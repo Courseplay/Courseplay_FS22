@@ -36,13 +36,13 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
+	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 end
 
 function Courseplay:restartSaveGame(saveGameNumber)
 	if g_server then
 		doRestart(true, " -autoStartSavegameId " .. saveGameNumber)
-		print("doRestart")
-		--restartApplication(" -autoStartSavegameId " .. saveGameNumber)
+		Courseplay.info('Restarting savegame %d', saveGameNumber)
 	end
 end
 
@@ -85,6 +85,28 @@ function Courseplay:printGlobalCpVariable(variableName, maxDepth, printToXML,pri
 		self:printVariableInternal( 'g_Courseplay', variableName, maxDepth, printToXML,printToSeparateXmlFiles)
 	else 
 		self:printVariable('g_Courseplay', maxDepth, printToXML,printToSeparateXmlFiles)
+	end
+end
+
+--- Load a Lua file
+--- This is to reload scripts without restarting the game.
+function Courseplay:loadFile(fileName)
+	fileName = fileName or 'reload.xml'
+	local path = courseplay.path .. fileName
+	if fileExists(path) then
+		g_xmlFile = loadXMLFile('loadFile', path)
+	end
+	if not g_xmlFile then
+		return 'Could not load ' .. path
+	else
+		local code = getXMLString(g_xmlFile, 'code')
+		local f = getfenv(0).loadstring('setfenv(1, courseplay); ' .. code)
+		if f then
+			f()
+			return 'OK: ' .. path .. ' loaded.'
+		else
+			return 'ERROR: ' .. path .. ' could not be compiled.'
+		end
 	end
 end
 
