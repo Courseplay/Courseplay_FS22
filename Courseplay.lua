@@ -31,6 +31,7 @@ function Courseplay:load()
 end
 
 function Courseplay:registerConsoleCommands()
+	addConsoleCommand( 'cpAddMoney', 'adds money', 'addMoney',self)
 	addConsoleCommand( 'cpRestartSaveGame', 'Load and start a savegame', 'restartSaveGame',self)
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
@@ -43,6 +44,10 @@ function Courseplay:restartSaveGame(saveGameNumber)
 		print("doRestart")
 		--restartApplication(" -autoStartSavegameId " .. saveGameNumber)
 	end
+end
+
+function Courseplay:addMoney(amount)
+	g_currentMission:addMoney(amount ~= nil and tonumber(amount) or 0, g_currentMission.player.farmId, MoneyType.OTHER)	
 end
 
 ---Prints a variable to the console or a xmlFile.
