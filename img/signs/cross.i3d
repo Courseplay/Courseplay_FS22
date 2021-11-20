@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="Crossing" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="7.0.0"/>
+  </Asset>
+
+  <Files>
+    <File fileId="1" filename="cross.png" relativePath="true"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="Sign" materialId="7" ambientColor="1 1 1" cosPower="20" specularColor="0.25 0.25 0.25">
+      <Texture fileId="1"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="cross.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+    <TransformGroup name="CrossingSign" clipDistance="175" nodeId="11">
+      <Shape shapeId="1" name="Front" nodeId="12" materialIds="7" castsShadows="true" receiveShadows="true"/>
+      <Shape shapeId="2" name="Back" nodeId="13" materialIds="7" castsShadows="true" receiveShadows="true"/>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="61">
+    <version>7.0.0.0</version>
+	<author><![CDATA[Courseplay.devTeam]]></author>
+	<title>
+		<en>CoursePlay</en>
+		<cs>课程玩法</cs>
+		<ct>課程玩法</ct>
+		<hu>CoursePlay - A Vezetősegéd</hu>
+		<jp>コースプレイ</jp>
+		<kr>코스 플레이</kr>
+	</title>
+
+    <description>
+        <en>
+		<![CDATA[Click to Switch - Just click on a vehicle to enter it!
+
+A quicker way of getting from a vehicle into another, which you can see from your current position, rather than cycling through your vehicles with a hotkey. A popular feature from the Courseplay mod now available as a standalone version.
+
+Right mouse click - Mouse cursor on/off
+
+Left mouse click - Enter vehicle]]>
+		</en>
+        <de>
+		<![CDATA[Click to switch - Einfach auf ein Fahrzeug klicken zum Einsteigen!
+
+Der schnellste Weg, um von einem Fahrzeug in ein anderes in sichtbarer Nähe zu gelangen. Schneller und komfortabler als durch die Fahrzeuge mit einer Taste zu wechseln. Ein beliebtes Feature von Courseplay, nun als eigenständige Mod.
+
+Rechtsklick - Mauszeiger an/aus
+
+Linksklick - In Fahrzeug einsteigen]]>
+		</de>
+    </description>
+
+	<iconFilename>img/icon_courseplay.dds</iconFilename>
+    <multiplayer supported="true" />
+	
+	<extraSourceFiles>
+        <sourceFile filename="Courseplay.lua"/>
+    </extraSourceFiles>
+
+	<specializations>
+        <specialization name="courseplaySpec"                   className="CourseplaySpec"                   filename="scripts/specializations/CourseplaySpec.lua" />
+    </specializations>
+	<!--
+	<inputBinding>
+		<actionBinding action="CLICK_TO_SWITCH_TOGGLE_MOUSE">
+			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_RIGHT" />
+		</actionBinding>
+		<actionBinding action="CLICK_TO_SWITCH_TOGGLE_MOUSE_ALTERNATIVE">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_c" />
+		</actionBinding>
+		<actionBinding action="CLICK_TO_SWITCH_CHANGES_ASSIGNMENTS">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_y" />
+		</actionBinding>
+        <actionBinding action="CLICK_TO_SWITCH_ENTER_VEHICLE">
+			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_LEFT" />
+		</actionBinding>	
+    </inputBinding>	
+
+	<actions>
+		<action name="CLICK_TO_SWITCH_TOGGLE_MOUSE" />
+		<action name="CLICK_TO_SWITCH_TOGGLE_MOUSE_ALTERNATIVE" />
+		<action name="CLICK_TO_SWITCH_CHANGES_ASSIGNMENTS" />
+        <action name="CLICK_TO_SWITCH_ENTER_VEHICLE" />
+	</actions>
+
+	<l10n>	
+		<text name="input_CLICK_TO_SWITCH_TOGGLE_MOUSE"><de>CTS: Mauszeiger an/aus</de><en>CTS: Mouse cursor on/off</en></text>	
+        <text name="input_CLICK_TO_SWITCH_TOGGLE_MOUSE_ALTERNATIVE"><de>CTS: Mauszeiger an/aus</de><en>CTS: Mouse cursor on/off</en></text>
+		<text name="input_CLICK_TO_SWITCH_CHANGES_ASSIGNMENTS"><de>CTS: Ändert die Belegung</de><en>CTS: Changes assignments</en></text>
+		<text name="input_CLICK_TO_SWITCH_ENTER_VEHICLE"><de>CTS: In Fahrzeug einsteigen</de><en>CTS: Try to enter vehicle</en></text>
+	</l10n>
+	-->
+</modDesc>

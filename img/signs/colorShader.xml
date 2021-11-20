@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Simple rgb color shader for emissiveMap materials
+	by Jakob Tischler, 26 December 2014
+-->
+<CustomShader version="4">
+	<Parameters>
+		<Parameter name="shapeColor" target="shapeColor" type="float3" defaultValue="1 0.212 0.0 1.0" minValue="0.0 0.0 0.0 1.0" maxValue="1.0 1.0 1.0 1.0" />
+	</Parameters>
+	<LodLevel startDistance="0">
+		<CodeInjections>
+			<CodeInjection position="MATERIALINFO">
+<![CDATA[
+uniform float3 shapeColor;
+]]>
+			</CodeInjection>
+			<CodeInjection position="EMISSIVE_FS">
+<![CDATA[
+emissiveColor.rgb *= shapeColor.rgb;
+]]>
+			</CodeInjection>
+		</CodeInjections>
+	</LodLevel>
+</CustomShader>

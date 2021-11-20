@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="Stop" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="7.0.0"/>
+  </Asset>
+
+  <Files>
+    <File fileId="2" filename="colorShader.xml" relativePath="true"/>
+    <File fileId="1" filename="normal.png" relativePath="true"/>
+    <File fileId="3" filename="stop.png" relativePath="true"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="Sign" materialId="6" ambientColor="1 1 1" cosPower="20" specularColor="0.25 0.25 0.25">
+      <Texture fileId="3"/>
+    </Material>
+    <Material name="diamond" materialId="8" ambientColor="1 1 1" customShaderId="2">
+      <Emissivemap fileId="1"/>
+      <CustomParameter name="diffuseColor" value="1 0.212 0 1"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="stop.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+    <Shape shapeId="1" name="Waypoint" clipDistance="175" nodeId="13" materialIds="8" castsShadows="true" receiveShadows="true">
+      <TransformGroup name="dummy" nodeId="14"/>
+      <TransformGroup name="StopSign" nodeId="15">
+        <Shape shapeId="2" name="Front" nodeId="16" materialIds="6" castsShadows="true" receiveShadows="true"/>
+        <Shape shapeId="3" name="Back" nodeId="17" materialIds="6" castsShadows="true" receiveShadows="true"/>
+      </TransformGroup>
+    </Shape>
+  </Scene>
+
+</i3D>
