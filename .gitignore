@@ -39,3 +39,32 @@ luac.out
 *.x86_64
 *.hex
 
+.project
+*~
+*.gitattributes
+*.idea
+*.iml
+out
+reload/venv
+reload.xml
+.vscode
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# horoman
+.builtpath
+
+# Satis
+TurnRadiusCalculation.lua
+TriangleCalculation.lua
+
+# Jakob
+*.WinMerge
