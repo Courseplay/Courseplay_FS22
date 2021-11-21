@@ -105,3 +105,28 @@ function CpUtil.getVariable(variableName)
 	local f = getfenv(0).loadstring('return ' .. variableName)
 	return f and f() or nil
 end
+
+--- Create a node at x,z, direction according to yRotation.
+--- If rootNode is given, make that the parent node, otherwise the parent is the terrain root node
+---@param name string
+---@param x number
+---@param z number
+---@param yRotation number
+---@param rootNode number
+function CpUtil.createNode(name, x, z, yRotation, rootNode)
+	local node = createTransformGroup(name)
+	link(rootNode or g_currentMission.terrainRootNode, node)
+	-- y is zero when we link to an existing node
+	local y = rootNode and 0 or getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z);
+	setTranslation( node, x, y, z );
+	setRotation( node, 0, yRotation, 0);
+	return node
+end
+
+--- Safely destroy a node
+function courseplay.destroyNode(node)
+	if node and entityExists(node) then
+		unlink(node)
+		delete(node)
+	end
+end
