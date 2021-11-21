@@ -180,5 +180,9 @@ function Courseplay:update(dt)
 	g_devHelper:update()
 end
 
+function Courseplay:draw()
+	g_devHelper:draw()
+end
+
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)

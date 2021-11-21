@@ -44,24 +44,17 @@ function DevHelper:update()
     if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.spec_aiVehicle then
 
         if self.vehicle ~= g_currentMission.controlledVehicle then
-            self.vehicleData = PathfinderUtil.VehicleData(g_currentMission.controlledVehicle, true)
+            --self.vehicleData = PathfinderUtil.VehicleData(g_currentMission.controlledVehicle, true)
         end
 
         self.vehicle = g_currentMission.controlledVehicle
         self.node = g_currentMission.controlledVehicle.rootNode
         lx, _, lz = localDirectionToWorld(self.node, 0, 0, 1)
 
-        self:updateProximitySensors(self.vehicle)
     else
         -- camera node looks backwards so need to flip everything by 180 degrees
         self.node = g_currentMission.player.cameraNode
         lx, _, lz = localDirectionToWorld(self.node, 0, 0, -1)
-        if not self.proxySensor then
-            self.proxySensor = ProximitySensor(self.node, 180, 10, 1, 0)
-        else
-            self.proxySensor:update()
-            self.proxySensor:showDebugInfo()
-        end
     end
 
     self.yRot = math.atan2( lx, lz )
@@ -77,13 +70,13 @@ function DevHelper:update()
 --    self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
 	self.data.farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(self.data.x, self.data.z)
 	self.data.farmland = g_farmlandManager:getFarmlandAtWorldPosition(self.data.x, self.data.z)
-    self.data.fieldAreaPercent = 100 * self.fieldArea / self.totalFieldArea
+--    self.data.fieldAreaPercent = 100 * self.fieldArea / self.totalFieldArea
 
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
 	self.data.nx, self.data.ny, self.data.nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, y, self.data.z)
 
     self.data.collidingShapes = ''
-    overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, bitOR(AIVehicleUtil.COLLISION_MASK, 2), true, true, true)
+    overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, bitOR(CollisionMask.VEHICLE, 2), true, true, true)
 
 end
 
@@ -170,8 +163,6 @@ function DevHelper:draw()
         table.insert(data, {name = key, value = value})
     end
     DebugUtil.renderTable(0.65, 0.3, 0.013, data, 0.05)
-    self:drawCourse()
-    self:showVehicleSize()
     self:showFillNodes()
     for _, vehicle in pairs(g_currentMission.vehicles) do
         if vehicle ~= g_currentMission.controlledVehicle and vehicle.cp and vehicle.cp.driver then
@@ -189,7 +180,7 @@ function DevHelper:draw()
 
 	local x, y, z = localToWorld(self.node, 0, -1, -3)
 
-	cpDebug:drawLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz)
+	drawDebugLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz, 1, 1, 1)
 	local xRot, yRot, zRot = getWorldRotation(self.tNode)
 	DebugUtil.drawOverlapBox(self.data.x, self.data.y, self.data.z, xRot, yRot, zRot, 4, 1, 4, 0, 100, 0)
 
