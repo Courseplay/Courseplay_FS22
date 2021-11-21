@@ -1,14 +1,7 @@
---[[
-    This mod enables the possibility to enter vehicles by clicking with the mouse onto them.
 
-    Interface for other mods: 
-    
-    - vehicle:isCourseplaySpecToggleMouseAllowed() : 
-        This function can be overwritten to disable the mouse visibility action event.
-    - vehicle:isCourseplaySpecAllowed() : 
-        This function can be overwritten to enable the click to switch raycast, if the mouse is active.
-]]
 
+--- This file is an example specialization.
+--- The existing code is from the mod: ClickToSwitch.
 
 ---@class CourseplaySpec
 CourseplaySpec = {}

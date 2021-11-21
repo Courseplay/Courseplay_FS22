@@ -2,25 +2,54 @@
 
 source(g_currentModDirectory.. "scripts/CpObject.lua")
 
+--- Global class 
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
 
 source(Courseplay.BASE_DIRECTORY .. "scripts/CpUtil.lua")
 
-
----Register the spec_clickToSwitch in all drivable vehicle,horses ...
-function Courseplay.register(typeManager)
-	for typeName, typeEntry in pairs(typeManager.types) do
-		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
-		end
-    end
+function Courseplay:init()
+	self:registerConsoleCommands()
 end
-TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
+
+------------------------------------------------------------------------------------------------------------------------
+-- Global Giants functions listener 
+------------------------------------------------------------------------------------------------------------------------
+
+--- This function is called on loading a savegame.
+---@param filename string
+function Courseplay:loadMap(filename)
+	self:load()
+end
+
+function Courseplay:update(dt)
+	
+end
+
+function Courseplay:draw()
+	
+end
+
+---@param posX number
+---@param posY number
+---@param isDown boolean
+---@param isUp boolean
+---@param button number
+function Courseplay:mouseEvent(posX, posY, isDown, isUp, button)
+	
+end
+
+---@param unicode number
+---@param sym number
+---@param modifier number
+---@param isDown boolean
+function Courseplay:keyEvent(unicode, sym, modifier, isDown)
+
+end
+
 
 function Courseplay:load()
-	self:registerConsoleCommands()
 	--self.savegameFolderPath = ('%ssavegame%d'):format(getUserProfileAppPath(), g_careerScreen.selectedIndex); -- This should work for both SP, MP and Dedicated Servers
 	self.cpFolderPath = string.format("%s%s",getUserProfileAppPath(),"courseplay")
 	createFolder(self.cpFolderPath)
@@ -39,6 +68,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 end
 
+---@param saveGameNumber number
 function Courseplay:restartSaveGame(saveGameNumber)
 	if g_server then
 		doRestart(true, " -autoStartSavegameId " .. saveGameNumber)
@@ -46,6 +76,7 @@ function Courseplay:restartSaveGame(saveGameNumber)
 	end
 end
 
+---@param amount amount
 function Courseplay:addMoney(amount)
 	g_currentMission:addMoney(amount ~= nil and tonumber(amount) or 0, g_currentMission.player.farmId, MoneyType.OTHER)	
 end
@@ -127,6 +158,18 @@ function Courseplay.error(str,...)
 	Courseplay.info("error: "..str,...)
 end
 
-g_Courseplay = Courseplay
+--- Registers all cp specializations.
+---@param typeManager TypeManager
+function Courseplay.register(typeManager)
+	--- TODO: make this function async. 
+	for typeName, typeEntry in pairs(typeManager.types) do
+		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
+		end
+    end
+end
+TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
 
-Courseplay:load()
+
+g_Courseplay = Courseplay()
+addModEventListener(g_Courseplay)

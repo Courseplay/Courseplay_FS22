@@ -36,10 +36,11 @@ function CpUtil.printVariableToXML(variableName, maxDepth,printToSeparateXmlFile
 	local filePath
 	if printToSeparateXmlFiles and tonumber(printToSeparateXmlFiles)>0 then 
 		local fileName = string.gsub(variableName,":","_")..".xml"
-		filePath = string.format("%s/%s",Courseplay.cpDebugPrintXmlFolderPath,fileName)
+		filePath = string.format("%s/%s",g_Courseplay.cpDebugPrintXmlFolderPath,fileName)
 	else 
-		filePath = Courseplay.cpDebugPrintXmlFilePathDefault
+		filePath = g_Courseplay.cpDebugPrintXmlFilePathDefault
 	end
+	Courseplay.info("Trying to print to xml file: %s",filePath)
 	local xmlFile = createXMLFile("xmlFile", filePath, baseKey);
 	local xmlFileValid = xmlFile and xmlFile ~= 0 or false
 	if not xmlFileValid then
@@ -69,7 +70,6 @@ function CpUtil.printVariableToXML(variableName, maxDepth,printToSeparateXmlFile
 	end
 	saveXMLFile(xmlFile)
 	delete(xmlFile)
-	Courseplay.info("Finished printing to %s",filePath)
 end
 
 ---Prints a variable to the console or a xmlFile.
