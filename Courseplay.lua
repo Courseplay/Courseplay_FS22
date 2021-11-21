@@ -1,6 +1,7 @@
 
 
 source(g_currentModDirectory.. "scripts/CpObject.lua")
+source(g_currentModDirectory.. "scripts/DevHelper.lua")
 
 --- Global class 
 Courseplay = CpObject()
@@ -66,6 +67,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
+	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
 end
 
 ---@param saveGameNumber number
@@ -123,7 +125,7 @@ end
 --- This is to reload scripts without restarting the game.
 function Courseplay:loadFile(fileName)
 	fileName = fileName or 'reload.xml'
-	local path = courseplay.path .. fileName
+	local path = Courseplay.BASE_DIRECTORY .. '/' .. fileName
 	if fileExists(path) then
 		g_xmlFile = loadXMLFile('loadFile', path)
 	end
@@ -131,7 +133,7 @@ function Courseplay:loadFile(fileName)
 		return 'Could not load ' .. path
 	else
 		local code = getXMLString(g_xmlFile, 'code')
-		local f = getfenv(0).loadstring('setfenv(1, courseplay); ' .. code)
+		local f = getfenv(0).loadstring('setfenv(1, '.. Courseplay.MOD_NAME .. '); ' .. code)
 		if f then
 			f()
 			return 'OK: ' .. path .. ' loaded.'
@@ -139,6 +141,10 @@ function Courseplay:loadFile(fileName)
 			return 'ERROR: ' .. path .. ' could not be compiled.'
 		end
 	end
+end
+
+function Courseplay:toggleDevHelper()
+	g_devHelper:toggle()
 end
 
 function Courseplay.info(...)
@@ -170,6 +176,9 @@ function Courseplay.register(typeManager)
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
 
+function Courseplay:update(dt)
+	g_devHelper:update()
+end
 
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)
