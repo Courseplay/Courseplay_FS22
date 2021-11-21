@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
+source(Courseplay.BASE_DIRECTORY .. "scripts/field/FieldScanner.lua")
 
 --- Development helper utilities to easily test and diagnose things.
 --- To test the pathfinding:
@@ -70,10 +71,9 @@ function DevHelper:update()
 --    self.data.fieldNum = courseplay.fields:getFieldNumForPosition(self.data.x, self.data.z)
 
 --    self.data.hasFruit, self.data.fruitValue, self.data.fruit = PathfinderUtil.hasFruit(self.data.x, self.data.z, 5, 3.6)
---    self.data.isField, self.fieldArea, self.totalFieldArea = courseplay:isField(self.data.x, self.data.z, 3, 3)
 
---    self.data.landId =  PathfinderUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
---    self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
+    --self.data.landId =  PathfinderUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
+    --self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
 	self.data.farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(self.data.x, self.data.z)
 	self.data.farmland = g_farmlandManager:getFarmlandAtWorldPosition(self.data.x, self.data.z)
 --    self.data.fieldAreaPercent = 100 * self.fieldArea / self.totalFieldArea
@@ -122,7 +122,7 @@ end
 -- Left-Alt + Space = save current vehicle position
 -- Left-Ctrl + Space = restore current vehicle position
 function DevHelper:keyEvent(unicode, sym, modifier, isDown)
-    if not CpManager.isDeveloper then return end
+    if not self.isEnabled then return end
     if bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_comma then
         -- Left Alt + < mark start
         self.start = State3D(self.data.x, -self.data.z, courseGenerator.fromCpAngleDeg(self.data.yRotDeg))
@@ -157,6 +157,9 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     elseif bitAND(modifier, Input.MOD_LCTRL) ~= 0 and isDown and sym == Input.KEY_space then
         -- restore vehicle position
         DevHelper.restoreVehiclePosition(g_currentMission.controlledVehicle)
+    elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
+        self:debug('Finding contour of current field')
+        g_fieldScanner:findContour(self.data.x, self.data.z)
     end
 end
 
@@ -191,7 +194,7 @@ function DevHelper:draw()
 	drawDebugLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz, 1, 1, 1)
 	local xRot, yRot, zRot = getWorldRotation(self.tNode)
 	DebugUtil.drawOverlapBox(self.data.x, self.data.y, self.data.z, xRot, yRot, zRot, 4, 1, 4, 0, 100, 0)
-
+    g_fieldScanner:draw()
 end
 
 function DevHelper:showFillNodes()

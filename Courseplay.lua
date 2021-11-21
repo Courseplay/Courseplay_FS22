@@ -1,15 +1,15 @@
 
 
 source(g_currentModDirectory.. "scripts/CpObject.lua")
-source(g_currentModDirectory.. "scripts/DevHelper.lua")
 
---- Global class 
+--- Global class
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
 
 source(Courseplay.BASE_DIRECTORY .. "scripts/CpUtil.lua")
 source(Courseplay.BASE_DIRECTORY .. "scripts/AIJobs/AIJobFieldWorkCp.lua")
+source(Courseplay.BASE_DIRECTORY .. "scripts/DevHelper.lua")
 
 function Courseplay:init()
 	self:registerConsoleCommands()
@@ -184,6 +184,10 @@ end
 function Courseplay:draw()
 	g_devHelper:draw()
 end
+
+function Courseplay:keyEvent(unicode, sym, modifier, isDown)
+	g_devHelper:keyEvent(unicode, sym, modifier, isDown)
+end;
 
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)
