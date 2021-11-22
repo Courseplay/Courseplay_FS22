@@ -124,7 +124,7 @@ function CpUtil.createNode(name, x, z, yRotation, rootNode)
 end
 
 --- Safely destroy a node
-function courseplay.destroyNode(node)
+function CpUtil.destroyNode(node)
 	if node and entityExists(node) then
 		unlink(node)
 		delete(node)
