@@ -29,7 +29,13 @@ DevHelper = CpObject()
 function DevHelper:init()
     self.data = {}
     self.isEnabled = false
+    self:registerConsoleCommands()
 end
+
+function DevHelper:registerConsoleCommands()
+	addConsoleCommand( 'cpGiantsAIDebug', 'cpGiantsAIDebug', 'turnOnGiantsAIDebug',self)
+end
+
 
 function DevHelper:debug(...)
     print(string.format(...))
@@ -240,6 +246,15 @@ function DevHelper.saveAllVehiclePositions()
         vehicle.vehiclePositionData = {}
         DevHelper.saveVehiclePosition(vehicle, vehicle.vehiclePositionData)
     end
+end
+
+function DevHelper.turnOnGiantsAIDebug()
+    VehicleDebug.setState(7)
+    g_currentMission.aiSystem:consoleCommandAIEnableDebug()
+    g_currentMission.aiSystem:consoleCommandAIToggleSplineVisibility()
+    g_currentMission.aiSystem:consoleCommandAIToggleAINodeDebug()
+    g_currentMission.aiSystem:consoleCommandAIShowObstacles()
+    g_currentMission.aiSystem:consoleCommandAIShowCosts()
 end
 
 -- make sure to recreate the global dev helper whenever this script is (re)loaded
