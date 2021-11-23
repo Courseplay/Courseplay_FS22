@@ -16,7 +16,7 @@ function FieldScanner:init(resolution)
     -- sure if it is 1 or 0.5, so 0.2 seems to be a safe bet
     self.resolution = resolution or 0.2
     self.highResolution = 0.01
-    self.normalTracerLookahead = 1.5
+    self.normalTracerLookahead = 1.0
     self.shortTracerLookahead = self.normalTracerLookahead / 20
     self.angleStep = self.highResolution / self.normalTracerLookahead
 end
@@ -42,7 +42,7 @@ function FieldScanner:setProbePosition(probe, x, z)
     setTranslation(probe, x, y, z)
 end
 
-function FieldScanner:rotateProbe(probe, angleStep)
+function FieldScanner:rotateProbeBy(probe, angleStep)
     local _, yRot, _ = getRotation(probe)
     setRotation(probe, 0, yRot + angleStep, 0)
 end
@@ -57,7 +57,7 @@ function FieldScanner:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
     while a < 2 * math.pi and isOnField ~= targetOnFieldState do
         x, y, z = localToWorld(probe, 0, 0, tracerLookahead)
         isOnField = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
-        self:rotateProbe(probe, (isOnField and 1 or -1) * self.angleStep)
+        self:rotateProbeBy(probe, (isOnField and 1 or -1) * self.angleStep)
         a = a + self.angleStep
     end
     local _, yRot, _ = getRotation(probe)
@@ -67,6 +67,7 @@ end
 --- Move northwards in big steps until we pass the edge of the field, then
 --- back up with small steps until we are back on the field.
 --- At the end, we'll be very close to the field edge.
+---@return boolean true if the edge was found
 function FieldScanner:findFieldEdge(probe)
     local i = 0
     while i < 100000 and self:isProbeOnField(probe) do
@@ -81,33 +82,29 @@ function FieldScanner:findFieldEdge(probe)
     self:debug('Field edge found at %.1f/%.1f after %d steps', x, z, i)
 end
 
---- Find the polygon representing a field. The point (x,z) must be on the field.
----@param x number
----@param z number
-function FieldScanner:findContour(x, z)
+function FieldScanner:traceFieldEdge(probe)
     self.points = {}
-    local probe = CpUtil.createNode('FieldScannerProbe', x, z, 0)
-    if not self:isProbeOnField(probe) then
-        self:debug('%.1f/%.1f is not on a field, can\'t start scanning here', x, z)
-        return
-    end
-    self:findFieldEdge(probe)
     local startX, _, startZ = getWorldTranslation(probe)
     local distanceFromStart = math.huge
     local tracerLookahead = self.normalTracerLookahead
     local prevYRot
+    local totalYRot = 0
     local approachingCorner = false
     local i = 0
-    while i < 1000 and (i == 1 or distanceFromStart > tracerLookahead) do
+    -- limit the number of iterations, also, must be close to the start and have made almost a full circle (pi is just
+    -- a half circle, but should be ok to protect us from edge cases like starting with a corner
+    while i < 10000 and (i == 1 or distanceFromStart > tracerLookahead or math.abs(totalYRot) < math.pi) do
         local yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
         -- how much we just turned?
-        if prevYRot and math.abs(yRot - prevYRot) > math.rad(15) then
+        local deltaYRot = yRot - (prevYRot or yRot)
+        if prevYRot and math.abs(deltaYRot) > math.rad(15) then
             local pX, pY, pZ = getWorldTranslation(probe)
             if approachingCorner then
                 -- approaching the corner and there was a big rotation change so we just passed the corner
                 tracerLookahead = self.normalTracerLookahead
+                totalYRot = totalYRot + deltaYRot
                 approachingCorner = false
-                self:debug('Looks like just passed a corner at %.1f/%.1f (%d)', pX, pZ, i)
+                -- self:debug('Looks like just passed a corner at %.1f/%.1f (%d, %.1f°)', pX, pZ, i, math.deg(deltaYRot))
             else
                 -- there is a big rotation change, a corner may be ahead,
                 -- switch to shorter tracer length while approaching the corner
@@ -116,20 +113,49 @@ function FieldScanner:findContour(x, z)
                 -- rotate probe back to original direction
                 setRotation(probe, 0, prevYRot, 0)
                 yRot = prevYRot
-                self:debug('Approaching a corner at %.1f/%.1f (%d)', pX, pZ, i)
+                --self:debug('Approaching a corner at %.1f/%.1f (%d, %.1f°)', pX, pZ, i, math.deg(deltaYRot))
             end
         else
             self:moveProbeForward(probe, tracerLookahead)
             local pX, pY, pZ = getWorldTranslation(probe)
             table.insert(self.points, {x = pX, y = pY, z = pZ, yRot = yRot})
             distanceFromStart = MathUtil.getPointPointDistance(pX, pZ, startX, startZ)
+            totalYRot = totalYRot + deltaYRot
         end
         -- more or less in the same direction, continue with the longer tracer beam
         prevYRot = yRot
         i = i + 1
     end
-    self:debug('Field contour with %d points generated', #self.points)
-    self.points = self:simplifyPolygon(self.points, 0.55)
+    self:debug('Field contour with %d points generated, total rotation %.1f°', #self.points, math.deg(totalYRot))
+    -- a negative totalYRot means we went around the field clockwise, which we always should if we start in the
+    -- middle of the field
+    -- if it is positive, it means we bumped into an island and traced the island instead of the field
+    return totalYRot < 0 and math.abs(totalYRot) > math.pi
+end
+
+--- Find the polygon representing a field. The point (x,z) must be on the field.
+---@param x number
+---@param z number
+function FieldScanner:findContour(x, z)
+    local probe = CpUtil.createNode('FieldScannerProbe', x, z, 0)
+    if not self:isProbeOnField(probe) then
+        self:debug('%.1f/%.1f is not on a field, can\'t start scanning here', x, z)
+        return
+    end
+    self:debug('Start field scanning at %.1f/%.1f', x, z)
+    local i = 1
+    while i < 10 do
+        self:findFieldEdge(probe)
+        if self:traceFieldEdge(probe) then
+            break
+        else
+            self:debug('Edge not, found we may have hit an island, reset/rotate the probe a bit and retry')
+            self:setProbePosition(probe, x, z)
+            setRotation(probe, 0, i * math.pi / 7, 0)
+        end
+        i = i + 1
+    end
+    self.points = self:simplifyPolygon(self.points, 0.75)
     self:debug('Field contour simplified, has now %d points', #self.points)
     self:sharpenCorners(self.points)
     for i, p in ipairs(self.points) do
