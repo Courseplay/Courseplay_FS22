@@ -162,6 +162,7 @@ function FieldScanner:findContour(x, z)
         self:debug('%d %.1f/%.1f', i, p.x, p.z)
     end
     CpUtil.destroyNode(probe)
+    return self.points
 end
 
 function FieldScanner:draw()

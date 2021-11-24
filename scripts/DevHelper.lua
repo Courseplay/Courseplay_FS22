@@ -125,12 +125,12 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     if not self.isEnabled then return end
     if bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_comma then
         -- Left Alt + < mark start
-        self.start = State3D(self.data.x, -self.data.z, courseGenerator.fromCpAngleDeg(self.data.yRotDeg))
+        self.start = State3D(self.data.x, -self.data.z, CourseGenerator.fromCpAngleDeg(self.data.yRotDeg))
         self:debug('Start %s', tostring(self.start))
 		PathfinderUtil.checkForObstaclesAhead(self.vehicle, 6)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_period then
         -- Left Alt + > mark goal
-        self.goal = State3D(self.data.x, -self.data.z, courseGenerator.fromCpAngleDeg(self.data.yRotDeg))
+        self.goal = State3D(self.data.x, -self.data.z, CourseGenerator.fromCpAngleDeg(self.data.yRotDeg))
 
         local x, y, z = getWorldTranslation(self.node)
         local _, yRot, _ = getRotation(self.node)
@@ -160,6 +160,9 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
         self:debug('Finding contour of current field')
         g_fieldScanner:findContour(self.data.x, self.data.z)
+    elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
+        self:debug('Generate course')
+        CourseGeneratorInterface.generate({x = self.data.x, z = self.data.z}, 0, 6, 1, true)
     end
 end
 

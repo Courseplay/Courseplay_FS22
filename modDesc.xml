@@ -30,7 +30,18 @@ Die nächste Version von Courseplay.]]>
 	
 	<extraSourceFiles>
         <sourceFile filename="Courseplay.lua"/>
-    </extraSourceFiles>
+		<sourceFile filename="scripts/DevHelper.lua"/>
+		<sourceFile filename="scripts/field/FieldScanner.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Genetic.lua"/>
+		<sourceFile filename="scripts/courseGenerator/center.lua"/>
+		<sourceFile filename="scripts/courseGenerator/headland.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Island.lua"/>
+		<sourceFile filename="scripts/courseGenerator/track.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+	</extraSourceFiles>
 
 	<specializations>
         <specialization name="courseplaySpec"                   className="CourseplaySpec"                   filename="scripts/specializations/CourseplaySpec.lua" />
