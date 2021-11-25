@@ -1,5 +1,3 @@
-source(Courseplay.BASE_DIRECTORY .. "scripts/CpUtil.lua")
-
 --- Create a polygon representing a field in Farming Simulator.
 --- We put a probe (a node) on anywhere on the field, then start moving the probe to north until we
 --- find the field edge. From that point on, we trace the edge clockwise around the field.

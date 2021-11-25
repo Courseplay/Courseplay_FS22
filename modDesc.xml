@@ -31,6 +31,7 @@ Die nächste Version von Courseplay.]]>
 	<extraSourceFiles>
         <sourceFile filename="Courseplay.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
+		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
@@ -41,6 +42,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/track.lua"/>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

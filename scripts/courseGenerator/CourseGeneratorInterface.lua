@@ -77,7 +77,8 @@ function CourseGeneratorInterface.generate(startPosition, startAngle,
 
 	--removeRidgeMarkersFromLastTrack(field.course,
 	--	vehicle.cp.courseGeneratorSettings.startOnHeadland:is(CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS))
-	return status, ok
+	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, 1)
+	return status, ok, course
 end
 
 function CourseGeneratorInterface.setSmoothAngles(headlandSettings, headlandCornerType)

@@ -154,7 +154,7 @@ function Courseplay.info(...)
 end
 
 function Courseplay.infoVehicle(vehicle, ...)
-	local vehicleName = vehicle and nameNum(vehicle) or "Unknown vehicle"
+	local vehicleName = vehicle and vehicle:getName() or "Unknown vehicle"
 	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 	local timestamp = getDate( ":%S")
 	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, vehicleName, string.format( ... )))

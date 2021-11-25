@@ -15,8 +15,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
-source(Courseplay.BASE_DIRECTORY .. "scripts/field/FieldScanner.lua")
-
 --- Development helper utilities to easily test and diagnose things.
 --- To test the pathfinding:
 --- 1. mark the start location/heading with Alt + <
@@ -30,7 +28,7 @@ DevHelper = CpObject()
 function DevHelper:init()
     self.data = {}
     self.isEnabled = false
-    self:registerConsoleCommands()
+    --self:registerConsoleCommands()
 end
 
 function DevHelper:registerConsoleCommands()
@@ -162,7 +160,17 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         g_fieldScanner:findContour(self.data.x, self.data.z)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
         self:debug('Generate course')
-        CourseGeneratorInterface.generate({x = self.data.x, z = self.data.z}, 0, 6, 1, true)
+        local status, ok, course = CourseGeneratorInterface.generate({x = self.data.x, z = self.data.z},
+                0, 6, 1, true)
+        if ok then
+            self.course = course
+            local map = g_currentMission.inGameMenu.pageAI.ingameMap
+            self.coursePlot = CoursePlot(map.ingameMap)
+            self.coursePlot:setWaypoints(course.waypoints)
+            self.coursePlot:setVisible(true)
+            g_currentMission.inGameMenu.pageAI.ingameMap.draw =
+                Utils.appendedFunction(g_currentMission.inGameMenu.pageAI.ingameMap.draw, g_devHelper.drawCoursePlot)
+        end
     end
 end
 
@@ -226,7 +234,7 @@ function DevHelper.saveVehiclePosition(vehicle, vehiclePositionData)
     for _,impl in pairs(vehicle:getAttachedImplements()) do
         DevHelper.saveVehiclePosition(impl.object, vehiclePositionData)
     end
-    Courseplay.info('Saved position of %s', nameNum(vehicle))
+    Courseplay.info('Saved position of %s', vehicle:getName())
 end
 
 function DevHelper.restoreVehiclePosition(vehicle)
@@ -234,7 +242,7 @@ function DevHelper.restoreVehiclePosition(vehicle)
         for _, savedPosition in pairs(vehicle.vehiclePositionData) do
             savedPosition[1]:setAbsolutePosition(savedPosition[2].x, savedPosition[2].y, savedPosition[2].z,
                     savedPosition[2].xRot, savedPosition[2].yRot, savedPosition[2].zRot)
-            Courseplay.info('Restored position of %s', nameNum(savedPosition[1]))
+            Courseplay.info('Restored position of %s', savedPosition[1]:getName())
         end
     end
 end
@@ -263,5 +271,12 @@ function DevHelper.turnOnGiantsAIDebug()
     g_currentMission.aiSystem:consoleCommandAIShowCosts()
 end
 
+function DevHelper.drawCoursePlot()
+    if g_devHelper.coursePlot then
+        g_devHelper.coursePlot:draw()
+    end
+end
+
 -- make sure to recreate the global dev helper whenever this script is (re)loaded
 g_devHelper = DevHelper()
+

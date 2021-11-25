@@ -36,15 +36,15 @@ function CpUtil.printVariableToXML(variableName, maxDepth,printToSeparateXmlFile
 	local filePath
 	if printToSeparateXmlFiles and tonumber(printToSeparateXmlFiles)>0 then 
 		local fileName = string.gsub(variableName,":","_")..".xml"
-		filePath = string.format("%s/%s",g_Courseplay.cpDebugPrintXmlFolderPath,fileName)
+		filePath = string.format("%s/%s",g_CpUtil.cpDebugPrintXmlFolderPath,fileName)
 	else 
-		filePath = g_Courseplay.cpDebugPrintXmlFilePathDefault
+		filePath = g_CpUtil.cpDebugPrintXmlFilePathDefault
 	end
-	Courseplay.info("Trying to print to xml file: %s",filePath)
+	CpUtil.info("Trying to print to xml file: %s",filePath)
 	local xmlFile = createXMLFile("xmlFile", filePath, baseKey);
 	local xmlFileValid = xmlFile and xmlFile ~= 0 or false
 	if not xmlFileValid then
-		Courseplay.error("xmlFile(%s) not valid!",filePath)
+		CpUtil.error("xmlFile(%s) not valid!",filePath)
 		return 
 	end
 	setXMLString(xmlFile, baseKey .. '#maxDepth', tostring(maxDepth))
@@ -105,6 +105,47 @@ function CpUtil.getVariable(variableName)
 	local f = getfenv(0).loadstring('return ' .. variableName)
 	return f and f() or nil
 end
+
+-- convenience debug function that expects string.format() arguments,
+-- CpUtil.debugVehicle( CpUtil.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
+---@param channel number
+function CpUtil.debugFormat(channel, ...)
+	-- TODO: enable debug channel configuration
+	if true or CpUtil.debugChannels and channel ~= nil and CpUtil.debugChannels[channel] ~= nil and CpUtil.debugChannels[channel] == true then
+		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+		local timestamp = getDate( ":%S")
+		channel = channel or 0
+		print(string.format('%s [dbg%d lp%d] %s', timestamp, channel, updateLoopIndex, string.format( ... )))
+	end
+end
+
+-- convenience debug function to show the vehicle name and expects string.format() arguments, 
+-- CpUtil.debugVehicle( CpUtil.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
+---@param channel number
+function CpUtil.debugVehicle(channel, vehicle, ...)
+	-- TODO: enable debug channel configuration
+	if true or CpUtil.debugChannels and channel ~= nil and CpUtil.debugChannels[channel] ~= nil and CpUtil.debugChannels[channel] == true then
+		local vehicleName = vehicle and vehicle.getName and vehicle:getName() or "Unknown vehicle"
+		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+		local timestamp = getDate( ":%S")
+		channel = channel or 0
+		print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, vehicleName, string.format( ... )))
+	end
+end
+
+function CpUtil.info(...)
+	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+	local timestamp = getDate( ":%S")
+	print(string.format('%s [info lp%d] %s', timestamp, updateLoopIndex, string.format( ... )))
+end
+
+function CpUtil.infoVehicle(vehicle, ...)
+	local vehicleName = vehicle and vehicle.getName and vehicle:getName() or "Unknown vehicle"
+	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+	local timestamp = getDate( ":%S")
+	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, vehicleName, string.format( ... )))
+end
+
 
 --- Create a node at x,z, direction according to yRotation.
 --- If rootNode is given, make that the parent node, otherwise the parent is the terrain root node
