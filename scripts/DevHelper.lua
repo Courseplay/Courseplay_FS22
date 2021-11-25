@@ -28,7 +28,7 @@ DevHelper = CpObject()
 function DevHelper:init()
     self.data = {}
     self.isEnabled = false
-    --self:registerConsoleCommands()
+    self:registerConsoleCommands()
 end
 
 function DevHelper:registerConsoleCommands()

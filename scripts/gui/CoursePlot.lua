@@ -29,7 +29,12 @@ function CoursePlot:init(map)
 	self.startPosition = {}
 	self.stopPosition = {}
 	self.isVisible = false
-	self.color = {42, 193, 237}
+	-- the normal FS22 blue
+	self.color = {self:normalizeRgb(42, 193, 237)}
+	-- a lighter shade of the same color
+	self.lightColor = {self:normalizeRgb(45, 207, 255)}
+	-- a darker shade of the same color
+	self.darkColor = {self:normalizeRgb(19, 87, 107)}
 end
 
 function CoursePlot:normalizeRgb(r, g, b)
@@ -50,7 +55,19 @@ function CoursePlot:setVisible( isVisible )
 end
 
 function CoursePlot:setWaypoints( waypoints )
-	self.waypoints = waypoints
+	self.waypoints = {}
+	-- remove waypoints from long straight lines, the plot only needs start/end. Too many waypoints
+	-- in the plot are a performance problem
+	table.insert(self.waypoints, waypoints[1])
+	self.waypoints[1].progress = 0
+	for i = 2, #waypoints - 1 do
+		if math.abs(waypoints[i].angle - waypoints[i - 1].angle) > math.pi / 1800 then
+			table.insert(self.waypoints, waypoints[i])
+			self.waypoints[#self.waypoints].progress = i / #waypoints
+		end
+	end
+	table.insert(self.waypoints, waypoints[#waypoints])
+	self.waypoints[1].progress = 1
 end
 
 -- start position used when generating the course, either first course wp
@@ -111,8 +128,9 @@ function CoursePlot:draw()
 				dx = np.x - wp.x;
 				dz = np.z - wp.z;
 				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5;
+				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress);
 
-				r, g, b = self:normalizeRgb(42, 193, 237)
+				--r, g, b = self:normalizeRgb(42, 193, 237)
 
 				setOverlayColor( self.courseOverlayId, r, g, b, 1 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )

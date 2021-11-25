@@ -91,12 +91,11 @@ function FieldScanner:traceFieldEdge(probe)
     local i = 0
     -- limit the number of iterations, also, must be close to the start and have made almost a full circle (pi is just
     -- a half circle, but should be ok to protect us from edge cases like starting with a corner
-    while i < 10000 and (i == 1 or distanceFromStart > tracerLookahead or math.abs(totalYRot) < math.pi) do
+    while i < 100000 and (i == 1 or distanceFromStart > tracerLookahead or math.abs(totalYRot) < math.pi) do
         local yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
         -- how much we just turned?
         local deltaYRot = yRot - (prevYRot or yRot)
         if prevYRot and math.abs(deltaYRot) > math.rad(15) then
-            local pX, pY, pZ = getWorldTranslation(probe)
             if approachingCorner then
                 -- approaching the corner and there was a big rotation change so we just passed the corner
                 tracerLookahead = self.normalTracerLookahead
@@ -153,11 +152,13 @@ function FieldScanner:findContour(x, z)
         end
         i = i + 1
     end
-    self.points = self:simplifyPolygon(self.points, 0.75)
+    self.points = self:simplifyPolygon(self.points, 1.75)
     self:debug('Field contour simplified, has now %d points', #self.points)
     self:sharpenCorners(self.points)
+    self.points = self:addIntermediatePoints(self.points, 10)
+    self:debug('Intermediate points added, has now %d points', #self.points)
     for i, p in ipairs(self.points) do
-        self:debug('%d %.1f/%.1f', i, p.x, p.z)
+       -- self:debug('%d %.1f/%.1f', i, p.x, p.z)
     end
     CpUtil.destroyNode(probe)
     return self.points
@@ -191,6 +192,27 @@ function FieldScanner:sharpenCorners(points)
         table.remove(points, indicesToRemove[i])
     end
 end
+
+-- Simplifying a polygon results in long straight lines, worst (or best?) case four long lines in case of a
+-- rectangular field. The course generator's headland algorithm likes to have vertices at least 5-10 meters apart,
+-- so add them here.
+function FieldScanner:addIntermediatePoints(points, distance)
+    local newPoints = {}
+    local prev = points[#points]
+    for i, p in ipairs(points) do
+        local d = MathUtil.getPointPointDistance(p.x, p.z, prev.x, prev.z)
+        local dx, dz = MathUtil.vector2Normalize(p.x - prev.x, p.z - prev.z)
+        for j = 1, math.floor(d / distance) - 2 do
+            table.insert(newPoints, {x = prev.x + distance * j * dx, z = prev.z + distance * j * dz})
+            newPoints[#newPoints].y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode,
+                    newPoints[#newPoints].x, 0, newPoints[#newPoints].z)
+        end
+        table.insert(newPoints, p)
+        prev = p
+    end
+    return newPoints
+end
+
 
 -- Distance of a point (px, pz) from a line starting between (sx, sz) and (ex, ez)GG
 function FieldScanner:perpendicularDistance(px, pz, sx, sz, ex, ez)
