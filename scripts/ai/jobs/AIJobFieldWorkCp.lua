@@ -1,5 +1,3 @@
-source(Courseplay.BASE_DIRECTORY .. "scripts/AIJobs/parameters/AIParameterWorkWidth.lua")
-
 --- Example AI job derived of AIJobFieldWork.
 ---@class AIJobFieldWorkCp
 AIJobFieldWorkCp = {}

@@ -8,7 +8,6 @@ Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
 
 source(Courseplay.BASE_DIRECTORY .. "scripts/CpUtil.lua")
-source(Courseplay.BASE_DIRECTORY .. "scripts/AIJobs/AIJobFieldWorkCp.lua")
 
 function Courseplay:init()
 	self:registerConsoleCommands()
