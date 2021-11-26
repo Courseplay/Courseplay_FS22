@@ -32,6 +32,7 @@ Die nächste Version von Courseplay.]]>
         <sourceFile filename="Courseplay.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
+		<sourceFile filename="scripts/Triggers.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterWorkWidth.lua"/>
@@ -45,11 +46,16 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
+		<sourceFile filename="scripts/gui/BunkerSiloPlot.lua"/>
+		<sourceFile filename="scripts/gui/NavigationCostPlot.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
-        <specialization name="courseplaySpec"                   className="CourseplaySpec"                   filename="scripts/specializations/CourseplaySpec.lua" />
-    </specializations>
+        <specialization name="courseplaySpec" className="CourseplaySpec" filename="scripts/specializations/CourseplaySpec.lua" />
+		<specialization name="shovelPositions" className="ShovelPositions" filename="scripts/specializations/ShovelPositions.lua"/>
+	<!--	<specialization name="aiDrivableBunkerSilo" className="AIDrivableBunkerSilo" filename="scripts/specializations/AIDrivableBunkerSilo.lua"/>
+	-->
+	</specializations>
 	<!--
 	<inputBinding>
 		<actionBinding action="CLICK_TO_SWITCH_TOGGLE_MOUSE">

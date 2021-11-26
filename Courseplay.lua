@@ -21,14 +21,15 @@ end
 ---@param filename string
 function Courseplay:loadMap(filename)
 	self:load()
+	g_devHelper:loadMap()
 end
 
 function Courseplay:update(dt)
-	
+	g_devHelper:update(dt)
 end
 
 function Courseplay:draw()
-	
+	g_devHelper:draw()
 end
 
 ---@param posX number
@@ -45,7 +46,7 @@ end
 ---@param modifier number
 ---@param isDown boolean
 function Courseplay:keyEvent(unicode, sym, modifier, isDown)
-
+	g_devHelper:keyEvent(unicode, sym, modifier, isDown)
 end
 
 
@@ -171,21 +172,12 @@ function Courseplay.register(typeManager)
 		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
 		end
+		if ShovelPositions.prerequisitesPresent(typeEntry.specializations) then 
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".shovelPositions")	
+		end
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
-
-function Courseplay:update(dt)
-	g_devHelper:update()
-end
-
-function Courseplay:draw()
-	g_devHelper:draw()
-end
-
-function Courseplay:keyEvent(unicode, sym, modifier, isDown)
-	g_devHelper:keyEvent(unicode, sym, modifier, isDown)
-end;
 
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)

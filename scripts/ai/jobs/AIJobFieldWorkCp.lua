@@ -20,6 +20,7 @@ end
 --- Registers additional jobs.
 function AIJobFieldWorkCp.registerJob(self)
 	self:registerJobType("FIELDWORK_CP", "FIELDWORK_CP", AIJobFieldWorkCp)
+--	self:registerJobType("SHOVEL_MODE_CP", "SHOVEL_MODE_CP", AIJobShovelModeCp)
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)

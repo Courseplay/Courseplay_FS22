@@ -31,6 +31,19 @@ function DevHelper:init()
     self:registerConsoleCommands()
 end
 
+function DevHelper:loadMap()
+    local map = g_currentMission.inGameMenu.pageAI.ingameMap
+    --- Draws bunker silo side walls on the map.
+    self.bunkerSiloPlot = BunkerSiloPlot(map.ingameMap)
+    --- Draws semi automated helper cost map around a target position.
+    self.navigationCostPlot = NavigationCostPlot(map.ingameMap)
+
+    g_currentMission.inGameMenu.pageAI.ingameMap.draw =
+                Utils.appendedFunction(g_currentMission.inGameMenu.pageAI.ingameMap.draw, g_devHelper.drawBunkerSiloPlot)
+    g_currentMission.inGameMenu.pageAI.ingameMap.draw =
+                Utils.appendedFunction(g_currentMission.inGameMenu.pageAI.ingameMap.draw, g_devHelper.drawNavigationCostPlot)  
+end
+
 function DevHelper:registerConsoleCommands()
 	addConsoleCommand( 'cpGiantsAIDebug', 'cpGiantsAIDebug', 'turnOnGiantsAIDebug',self)
 end
@@ -274,6 +287,20 @@ end
 function DevHelper.drawCoursePlot()
     if g_devHelper.coursePlot then
         g_devHelper.coursePlot:draw()
+    end
+end
+
+--- Draws bunker silo side walls on the map.
+function DevHelper.drawBunkerSiloPlot()
+    if g_devHelper.bunkerSiloPlot then
+        g_devHelper.bunkerSiloPlot:draw()
+    end
+end
+
+--- Draws semi automated helper cost map around a target position.
+function DevHelper.drawNavigationCostPlot()
+    if g_devHelper.navigationCostPlot then
+        g_devHelper.navigationCostPlot:draw()
     end
 end
 

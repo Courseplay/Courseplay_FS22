@@ -3,11 +3,12 @@ CpUtil = {}
 ---Prints a table to an xml File recursively.
 ---Basically has the same function as DebugUtil.printTableRecursively() except for saving the prints to an xml file
 ---@param value table is the last relevant value from parent table
+---@param parentName string
 ---@param depth number is the current depth of the iteration
 ---@param maxDepth number represent the max iterations 
 ---@param xmlFile number xmlFile to save in
 ---@param baseKey string parent key 
-function CpUtil.printTableRecursivelyToXML(value, depth, maxDepth,xmlFile,baseKey)
+function CpUtil.printTableRecursivelyToXML(value,parentName, depth, maxDepth,xmlFile,baseKey)
 	depth = depth or 0
 	maxDepth = maxDepth or 3
 	if depth > maxDepth then
@@ -21,8 +22,9 @@ function CpUtil.printTableRecursivelyToXML(value, depth, maxDepth,xmlFile,baseKe
 		setXMLString(xmlFile, key .. '#valueType', tostring(valueType))
 		setXMLString(xmlFile, key .. '#index', tostring(i))
 		setXMLString(xmlFile, key .. '#value', tostring(j))
+		setXMLString(xmlFile, key .. '#parent', tostring(parentName))
 		if valueType == "table" then
-			CpUtil.printTableRecursivelyToXML(j,depth+1, maxDepth,xmlFile,key)
+			CpUtil.printTableRecursivelyToXML(j,parentName.."."..tostring(i),depth+1, maxDepth,xmlFile,key)
 		end
 		k = k + 1
 	end
@@ -56,10 +58,10 @@ function CpUtil.printVariableToXML(variableName, maxDepth,printToSeparateXmlFile
 		setXMLString(xmlFile, key .. '#valueType', tostring(valueType))
 		setXMLString(xmlFile, key .. '#variableName', tostring(variableName))
 		if valueType == 'table' then		
-			CpUtil.printTableRecursivelyToXML(value,1,depth,xmlFile,key)
+			CpUtil.printTableRecursivelyToXML(value,tostring(variableName),1,depth,xmlFile,key)
 			local mt = getmetatable(value)
 			if mt and type(mt) == 'table' then
-				CpUtil.printTableRecursivelyToXML(mt,1,depth,xmlFile,key..'-metaTable')
+				CpUtil.printTableRecursivelyToXML(mt,tostring(variableName),1,depth,xmlFile,key..'-metaTable')
 			end
 		else 
 			setXMLString(xmlFile, key .. '#valueType', tostring(valueType))
@@ -170,4 +172,36 @@ function CpUtil.destroyNode(node)
 		unlink(node)
 		delete(node)
 	end
+end
+
+function CpUtil.getVehicleWithSpecialization(vehicle,Spec)
+	if SpecializationUtil.hasSpecialization(Spec,vehicle.specializations) then 
+		return vehicle
+	end
+	for _, childVehicle in ipairs(vehicle:getChildVehicles()) do
+		if SpecializationUtil.hasSpecialization(Spec,childVehicle.specializations) then 
+			return childVehicle
+		end
+	end
+end
+
+function CpUtil.getShovelWidth(shovel)
+	return shovel.spec_shovel.shovelNodes[1].width
+end
+
+function nameNum(vehicle)
+	if vehicle == nil or not vehicle.getName then
+		return 'nil'
+	end
+	local name = vehicle:getName()
+	local storeItem = g_storeManager:getItemByXMLFilename(vehicle.configFileName)
+
+	if storeItem ~= nil then
+		local brand = g_brandManager:getBrandByIndex(storeItem.brandIndex)
+
+		if brand ~= nil then
+			name = brand.title .. " " .. name
+		end
+	end
+	return name
 end
