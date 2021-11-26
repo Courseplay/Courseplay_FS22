@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+---@class CoursePlot : CpObject
 CoursePlot = CpObject()
 
 -- Position and size of the course plot as normalized screen coordinates
@@ -168,3 +169,23 @@ function CoursePlot:draw()
 		end
 	end
 end
+
+--- CoursePlot is a singleton, created on demand. Use this to access it, never directly g_coursePlot
+function CoursePlot.getInstance()
+	if g_coursePlot == nil then
+		g_coursePlot = CoursePlot(g_currentMission.inGameMenu.pageAI.ingameMap.ingameMap)
+		g_currentMission.inGameMenu.pageAI.ingameMap.draw =
+			Utils.appendedFunction(g_currentMission.inGameMenu.pageAI.ingameMap.draw, CoursePlot.drawCoursePlot)
+	end
+	return g_coursePlot
+end
+
+function CoursePlot.drawCoursePlot()
+	CoursePlot.getInstance():draw()
+end
+
+-- force recreating it after reload (for development
+if g_coursePlot then
+	g_coursePlot = nil
+end
+

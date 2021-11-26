@@ -2,15 +2,13 @@
 -- Wraps the CourseGenerator which does not depend on the CP or Giants code.
 -- all course generator related code dependent on CP/Giants functions go here
 CourseGeneratorInterface = {}
+---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
 ---@param startAngle number as in AIParameterPositionAngle
 ---@param workWidth number
 ---@param numberOfHeadlands number
-function CourseGeneratorInterface.generate(startPosition, startAngle,
+function CourseGeneratorInterface.generate(fieldPolygon, startPosition, startAngle,
 								  workWidth, numberOfHeadlands, startOnHeadland)
-
-	-- generate the field polygon based on the start position
-	local fieldPolygon = g_fieldScanner:findContour(startPosition.x, startPosition.z)
 
 	CourseGenerator.debug('Generating course, width %.1f m, headlands %d', workWidth, numberOfHeadlands)
 
