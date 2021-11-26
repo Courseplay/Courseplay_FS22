@@ -116,7 +116,8 @@ function Island.findIslands( polygon )
 	local islandNodes = {}
 	for _, row in ipairs(grid.map) do
 		for _, index in pairs(row) do
-			if not courseplay:isField(grid[index].x, -grid[index].y) then
+			local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(grid[index].x, 0, -grid[index].y)
+			if not isOnField then
 				-- add a node only if it is far enough from the field boundary
 				-- to filter false positives around the field boundary
 				local _, d = polygon:getClosestPointIndex(grid[index])

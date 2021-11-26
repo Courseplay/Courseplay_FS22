@@ -196,6 +196,7 @@ end
 -- Simplifying a polygon results in long straight lines, worst (or best?) case four long lines in case of a
 -- rectangular field. The course generator's headland algorithm likes to have vertices at least 5-10 meters apart,
 -- so add them here.
+-- TODO: should probably be moved to the course generator as this is its problem, not ours here...
 function FieldScanner:addIntermediatePoints(points, distance)
     local newPoints = {}
     local prev = points[#points]

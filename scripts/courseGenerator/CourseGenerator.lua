@@ -207,7 +207,7 @@ end
 function CourseGenerator.pointsToXy( points )
 	local result = {}
 	for _, point in ipairs( points ) do
-		table.insert( result, { x = point.x or point.cx, y = - ( point.z or point.cz )})
+		table.insert( result, {x = point.x, y = -point.z})
 	end
 	return result
 end
@@ -215,7 +215,7 @@ end
 function CourseGenerator.pointsToXz( points )
 	local result = {}
 	for _, point in ipairs( points) do
-		table.insert( result, { x = point.x, z = -point.y })
+		table.insert( result, {x = point.x, z = -point.y})
 	end
 	return result
 end
@@ -291,14 +291,6 @@ function CourseGenerator.fromCpAngle(angle)
 		a = 2 * math.pi + a
 	end
 	return a
-end
-
-
---- Island finder wrapper for CP, 
--- expects FS coordinates
-function CourseGenerator.findIslands( fieldData )
-	local islandNodes = Island.findIslands( Polygon:new( CourseGenerator.pointsToXy( fieldData.points )))
-	fieldData.islandNodes = CourseGenerator.pointsToCxCz( islandNodes )
 end
 
 --- Find the starting location coordinates when the user wants to start

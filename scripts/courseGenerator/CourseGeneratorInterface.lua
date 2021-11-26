@@ -46,13 +46,17 @@ function CourseGeneratorInterface.generate(startPosition, startAngle,
 	}
 
 	--------------------------------------------------------------------------------------------------------------------
+	-- Detect islands
+	-----------------------------------------------------------------------------------------------------------------------
+	local islandNodes = Island.findIslands(Polygon:new(CourseGenerator.pointsToXy(fieldPolygon)))
+
+	--------------------------------------------------------------------------------------------------------------------
 	-- General settings
 	-----------------------------------------------------------------------------------------------------------------------
 	local turnRadius = 6
 	local minDistanceBetweenPoints = 0.5
 	local doSmooth = true
-	local islandNodes = {}
-	local islandBypassMode = Island.BYPASS_MODE_NONE
+	local islandBypassMode = Island.BYPASS_MODE_CIRCLE
 
 	local field = {}
 	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
@@ -66,7 +70,7 @@ function CourseGeneratorInterface.generate(startPosition, startAngle,
 		minDistanceBetweenPoints,
 		minSmoothAngle, maxSmoothAngle, doSmooth,
 		roundCorners, turnRadius,
-		CourseGenerator.pointsToXy(islandNodes),
+		islandNodes,
 		islandBypassMode, centerSettings
 	)
 
