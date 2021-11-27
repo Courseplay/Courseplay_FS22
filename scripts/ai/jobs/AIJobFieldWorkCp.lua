@@ -49,16 +49,15 @@ function AIJobFieldWorkCp:validate()
 	-- we have course, show the course plot on the AI helper screen
 	CoursePlot.getInstance():setWaypoints(self.course.waypoints)
 	CoursePlot.getInstance():setVisible(true)
+	-- save the course on the vehicle for the strategy to use later
+	local vehicle = self.vehicleParameter:getVehicle()
+	vehicle:setFieldWorkCourse(self.course)
 	return true, ''
-end
-
-function AIJobFieldWorkCp:start()
-
 end
 
 --- Registers additional jobs.
 function AIJobFieldWorkCp.registerJob(self)
-	self:registerJobType("FIELDWORK_CP", "FIELDWORK_CP", AIJobFieldWorkCp)
+	self:registerJobType("FIELDWORK_CP", "CP Fieldwork", AIJobFieldWorkCp)
 end
 
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job

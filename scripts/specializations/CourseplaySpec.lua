@@ -16,16 +16,19 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
 end
---[[
 function CourseplaySpec.registerFunctions(vehicleType)
+    SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CourseplaySpec.setFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CourseplaySpec.getFieldWorkCourse)
+--[[
     SpecializationUtil.registerFunction(vehicleType, "isCourseplaySpecMouseActive", CourseplaySpec.isCourseplaySpecMouseActive)
     SpecializationUtil.registerFunction(vehicleType, "onCourseplaySpecToggleMouse", CourseplaySpec.onCourseplaySpecToggleMouse)
-    SpecializationUtil.registerFunction(vehicleType, "setCourseplaySpecShowMouseCursor", CourseplaySpec.setCourseplaySpecShowMouseCursor)
-    SpecializationUtil.registerFunction(vehicleType, "getCourseplaySpecLastMousePosition", CourseplaySpec.getCourseplaySpecLastMousePosition)
+    SpecializationUtil.registerFunction(vehicleType, "setFieldWorkCourseplaySpecShowMouseCursor", CourseplaySpec.setFieldWorkCourseplaySpecShowMouseCursor)
+    SpecializationUtil.registerFunction(vehicleType, "getFieldWorkCourseplaySpecLastMousePosition", CourseplaySpec.getFieldWorkCourseplaySpecLastMousePosition)
     SpecializationUtil.registerFunction(vehicleType, "enterVehicleRaycastCourseplaySpec", CourseplaySpec.enterVehicleRaycastCourseplaySpec)
     SpecializationUtil.registerFunction(vehicleType, "enterVehicleRaycastCallbackCourseplaySpec", CourseplaySpec.enterVehicleRaycastCallbackCourseplaySpec)
-end
 ]]--
+end
+
 function CourseplaySpec:onLoad(savegame)
 	--- Register the spec: spec_CourseplaySpec
     local specName = CourseplaySpec.MOD_NAME .. ".courseplaySpec"
@@ -110,7 +113,7 @@ end
 ---@param callbackState number
 ---@param isAnalog boolean
 function CourseplaySpec.actionEventToggleMouse(self, actionName, inputValue, callbackState, isAnalog)
-    self:setCourseplaySpecShowMouseCursor(not self:isCourseplaySpecMouseActive())
+    self:setFieldWorkCourseplaySpecShowMouseCursor(not self:isCourseplaySpecMouseActive())
 end
 
 --- Action event for entering a vehicle by mouse click
@@ -121,7 +124,7 @@ end
 ---@param isAnalog boolean
 function CourseplaySpec.actionEventEnterVehicle(self, actionName, inputValue, callbackState, isAnalog)
     if self:isCourseplaySpecMouseActive() then
-        local x,y = self:getCourseplaySpecLastMousePosition()
+        local x,y = self:getFieldWorkCourseplaySpecLastMousePosition()
         self:enterVehicleRaycastCourseplaySpec(x,y)
     end
 end
@@ -146,7 +149,7 @@ end
 
 --- Active/disable the mouse cursor
 ---@param show boolean
-function CourseplaySpec:setCourseplaySpecShowMouseCursor(show)
+function CourseplaySpec:setFieldWorkCourseplaySpecShowMouseCursor(show)
     local spec = self.spec_CourseplaySpec
 	g_inputBinding:setShowMouseCursor(show)
     self:onCourseplaySpecToggleMouse()
@@ -159,7 +162,7 @@ end
 --- Gets the last mouse cursor screen positions
 ---@return number posX
 ---@return number posY
-function CourseplaySpec:getCourseplaySpecLastMousePosition()
+function CourseplaySpec:getFieldWorkCourseplaySpecLastMousePosition()
     return g_inputBinding.mousePosXLast,g_inputBinding.mousePosYLast 
 end
 
@@ -191,10 +194,20 @@ function CourseplaySpec:enterVehicleRaycastCallbackCourseplaySpec(hitObjectId, x
             if targetObject then 
                 -- this is a valid vehicle, so enter it
                 g_currentMission:requestToEnterVehicle(targetObject)
-                self:setCourseplaySpecShowMouseCursor(false)
+                self:setFieldWorkCourseplaySpecShowMouseCursor(false)
                 return false
             end                
         end
     end
     return true
+end
+
+---@param course : Course
+function CourseplaySpec:setFieldWorkCourse(course)
+    self.course = course
+end
+
+---@return Course
+function CourseplaySpec:getFieldWorkCourse()
+    return self.course
 end
