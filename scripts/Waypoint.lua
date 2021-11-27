@@ -133,9 +133,10 @@ function Waypoint:getOffsetPosition(offsetX, offsetZ, dx, dz)
 	local x, y, z = self:getPosition()
 	local deltaX = dx or self.dx
 	local deltaZ = dz or self.dz
-	-- X offset should be inverted if we drive reverse here (left is always left regardless of the driving direction)
-	local reverse = self.reverseOffset and -1 or 1
-	if deltaX and deltaZ then
+	-- check for NaN
+	if deltaX and deltaZ and deltaX == deltaX and deltaZ == deltaZ then
+		-- X offset should be inverted if we drive reverse here (left is always left regardless of the driving direction)
+		local reverse = self.reverseOffset and -1 or 1
 		x = x - deltaZ * reverse * offsetX + deltaX * offsetZ
 		z = z + deltaX * reverse * offsetX + deltaZ * offsetZ
 	end
@@ -384,12 +385,15 @@ function Course:enrichWaypointData()
 			self.dFromLastTurn = self.dFromLastTurn + dToNext
 		end
 		self.waypoints[i].turnsToHere = self.totalTurns
-		self.waypoints[i].dx, _, self.waypoints[i].dz, _ = MathUtil.vector3Normalize(nx - cx, 0, nz - cz)
+		-- TODO: looks like we may end up with the first two waypoint of a course being the same. This takes care
+		-- of setting dx/dz to 0 (instead of NaN) but should investigate as it does not make sense
 		local dx, dz = MathUtil.vector2Normalize(nx - cx, nz - cz)
 		-- check for NaN
-		if dx == dx or dz == dz then
+		if dx == dx and dz == dz then
+			self.waypoints[i].dx, self.waypoints[i].dz = dx, dz
 			self.waypoints[i].yRot = MathUtil.getYRotationFromDirection(dx, dz)
 		else
+			self.waypoints[i].dx, self.waypoints[i].dz = 0, 0
 			self.waypoints[i].yRot = 0
 		end
 		self.waypoints[i].angle = math.deg(self.waypoints[i].yRot)

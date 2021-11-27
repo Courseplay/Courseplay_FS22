@@ -51,6 +51,7 @@ function AIJobFieldWorkCp:validate()
 	CoursePlot.getInstance():setVisible(true)
 	-- save the course on the vehicle for the strategy to use later
 	local vehicle = self.vehicleParameter:getVehicle()
+	self.course:setVehicle(vehicle)
 	vehicle:setFieldWorkCourse(self.course)
 	return true, ''
 end

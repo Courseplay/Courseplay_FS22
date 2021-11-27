@@ -21,11 +21,25 @@ function AIDriveStrategyFollowCourse:update()
     self.ppc:update()
 end
 
+function AIDriveStrategyFollowCourse:getDriveData(dt, vX, vY, vZ)
+    local moveForwards = not self.ppc:isReversing()
+    local gx, _, gz = self.ppc:getGoalPointPosition()
+    local maxSpeed = self.vehicle:getSpeedLimit(true)
+    return gx, gz, moveForwards, maxSpeed, 100
+end
+
 function AIDriveStrategyFollowCourse:updateAIFieldWorkerDriveStrategies()
     local driveStrategyFollowCourse = AIDriveStrategyFollowCourse.new()
-    CpUtil.debugVehicle(1, self, 'Adding FollowCourse drive strategy')
     driveStrategyFollowCourse:setAIVehicle(self)
-    table.insert(self.spec_aiFieldWorker.driveStrategies, driveStrategyFollowCourse)
+    -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
+    -- our own specialization
+    for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do
+        if strategy.getDriveStraightData then
+            CpUtil.debugVehicle(1, self, 'Replacing fieldwork helper drive strategy with Courseplay drive strategy')
+            self.spec_aiFieldWorker.driveStrategies[i]:delete()
+            self.spec_aiFieldWorker.driveStrategies[i] = driveStrategyFollowCourse
+        end
+    end
 end
 
 AIFieldWorker.updateAIFieldWorkerDriveStrategies = Utils.appendedFunction(AIFieldWorker.updateAIFieldWorkerDriveStrategies,
