@@ -2,5 +2,6 @@
 <l10n>
 	<texts>
 		<text name="FIELDWORK_CP" 							text="CP: Fieldwork" />
+		<text name="FIELDWORK_BUTTON" 						text="CP: Generate fieldwork course." />
 	</texts>
 </l10n>

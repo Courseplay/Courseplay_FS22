@@ -1,23 +1,54 @@
---- Example AI job derived of AIJobFieldWork.
+--- AI job derived of AIJobFieldWork.
 ---@class AIJobFieldWorkCp : AIJobFieldWork
 AIJobFieldWorkCp = {}
 local AIJobFieldWorkCp_mt = Class(AIJobFieldWorkCp, AIJobFieldWork)
 
+---Localization text symbols.
+AIJobFieldWorkCp.translations = {
+    JobName = "$l10n_FIELDWORK_CP",
+    GenerateButton = "FIELDWORK_BUTTON",
+	workWidth = "workWidth",
+	centerMode = "centerMode",
+	headlandCornerType = "headlandCornerType",
+	numberOfHeadlands = "numberOfHeadlands",
+	rowDirection = "rowDirection",
+	startOnHeadland = "startOnHeadland",
+
+}
+
+AIJobFieldWorkCp.AIParameters = {
+	workWidth = AIParameterWorkWidth.new,
+	centerMode = AIParameterCenterMode.new,
+	headlandCornerType = AIParameterHeadlandCornerType.new,
+	numberOfHeadlands = AIParameterNumberOfHeadlands.new,
+	rowDirection = AIParameterRowDirection.new,
+	startOnHeadland = AIParameterStartOnHeadland.new,
+}
+
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
-	--- Creates a custom parameter.
-	self.workWidthParameter = AIParameterWorkWidth.new()
-	--- Creates a name link to get this parameter later with: "self:getNamedParameter("workWidth")"
-	self:addNamedParameter("workWidth", self.workWidthParameter)
-	--- Creates an Gui element in the helper menu.
-	local workWidthGroup = AIParameterGroup.new(g_i18n:getText("work width"))
-	workWidthGroup:addParameter(self.workWidthParameter)
-	--- Adds this gui element to the gui table.
-	table.insert(self.groupedParameters, workWidthGroup)
+	AIJobFieldWorkCp.enrichAIParameters(self)
 	CoursePlot.getInstance():setVisible(false)
 	self.lastPositionX = 0
 	self.lastPositionZ = 0
 	return self
+end
+
+--- Creates the necessary AI parameters and binds them to the gui.
+function AIJobFieldWorkCp.enrichAIParameters(self)
+	for name,class in pairs(AIJobFieldWorkCp.AIParameters) do 
+		local key = name.."Parameter"
+		--- Creates the parameter
+		self[key] = class()
+		--- Creates a name link to get this parameter later with: "self:getNamedParameter("workWidth")"
+		self:addNamedParameter(name, self[key])
+		--- Creates an Gui title element in the helper menu.
+		local group = AIParameterGroup.new(AIJobFieldWorkCp.translations[name])
+		group:addParameter(self[key])
+		--- Adds this gui element to the gui table.
+		table.insert(self.groupedParameters, group)
+	end
+	
 end
 
 --- Called when parameters change, for now, scan field and generate a default course
@@ -58,7 +89,17 @@ end
 
 --- Registers additional jobs.
 function AIJobFieldWorkCp.registerJob(self)
-	self:registerJobType("FIELDWORK_CP", "CP Fieldwork", AIJobFieldWorkCp)
+	self:registerJobType("FIELDWORK_CP", AIJobFieldWorkCp.translations.JobName, AIJobFieldWorkCp)
+end
+
+--- Is course generation allowed ?
+function AIJobFieldWorkCp:getCanGenerateFieldWorkCourse()
+	return true	
+end
+
+--- Button callback to generate a field work course.
+function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
+	print("onClickGenerateFieldWorkCourse")
 end
 
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job
@@ -71,3 +112,30 @@ if g_currentMission then
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)
+
+--- Adds the course generate button.
+function AIJobFieldWorkCp.loadFromXmlInGameMenu(self,xmlFile, key)
+	self.buttonGenerateCourse = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
+	self.buttonGenerateCourse:setText(g_i18n:getText(AIJobFieldWorkCp.translations.GenerateButton))
+	--self.buttonGenerateCourse:setText("generator")
+	self.buttonGenerateCourse:setVisible(false)
+	self.buttonGenerateCourse.onClickCallback = self.onClickGenerateFieldWorkCourse
+	self.buttonGotoJob.parent:invalidateLayout()
+end
+InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,AIJobFieldWorkCp.loadFromXmlInGameMenu)
+
+
+--- Updates generate button visibility.
+function AIJobFieldWorkCp.updateContextInputBarVisibilityIngameMenu(self)
+	local visible = self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse()
+	self.buttonGenerateCourse:setVisible(visible)
+end
+
+InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,AIJobFieldWorkCp.updateContextInputBarVisibilityIngameMenu)
+
+--- Button Callback.
+function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
+	if self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse() then 
+		self.currentJob:onClickGenerateFieldWorkCourse()
+	end
+end
