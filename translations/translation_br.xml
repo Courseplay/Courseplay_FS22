@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
-		<text name="FIELDWORK_CP" 							text="CP: Fieldwork" />
+	<!--Drivemodes-->
+		<text name="FIELDWORK_CP"								text="CP: Fieldwork" />
+	<!--Generator Settings-->
+		<text name="FIELDWORK_BUTTON" 							text="CP: Generate fieldwork course." />
+		<text name="COURSEPLAY_CENTER_MODE_UP_DOWN"				text="Up/Down" />
+		<text name="COURSEPLAY_CENTER_MODE_CIRCULAR"			text="Circular" />
+		<text name="COURSEPLAY_CENTER_MODE_SPIRAL"				text="Espiral" />
+		<text name="COURSEPLAY_CENTER_MODE_LANDS"				text="Lands" />
+		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_SMOOTH"		text="Suave" />
+		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_SHARP"		text="Virar" />
+		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_ROUND"		text="Arredondado (turn radius)" />
+		<text name="COURSEPLAY_HEADLAND_PASSES"					text="Passes de cabeceira" />
+		<text name="COURSEPLAY_UP_DOWN_ROWS"					text="Linhas normais" />
 	</texts>
 </l10n>

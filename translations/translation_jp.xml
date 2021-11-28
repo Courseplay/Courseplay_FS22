@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
-		<text name="FIELDWORK_CP" 							text="CP: Fieldwork" />
+	<!--Drivemodes-->
+		<text name="FIELDWORK_CP"								text="CP: Fieldwork" />
+	<!--Generator Settings-->
+		<text name="FIELDWORK_BUTTON" 							text="CP: Generate fieldwork course." />
+		<text name="COURSEPLAY_CENTER_MODE_UP_DOWN"				text="上/下" />
+		<text name="COURSEPLAY_CENTER_MODE_CIRCULAR"			text="円" />
+		<text name="COURSEPLAY_CENTER_MODE_SPIRAL"				text="らせん" />
+		<text name="COURSEPLAY_CENTER_MODE_LANDS"				text="ランド" />
+		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_SMOOTH"		text="スムース" />
+		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_SHARP"		text="ターン" />
+		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_ROUND"		text="ラウンド (turn radius)" />
+		<text name="COURSEPLAY_HEADLAND_PASSES"					text="まくら地のパス" />
+		<text name="COURSEPLAY_UP_DOWN_ROWS"					text="上/下の行" />
 	</texts>
 </l10n>
