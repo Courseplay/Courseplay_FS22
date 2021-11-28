@@ -33,7 +33,9 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyFollowCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIUtil.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterWorkWidth.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterCenterMode.lua"/>
