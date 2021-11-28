@@ -38,12 +38,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
-		<sourceFile filename="scripts/ai/parameters/AIParameterWorkWidth.lua"/>
-		<sourceFile filename="scripts/ai/parameters/AIParameterCenterMode.lua"/>
-		<sourceFile filename="scripts/ai/parameters/AIParameterHeadlandCornerType.lua"/>
-		<sourceFile filename="scripts/ai/parameters/AIParameterNumberOfHeadlands.lua"/>
-		<sourceFile filename="scripts/ai/parameters/AIParameterRowDirection.lua"/>
-		<sourceFile filename="scripts/ai/parameters/AIParameterStartOnHeadland.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
 		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>

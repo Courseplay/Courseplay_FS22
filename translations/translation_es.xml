@@ -3,16 +3,32 @@
 	<texts>
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"								text="CP: Fieldwork" />
-	<!--Generator Settings-->
+	<!--Generate course button-->
 		<text name="FIELDWORK_BUTTON" 							text="CP: Generate fieldwork course." />
-		<text name="COURSEPLAY_CENTER_MODE_UP_DOWN"				text="Arriba y abajo" />
-		<text name="COURSEPLAY_CENTER_MODE_CIRCULAR"			text="Circular" />
-		<text name="COURSEPLAY_CENTER_MODE_SPIRAL"				text="Espiral" />
-		<text name="COURSEPLAY_CENTER_MODE_LANDS"				text="Tramos" />
-		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_SMOOTH"		text="Suave" />
-		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_SHARP"		text="Girar" />
-		<text name="COURSEPLAY_HEADLAND_CORNER_TYPE_ROUND"		text="Redondo (girar radio)" />
-		<text name="COURSEPLAY_HEADLAND_PASSES"					text="Pases de cabecera" />
-		<text name="COURSEPLAY_UP_DOWN_ROWS"					text="Subir y bajar filas" />
+	<!--AI parameters field work-->
+		<text name="CP_ai_param_workWidth_title"				text="Work width" />
+
+		<text name="CP_ai_param_numberOfHeadlands_title"		text="Number of Headlands" />
+
+		<text name="CP_ai_param_centerMode_title"				text="Field center" />
+		<text name="CP_ai_param_centerMode_up_down" 			text="Up/down" />
+		<text name="CP_ai_param_centerMode_spiral" 				text="Spiral" />
+		<text name="CP_ai_param_centerMode_circular" 			text="Racetrack" />
+		<text name="CP_ai_param_centerMode_lands" 				text="Lands" />
+
+		<text name="CP_ai_param_headlandCornerType_title"		text="Headland corners" />
+		<text name="CP_ai_param_headlandCornerType_smooth" 		text="Smooth" />
+		<text name="CP_ai_param_headlandCornerType_sharp" 		text="Turn" />
+		<text name="CP_ai_param_headlandCornerType_round" 		text="Round" />
+
+		<text name="CP_ai_param_rowDirection_title"				text="Row start direction" />
+		<text name="CP_ai_param_rowDirection_automatic" 		text="Automatic" />
+		<text name="CP_ai_param_rowDirection_longest_edge" 		text="Longest edge" />
+
+		<text name="CP_ai_param_startOnHeadland_title"			text="Start work on" />
+		<text name="CP_ai_param_startOnHeadland_on_headland" 	text="Headland" />
+		<text name="CP_ai_param_startOnHeadland_up_down_rows" 	text="Rows" />
+	<!-- -->
+
 	</texts>
 </l10n>

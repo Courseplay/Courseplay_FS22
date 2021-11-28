@@ -5,7 +5,7 @@ local AIJobFieldWorkCp_mt = Class(AIJobFieldWorkCp, AIJobFieldWork)
 
 ---Localization text symbols.
 AIJobFieldWorkCp.translations = {
-    JobName = "$l10n_FIELDWORK_CP",
+    JobName = "FIELDWORK_CP",
     GenerateButton = "FIELDWORK_BUTTON",
 	workWidth = "workWidth",
 	centerMode = "centerMode",
@@ -16,34 +16,83 @@ AIJobFieldWorkCp.translations = {
 
 }
 
-AIJobFieldWorkCp.AIParameters = {
-	workWidth = AIParameterWorkWidth.new,
-	centerMode = AIParameterCenterMode.new,
-	headlandCornerType = AIParameterHeadlandCornerType.new,
-	numberOfHeadlands = AIParameterNumberOfHeadlands.new,
-	rowDirection = AIParameterRowDirection.new,
-	startOnHeadland = AIParameterStartOnHeadland.new,
-}
+--- Creates a xml schema to load the ai parameters from the config file.
+function AIJobFieldWorkCp.initXmlSchema()
+	AIJobFieldWorkCp.xmlSchema = XMLSchema.new("AIParameters")
+	local schema = AIJobFieldWorkCp.xmlSchema	
+	--- 			valueTypeId, 			path, 				description, defaultValue, isRequired
+	schema:register(XMLValueType.STRING, "AIParameters.AIParameter(?)#name", "AI parameter name",nil,true)
+	schema:register(XMLValueType.STRING, "AIParameters.AIParameter(?)#title", "AI parameter tile",nil,true)
+	schema:register(XMLValueType.INT, "AIParameters.AIParameter(?)#min", "AI parameter min")
+	schema:register(XMLValueType.INT, "AIParameters.AIParameter(?)#max", "AI parameter max")
+	schema:register(XMLValueType.FLOAT, "AIParameters.AIParameter(?)#incremental", "AI parameter incremental",1)
+
+	schema:register(XMLValueType.STRING, "AIParameters.AIParameter(?).Values.Value(?)#name", "AI parameter value name", nil)
+	schema:register(XMLValueType.INT, "AIParameters.AIParameter(?).Values.Value(?)", "AI parameter value", nil)
+
+	schema:register(XMLValueType.STRING, "AIParameters.AIParameter(?).Texts.Text(?)#name", "AI parameter value name", nil)
+	schema:register(XMLValueType.STRING, "AIParameters.AIParameter(?).Texts.Text(?)", "AI parameter value", nil)
+end
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
-	AIJobFieldWorkCp.enrichAIParameters(self)
+	self.aiParametersFilePath = Utils.getFilename("config/FieldWorkAIParameters.xml", g_Courseplay.BASE_DIRECTORY)
+	AIJobFieldWorkCp.initXmlSchema()
+	AIJobFieldWorkCp.enrichAIParameters(self,self.aiParametersFilePath)
 	CoursePlot.getInstance():setVisible(false)
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
+
+	--- Small translation fix, needs to be removed once giants fixes it.
+	local ai = 	g_currentMission.aiJobTypeManager
+	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
 	return self
 end
 
+--- Loads all AI parameters form an xmlFile.
+function AIJobFieldWorkCp.loadAIParametersData(self,filePath)
+	local aiParameters = {}
+	local xmlFile = XMLFile.load("aiParametersXml", filePath, AIJobFieldWorkCp.xmlSchema)
+	xmlFile:iterate("AIParameters.AIParameter", function (i, baseKey)
+		local aiParameter = {}
+		aiParameter.name = xmlFile:getValue(baseKey.."#name")
+		aiParameter.title = g_i18n:getText(xmlFile:getValue(baseKey.."#title"))
+		aiParameter.min = xmlFile:getValue(baseKey.."#min")
+		aiParameter.max = xmlFile:getValue(baseKey.."#max")
+		aiParameter.incremental = MathUtil.round(xmlFile:getValue(baseKey.."#incremental"),3)
+	--	CpUtil.info("AIParameter(%d) name: %s, title: %s, min: %s, max: %s, inc: %s",
+	--				i,tostring(aiParameter.name),tostring(aiParameter.title),tostring(aiParameter.min),
+	--				tostring(aiParameter.max),tostring(aiParameter.incremental))
+		aiParameter.values = {}
+		xmlFile:iterate(baseKey..".Values.Value", function (i, key)
+			local name = xmlFile:getValue(key.."#name")
+			local value = xmlFile:getValue(key)
+			table.insert(aiParameter.values,value)
+		end)
+		aiParameter.texts = {}
+		xmlFile:iterate(baseKey..".Texts.Text", function (i, key)
+			local name = xmlFile:getValue(key.."#name")
+			local text = g_i18n:getText(xmlFile:getValue(key))
+			table.insert(aiParameter.texts,text)
+		end)
+		table.insert(aiParameters,aiParameter)
+	end)
+	xmlFile:delete()
+	return aiParameters
+end
+
+
 --- Creates the necessary AI parameters and binds them to the gui.
-function AIJobFieldWorkCp.enrichAIParameters(self)
-	for name,class in pairs(AIJobFieldWorkCp.AIParameters) do 
-		local key = name.."Parameter"
+function AIJobFieldWorkCp.enrichAIParameters(self,filePath)
+	local aiParameters = AIJobFieldWorkCp.loadAIParametersData(self,filePath)
+	for _,data in ipairs(aiParameters) do 
+		local key = data.name.."Parameter"
 		--- Creates the parameter
-		self[key] = class()
-		--- Creates a name link to get this parameter later with: "self:getNamedParameter("workWidth")"
-		self:addNamedParameter(name, self[key])
+		self[key] = AIParameterSettingList.new(data)
+		--- Creates a name link to get this parameter later with: "self:getNamedParameter("data.name")"
+		self:addNamedParameter(data.name, self[key])
 		--- Creates an Gui title element in the helper menu.
-		local group = AIParameterGroup.new(AIJobFieldWorkCp.translations[name])
+		local group = AIParameterGroup.new(data.title)
 		group:addParameter(self[key])
 		--- Adds this gui element to the gui table.
 		table.insert(self.groupedParameters, group)
@@ -102,7 +151,7 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	status, ok, self.course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
 			0,
-			self.workWidthParameter:get(),
+			self.workWidthParameter:getValue(),
 			self.numberOfHeadlandsParameter:getValue(),
 			self.startOnHeadlandParameter:getValue(),
 			self.headlandCornerTypeParameter:getValue(),
