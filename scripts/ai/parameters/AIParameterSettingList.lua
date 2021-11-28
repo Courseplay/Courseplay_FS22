@@ -1,5 +1,5 @@
 --- Selection list with values and texts.
----@class AIParameterSettingList
+---@class AIParameterSettingList : AIParameter
 AIParameterSettingList = {}
 local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
 
@@ -50,19 +50,6 @@ function AIParameterSettingList:setToIx(ix)
 	end
 end
 
---- Set to a specific value
-function AIParameterSettingList:set(value)
-	local new
-	-- find the value requested
-	for i = 1, #self.values do
-		if self.values[i] == value then
-			new = self:checkAndSetValidValue(i)
-			self:setToIx(new)
-			return
-		end
-	end
-end
-
 function AIParameterSettingList:checkAndSetValidValue(new)
 	if new > #self.values then
 		return 1
@@ -102,17 +89,25 @@ function AIParameterSettingList:writeStream(streamId, connection)
 	streamWriteInt32(streamId, self.current)
 end
 
---- Set to a specific value.
-function AIParameterSettingList:setValue(value)
+local function setValueInternal(self, value, comparisonFunc)
 	local new
 	-- find the value requested
 	for i = 1, #self.values do
-		if self.values[i] == value then
+		if comparisonFunc(self.values[i], value) then
 			new = self:checkAndSetValidValue(i)
 			self:setToIx(new)
 			return
 		end
 	end
+end
+
+function AIParameterSettingList:setFloatValue(value)
+	setValueInternal(self, value, function(a, b)  return MathUtil.equalEpsilon(a, b, 0.01) end)
+end
+
+--- Set to a specific value.
+function AIParameterSettingList:setValue(value)
+	setValueInternal(self, value, function(a, b)  return a == b end)
 end
 
 --- Gets a specific value.

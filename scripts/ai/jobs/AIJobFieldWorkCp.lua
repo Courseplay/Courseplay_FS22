@@ -17,7 +17,7 @@ AIJobFieldWorkCp.translations = {
 }
 
 --- Creates a xml schema to load the ai parameters from the config file.
-function AIJobFieldWorkCp.initXmlSchema()
+function AIJobFieldWorkCp:initXmlSchema()
 	AIJobFieldWorkCp.xmlSchema = XMLSchema.new("AIParameters")
 	local schema = AIJobFieldWorkCp.xmlSchema	
 	--- 			valueTypeId, 			path, 				description, defaultValue, isRequired
@@ -37,8 +37,8 @@ end
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
 	self.aiParametersFilePath = Utils.getFilename("config/FieldWorkAIParameters.xml", g_Courseplay.BASE_DIRECTORY)
-	AIJobFieldWorkCp.initXmlSchema()
-	AIJobFieldWorkCp.enrichAIParameters(self,self.aiParametersFilePath)
+	self:initXmlSchema()
+	self:enrichAIParameters(self.aiParametersFilePath)
 	CoursePlot.getInstance():setVisible(false)
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
@@ -50,7 +50,7 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 end
 
 --- Loads all AI parameters form an xmlFile.
-function AIJobFieldWorkCp.loadAIParametersData(self,filePath)
+function AIJobFieldWorkCp:loadAIParametersData(filePath)
 	local aiParameters = {}
 	local xmlFile = XMLFile.load("aiParametersXml", filePath, AIJobFieldWorkCp.xmlSchema)
 	xmlFile:iterate("AIParameters.AIParameter", function (i, baseKey)
@@ -83,8 +83,8 @@ end
 
 
 --- Creates the necessary AI parameters and binds them to the gui.
-function AIJobFieldWorkCp.enrichAIParameters(self,filePath)
-	local aiParameters = AIJobFieldWorkCp.loadAIParametersData(self,filePath)
+function AIJobFieldWorkCp:enrichAIParameters(filePath)
+	local aiParameters = self:loadAIParametersData(filePath)
 	for _,data in ipairs(aiParameters) do 
 		local key = data.name.."Parameter"
 		--- Creates the parameter
@@ -101,7 +101,7 @@ end
 
 function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
-	self.workWidthParameter:set(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
+	self.workWidthParameter:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end
 
 --- Called when parameters change, for now, scan field and generate a default course
@@ -181,7 +181,7 @@ end
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)
 
 --- Adds the course generate button.
-function AIJobFieldWorkCp.loadFromXmlInGameMenu(self,xmlFile, key)
+function AIJobFieldWorkCp.loadFromXmlInGameMenu(self, xmlFile, key)
 	self.buttonGenerateCourse = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
 	self.buttonGenerateCourse:setText(g_i18n:getText(AIJobFieldWorkCp.translations.GenerateButton))
 	--self.buttonGenerateCourse:setText("generator")
