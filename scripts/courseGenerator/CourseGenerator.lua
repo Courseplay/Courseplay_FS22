@@ -59,7 +59,6 @@ CourseGenerator.STARTING_LOCATION_SELECT_ON_MAP = 11
 CourseGenerator.STARTING_LOCATION_MAX = 11
 
 -- headland modes
-CourseGenerator.HEADLAND_MODE_MIN = 1
 CourseGenerator.HEADLAND_MODE_NONE = 1
 -- 0-n headland rows all around the field and up/down rows in the middle
 CourseGenerator.HEADLAND_MODE_NORMAL = 2
@@ -69,7 +68,6 @@ CourseGenerator.HEADLAND_MODE_NORMAL = 2
 CourseGenerator.HEADLAND_MODE_NARROW_FIELD = 3
 -- 0-n headland rows on two opposite ends of the field, up/down rows between.
 CourseGenerator.HEADLAND_MODE_TWO_SIDE = 4
-CourseGenerator.HEADLAND_MODE_MAX = 4
 
 CourseGenerator.headlandModeTexts = { 'none', 'normal', 'narrow', 'two side'}
 
@@ -152,6 +150,13 @@ CourseGenerator.RIDGEMARKER_RIGHT = 2
 
 -- Distance of waypoints on the generated track in meters
 CourseGenerator.waypointDistance = 5
+--- Minimum radius in meters where a lane change on the headland is allowed. This is to ensure that
+--- we only change lanes on relatively straight sections of the headland (not around corners)
+CourseGenerator.headlandLaneChangeMinRadius = 20
+--- No lane change allowed on the headland if there is a corner ahead within this distance in meters
+CourseGenerator.headlandLaneChangeMinDistanceToCorner = 20
+--- No lane change allowed on the headland if there is a corner behind within this distance in meters
+CourseGenerator.headlandLaneChangeMinDistanceFromCorner = 10
 
 CourseGenerator.cornerTypeText = {
 	'COURSEPLAY_HEADLAND_CORNER_TYPE_SMOOTH',

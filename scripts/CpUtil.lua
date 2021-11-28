@@ -121,17 +121,22 @@ function CpUtil.debugFormat(channel, ...)
 	end
 end
 
+--- (Safely) get the name of a vehicle or implement.
+---@param object table vehicle or implement
+function CpUtil.getName(object)
+	return object and object.getName and object:getName() or "Unknown"
+end
+
 -- convenience debug function to show the vehicle name and expects string.format() arguments, 
 -- CpUtil.debugVehicle( CpUtil.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
 function CpUtil.debugVehicle(channel, vehicle, ...)
 	-- TODO: enable debug channel configuration
 	if true or CpUtil.debugChannels and channel ~= nil and CpUtil.debugChannels[channel] ~= nil and CpUtil.debugChannels[channel] == true then
-		local vehicleName = vehicle and vehicle.getName and vehicle:getName() or "Unknown vehicle"
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
-		print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, vehicleName, string.format( ... )))
+		print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
 	end
 end
 
@@ -142,10 +147,9 @@ function CpUtil.info(...)
 end
 
 function CpUtil.infoVehicle(vehicle, ...)
-	local vehicleName = vehicle and vehicle.getName and vehicle:getName() or "Unknown vehicle"
 	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 	local timestamp = getDate( ":%S")
-	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, vehicleName, string.format( ... )))
+	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
 end
 
 

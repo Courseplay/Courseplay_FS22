@@ -29,8 +29,8 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
 	AIJobFieldWorkCp.enrichAIParameters(self)
 	CoursePlot.getInstance():setVisible(false)
-	self.lastPositionX = 0
-	self.lastPositionZ = 0
+	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
+	self.hasValidPosition = false
 	return self
 end
 
@@ -48,12 +48,16 @@ function AIJobFieldWorkCp.enrichAIParameters(self)
 		--- Adds this gui element to the gui table.
 		table.insert(self.groupedParameters, group)
 	end
-	
+end
+
+function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+	self.workWidthParameter:set(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end
 
 --- Called when parameters change, for now, scan field and generate a default course
-function AIJobFieldWorkCp:validate()
-	local isValid, errorMessage = AIJobFieldWork:superClass().validate(self)
+function AIJobFieldWorkCp:validate(farmId)
+	local isValid, errorMessage = AIJobFieldWork:superClass().validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
@@ -65,25 +69,18 @@ function AIJobFieldWorkCp:validate()
 		return isValid, errorMessage
 	else
 		self.lastPositionX, self.lastPositionZ = tx, tz
+		self.hasValidPosition = true
 	end
 
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
 	if not self.fieldPolygon then
+		self.hasValidPosition = false
 		return false, 'target not on field'
 	end
 
-	local status, ok
-	status, ok, self.course = CourseGeneratorInterface.generate(self.fieldPolygon, {x = tx, z = tz}, 0, 6, 1, true)
-	if not ok then
-		return false, 'could not generate course'
+	if self.course == nil then
+		return false, 'Generate a course before starting the job!'
 	end
-	-- we have course, show the course plot on the AI helper screen
-	CoursePlot.getInstance():setWaypoints(self.course.waypoints)
-	CoursePlot.getInstance():setVisible(true)
-	-- save the course on the vehicle for the strategy to use later
-	local vehicle = self.vehicleParameter:getVehicle()
-	self.course:setVehicle(vehicle)
-	vehicle:setFieldWorkCourse(self.course)
 	return true, ''
 end
 
@@ -94,12 +91,33 @@ end
 
 --- Is course generation allowed ?
 function AIJobFieldWorkCp:getCanGenerateFieldWorkCourse()
-	return true	
+	return self.hasValidPosition
 end
 
 --- Button callback to generate a field work course.
 function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	print("onClickGenerateFieldWorkCourse")
+
+	local status, ok
+	status, ok, self.course = CourseGeneratorInterface.generate(self.fieldPolygon,
+			{x = self.lastPositionX, z = self.lastPositionZ},
+			0,
+			self.workWidthParameter:get(),
+			self.numberOfHeadlandsParameter:getValue(),
+			self.startOnHeadlandParameter:getValue(),
+			self.headlandCornerTypeParameter:getValue(),
+			self.centerModeParameter:getValue()
+	)
+	if not ok then
+		return false, 'could not generate course'
+	end
+	-- we have course, show the course plot on the AI helper screen
+	CoursePlot.getInstance():setWaypoints(self.course.waypoints)
+	CoursePlot.getInstance():setVisible(true)
+	-- save the course on the vehicle for the strategy to use later
+	local vehicle = self.vehicleParameter:getVehicle()
+	self.course:setVehicle(vehicle)
+	vehicle:setFieldWorkCourse(self.course)
 end
 
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job

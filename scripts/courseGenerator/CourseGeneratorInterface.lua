@@ -7,8 +7,15 @@ CourseGeneratorInterface = {}
 ---@param startAngle number as in AIParameterPositionAngle
 ---@param workWidth number
 ---@param numberOfHeadlands number
-function CourseGeneratorInterface.generate(fieldPolygon, startPosition, startAngle,
-								  workWidth, numberOfHeadlands, startOnHeadland)
+function CourseGeneratorInterface.generate(fieldPolygon,
+										   startPosition,
+										   startAngle,
+										   workWidth,
+										   numberOfHeadlands,
+										   startOnHeadland,
+										   headlandCornerType,
+										   centerMode
+)
 
 	CourseGenerator.debug('Generating course, width %.1f m, headlands %d', workWidth, numberOfHeadlands)
 
@@ -24,9 +31,8 @@ function CourseGeneratorInterface.generate(fieldPolygon, startPosition, startAng
 		-- ignore headland order setting when there's no headland
 		headlandFirst = startOnHeadland or numberOfHeadlands == 0,
 		isClockwise = true, -- calculate from startAngle later
-		mode = CourseGenerator.HEADLAND_MODE_NORMAL
+		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
 	}
-	local headlandCornerType = CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH
 	local roundCorners = headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND
 	local minSmoothAngle, maxSmoothAngle = CourseGeneratorInterface.setSmoothAngles(headlandSettings, headlandCornerType)
 
@@ -38,8 +44,8 @@ function CourseGeneratorInterface.generate(fieldPolygon, startPosition, startAng
 		useLongestEdgeAngle = false and CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
 		rowAngle = 0,
 		nRowsToSkip = 0,
-		mode = CourseGenerator.CENTER_MODE_UP_DOWN,
-		nRowsPerLand = 0,
+		mode = centerMode,
+		nRowsPerLand = centerMode ~= CourseGenerator.CENTER_MODE_LANDS and 0 or 6,
 		pipeOnLeftSide = true
 	}
 

@@ -49,3 +49,7 @@ end
 function AIParameterWorkWidth:get()
 	return self.value	
 end
+
+function AIParameterWorkWidth:set(value)
+	self.value = value
+end

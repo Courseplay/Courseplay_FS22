@@ -227,17 +227,17 @@ end
 local function continueUntilStraightSection(headlandPath, track, passNumber, i, step, isConnectingTrack)
 	local dElapsed = 0
 	-- search only for the next few meters
-	local searchLimit = courseplay.globalCourseGeneratorSettings.headlandLaneChangeMinDistanceToCorner:get() +
-			courseplay.globalCourseGeneratorSettings.headlandLaneChangeMinDistanceFromCorner:get()
+	local searchLimit = CourseGenerator.headlandLaneChangeMinDistanceToCorner +
+			CourseGenerator.headlandLaneChangeMinDistanceFromCorner
 	local count = 0
 	while dElapsed < searchLimit do
 		dElapsed = dElapsed + track[i].nextEdge.length
 		local r = track:getSmallestRadiusWithinDistance(i,
-				courseplay.globalCourseGeneratorSettings.headlandLaneChangeMinDistanceToCorner:get(),
-				courseplay.globalCourseGeneratorSettings.headlandLaneChangeMinDistanceFromCorner:get(),
+				CourseGenerator.headlandLaneChangeMinDistanceToCorner,
+				CourseGenerator.headlandLaneChangeMinDistanceFromCorner,
 				step)
 		-- nice straight section, done
-		if r > courseplay.globalCourseGeneratorSettings.headlandLaneChangeMinRadius:get() then
+		if r > CourseGenerator.headlandLaneChangeMinRadius then
 			CourseGenerator.debug('Added %d waypoints to reach a straight section for the headland %d lane change after %.1f m, r = %.1f',
 				count, passNumber, dElapsed, r)
 			return i
