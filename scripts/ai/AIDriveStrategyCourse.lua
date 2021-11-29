@@ -63,9 +63,10 @@ function AIDriveStrategyCourse:error(...)
 end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle)
-    AIDriveStrategyStraight:superClass().setAIVehicle(self, vehicle)
+    AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self.ppc = PurePursuitController(vehicle)
-    self.ppc:setCourse(vehicle:getFieldWorkCourse())
+    self.course = vehicle:getFieldWorkCourse()
+    self.ppc:setCourse(self.course)
     -- TODO: should probably be the closest waypoint to the target?
     self.ppc:initialize(1)
 end

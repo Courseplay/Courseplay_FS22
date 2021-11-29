@@ -143,10 +143,6 @@ end
 
 -- initialize controller before driving
 function PurePursuitController:initialize(ix)
-	-- for now, if no course set, use the vehicle's current waypoints
-	if not self.course then
-		self.course = Course(self.vehicle, self.vehicle.Waypoints)
-	end
 	self.firstIx = ix
 	-- relevantWpNode always points to the point where the relevant path segment starts
 	self.relevantWpNode:setToWaypoint(self.course, self.firstIx )
@@ -364,7 +360,7 @@ function PurePursuitController:findRelevantSegment()
 		if not self:reachedLastWaypoint() then
 			-- disable debugging once we reached the last waypoint. Otherwise we'd keep logging
 			-- until the user presses 'Stop driver'.
-			self:debug('relevant waypoint: %d, crosstrack error: %.1f', self.relevantWpNode.ix, self.crossTrackError)
+			self:debug('relevant waypoint: %d, crosstrack: %.1f', self.relevantWpNode.ix, self.crossTrackError)
 		end
 	end
 	if true or courseplay.debugChannels[courseplay.DBG_PPC] then

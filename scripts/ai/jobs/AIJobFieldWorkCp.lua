@@ -84,8 +84,8 @@ end
 
 --- Creates the necessary AI parameters and binds them to the gui.
 function AIJobFieldWorkCp:enrichAIParameters(filePath)
-	local aiParameters = self:loadAIParametersData(filePath)
-	for _,data in ipairs(aiParameters) do 
+	self.aiParameters = self:loadAIParametersData(filePath)
+	for _,data in ipairs(self.aiParameters) do
 		local key = data.name.."Parameter"
 		--- Creates the parameter
 		self[key] = AIParameterSettingList.new(data)
@@ -101,7 +101,19 @@ end
 
 function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
-	self.workWidthParameter:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
+
+	if vehicle.getLastJob ~= nil then
+		local lastJob = vehicle:getLastJob()
+		-- if there's a last job, reuse its parameters
+		if not isDirectStart and lastJob ~= nil and lastJob:isa(AIJobFieldWorkCp) then
+			for _, data in ipairs(self.aiParameters) do
+				local key = data.name .. "Parameter"
+				self[key]:setValue(lastJob[key]:getValue())
+			end
+		end
+	else
+		self.workWidthParameter:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
+	end
 end
 
 --- Called when parameters change, for now, scan field and generate a default course
@@ -147,10 +159,12 @@ end
 function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	print("onClickGenerateFieldWorkCourse")
 
+	local vehicle = self.vehicleParameter:getVehicle()
 	local status, ok
 	status, ok, self.course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
 			0,
+			AIUtil.getTurningRadius(vehicle),
 			self.workWidthParameter:getValue(),
 			self.numberOfHeadlandsParameter:getValue(),
 			self.startOnHeadlandParameter:getValue(),
@@ -164,7 +178,6 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	CoursePlot.getInstance():setWaypoints(self.course.waypoints)
 	CoursePlot.getInstance():setVisible(true)
 	-- save the course on the vehicle for the strategy to use later
-	local vehicle = self.vehicleParameter:getVehicle()
 	self.course:setVehicle(vehicle)
 	vehicle:setFieldWorkCourse(self.course)
 end

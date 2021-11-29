@@ -99,7 +99,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCal
 
 	-- smooth the offset a bit to avoid sudden changes
 	tightTurnOffset = smoothOffset(offset)
-	courseplay.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle,
+	CpUtil.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle,
 		'Tight turn, r = %.1f, tow bar = %.1f m, currentAngle = %.0f, nextAngle = %.0f, offset = %.1f, smoothOffset = %.1f',
 		r, towBarLength, currentAngle, nextAngle, offset, tightTurnOffset )
 	-- remember the last value for smoothing
@@ -110,7 +110,7 @@ function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
 	local workTool = courseplay:getFirstReversingWheeledWorkTool(vehicle)
 	if not workTool or not workTool.cp.realTurningNode then
-		courseplay.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
+		CpUtil.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
 		-- default is not 0 as this is used to calculate trailer heading and 0 here may result in NaNs
 		return 3
 	end
@@ -119,7 +119,7 @@ function AIUtil.getTowBarLength(vehicle)
 	local tractorX, _, tractorZ = getWorldTranslation(AIUtil.getDirectionNode(vehicle))
 	local toolX, _, toolZ = getWorldTranslation( workTool.cp.realTurningNode )
 	local towBarLength = courseplay:distance( tractorX, tractorZ, toolX, toolZ )
-	courseplay.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle, 'tow bar length is %.1f.', towBarLength)
+	CpUtil.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle, 'tow bar length is %.1f.', towBarLength)
 	return towBarLength
 end
 
@@ -165,24 +165,24 @@ end
 
 -- Get the turning radius of the vehicle and its implements (copied from AIDriveStrategyStraight.updateTurnData())
 function AIUtil.getTurningRadius(vehicle)
-	courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, 'Finding turn radius:')
+	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, 'Finding turn radius:')
 
 	local radius = vehicle.maxTurningRadius or 6
-	courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  turnRadius set to %.1f', radius)
+	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  turnRadius set to %.1f', radius)
 
 	if g_vehicleConfigurations:get(vehicle, 'turnRadius') then
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
-		courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
+		CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
 	end
 	
-	local turnDiameterSetting = vehicle.cp.settings.turnDiameter
-	if not turnDiameterSetting:isAutomaticActive() then
-		radius = turnDiameterSetting:get() / 2
-		courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  turnRadius manually set to %.1f', radius)
-	end
+	--local turnDiameterSetting = vehicle.cp.settings.turnDiameter
+	--if not turnDiameterSetting:isAutomaticActive() then
+	--	radius = turnDiameterSetting:get() / 2
+	--	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  turnRadius manually set to %.1f', radius)
+	--end
 
 	if vehicle:getAIMinTurningRadius() ~= nil then
-		courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
+		CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
 		radius = math.max(radius, vehicle:getAIMinTurningRadius())
 	end
 
@@ -192,26 +192,27 @@ function AIUtil.getTurningRadius(vehicle)
 		local turnRadius = 0
 		if g_vehicleConfigurations:get(implement.object, 'turnRadius') then
 			turnRadius = g_vehicleConfigurations:get(implement.object, 'turnRadius')
-			courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
+			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
 				implement.object:getName(), turnRadius)
 		elseif SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
 			-- only call this for AIImplements, others may throw an error as the Giants code assumes AIImplement
 			turnRadius = AIVehicleUtil.getMaxToolRadius(implement)
 			if turnRadius > 0 then
-				courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
+				CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
 					implement.object:getName(), turnRadius)
 			end
 		end
 		if turnRadius == 0 then
-			turnRadius = courseplay:getToolTurnRadius(implement.object)
-			courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, we calculated %.1f',
+			-- TODO
+			--turnRadius = courseplay:getToolTurnRadius(implement.object)
+			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, we assume %.1f',
 				implement.object:getName(), turnRadius)
 		end
 		maxToolRadius = math.max(maxToolRadius, turnRadius)
-		courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)
+		CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)
 	end
 	radius = math.max(radius, maxToolRadius)
-	courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
+	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
 	return radius
 end
 
@@ -272,7 +273,7 @@ function AIUtil.getFirstAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the front of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				implement.object.sizeLength / 2 + implement.object.lengthOffset)
-			courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
+			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
 			if d > maxDistance then
 				maxDistance = d
 				firstImplement = implement.object
@@ -293,7 +294,7 @@ function AIUtil.getLastAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the back of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				- implement.object.sizeLength / 2 + implement.object.lengthOffset)
-			courseplay.debugVehicle(courseplay.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
 			if d < minDistance then
 				minDistance = d
 				lastImplement = implement.object
@@ -355,6 +356,37 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 		end
 	end
 end
+
+function AIUtil.getAllAIImplements(object, implements)
+	if not implements then implements = {} end
+	for _, implement in ipairs(object:getAttachedImplements()) do
+		-- ignore everything which has no work area
+		if AIUtil.isValidAIImplement(implement.object) then
+			table.insert(implements, implement)
+		end
+		AIUtil.getAllAIImplements(implement.object, implements)
+	end
+	return implements
+end
+
+-- Is this and implement we should consider when deciding when to lift/raise implements at the end/start of a row?
+function AIUtil.isValidAIImplement(object)
+	if WorkWidthUtil.hasWorkAreas(object) then
+		-- has work areas, good.
+		return true
+	else
+		local aiLeftMarker, _, _ = WorkWidthUtil.getAIMarkers(object, true)
+		if aiLeftMarker then
+			-- has AI markers, good
+			return true
+		else
+			-- no work areas, no AI markers, can't use.
+			return false
+		end
+	end
+end
+
+
 
 --- Is this a real wheel the implement is actually rolling on (and turning around) or just some auxiliary support
 --- wheel? We need to know about the real wheels when finding the turn radius/distance between attacher joint and
@@ -552,7 +584,7 @@ end
 function AIUtil.getShieldWorkWidth(object,logPrefix)
 	if object.spec_leveler then 
 		local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-		courseplay.debugFormat(courseplay.DBG_IMPLEMENTS,'%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
+		CpUtil.debugFormat(DBG_IMPLEMENTS,'%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
 		return width
 	end
 end

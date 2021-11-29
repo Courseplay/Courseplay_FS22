@@ -11,6 +11,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   startPosition,
 										   startAngle,
 										   workWidth,
+										   turnRadius,
 										   numberOfHeadlands,
 										   startOnHeadland,
 										   headlandCornerType,
@@ -57,7 +58,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	--------------------------------------------------------------------------------------------------------------------
 	-- General settings
 	-----------------------------------------------------------------------------------------------------------------------
-	local turnRadius = 6
 	local minDistanceBetweenPoints = 0.5
 	local doSmooth = true
 	local islandBypassMode = Island.BYPASS_MODE_CIRCLE

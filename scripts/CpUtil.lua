@@ -124,7 +124,10 @@ end
 --- (Safely) get the name of a vehicle or implement.
 ---@param object table vehicle or implement
 function CpUtil.getName(object)
-	return object and object.getName and object:getName() or "Unknown"
+	if object == CpUtil then
+		return 'ERROR, calling CpUtil.getName with : !'
+	end
+	return object and object.getName and object:getName() or 'Unknown'
 end
 
 -- convenience debug function to show the vehicle name and expects string.format() arguments, 
