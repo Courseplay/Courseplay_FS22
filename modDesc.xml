@@ -32,6 +32,8 @@ Die nächste Version von Courseplay.]]>
         <sourceFile filename="Courseplay.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
+		<sourceFile filename="scripts/settings/Settings.lua"/>
+		<sourceFile filename="scripts/settings/GlobalSettings.lua"/>
 		<sourceFile filename="scripts/field/FieldUtil.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
@@ -54,6 +56,8 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
+		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
+		<sourceFile filename="scripts/gui/InGameMenuGeneralSettingsExtendedCP.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

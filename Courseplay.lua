@@ -57,6 +57,8 @@ function Courseplay:load()
 	createFolder(self.cpDebugPrintXmlFolderPath)
 	self.cpDebugPrintXmlFilePathDefault = string.format("%s/%s",self.cpDebugPrintXmlFolderPath,"courseplayDebugPrint.xml")		
 
+	self.debugChannels = DebugChannelSettingContainer.create()
+	
 end
 
 function Courseplay:registerConsoleCommands()
@@ -65,6 +67,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
+	addConsoleCommand( 'printCurrentAiJobVariable', 'Print current ai job selected variable', 'printCurrentAiJobVariable', self)
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
 end
@@ -118,6 +121,12 @@ function Courseplay:printGlobalCpVariable(variableName, maxDepth, printToXML,pri
 	else 
 		self:printVariable('g_Courseplay', maxDepth, printToXML,printToSeparateXmlFiles)
 	end
+end
+
+function Courseplay:printCurrentAiJobVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+	local prefix = variableName and 'g_currentMission.inGameMenu.pageAI.currentJob' or 'g_currentMission.inGameMenu.pageAI'
+	variableName = variableName or 'currentJob'
+	self:printVariableInternal( prefix, variableName, maxDepth, printToXML,printToSeparateXmlFiles)
 end
 
 --- Load a Lua file

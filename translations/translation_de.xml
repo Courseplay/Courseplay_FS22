@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
+	<!--Global translations-->
+		<text name="COURSEPLAY_DEACTIVATED" 					text="deaktiviert" />
+		<text name="COURSEPLAY_ACTIVATED" 						text="aktiviert" />
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"								text="CP: Feldarbeit" />
 	<!--Generate course button-->
@@ -28,7 +31,11 @@
 		<text name="CP_ai_param_startOnHeadland_title"			text="Arbeit beginnen auf" />
 		<text name="CP_ai_param_startOnHeadland_on_headland" 	text="Vorgewende Bahnen" />
 		<text name="CP_ai_param_startOnHeadland_up_down_rows" 	text="Feldreihen" />
-	<!-- -->
+	<!--Global settings-->
+		<text name="CP_debugChannels_header"					text="CP: Debug Channels" />
+		
+		<text name="CP_debugChannels_courseGenerator_label"		text="Course generator debug channel" />
+		<text name="CP_debugChannels_courseGenerator_tooltip" 	text="Displays usefully information" />
 
 	</texts>
 </l10n>
