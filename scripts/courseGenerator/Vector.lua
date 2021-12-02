@@ -49,7 +49,6 @@ end
 
 -- set the values of the Vector to something new
 function Vector:set(x,y)
-    if x:is_a(Vector) then self.x, self.y = x.x, x.y; return end
     self.x, self.y = x or self.x, y or self.y
     return self
 end
@@ -148,9 +147,9 @@ end
 -- normalize the Vector (give it a magnitude of 1)
 function Vector:norm()
     local m = self:length()
-    if m ~= 0 then
-        self:replace(self / m)
-    end
+	if m ~= 0 then
+		self:replace(self / m)
+	end
     return self
 end
 
@@ -184,6 +183,13 @@ function Vector:rotate(theta)
     self:replace(fromAngle(self:heading() + theta))
     self:setLength(m)
     return self
+end
+
+function Vector:setHeading(theta)
+	local m = self:length()
+	self:replace(fromAngle(theta))
+	self:setLength(m)
+	return self
 end
 
 -- return x and y of Vector as a regular array
