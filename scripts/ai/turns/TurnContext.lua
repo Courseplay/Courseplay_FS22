@@ -1,3 +1,25 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+Copyright (C) 2019 Peter Vaiko
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
+---
+--- A turn context contains all geometric information about a turn and can be used to
+--- generate turn maneuvers for row end (180) or headland (corner) turns.
+---
 ---@class TurnContext
 ---@field turnStartWp Waypoint
 ---@field beforeTurnStartWp Waypoint
@@ -332,14 +354,15 @@ end
 ---@param vehicle table
 ---@param r number turning radius in m
 ---@param sideOffset number (left < 0, right > 0) side offset to use when the course has an offset, for example
---- due to a tool setting. When not supplied the tool offset X set for the vehicle is used
+--- due to a tool setting.
+--- TODO_22: side offset used the toolOffsetX setting for the vehicle
 function TurnContext:createCorner(vehicle, r, sideOffset)
     -- use the average angle of the turn end and the next wp as there is often a bend there
     local endAngleDeg = self:getAverageEndAngleDeg()
     CpUtil.debugVehicle(DBG_TURN, vehicle, 'start angle: %.1f, end angle: %.1f (from %.1f and %.1f)', self.beforeTurnStartWp.angle,
             endAngleDeg, self.turnEndWp.angle, self.afterTurnEndWp.angle)
     return Corner(vehicle, self.beforeTurnStartWp.angle, self.turnStartWp, endAngleDeg, self.turnEndWp, r,
-            sideOffset or vehicle.cp.settings.toolOffsetX:get())
+            sideOffset)
 end
 
 --- Create a turn ending course using the vehicle's current position and the front marker node (where the vehicle must

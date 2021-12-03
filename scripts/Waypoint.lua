@@ -1157,17 +1157,21 @@ end
 
 --- Create a new (straight) temporary course based on a world coordinates
 ---@param vehicle table
+---@param sx number x at start position
+---@param sz number z at start position
+---@param ex number x at end position
+---@param ez number z at end position
 ---@param referenceNode number
 ---@param xOffset number side offset of the new course (relative to node), left positive
 ---@param zStartOffset number start at this many meters z offset from node
 ---@param zEndOffset number end at this many meters z offset from node
 ---@param step number step (waypoint distance), must be positive
 ---@param reverse boolean is this a reverse course?
-function Course.createFromTwoWorldPositions(vehicle, x, z, dx, dz, xOffset, zStartOffset, zEndOffset, step, reverse)
+function Course.createFromTwoWorldPositions(vehicle, sx, sz, ex, ez, xOffset, zStartOffset, zEndOffset, step, reverse)
 	local waypoints = {}
 	
 	local yRot
-	local nx,nz = MathUtil.vector2Normalize(dx-x,dz-z)
+	local nx,nz = MathUtil.vector2Normalize(ex - sx, ez - sz)
 	if nx ~= nx or nz ~= nz then
 		yRot=0
 	else
@@ -1176,17 +1180,20 @@ function Course.createFromTwoWorldPositions(vehicle, x, z, dx, dz, xOffset, zSta
 
 	local node = createTransformGroup("temp")
 
-	setTranslation(node,x,0,z)
+	setTranslation(node, sx,0, sz)
 	setRotation(node,0,yRot,0)
 
-	local dist = MathUtil.getPointPointDistance(x, z, dx, dz)
+	local dist = MathUtil.getPointPointDistance(sx, sz, ex, ez)
 	
-	for d=zStartOffset,dist+zEndOffset,step do 
+	for d = zStartOffset, dist + zEndOffset, step do
 		local ax, _, az = localToWorld(node, xOffset, 0, d)
-		table.insert(waypoints, {x = ax, z = az, rev = reverse})
+		if MathUtil.getPointPointDistance(ex, ez, ax, az) > 0.1 * step then
+			-- only add this point if not too close to the end point (as the end point will always be added)
+			table.insert(waypoints, {x = ax, z = az, rev = reverse})
+		end
 	end
 	---Make sure that at the end is a waypoint.
-	local ax, _, az = localToWorld(node, xOffset, 0, dist+zEndOffset)
+	local ax, _, az = localToWorld(node, xOffset, 0, dist + zEndOffset)
 	table.insert(waypoints, {x = ax, z = az, rev = reverse})
 
 	CpUtil.destroyNode(node)

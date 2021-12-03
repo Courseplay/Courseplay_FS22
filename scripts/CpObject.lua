@@ -38,7 +38,7 @@ function CpObject(base, init)
 	local mt = {}
 	mt.__call = function(class_tbl, ...)
 		local obj = {}
-		setmetatable(obj,c)
+		setmetatable(obj, c)
 		if class_tbl.init then
 			class_tbl.init(obj,...)
 		else
