@@ -27,7 +27,7 @@ local module = {
 
 ---@class Vector
 Vector = CpObject()
-assert = function () end
+
 -- get a random function from Love2d or base lua, in that order.
 local rand = math.random
 if love and love.math then rand = love.math.random end

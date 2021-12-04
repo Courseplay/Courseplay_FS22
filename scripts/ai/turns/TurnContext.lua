@@ -515,35 +515,36 @@ function TurnContext:debug(...)
 end
 
 function TurnContext:drawDebug()
-    if courseplay.debugChannels[self.debugChannel] then
+	-- TODO_22: debugChannel
+    if true or courseplay.debugChannels[self.debugChannel] then
         local cx, cy, cz
         local nx, ny, nz
         local height = 1
         if self.workStartNode then
             cx, cy, cz = localToWorld(self.workStartNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.workStartNode, self.workWidth / 2, 0, 0)
-            cpDebug:drawLine(cx, cy + height, cz, 0, 1, 0, nx, ny + height, nz)
+            DebugUtil.drawLine(cx, cy + height, cz, 0, 1, 0, nx, ny + height, nz)
             DebugUtil.drawDebugNode(self.workStartNode, 'work start')
         end
         if self.lateWorkStartNode then
             cx, cy, cz = localToWorld(self.lateWorkStartNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.lateWorkStartNode, self.workWidth / 2, 0, 0)
-            cpDebug:drawLine(cx, cy + height, cz, 0, 0.7, 0, nx, ny + height, nz)
+			DebugUtil.drawLine(cx, cy + height, cz, 0, 0.5, 0, nx, ny + height, nz)
         end
         if self.workEndNode then
             cx, cy, cz = localToWorld(self.workEndNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.workEndNode, self.workWidth / 2, 0, 0)
-            cpDebug:drawLine(cx, cy + height, cz, 1, 0, 0, nx, ny + height, nz)
+			DebugUtil.drawLine(cx, cy + height, cz, 1, 0, 0, nx, ny + height, nz)
             DebugUtil.drawDebugNode(self.workEndNode, 'work end')
         end
         if self.lateWorkEndNode then
             cx, cy, cz = localToWorld(self.lateWorkEndNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.lateWorkEndNode, self.workWidth / 2, 0, 0)
-            cpDebug:drawLine(cx, cy + height, cz, 0.7, 0, 0, nx, ny + height, nz)
+			DebugUtil.drawLine(cx, cy + height, cz, 0.5, 0, 0, nx, ny + height, nz)
         end
         if self.vehicleAtTurnEndNode then
             cx, cy, cz = localToWorld(self.vehicleAtTurnEndNode, 0, 0, 0)
-            cpDebug:drawLine(cx, cy, cz, 1, 1, 0, cx, cy + 2, cz)
+			DebugUtil.drawLine(cx, cy, cz, 1, 1, 0, cx, cy + 2, cz)
             DebugUtil.drawDebugNode(self.vehicleAtTurnEndNode, 'vehicle\nat turn end')
         end
         if self.vehicleAtTurnStartNode then

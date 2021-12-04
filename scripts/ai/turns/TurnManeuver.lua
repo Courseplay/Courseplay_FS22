@@ -11,7 +11,7 @@ TurnManeuver.reverseWPChangeDistanceWithTool	= 3
 ---@param vehicleDirectionNode number Giants node, pointing in the vehicle's front direction
 ---@param turningRadius number
 ---@param workWidth number
-function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
+function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, directionNodeToTurnNodeLength)
 	self.vehicleDirectionNode = vehicleDirectionNode
 	self.turnContext = turnContext
 	self.vehicle = vehicle
@@ -19,8 +19,8 @@ function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRa
 	self.turningRadius = turningRadius
 	self.workWidth = workWidth
 	-- TODO_22: calculate!
-	self.directionNodeToTurnNodeLength = 3
-	self.direction = turnContext:isLeftTurn() and 1 or -1
+	self.directionNodeToTurnNodeLength = directionNodeToTurnNodeLength
+	self.direction = turnContext:isLeftTurn() and -1 or 1
 end
 
 function TurnManeuver:getWaypoints()
@@ -48,10 +48,10 @@ function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnE
 	-- add points between the first and last
 	local x, z
 	if numPointsNeeded > 1 then
-		TurnManeuver.wpDistance = dist / numPointsNeeded
+		local wpDistance = dist / numPointsNeeded
 		for i=1, numPointsNeeded - 1 do
-			x = fromPoint.x + (i * TurnManeuver.wpDistance * dx)
-			z = fromPoint.z + (i * TurnManeuver.wpDistance * dz)
+			x = fromPoint.x + (i * wpDistance * dx)
+			z = fromPoint.z + (i * wpDistance * dz)
 
 			self:addWaypoint(x, z, endTurn, reverse, nil, changeDirectionWhenAligned)
 		end
@@ -183,8 +183,10 @@ HeadlandCornerTurnManeuver = CpObject(TurnManeuver)
 -- Drive past turnEnd, up to implement width from the edge of the field (or current headland), raise implements, then
 -- reverse back straight, then forward on a curve, then back up to the corner, lower implements there.
 ------------------------------------------------------------------------
-function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, reversingWorkTool)
-	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
+---@param turnContext TurnContext
+function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth,
+										 reversingWorkTool, directionNodeToTurnNodeLength)
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, directionNodeToTurnNodeLength)
 
 	self:debug("(Turn) Using Headland Corner Reverse Turn for tractors")
 
