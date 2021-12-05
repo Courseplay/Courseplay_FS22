@@ -61,6 +61,13 @@ function AIDriveStrategyFieldWorkCourse:setAIVehicle(vehicle)
     self:setAllStaticParameters()
 end
 
+function AIDriveStrategyFieldWorkCourse:update()
+    AIDriveStrategyFieldWorkCourse:superClass().update(self)
+    if self.state == self.states.TURNING and self.turnContext then
+        self.turnContext:drawDebug()
+    end
+end
+
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
@@ -86,7 +93,10 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         maxSpeed = 0
     elseif self.state == self.states.WORKING then
         maxSpeed = self.vehicle:getSpeedLimit(true)
+    elseif self.state == self.states.TURNING then
+        maxSpeed = self.aiTurn:getDriveData()
     end
+    self:debugSparse('%.1f/%.1f', gx, gz)
     return gx, gz, moveForwards, maxSpeed, 100
 end
 
@@ -113,6 +123,94 @@ function AIDriveStrategyFieldWorkCourse:raiseImplements()
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
 end
 
+
+function AIDriveStrategyFieldWorkCourse:shouldRaiseImplements(turnStartNode)
+    -- see if the vehicle has AI markers -> has work areas (built-in implements like a mower or cotton harvester)
+    local doRaise = self:shouldRaiseThisImplement(self.vehicle, turnStartNode)
+    -- and then check all implements
+    for _, implement in pairs(AIUtil.getAllAIImplements(self.vehicle)) do
+        -- only when _all_ implements can be raised will we raise them all, hence the 'and'
+        doRaise = doRaise and self:shouldRaiseThisImplement(implement.object, turnStartNode)
+    end
+    return doRaise
+end
+
+---@param turnStartNode number at the last waypoint of the row, pointing in the direction of travel. This is where
+--- the implement should be raised when beginning a turn
+function AIDriveStrategyFieldWorkCourse:shouldRaiseThisImplement(object, turnStartNode)
+    local aiFrontMarker, _, aiBackMarker = WorkWidthUtil.getAIMarkers(object, nil, true)
+    -- if something (like a combine) does not have an AI marker it should not prevent from raising other implements
+    -- like the header, which does have markers), therefore, return true here
+    if not aiBackMarker or not aiFrontMarker then return true end
+    -- TODO_22
+    --local marker = self.vehicle.cp.settings.implementRaiseTime:is(ImplementRaiseLowerTimeSetting.EARLY) and aiFrontMarker or aiBackMarker
+    local marker = aiFrontMarker
+    -- turn start node in the back marker node's coordinate system
+    local _, _, dz = localToLocal(marker, turnStartNode, 0, 0, 0)
+    self:debugSparse('%s: shouldRaiseImplements: dz = %.1f', CpUtil.getName(object), dz)
+    -- marker is just in front of the turn start node
+    return dz > 0
+end
+
+
+--- When finishing a turn, is it time to lower all implements here?
+-- TODO: remove the reversing parameter and use ppc to find out once not called from turn.lua
+function AIDriveStrategyFieldWorkCourse:shouldLowerImplements(turnEndNode, reversing)
+    -- see if the vehicle has AI markers -> has work areas (built-in implements like a mower or cotton harvester)
+    local doLower, vehicleHasMarkers = self:shouldLowerThisImplement(self.vehicle, turnEndNode, reversing)
+    if not vehicleHasMarkers and reversing then
+        -- making sure the 'and' below will work if reversing and the vehicle has no markers
+        doLower = true
+    end
+    -- and then check all implements
+    for _, implement in ipairs(AIUtil.getAllAIImplements(self.vehicle)) do
+        if reversing then
+            -- when driving backward, all implements must reach the turn end node before lowering, hence the 'and'
+            doLower = doLower and self:shouldLowerThisImplement(implement.object, turnEndNode, reversing)
+        else
+            -- when driving forward, if it is time to lower any implement, we'll lower all, hence the 'or'
+            doLower = doLower or self:shouldLowerThisImplement(implement.object, turnEndNode, reversing)
+        end
+    end
+    return doLower
+end
+
+---@param object table is a vehicle or implement object with AI markers (marking the working area of the implement)
+---@param turnEndNode number node at the first waypoint of the row, pointing in the direction of travel. This is where
+--- the implement should be in the working position after a turn
+---@param reversing boolean are we reversing? When reversing towards the turn end point, we must lower the implements
+--- when we are _behind_ the turn end node (dz < 0), otherwise once we reach it (dz > 0)
+---@return boolean, boolean the second one is true when the first is valid
+function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEndNode, reversing)
+    local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object, nil, true)
+    if not aiLeftMarker then return false, false end
+    local _, _, dzLeft = localToLocal(aiLeftMarker, turnEndNode, 0, 0, 0)
+    local _, _, dzRight = localToLocal(aiRightMarker, turnEndNode, 0, 0, 0)
+    local _, _, dzBack = localToLocal(aiBackMarker, turnEndNode, 0, 0, 0)
+    local loweringDistance
+    if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) then
+        -- sowing machines are stopped while lowering, but leave a little reserve to allow for stopping
+        -- TODO: rather slow down while approaching the lowering point
+        loweringDistance = 0.5
+    else
+        -- others can be lowered without stopping so need to start lowering before we get to the turn end to be
+        -- in the working position by the time we get to the first waypoint of the next row
+        loweringDistance = self.vehicle.lastSpeed * self.loweringDurationMs + 0.5 -- vehicle.lastSpeed is in meters per millisecond
+    end
+    local dzFront = (dzLeft + dzRight) / 2
+    self:debug('%s: dzLeft = %.1f, dzRight = %.1f, dzFront = %.1f, dzBack = %.1f, loweringDistance = %.1f, reversing %s',
+            CpUtil.getName(object), dzLeft, dzRight, dzFront, dzBack, loweringDistance, tostring(reversing))
+    -- TODO_22
+    --local dz = self.vehicle.cp.settings.implementLowerTime:is(ImplementRaiseLowerTimeSetting.EARLY) and dzFront or dzBack
+    local dz = dzFront
+    if reversing then
+        return dz < 0 , true
+    else
+        -- dz will be negative as we are behind the target node
+        return dz > - loweringDistance, true
+    end
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
@@ -134,15 +232,32 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
     self.ppc:setShortLookaheadDistance()
     self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
+    self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+    self.state = self.states.TURNING
+end
 
+-- switch back to fieldwork after the turn ended.
+---@param ix number waypoint to resume fieldwork after
+---@param forceIx boolean if true, fieldwork will resume exactly at ix. If false, we'll look for the next waypoint
+--- in front of us.
+function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
+    self.ppc:setNormalLookaheadDistance()
+    self.state = self.states.WORKING
+    self:lowerImplements()
+    -- restore our own listeners for waypoint changes
+    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
+    local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix, self.vehicle:getAIDirectionNode(), 0)
+    self:startCourse(self.course, startIx)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Static parameters (won't change while driving)
------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------``-------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self:setFrontAndBackMarkers()
     self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
+    self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
+    self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
 end
 
 --- Find the foremost and rearmost AI marker

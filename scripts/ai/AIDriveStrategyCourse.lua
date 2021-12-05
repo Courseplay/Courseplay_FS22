@@ -65,10 +65,8 @@ end
 function AIDriveStrategyCourse:setAIVehicle(vehicle)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self.ppc = PurePursuitController(vehicle)
-    self.course = vehicle:getFieldWorkCourse()
-    self.ppc:setCourse(self.course)
     -- TODO: should probably be the closest waypoint to the target?
-    self.ppc:initialize(1)
+    self:startCourse(vehicle:getFieldWorkCourse(), 1)
 end
 
 function AIDriveStrategyCourse:update()
@@ -82,4 +80,14 @@ function AIDriveStrategyCourse:getDriveData(dt, vX, vY, vZ)
     return gx, gz, moveForwards, maxSpeed, 100
 end
 
+--- Start a course and continue with nextCourse at ix when done
+---@param tempCourse Course
+---@param nextCourse Course
+---@param ix number
+function AIDriveStrategyCourse:startCourse(course, ix)
+    self:debug('Starting a course, at waypoint %d, no next course set.', ix)
+    self.course = course
+    self.ppc:setCourse(self.course)
+    self.ppc:initialize(ix)
+end
 

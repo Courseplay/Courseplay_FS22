@@ -149,7 +149,7 @@ function FieldScanner:findContour(x, z)
     self.points = self:simplifyPolygon(self.points, 1.75)
     self:debug('Field contour simplified, has now %d points', #self.points)
     self:sharpenCorners(self.points)
-    self.points = self:addIntermediatePoints(self.points, 10)
+    self.points = self:addIntermediatePoints(self.points, 5)
     self:debug('Intermediate points added, has now %d points', #self.points)
     for i, p in ipairs(self.points) do
        -- self:debug('%d %.1f/%.1f', i, p.x, p.z)
@@ -197,8 +197,10 @@ function FieldScanner:addIntermediatePoints(points, distance)
     for i, p in ipairs(points) do
         local d = MathUtil.getPointPointDistance(p.x, p.z, prev.x, prev.z)
         local dx, dz = MathUtil.vector2Normalize(p.x - prev.x, p.z - prev.z)
-        for j = 1, math.floor(d / distance) - 2 do
-            table.insert(newPoints, {x = prev.x + distance * j * dx, z = prev.z + distance * j * dz})
+        local numberOfIntermediatePoints = math.floor(d / distance) - 1
+        local dBetweenPoints = d / (numberOfIntermediatePoints + 1)
+        for j = 1, d, dBetweenPoints do
+            table.insert(newPoints, {x = prev.x + j * dx, z = prev.z + j * dz})
             newPoints[#newPoints].y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode,
                     newPoints[#newPoints].x, 0, newPoints[#newPoints].z)
         end

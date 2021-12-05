@@ -375,7 +375,7 @@ function AIUtil.isValidAIImplement(object)
 		-- has work areas, good.
 		return true
 	else
-		local aiLeftMarker, _, _ = WorkWidthUtil.getAIMarkers(object, true)
+		local aiLeftMarker, _, _ = WorkWidthUtil.getAIMarkers(object, nil, true)
 		if aiLeftMarker then
 			-- has AI markers, good
 			return true
@@ -587,4 +587,45 @@ function AIUtil.getShieldWorkWidth(object,logPrefix)
 		CpUtil.debugFormat(DBG_IMPLEMENTS,'%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
 		return width
 	end
+end
+
+function AIUtil.findLoweringDurationMs(vehicle)
+	local function getLoweringDurationMs(object)
+		if object.spec_animatedVehicle then
+			-- TODO: implement these in the specifications?
+			return math.max(object.spec_animatedVehicle:getAnimationDuration('lowerAnimation'),
+					object.spec_animatedVehicle:getAnimationDuration('rotatePickup'))
+		else
+			return 0
+		end
+	end
+
+	local loweringDurationMs = getLoweringDurationMs(vehicle)
+	CpUtil.debugFormat(DBG_IMPLEMENTS, 'Lowering duration: %d ms', loweringDurationMs)
+
+	-- check all implements first
+	local implements = vehicle:getAttachedImplements()
+	for _, implement in ipairs(implements) do
+		local implementLoweringDurationMs = getLoweringDurationMs(implement.object)
+		CpUtil.debugFormat(DBG_IMPLEMENTS, 'Lowering duration (%s): %d ms', implement.object:getName(), implementLoweringDurationMs)
+		if implementLoweringDurationMs > loweringDurationMs then
+			loweringDurationMs = implementLoweringDurationMs
+		end
+		local jointDescIndex = implement.jointDescIndex
+		-- now check the attacher joints
+		if vehicle.spec_attacherJoints and jointDescIndex then
+			local ajs = vehicle.spec_attacherJoints:getAttacherJoints()
+			local ajLoweringDurationMs = ajs[jointDescIndex] and ajs[jointDescIndex].moveDefaultTime or 0
+			CpUtil.debugFormat(DBG_IMPLEMENTS, 'Lowering duration (%s attacher joint): %d ms', implement.object:getName(), ajLoweringDurationMs)
+			if ajLoweringDurationMs > loweringDurationMs then
+				loweringDurationMs = ajLoweringDurationMs
+			end
+		end
+	end
+	if not loweringDurationMs or loweringDurationMs <= 1 then
+		loweringDurationMs = 2000
+		CpUtil.debugFormat(DBG_IMPLEMENTS, 'No lowering duration found, setting to: %d ms', loweringDurationMs)
+	end
+	CpUtil.debugFormat(DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
+	return loweringDurationMs
 end

@@ -63,6 +63,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
+	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'saveAllFields', self )
 end
 
 ---@param saveGameNumber number
@@ -140,6 +141,10 @@ end
 
 function Courseplay:toggleDevHelper()
 	g_devHelper:toggle()
+end
+
+function Courseplay:saveAllFields()
+	FieldUtil.saveAllFields()
 end
 
 function Courseplay.info(...)

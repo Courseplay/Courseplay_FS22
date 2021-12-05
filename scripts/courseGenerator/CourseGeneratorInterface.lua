@@ -15,7 +15,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   numberOfHeadlands,
 										   startOnHeadland,
 										   headlandCornerType,
-										   centerMode
+										   centerMode,
+										   rowDirection
 )
 
 	CourseGenerator.debug('Generating course, width %.1f m, headlands %d', workWidth, numberOfHeadlands)
@@ -41,8 +42,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	-- Center settings
 	-----------------------------------------------------------------------------------------------------------------------
 	local centerSettings = {
-		useBestAngle = true and CourseGenerator.ROW_DIRECTION_AUTOMATIC,
-		useLongestEdgeAngle = false and CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
+		useBestAngle = rowDirection == CourseGenerator.ROW_DIRECTION_AUTOMATIC,
+		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
 		rowAngle = 0,
 		nRowsToSkip = 0,
 		mode = centerMode,

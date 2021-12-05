@@ -157,12 +157,14 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         DevHelper.restoreVehiclePosition(g_currentMission.controlledVehicle)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
         self:debug('Finding contour of current field')
-        g_fieldScanner:findContour(self.data.x, self.data.z)
+        local points = g_fieldScanner:findContour(self.data.x, self.data.z)
+        local fieldId = FieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
+        FieldUtil.saveField(fieldId, points)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
         self:debug('Generate course')
         local status, ok, course = CourseGeneratorInterface.generate(g_fieldScanner:findContour(self.data.x, self.data.z),
                 {x = self.data.x, z = self.data.z},
-                0, 6, 1, true)
+                0, 6, 6, 1, true)
         if ok then
             self.course = course
             local map = g_currentMission.inGameMenu.pageAI.ingameMap

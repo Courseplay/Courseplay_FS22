@@ -125,9 +125,11 @@ function WorkWidthUtil.getAIMarkers(object,logPrefix,suppressLog)
             end
             return nil, nil, nil
         else
+            if not suppressLog then WorkWidthUtil.debug(object,logPrefix,'AI markers from work area set') end
             return aiLeftMarker, aiRightMarker, aiBackMarker
         end
     else
+        if not suppressLog then WorkWidthUtil.debug(object,logPrefix,'AI markers set') end
         return aiLeftMarker, aiRightMarker, aiBackMarker
     end
 end

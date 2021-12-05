@@ -363,8 +363,9 @@ function PurePursuitController:findRelevantSegment()
 			self:debug('relevant waypoint: %d, crosstrack: %.1f', self.relevantWpNode.ix, self.crossTrackError)
 		end
 	end
+	-- TODO_22
 	if true or courseplay.debugChannels[courseplay.DBG_PPC] then
-		DebugUtil.drawDebugLine(px, py + 3, pz, 1, 1, 0, px, py + 1, pz, 1, 1, 0);
+		DebugUtil.drawDebugLine(px, py + 3, pz, px, py + 1, pz, 1, 1, 0);
 		DebugUtil.drawDebugNode(self.relevantWpNode.node, string.format('ix = %d\nrelevant\nnode', self.relevantWpNode.ix))
 		DebugUtil.drawDebugNode(self.projectedPosNode, 'projected\nvehicle\nposition')
 	end
@@ -477,7 +478,7 @@ function PurePursuitController:findGoalPoint()
 	
 	if true or courseplay.debugChannels[courseplay.DBG_PPC] then
 		local gx, gy, gz = localToWorld(self.goalWpNode.node, 0, 0, 0)
-		DebugUtil.drawDebugLine(gx, gy + 3, gz, 0, 1, 0, gx, gy + 1, gz, 0, 1, 0);
+		DebugUtil.drawDebugLine(gx, gy + 3, gz, gx, gy + 1, gz, 0, 1, 0);
 		DebugUtil.drawDebugNode(self.currentWpNode.node, string.format('ix = %d\ncurrent\nwaypoint', self.currentWpNode.ix))
 	end
 end
@@ -516,6 +517,7 @@ end
 
 function PurePursuitController:showGoalpointDiag(case, ...)
 	local diagText = string.format(...)
+	-- TODO_22
 	if true or courseplay.debugChannels[courseplay.DBG_PPC] then
 		DebugUtil.drawDebugNode(self.goalWpNode.node, diagText)
 		DebugUtil.drawDebugNode(self.controlledNode, 'controlled')

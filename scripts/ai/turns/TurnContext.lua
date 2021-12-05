@@ -452,24 +452,22 @@ end
 function TurnContext:getDistanceToFieldEdge(node)
     for d = 0, 100, 1 do
         local x, _, z = localToWorld(node, 0, 0, d)
-        local isField, area, totalArea = courseplay:isField(x, z, 1, 1)
+        local isField = FieldUtil.isOnField(x, z)
         if d == 0 and not isField then
             self:debug('Vehicle not on field, search backwards')
             for db = 0, 50, 1 do
                 x, _, z = localToWorld(node, 0, 0, -db)
-                isField, area, totalArea = courseplay:isField(x, z, 1, 1)
-                local fieldRatio = area / totalArea
-                if isField or fieldRatio > 0.5 then
-                    self:debug('Field edge is at %d m (behind us), ratio %.2f', -db, fieldRatio)
+                isField = FieldUtil.isOnField(x, z)
+                if isField then
+                    self:debug('Field edge is at %d m (behind us)', -db)
                     return -db
                 end
             end
             self:debug('Field edge not found (vehicle not on field)')
             return nil
         end
-        local fieldRatio = area / totalArea
-        if not isField or fieldRatio < 0.5 then
-            self:debug('Field edge is at %d m (in front of us), ratio %.2f', d, fieldRatio)
+        if not isField then
+            self:debug('Field edge is at %d m (in front of us)', d)
             return d
         end
     end
@@ -523,28 +521,28 @@ function TurnContext:drawDebug()
         if self.workStartNode then
             cx, cy, cz = localToWorld(self.workStartNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.workStartNode, self.workWidth / 2, 0, 0)
-            DebugUtil.drawLine(cx, cy + height, cz, 0, 1, 0, nx, ny + height, nz)
+            DebugUtil.drawDebugLine(cx, cy + height, cz, nx, ny + height, nz, 0, 1, 0)
             DebugUtil.drawDebugNode(self.workStartNode, 'work start')
         end
         if self.lateWorkStartNode then
             cx, cy, cz = localToWorld(self.lateWorkStartNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.lateWorkStartNode, self.workWidth / 2, 0, 0)
-			DebugUtil.drawLine(cx, cy + height, cz, 0, 0.5, 0, nx, ny + height, nz)
+			DebugUtil.drawDebugLine(cx, cy + height, cz, nx, ny + height, nz, 0, 0.5, 0)
         end
         if self.workEndNode then
             cx, cy, cz = localToWorld(self.workEndNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.workEndNode, self.workWidth / 2, 0, 0)
-			DebugUtil.drawLine(cx, cy + height, cz, 1, 0, 0, nx, ny + height, nz)
+			DebugUtil.drawDebugLine(cx, cy + height, cz, nx, ny + height, nz, 1, 0, 0)
             DebugUtil.drawDebugNode(self.workEndNode, 'work end')
         end
         if self.lateWorkEndNode then
             cx, cy, cz = localToWorld(self.lateWorkEndNode, -self.workWidth / 2, 0, 0)
             nx, ny, nz = localToWorld(self.lateWorkEndNode, self.workWidth / 2, 0, 0)
-			DebugUtil.drawLine(cx, cy + height, cz, 0.5, 0, 0, nx, ny + height, nz)
+			DebugUtil.drawDebugLine(cx, cy + height, cz, nx, ny + height, nz, 0.5, 0, 0)
         end
         if self.vehicleAtTurnEndNode then
             cx, cy, cz = localToWorld(self.vehicleAtTurnEndNode, 0, 0, 0)
-			DebugUtil.drawLine(cx, cy, cz, 1, 1, 0, cx, cy + 2, cz)
+			DebugUtil.drawDebugLine(cx, cy, cz, cx, cy + 2, cz, 1, 1, 0)
             DebugUtil.drawDebugNode(self.vehicleAtTurnEndNode, 'vehicle\nat turn end')
         end
         if self.vehicleAtTurnStartNode then

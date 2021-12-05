@@ -111,19 +111,19 @@ function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectSt
 				self[key]:setValue(lastJob[key]:getValue())
 			end
 		end
-	else
-		self.workWidthParameter:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 	end
+	-- for now, always take the auto work width
+	self.workWidthParameter:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end
 
---- Called when parameters change, for now, scan field and generate a default course
+--- Called when parameters change, scan field
 function AIJobFieldWorkCp:validate(farmId)
 	local isValid, errorMessage = AIJobFieldWork:superClass().validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
 
-	-- everything else is valid, now find the field and generate a course
+	-- everything else is valid, now find the field
 	local tx, tz = self.positionAngleParameter:getPosition()
 	if tx == self.lastPositionX and tz == self.lastPositionZ then
 		CpUtil.debugFormat(1, 'Position did not change, do not generate course again')
@@ -169,7 +169,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			self.numberOfHeadlandsParameter:getValue(),
 			self.startOnHeadlandParameter:getValue(),
 			self.headlandCornerTypeParameter:getValue(),
-			self.centerModeParameter:getValue()
+			self.centerModeParameter:getValue(),
+			self.rowDirectionParameter:getValue()
 	)
 	if not ok then
 		return false, 'could not generate course'

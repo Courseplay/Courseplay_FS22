@@ -38,7 +38,11 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/field/FieldUtil.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
+		<sourceFile filename="scripts/ai/CpMathUtil.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
+		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
+		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
+		<sourceFile filename="scripts/ai/turns/TurnManeuver.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
