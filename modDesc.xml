@@ -29,7 +29,10 @@ Die nächste Version von Courseplay.]]>
     <multiplayer supported="true" />
 	
 	<extraSourceFiles>
-        <sourceFile filename="Courseplay.lua"/>
+		<sourceFile filename="scripts/CpObject.lua"/>
+		<sourceFile filename="Courseplay.lua"/>
+		<sourceFile filename="scripts/CpUtil.lua"/>
+		<sourceFile filename="scripts/debug/CpDebug.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/field/FieldUtil.lua"/>
@@ -59,34 +62,33 @@ Die nächste Version von Courseplay.]]>
 	<specializations>
         <specialization name="courseplaySpec"                   className="CourseplaySpec"                   filename="scripts/specializations/CourseplaySpec.lua" />
     </specializations>
-	<!--
+
 	<inputBinding>
-		<actionBinding action="CLICK_TO_SWITCH_TOGGLE_MOUSE">
-			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_RIGHT" />
+		<actionBinding action="CP_DBG_CHANNEL_SELECT_PREVIOUS">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_1" />
 		</actionBinding>
-		<actionBinding action="CLICK_TO_SWITCH_TOGGLE_MOUSE_ALTERNATIVE">
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_c" />
+		<actionBinding action="CP_DBG_CHANNEL_SELECT_NEXT">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_3" />
 		</actionBinding>
-		<actionBinding action="CLICK_TO_SWITCH_CHANGES_ASSIGNMENTS">
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_y" />
+		<actionBinding action="CP_DBG_CHANNEL_TOGGLE_CURRENT">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_2" />
 		</actionBinding>
-        <actionBinding action="CLICK_TO_SWITCH_ENTER_VEHICLE">
-			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_LEFT" />
-		</actionBinding>	
+		<actionBinding action="CP_DBG_CHANNEL_MENU_VISIBILITY">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_4" />
+		</actionBinding>
     </inputBinding>	
 
 	<actions>
-		<action name="CLICK_TO_SWITCH_TOGGLE_MOUSE" />
-		<action name="CLICK_TO_SWITCH_TOGGLE_MOUSE_ALTERNATIVE" />
-		<action name="CLICK_TO_SWITCH_CHANGES_ASSIGNMENTS" />
-        <action name="CLICK_TO_SWITCH_ENTER_VEHICLE" />
+		<action name="CP_DBG_CHANNEL_SELECT_PREVIOUS" />
+		<action name="CP_DBG_CHANNEL_SELECT_NEXT" />
+		<action name="CP_DBG_CHANNEL_TOGGLE_CURRENT" />
+		<action name="CP_DBG_CHANNEL_MENU_VISIBILITY" />
 	</actions>
 
 	<l10n>	
-		<text name="input_CLICK_TO_SWITCH_TOGGLE_MOUSE"><de>CTS: Mauszeiger an/aus</de><en>CTS: Mouse cursor on/off</en></text>	
-        <text name="input_CLICK_TO_SWITCH_TOGGLE_MOUSE_ALTERNATIVE"><de>CTS: Mauszeiger an/aus</de><en>CTS: Mouse cursor on/off</en></text>
-		<text name="input_CLICK_TO_SWITCH_CHANGES_ASSIGNMENTS"><de>CTS: Ändert die Belegung</de><en>CTS: Changes assignments</en></text>
-		<text name="input_CLICK_TO_SWITCH_ENTER_VEHICLE"><de>CTS: In Fahrzeug einsteigen</de><en>CTS: Try to enter vehicle</en></text>
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS"><de>CP: Nächster Debug channel auswählen.</de><en>CP: Select next debug channel.</en></text>	
+        <text name="input_CP_DBG_CHANNEL_SELECT_NEXT"><de>CP: Vorheriger Debug channel auswählen.</de><en>CP: Select previous debug channel.</en></text>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"><de>CP: Aktuellen Debug channel ändern.</de><en>CP: Change current debug channel.</en></text>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY"><de>CP: Zeigt debug channels menu ja/nein.</de><en>CP: Shows debug channel menu yes/no.</en></text>
 	</l10n>
-	-->
 </modDesc>

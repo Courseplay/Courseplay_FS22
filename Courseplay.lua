@@ -1,13 +1,9 @@
 
-
-source(g_currentModDirectory.. "scripts/CpObject.lua")
-
 --- Global class
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
 
-source(Courseplay.BASE_DIRECTORY .. "scripts/CpUtil.lua")
 
 function Courseplay:init()
 	self:registerConsoleCommands()
@@ -24,11 +20,12 @@ function Courseplay:loadMap(filename)
 end
 
 function Courseplay:update(dt)
-	
+	g_devHelper:update()
 end
 
 function Courseplay:draw()
-	
+	g_devHelper:draw()
+	CpDebug:draw()
 end
 
 ---@param posX number
@@ -45,9 +42,8 @@ end
 ---@param modifier number
 ---@param isDown boolean
 function Courseplay:keyEvent(unicode, sym, modifier, isDown)
-
+	g_devHelper:keyEvent(unicode, sym, modifier, isDown)
 end
-
 
 function Courseplay:load()
 	--self.savegameFolderPath = ('%ssavegame%d'):format(getUserProfileAppPath(), g_careerScreen.selectedIndex); -- This should work for both SP, MP and Dedicated Servers
@@ -174,18 +170,6 @@ function Courseplay.register(typeManager)
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
-
-function Courseplay:update(dt)
-	g_devHelper:update()
-end
-
-function Courseplay:draw()
-	g_devHelper:draw()
-end
-
-function Courseplay:keyEvent(unicode, sym, modifier, isDown)
-	g_devHelper:keyEvent(unicode, sym, modifier, isDown)
-end;
 
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)
