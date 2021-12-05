@@ -112,8 +112,7 @@ end
 -- CpUtil.debugVehicle( CpUtil.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
 function CpUtil.debugFormat(channel, ...)
-	-- TODO: enable debug channel configuration
-	if true or CpUtil.debugChannels and channel ~= nil and CpUtil.debugChannels[channel] ~= nil and CpUtil.debugChannels[channel] == true then
+	if CpDebug and CpDebug:isChannelActive(channel) then
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
@@ -134,8 +133,7 @@ end
 -- CpUtil.debugVehicle( CpUtil.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
 function CpUtil.debugVehicle(channel, vehicle, ...)
-	-- TODO: enable debug channel configuration
-	if true or CpUtil.debugChannels and channel ~= nil and CpUtil.debugChannels[channel] ~= nil and CpUtil.debugChannels[channel] == true then
+	if CpDebug and CpDebug:isChannelActive(channel) then
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
