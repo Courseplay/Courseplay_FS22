@@ -103,7 +103,7 @@ function PurePursuitController:delete()
 end
 
 function PurePursuitController:debug(...)
-	CpUtil.debugVehicle(1, self.vehicle, 'PPC: ' .. string.format( ... ))
+	CpUtil.debugVehicle(CpDebug.DBG_PPC, self.vehicle, 'PPC: ' .. string.format( ... ))
 end
 
 function PurePursuitController:debugSparse(...)

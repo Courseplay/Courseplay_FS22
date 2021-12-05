@@ -32,6 +32,7 @@ function AIDriveStrategyCourse.new(customMt)
         customMt = AIDriveStrategyCourse_mt
     end
     local self = AIDriveStrategy.new(customMt)
+    self.debugChannel = CpDebug.DBG_AI_DRIVER
     self:initStates(AIDriveStrategyCourse.myStates)
     return self
 end

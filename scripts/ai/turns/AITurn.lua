@@ -42,7 +42,7 @@ of implements when needed. From this point on, control is passed back to the AID
 
 ---@class AITurn
 AITurn = CpObject()
-AITurn.debugChannel = 12
+AITurn.debugChannel = CpDebug.DBG_TURN
 
 ---@field ppc PurePursuitController
 ---@field turnContext TurnContext
@@ -543,7 +543,7 @@ function CourseTurn:changeDirectionWhenAligned()
 			local nextDirectionChangeIx = self.turnCourse:getNextDirectionChangeFromIx(self.turnCourse:getCurrentWaypointIx())
 			if nextDirectionChangeIx then
 				self:debug('skipping to next direction change at %d', nextDirectionChangeIx + 1)
-				self.driveStrategy:resumeAt(nextDirectionChangeIx + 1)
+				self.ppc:initialize(nextDirectionChangeIx + 1)
 			end
 		end
 	end

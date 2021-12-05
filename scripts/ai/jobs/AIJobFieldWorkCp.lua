@@ -126,7 +126,7 @@ function AIJobFieldWorkCp:validate(farmId)
 	-- everything else is valid, now find the field
 	local tx, tz = self.positionAngleParameter:getPosition()
 	if tx == self.lastPositionX and tz == self.lastPositionZ then
-		CpUtil.debugFormat(1, 'Position did not change, do not generate course again')
+		CpUtil.debugFormat(CpDebug.DBG_HUD, 'Position did not change, do not generate course again')
 		return isValid, errorMessage
 	else
 		self.lastPositionX, self.lastPositionZ = tx, tz

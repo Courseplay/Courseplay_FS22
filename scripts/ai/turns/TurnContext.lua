@@ -51,7 +51,7 @@ TurnContext = CpObject()
 --- much bigger than the turning diameter so the implement's tip on the turn inside is ahead of the vehicle.
 function TurnContext:init(course, turnStartIx, turnNodes, workWidth,
                           frontMarkerDistance, backMarkerDistance, turnEndSideOffset, turnEndForwardOffset)
-    self.debugChannel = 14
+    self.debugChannel = CpDebug.DBG_TURN
     self.workWidth = workWidth
 
     --- Setting up turn waypoints
@@ -359,7 +359,7 @@ end
 function TurnContext:createCorner(vehicle, r, sideOffset)
     -- use the average angle of the turn end and the next wp as there is often a bend there
     local endAngleDeg = self:getAverageEndAngleDeg()
-    CpUtil.debugVehicle(DBG_TURN, vehicle, 'start angle: %.1f, end angle: %.1f (from %.1f and %.1f)', self.beforeTurnStartWp.angle,
+    CpUtil.debugVehicle(CpDebug.DBG_TURN, vehicle, 'start angle: %.1f, end angle: %.1f (from %.1f and %.1f)', self.beforeTurnStartWp.angle,
             endAngleDeg, self.turnEndWp.angle, self.afterTurnEndWp.angle)
     return Corner(vehicle, self.beforeTurnStartWp.angle, self.turnStartWp, endAngleDeg, self.turnEndWp, r,
             sideOffset)

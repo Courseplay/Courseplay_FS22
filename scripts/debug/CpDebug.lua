@@ -54,7 +54,12 @@ end
 ---@param ix number
 ---@return boolean
 function CpDebug:isChannelActive(ix)
-	return self.channels[ix].active	
+	if self.channels[ix] then
+		return self.channels[ix].active
+	else
+		CpUtil.info('Error: debug channel %s not found!', tostring(ix))
+		printCallstack()
+	end
 end
 
 ---Sets the next select channel.

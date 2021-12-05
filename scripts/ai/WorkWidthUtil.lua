@@ -225,5 +225,5 @@ end
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.debug(object,logPrefix,str,...)
-    CpUtil.debugFormat(1,'%s%s: '..str, logPrefix or "", CpUtil.getName(object), ...)
+    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: '..str, logPrefix or "", CpUtil.getName(object), ...)
 end

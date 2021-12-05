@@ -109,7 +109,7 @@ function CpUtil.getVariable(variableName)
 end
 
 -- convenience debug function that expects string.format() arguments,
--- CpUtil.debugVehicle( CpUtil.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
+-- CpUtil.debugVehicle( CpDebug.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
 function CpUtil.debugFormat(channel, ...)
 	if CpDebug and CpDebug:isChannelActive(channel) then
@@ -130,7 +130,7 @@ function CpUtil.getName(object)
 end
 
 -- convenience debug function to show the vehicle name and expects string.format() arguments, 
--- CpUtil.debugVehicle( CpUtil.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
+-- CpUtil.debugVehicle( CpDebug.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
 function CpUtil.debugVehicle(channel, vehicle, ...)
 	if CpDebug and CpDebug:isChannelActive(channel) then

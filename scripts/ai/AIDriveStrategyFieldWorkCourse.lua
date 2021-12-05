@@ -211,6 +211,26 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
     end
 end
 
+
+--- Are all implements now aligned with the node? Can be used to find out if we are for instance aligned with the
+--- turn end node direction in a question mark turn and can start reversing.
+function AIDriveStrategyFieldWorkCourse:areAllImplementsAligned(node)
+    -- see if the vehicle has AI markers -> has work areas (built-in implements like a mower or cotton harvester)
+    local allAligned = self:isThisImplementAligned(self.vehicle, node)
+    -- and then check all implements
+    for _, implement in ipairs(AIUtil.getAllAIImplements(self.vehicle)) do
+        -- _all_ implements must be aligned, hence the 'and'
+        allAligned = allAligned and self:isThisImplementAligned(implement.object, node)
+    end
+    return allAligned
+end
+
+function AIDriveStrategyFieldWorkCourse:isThisImplementAligned(object, node)
+    local aiFrontMarker, _, _ = WorkWidthUtil.getAIMarkers(object, nil, true)
+    if not aiFrontMarker then return true end
+    return TurnContext.isSameDirection(aiFrontMarker, node, 2)
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
@@ -341,7 +361,7 @@ function AIDriveStrategyFieldWorkCourse:updateAIFieldWorkerDriveStrategies()
     -- our own specialization
     for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do
         if strategy.getDriveStraightData then
-            CpUtil.debugVehicle(1, self, 'Replacing fieldwork helper drive strategy with Courseplay drive strategy')
+            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with Courseplay drive strategy')
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             self.spec_aiFieldWorker.driveStrategies[i] = driveStrategyFollowFieldWorkCourse
         end

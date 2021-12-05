@@ -178,7 +178,7 @@ end
 function WaypointNode:setToWaypoint(course, ix, suppressLog)
 	local newIx = math.min(ix, course:getNumberOfWaypoints())
 	if newIx ~= self.ix and self.logChanges and not suppressLog then
-		CpUtil.debugVehicle(CpUtil.DBG_PPC, course.vehicle, 'PPC: %s waypoint index %d', getName(self.node), ix)
+		CpUtil.debugVehicle(CpDebug.DBG_PPC, course.vehicle, 'PPC: %s waypoint index %d', getName(self.node), ix)
 	end
 	self.ix = newIx
 	local x, y, z = course:getWaypointPosition(self.ix)
@@ -198,7 +198,7 @@ function WaypointNode:setToWaypointOrBeyond(course, ix, distance)
 		local nx, ny, nz = localToWorld(self.node, 0, 0, distance)
 		setTranslation(self.node, nx, ny, nz)
 		if self.logChanges and self.mode and self.mode ~= WaypointNode.MODE_LAST_WP then
-			CpUtil.debugVehicle(CpUtil.DBG_PPC, course.vehicle, 'PPC: last waypoint reached, moving node beyond last: %s', getName(self.node))
+			CpUtil.debugVehicle(CpDebug.DBG_PPC, course.vehicle, 'PPC: last waypoint reached, moving node beyond last: %s', getName(self.node))
 		end
 		
 		self.mode = WaypointNode.MODE_LAST_WP
@@ -214,7 +214,7 @@ function WaypointNode:setToWaypointOrBeyond(course, ix, distance)
 		local nx, ny, nz = localToWorld(self.node, 0, 0, distance)
 		setTranslation(self.node, nx, ny, nz)
 		if self.logChanges and self.mode and self.mode ~= WaypointNode.MODE_SWITCH_DIRECTION then
-			CpUtil.debugVehicle(CpUtil.DBG_PPC, course.vehicle, 'PPC: switching direction at %d, moving node beyond it: %s', ix, getName(self.node))
+			CpUtil.debugVehicle(CpDebug.DBG_PPC, course.vehicle, 'PPC: switching direction at %d, moving node beyond it: %s', ix, getName(self.node))
 		end
 		self.mode = WaypointNode.MODE_SWITCH_DIRECTION
 	elseif course:mustReach(ix) then
@@ -226,12 +226,12 @@ function WaypointNode:setToWaypointOrBeyond(course, ix, distance)
 		local nx, ny, nz = localToWorld(self.node, 0, 0, distance)
 		setTranslation(self.node, nx, ny, nz)
 		if self.logChanges and self.mode and self.mode ~= WaypointNode.MODE_MUST_REACH then
-			CpUtil.debugVehicle(CpUtil.DBG_PPC, course.vehicle, 'PPC: must reach next waypoint, moving node beyond it: %s', getName(self.node))
+			CpUtil.debugVehicle(CpDebug.DBG_PPC, course.vehicle, 'PPC: must reach next waypoint, moving node beyond it: %s', getName(self.node))
 		end
 		self.mode = WaypointNode.MODE_MUST_REACH
 	else
 		if self.logChanges and self.mode and self.mode ~= WaypointNode.MODE_NORMAL then
-			CpUtil.debugVehicle(CpUtil.DBG_PPC, course.vehicle, 'PPC: normal waypoint (not last, no direction change: %s', getName(self.node))
+			CpUtil.debugVehicle(CpDebug.DBG_PPC, course.vehicle, 'PPC: normal waypoint (not last, no direction change: %s', getName(self.node))
 		end
 		self.mode = WaypointNode.MODE_NORMAL
 		self:setToWaypoint(course, ix)
@@ -438,7 +438,7 @@ function Course:enrichWaypointData()
 			turnFound = true
 		end
 	end
-	CpUtil.debugVehicle(CpUtil.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
 end
 
 function Course:calculateRadius(ix)
@@ -998,7 +998,7 @@ function Course:getNextFwdWaypointIx(ix)
 			return i
 		end
 	end
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
 	return ix
 end
 
@@ -1012,7 +1012,7 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, lookAhe
 			end
 		end
 	end
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
 	return ix
 end
 
@@ -1026,7 +1026,7 @@ function Course:getNextRevWaypointIxFromVehiclePosition(ix, vehicleNode, lookAhe
 			end
 		end
 	end
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
 	return ix
 end
 
@@ -1296,7 +1296,7 @@ function Course:addReverseForAutoDriveCourse()
 		local deltaAngleDeg = math.abs(math.deg(getDeltaAngle(self.waypoints[i].yRot, self.waypoints[i - 1].yRot)))
 		if deltaAngleDeg >= 100 then
 			reverse = not reverse
-			CpUtil.debugFormat(CpUtil.DBG_COURSES,
+			CpUtil.debugFormat(CpDebug.DBG_COURSES,
 				'Adding reverse for AutoDrive: direction change at %d (delta angle %.1f, reverse is now %s',
 				i, deltaAngleDeg, tostring(reverse))
 		end
@@ -1489,7 +1489,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 		origHeadlandsCourse, ix = self:getNextHeadlandSection(currentLaneNumber, ix)
 		if origHeadlandsCourse:getNumberOfWaypoints() > 0 then
 			if origHeadlandsCourse:getNumberOfWaypoints() > 2 then
-				CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Headland section to %d', ix)
+				CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Headland section to %d', ix)
 				CourseGenerator.pointsToXyInPlace(origHeadlandsCourse.waypoints)
 				local origHeadlands = Polyline:new(origHeadlandsCourse.waypoints)
 				origHeadlands:calculateData()
@@ -1505,36 +1505,36 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 					offsetHeadlands:calculateData()
 					self:markAsHeadland(offsetHeadlands, currentLaneNumber)
 					if origHeadlandsCourse:isTurnStartAtIx(origHeadlandsCourse:getNumberOfWaypoints()) then
-						CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
+						CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
 						offsetHeadlands[#offsetHeadlands].turnStart = true
 					end
 					addTurnsToCorners(offsetHeadlands, math.rad(60), true)
 					CourseGenerator.pointsToXzInPlace(offsetHeadlands)
 					offsetCourse:appendWaypoints(offsetHeadlands)
-					CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Headland done %d', ix)
+					CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Headland done %d', ix)
 				end
 			else
-				CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Short headland section to %d', ix)
+				CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Short headland section to %d', ix)
 				origHeadlandsCourse:offsetUpDownRows(offset, 0)
 				offsetCourse:append(origHeadlandsCourse)
 			end
 		else
 			local upDownCourse
-			CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Get next non-headland %d', ix)
+			CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Get next non-headland %d', ix)
 			upDownCourse, ix = self:getNextNonHeadlandSection(ix)
 			if upDownCourse:getNumberOfWaypoints() > 0 then
-				CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Up/down section to %d', ix)
+				CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Up/down section to %d', ix)
 				upDownCourse:offsetUpDownRows(offset, 0, useSameTurnWidth)
 				offsetCourse:append(upDownCourse)
 			end
 		end
 	end
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Original headland length %.0f m, new headland length %.0f m (%.1f %%, %.1f m)',
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Original headland length %.0f m, new headland length %.0f m (%.1f %%, %.1f m)',
 			self.headlandLength, offsetCourse.headlandLength, 100 * offsetCourse.headlandLength / self.headlandLength,
 			offsetCourse.headlandLength - self.headlandLength)
 	local originalNonHeadlandLength = self.length - self.headlandLength
 	local offsetNonHeadlandLength = offsetCourse.length - offsetCourse.headlandLength
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Original non-headland length %.0f m, new non-headland length %.0f m (%.1f %%, %.1f m)',
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Original non-headland length %.0f m, new non-headland length %.0f m (%.1f %%, %.1f m)',
 			originalNonHeadlandLength, offsetNonHeadlandLength,
 			100 * offsetNonHeadlandLength / originalNonHeadlandLength,
 			offsetNonHeadlandLength - originalNonHeadlandLength)
@@ -1701,14 +1701,14 @@ end
 function Course:addWaypointsForRows()
 	local waypoints = self:initWaypoints()
 
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Course: adding waypoints for rows')
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: adding waypoints for rows')
 
 	for i = 1, #self.waypoints - 1 do
 		table.insert(waypoints, Waypoint(self.waypoints[i]))
 		local p = self.waypoints[i]
 		if self:isTurnEndAtIx(i) and self:isTurnStartAtIx(i + 1) and
 			p.dToNext > CourseGenerator.waypointDistance + 0.1 then
-			CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Course: adding waypoints for row, length %.1f', p.dToNext)
+			CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: adding waypoints for row, length %.1f', p.dToNext)
 			for n = 1, (p.dToNext / CourseGenerator.waypointDistance) - 1 do
 				local newWp = Waypoint(p)
 				newWp.turnEnd = nil
@@ -1720,7 +1720,7 @@ function Course:addWaypointsForRows()
 	end
 	table.insert(waypoints, Waypoint(self.waypoints[#self.waypoints]))
 	self.waypoints = waypoints
-	CpUtil.debugFormat(CpUtil.DBG_COURSES, 'Course: has now %d waypoints', #self.waypoints)
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: has now %d waypoints', #self.waypoints)
 	self:enrichWaypointData()
 end
 
@@ -1825,7 +1825,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
 
-	CpUtil.debugVehicle(CpUtil.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
 
@@ -1841,7 +1841,7 @@ function Course.createFromStream(streamId, connection)
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
 
-	CpUtil.debugVehicle(CpUtil.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
 

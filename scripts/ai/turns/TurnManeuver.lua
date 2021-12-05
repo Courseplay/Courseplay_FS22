@@ -28,7 +28,7 @@ function TurnManeuver:getWaypoints()
 end
 
 function TurnManeuver:debug(...)
-	CpUtil.debugVehicle(DBG_TURN, self.vehicle, ...)
+	CpUtil.debugVehicle(CpDebug.DBG_TURN, self.vehicle, ...)
 end
 
 function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnEnd,
@@ -205,7 +205,7 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	local dx, dy, dz = worldToLocal( helperNode, toPoint.x, toPoint.y, toPoint.z )
 	-- at which waypoint we have to raise the implement
 	if dz > 0 then
-		self:debug("(Turn) TurnGenerator.generateTurnTypeHeadlandCornerReverseStraightTractor(), now driving forward so implement reaches headland")
+		self:debug("(Turn) HeadlandCornerTurnManeuver, now driving forward so implement reaches headland")
 		self:generateStraightSection(fromPoint, toPoint, false )
 		setTranslation(helperNode, dx, dy, dz)
 	end
@@ -220,7 +220,7 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	-- helper node is where we would be at this point of the turn, so check if next target is behind or in front of us
 	_, _, dz = worldToLocal( helperNode, toPoint.x, toPoint.y, toPoint.z )
 	CpUtil.destroyNode(helperNode)
-	self:debug("(Turn) TurnGenerator.generateTurnTypeHeadlandCornerReverseStraightTractor(), from ( %.2f %.2f ), to ( %.2f %.2f) workWidth: %.1f, dz = %.1f",
+	self:debug("(Turn) HeadlandCornerTurnManeuver, from ( %.2f %.2f ), to ( %.2f %.2f) workWidth: %.1f, dz = %.1f",
 		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z, self.workWidth, dz )
 	self:generateStraightSection( fromPoint, toPoint, dz < 0)
 
@@ -233,9 +233,9 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	-- and we can start reversing more or less straight.
 	fromPoint = corner:getPointAtDistanceFromArcEnd((self.directionNodeToTurnNodeLength + self.wpChangeDistance + buffer) * 0.2)
 	toPoint = corner:getPointAtDistanceFromArcEnd(self.directionNodeToTurnNodeLength + self.wpChangeDistance + buffer)
-	self:debug("(Turn) TurnGenerator.generateTurnTypeHeadlandCornerReverseStraightTractor(), from ( %.2f %.2f ), to ( %.2f %.2f)",
+	self:debug("(Turn) HeadlandCornerTurnManeuver, from ( %.2f %.2f ), to ( %.2f %.2f)",
 		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z)
-	self:generateStraightSection(fromPoint, toPoint, false, false )
+	self:generateStraightSection(fromPoint, toPoint, false, false, 0, true)
 
 	-- now back up the implement to the edge of the field (or headland)
 	fromPoint = corner:getArcEnd()

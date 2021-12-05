@@ -99,7 +99,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCal
 
 	-- smooth the offset a bit to avoid sudden changes
 	tightTurnOffset = smoothOffset(offset)
-	CpUtil.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle,
+	CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle,
 		'Tight turn, r = %.1f, tow bar = %.1f m, currentAngle = %.0f, nextAngle = %.0f, offset = %.1f, smoothOffset = %.1f',
 		r, towBarLength, currentAngle, nextAngle, offset, tightTurnOffset )
 	-- remember the last value for smoothing
@@ -110,7 +110,7 @@ function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
 	local workTool = courseplay:getFirstReversingWheeledWorkTool(vehicle)
 	if not workTool or not workTool.cp.realTurningNode then
-		CpUtil.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
+		CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
 		-- default is not 0 as this is used to calculate trailer heading and 0 here may result in NaNs
 		return 3
 	end
@@ -119,7 +119,7 @@ function AIUtil.getTowBarLength(vehicle)
 	local tractorX, _, tractorZ = getWorldTranslation(AIUtil.getDirectionNode(vehicle))
 	local toolX, _, toolZ = getWorldTranslation( workTool.cp.realTurningNode )
 	local towBarLength = courseplay:distance( tractorX, tractorZ, toolX, toolZ )
-	CpUtil.debugVehicle(courseplay.DBG_AI_DRIVER, vehicle, 'tow bar length is %.1f.', towBarLength)
+	CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'tow bar length is %.1f.', towBarLength)
 	return towBarLength
 end
 
@@ -165,24 +165,24 @@ end
 
 -- Get the turning radius of the vehicle and its implements (copied from AIDriveStrategyStraight.updateTurnData())
 function AIUtil.getTurningRadius(vehicle)
-	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, 'Finding turn radius:')
+	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Finding turn radius:')
 
 	local radius = vehicle.maxTurningRadius or 6
-	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  turnRadius set to %.1f', radius)
+	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set to %.1f', radius)
 
 	if g_vehicleConfigurations:get(vehicle, 'turnRadius') then
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
-		CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
 	end
 	
 	--local turnDiameterSetting = vehicle.cp.settings.turnDiameter
 	--if not turnDiameterSetting:isAutomaticActive() then
 	--	radius = turnDiameterSetting:get() / 2
-	--	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  turnRadius manually set to %.1f', radius)
+	--	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius manually set to %.1f', radius)
 	--end
 
 	if vehicle:getAIMinTurningRadius() ~= nil then
-		CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
 		radius = math.max(radius, vehicle:getAIMinTurningRadius())
 	end
 
@@ -192,27 +192,27 @@ function AIUtil.getTurningRadius(vehicle)
 		local turnRadius = 0
 		if g_vehicleConfigurations:get(implement.object, 'turnRadius') then
 			turnRadius = g_vehicleConfigurations:get(implement.object, 'turnRadius')
-			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
+			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
 				implement.object:getName(), turnRadius)
 		elseif SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
 			-- only call this for AIImplements, others may throw an error as the Giants code assumes AIImplement
 			turnRadius = AIVehicleUtil.getMaxToolRadius(implement)
 			if turnRadius > 0 then
-				CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
 					implement.object:getName(), turnRadius)
 			end
 		end
 		if turnRadius == 0 then
 			-- TODO
 			--turnRadius = courseplay:getToolTurnRadius(implement.object)
-			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, we assume %.1f',
+			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, we assume %.1f',
 				implement.object:getName(), turnRadius)
 		end
 		maxToolRadius = math.max(maxToolRadius, turnRadius)
-		CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)
 	end
 	radius = math.max(radius, maxToolRadius)
-	CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
+	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
 	return radius
 end
 
@@ -273,7 +273,7 @@ function AIUtil.getFirstAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the front of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				implement.object.sizeLength / 2 + implement.object.lengthOffset)
-			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
+			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
 			if d > maxDistance then
 				maxDistance = d
 				firstImplement = implement.object
@@ -294,7 +294,7 @@ function AIUtil.getLastAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the back of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				- implement.object.sizeLength / 2 + implement.object.lengthOffset)
-			CpUtil.debugVehicle(DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
 			if d < minDistance then
 				minDistance = d
 				lastImplement = implement.object
@@ -584,7 +584,7 @@ end
 function AIUtil.getShieldWorkWidth(object,logPrefix)
 	if object.spec_leveler then 
 		local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-		CpUtil.debugFormat(DBG_IMPLEMENTS,'%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
+		CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
 		return width
 	end
 end
@@ -601,13 +601,13 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	end
 
 	local loweringDurationMs = getLoweringDurationMs(vehicle)
-	CpUtil.debugFormat(DBG_IMPLEMENTS, 'Lowering duration: %d ms', loweringDurationMs)
+	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Lowering duration: %d ms', loweringDurationMs)
 
 	-- check all implements first
 	local implements = vehicle:getAttachedImplements()
 	for _, implement in ipairs(implements) do
 		local implementLoweringDurationMs = getLoweringDurationMs(implement.object)
-		CpUtil.debugFormat(DBG_IMPLEMENTS, 'Lowering duration (%s): %d ms', implement.object:getName(), implementLoweringDurationMs)
+		CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Lowering duration (%s): %d ms', implement.object:getName(), implementLoweringDurationMs)
 		if implementLoweringDurationMs > loweringDurationMs then
 			loweringDurationMs = implementLoweringDurationMs
 		end
@@ -616,7 +616,7 @@ function AIUtil.findLoweringDurationMs(vehicle)
 		if vehicle.spec_attacherJoints and jointDescIndex then
 			local ajs = vehicle.spec_attacherJoints:getAttacherJoints()
 			local ajLoweringDurationMs = ajs[jointDescIndex] and ajs[jointDescIndex].moveDefaultTime or 0
-			CpUtil.debugFormat(DBG_IMPLEMENTS, 'Lowering duration (%s attacher joint): %d ms', implement.object:getName(), ajLoweringDurationMs)
+			CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Lowering duration (%s attacher joint): %d ms', implement.object:getName(), ajLoweringDurationMs)
 			if ajLoweringDurationMs > loweringDurationMs then
 				loweringDurationMs = ajLoweringDurationMs
 			end
@@ -624,8 +624,8 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	end
 	if not loweringDurationMs or loweringDurationMs <= 1 then
 		loweringDurationMs = 2000
-		CpUtil.debugFormat(DBG_IMPLEMENTS, 'No lowering duration found, setting to: %d ms', loweringDurationMs)
+		CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'No lowering duration found, setting to: %d ms', loweringDurationMs)
 	end
-	CpUtil.debugFormat(DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
+	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
 	return loweringDurationMs
 end
