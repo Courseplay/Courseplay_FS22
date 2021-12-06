@@ -183,8 +183,8 @@ end
 ---@param offsX number
 ---@param offsZ number
 function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
-    local firstObject =  AIDriverUtil.getFirstAttachedImplement(vehicle)
-    local lastObject =  AIDriverUtil.getLastAttachedImplement(vehicle)
+    local firstObject =  AIUtil.getFirstAttachedImplement(vehicle)
+    local lastObject =  AIUtil.getLastAttachedImplement(vehicle)
 
     local function show(object,workWidth,offsX,offsZ)
         if object == nil then

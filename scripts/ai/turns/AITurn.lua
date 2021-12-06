@@ -522,7 +522,7 @@ function CourseTurn:onWaypointChange(ix)
 		if self.useTightTurnOffset or self.turnCourse:useTightTurnOffset(ix) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
-			--self.tightTurnOffset = AIDriverUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse, self.tightTurnOffset, true)
+			--self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse, self.tightTurnOffset, true)
 			--self.turnCourse:setOffset(self.tightTurnOffset, 0)
 		end
 	end
@@ -555,8 +555,10 @@ function CourseTurn:generateCalculatedTurn()
 		-- TODO_22
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 				self.turningRadius, self.workWidth, false, 2)
+	else
+		turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(), self.turningRadius)
 	end
-	self.turnCourse = Course(self.vehicle, turnManeuver:getWaypoints(), true)
+	self.turnCourse = turnManeuver:getCourse()
 end
 
 function CourseTurn:generatePathfinderTurn()
@@ -586,9 +588,9 @@ function CourseTurn:onPathfindingDone(path)
 		self:debug('Pathfinding finished with %d waypoints (%d ms)', #path, self.vehicle.timer - (self.pathfindingStartedAt or 0))
 		if self.reverseBeforeStartingTurnWaypoints and #self.reverseBeforeStartingTurnWaypoints > 0 then
 			self.turnCourse = Course(self.vehicle, self.reverseBeforeStartingTurnWaypoints, true)
-			self.turnCourse:appendWaypoints(courseGenerator.pointsToXzInPlace(path))
+			self.turnCourse:appendWaypoints(CourseGenerator.pointsToXzInPlace(path))
 		else
-			self.turnCourse = Course(self.vehicle, courseGenerator.pointsToXzInPlace(path), true)
+			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
 		self.turnCourse:setTurnEndForLastWaypoints(5)
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row

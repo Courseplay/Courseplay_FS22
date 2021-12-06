@@ -211,7 +211,6 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
     end
 end
 
-
 --- Are all implements now aligned with the node? Can be used to find out if we are for instance aligned with the
 --- turn end node direction in a question mark turn and can start reversing.
 function AIDriveStrategyFieldWorkCourse:areAllImplementsAligned(node)

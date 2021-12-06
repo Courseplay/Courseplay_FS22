@@ -24,7 +24,11 @@ function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRa
 end
 
 function TurnManeuver:getWaypoints()
-	return self.waypoints
+	return self.course:getWaypoints()
+end
+
+function TurnManeuver:getCourse()
+	return self.course
 end
 
 function TurnManeuver:debug(...)
@@ -176,6 +180,24 @@ function TurnManeuver:addWaypoint(x, z, turnEnd, reverse, dontPrint, changeDirec
 	end
 end
 
+---@class DubinsTurnManeuver : TurnManeuver
+DubinsTurnManeuver = CpObject(TurnManeuver)
+
+function DubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius)
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, 1, 0)
+	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.vehicle)
+	self:debug('(Turn): generate turn with Dubins path, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
+	local path = PathfinderUtil.findDubinsPath(vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+	self.course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+	self.course:setTurnEndForLastWaypoints(5)
+	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
+	self.course:setUseTightTurnOffsetForLastWaypoints(10)
+	self.turnContext:appendEndingTurnCourse(self.course)
+	-- and once again, if there is an ending course, keep adjusting the tight turn offset
+	-- TODO: should probably better done on onWaypointChange, to reset to 0
+	self.course:setUseTightTurnOffsetForLastWaypoints(10)
+end
+
 ---@class HeadlandCornerTurnManeuver : TurnManeuver
 HeadlandCornerTurnManeuver = CpObject(TurnManeuver)
 
@@ -251,4 +273,5 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 
 	-- lower the implement
 	self.waypoints[#self.waypoints].lowerImplement = true
+	self.course = Course(vehicle, self.waypoints, true)
 end

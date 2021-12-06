@@ -8,7 +8,7 @@
 	<!--AI parameters field work-->
 		<text name="CP_ai_param_workWidth_title"				text="Work width" />
 
-		<text name="CP_ai_param_numberOfHeadlands_title"		text="Number of Headlands" />
+		<text name="CP_ai_param_numberOfHeadlands_title"		text="Number of headlands" />
 
 		<text name="CP_ai_param_centerMode_title"				text="Field center" />
 		<text name="CP_ai_param_centerMode_up_down" 			text="Up/down" />

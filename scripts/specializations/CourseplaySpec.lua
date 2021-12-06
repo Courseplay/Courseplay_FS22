@@ -19,6 +19,7 @@ end
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CourseplaySpec.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CourseplaySpec.getFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
 --[[
     SpecializationUtil.registerFunction(vehicleType, "isCourseplaySpecMouseActive", CourseplaySpec.isCourseplaySpecMouseActive)
     SpecializationUtil.registerFunction(vehicleType, "onCourseplaySpecToggleMouse", CourseplaySpec.onCourseplaySpecToggleMouse)
@@ -91,7 +92,7 @@ end;
 ---@param self table vehicle
 function CourseplaySpec.updateActionEventState(self)
     --- Activate/deactivate the CourseplaySpec action event 
-    local spec = self.spec_CourseplaySpec
+    local spec = self.spec_courseplaySpec
 
     local actionEvent = spec.actionEvents[InputAction.CLICK_TO_SWITCH_ENTER_VEHICLE]
     g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:isCourseplaySpecMouseActive())
@@ -210,4 +211,14 @@ end
 ---@return Course
 function CourseplaySpec:getFieldWorkCourse()
     return self.course
+end
+
+function CourseplaySpec:getReverseDrivingDirectionNode()
+    local spec = self.spec_courseplaySpec
+    if not spec.reverseDrivingDirectionNode and SpecializationUtil.hasSpecialization(ReverseDriving, self.specializations) then
+        spec.reverseDrivingDirectionNode =
+            CpUtil.createNewLinkedNode(self, "realReverseDrivingDirectionNode", self:getAIDirectionNode())
+        setRotation(spec.reverseDrivingDirectionNode, 0, math.pi, 0)
+    end
+    return spec.reverseDrivingDirectionNode
 end

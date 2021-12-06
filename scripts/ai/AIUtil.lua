@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+---
+--- High level (scope is the entire vehicle chain) utilities for the Courseplay AI
+
 ---@class AIUtil
 AIUtil = {}
 
@@ -37,9 +40,9 @@ function AIUtil.getDirectionNode(vehicle)
 	if AIUtil.isReverseDriving(vehicle) then
 		-- reverse driving tractor, use the CP calculated reverse driving direction node pointing in the
 		-- direction the driver seat is facing
-		return vehicle.cp.reverseDrivingDirectionNode
+		return vehicle:getReverseDrivingDirectionNode()
 	else
-		return vehicle.cp.directionNode or vehicle.rootNode
+		return vehicle:getAIDirectionNode() or vehicle.rootNode
 	end
 end
 
@@ -108,7 +111,7 @@ end
 
 function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
-	local workTool = courseplay:getFirstReversingWheeledWorkTool(vehicle)
+	local workTool = AIUtil.getFirstReversingWheeledWorkTool(vehicle)
 	if not workTool or not workTool.cp.realTurningNode then
 		CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
 		-- default is not 0 as this is used to calculate trailer heading and 0 here may result in NaNs
@@ -118,7 +121,7 @@ function AIUtil.getTowBarLength(vehicle)
 	-- (not quite accurate when the angle between the tractor and the tool is high)
 	local tractorX, _, tractorZ = getWorldTranslation(AIUtil.getDirectionNode(vehicle))
 	local toolX, _, toolZ = getWorldTranslation( workTool.cp.realTurningNode )
-	local towBarLength = courseplay:distance( tractorX, tractorZ, toolX, toolZ )
+	local towBarLength = MathUtil.getPointPointDistance( tractorX, tractorZ, toolX, toolZ )
 	CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'tow bar length is %.1f.', towBarLength)
 	return towBarLength
 end
@@ -133,7 +136,7 @@ function AIUtil.getReverserNode(vehicle)
 	local reverserNode, debugText
 	-- if there's a reverser node on the tool, use that
 	local reverserDirectionNode = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle)
-	local reversingWheeledWorkTool = courseplay:getFirstReversingWheeledWorkTool(vehicle)
+	local reversingWheeledWorkTool = AIUtil.getFirstReversingWheeledWorkTool(vehicle)
 	if reverserDirectionNode then
 		reverserNode = reverserDirectionNode
 		debugText = 'implement reverse (Giants)'
@@ -214,6 +217,27 @@ function AIUtil.getTurningRadius(vehicle)
 	radius = math.max(radius, maxToolRadius)
 	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
 	return radius
+end
+
+
+function AIUtil.getFirstReversingWheeledWorkTool(vehicle)
+	-- since some weird things like Seed Bigbag are also vehicles, check this first
+	if not vehicle.getAttachedImplements then return nil end
+	-- Check all attached implements if we are a wheeled workTool behind the tractor
+	for _, imp in ipairs(vehicle:getAttachedImplements()) do
+		-- Check if the implement is behind
+		if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
+			if ImplementUtil.isWheeledImplement(imp.object) then
+				-- If the implement is a wheeled workTool, then return the object
+				return imp.object
+			else
+				-- If the implement is not a wheeled workTool, then check if that implement have an attached wheeled workTool and return that.
+				return AIUtil.getFirstReversingWheeledWorkTool(imp.object)
+			end
+		end
+	end
+	-- If we didnt find any workTool, return nil
+	return nil
 end
 
 ---@return boolean true if there are any implements attached to the back of the vehicle
@@ -419,6 +443,9 @@ function AIUtil.getCurrentNormalizedSteeringAngle(vehicle)
 	end
 end
 
+------------------------------------------------------------------------------------------------------------------------
+--- Fill Levels
+---------------------------------------------------------------------------------------------------------------------------
 function AIUtil.getAllFillLevels(object, fillLevelInfo, driver)
 	-- get own fill levels
 	if object.getFillUnits then

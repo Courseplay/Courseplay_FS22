@@ -372,10 +372,10 @@ end
 ---@param corner Corner if caller already has a corner to use, can pass in here. If nil, we will create our own
 ---@return Course
 function TurnContext:createEndingTurnCourse(vehicle, corner)
-    local startAngle = math.deg(self:getNodeDirection(AIDriverUtil.getDirectionNode(vehicle)))
+    local startAngle = math.deg(self:getNodeDirection(vehicle:getAIDirectionNode()))
     local r = vehicle.cp.settings.turnDiameter:get() / 2
     local startPos, endPos = {}, {}
-    startPos.x, _, startPos.z = getWorldTranslation(AIDriverUtil.getDirectionNode(vehicle))
+    startPos.x, _, startPos.z = getWorldTranslation(vehicle:getAIDirectionNode())
     endPos.x, _, endPos.z = getWorldTranslation(self.vehicleAtTurnEndNode)
     -- use side offset 0 as all the offsets is already included in the vehicleAtTurnEndNode
     local myCorner = corner or Corner(vehicle, startAngle, startPos, self.turnEndWp.angle, endPos	, r, 0)
@@ -399,8 +399,8 @@ end
 --- @param vehicle table
 --- @param reverseDistance number distance to reverse in meters
 function TurnContext:createReverseWaypointsBeforeStartingTurn(vehicle, reverseDistance)
-    local reverserNode = AIDriverUtil.getReverserNode(vehicle)
-    local _, _, dStart = localToLocal(reverserNode or AIDriverUtil.getDirectionNode(vehicle), self.workEndNode, 0, 0, 0)
+    local reverserNode = AIUtil.getReverserNode(vehicle)
+    local _, _, dStart = localToLocal(reverserNode or vehicle:getAIDirectionNode(), self.workEndNode, 0, 0, 0)
     local waypoints = {}
     for d = dStart, dStart - reverseDistance - 1, -1 do
         local x, y, z = localToWorld(self.workEndNode, 0, 0, d)
@@ -493,7 +493,7 @@ function TurnContext:getTurnEndNodeAndOffsets(vehicle)
         turnEndNode = self.workStartNode
         startOffset = 0
         -- vehicle is about frontMarkerDistance before the work end when finishing the turn
-        if AIDriverUtil.getTowBarLength(vehicle) > 0 then
+        if AIUtil.getTowBarLength(vehicle) > 0 then
             -- giving enough time for the implement to align, the vehicle will reach the next row about the
             -- front marker distance _before_ the turn end so have the front marker distance to drive straight,
             -- during this time we expect the implement to align with the tractor

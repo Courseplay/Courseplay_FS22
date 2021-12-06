@@ -67,7 +67,10 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self.ppc = PurePursuitController(vehicle)
     -- TODO: should probably be the closest waypoint to the target?
-    self:startCourse(vehicle:getFieldWorkCourse(), 1)
+    local course = vehicle:getFieldWorkCourse()
+    local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
+    self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
+    self:startCourse(course, ixClosestRightDirection)
 end
 
 function AIDriveStrategyCourse:update()

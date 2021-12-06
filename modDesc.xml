@@ -38,6 +38,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/field/FieldUtil.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
+		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
 		<sourceFile filename="scripts/ai/CpMathUtil.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
@@ -59,6 +60,12 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/track.lua"/>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
+		<sourceFile filename="scripts/pathfinder/Dubins.lua"/>
+		<sourceFile filename="scripts/pathfinder/ReedsShepp.lua"/>
+		<sourceFile filename="scripts/pathfinder/ReedsSheppSolver.lua"/>
+		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
+		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
 	</extraSourceFiles>
