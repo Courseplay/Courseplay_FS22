@@ -107,8 +107,7 @@ function AITurn:onWaypointPassed(ix, course)
 	self:debug('onWaypointPassed %d', ix)
 	if ix == course:getNumberOfWaypoints() then
 		self:debug('Last waypoint reached, this should not happen, resuming fieldwork')
-		-- TODO_22
-		--self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 	end
 end
 

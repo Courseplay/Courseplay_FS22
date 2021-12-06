@@ -15,7 +15,9 @@ end
 function CourseplaySpec.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
 end
+
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CourseplaySpec.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CourseplaySpec.getFieldWorkCourse)
@@ -31,7 +33,7 @@ function CourseplaySpec.registerFunctions(vehicleType)
 end
 
 function CourseplaySpec:onLoad(savegame)
-	--- Register the spec: spec_CourseplaySpec
+	--- Register the spec: spec_courseplaySpec
     local specName = CourseplaySpec.MOD_NAME .. ".courseplaySpec"
     self.spec_courseplaySpec = self["spec_" .. specName]
     local spec = self.spec_courseplaySpec
@@ -60,7 +62,7 @@ end
 function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
 	--[[
     if self.isClient then
-        local spec = self.spec_CourseplaySpec
+        local spec = self.spec_courseplaySpec
         self:clearActionEventsTable(spec.actionEvents)
         if isActiveForInputIgnoreSelection then
             --- Toggle mouse action event
@@ -131,27 +133,27 @@ function CourseplaySpec.actionEventEnterVehicle(self, actionName, inputValue, ca
 end
 
 function CourseplaySpec.actionEventChangeAssignments(self, actionName, inputValue, callbackState, isAnalog)
-    local spec = self.spec_CourseplaySpec
+    local spec = self.spec_courseplaySpec
     spec.assignmentMode = CourseplaySpec.DEFAULT_ASSIGNMENT and CourseplaySpec.ADVANCED_ASSIGNMENT or CourseplaySpec.DEFAULT_ASSIGNMENT
     CourseplaySpec.updateActionEventState(self)
 end
 
 function CourseplaySpec:onCourseplaySpecToggleMouse()
-    local spec = self.spec_CourseplaySpec
+    local spec = self.spec_courseplaySpec
     spec.mouseActive = not spec.mouseActive
     CourseplaySpec.updateActionEventState(self)
 end
 
 --- Is the mouse visible/active
 function CourseplaySpec:isCourseplaySpecMouseActive()
-    local spec = self.spec_CourseplaySpec
+    local spec = self.spec_courseplaySpec
     return spec.mouseActive
 end
 
 --- Active/disable the mouse cursor
 ---@param show boolean
 function CourseplaySpec:setFieldWorkCourseplaySpecShowMouseCursor(show)
-    local spec = self.spec_CourseplaySpec
+    local spec = self.spec_courseplaySpec
 	g_inputBinding:setShowMouseCursor(show)
     self:onCourseplaySpecToggleMouse()
     ---While mouse cursor is active, disable the camera rotations
@@ -221,4 +223,10 @@ function CourseplaySpec:getReverseDrivingDirectionNode()
         setRotation(spec.reverseDrivingDirectionNode, 0, math.pi, 0)
     end
     return spec.reverseDrivingDirectionNode
+end
+
+function CourseplaySpec:onDraw(isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
+    if self.course and self.course:isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_COURSES) then
+        self.course:draw()
+    end
 end
