@@ -96,8 +96,21 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.TURNING then
         maxSpeed = self.aiTurn:getDriveData()
     end
+    self:setAITarget()
     self:debugSparse('%.1f/%.1f', gx, gz)
     return gx, gz, moveForwards, maxSpeed, 100
+end
+
+-- Seems like the Giants AIDriveStrategyCollision needs these variables on the vehicle to be set
+-- to calculate an accurate path prediction
+function AIDriveStrategyFieldWorkCourse:setAITarget()
+    local dx, _, dz = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
+    local length = MathUtil.vector2Length(dx, dz)
+    dx = dx / length
+    dz = dz / length
+    self.vehicle.aiDriveDirection = { dx, dz }
+    local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
+    self.vehicle.aiDriveTarget = { x, z }
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -363,6 +376,7 @@ function AIDriveStrategyFieldWorkCourse:updateAIFieldWorkerDriveStrategies()
             CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with Courseplay drive strategy')
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             self.spec_aiFieldWorker.driveStrategies[i] = driveStrategyFollowFieldWorkCourse
+            return
         end
     end
 end
