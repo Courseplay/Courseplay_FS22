@@ -135,7 +135,6 @@ function AIReverseDriver:getDriveData()
 	lx, lz = -lx * self.ppc:getLookaheadDistance(), -lz * self.ppc:getLookaheadDistance()
 	-- AIDriveStrategy wants a global position to drive to (which it later converts to local, but whatever...)
 	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
-	self:debug('adiff %.1f°, l %.1f/%.1f, g %.1f/%.1f', math.deg(angleDiff), lx, lz, gx, gz)
 	-- TODO_22 reverse speed
 	return gx, gz, false, 5
 end

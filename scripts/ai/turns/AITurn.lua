@@ -489,8 +489,11 @@ end
 function CourseTurn:turn()
 
 	AITurn.turn(self)
+
 	self:updateTurnProgress()
+
 	self:changeDirectionWhenAligned()
+	self:changeToFwdWhenWaypointReached()
 
 	if self.turnCourse:isTurnEndAtIx(self.turnCourse:getCurrentWaypointIx()) then
 		self.state = self.states.ENDING_TURN
@@ -538,7 +541,7 @@ end
 --- change direction as soon as the implement is aligned.
 --- So check that here and force a direction change when possible.
 function CourseTurn:changeDirectionWhenAligned()
-	if self.turnCourse:isChangeDirectionWhenAligned(self.turnCourse:getCurrentWaypointIx()) then
+	if TurnManeuver.getTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED) then
 		local aligned = self.driveStrategy:areAllImplementsAligned(self.turnContext.turnEndWpNode.node)
 		self:debug('aligned: %s', tostring(aligned))
 		if aligned then
@@ -552,12 +555,33 @@ function CourseTurn:changeDirectionWhenAligned()
 	end
 end
 
+--- Check if we reached a waypoint where we should change to forward. This is useful when backing up to reach a point
+--- where we can start driving on an arc, for example in a headland corner of when backing up from the field edge
+--- before we make a U turn
+function CourseTurn:changeToFwdWhenWaypointReached()
+	local changeWpIx =
+		TurnManeuver.getTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED)
+	if changeWpIx and self.ppc:isReversing() then
+		local _, _, dz = self.turnCourse:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), changeWpIx)
+		-- is the change waypoint now in front of us?
+		if dz > 0 then
+			-- find the next direction switch and continue course from there
+			local getNextFwdWaypointIx = self.turnCourse:getNextFwdWaypointIx(self.turnCourse:getCurrentWaypointIx())
+			if getNextFwdWaypointIx then
+				self:debug('skipping to next forward waypoint at %d (dz: %.1f)', getNextFwdWaypointIx, dz)
+				self.ppc:initialize(getNextFwdWaypointIx)
+			end
+		end
+	end
+end
+
+
 function CourseTurn:generateCalculatedTurn()
 	local turnManeuver
 	if self.turnContext:isHeadlandCorner() then
 		-- TODO_22
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-				self.turningRadius, self.workWidth, false, 2)
+				self.turningRadius, self.workWidth, false)
 	else
 		turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(), self.turningRadius)
 	end

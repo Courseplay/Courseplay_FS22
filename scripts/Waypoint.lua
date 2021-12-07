@@ -75,31 +75,29 @@ function Waypoint:init(cpWp, cpIndex)
 	self:set(cpWp, cpIndex)
 end
 
-function Waypoint:set(cpWp, cpIndex)
+function Waypoint:set(wp, cpIndex)
 	-- we initialize explicitly, no table copy as we want to have
 	-- full control over what is used in this object
-	-- can use course waypoints with cx/cz or turn waypoints with posX/posZ (but if revPos exists, that takes precedence
-	-- just like in the original turn code, don't ask me why there are two different values if we only use one...)
-	self.x = cpWp.x or cpWp.cx or cpWp.revPosX or cpWp.posX or 0
-	self.z = cpWp.z or cpWp.cz or cpWp.revPosZ or cpWp.posZ or 0
+	self.x = wp.x or 0
+	self.z = wp.z or 0
 	self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.x, 0, self.z)
-	self.angle = cpWp.angle or nil
-	self.radius = cpWp.radius or nil
-	self.rev = cpWp.rev or cpWp.turnReverse or cpWp.reverse or false
-	self.rev = self.rev or cpWp.gear and cpWp.gear == Gear.Backward
-	self.speed = cpWp.speed
+	self.angle = wp.angle or nil
+	self.radius = wp.radius or nil
+	self.rev = wp.rev or wp.turnReverse or wp.reverse or false
+	self.rev = self.rev or wp.gear and wp.gear == Gear.Backward
+	self.speed = wp.speed
 	self.cpIndex = cpIndex or 0
-	self.turnStart = cpWp.turnStart
-	self.turnEnd = cpWp.turnEnd
-	self.interact = cpWp.wait or false
-	self.isConnectingTrack = cpWp.isConnectingTrack or nil
-	self.lane = cpWp.lane
-	self.ridgeMarker = cpWp.ridgeMarker
-	self.unload = cpWp.unload
-	self.mustReach = cpWp.mustReach
-	self.align = cpWp.align
-	self.headlandHeightForTurn = cpWp.headlandHeightForTurn
-	self.changeDirectionWhenAligned = cpWp.changeDirectionWhenAligned
+	self.turnStart = wp.turnStart
+	self.turnEnd = wp.turnEnd
+	self.interact = wp.wait or false
+	self.isConnectingTrack = wp.isConnectingTrack or nil
+	self.lane = wp.lane
+	self.ridgeMarker = wp.ridgeMarker
+	self.unload = wp.unload
+	self.mustReach = wp.mustReach
+	self.align = wp.align
+	self.headlandHeightForTurn = wp.headlandHeightForTurn
+	self.turnControls = table.copy(wp.turnControls)
 end
 
 --- Set from a generated waypoint (output of the course generator)
@@ -584,8 +582,8 @@ function Course:isOnOutermostHeadland(ix)
 	return self.waypoints[ix].lane and self.waypoints[ix].lane == -1
 end
 
-function Course:isChangeDirectionWhenAligned(ix)
-	return self.waypoints[ix].changeDirectionWhenAligned
+function Course:getTurnControls(ix)
+	return self.waypoints[ix].turnControls
 end
 
 function Course:useTightTurnOffset(ix)

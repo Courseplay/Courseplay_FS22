@@ -270,7 +270,10 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix)
 end
 
 function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix)
-
+    if ix == self.course:getNumberOfWaypoints() then
+        self:debug('Last waypoint reached, stopping job.')
+        self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------

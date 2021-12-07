@@ -355,12 +355,13 @@ function PurePursuitController:findRelevantSegment()
 		passed, ix = self:havePassedAnyWaypointBetween(self.nextWpNode.ix, self.wpBeforeGoalPointIx)
 	end
 	if passed then
-		self.relevantWpNode:setToWaypoint(self.course, ix)
-		self.nextWpNode:setToWaypoint(self.course, self.relevantWpNode.ix + 1)
+		self.relevantWpNode:setToWaypoint(self.course, ix, true)
+		self.nextWpNode:setToWaypoint(self.course, self.relevantWpNode.ix + 1, true)
 		if not self:reachedLastWaypoint() then
 			-- disable debugging once we reached the last waypoint. Otherwise we'd keep logging
 			-- until the user presses 'Stop driver'.
-			self:debug('relevant waypoint: %d, crosstrack: %.1f', self.relevantWpNode.ix, self.crossTrackError)
+			self:debug('relevant waypoint: %d, next waypoint %d, crosstrack: %.1f',
+					self.relevantWpNode.ix, self.nextWpNode.ix, self.crossTrackError)
 		end
 	end
 	-- TODO_22

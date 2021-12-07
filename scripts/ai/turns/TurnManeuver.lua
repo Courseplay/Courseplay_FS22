@@ -6,12 +6,26 @@ TurnManeuver.wpChangeDistance 					= 3
 TurnManeuver.reverseWPChangeDistance			= 5
 TurnManeuver.reverseWPChangeDistanceWithTool	= 3
 
+--- Turn controls which can be placed on turn waypoints and control the execution of the turn maneuver.
+-- Change direction when the implement is aligned with the tractor
+-- value : boolean
+TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED = 'changeDirectionWhenAligned'
+-- Change to forward when a given waypoint is reached (dz > 0 as we assume we are reversing)
+-- value : index of waypoint to reach
+TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED = 'changeToFwdWhenReached'
+
+---@param course Course
+function TurnManeuver.getTurnControl(course, ix, control)
+	local controls = course:getTurnControls(ix)
+	return controls and controls[control]
+end
+
 ---@param vehicle table only used for debug, to get the name of the vehicle
 ---@param turnContext TurnContext
 ---@param vehicleDirectionNode number Giants node, pointing in the vehicle's front direction
 ---@param turningRadius number
 ---@param workWidth number
-function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, directionNodeToTurnNodeLength)
+function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
 	self.vehicleDirectionNode = vehicleDirectionNode
 	self.turnContext = turnContext
 	self.vehicle = vehicle
@@ -19,7 +33,7 @@ function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRa
 	self.turningRadius = turningRadius
 	self.workWidth = workWidth
 	-- TODO_22: calculate!
-	self.directionNodeToTurnNodeLength = directionNodeToTurnNodeLength
+	self.directionNodeToTurnNodeLength = AIUtil.getTowBarLength(self.vehicle)
 	self.direction = turnContext:isLeftTurn() and -1 or 1
 end
 
@@ -36,7 +50,7 @@ function TurnManeuver:debug(...)
 end
 
 function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnEnd,
-											  secondaryReverseDistance, changeDirectionWhenAligned, doNotAddLastPoint)
+											  secondaryReverseDistance, doNotAddLastPoint)
 	local endTurn = false
 	local dist = MathUtil.getPointPointDistance(fromPoint.x, fromPoint.z, toPoint.x, toPoint.z)
 	local numPointsNeeded = math.ceil(dist / TurnManeuver.wpDistance)
@@ -46,22 +60,24 @@ function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnE
 		endTurn = turnEnd
 	end
 
+
 	-- add first point
-	self:addWaypoint(fromPoint.x, fromPoint.z, endTurn, reverse, nil, changeDirectionWhenAligned)
+	self:addWaypoint(fromPoint.x, fromPoint.z, endTurn, reverse, nil)
+	local fromIx = #self.waypoints
 
 	-- add points between the first and last
 	local x, z
 	if numPointsNeeded > 1 then
 		local wpDistance = dist / numPointsNeeded
-		for i=1, numPointsNeeded - 1 do
+		for i = 1, numPointsNeeded - 1 do
 			x = fromPoint.x + (i * wpDistance * dx)
 			z = fromPoint.z + (i * wpDistance * dz)
 
-			self:addWaypoint(x, z, endTurn, reverse, nil, changeDirectionWhenAligned)
+			self:addWaypoint(x, z, endTurn, reverse, nil)
 		end
 	end
 
-	if doNotAddLastPoint then return end
+	if doNotAddLastPoint then return fromIx, #self.waypoints end
 
 	-- add last point
 	local revx, revz
@@ -73,7 +89,8 @@ function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnE
 	x = toPoint.x
 	z = toPoint.z
 
-	self:addWaypoint(x, z, endTurn, reverse, revx, revz, nil, changeDirectionWhenAligned)
+	self:addWaypoint(x, z, endTurn, reverse, revx, revz, nil)
+	return fromIx, #self.waypoints
 end
 
 -- startDir and stopDir are points (x,z). The arc starts where the line from the center of the circle
@@ -163,20 +180,28 @@ function TurnManeuver:generateTurnCircle(center, startDir, stopDir, radius, cloc
 	delete(point)
 end
 
-function TurnManeuver:addWaypoint(x, z, turnEnd, reverse, dontPrint, changeDirectionWhenAligned)
+function TurnManeuver:addWaypoint(x, z, turnEnd, reverse, dontPrint)
 	local wp = {}
 	wp.x = x
 	wp.z = z
 	wp.turnEnd = turnEnd
 	wp.reverse = reverse
-	wp.changeDirectionWhenAligned = changeDirectionWhenAligned
 	table.insert(self.waypoints, wp)
 
 	if not dontPrint then
-		self:debug("(Turn:addWaypoint %d) x=%.2f, z=%.2f, turnEnd=%s, reverse=%s, changeDirectionWhenAligned=%s",
+		self:debug("(Turn:addWaypoint %d) x=%.2f, z=%.2f, turnEnd=%s, reverse=%s",
 			#self.waypoints, x, z,
-			tostring(turnEnd and true or false), tostring(reverse and true or false), 
-			tostring(changeDirectionWhenAligned and true or false))
+			tostring(turnEnd and true or false), tostring(reverse and true or false))
+	end
+end
+
+function TurnManeuver:addTurnControl(fromIx, toIx, control, value)
+	self:debug('(Turn:addTurnControl) %d - %d %s %s', fromIx, toIx, control, tostring(value))
+	for i = fromIx, toIx do
+		if not self.waypoints[i].turnControls then
+			self.waypoints[i].turnControls = {}
+		end
+		self.waypoints[i].turnControls[control] = value
 	end
 end
 
@@ -206,9 +231,8 @@ HeadlandCornerTurnManeuver = CpObject(TurnManeuver)
 -- reverse back straight, then forward on a curve, then back up to the corner, lower implements there.
 ------------------------------------------------------------------------
 ---@param turnContext TurnContext
-function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth,
-										 reversingWorkTool, directionNodeToTurnNodeLength)
-	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, directionNodeToTurnNodeLength)
+function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, reversingWorkTool)
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
 
 	self:debug("(Turn) Using Headland Corner Reverse Turn for tractors")
 
@@ -244,8 +268,8 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	CpUtil.destroyNode(helperNode)
 	self:debug("(Turn) HeadlandCornerTurnManeuver, from ( %.2f %.2f ), to ( %.2f %.2f) workWidth: %.1f, dz = %.1f",
 		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z, self.workWidth, dz )
-	self:generateStraightSection( fromPoint, toPoint, dz < 0)
-
+	local fromIx, toIx = self:generateStraightSection( fromPoint, toPoint, dz < 0)
+	self:addTurnControl(fromIx, toIx, TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED, #self.waypoints)
 	-- Generate turn circle (Forward)
 	local startDir = corner:getArcStart()
 	local stopDir = corner:getArcEnd()
@@ -257,7 +281,9 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	toPoint = corner:getPointAtDistanceFromArcEnd(self.directionNodeToTurnNodeLength + self.wpChangeDistance + buffer)
 	self:debug("(Turn) HeadlandCornerTurnManeuver, from ( %.2f %.2f ), to ( %.2f %.2f)",
 		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z)
-	self:generateStraightSection(fromPoint, toPoint, false, false, 0, true)
+
+	fromIx, toIx = self:generateStraightSection(fromPoint, toPoint, false, false, 0, true)
+	self:addTurnControl(fromIx, toIx, TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true)
 
 	-- now back up the implement to the edge of the field (or headland)
 	fromPoint = corner:getArcEnd()
