@@ -1286,7 +1286,7 @@ function Course:draw()
 		Utils.renderTextAtWorldPosition(x, y + 3.2, z, tostring(i), getCorrectTextSize(0.012), 0)
 		if i < self:getNumberOfWaypoints() then
 			local nx, ny, nz = self:getWaypointPosition(i + 1)
-			DebugUtil.drawLine(x, y + 3, z, nx, ny + 3, nz, 0, 0, 100)
+			DebugUtil.drawDebugLine(x, y + 3, z, nx, ny + 3, nz, 0, 0, 100)
 		end
 	end
 end

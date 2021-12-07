@@ -226,7 +226,4 @@ function CourseplaySpec:getReverseDrivingDirectionNode()
 end
 
 function CourseplaySpec:onDraw(isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
-    if self.course and self.course:isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_COURSES) then
-        self.course:draw()
-    end
 end

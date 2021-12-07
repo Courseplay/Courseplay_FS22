@@ -51,7 +51,7 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
     self:calculateSizeOfObjectList(vehicle, {{object = vehicle}}, buffer, self.rectangles)
     -- we'll calculate the trailer's precise position an angle for the collision detection to not hit obstacles
     -- while turning. Get that object here, there may be more but we ignore that case.
-    self.trailer = courseplay:getFirstReversingWheeledWorkTool(vehicle)
+    self.trailer = courseplay:getFirstReversingImplementWithWheels(vehicle)
     if self.trailer then
         -- the trailer's heading is different than the vehicle's heading and will be calculated and
         -- checked for collision independently at each waypoint. Also, the trailer is rotated to its heading

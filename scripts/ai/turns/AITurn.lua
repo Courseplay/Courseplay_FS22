@@ -226,6 +226,10 @@ function AITurn:endTurn(dt)
 	end
 end
 
+function AITurn:drawDebug()
+
+end
+
 --[[
 A K (3 point) turn to make a 180 to continue on the next row.addState
 ]]
@@ -604,6 +608,12 @@ function CourseTurn:onPathfindingDone(path)
 	end
 	self.driveStrategy:startFieldworkCourseWithTemporaryCourse(self.turnCourse, self.turnContext.turnEndWpIx)
 	self.state = self.states.TURNING
+end
+
+function CourseTurn:drawDebug()
+	if self.turnCourse and self.turnCourse:isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_COURSES) then
+		self.turnCourse:draw()
+	end
 end
 
 --- Combines (in general, when harvesting) in headland corners we want to work the corner first, then back up and then

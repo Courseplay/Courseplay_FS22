@@ -111,8 +111,8 @@ end
 
 function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
-	local workTool = AIUtil.getFirstReversingWheeledWorkTool(vehicle)
-	if not workTool or not workTool.cp.realTurningNode then
+	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if not implement or not implement.steeringAxleNode then
 		CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
 		-- default is not 0 as this is used to calculate trailer heading and 0 here may result in NaNs
 		return 3
@@ -120,7 +120,7 @@ function AIUtil.getTowBarLength(vehicle)
 	-- get the distance between the tractor and the towed implement's turn node
 	-- (not quite accurate when the angle between the tractor and the tool is high)
 	local tractorX, _, tractorZ = getWorldTranslation(AIUtil.getDirectionNode(vehicle))
-	local toolX, _, toolZ = getWorldTranslation( workTool.cp.realTurningNode )
+	local toolX, _, toolZ = getWorldTranslation(implement.steeringAxleNode)
 	local towBarLength = MathUtil.getPointPointDistance( tractorX, tractorZ, toolX, toolZ )
 	CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'tow bar length is %.1f.', towBarLength)
 	return towBarLength
@@ -136,12 +136,12 @@ function AIUtil.getReverserNode(vehicle)
 	local reverserNode, debugText
 	-- if there's a reverser node on the tool, use that
 	local reverserDirectionNode = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle)
-	local reversingWheeledWorkTool = AIUtil.getFirstReversingWheeledWorkTool(vehicle)
+	local reversingWheeledWorkTool = AIUtil.getFirstReversingImplementWithWheels(vehicle)
 	if reverserDirectionNode then
 		reverserNode = reverserDirectionNode
 		debugText = 'implement reverse (Giants)'
-	elseif reversingWheeledWorkTool and reversingWheeledWorkTool.cp.realTurningNode then
-		reverserNode = reversingWheeledWorkTool.cp.realTurningNode
+	elseif reversingWheeledWorkTool and reversingWheeledWorkTool.steeringAxleNode then
+		reverserNode = reversingWheeledWorkTool.steeringAxleNode
 		debugText = 'implement reverse (Courseplay)'
 	elseif vehicle.spec_articulatedAxis ~= nil then
 		-- articulated axis vehicles have a special reverser node
@@ -219,8 +219,8 @@ function AIUtil.getTurningRadius(vehicle)
 	return radius
 end
 
-
-function AIUtil.getFirstReversingWheeledWorkTool(vehicle)
+---@return table implement object
+function AIUtil.getFirstReversingImplementWithWheels(vehicle)
 	-- since some weird things like Seed Bigbag are also vehicles, check this first
 	if not vehicle.getAttachedImplements then return nil end
 	-- Check all attached implements if we are a wheeled workTool behind the tractor
@@ -232,7 +232,7 @@ function AIUtil.getFirstReversingWheeledWorkTool(vehicle)
 				return imp.object
 			else
 				-- If the implement is not a wheeled workTool, then check if that implement have an attached wheeled workTool and return that.
-				return AIUtil.getFirstReversingWheeledWorkTool(imp.object)
+				return AIUtil.getFirstReversingImplementWithWheels(imp.object)
 			end
 		end
 	end

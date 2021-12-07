@@ -19,7 +19,7 @@
 	<DebugChannel active="false" name="DBG_MODE_10" text="mode 10 - bunker silo compacter"/>
 	<DebugChannel active="true" name="DBG_PATHFINDER" text="pathfinder"/>
 	<DebugChannel active="false" name="DBG_TRIGGERS" text="triggers"/>
-	<DebugChannel active="false" name="DBG_REVERSE" text="reverse driving"/>
+	<DebugChannel active="true" name="DBG_REVERSE" text="reverse driving"/>
 	<DebugChannel active="true" name="DBG_TURN" text="turns"/>
 	<DebugChannel active="true" name="DBG_PPC" text="pure pursuit controller"/>
 	<DebugChannel active="false" name="DBG_LOAD_UNLOAD" text="load and unload tippers"/>

@@ -63,16 +63,33 @@ end
 
 function AIDriveStrategyFieldWorkCourse:update()
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
-    if self.state == self.states.TURNING and self.turnContext then
-        self.turnContext:drawDebug()
+    if self.state == self.states.TURNING then
+        if self.turnContext then
+            self.turnContext:drawDebug()
+        end
+        if self.aiTurn then
+            self.aiTurn:drawDebug()
+        end
     end
+
 end
 
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
+
     local moveForwards = not self.ppc:isReversing()
-    local gx, _, gz = self.ppc:getGoalPointPosition()
+    local gx, gz
+
     local maxSpeed = self.vehicle:getSpeedLimit(true)
+    if not moveForwards then
+        gx, gz, _, maxSpeed = self.reverser:getDriveData()
+        if not gx then
+            -- simple reverse (not towing anything), just use PPC
+            gx, _, gz = self.ppc:getGoalPointPosition()
+        end
+    else
+        gx, _, gz = self.ppc:getGoalPointPosition()
+    end
 
     if self.state == self.states.INITIAL then
         self:lowerImplements()
@@ -290,6 +307,7 @@ function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
     self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
+    self.reverser = AIReverseDriver(self.vehicle, self.ppc, self.course)
 end
 
 --- Find the foremost and rearmost AI marker
