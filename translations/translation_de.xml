@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
+
+		<text name="COURSEPLAY_ACTIVATED" 							text="aktiviert" />
+		<text name="COURSEPLAY_DEACTIVATED" 						text="deaktiviert" />
+
 	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"								text="CP: Feldarbeit" />
+		<text name="FIELDWORK_CP"									text="CP: Feldarbeit" />
 	<!--Generate course button-->
-		<text name="FIELDWORK_BUTTON" 							text="CP: Generiere Feldkurs." />
+		<text name="FIELDWORK_BUTTON" 								text="CP: Generiere Feldkurs." />
 	<!--AI parameters field work-->
-		<text name="CP_ai_param_workWidth_title"				text="Arbeitsbreite" />
+		<text name="CP_ai_param_workWidth_title"					text="Arbeitsbreite" />
 
-		<text name="CP_ai_param_numberOfHeadlands_title"		text="Anzahl an Vorgewende Bahnen" />
+		<text name="CP_ai_param_numberOfHeadlands_title"			text="Anzahl an Vorgewende Bahnen" />
 
-		<text name="CP_ai_param_centerMode_title"				text="Feldmitte" />
-		<text name="CP_ai_param_centerMode_up_down" 			text="Hoch/runter" />
-		<text name="CP_ai_param_centerMode_spiral" 				text="Spiralförmig" />
-		<text name="CP_ai_param_centerMode_circular" 			text="Kreisförmig" />
-		<text name="CP_ai_param_centerMode_lands" 				text="Innen nach aussen" />
+		<text name="CP_ai_param_centerMode_title"					text="Feldmitte" />
+		<text name="CP_ai_param_centerMode_up_down" 				text="Hoch/runter" />
+		<text name="CP_ai_param_centerMode_spiral" 					text="Spiralförmig" />
+		<text name="CP_ai_param_centerMode_circular" 				text="Kreisförmig" />
+		<text name="CP_ai_param_centerMode_lands" 					text="Innen nach aussen" />
 
-		<text name="CP_ai_param_headlandCornerType_title"		text="Vorgewende Ecken" />
-		<text name="CP_ai_param_headlandCornerType_smooth" 		text="Weich" />
-		<text name="CP_ai_param_headlandCornerType_sharp" 		text="Scharf" />
-		<text name="CP_ai_param_headlandCornerType_round" 		text="Rund" />
+		<text name="CP_ai_param_headlandCornerType_title"			text="Vorgewende Ecken" />
+		<text name="CP_ai_param_headlandCornerType_smooth" 			text="Weich" />
+		<text name="CP_ai_param_headlandCornerType_sharp" 			text="Scharf" />
+		<text name="CP_ai_param_headlandCornerType_round" 			text="Rund" />
 
-		<text name="CP_ai_param_rowDirection_title"				text="Bahnen Startrichtung" />
-		<text name="CP_ai_param_rowDirection_automatic" 		text="Automatisch" />
-		<text name="CP_ai_param_rowDirection_longest_edge" 		text="Längste Kante" />
+		<text name="CP_ai_param_rowDirection_title"					text="Bahnen Startrichtung" />
+		<text name="CP_ai_param_rowDirection_automatic" 			text="Automatisch" />
+		<text name="CP_ai_param_rowDirection_longest_edge" 			text="Längste Kante" />
 
-		<text name="CP_ai_param_startOnHeadland_title"			text="Arbeit beginnen auf" />
-		<text name="CP_ai_param_startOnHeadland_on_headland" 	text="Vorgewende Bahnen" />
-		<text name="CP_ai_param_startOnHeadland_up_down_rows" 	text="Feldreihen" />
-	<!-- -->
+		<text name="CP_ai_param_startOnHeadland_title"				text="Arbeit beginnen auf" />
+		<text name="CP_ai_param_startOnHeadland_on_headland" 		text="Vorgewende Bahnen" />
+		<text name="CP_ai_param_startOnHeadland_up_down_rows" 		text="Feldreihen" />
+	<!-- VehicleSettings -->
+		<text name="CP_vehicle_setting_title"												text="Fahrzeug-einstellungen von (%s)"/>
+		<text name="CP_vehicle_setting_subTitle_basic"										text="Normale Einstellungen."/>
+		<text name="CP_vehicle_setting_returnToFirstPoint_title" 							text="Am Startpunkt enden."/>
+		<text name="CP_vehicle_setting_returnToFirstPoint_tooltip" 							text="Am Startpunkt enden."/>
+		<text name="CP_vehicle_setting_returnToFirstPoint_releaseDriver" 					text="deaktiviert und entlasse CP Fahrer."/>
+		<text name="CP_vehicle_setting_returnToFirstPoint_returnToStartAndReleaseDriver" 	text="aktiviert und entlasse CP Fahrer"/>
 
+		<text name="CP_vehicle_setting_stopAtEnd_title" 									text="Stop am Endpunkt."/>
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 									text="Stop am Endpunkt."/>
+	<!-- GlobalSettings -->	
+		<text name="CP_global_setting_title"												text="Globale-einstellungen"/>
+		<text name="CP_global_setting_subTitle_basic"										text="Normale Einstellungen."/>
+		<text name="CP_global_setting_returnToFirstPoint_title" 							text="Am Startpunkt enden."/>
+		<text name="CP_global_setting_returnToFirstPoint_tooltip" 							text="Am Startpunkt enden."/>
+		<text name="CP_global_setting_returnToFirstPoint_releaseDriver" 					text="deaktiviert und entlasse CP Fahrer."/>
+		<text name="CP_global_setting_returnToFirstPoint_returnToStartAndReleaseDriver" 	text="aktiviert und entlasse CP Fahrer"/>
+
+		<text name="CP_global_setting_stopAtEnd_title" 										text="Stop am Endpunkt."/>
+		<text name="CP_global_setting_stopAtEnd_tooltip" 									text="Stop am Endpunkt."/>
+		
 	</texts>
 </l10n>

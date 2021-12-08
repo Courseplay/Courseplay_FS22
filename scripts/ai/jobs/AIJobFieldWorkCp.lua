@@ -193,30 +193,3 @@ if g_currentMission then
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)
-
---- Adds the course generate button.
-function AIJobFieldWorkCp.loadFromXmlInGameMenu(self, xmlFile, key)
-	self.buttonGenerateCourse = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
-	self.buttonGenerateCourse:setText(g_i18n:getText(AIJobFieldWorkCp.translations.GenerateButton))
-	--self.buttonGenerateCourse:setText("generator")
-	self.buttonGenerateCourse:setVisible(false)
-	self.buttonGenerateCourse.onClickCallback = self.onClickGenerateFieldWorkCourse
-	self.buttonGotoJob.parent:invalidateLayout()
-end
-InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,AIJobFieldWorkCp.loadFromXmlInGameMenu)
-
-
---- Updates generate button visibility.
-function AIJobFieldWorkCp.updateContextInputBarVisibilityIngameMenu(self)
-	local visible = self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse()
-	self.buttonGenerateCourse:setVisible(visible)
-end
-
-InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,AIJobFieldWorkCp.updateContextInputBarVisibilityIngameMenu)
-
---- Button Callback.
-function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
-	if self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse() then 
-		self.currentJob:onClickGenerateFieldWorkCourse()
-	end
-end

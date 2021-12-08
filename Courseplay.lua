@@ -3,7 +3,7 @@
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
-
+Courseplay.BASE_KEY = "Courseplay."
 
 function Courseplay:init()
 	self:registerConsoleCommands()
@@ -16,7 +16,27 @@ end
 --- This function is called on loading a savegame.
 ---@param filename string
 function Courseplay:loadMap(filename)
+	self.globalSettings = CpGlobalSettings()
+	self:registerSchema()
 	self:load()
+	self:setupGui()
+--	local xmlFile = XMLFile.load("courseplayXml",self.cpFolderPath.."" , Vehicle.xmlSchemaSavegame)
+--	self.globalSettings:loadFromXMLFile()
+end
+
+function Courseplay:registerSchema()
+	self.schema = XMLSchema.new("Courseplay")
+	self.globalSettings:registerSchema(self.schema,self.BASE_KEY)
+end
+
+
+function Courseplay:setupGui()
+	CpVehicleSettingsFrame.init()
+	CpGlobalSettingsFrame.init()
+end
+
+function Courseplay:saveToXMLFile()
+--	self.globalSettings:saveToXMLFile()
 end
 
 function Courseplay:update(dt)
@@ -52,6 +72,8 @@ function Courseplay:load()
 	self.cpDebugPrintXmlFolderPath = string.format("%s/%s",self.cpFolderPath,"courseplayDebugPrint")
 	createFolder(self.cpDebugPrintXmlFolderPath)
 	self.cpDebugPrintXmlFilePathDefault = string.format("%s/%s",self.cpDebugPrintXmlFolderPath,"courseplayDebugPrint.xml")		
+
+	self.cpXmlFile = string.format("%s/%s",self.cpFolderPath,"courseplay.xml")		
 
 end
 
@@ -174,10 +196,14 @@ end
 ---@param typeManager TypeManager
 function Courseplay.register(typeManager)
 	--- TODO: make this function async. 
-	for typeName, typeEntry in pairs(typeManager.types) do
+	for typeName, typeEntry in pairs(typeManager.types) do	
 		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
 		end
+		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpVehicleSettings")	
+		end
+
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
