@@ -580,8 +580,9 @@ function CourseTurn:generateCalculatedTurn()
 	local turnManeuver
 	if self.turnContext:isHeadlandCorner() then
 		-- TODO_22
+		local reversingImplement, steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-				self.turningRadius, self.workWidth, false)
+				self.turningRadius, self.workWidth, reversingImplement, steeringLength)
 	else
 		turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(), self.turningRadius)
 	end

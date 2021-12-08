@@ -20,25 +20,32 @@ function TurnManeuver.getTurnControl(course, ix, control)
 	return controls and controls[control]
 end
 
+---@return boolean, number true if this is a towed reversing implement/steeringLength
+function TurnManeuver.getSteeringParameters(vehicle)
+	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if not implement then
+		return false, 0
+	else
+		return true, AIUtil.getTowBarLength(vehicle)
+	end
+end
+
 ---@param vehicle table only used for debug, to get the name of the vehicle
 ---@param turnContext TurnContext
 ---@param vehicleDirectionNode number Giants node, pointing in the vehicle's front direction
 ---@param turningRadius number
 ---@param workWidth number
-function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
+---@param steeringLength number distance between the tractor's rear axle and the towed implement/trailer's rear axle,
+--- roughly tells how far we need to pull ahead (or back) relative to our target until the entire rig reaches that target.
+function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
 	self.vehicleDirectionNode = vehicleDirectionNode
 	self.turnContext = turnContext
 	self.vehicle = vehicle
 	self.waypoints = {}
 	self.turningRadius = turningRadius
 	self.workWidth = workWidth
-	-- TODO_22: calculate!
-	self.directionNodeToTurnNodeLength = AIUtil.getTowBarLength(self.vehicle)
+	self.steeringLength = steeringLength
 	self.direction = turnContext:isLeftTurn() and -1 or 1
-end
-
-function TurnManeuver:getWaypoints()
-	return self.course:getWaypoints()
 end
 
 function TurnManeuver:getCourse()
@@ -231,8 +238,9 @@ HeadlandCornerTurnManeuver = CpObject(TurnManeuver)
 -- reverse back straight, then forward on a curve, then back up to the corner, lower implements there.
 ------------------------------------------------------------------------
 ---@param turnContext TurnContext
-function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, reversingWorkTool)
-	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
+function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth,
+										 reversingWorkTool, steeringLength)
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
 
 	self:debug("(Turn) Using Headland Corner Reverse Turn for tractors")
 
@@ -256,13 +264,13 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 		setTranslation(helperNode, dx, dy, dz)
 	end
 	-- in reverse our reference point is the implement's turn node so put the first reverse waypoint behind us
-	fromPoint.x, _, fromPoint.z = localToWorld(self.vehicleDirectionNode, 0, 0, - self.directionNodeToTurnNodeLength )
+	fromPoint.x, _, fromPoint.z = localToWorld(self.vehicleDirectionNode, 0, 0, - self.steeringLength )
 
 	-- allow for a little buffer so we can straighten out the implement
-	local buffer = self.directionNodeToTurnNodeLength * 0.8
+	local buffer = self.steeringLength * 0.8
 
 	-- now back up so the tractor is at the start of the arc
-	toPoint = corner:getPointAtDistanceFromArcStart(self.directionNodeToTurnNodeLength + self.reverseWPChangeDistance + buffer)
+	toPoint = corner:getPointAtDistanceFromArcStart(self.steeringLength + self.reverseWPChangeDistance + buffer)
 	-- helper node is where we would be at this point of the turn, so check if next target is behind or in front of us
 	_, _, dz = worldToLocal( helperNode, toPoint.x, toPoint.y, toPoint.z )
 	CpUtil.destroyNode(helperNode)
@@ -277,8 +285,8 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 
 	-- Drive forward until our implement reaches the circle end and a bit more so it is hopefully aligned with the tractor
 	-- and we can start reversing more or less straight.
-	fromPoint = corner:getPointAtDistanceFromArcEnd((self.directionNodeToTurnNodeLength + self.wpChangeDistance + buffer) * 0.2)
-	toPoint = corner:getPointAtDistanceFromArcEnd(self.directionNodeToTurnNodeLength + self.wpChangeDistance + buffer)
+	fromPoint = corner:getPointAtDistanceFromArcEnd((self.steeringLength + self.wpChangeDistance + buffer) * 0.2)
+	toPoint = corner:getPointAtDistanceFromArcEnd(self.steeringLength + self.wpChangeDistance + buffer)
 	self:debug("(Turn) HeadlandCornerTurnManeuver, from ( %.2f %.2f ), to ( %.2f %.2f)",
 		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z)
 

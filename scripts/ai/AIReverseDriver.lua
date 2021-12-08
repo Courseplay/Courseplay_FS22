@@ -184,7 +184,7 @@ function AIReverseDriver:setReversingProperties(implement)
 		self:debug('--> implement.steeringAxleNode == implement.reversingProperties.frontNode')
 		implement.reversingProperties.isPivot = false
 	else
-		implement.reversingProperties.isPivot = false
+		implement.reversingProperties.isPivot = true
 	end
 
 	self:debug('--> isPivot=%s, frontNode=%s', 
