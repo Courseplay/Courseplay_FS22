@@ -86,6 +86,8 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         if not gx then
             -- simple reverse (not towing anything), just use PPC
             gx, _, gz = self.ppc:getGoalPointPosition()
+            -- TODO_22
+            maxSpeed = 5
         end
     else
         gx, _, gz = self.ppc:getGoalPointPosition()
@@ -111,7 +113,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WORKING then
         maxSpeed = self.vehicle:getSpeedLimit(true)
     elseif self.state == self.states.TURNING then
-        maxSpeed = self.aiTurn:getDriveData()
+        maxSpeed = math.min(maxSpeed, self.aiTurn:getDriveData())
     end
     self:setAITarget()
     self:debugSparse('%.1f/%.1f', gx, gz)
