@@ -640,7 +640,7 @@ end
 ---@return dz z world direction
 function Course:getWaypointWorldDirections(ix)
 	local wp = self.waypoints[math.min(#self.waypoints, ix)]
-	return wp.dx,wp.dz
+	return wp.dx, wp.dz
 end
 
 -- This is the radius from the course generator. For now ony island bypass waypoints nodes have a
@@ -1111,6 +1111,14 @@ function Course.createFromNode(vehicle, referenceNode, xOffset, from, to, step, 
 	return course
 end
 
+--- Move a course by dx/dz world coordinates
+function Course:translate(dx, dz)
+	for _, wp in ipairs(self.waypoints) do
+		wp.x = wp.x + dx
+		wp.z = wp.z + dz
+		wp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wp.x, 0, wp.z)
+	end
+end
 --- Create a new temporary course between two nodes.
 ---@param vehicle table
 ---@param startNode number

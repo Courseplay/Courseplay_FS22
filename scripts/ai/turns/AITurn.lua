@@ -463,8 +463,8 @@ end
 -- this turn starts when the vehicle reached the point where the implements are raised.
 -- now use turn.lua to generate the turn maneuver waypoints
 function CourseTurn:startTurn()
-	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
 	-- TODO_22
+	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
 	if false and (canTurnOnField or self.vehicle.cp.settings.turnOnField:is(false)) and
 			self.turnContext:isPathfinderTurn(self.turningRadius * 2) then
 		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
@@ -578,13 +578,15 @@ end
 
 function CourseTurn:generateCalculatedTurn()
 	local turnManeuver
+	local reversingImplement, steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
 	if self.turnContext:isHeadlandCorner() then
 		-- TODO_22
-		local reversingImplement, steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-				self.turningRadius, self.workWidth, reversingImplement, steeringLength)
+			self.turningRadius, self.workWidth, reversingImplement, steeringLength)
 	else
-		turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(), self.turningRadius)
+		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
+		turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
+			self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
