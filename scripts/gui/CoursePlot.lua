@@ -60,7 +60,7 @@ function CoursePlot:setWaypoints( waypoints )
 	-- remove waypoints from long straight lines, the plot only needs start/end. Too many waypoints
 	-- in the plot are a performance problem
 	table.insert(self.waypoints, waypoints[1])
-	self.waypoints[1].progress = 0
+	self.waypoints[1].progress = 1 / #waypoints
 	for i = 2, #waypoints - 1 do
 		if math.abs(waypoints[i].angle - waypoints[i - 1].angle) > math.pi / 1800 then
 			table.insert(self.waypoints, waypoints[i])
@@ -129,9 +129,7 @@ function CoursePlot:draw()
 				dx = np.x - wp.x;
 				dz = np.z - wp.z;
 				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5;
-				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress);
-
-				--r, g, b = self:normalizeRgb(42, 193, 237)
+				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress)
 
 				setOverlayColor( self.courseOverlayId, r, g, b, 1 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )

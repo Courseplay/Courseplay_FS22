@@ -454,10 +454,11 @@ function CourseTurn:getForwardSpeed()
 			-- TODO_22
 			--self.driveStrategy:setSpeed((self.driveStrategy:getFieldSpeed() + self.vehicle.cp.speeds.turn) / 2)
 			return 1.5 * AITurn.getForwardSpeed(self)
+		else
+			return AITurn.getForwardSpeed(self)
 		end
-	else
-		return AITurn.getForwardSpeed(self)
 	end
+	return AITurn.getForwardSpeed(self)
 end
 
 -- this turn starts when the vehicle reached the point where the implements are raised.

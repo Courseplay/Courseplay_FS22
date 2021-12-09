@@ -237,7 +237,6 @@ function TurnManeuver:moveCourseBack(course, dBack)
 	local reverseBeforeTurn = Course.createFromNode(self.vehicle, self.turnContext.workEndNode,
 		0, -self.steeringLength, -self.steeringLength - dBack, -1, true)
 	local dx, dz = reverseBeforeTurn:getWaypointWorldDirections(1)
-	reverseBeforeTurn:print()
 	self:debug('translating turn course: dx=%.1f, dz=%.1f', dx * dBack, dz * dBack)
 	course:translate(dx * dBack, dz * dBack)
 	reverseBeforeTurn:append(course)
@@ -246,7 +245,6 @@ function TurnManeuver:moveCourseBack(course, dBack)
 	if dFromTurnEnd > 0 then
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
 			0, dFromTurnEnd - self.steeringLength, -self.steeringLength, -1, true)
-		reverseAfterTurn:print()
 		reverseBeforeTurn:append(reverseAfterTurn)
 	end
 	return reverseBeforeTurn
@@ -328,11 +326,13 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	self:debug("from ( %.2f %.2f ), to ( %.2f %.2f) workWidth: %.1f, dz = %.1f",
 		fromPoint.x, fromPoint.z, toPoint.x, toPoint.z, self.workWidth, dz )
 	local fromIx, toIx = self:generateStraightSection( fromPoint, toPoint, dz < 0)
-	self:addTurnControl(fromIx, toIx, TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED, #self.waypoints)
+	-- this is where the arc will begin, and once the tractor reaches it, can switch to forward
+	local changeToFwdIx = #self.waypoints + 1
 	-- Generate turn circle (Forward)
 	local startDir = corner:getArcStart()
 	local stopDir = corner:getArcEnd()
 	self:generateTurnCircle(centerForward, startDir, stopDir, self.turningRadius, self.direction * -1, true)
+	self:addTurnControl(fromIx, toIx, TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED, changeToFwdIx)
 
 	-- Drive forward until our implement reaches the circle end and a bit more so it is hopefully aligned with the tractor
 	-- and we can start reversing more or less straight.
