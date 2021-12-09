@@ -20,8 +20,13 @@ function Courseplay:loadMap(filename)
 	self:registerSchema()
 	self:load()
 	self:setupGui()
---	local xmlFile = XMLFile.load("courseplayXml",self.cpFolderPath.."" , Vehicle.xmlSchemaSavegame)
---	self.globalSettings:loadFromXMLFile()
+	if g_currentMission.missionInfo.savegameDirectory ~= nil then
+		local filePath = g_currentMission.missionInfo.savegameDirectory .. "/Courseplay.xml"
+		self.xmlFile = XMLFile.load("cpXml", filePath , self.schema)
+		if self.xmlFile == nil then return end
+		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.BASE_KEY)
+		self.xmlFile:delete()
+	end
 end
 
 function Courseplay:registerSchema()
@@ -35,9 +40,15 @@ function Courseplay:setupGui()
 	CpGlobalSettingsFrame.init()
 end
 
-function Courseplay:saveToXMLFile()
---	self.globalSettings:saveToXMLFile()
+function Courseplay.saveToXMLFile(missionInfo)
+	if missionInfo.isValid then 
+		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", "Courseplay", g_Courseplay.schema)
+		g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.BASE_KEY)
+		xmlFile:save()
+		xmlFile:delete()
+	end
 end
+FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
 	g_devHelper:update()

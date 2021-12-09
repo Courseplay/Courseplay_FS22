@@ -10,6 +10,7 @@ CpVehicleSettings.KEY = "."..CpVehicleSettings.MOD_NAME..".cpVehicleSettings"
 function CpVehicleSettings.initSpecialization()
 	local schema = Vehicle.xmlSchemaSavegame
     schema:register(XMLValueType.INT,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#value","Setting value")
+    schema:register(XMLValueType.INT,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#name","Setting name")
 end
 
 
@@ -103,6 +104,7 @@ function CpVehicleSettings:saveToXMLFile(xmlFile, key, usedModNames)
     for i,setting in ipairs(spec.settings) do 
         local key = string.format("%s(%d)",key,i-1)
         setting:saveToXMLFile(xmlFile, key, usedModNames)
+        xmlFile:setValue(key.."#name",setting:getName())
         CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
     end
 end
