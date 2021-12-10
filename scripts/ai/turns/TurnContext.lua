@@ -422,7 +422,7 @@ function TurnContext:appendEndingTurnCourse(course)
     -- +1 so the first waypoint of the appended line won't overlap with the last wp of course
     for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + 3, 1 do
         local x, y, z = localToWorld(startNode, 0, 0, d)
-        table.insert(waypoints, {x = x, y = y, z = z, turnEnd = true})
+        table.insert(waypoints, {x = x, y = y, z = z})
     end
     course:appendWaypoints(waypoints)
 end

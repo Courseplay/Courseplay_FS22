@@ -178,7 +178,7 @@ function PurePursuitController:setNormalLookaheadDistance()
 end
 
 function PurePursuitController:setShortLookaheadDistance()
-	self.baseLookAheadDistance = self.shortLookaheadDistance
+	self.baseLookAheadDistance = self.veryShortLookaheadDistance
 end
 
 --- Set a short lookahead distance for ttlMs milliseconds

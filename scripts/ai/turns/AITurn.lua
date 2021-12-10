@@ -529,8 +529,8 @@ function CourseTurn:onWaypointChange(ix)
 		if self.useTightTurnOffset or self.turnCourse:useTightTurnOffset(ix) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
-			--self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse, self.tightTurnOffset, true)
-			--self.turnCourse:setOffset(self.tightTurnOffset, 0)
+			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse, self.tightTurnOffset, true)
+			self.turnCourse:setOffset(self.tightTurnOffset, 0)
 		end
 	end
 end
@@ -586,7 +586,8 @@ function CourseTurn:generateCalculatedTurn()
 			self.turningRadius, self.workWidth, reversingImplement, steeringLength)
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
-		if distanceToFieldEdge > self.workWidth then
+		if distanceToFieldEdge > self.workWidth or steeringLength > 0 then
+			-- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
 			turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 				self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
 		else

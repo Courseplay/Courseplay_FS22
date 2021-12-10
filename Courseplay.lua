@@ -61,6 +61,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
+	addConsoleCommand( 'printStrategyVariable', 'Print g_currentMission.controlledVehicle.spec_aiFieldWorker.driveStrategies[2].variable', 'printStrategyVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
 	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'saveAllFields', self )
@@ -106,6 +107,11 @@ end
 function Courseplay:printVehicleVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
 	local prefix = variableName and 'g_currentMission.controlledVehicle' or 'g_currentMission'
 	variableName = variableName or 'controlledVehicle'
+	self:printVariableInternal( prefix, variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+end
+
+function Courseplay:printStrategyVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+	local prefix = 'g_currentMission.controlledVehicle.spec_aiFieldWorker.driveStrategies[2]'
 	self:printVariableInternal( prefix, variableName, maxDepth, printToXML,printToSeparateXmlFiles)
 end
 

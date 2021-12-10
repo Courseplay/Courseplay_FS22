@@ -68,7 +68,7 @@ function AIReverseDriver:getDriveData()
 
 	local lxTractor, lzTractor = 0, 0
 
-	local maxTractorAngle = math.rad(60)
+	local maxTractorAngle = math.rad(75)
 
 	-- for articulated vehicles use the articulated axis' rotation node as it is a better indicator or the
 	-- vehicle's orientation than the direction node which often turns/moves with an articulated vehicle part
@@ -139,6 +139,7 @@ function AIReverseDriver:getDriveData()
 	lx, lz = -lx * self.ppc:getLookaheadDistance(), -lz * self.ppc:getLookaheadDistance()
 	-- AIDriveStrategy wants a global position to drive to (which it later converts to local, but whatever...)
 	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
+	DebugUtil.drawDebugLine(gx, ty, gz, gx, ty + 3, gz, 1, 0, 0)
 	-- TODO_22 reverse speed
 	return gx, gz, false, 5
 end
