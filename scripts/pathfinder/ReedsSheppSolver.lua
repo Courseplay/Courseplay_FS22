@@ -28,7 +28,6 @@ https://github.com/mattbradley/AutonomousCar
 ReedsSheppSolver = CpObject(AnalyticSolver)
 
 function ReedsSheppSolver:init()
-    self.numPathWords = 48
 end
 
 local sin, cos, asin, acos, atan2, abs, sqrt, floor, huge, pi =
@@ -39,7 +38,7 @@ local piHalf = pi / 2
 
 ---@param start State3D
 ---@param goal State3D
-function ReedsSheppSolver:solve(start, goal, turnRadius, allowReverse)
+function ReedsSheppSolver:solve(start, goal, turnRadius, enabledPathWords)
     -- Translate the goal so that the start position is at the origin
     -- Also normalize to turnRadius so all circles are unit circles (radius == 1)
     local newGoal = State3D((goal.x - start.x) / turnRadius, (goal.y - start.y) / turnRadius, self:wrapAngle(goal.t - start.t))
@@ -49,7 +48,7 @@ function ReedsSheppSolver:solve(start, goal, turnRadius, allowReverse)
     local bestPathLength = huge
     local bestWord, bestKey
     local bestT, bestU, bestV = 0, 0, 0
-    for key, word in pairs(ReedsShepp.PathWords) do
+    for key, word in pairs(enabledPathWords or ReedsShepp.PathWords) do
         local potentialLength, t, u, v = self:calculatePathLength(newGoal, word)
         if potentialLength < huge then
            --   print(key, potentialLength)

@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 PathfinderUtil = {}
 
 PathfinderUtil.dubinsSolver = DubinsSolver()
-PathfinderUtil.reedSheppSolver = ReedsSheppSolver()
+PathfinderUtil.reedsSheppSolver = ReedsSheppSolver()
 
 PathfinderUtil.defaultOffFieldPenalty = 7.5
 PathfinderUtil.defaultAreaToAvoidPenalty = 2000
@@ -723,9 +723,10 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
 end
 
 ------------------------------------------------------------------------------------------------------------------------
---- Generate a Dubins path between the vehicle and the goal node
+--- Generate an analytic path between the vehicle and the goal node
 ------------------------------------------------------------------------------------------------------------------------
----@param vehicle table
+---@param solver AnalyticSolver for instance PathfinderUtil.dubinsSolver or PathfinderUtil.reedsSheppSolver
+---@param vehicleDirectionNode number Giants node
 ---@param startOffset number offset in meters relative to the vehicle position (forward positive, backward negative) where
 --- we want the turn to start
 ---@param goalReferenceNode table node used to determine the goal
@@ -733,14 +734,17 @@ end
 ---@param zOffset number offset in meters relative to the goal node (forward positive, backward negative)
 --- Together with the goalReferenceNode defines the goal
 ---@param turnRadius number vehicle turning radius
-function PathfinderUtil.findDubinsPath(vehicleDirectionNode, startOffset, goalReferenceNode, xOffset, zOffset, turnRadius)
+function PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, goalReferenceNode,
+										 xOffset, zOffset, turnRadius)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleDirectionNode, 0, startOffset or 0)
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, xOffset or 0, zOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
-    local solution = PathfinderUtil.dubinsSolver:solve(start, goal, turnRadius)
-    local dubinsPath = solution:getWaypoints(start, turnRadius)
-    return dubinsPath, solution:getLength(turnRadius)
+    local solution = solver:solve(start, goal, turnRadius)
+	local length, path = solution:getLength(turnRadius)
+	-- a solution with math.huge length means no soulution found
+    if length < 100000 then path = solution:getWaypoints(start, turnRadius) end
+    return path, length
 end
 
 
@@ -868,7 +872,8 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
 		local dx, dy, dz = localDirectionToWorld(vehicle:getAIDirectionNode(), xOffset, 0, xOffset == 0 and 1 or 0)
 		local yRot = MathUtil.getYRotationFromDirection(dx, dz)
 		setRotation(PathfinderUtil.helperNode, 0, yRot, 0)
-		local path, len = PathfinderUtil.findDubinsPath(vehicle:getAIDirectionNode(), 0, PathfinderUtil.helperNode, 0, 0, turnRadius)
+		local path, len = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
+			vehicle:getAIDirectionNode(), 0, PathfinderUtil.helperNode, 0, 0, turnRadius)
 		-- making sure we continue with the correct trailer heading
 		path[1]:setTrailerHeading(start:getTrailerHeading())
 		State3D.calculateTrailerHeadings(path, hitchLength)

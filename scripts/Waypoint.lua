@@ -395,7 +395,7 @@ function Course:enrichWaypointData()
 			self.waypoints[i].yRot = 0
 		end
 		self.waypoints[i].angle = math.deg(self.waypoints[i].yRot)
-		self.waypoints[i].calculatedRadius = self:calculateRadius(i)
+		self.waypoints[i].calculatedRadius = i == 1 and math.huge or self:calculateRadius(i)
 		if (self:isReverseAt(i) and not self:switchingToForwardAt(i)) or self:switchingToReverseAt(i) then
 			-- X offset must be reversed at waypoints where we are driving in reverse
 			self.waypoints[i].reverseOffset = true
@@ -440,8 +440,8 @@ function Course:enrichWaypointData()
 end
 
 function Course:calculateRadius(ix)
-	local deltaAngleDeg = math.deg(getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot))
-	return math.abs( self:getDistanceToNextWaypoint(ix) / ( 2 * math.asin( math.rad(deltaAngleDeg) / 2 )))
+	local deltaAngle = getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
+	return math.abs( self:getDistanceToNextWaypoint(ix) / ( 2 * math.asin(deltaAngle) / 2 ))
 end
 
 --- Is this the same course as otherCourse?
@@ -1077,9 +1077,7 @@ end
 ---@param dx number	direction to extend
 ---@param dz number direction to extend
 function Course:extend(length, dx, dz)
-	self:print()
 	local lastWp = self.waypoints[#self.waypoints]
-	local len = self.waypoints[#self.waypoints - 1].dToNext
 	dx, dz = dx or lastWp.dx, dz or lastWp.dz
 	local wpDistance = 2
 	for i = wpDistance, math.max(length, wpDistance), wpDistance do
@@ -1119,6 +1117,33 @@ function Course:translate(dx, dz)
 		wp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wp.x, 0, wp.z)
 	end
 end
+
+
+--- The Reeds-Shepp algorithm we have does not take into account any towed implement or trailer, it calculates
+--- the path for a single vehicle. Therefore, we need to extend the path at the cusps (direction changes) to
+--- allow the towed implement to also reach the cusp, or, when reversing, reverse enough that the tractor reaches
+--- the cusp.
+function Course:adjustForTowedImplements(extensionLength)
+	local waypoints = {self.waypoints[1]}
+	for i = 2, #self.waypoints do
+		if self:switchingDirectionAt(i) then
+			local wp = self.waypoints[i - 1]
+			local wpDistance = 1
+			for j = wpDistance, math.max(extensionLength, wpDistance), wpDistance do
+				local newWp = Waypoint(wp)
+				newWp.x = wp.x + wp.dx * j
+				newWp.z = wp.z + wp.dz * j
+				table.insert(waypoints, newWp)
+			end
+		else
+			table.insert(waypoints, self.waypoints[i])
+		end
+	end
+	self.waypoints = waypoints
+	self:enrichWaypointData()
+end
+
+
 --- Create a new temporary course between two nodes.
 ---@param vehicle table
 ---@param startNode number

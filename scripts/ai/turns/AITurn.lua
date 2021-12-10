@@ -586,8 +586,13 @@ function CourseTurn:generateCalculatedTurn()
 			self.turningRadius, self.workWidth, reversingImplement, steeringLength)
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
-		turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-			self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
+		if distanceToFieldEdge > self.workWidth then
+			turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
+				self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
+		else
+			turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
+				self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
+		end
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
@@ -599,7 +604,8 @@ function CourseTurn:generatePathfinderTurn()
 
 	if self.vehicle.cp.settings.usePathfindingInTurns:is(false) or self.turnContext:isSimpleWideTurn(self.turningRadius * 2) then
 		self:debug('Wide turn: generate turn with Dubins path, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
-		path = PathfinderUtil.findDubinsPath(self.vehicle, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+		path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
+			self:getAIDirectionNode(), startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
 		return self:onPathfindingDone(path)
 	else
 		self:debug('Wide turn: generate turn with hybrid A*, start offset %.1f, goal offset %.1f', startOffset, goalOffset)

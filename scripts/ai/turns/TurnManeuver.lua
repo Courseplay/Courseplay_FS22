@@ -5,6 +5,7 @@ TurnManeuver.wpDistance = 1.5  -- Waypoint Distance in Straight lines
 TurnManeuver.wpChangeDistance 					= 3
 TurnManeuver.reverseWPChangeDistance			= 5
 TurnManeuver.reverseWPChangeDistanceWithTool	= 3
+TurnManeuver.debugPrefix = '(Turn): '
 
 --- Turn controls which can be placed on turn waypoints and control the execution of the turn maneuver.
 -- Change direction when the implement is aligned with the tractor
@@ -49,7 +50,6 @@ function TurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRa
 	-- how far the furthest point of the maneuver is from the vehicle's direction node, used to
 	-- check if we can turn on the field
 	self.dzMax = -math.huge
-	self.debugPrefix = '(Turn): '
 end
 
 function TurnManeuver:getCourse()
@@ -250,17 +250,18 @@ function TurnManeuver:moveCourseBack(course, dBack)
 	return reverseBeforeTurn
 end
 
----@class DubinsTurnManeuver : TurnManeuver
-DubinsTurnManeuver = CpObject(TurnManeuver)
-
-function DubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength, distanceToFieldEdge)
+---@class AnalyticTurnManeuver : TurnManuever
+AnalyticTurnManeuver = CpObject(TurnManeuver)
+function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength, distanceToFieldEdge)
 	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
-	self.debugPrefix = '(DubinsTurn): '
 	self:debug('Start generating')
+	self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f',
+		turningRadius, workWidth, steeringLength, distanceToFieldEdge)
+
 	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.vehicle)
-	self:debug('generate turn with Dubins path, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
-	local path = PathfinderUtil.findDubinsPath(vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
-	self.course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+
+	self.course = self:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 	self.course:setUseTightTurnOffsetForLastWaypoints(10)
 	self.turnContext:appendEndingTurnCourse(self.course)
@@ -276,8 +277,65 @@ function DubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, tur
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge)
 	end
-
 	self.course:setTurnEndForLastWaypoints(5)
+end
+
+---@class DubinsTurnManeuver : AnalyticTurnManeuver
+DubinsTurnManeuver = CpObject(AnalyticTurnManeuver)
+
+function DubinsTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
+								 workWidth, steeringLength, distanceToFieldEdge)
+	self.debugPrefix = '(DubinsTurn): '
+	AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
+		workWidth, steeringLength, distanceToFieldEdge)
+end
+
+function DubinsTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode,
+											 xOffset, goalOffset, turningRadius)
+	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
+		vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+	return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+end
+
+---@class LeftTurnReedsSheppSolver : ReedsSheppSolver
+LeftTurnReedsSheppSolver = CpObject(ReedsSheppSolver)
+function LeftTurnReedsSheppSolver:solve(start, goal, turnRadius)
+	return ReedsSheppSolver.solve(self, start, goal, turnRadius, {ReedsShepp.PathWords.LfRbLf})
+end
+
+---@class RightTurnReedsSheppSolver : ReedsSheppSolver
+RightTurnReedsSheppSolver = CpObject(ReedsSheppSolver)
+function RightTurnReedsSheppSolver:solve(start, goal, turnRadius)
+	return ReedsSheppSolver.solve(self, start, goal, turnRadius, {ReedsShepp.PathWords.RfLbRf})
+end
+
+---@class ReedsSheppTurnManeuver : AnalyticTurnManeuver
+ReedsSheppTurnManeuver = CpObject(AnalyticTurnManeuver)
+
+function ReedsSheppTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius,
+								 workWidth, steeringLength, distanceToFieldEdge)
+	self.debugPrefix = '(ReedsSheppTurn): '
+	AnalyticTurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius,
+		workWidth, steeringLength, distanceToFieldEdge)
+end
+
+function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode,
+											 xOffset, goalOffset, turningRadius)
+	local solver
+	if self.turnContext:isLeftTurn() then
+		self:debug('using LeftTurnReedsSheppSolver')
+		solver = LeftTurnReedsSheppSolver()
+	else
+		self:debug('using RightTurnReedsSheppSolver')
+		solver = RightTurnReedsSheppSolver()
+	end
+	local path = PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, turnEndNode,
+		0, goalOffset, self.turningRadius)
+	local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+	course:print()
+	course:adjustForTowedImplements(self.steeringLength + 1)
+	course:print()
+	return course
 end
 
 ---@class HeadlandCornerTurnManeuver : TurnManeuver
