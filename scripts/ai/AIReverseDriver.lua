@@ -32,7 +32,11 @@ function AIReverseDriver:init(vehicle, ppc, course)
 	self.course = course
 	-- the main implement (towed) or trailer we are controlling
 	self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle)
-	self:setReversingProperties(self.reversingImplement)
+	if self.reversingImplement then
+		self:setReversingProperties(self.reversingImplement)
+	else
+		self:debug('No towed implement found.')
+	end
 	self:debug('AIReverseDriver created.')
 	-- TODO_22
 	-- handle HookLift
