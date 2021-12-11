@@ -464,10 +464,9 @@ end
 -- this turn starts when the vehicle reached the point where the implements are raised.
 -- now use turn.lua to generate the turn maneuver waypoints
 function CourseTurn:startTurn()
-	-- TODO_22
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
-	if false and (canTurnOnField or self.vehicle.cp.settings.turnOnField:is(false)) and
-			self.turnContext:isPathfinderTurn(self.turningRadius * 2) then
+	-- TODO_22 self.vehicle.cp.settings.turnOnField:is(false)
+	if false and (canTurnOnField or true) and self.turnContext:isPathfinderTurn(self.turningRadius * 2) then
 		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
 		-- but we don't have enough space and have to reverse, fall back to the generated turns
 		self:generatePathfinderTurn()
@@ -477,6 +476,7 @@ function CourseTurn:startTurn()
 		self.ppc:initialize(1)
 		self.state = self.states.TURNING
 	end
+	self.turnCourse:print()
 end
 
 function CourseTurn:isForwardOnly()
@@ -529,7 +529,8 @@ function CourseTurn:onWaypointChange(ix)
 		if self.useTightTurnOffset or self.turnCourse:useTightTurnOffset(ix) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
-			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse, self.tightTurnOffset, true)
+			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse,
+					self.tightTurnOffset, true)
 			self.turnCourse:setOffset(self.tightTurnOffset, 0)
 		end
 	end
@@ -582,10 +583,12 @@ function CourseTurn:generateCalculatedTurn()
 	local reversingImplement, steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
 	if self.turnContext:isHeadlandCorner() then
 		-- TODO_22
+		self:debug('This is a headland turn')
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 			self.turningRadius, self.workWidth, reversingImplement, steeringLength)
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
+		self:debug('This is NOT a headland turn, distanceToFieldEdge=%.1f', distanceToFieldEdge)
 		if distanceToFieldEdge > self.workWidth or steeringLength > 0 then
 			-- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
 			turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),

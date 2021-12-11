@@ -97,6 +97,7 @@ function Waypoint:set(wp, cpIndex)
 	self.mustReach = wp.mustReach
 	self.align = wp.align
 	self.headlandHeightForTurn = wp.headlandHeightForTurn
+	self.useTightTurnOffset = wp.useTightTurnOffset
 	self.turnControls = table.copy(wp.turnControls)
 end
 
@@ -353,13 +354,13 @@ end
 
 -- add missing angles and world directions from one waypoint to the other
 -- PPC relies on waypoint angles, the world direction is needed to calculate offsets
-function Course:enrichWaypointData()
+function Course:enrichWaypointData(startIx)
 	if #self.waypoints < 2 then return end
 	self.length = 0
 	self.headlandLength = 0
 	self.firstHeadlandWpIx = nil
 	self.firstCenterWpIx = nil
-	for i = 1, #self.waypoints - 1 do
+	for i = startIx or 1, #self.waypoints - 1 do
 		self.waypoints[i].dToHere = self.length
 		self.waypoints[i].dToHereOnHeadland = self.headlandLength
 		local cx, _, cz = self:getWaypointPosition(i)
@@ -738,10 +739,10 @@ end
 function Course:print()
 	for i = 1, #self.waypoints do
 		local p = self.waypoints[i]
-		print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s i=%s d=%.1f t=%d l=%s p=%s',
+		print(string.format('%d: x=%.1f z=%.1f a=%.1f yRot=%.1f ts=%s te=%s r=%s i=%s d=%.1f t=%d l=%s p=%s tt=%s',
 				i, p.x, p.z, p.angle or -1, math.deg(p.yRot or 0),
 				tostring(p.turnStart), tostring(p.turnEnd), tostring(p.rev), tostring(p.interact),
-				p.dToHere or -1, p.turnsToHere or -1, tostring(p.lane), tostring(p.pipeInFruit)))
+				p.dToHere or -1, p.turnsToHere or -1, tostring(p.lane), tostring(p.pipeInFruit), tostring(p.useTightTurnOffset)))
 	end
 end
 
@@ -1077,17 +1078,20 @@ end
 ---@param dx number	direction to extend
 ---@param dz number direction to extend
 function Course:extend(length, dx, dz)
+	-- remember the number of waypoints when we started
+	local nWaypoints = #self.waypoints
 	local lastWp = self.waypoints[#self.waypoints]
 	dx, dz = dx or lastWp.dx, dz or lastWp.dz
-	local wpDistance = 2
-	for i = wpDistance, math.max(length, wpDistance), wpDistance do
-		lastWp = self.waypoints[#self.waypoints]
-		local x = lastWp.x + dx * wpDistance
-		local z = lastWp.z + dz * wpDistance
+	local step = 5
+	local first = math.min(length, step)
+	local last = length
+	for i = first, last, step do
+		local x = lastWp.x + dx * i
+		local z = lastWp.z + dz * i
 		self:appendWaypoint({x = x, z = z})
 	end
-	self:enrichWaypointData()
-	self:print()
+	-- enrich the waypoints we added
+	self:enrichWaypointData(nWaypoints)
 end
 
 --- Create a new (straight) temporary course based on a node

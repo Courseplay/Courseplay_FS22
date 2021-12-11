@@ -116,7 +116,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         maxSpeed = math.min(maxSpeed, self.aiTurn:getDriveData())
     end
     self:setAITarget()
-    self:debugSparse('%.1f/%.1f', gx, gz)
     return gx, gz, moveForwards, maxSpeed, 100
 end
 
@@ -313,6 +312,11 @@ function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc, self.course)
+    if self.frontMarkerDistance < 0 then
+        self:debug('extend course by %.1f m to make sure we do not miss anything when the course ends',
+                -self.frontMarkerDistance)
+        self.course:extend(-self.frontMarkerDistance)
+    end
 end
 
 --- Find the foremost and rearmost AI marker

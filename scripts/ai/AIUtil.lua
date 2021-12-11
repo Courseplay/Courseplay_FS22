@@ -64,7 +64,6 @@ function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCal
 	else
 		r = course:getRadiusAtIx(course:getCurrentWaypointIx())
 	end
-
 	if not r then
 		return smoothOffset(0)
 	end
@@ -72,7 +71,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCal
 	-- limit the radius we are trying to follow to the vehicle's turn radius.
 	-- TODO: there's some potential here as the towed implement can move on a radius less than the vehicle's
 	-- turn radius so this limit may be too pessimistic
-	local turnDiameter = vehicle.cp.settings.turnDiameter:get()
+	local turnDiameter = r or vehicle.cp.settings.turnDiameter:get() -- TODO_22
 	r = math.max(r, turnDiameter / 2)
 
 	local towBarLength = AIUtil.getTowBarLength(vehicle)
