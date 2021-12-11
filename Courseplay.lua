@@ -208,13 +208,15 @@ end
 function Courseplay.register(typeManager)
 	--- TODO: make this function async. 
 	for typeName, typeEntry in pairs(typeManager.types) do	
-		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
+		if CourseplaySpec.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
 		end
-		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
+		if CpVehicleSettings.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpVehicleSettings")	
 		end
-
+		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
+		end
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)

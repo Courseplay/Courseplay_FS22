@@ -12,6 +12,7 @@ function CpSettingsUtil.init()
     local schema = CpSettingsUtil.setupXmlSchema	
 	local baseKey = "Settings.SettingSubTitle(?).Setting(?)"
 	-- valueTypeId, path, description, defaultValue, isRequired
+	schema:register(XMLValueType.STRING, "Settings#title","Settings prefix text")
 	schema:register(XMLValueType.STRING, "Settings#prefixText","Settings prefix text",nil,true)
 	schema:register(XMLValueType.STRING, "Settings.SettingSubTitle(?)#title", "Setting sub title",nil,true)
 	schema:register(XMLValueType.BOOL, "Settings.SettingSubTitle(?)#prefix", "Setting sub title is a prefix",true)
@@ -40,9 +41,14 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
     class.settings = {}
     class.settingsByName = {}
 	class.settingsBySubTitle = {}
-	class.globalNames = {}
     local uniqueID = 0
 	local setupKey = xmlFile:getValue("Settings#prefixText")
+	local pageTitle = xmlFile:getValue("Settings#title")
+	if pageTitle then
+		class.pageTitle =  g_i18n:getText(xmlFile:getValue("Settings#title"))
+	else 
+		class.pageTitle = g_i18n:getText(setupKey .. "title")
+	end
 	xmlFile:iterate("Settings.SettingSubTitle", function (i, masterKey)
 		local subTitle = xmlFile:getValue(masterKey.."#title")
 		--- This flag can by used to simplify the translation text. 
@@ -83,7 +89,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 				local value = xmlFile:getValue(key)
 				table.insert(settingParameters.values,value)
 				if name ~= nil and name ~= "" then
-					class.globalNames[name] = value
+					class[name] = value
 				end
 			end)
 			settingParameters.texts = {}
@@ -102,6 +108,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 
 			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters)
 			class.settingsByName[settingParameters.name] = setting
+			class[settingParameters.name] = settingParameters.name
 			table.insert(class.settings,setting)
 			table.insert(subTitleSettings.elements,setting)
 
@@ -129,6 +136,7 @@ end
 
 --- Clones for each setting and subtitle generic gui elements and applies basic setups.
 ---@param settingsBySubTitle table
+---@param pageTitle string
 ---@param parentGuiElement GuiElement
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement

@@ -18,7 +18,7 @@ function CpVehicleSettingsFrame.init()
 		return allowed
 	end
 
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,CpVehicleSettingsFrame,g_i18n:getText("CP_vehicle_setting_title")
+	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,CpVehicleSettingsFrame
 									,predicateFunc,3)
 	inGameMenu.pageCpVehicleSettings = page
 end
@@ -28,8 +28,9 @@ function CpVehicleSettingsFrame:initialize()
 	local layout = g_currentMission.inGameMenu.pageSettingsGeneral.boxLayout
 	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(layout)
 	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(layout)
-	
-	CpSettingsUtil.generateGuiElementsFromSettingsTable(CpVehicleSettings.getSettingSetup(),
+	local settingsBySubTitle,pageTitle = CpVehicleSettings.getSettingSetup()
+	self.pageTitle = pageTitle
+	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,genericSettingElement, genericSubTitleElement)
 
 	self.boxLayout:invalidateLayout()
@@ -42,7 +43,7 @@ function CpVehicleSettingsFrame:onFrameOpen()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
 	
 	--- Changes the page title.
-	local title = string.format(g_i18n:getText("CP_vehicle_setting_title"),vehicle:getName())
+	local title = string.format(self.pageTitle,vehicle:getName())
 	CpGuiUtil.changeTextForElementsWithProfileName(self,"ingameMenuFrameHeaderText",title)
 	
 	if vehicle ~=nil then 
@@ -59,7 +60,9 @@ end
 function CpVehicleSettingsFrame:onFrameClose()
 	InGameMenuGeneralSettingsFrame:superClass().onFrameClose(self)
 	if self.settings then
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,g_currentMission.controlledVehicle, "onFrameClose CpVehicleSettingsFrame" )
+		local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
+		local vehicle = InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
+		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "onFrameClose CpVehicleSettingsFrame" )
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.boxLayout)
 	end
 	self.settings = nil

@@ -6,7 +6,7 @@ CourseplaySpec = {}
 CourseplaySpec.MOD_NAME = g_currentModName
 
 function CourseplaySpec.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(Drivable, specializations) 
+    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
 
 function CourseplaySpec.registerEventListeners(vehicleType)	

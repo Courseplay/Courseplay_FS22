@@ -10,7 +10,7 @@ CpGuiUtil = {}
 ---@param predicateFunc function function called on inGameMenu:updatePages() and enables/disables the page.
 ---@param position number position in the in game menu.
 ---@return table
-function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,class,title,predicateFunc,position)
+function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,class,predicateFunc,position)
 	
 	local page = inGameMenu.pageSettingsGeneral:clone(inGameMenu.pageSettingsGeneral.parent,true)
 	--- Changes the page title.
@@ -113,7 +113,21 @@ function CpGuiUtil.executeFunctionForElementsWithProfileName(rootElement,profile
 	end
 end
 
---- Changes the string of children elements with a given profile name.
+--- Executes a function for all children elements.
+---@param rootElement GuiElement Searches in this element children elements.
+---@param lambda1 function
+---@param lambda2 function
+---@return GuiElement
+function CpGuiUtil.executeFunctionForElements(rootElement,lambda1,lambda2,...)
+	local items = rootElement:getDescendants(lambda1)
+	if items then 
+		for _,item in ipairs(items) do 
+			lambda2(item,...)
+		end
+	end
+end
+
+--- Changes the text of children elements with a given profile name.
 ---@param rootElement GuiElement Searches in this element children elements.
 ---@param profileName string 
 ---@param text string
@@ -121,6 +135,18 @@ end
 function CpGuiUtil.changeTextForElementsWithProfileName(rootElement,profileName,text)
 	CpGuiUtil.executeFunctionForElementsWithProfileName(rootElement,profileName,
 														TextElement.setText,text)
+end
+
+--- Changes the color of children elements with a given profile name.
+---@param rootElement GuiElement Searches in this element children elements.
+---@param profileName string 
+---@param color table r,g,b,alpha
+---@return GuiElement
+function CpGuiUtil.changeColorForElementsWithProfileName(rootElement,profileName,color)
+	local r,g,b,a = unpack(color)
+
+	CpGuiUtil.executeFunctionForElementsWithProfileName(rootElement,profileName,
+													BitmapElement.setImageColor,nil,r,g,b,a)
 end
 
 --- Gets the first multi text element for the rootElement.
@@ -135,4 +161,8 @@ end
 ---@return GuiElement
 function CpGuiUtil.getGenericSubTitleElementFromLayout(rootElement)
 	return CpGuiUtil.getFirstElementWithProfileName(rootElement,"settingsMenuSubtitle")
+end
+
+function CpGuiUtil.getNormalizedRgb(r, g, b,alpha)
+	return r / 255, g / 255, b / 255, alpha
 end

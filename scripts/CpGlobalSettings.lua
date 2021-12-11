@@ -16,11 +16,6 @@ end
 function CpGlobalSettings:loadSettingsSetup()
     local filePath = Utils.getFilename("config/GlobalSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(self,filePath)
-    if self.globalNames then 
-        for name,value in pairs(self.globalNames) do 
-            self[name] = value
-        end
-    end
 end
 
 function CpGlobalSettings:loadFromXMLFile(xmlFile,baseKey)
@@ -52,10 +47,14 @@ function CpGlobalSettings:setSettingValue(name,value)
     return self.settingsByName[name]:setValue(value)
 end
 
+function CpGlobalSettings:setSettingFloatValue(name,value)
+    return self.settingsByName[name]:setSettingFloatValue(value)
+end
+
 function CpGlobalSettings:getSettings()
     return self.settings
 end
 
 function CpGlobalSettings:getSettingSetup()
-	return self.settingsBySubTitle
+	return self.settingsBySubTitle,self.pageTitle
 end

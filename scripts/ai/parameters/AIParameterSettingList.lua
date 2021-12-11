@@ -193,8 +193,8 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self.guiElement.rightButtonElement.target = self
 	self.guiElement.leftButtonElement.onClickCallback = self.setPreviousItem
 	self.guiElement.rightButtonElement.onClickCallback = self.setNextItem
-	self:updateGuiElementValues()
 	self.guiElement:setTexts(self:getGuiElementTexts())
+	self:updateGuiElementValues()
 end
 
 function AIParameterSettingList:resetGuiElement()

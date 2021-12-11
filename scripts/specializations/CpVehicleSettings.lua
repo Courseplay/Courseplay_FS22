@@ -10,12 +10,12 @@ CpVehicleSettings.KEY = "."..CpVehicleSettings.MOD_NAME..".cpVehicleSettings"
 function CpVehicleSettings.initSpecialization()
 	local schema = Vehicle.xmlSchemaSavegame
     schema:register(XMLValueType.INT,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#value","Setting value")
-    schema:register(XMLValueType.INT,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#name","Setting name")
+    schema:register(XMLValueType.STRING,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#name","Setting name")
 end
 
 
 function CpVehicleSettings.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(Drivable, specializations) 
+    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
 
 function CpVehicleSettings.registerEventListeners(vehicleType)	
@@ -26,6 +26,7 @@ function CpVehicleSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCpSetting', CpVehicleSettings.getSetting)
     SpecializationUtil.registerFunction(vehicleType, 'getCpSettingValue', CpVehicleSettings.getSettingValue)
     SpecializationUtil.registerFunction(vehicleType, 'setCpSettingValue', CpVehicleSettings.setSettingValue)
+    SpecializationUtil.registerFunction(vehicleType, 'setCpSettingFloatValue', CpVehicleSettings.setSettingFloatValue)
     SpecializationUtil.registerFunction(vehicleType, 'getCpSettings', CpVehicleSettings.getSettings)
 end
 
@@ -53,6 +54,14 @@ function CpVehicleSettings:setSettingValue(name,value)
     return spec.settingsByName[name]:setValue(value)
 end
 
+--- Sets a single setting float value by it's name.
+---@param name string
+---@param value any
+function CpVehicleSettings:setSettingFloatValue(name,value)
+    local spec = self.spec_cpVehicleSettings
+    return spec.settingsByName[name]:setFloatValue(value)
+end
+
 --- Gets all settings.
 ---@return table
 function CpVehicleSettings:getSettings()
@@ -77,25 +86,22 @@ end
 function CpVehicleSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/VehicleSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpVehicleSettings,filePath)
-    if CpVehicleSettings.globalNames then 
-        for name,value in pairs(CpVehicleSettings.globalNames) do 
-            CpVehicleSettings[name] = value
-        end
-    end
 end
 CpVehicleSettings.loadSettingsSetup()
 
 function CpVehicleSettings.getSettingSetup()
-    return CpVehicleSettings.settingsBySubTitle
+    return CpVehicleSettings.settingsBySubTitle,CpVehicleSettings.pageTitle
 end
 
 function CpVehicleSettings:loadSettings(savegame)
     if savegame == nil or savegame.resetVehicles then return end
     local spec = self.spec_cpVehicleSettings
 	savegame.xmlFile:iterate(savegame.key..CpVehicleSettings.KEY, function (ix, key)
-		local setting = spec.settings[ix]
-        setting:loadFromXMLFile(savegame.xmlFile, key)
-        CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+        local setting = spec.settings[ix]
+        if setting then
+            setting:loadFromXMLFile(savegame.xmlFile, key)
+            CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+        end
 	end)
 end
 

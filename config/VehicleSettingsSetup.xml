@@ -30,24 +30,7 @@
 -->
 
 <Settings prefixText="CP_vehicle_setting_">
-	<!--ReturnToFirstPointSetting -->
-<!--	<Setting name="workWidth" title="CP_ai_param_workWidth_title" min="1" max="50" incremental="0.1"  tooltip="CP_vehicle_setting_returnToFirstPoint_tooltip"/> -->
-	<SettingSubTitle prefix="true" title="basic">
-		<Setting classType="AIParameterSettingList" name="returnToFirstPoint">
-			<Values>
-				<Value name="DEACTIVATED">1</Value> 
-				<Value name="RETURN_TO_START">2</Value> 
-				<Value name="RELEASE_DRIVER">3</Value> 
-				<Value name="RETURN_TO_START_AND_RELEASE_DRIVER">4</Value> 
-			</Values> 
-			<Texts>
-				<Text prefix="false">COURSEPLAY_DEACTIVATED</Text> 
-				<Text prefix="false">COURSEPLAY_ACTIVATED</Text> 
-				<Text>releaseDriver</Text> 
-				<Text>returnToStartAndReleaseDriver</Text> 
-			</Texts> 
-		</Setting>
-		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd">
-		</Setting>
+	<SettingSubTitle title="basic">
+		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd"/>
 	</SettingSubTitle>
 </Settings>

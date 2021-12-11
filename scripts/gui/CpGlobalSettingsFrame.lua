@@ -8,7 +8,7 @@ CpGlobalSettingsFrame = {}
 ---Creates the in game menu page.
 function CpGlobalSettingsFrame.init()
 	local inGameMenu = g_gui.screenControllers[InGameMenu]
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,CpGlobalSettingsFrame,g_i18n:getText("CP_global_setting_title")
+	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,CpGlobalSettingsFrame
 												,function () return true end,3)
 	inGameMenu.pageCpGlobalSettings = page
 end
@@ -20,9 +20,10 @@ function CpGlobalSettingsFrame:initialize()
 	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(layout)
 	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(layout)
 	self.settings = g_Courseplay.globalSettings:getSettings()
-	CpSettingsUtil.generateGuiElementsFromSettingsTable(g_Courseplay.globalSettings:getSettingSetup(),
+	local settingsBySubTitle,pageTitle = g_Courseplay.globalSettings:getSettingSetup()
+	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,genericSettingElement, genericSubTitleElement)
-
+	CpGuiUtil.changeTextForElementsWithProfileName(self,"ingameMenuFrameHeaderText",pageTitle)
 	CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
 
 	self.boxLayout:invalidateLayout()
