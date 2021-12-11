@@ -82,7 +82,7 @@ end
 
 function File:delete()
 	getfenv(0).deleteFile(self:getFullPath())
-	courseplay.debugFormat(courseplay.DBG_COURSES, 'deleted file %s', self:getFullPath())
+	courseplay.debugFormat(CpDebug.DBG_COURSES, 'deleted file %s', self:getFullPath())
 end
 
 --- A directory on the file system. This can recursively be traversed to all subdirectories.
@@ -135,9 +135,9 @@ end
 function Directory:delete()
 	if self:isEmpty() then
 		getfenv(0).deleteFolder(self:getFullPath())
-		courseplay.debugFormat(courseplay.DBG_COURSES, 'deleted folder %s', self:getFullPath())
+		courseplay.debugFormat(CpDebug.DBG_COURSES, 'deleted folder %s', self:getFullPath())
 	else
-		courseplay.debugFormat(courseplay.DBG_COURSES, 'folder %s is not empty, cannot delete', self:getFullPath())
+		courseplay.debugFormat(CpDebug.DBG_COURSES, 'folder %s is not empty, cannot delete', self:getFullPath())
 	end
 end
 
@@ -375,7 +375,7 @@ function CourseManager:init()
 	self.assignments = {}
 	-- representation of all waypoints loaded for a vehicle as needed by the legacy functions
 	self.legacyWaypoints = {}
-	self.savegameFolderPath = ('%ssavegame%d'):format(getUserProfileAppPath(), g_careerScreen.selectedIndex)
+	self.savegameFolderPath = g_careerScreen.currentSavegame.savegameDirectory
 	-- file where we save the courses assigned to each vehicle
 	self.savedAssignmentsXmlFilePath = self.savegameFolderPath .. '/courseplayCourseAssignments.xml'
 	-- this is the list of courses loaded from a savegame and waiting for the vehicle to grab them (to which they were
@@ -434,7 +434,7 @@ end
 --- and then save this course to the directory at index in the HUD
 function CourseManager:saveCourseFromVehicle(index, vehicle, name)
 	local dir = index and self:getViewAtIndex(index):getEntity() or self.courseDir
-	courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, 'saving course %s in folder %s', name, dir:getName())
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'saving course %s in folder %s', name, dir:getName())
 	local courses = self:getAssignedCourses(vehicle)
 	local course = courses[1]:copy()
 	for i = 2, #courses do
@@ -501,7 +501,7 @@ end
 function CourseManager:assignCourseToVehicle(vehicle, course)
 	course:setVehicle(vehicle)
 	self:assign(vehicle, course)
-	courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, 'course %s assigned', course:getName())
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'course %s assigned', course:getName())
 	self:updateLegacyCourseData(vehicle)
 end
 
@@ -511,7 +511,7 @@ function CourseManager:unloadAllCoursesFromVehicle(vehicle)
 	if ix then
 		self.legacyWaypoints[assignment.vehicle] = {}
 		table.remove(self.assignments, ix)
-		courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, 'unloaded all courses')
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'unloaded all courses')
 	end
 	self:updateLegacyCourseData(vehicle)
 end
@@ -547,7 +547,7 @@ function CourseManager:loadAssignedCourse(vehicle, assignmentId)
 	if self.savedAssignments[assignmentId] then
 		self.savedAssignments[assignmentId].vehicle = vehicle
 		for _, course in ipairs(self.savedAssignments[assignmentId].courses) do
-			courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, 'loading assigned course %s from savegame', course:getName())
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'loading assigned course %s from savegame', course:getName())
 			g_courseManager:assignCourseToVehicle(vehicle, course)
 		end
 	end
@@ -568,7 +568,7 @@ function CourseManager:saveAssignedCourses()
 		setXMLString(savedAssignmentsXml, key .. '#vehicle', nameNum(assignment.vehicle))
 		for i, course in ipairs(assignment.courses) do
 			local courseKey = string.format('%s.course(%d)', key, i - 1)
-			courseplay.debugVehicle(courseplay.DBG_COURSES, assignment.vehicle, 'saving assigned course %s', course:getName())
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, assignment.vehicle, 'saving assigned course %s', course:getName())
 			course:saveToXml(savedAssignmentsXml, courseKey)
 		end
 		assignmentId = assignmentId + 1
@@ -639,27 +639,23 @@ end
 --- Update all the legacy (as usual global) data structures related to a vehicle's loaded course
 -- TODO: once someone has the time and motivation, refactor those legacy structures
 function CourseManager:updateLegacyCourseData(vehicle)
-	-- force reload of the 2D plot
-	vehicle.cp.course2dDrawData = nil;
-	vehicle.cp.course2dUpdateDrawData = true;
 	self:updateLegacyWaypoints(vehicle);
 	if g_client then
-		courseplay.signs:updateWaypointSigns(vehicle);
+		-- TODO_22
+		--courseplay.signs:updateWaypointSigns(vehicle);
 	end
-	-- TODO: get rid of this global variable
-	vehicle:setCpVar('canDrive', self:hasCourse(vehicle), courseplay.isClient);
 end
 
 --- Get all courses assigned to the vehicle. These will be concatenated into a single course
 --- in the order they were added to the vehicle in the HUD
 function CourseManager:getCourse(vehicle, excludeFieldworkCourses)
 	local _, assignment = self:getAssignment(vehicle)
-	courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, 'getting courses:')
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'getting courses:')
 	local combinedCourse = Course(vehicle, {})
 	local nCurses = 0
 	for _, course in ipairs(assignment.courses) do
 		if not excludeFieldworkCourses or (excludeFieldworkCourses and not course:isFieldworkCourse()) then
-			courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, '\t adding %s', course:getName())
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, '\t adding %s', course:getName())
 			if combinedCourse:getName() == '' then
 				combinedCourse:setName(course:getName())
 			end
@@ -677,7 +673,7 @@ function CourseManager:getFieldworkCourse(vehicle)
 	local _, assignment = self:getAssignment(vehicle)
 	for _, course in ipairs(assignment.courses) do
 		if course:isFieldworkCourse() then
-			courseplay.debugVehicle(courseplay.DBG_COURSES, vehicle, 'getting fieldwork course %s', course:getName())
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'getting fieldwork course %s', course:getName())
 			return course
 		end
 	end

@@ -34,6 +34,8 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/CpUtil.lua"/>
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
+		<sourceFile filename="scripts/courseManager/CourseEvent.lua"/>
+		<sourceFile filename="scripts/courseManager/CourseManager.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Genetic.lua"/>

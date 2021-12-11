@@ -1,5 +1,5 @@
 lu = require("luaunit")
-package.path = package.path .. ";../?.lua"
+package.path = package.path .. ";../?.lua;../courseManager/?.lua"
 require('mock-GiantsEngine')
 require('mock-Courseplay')
 require('CpObject')

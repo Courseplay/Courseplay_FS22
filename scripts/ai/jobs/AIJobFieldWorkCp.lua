@@ -184,6 +184,7 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	-- save the course on the vehicle for the strategy to use later
 	self.course:setVehicle(vehicle)
 	vehicle:setFieldWorkCourse(self.course)
+	g_courseManager:loadGeneratedCourse(vehicle, self.course)
 end
 
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job

@@ -86,6 +86,7 @@ function Courseplay:load()
 
 	self.cpXmlFile = string.format("%s/%s",self.cpFolderPath,"courseplay.xml")		
 
+	g_courseManager = CourseManager()
 end
 
 function Courseplay:registerConsoleCommands()
@@ -108,7 +109,7 @@ function Courseplay:restartSaveGame(saveGameNumber)
 	end
 end
 
----@param amount amount
+---@param amount number
 function Courseplay:addMoney(amount)
 	g_currentMission:addMoney(amount ~= nil and tonumber(amount) or 0, g_currentMission.player.farmId, MoneyType.OTHER)	
 end

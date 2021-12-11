@@ -14,7 +14,7 @@ g_currentMission.missionInfo = {}
 g_currentMission.missionInfo.mapId = 'MockMap'
 
 g_careerScreen = {}
-g_careerScreen.selectedIndex = 1
+g_careerScreen.currentSavegame = {savegameDirectory = 'savegame1'}
 
 function getUserProfileAppPath()
     return './'
