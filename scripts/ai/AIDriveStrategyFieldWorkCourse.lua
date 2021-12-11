@@ -81,6 +81,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     local gx, gz
 
     local maxSpeed = self.vehicle:getSpeedLimit(true)
+    ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
         if not gx then
@@ -92,6 +93,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     else
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
+    ----------------------------------------------------------------
 
     if self.state == self.states.INITIAL then
         self:lowerImplements()
@@ -114,6 +116,9 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         maxSpeed = self.vehicle:getSpeedLimit(true)
     elseif self.state == self.states.TURNING then
         maxSpeed = math.min(maxSpeed, self.aiTurn:getDriveData())
+    elseif self.state == self.states.ON_CONNECTING_TRACK then
+        -- TODO_22
+        maxSpeed = self.vehicle:getSpeedLimit(true)
     end
     self:setAITarget()
     return gx, gz, moveForwards, maxSpeed, 100
@@ -267,10 +272,29 @@ end
 function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix)
     if self.state ~= self.states.TURNING and self.course:isTurnStartAtIx(ix) then
         self:startTurn(ix)
+    elseif self.state == self.states.ON_CONNECTING_TRACK then
+        if not self.course:isOnConnectingTrack(ix) then
+            -- reached the end of the connecting track, back to work
+            self:debug('connecting track ended, back to work, first lowering implements.')
+            self.state = self.states.WORKING
+            self:lowerImplements()
+        end
     end
 end
 
 function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix)
+    if self.state == self.states.WORKING then
+        -- check for transition to connecting track, make sure we've been on it for a few waypoints already
+        -- to avoid raising the implements too soon, this can be a problem with long implements not yet reached
+        -- the end of the headland track while the tractor is already on the connecting track
+        if self.course:isOnConnectingTrack(self.course:getCurrentWaypointIx()) and self.course:isOnConnectingTrack(ix) and self.course:isOnConnectingTrack(ix - 2) then
+            -- reached a connecting track (done with the headland, move to the up/down row or vice versa),
+            -- raise all implements while moving
+            self:debug('on a connecting track now, raising implements.')
+            self:raiseImplements()
+            self.fieldworkState = self.states.ON_CONNECTING_TRACK
+        end
+    end
     if ix == self.course:getNumberOfWaypoints() then
         self:debug('Last waypoint reached, stopping job.')
         self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
