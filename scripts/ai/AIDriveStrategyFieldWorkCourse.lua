@@ -270,7 +270,8 @@ end
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix)
-    if self.state ~= self.states.TURNING and self.course:isTurnStartAtIx(ix) then
+    if self.state ~= self.states.TURNING and self.state ~= self.states.ON_CONNECTING_TRACK
+            and self.course:isTurnStartAtIx(ix) then
         self:startTurn(ix)
     elseif self.state == self.states.ON_CONNECTING_TRACK then
         if not self.course:isOnConnectingTrack(ix) then
@@ -292,7 +293,7 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix)
             -- raise all implements while moving
             self:debug('on a connecting track now, raising implements.')
             self:raiseImplements()
-            self.fieldworkState = self.states.ON_CONNECTING_TRACK
+            self.state = self.states.ON_CONNECTING_TRACK
         end
     end
     if ix == self.course:getNumberOfWaypoints() then
