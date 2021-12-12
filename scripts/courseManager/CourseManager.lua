@@ -359,8 +359,8 @@ end
 CourseManager = CpObject()
 
 function CourseManager:init()
-	-- courses are stored in a folder per map, under modsSettings/Courseplay/Courses/<map name>/
-	local baseDir = getUserProfileAppPath() .. "/modsSettings/Courseplay"
+	-- courses are stored in a folder per map, under modSettings/Courseplay/Courses/<map name>/
+	local baseDir = getUserProfileAppPath() .. "/modSettings/Courseplay"
 	-- create subfolders one by one, seems like createFolder() can't recursively create subfolders
 	createFolder(baseDir)
 	baseDir = baseDir .. "/Courses/"
