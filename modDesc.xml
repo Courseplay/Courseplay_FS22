@@ -67,6 +67,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
 		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>

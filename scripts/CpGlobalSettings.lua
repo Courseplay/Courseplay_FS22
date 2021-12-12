@@ -20,10 +20,13 @@ end
 
 function CpGlobalSettings:loadFromXMLFile(xmlFile,baseKey)
     xmlFile:iterate(baseKey..CpGlobalSettings.KEY, function (ix, key)
-		local setting = self.settings[ix]
-        setting:loadFromXMLFile(xmlFile, key)
-        CpUtil.debugFormat(CpUtil.DBG_HUD,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-	end)
+		local name = xmlFile:getValue(key.."#name")
+        local setting = self.settingsByName[name]
+        if setting then
+            setting:loadFromXMLFile(xmlFile, key)
+            CpUtil.debugFormat(CpUtil.DBG_HUD,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+        end
+    end)
 end
 
 function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)

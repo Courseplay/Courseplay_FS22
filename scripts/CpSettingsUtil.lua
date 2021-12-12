@@ -3,32 +3,83 @@ CpSettingsUtil = {}
 --- Class reference name to Class.
 CpSettingsUtil.classTypes = {
 	["AIParameterSettingList"] = AIParameterSettingList.new,
-	["AIParameterBooleanSetting"] = AIParameterBooleanSetting.new
+	["AIParameterBooleanSetting"] = AIParameterBooleanSetting.new,
+	["AIParameterSpeedSetting"] = AIParameterSpeedSetting.new,
 }
 
+--[[
+	All the settings configurations.
+	They are divided by sub titles in the gui.
+	
+	All basic AIParameterSettingList can be initialized with values/texts or as an number sequence: [min:incremental:max]
+
+	Settings :
+		- prefixText (string):  pre fix text used for translations
+		
+		- SettingSubTitle(?) :
+			- prefix (bool): prefix used yes/no?, default = true
+			- title (string): sub title text in the gui menu
+
+			- Setting(?)
+				- classType (string): class name
+				- name (string): name of the setting 
+				- title (string): title text in the gui menu (optional)
+				- tooltip (string): tooltip text in the gui menu (optional)
+				- default(int) : default value to be set. (optional)
+
+				- min (int): min value
+				- max (int): max value
+				- incremental (float): increment (optional), default "1"
+				- text(string): string to format the setting value with in the gui element.
+				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional)
+
+				- neededSpecs(string): all specializations separated "," that are needed, default is enabled for every combo.
+				- disabledSpecs(string): all specializations separated "," that are disallowed , default is every combo is allowed.
+
+				- Values : 
+					- Value(?) :
+						- name (string): Global name, should be unique for all settings in this xml file.
+						- value (int): value
+				- Texts : 
+					- Text(?) :
+						- prefix (string): prefix used yes/no?, default = true
+						- value (string): translation text		
+]]--
 --- All xml values used by the settings setup xml files.
 function CpSettingsUtil.init()
     CpSettingsUtil.setupXmlSchema = XMLSchema.new("SettingsSetup")
     local schema = CpSettingsUtil.setupXmlSchema	
-	local baseKey = "Settings.SettingSubTitle(?).Setting(?)"
 	-- valueTypeId, path, description, defaultValue, isRequired
-	schema:register(XMLValueType.STRING, "Settings#title","Settings prefix text")
+	schema:register(XMLValueType.STRING, "Settings#title","Settings prefix text",nil,true)
 	schema:register(XMLValueType.STRING, "Settings#prefixText","Settings prefix text",nil,true)
-	schema:register(XMLValueType.STRING, "Settings.SettingSubTitle(?)#title", "Setting sub title",nil,true)
-	schema:register(XMLValueType.BOOL, "Settings.SettingSubTitle(?)#prefix", "Setting sub title is a prefix",true)
-    schema:register(XMLValueType.STRING, baseKey.."#name", "Setting name",nil,true)
-    schema:register(XMLValueType.STRING, baseKey.."#classType", "Setting class type",nil,true)
-	schema:register(XMLValueType.STRING, baseKey.."#title", "Setting tile")
-    schema:register(XMLValueType.STRING, baseKey.."#tooltip", "Setting tooltip")
-	schema:register(XMLValueType.INT, baseKey.."#min", "Setting min value")
-	schema:register(XMLValueType.INT, baseKey.."#max", "Setting max value")
-	schema:register(XMLValueType.FLOAT, baseKey.."#incremental", "Setting incremental",1)
+	
+	local key = "Settings.SettingSubTitle(?)"
+	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title",nil,true)
+	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix",true)
 
-	schema:register(XMLValueType.STRING, baseKey..".Values.Value(?)#name", "Setting value name", nil)
-	schema:register(XMLValueType.INT, baseKey..".Values.Value(?)", "Setting value", nil)
+	key = "Settings.SettingSubTitle(?).Setting(?)"
+    schema:register(XMLValueType.STRING, key.."#name", "Setting name",nil,true)
+    schema:register(XMLValueType.STRING, key.."#classType", "Setting class type",nil,true)
+	schema:register(XMLValueType.STRING, key.."#title", "Setting tile") -- optional
+    schema:register(XMLValueType.STRING, key.."#tooltip", "Setting tooltip") -- optional
+	schema:register(XMLValueType.INT, key.."#default", "Setting default value") -- optional
 
-	schema:register(XMLValueType.STRING, baseKey..".Texts.Text(?)", "Setting value text", nil)
-	schema:register(XMLValueType.BOOL, baseKey..".Texts.Text(?)#prefix", "Setting value text is a prefix", true)
+	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
+	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
+	schema:register(XMLValueType.FLOAT, key.."#incremental", "Setting incremental",1) -- optional
+	schema:register(XMLValueType.STRING, key.."#text", "Setting text") -- optional
+	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h,m ...)") --optional
+
+	schema:register(XMLValueType.STRING, key.."#neededSpecs", "Specializations needed for this setting to be enabled.") -- optional
+	schema:register(XMLValueType.STRING, key.."#disabledSpecs", "Specializations that disable this setting.") -- optional
+
+	key = "Settings.SettingSubTitle(?).Setting(?).Values.Value(?)"
+	schema:register(XMLValueType.INT, key, "Setting value", nil)
+	schema:register(XMLValueType.STRING, key.."#name", "Setting value name", nil)
+	
+	key = "Settings.SettingSubTitle(?).Setting(?).Texts.Text(?)"
+	schema:register(XMLValueType.STRING, key, "Setting value text", nil)
+	schema:register(XMLValueType.BOOL, key.."#prefix", "Setting value text is a prefix", true)
 end
 CpSettingsUtil.init()
 
@@ -78,12 +129,21 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 			else 
 				settingParameters.tooltip = g_i18n:getText(setupKey..settingParameters.name.."_tooltip")
 			end
+			settingParameters.default = xmlFile:getValue(baseKey.."#default")
+
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")
 			settingParameters.incremental = MathUtil.round(xmlFile:getValue(baseKey.."#incremental"),3)
+			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
+			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
+
+			local neededSpecsStr = xmlFile:getValue(baseKey.."#neededSpecs")
+			settingParameters.neededSpecs = CpSettingsUtil.getSpecsFromString(neededSpecsStr)
+
+			local disabledSpecs = xmlFile:getValue(baseKey.."#disabledSpecs")
+			settingParameters.disabledSpecs = CpSettingsUtil.getSpecsFromString(disabledSpecs)
 
 			settingParameters.values = {}
-
 			xmlFile:iterate(baseKey..".Values.Value", function (i, key)
 				local name = xmlFile:getValue(key.."#name")
 				local value = xmlFile:getValue(key)
@@ -92,8 +152,10 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 					class[name] = value
 				end
 			end)
+
 			settingParameters.texts = {}
 			xmlFile:iterate(baseKey..".Texts.Text", function (i, key)
+				--- This flag can by used to simplify the translation text. 
 				local prefix = xmlFile:getValue(key.."#prefix",true)
 				local text = xmlFile:getValue(key)
 				if prefix then
@@ -119,15 +181,31 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 	xmlFile:delete()
 end
 
+--- Gets Specializations form a string, where each is separated by a ",".
+---@param str string
+---@return table
+function CpSettingsUtil.getSpecsFromString(str)
+	if str then
+		local substrings = str:split(",")
+		local results = {}
+		if substrings ~= nil then
+			for i = 1, #substrings do
+				results[i] = g_specializationManager:getSpecializationByName(substrings[i])
+			end
+		end
+		return results
+	end
+end
+
 --- Clones a settings table.
 ---@param settings table
 ---@return table clonedSettings
 ---@return table clonedSettingsByNames
-function CpSettingsUtil.cloneSettingsTable(settings)
+function CpSettingsUtil.cloneSettingsTable(settings,...)
 	local clonedSettings = {}
 	local clonedSettingsByNames = {}
 	for _,setting in ipairs(settings) do 
-		local settingClone = setting:clone()
+		local settingClone = setting:clone(...)
 		table.insert(clonedSettings,settingClone)
 		clonedSettingsByNames[settingClone:getName()] = settingClone
 	end
@@ -136,7 +214,6 @@ end
 
 --- Clones for each setting and subtitle generic gui elements and applies basic setups.
 ---@param settingsBySubTitle table
----@param pageTitle string
 ---@param parentGuiElement GuiElement
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement

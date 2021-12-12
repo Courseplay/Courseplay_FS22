@@ -77,7 +77,7 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
-    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpCourseGeneratorSettings.settings)
+    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpCourseGeneratorSettings.settings,self)
 
     CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
@@ -98,10 +98,13 @@ function CpCourseGeneratorSettings:loadSettings(savegame)
     if savegame == nil or savegame.resetVehicles then return end
     local spec = self.spec_cpCourseGeneratorSettings
 	savegame.xmlFile:iterate(savegame.key..CpCourseGeneratorSettings.KEY, function (ix, key)
-		local setting = spec.settings[ix]
-        setting:loadFromXMLFile(savegame.xmlFile, key)
-        CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-	end)
+		local name = savegame.xmlFile:getValue(key.."#name")
+        local setting = spec.settingsByName[name]
+        if setting then
+            setting:loadFromXMLFile(savegame.xmlFile, key)
+            CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+        end
+    end)
 end
 
 function CpCourseGeneratorSettings:saveToXMLFile(xmlFile, key, usedModNames)

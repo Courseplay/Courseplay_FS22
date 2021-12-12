@@ -2,37 +2,13 @@
 
 
 <!-- 
-	All the vehicle specific settings can be setup here.
-	They are divided by sub titles in the gui.
-	
-	All basic AIParameterSettingList can be initialized with values/texts or as an number sequence: [min:incremental:max]
-
-	Settings :
-		- prefixText (string):  pre fix text used for translations
-		- SettingSubTitle(?) :
-			- prefix (bool): prefix used yes/no?
-			- title (string): sub title text in the gui menu
-			- Setting(?)
-				- classType (string): class name
-				- name (string): name of the setting 
-				- title (string): title text in the gui menu
-				- tooltip (string): tooltip text in the gui menu
-				- min (int): min value
-				- max (int): max value
-				- incremental (float): increment
-				- Values : 
-					- Value(?) :
-						- name (string): Global name, should be unique for all settings in this xml file.
-						- value (int): value
-				- Texts : 
-					- Text(?) :
-						- prefix (string): prefix used yes/no?
-						- value (string): translation text		
+	All the course generator settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
 -->
 
 <Settings prefixText="CP_vehicle_courseGeneratorSetting_">
 	<SettingSubTitle title="basic">
-		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1"/>
+		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2"/>
 		<Setting classType="AIParameterSettingList" name="centerMode">
 			<Values>
 				<Value name="CENTER_MODE_UP_DOWN">1</Value> 
@@ -88,8 +64,8 @@
 				<Value name="RETURN_TO_START_AND_RELEASE_DRIVER">4</Value> 
 			</Values> 
 			<Texts>
-				<Text prefix="false">COURSEPLAY_DEACTIVATED</Text> 
-				<Text prefix="false">COURSEPLAY_ACTIVATED</Text> 
+				<Text prefix="false">CP_activated</Text> 
+				<Text prefix="false">CP_deactivated</Text> 
 				<Text>releaseDriver</Text> 
 				<Text>returnToStartAndReleaseDriver</Text> 
 			</Texts> 

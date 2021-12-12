@@ -2,8 +2,9 @@
 <l10n>
 	<texts>
 
-		<text name="COURSEPLAY_ACTIVATED" 							text="aktiviert" />
-		<text name="COURSEPLAY_DEACTIVATED" 						text="deaktiviert" />
+		<text name="CP_activated" 									text="aktiviert" />
+		<text name="CP_deactivated" 								text="deaktiviert" />
+		<text name="CP_unit_meter" 									text="m" />
 
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"									text="CP: Feldarbeit" />
@@ -35,13 +36,70 @@
 		<text name="CP_ai_param_startOnHeadland_up_down_rows" 		text="Feldreihen" />
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"												text="Fahrzeug-einstellungen von (%s)"/>
-
-		<text name="CP_vehicle_setting_subTitle_courseGenerator"							text="Kursgenerator Einstellungen."/>
 		
 		<text name="CP_vehicle_setting_subTitle_basic"										text="Normale Einstellungen."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 									text="Stop am Endpunkt."/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 									text="Stop am Endpunkt."/>
+
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 							text="Geräte am Kursende einklappen"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Aktiviert/Deaktiviert das einklappen des Gerätes am Ende der Feldarbeit."/>
+
+		<text name="CP_vehicle_setting_raiseImplementEarly_title" 							text="Tool anheben"/>
+		<text name="CP_vehicle_setting_raiseImplementEarly_tooltip" 						text="Tool anheben am Ende einer Reihe oder am Start des Vorgewende-Wendemanövers."/>
+		<text name="CP_vehicle_setting_raiseImplementEarly_early" 							text="früh"/>
+		<text name="CP_vehicle_setting_raiseImplementEarly_late" 							text="spät"/>
+
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 							text="Tool absenken"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 						text="Tool absenken am Ende einer Reihe oder am Ende des Vorgewende-Wendemanövers."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" 							text="früh"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" 							text="spät"/>
+
+		<text name="CP_vehicle_setting_turnOnField_title" 									text="Wende auf dem Feld:"/>
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 								text="Wende auf dem Feld"/>
+
+		<text name="CP_vehicle_setting_toolOffsetX_title" 									text="Gerät-Versatz (seitlich)"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 								text="Gerät-Versatz (seitlich)"/>
+
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 									text="Gerät-Versatz (längs)"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 								text="Gerät-Versatz (längs)"/>
+
+		<text name="CP_vehicle_setting_turnDiameter_title" 									text="Wendekreis:"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 								text="Wendekreis:"/>
+	
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 								text="Rohr immer ausfahren."/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 							text="Rohr immer ausfahren, solange der Drescher auf einen Abfahrer wartet."/>
+
+		<text name="CP_vehicle_setting_stopForUnload_title" 								text="Während dem Abladen anhalten."/>
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" 								text="Während dem Abladen anhalten."/>
+
+		<text name="CP_vehicle_setting_strawSwath_title" 									text="Drescher Strohablage"/>
+		<text name="CP_vehicle_setting_strawSwath_tooltip" 									text="Drescher Strohablage"/>
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 								text="Nur Mitte"/>
+
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 						text="Spurreißer"/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 						text="Spurreißer an/aus."/>
+
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 				text="Düngefunktion der Sämaschine"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 				text="Aktiviert oder deaktiviert die Düngefunktion der Sämaschine."/>
+
+		<text name="CP_vehicle_setting_symmetricLaneChange_title" 							text="Symmetrischer Bahnwechsel"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 						text="Symmetrischer Bahnwechsel"/>
+
+		<text name="CP_vehicle_setting_convoyActive_title" 									text="Fahrzeugverband"/>
+		<text name="CP_vehicle_setting_convoyActive_tooltip" 								text="Fahrzeugverband"/>
+
+		<text name="CP_vehicle_setting_convoyMinDistance_title" 							text="Fahrzeugverband minimale Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 							text="Fahrzeugverband minimale Entfernung"/>
+		
+		<text name="CP_vehicle_setting_convoyMaxDistance_title" 							text="Fahrzeugverband maximale Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 							text="Fahrzeugverband maximale Entfernung"/>
+
+		<text name="CP_vehicle_setting_subTitle_speed" 										text="Geschwindigkeiten"/>
+
+		<text name="CP_vehicle_setting_fieldworkSpeed_title" 								text="Feldarbeit"/>
+		<text name="CP_vehicle_setting_fieldworkSpeed_tooltip" 								text="Feldarbeit"/>
+
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursgenerator-einstellungen von (%s)"/>

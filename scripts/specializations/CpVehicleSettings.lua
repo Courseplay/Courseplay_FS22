@@ -76,7 +76,7 @@ function CpVehicleSettings:onLoad(savegame)
     local spec = self.spec_cpVehicleSettings
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
-    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpVehicleSettings.settings)
+    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpVehicleSettings.settings,self)
 
     CpVehicleSettings.loadSettings(self,savegame)
 end
@@ -97,7 +97,8 @@ function CpVehicleSettings:loadSettings(savegame)
     if savegame == nil or savegame.resetVehicles then return end
     local spec = self.spec_cpVehicleSettings
 	savegame.xmlFile:iterate(savegame.key..CpVehicleSettings.KEY, function (ix, key)
-        local setting = spec.settings[ix]
+        local name = savegame.xmlFile:getValue(key.."#name")
+        local setting = spec.settingsByName[name]
         if setting then
             setting:loadFromXMLFile(savegame.xmlFile, key)
             CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
