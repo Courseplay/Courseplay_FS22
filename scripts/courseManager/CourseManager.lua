@@ -641,8 +641,7 @@ end
 function CourseManager:updateLegacyCourseData(vehicle)
 	self:updateLegacyWaypoints(vehicle);
 	if g_client then
-		-- TODO_22
-		--courseplay.signs:updateWaypointSigns(vehicle);
+		g_courseDisplay:updateWaypointSigns(vehicle);
 	end
 end
 

@@ -79,6 +79,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/gui/GiantsGuiExtended.lua"/>
 		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>
 		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
+		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

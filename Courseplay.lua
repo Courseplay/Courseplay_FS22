@@ -87,6 +87,7 @@ function Courseplay:load()
 	self.cpXmlFile = string.format("%s/%s",self.cpFolderPath,"courseplay.xml")		
 
 	g_courseManager = CourseManager()
+	g_courseDisplay = CourseDisplay()
 end
 
 function Courseplay:registerConsoleCommands()

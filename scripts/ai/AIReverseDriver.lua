@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/courseplay)
-Copyright (C) 2021 Peter Vaiko
+Copyright (C) 2021 Satis, Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ function AIReverseDriver:getDriveData()
 		lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(turnNode, xTipper,yTipper,zTipper)
 		self:showDirection(turnNode,lxTractor, lzTractor, 1, 1, 0)
 
-		local rotDelta = self.reversingImplement.reversingProperties.nodeDistance * 0.3
+		local rotDelta = self.reversingImplement.reversingProperties.nodeDistance * 0.5
 		local trailerToWaypointAngle = self:getLocalYRotationToPoint(node, tx, yTipper, tz, -1) * rotDelta
 		trailerToWaypointAngle = MathUtil.clamp(trailerToWaypointAngle, -math.rad(90), math.rad(90))
 		local tractorToTrailerAngle = self:getLocalYRotationToPoint(turnNode, xTipper, yTipper, zTipper, -1)
