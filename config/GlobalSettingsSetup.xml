@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the global settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_global_setting_">
+	<SettingSubTitle prefix="true" title="basic">
+		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd">
+		</Setting>
+	</SettingSubTitle>
+</Settings>

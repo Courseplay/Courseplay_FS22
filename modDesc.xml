@@ -66,14 +66,24 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
 		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
+		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
+		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
+		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
+		<sourceFile filename="scripts/gui/GiantsGuiExtended.lua"/>
+		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>
+		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
-        <specialization name="courseplaySpec"                   className="CourseplaySpec"                   filename="scripts/specializations/CourseplaySpec.lua" />
-    </specializations>
+        <specialization name="courseplaySpec" className="CourseplaySpec" filename="scripts/specializations/CourseplaySpec.lua" />
+		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
+		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
+	</specializations>
 
 	<inputBinding>
 		<actionBinding action="CP_DBG_CHANNEL_SELECT_PREVIOUS">

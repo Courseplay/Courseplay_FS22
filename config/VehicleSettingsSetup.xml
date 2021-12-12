@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the vehicle settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_vehicle_setting_">
+	<SettingSubTitle title="basic">
+		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd"/>
+		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd"/>
+		<Setting classType="AIParameterBooleanSetting" name="raiseImplementEarly">
+			<Texts>
+				<Text>early</Text>
+				<Text>late</Text>
+			</Texts>
+		</Setting>
+
+		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly">
+			<Texts>
+				<Text>early</Text>
+				<Text>late</Text>
+			</Texts>
+		</Setting>
+		<Setting classType="AIParameterBooleanSetting" name="turnOnField"/>
+		
+		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="turnDiameter" min="0" max="50" unit="2"/>
+
+		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold"/>
+		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
+		<Setting classType="AIParameterSettingList" name="strawSwath">
+			<Values>
+				<Value name="STRAW_SWATH_ON">1</Value>
+				<Value name="STRAW_SWATH_OFF">2</Value>
+				<Value name="STRAW_SWATH_ONLY_CENTER">3</Value>
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_activated</Text>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text>onlyCenter</Text>
+			</Texts>
+		</Setting>
+		
+		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic"/>
+		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled"/>
+		
+		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
+		<Setting classType="AIParameterBooleanSetting" name="convoyActive"/>
+		<Setting classType="AIParameterSettingList" name="convoyMinDistance" min="10" max="200" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="convoyMaxDistance" min="40" max="300" unit="2"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="speed">
+		<Setting classType="AIParameterSpeedSetting" name="fieldworkSpeed" min="5" max="50" unit="1"/>		
+
+	</SettingSubTitle>
+</Settings>

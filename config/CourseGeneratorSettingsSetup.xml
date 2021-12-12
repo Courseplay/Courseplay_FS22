@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- 
+	All the course generator settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_vehicle_courseGeneratorSetting_">
+	<SettingSubTitle title="basic">
+		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="centerMode">
+			<Values>
+				<Value name="CENTER_MODE_UP_DOWN">1</Value> 
+				<Value name="CENTER_MODE_SPIRAL">2</Value> 
+				<Value name="CENTER_MODE_CIRCULAR">3</Value> 
+				<Value name="CENTER_MODE_LANDS">4</Value> 
+			</Values> 
+			<Texts>
+				<Text>up_down</Text> 
+				<Text>spiral</Text> 
+				<Text>circular</Text> 
+				<Text>lands</Text> 
+			</Texts> 
+		</Setting>
+		<Setting classType="AIParameterSettingList" name="headlandCornerType" >
+			<Values>
+				<Value name="HEADLAND_CORNER_TYPE_SMOOTH">1</Value> 
+				<Value name="HEADLAND_CORNER_TYPE_SHARP">2</Value> 
+				<Value name="HEADLAND_CORNER_TYPE_ROUND">3</Value> 
+			</Values> 
+			<Texts>
+				<Text>smooth</Text> 
+				<Text>sharp</Text> 
+				<Text>round</Text> 
+			</Texts> 
+		</Setting>
+		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
+		<Setting classType="AIParameterSettingList" name="rowDirection" >
+			<Values>
+				<Value name="ROW_DIRECTION_AUTOMATIC">5</Value> 
+				<Value name="ROW_DIRECTION_LONGEST_EDGE">6</Value> 
+			</Values> 
+			<Texts>
+				<Text>automatic</Text> 
+				<Text>longest_edge</Text> 
+			</Texts> 
+		</Setting>
+		<Setting classType="AIParameterSettingList" name="startOnHeadland">
+			<Values>
+				<Value name="HEADLAND_START_ON_HEADLAND">1</Value> 
+				<Value name="HEADLAND_START_ON_UP_DOWN_ROWS">3</Value> 
+			</Values> 
+			<Texts>
+				<Text>on_headland</Text> 
+				<Text>up_down_rows</Text> 
+			</Texts> 
+		</Setting>
+		<Setting classType="AIParameterSettingList" name="returnToFirstPoint">
+			<Values>
+				<Value name="DEACTIVATED">1</Value> 
+				<Value name="RETURN_TO_START">2</Value> 
+				<Value name="RELEASE_DRIVER">3</Value> 
+				<Value name="RETURN_TO_START_AND_RELEASE_DRIVER">4</Value> 
+			</Values> 
+			<Texts>
+				<Text prefix="false">CP_activated</Text> 
+				<Text prefix="false">CP_deactivated</Text> 
+				<Text>releaseDriver</Text> 
+				<Text>returnToStartAndReleaseDriver</Text> 
+			</Texts> 
+		</Setting>
+	</SettingSubTitle>
+</Settings>

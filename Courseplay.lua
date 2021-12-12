@@ -3,7 +3,7 @@
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
-
+Courseplay.BASE_KEY = "Courseplay."
 
 function Courseplay:init()
 	self:registerConsoleCommands()
@@ -16,8 +16,39 @@ end
 --- This function is called on loading a savegame.
 ---@param filename string
 function Courseplay:loadMap(filename)
+	self.globalSettings = CpGlobalSettings()
+	self:registerSchema()
 	self:load()
+	self:setupGui()
+	if g_currentMission.missionInfo.savegameDirectory ~= nil then
+		local filePath = g_currentMission.missionInfo.savegameDirectory .. "/Courseplay.xml"
+		self.xmlFile = XMLFile.load("cpXml", filePath , self.schema)
+		if self.xmlFile == nil then return end
+		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.BASE_KEY)
+		self.xmlFile:delete()
+	end
 end
+
+function Courseplay:registerSchema()
+	self.schema = XMLSchema.new("Courseplay")
+	self.globalSettings:registerSchema(self.schema,self.BASE_KEY)
+end
+
+
+function Courseplay:setupGui()
+	CpVehicleSettingsFrame.init()
+	CpGlobalSettingsFrame.init()
+end
+
+function Courseplay.saveToXMLFile(missionInfo)
+	if missionInfo.isValid then 
+		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", "Courseplay", g_Courseplay.schema)
+		g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.BASE_KEY)
+		xmlFile:save()
+		xmlFile:delete()
+	end
+end
+FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
 	g_devHelper:update()
@@ -52,6 +83,8 @@ function Courseplay:load()
 	self.cpDebugPrintXmlFolderPath = string.format("%s/%s",self.cpFolderPath,"courseplayDebugPrint")
 	createFolder(self.cpDebugPrintXmlFolderPath)
 	self.cpDebugPrintXmlFilePathDefault = string.format("%s/%s",self.cpDebugPrintXmlFolderPath,"courseplayDebugPrint.xml")		
+
+	self.cpXmlFile = string.format("%s/%s",self.cpFolderPath,"courseplay.xml")		
 
 end
 
@@ -174,9 +207,15 @@ end
 ---@param typeManager TypeManager
 function Courseplay.register(typeManager)
 	--- TODO: make this function async. 
-	for typeName, typeEntry in pairs(typeManager.types) do
-		if SpecializationUtil.hasSpecialization(Drivable, typeEntry.specializations) then
+	for typeName, typeEntry in pairs(typeManager.types) do	
+		if CourseplaySpec.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
+		end
+		if CpVehicleSettings.prerequisitesPresent(typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpVehicleSettings")	
+		end
+		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
 		end
     end
 end

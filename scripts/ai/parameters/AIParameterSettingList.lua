@@ -3,9 +3,10 @@
 AIParameterSettingList = {}
 local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
 
-function AIParameterSettingList.new(data,customMt)
+function AIParameterSettingList.new(data,vehicle,customMt)
 	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
 	self.type = AIParameterType.SELECTOR
+	self.vehicle = vehicle
 	self.name = data.name
 	if next(data.values) ~=nil then 
 		self.values = data.values
@@ -13,21 +14,67 @@ function AIParameterSettingList.new(data,customMt)
 	else 
 		self.values = {}
 		self.texts = {}
-		AIParameterSettingList.generateValues(self.values,self.texts,data.min,data.max,data.incremental)
+		AIParameterSettingList.generateValues(self,self.values,self.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
 	end
+	self.title = data.title 
+	self.tooltip = data.tooltip
+
 	-- index of the current value/text
-	self.current = 1
+	self.current =  1
 	-- index of the previous value/text
 	self.previous = 1
+
+	if data.default ~=nil then
+		AIParameterSettingList.setFloatValue(self,data.default)
+		CpUtil.debugFormat(CpUtil.DBG_HUD,"%s set to default: %d",self.name,data.default)
+	end
+
+	self.data = data
+
+	self.guiElementId = data.uniqueID
+
+	self.guiElement = nil
+
+	self.isDisabled = false
+
 	return self
 end
 
+function AIParameterSettingList.getSpeedText(value)
+	return string.format("%1d %s",g_i18n:getSpeed(value),g_i18n:getSpeedMeasuringUnit())
+end
+
+function AIParameterSettingList.getDistanceText(value)
+	return string.format("%.1f %s",g_i18n:getDistance(value),g_i18n:getText("CP_unit_meter"))
+end
+
+function AIParameterSettingList.getAreaText(value)
+	return g_i18n:formatArea(value, 1, true)
+end
+
+AIParameterSettingList.UNITS = {
+	AIParameterSettingList.getSpeedText, --- km/h
+	AIParameterSettingList.getDistanceText, --- m
+	AIParameterSettingList.getAreaText --- ha/arcs
+}
+
+
 --- Generates numeric values and texts from min to max with incremental of inc or 1.
-function AIParameterSettingList.generateValues(values,texts,min,max,inc)
+---@param values table
+---@param texts table
+---@param min number
+---@param max number
+---@param inc number
+---@param textStr string
+---@param unit number
+function AIParameterSettingList:generateValues(values,texts,min,max,inc,textStr,unit)
 	inc = inc or 1
 	for i=min,max,inc do 
 		table.insert(values,i)
-		table.insert(texts,tostring(i))
+		local value = MathUtil.round(i,2)
+		local text = unit and AIParameterSettingList.UNITS[unit] and AIParameterSettingList.UNITS[unit](value) or tostring(value)
+		local text = textStr and string.format(textStr,value) or text
+		table.insert(texts,text)
 	end
 end
 
@@ -47,6 +94,7 @@ function AIParameterSettingList:setToIx(ix)
 		self.previous = self.current
 		self.current = ix
 		self:onChange()
+		self:updateGuiElementValues()
 	end
 end
 
@@ -74,6 +122,7 @@ function AIParameterSettingList:getDebugString()
 	return string.format('%s: %s', self.name, string.gsub(self.texts[self.current], '%%', 'percent'))
 end
 function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
+--	CpUtil.debugFormat(CP.D"")
 	xmlFile:setInt(key .. "#value", self.current)
 end
 
@@ -130,3 +179,70 @@ function AIParameterSettingList:setPreviousItem()
 	local new = self:checkAndSetValidValue(self.current - 1)
 	self:setToIx(new)
 end
+
+function AIParameterSettingList:clone(...)
+	return AIParameterSettingList.new(self.data,...)
+end
+
+function AIParameterSettingList:getTitle()
+	return self.title	
+end
+
+function AIParameterSettingList:getTooltip()
+	return self.tooltip	
+end
+
+function AIParameterSettingList:setGenericGuiElementValues(guiElement)
+	guiElement.leftButtonElement:setCallback("onClickCallback", "setPreviousItem")
+	guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
+	guiElement:setLabel(self:getTitle())
+	local toolTipElement = guiElement.elements[6]
+	toolTipElement:setText(self:getTooltip())
+end
+
+function AIParameterSettingList:getGuiElementTexts()
+	return self.texts
+end
+
+function AIParameterSettingList:getGuiElementStateFromValue(value)
+	for i = 1, #self.values do
+		if self.values[i] == value then
+			return i
+		end
+	end
+	return nil
+end
+
+function AIParameterSettingList:getGuiElementState()
+	return self:getGuiElementStateFromValue(self.values[self.current])
+end
+
+function AIParameterSettingList:updateGuiElementValues()
+	if self.guiElement == nil then return end
+	self.guiElement:setState(self:getGuiElementState())
+	self.guiElement:setDisabled(self.isDisabled)
+end
+
+function AIParameterSettingList:setGuiElement(guiElement)
+	self:validateCurrentValue()
+	self.guiElement = guiElement
+	self.guiElement.leftButtonElement.target = self
+	self.guiElement.rightButtonElement.target = self
+	self.guiElement.leftButtonElement.onClickCallback = self.setPreviousItem
+	self.guiElement.rightButtonElement.onClickCallback = self.setNextItem
+	self.guiElement:setTexts(self:getGuiElementTexts())
+	self:updateGuiElementValues()
+end
+
+function AIParameterSettingList:resetGuiElement()
+	self.guiElement = nil
+end
+
+function AIParameterSettingList:getName()
+	return self.name	
+end
+
+function AIParameterSettingList:getIsDisabled()
+	return self.isDisabled
+end
+

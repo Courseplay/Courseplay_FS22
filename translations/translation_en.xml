@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
-	<!--Jobs-->
-		<text name="FIELDWORK_CP"								text="CP: Fieldwork" />
-	<!--Generate course button-->
-		<text name="FIELDWORK_BUTTON" 							text="CP: Generate fieldwork course." />
-	<!--AI parameters field work-->
+
+		<text name="CP_activated" 								text="activated" />
+		<text name="CP_deactivated" 							text="deactivated" />
+		<text name="CP_unit_meter" 								text="m" />
+
 		<text name="CP_ai_param_workWidth_title"				text="Work width" />
 
 		<text name="CP_ai_param_numberOfHeadlands_title"		text="Number of headlands" />
@@ -29,6 +29,149 @@
 		<text name="CP_ai_param_startOnHeadland_on_headland" 	text="Headland" />
 		<text name="CP_ai_param_startOnHeadland_up_down_rows" 	text="Rows" />
 	<!-- -->
+
+	<!--Drivemodes-->
+		<text name="FIELDWORK_CP"									text="CP: Fieldwork" />
+	<!--Generate course button-->
+		<text name="CP_ai_page_generate_course" 					text="CP: Generate fieldwork course." />
+		<text name="CP_ai_page_open_course_generator" 				text="CP: Open/close course generator." />
+
+	<!-- VehicleSettings -->
+		<text name="CP_vehicle_setting_title"												text="Vehicle-settings of (%s)"/>
+		
+		<text name="CP_vehicle_setting_subTitle_basic"										text="Basic settings"/>
+
+		<text name="CP_vehicle_setting_stopAtEnd_title" 									text="Stop at end"/>
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 									text="Stop at end"/>
+
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 							text="Fold tools at course end"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Enables/disables automatic folding of implements at the end of the course."/>
+
+		<text name="CP_vehicle_setting_raiseImplementEarly_title" 							text="Tool rasing at the"/>
+		<text name="CP_vehicle_setting_raiseImplementEarly_tooltip" 						text="Tool raising at the end of a row or at the start of a headland turn."/>
+		<text name="CP_vehicle_setting_raiseImplementEarly_early" 							text="end of a row"/>
+		<text name="CP_vehicle_setting_raiseImplementEarly_late" 							text="start of a turn"/>
+
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 							text="Tool lowering at the"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 						text="Tool lowering at the start of a row or at the end of a headland turn."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" 							text="start of a row"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" 							text="end of a turn"/>
+
+		<text name="CP_vehicle_setting_turnOnField_title" 									text="Only turning on the field"/>
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 								text="Only turning on the field"/>
+
+		<text name="CP_vehicle_setting_toolOffsetX_title" 									text="Tool offset horizontal"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 								text="Tool offset horizontal"/>
+
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 									text="Tool offset vertical"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 								text="Tool offset vertical"/>
+
+		<text name="CP_vehicle_setting_turnDiameter_title" 									text="Turning circle width"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 								text="Turning circle width"/>
+	
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 								text="Always unfold the pipe"/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 							text="Always unfold the pipe or only while waiting on an unloader."/>
+
+		<text name="CP_vehicle_setting_stopForUnload_title" 								text="Stop while unloading"/>
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" 								text="Always stops driving, while unloading."/>
+
+		<text name="CP_vehicle_setting_strawSwath_title" 									text="Straw swath"/>
+		<text name="CP_vehicle_setting_strawSwath_tooltip" 									text="Enables/disables straw swath or only disables it on headlands."/>
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 								text="Headlands disabled"/>
+
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 						text="Ridge markers"/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 						text="Ridge markers on/off."/>
+
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 				text="Sowing machines use fertilizer"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 				text="Enables/disables fertilizer usage of sowing machines."/>
+
+		<text name="CP_vehicle_setting_symmetricLaneChange_title" 							text="Symmetric lane change"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 						text="Symmetric lane change"/>
+
+		<text name="CP_vehicle_setting_convoyActive_title" 									text="Vehicle convoy"/>
+		<text name="CP_vehicle_setting_convoyActive_tooltip" 								text="Vehicle convoy on/off"/>
+
+		<text name="CP_vehicle_setting_convoyMinDistance_title" 							text="Vehicle convoy min distance"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 							text="Vehicle convoy min distance"/>
+		
+		<text name="CP_vehicle_setting_convoyMaxDistance_title" 							text="Vehicle convoy max distance"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 							text="Vehicle convoy max distance"/>
+
+		<text name="CP_vehicle_setting_subTitle_speed" 										text="Speeds"/>
+
+		<text name="CP_vehicle_setting_fieldworkSpeed_title" 								text="Fieldwork"/>
+		<text name="CP_vehicle_setting_fieldworkSpeed_tooltip" 								text="Fieldwork"/>
+
+
+		<text name="CP_ai_param_centerMode_title"				text="Field center" />
+		<text name="CP_ai_param_centerMode_up_down" 			text="Up/down" />
+		<text name="CP_ai_param_centerMode_spiral" 				text="Spiral" />
+		<text name="CP_ai_param_centerMode_circular" 			text="Racetrack" />
+		<text name="CP_ai_param_centerMode_lands" 				text="Lands" />
+
+		<text name="CP_ai_param_headlandCornerType_title"		text="Headland corners" />
+		<text name="CP_ai_param_headlandCornerType_smooth" 		text="Smooth" />
+		<text name="CP_ai_param_headlandCornerType_sharp" 		text="Turn" />
+		<text name="CP_ai_param_headlandCornerType_round" 		text="Round" />
+
+		<text name="CP_ai_param_rowDirection_title"				text="Row start direction" />
+		<text name="CP_ai_param_rowDirection_automatic" 		text="Automatic" />
+		<text name="CP_ai_param_rowDirection_longest_edge" 		text="Longest edge" />
+
+		<text name="CP_ai_param_startOnHeadland_title"			text="Start work on" />
+		<text name="CP_ai_param_startOnHeadland_on_headland" 	text="Headland" />
+		<text name="CP_ai_param_startOnHeadland_up_down_rows" 	text="Rows" />
+
+
+	<!-- Vehicle course generator settings -->
+		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Course generator settings of (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Course generator settings of (%s)"/>
+		
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Work width" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Work width" />
+		
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Number of headlands" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands" />
+		
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Field center" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Field center" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Up/down" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spiral" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Racetrack" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Lands" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Headland corners" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Headland corners" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="Smooth" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Sharp" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Round" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Row start direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Row start direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatic" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Longest edge" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start work on" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start work on" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Headland" />
+
+
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stopping at the end"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stopping at the end"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="deactivated and release driver"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="activated and release driver"/>
+
+	<!-- GlobalSettings -->	
+		<text name="CP_global_setting_title"												text="Global-settings"/>
+		<text name="CP_global_setting_subTitle_basic"										text="Basic settings."/>
+
+		<text name="CP_global_setting_stopAtEnd_title" 										text="Stop at end"/>
+		<text name="CP_global_setting_stopAtEnd_tooltip" 									text="Stop at end."/>
+
+
+
+
 
 	</texts>
 </l10n>

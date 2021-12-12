@@ -36,9 +36,9 @@ end
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
-	self.aiParametersFilePath = Utils.getFilename("config/FieldWorkAIParameters.xml", g_Courseplay.BASE_DIRECTORY)
-	self:initXmlSchema()
-	self:enrichAIParameters(self.aiParametersFilePath)
+--	self.aiParametersFilePath = Utils.getFilename("config/FieldWorkAIParameters.xml", g_Courseplay.BASE_DIRECTORY)
+--	self:initXmlSchema()
+--	self:enrichAIParameters(self.aiParametersFilePath)
 	CoursePlot.getInstance():setVisible(false)
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
@@ -113,7 +113,7 @@ function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectSt
 		end
 	end
 	-- for now, always take the auto work width
-	self.workWidthParameter:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
+	vehicle:setCourseGeneratorSettingFloatValue(CpCourseGeneratorSettings.workWidth,WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end
 
 --- Called when parameters change, scan field
@@ -155,22 +155,25 @@ function AIJobFieldWorkCp:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
 end
 
+function AIJobFieldWorkCp:hasGeneratedCourse()
+	return self.hasValidPosition and self.course ~= nil	
+end
+
 --- Button callback to generate a field work course.
 function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
-	print("onClickGenerateFieldWorkCourse")
-
 	local vehicle = self.vehicleParameter:getVehicle()
+	local getValue = vehicle.getCourseGeneratorSettingValue
 	local status, ok
 	status, ok, self.course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
 			0,
-			self.workWidthParameter:getValue(),
+			getValue(vehicle,CpCourseGeneratorSettings.workWidth),
 			AIUtil.getTurningRadius(vehicle),
-			self.numberOfHeadlandsParameter:getValue(),
-			self.startOnHeadlandParameter:getValue(),
-			self.headlandCornerTypeParameter:getValue(),
-			self.centerModeParameter:getValue(),
-			self.rowDirectionParameter:getValue()
+			getValue(vehicle,CpCourseGeneratorSettings.numberOfHeadlands),
+			getValue(vehicle,CpCourseGeneratorSettings.startOnHeadland),
+			getValue(vehicle,CpCourseGeneratorSettings.headlandCornerType),
+			getValue(vehicle,CpCourseGeneratorSettings.centerMode),
+			getValue(vehicle,CpCourseGeneratorSettings.rowDirection)
 	)
 	if not ok then
 		return false, 'could not generate course'
@@ -193,30 +196,3 @@ if g_currentMission then
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)
-
---- Adds the course generate button.
-function AIJobFieldWorkCp.loadFromXmlInGameMenu(self, xmlFile, key)
-	self.buttonGenerateCourse = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
-	self.buttonGenerateCourse:setText(g_i18n:getText(AIJobFieldWorkCp.translations.GenerateButton))
-	--self.buttonGenerateCourse:setText("generator")
-	self.buttonGenerateCourse:setVisible(false)
-	self.buttonGenerateCourse.onClickCallback = self.onClickGenerateFieldWorkCourse
-	self.buttonGotoJob.parent:invalidateLayout()
-end
-InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,AIJobFieldWorkCp.loadFromXmlInGameMenu)
-
-
---- Updates generate button visibility.
-function AIJobFieldWorkCp.updateContextInputBarVisibilityIngameMenu(self)
-	local visible = self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse()
-	self.buttonGenerateCourse:setVisible(visible)
-end
-
-InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,AIJobFieldWorkCp.updateContextInputBarVisibilityIngameMenu)
-
---- Button Callback.
-function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
-	if self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse() then 
-		self.currentJob:onClickGenerateFieldWorkCourse()
-	end
-end
