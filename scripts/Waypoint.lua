@@ -99,6 +99,8 @@ function Waypoint:set(wp, cpIndex)
 	self.headlandHeightForTurn = wp.headlandHeightForTurn
 	self.useTightTurnOffset = wp.useTightTurnOffset
 	self.turnControls = table.copy(wp.turnControls)
+	self.dToNext = wp.dToNext
+	self.yRot = wp.yRot
 end
 
 --- Set from a generated waypoint (output of the course generator)

@@ -59,7 +59,7 @@ function CourseDisplay:delete()
 		end
 	end
 
-	for _,itemNode in pairs(courseplay.signs.protoTypes) do
+	for _,itemNode in pairs(self.protoTypes) do
 		self:deleteSign(itemNode)
 	end
 end
@@ -165,7 +165,7 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
 		end
 
 		local np
-		for i,wp in pairs(waypoints) do
+		for i, wp in pairs(waypoints) do
     		if idx == nil or i == idx then  -- add this for courseEditor
     			local neededSignType = 'normal'
     			if i == 1 then
@@ -180,7 +180,7 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
 
     			-- direction + angle
     			if wp.rotX == nil then wp.rotX = 0 end
-    			if wp.y == nil or wp.cy == 0 then
+    			if wp.y == nil or wp.y == 0 then
     				wp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wp.x, 0, wp.z)
     			end
 
@@ -191,13 +191,10 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
     				end
 
     				wp.dirX, wp.dirY, wp.dirZ = MathUtil.vector3Normalize(np.x - wp.x, np.y - wp.y, np.z - wp.z)
-					wp.distToNextPoint = MathUtil.vector3Length(np.x - wp.x, np.y - wp.y, np.z - wp.z)
-    				if wp.distToNextPoint <= 0.01 and i > 1 then
+    				if wp.dToNext <= 0.01 and i > 1 then
     					local pp = waypoints[i - 1]
     					wp.dirX, wp.dirY, wp.dirZ = pp.dirX, pp.dirY, pp.dirZ
     				end
-    				wp.rotY = MathUtil.getYRotationFromDirection(wp.dirX, wp.dirZ)
-    				wp.angle = deg(wp.rotY)
 
     				local dy = np.y - wp.y
     				local dist2D = MathUtil.vector2Length(np.x - wp.x, np.z - wp.z)
@@ -205,7 +202,7 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
     			else
     				local pp = waypoints[i - 1]
 					if pp then
-						wp.dirX, wp.dirY, wp.dirZ, wp.distToNextPoint = pp.dirX, pp.dirY, pp.dirZ, 0
+						wp.dirX, wp.dirY, wp.dirZ, wp.dToNext = pp.dirX, pp.dirY, pp.dirZ, 0
 						wp.rotX = 0
 						wp.rotY = pp.rotY
 					end
@@ -229,7 +226,7 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
     								local signPart = getChildAt(existingSignData.sign, 1)
     								setRotation(signPart, -wp.rotX, 0, 0)
     							end
-    							self:setWaypointSignLine(existingSignData.sign, wp.distToNextPoint, true)
+    							self:setWaypointSignLine(existingSignData.sign, wp.dToNext, true)
     						end
     						if neededSignType ~= 'cross' then
     							self:setSignColor(existingSignData, diamondColor)
@@ -237,10 +234,10 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
     					end
     				else
     					self:moveToBuffer(vehicle, i, existingSignData)
-    					self:addSign(vehicle, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.distToNextPoint, diamondColor)
+    					self:addSign(vehicle, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
     				end
     			else
-    				self:addSign(vehicle, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.distToNextPoint, diamondColor)
+    				self:addSign(vehicle, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
     			end
     		end
 		end
