@@ -24,10 +24,11 @@ function CpVehicleSettingsFrame.init()
 end
 
 function CpVehicleSettingsFrame:initialize()
-	self.boxLayout.elements = {}
-	local layout = g_currentMission.inGameMenu.pageSettingsGeneral.boxLayout
-	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(layout)
-	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(layout)
+	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(self.boxLayout)
+	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(self.boxLayout)
+	for i = #self.boxLayout.elements, 1, -1 do
+		self.boxLayout.elements[i]:delete()
+	end
 	local settingsBySubTitle,pageTitle = CpVehicleSettings.getSettingSetup()
 	self.pageTitle = pageTitle
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
@@ -54,6 +55,9 @@ function CpVehicleSettingsFrame:onFrameOpen()
 		end
 	end
 	self.boxLayout:invalidateLayout()
+	self:setSoundSuppressed(true)
+	FocusManager:setFocus(self.boxLayout)
+	self:setSoundSuppressed(false)
 end
 
 --- Unbinds the settings of the selected vehicle to the gui elements.

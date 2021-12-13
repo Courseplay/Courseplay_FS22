@@ -102,16 +102,6 @@ end
 function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 
-	if vehicle.getLastJob ~= nil then
-		local lastJob = vehicle:getLastJob()
-		-- if there's a last job, reuse its parameters
-		if not isDirectStart and lastJob ~= nil and lastJob:isa(AIJobFieldWorkCp) then
-			for _, data in ipairs(self.aiParameters) do
-				local key = data.name .. "Parameter"
-				self[key]:setValue(lastJob[key]:getValue())
-			end
-		end
-	end
 	-- for now, always take the auto work width
 	vehicle:setCourseGeneratorSettingFloatValue(CpCourseGeneratorSettings.workWidth,WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end

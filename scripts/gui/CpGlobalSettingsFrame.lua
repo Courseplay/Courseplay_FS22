@@ -15,22 +15,29 @@ end
 
 --- Setup of the gui elements and binds the settings to the gui elements.
 function CpGlobalSettingsFrame:initialize()
-	self.boxLayout.elements = {}
-	local layout = g_currentMission.inGameMenu.pageSettingsGeneral.boxLayout
-	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(layout)
-	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(layout)
+	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(self.boxLayout)
+	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(self.boxLayout)
+	for i = #self.boxLayout.elements, 1, -1 do
+		self.boxLayout.elements[i]:delete()
+	end
+--	self.boxLayout:reloadFocusHandling(true)
 	self.settings = g_Courseplay.globalSettings:getSettings()
 	local settingsBySubTitle,pageTitle = g_Courseplay.globalSettings:getSettingSetup()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,genericSettingElement, genericSubTitleElement)
 	CpGuiUtil.changeTextForElementsWithProfileName(self,"ingameMenuFrameHeaderText",pageTitle)
 	CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
-
 	self.boxLayout:invalidateLayout()
+
 end
 
 function CpGlobalSettingsFrame:onFrameOpen()
 	InGameMenuGeneralSettingsFrame:superClass().onFrameOpen(self)
+	self.boxLayout:invalidateLayout()
+	self:setSoundSuppressed(true)
+	FocusManager:setFocus(self.boxLayout)
+	self:setSoundSuppressed(false)
+	
 end
 	
 function CpGlobalSettingsFrame:onFrameClose()

@@ -195,6 +195,7 @@ end
 function AIParameterSettingList:setGenericGuiElementValues(guiElement)
 	guiElement.leftButtonElement:setCallback("onClickCallback", "setPreviousItem")
 	guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
+	guiElement:setCallback("onClickCallback", "onClick")
 	guiElement:setLabel(self:getTitle())
 	local toolTipElement = guiElement.elements[6]
 	toolTipElement:setText(self:getTooltip())
@@ -226,10 +227,12 @@ end
 function AIParameterSettingList:setGuiElement(guiElement)
 	self:validateCurrentValue()
 	self.guiElement = guiElement
+	self.guiElement.target = self
 	self.guiElement.leftButtonElement.target = self
 	self.guiElement.rightButtonElement.target = self
 	self.guiElement.leftButtonElement.onClickCallback = self.setPreviousItem
 	self.guiElement.rightButtonElement.onClickCallback = self.setNextItem
+	self.guiElement.onClickCallback = self.onClick
 	self.guiElement:setTexts(self:getGuiElementTexts())
 	self:updateGuiElementValues()
 end
@@ -244,5 +247,9 @@ end
 
 function AIParameterSettingList:getIsDisabled()
 	return self.isDisabled
+end
+
+function AIParameterSettingList:onClick()
+	
 end
 

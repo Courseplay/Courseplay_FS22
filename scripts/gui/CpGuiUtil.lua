@@ -6,16 +6,12 @@ CpGuiUtil = {}
 --- Clones the setting in game menu page.
 ---@param inGameMenu InGameMenu
 ---@param class table
----@param title string
 ---@param predicateFunc function function called on inGameMenu:updatePages() and enables/disables the page.
 ---@param position number position in the in game menu.
 ---@return table
 function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,class,predicateFunc,position)
 	
 	local page = inGameMenu.pageSettingsGeneral:clone(inGameMenu.pageSettingsGeneral.parent,true)
-	--- Changes the page title.
-	CpGuiUtil.changeTextForElementsWithProfileName(page,"ingameMenuFrameHeaderText",title)
-
 	inGameMenu:registerPage(page, nil, predicateFunc)
 	inGameMenu:addPageTab(page,g_iconsUIFilename, GuiUtils.getUVs(InGameMenu.TAB_UV.GENERAL_SETTINGS)) -- use the global here because the value changes with resolution settings
 	page:applyScreenAlignment()
@@ -76,7 +72,7 @@ end
 ---@return GuiElement
 function CpGuiUtil.cloneElementWithProfileName(rootElement,profileName,parent)
 	local item = CpGuiUtil.getFirstElementWithProfileName(rootElement,profileName)
-	return item and item:clone(parent,true)
+	return item and item:clone(parent)
 end
 
 --- Gets all children elements with a given profile name.

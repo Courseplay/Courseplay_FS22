@@ -218,14 +218,25 @@ end
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,parentGuiElement,genericSettingElement,genericSubTitleElement)
+	local prevSetting = parentGuiElement
+	local firstSetting = settingsBySubTitle[1][1]
 	for _,data in ipairs(settingsBySubTitle) do 
-		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
+		genericSubTitleElement:unlinkElement()
+		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement,true)
+		parentGuiElement:invalidateLayout()
+	--	FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		clonedSubTitleElement:setText(data.title)
 		for _,setting in ipairs(data.elements) do 
-			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
+			genericSettingElement:unlinkElement()
+			local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
+--			parentGuiElement:invalidateLayout()
 			setting:setGenericGuiElementValues(clonedSettingElement)
+			clonedSettingElement:reloadFocusHandling(true)
+		--	FocusManager:linkElements(prevSetting,FocusManager.BOTTOM,clonedSettingElement)
+			prevSetting = clonedSettingElement
 		end
 	end
+	FocusManager:linkElements(prevSetting,FocusManager.BOTTOM,firstSetting)
 end
 
 --- Links the gui elements to the correct settings.
