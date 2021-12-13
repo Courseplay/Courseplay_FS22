@@ -46,7 +46,7 @@ function CourseplaySpec:onLeaveVehicle(isControlling)
     g_courseDisplay:setSignsVisibility(self, true);
 end
 
----@param course : Course
+---@param course  Course
 function CourseplaySpec:setFieldWorkCourse(course)
     self.course = course
 end

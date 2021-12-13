@@ -30,7 +30,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 		self:debug("set to default %s",data.default)
 	end
 
-	self.onChangeCallbackStr = data.onChangeCallbackStr
+	self.callbacks = data.callbacks
 
 	self.data = data
 
@@ -113,7 +113,7 @@ end
 
 function AIParameterSettingList:onChange()
 	if self.setupDone then
-		self:raiseCallback(self.onChangeCallbackStr)
+		self:raiseCallback(self.callbacks.onChangeCallbackStr)
 	end
 end
 

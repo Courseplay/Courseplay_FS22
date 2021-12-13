@@ -146,7 +146,9 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
 			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
 
-			settingParameters.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
+			settingParameters.callbacks = {}
+			settingParameters.callbacks.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
+
 
 			local neededSpecsStr = xmlFile:getValue(baseKey.."#neededSpecs")
 			settingParameters.neededSpecs = CpSettingsUtil.getSpecsFromString(neededSpecsStr)
@@ -275,6 +277,17 @@ function CpSettingsUtil.unlinkGuiElementsAndSettings(settings,layout)
 			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s",settings[i]:getName())
 			settings[i]:resetGuiElement()
 			i = i + 1
+		end
+	end
+end
+
+--- Raises an event for all settings.
+---@param settings table
+---@param eventName string
+function CpSettingsUtil.raiseEventForSettings(settings,eventName,...)
+	for _,setting in ipairs(settings) do 
+		if setting[eventName] then 
+			setting[eventName](setting,...)
 		end
 	end
 end
