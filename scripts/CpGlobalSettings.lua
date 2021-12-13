@@ -61,3 +61,7 @@ end
 function CpGlobalSettings:getSettingSetup()
 	return self.settingsBySubTitle,self.pageTitle
 end
+
+function CpGlobalSettings:raiseCallback(callbackStr)
+    
+end

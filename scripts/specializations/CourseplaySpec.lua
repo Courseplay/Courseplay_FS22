@@ -15,6 +15,11 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 --    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "updateSignVisibility", CourseplaySpec)
+end
+
+function CourseplaySpec.registerEvents(vehicleType)
+    SpecializationUtil.registerEvent(vehicleType, 'updateSignVisibility', CourseplaySpec.updateSignVisibility)
 end
 
 function CourseplaySpec.registerFunctions(vehicleType)
@@ -41,7 +46,7 @@ function CourseplaySpec:onLeaveVehicle(isControlling)
     g_courseDisplay:setSignsVisibility(self, true);
 end
 
----@param course : Course
+---@param course  Course
 function CourseplaySpec:setFieldWorkCourse(course)
     self.course = course
 end
@@ -61,3 +66,6 @@ function CourseplaySpec:getReverseDrivingDirectionNode()
     return spec.reverseDrivingDirectionNode
 end
 
+function CourseplaySpec:updateSignVisibility()
+    g_courseDisplay:updateWaypointSigns(self)
+end

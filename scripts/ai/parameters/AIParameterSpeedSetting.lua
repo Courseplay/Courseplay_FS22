@@ -4,9 +4,9 @@ AIParameterSpeedSetting = {}
 
 local AIParameterSpeedSetting_mt = Class(AIParameterSpeedSetting, AIParameterSettingList)
 
-function AIParameterSpeedSetting.new(data,vehicle,customMt)
+function AIParameterSpeedSetting.new(data,vehicle,class,customMt)
 	data.max = AIParameterSpeedSetting.getMaxSpeed(vehicle,data.max)
-	local self = AIParameterSettingList.new(data,vehicle,customMt or AIParameterSpeedSetting_mt)
+	local self = AIParameterSettingList.new(data,vehicle,class,customMt or AIParameterSpeedSetting_mt)
 
 	return self
 end

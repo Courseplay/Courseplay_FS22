@@ -13,6 +13,10 @@ CpSettingsUtil.classTypes = {
 	
 	All basic AIParameterSettingList can be initialized with values/texts or as an number sequence: [min:incremental:max]
 
+	Callbacks are passed as an string to to the class:raiseCallback() function.
+	If the class is a Specializations for example VehicleSettings, 
+	then the callback will be called as an event and must be registered by another specialization. 
+
 	Settings :
 		- prefixText (string):  pre fix text used for translations
 		
@@ -32,6 +36,8 @@ CpSettingsUtil.classTypes = {
 				- incremental (float): increment (optional), default "1"
 				- text(string): string to format the setting value with in the gui element.
 				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional)
+
+				- onChangeCallback(string): callback function raised on setting value changed. 
 
 				- neededSpecs(string): all specializations separated "," that are needed, default is enabled for every combo.
 				- disabledSpecs(string): all specializations separated "," that are disallowed , default is every combo is allowed.
@@ -70,6 +76,9 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.STRING, key.."#text", "Setting text") -- optional
 	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h,m ...)") --optional
 
+	--- callbacks:
+	schema:register(XMLValueType.STRING, key.."#onChangeCallback", "Setting callback on change") -- optional
+
 	schema:register(XMLValueType.STRING, key.."#neededSpecs", "Specializations needed for this setting to be enabled.") -- optional
 	schema:register(XMLValueType.STRING, key.."#disabledSpecs", "Specializations that disable this setting.") -- optional
 
@@ -83,8 +92,8 @@ function CpSettingsUtil.init()
 end
 CpSettingsUtil.init()
 
-function CpSettingsUtil.getSettingFromParameters(parameters)
-    return CpSettingsUtil.classTypes[parameters.classType](parameters)
+function CpSettingsUtil.getSettingFromParameters(parameters,...)
+    return CpSettingsUtil.classTypes[parameters.classType](parameters,...)
 end
 
 function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
@@ -137,6 +146,10 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
 			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
 
+			settingParameters.callbacks = {}
+			settingParameters.callbacks.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
+
+
 			local neededSpecsStr = xmlFile:getValue(baseKey.."#neededSpecs")
 			settingParameters.neededSpecs = CpSettingsUtil.getSpecsFromString(neededSpecsStr)
 
@@ -168,7 +181,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 
 			settingParameters.uniqueID = uniqueID
 
-			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters)
+			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters,nil,class)
 			class.settingsByName[settingParameters.name] = setting
 			class[settingParameters.name] = settingParameters.name
 			table.insert(class.settings,setting)
@@ -180,6 +193,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 	end)
 	xmlFile:delete()
 end
+
 
 --- Gets Specializations form a string, where each is separated by a ",".
 ---@param str string
@@ -218,14 +232,25 @@ end
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,parentGuiElement,genericSettingElement,genericSubTitleElement)
+	local prevSetting = parentGuiElement
+	local firstSetting = settingsBySubTitle[1][1]
 	for _,data in ipairs(settingsBySubTitle) do 
-		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
+		genericSubTitleElement:unlinkElement()
+		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement,true)
+		parentGuiElement:invalidateLayout()
+	--	FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		clonedSubTitleElement:setText(data.title)
 		for _,setting in ipairs(data.elements) do 
-			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
+			genericSettingElement:unlinkElement()
+			local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
+--			parentGuiElement:invalidateLayout()
 			setting:setGenericGuiElementValues(clonedSettingElement)
+			clonedSettingElement:reloadFocusHandling(true)
+		--	FocusManager:linkElements(prevSetting,FocusManager.BOTTOM,clonedSettingElement)
+			prevSetting = clonedSettingElement
 		end
 	end
+	FocusManager:linkElements(prevSetting,FocusManager.BOTTOM,firstSetting)
 end
 
 --- Links the gui elements to the correct settings.
@@ -252,6 +277,17 @@ function CpSettingsUtil.unlinkGuiElementsAndSettings(settings,layout)
 			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s",settings[i]:getName())
 			settings[i]:resetGuiElement()
 			i = i + 1
+		end
+	end
+end
+
+--- Raises an event for all settings.
+---@param settings table
+---@param eventName string
+function CpSettingsUtil.raiseEventForSettings(settings,eventName,...)
+	for _,setting in ipairs(settings) do 
+		if setting[eventName] then 
+			setting[eventName](setting,...)
 		end
 	end
 end
