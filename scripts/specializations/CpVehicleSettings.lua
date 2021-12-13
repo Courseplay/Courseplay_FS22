@@ -76,8 +76,8 @@ function CpVehicleSettings:onLoad(savegame)
     local spec = self.spec_cpVehicleSettings
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
-    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpVehicleSettings.settings,self)
-
+    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpVehicleSettings.settings,self,CpVehicleSettings)
+    
     CpVehicleSettings.loadSettings(self,savegame)
 end
 
@@ -114,4 +114,9 @@ function CpVehicleSettings:saveToXMLFile(xmlFile, key, usedModNames)
         xmlFile:setValue(key.."#name",setting:getName())
         CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
     end
+end
+
+--- Callback raised by a setting and executed as an vehicle event.
+function CpVehicleSettings:raiseCallback(callbackStr)
+    SpecializationUtil.raiseEvent(self,callbackStr)
 end

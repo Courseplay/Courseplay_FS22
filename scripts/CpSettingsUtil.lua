@@ -13,6 +13,10 @@ CpSettingsUtil.classTypes = {
 	
 	All basic AIParameterSettingList can be initialized with values/texts or as an number sequence: [min:incremental:max]
 
+	Callbacks are passed as an string to to the class:raiseCallback() function.
+	If the class is a Specializations for example VehicleSettings, 
+	then the callback will be called as an event and must be registered by another specialization. 
+
 	Settings :
 		- prefixText (string):  pre fix text used for translations
 		
@@ -32,6 +36,8 @@ CpSettingsUtil.classTypes = {
 				- incremental (float): increment (optional), default "1"
 				- text(string): string to format the setting value with in the gui element.
 				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional)
+
+				- onChangeCallback(string): callback function raised on setting value changed. 
 
 				- neededSpecs(string): all specializations separated "," that are needed, default is enabled for every combo.
 				- disabledSpecs(string): all specializations separated "," that are disallowed , default is every combo is allowed.
@@ -70,6 +76,9 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.STRING, key.."#text", "Setting text") -- optional
 	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h,m ...)") --optional
 
+	--- callbacks:
+	schema:register(XMLValueType.STRING, key.."#onChangeCallback", "Setting callback on change") -- optional
+
 	schema:register(XMLValueType.STRING, key.."#neededSpecs", "Specializations needed for this setting to be enabled.") -- optional
 	schema:register(XMLValueType.STRING, key.."#disabledSpecs", "Specializations that disable this setting.") -- optional
 
@@ -83,8 +92,8 @@ function CpSettingsUtil.init()
 end
 CpSettingsUtil.init()
 
-function CpSettingsUtil.getSettingFromParameters(parameters)
-    return CpSettingsUtil.classTypes[parameters.classType](parameters)
+function CpSettingsUtil.getSettingFromParameters(parameters,...)
+    return CpSettingsUtil.classTypes[parameters.classType](parameters,...)
 end
 
 function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
@@ -137,6 +146,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
 			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
 
+			settingParameters.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
+
 			local neededSpecsStr = xmlFile:getValue(baseKey.."#neededSpecs")
 			settingParameters.neededSpecs = CpSettingsUtil.getSpecsFromString(neededSpecsStr)
 
@@ -168,7 +179,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 
 			settingParameters.uniqueID = uniqueID
 
-			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters)
+			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters,nil,class)
 			class.settingsByName[settingParameters.name] = setting
 			class[settingParameters.name] = settingParameters.name
 			table.insert(class.settings,setting)
@@ -180,6 +191,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 	end)
 	xmlFile:delete()
 end
+
 
 --- Gets Specializations form a string, where each is separated by a ",".
 ---@param str string

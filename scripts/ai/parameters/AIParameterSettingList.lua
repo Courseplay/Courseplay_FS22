@@ -3,10 +3,11 @@
 AIParameterSettingList = {}
 local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
 
-function AIParameterSettingList.new(data,vehicle,customMt)
+function AIParameterSettingList.new(data,vehicle,class,customMt)
 	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
 	self.type = AIParameterType.SELECTOR
 	self.vehicle = vehicle
+	self.class = class
 	self.name = data.name
 	if next(data.values) ~=nil then 
 		self.values = data.values
@@ -26,8 +27,10 @@ function AIParameterSettingList.new(data,vehicle,customMt)
 
 	if data.default ~=nil then
 		AIParameterSettingList.setFloatValue(self,data.default)
-		CpUtil.debugFormat(CpUtil.DBG_HUD,"%s set to default: %d",self.name,data.default)
+		self:debug("set to default %s",data.default)
 	end
+
+	self.onChangeCallbackStr = data.onChangeCallbackStr
 
 	self.data = data
 
@@ -36,7 +39,7 @@ function AIParameterSettingList.new(data,vehicle,customMt)
 	self.guiElement = nil
 
 	self.isDisabled = false
-
+	self.setupDone = true
 	return self
 end
 
@@ -109,7 +112,9 @@ function AIParameterSettingList:checkAndSetValidValue(new)
 end
 
 function AIParameterSettingList:onChange()
-	-- setting specific implementation in the derived classes
+	if self.setupDone then
+		self:raiseCallback(self.onChangeCallbackStr)
+	end
 end
 
 function AIParameterSettingList:validateCurrentValue()
@@ -122,7 +127,6 @@ function AIParameterSettingList:getDebugString()
 	return string.format('%s: %s', self.name, string.gsub(self.texts[self.current], '%%', 'percent'))
 end
 function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
---	CpUtil.debugFormat(CP.D"")
 	xmlFile:setInt(key .. "#value", self.current)
 end
 
@@ -253,3 +257,24 @@ function AIParameterSettingList:onClick()
 	
 end
 
+--- Raises an event and sends the callback string to the Settings controller class.
+function AIParameterSettingList:raiseCallback(callbackStr)
+	if self.class and self.class.raiseCallback and callbackStr then 
+		self:debug("raised Callback %s",callbackStr)
+		--- If the setting is bound to a setting, then call the specialization function with self as vehicle.
+		if self.vehicle ~= nil then 
+			self.class.raiseCallback(self.vehicle,callbackStr)
+		else
+			self.class:raiseCallback(callbackStr)
+		end
+	end
+end
+
+function AIParameterSettingList:debug(str,...)
+	local name = string.format("%s: ",self.name)
+	if self.vehicle == nil then
+		CpUtil.debugFormat(CpUtil.DBG_HUD,name..str,...)
+	else 
+		CpUtil.debugVehicle(CpUtil.DBG_HUD,self.vehicle,name..str,...)
+	end
+end
