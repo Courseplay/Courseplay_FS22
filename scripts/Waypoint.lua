@@ -418,7 +418,7 @@ function Course:enrichWaypointData(startIx)
 			self.waypoints[#self.waypoints - 1].dToHereOnHeadland + self.waypoints[#self.waypoints - 1].dToNext or
 			self.waypoints[#self.waypoints - 1].dToHereOnHeadland
 	self.waypoints[#self.waypoints].turnsToHere = self.totalTurns
-	self.waypoints[#self.waypoints].calculatedRadius = self:calculateRadius(#self.waypoints)
+	self.waypoints[#self.waypoints].calculatedRadius = math.huge
 	self.waypoints[#self.waypoints].reverseOffset = self:isReverseAt(#self.waypoints)
 	-- now add some metadata for the combines
 	local dToNextTurn, lNextRow, nextRowStartIx = 0, 0, 0
@@ -442,7 +442,7 @@ end
 
 function Course:calculateRadius(ix)
 	local deltaAngle = getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
-	return math.abs( self:getDistanceToNextWaypoint(ix) / ( 2 * math.asin(deltaAngle) / 2 ))
+	return math.abs( self:getDistanceToNextWaypoint(ix) / ( 2 * math.sin(deltaAngle / 2 )))
 end
 
 --- Is this the same course as otherCourse?
