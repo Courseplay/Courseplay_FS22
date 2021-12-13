@@ -8,8 +8,8 @@ require('CourseManager')
 
 -- clean up
 local workingDir = io.popen"cd":read'*l'
-deleteFolder(workingDir .. '\\modsSettings')
-local coursesDir = 'modsSettings\\Courseplay\\Courses'
+deleteFolder(workingDir .. '\\modSettings')
+local coursesDir = 'modSettings\\Courseplay\\Courses'
 os.execute('mkdir ' .. coursesDir)
 local mapCoursesDir = workingDir .. '\\' .. coursesDir .. '\\' .. g_currentMission.missionInfo.mapId
 ------------------------------------------------------------------------------------------------------------------------
