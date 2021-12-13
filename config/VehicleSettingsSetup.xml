@@ -9,7 +9,7 @@
 	<SettingSubTitle title="basic">
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd"/>
 		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd"/>
-		<Setting classType="AIParameterBooleanSetting" name="raiseImplementEarly">
+		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate">
 			<Texts>
 				<Text>early</Text>
 				<Text>late</Text>
@@ -18,18 +18,21 @@
 
 		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly">
 			<Texts>
-				<Text>early</Text>
 				<Text>late</Text>
+				<Text>early</Text>
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField"/>
-		
+		<Setting classType="AIParameterBooleanSetting" name="avoidFruit"/>
+
 		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
 		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
 		<Setting classType="AIParameterSettingList" name="turnDiameter" min="0" max="50" unit="2"/>
 
 		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold"/>
 		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
+		<Setting classType="AIParameterBooleanSetting" name="selfUnload"/>
+		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland"/>
 		<Setting classType="AIParameterSettingList" name="strawSwath">
 			<Values>
 				<Value name="STRAW_SWATH_ON">1</Value>

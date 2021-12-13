@@ -39,16 +39,22 @@
 		
 		<text name="CP_vehicle_setting_subTitle_basic"										text="Normale Einstellungen."/>
 
+		<text name="CP_vehicle_setting_showCourse_title" 									text="Show course"/>
+		<text name="CP_vehicle_setting_showCourse_tooltip" 									text="Show the current course of the vehicle"/>
+
+		<text name="CP_vehicle_setting_showCourse_startStop" 								text="Start/stop only"/>
+		<text name="CP_vehicle_setting_showCourse_all" 										text="All waypoints"/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 									text="Stop am Endpunkt."/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 									text="Stop am Endpunkt."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 							text="Geräte am Kursende einklappen"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Aktiviert/Deaktiviert das einklappen des Gerätes am Ende der Feldarbeit."/>
 
-		<text name="CP_vehicle_setting_raiseImplementEarly_title" 							text="Tool anheben"/>
-		<text name="CP_vehicle_setting_raiseImplementEarly_tooltip" 						text="Tool anheben am Ende einer Reihe oder am Start des Vorgewende-Wendemanövers."/>
-		<text name="CP_vehicle_setting_raiseImplementEarly_early" 							text="früh"/>
-		<text name="CP_vehicle_setting_raiseImplementEarly_late" 							text="spät"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 							text="Tool anheben"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 						text="Tool anheben am Ende einer Reihe oder am Start des Vorgewende-Wendemanövers."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_early" 							text="früh"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_late" 							text="spät"/>
 
 		<text name="CP_vehicle_setting_lowerImplementEarly_title" 							text="Tool absenken"/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 						text="Tool absenken am Ende einer Reihe oder am Ende des Vorgewende-Wendemanövers."/>
@@ -57,6 +63,9 @@
 
 		<text name="CP_vehicle_setting_turnOnField_title" 									text="Wende auf dem Feld:"/>
 		<text name="CP_vehicle_setting_turnOnField_tooltip" 								text="Wende auf dem Feld"/>
+
+		<text name="CP_vehicle_setting_avoidFruit_title" 									text="Avoid driving in fruit"/>
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  		text="The AI will try to avoid driving in the fruit"/>
 
 		<text name="CP_vehicle_setting_toolOffsetX_title" 									text="Gerät-Versatz (seitlich)"/>
 		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 								text="Gerät-Versatz (seitlich)"/>
@@ -72,6 +81,12 @@
 
 		<text name="CP_vehicle_setting_stopForUnload_title" 								text="Während dem Abladen anhalten."/>
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 								text="Während dem Abladen anhalten."/>
+
+		<text name="CP_vehicle_setting_selfUnload_title" 									text="Combine self unload"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  		text="Combine drives to trailer on or near the field to unload."/>
+
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 						text="Unload on first headland"/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  		text="Combine will not avoid unloading on the first headland."/>
 
 		<text name="CP_vehicle_setting_strawSwath_title" 									text="Drescher Strohablage"/>
 		<text name="CP_vehicle_setting_strawSwath_tooltip" 									text="Drescher Strohablage"/>

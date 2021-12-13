@@ -176,7 +176,8 @@ function AIUtil.getTurningRadius(vehicle)
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
 	end
-	
+
+	-- TODO_22
 	--local turnDiameterSetting = vehicle.cp.settings.turnDiameter
 	--if not turnDiameterSetting:isAutomaticActive() then
 	--	radius = turnDiameterSetting:get() / 2
