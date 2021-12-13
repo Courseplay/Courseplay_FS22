@@ -268,33 +268,27 @@ function CourseDisplay:setSignsVisibility(vehicle, forceHide)
 	if self.courses[vehicle] == nil or (#self.courses[vehicle].current == 0 and #self.courses[vehicle].crossing == 0) then
 		return
 	end
-	-- TODO_22
-	ShowVisualWaypointsSetting = {}
-	ShowVisualWaypointsSetting.DEACTIVATED = 0
-	ShowVisualWaypointsSetting.START_STOP = 1
-	ShowVisualWaypointsSetting.ALL = 3
-	local showVisualWaypointsState = ShowVisualWaypointsSetting.ALL --vehicle.cp.settings.showVisualWaypoints:get()
-	--CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Setting visibility for %d waypoints, start/end=%s all=%s, xing=%s', numSigns,
-	--		tostring(vehicle.cp.visualWaypointsStartEnd), tostring(vehicle.cp.visualWaypointsAll), tostring(vehicle.cp.visualWaypointsCrossing))
-
 	local numSigns = #self.courses[vehicle].current
+
+	local showVisualWaypointsState = vehicle:getCpSettingValue(CpVehicleSettings.showCourse)
+
 	local vis, isStartEndPoint
 	for k,signData in pairs(self.courses[vehicle].current) do
 		vis = false
 		isStartEndPoint = k <= 2 or k >= (numSigns - 2)
 
-		if (signData.type == 'wait' or signData.type == 'unload') and showVisualWaypointsState>=ShowVisualWaypointsSetting.START_STOP then
+		if (signData.type == 'wait' or signData.type == 'unload') and showVisualWaypointsState>=CpVehicleSettings.SHOW_COURSE_START_STOP then
 			vis = true
 			local line = getChildAt(signData.sign, 0)
-			if showVisualWaypointsState==ShowVisualWaypointsSetting.START_STOP then
+			if showVisualWaypointsState==CpVehicleSettings.SHOW_COURSE_START_STOP then
 				setVisibility(line, isStartEndPoint)
 			else
 				setVisibility(line, true)
 			end
 		else
-			if showVisualWaypointsState==ShowVisualWaypointsSetting.ALL then
+			if showVisualWaypointsState==CpVehicleSettings.SHOW_COURSE_ALL then
 				vis = true
-			elseif showVisualWaypointsState>=ShowVisualWaypointsSetting.START_STOP and isStartEndPoint then
+			elseif showVisualWaypointsState>=CpVehicleSettings.SHOW_COURSE_START_STOP and isStartEndPoint then
 				vis = true
 			end
 		end

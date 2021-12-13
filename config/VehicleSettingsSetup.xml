@@ -7,6 +7,20 @@
 
 <Settings prefixText="CP_vehicle_setting_">
 	<SettingSubTitle title="basic">
+		<Setting classType="AIParameterSettingList" name="showCourse">
+			<Values>
+				<Value name="SHOW_COURSE_DEACTIVATED">0</Value>
+				<Value name="SHOW_COURSE_START_STOP">1</Value>
+				<Value name="SHOW_COURSE_ALL">2</Value>
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text>startStop</Text>
+				<Text>all</Text>
+			</Texts>
+		</Setting>
+
+
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd"/>
 		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd"/>
 		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate">

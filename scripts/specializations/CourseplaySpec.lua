@@ -12,7 +12,9 @@ end
 function CourseplaySpec.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
-    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
+--    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
 end
 
 function CourseplaySpec.registerFunctions(vehicleType)
@@ -21,11 +23,22 @@ function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
 end
 
+------------------------------------------------------------------------------------------------------------------------
+--- Event listeners
+---------------------------------------------------------------------------------------------------------------------------
 function CourseplaySpec:onLoad(savegame)
 	--- Register the spec: spec_courseplaySpec
     local specName = CourseplaySpec.MOD_NAME .. ".courseplaySpec"
     self.spec_courseplaySpec = self["spec_" .. specName]
     local spec = self.spec_courseplaySpec
+end
+
+function CourseplaySpec:onEnterVehicle(isControlling)
+    g_courseDisplay:setSignsVisibility(self);
+end
+
+function CourseplaySpec:onLeaveVehicle(isControlling)
+    g_courseDisplay:setSignsVisibility(self, true);
 end
 
 ---@param course : Course
@@ -48,5 +61,3 @@ function CourseplaySpec:getReverseDrivingDirectionNode()
     return spec.reverseDrivingDirectionNode
 end
 
-function CourseplaySpec:onDraw(isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
-end
