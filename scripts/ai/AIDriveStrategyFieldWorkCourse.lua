@@ -419,15 +419,21 @@ end
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
 function AIDriveStrategyFieldWorkCourse:updateAIFieldWorkerDriveStrategies()
-    local driveStrategyFollowFieldWorkCourse = AIDriveStrategyFieldWorkCourse.new()
-    driveStrategyFollowFieldWorkCourse:setAIVehicle(self)
     -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
     -- our own specialization
     for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do
         if strategy.getDriveStraightData then
-            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with Courseplay drive strategy')
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            self.spec_aiFieldWorker.driveStrategies[i] = driveStrategyFollowFieldWorkCourse
+            local cpDriveStrategy
+            if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
+                cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyCombineCourse')
+            else
+                cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
+                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyFieldWorkCourse')
+            end
+            cpDriveStrategy:setAIVehicle(self)
+            self.spec_aiFieldWorker.driveStrategies[i] = cpDriveStrategy
             return
         end
     end

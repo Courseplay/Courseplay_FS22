@@ -6,6 +6,11 @@ function FieldUtil.isNodeOnField(node)
     return isOnField
 end
 
+--- Is the relative position dx/dz on the same field as node?
+function FieldUtil.isOnSameField(node, dx, dy)
+
+end
+
 function FieldUtil.isOnField(x, z)
     local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z);
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
