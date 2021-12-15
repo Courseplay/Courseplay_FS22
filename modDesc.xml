@@ -66,6 +66,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
+		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>

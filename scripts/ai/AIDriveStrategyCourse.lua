@@ -39,7 +39,9 @@ end
 
 --- Aggregation of states from this and all descendant classes
 function AIDriveStrategyCourse:initStates(states)
-    self.states = {}
+    if self.states == nil then
+        self.states = {}
+    end
     for key, state in pairs(states) do
         self.states[key] = {name = tostring(key), properties = state}
     end

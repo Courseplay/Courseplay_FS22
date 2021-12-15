@@ -46,6 +46,8 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.state = self.states.INITIAL
     -- cache for the nodes created by TurnContext
     self.turnNodes = {}
+    -- course offsets dynamically set by the AI and added to all tool and other offsets
+    self.aiOffsetX, self.aiOffsetZ = 0, 0
     return self
 end
 
@@ -94,6 +96,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
     ----------------------------------------------------------------
+    self:debugSparse('combine getdrivedata')
 
     if self.state == self.states.INITIAL then
         self:lowerImplements()
@@ -283,7 +286,7 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix)
     end
 end
 
-function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix)
+function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
     if self.state == self.states.WORKING then
         -- check for transition to connecting track, make sure we've been on it for a few waypoints already
         -- to avoid raising the implements too soon, this can be a problem with long implements not yet reached
@@ -296,10 +299,21 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix)
             self.state = self.states.ON_CONNECTING_TRACK
         end
     end
-    if ix == self.course:getNumberOfWaypoints() then
-        self:debug('Last waypoint reached, stopping job.')
-        self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+    if course:isLastWaypointIx(ix) then
+        self:onLastWaypointPassed()
     end
+end
+
+--- Called when the last waypoint of a course is passed
+function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
+    self:debug('Last waypoint of the course reached.')
+    -- by default, stop the job
+    self:finishFieldWork()
+end
+
+function AIDriveStrategyFieldWorkCourse:finishFieldWork()
+    self:debug('Course ended, stopping job.')
+    self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -411,6 +425,14 @@ end
 
 function AIDriveStrategyFieldWorkCourse:getTurnEndForwardOffset()
     return 0
+end
+
+--- We already set the offsets on the course at start, this is to update those values
+-- if the user changed them during the run or the AI driver wants to add an offset
+function AIDriveStrategyFieldWorkCourse:updateFieldworkOffset()
+    self.course:setOffset(
+            self.vehicle:getCpSettingValue(CpVehicleSettings.toolOffsetX) + self.aiOffsetX + (self.tightTurnOffset or 0),
+            self.vehicle:getCpSettingValue(CpVehicleSettings.toolOffsetZ) + self.aiOffsetZ)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

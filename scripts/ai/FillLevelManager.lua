@@ -18,11 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --- Keeps track of all fill types/levels of a vehicle and attached implements
 ---@class FillLevelManager
-FillLevelUtil = CpObject()
+FillLevelManager = CpObject()
 
 function FillLevelManager:init(vehicle, debugChannel)
     self.vehicle = vehicle
     self.debugChannel = debugChannel or CpDebug.DBG_IMPLEMENTS
+    self.lastTotalFillLevel = math.huge
 end
 
 function FillLevelManager:debug(...)
