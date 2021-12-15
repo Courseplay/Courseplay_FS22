@@ -69,6 +69,10 @@ function FileSystemEntity.__eq(a, b)
 	return a.fullPath == b.fullPath
 end
 
+function FileSystemEntity.__lt(a, b)
+	return a.name < b.name
+end
+
 function FileSystemEntity:__tostring()
 	return 'Name: ' .. self.name .. ', Path: ' .. self.fullPath
 end
@@ -99,6 +103,30 @@ end
 function Directory:isDirectory()
 	return true
 end
+
+function Directory:getEntries(directories, files)
+	local entries = {}
+	for _, entry in pairs(self.entries) do
+		if directories and entry:isDirectory() then
+			table.insert(entries, entry)
+		end
+		if files and not entry:isDirectory() then
+			table.insert(entries, entry)
+		end
+	end
+	table.sort(entries)
+	return entries
+end
+
+
+function Directory:getDirectories()
+	return self:getEntries(true, false)
+end
+
+function Directory:getFiles()
+	return self:getEntries(false, true)
+end
+
 
 --- Refresh from disk
 function Directory:refresh()
@@ -202,7 +230,7 @@ function FileSystemEntityView:__tostring()
 end
 
 function FileSystemEntityView.__lt(a, b)
-	return a.name < b.name
+	return a.entity.name < b.entity.name
 end
 
 function FileSystemEntityView:isDirectory()
@@ -394,6 +422,10 @@ function CourseManager:getEntries()
 	return self.courseDirView:getEntries()
 end
 
+function CourseManager:getDirectories()
+	return self.courseDir:getDirectories()
+end
+
 --- The current entry is the one on the top of the HUD. Scrolling the HUD changes the current entry.
 function CourseManager:setCurrentEntry(num)
 	self.currentEntry = math.max(math.min(num, #self.courseDirView:getEntries()), 1)
@@ -422,11 +454,11 @@ function CourseManager:fold(index)
 	self:debug('%s folded', dir:getName())
 end
 
-function CourseManager:createDirectory(index, name)
-	-- if index is given, it points to a directory in the HUD, so create the new directory under that,
+function CourseManager:createDirectory(dir, name)
+	-- if dir is given the new directory under that,
 	-- otherwise under the root
-	local dir = index and self:getViewAtIndex(index):getEntity() or self.courseDir
-	dir:createDirectory(name)
+	local parentDir = dir or self.courseDir
+	parentDir:createDirectory(name)
 	self:refresh()
 end
 

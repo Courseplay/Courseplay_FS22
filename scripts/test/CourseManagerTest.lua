@@ -76,6 +76,7 @@ assert(tostring(dv) == [[test1
 file1
 ]])
 
+
 e[2]:unfold()
 e = dv:getEntries()
 assert(tostring(dv) == [[test1
@@ -108,6 +109,18 @@ assert(cm:getCurrentEntry() == 1)
 
 cm:unfold(1)
 assert(tostring(cm:getEntries()[2]) == FileSystemEntityView.indentString .. 'test2\n')
+
+local dirs = cm:getDirectories()
+assert(dirs[1].name == 'test1')
+cm:createDirectory(nil, 'anothertest')
+dirs = cm:getDirectories()
+assert(dirs[1].name == 'anothertest')
+assert(dirs[2].name == 'test1')
+dirs = dirs[2]:getDirectories()
+assert(dirs[1].name == 'test2')
+local files = dirs[1]:getFiles()
+assert(files[1].name == 'file1')
+assert(files[2].name == 'file2')
 
 deleteFolder(mapCoursesDir)
 cm:refresh()
