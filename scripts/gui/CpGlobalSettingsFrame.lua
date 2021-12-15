@@ -8,7 +8,7 @@ CpGlobalSettingsFrame = {}
 ---Creates the in game menu page.
 function CpGlobalSettingsFrame.init()
 	local inGameMenu = g_gui.screenControllers[InGameMenu]
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,CpGlobalSettingsFrame
+	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pageSettingsGeneral,CpGlobalSettingsFrame
 												,function () return true end,3)
 	inGameMenu.pageCpGlobalSettings = page
 end

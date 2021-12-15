@@ -45,6 +45,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/track.lua"/>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+		<sourceFile filename="scripts/CourseUtil.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
@@ -83,6 +84,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>
 		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>
 		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
+		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 	</extraSourceFiles>
 
@@ -90,6 +92,7 @@ Die nächste Version von Courseplay.]]>
         <specialization name="courseplaySpec" className="CourseplaySpec" filename="scripts/specializations/CourseplaySpec.lua" />
 		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
+		<specialization name="cpCourseControl" className="CpCourseControl" filename="scripts/specializations/CourseControl.lua"/>
 	</specializations>
 
 	<inputBinding>

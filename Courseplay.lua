@@ -38,6 +38,7 @@ end
 function Courseplay:setupGui()
 	CpVehicleSettingsFrame.init()
 	CpGlobalSettingsFrame.init()
+	CpCourseManagerFrame.init()
 end
 
 function Courseplay.saveToXMLFile(missionInfo)
@@ -218,6 +219,9 @@ function Courseplay.register(typeManager)
 		end
 		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
+		end
+		if CpCourseControl.prerequisitesPresent(typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseControl")	
 		end
     end
 end

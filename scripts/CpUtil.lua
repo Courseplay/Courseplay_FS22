@@ -178,3 +178,7 @@ function CpUtil.destroyNode(node)
 		delete(node)
 	end
 end
+
+function CpUtil.callErrorCorrectedFunction(func,...)
+	xpcall(func, function(err) printCallstack(); return err end, ...)
+end

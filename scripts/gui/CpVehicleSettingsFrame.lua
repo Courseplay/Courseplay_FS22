@@ -18,7 +18,7 @@ function CpVehicleSettingsFrame.init()
 		return allowed
 	end
 
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,CpVehicleSettingsFrame
+	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pageSettingsGeneral,CpVehicleSettingsFrame
 									,predicateFunc,3)
 	inGameMenu.pageCpVehicleSettings = page
 end
