@@ -390,7 +390,18 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	self:handlePipe(dt)
 	self:checkRendezvous()
 	self:checkBlockingUnloader()
+	self:disableCutterTimer()
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
+end
+
+function AIDriveStrategyCombineCourse:disableCutterTimer()
+	if self.combine.attachedCutters then
+		for cutter, _ in pairs(self.combine.attachedCutters) do
+			if cutter.spec_cutter and cutter.spec_cutter.aiNoValidGroundTimer then
+				cutter.spec_cutter.aiNoValidGroundTimer = 0
+			end
+		end
+	end
 end
 
 function AIDriveStrategyCombineCourse:startWaitingForUnloadBeforeNextRow()

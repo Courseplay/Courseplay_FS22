@@ -591,7 +591,10 @@ function CourseTurn:generateCalculatedTurn()
 		self.forceTightTurnOffset = steeringLength > 0
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
-		self:debug('This is NOT a headland turn, distanceToFieldEdge=%.1f', distanceToFieldEdge)
+		local turnOnField = self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField)
+		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
+		-- if don't have to turn on field then pretend we have a lot of space
+		distanceToFieldEdge = turnOnField and distanceToFieldEdge or math.huge
 		if distanceToFieldEdge > self.workWidth or steeringLength > 0 then
 			-- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
 			turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
