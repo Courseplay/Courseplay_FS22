@@ -45,7 +45,6 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/track.lua"/>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
-		<sourceFile filename="scripts/CourseUtil.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>

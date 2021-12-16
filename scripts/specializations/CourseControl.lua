@@ -7,34 +7,37 @@ CpCourseControl = {}
 CpCourseControl.MOD_NAME = g_currentModName
 
 CpCourseControl.KEY = "."..CpCourseControl.MOD_NAME..".cpCourseControl."
-CpCourseControl.assignedCoursesKey = CpCourseControl.KEY.."Assignment"
 CpCourseControl.xmlKey = "Course"
+CpCourseControl.rootKey = "AssignedCourses"
+CpCourseControl.rootKeyFileManager = "Courses"
+CpCourseControl.xmlKeyFileManager = "Courses.Course"
 
 CpCourseControl.i18n = {
 	["noCurrentCourse"] = "CP_courseManager_no_current_course",
 	["temporaryCourse"] = "CP_courseManager_temporary_course",
 }
+CpCourseControl.vehicles = {}
 
 --- generic xml course schema for saving/loading.
 function CpCourseControl.registerXmlSchemaValues(schema,baseKey)
 	baseKey = baseKey or ""
-	schema:register(XMLValueType.STRING, baseKey .. CpCourseControl.xmlKey .. "#name", "Course name")
-	schema:register(XMLValueType.FLOAT, baseKey .. CpCourseControl.xmlKey .. "#workWidth", "Course work width")
-	schema:register(XMLValueType.INT, baseKey .. CpCourseControl.xmlKey .. "#numHeadlands", "Course number of headlands")
-	schema:register(XMLValueType.INT, baseKey .. CpCourseControl.xmlKey .. "#multiTools", "Course multi tools")
-	schema:register(XMLValueType.STRING, baseKey .. CpCourseControl.xmlKey .. ".waypoints", "Course serialized waypoints")
+	schema:register(XMLValueType.STRING, baseKey .. "#name", "Course name")
+	schema:register(XMLValueType.FLOAT, baseKey  .. "#workWidth", "Course work width")
+	schema:register(XMLValueType.INT, baseKey .. "#numHeadlands", "Course number of headlands")
+	schema:register(XMLValueType.INT, baseKey .. "#multiTools", "Course multi tools")
+    schema:register(XMLValueType.BOOL, baseKey .. "#isSavedAsFile", "Course is saved as file or temporary ?",false)
+	schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints")
 end
 
 function CpCourseControl.initSpecialization()
     CpCourseControl.xmlSchema = XMLSchema.new("Course")
 	local schema = CpCourseControl.xmlSchema
-	CpCourseControl.registerXmlSchemaValues(schema,"")
+	CpCourseControl.registerXmlSchemaValues(schema,CpCourseControl.xmlKeyFileManager .."(?)")
 
     local schema = Vehicle.xmlSchemaSavegame
-    local key = "vehicles.vehicle(?)" .. CpCourseControl.assignedCoursesKey
-    schema:register(XMLValueType.INT, key .. "#id","assigned id")
-    schema:register(XMLValueType.BOOL, key .. "#isSaved","assigned isSaved",false)
-	CpCourseControl.registerXmlSchemaValues(schema,key..".Courses(?).")
+    local key = "vehicles.vehicle(?)" .. CpCourseControl.KEY .. CpCourseControl.rootKey
+---    schema:register(XMLValueType.BOOL, key .. "#hasTemporaryCourses","Are the courses a temporary and not saved?",false)
+	CpCourseControl.registerXmlSchemaValues(schema,key.."(?)")
 end
 
 function CpCourseControl.prerequisitesPresent(specializations)
@@ -63,12 +66,16 @@ end
 function CpCourseControl.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CpCourseControl.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CpCourseControl.getFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'addCourse', CpCourseControl.addCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'getCourses', CpCourseControl.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCourse', CpCourseControl.hasCourse)
     SpecializationUtil.registerFunction(vehicleType, 'loadCourse', CpCourseControl.loadCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCourse', CpCourseControl.saveCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'resetCourse', CpCourseControl.resetCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'getCourseName', CpCourseControl.getCourseName)
+    SpecializationUtil.registerFunction(vehicleType, 'resetCourses', CpCourseControl.resetCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'getCurrentCourseName', CpCourseControl.getCurrentCourseName)
     SpecializationUtil.registerFunction(vehicleType, 'drawCoursePlot', CpCourseControl.drawCoursePlot)
+    SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCourses', CpCourseControl.loadAssignedCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCourses', CpCourseControl.saveAssignedCourses)
 end
 
 function CpCourseControl:onLoad(savegame)
@@ -77,72 +84,84 @@ function CpCourseControl:onLoad(savegame)
     self.spec_cpCourseControl = self["spec_" .. specName]
     local spec = self.spec_cpCourseControl
     self.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
+ 
+    self.courses = {}
+    
  --   TODO: make this an instance similar to course plot
  --   self.courseDisplay = CourseDisplay() 
+    CpCourseControl.vehicles[self.id] = self
 end
 
 function CpCourseControl:onPostLoad(savegame)
-    CpCourseControl.loadAssignedCourses(self,savegame)
+    if savegame == nil or savegame.resetVehicles then return end
+    self:loadAssignedCourses(savegame.xmlFile,savegame.key..CpCourseControl.KEY..CpCourseControl.rootKey )
 end
 
-function CpCourseControl:loadAssignedCourses(savegame)
-    if savegame == nil or savegame.resetVehicles then return end
+function CpCourseControl:loadAssignedCourses(xmlFile,baseKey)
     local spec = self.spec_cpCourseControl
     local courses = {}
-    local baseKey = savegame.key..CpCourseControl.assignedCoursesKey
-    local id = savegame.xmlFile:getValue(baseKey.."#id")
-    local isSaved = savegame.xmlFile:getValue(baseKey.."#isSaved",false)
-    savegame.xmlFile:iterate(baseKey..".Courses",function (i,key)
-        local course = CourseUtil.createFromXml(self,savegame.xmlFile,key..".Course")
+    xmlFile:iterate(baseKey,function (i,key)
+        local course = Course.createFromXml(self,xmlFile,key)
+        course:setVehicle(self)
         table.insert(courses,course)
-    end)
+    end)    
     if courses ~= nil and next(courses) then
-        self.course = courses[1]
-        self.course:setVehicle(self)
-        g_courseManager:setAssignedCourseFromSaveGame(self, id ,courses,isSaved)
+        spec.courses = courses
         SpecializationUtil.raiseEvent(self,"onCourseChange",courses[1])
     end
 end
 
 function CpCourseControl:saveToXMLFile(xmlFile, baseKey, usedModNames)
-    CpCourseControl.saveAssignedCourses(self,xmlFile, baseKey, usedModNames)
+    self:saveAssignedCourses(xmlFile, baseKey.."."..CpCourseControl.rootKey)
 end
 
-function CpCourseControl:saveAssignedCourses(xmlFile, baseKey, usedModNames)
-    local ix,assignment = g_courseManager:getAssignment(self)
-    local courses = assignment.courses
+function CpCourseControl:saveAssignedCourses(xmlFile, baseKey, name)
+    local spec = self.spec_cpCourseControl
+    local courses = spec.courses
     if courses ~=nil and next(courses) then
-        local baseKey = baseKey..".Assignment"
-        if ix ~= nil then
-            xmlFile:setValue(baseKey.."#id",ix)
-            xmlFile:setValue(baseKey.."#isSaved",assignment.isSaved)
-        end
+        courses[1]:setName(name)
         for i=1,#courses do 
-            local key = string.format("%s.Courses(%d).Course",baseKey,i-1)
+            local key = string.format("%s(%d)",baseKey,i-1)
             local course = courses[i]
-            CourseUtil.saveToXml(course,xmlFile, key)
+            course:saveToXml(xmlFile, key)
         end
     end
 end
 
 ---@param course  Course
 function CpCourseControl:setFieldWorkCourse(course)
-    self:resetCourse()
-    self.course = course
-	g_courseManager:loadGeneratedCourse(self, self.course)
-    self.course:setVehicle(self)
-    SpecializationUtil.raiseEvent(self,"onCourseChange",self.course)
+    self:resetCourses()
+    self:addCourse(course)   
 end
 
-function CpCourseControl:resetCourse()
-    self.course = nil
-    g_courseManager:unloadAllCoursesFromVehicle(self, self.course)
+function CpCourseControl:addCourse(course)
+    local spec = self.spec_cpCourseControl
+    course:setVehicle(self)
+    table.insert(spec.courses,course)
+    SpecializationUtil.raiseEvent(self,"onCourseChange",course)
+end
+
+function CpCourseControl:resetCourses()
+    local spec = self.spec_cpCourseControl
+    spec.courses = {}
     SpecializationUtil.raiseEvent(self,"onCourseChange")
 end
 
 ---@return Course
 function CpCourseControl:getFieldWorkCourse()
-    return self.course
+    local spec = self.spec_cpCourseControl
+    --- TODO: For now only returns the first course.
+    return spec.courses[1]
+end
+
+function CpCourseControl:getCourses()
+    local spec = self.spec_cpCourseControl
+    return spec.courses
+end
+
+function CpCourseControl:hasCourse()
+    local spec = self.spec_cpCourseControl
+    return next(spec.courses) ~= nil
 end
 
 
@@ -173,10 +192,14 @@ function CpCourseControl:onCourseChange(newCourse)
         g_courseDisplay:updateWaypointSigns(self)
     --    self.courseDisplay:updateWaypointSigns(self)
 	end
+
+    g_courseManager:updateLegacyWaypoints(self)
 end
 
 function CpCourseControl:drawCoursePlot(map)
-    self.coursePlot:draw(map)
+    if self:hasCourse() then
+        self.coursePlot:draw(map)
+    end
 end
 
 function CpCourseControl:onDraw()
@@ -191,28 +214,58 @@ function CpCourseControl:onWriteStream(streamId)
 	
 end
 
-function CpCourseControl:hasCourse()
-    return self.course ~= nil
+function CpCourseControl:onPreDelete()
+    CpCourseControl.vehicles[self.id] = nil
+    self:resetCourses()
 end
 
-function CpCourseControl:getCourseName()
+------------------------------------------------------------------------
+-- Interaction between the course manager frame and the vehicle courses.
+------------------------------------------------------------------------
+
+function CpCourseControl:getCurrentCourseName()
     if self:hasCourse() then 
-        local name = g_courseManager:getCourseName(self)
-        return name or g_i18n:getText(CpCourseControl.i18n.temporaryCourse)
+        local courses = self:getCourses()
+        local name =  CpCourseControl.getCourseName(courses[1])
+        for i = 2,#courses do 
+            name = string.format("%s + %s",name,CpCourseControl.getCourseName(courses[i]))
+        end  
+        name = string.format("%s (%d)",name,#courses)
+        return name
     end
     return g_i18n:getText(CpCourseControl.i18n.noCurrentCourse)
 end
 
+function CpCourseControl.getCourseName(course)
+	local name = course:getName()
+    local isSavedAsFile = course:isSavedAsFile()
+    if not isSavedAsFile or name == "" then 
+        g_i18n:getText(CpCourseControl.i18n.temporaryCourse)
+    end
+    return name
+end
+
 function CpCourseControl:loadCourse(dirIx,entryIx)
-    self.course = g_courseManager:loadCourseSelectedInHud(self,dirIx,entryIx)
-    SpecializationUtil.raiseEvent(self,"onCourseChange",self.course)
+    g_courseManager:loadCourseSelectedInHud(self,dirIx,entryIx)
 end
 
 function CpCourseControl:saveCourse(ix,text)
     g_courseManager:saveCourseFromVehicle(ix, self, text)
 end
 
-function CpCourseControl:onPreDelete()
-    self:resetCourse()
+function CpCourseControl.getValidVehicles()
+    return CpCourseControl.vehicles
 end
 
+function CpCourseControl:appendCourse(course)
+
+end
+
+function CpCourseControl:getFieldworkCourseLegacy(vehicle)
+	for _, course in ipairs(self:getCourses()) do
+		if course:isFieldworkCourse() then
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES,vehicle, 'getting fieldwork course %s', course:getName())
+			return course
+		end
+	end
+end

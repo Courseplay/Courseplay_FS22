@@ -191,6 +191,9 @@
 		<text name="CP_courseManager_folder_dialog"														text="Folder name:"/>
 		<text name="CP_courseManager_course_dialog"														text="Course name:"/>
 
+		<text name="CP_courseManager_deleteWarning"														text="Are you sure, you want to delete (%s)?"/>
+
+		<text name="CP_courseManager_change_mode"														text="Change mode"/>
 
 
 		

@@ -30,8 +30,9 @@ function CpFieldUtil.getFieldIdAtWorldPosition(posX, posZ)
     return 0
 end
 
+
 function CpFieldUtil.saveAllFields()
-    local fileName = createXMLFile("cpFields", string.format('%s/cpFields.xml', g_Courseplay.cpDebugPrintXmlFolderPath), "CPFields");
+    local fileName = createXMLFile("cpFields", string.format('%s/cpFields.xml', g_Courseplay.debugPrintDir), "CPFields");
     print(string.format('Saving fields to %s', fileName))
     if fileName and fileName ~= 0 then
         for _, field in pairs(g_fieldManager:getFields()) do

@@ -210,20 +210,22 @@
 		<text name="CP_courseManager_no_current_course"													text="none"/>
 		<text name="CP_courseManager_temporary_course"													text="temporary"/>
 
-		<text name="CP_courseManager_course_load"														text="Loads course"/>
-		<text name="CP_courseManager_course_save"														text="Saves course"/>
-		<text name="CP_courseManager_course_clear_current"												text="Clears current course"/>
-		<text name="CP_courseManager_course_delete"														text="Deletes course"/>
-		<text name="CP_courseManager_course_rename"														text="Renames course"/>
+		<text name="CP_courseManager_course_load"														text="Load course"/>
+		<text name="CP_courseManager_course_save"														text="Save course"/>
+		<text name="CP_courseManager_course_clear_current"												text="Clear current course"/>
+		<text name="CP_courseManager_course_delete"														text="Delete course"/>
+		<text name="CP_courseManager_course_rename"														text="Rename course"/>
 
-		<text name="CP_courseManager_folder_create"														text="Creates new folder"/>
-		<text name="CP_courseManager_folder_delete"														text="Deletes folder"/>
-		<text name="CP_courseManager_folder_move_course"												text="Moves Course to folder"/>
-		<text name="CP_courseManager_folder_rename"														text="Renames folder"/>
+		<text name="CP_courseManager_folder_create"														text="Create new folder"/>
+		<text name="CP_courseManager_folder_delete"														text="Delete folder"/>
+		<text name="CP_courseManager_folder_move_course"												text="Move Course to folder"/>
+		<text name="CP_courseManager_folder_rename"														text="Rename folder"/>
 
 		<text name="CP_courseManager_folder_dialog"														text="Folder name:"/>
 		<text name="CP_courseManager_course_dialog"														text="Course name:"/>
+		<text name="CP_courseManager_deleteWarning"														text="Are you sure, you want to delete (%s)?"/>
 
+		<text name="CP_courseManager_change_mode"														text="Change mode"/>
 
 	</texts>
 </l10n>

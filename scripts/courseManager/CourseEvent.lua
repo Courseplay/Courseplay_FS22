@@ -21,7 +21,7 @@ function CourseEvent:readStream(streamId, connection) -- wird aufgerufen wenn mi
 	local nCourses = streamReadInt32(streamId)
 	self.courses = {}
 	for _ = 1, nCourses do
-		table.insert(self.courses, CourseUtil.createFromStream(streamId, connection))
+		table.insert(self.courses, Course.createFromStream(self.vehicle,streamId, connection))
 	end
 	self:run(connection);
 end
@@ -31,7 +31,7 @@ function CourseEvent:writeStream(streamId, connection)
 	streamWriteInt32(streamId, NetworkUtil.getObjectId(self.vehicle))
 	streamWriteInt32(streamId, #self.courses)
 	for _, course in ipairs(self.courses) do
-		CourseUtil.writeStream(course,streamId, connection)
+		course:writeStream(streamId, connection)
 	end
 end
 

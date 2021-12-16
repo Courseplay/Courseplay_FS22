@@ -78,16 +78,20 @@ function Courseplay:keyEvent(unicode, sym, modifier, isDown)
 end
 
 function Courseplay:load()
-	--self.savegameFolderPath = ('%ssavegame%d'):format(getUserProfileAppPath(), g_careerScreen.selectedIndex); -- This should work for both SP, MP and Dedicated Servers
-	self.cpFolderPath = string.format("%s%s",getUserProfileAppPath(),"courseplay")
-	createFolder(self.cpFolderPath)
-	self.cpDebugPrintXmlFolderPath = string.format("%s/%s",self.cpFolderPath,"courseplayDebugPrint")
-	createFolder(self.cpDebugPrintXmlFolderPath)
-	self.cpDebugPrintXmlFilePathDefault = string.format("%s/%s",self.cpDebugPrintXmlFolderPath,"courseplayDebugPrint.xml")		
+	--- Base cp folder
+	self.baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME ..  "/"
+	createFolder(self.baseDir)
 
-	self.cpXmlFile = string.format("%s/%s",self.cpFolderPath,"courseplay.xml")		
+	--- Sub folder for debug information
+	self.debugDir = self.baseDir .. "Debug/"
+	createFolder(self.debugDir) 
+	--- Sub folder for debug prints
+	self.debugPrintDir = self.debugDir .. "DebugPrints/"
+	createFolder(self.debugPrintDir) 
+	--- Default path to save prints without an explicit name.
+	self.defaultDebugPrintPath = self.debugDir .. "DebugPrint.xml"
 
-	g_courseManager = CourseManager()
+	g_courseManager = CourseManager(self.baseDir)
 	g_courseDisplay = CourseDisplay()
 end
 
