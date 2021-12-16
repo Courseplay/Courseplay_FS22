@@ -305,19 +305,28 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyCombineCourse:onLastWaypointPassed()
-	if self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
-			self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
-		-- pulled back, now wait for unload
-		self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
-		self:debug('Pulled back, now wait for unload')
-		self:setInfoText(self:getFillLevelInfoText())
-	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-		self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
-		self:lowerImplements()
-		self.unloadState = self.states.MAKING_POCKET
-		-- offset the main fieldwork course and start on it
-		self.aiOffsetX = self.pullBackRightSideOffset
-		self:startRememberedCourse()
+	if self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD then
+		if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
+			self:debug('Pull back finished, returning to fieldwork')
+			self:startRememberedCourse()
+			self:changeToFieldWork()
+		elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
+			self:debug('Back from self unload, returning to fieldwork')
+			self:startCourse(self.course, self.waypointIxAfterPathfinding)
+			self:changeToFieldWork()
+		elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
+			self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
+			self:lowerImplements()
+			self.unloadState = self.states.MAKING_POCKET
+			-- offset the main fieldwork course and start on it
+			self.aiOffsetX = self.pullBackRightSideOffset
+			self:startRememberedCourse()
+		elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
+			-- pulled back, now wait for unload
+			self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
+			self:debug('Pulled back, now wait for unload')
+			self:setInfoText(self:getFillLevelInfoText())
+		end
 	else
 		AIDriveStrategyCombineCourse.superClass().onLastWaypointPassed(self)
 	end
@@ -437,7 +446,7 @@ function AIDriveStrategyCombineCourse:driveFieldworkUnloadOrRefill()
 			self:cancelRendezvous()
 			if unloaderWhoDidNotShowUp then unloaderWhoDidNotShowUp:onMissedRendezvous(self) end
 			self:debug('Waited for unloader at the end of the row but it did not show up, try to continue')
-			self:changeToFieldwork()
+			self:changeToFieldWork()
 		end
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
 		local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
@@ -457,23 +466,24 @@ function AIDriveStrategyCombineCourse:driveFieldworkUnloadOrRefill()
 				if pullBackReturnCourse then
 					self.unloadState = self.states.RETURNING_FROM_PULL_BACK
 					self:debug('Unloading finished, returning to fieldwork on return course')
-					self:startCourse(pullBackReturnCourse, 1, self.courseAfterPullBack, self.ixAfterPullBack)
+					self:startCourse(pullBackReturnCourse, 1)
+					self:rememberCourse(self.courseAfterPullBack, self.ixAfterPullBack)
 				else
 					self:debug('Unloading finished, returning to fieldwork directly')
 					self:startCourse(self.courseAfterPullBack, self.ixAfterPullBack)
 					self.ppc:setNormalLookaheadDistance()
-					self:changeToFieldwork()
+					self:changeToFieldWork()
 				end
 			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET then
 				self:debug('Unloading in pocket finished, returning to fieldwork')
 				self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
-				self:changeToFieldwork()
+				self:changeToFieldWork()
 			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
 				self:debug('Unloading before next row finished, returning to fieldwork')
-				self:changeToFieldwork()
+				self:changeToFieldWork()
 			else
 				self:debug('Unloading finished, previous state not known, returning to fieldwork')
-				self:changeToFieldwork()
+				self:changeToFieldWork()
 			end
 		end
 	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
@@ -508,10 +518,10 @@ function AIDriveStrategyCombineCourse:onNextCourse(ix)
 	if self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD then
 		if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
 			self:debug('Pull back finished, returning to fieldwork')
-			self:changeToFieldwork()
+			self:changeToFieldWork()
 		elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 			self:debug('Back from self unload, returning to fieldwork')
-			self:changeToFieldwork()
+			self:changeToFieldWork()
 		end
 	elseif self.state == self.states.TURNING then
 		self.ppc:setNormalLookaheadDistance()

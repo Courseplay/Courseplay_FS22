@@ -79,6 +79,8 @@ end
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
+    self:updateFieldworkOffset()
+
     local moveForwards = not self.ppc:isReversing()
     local gx, gz
 
@@ -314,6 +316,12 @@ end
 function AIDriveStrategyFieldWorkCourse:finishFieldWork()
     self:debug('Course ended, stopping job.')
     self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+end
+
+function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
+    self:debug('change to fieldwork')
+    self.state = self.states.WAITING_FOR_LOWER
+    self:lowerImplements(self.vehicle)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

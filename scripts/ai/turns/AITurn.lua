@@ -440,8 +440,9 @@ CourseTurn = CpObject(AITurn)
 
 function CourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, name)
 	AITurn.init(self, vehicle, driveStrategy, ppc, turnContext, workWidth, name or 'CourseTurn')
-	-- adjust turn course for tight turns only for headland corners by default
-	self.useTightTurnOffset = turnContext:isHeadlandCorner()
+
+	self.forceTightTurnOffset = false
+	self.enableTightTurnOffset = false
 	self.fieldworkCourse = fieldworkCourse
 end
 
@@ -526,7 +527,7 @@ end
 function CourseTurn:onWaypointChange(ix)
 	AITurn.onWaypointChange(self, ix)
 	if self.turnCourse then
-		if self.useTightTurnOffset or self.turnCourse:useTightTurnOffset(ix) then
+		if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
 			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse,
@@ -586,6 +587,8 @@ function CourseTurn:generateCalculatedTurn()
 		self:debug('This is a headland turn')
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 			self.turningRadius, self.workWidth, reversingImplement, steeringLength)
+		-- adjust turn course for tight turns only for headland corners by default
+		self.forceTightTurnOffset = steeringLength > 0
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
 		self:debug('This is NOT a headland turn, distanceToFieldEdge=%.1f', distanceToFieldEdge)
@@ -597,6 +600,8 @@ function CourseTurn:generateCalculatedTurn()
 			turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 				self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
 		end
+		-- only use tight turn offset if we are towing something
+		self.enableTightTurnOffset = steeringLength > 0
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
