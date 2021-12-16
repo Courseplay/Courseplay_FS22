@@ -86,7 +86,7 @@ end
 
 function File:delete()
 	getfenv(0).deleteFile(self:getFullPath())
-	courseplay.debugFormat(CpDebug.DBG_COURSES, 'deleted file %s', self:getFullPath())
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'deleted file %s', self:getFullPath())
 end
 
 --- A directory on the file system. This can recursively be traversed to all subdirectories.
@@ -163,9 +163,9 @@ end
 function Directory:delete()
 	if self:isEmpty() then
 		getfenv(0).deleteFolder(self:getFullPath())
-		courseplay.debugFormat(CpDebug.DBG_COURSES, 'deleted folder %s', self:getFullPath())
+		CpUtil.debugFormat(CpDebug.DBG_COURSES, 'deleted folder %s', self:getFullPath())
 	else
-		courseplay.debugFormat(CpDebug.DBG_COURSES, 'folder %s is not empty, cannot delete', self:getFullPath())
+		CpUtil.debugFormat(CpDebug.DBG_COURSES, 'folder %s is not empty, cannot delete', self:getFullPath())
 	end
 end
 
@@ -281,7 +281,7 @@ DirectoryView = CpObject(FileSystemEntityView)
 function DirectoryView:init(directory, level, folded)
 	FileSystemEntityView.init(self, directory, level)
 	self.directory = directory
-	self.folded = folded or false
+	self.folded = false--folded or false
 	self:refresh()
 end
 
@@ -329,7 +329,7 @@ end
 
 function DirectoryView:collectEntries(t)
 	if self.level > 0 then
-		table.insert(t, self)
+--		table.insert(t, self)
 	end
 	if not self.folded then
 		for _, dv in ipairs(self.directoryViews) do
@@ -389,7 +389,7 @@ CourseManager = CpObject()
 
 function CourseManager:init()
 	-- courses are stored in a folder per map, under modSettings/Courseplay/Courses/<map name>/
-	local baseDir = getUserProfileAppPath() .. "/modSettings/Courseplay"
+	local baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME
 	-- create subfolders one by one, seems like createFolder() can't recursively create subfolders
 	createFolder(baseDir)
 	baseDir = baseDir .. "/Courses/"
@@ -428,6 +428,38 @@ end
 
 function CourseManager:getDirectories()
 	return self.courseDir:getDirectories()
+end
+
+function CourseManager:getEntriesForDirectory(dirIx)
+	local dir = self:getDirectoryByIndex(dirIx)
+	local view = DirectoryView(dir)
+	return view:getEntries()
+end
+
+function CourseManager:getEntryForDirectory(dirIx,index)
+	return self:getEntriesForDirectory(dirIx)[index]
+end
+
+function CourseManager:getNumberOfEntriesForDirectory(dirIx)
+	return #self:getEntriesForDirectory(dirIx)
+end
+
+function CourseManager:getNumberOfEntries()
+	return #self:getEntries()
+end
+
+function CourseManager:getNumberOfDirectories()
+	return #self:getDirectories()
+end
+
+function CourseManager:getEntryByIndex(index)
+	local entries = self:getEntries()
+	return entries[index]
+end
+
+function CourseManager:getDirectoryByIndex(index)
+	local directories = self:getDirectories()
+	return directories[index]
 end
 
 --- The current entry is the one on the top of the HUD. Scrolling the HUD changes the current entry.
@@ -472,8 +504,8 @@ end
 
 --- Take all the courses currently assigned to the vehicle and concatenate them into a single course
 --- and then save this course to the directory at index in the HUD
-function CourseManager:saveCourseFromVehicle(index, vehicle, name)
-	local dir = index and self:getViewAtIndex(index):getEntity() or self.courseDir
+function CourseManager:saveCourseFromVehicle(directoryIx, vehicle, name)
+	local dir = self:getDirectoryByIndex(directoryIx)
 	self:debugVehicle(vehicle, 'saving course %s in folder %s', name, dir:getName())
 	local ix,assignment = self:getAssignment(vehicle)
 	assignment.isSaved = true
@@ -484,7 +516,7 @@ function CourseManager:saveCourseFromVehicle(index, vehicle, name)
 	end
 	self:saveCourse(dir:getFullPath() .. '/' .. name, course)
 	self:refresh()
-	courses[1]:setName(self:getLastEntry():getName())
+	courses[1]:setName(name)
 end
 
 function CourseManager:saveCourse(fullPath, course)
@@ -522,10 +554,8 @@ function CourseManager:assign(vehicle, course,isSaved)
 end
 
 --- Load the course shown in the HUD at index
-function CourseManager:loadCourseSelectedInHud(vehicle, index)
-	self:getCurrentEntry()
-	local file = self.courseDirView:getEntries()[self:getCurrentEntry() - 1 + index]
-
+function CourseManager:loadCourseSelectedInHud(vehicle, dirIx,entryIx)
+	local file = self:getEntryForDirectory(dirIx,entryIx)
 	local courseXml = XMLFile.load("courseXML",file:getFullPath(),CpCourseControl.xmlSchema)
 	local course = CourseUtil.createFromXml(vehicle, courseXml,CpCourseControl.xmlKey)
 	course:setName(file:getName())
@@ -535,10 +565,15 @@ function CourseManager:loadCourseSelectedInHud(vehicle, index)
 	return course
 end
 
-function CourseManager:deleteEntitySelectedInHud(vehicle, index)
-	self:getCurrentEntry()
-	local entity = self:getViewAtIndex(index):getEntity()
-	entity:delete()
+function CourseManager:deleteDirectory(dirIx)
+	local dir = self:getDirectoryByIndex(dirIx)
+	dir:delete()
+	self:refresh()
+end
+
+function CourseManager:deleteEntityInDirectory(dirIx,entityIx)
+	local entry = self:getEntryForDirectory(dirIx,entityIx):getEntity()
+	entry:delete()
 	self:refresh()
 end
 

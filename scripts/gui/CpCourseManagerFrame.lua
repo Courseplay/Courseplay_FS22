@@ -168,22 +168,23 @@ function CpCourseManagerFrame:onFrameClose()
 end
 
 function CpCourseManagerFrame:getNumberOfItemsInSection(list, section)
-	local entries = g_courseManager:getEntries()
 	if list == self.folderList then
-		return 3
+		return g_courseManager:getNumberOfDirectories()
 	else
-		return #entries
+		local folderIx = self.folderList:getSelectedIndexInSection()
+		return g_courseManager:getNumberOfEntriesForDirectory(folderIx)
 	end
 end
 
 function CpCourseManagerFrame:populateCellForItemInSection(list, section, index, cell)
 	if list == self.folderList then
-
+		local directory =  g_courseManager:getDirectoryByIndex(index)
 		cell:getAttribute("icon"):setVisible(false)
-		cell:getAttribute("title"):setText("folder: "..index)
+		cell:getAttribute("title"):setText(directory:getName())
 
 	else
-		local entry = g_courseManager:getEntryByIndex(index)
+		local folderIx = self.folderList:getSelectedIndexInSection()
+		local entry = g_courseManager:getEntryForDirectory(folderIx,index)
 	
 		cell:getAttribute("hotspot"):setVisible(false)
 
@@ -198,23 +199,24 @@ end
 
 function CpCourseManagerFrame:onListSelectionChanged(list, section, index)
 	if list == self.folderList then 
-	--	self.courseList:reloadData()
+		self.courseList:reloadData()
 		CpUtil.debugFormat(CpUtil.DBG_HUD,"folderList -> onListSelectionChanged")
 		if self.movedCourseSelectedIx ~= nil then 
 			CpUtil.debugFormat(CpUtil.DBG_HUD,"Moved course(%d) to folder(%d)",self.movedCourseSelectedIx,index)
 			self.movedCourseSelectedIx = nil
 			self.mode = CpCourseManagerFrame.MODE_FOLDER
-			self:updateMenuButtons()
+		else 
+			self.mode = CpCourseManagerFrame.MODE_FOLDER
 		end
 	else
 		CpUtil.debugFormat(CpUtil.DBG_HUD,"courseList -> onListSelectionChanged")
 		if self.mode == CpCourseManagerFrame.MODE_FOLDER and self.initialized then 
 			self.mode = CpCourseManagerFrame.MODE_COURSE
-			self:updateMenuButtons()
 		elseif self.mode == CpCourseManagerFrame.MODE_MOVE_COURSE then 
 			self.movedCourseSelectedIx = index
 		end
 	end
+	self:updateMenuButtons()
 end
 
 function CpCourseManagerFrame:onClearElementSelection(list)
@@ -238,24 +240,25 @@ function CpCourseManagerFrame:updateMenuButtons()
 	local hasCourse,isSaved = g_courseManager:hasCourse(self.currentVehicle)
 	self.courseButtonInfo.loadOrSaveButtonInfo.text = not hasCourse and g_i18n:getText(CpCourseManagerFrame.translations.loadCourse) or 
 													  	g_i18n:getText(CpCourseManagerFrame.translations.saveCourse)
+
 	if self.mode == CpCourseManagerFrame.MODE_COURSE then 
 		if hasCourse then
 			table.insert(self.menuButtonInfo, self.courseButtonInfo.clearCurrentCourseButtonInfo)
 		end
 		table.insert(self.menuButtonInfo, self.courseButtonInfo.loadOrSaveButtonInfo)
-	--	table.insert(self.menuButtonInfo, self.courseButtonInfo.deleteCourseButtonInfo)
+		table.insert(self.menuButtonInfo, self.courseButtonInfo.deleteCourseButtonInfo)
 	--	table.insert(self.menuButtonInfo, self.courseButtonInfo.renameCourseButtonInfo)
 	elseif self.mode == CpCourseManagerFrame.MODE_FOLDER then 
 		if hasCourse then
 			table.insert(self.menuButtonInfo, self.courseButtonInfo.clearCurrentCourseButtonInfo)
 		end
-	--	table.insert(self.menuButtonInfo, self.folderButtonInfo.moveCourseButtonInfo)
+		table.insert(self.menuButtonInfo, self.folderButtonInfo.moveCourseButtonInfo)
 		table.insert(self.menuButtonInfo, self.courseButtonInfo.loadOrSaveButtonInfo)
-	--	table.insert(self.menuButtonInfo, self.folderButtonInfo.createFolderButtonInfo)
-	--	table.insert(self.menuButtonInfo, self.folderButtonInfo.deleteFolderButtonInfo)
+		table.insert(self.menuButtonInfo, self.folderButtonInfo.createFolderButtonInfo)
+		table.insert(self.menuButtonInfo, self.folderButtonInfo.deleteFolderButtonInfo)
 	--	table.insert(self.menuButtonInfo, self.folderButtonInfo.renameFolderButtonInfo)
 	elseif self.mode == CpCourseManagerFrame.MODE_MOVE_COURSE then 
-		
+		table.insert(self.menuButtonInfo, self.folderButtonInfo.moveCourseButtonInfo)
 	end
 	
 	self:setMenuButtonInfoDirty()
@@ -265,8 +268,10 @@ function CpCourseManagerFrame:onClickLoadOrSaveCourse()
 	local hasCourse = self.currentVehicle:hasCourse()
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickLoadOrSaveCourse")
 	local courseIx = self.courseList:getSelectedIndexInSection()
+	local folderIx = self.folderList:getSelectedIndexInSection()
 	if not hasCourse then -- only allow saving if it not already saved!
-		self.currentVehicle:loadCourse(courseIx)
+		self.currentVehicle:loadCourse(folderIx,courseIx)
+		self:updateMenuButtons()
 	else 
 		CpCourseManagerFrame.showInputTextDialog(self,CpCourseManagerFrame.translations.courseDialogTitle,
 												CpCourseManagerFrame.onClickSaveCourseDialog)
@@ -276,8 +281,10 @@ end
 function CpCourseManagerFrame:onClickSaveCourseDialog(text,clickOk)
 	if clickOk then 
 		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickSaveCourseDialog- > %s",text)
-		self.currentVehicle:saveCourse(nil,text)
+		local folderIx = self.folderList:getSelectedIndexInSection()
+		self.currentVehicle:saveCourse(folderIx,text)
 		self.courseList:reloadData()
+		self:updateMenuButtons()
 	end
 end
 
@@ -292,6 +299,11 @@ end
 
 function CpCourseManagerFrame:onClickDeleteCourse()
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickDeleteCourse")
+	local folderIx = self.folderList:getSelectedIndexInSection()
+	local courseIx = self.courseList:getSelectedIndexInSection()
+	g_courseManager:deleteEntityInDirectory(folderIx,courseIx)
+	self.folderList:reloadData()
+	self.courseList:reloadData()
 end
 
 function CpCourseManagerFrame:onClickRenameCourse()
@@ -317,11 +329,16 @@ function CpCourseManagerFrame:onClickCreateFolderDialog(text,clickOk)
 	if clickOk then 
 		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickCreateFolderDialog - > %s",text)
 		g_courseManager:createDirectory(nil, text)
+		self:updateMenuButtons()
 	end
 end
 
 function CpCourseManagerFrame:onClickDeleteFolder()
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickDeleteFolder")
+	local folderIx = self.folderList:getSelectedIndexInSection()
+	g_courseManager:deleteDirectory(folderIx)
+	self.folderList:reloadData()
+	self.courseList:reloadData()
 end
 
 function CpCourseManagerFrame:onClickRenameFolder()

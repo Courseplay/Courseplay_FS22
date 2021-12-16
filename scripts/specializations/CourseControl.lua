@@ -203,8 +203,8 @@ function CpCourseControl:getCourseName()
     return g_i18n:getText(CpCourseControl.i18n.noCurrentCourse)
 end
 
-function CpCourseControl:loadCourse(ix)
-    self.course = g_courseManager:loadCourseSelectedInHud(self,ix)
+function CpCourseControl:loadCourse(dirIx,entryIx)
+    self.course = g_courseManager:loadCourseSelectedInHud(self,dirIx,entryIx)
     SpecializationUtil.raiseEvent(self,"onCourseChange",self.course)
 end
 
