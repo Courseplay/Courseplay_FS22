@@ -405,7 +405,7 @@ function CourseManager:init()
 	self.legacyWaypoints = {}
 	self.savegameFolderPath = g_careerScreen.currentSavegame.savegameDirectory
 	-- file where we save the courses assigned to each vehicle
-	self.savedAssignmentsXmlFilePath = self.savegameFolderPath .. '/courseplayCourseAssignments.xml'
+	--self.savedAssignmentsXmlFilePath = self.savegameFolderPath .. '/courseplayCourseAssignments.xml'
 	-- this is the list of courses loaded from a savegame and waiting for the vehicle to grab them (to which they were
 	-- assigned when the game was saved) after the game is loaded
 	self.savedAssignments = {}

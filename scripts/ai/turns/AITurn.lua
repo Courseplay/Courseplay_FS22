@@ -737,9 +737,9 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
 	-- now make a pocket in the inner headland to make room to turn
-	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.75, -offset * 0.75)
+	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.75, -offset * 0.6)
 	table.insert(cornerWaypoints, wp)
-	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.5, -offset * 0.9)
+	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.5, -offset * 0.7)
 	if not FieldUtil.isOnField(wp.x, wp.z) then
 		self:debug('No field where the pocket would be, this seems to be a 270 corner')
 		corner:delete()
@@ -747,13 +747,13 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	end
 	table.insert(cornerWaypoints, wp)
 	-- drive forward to the field edge on the inner headland
-	wp = corner:getPointAtDistanceFromCornerStart(d, -offset)
+	wp = corner:getPointAtDistanceFromCornerStart(d, -offset * 0.7)
 	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
 	table.insert(cornerWaypoints, wp)
-	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 2)
+	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 1.5)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
-	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius / 3, self.turningRadius / 4)
+	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius / 3, self.turningRadius / 2)
 	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.5
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius, self.turningRadius / 4)
