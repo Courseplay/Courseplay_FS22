@@ -69,7 +69,8 @@
 		<Setting classType="AIParameterSettingList" name="convoyMaxDistance" min="40" max="300" unit="2"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="speed">
-		<Setting classType="AIParameterSpeedSetting" name="fieldworkSpeed" min="5" max="50" unit="1"/>		
-
+		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" unit="1"/>
 	</SettingSubTitle>
 </Settings>

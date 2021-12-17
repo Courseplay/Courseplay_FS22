@@ -394,6 +394,9 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
+--- The Giants Cutter class has a timer to stop the AI job if there is no fruit being processed for 5 seconds.
+--- This prevents us from driving for instance on a connecting track or longer turns (and also testing), so
+--- we just reset that timer here in every update cycle.
 function AIDriveStrategyCombineCourse:disableCutterTimer()
 	if self.combine.attachedCutters then
 		for cutter, _ in pairs(self.combine.attachedCutters) do
@@ -1075,10 +1078,10 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 	if self.turnContext:isHeadlandCorner() then
 		if self:isPotatoOrSugarBeetHarvester() then
 			self:debug('Headland turn but this harvester uses normal turn maneuvers.')
-			UnloadableFieldworkAIDriver.startTurn(self, ix)
+			AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
 		elseif self.course:isOnConnectingTrack(ix) then
 			self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
-			UnloadableFieldworkAIDriver.startTurn(self, ix)
+			AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
 		elseif self.course:isOnOutermostHeadland(ix) and self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) then
 			self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
 			self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.turnContext, self.course)
@@ -1086,7 +1089,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 			self.ppc:setShortLookaheadDistance()
 		else
 			self:debug('Use combine headland turn.')
-			self.aiTurn = CombineHeadlandTurn(self.vehicle, self, self.turnContext)
+			self.aiTurn = CombineHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext)
 			self.state = self.states.TURNING
 		end
 	else

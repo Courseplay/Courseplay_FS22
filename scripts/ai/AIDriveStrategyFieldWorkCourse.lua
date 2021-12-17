@@ -84,22 +84,19 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
     local gx, gz
 
-    local maxSpeed = self.vehicle:getSpeedLimit(true)
+    local maxSpeed = self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed)
     ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
         if not gx then
             -- simple reverse (not towing anything), just use PPC
             gx, _, gz = self.ppc:getGoalPointPosition()
-            -- TODO_22
-            maxSpeed = 5
+            maxSpeed = self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed)
         end
     else
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
     ----------------------------------------------------------------
-    self:debugSparse('combine getdrivedata')
-
     if self.state == self.states.INITIAL then
         self:lowerImplements()
         self.state = self.states.WAITING_FOR_LOWER
@@ -120,9 +117,12 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WORKING then
         maxSpeed = self.vehicle:getSpeedLimit(true)
     elseif self.state == self.states.TURNING then
-        maxSpeed = math.min(maxSpeed, self.aiTurn:getDriveData())
+        local turnGx, turnGz, turnMoveForwards, turnMaxSpeed = self.aiTurn:getDriveData(dt)
+        maxSpeed = math.min(maxSpeed, turnMaxSpeed)
+        -- if turn tells us which way to go, use that
+        gx, gz = turnGx or gx, turnGz or gz
+        if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
-        -- TODO_22
         maxSpeed = self.vehicle:getSpeedLimit(true)
     end
     self:setAITarget()

@@ -115,8 +115,11 @@
 		<text name="CP_vehicle_setting_subTitle_speed" 										text="Speeds"/>
 
 		<text name="CP_vehicle_setting_fieldworkSpeed_title" 								text="Fieldwork"/>
-		<text name="CP_vehicle_setting_fieldworkSpeed_tooltip" 								text="Fieldwork"/>
-
+		<text name="CP_vehicle_setting_fieldworkSpeed_tooltip" 								text="Maximum speed while working on the field"/>
+		<text name="CP_vehicle_setting_turnSpeed_title" 									text="Turn"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 									text="Maximum speed during turn maneuvers"/>
+		<text name="CP_vehicle_setting_reverseSpeed_title" 									text="Reverse"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 								text="Maximum speed while reversing"/>
 
 		<text name="CP_ai_param_centerMode_title"				text="Field center" />
 		<text name="CP_ai_param_centerMode_up_down" 			text="Up/down" />
