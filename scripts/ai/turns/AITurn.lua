@@ -495,7 +495,6 @@ function CourseTurn:startTurn()
 		self.ppc:initialize(1)
 		self.state = self.states.TURNING
 	end
-	self.turnCourse:print()
 end
 
 function CourseTurn:isForwardOnly()
@@ -595,7 +594,6 @@ function CourseTurn:changeToFwdWhenWaypointReached()
 	end
 end
 
-
 function CourseTurn:generateCalculatedTurn()
 	local turnManeuver
 	local reversingImplement, steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
@@ -686,8 +684,8 @@ CombineCourseTurn = CpObject(CourseTurn)
 
 ---@param driver AIDriver
 ---@param turnContext TurnContext
-function CombineCourseTurn:init(vehicle, driver, turnContext, fieldworkCourse, name)
-	CourseTurn.init(self, vehicle, driver, turnContext, fieldworkCourse,name or 'CombineCourseTurn')
+function CombineCourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, name)
+	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse,workWidth, name or 'CombineCourseTurn')
 end
 
 -- in a combine headland turn we want to raise the header after it reached the field edge (or headland edge on an inner
@@ -707,29 +705,27 @@ end
 ---@class CombinePocketHeadlandTurn : CombineCourseTurn
 CombinePocketHeadlandTurn = CpObject(CombineCourseTurn)
 
----@param driver CombineAIDriver
+---@param driveStrategy AIDriveStrategyCombineCourse
 ---@param turnContext TurnContext
-function CombinePocketHeadlandTurn:init(vehicle, driver, turnContext, fieldworkCourse)
-	CombineCourseTurn.init(self, vehicle, driver, turnContext, fieldworkCourse,'CombinePocketHeadlandTurn')
+function CombinePocketHeadlandTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth)
+	CombineCourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse,
+			workWidth, 'CombinePocketHeadlandTurn')
 end
 
 --- Create a pocket in the next row at the corner to stay on the field during the turn maneuver.
 ---@param turnContext TurnContext
 function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	local cornerWaypoints = {}
-	local turnDiameter = self.vehicle.cp.settings.turnDiameter:get()
-	local turningRadius = turnDiameter / 2
 	-- this is how far we have to cut into the next headland (the position where the header will be after the turn)
-	local workWidth = vehicle.cp.courseGeneratorSettings.workWidth:get()
-	local offset = math.min(turningRadius + turnContext.frontMarkerDistance,  workWidth)
-	local corner = turnContext:createCorner(self.vehicle, turningRadius)
-	local d = -workWidth / 2 + turnContext.frontMarkerDistance
+	local offset = math.min(self.turningRadius + turnContext.frontMarkerDistance, self.workWidth)
+	local corner = turnContext:createCorner(self.vehicle, self.turningRadius)
+	local d = -self.workWidth / 2 + turnContext.frontMarkerDistance
 	local wp = corner:getPointAtDistanceFromCornerStart(d + 2)
-	wp.speed = self.vehicle.cp.speeds.turn * 0.75
+	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive forward up to the field edge
 	wp = corner:getPointAtDistanceFromCornerStart(d)
-	wp.speed = self.vehicle.cp.speeds.turn * 0.75
+	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive back to prepare for making a pocket
 	-- reverse back to set up for the headland after the corner
@@ -744,7 +740,7 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.75, -offset * 0.75)
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.5, -offset * 0.9)
-	if not courseplay:isField(wp.x, wp.z) then
+	if not FieldUtil.isOnField(wp.x, wp.z) then
 		self:debug('No field where the pocket would be, this seems to be a 270 corner')
 		corner:delete()
 		return nil
@@ -752,16 +748,16 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	table.insert(cornerWaypoints, wp)
 	-- drive forward to the field edge on the inner headland
 	wp = corner:getPointAtDistanceFromCornerStart(d, -offset)
-	wp.speed = self.vehicle.cp.speeds.turn * 0.75
+	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 2)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
-	wp = corner:getPointAtDistanceFromCornerEnd(turningRadius / 3, turningRadius / 4)
-	wp.speed = self.vehicle.cp.speeds.turn * 0.5
+	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius / 3, self.turningRadius / 4)
+	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.5
 	table.insert(cornerWaypoints, wp)
-	wp = corner:getPointAtDistanceFromCornerEnd(turningRadius, turningRadius / 4)
-	wp.speed = self.vehicle.cp.speeds.turn * 0.5
+	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius, self.turningRadius / 4)
+	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.5
 	table.insert(cornerWaypoints, wp)
 	corner:delete()
 	return Course(self.vehicle, cornerWaypoints, true), turnContext.turnEndWpIx
@@ -774,7 +770,9 @@ function CombinePocketHeadlandTurn:startTurn()
 		self:debug('Could not create pocket course, falling back to normal headland corner')
 		self:generateCalculatedTurn()
 	end
-	self.driveStrategy:startFieldworkCourseWithTemporaryCourse(self.turnCourse, self.turnContext.turnEndWpIx)
+	--self.driveStrategy:startFieldworkCourseWithTemporaryCourse(self.turnCourse, self.turnContext.turnEndWpIx)
+	self.ppc:setCourse(self.turnCourse)
+	self.ppc:initialize(1)
 	self.state = self.states.TURNING
 end
 

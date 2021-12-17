@@ -1084,7 +1084,8 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 			AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
 		elseif self.course:isOnOutermostHeadland(ix) and self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) then
 			self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
-			self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.turnContext, self.course)
+			self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext,
+					self.course, self:getWorkWidth())
 			self.state = self.states.TURNING
 			self.ppc:setShortLookaheadDistance()
 		else
