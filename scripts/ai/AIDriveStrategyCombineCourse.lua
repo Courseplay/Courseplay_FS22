@@ -66,7 +66,8 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.litersPerSecond = 0
 	self.fillLevelAtLastWaypoint = 0
 	self.beaconLightsActive = false
-	self.lastEmptyTimestamp = 0
+	self.stopDisabledAfterEmpty = CpTemporaryObject(false)
+	self.stopDisabledAfterEmpty:set(false, 1)
 	self.pipeOffsetX = 0
 	self.unloaders = {}
 	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
@@ -216,8 +217,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		self:setMaxSpeed(self:getWorkSpeed())
 	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
 		self:setMaxSpeed(self.vehicle.cp.speeds.turn)
-	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD or
-			self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
+	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
 			self.unloadState == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
 		if self:isUnloadFinished() then
@@ -233,6 +233,15 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		else
 			self:setMaxSpeed(0)
 		end
+	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
+		if g_updateLoopIndex % 5 == 0 then --small delay, to make sure no more fillLevel change is happening
+			if not self:isFull() and not self:shouldStopForUnloading() then
+				self:debug('not full anymore, can continue working')
+				-- TODO_22 self:clearInfoText(self:getFillLevelInfoText())
+				self:changeToFieldWork()
+			end
+		end
+		self:setMaxSpeed(0)
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW then
 		self:setMaxSpeed(0)
 		if self:isDischarging() then
@@ -542,9 +551,8 @@ function AIDriveStrategyCombineCourse:isFull()
 				self:debugSparse('Full or refillUntilPct reached: %.2f', percentage)
 				return true
 			end
-			if self:shouldStopForUnloading(percentage) then
-				self:debugSparse('Stop for unloading: %.2f', percentage)
-				return true
+			if percentage < 0.1 then
+				self.stopDisabledAfterEmpty:set(true, 2000)
 			end
 		end
 	end
@@ -1302,21 +1310,16 @@ function AIDriveStrategyCombineCourse:getIsChopperWaitingForTrailer()
 	return false
 end
 
-function AIDriveStrategyCombineCourse:shouldStopForUnloading(pc)
-	local stop = false
+function AIDriveStrategyCombineCourse:shouldStopForUnloading()
 	if self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.pipe then
-		if self:isDischarging() and g_updateLoopIndex > self.lastEmptyTimestamp + 600 then
+		if self:isDischarging() and not self.stopDisabledAfterEmpty:get() then
 			-- stop only if the pipe is discharging AND we have been emptied a while ago.
 			-- this makes sure the combine will start driving after it is emptied but the trailer
 			-- is still under the pipe
-			stop = true
+			return true
 		end
 	end
-	if pc and pc < 0.1 then
-		-- remember the time we were completely unloaded.
-		self.lastEmptyTimestamp = g_updateLoopIndex
-	end
-	return stop
+	return false
 end
 
 function AIDriveStrategyCombineCourse:getFillType()
