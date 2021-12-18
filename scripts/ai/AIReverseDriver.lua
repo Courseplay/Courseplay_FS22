@@ -111,12 +111,17 @@ function AIReverseDriver:getDriveData()
 
 		lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
 	else
-		lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(turnNode, xTipper,yTipper,zTipper)
-		self:showDirection(turnNode,lxTractor, lzTractor, 1, 1, 0)
+		lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(turnNode, xTipper, yTipper, zTipper)
+		self:showDirection(turnNode, lxTractor, lzTractor, 1, 1, 0)
 
 		local rotDelta = self.reversingImplement.reversingProperties.nodeDistance * 0.5
 		local trailerToWaypointAngle = self:getLocalYRotationToPoint(node, tx, yTipper, tz, -1) * rotDelta
+
+		local ttwa = self:getLocalYRotationToPoint(node, tx, yTipper, tz, -1)
+
+
 		trailerToWaypointAngle = MathUtil.clamp(trailerToWaypointAngle, -math.rad(90), math.rad(90))
+
 		local tractorToTrailerAngle = self:getLocalYRotationToPoint(turnNode, xTipper, yTipper, zTipper, -1)
 
 		angleDiff = (tractorToTrailerAngle - trailerToWaypointAngle) * (1 + rotDelta)

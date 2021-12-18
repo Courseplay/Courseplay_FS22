@@ -47,8 +47,12 @@ function AIDriveStrategyCourse:initStates(states)
     end
 end
 
+function AIDriveStrategyCourse:getStateAsString()
+    return self.state.name
+end
+
 function AIDriveStrategyCourse:debug(...)
-    CpUtil.debugVehicle(self.debugChannel, self.vehicle, self.state.name .. ': ' .. string.format(...))
+    CpUtil.debugVehicle(self.debugChannel, self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
 function AIDriveStrategyCourse:debugSparse(...)
@@ -58,11 +62,11 @@ function AIDriveStrategyCourse:debugSparse(...)
 end
 
 function AIDriveStrategyCourse:info(...)
-    CpUtil.infoVehicle(self.vehicle, self.state.name .. ': ' .. string.format(...))
+    CpUtil.infoVehicle(self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
 function AIDriveStrategyCourse:error(...)
-    CpUtil.infoVehicle(self.vehicle, self.state.name .. ': ' .. string.format(...))
+    CpUtil.infoVehicle(self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle)

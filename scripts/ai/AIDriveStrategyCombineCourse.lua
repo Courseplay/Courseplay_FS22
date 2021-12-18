@@ -28,6 +28,7 @@ AIDriveStrategyCombineCourse.myStates = {
 	-- main states
 	UNLOADING_ON_FIELD = {},
 	-- unload sub-states
+	STOPPING_FOR_UNLOAD = {},
 	WAITING_FOR_UNLOAD_ON_FIELD = {},
 	PULLING_BACK_FOR_UNLOAD = {},
 	WAITING_FOR_UNLOAD_AFTER_PULLED_BACK = {},
@@ -71,6 +72,14 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 	self:initUnloadStates()
 	return self
+end
+
+function AIDriveStrategyCombineCourse:getStateAsString()
+	local s = self.state.name
+	if self.state == self.states.UNLOADING_ON_FIELD then
+		s = s .. '/' .. self.unloadState.name
+	end
+	return s
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -178,8 +187,6 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 		end
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		self:driveUnloadOnField()
-	else
-		self:debugSparse('Unknown state.')
 	end
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
@@ -191,18 +198,20 @@ end
 ---  * change the course to run, for example pulling back/making pocket or self unload
 ---  * this does not supply drive target point
 function AIDriveStrategyCombineCourse:driveUnloadOnField()
-	if self.unloadState == self.states.WAITING_FOR_STOP_BEFORE_PULLING_BACK then
+	if self.unloadState == self.states.STOPPING_FOR_UNLOAD then
 		self:setMaxSpeed(0)
 		-- wait until we stopped before raising the implements
-		if self:isStopped() then
-			self:debug('Raise implements and start pulling back')
-			self:raiseImplements()
-			self.unloadState = self.states.PULLING_BACK_FOR_UNLOAD
+		if AIUtil.isStopped(self.vehicle) then
+			if self.raiseHeaderAfterStopped then
+				self:debug('Stopped, now raise implements and switch to next unload state')
+				self:raiseImplements()
+			end
+			self.unloadState = self.newUnloadStateAfterStopped
 		end
 	elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
-		self:setMaxSpeed(self.vehicle.cp.speeds.reverse)
+		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
 	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-		self:setMaxSpeed(self.vehicle.cp.speeds.reverse)
+		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
 	elseif self.unloadState == self.states.MAKING_POCKET then
 		self:setMaxSpeed(self:getWorkSpeed())
 	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
@@ -434,6 +443,13 @@ function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
 	AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
 
+function AIDriveStrategyCombineCourse:stopForUnload(newUnloadStateAfterStopped, raiseHeaderAfterStopped)
+	self.state = self.states.UNLOADING_ON_FIELD
+	self.unloadState = self.states.STOPPING_FOR_UNLOAD
+	self.newUnloadStateAfterStopped = newUnloadStateAfterStopped
+	self.raiseHeaderAfterStopped = raiseHeaderAfterStopped
+end
+
 function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 	self:checkFruit()
 	-- TODO: check around turn maneuvers we may not want to pull back before a turn
@@ -466,8 +482,7 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 		if pullBackCourse then
 			pullBackCourse:print()
 			self:debug('Pipe in fruit, pulling back to make room for unloading')
-			self.state = self.states.UNLOADING_ON_FIELD
-			self.unloadState = self.states.WAITING_FOR_STOP_BEFORE_PULLING_BACK
+			self:stopForUnload(self.states.PULLING_BACK_FOR_UNLOAD, true)
 			self.courseAfterPullBack = self.course
 			self.ixAfterPullBack = self.ppc:getLastPassedWaypointIx() or self.ppc:getCurrentWaypointIx()
 			-- tighter turns
@@ -482,8 +497,7 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 end
 
 function AIDriveStrategyCombineCourse:startWaitingForUnloadWhenFull()
-	self.state = self.states.UNLOADING_ON_FIELD
-	self.unloadState = self.states.WAITING_FOR_UNLOAD_ON_FIELD
+	self:stopForUnload(self.states.WAITING_FOR_UNLOAD_ON_FIELD, true)
 	self:debug('Waiting for the unloader on the field')
 	g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL,
 			string.format(g_i18n:getText("ai_messageErrorGrainTankIsFull"), self.vehicle:getCurrentHelper().name))
@@ -734,7 +748,7 @@ end
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
 	if not self.backwardLookingProximitySensorPack then return end
 	local d, blockingVehicle = self.backwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
-	if d < 1000 and blockingVehicle and self:isStopped() and self:isReversing() and not self:isWaitingForUnload() then
+	if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and self:isReversing() and not self:isWaitingForUnload() then
 		self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
 		if blockingVehicle.cp.driver and blockingVehicle.cp.driver.onBlockingOtherVehicle then
 			blockingVehicle.cp.driver:onBlockingOtherVehicle(self.vehicle)

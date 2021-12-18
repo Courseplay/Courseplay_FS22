@@ -337,7 +337,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
     self:debug('change to fieldwork')
-    self.state = self.states.WAITING_FOR_LOWER
+    self.state = self.states.WAITING_FOR_LOWER_DELAYED
     self:lowerImplements(self.vehicle)
 end
 
