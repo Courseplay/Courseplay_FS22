@@ -234,7 +234,7 @@ function TurnManeuver:moveCourseBack(course, dBack)
 	dBack = dBack < 1 and 1 or dBack
 	self:debug('moving course: dz=%.1f', dBack)
 	-- generate a straight reverse section first
-	local reverseBeforeTurn = Course.createFromNode(self.vehicle, self.turnContext.workEndNode,
+	local reverseBeforeTurn = Course.createFromNode(self.vehicle, self.vehicleDirectionNode,
 		0, -self.steeringLength, -self.steeringLength - dBack, -1, true)
 	local dx, dz = reverseBeforeTurn:getWaypointWorldDirections(1)
 	self:debug('translating turn course: dx=%.1f, dz=%.1f', dx * dBack, dz * dBack)

@@ -478,14 +478,15 @@ end
 
 --- Assuming a vehicle just finished a row, provide parameters for calculating a path to the start
 --- of the next row, making sure that the vehicle and the implement arrives there aligned with the row direction
----@return number, number, number the node where the turn ends, z offset to use with the start node, z offset to use with the end node
+---@return number, number, number the node where the turn ends, z offset to use with the start node, which should be
+--- the vehicle's direction node, and lastly, z offset to use with the end node
 function TurnContext:getTurnEndNodeAndOffsets(vehicle)
     local turnEndNode, startOffset, goalOffset
     if self.frontMarkerDistance > 0 then
         -- implement in front of vehicle. Turn should end with the implement at the work start position, this is where
         -- the vehicle's root node is on the vehicleAtTurnEndNode
         turnEndNode = self.vehicleAtTurnEndNode
-        startOffset = self.frontMarkerDistance
+        startOffset = 0
         goalOffset = 0
     else
         -- implement behind vehicle. Since we are turning, we want to be aligned with the next row with our vehicle

@@ -1106,8 +1106,10 @@ end
 ---@param reverse boolean is this a reverse course?
 function Course.createFromNode(vehicle, referenceNode, xOffset, from, to, step, reverse)
 	local waypoints = {}
-	for d = from, to, step do
-		local x, _, z = localToWorld(referenceNode, xOffset, 0, d)
+	local nPoints = math.floor(math.abs((from - to) / step)) + 1
+	local dBetweenPoints = (to - from) / nPoints
+	for i = 1, nPoints do
+		local x, _, z = localToWorld(referenceNode, xOffset, 0, i * dBetweenPoints)
 		table.insert(waypoints, {x = x, z = z, rev = reverse})
 	end
 	local course = Course(vehicle, waypoints, true)
