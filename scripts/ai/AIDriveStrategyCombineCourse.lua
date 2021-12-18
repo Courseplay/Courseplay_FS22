@@ -220,9 +220,9 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
 		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
 	elseif self.unloadState == self.states.MAKING_POCKET then
-		self:setMaxSpeed(self:getWorkSpeed())
+		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
 	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
-		self:setMaxSpeed(self.vehicle.cp.speeds.turn)
+		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed))
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
 			self.unloadState == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
@@ -458,6 +458,8 @@ function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
 	AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
 
+--- Stop, raise the header (if needed) and then, and only then change to the new states. This is to avoid leaving
+--- unharvested spots due to the header being lifted while the vehicle is still in motion.
 function AIDriveStrategyCombineCourse:stopForUnload(newUnloadStateAfterStopped, raiseHeaderAfterStopped)
 	self.state = self.states.UNLOADING_ON_FIELD
 	self.unloadState = self.states.STOPPING_FOR_UNLOAD
