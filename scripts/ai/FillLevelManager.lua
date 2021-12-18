@@ -36,13 +36,20 @@ function FillLevelManager:debugSparse(...)
     end
 end
 
+function FillLevelManager:needsRefill()
+    local fillLevelInfo = {}
+    self:getAllFillLevels(self.vehicle, fillLevelInfo)
+    return self:areFillLevelsOk(fillLevelInfo)
+end
+
+
 -- is the fill level ok to continue? With fillable tools we need to stop working when we are out
 -- of material (seed, fertilizer, etc.)
 function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
     local allOk = true
     local hasSeeds, hasNoFertilizer = false, false
     local liquidFertilizerFillLevel,herbicideFillLevel, seedsFillLevel, fertilizerFillLevel = 0, 0, 0, 0
-    if self.vehicle.cp.settings.sowingMachineFertilizerEnabled:is(false) and AIUtil.hasAIImplementWithSpecialization(self.vehicle, FertilizingCultivator) then
+    if not self.vehicle:getCpSettingValue(CpVehicleSettings.sowingMachineFertilizerEnabled) and AIUtil.hasAIImplementWithSpecialization(self.vehicle, FertilizingCultivator) then
         -- TODO_22 courseplay:setInfoText(self.vehicle, "skipping loading Seeds/Fertilizer and continue with Cultivator !!!")
         return true
     end
@@ -54,7 +61,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
                 allOk = false
             end
         else
-            if self:isValidFillType(fillType) and info.fillLevel == 0 and info.capacity > 0 and not self:helperBuysThisFillType(fillType) then
+            if self:isValidFillType(nil, fillType) and info.fillLevel == 0 and info.capacity > 0 and not self:helperBuysThisFillType(fillType) then
                 allOk = false
                 if fillType == FillType.FERTILIZER or fillType == FillType.LIQUIDFERTILIZER then hasNoFertilizer = true end
             else
@@ -92,13 +99,6 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
     end
     self.lastTotalFillLevel = totalFillLevel
     return allOk
-end
-
---- Do we need to check this fill unit at all?
---- AIR and DEF are currently don't seem to be used in the game and some mods come with empty tank. Most stock
---- vehicles don't seem to consume any air or adblue.
-function FillLevelManager:isValidFillType(fillType)
-    return fillType ~= FillType.DEF	and fillType ~= FillType.AIR
 end
 
 --- Does the helper buy this fill unit (according to the game settings)? If yes, we don't have to stop or refill when empty.
@@ -158,9 +158,7 @@ function FillLevelManager:getAllFillLevels(object, fillLevelInfo, driver)
         for _, fillUnit in pairs(object:getFillUnits()) do
             local fillType = self:getFillTypeFromFillUnit(fillUnit)
             local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(fillType)
-            if driver then
-                driver:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
-            end
+            self:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
             if not fillLevelInfo[fillType] then fillLevelInfo[fillType] = {fillLevel=0, capacity=0} end
             fillLevelInfo[fillType].fillLevel = fillLevelInfo[fillType].fillLevel + fillUnit.fillLevel
             fillLevelInfo[fillType].capacity = fillLevelInfo[fillType].capacity + fillUnit.capacity
@@ -242,8 +240,8 @@ end
 ---@param object table
 ---@param fillType number
 ---@param fillUnitIndex number
-function FillLevelManager:isValidFuelType(object,fillType,fillUnitIndex)
-    if object.getConsumerFillUnitIndex then
+function FillLevelManager:isValidFuelType(object, fillType, fillUnitIndex)
+    if object and object.getConsumerFillUnitIndex then
         local index = object:getConsumerFillUnitIndex(fillType)
         if fillUnitIndex ~= nil then
             return fillUnitIndex and fillUnitIndex == index

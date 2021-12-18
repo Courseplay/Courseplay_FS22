@@ -25,6 +25,10 @@ AIDriveStrategyCombineCourse.pocketFillLevelFullPercentage = 95
 AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 40
 
 AIDriveStrategyCombineCourse.myStates = {
+	-- main states
+	UNLOADING_ON_FIELD = {},
+	-- unload sub-states
+	WAITING_FOR_UNLOAD_ON_FIELD = {},
 	PULLING_BACK_FOR_UNLOAD = {},
 	WAITING_FOR_UNLOAD_AFTER_PULLED_BACK = {},
 	RETURNING_FROM_PULL_BACK = {},
@@ -64,17 +68,17 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.lastEmptyTimestamp = 0
 	self.pipeOffsetX = 0
 	self.unloaders = {}
+	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 	self:initUnloadStates()
 	return self
 end
 
-
+-----------------------------------------------------------------------------------------------------------------------
+--- Initialization
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
 	self:debug('AIDriveStrategyCombineCourse set')
-	---@type FillLevelManager
-	self.fillLevelManager = FillLevelManager(self.vehicle)
-
 	if self.vehicle.spec_combine then
 		self.combine = self.vehicle.spec_combine
 	else
@@ -118,73 +122,8 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 
 	local total, pipeInFruit = self.course:setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
 	self:shouldStrawSwathBeOn(self.course:getCurrentWaypointIx())
-	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
-end
-
-function AIDriveStrategyCombineCourse:setUpPipe()
-	if self.vehicle.spec_pipe then
-		self.pipe = self.vehicle.spec_pipe
-		self.objectWithPipe = self.vehicle
-	else
-		local implementWithPipe = AIUtil.getAIImplementWithSpecialization(self.vehicle, Pipe)
-		if implementWithPipe then
-			self.pipe = implementWithPipe.spec_pipe
-			self.objectWithPipe = implementWithPipe
-		else
-			self:info('Could not find implement with pipe')
-		end
-	end
-
-	if self.pipe then
-		-- check the pipe length:
-		-- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
-		local wasFolded, wasClosed
-		if self.vehicle.spec_foldable then
-			wasFolded = not self.vehicle.spec_foldable:getIsUnfolded()
-			if wasFolded then
-				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 0 or 1, true)
-			end
-		end
-		if self.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
-			wasClosed = true
-			if self.pipe.animation.name then
-				self.pipe:setAnimationTime(self.pipe.animation.name, 1, true)
-			else
-				-- as seen in the Giants pipe code
-				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-			end
-		end
-		local dischargeNode = self:getCurrentDischargeNode()
-		self:fixDischargeDistance(dischargeNode)
-		local dx, _, _ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
-		self.pipeOnLeftSide = dx >= 0
-		self:debug('Pipe on left side %s', tostring(self.pipeOnLeftSide))
-		-- use self.combine so attached harvesters have the offset relative to the harvester's root node
-		-- (and thus, does not depend on the angle between the tractor and the harvester)
-		self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
-		self:debug('Pipe offset: x = %.1f, z = %.1f', self.pipeOffsetX, self.pipeOffsetZ)
-		if wasClosed then
-			if self.pipe.animation.name then
-				self.pipe:setAnimationTime(self.pipe.animation.name, 0, true)
-			else
-				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-			end
-		end
-		if self.vehicle.spec_foldable then
-			if wasFolded then
-				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
-			end
-		end
-	else
-		-- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
-		-- periodically even when CP isn't driving, and even for cotton harvesters...
-		self.pipeOffsetX, self.pipeOffsetZ = 0, 0
-		self.pipeOnLeftSide = true
-	end
 end
 
 -- This part of an ugly workaround to make the chopper pickups work
@@ -217,11 +156,6 @@ function AIDriveStrategyCombineCourse:stop(msgReference)
     UnloadableFieldworkAIDriver.stop(self,msgReference)
 end
 
-function AIDriveStrategyCombineCourse:drive(dt)
-	-- the rest is the same as the parent class
-	UnloadableFieldworkAIDriver.drive(self, dt)
-end
-
 -- remember a course to start
 function AIDriveStrategyCombineCourse:rememberCourse(course, ix)
 	self.rememberedCourse = course
@@ -233,10 +167,163 @@ function AIDriveStrategyCombineCourse:startRememberedCourse()
 	self:startCourse(self.rememberedCourse, self.rememberedCourseStartIx)
 end
 
+function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
+	self:handlePipe(dt)
+	self:disableCutterTimer()
+	if self.state == self.states.WORKING then
+		self:checkRendezvous()
+		self:checkBlockingUnloader()
+		if self:isFull() then
+			self:changeToUnloadOnField()
+		end
+	elseif self.state == self.states.UNLOADING_ON_FIELD then
+		self:driveUnloadOnField()
+	else
+		self:debugSparse('Unknown state.')
+	end
+	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
+end
+
+--- Take care of unloading on the field. This could be stopping and waiting for an unloader or
+--- self unloading.
+--- The output of this function is:
+---  * set self.maxSpeed
+---  * change the course to run, for example pulling back/making pocket or self unload
+---  * this does not supply drive target point
+function AIDriveStrategyCombineCourse:driveUnloadOnField()
+	if self.unloadState == self.states.WAITING_FOR_STOP_BEFORE_PULLING_BACK then
+		self:setMaxSpeed(0)
+		-- wait until we stopped before raising the implements
+		if self:isStopped() then
+			self:debug('Raise implements and start pulling back')
+			self:raiseImplements()
+			self.unloadState = self.states.PULLING_BACK_FOR_UNLOAD
+		end
+	elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
+		self:setMaxSpeed(self.vehicle.cp.speeds.reverse)
+	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
+		self:setMaxSpeed(self.vehicle.cp.speeds.reverse)
+	elseif self.unloadState == self.states.MAKING_POCKET then
+		self:setMaxSpeed(self:getWorkSpeed())
+	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
+		self:setMaxSpeed(self.vehicle.cp.speeds.turn)
+	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD or
+			self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
+			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
+			self.unloadState == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
+		if self:isUnloadFinished() then
+			-- reset offset to return to the original up/down row after we unloaded in the pocket
+			self.aiOffsetX = 0
+
+			self:clearInfoText(self:getFillLevelInfoText())
+			-- wait a bit after the unload finished to give a chance to the unloader to move away
+			self.stateBeforeWaitingForUnloaderToLeave = self.unloadState
+			self.unloadState = self.states.WAITING_FOR_UNLOADER_TO_LEAVE
+			self.waitingForUnloaderSince = g_currentMission.time
+			self:debug('Unloading finished, wait for the unloader to leave...')
+		else
+			self:setMaxSpeed(0)
+		end
+	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW then
+		self:setMaxSpeed(0)
+		if self:isDischarging() then
+			self:cancelRendezvous()
+			self.unloadState = self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW
+			self:debug('Unloading started at end of row')
+		end
+		if not self.waitingForUnloaderAtEndOfRow:get() then
+			local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
+			self:cancelRendezvous()
+			if unloaderWhoDidNotShowUp then unloaderWhoDidNotShowUp:onMissedRendezvous(self) end
+			self:debug('Waited for unloader at the end of the row but it did not show up, try to continue')
+			self:changeToFieldWork()
+		end
+	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
+		local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
+		if fillLevel < 0.01 then
+			self:clearInfoText(self:getFillLevelInfoText())
+			self:debug('Unloading finished after fieldwork ended, end course')
+			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+		else
+			self:setMaxSpeed(0)
+		end
+	elseif self.unloadState == self.states.WAITING_FOR_UNLOADER_TO_LEAVE then
+		self:setMaxSpeed(0)
+		-- TODO: instead of just wait a few seconds we could check if the unloader has actually left
+		if self.waitingForUnloaderSince + 5000 < g_currentMission.time then
+			if self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK then
+				local pullBackReturnCourse = self:createPullBackReturnCourse()
+				if pullBackReturnCourse then
+					self.unloadState = self.states.RETURNING_FROM_PULL_BACK
+					self:debug('Unloading finished, returning to fieldwork on return course')
+					self:startCourse(pullBackReturnCourse, 1)
+					self:rememberCourse(self.courseAfterPullBack, self.ixAfterPullBack)
+				else
+					self:debug('Unloading finished, returning to fieldwork directly')
+					self:startCourse(self.courseAfterPullBack, self.ixAfterPullBack)
+					self.ppc:setNormalLookaheadDistance()
+					self:changeToFieldWork()
+				end
+			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET then
+				self:debug('Unloading in pocket finished, returning to fieldwork')
+				self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
+				self:changeToFieldWork()
+			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
+				self:debug('Unloading before next row finished, returning to fieldwork')
+				self:changeToFieldWork()
+			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
+				self:debug('Unloading on field finished, returning to fieldwork')
+				self:changeToFieldWork()
+			else
+				self:debug('Unloading finished, previous state not known, returning to fieldwork')
+				self:changeToFieldWork()
+			end
+		end
+	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
+		self:setMaxSpeed(self:getFieldSpeed())
+	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
+		self:setMaxSpeed(self:getFieldSpeed())
+	elseif self.unloadState == self.states.SELF_UNLOADING then
+		self:setMaxSpeed(0)
+		if self:isUnloadFinished() then
+			self:debug('Self unloading finished, returning to fieldwork')
+			if self:returnToFieldworkAfterSelfUnloading() then
+				self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
+			else
+				self:startFieldworkWithPathfinding(self.aiDriverData.continueFieldworkAtWaypoint)
+			end
+			self.ppc:setNormalLookaheadDistance()
+		end
+	elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED then
+		self:setMaxSpeed(0)
+		if self:isUnloadFinished() then
+			self:debug('Self unloading finished after fieldwork ended, returning to fieldwork')
+			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+		end
+	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
+		self:setMaxSpeed(self:getFieldSpeed())
+	end
+end
+
+--- The Giants Cutter class has a timer to stop the AI job if there is no fruit being processed for 5 seconds.
+--- This prevents us from driving for instance on a connecting track or longer turns (and also testing), so
+--- we just reset that timer here in every update cycle.
+function AIDriveStrategyCombineCourse:disableCutterTimer()
+	if self.combine.attachedCutters then
+		for cutter, _ in pairs(self.combine.attachedCutters) do
+			if cutter.spec_cutter and cutter.spec_cutter.aiNoValidGroundTimer then
+				cutter.spec_cutter.aiNoValidGroundTimer = 0
+			end
+		end
+	end
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Event listeners
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:onEndCourse()
 	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-	if self.state == self.states.ON_FIELDWORK_COURSE and
-			self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD then
+	if self.state == self.states.UNLOADING_ON_FIELD then
 		if self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
 			self:debug('Self unloading point reached, fill level %.1f.', fillLevel)
 			self.unloadState = self.states.SELF_UNLOADING
@@ -244,11 +331,11 @@ function AIDriveStrategyCombineCourse:onEndCourse()
 			self:debug('Self unloading point reached after fieldwork ended, fill level %.1f.', fillLevel)
 			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
 		end
-	elseif self.state == self.states.ON_FIELDWORK_COURSE and fillLevel > 0 then
+	elseif self.state == self.states.WORKING and fillLevel > 0 then
 		if self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) and self:startSelfUnload() then
 			self:debug('Start self unload after fieldwork ended')
 			self:raiseImplements()
-			self.state = self.states.UNLOAD_OR_REFILL_ON_FIELD
+			self.state = self.states.UNLOADING_ON_FIELD
 			self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED
 			self.ppc:setShortLookaheadDistance()
 			self:disableCollisionDetection()
@@ -256,7 +343,7 @@ function AIDriveStrategyCombineCourse:onEndCourse()
 			self:setInfoText(self:getFillLevelInfoText())
 			-- let AutoDrive know we are done and can unload
 			self:debug('Fieldwork done, fill level is %.1f, now waiting to be unloaded.', fillLevel)
-			self.state = self.states.UNLOAD_OR_REFILL_ON_FIELD
+			self.state = self.states.UNLOADING_ON_FIELD
 			self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
 		end
 	else
@@ -265,36 +352,37 @@ function AIDriveStrategyCombineCourse:onEndCourse()
 end
 
 function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
-	if self.state == self.states.ON_FIELDWORK_COURSE and
+	if self.state == self.states.UNLOADING_ON_FIELD and
 			(self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
 			self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
 			self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD) then
 		-- nothing to do while driving to unload and back
 		return AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
 	end
+
 	self:checkFruit()
+
 	-- make sure we start making a pocket while we still have some fill capacity left as we'll be
 	-- harvesting fruit while making the pocket unless we have self unload turned on
-	if self:shouldMakePocket() and self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) then
+	if self:shouldMakePocket() and not self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) then
 		self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
 	end
 
 	self:shouldStrawSwathBeOn(ix)
 
-	if self.state == self.states.ON_FIELDWORK_COURSE and self.state == self.states.WORKING then
+	if self.state == self.states.WORKING then
 		self:checkDistanceUntilFull(ix)
 	end
 
-	if self.state == self.states.ON_FIELDWORK_COURSE and
-		self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
+	if self.state == self.states.UNLOADING_ON_FIELD and
 		self.unloadState == self.states.MAKING_POCKET and
 		self.unloadInPocketIx and ix == self.unloadInPocketIx then
 		-- we are making a pocket and reached the waypoint where we are going to stop and wait for unload
 		self:debug('Waiting for unload in the pocket')
 		self:setInfoText(self:getFillLevelInfoText())
 		self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
-
 	end
+
 	if self.returnedFromPocketIx and self.returnedFromPocketIx == ix then
 		-- back to normal look ahead distance for PPC, no tight turns are needed anymore
 		self:debug('Reset PPC to normal lookahead distance')
@@ -305,7 +393,7 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyCombineCourse:onLastWaypointPassed()
-	if self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD then
+	if self.state == self.states.UNLOADING_ON_FIELD then
 		if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
 			self:debug('Pull back finished, returning to fieldwork')
 			self:startRememberedCourse()
@@ -336,13 +424,23 @@ function AIDriveStrategyCombineCourse:isWaitingInPocket()
  	return self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET
 end
 
-function AIDriveStrategyCombineCourse:changeToFieldworkUnloadOrRefill()
+-----------------------------------------------------------------------------------------------------------------------
+--- State changes
+-----------------------------------------------------------------------------------------------------------------------
+
+--- Some of our turns need a short look ahead distance, make sure we restore the normal after the turn
+function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
+	self.ppc:setNormalLookaheadDistance()
+	AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
+end
+
+function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 	self:checkFruit()
 	-- TODO: check around turn maneuvers we may not want to pull back before a turn
 	if self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) and self:startSelfUnload() then
 		self:debug('Start self unload')
 		self:raiseImplements()
-		self.state = self.states.UNLOAD_OR_REFILL_ON_FIELD
+		self.state = self.states.UNLOADING_ON_FIELD
 		self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
 		self.ppc:setShortLookaheadDistance()
 		self:disableCollisionDetection()
@@ -351,7 +449,7 @@ function AIDriveStrategyCombineCourse:changeToFieldworkUnloadOrRefill()
 		local pocketCourse, nextIx = self:createPocketCourse()
 		if pocketCourse then
 			self:debug('No room to the left, making a pocket for unload')
-			self.state = self.states.UNLOAD_OR_REFILL_ON_FIELD
+			self.state = self.states.UNLOADING_ON_FIELD
 			self.unloadState = self.states.REVERSING_TO_MAKE_A_POCKET
 			-- raise header for reversing
 			self:raiseImplements()
@@ -360,8 +458,7 @@ function AIDriveStrategyCombineCourse:changeToFieldworkUnloadOrRefill()
 			-- tighter turns
 			self.ppc:setShortLookaheadDistance()
 		else
-			-- revert to normal behavior
-			UnloadableFieldworkAIDriver.changeToFieldworkUnloadOrRefill(self)
+			self:startWaitingForUnloadWhenFull()
 		end
 	elseif self.vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and self:shouldPullBack() then
 		-- is our pipe in the fruit? (assuming pipe is on the left side)
@@ -369,186 +466,37 @@ function AIDriveStrategyCombineCourse:changeToFieldworkUnloadOrRefill()
 		if pullBackCourse then
 			pullBackCourse:print()
 			self:debug('Pipe in fruit, pulling back to make room for unloading')
-			self.state = self.states.UNLOAD_OR_REFILL_ON_FIELD
-			self.unloadState = self.states.WAITING_FOR_STOP
+			self.state = self.states.UNLOADING_ON_FIELD
+			self.unloadState = self.states.WAITING_FOR_STOP_BEFORE_PULLING_BACK
 			self.courseAfterPullBack = self.course
 			self.ixAfterPullBack = self.ppc:getLastPassedWaypointIx() or self.ppc:getCurrentWaypointIx()
 			-- tighter turns
 			self.ppc:setShortLookaheadDistance()
 			self:startCourse(pullBackCourse, 1)
 		else
-			-- revert to normal behavior
-			UnloadableFieldworkAIDriver.changeToFieldworkUnloadOrRefill(self)
+			self:startWaitingForUnloadWhenFull()
 		end
 	else
-		-- pipe not in fruit, combine not on outermost headland, just do the normal thing
-		UnloadableFieldworkAIDriver.changeToFieldworkUnloadOrRefill(self)
+		self:startWaitingForUnloadWhenFull()
 	end
 end
 
-function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
-	self:handlePipe(dt)
-	self:checkRendezvous()
-	self:checkBlockingUnloader()
-	self:disableCutterTimer()
-	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
-end
-
---- The Giants Cutter class has a timer to stop the AI job if there is no fruit being processed for 5 seconds.
---- This prevents us from driving for instance on a connecting track or longer turns (and also testing), so
---- we just reset that timer here in every update cycle.
-function AIDriveStrategyCombineCourse:disableCutterTimer()
-	if self.combine.attachedCutters then
-		for cutter, _ in pairs(self.combine.attachedCutters) do
-			if cutter.spec_cutter and cutter.spec_cutter.aiNoValidGroundTimer then
-				cutter.spec_cutter.aiNoValidGroundTimer = 0
-			end
-		end
-	end
+function AIDriveStrategyCombineCourse:startWaitingForUnloadWhenFull()
+	self.state = self.states.UNLOADING_ON_FIELD
+	self.unloadState = self.states.WAITING_FOR_UNLOAD_ON_FIELD
+	self:debug('Waiting for the unloader on the field')
+	g_currentMission:addIngameNotification(FSBaseMission.INGAME_NOTIFICATION_CRITICAL,
+			string.format(g_i18n:getText("ai_messageErrorGrainTankIsFull"), self.vehicle:getCurrentHelper().name))
 end
 
 function AIDriveStrategyCombineCourse:startWaitingForUnloadBeforeNextRow()
 	self:debug('Waiting for unload before starting the next row')
 	self.waitingForUnloaderAtEndOfRow:set(true, 30000)
-	self.state = self.states.UNLOAD_OR_REFILL_ON_FIELD
+	self.state = self.states.UNLOADING_ON_FIELD
 	self.unloadState = self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW
 end
 
---- Stop for unload/refill while driving the fieldwork course
-function AIDriveStrategyCombineCourse:driveFieldworkUnloadOrRefill()
-	if self.unloadState == self.states.WAITING_FOR_STOP then
-		self:setSpeed(0)
-		-- wait until we stopped before raising the implements
-		if self:isStopped() then
-			self:debug('Raise implements and start pulling back')
-			self:raiseImplements()
-			self.unloadState = self.states.PULLING_BACK_FOR_UNLOAD
-		end
-	elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
-		self:setSpeed(self.vehicle.cp.speeds.reverse)
-	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-		self:setSpeed(self.vehicle.cp.speeds.reverse)
-	elseif self.unloadState == self.states.MAKING_POCKET then
-		self:setSpeed(self:getWorkSpeed())
-	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
-		self:setSpeed(self.vehicle.cp.speeds.turn)
-	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
-			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
-			self.unloadState == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
-		if self:unloadFinished() then
-			-- reset offset to return to the original up/down row after we unloaded in the pocket
-			self.aiOffsetX = 0
-
-			self:clearInfoText(self:getFillLevelInfoText())
-			-- wait a bit after the unload finished to give a chance to the unloader to move away
-			self.stateBeforeWaitingForUnloaderToLeave = self.unloadState
-			self.unloadState = self.states.WAITING_FOR_UNLOADER_TO_LEAVE
-			self.waitingForUnloaderSince = self.vehicle.timer
-			self:debug('Unloading finished, wait for the unloader to leave...')
-		else
-			self:setSpeed(0)
-		end
-	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW then
-		self:setSpeed(0)
-		if self:isDischarging() then
-			self:cancelRendezvous()
-			self.unloadState = self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW
-			self:debug('Unloading started at end of row')
-		end
-		if not self.waitingForUnloaderAtEndOfRow:get() then
-			local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
-			self:cancelRendezvous()
-			if unloaderWhoDidNotShowUp then unloaderWhoDidNotShowUp:onMissedRendezvous(self) end
-			self:debug('Waited for unloader at the end of the row but it did not show up, try to continue')
-			self:changeToFieldWork()
-		end
-	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
-		local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-		if fillLevel < 0.01 then
-			self:clearInfoText(self:getFillLevelInfoText())
-			self:debug('Unloading finished after fieldwork ended, end course')
-			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
-		else
-			self:setSpeed(0)
-		end
-	elseif self.unloadState == self.states.WAITING_FOR_UNLOADER_TO_LEAVE then
-		self:setSpeed(0)
-		-- TODO: instead of just wait a few seconds we could check if the unloader has actually left
-		if self.waitingForUnloaderSince + 5000 < self.vehicle.timer then
-			if self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK then
-				local pullBackReturnCourse = self:createPullBackReturnCourse()
-				if pullBackReturnCourse then
-					self.unloadState = self.states.RETURNING_FROM_PULL_BACK
-					self:debug('Unloading finished, returning to fieldwork on return course')
-					self:startCourse(pullBackReturnCourse, 1)
-					self:rememberCourse(self.courseAfterPullBack, self.ixAfterPullBack)
-				else
-					self:debug('Unloading finished, returning to fieldwork directly')
-					self:startCourse(self.courseAfterPullBack, self.ixAfterPullBack)
-					self.ppc:setNormalLookaheadDistance()
-					self:changeToFieldWork()
-				end
-			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET then
-				self:debug('Unloading in pocket finished, returning to fieldwork')
-				self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
-				self:changeToFieldWork()
-			elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
-				self:debug('Unloading before next row finished, returning to fieldwork')
-				self:changeToFieldWork()
-			else
-				self:debug('Unloading finished, previous state not known, returning to fieldwork')
-				self:changeToFieldWork()
-			end
-		end
-	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
-		self:setSpeed(self:getFieldSpeed())
-	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
-		self:setSpeed(self:getFieldSpeed())
-	elseif self.unloadState == self.states.SELF_UNLOADING then
-		self:setSpeed(0)
-		if self:unloadFinished() then
-			self:debug('Self unloading finished, returning to fieldwork')
-			if self:returnToFieldworkAfterSelfUnloading() then
-				self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
-			else
-				self:startFieldworkWithPathfinding(self.aiDriverData.continueFieldworkAtWaypoint)
-			end
-			self.ppc:setNormalLookaheadDistance()
-		end
-	elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED then
-		self:setSpeed(0)
-		if self:unloadFinished() then
-			self:debug('Self unloading finished after fieldwork ended, returning to fieldwork')
-			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
-		end
-	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
-		self:setSpeed(self:getFieldSpeed())
-	else
-		AIDriveStrategyCombineCourse.superClass().driveFieldworkUnloadOrRefill(self)
-	end
-end
-
-function AIDriveStrategyCombineCourse:onNextCourse(ix)
-	if self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD then
-		if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
-			self:debug('Pull back finished, returning to fieldwork')
-			self:changeToFieldWork()
-		elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
-			self:debug('Back from self unload, returning to fieldwork')
-			self:changeToFieldWork()
-		end
-	elseif self.state == self.states.TURNING then
-		self.ppc:setNormalLookaheadDistance()
-		-- make sure the next waypoint is in front of us. It can be behind us after a turn with multitools where the
-		-- x offset is high (wide tools)
-		self.ppc:initialize(self.course:getNextFwdWaypointIxFromVehiclePosition(ix, self.vehicle:getAIDirectionNode(), 0))
-		UnloadableFieldworkAIDriver.onNextCourse(self)
-	else
-		UnloadableFieldworkAIDriver.onNextCourse(self)
-	end
-end
-
-function AIDriveStrategyCombineCourse:unloadFinished()
+function AIDriveStrategyCombineCourse:isUnloadFinished()
 	local discharging = true
 	local dischargingNow = false
 	if self.pipe then
@@ -565,16 +513,29 @@ function AIDriveStrategyCombineCourse:unloadFinished()
 		self.notDischargingSinceLoopIndex = nil
 	end
 	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-
-	local fillLevelInfo = {}
-	self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
-	local allFillLevelsOk = self.fillLevelManager:areFillLevelsOk(fillLevelInfo)
-
 	-- unload is done when fill levels are ok (not full) and not discharging anymore (either because we
 	-- are empty or the trailer is full)
-	return (allFillLevelsOk and not discharging) or fillLevel < 0.1
+	return (not self:isFull() and not discharging) or fillLevel < 0.1
 end
 
+function AIDriveStrategyCombineCourse:isFull()
+	local fillLevelInfo = {}
+	self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
+	for fillType, info in pairs(fillLevelInfo) do
+		if self.fillLevelManager:isValidFillType(self.vehicle, fillType) then
+			local percentage =  info.fillLevel / info.capacity * 100
+			if info.fillLevel >= info.capacity or percentage > self.fillLevelFullPercentage  then
+				self:debugSparse('Full or refillUntilPct reached: %.2f', percentage)
+				return true
+			end
+			if self:shouldStopForUnloading(percentage) then
+				self:debugSparse('Stop for unloading: %.2f', percentage)
+				return true
+			end
+		end
+	end
+	return false
+end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
 	if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
@@ -639,7 +600,7 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
 			local litersPerMeter = (fillLevel - self.fillLevelAtLastWaypoint) / self.course:getDistanceToNextWaypoint(ix - 1)
 			-- make sure it won't end up being inf
 			local litersPerSecond = math.min(1000, (fillLevel - self.fillLevelAtLastWaypoint) /
-					((self.vehicle.timer - (self.fillLevelLastCheckedTime or self.vehicle.timer)) / 1000))
+					((g_currentMission.time - (self.fillLevelLastCheckedTime or g_currentMission.time)) / 1000))
 			-- smooth everything a bit, also ignore 0
 			self.litersPerMeter = litersPerMeter > 0 and (self.litersPerMeter + litersPerMeter) / 2 or self.litersPerMeter
 			self.litersPerSecond = litersPerSecond > 0 and (self.litersPerSecond + litersPerSecond) / 2 or self.litersPerSecond
@@ -651,7 +612,7 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
 			self.litersPerSecond = 0
 			self.fillLevelAtLastWaypoint = fillLevel
 		end
-		self.fillLevelLastCheckedTime = self.vehicle.timer
+		self.fillLevelLastCheckedTime = g_currentMission.time
 		self:debug('Fill rate is %.1f l/m, %.1f l/s', self.litersPerMeter, self.litersPerSecond)
 	end
 	local litersUntilFull = self.combine:getFillUnitCapacity(self.combine.fillUnitIndex) - fillLevel
@@ -672,7 +633,7 @@ function AIDriveStrategyCombineCourse:checkRendezvous()
 			if d < 10 then
 				self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
 						self.agreedUnloaderRendezvousWaypointIx)
-				self:setSpeed(self:getWorkSpeed() / 2)
+				self:setMaxSpeed(self:getWorkSpeed() / 2)
 				local dToTurn = self.course:getDistanceToNextTurn(self.agreedUnloaderRendezvousWaypointIx) or math.huge
 				if dToTurn < 20 then
 					self:debug('Unloader rendezvous waypoint %d is before a turn, waiting for the unloader here',
@@ -711,8 +672,8 @@ end
 --- Before the unloader asks for a rendezvous (which may result in a lengthy pathfinding to figure out
 --- the distance), it should check if the combine is willing to rendezvous.
 function AIDriveStrategyCombineCourse:isWillingToRendezvous()
-	if self.state ~= self.states.ON_FIELDWORK_COURSE then
-		self:debug('not on fieldwork course, will not rendezvous')
+	if self.state ~= self.states.WORKING then
+		self:debug('not harvesting, will not rendezvous')
 		return nil
 	elseif not self.vehicle:getCpSettingValue(CpVehicleSettings.unloadOnFirstHeadland) and
 			self.course:isOnHeadland(self.course:getCurrentWaypointIx(), 1) then
@@ -1030,9 +991,8 @@ end
 --- Interface for Mode 2 and AutoDrive
 ---@return boolean true when the combine is waiting to be unloaded
 function AIDriveStrategyCombineCourse:isWaitingForUnload()
-	return self.state == self.states.ON_FIELDWORK_COURSE and
-		self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
-		(self.unloadState == self.states.WAITING_FOR_UNLOAD_OR_REFILL or
+	return self.state == self.states.UNLOADING_ON_FIELD and
+		(self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD or
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED)
@@ -1041,22 +1001,20 @@ end
 --- Interface for AutoDrive
 ---@return boolean true when the combine is waiting to be unloaded after it ended the course
 function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterCourseEnded()
-	return self.state == self.states.ON_FIELDWORK_COURSE and
-		self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
+	return self.state == self.states.UNLOADING_ON_FIELD and
 		self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
 end
 
 --- Interface for Mode 2
 ---@return boolean true when the combine is waiting to after it pulled back.
 function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterPulledBack()
-	return self.state == self.states.ON_FIELDWORK_COURSE and
-			self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
+	return self.state == self.states.UNLOADING_ON_FIELD and
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
 end
 
-function AIDriveStrategyCombineCourse:createTurnCourse()
-	return CombineCourseTurn(self.vehicle, self, self.turnContext, self.course)
-end
+-----------------------------------------------------------------------------------------------------------------------
+--- Turns
+-----------------------------------------------------------------------------------------------------------------------
 
 --- Will we be driving forward only (not reversing) during a turn
 function AIDriveStrategyCombineCourse:isTurnForwardOnly()
@@ -1100,7 +1058,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 end
 
 function AIDriveStrategyCombineCourse:isTurning()
-	return self.state == self.states.ON_FIELDWORK_COURSE and self.state == self.states.TURNING
+	return self.state == self.states.TURNING
 end
 
 -- Turning except in the ending turn phase which isn't really a turn, it is rather 'starting row'
@@ -1132,6 +1090,73 @@ function AIDriveStrategyCombineCourse:isChopper()
 	return self.combine:getFillUnitCapacity(self.combine.fillUnitIndex) > 10000000
 end
 
+-----------------------------------------------------------------------------------------------------------------------
+--- Pipe handling
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCombineCourse:setUpPipe()
+	if self.vehicle.spec_pipe then
+		self.pipe = self.vehicle.spec_pipe
+		self.objectWithPipe = self.vehicle
+	else
+		local implementWithPipe = AIUtil.getAIImplementWithSpecialization(self.vehicle, Pipe)
+		if implementWithPipe then
+			self.pipe = implementWithPipe.spec_pipe
+			self.objectWithPipe = implementWithPipe
+		else
+			self:info('Could not find implement with pipe')
+		end
+	end
+
+	if self.pipe then
+		-- check the pipe length:
+		-- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
+		local wasFolded, wasClosed
+		if self.vehicle.spec_foldable then
+			wasFolded = not self.vehicle.spec_foldable:getIsUnfolded()
+			if wasFolded then
+				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 0 or 1, true)
+			end
+		end
+		if self.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
+			wasClosed = true
+			if self.pipe.animation.name then
+				self.pipe:setAnimationTime(self.pipe.animation.name, 1, true)
+			else
+				-- as seen in the Giants pipe code
+				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
+				self.objectWithPipe:updatePipeNodes(999999, nil)
+			end
+		end
+		local dischargeNode = self:getCurrentDischargeNode()
+		self:fixDischargeDistance(dischargeNode)
+		local dx, _, _ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
+		self.pipeOnLeftSide = dx >= 0
+		self:debug('Pipe on left side %s', tostring(self.pipeOnLeftSide))
+		-- use self.combine so attached harvesters have the offset relative to the harvester's root node
+		-- (and thus, does not depend on the angle between the tractor and the harvester)
+		self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
+		self:debug('Pipe offset: x = %.1f, z = %.1f', self.pipeOffsetX, self.pipeOffsetZ)
+		if wasClosed then
+			if self.pipe.animation.name then
+				self.pipe:setAnimationTime(self.pipe.animation.name, 0, true)
+			else
+				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
+				self.objectWithPipe:updatePipeNodes(999999, nil)
+			end
+		end
+		if self.vehicle.spec_foldable then
+			if wasFolded then
+				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
+			end
+		end
+	else
+		-- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
+		-- periodically even when CP isn't driving, and even for cotton harvesters...
+		self.pipeOffsetX, self.pipeOffsetZ = 0, 0
+		self.pipeOnLeftSide = true
+	end
+end
+
 function AIDriveStrategyCombineCourse:handlePipe(dt)
 	if self.pipe then
 		if self:isChopper() then
@@ -1158,18 +1183,9 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
 	end
 end
 
-function AIDriveStrategyCombineCourse:getFillLevelPercentage()
-	return 100 * self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex) / self.vehicle:getFillUnitCapacity(self.combine.fillUnitIndex)
-end
-
---- Support for AutoDrive mod: they'll only find us if we open the pipe
-function AIDriveStrategyCombineCourse:isAutoDriveWaitingForPipe()
-	return self.vehicle.spec_autodrive and self.vehicle.spec_autodrive.combineIsCallingDriver and self.vehicle.spec_autodrive:combineIsCallingDriver(self.vehicle)
-end
-
 function AIDriveStrategyCombineCourse:handleChopperPipe()
 	self.isChopperWaitingForTrailer = false
-	if self.state == self.states.ON_FIELDWORK_COURSE then
+	if self.state == self.states.WORKING then
 		-- chopper always opens the pipe
 		self:openPipe()
 		-- and stops if there's no trailer in sight
@@ -1179,26 +1195,11 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 		if self:getIsChopperWaitingForTrailer(fillLevel) then
 			self:debugSparse('Chopper waiting for trailer, fill level %f', fillLevel)
 			self.isChopperWaitingForTrailer = true
-			self:setSpeed(0)
+			self:setMaxSpeed(0)
 		end
 	else
 		self:closePipe()
 	end
-end
-
-function AIDriveStrategyCombineCourse:getIsChopperWaitingForTrailer()
-	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-	if fillLevel > 0.01 and self:getFillType() ~= FillType.UNKNOWN and not (self:isFillableTrailerUnderPipe() and self:canDischarge()) then
-		-- the above condition (by the time of writing this comment we can't remember which exact one) temporarily
-		-- can return an incorrect value so try to ignore these glitches
-		self.cantDischargeCount = self.cantDischargeCount and self.cantDischargeCount + 1 or 0
-		if self.cantDischargeCount > 10 then
-			return true
-		end
-	else
-		self.cantDischargeCount = 0
-	end
-	return false
 end
 
 function AIDriveStrategyCombineCourse:needToOpenPipe()
@@ -1209,7 +1210,7 @@ end
 function AIDriveStrategyCombineCourse:openPipe()
 	if not self:needToOpenPipe() then return end
 	if self.pipe.currentState ~= AIUtil.PIPE_STATE_MOVING and
-		self.pipe.currentState ~= AIUtil.PIPE_STATE_OPEN then
+			self.pipe.currentState ~= AIUtil.PIPE_STATE_OPEN then
 		self:debug('Opening pipe')
 		self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN)
 	end
@@ -1218,7 +1219,7 @@ end
 function AIDriveStrategyCombineCourse:closePipe()
 	if not self:needToOpenPipe() then return end
 	if self.pipe.currentState ~= AIUtil.PIPE_STATE_MOVING and
-		self.pipe.currentState ~= AIUtil.PIPE_STATE_CLOSED then
+			self.pipe.currentState ~= AIUtil.PIPE_STATE_CLOSED then
 		self:debug('Closing pipe')
 		self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED)
 	end
@@ -1227,23 +1228,6 @@ end
 function AIDriveStrategyCombineCourse:isPipeMoving()
 	if not self:needToOpenPipe() then return end
 	return self.pipe.currentState == AIUtil.PIPE_STATE_MOVING
-end
-
-function AIDriveStrategyCombineCourse:shouldStopForUnloading(pc)
-	local stop = false
-	if self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.pipe then
-		if self:isDischarging() and g_updateLoopIndex > self.lastEmptyTimestamp + 600 then
-			-- stop only if the pipe is discharging AND we have been emptied a while ago.
-			-- this makes sure the combine will start driving after it is emptied but the trailer
-			-- is still under the pipe
-			stop = true
-		end
-	end
-	if pc and pc < 0.1 then
-		-- remember the time we were completely unloaded.
-		self.lastEmptyTimestamp = g_updateLoopIndex
-	end
-	return stop
 end
 
 function AIDriveStrategyCombineCourse:isFillableTrailerUnderPipe()
@@ -1274,18 +1258,59 @@ function AIDriveStrategyCombineCourse:canLoadTrailer(trailer)
 	return false, 0
 end
 
+function AIDriveStrategyCombineCourse:getCurrentDischargeNode()
+	if self.combine and self.combine.getCurrentDischargeNode then
+		return self.combine:getCurrentDischargeNode()
+	end
+end
+
+function AIDriveStrategyCombineCourse:getFillLevelPercentage()
+	return 100 * self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex) / self.vehicle:getFillUnitCapacity(self.combine.fillUnitIndex)
+end
+
+--- Support for AutoDrive mod: they'll only find us if we open the pipe
+function AIDriveStrategyCombineCourse:isAutoDriveWaitingForPipe()
+	return self.vehicle.spec_autodrive and self.vehicle.spec_autodrive.combineIsCallingDriver and self.vehicle.spec_autodrive:combineIsCallingDriver(self.vehicle)
+end
+
+function AIDriveStrategyCombineCourse:getIsChopperWaitingForTrailer()
+	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
+	if fillLevel > 0.01 and self:getFillType() ~= FillType.UNKNOWN and not (self:isFillableTrailerUnderPipe() and self:canDischarge()) then
+		-- the above condition (by the time of writing this comment we can't remember which exact one) temporarily
+		-- can return an incorrect value so try to ignore these glitches
+		self.cantDischargeCount = self.cantDischargeCount and self.cantDischargeCount + 1 or 0
+		if self.cantDischargeCount > 10 then
+			return true
+		end
+	else
+		self.cantDischargeCount = 0
+	end
+	return false
+end
+
+function AIDriveStrategyCombineCourse:shouldStopForUnloading(pc)
+	local stop = false
+	if self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.pipe then
+		if self:isDischarging() and g_updateLoopIndex > self.lastEmptyTimestamp + 600 then
+			-- stop only if the pipe is discharging AND we have been emptied a while ago.
+			-- this makes sure the combine will start driving after it is emptied but the trailer
+			-- is still under the pipe
+			stop = true
+		end
+	end
+	if pc and pc < 0.1 then
+		-- remember the time we were completely unloaded.
+		self.lastEmptyTimestamp = g_updateLoopIndex
+	end
+	return stop
+end
+
 function AIDriveStrategyCombineCourse:getFillType()
 	local dischargeNode = self.objectWithPipe:getDischargeNodeByIndex(self.objectWithPipe:getPipeDischargeNodeIndex())
 	if dischargeNode then
 		return self.objectWithPipe:getFillUnitFillType(dischargeNode.fillUnitIndex)
 	end
 	return nil
-end
-
-function AIDriveStrategyCombineCourse:getCurrentDischargeNode()
-	if self.combine and self.combine.getCurrentDischargeNode then
-		return self.combine:getCurrentDischargeNode()
-	end
 end
 
 -- even if there is a trailer in range, we should not start moving until the pipe is turned towards the
@@ -1320,7 +1345,10 @@ function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
 	return false
 end
 
---- Find a trailer we can use for self unloading
+-----------------------------------------------------------------------------------------------------------------------
+--- Self unload
+-----------------------------------------------------------------------------------------------------------------------
+------ Find a trailer we can use for self unloading
 function AIDriveStrategyCombineCourse:findBestTrailer()
 	local bestTrailer, bestFillUnitIndex
 	local minDistance = math.huge
@@ -1396,7 +1424,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 
 	if not self.pathfinder or not self.pathfinder:isActive() then
 		self:rememberWaypointToContinueFieldwork()
-		self.pathfindingStartedAt = self.vehicle.timer
+		self.pathfindingStartedAt = g_currentMission.time
 		self.courseAfterPathfinding = nil
 		self.waypointIxAfterPathfinding = nil
 		local targetNode = fillRootNode or bestTrailer.rootNode
@@ -1435,7 +1463,7 @@ end
 --- Back to fieldwork after self unloading
 function AIDriveStrategyCombineCourse:returnToFieldworkAfterSelfUnloading()
 	if not self.pathfinder or not self.pathfinder:isActive() then
-		self.pathfindingStartedAt = self.vehicle.timer
+		self.pathfindingStartedAt = g_currentMission.time
 		self.courseAfterPathfinding = self.course
 		self.waypointIxAfterPathfinding = self.aiDriverData.continueFieldworkAtWaypoint
 		self.selfUnloadAlignCourse = nil
@@ -1457,7 +1485,7 @@ end
 -- TODO: split this into two, depending on the call location, like in mode 2
 function AIDriveStrategyCombineCourse:onPathfindingDone(path)
 	if path and #path > 2 then
-		self:debug('(AIDriveStrategyCombineCourse) Pathfinding finished with %d waypoints (%d ms)', #path, self.vehicle.timer - (self.pathfindingStartedAt or 0))
+		self:debug('(AIDriveStrategyCombineCourse) Pathfinding finished with %d waypoints (%d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
 		local selfUnloadCourse = Course(self.vehicle, courseGenerator.pointsToXzInPlace(path), true)
 		if self.selfUnloadAlignCourse then
 			selfUnloadCourse:append(self.selfUnloadAlignCourse)
@@ -1466,22 +1494,16 @@ function AIDriveStrategyCombineCourse:onPathfindingDone(path)
 		self:startCourse(selfUnloadCourse, 1, self.courseAfterPathfinding, self.waypointIxAfterPathfinding)
 		return true
 	else
-		self:debug('No path found in %d ms, no self unloading', self.vehicle.timer - (self.pathfindingStartedAt or 0))
+		self:debug('No path found in %d ms, no self unloading', g_currentMission.time - (self.pathfindingStartedAt or 0))
 		if self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 			self:startFieldworkWithPathfinding(self.aiDriverData.continueFieldworkAtWaypoint)
 		elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
-			self.unloadState = self.states.WAITING_FOR_UNLOAD_OR_REFILL
+			self.unloadState = self.states.WAITING_FOR_UNLOAD_ON_FIELD
 		elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
 			self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
 		end
 		return false
 	end
-end
-
---- Some of our turns need a short look ahead distance, make sure we restore the normal after the turn
-function AIDriveStrategyCombineCourse:resumeFieldworkAfterTurn(ix)
-	self.ppc:setNormalLookaheadDistance()
-	AIDriveStrategyCombineCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
 
 --- Let unloaders register for events. This is different from the CombineUnloadManager registration, these
@@ -1570,7 +1592,7 @@ function AIDriveStrategyCombineCourse:initUnloadStates()
 
 	self.safeFieldworkUnloadOrRefillStates = {
 		self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED,
-		self.states.WAITING_FOR_UNLOAD_OR_REFILL,
+		self.states.WAITING_FOR_UNLOAD_ON_FIELD,
 		self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK,
 		self.states.WAITING_FOR_UNLOAD_IN_POCKET,
 		self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW
@@ -1593,14 +1615,7 @@ function AIDriveStrategyCombineCourse:isStateOneOf(myState, states)
 	return false
 end
 
-function AIDriveStrategyCombineCourse:isFieldworkStateOneOf(states)
-	if self.state ~= self.states.ON_FIELDWORK_COURSE then
-		return false
-	end
-	return self:isStateOneOf(self.state, states)
-end
-
-function AIDriveStrategyCombineCourse:isFieldworkUnloadOrRefillStateOneOf(states)
+function AIDriveStrategyCombineCourse:isUnloadStateOneOf(states)
 	return self:isStateOneOf(self.unloadState, states)
 end
 
@@ -1627,15 +1642,13 @@ end
 function AIDriveStrategyCombineCourse:isManeuvering()
 	return self:isTurning() or
 			(
-					self.state == self.states.ON_FIELDWORK_COURSE and
-							self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
-							not self:isFieldworkUnloadOrRefillStateOneOf(self.safeFieldworkUnloadOrRefillStates)
+							self.state == self.states.UNLOADING_ON_FIELD and
+							not self:isUnloadStateOneOf(self.safeFieldworkUnloadOrRefillStates)
 			)
 end
 
 function AIDriveStrategyCombineCourse:isOnHeadland(n)
-	return self.state == self.states.ON_FIELDWORK_COURSE and
-			self.course:isOnHeadland(self.course:getCurrentWaypointIx(), n)
+	return self.course:isOnHeadland(self.course:getCurrentWaypointIx(), n)
 end
 
 --- Are we ready for an unloader?
@@ -1646,9 +1659,7 @@ function AIDriveStrategyCombineCourse:isReadyToUnload(noUnloadWithPipeInFruit)
 	if self:willWaitForUnloadToFinish() then return true end
 
 	-- but, if we are full and waiting for unload, we have no choice, we must be ready ...
-	if self.state == self.states.ON_FIELDWORK_COURSE and
-			self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
-			self.unloadState == self.states.WAITING_FOR_UNLOAD_OR_REFILL then
+	if self.state == self.states.UNLOADING_ON_FIELD and self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
 		return true
 	end
 
@@ -1676,9 +1687,8 @@ end
 
 --- Will not move until unload is done? Unloaders like to know this.
 function AIDriveStrategyCombineCourse:willWaitForUnloadToFinish()
-	return self.state == self.states.ON_FIELDWORK_COURSE and
-			self.state == self.states.UNLOAD_OR_REFILL_ON_FIELD and
-			((self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.unloadState == self.states.WAITING_FOR_UNLOAD_OR_REFILL) or
+	return self.state == self.states.UNLOADING_ON_FIELD and
+			((self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD) or
 					self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
 					self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
 					self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED)
@@ -1808,7 +1818,7 @@ end
 --- player driven vehicles.
 function AIDriveStrategyCombineCourse:isProximitySlowDownEnabled(vehicle)
 	-- if not on fieldwork, always enable slowing down
-	if self.state ~= self.states.ON_FIELDWORK_COURSE then return true end
+	if self.state ~= self.states.WORKING then return true end
 
 	-- CP drives other vehicle, it'll take care of everything, including enable/disable
 	-- the proximity sensor when unloading

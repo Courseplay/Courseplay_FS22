@@ -67,6 +67,8 @@ end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
+    ---@type FillLevelManager
+    self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
     -- TODO: should probably be the closest waypoint to the target?
     local course = vehicle:getFieldWorkCourse()
@@ -82,8 +84,19 @@ end
 function AIDriveStrategyCourse:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
     local gx, _, gz = self.ppc:getGoalPointPosition()
-    local maxSpeed = self.vehicle:getSpeedLimit(true)
-    return gx, gz, moveForwards, maxSpeed, 100
+    return gx, gz, moveForwards, self.maxSpeed, 100
+end
+
+--- Set the maximum speed. The idea is that self.maxSpeed is reset at the beginning of every loop and
+-- every function calls setMaxSpeed() and the speed will be set to the minimum
+-- speed set in this loop.
+function AIDriveStrategyCourse:setMaxSpeed(speed)
+    if self.maxSpeedUpdatedLoopIndex == nil or self.maxSpeedUpdatedLoopIndex ~= g_updateLoopIndex then
+        -- new loop, reset max speed
+        self.maxSpeed = self.vehicle:getSpeedLimit(true)
+        self.maxSpeedUpdatedLoopIndex = g_updateLoopIndex
+    end
+    self.maxSpeed = math.min(self.maxSpeed, speed)
 end
 
 --- Start a course and continue with nextCourse at ix when done
@@ -97,3 +110,16 @@ function AIDriveStrategyCourse:startCourse(course, ix)
     self.ppc:initialize(ix)
 end
 
+--- @param msgReference string as defined in globalInfoText.msgReference
+function AIDriveStrategyCourse:clearInfoText(msgReference)
+    -- TODO_22
+    if msgReference then
+        self:debug('clearInfoText: %s', msgReference)
+    end
+end
+
+function AIDriveStrategyCourse:getFillLevelInfoText()
+    -- TODO_22
+    self:debug('getFillLevelInfoText')
+    return 'getFillLevelInfoText'
+end

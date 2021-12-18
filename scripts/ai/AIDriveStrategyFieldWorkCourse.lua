@@ -26,8 +26,6 @@ local AIDriveStrategyFieldWorkCourse_mt = Class(AIDriveStrategyFieldWorkCourse, 
 AIDriveStrategyFieldWorkCourse.myStates = {
     INITIAL = {},
     WORKING = {},
-    UNLOAD_OR_REFILL_ON_FIELD = {},
-    WAITING_FOR_UNLOAD_OR_REFILL ={}, -- while on the field
     ON_CONNECTING_TRACK = {},
     WAITING_FOR_LOWER = {},
     WAITING_FOR_LOWER_DELAYED = {},
@@ -36,6 +34,8 @@ AIDriveStrategyFieldWorkCourse.myStates = {
     TURNING = {},
     TEMPORARY = {},
 }
+
+AIDriveStrategyFieldWorkCourse.normalFillLevelFullPercentage = 99.5
 
 function AIDriveStrategyFieldWorkCourse.new(customMt)
     if customMt == nil then
@@ -48,6 +48,7 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.turnNodes = {}
     -- course offsets dynamically set by the AI and added to all tool and other offsets
     self.aiOffsetX, self.aiOffsetZ = 0, 0
+
     return self
 end
 
@@ -82,9 +83,9 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     self:updateFieldworkOffset()
 
     local moveForwards = not self.ppc:isReversing()
-    local gx, gz
+    local gx, gz, maxSpeed
 
-    local maxSpeed = self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed)
+    self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed))
     ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
@@ -93,6 +94,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
             gx, _, gz = self.ppc:getGoalPointPosition()
             maxSpeed = self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed)
         end
+        self:setMaxSpeed(maxSpeed)
     else
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
@@ -106,27 +108,27 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
             self.state = self.states.WORKING
         else
             self:debugSparse('waiting for all tools to lower')
-            maxSpeed = 0
+            self:setMaxSpeed(0)
         end
     elseif self.state == self.states.WAITING_FOR_LOWER_DELAYED then
         -- getCanAIVehicleContinueWork() seems to return false when the implement being lowered/raised (moving) but
         -- true otherwise. Due to some timing issues it may return true just after we started lowering it, so this
         -- here delays the check for another cycle.
         self.state = self.states.WAITING_FOR_LOWER
-        maxSpeed = 0
+        self:setMaxSpeed(0)
     elseif self.state == self.states.WORKING then
-        maxSpeed = self.vehicle:getSpeedLimit(true)
+        self:setMaxSpeed(self.vehicle:getSpeedLimit(true))
     elseif self.state == self.states.TURNING then
         local turnGx, turnGz, turnMoveForwards, turnMaxSpeed = self.aiTurn:getDriveData(dt)
-        maxSpeed = math.min(maxSpeed, turnMaxSpeed)
+        self:setMaxSpeed(turnMaxSpeed)
         -- if turn tells us which way to go, use that
         gx, gz = turnGx or gx, turnGz or gz
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
-        maxSpeed = self.vehicle:getSpeedLimit(true)
+        self:setMaxSpeed(self.vehicle:getSpeedLimit(true))
     end
     self:setAITarget()
-    return gx, gz, moveForwards, maxSpeed, 100
+    return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
 -- Seems like the Giants AIDriveStrategyCollision needs these variables on the vehicle to be set
@@ -313,6 +315,21 @@ function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
     self:finishFieldWork()
 end
 
+-----------------------------------------------------------------------------------------------------------------------
+--- Turn
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyFieldWorkCourse:startTurn(ix)
+    local fm, bm = self:getFrontAndBackMarkers()
+    self.ppc:setShortLookaheadDistance()
+    self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(), fm, bm,
+            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
+    self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+    self.state = self.states.TURNING
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- State changes
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:finishFieldWork()
     self:debug('Course ended, stopping job.')
     self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
@@ -324,16 +341,30 @@ function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
     self:lowerImplements(self.vehicle)
 end
 
------------------------------------------------------------------------------------------------------------------------
---- Turn
------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyFieldWorkCourse:startTurn(ix)
-    local fm, bm = self:getFrontAndBackMarkers()
-    self.ppc:setShortLookaheadDistance()
-    self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(), fm, bm,
-            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-    self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
-    self.state = self.states.TURNING
+function AIDriveStrategyFieldWorkCourse:stopAndChangeToUnload()
+    -- TODO_22 run unload/refill with the vanilla helper?
+    if false and self.unloadRefillCourse and not self.heldForUnloadRefill then
+        self:rememberWaypointToContinueFieldwork()
+        self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.aiDriverData.continueFieldworkAtWaypoint or -1)
+        self:changeToUnloadOrRefill()
+        self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
+    else
+        if self.vehicle.spec_autodrive and self.vehicle.cp.settings.autoDriveMode:useForUnloadOrRefill() then
+            -- Switch to AutoDrive when enabled
+            self:rememberWaypointToContinueFieldwork()
+            self:stopWork()
+            self:foldImplements()
+            self.state = self.states.ON_UNLOAD_OR_REFILL_WITH_AUTODRIVE
+            self:debug('passing the control to AutoDrive to run the unload/refill course.')
+            --- Make sure trigger handler is disabled, while autodrive is driving.
+            self.triggerHandler:disableFillTypeLoading()
+            self.triggerHandler:disableFuelLoading()
+            self.vehicle.spec_autodrive:StartDrivingWithPathFinder(self.vehicle, self.vehicle.ad.mapMarkerSelected, self.vehicle.ad.mapMarkerSelected_Unload, self, FieldworkAIDriver.onEndCourse, nil);
+        else
+            -- otherwise we'll
+            self:changeToFieldworkUnloadOrRefill()
+        end;
+    end
 end
 
 -- switch back to fieldwork after the turn ended.
