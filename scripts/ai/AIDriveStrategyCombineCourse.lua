@@ -181,12 +181,18 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	self:handlePipe(dt)
 	self:disableCutterTimer()
 	if self.state == self.states.WORKING then
+		-- Harvesting
 		self:checkRendezvous()
 		self:checkBlockingUnloader()
 		if self:isFull() then
 			self:changeToUnloadOnField()
 		end
+		if self:shouldStopForUnloading() then
+			-- player does not want us to move while discharging
+			self:setMaxSpeed(0)
+		end
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
+		-- Unloading
 		self:driveUnloadOnField()
 	end
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
