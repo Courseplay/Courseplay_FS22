@@ -55,10 +55,6 @@ HOW TO USE
 ---@class PurePursuitController
 PurePursuitController = CpObject()
 
--- normal lookahead distance
-PurePursuitController.normalLookAheadDistance = 5
-PurePursuitController.shortLookaheadDistance = 2.5
-
 -- constructor
 function PurePursuitController:init(vehicle)
 	self.normalLookAheadDistance = math.min(vehicle.maxTurningRadius, 6)
@@ -178,7 +174,7 @@ function PurePursuitController:setNormalLookaheadDistance()
 end
 
 function PurePursuitController:setShortLookaheadDistance()
-	self.baseLookAheadDistance = self.veryShortLookaheadDistance
+	self.baseLookAheadDistance = self.shortLookaheadDistance
 end
 
 --- Set a short lookahead distance for ttlMs milliseconds
