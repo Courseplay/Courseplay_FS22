@@ -97,10 +97,12 @@
 
 	<SettingSubTitle title="speed">
 		<!--Fieldwork Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="15" unit="1"/>
+		<!--Field Speed-->
+		<Setting classType="AIParameterSpeedSetting" name="fieldSpeed" min="5" max="50" default="20" unit="1"/>
 		<!--Turn Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" default="8" unit="1"/>
 		<!--Reverse Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1"/>
 	</SettingSubTitle>
 </Settings>

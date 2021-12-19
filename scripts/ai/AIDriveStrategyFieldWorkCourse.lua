@@ -128,7 +128,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         gx, gz = turnGx or gx, turnGz or gz
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
-        self:setMaxSpeed(self.vehicle:getSpeedLimit(true))
+        self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
     end
     self:setAITarget()
     return gx, gz, moveForwards, self.maxSpeed, 100
