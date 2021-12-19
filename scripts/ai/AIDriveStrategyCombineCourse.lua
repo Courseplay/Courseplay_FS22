@@ -115,7 +115,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	self.pullBackRightSideOffset = math.abs(self.pipeOffsetX) - self:getWorkWidth() / 2 + 5
 	self.pullBackRightSideOffset = self.pipeOnLeftSide and self.pullBackRightSideOffset or -self.pullBackRightSideOffset
 	-- should be at pullBackRightSideOffset to the right or left at pullBackDistanceStart
-	self.pullBackDistanceStart = AIUtil.getTurningRadius(self.vehicle)
+	self.pullBackDistanceStart = 2 * AIUtil.getTurningRadius(self.vehicle)
 	-- and back up another bit
 	self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
 	-- when making a pocket, how far to back up before changing to forward
