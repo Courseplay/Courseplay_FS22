@@ -118,8 +118,8 @@
 
 		<text name="CP_vehicle_setting_subTitle_speed" 										text="Speeds"/>
 
-		<text name="CP_vehicle_setting_fieldworkSpeed_title" 								text="Fieldwork"/>
-		<text name="CP_vehicle_setting_fieldworkSpeed_tooltip" 								text="Maximum speed while working on the field"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 								text="Fieldwork"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 								text="Maximum speed while working on the field"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 									text="Turn"/>
 		<text name="CP_vehicle_setting_turnSpeed_tooltip" 									text="Maximum speed during turn maneuvers"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 									text="Reverse"/>
