@@ -37,7 +37,11 @@
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"												text="Fahrzeug-einstellungen von (%s)"/>
 		
-		<text name="CP_vehicle_setting_subTitle_basic"										text="Normale Einstellungen."/>
+		<text name="CP_vehicle_setting_subTitle_basic"										text="Normale Einstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_implement"									text="Tools Einstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_combine"									text="Drescher Einstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_seeder"										text="Saatmaschine Einstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_multitool"									text="Multitool Einstellungen"/>
 
 		<text name="CP_vehicle_setting_showCourse_title" 									text="Show course"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 									text="Show the current course of the vehicle"/>
@@ -52,7 +56,7 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Aktiviert/Deaktiviert das einklappen des Gerätes am Ende der Feldarbeit."/>
 
 		<text name="CP_vehicle_setting_raiseImplementLate_title" 							text="Tool anheben"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 						text="Tool anheben am Ende einer Reihe oder am Start des Vorgewende-Wendemanövers."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 							text="Tool anheben am Ende einer Reihe oder am Start des Vorgewende-Wendemanövers."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 							text="früh"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 							text="spät"/>
 
@@ -112,8 +116,12 @@
 
 		<text name="CP_vehicle_setting_subTitle_speed" 										text="Geschwindigkeiten"/>
 
-		<text name="CP_vehicle_setting_fieldworkSpeed_title" 								text="Feldarbeit"/>
-		<text name="CP_vehicle_setting_fieldworkSpeed_tooltip" 								text="Feldarbeit"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 								text="Feldarbeit"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 								text="Maximale Geschwindigkeit bei der Feldarbeit"/>
+		<text name="CP_vehicle_setting_turnSpeed_title" 									text="Wendemanöver"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 									text="Maximale Geschwindigkeit beim Wendemanöver"/>
+		<text name="CP_vehicle_setting_reverseSpeed_title" 									text="Rückwärts"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 								text="Maximale Geschwindigkeit beim Rückwärts fahren"/>
 
 
 	<!-- Vehicle course generator settings -->

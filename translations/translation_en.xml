@@ -40,6 +40,10 @@
 		<text name="CP_vehicle_setting_title"												text="Vehicle settings for (%s)"/>
 		
 		<text name="CP_vehicle_setting_subTitle_basic"										text="Basic settings"/>
+		<text name="CP_vehicle_setting_subTitle_implement"									text="Tools settings"/>
+		<text name="CP_vehicle_setting_subTitle_combine"									text="Combine settings"/>
+		<text name="CP_vehicle_setting_subTitle_seeder"										text="Seeder settings"/>
+		<text name="CP_vehicle_setting_subTitle_multitool"									text="Multitool settings"/>
 
 		<text name="CP_vehicle_setting_showCourse_title" 									text="Show course"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 									text="Show the current course of the vehicle"/>
@@ -54,7 +58,7 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Enables/disables automatic folding of implements at the end of the course."/>
 
 		<text name="CP_vehicle_setting_raiseImplementLate_title" 							text="Tool rasing at the"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 						text="Tool raising at the end of a row or at the start of a headland turn."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 							text="Tool raising at the end of a row or at the start of a headland turn."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 							text="end of a row"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 							text="start of a turn"/>
 
