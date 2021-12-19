@@ -266,12 +266,6 @@ function TurnContext:setTargetNode(node)
     self.targetNode = node
 end
 
--- TODO: this should be a global util function, not under TurnContext
-function TurnContext:getNodeDirection(node)
-    local lx, _, lz = localDirectionToWorld(node, 0, 0, 1)
-    return math.atan2( lx, lz )
-end
-
 --- Returns true if node1 is pointing approximately in node2's direction
 ---@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 10 degrees
 function TurnContext.isSameDirection(node1, node2, thresholdDeg)
@@ -363,36 +357,6 @@ function TurnContext:createCorner(vehicle, r, sideOffset)
             endAngleDeg, self.turnEndWp.angle, self.afterTurnEndWp.angle)
     return Corner(vehicle, self.beforeTurnStartWp.angle, self.turnStartWp, endAngleDeg, self.turnEndWp, r,
             sideOffset)
-end
-
---- Create a turn ending course using the vehicle's current position and the front marker node (where the vehicle must
---- be in the moment it starts on the next row. Use the Corner class to generate a nice arc.
--- TODO: use Dubins instead?
----@param vehicle table
----@param corner Corner if caller already has a corner to use, can pass in here. If nil, we will create our own
----@return Course
-function TurnContext:createEndingTurnCourse(vehicle, corner)
-    local startAngle = math.deg(self:getNodeDirection(vehicle:getAIDirectionNode()))
-    local r = vehicle.cp.settings.turnDiameter:get() / 2
-    local startPos, endPos = {}, {}
-    startPos.x, _, startPos.z = getWorldTranslation(vehicle:getAIDirectionNode())
-    endPos.x, _, endPos.z = getWorldTranslation(self.vehicleAtTurnEndNode)
-    -- use side offset 0 as all the offsets is already included in the vehicleAtTurnEndNode
-    local myCorner = corner or Corner(vehicle, startAngle, startPos, self.turnEndWp.angle, endPos	, r, 0)
-    courseplay:clearTurnTargets(vehicle)
-    local center = myCorner:getArcCenter()
-    local startArc = myCorner:getArcStart()
-    local endArc = myCorner:getArcEnd()
-    courseplay:generateTurnCircle(vehicle, center, startArc, endArc, r, self:isLeftTurn() and 1 or -1, false);
-    -- make sure course reaches the front marker node so end it well behind that node
-    local endStraight = {}
-    endStraight.x, _, endStraight.z = localToWorld(self.vehicleAtTurnEndNode, 0, 0, 3)
-    courseplay:generateTurnStraightPoints(vehicle, endArc, endStraight)
-    local course = Course(vehicle, vehicle.cp.turnTargets, true)
-    -- if we created our corner, delete it now.
-    if not corner then myCorner:delete() end
-    courseplay:clearTurnTargets(vehicle)
-    return course
 end
 
 --- Course to reverse before starting a turn to make sure the turn is completely on the field

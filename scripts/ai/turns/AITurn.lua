@@ -113,22 +113,23 @@ function AITurn:onWaypointPassed(ix, course)
 	end
 end
 
-function AITurn.canMakeKTurn(vehicle, turnContext)
+function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 	if turnContext:isHeadlandCorner() then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Headland turn, let turn.lua drive for now.')
 		return false
 	end
-	local turnDiameter = vehicle.cp.settings.turnDiameter:get()
-	if turnDiameter <= math.abs(turnContext.dx) then
-		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'wide turn with no reversing (turn diameter = %.1f, dx = %.1f, let turn.lua do that for now.',
-			turnDiameter, math.abs(turnContext.dx))
+	local turningRadius = AIUtil.getTurningRadius(vehicle)
+	if 2 * turningRadius <= math.abs(turnContext.dx) then
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'narrow turn with no reversing (turn radius = %.1f, dx = %.1f',
+				turningRadius, math.abs(turnContext.dx))
 		return true
 	end
 	if not AIVehicleUtil.getAttachedImplementsAllowTurnBackward(vehicle) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Not all attached implements allow for reversing, use generated course turn')
 		return false
 	end
-	if vehicle.cp.settings.turnOnField:is(true) and not AITurn.canTurnOnField(turnContext, vehicle) then
+	if vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) and
+			not AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Turn on field is on but there is not enough space, use generated course turn')
 		return false
 	end
@@ -170,6 +171,22 @@ function AITurn:isEndingTurn()
 	-- include the direction too because some turns go to the ENDING_TURN state very early, while still driving
 	-- perpendicular to the row. This way this returns true really only when we are about to end the turn
 	return self.state == self.states.ENDING_TURN and self.turnContext:isDirectionCloseToEndDirection(self.vehicle:getAIDirectionNode(), 15)
+end
+
+-- get a virtual goal point position for a turn performed with full steering angle to the left or right (or straight)
+---@param moveForwards boolean move forward when true, backwards otherwise
+---@param isLeftTurn boolean turn to the right or left, or straight when nil
+function AITurn:getGoalPointForTurn(moveForwards, isLeftTurn)
+	local dx, dz
+	if isLeftTurn == nil then
+		dx = 0
+		dz = moveForwards and self.ppc:getLookaheadDistance() or -self.ppc:getLookaheadDistance()
+	else
+		dx = isLeftTurn and self.ppc:getLookaheadDistance() or -self.ppc:getLookaheadDistance()
+		dz = moveForwards and 1 or -1
+	end
+	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), dx, 0, dz)
+	return gx, gz
 end
 
 function AITurn:getDriveData(dt)
@@ -218,7 +235,7 @@ end
 function AITurn:endTurn(dt)
 	-- keep driving on the turn ending temporary course until we need to lower our implements
 	-- check implements only if we are more or less in the right direction (next row's direction)
-	if self.turnContext:isDirectionCloseToEndDirection(self.driveStrategy:getDirectionNode(), 30) and
+	if self.turnContext:isDirectionCloseToEndDirection(self.vehicle:getAIDirectionNode(), 30) and
 		self.driveStrategy:shouldLowerImplements(self.turnContext.turnEndWpNode.node, false) then
 		self:debug('Turn ended, resume fieldwork')
 		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
@@ -230,17 +247,35 @@ function AITurn:drawDebug()
 end
 
 --[[
-A K (3 point) turn to make a 180 to continue on the next row.addState
+A K (3 point) turn to make a 180 to continue on the next row. This is a hybrid maneuver, starting with
+the forward (and reverse if there's not enough room) leg, then using a course leading into the next row
+in the turn end phase.
 ]]
 
 ---@class KTurn : AITurn
 KTurn = CpObject(AITurn)
 
-function KTurn:init(vehicle, driver, turnContext)
-	AITurn.init(self, vehicle, driver, turnContext, 'KTurn')
+function KTurn:init(vehicle, strategy, ppc, turnContext, workWidth)
+	AITurn.init(self, vehicle, strategy, ppc, turnContext, workWidth, 'KTurn')
 	self:addState('FORWARD')
 	self:addState('REVERSE')
 	self:addState('FORWARD_ARC')
+	self.blocked = CpTemporaryObject(false)
+	self.blocked:set(false, 1)
+end
+
+function KTurn:onWaypointChange(ix)
+	-- ending part of the K turn is driving on the course end, so revert to the default
+	if self.state == self.states.ENDING_TURN then
+		AITurn.onWaypointChange(self, ix)
+	end
+end
+
+function KTurn:onWaypointPassed(ix, course)
+	-- ending part of the K turn is driving on the course end, so revert to the default
+	if self.state == self.states.ENDING_TURN then
+		AITurn.onWaypointPassed(self, ix, course)
+	end
 end
 
 function KTurn:startTurn()
@@ -250,66 +285,73 @@ end
 function KTurn:turn(dt)
 	-- we end the K turn with a temporary course leading straight into the next row. During this turn the
 	-- AI driver's state remains TURNING and thus calls AITurn:drive() which wil take care of raising the implements
-	local endTurn = function()
+	local endTurn = function(course)
 		self.vehicle:raiseAIEvent("onAITurnProgress", "onAIImplementTurnProgress", 100, self.turnContext:isLeftTurn())
 		self.state = self.states.ENDING_TURN
-		self.driveStrategy:startFieldworkCourseWithTemporaryCourse(self.endingTurnCourse, self.turnContext.turnEndWpIx)
+		self.ppc:setCourse(course)
+		self.ppc:initialize(1)
 	end
 
-	AITurn.turn(self)
-	local turnDiameter = self.vehicle.cp.settings.turnDiameter:get()
-	local turningRadius = turnDiameter / 2
+	local gx, gz, maxSpeed, moveForwards
 	if self.state == self.states.FORWARD then
-		local dx, _, dz = self.turnContext:getLocalPositionFromTurnEnd(self.driveStrategy:getDirectionNode())
-		self:getForwardSpeed()
+		local dx, _, dz = self.turnContext:getLocalPositionFromTurnEnd(self.vehicle:getAIDirectionNode())
+		maxSpeed = self:getForwardSpeed()
+		moveForwards = true
 		if dz > 0 then
 			-- drive straight until we are beyond the turn end
-			self.driveStrategy:driveVehicleBySteeringAngle(dt, true, 0, self.turnContext:isLeftTurn(), self.driveStrategy:getSpeed())
-		elseif not self.turnContext:isDirectionPerpendicularToTurnEndDirection(self.driveStrategy:getDirectionNode()) then
+			gx, gz = self:getGoalPointForTurn(moveForwards, nil)
+		elseif not self.turnContext:isDirectionPerpendicularToTurnEndDirection(self.vehicle:getAIDirectionNode()) then
 			-- full turn towards the turn end waypoint
-			self.driveStrategy:driveVehicleBySteeringAngle(dt, true, 1, self.turnContext:isLeftTurn(), self.driveStrategy:getSpeed())
+			gx, gz = self:getGoalPointForTurn(moveForwards, self.turnContext:isLeftTurn())
 		else
 			-- drive straight ahead until we cross turn end line
-			self.driveStrategy:driveVehicleBySteeringAngle(dt, true, 0, self.turnContext:isLeftTurn(), self.driveStrategy:getSpeed())
-			if self.turnContext:isLateralDistanceGreater(dx, turningRadius * 1.05) then
+			gx, gz = self:getGoalPointForTurn(moveForwards, nil)
+			if self.turnContext:isLateralDistanceGreater(dx, self.turningRadius * 1.05) then
 				-- no need to reverse from here, we can make the turn
-				self.endingTurnCourse = self.turnContext:createEndingTurnCourse(self.vehicle)
-				self:debug('K Turn: dx = %.1f, r = %.1f, no need to reverse.', dx, turningRadius)
-				endTurn()
+				self.endingTurnCourse = TurnEndingManeuver(self.vehicle, self.turnContext,
+						self.vehicle:getAIDirectionNode(), self.turningRadius, self.workWidth, 0):getCourse()
+				self:debug('K Turn: dx = %.1f, r = %.1f, no need to reverse.', dx, self.turningRadius)
+				endTurn(self.endingTurnCourse)
 			else
 				-- reverse until we can make turn to the turn end point
 				self.vehicle:raiseAIEvent("onAITurnProgress", "onAIImplementTurnProgress", 50, self.turnContext:isLeftTurn())
 				self.state = self.states.REVERSE
-				self.endingTurnCourse = self.turnContext:createEndingTurnCourse(self.vehicle)
-				self:debug('K Turn: dx = %.1f, r = %.1f, reversing now.', dx, turningRadius)
+				self.endingTurnCourse = TurnEndingManeuver(self.vehicle, self.turnContext,
+						self.vehicle:getAIDirectionNode(), self.turningRadius, self.workWidth, 0):getCourse()
+				self:debug('K Turn: dx = %.1f, r = %.1f, reversing now.', dx, self.turningRadius)
 			end
 		end
 	elseif self.state == self.states.REVERSE then
 		-- reversing parallel to the direction between the turn start and turn end waypoints
+		moveForwards = false
 		maxSpeed = self:getReverseSpeed()
-		self.driveStrategy:driveVehicleBySteeringAngle(dt, false, 0, self.turnContext:isLeftTurn(), self.driveStrategy:getSpeed())
-		local _, _, dz = self.endingTurnCourse:getWaypointLocalPosition(self.driveStrategy:getDirectionNode(), 1)
+		gx, gz = self:getGoalPointForTurn(moveForwards, nil)
+		local _, _, dz = self.endingTurnCourse:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), 1)
 		if dz > 0  then
 			-- we can make the turn from here
 			self:debug('K Turn ending turn')
-			endTurn()
+			endTurn(self.endingTurnCourse)
 		end
 	elseif self.state == self.states.REVERSING_AFTER_BLOCKED then
+		moveForwards = false
 		maxSpeed = self:getReverseSpeed()
-		self.driveStrategy:driveVehicleBySteeringAngle(dt, false, 0.6, self.turnContext:isLeftTurn(), self.driveStrategy:getSpeed())
-		if self.vehicle.timer > self.blockedTimer + 3500 then
+		-- TODO_22 here we should not fully steer to recover, see if this is still needed
+		gx, gz = self:getGoalPointForTurn(moveForwards, self.turnContext:isLeftTurn())
+		if not self.blocked:get() then
 			self.state = self.stateAfterBlocked
 			self:debug('Trying again after reversed due to being blocked')
 		end
 	elseif self.state == self.states.FORWARDING_AFTER_BLOCKED then
-		self:getForwardSpeed()
-		self.driveStrategy:driveVehicleBySteeringAngle(dt, true, 0.6, self.turnContext:isLeftTurn(), self.driveStrategy:getSpeed())
-		if self.vehicle.timer > self.blockedTimer + 3500 then
+		maxSpeed = self:getForwardSpeed()
+		moveForwards = true
+		-- TODO_22 here we should not fully steer to recover, see if this is still needed
+		gx, gz = self:getGoalPointForTurn(moveForwards, self.turnContext:isLeftTurn())
+		if not self.blocked:get() then
 			self.state = self.stateAfterBlocked
 			self:debug('Trying again after forwarded due to being blocked')
 		end
 	end
-	return true
+	return gx, gz, moveForwards, maxSpeed
 end
 
 function KTurn:onBlocked()
@@ -318,7 +360,7 @@ function KTurn:onBlocked()
 		return
 	end
 	self.stateAfterBlocked = self.state
-	self.blockedTimer = self.vehicle.timer
+	self.blocked:set(true, 3500)
 	if self.state == self.states.REVERSE then
 		self.state = self.states.FORWARDING_AFTER_BLOCKED
 		self:debug('Blocked, try forwarding a bit')
@@ -350,6 +392,8 @@ function CombineHeadlandTurn:init(vehicle, driveStrategy, ppc, turnContext)
 	self.cornerAngleToTurn = turnContext:getCornerAngleToTurn()
 	self.angleToTurnInReverse = math.abs(self.cornerAngleToTurn / 2)
 	self.dxToStartReverseTurn = self.turningRadius - math.abs(self.turningRadius - self.turningRadius * math.cos(self.cornerAngleToTurn))
+	self.blocked = CpTemporaryObject(false)
+	self.blocked:set(false, 1)
 end
 
 function CombineHeadlandTurn:startTurn()
@@ -361,22 +405,6 @@ end
 -- headland.
 function CombineHeadlandTurn:getRaiseImplementNode()
 	return self.turnContext.lateWorkEndNode
-end
-
--- get a virtual goal point position for a turn. This is
----@param moveForwards boolean move forward when true, backwards otherwise
----@param isLeftTurn boolean turn to the right or left, or straight when nil
-function CombineHeadlandTurn:getGoalPointForTurn(moveForwards, isLeftTurn)
-	local dx, dz
-	if isLeftTurn == nil then
-		dx = 0
-		dz = moveForwards and self.ppc:getLookaheadDistance() or -self.ppc:getLookaheadDistance()
-	else
-		dx = isLeftTurn and self.ppc:getLookaheadDistance() or -self.ppc:getLookaheadDistance()
-		dz = moveForwards and 1 or -1
-	end
-	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), dx, 0, dz)
-	return gx, gz
 end
 
 function CombineHeadlandTurn:turn(dt)
@@ -421,7 +449,7 @@ function CombineHeadlandTurn:turn(dt)
 		moveForwards = false
 		-- TODO: may need to steer less...
 		gx, gz = self:getGoalPointForTurn(moveForwards, self.turnContext:isLeftTurn())
-		if self.vehicle.timer > self.blockedTimer + 3500 then
+		if not self.blocked:get() then
 			self.state = self.stateAfterBlocked
 			self:debug('Trying again after reversed due to being blocked')
 		end
@@ -430,7 +458,7 @@ function CombineHeadlandTurn:turn(dt)
 		moveForwards = true
 		-- TODO: may need to steer less...
 		gx, gz = self:getGoalPointForTurn(moveForwards, self.turnContext:isLeftTurn())
-		if self.vehicle.timer > self.blockedTimer + 3500 then
+		if not self.blocked:get() then
 			self.state = self.stateAfterBlocked
 			self:debug('Trying again after forwarded due to being blocked')
 		end
@@ -440,7 +468,7 @@ end
 
 function CombineHeadlandTurn:onBlocked()
 	self.stateAfterBlocked = self.state
-	self.blockedTimer = self.vehicle.timer
+	self.blocked:set(true, 3500)
 	if self.state == self.states.REVERSE_ARC or self.state == self.states.REVERSE_STRAIGHT then
 		self.state = self.states.FORWARDING_AFTER_BLOCKED
 		self:debug('Blocked, try forwarding a bit')

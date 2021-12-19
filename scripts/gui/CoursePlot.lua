@@ -102,12 +102,6 @@ function CoursePlot:draw()
 	if not self.isVisible then return end
 	local lineThickness = 2 / g_screenHeight -- 2 pixels
 
---	if g_updateLoopIndex % 200 == 0 then
---		local wx, wz = self.waypoints[1].x, self.waypoints[1].z
---		local x, y = self:worldToScreen(wx, wz)
---		print(string.format('%.1f/%.1f -> %.1f/%.1f', wx, wz, x, y))
---	end
-
 	if self.waypoints and #self.waypoints > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.

@@ -124,7 +124,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.TURNING then
         local turnGx, turnGz, turnMoveForwards, turnMaxSpeed = self.aiTurn:getDriveData(dt)
         self:setMaxSpeed(turnMaxSpeed)
-        -- if turn tells us which way to go, use that
+        -- if turn tells us which way to go, use that, otherwise just do whatever PPC tells us
         gx, gz = turnGx or gx, turnGz or gz
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
@@ -327,7 +327,11 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
     self.ppc:setShortLookaheadDistance()
     self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-    self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+    if AITurn.canMakeKTurn(self.vehicle, self.turnContext, self.workWidth) then
+        self.aiTurn = KTurn(self.vehicle, self, self.ppc, self.turnContext, self.workWidth)
+    else
+        self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+    end
     self.state = self.states.TURNING
 end
 

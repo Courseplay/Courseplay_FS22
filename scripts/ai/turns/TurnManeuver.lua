@@ -338,6 +338,40 @@ function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffs
 	return course
 end
 
+---@class TurnEndingManeuver : TurnManeuver
+TurnEndingManeuver = CpObject(TurnManeuver)
+
+--- Create a turn ending course using the vehicle's current position and the front marker node (where the vehicle must
+--- be in the moment it starts on the next row. Use the Corner class to generate a nice arc.
+--- Could be using Dubins but that may end up generating a full circle if there's not enough room, even if we
+--- miss it by just a few centimeters
+function TurnEndingManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
+	self.debugPrefix = '(TurnEnding): '
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
+	self:debug('Start generating')
+	self:debug('r=%.1f, w=%.1f', turningRadius, workWidth)
+
+	local startAngle = math.deg(CpMathUtil.getNodeDirection(vehicleDirectionNode))
+	local r = turningRadius
+	local startPos, endPos = {}, {}
+	startPos.x, _, startPos.z = getWorldTranslation(vehicleDirectionNode)
+	endPos.x, _, endPos.z = getWorldTranslation(turnContext.vehicleAtTurnEndNode)
+	-- use side offset 0 as all the offsets is already included in the vehicleAtTurnEndNode
+	local myCorner = Corner(vehicle, startAngle, startPos, self.turnContext.turnEndWp.angle, endPos	, r, 0)
+	local center = myCorner:getArcCenter()
+	local startArc = myCorner:getArcStart()
+	local endArc = myCorner:getArcEnd()
+	self:generateTurnCircle(center, startArc, endArc, r, self.turnContext:isLeftTurn() and 1 or -1, false)
+	-- make sure course reaches the front marker node so end it well behind that node
+	local endStraight = {}
+	endStraight.x, _, endStraight.z = localToWorld(self.turnContext.vehicleAtTurnEndNode, 0, 0, 3)
+	self:generateStraightSection(endArc, endStraight)
+	myCorner:delete()
+	self.course = Course(vehicle, self.waypoints, true)
+	self.course:setUseTightTurnOffsetForLastWaypoints(10)
+	self.course:setTurnEndForLastWaypoints(5)
+end
+
 ---@class HeadlandCornerTurnManeuver : TurnManeuver
 HeadlandCornerTurnManeuver = CpObject(TurnManeuver)
 

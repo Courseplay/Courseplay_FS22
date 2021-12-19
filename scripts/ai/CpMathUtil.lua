@@ -30,3 +30,8 @@ function CpMathUtil.getPointDirection(cp, np)
 	end
 	return dx, dz, vl
 end
+
+function CpMathUtil.getNodeDirection(node)
+	local lx, _, lz = localDirectionToWorld(node, 0, 0, 1)
+	return math.atan2( lx, lz )
+end
