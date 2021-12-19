@@ -66,6 +66,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:update()
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
+    -- TODO_22 add debug flag
     if self.state == self.states.TURNING then
         if self.turnContext then
             self.turnContext:drawDebug()
@@ -74,7 +75,9 @@ function AIDriveStrategyFieldWorkCourse:update()
             self.aiTurn:drawDebug()
         end
     end
-
+    if self.course:isTemporary() then
+       self.course:draw()
+    end
 end
 
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
@@ -155,7 +158,8 @@ function AIDriveStrategyFieldWorkCourse:lowerImplements()
     if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) or self.ppc:isReversing() then
         -- sowing machines want to stop while the implement is being lowered
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
-        self.state = self.states.WAITING_FOR_LOWER_DELAYED
+        -- TODO_22
+        --self.state = self.states.WAITING_FOR_LOWER_DELAYED
     end
 end
 
@@ -480,6 +484,10 @@ end
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
 function AIDriveStrategyFieldWorkCourse:updateAIFieldWorkerDriveStrategies()
+    if not self:getFieldWorkCourse() then
+        CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'has no CP field work course, run the built-in helper...')
+        return
+    end
     -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
     -- our own specialization
     for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do

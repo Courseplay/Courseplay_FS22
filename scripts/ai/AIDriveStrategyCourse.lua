@@ -69,6 +69,11 @@ function AIDriveStrategyCourse:error(...)
     CpUtil.infoVehicle(self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
+-- TODO_22
+function AIDriveStrategyCourse:setInfoText(text)
+    self:debug(text)
+end
+
 function AIDriveStrategyCourse:setAIVehicle(vehicle)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     ---@type FillLevelManager

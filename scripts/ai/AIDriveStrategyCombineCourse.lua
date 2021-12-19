@@ -70,7 +70,6 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.stopDisabledAfterEmpty:set(false, 1)
 	self.pipeOffsetX = 0
 	self.unloaders = {}
-	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 	self:initUnloadStates()
 	return self
 end
@@ -120,7 +119,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	-- and back up another bit
 	self.pullBackDistanceEnd = self.pullBackDistanceStart + 5
 	-- when making a pocket, how far to back up before changing to forward
-	self.pocketReverseDistance = 25
+	self.pocketReverseDistance = 20
 	-- register ourselves at our boss
 	-- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
 	self:measureBackDistance()
@@ -134,6 +133,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	self:shouldStrawSwathBeOn(self.course:getCurrentWaypointIx())
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
+	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 end
 
 -- This part of an ugly workaround to make the chopper pickups work
@@ -220,7 +220,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
 		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
 	elseif self.unloadState == self.states.MAKING_POCKET then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed))
 	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
 		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed))
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
@@ -431,7 +431,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self:lowerImplements()
 			self.unloadState = self.states.MAKING_POCKET
 			-- offset the main fieldwork course and start on it
-			self.aiOffsetX = self.pullBackRightSideOffset
+			self.aiOffsetX = math.min(self.pullBackRightSideOffset, self:getWorkWidth())
 			self:startRememberedCourse()
 		elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
 			-- pulled back, now wait for unload
@@ -484,10 +484,10 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 			self:debug('No room to the left, making a pocket for unload')
 			self.state = self.states.UNLOADING_ON_FIELD
 			self.unloadState = self.states.REVERSING_TO_MAKE_A_POCKET
+			self:rememberCourse(self.course, nextIx)
 			-- raise header for reversing
 			self:raiseImplements()
 			self:startCourse(pocketCourse, 1)
-			self:rememberCourse(self.course, nextIx)
 			-- tighter turns
 			self.ppc:setShortLookaheadDistance()
 		else
@@ -1862,6 +1862,11 @@ end
 function AIDriveStrategyCombineCourse:getWorkingToolPositionsSetting()
 	local setting = self.settings.pipeToolPositions
 	return setting:getHasMoveablePipe() and setting:hasValidToolPositions() and setting
+end
+
+-- TODO_22
+function AIDriveStrategyCombineCourse:setInfoText(text)
+	self:debug(text)
 end
 
 -- This is to disable the Giants helper's combine drive strategy
