@@ -65,6 +65,7 @@ function AITurn:init(vehicle, driveStrategy, ppc, turnContext, workWidth, name)
 	self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
 	---@type TurnContext
 	self.turnContext = turnContext
+	self.reversingImplement, self.steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
 	self.state = self.states.INITIALIZING
 	self.name = name or 'AITurn'
 end
@@ -594,30 +595,29 @@ end
 
 function CourseTurn:generateCalculatedTurn()
 	local turnManeuver
-	local reversingImplement, steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
 	if self.turnContext:isHeadlandCorner() then
 		-- TODO_22
 		self:debug('This is a headland turn')
 		turnManeuver = HeadlandCornerTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-			self.turningRadius, self.workWidth, reversingImplement, steeringLength)
+			self.turningRadius, self.workWidth, self.reversingImplement, self.steeringLength)
 		-- adjust turn course for tight turns only for headland corners by default
-		self.forceTightTurnOffset = steeringLength > 0
+		self.forceTightTurnOffset = self.steeringLength > 0
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
 		local turnOnField = self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField)
 		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
 		-- if don't have to turn on field then pretend we have a lot of space
 		distanceToFieldEdge = turnOnField and distanceToFieldEdge or math.huge
-		if distanceToFieldEdge > self.workWidth or steeringLength > 0 then
+		if distanceToFieldEdge > self.workWidth or self.steeringLength > 0 then
 			-- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
 			turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-				self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
+				self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
 		else
 			turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
-				self.turningRadius, self.workWidth, steeringLength, distanceToFieldEdge)
+				self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
 		end
 		-- only use tight turn offset if we are towing something
-		self.enableTightTurnOffset = steeringLength > 0
+		self.enableTightTurnOffset = self.steeringLength > 0
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
@@ -625,7 +625,7 @@ end
 function CourseTurn:generatePathfinderTurn()
 	self.pathfindingStartedAt = self.vehicle.timer
 	local done, path
-	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.vehicle)
+	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
 	if self.vehicle.cp.settings.usePathfindingInTurns:is(false) or self.turnContext:isSimpleWideTurn(self.turningRadius * 2) then
 		self:debug('Wide turn: generate turn with Dubins path, start offset %.1f, goal offset %.1f', startOffset, goalOffset)

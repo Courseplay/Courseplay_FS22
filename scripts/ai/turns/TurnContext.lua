@@ -480,7 +480,7 @@ end
 --- of the next row, making sure that the vehicle and the implement arrives there aligned with the row direction
 ---@return number, number, number the node where the turn ends, z offset to use with the start node, which should be
 --- the vehicle's direction node, and lastly, z offset to use with the end node
-function TurnContext:getTurnEndNodeAndOffsets(vehicle)
+function TurnContext:getTurnEndNodeAndOffsets(steeringLength)
     local turnEndNode, startOffset, goalOffset
     if self.frontMarkerDistance > 0 then
         -- implement in front of vehicle. Turn should end with the implement at the work start position, this is where
@@ -494,7 +494,7 @@ function TurnContext:getTurnEndNodeAndOffsets(vehicle)
         turnEndNode = self.workStartNode
         startOffset = 0
         -- vehicle is about frontMarkerDistance before the work end when finishing the turn
-        if AIUtil.getTowBarLength(vehicle) > 0 then
+        if steeringLength > 0 then
             -- giving enough time for the implement to align, the vehicle will reach the next row about the
             -- front marker distance _before_ the turn end so have the front marker distance to drive straight,
             -- during this time we expect the implement to align with the tractor

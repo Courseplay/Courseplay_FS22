@@ -258,7 +258,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f',
 		turningRadius, workWidth, steeringLength, distanceToFieldEdge)
 
-	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.vehicle)
+	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
 	self.course = self:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
 
