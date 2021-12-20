@@ -85,6 +85,8 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     -- for now, pathfinding generated courses can't be driven by towed tools
     self.allowReversePathfinding = AIUtil.getFirstReversingImplementWithWheels(self.vehicle) == nil
 
+    self:enableCollisionDetection()
+
     -- TODO: should probably be the closest waypoint to the target?
     local course = vehicle:getFieldWorkCourse()
     local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
@@ -190,7 +192,6 @@ function AIDriveStrategyCourse:setUpAlignmentCourse(course, ix)
     return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(alignmentWaypoints), true)
 end
 
-
 ------------------------------------------------------------------------------------------------------------------------
 --- Collision
 ---------------------------------------------------------------------------------------------------------------------------
@@ -204,4 +205,18 @@ function AIDriveStrategyCourse:enableCollisionDetection()
     if self.vehicle then
         CourseplaySpec.enableCollisionDetection(self.vehicle)
     end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Course helpers
+---------------------------------------------------------------------------------------------------------------------------
+
+--- Are we within distance meters of the last waypoint (measured on the course, not direct path)?
+function AIDriveStrategyCourse:isCloseToCourseEnd(distance)
+    return self.course:getDistanceToLastWaypoint(self.ppc:getCurrentWaypointIx()) < distance
+end
+
+--- Are we within distance meters of the first waypoint (measured on the course, not direct path)?
+function AIDriveStrategyCourse:isCloseToCourseStart(distance)
+    return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
 end

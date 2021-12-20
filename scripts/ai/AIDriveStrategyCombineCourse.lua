@@ -307,15 +307,16 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 				self:changeToFieldWork()
 			end
 		end
-	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
-		if self.ppc:getCurrentWaypointIx() > self.course:getNumberOfWaypoints() - 8 then
+	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
+			self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
+		if self:isCloseToCourseEnd(25) then
 			-- slow down towards the end of the course, near the trailer
 			self:setMaxSpeed(0.5 * self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+			-- disable stock collision detection as we have to drive very close to the tractor/trailer
+			self:disableCollisionDetection()
 		else
 			self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
 		end
-	elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
 	elseif self.unloadState == self.states.SELF_UNLOADING then
 		self:setMaxSpeed(0)
 		if self:isUnloadFinished() then
@@ -331,7 +332,12 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
 		end
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+		if self:isCloseToCourseStart(25) then
+			self:setMaxSpeed(0.5 * self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+		else
+			self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+			self:enableCollisionDetection()
+		end
 	end
 end
 
@@ -474,7 +480,6 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 		self.state = self.states.UNLOADING_ON_FIELD
 		self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
 		self.ppc:setShortLookaheadDistance()
-		self:disableCollisionDetection()
 	elseif self.vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and self:shouldMakePocket() then
 		-- I'm on the edge of the field or fruit is on both sides, make a pocket on the right side and wait there for the unload
 		local pocketCourse, nextIx = self:createPocketCourse()
