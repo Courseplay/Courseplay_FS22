@@ -137,7 +137,9 @@ end
 -- Seems like the Giants AIDriveStrategyCollision needs these variables on the vehicle to be set
 -- to calculate an accurate path prediction
 function AIDriveStrategyFieldWorkCourse:setAITarget()
-    local dx, _, dz = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
+    --local dx, _, dz = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
+    local wp = self.ppc:getCurrentWaypoint()
+    local dx, dz = wp.dx, wp.dz
     local length = MathUtil.vector2Length(dx, dz)
     dx = dx / length
     dz = dz / length
@@ -353,7 +355,7 @@ function AIDriveStrategyFieldWorkCourse:stopAndChangeToUnload()
     -- TODO_22 run unload/refill with the vanilla helper?
     if false and self.unloadRefillCourse and not self.heldForUnloadRefill then
         self:rememberWaypointToContinueFieldwork()
-        self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.aiDriverData.continueFieldworkAtWaypoint or -1)
+        self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.storage.continueFieldworkAtWaypoint or -1)
         self:changeToUnloadOrRefill()
         self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
     else
@@ -472,6 +474,27 @@ end
 
 function AIDriveStrategyFieldWorkCourse:getTurnEndForwardOffset()
     return 0
+end
+
+function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldwork()
+    self.storage.continueFieldworkAtWaypoint = self:getBestWaypointToContinueFieldwork()
+end
+
+function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldwork()
+    local bestKnownCurrentWpIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getCurrentWaypointIx()
+    -- after we return from a refill/unload, continue a bit before the point where we left to
+    -- make sure not leaving any unworked patches
+    local bestWpIx = self.course:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
+    if bestWpIx then
+        -- anything other than a turn start wp will work fine
+        if self.course:isTurnStartAtIx(bestWpIx) then
+            bestWpIx = bestWpIx - 1
+        end
+    else
+        bestWpIx = bestKnownCurrentWpIx
+    end
+    self:debug('Best return to fieldwork waypoint is %d', bestWpIx)
+    return bestWpIx
 end
 
 --- We already set the offsets on the course at start, this is to update those values

@@ -46,13 +46,15 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
-		<sourceFile filename="scripts/field/FieldUtil.lua"/>
+		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
+		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
 		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
 		<sourceFile filename="scripts/pathfinder/Dubins.lua"/>
 		<sourceFile filename="scripts/pathfinder/ReedsShepp.lua"/>
 		<sourceFile filename="scripts/pathfinder/ReedsSheppSolver.lua"/>
+		<sourceFile filename="scripts/pathfinder/HybridAStar.lua"/>
 		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>

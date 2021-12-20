@@ -66,6 +66,31 @@ function CourseplaySpec:getReverseDrivingDirectionNode()
     return spec.reverseDrivingDirectionNode
 end
 
+function CourseplaySpec:isCollisionDetectionEnabled()
+    return self.collisionDetectionEnabled
+end
+
+function CourseplaySpec:enableCollisionDetection()
+    self.collisionDetectionEnabled = true
+end
+
+function CourseplaySpec:disableCollisionDetection()
+    self.collisionDetectionEnabled = false
+end
+
+--- This is to be able to disable the built-in AIDriveStrategyCollision check from our drive strategies
+function CourseplaySpec:getCollisionCheckActive(superFunc,...)
+    if self.collisionDetectionEnabled then
+        return superFunc(self,...)
+    else
+        return false
+    end
+end
+
+AIDriveStrategyCollision.getCollisionCheckActive = Utils.overwrittenFunction(
+        AIDriveStrategyCollision.getCollisionCheckActive, CourseplaySpec.getCollisionCheckActive
+)
+
 function CourseplaySpec:updateSignVisibility()
     g_courseDisplay:updateWaypointSigns(self)
 end

@@ -416,12 +416,12 @@ end
 function TurnContext:getDistanceToFieldEdge(node)
     for d = 0, 100, 1 do
         local x, _, z = localToWorld(node, 0, 0, d)
-        local isField = FieldUtil.isOnField(x, z)
+        local isField = CpFieldUtil.isOnField(x, z)
         if d == 0 and not isField then
             self:debug('Vehicle not on field, search backwards')
             for db = 0, 50, 1 do
                 x, _, z = localToWorld(node, 0, 0, -db)
-                isField = FieldUtil.isOnField(x, z)
+                isField = CpFieldUtil.isOnField(x, z)
                 if isField then
                     self:debug('Field edge is at %d m (behind us)', -db)
                     return -db

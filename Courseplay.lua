@@ -185,7 +185,7 @@ function Courseplay:toggleDevHelper()
 end
 
 function Courseplay:saveAllFields()
-	FieldUtil.saveAllFields()
+	CpFieldUtil.saveAllFields()
 end
 
 function Courseplay.info(...)

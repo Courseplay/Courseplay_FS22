@@ -42,13 +42,13 @@ end
 --- Rotate the probe until it aligns with the field edge
 function FieldScanner:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
     local x, y, z = localToWorld(probe, 0, 0, tracerLookahead)
-    local startOnField = FieldUtil.isOnField(x, z)
+    local startOnField = CpFieldUtil.isOnField(x, z)
     -- rotate the probe and see if a point in front of us is still on the field or not.
     local a, isOnField, targetOnFieldState = 0, startOnField, not startOnField
     -- rotate probe clockwise
     while a < 2 * math.pi and isOnField ~= targetOnFieldState do
         x, y, z = localToWorld(probe, 0, 0, tracerLookahead)
-        isOnField = FieldUtil.isOnField(x, z)
+        isOnField = CpFieldUtil.isOnField(x, z)
         self:rotateProbeBy(probe, (isOnField and 1 or -1) * self.angleStep)
         a = a + self.angleStep
     end
@@ -62,12 +62,12 @@ end
 ---@return boolean true if the edge was found
 function FieldScanner:findFieldEdge(probe)
     local i = 0
-    while i < 100000 and FieldUtil.isNodeOnField(probe) do
+    while i < 100000 and CpFieldUtil.isNodeOnField(probe) do
         -- move probe forward
         self:moveProbeForward(probe, self.resolution)
         i = i + 1
     end
-    while not FieldUtil.isNodeOnField(probe) do
+    while not CpFieldUtil.isNodeOnField(probe) do
         self:moveProbeForward(probe, -self.highResolution)
     end
     local x, _, z = getWorldTranslation(probe)
@@ -129,7 +129,7 @@ end
 ---@param z number
 function FieldScanner:findContour(x, z)
     local probe = CpUtil.createNode('FieldScannerProbe', x, z, 0)
-    if not FieldUtil.isNodeOnField(probe) then
+    if not CpFieldUtil.isNodeOnField(probe) then
         self:debug('%.1f/%.1f is not on a field, can\'t start scanning here', x, z)
         return
     end

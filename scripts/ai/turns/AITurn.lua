@@ -512,7 +512,9 @@ end
 function CourseTurn:startTurn()
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
 	-- TODO_22 self.vehicle.cp.settings.turnOnField:is(false)
-	if false and (canTurnOnField or true) and self.turnContext:isPathfinderTurn(self.turningRadius * 2) then
+	if (canTurnOnField or self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField)) and
+			self.turnContext:isPathfinderTurn(self.turningRadius * 2) and
+			not self.turnContext:isSimpleWideTurn(self.turningRadius * 2) then
 		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
 		-- but we don't have enough space and have to reverse, fall back to the generated turns
 		self:generatePathfinderTurn()
@@ -655,21 +657,14 @@ function CourseTurn:generatePathfinderTurn()
 	local done, path
 	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
-	if self.vehicle.cp.settings.usePathfindingInTurns:is(false) or self.turnContext:isSimpleWideTurn(self.turningRadius * 2) then
-		self:debug('Wide turn: generate turn with Dubins path, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
-		path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
-			self:getAIDirectionNode(), startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+	self:debug('Wide turn: generate turn with hybrid A*, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
+	self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
+			self.turningRadius, self.driveStrategy:getAllowReversePathfinding(), self.fieldworkCourse)
+	if done then
 		return self:onPathfindingDone(path)
 	else
-		self:debug('Wide turn: generate turn with hybrid A*, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
-		self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
-				self.turningRadius, self.driveStrategy:getAllowReversePathfinding(), self.fieldworkCourse)
-		if done then
-			return self:onPathfindingDone(path)
-		else
-			self.state = self.states.WAITING_FOR_PATHFINDER
-			self.driveStrategy:setPathfindingDoneCallback(self, self.onPathfindingDone)
-		end
+		self.state = self.states.WAITING_FOR_PATHFINDER
+		self.driveStrategy:setPathfindingDoneCallback(self, self.onPathfindingDone)
 	end
 end
 
@@ -766,7 +761,7 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.75, -offset * 0.6)
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance * 0.5, -offset * 0.7)
-	if not FieldUtil.isOnField(wp.x, wp.z) then
+	if not CpFieldUtil.isOnField(wp.x, wp.z) then
 		self:debug('No field where the pocket would be, this seems to be a 270 corner')
 		corner:delete()
 		return nil

@@ -51,7 +51,7 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
     self:calculateSizeOfObjectList(vehicle, {{object = vehicle}}, buffer, self.rectangles)
     -- we'll calculate the trailer's precise position an angle for the collision detection to not hit obstacles
     -- while turning. Get that object here, there may be more but we ignore that case.
-    self.trailer = courseplay:getFirstReversingImplementWithWheels(vehicle)
+    self.trailer = AIUtil.getFirstReversingImplementWithWheels(vehicle)
     if self.trailer then
         -- the trailer's heading is different than the vehicle's heading and will be calculated and
         -- checked for collision independently at each waypoint. Also, the trailer is rotated to its heading
@@ -61,9 +61,9 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
             vehicle = self.trailer,
             rootVehicle = self.trailer:getRootVehicle(),
             dFront = buffer or 0,
-            dRear = - self.trailer.sizeLength - (buffer or 0),
-            dLeft = self.trailer.sizeWidth / 2 + (buffer or 0),
-            dRight = -self.trailer.sizeWidth / 2 - (buffer or 0)
+            dRear = - self.trailer.size.length - (buffer or 0),
+            dLeft = self.trailer.size.width / 2 + (buffer or 0),
+            dRight = -self.trailer.size.width / 2 - (buffer or 0)
         }
 				local inputAttacherJoint = self.trailer:getActiveInputAttacherJoint()
 				if inputAttacherJoint then
@@ -72,7 +72,7 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
 				else
 						self.trailerHitchOffset = self.dRear
 				end
-    		courseplay.debugVehicle(courseplay.DBG_PATHFINDER, vehicle, 'trailer for the pathfinding is %s, hitch offset is %.1f',
+    		CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, vehicle, 'trailer for the pathfinding is %s, hitch offset is %.1f',
                 self.trailer:getName(), self.trailerHitchOffset)
     end
     if withImplements then
@@ -96,17 +96,17 @@ function PathfinderUtil.VehicleData:getRectangleForImplement(implement, referenc
         -- we call this offset, and is negative when behind the reference node, positive when in front of it
         -- (need to reverse attacherJointToImplementRoot)
         rootToReferenceNodeOffset = - attacherJointToImplementRoot + referenceToAttacherJoint
-        courseplay.debugFormat(courseplay.DBG_PATHFINDER, '%s: ref to attacher joint %.1f, att to implement root %.1f, impl root to ref %.1f',
+        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, '%s: ref to attacher joint %.1f, att to implement root %.1f, impl root to ref %.1f',
             implement.object:getName(), referenceToAttacherJoint, attacherJointToImplementRoot, rootToReferenceNodeOffset)
     else
         _, _, rootToReferenceNodeOffset = localToLocal(implement.object.rootNode, referenceNode, 0, 0, 0)
     end
     -- default size, used by Giants to determine the drop area when buying something
     local rectangle = {
-        dFront = rootToReferenceNodeOffset + implement.object.sizeLength / 2 + implement.object.lengthOffset + (buffer or 0),
-        dRear = rootToReferenceNodeOffset - implement.object.sizeLength / 2 + implement.object.lengthOffset - (buffer or 0),
-        dLeft = implement.object.sizeWidth / 2,
-        dRight = -implement.object.sizeWidth / 2
+        dFront = rootToReferenceNodeOffset + implement.object.size.length / 2 + implement.object.size.lengthOffset + (buffer or 0),
+        dRear = rootToReferenceNodeOffset - implement.object.size.length / 2 + implement.object.size.lengthOffset - (buffer or 0),
+        dLeft = implement.object.size.width / 2,
+        dRight = -implement.object.size.width / 2
     }
     -- now see if we have something better, then use that. Since any of the six markers may be missing, we
     -- check them one by one.
@@ -148,7 +148,7 @@ function PathfinderUtil.VehicleData:calculateSizeOfObjectList(vehicle, implement
             self.dRight = math.min(self.dRight, rectangle.dRight)
         end
     end
-    --courseplay.debugVehicle(courseplay.DBG_PATHFINDER, vehicle, 'Size: dFront %.1f, dRear %.1f, dLeft = %.1f, dRight = %.1f',
+    --CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, vehicle, 'Size: dFront %.1f, dRear %.1f, dLeft = %.1f, dRight = %.1f',
     --        self.dFront, self.dRear, self.dLeft, self.dRight)
 end
 
@@ -214,7 +214,7 @@ PathfinderUtil.Context = CpObject()
 function PathfinderUtil.Context:init(vehicle, vehiclesToIgnore, objectsToIgnore)
     self.vehicleData = PathfinderUtil.VehicleData(vehicle, true, 0.5)
 	self.trailerHitchLength = AIUtil.getTowBarLength(vehicle)
-	self.turnRadius = vehicle.cp and vehicle.cp.driver and AIUtil.getTurningRadius(vehicle) or 10
+	self.turnRadius = AIUtil.getTurningRadius(vehicle) or 10
 	self.vehiclesToIgnore = vehiclesToIgnore or {}
 	self.objectsToIgnore = objectsToIgnore or {}
 end
@@ -298,7 +298,7 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
             -- just bumped into myself or a vehicle we want to ignore
             return
         end
-        --courseplay.debugFormat(courseplay.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
+        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
     end
    	if not getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
         local text = ''
@@ -330,11 +330,11 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 	self.collidingShapes = 0
 	self.collidingShapesText = 'unknown'
 
-    overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, bitOR(AIVehicleUtil.COLLISION_MASK, 2), true, true, true)
-    if log and self.collidingShapes > 0 then
+    overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, CollisionFlag.AI_BLOCKING, true, true, true)
+    if true and self.collidingShapes > 0 then
         table.insert(PathfinderUtil.overlapBoxes,
                 { x = x, y = y + 0.2, z = z, xRot = xRot, yRot = yRot, zRot = zRot, width = width, length = length})
-        courseplay.debugFormat(courseplay.DBG_PATHFINDER,
+        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
 					'pathfinder colliding shapes %s with %s at x = %.1f, z = %.1f, (%.1fx%.1f), yRot = %d',
 					self.collidingShapesText, vehicleData.name, x, z, width, length, math.deg(yRot))
     end
@@ -359,7 +359,7 @@ function PathfinderUtil.hasFruit(x, z, length, width)
             -- if the last boolean parameter is true then it returns fruitValue > 0 for fruits/states ready for forage also
             local fruitValue, a, b, c = FSDensityMapUtil.getFruitArea(fruitType.index, x - width / 2, z - length / 2, x + width / 2, z, x, z + length / 2, true, true)
             --if g_updateLoopIndex % 200 == 0 then
-                --courseplay.debugFormat(courseplay.DBG_PATHFINDER, '%.1f, %s, %s, %s %s', fruitValue, tostring(a), tostring(b), tostring(c), g_fruitTypeManager:getFruitTypeByIndex(fruitType.index).name)
+                --CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, '%.1f, %s, %s, %s %s', fruitValue, tostring(a), tostring(b), tostring(c), g_fruitTypeManager:getFruitTypeByIndex(fruitType.index).name)
             --end
             if fruitValue > 0 then
                 return true, fruitValue, g_fruitTypeManager:getFruitTypeByIndex(fruitType.index).name
@@ -442,7 +442,7 @@ function PathfinderConstraints:init(context, maxFruitPercent, offFieldPenalty, f
     self:resetCounts()
 	local areaText = self.areaToAvoid and
 		string.format('%.1f x %.1f m', self.areaToAvoid.length, self.areaToAvoid.width) or 'none'
-    courseplay.debugFormat(courseplay.DBG_PATHFINDER,
+    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
 		'Pathfinder constraints: off field penalty %.1f, max fruit percent: %d, field number %d, area to avoid %s',
         self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaText)
 end
@@ -458,16 +458,11 @@ end
 --- obstacle avoidance or forcing the search to remain in certain areas.
 ---@param node State3D
 function PathfinderConstraints:getNodePenalty(node)
-    -- tweak these two parameters to set up how far the path will be from the field or fruit boundary
-    -- size of the area to check for field/fruit
-    local areaSize = 4
-    -- minimum ratio of the area checked must be on field/clear of fruit
-    local minRequiredAreaRatio = 0.8
     local penalty = 0
-    local isField, area, totalArea = courseplay:isField(node.x, -node.y, areaSize, areaSize)
     -- not on any field
     local offFieldPenalty = self.offFieldPenalty
-    local offField = area / totalArea < minRequiredAreaRatio
+    print('hey')
+    local offField = not CpFieldUtil.isOnField(node.x, -node.y)
     if self.fieldNum ~= 0 and not offField then
         -- if there's a preferred field and we are on a field
         if not PathfinderUtil.isWorldPositionOwned(node.x, -node.y) then
@@ -482,8 +477,8 @@ function PathfinderConstraints:getNodePenalty(node)
         node.offField = true
     end
     --local fieldId = PathfinderUtil.getFieldIdAtWorldPosition(node.x, -node.y)
-    if isField then
-        local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, areaSize, areaSize)
+    if not offField then
+        local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4)
         if hasFruit and fruitValue > self.maxFruitPercent then
             penalty = penalty + fruitValue / 2
             self.fruitPenaltyNodeCount = self.fruitPenaltyNodeCount + 1
@@ -509,7 +504,7 @@ function PathfinderConstraints:isValidAnalyticSolutionNode(node, log)
     local analyticLimit = self.maxFruitPercent * 2
     if hasFruit and fruitValue > analyticLimit then
         if log then
-            courseplay.debugFormat(courseplay.DBG_PATHFINDER, 'isValidAnalyticSolutionNode: fruitValue %.1f, max %.1f @ %.1f, %.1f',
+            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'isValidAnalyticSolutionNode: fruitValue %.1f, max %.1f @ %.1f, %.1f',
                     fruitValue, analyticLimit, node.x, -node.y)
         end
         return false
@@ -522,7 +517,7 @@ end
 -- A helper node to calculate world coordinates
 local function ensureHelperNode()
 	if not PathfinderUtil.helperNode then
-		PathfinderUtil.helperNode = courseplay.createNode('pathfinderHelper', 0, 0, 0)
+		PathfinderUtil.helperNode = CpUtil.createNode('pathfinderHelper', 0, 0, 0)
 	end
 end
 
@@ -533,8 +528,7 @@ end
 ---@param offFieldValid boolean consider nodes well off the field valid even in strict mode
 function PathfinderConstraints:isValidNode(node, log, ignoreTrailer, offFieldValid)
 	if not offFieldValid and self.strictMode then
-		local isField, _, _ = courseplay:isField(node.x, -node.y, 15, 15)
-		if not isField then return false end
+		if not CpFieldUtil.isOnField(node.x, -node.y) then return false end
 	end
 	ensureHelperNode()
 	PathfinderUtil.setWorldPositionAndRotationOnTerrain(PathfinderUtil.helperNode,
@@ -576,22 +570,22 @@ end
 
 function PathfinderConstraints:relaxConstraints()
     self:showStatistics()
-    courseplay.debugFormat(courseplay.DBG_PATHFINDER, 'relaxing pathfinder constraints: allow driving through fruit')
+    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'relaxing pathfinder constraints: allow driving through fruit')
     self.maxFruitPercent = math.huge
     self:resetCounts()
 end
 
 function PathfinderConstraints:showStatistics()
-    courseplay.debugFormat(courseplay.DBG_PATHFINDER,
+    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
 		'Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, area to avoid: %d',
 		self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
 		self.areaToAvoidPenaltyCount)
-    courseplay.debugFormat(courseplay.DBG_PATHFINDER, '  max fruit %.1f %%, off-field penalty: %.1f',
+    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, '  max fruit %.1f %%, off-field penalty: %.1f',
             self.maxFruitPercent, self.offFieldPenalty)
 end
 
 function PathfinderConstraints:resetConstraints()
-    courseplay.debugFormat(courseplay.DBG_PATHFINDER, 'resetting pathfinder constraints: maximum fruit percent allowed is now %d',
+    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'resetting pathfinder constraints: maximum fruit percent allowed is now %d',
             self.initialMaxFruitPercent)
     self.maxFruitPercent = self.initialMaxFruitPercent
     self:resetCounts()
@@ -623,7 +617,7 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
 	local context = PathfinderUtil.Context(vehicle, vehiclesToIgnore, objectsToIgnore)
 
 	local constraints = PathfinderConstraints(context,
-            maxFruitPercent or (vehicle.cp.settings.useRealisticDriving:is(true) and 50 or math.huge),
+            maxFruitPercent or (vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and 50 or math.huge),
             offFieldPenalty or PathfinderUtil.defaultOffFieldPenalty,
             fieldNum, areaToAvoid)
 
@@ -716,7 +710,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local context = PathfinderUtil.Context(
             vehicle,
             vehiclesToIgnore)
-    local constraints = PathfinderConstraints(context, nil, vehicle.cp.settings.turnOnField:is(true) and 10 or nil, fieldNum)
+    local constraints = PathfinderConstraints(context, nil, vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) and 10 or nil, fieldNum)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -838,7 +832,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode
     local context = PathfinderUtil.Context(vehicle, vehiclesToIgnore)
 
     local constraints = PathfinderConstraints(context,
-            maxFruitPercent or (vehicle.cp.settings.useRealisticDriving:is(true) and 50 or math.huge),
+            maxFruitPercent or (vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and 50 or math.huge),
             PathfinderUtil.defaultOffFieldPenalty,
             fieldNum)
 
@@ -898,7 +892,7 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
 	local rightOk = isValidPath(constraints, path)
 	path = findPath(start, context.trailerHitchLength, 0, safeTurnRadius)
 	local straightOk = isValidPath(constraints, path)
-	courseplay.debugFormat(courseplay.DBG_PATHFINDER, 'Obstacle check: left ok: %s, right ok: %s, straight ok %s',
+	CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'Obstacle check: left ok: %s, right ok: %s, straight ok %s',
 		tostring(leftOk), tostring(rightOk), tostring(straightOk))
 	return leftOk, rightOk, straightOk
 end

@@ -26,6 +26,7 @@
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField"/>
 		<!--Avoid Fruit-->
 		<Setting classType="AIParameterBooleanSetting" name="avoidFruit"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">

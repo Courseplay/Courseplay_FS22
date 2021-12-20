@@ -79,6 +79,12 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     ---@type FillLevelManager
     self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
+    -- TODO_22 properly implement this in courseplaySpec
+    self.storage = vehicle.spec_courseplaySpec
+
+    -- for now, pathfinding generated courses can't be driven by towed tools
+    self.allowReversePathfinding = AIUtil.getFirstReversingImplementWithWheels(self.vehicle) == nil
+
     -- TODO: should probably be the closest waypoint to the target?
     local course = vehicle:getFieldWorkCourse()
     local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
@@ -88,6 +94,7 @@ end
 
 function AIDriveStrategyCourse:update()
     self.ppc:update()
+    self:updatePathfinding()
 end
 
 function AIDriveStrategyCourse:getDriveData(dt, vX, vY, vZ)
@@ -131,4 +138,69 @@ function AIDriveStrategyCourse:getFillLevelInfoText()
     -- TODO_22
     self:debug('getFillLevelInfoText')
     return 'getFillLevelInfoText'
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Pathfinding
+---------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:getAllowReversePathfinding()
+    return self.allowReversePathfinding -- TODO_22 and self.settings.allowReverseForPathfindingInTurns:is(true)
+end
+
+function AIDriveStrategyCourse:setPathfindingDoneCallback(object, func)
+    self.pathfindingDoneObject = object
+    self.pathfindingDoneCallbackFunc = func
+end
+
+function AIDriveStrategyCourse:updatePathfinding()
+    if self.pathfinder and self.pathfinder:isActive() then
+        local done, path = self.pathfinder:resume()
+        if done then
+            self.pathfindingDoneCallbackFunc(self.pathfindingDoneObject, path)
+        end
+    end
+end
+
+---@param course Course
+function AIDriveStrategyCourse:setUpAlignmentCourse(course, ix)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode(), 0, 0)
+    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    x, _, z = course:getWaypointPosition(ix)
+    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
+    local turnRadius = AIUtil.getTurningRadius(self.vehicle)
+
+    local solution
+    if self.allowReversePathfinding then
+        solution = PathfinderUtil.reedSheppSolver:solve(start, goal, turnRadius)
+    else
+        solution = PathfinderUtil.dubinsSolver:solve(start, goal, turnRadius)
+    end
+
+    local alignmentWaypoints = solution:getWaypoints(start, turnRadius)
+    if not alignmentWaypoints then
+        self:debug("Can't find an alignment course, may be too close to target wp?" )
+        return nil
+    end
+    if #alignmentWaypoints < 3 then
+        self:debug("Alignment course would be only %d waypoints, it isn't needed then.", #alignmentWaypoints )
+        return nil
+    end
+    self:debug('Alignment course with %d waypoints started.', #alignmentWaypoints)
+    return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(alignmentWaypoints), true)
+end
+
+
+------------------------------------------------------------------------------------------------------------------------
+--- Collision
+---------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:disableCollisionDetection()
+    if self.vehicle then
+        CourseplaySpec.disableCollisionDetection(self.vehicle)
+    end
+end
+
+function AIDriveStrategyCourse:enableCollisionDetection()
+    if self.vehicle then
+        CourseplaySpec.enableCollisionDetection(self.vehicle)
+    end
 end

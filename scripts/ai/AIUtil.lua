@@ -290,13 +290,13 @@ end
 --- when > 0 in front of the vehicle
 function AIUtil.getFirstAttachedImplement(vehicle)
 	-- by default, it is the vehicle's front
-	local maxDistance = vehicle.sizeLength / 2 + vehicle.lengthOffset
+	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
 	local firstImplement = vehicle
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
 			-- the distance from the vehicle's root node to the front of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
-				implement.object.sizeLength / 2 + implement.object.lengthOffset)
+				implement.object.size.length / 2 + implement.object.size.lengthOffset)
 			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
 			if d > maxDistance then
 				maxDistance = d
@@ -310,14 +310,14 @@ end
 ---@return table, number rearmost object and the distance between the back of that object and the root node of the object
 function AIUtil.getLastAttachedImplement(vehicle)
 	-- by default, it is the vehicle's back
-	local minDistance = vehicle.sizeLength / 2 - vehicle.lengthOffset
-	-- lengthOffset > 0 if the root node is towards the back of the vehicle, < 0 if it is towards the front
+	local minDistance = vehicle.size.length / 2 - vehicle.size.lengthOffset
+	-- size.lengthOffset > 0 if the root node is towards the back of the vehicle, < 0 if it is towards the front
 	local lastImplement = vehicle
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
 			-- the distance from the vehicle's root node to the back of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
-				- implement.object.sizeLength / 2 + implement.object.lengthOffset)
+				- implement.object.size.length / 2 + implement.object.size.lengthOffset)
 			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
 			if d < minDistance then
 				minDistance = d
@@ -482,10 +482,10 @@ end
 
 ---Gets the total length of the vehicle and all it's implements.
 function AIUtil.getVehicleAndImplementsTotalLength(vehicle)
-	local totalLength = vehicle.sizeLength
+	local totalLength = vehicle.size.length
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
-			totalLength = totalLength + implement.object.sizeLength
+			totalLength = totalLength + implement.object.size.length
 		end
 	end
 	return totalLength

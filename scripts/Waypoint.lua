@@ -285,6 +285,15 @@ function Course:setVehicle(vehicle)
 	self.vehicle = vehicle
 end
 
+function Course:setFieldPolygon(polygon)
+	self.fieldPolygon = polygon
+end
+
+-- The field polygon used to generate the course
+function Course:getFieldPolygon()
+	return self.fieldPolygon
+end
+
 function Course:getName()
 	return self.name
 end
@@ -639,8 +648,8 @@ end
 
 --- Gets the world directions of the waypoint.
 ---@param ix number
----@return dx x world direction 
----@return dz z world direction
+---@return number x world direction
+---@return number z world direction
 function Course:getWaypointWorldDirections(ix)
 	local wp = self.waypoints[math.min(#self.waypoints, ix)]
 	return wp.dx, wp.dz
@@ -1105,11 +1114,14 @@ end
 ---@param step number step (waypoint distance), must be negative if to < from
 ---@param reverse boolean is this a reverse course?
 function Course.createFromNode(vehicle, referenceNode, xOffset, from, to, step, reverse)
+	CpUtil.info('%.1f %.1f %.1f', from, to, step)
 	local waypoints = {}
 	local nPoints = math.floor(math.abs((from - to) / step)) + 1
 	local dBetweenPoints = (to - from) / nPoints
+	CpUtil.info('%.1f %.1f %.1f', nPoints, dBetweenPoints, step)
+	local dz = from
 	for i = 1, nPoints do
-		local x, _, z = localToWorld(referenceNode, xOffset, 0, i * dBetweenPoints)
+		local x, _, z = localToWorld(referenceNode, xOffset, 0, dz + i * dBetweenPoints)
 		table.insert(waypoints, {x = x, z = z, rev = reverse})
 	end
 	local course = Course(vehicle, waypoints, true)

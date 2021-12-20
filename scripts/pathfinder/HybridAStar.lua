@@ -65,6 +65,7 @@ end
 function PathfinderInterface:resume(...)
 	local ok, done, path, goalNodeInvalid = coroutine.resume(self.coroutine, self, ...)
 	if not ok or done then
+		if not ok then print(done) end
 		self.coroutine = nil
 		return true, path, goalNodeInvalid
 	end
@@ -73,7 +74,7 @@ end
 
 function PathfinderInterface:debug(...)
 	if CourseGenerator.isRunningInGame() then
-		courseplay.debugFormat(courseplay.DBG_PATHFINDER, ...)
+		CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, ...)
 	else
 		print(string.format( ...))
 		io.stdout:flush()
@@ -369,7 +370,7 @@ function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
 	self.deltaPosGoal = 2 * self.deltaPos
 	-- if the goal heading is within self.deltaThetaDeg degrees we consider it reached
 	self.deltaThetaGoal = math.rad(self.deltaThetaDeg)
-	self.maxDeltaTheta = courseplay.globalPathfinderSettings.maxDeltaAngleAtGoal:get()
+	self.maxDeltaTheta = g_Courseplay.globalSettings:getSettingValue('maxDeltaAngleAtGoal')
 	self.originalDeltaThetaGoal = self.deltaThetaGoal
 	-- the same two parameters are used to discretize the continuous state space
 	self.analyticSolverEnabled = true
@@ -382,7 +383,7 @@ function HybridAStar:getMotionPrimitives(turnRadius, allowReverse)
 end
 
 function HybridAStar:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
-	local analyticSolution, _ = self.analyticSolver:solve(start, goal, turnRadius, allowReverse)
+	local analyticSolution, _ = self.analyticSolver:solve(start, goal, turnRadius)
 	local analyticSolutionLength = analyticSolution:getLength(turnRadius)
 	local analyticPath = analyticSolution:getWaypoints(start, turnRadius)
 	-- making sure we continue with the correct trailer heading
@@ -414,7 +415,6 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 	-- create the configuration space
 	---@type HybridAStar.NodeList closedList
 	self.nodes = HybridAStar.NodeList(self.deltaPos, self.deltaThetaDeg)
-
 	if allowReverse then
 		self.analyticSolver = ReedsSheppSolver()
 	else
@@ -499,6 +499,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 					constraints:showStatistics()
 					return true, self.path
 				end
+
 				local existingSuccNode = self.nodes:get(succ)
 				if not existingSuccNode or (existingSuccNode and not existingSuccNode:isClosed()) then
 					-- ignore invalidity of a node in the first few iterations: this is due to the fact that sometimes
@@ -508,7 +509,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 						succ:updateG(primitive, constraints:getNodePenalty(succ))
 						local analyticSolutionCost = 0
 						if self.analyticSolverEnabled then
-							local analyticSolution = self.analyticSolver:solve(succ, goal, turnRadius, allowReverse)
+							local analyticSolution = self.analyticSolver:solve(succ, goal, turnRadius)
 							analyticSolutionCost = analyticSolution:getLength(turnRadius)
 							succ:updateH(goal, analyticSolutionCost)
 						else
@@ -531,7 +532,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 								-- add to open list
 								succ:insert(openList)
 							else
-								--self:debug('insert existing node back %s (iteration %d), diff %s', tostring(succ), self.iterations, tostring(succ:getCost() - existingSuccNode:getCost()))
+							--self:debug('insert existing node back %s (iteration %d), diff %s', tostring(succ), self.iterations, tostring(succ:getCost() - existingSuccNode:getCost()))
 							end
 						else
 							-- successor cell does not yet exist
@@ -561,7 +562,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 		-- accurately find the trailer)
 		if not self.mustBeAccurate then
 			self.deltaThetaGoal = math.min(self.maxDeltaTheta,
-					self.originalDeltaThetaGoal + courseplay.globalPathfinderSettings.deltaAngleRelaxFactor:get() * r)
+					self.originalDeltaThetaGoal + g_Courseplay.globalSettings:getSettingValue('deltaAngleRelaxFactor') * r)
 		end
 	end
 	--self:printOpenList(openList)
@@ -725,6 +726,8 @@ end
 function HybridAStarWithAStarInTheMiddle:resume(...)
 	local ok, done, path, goalNodeInvalid = coroutine.resume(self.coroutine, self.currentPathfinder, ...)
 	if not ok then
+		print(done)
+		printCallstack()
 		self.coroutine = nil
 		return true, nil, goalNodeInvalid
 	end

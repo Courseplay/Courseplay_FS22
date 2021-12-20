@@ -87,6 +87,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	--removeRidgeMarkersFromLastTrack(field.course,
 	--	vehicle.cp.courseGeneratorSettings.startOnHeadland:is(CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS))
 	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, 1)
+	course:setFieldPolygon(fieldPolygon)
 	return status, ok, course
 end
 

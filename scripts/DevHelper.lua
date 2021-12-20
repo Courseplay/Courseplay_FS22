@@ -158,8 +158,8 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
         self:debug('Finding contour of current field')
         local points = g_fieldScanner:findContour(self.data.x, self.data.z)
-        local fieldId = FieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
-        FieldUtil.saveField(fieldId, points)
+        local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
+        CpFieldUtil.saveField(fieldId, points)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
         self:debug('Generate course')
         local status, ok, course = CourseGeneratorInterface.generate(g_fieldScanner:findContour(self.data.x, self.data.z),

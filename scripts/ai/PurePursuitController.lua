@@ -196,6 +196,12 @@ function PurePursuitController:getCurrentWaypointIx()
 	return self.currentWpNode.ix
 end
 
+--- Get the current waypoint object
+---@return Waypoint
+function PurePursuitController:getCurrentWaypoint()
+	return self.course:getWaypoint(self.currentWpNode.ix)
+end
+
 --- get index of relevant waypoint (one we are close to)
 function PurePursuitController:getRelevantWaypointIx()
 	return self.relevantWpNode.ix
