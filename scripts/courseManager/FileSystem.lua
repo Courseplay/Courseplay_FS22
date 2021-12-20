@@ -559,6 +559,9 @@ function DirectoryView:getSubEntryByIndex(parentIx,childIx)
 end
 
 function DirectoryView:getNumberOfEntriesForIndex(ix)
+	if not self:areEntriesVisible() then 
+		return 0
+	end
 	local entries = self:getEntries()
 	if entries and entries[ix] and entries[ix]:isDirectory() then
 		return #(entries[ix]:getEntries())
@@ -580,7 +583,11 @@ function DirectoryView:isDeleteAllowed()
 end
 
 function DirectoryView:hasAccess()
-	return self.level >= 2
+	return self.level > 2
+end
+
+function DirectoryView:areEntriesVisible()
+	return self.level >=1
 end
 
 function DirectoryView:addDirectory(name)
@@ -591,7 +598,9 @@ function DirectoryView:addFile(name)
 	return self.directory:addFile(name)
 end
 
-
+function DirectoryView:canOpen()
+	return self.level <2
+end
 
 --- File system to handle multiple files/directions.
 ---@class FileSystem 
@@ -636,17 +645,16 @@ end
 --- Makes sure the current directory view is valid, for deleting/renaming/moving.
 ---@param entryView FileSystemEntityView
 function FileSystem:validate(entryView)
-	if self.currentDirectoryView == entryView or self.currentDirectoryView == entryView:getParent() then 
-		self:iterateBackwards()
-	end
+--	if self.currentDirectoryView == entryView or self.currentDirectoryView == entryView:getParent() then 
+--		self:iterateBackwards()
+--	end
 end
 
 --- Opens a directory and changes the view.
 ---@param entryView DirectoryView
 function FileSystem:iterateForwards(entryView)
 	if entryView:isDirectory() then
-		local subEntries = entryView:getEntries()
-		if next(subEntries) ~=nil then
+		if entryView:canOpen() then
 			if entryView ~= self.rootDirectoryView then
 				self.currentDirectoryView = entryView	
 			end
@@ -681,6 +689,10 @@ end
 ---@return FileSystemEntityView
 function FileSystem:getSubEntryByIndex(parentIx,childIx)
 	return self.currentDirectoryView:getSubEntryByIndex(parentIx,childIx)
+end
+
+function FileSystem:createDirectory(name)
+	return self.currentDirectoryView:addDirectory(name)
 end
 
 

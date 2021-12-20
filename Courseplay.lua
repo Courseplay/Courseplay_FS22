@@ -41,6 +41,11 @@ function Courseplay:setupGui()
 	CpCourseManagerFrame.init(self.courseStorage)
 end
 
+function Courseplay:loadMapDataHelpLineManager(xmlFile, missionInfo)
+	self:loadFromXML(Utils.getFilename("config/HelpMenu.xml",Courseplay.BASE_DIRECTORY))
+end
+HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapData,Courseplay.loadMapDataHelpLineManager)
+
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
 		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", "Courseplay", g_Courseplay.schema)
@@ -94,6 +99,7 @@ function Courseplay:load()
 	self.courseDir = self.baseDir .. "Courses"
 	createFolder(self.courseDir) 
 	self.courseStorage = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
+	g_courseManger = self.courseStorage
 	g_courseDisplay = CourseDisplay()
 end
 

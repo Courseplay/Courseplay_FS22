@@ -28,11 +28,14 @@ CpCourseManagerFrame.translations = {
 	["entryExistAlreadyError"] = "CP_courseManager_entryExistAlreadyError",
 	["noAccessError"] = "CP_courseManager_noAccessError",
 	["targetIsNoFolder"] = "CP_courseManager_targetIsNoFolderError",
-	["targetIsNoCourse"] = "CP_courseManager_targetIsNoCourseError"
+	["targetIsNoCourse"] = "CP_courseManager_targetIsNoCourseError",
+
+	["basicSettings"] = "CP_courseManager_basicSettings",
+	["advancedSettings"] = "CP_courseManager_advancedSettings",
 }
 
 CpCourseManagerFrame.minMode = 1
-CpCourseManagerFrame.maxMode = 4
+CpCourseManagerFrame.maxMode = 2
 
 CpCourseManagerFrame.actionStates = {
 	disabled = 0,
@@ -79,6 +82,7 @@ function CpCourseManagerFrame:initialize()
 	local inGameMenu = g_gui.screenControllers[InGameMenu]
 	self.rightLayout = self.priceList
 	self.leftLayout = self.productList
+	
 	--- Changes titles
 	self.pageTitle = CpGuiUtil.getFirstElementWithProfileName(self,"ingameMenuFrameHeaderText") 
 	local elements = CpGuiUtil.getElementsWithProfileName(self,"ingameCalendarHeaderBox")
@@ -87,10 +91,21 @@ function CpCourseManagerFrame:initialize()
 	self.leftLayoutTitle:setText("")
 	self.leftLayoutTitle.textUpperCase = false
 	elements[1].elements[2]:delete()
-	self.rightLayoutTitle = elements[2].elements[1]
-	self.rightLayoutTitle:setText("")
+	local rightLayoutTitle = elements[2].elements[1]
+	self.rightToggleBtn = ButtonElement.new(self)
+	TextElement.copyAttributes(self.rightToggleBtn,rightLayoutTitle)
+	rightLayoutTitle.parent:addElement(self.rightToggleBtn)
+	rightLayoutTitle.parent:invalidateLayout()
+	self.rightToggleBtn.target = self
+	self.rightToggleBtn.onClickCallback = function(self) 
+												CpCourseManagerFrame.onClickChangeMode(self) 
+												self:updateMenuButtons()
+											end 
+	self.rightToggleBtn:setVisible(true)
+	self.rightToggleBtn.textUpperCase = false
 	elements[2].elements[2]:delete()
 	elements[2].elements[2]:delete()
+	rightLayoutTitle:delete()
 	--- Deletes unused layout.
 	self:getDescendantById("fluctuationsColumn"):delete()
 	self.noSellpointsText:delete()
@@ -105,6 +120,7 @@ function CpCourseManagerFrame:initialize()
 			self:updateMenuButtons()
 		end
 	}
+
 	self.modes = {
 		{
 			--- Loads the current course
@@ -129,19 +145,6 @@ function CpCourseManagerFrame:initialize()
 				end,
 				callbackDisabled = CpCourseManagerFrame.clearCurrentCourseDisabled
 			},
-		},
-		{
-			--- Creates a new directory
-			{
-				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.createDirectory),
-				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.createDirectory
-					self:updateMenuButtons()
-				end,
-				callbackDisabled = CpCourseManagerFrame.createDirectoryDisabled,
-			},
 			--- Saves the current courses.
 			{
 				profile = "buttonActivate",
@@ -152,6 +155,20 @@ function CpCourseManagerFrame:initialize()
 					self:updateMenuButtons()
 				end,
 				callbackDisabled = CpCourseManagerFrame.saveCourseDisabled,
+			},
+			--- Creates a new directory
+			{
+				profile = "buttonActivate",
+				inputAction = InputAction.MENU_ACTIVATE,
+				text = g_i18n:getText(CpCourseManagerFrame.translations.createDirectory),
+				callback = function ()
+					CpCourseManagerFrame.showInputTextDialog(
+					self,CpCourseManagerFrame.translations.folderDialogTitle,
+						CpCourseManagerFrame.onClickCreateDirectoryDialog)
+				--	self.actionState = CpCourseManagerFrame.actionStates.createDirectory
+					self:updateMenuButtons()
+				end,
+				callbackDisabled = CpCourseManagerFrame.createDirectoryDisabled,
 			},
 		},
 		{
@@ -167,18 +184,16 @@ function CpCourseManagerFrame:initialize()
 				callbackDisabled = CpCourseManagerFrame.moveEntryDisabled
 			},
 			--- Copy an entry
-			{
-				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.copyEntry),
-				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.copyEntrySelect
-					self:updateMenuButtons()
-				end,
-				callbackDisabled = CpCourseManagerFrame.copyEntryDisabled
-			},
-		},
-		{
+--			{
+--				profile = "buttonActivate",
+--				inputAction = InputAction.MENU_ACTIVATE,
+--				text = g_i18n:getText(CpCourseManagerFrame.translations.copyEntry),
+--				callback = function ()
+--					self.actionState = CpCourseManagerFrame.actionStates.copyEntrySelect
+--					self:updateMenuButtons()
+--				end,
+--				callbackDisabled = CpCourseManagerFrame.copyEntryDisabled
+--			},
 			--- Delete
 			{
 				profile = "buttonActivate",
@@ -306,6 +321,7 @@ function CpCourseManagerFrame:populateCellForItemInSection(list, section, index,
 
 		cell.target = self
 		cell:setCallback("onClickCallback", "onClickRightItem")
+		
 	end
 end
 
@@ -459,14 +475,16 @@ function CpCourseManagerFrame:updateMenuButtons()
 	if self.courseStorage:getCanIterateBackwards() then
 		self.menuButtonInfo[1].callback = function () self:onClickIterateBack() end
 	end
-	table.insert(self.menuButtonInfo,self.modeButton)
-	table.insert(self.menuButtonInfo,self.clearCurrentCourseButton)
+--	table.insert(self.menuButtonInfo,self.modeButton)
 	for i,data in pairs(self.modes[self.curMode]) do 
 		if data.callbackDisabled == nil or not data.callbackDisabled(self) then
 			table.insert(self.menuButtonInfo,data)
 		end
 	end	
 	self:setMenuButtonInfoDirty()
+	local text = self.curMode == CpCourseManagerFrame.minMode and g_i18n:getText(CpCourseManagerFrame.translations.basicSettings)
+					or  g_i18n:getText(CpCourseManagerFrame.translations.advancedSettings)
+	self.rightToggleBtn:setText(text)
 end
 
 ---------------------------------------------------
@@ -520,7 +538,7 @@ end
 function CpCourseManagerFrame:onClickCreateDirectoryDialog(text,clickOk,viewEntry)
 	if clickOk then 
 		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickCreateDirectoryDialog - > %s",text)
-		local wasAdded = viewEntry:addDirectory(text)
+		local wasAdded = self.courseStorage:createDirectory(text)
 		if not wasAdded then 
 			CpCourseManagerFrame.showInfoDialog(
 				CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
@@ -559,7 +577,6 @@ end
 
 
 function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
-	local name = viewEntry.getName and viewEntry:getName() or viewEntry[1] and viewEntry[1]:getName()
 	g_gui:showTextInputDialog({
 		disableFilter = true,
 		callback = function (self,text,clickOk,viewEntry)
@@ -568,7 +585,7 @@ function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
 		end,
 		target = self,
 		defaultText = "",
-		dialogPrompt = string.format(g_i18n:getText(title),name),
+		dialogPrompt = string.format(g_i18n:getText(title),viewEntry and viewEntry:getName()),
 		imePrompt = g_i18n:getText(title),
 		confirmText = g_i18n:getText("button_ok"),
 		args = viewEntry
@@ -602,29 +619,29 @@ function CpCourseManagerFrame:clearCurrentCourseDisabled()
 end
 
 function CpCourseManagerFrame:loadCourseDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:saveCourseDisabled()
-	return not self.currentVehicle:hasCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return not self.currentVehicle:hasCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:createDirectoryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:moveEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:copyEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:deleteEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:renameEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
