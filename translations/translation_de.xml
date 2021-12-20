@@ -169,8 +169,8 @@
 		<text name="CP_global_setting_title"															text="Global-settings"/>
 		<text name="CP_global_setting_subTitle_basic"													text="Basic settings."/>
 
-		<text name="CP_global_setting_showAllActiveCourses_title" 										text="Show all active courses"/>
-		<text name="CP_global_setting_showAllActiveCourses_tooltip" 									text="Show all active courses in the in game map and in game."/>
+		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Show all active courses"/>
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Show all active courses in the in game map and in game."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="CourseManger(current course: %s)"/>

@@ -7,7 +7,7 @@
 
 <Settings prefixText="CP_global_setting_">
 	<SettingSubTitle prefix="true" title="basic">
-		<Setting classType="AIParameterBooleanSetting" name="showAllActiveCourses">
+		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses">
 		</Setting>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="pathfinder">

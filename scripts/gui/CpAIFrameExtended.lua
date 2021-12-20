@@ -186,10 +186,10 @@ end
 InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onStartGoToJob,CpInGameMenuAIFrameExtended.onStartGoToJob)
 
 function CpInGameMenuAIFrameExtended:draw()	
-	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.showAllActiveCourses)
+	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.showsAllActiveCourses)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if CoursePlotAlwaysVisible then
-		local vehicles = CpCourseManger.getValidVehicles()
+		local vehicles = CpCourseManager.getValidVehicles()
 		for v,_ in pairs(vehicles) do 
 			v:drawCoursePlot(self.ingameMapBase)
 		end

@@ -202,8 +202,8 @@
 		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 							text="Delta angle relax factor"/>
 		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 						text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
 
-		<text name="CP_global_setting_showAllActiveCourses_title" 										text="Show all active courses"/>
-		<text name="CP_global_setting_showAllActiveCourses_tooltip" 									text="Show all active courses in the in game map and in game."/>
+		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Shows all active courses"/>
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Shows all active courses on the in game map."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="CourseManger(current course: %s)"/>
