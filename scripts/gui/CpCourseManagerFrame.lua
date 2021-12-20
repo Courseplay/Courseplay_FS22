@@ -262,16 +262,33 @@ function CpCourseManagerFrame:getNumberOfItemsInSection(list, section)
 		return g_courseManager:getNumberOfEntriesForIndex(ix) or 0
 	end
 end
+---leftX, bottomY, rightX, topY = unpack(UVs);
+function CpCourseManagerFrame.setFolderIcon(element)
+	element.iconImageSize = {32,32}
+	element:setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
+	element:setImageUVs(nil,unpack(GuiUtils.getUVs({0,220,32,32},{256,512})))
+	element:setImageColor(nil,0, 0, 0, 0.5)
+end
+---112,144, 144,112
+---40,108,  72,76
+function CpCourseManagerFrame.setCourseIcon(element)
+	element.iconImageSize = {32,32}
+	element:setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
+	element:setImageUVs(nil,unpack(GuiUtils.getUVs({40,76,32,32},{256,512})))
+	element:setImageColor(nil,0, 0, 0, 0.5)
+end
+
 
 function CpCourseManagerFrame:populateCellForItemInSection(list, section, index, cell)
 	if list == self.leftLayout then
 		local entry =  g_courseManager:getEntryByIndex(index)
 		cell.viewEntry = entry
-		cell:getAttribute("icon").iconImageSize = {32,32}
-		cell:getAttribute("icon"):setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
-		cell:getAttribute("icon"):setImageUVs(nil,unpack(GuiUtils.getUVs({0,220,32,32},{256,512})))
-		cell:getAttribute("icon"):setImageColor(nil,0, 0, 0, 0.5)
-		cell:getAttribute("icon"):setVisible(entry:isDirectory())
+		if entry:isDirectory() then
+			CpCourseManagerFrame.setFolderIcon(cell:getAttribute("icon"))
+		else 
+			CpCourseManagerFrame.setCourseIcon(cell:getAttribute("icon"))
+		end
+		cell:getAttribute("icon"):setVisible(true)
 		cell:getAttribute("title"):setText(entry and entry:getName() or "unknown: "..index)
 		cell.target = self
 		cell:setCallback("onClickCallback", "onClickLeftItem")
@@ -280,7 +297,12 @@ function CpCourseManagerFrame:populateCellForItemInSection(list, section, index,
 		local ix = self.leftLayout:getSelectedIndexInSection()
 		local entry = g_courseManager:getSubEntryByIndex(ix,index)
 		cell.viewEntry = entry
-		cell:getAttribute("hotspot"):setVisible(false)
+		if entry:isDirectory() then
+			CpCourseManagerFrame.setFolderIcon(cell:getAttribute("hotspot"))
+		else 
+			CpCourseManagerFrame.setCourseIcon(cell:getAttribute("hotspot"))
+		end
+		cell:getAttribute("hotspot"):setVisible(true)
 
 		cell:getAttribute("title"):setText(entry and entry:getName() or "unknown: "..index)
 
