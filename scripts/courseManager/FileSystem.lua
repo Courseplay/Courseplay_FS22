@@ -602,6 +602,10 @@ function DirectoryView:canOpen()
 	return self.level <2
 end
 
+function DirectoryView:getEntryByName(name)
+
+end
+
 --- File system to handle multiple files/directions.
 ---@class FileSystem 
 FileSystem = CpObject()
@@ -613,6 +617,10 @@ function FileSystem:init(baseDir,name)
 	self.rootDirectoryView:addDirectory("Singleplayer")
 	self:refresh()
 	self.currentDirectoryView = self.rootDirectoryView
+	if not g_currentMission.missionDynamicInfo.isMultiplayer then 
+		local entries = self.currentDirectoryView:getEntries()
+		self.currentDirectoryView = entries[1]
+	end
 end
 
 --- Refresh everything from disk
@@ -632,6 +640,10 @@ end
 --- Is moving backwards in the current file system tree allowed ?
 ---@return boolean
 function FileSystem:getCanIterateBackwards()
+	if not g_currentMission.missionDynamicInfo.isMultiplayer then 
+		return false
+	end
+
 	return self.currentDirectoryView ~= self.rootDirectoryView
 end
 
