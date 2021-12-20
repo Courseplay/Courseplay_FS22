@@ -137,7 +137,7 @@ function CpCourseManagerFrame:initialize()
 			---  Clears the current course
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
+				inputAction = InputAction.MENU_CANCEL,
 				text = g_i18n:getText(CpCourseManagerFrame.translations.clearCurrentCourse),
 				callback = function ()
 					CpCourseManagerFrame.onClickClearCurrentCourse(self)
@@ -148,7 +148,7 @@ function CpCourseManagerFrame:initialize()
 			--- Saves the current courses.
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
+				inputAction = InputAction.MENU_EXTRA_1,
 				text = g_i18n:getText(CpCourseManagerFrame.translations.saveCourse),
 				callback = function ()
 					self.actionState = CpCourseManagerFrame.actionStates.saveCourse
@@ -159,7 +159,7 @@ function CpCourseManagerFrame:initialize()
 			--- Creates a new directory
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
+				inputAction = InputAction.MENU_EXTRA_2,
 				text = g_i18n:getText(CpCourseManagerFrame.translations.createDirectory),
 				callback = function ()
 					CpCourseManagerFrame.showInputTextDialog(
@@ -197,7 +197,7 @@ function CpCourseManagerFrame:initialize()
 			--- Delete
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
+				inputAction = InputAction.MENU_EXTRA_1,
 				text = g_i18n:getText(CpCourseManagerFrame.translations.deleteEntry),
 				callback = function ()
 					self.actionState = CpCourseManagerFrame.actionStates.deleteEntry
@@ -208,7 +208,7 @@ function CpCourseManagerFrame:initialize()
 			--- Rename
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
+				inputAction = InputAction.MENU_EXTRA_2,
 				text = g_i18n:getText(CpCourseManagerFrame.translations.renameEntry),
 				callback = function ()
 					self.actionState = CpCourseManagerFrame.actionStates.renameEntry
