@@ -189,7 +189,7 @@ function CpInGameMenuAIFrameExtended:draw()
 	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.showAllActiveCourses)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if CoursePlotAlwaysVisible then
-		local vehicles = CpCourseControl.getValidVehicles()
+		local vehicles = CpCourseManger.getValidVehicles()
 		for v,_ in pairs(vehicles) do 
 			v:drawCoursePlot(self.ingameMapBase)
 		end

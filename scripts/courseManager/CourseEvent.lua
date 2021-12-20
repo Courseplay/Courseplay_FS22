@@ -40,10 +40,10 @@ function CourseEvent:run(connection)
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"run course event")
 	if #self.courses > 0 then
 		for _, course in ipairs(self.courses) do
-			g_courseManager:assignCourseToVehicle(self.vehicle, course)
+			g_courseStorage:assignCourseToVehicle(self.vehicle, course)
 		end
 	else
-		g_courseManager:unloadAllCoursesFromVehicle(self.vehicle)
+		g_courseStorage:unloadAllCoursesFromVehicle(self.vehicle)
 	end
 	if not connection:getIsServer() then
 		-- event was received from a client, so we, the server broadcast it to all other clients now

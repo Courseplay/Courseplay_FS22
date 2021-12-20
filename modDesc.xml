@@ -91,7 +91,7 @@ Die nächste Version von Courseplay.]]>
         <specialization name="courseplaySpec" className="CourseplaySpec" filename="scripts/specializations/CourseplaySpec.lua" />
 		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
-		<specialization name="cpCourseControl" className="CpCourseControl" filename="scripts/specializations/CourseControl.lua"/>
+		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
 	</specializations>
 
 	<inputBinding>

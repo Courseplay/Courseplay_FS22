@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 --[[
-
-
+	Generic file system to store xml files and folders, similar to the windows file explorer.
+	
 ]]--
 
 --- An entity (file or directory) in the file system
@@ -69,7 +69,9 @@ end
 
 ---@class File : FileSystemEntity
 File = CpObject(FileSystemEntity)
-
+---@param parentPath string
+---@param parent Directory
+---@param name string
 function File:init(parentPath,name,parent)
 	FileSystemEntity.init(self,parentPath,name,parent)
 end
@@ -83,6 +85,16 @@ function File:delete()
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'deleted file %s', self:getFullPath())
 end
 
+--- Saves the xml file.
+--- This function acts as an wrapper for saving the xml file.
+--- All the values are saved in the lambda function.
+---@param xmlRootName string xml root element name
+---@param xmlSchema XMLSchema 
+---@param xmlBaseKey string 
+---@param lambda function
+---@param class table
+---@return boolean
+---@return any
 function File:save(xmlRootName,xmlSchema,xmlBaseKey,lambda,class,...)
 	local xmlFile = XMLFile.create("tempXmlFile",self.fullPath,xmlRootName,xmlSchema)
 	if xmlFile ~= nil then
@@ -95,9 +107,19 @@ function File:save(xmlRootName,xmlSchema,xmlBaseKey,lambda,class,...)
 		xmlFile:delete()
 		return true
 	end
-	return false,"couldn't create xml file: " .. self.fullPath
+	CpUtil.debugFormat(CpDebug.DBG_COURSES,"couldn't create xml file: %s",self.fullPath)
+	return false
 end
 
+--- Loads the xml file.
+--- This function acts as an wrapper for loading the xml file.
+--- All the values are loaded in the lambda function.
+---@param xmlSchema XMLSchema
+---@param xmlBaseKey string
+---@param lambda function
+---@param class table
+---@param ... any
+---@return boolean
 function File:load(xmlSchema,xmlBaseKey,lambda,class,...)
 	local xmlFile = XMLFile.load("tempXmlFile",self.fullPath,xmlSchema)
 	if xmlFile ~= nil then
@@ -109,17 +131,32 @@ function File:load(xmlSchema,xmlBaseKey,lambda,class,...)
 		xmlFile:delete()
 		return true
 	end
-	return false,"couldn't load xml file: " .. self.fullPath
+	CpUtil.debugFormat(CpDebug.DBG_COURSES,"couldn't load xml file: %s",self.fullPath)
+	return false
 end
 
 function File:clone()
 	return File(self.parentPath,self.parent,self.name)
 end
 
+--- Copies a file to a new directory.
+---@param newParent Directory
+---@param overwrite boolean is overwriting of existing files allowed ?
+---@return boolean
 function File:copy(newParent,overwrite)
-	return copyFile(self.fullPath,newParent:getFullPath() .. "/" .. self.name,overwrite or false)
+	if not newParent.entries[self.name] then
+		copyFile(self.fullPath,newParent:getFullPath() .. "/" .. self.name,overwrite or false)
+		return true
+	end
+	return false
 end
 
+--- Moves a file to a new directory.
+--- This is done by coping it to the new directory 
+--- and then deleting the original file.
+---@param newParent Directory
+---@param overwrite boolean is overwriting of existing files allowed ?
+---@return boolean
 function File:move(newParent,overwrite)
 	local wasMoved = self:copy(newParent,overwrite)
 	if wasMoved then	
@@ -128,12 +165,19 @@ function File:move(newParent,overwrite)
 	return wasMoved
 end
 
+--- Renames a file.
+--- This is done by coping it under the new name in the same directory 
+--- and then deleting the original file.
+---@param newName string
+---@param overwrite boolean is overwriting of existing files allowed ?
+---@return boolean
 function File:rename(newName,overwrite)
-	local wasRenamed = self:copy(self.parentPath .. "/" .. newName,overwrite)
-	if wasRenamed then
+	if not self.parent:hasEntry(newName) then
+		copyFile(self.fullPath,self.parent:getFullPath() .. "/" .. newName,overwrite or false)
 		self:delete()
-	end 
-	return wasRenamed
+		return true
+	end
+	return false
 end
 
 
@@ -179,6 +223,9 @@ function Directory:getFiles()
 	return self:getEntries(false, true)
 end
 
+function Directory:hasEntry(name)
+	return self.entries[name] ~=nil	
+end
 
 --- Refresh from disk
 function Directory:refresh()
@@ -195,6 +242,9 @@ function Directory:refresh()
 	end
 end
 
+--- FileSystemEntity found in the directory.
+---@param name string
+---@param isDirectory boolean
 function Directory:fileCallback(name, isDirectory)
 	if isDirectory then
 		if self.entries[name] then
@@ -221,6 +271,8 @@ function Directory:deleteFile(name)
 	end
 end
 
+---@param forceDelete boolean If it's true, then all sub entities will also be deleted.
+---@return boolean
 function Directory:delete(forceDelete)
 	self:refresh()
 	if forceDelete then 
@@ -243,6 +295,9 @@ function Directory:isEmpty()
 	return next(self.entries) == nil
 end
 
+--- Adds a sub directory with a given name.
+---@param name string
+---@return boolean
 function Directory:addDirectory(name)
 	self:refresh()
 	if not self.entries[name] then
@@ -252,6 +307,9 @@ function Directory:addDirectory(name)
 	return false
 end
 
+--- Adds a new file with a given name.
+---@param name string
+---@return boolean
 function Directory:addFile(name)
 	self:refresh()
 	if not self.entries[name] then
@@ -279,6 +337,10 @@ function Directory:clone()
 	return clonedDir	
 end
 
+--- Copies the directory and it's sub entities recursively.
+---@param newParent Directory
+---@param overwrite boolean is overwriting of existing files allowed ?
+---@return boolean
 function Directory:copy(newParent,overwrite)
 	newParent:refresh()
 	CpUtil.debugFormat(CpDebug.DBG_COURSES,"Attempt to copy(%s) to %s",self.name,newParent:getFullPath())
@@ -295,6 +357,12 @@ function Directory:copy(newParent,overwrite)
 	return true
 end
 
+--- Moves the directory and it's sub entries to a new directory recursively.
+--- This is done by coping it and it's sub entries to the new directory recursively
+--- and then deleting the original entries recursively.
+---@param newParent Directory
+---@param overwrite boolean is overwriting of existing files allowed ?
+---@return boolean
 function Directory:move(newParent,overwrite)
 	newParent:refresh()
 	local canBeMoved = self:copy(newParent,overwrite)
@@ -304,6 +372,12 @@ function Directory:move(newParent,overwrite)
 	return canBeMoved
 end
 
+--- Renames a directory.
+--- This is done by coping it under the new name in the same directory recursively with all it's sub entries 
+--- and then deleting the original entries recursively.
+---@param newName string
+---@param overwrite boolean is overwriting of existing files allowed ?
+---@return boolean
 function Directory:rename(newName,overwrite)
 	self:refresh()
 	if self.entries[newName] then
@@ -428,12 +502,9 @@ function DirectoryView:refresh()
 			table.insert(self.fileViews, FileView(entry,self, self.level + 1))
 		end
 	end
-	local function sort(a,b)
-		return a.name < b.name
-	end
 
-	table.sort(self.directoryViews,sort)
-	table.sort(self.fileViews,sort)
+	table.sort(self.directoryViews)
+	table.sort(self.fileViews)
 end
 
 function DirectoryView:__tostring()
@@ -489,7 +560,10 @@ end
 
 function DirectoryView:getNumberOfEntriesForIndex(ix)
 	local entries = self:getEntries()
-	return entries[ix] and #(entries[ix]:getEntries()) or 0
+	if entries and entries[ix] and entries[ix]:isDirectory() then
+		return #(entries[ix]:getEntries())
+	end
+	return 0
 end
 
 function DirectoryView:getNumberOfEntries()
@@ -538,51 +612,73 @@ function FileSystem:refresh()
 	self.rootDirectoryView:refresh()
 end
 
+--- Gets the shorted file path of the current selected directory
+--- with the parent directory name and the current name. 
+---@return string
 function FileSystem:getCurrentDirectoryViewPath()
 	local parentName = self.currentDirectoryView:getParent() and "../"..self.currentDirectoryView:getParent():getName() or ".."
 	return string.format("%s/%s/",parentName,self.currentDirectoryView:getName())
 end
 
+--- Is moving backwards in the current file system tree allowed ?
+---@return boolean
 function FileSystem:getCanIterateBackwards()
 	return self.currentDirectoryView ~= self.rootDirectoryView
 end
 
+--- Moves to the parent element of the current directory.
 function FileSystem:iterateBackwards()
 	if self:getCanIterateBackwards() then 
 		self.currentDirectoryView = self.currentDirectoryView:getParent()
 	end
 end
 
+--- Makes sure the current directory view is valid, for deleting/renaming/moving.
+---@param entryView FileSystemEntityView
 function FileSystem:validate(entryView)
 	if self.currentDirectoryView == entryView or self.currentDirectoryView == entryView:getParent() then 
 		self:iterateBackwards()
 	end
 end
 
-function FileSystem:iterateForwards(entry)
-	if entry:isDirectory() then
-		local subEntries = entry:getEntries()
+--- Opens a directory and changes the view.
+---@param entryView DirectoryView
+function FileSystem:iterateForwards(entryView)
+	if entryView:isDirectory() then
+		local subEntries = entryView:getEntries()
 		if next(subEntries) ~=nil then
-			if entry ~= self.rootDirectoryView then
-				self.currentDirectoryView = entry	
+			if entryView ~= self.rootDirectoryView then
+				self.currentDirectoryView = entryView	
 			end
 			self:refresh()
 		end
 	end
 end
 
+--- Gets the number of entries for the current selected directory.
+---@return number
 function FileSystem:getNumberOfEntries()
 	return self.currentDirectoryView:getNumberOfEntries()
 end
 
+--- Gets the number of entries for a sub directory of the current selected directory.
+---@param ix number
+---@return number
 function FileSystem:getNumberOfEntriesForIndex(ix)
 	return self.currentDirectoryView:getNumberOfEntriesForIndex(ix)
 end
 
+--- Gets a sub entry of the current selected directory.
+---@param ix number
+---@return FileSystemEntityView
 function FileSystem:getEntryByIndex(ix)
 	return self.currentDirectoryView:getEntryByIndex(ix)
 end
 
+--- Gets a sub entry of a sub directory of the current selected directory.
+---@param parentIx number
+---@param childIx number
+---@return FileSystemEntityView
 function FileSystem:getSubEntryByIndex(parentIx,childIx)
 	return self.currentDirectoryView:getSubEntryByIndex(parentIx,childIx)
 end

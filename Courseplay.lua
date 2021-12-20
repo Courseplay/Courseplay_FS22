@@ -38,7 +38,7 @@ end
 function Courseplay:setupGui()
 	CpVehicleSettingsFrame.init()
 	CpGlobalSettingsFrame.init()
-	CpCourseManagerFrame.init()
+	CpCourseManagerFrame.init(self.courseStorage)
 end
 
 function Courseplay.saveToXMLFile(missionInfo)
@@ -93,7 +93,7 @@ function Courseplay:load()
 
 	self.courseDir = self.baseDir .. "Courses"
 	createFolder(self.courseDir) 
-	g_courseManager = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
+	self.courseStorage = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
 	g_courseDisplay = CourseDisplay()
 end
 
@@ -226,8 +226,8 @@ function Courseplay.register(typeManager)
 		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
 		end
-		if CpCourseControl.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseControl")	
+		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
     end
 end
