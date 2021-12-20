@@ -91,7 +91,9 @@ function Courseplay:load()
 	--- Default path to save prints without an explicit name.
 	self.defaultDebugPrintPath = self.debugDir .. "DebugPrint.xml"
 
-	g_courseManager = CourseManager(self.baseDir)
+	self.courseDir = self.baseDir .. "Courses"
+	createFolder(self.courseDir) 
+	g_courseManager = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
 	g_courseDisplay = CourseDisplay()
 end
 

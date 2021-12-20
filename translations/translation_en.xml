@@ -210,22 +210,28 @@
 		<text name="CP_courseManager_no_current_course"													text="none"/>
 		<text name="CP_courseManager_temporary_course"													text="temporary"/>
 
-		<text name="CP_courseManager_course_load"														text="Load course"/>
-		<text name="CP_courseManager_course_save"														text="Save course"/>
-		<text name="CP_courseManager_course_clear_current"												text="Clear current course"/>
-		<text name="CP_courseManager_course_delete"														text="Delete course"/>
-		<text name="CP_courseManager_course_rename"														text="Rename course"/>
+		<text name="CP_courseManager_change_mode"														text="Change mode"/>
 
-		<text name="CP_courseManager_folder_create"														text="Create new folder"/>
-		<text name="CP_courseManager_folder_delete"														text="Delete folder"/>
-		<text name="CP_courseManager_folder_move_course"												text="Move Course to folder"/>
-		<text name="CP_courseManager_folder_rename"														text="Rename folder"/>
+		<text name="CP_courseManager_load_courses"														text="Load course"/>
+		<text name="CP_courseManager_save_courses"														text="Save course"/>
+		<text name="CP_courseManager_clear_current_courses"												text="Clear current course"/>
+	
+		<text name="CP_courseManager_create_directory"													text="Create new folder"/>
+		
+		<text name="CP_courseManager_move_entry"														text="Move entry"/>
+		<text name="CP_courseManager_delete_entry"														text="Delete entry"/>
+		<text name="CP_courseManager_rename_entry"														text="Rename entry"/>
+		<text name="CP_courseManager_copy_entry"														text="Copy entry"/>
 
 		<text name="CP_courseManager_folder_dialog"														text="Folder name:"/>
 		<text name="CP_courseManager_course_dialog"														text="Course name:"/>
+		
 		<text name="CP_courseManager_deleteWarning"														text="Are you sure, you want to delete (%s)?"/>
 
-		<text name="CP_courseManager_change_mode"														text="Change mode"/>
-
+		<text name="CP_courseManager_deleteError"														text="Folder is not empty (%s)!"/>
+		<text name="CP_courseManager_entryExistAlreadyError"											text="File or folder already exist in target folder (%s)!"/>
+		<text name="CP_courseManager_noAccessError"														text="No access to the folder (%s)!"/>
+		<text name="CP_courseManager_targetIsNoFolderError"												text="Target location is not a folder (%s)!"/>
+		<text name="CP_courseManager_targetIsNoCourseError"												text="Target location is not a course (%s)!"/>
 	</texts>
 </l10n>

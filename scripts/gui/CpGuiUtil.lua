@@ -27,7 +27,8 @@ function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,parentGui,class,predicateFun
 	CpGuiUtil.replaceFunction(page,"onClearElementSelection",class.onClearElementSelection)
 	CpGuiUtil.replaceFunction(page,"updateMenuButtons",class.updateMenuButtons)
 	inGameMenu:registerPage(page, nil, predicateFunc)
-	inGameMenu:addPageTab(page,g_iconsUIFilename, GuiUtils.getUVs(InGameMenu.TAB_UV.GENERAL_SETTINGS)) -- use the global here because the value changes with resolution settings
+	local iconFileName = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+	inGameMenu:addPageTab(page,iconFileName, GuiUtils.getUVs(uvs)) -- use the global here because the value changes with resolution settings
 	page:applyScreenAlignment()
 	page:updateAbsolutePosition()
 	

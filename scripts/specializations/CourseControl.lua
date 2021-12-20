@@ -69,13 +69,19 @@ function CpCourseControl.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'addCourse', CpCourseControl.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCourses', CpCourseControl.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCourse', CpCourseControl.hasCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'loadCourse', CpCourseControl.loadCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'saveCourse', CpCourseControl.saveCourse)
+    
+    SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCourse', CpCourseControl.appendLoadedCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'saveCourses', CpCourseControl.saveCourses)
     SpecializationUtil.registerFunction(vehicleType, 'resetCourses', CpCourseControl.resetCourses)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCourseName', CpCourseControl.getCurrentCourseName)
+    
     SpecializationUtil.registerFunction(vehicleType, 'drawCoursePlot', CpCourseControl.drawCoursePlot)
+    
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCourses', CpCourseControl.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCourses', CpCourseControl.saveAssignedCourses)
+
+    SpecializationUtil.registerFunction(vehicleType, 'updateLegacyWaypoints', CpCourseControl.updateLegacyWaypoints)
+    SpecializationUtil.registerFunction(vehicleType, 'getLegacyWaypoints', CpCourseControl.getLegacyWaypoints)
 end
 
 function CpCourseControl:onLoad(savegame)
@@ -90,6 +96,8 @@ function CpCourseControl:onLoad(savegame)
  --   TODO: make this an instance similar to course plot
  --   self.courseDisplay = CourseDisplay() 
     CpCourseControl.vehicles[self.id] = self
+
+    spec.legacyWaypoints = {}
 end
 
 function CpCourseControl:onPostLoad(savegame)
@@ -115,14 +123,16 @@ function CpCourseControl:saveToXMLFile(xmlFile, baseKey, usedModNames)
     self:saveAssignedCourses(xmlFile, baseKey.."."..CpCourseControl.rootKey)
 end
 
-function CpCourseControl:saveAssignedCourses(xmlFile, baseKey, name)
+function CpCourseControl:saveAssignedCourses(xmlFile, baseKey,name)
     local spec = self.spec_cpCourseControl
     local courses = spec.courses
     if courses ~=nil and next(courses) then
-        courses[1]:setName(name)
         for i=1,#courses do 
             local key = string.format("%s(%d)",baseKey,i-1)
             local course = courses[i]
+            if name then 
+                course:setName(name)
+            end
             course:saveToXml(xmlFile, key)
         end
     end
@@ -193,7 +203,7 @@ function CpCourseControl:onCourseChange(newCourse)
     --    self.courseDisplay:updateWaypointSigns(self)
 	end
 
-    g_courseManager:updateLegacyWaypoints(self)
+    self:updateLegacyWaypoints()
 end
 
 function CpCourseControl:drawCoursePlot(map)
@@ -245,12 +255,14 @@ function CpCourseControl.getCourseName(course)
     return name
 end
 
-function CpCourseControl:loadCourse(dirIx,entryIx)
-    g_courseManager:loadCourseSelectedInHud(self,dirIx,entryIx)
+function CpCourseControl:appendLoadedCourse(file)
+    file:load(CpCourseControl.xmlSchema,CpCourseControl.xmlKeyFileManager,
+    CpCourseControl.loadAssignedCourses,self)
 end
 
-function CpCourseControl:saveCourse(ix,text)
-    g_courseManager:saveCourseFromVehicle(ix, self, text)
+function CpCourseControl:saveCourses(file,text)
+    file:save(CpCourseControl.rootKeyFileManager,CpCourseControl.xmlSchema,
+    CpCourseControl.xmlKeyFileManager,CpCourseControl.saveAssignedCourses,self,text)
 end
 
 function CpCourseControl.getValidVehicles()
@@ -268,4 +280,25 @@ function CpCourseControl:getFieldworkCourseLegacy(vehicle)
 			return course
 		end
 	end
+end
+
+--- For backwards compatibility, create all waypoints of all loaded courses for this vehicle, as it
+--- used to be stored in the terrible global Waypoints variable
+--- Update all the legacy (as usual global) data structures related to a vehicle's loaded course
+-- TODO: once someone has the time and motivation, refactor those legacy structures
+function CpCourseControl:updateLegacyWaypoints()
+    local spec = self.spec_cpCourseControl
+	spec.legacyWaypoints = {}
+	local n = 1
+	for _, course in ipairs(self:getCourses()) do
+		for i = 1, course:getNumberOfWaypoints() do
+			table.insert(spec.legacyWaypoints, Waypoint(course:getWaypoint(i), n))
+			n = n +1
+		end
+	end
+end
+
+function CpCourseControl:getLegacyWaypoints()
+    local spec = self.spec_cpCourseControl
+	return spec.legacyWaypoints
 end

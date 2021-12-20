@@ -143,7 +143,7 @@ function CourseDisplay:setWaypointSignLine(sign, distance, vis)
 end
 
 function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
-	local waypoints = g_courseManager:getLegacyWaypoints(vehicle)
+	local waypoints = vehicle:getLegacyWaypoints()
 	if not waypoints then return end
 
 	if self.courses[vehicle] == nil then

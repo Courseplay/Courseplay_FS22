@@ -40,13 +40,14 @@ The Course Manager is responsible for:
 ---@class FileSystemEntity
 FileSystemEntity = CpObject()
 
----@param fullPath string
+---@param parentPath string
 ---@param parent FileSystemEntity
 ---@param name string
-function FileSystemEntity:init(fullPath, parent, name)
-	self.fullPath = fullPath
+function FileSystemEntity:init(parentPath, parent, name)
+	self.fullPath = parentPath .. '/' .. name
+	self.parentPath = parentPath
 	self.parent = parent
-	self.name = name or string.match(fullPath, '.*[\\/](.+)')
+	self.name = name --or string.match(fullPath, '.*[\\/](.+)')
 end
 
 function FileSystemEntity:isDirectory()
@@ -59,6 +60,10 @@ end
 
 function FileSystemEntity:getFullPath()
 	return self.fullPath
+end
+
+function FileSystemEntity:getParentPath()
+	return self.parentPath
 end
 
 function FileSystemEntity:getParent()
@@ -90,16 +95,25 @@ function File:delete()
 end
 
 function File:clone()
-	local clonedFile = File(self:getFullPath(),self:getParent(),self:getName())
+	local clonedFile = File(self:getParentPath(),self:getParent(),self:getName())
 	return clonedFile	
+end
+
+function File:copy(newParentPath,overwrite)
+	copyFile(self:getFullPath(),newParentPath .. "/" .. self:getName(),overwrite or false)
+end
+
+function File:rename(newName,overwrite)
+	self:copy(self:getParentPath() .. "/" .. newName,overwrite)
+	self:delete()
 end
 
 --- A directory on the file system. This can recursively be traversed to all subdirectories.
 ---@class Directory : FileSystemEntity
 Directory = CpObject(FileSystemEntity)
 
-function Directory:init(fullPath, parent, name)
-	FileSystemEntity.init(self, fullPath, parent, name)
+function Directory:init(parentPath, parent, name)
+	FileSystemEntity.init(self, parentPath, parent, name)
 	self.entries = {}
 	createFolder(self.fullPath)
 	self:refresh()
@@ -132,7 +146,6 @@ function Directory:getFiles()
 	return self:getEntries(false, true)
 end
 
-
 --- Refresh from disk
 function Directory:refresh()
 	self.entriesToRemove = {}
@@ -161,8 +174,9 @@ function Directory:fileCallback(name, isDirectory)
 end
 
 function Directory:deleteFile(name)
-	getfenv(0).deleteFile(self.entries[name]:getFullPath())
-	self.entries[name] = nil
+	if self.entries[name] then 
+		self.entries[name]:delete()
+	end
 end
 
 function Directory:delete()
@@ -182,9 +196,16 @@ function Directory:isEmpty()
 	return true
 end
 
-function Directory:createDirectory(name)
+function Directory:addDirectory(name)
 	if not self.entries[name] then
 		self.entries[name] = Directory(self.fullPath .. '\\' .. name, self)
+	end
+	return self.entries[name]
+end
+
+function Directory:addFile(name)
+	if not self.entries[name] then
+		self.entries[name] = File(self.fullPath .. '\\' .. name, self)
 	end
 	return self.entries[name]
 end
@@ -201,6 +222,31 @@ function Directory:clone()
 	local clonedDir = Directory(self:getFullPath(),self:getParent(),self:getName())
 	clonedDir:refresh()
 	return clonedDir	
+end
+
+
+function Directory:copy(newParentPath,overwrite)
+	File.copy(self,newParentPath,overwrite)
+	local entries = self:getEntries()
+	for i,entry in ipairs(entries) do 
+		entry:copy(newParentPath,overwrite)
+	end
+	for i,entry in ipairs(entries) do 
+		entry:delete()
+	end
+	self:delete()
+end
+
+function Directory:rename(newName,overwrite)
+	local path = self:getParentPath() .. "/" .. newName
+	local entries = self:getEntries()
+	for i,entry in ipairs(entries) do 
+		entry:rename(newName,overwrite)
+	end
+	for i,entry in ipairs(entries) do 
+		entry:delete()
+	end
+	self:copy(self:getParentPath() .. "/" .. newName,overwrite)
 end
 
 --- A view representing a file system entity (file or directory). The view knows how to display an entity on the UI.
@@ -385,10 +431,10 @@ CourseManager = CpObject()
 function CourseManager:init(baseDir)
 	-- courses are stored in a folder per map, under modSettings/Courseplay/Courses/<map name>/
 	-- create subfolders one by one, seems like createFolder() can't recursively create subfolders
-	baseDir = baseDir .. "Courses/"
+	baseDir = baseDir .. "Courses"
 	createFolder(baseDir)
 	self.courseDirFullPath = baseDir .. g_currentMission.missionInfo.mapId
-	self.courseDir = Directory(self.courseDirFullPath)
+	self.courseDir = Directory(baseDir,nil,g_currentMission.missionInfo.mapId)
 	self.courseDirView = DirectoryView(self.courseDir)
 	self.currentEntry = 1
 
