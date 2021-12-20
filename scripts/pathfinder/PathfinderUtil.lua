@@ -461,7 +461,6 @@ function PathfinderConstraints:getNodePenalty(node)
     local penalty = 0
     -- not on any field
     local offFieldPenalty = self.offFieldPenalty
-    print('hey')
     local offField = not CpFieldUtil.isOnField(node.x, -node.y)
     if self.fieldNum ~= 0 and not offField then
         -- if there's a preferred field and we are on a field

@@ -154,6 +154,7 @@ end
 
 function AIDriveStrategyCourse:updatePathfinding()
     if self.pathfinder and self.pathfinder:isActive() then
+        self:setMaxSpeed(0)
         local done, path = self.pathfinder:resume()
         if done then
             self.pathfindingDoneCallbackFunc(self.pathfindingDoneObject, path)
