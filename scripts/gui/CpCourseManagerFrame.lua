@@ -414,7 +414,7 @@ function CpCourseManagerFrame:onClickItem(layout,element)
 		self.actionState = CpCourseManagerFrame.actionStates.disabled
 	elseif self.actionState == CpCourseManagerFrame.actionStates.renameEntry then 
 		--- Renames a selected entity.
-		if viewEntry:hasAccess() then
+		if viewEntry:isRenameAllowed() then
 			CpCourseManagerFrame.showInputTextDialog(
 						self,CpCourseManagerFrame.translations.renameEntry,
 							CpCourseManagerFrame.onClickRenameEntryDialog,viewEntry)

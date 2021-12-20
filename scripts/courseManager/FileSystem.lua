@@ -281,6 +281,7 @@ function Directory:delete(forceDelete)
 			entry:delete(true)
 		end
 	end
+	self:refresh()
 	if self:isEmpty() then
 		getfenv(0).deleteFolder(self.fullPath)
 		CpUtil.debugFormat(CpDebug.DBG_COURSES,"deleted folder: %s",self.fullPath)
@@ -472,6 +473,10 @@ function FileSystemEntityView:hasAccess()
 	return true
 end
 
+function FileSystemEntityView:isRenameAllowed()
+	return true
+end
+
 --- View of a regular file (XML with a saved course
 ---@class FileView : FileSystemEntityView
 FileView = CpObject(FileSystemEntityView)
@@ -579,6 +584,10 @@ function DirectoryView:getEntryByIndex(ix)
 end
 
 function DirectoryView:isDeleteAllowed()
+	return self.level >= 2
+end
+
+function DirectoryView:isRenameAllowed()
 	return self.level >= 2
 end
 
