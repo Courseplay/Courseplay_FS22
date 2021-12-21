@@ -227,7 +227,7 @@ end
 
 function CpCourseManager:onPreDelete()
     CpCourseManager.vehicles[self.id] = nil
-    self:resetCourses()
+    CpCourseManager.resetCourses(self)
 end
 
 ------------------------------------------------------------------------
