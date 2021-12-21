@@ -653,7 +653,7 @@ function CourseTurn:generateCalculatedTurn()
 end
 
 function CourseTurn:generatePathfinderTurn()
-	self.pathfindingStartedAt = self.vehicle.timer
+	self.pathfindingStartedAt = g_currentMission.time
 	local done, path
 	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
@@ -670,7 +670,7 @@ end
 
 function CourseTurn:onPathfindingDone(path)
 	if path and #path > 2 then
-		self:debug('Pathfinding finished with %d waypoints (%d ms)', #path, self.vehicle.timer - (self.pathfindingStartedAt or 0))
+		self:debug('Pathfinding finished with %d waypoints (%d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
 		if self.reverseBeforeStartingTurnWaypoints and #self.reverseBeforeStartingTurnWaypoints > 0 then
 			self.turnCourse = Course(self.vehicle, self.reverseBeforeStartingTurnWaypoints, true)
 			self.turnCourse:appendWaypoints(CourseGenerator.pointsToXzInPlace(path))
@@ -685,10 +685,11 @@ function CourseTurn:onPathfindingDone(path)
 		-- TODO: should probably better done on onWaypointChange, to reset to 0
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
 	else
-		self:debug('No path found in %d ms, falling back to normal turn course generator', self.vehicle.timer - (self.pathfindingStartedAt or 0))
+		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))
 		self:generateCalculatedTurn()
 	end
-	self.driveStrategy:startFieldworkCourseWithTemporaryCourse(self.turnCourse, self.turnContext.turnEndWpIx)
+	self.ppc:setCourse(self.turnCourse)
+	self.ppc:initialize(1)
 	self.state = self.states.TURNING
 end
 
@@ -791,7 +792,6 @@ function CombinePocketHeadlandTurn:startTurn()
 		self:debug('Could not create pocket course, falling back to normal headland corner')
 		self:generateCalculatedTurn()
 	end
-	--self.driveStrategy:startFieldworkCourseWithTemporaryCourse(self.turnCourse, self.turnContext.turnEndWpIx)
 	self.ppc:setCourse(self.turnCourse)
 	self.ppc:initialize(1)
 	self.state = self.states.TURNING
