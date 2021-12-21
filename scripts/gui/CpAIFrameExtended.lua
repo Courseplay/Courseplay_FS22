@@ -17,11 +17,10 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	local inGameMenu = g_currentMission.inGameMenu
 	self.courseGeneratorLayout = CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"ingameMenuSettingsBox",self)
-	
+	self.courseGeneratorLayout:setSize(self.courseGeneratorLayout.size[1]-0.15,nil)
 	--- Moves the layout slightly to the left
 	local x,y = unpack(g_currentMission.inGameMenu.pagingTabList.size)
-	self.courseGeneratorLayout:setAbsolutePosition(x+0.02,self.courseGeneratorLayout.absPosition[2])
-
+	self.courseGeneratorLayout:setAbsolutePosition(x+0.02,self.courseGeneratorLayout.absPosition[2]-0.1)
 	--- Clears elements from the cloned page.
 	self.courseGeneratorLayoutElements = CpGuiUtil.getFirstElementWithProfileName(self.courseGeneratorLayout,"ingameMenuSettingsLayout")
 	for i = #self.courseGeneratorLayoutElements.elements, 1, -1 do
@@ -35,7 +34,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpGuiUtil.changeColorForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",color)
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setPosition,self.courseGeneratorLayout.position[1]-0.01,self.courseGeneratorLayout.position[2])
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setSize,self.courseGeneratorLayout.size[1]*1.01,self.courseGeneratorLayout.size[2])
-
+	
 	--- Adds Setting elements to the layout.
 	local layout = g_currentMission.inGameMenu.pageSettingsGeneral.boxLayout
 	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(layout)
@@ -43,8 +42,22 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	local settingsBySubTitle,pageTitle = CpCourseGeneratorSettings.getSettingSetup()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.courseGeneratorLayoutElements,genericSettingElement, genericSubTitleElement)
-	self.courseGeneratorLayoutPageTitle = pageTitle
+	
+	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsTooltip",function (item) item.textMaxWidth = item.textMaxWidth/2 end)
 
+	local function changeBtnIconColor(item)
+		local colorData = {}
+		GuiOverlay.copyColors(colorData, item.icon)
+		local color = colorData.color
+		color[4] = 1
+		item.icon.color = colorData.colorFocused
+		GuiOverlay.copyColors(colorData, item.overlay)
+		item.overlay.color = colorData.colorFocused
+	end
+	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsLeft",changeBtnIconColor)
+	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsRight",changeBtnIconColor)
+	self.courseGeneratorLayoutPageTitle = pageTitle
+	
 	local function hasText(element)
 		return element:isa(TextElement)
 	end

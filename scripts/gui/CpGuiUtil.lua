@@ -128,6 +128,20 @@ function CpGuiUtil.executeFunctionForElementsWithProfileName(rootElement,profile
 	end
 end
 
+--- Sets a value for all children elements with a given profile name.
+---@param rootElement GuiElement Searches in this element children elements.
+---@param profileName string 
+---@param valueName string
+---@return GuiElement
+function CpGuiUtil.setValueForElementsWithProfileName(rootElement,profileName,valueName,...)
+	local items = CpGuiUtil.getElementsWithProfileName(rootElement,profileName)
+	if items then 
+		for _,item in ipairs(items) do 
+			item[valueName](item,...)
+		end
+	end
+end
+
 --- Executes a function for all children elements.
 ---@param rootElement GuiElement Searches in this element children elements.
 ---@param lambda1 function
