@@ -1,3 +1,5 @@
+
+require('scripts.CpObject')
 ------------------------------------------------------------------------------------------------------------------------
 -- Mocks for the Giants engine/game functions
 ------------------------------------------------------------------------------------------------------------------------
@@ -12,6 +14,9 @@ g_currentMission = {}
 g_currentMission.mock = true
 g_currentMission.missionInfo = {}
 g_currentMission.missionInfo.mapId = 'MockMap'
+
+g_currentMission.missionDynamicInfo = {}
+g_currentMission.missionDynamicInfo.isMultiplayer = false
 
 g_careerScreen = {}
 g_careerScreen.currentSavegame = {savegameDirectory = 'savegame1'}
@@ -38,17 +43,62 @@ function getfenv()
 end
 
 function deleteFile(fullPath)
-    os.execute('del "' .. fullPath .. '"')
+    os.remove(fullPath)
+    --os.execute('del "' .. fullPath .. '"')
 end
 
 function deleteFolder(fullPath)
     os.execute('del /s /q "' .. fullPath .. '\\*"')
     os.execute('for /d %i in ("' .. fullPath .. '\\*") do rd /s /q "%i"')
+    os.remove(fullPath)
 end
 
-function fileExists(fullPath)
-    for _ in io.popen('dir "' .. fullPath .. '" /b'):lines() do
-        return true
+function fileExists(path)
+    local file = io.open(path, 'rb')
+    if file then
+        file:close()
     end
-    return false
+    return file ~= nil
+end
+
+function copyFile(prevPath,newPath)
+    local file, err = io.open(prevPath, 'rb')
+    local content = file:read("*a")
+    local newFile, err = io.open(newPath, "w")
+    newFile:write(content)
+    file:close()
+    newFile:close()
+end
+
+XMLFile = CpObject()
+
+function XMLFile.create(name,path,xmlRootName,xmlSchema)
+    local xmlFile = XMLFile()
+    xmlFile.path = path
+    return xmlFile
+end
+
+function XMLFile:save()
+    local file,err = io.open(self.path, 'w+')
+    if err then
+        print("Error xmlFile.save: "..err)
+    end
+    self.file = file
+end
+
+function XMLFile.load(name,path,xmlSchema)
+    local xmlFile = XMLFile()
+    local file,err = io.open(path, 'r')
+    if err then
+        print("Error xmlFile.load: "..err)
+    end
+    xmlFile.file = file
+    xmlFile.path = path
+    return xmlFile.file ~= nil and xmlFile
+end
+
+function XMLFile:delete()
+    if self.file then
+        self.file:close()
+    end
 end

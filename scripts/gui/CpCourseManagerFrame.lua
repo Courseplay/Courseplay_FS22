@@ -236,9 +236,9 @@ function CpCourseManagerFrame:onFrameOpen()
 
 	local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
 	self.currentVehicle =  InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
---	self:setSoundSuppressed(true)
---	FocusManager:setFocus(self.boxLayout)
---	self:setSoundSuppressed(false)
+	self:setSoundSuppressed(true)
+	FocusManager:setFocus(self.leftLayout)
+	self:setSoundSuppressed(false)
 	CpCourseManagerFrame.updateLists(self)
 	self.initialized = true
 end
