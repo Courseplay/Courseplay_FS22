@@ -265,6 +265,7 @@ end
 ---@param vehicle Vehicle
 ---@param forceHide boolean if true, then hide all waypoints.
 function CourseDisplay:setSignsVisibility(vehicle, forceHide)
+	if not forceHide and vehicle:getCpLegacyWaypoints() == nil then return end
 	if self.courses[vehicle] == nil or (#self.courses[vehicle].current == 0 and #self.courses[vehicle].crossing == 0) then
 		return
 	end

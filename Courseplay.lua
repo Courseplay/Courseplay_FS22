@@ -241,6 +241,7 @@ function Courseplay.register(typeManager)
 		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
+		CpAIFieldWorkerExtended.register(typeManager,typeName,typeEntry.specializations)
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)

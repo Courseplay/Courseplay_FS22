@@ -19,7 +19,7 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CourseplaySpec)
---    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
+--    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
 
@@ -31,7 +31,8 @@ function CourseplaySpec.registerFunctions(vehicleType)
 end
 
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
-    
+   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CourseplaySpec.getStartAIJobText)
+  
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners

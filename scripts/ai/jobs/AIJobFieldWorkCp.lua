@@ -92,7 +92,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 end
 
 function AIJobFieldWorkCp:getPricePerMs()
-	return AIJobFieldWorkCp:superClass().getPricePerMs(self) * g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.wageModifier)/100
+	local modifier = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.wageModifier)/100
+	return AIJobFieldWorkCp:superClass().getPricePerMs(self) * modifier
 end
 
 --- Automatically repairs the vehicle, depending on the auto repair setting.
