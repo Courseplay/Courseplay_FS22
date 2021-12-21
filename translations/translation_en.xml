@@ -199,8 +199,13 @@
 		<text name="CP_global_setting_wageModifier_title" 									text="Cp driver wages"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 								text="Cp driver wages as percentage of normal worker's wages"/>
 
-		<text name="CP_global_setting_wageModifier_0_percent" 								text="0%"/>
-
+		<text name="CP_global_setting_autoRepair_title" 									text="Automatic repair"/>
+		<text name="CP_global_setting_autoRepair_tooltip" 									text="Cp driver automatically repair, while driving."/>
+		<text name="CP_global_setting_autoRepair_off" 										text="Don't repair"/>
+		<text name="CP_global_setting_autoRepair_less_than_25" 								text="&lt; 25%"/>
+		<text name="CP_global_setting_autoRepair_less_than_70" 								text="&lt; 70%"/>
+		<text name="CP_global_setting_autoRepair_always" 									text="Keep it healthy"/>
+		
 		<text name="CP_global_setting_subTitle_pathfinder"									text="Pathfinder settings"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 							text="Angle difference at goal"/>

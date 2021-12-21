@@ -95,6 +95,21 @@ function AIJobFieldWorkCp:getPricePerMs()
 	return AIJobFieldWorkCp:superClass().getPricePerMs(self) * g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.wageModifier)/100
 end
 
+--- Automatically repairs the vehicle, depending on the auto repair setting.
+--- Currently repairs all AI drivers.
+function AIJobFieldWorkCp:onUpdateTickWearable(...)
+	if self:getIsAIActive() and self:getUsageCausesDamage() then 
+	--	if self.rootVehicle then-- and self.rootVehicle.getJob and self.rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+			local dx = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.autoRepair)
+			local repairStatus = (1 - self:getDamageAmount())*100
+			if repairStatus < dx then 
+				self:repairVehicle()
+			end		
+	--	end
+	end
+end
+Wearable.onUpdateTick = Utils.appendedFunction(Wearable.onUpdateTick, AIJobFieldWorkCp.onUpdateTickWearable)
+
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job
 if g_currentMission then
 	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName('FIELDWORK_CP')
