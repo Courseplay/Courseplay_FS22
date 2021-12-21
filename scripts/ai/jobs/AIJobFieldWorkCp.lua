@@ -91,6 +91,10 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	vehicle:setFieldWorkCourse(course)
 end
 
+function AIJobFieldWorkCp:getPricePerMs()
+	return AIJobFieldWorkCp:superClass().getPricePerMs(self) * g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.wageModifier)/100
+end
+
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job
 if g_currentMission then
 	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName('FIELDWORK_CP')

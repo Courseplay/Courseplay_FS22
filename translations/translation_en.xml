@@ -196,6 +196,11 @@
 		<text name="CP_global_setting_stopAtEnd_title" 										text="Stop at end"/>
 		<text name="CP_global_setting_stopAtEnd_tooltip" 									text="Stop at end."/>
 
+		<text name="CP_global_setting_wageModifier_title" 									text="Cp driver wages"/>
+		<text name="CP_global_setting_wageModifier_tooltip" 								text="Cp driver wages as percentage of normal worker's wages"/>
+
+		<text name="CP_global_setting_wageModifier_0_percent" 								text="0%"/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"									text="Pathfinder settings"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 							text="Angle difference at goal"/>
