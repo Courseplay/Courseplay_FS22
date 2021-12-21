@@ -1,10 +1,10 @@
-lu = require("scripts.test.luaunit")
+lu = require("luaunit")
 package.path = package.path .. ";../?.lua;../courseManager/?.lua"
-require('scripts.test.mock-GiantsEngine')
-require('scripts.test.mock-Courseplay')
-require('scripts.CpObject')
-require('scripts.CpUtil')
-require('scripts.courseManager.FileSystem')
+require('mock-GiantsEngine')
+require('mock-Courseplay')
+require('CpObject')
+require('CpUtil')
+require('FileSystem')
 
 --- Still WIP
 
