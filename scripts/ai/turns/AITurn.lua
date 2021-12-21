@@ -127,6 +127,7 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Have a towed implement, use generated course turn')
 		return false
 	end
+	local turningRadius = AIUtil.getTurningRadius(vehicle)
 	if vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) and
 			not AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Turn on field is on but there is not enough space, use generated course turn')
