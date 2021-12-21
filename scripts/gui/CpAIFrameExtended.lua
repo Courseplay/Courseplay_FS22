@@ -85,7 +85,7 @@ end
 function CpInGameMenuAIFrameExtended:getCanStartJob(superFunc,...)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if vehicle and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse then 
-		return vehicle:hasCourse() and superFunc(self,...)
+		return vehicle:hasCpCourse() and superFunc(self,...)
 	end 
 	return superFunc(self,...)
 end
@@ -190,11 +190,11 @@ function CpInGameMenuAIFrameExtended:draw()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if CoursePlotAlwaysVisible then
 		local vehicles = CpCourseManager.getValidVehicles()
-		for v,_ in pairs(vehicles) do 
-			v:drawCoursePlot(self.ingameMapBase)
+		for i,v in pairs(vehicles) do 
+			v:drawCpCoursePlot(self.ingameMapBase)
 		end
-	elseif vehicle and vehicle.drawCoursePlot  then 
-		vehicle:drawCoursePlot(self.ingameMapBase)
+	elseif vehicle and vehicle.drawCpCoursePlot  then 
+		vehicle:drawCpCoursePlot(self.ingameMapBase)
 	end
 end
 InGameMenuAIFrame.draw = Utils.appendedFunction(InGameMenuAIFrame.draw, CpInGameMenuAIFrameExtended.draw)

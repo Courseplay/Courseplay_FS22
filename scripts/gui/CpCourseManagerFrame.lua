@@ -348,7 +348,7 @@ function CpCourseManagerFrame:onClickItem(layout,element)
 	elseif self.actionState == CpCourseManagerFrame.actionStates.loadCourse then 
 		--- If a file/course was select then allow loading of the course.
 		if not viewEntry:isDirectory() then
-			self.currentVehicle:appendLoadedCourse(viewEntry:getEntity())
+			self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
 		else
 			CpCourseManagerFrame.showInfoDialog(
 				CpCourseManagerFrame.translations.targetIsNoCourse,viewEntry)
@@ -464,7 +464,7 @@ end
 
 --- Updates the button at the bottom, which depends on the current select mode.
 function CpCourseManagerFrame:updateMenuButtons()
-	local courseName = self.currentVehicle:getCurrentCourseName()
+	local courseName = self.currentVehicle:getCurrentCpCourseName()
 	local title = string.format(g_i18n:getText(CpCourseManagerFrame.translations.title),courseName)
 	self.pageTitle:setText(title)
 	self.menuButtonInfo = {
@@ -512,9 +512,9 @@ end
 --- Clears the current courses.
 function CpCourseManagerFrame:onClickClearCurrentCourse()
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickClearCurrentCourse")
-	local hasCourse = self.currentVehicle:hasCourse()
+	local hasCourse = self.currentVehicle:hasCpCourse()
 	if hasCourse then 
-		self.currentVehicle:resetCourses()
+		self.currentVehicle:resetCpCourses()
 	end
 	CpCourseManagerFrame.updateLists(self)
 end
@@ -530,7 +530,7 @@ function CpCourseManagerFrame:onClickSaveEntryDialog(text,clickOk,viewEntry)
 				CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
 			return 
 		end
-		self.currentVehicle:saveCourses(file,text)
+		self.currentVehicle:saveCpCourses(file,text)
 	end
 end
 
@@ -615,7 +615,7 @@ end
 ---------------------------------------------------
 
 function CpCourseManagerFrame:clearCurrentCourseDisabled()
-	return not self.currentVehicle:hasCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return not self.currentVehicle:hasCpCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled
 end
 
 function CpCourseManagerFrame:loadCourseDisabled()
@@ -623,7 +623,7 @@ function CpCourseManagerFrame:loadCourseDisabled()
 end
 
 function CpCourseManagerFrame:saveCourseDisabled()
-	return not self.currentVehicle:hasCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return not self.currentVehicle:hasCpCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:createDirectoryDisabled()

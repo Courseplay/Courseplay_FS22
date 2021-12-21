@@ -22,7 +22,7 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 --    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
-    SpecializationUtil.registerEventListener(vehicleType, "onCourseChange", CourseplaySpec)
+
 end
 
 function CourseplaySpec.registerFunctions(vehicleType)
@@ -55,9 +55,6 @@ function CourseplaySpec:onLeaveVehicle(isControlling)
    
 end
 
-function CourseplaySpec:onCourseChange(newCourse)
-
-end
 
 
 function CourseplaySpec:getReverseDrivingDirectionNode()

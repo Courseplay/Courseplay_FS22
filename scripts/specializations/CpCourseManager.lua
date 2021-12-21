@@ -50,38 +50,38 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpCourseManager)
-    SpecializationUtil.registerEventListener(vehicleType, "onCourseChange", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "cpOnCourseChange", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpCourseManager)
-    SpecializationUtil.registerEventListener(vehicleType, "updateSignVisibility", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
 end
 
 function CpCourseManager.registerEvents(vehicleType)
-    SpecializationUtil.registerEvent(vehicleType, 'updateSignVisibility', CpCourseManager.updateSignVisibility)
-    SpecializationUtil.registerEvent(vehicleType, 'onCourseChange', CpCourseManager.onCourseChange)
+    SpecializationUtil.registerEvent(vehicleType, 'cpUpdateWaypointVisibility', CpCourseManager.cpUpdateWaypointVisibility)
+    SpecializationUtil.registerEvent(vehicleType, 'cpOnCourseChange', CpCourseManager.cpOnCourseChange)
 end
 
 function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CpCourseManager.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CpCourseManager.getFieldWorkCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'addCourse', CpCourseManager.addCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'getCourses', CpCourseManager.getCourses)
-    SpecializationUtil.registerFunction(vehicleType, 'hasCourse', CpCourseManager.hasCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
     
-    SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCourse', CpCourseManager.appendLoadedCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'saveCourses', CpCourseManager.saveCourses)
-    SpecializationUtil.registerFunction(vehicleType, 'resetCourses', CpCourseManager.resetCourses)
-    SpecializationUtil.registerFunction(vehicleType, 'getCurrentCourseName', CpCourseManager.getCurrentCourseName)
+    SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
     
-    SpecializationUtil.registerFunction(vehicleType, 'drawCoursePlot', CpCourseManager.drawCoursePlot)
+    SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCoursePlot)
     
-    SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCourses', CpCourseManager.loadAssignedCourses)
-    SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCourses', CpCourseManager.saveAssignedCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
 
-    SpecializationUtil.registerFunction(vehicleType, 'updateLegacyWaypoints', CpCourseManager.updateLegacyWaypoints)
-    SpecializationUtil.registerFunction(vehicleType, 'getLegacyWaypoints', CpCourseManager.getLegacyWaypoints)
+
+    SpecializationUtil.registerFunction(vehicleType, 'getCpLegacyWaypoints', CpCourseManager.getLegacyWaypoints)
 end
 
 function CpCourseManager:onLoad(savegame)
@@ -89,9 +89,9 @@ function CpCourseManager:onLoad(savegame)
     local specName = CpCourseManager.MOD_NAME .. ".cpCourseManager"
     self.spec_cpCourseManager  = self["spec_" .. specName]
     local spec = self.spec_cpCourseManager 
-    self.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
+    spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
  
-    self.courses = {}
+    spec.courses = {}
     
  --   TODO: make this an instance similar to course plot
  --   self.courseDisplay = CourseDisplay() 
@@ -102,7 +102,7 @@ end
 
 function CpCourseManager:onPostLoad(savegame)
     if savegame == nil or savegame.resetVehicles then return end
-    self:loadAssignedCourses(savegame.xmlFile,savegame.key..CpCourseManager.KEY..CpCourseManager.rootKey )
+    CpCourseManager.loadAssignedCourses(self,savegame.xmlFile,savegame.key..CpCourseManager.KEY..CpCourseManager.rootKey)
 end
 
 function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
@@ -115,12 +115,12 @@ function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
     end)    
     if courses ~= nil and next(courses) then
         spec.courses = courses
-        SpecializationUtil.raiseEvent(self,"onCourseChange",courses[1])
+        SpecializationUtil.raiseEvent(self,"cpOnCourseChange",courses[1])
     end
 end
 
 function CpCourseManager:saveToXMLFile(xmlFile, baseKey, usedModNames)
-    self:saveAssignedCourses(xmlFile, baseKey.."."..CpCourseManager.rootKey)
+    CpCourseManager.saveAssignedCourses(self,xmlFile, baseKey.."."..CpCourseManager.rootKey)
 end
 
 function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
@@ -140,21 +140,21 @@ end
 
 ---@param course  Course
 function CpCourseManager:setFieldWorkCourse(course)
-    self:resetCourses()
-    self:addCourse(course)   
+    CpCourseManager.resetCourses(self)
+    CpCourseManager.addCourse(self,course)   
 end
 
 function CpCourseManager:addCourse(course)
     local spec = self.spec_cpCourseManager 
     course:setVehicle(self)
     table.insert(spec.courses,course)
-    SpecializationUtil.raiseEvent(self,"onCourseChange",course)
+    SpecializationUtil.raiseEvent(self,"cpOnCourseChange",course)
 end
 
 function CpCourseManager:resetCourses()
     local spec = self.spec_cpCourseManager 
     spec.courses = {}
-    SpecializationUtil.raiseEvent(self,"onCourseChange")
+    SpecializationUtil.raiseEvent(self,"cpOnCourseChange")
 end
 
 ---@return Course
@@ -175,7 +175,7 @@ function CpCourseManager:hasCourse()
 end
 
 
-function CpCourseManager:updateSignVisibility()
+function CpCourseManager:cpUpdateWaypointVisibility()
     g_courseDisplay:updateWaypointSigns(self)
  --   self.courseDisplay:updateWaypointSigns(self)
 end
@@ -190,25 +190,26 @@ function CpCourseManager:onLeaveVehicle(isControlling)
    
 end
 
-function CpCourseManager:onCourseChange(newCourse)
+function CpCourseManager:cpOnCourseChange(newCourse)
+    local spec = self.spec_cpCourseManager
     if newCourse then 
         -- we have course, show the course plot on the AI helper screen
-        self.coursePlot:setWaypoints(newCourse.waypoints)
-        self.coursePlot:setVisible(true)
+        spec.coursePlot:setWaypoints(newCourse.waypoints)
+        spec.coursePlot:setVisible(true)
     else 
-        self.coursePlot:setVisible(false)
+        spec.coursePlot:setVisible(false)
     end
     if g_client then
         g_courseDisplay:updateWaypointSigns(self)
-    --    self.courseDisplay:updateWaypointSigns(self)
 	end
 
-    self:updateLegacyWaypoints()
+    CpCourseManager.updateLegacyWaypoints(self)
 end
 
 function CpCourseManager:drawCoursePlot(map)
-    if self:hasCourse() then
-        self.coursePlot:draw(map)
+    if CpCourseManager.hasCourse(self) then
+        local spec = self.spec_cpCourseManager
+        spec.coursePlot:draw(map)
     end
 end
 
@@ -234,8 +235,8 @@ end
 ------------------------------------------------------------------------
 
 function CpCourseManager:getCurrentCourseName()
-    if self:hasCourse() then 
-        local courses = self:getCourses()
+    if CpCourseManager.hasCourse(self) then 
+        local courses = CpCourseManager.getCourses(self)
         local name =  CpCourseManager.getCourseName(courses[1])
         for i = 2,#courses do 
             name = string.format("%s + %s",name,CpCourseManager.getCourseName(courses[i]))
@@ -256,6 +257,8 @@ function CpCourseManager.getCourseName(course)
 end
 
 function CpCourseManager:appendLoadedCourse(file)
+    --- For now clear the previous courses.
+    CpCourseManager.resetCourses(self)
     file:load(CpCourseManager.xmlSchema,CpCourseManager.xmlKeyFileManager,
     CpCourseManager.loadAssignedCourses,self)
 end
@@ -274,7 +277,7 @@ function CpCourseManager:appendCourse(course)
 end
 
 function CpCourseManager:getFieldworkCourseLegacy(vehicle)
-	for _, course in ipairs(self:getCourses()) do
+	for _, course in ipairs(CpCourseManager.getCourses(self)) do
 		if course:isFieldworkCourse() then
 			CpUtil.debugVehicle(CpDebug.DBG_COURSES,vehicle, 'getting fieldwork course %s', course:getName())
 			return course
@@ -290,7 +293,7 @@ function CpCourseManager:updateLegacyWaypoints()
     local spec = self.spec_cpCourseManager 
 	spec.legacyWaypoints = {}
 	local n = 1
-	for _, course in ipairs(self:getCourses()) do
+	for _, course in ipairs(CpCourseManager.getCourses(self)) do
 		for i = 1, course:getNumberOfWaypoints() do
 			table.insert(spec.legacyWaypoints, Waypoint(course:getWaypoint(i), n))
 			n = n +1
@@ -300,5 +303,5 @@ end
 
 function CpCourseManager:getLegacyWaypoints()
     local spec = self.spec_cpCourseManager 
-	return spec.legacyWaypoints
+	return spec and spec.legacyWaypoints
 end

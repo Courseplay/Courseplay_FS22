@@ -53,7 +53,7 @@ function AIJobFieldWorkCp:validate(farmId)
 
 	local vehicle = self.vehicleParameter:getVehicle()
 
-	if vehicle and not vehicle:hasCourse() then
+	if vehicle and not vehicle:hasCpCourse() then
 		return false, 'Generate a course before starting the job!'
 	end
 	return true, ''

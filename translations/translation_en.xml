@@ -191,10 +191,12 @@
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"												text="Global settings"/>
-		<text name="CP_global_setting_subTitle_general"										text="Basic settings."/>
+		<text name="CP_global_setting_subTitle_general"										text="Basic settings"/>
 
 		<text name="CP_global_setting_stopAtEnd_title" 										text="Stop at end"/>
 		<text name="CP_global_setting_stopAtEnd_tooltip" 									text="Stop at end."/>
+
+		<text name="CP_global_setting_subTitle_pathfinder"									text="Pathfinder settings"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 							text="Angle difference at goal"/>
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 							text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
