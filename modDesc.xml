@@ -85,6 +85,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
 		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
+		<sourceFile filename="scripts/gui/CpAIHotspotExtended.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

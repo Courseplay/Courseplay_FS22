@@ -27,6 +27,7 @@ end
 
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpAdditionalHotspotDetails', CourseplaySpec.getCpAdditionalHotspotDetails)
 end
 
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
@@ -58,6 +59,11 @@ function CourseplaySpec:onLeaveVehicle(isControlling)
    
 end
 
+--- TODO: return all relevant values that should be displayed under the map hotspot.
+function CourseplaySpec:getCpAdditionalHotspotDetails()
+    --- time remaining in s
+    return 60
+end
 
 
 function CourseplaySpec:getReverseDrivingDirectionNode()

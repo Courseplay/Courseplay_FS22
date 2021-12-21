@@ -195,3 +195,18 @@ end
 function CpGuiUtil.getNormalizedRgb(r, g, b,alpha)
 	return r / 255, g / 255, b / 255, alpha
 end
+---unit_minutesShort
+function CpGuiUtil.getFormatTimeText(seconds)
+	local minutes = math.floor(seconds/60)
+	seconds = seconds %60
+	local hours = math.floor(minutes/60)
+	seconds = seconds %60
+	minutes = minutes %60
+	if hours > 0 then 
+		return string.format("%dhour %dmin %dsec",hours,minutes,seconds)
+	elseif minutes>0 then 
+		return string.format("%dmin %dsec",minutes,seconds)
+	else 
+		return string.format("%dsec",seconds)
+	end
+end
