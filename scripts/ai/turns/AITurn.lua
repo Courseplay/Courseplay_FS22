@@ -118,12 +118,6 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Headland turn, let turn.lua drive for now.')
 		return false
 	end
-	local turningRadius = AIUtil.getTurningRadius(vehicle)
-	if 2 * turningRadius <= math.abs(turnContext.dx) then
-		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Narrow turn with no reversing (turn radius = %.1f, dx = %.1f',
-				turningRadius, math.abs(turnContext.dx))
-		return true
-	end
 	if not AIVehicleUtil.getAttachedImplementsAllowTurnBackward(vehicle) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Not all attached implements allow for reversing, use generated course turn')
 		return false
