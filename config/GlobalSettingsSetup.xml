@@ -7,7 +7,7 @@
 
 <Settings prefixText="CP_global_setting_">
 	<SettingSubTitle prefix="true" title="general">
-		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd">
+		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses">
 		</Setting>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="pathfinder">

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helpLines>
+	<category title="$l10n_CP_help_title">
+        <page title="$l10n_CP_help_basic_page_title">
+
+       <!-- <paragraph>
+                <text text="$l10n_helpLine_basicEconomy_makingMoney_general" />
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_helpLine_basicEconomy_makingMoney_factories" />
+                <image filename="$dataS/menu/helpline/helplineAtlas-1.png" uvs="25px 25px 277px 200px" />
+            </paragraph>
+			-->
+			<paragraph>
+                <text text="$l10n_CP_help_basic_page_test" />
+            </paragraph>
+		</page>
+	</category>
+</helpLines>

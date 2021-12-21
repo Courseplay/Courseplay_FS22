@@ -38,7 +38,13 @@ end
 function Courseplay:setupGui()
 	CpVehicleSettingsFrame.init()
 	CpGlobalSettingsFrame.init()
+	CpCourseManagerFrame.init(self.courseStorage)
 end
+
+function Courseplay:loadMapDataHelpLineManager(xmlFile, missionInfo)
+	self:loadFromXML(Utils.getFilename("config/HelpMenu.xml",Courseplay.BASE_DIRECTORY))
+end
+HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapData,Courseplay.loadMapDataHelpLineManager)
 
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
@@ -77,16 +83,23 @@ function Courseplay:keyEvent(unicode, sym, modifier, isDown)
 end
 
 function Courseplay:load()
-	--self.savegameFolderPath = ('%ssavegame%d'):format(getUserProfileAppPath(), g_careerScreen.selectedIndex); -- This should work for both SP, MP and Dedicated Servers
-	self.cpFolderPath = string.format("%s%s",getUserProfileAppPath(),"courseplay")
-	createFolder(self.cpFolderPath)
-	self.cpDebugPrintXmlFolderPath = string.format("%s/%s",self.cpFolderPath,"courseplayDebugPrint")
-	createFolder(self.cpDebugPrintXmlFolderPath)
-	self.cpDebugPrintXmlFilePathDefault = string.format("%s/%s",self.cpDebugPrintXmlFolderPath,"courseplayDebugPrint.xml")		
+	--- Base cp folder
+	self.baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME ..  "/"
+	createFolder(self.baseDir)
 
-	self.cpXmlFile = string.format("%s/%s",self.cpFolderPath,"courseplay.xml")		
+	--- Sub folder for debug information
+	self.debugDir = self.baseDir .. "Debug/"
+	createFolder(self.debugDir) 
+	--- Sub folder for debug prints
+	self.debugPrintDir = self.debugDir .. "DebugPrints/"
+	createFolder(self.debugPrintDir) 
+	--- Default path to save prints without an explicit name.
+	self.defaultDebugPrintPath = self.debugDir .. "DebugPrint.xml"
 
-	g_courseManager = CourseManager()
+	self.courseDir = self.baseDir .. "Courses"
+	createFolder(self.courseDir) 
+	self.courseStorage = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
+	g_courseManger = self.courseStorage
 	g_courseDisplay = CourseDisplay()
 end
 
@@ -218,6 +231,9 @@ function Courseplay.register(typeManager)
 		end
 		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
+		end
+		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
+			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
     end
 end

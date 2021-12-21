@@ -83,8 +83,9 @@ function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
 end
 
 function CpInGameMenuAIFrameExtended:getCanStartJob(superFunc,...)
-	if self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse then 
-		return self.currentJob:hasGeneratedCourse() and superFunc(self,...)
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	if vehicle and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse then 
+		return vehicle:hasCpCourse() and superFunc(self,...)
 	end 
 	return superFunc(self,...)
 end
@@ -183,3 +184,17 @@ function CpInGameMenuAIFrameExtended:onStartGoToJob()
 	end
 end
 InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onStartGoToJob,CpInGameMenuAIFrameExtended.onStartGoToJob)
+
+function CpInGameMenuAIFrameExtended:draw()	
+	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.showsAllActiveCourses)
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	if CoursePlotAlwaysVisible then
+		local vehicles = CpCourseManager.getValidVehicles()
+		for i,v in pairs(vehicles) do 
+			v:drawCpCoursePlot(self.ingameMapBase)
+		end
+	elseif vehicle and vehicle.drawCpCoursePlot  then 
+		vehicle:drawCpCoursePlot(self.ingameMapBase)
+	end
+end
+InGameMenuAIFrame.draw = Utils.appendedFunction(InGameMenuAIFrame.draw, CpInGameMenuAIFrameExtended.draw)

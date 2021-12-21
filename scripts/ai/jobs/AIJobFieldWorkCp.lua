@@ -11,7 +11,6 @@ AIJobFieldWorkCp.translations = {
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
-	CoursePlot.getInstance():setVisible(false)
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
 
@@ -52,7 +51,9 @@ function AIJobFieldWorkCp:validate(farmId)
 		return false, 'target not on field'
 	end
 
-	if self.course == nil then
+	local vehicle = self.vehicleParameter:getVehicle()
+
+	if vehicle and not vehicle:hasCpCourse() then
 		return false, 'Generate a course before starting the job!'
 	end
 	return true, ''
@@ -68,16 +69,11 @@ function AIJobFieldWorkCp:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
 end
 
-function AIJobFieldWorkCp:hasGeneratedCourse()
-	return self.hasValidPosition and self.course ~= nil	
-end
-
 --- Button callback to generate a field work course.
 function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local getValue = vehicle.getCourseGeneratorSettingValue
-	local status, ok
-	status, ok, self.course = CourseGeneratorInterface.generate(self.fieldPolygon,
+	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
 			0,
 			getValue(vehicle,CpCourseGeneratorSettings.workWidth),
@@ -91,13 +87,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	if not ok then
 		return false, 'could not generate course'
 	end
-	-- we have course, show the course plot on the AI helper screen
-	CoursePlot.getInstance():setWaypoints(self.course.waypoints)
-	CoursePlot.getInstance():setVisible(true)
-	-- save the course on the vehicle for the strategy to use later
-	self.course:setVehicle(vehicle)
-	vehicle:setFieldWorkCourse(self.course)
-	g_courseManager:loadGeneratedCourse(vehicle, self.course)
+
+	vehicle:setFieldWorkCourse(course)
 end
 
 --- for reload, messing with the internals of the job type manager so it uses the reloaded job

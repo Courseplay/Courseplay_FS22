@@ -5,6 +5,12 @@ CourseplaySpec = {}
 
 CourseplaySpec.MOD_NAME = g_currentModName
 
+CourseplaySpec.KEY = "."..CourseplaySpec.MOD_NAME..".courseplaySpec."
+
+function CourseplaySpec.initSpecialization()
+    local schema = Vehicle.xmlSchemaSavegame
+end
+
 function CourseplaySpec.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
@@ -12,19 +18,14 @@ end
 function CourseplaySpec.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CourseplaySpec)
 --    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
-    SpecializationUtil.registerEventListener(vehicleType, "updateSignVisibility", CourseplaySpec)
-end
 
-function CourseplaySpec.registerEvents(vehicleType)
-    SpecializationUtil.registerEvent(vehicleType, 'updateSignVisibility', CourseplaySpec.updateSignVisibility)
 end
 
 function CourseplaySpec.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CourseplaySpec.setFieldWorkCourse)
-    SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CourseplaySpec.getFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
 end
 
@@ -38,23 +39,23 @@ function CourseplaySpec:onLoad(savegame)
     local spec = self.spec_courseplaySpec
 end
 
+function CourseplaySpec:onPostLoad(savegame)
+
+end
+
+function CourseplaySpec:saveToXMLFile(xmlFile, baseKey, usedModNames)
+   
+end
+
 function CourseplaySpec:onEnterVehicle(isControlling)
-    g_courseDisplay:setSignsVisibility(self);
+    
 end
 
 function CourseplaySpec:onLeaveVehicle(isControlling)
-    g_courseDisplay:setSignsVisibility(self, true);
+   
 end
 
----@param course  Course
-function CourseplaySpec:setFieldWorkCourse(course)
-    self.course = course
-end
 
----@return Course
-function CourseplaySpec:getFieldWorkCourse()
-    return self.course
-end
 
 function CourseplaySpec:getReverseDrivingDirectionNode()
     local spec = self.spec_courseplaySpec
@@ -90,7 +91,3 @@ end
 AIDriveStrategyCollision.getCollisionCheckActive = Utils.overwrittenFunction(
         AIDriveStrategyCollision.getCollisionCheckActive, CourseplaySpec.getCollisionCheckActive
 )
-
-function CourseplaySpec:updateSignVisibility()
-    g_courseDisplay:updateWaypointSigns(self)
-end

@@ -21,9 +21,7 @@ CoursePlot = CpObject()
 
 -- Position and size of the course plot as normalized screen coordinates
 -- x = 0, y = 0 is the bottom left corner of the screen, terrainSize is in meters
----@param map table, an Inga derived class where the plot is displayed
-function CoursePlot:init(map)
-	self.map = map
+function CoursePlot:init()
 	self.courseOverlayId = createImageOverlay('dataS/scripts/shared/graph_pixel.dds')
 	self.startSignOverlayId = createImageOverlay(Utils.getFilename('img/signs/start_noMM.dds', Courseplay.BASE_DIRECTORY))
 	self.stopSignOverlayId = createImageOverlay(Utils.getFilename('img/signs/stop_noMM.dds', Courseplay.BASE_DIRECTORY))
@@ -82,10 +80,10 @@ function CoursePlot:setStopPosition( x, z )
 	self.stopPosition.x, self.stopPosition.z = x, z
 end
 
-function CoursePlot:worldToScreen( worldX, worldZ )
-	local objectX = (worldX + self.map.worldCenterOffsetX) / self.map.worldSizeX * 0.5 + 0.25
-	local objectZ = (worldZ + self.map.worldCenterOffsetZ) / self.map.worldSizeZ * 0.5 + 0.25
-	local x, y, _, _ = self.map.fullScreenLayout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
+function CoursePlot:worldToScreen(map, worldX, worldZ )
+	local objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * 0.5 + 0.25
+	local objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * 0.5 + 0.25
+	local x, y, _, _ = map.fullScreenLayout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
 	return x, y
 end
 
@@ -97,7 +95,7 @@ end
 
 -- Draw the course in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
-function CoursePlot:draw()
+function CoursePlot:draw(map)
 
 	if not self.isVisible then return end
 	local lineThickness = 2 / g_screenHeight -- 2 pixels
@@ -112,8 +110,8 @@ function CoursePlot:draw()
 			wp = self.waypoints[ i ]
 			np = self.waypoints[ i + 1 ]
 
-			startX, startY = self:worldToScreen( wp.x, wp.z )
-			endX, endY	   = self:worldToScreen( np.x, np.z )
+			startX, startY = self:worldToScreen(map, wp.x, wp.z )
+			endX, endY	   = self:worldToScreen(map, np.x, np.z )
 			-- render only if it is on the plot area
 			if startX and startY and endX and endY then
 				dx2D = endX - startX;
@@ -134,12 +132,12 @@ function CoursePlot:draw()
 	end
 
 	local signSizeMeters = 20
-	local zoom = self.map.fullScreenLayout:getIconZoom()
-	local signWidth, signHeight = signSizeMeters * self.map.uiScale * zoom, signSizeMeters * self.map.uiScale * zoom
+	local zoom = map.fullScreenLayout:getIconZoom()
+	local signWidth, signHeight = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom
 
 	-- render a sign marking the end of the course
 	if self.stopPosition.x and self.stopPosition.z then
-		local x, y = self:worldToScreen( self.stopPosition.x, self.stopPosition.z )
+		local x, y = self:worldToScreen( map,self.stopPosition.x, self.stopPosition.z )
 		if x and y then
 			setOverlayColor( self.stopSignOverlayId, 1, 1, 1, 0.8 )
 			renderOverlay( self.stopSignOverlayId,
@@ -151,7 +149,7 @@ function CoursePlot:draw()
 
 	-- render a sign marking the current position used as a starting location for the course
 	if self.startPosition.x and self.startPosition.z then
-		local x, y = self:worldToScreen( self.startPosition.x, self.startPosition.z )
+		local x, y = self:worldToScreen(map, self.startPosition.x, self.startPosition.z )
 		if x and y then
 			setOverlayColor( self.startSignOverlayId, 1, 1, 1, 0.8 )
 			renderOverlay( self.startSignOverlayId,
@@ -160,20 +158,6 @@ function CoursePlot:draw()
 				signWidth, signHeight)
 		end
 	end
-end
-
---- CoursePlot is a singleton, created on demand. Use this to access it, never directly g_coursePlot
-function CoursePlot.getInstance()
-	if g_coursePlot == nil then
-		g_coursePlot = CoursePlot(g_currentMission.inGameMenu.pageAI.ingameMap.ingameMap)
-		g_currentMission.inGameMenu.pageAI.ingameMap.draw =
-			Utils.appendedFunction(g_currentMission.inGameMenu.pageAI.ingameMap.draw, CoursePlot.drawCoursePlot)
-	end
-	return g_coursePlot
-end
-
-function CoursePlot.drawCoursePlot()
-	CoursePlot.getInstance():draw()
 end
 
 -- force recreating it after reload (for development

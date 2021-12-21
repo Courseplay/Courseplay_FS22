@@ -167,12 +167,6 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
                 0, 6, 6, 1, true)
         if ok then
             self.course = course
-            local map = g_currentMission.inGameMenu.pageAI.ingameMap
-            self.coursePlot = CoursePlot(map.ingameMap)
-            self.coursePlot:setWaypoints(course.waypoints)
-            self.coursePlot:setVisible(true)
-            g_currentMission.inGameMenu.pageAI.ingameMap.draw =
-                Utils.appendedFunction(g_currentMission.inGameMenu.pageAI.ingameMap.draw, g_devHelper.drawCoursePlot)
         end
     end
 end
@@ -274,11 +268,6 @@ function DevHelper.turnOnGiantsAIDebug()
     g_currentMission.aiSystem:consoleCommandAIShowCosts()
 end
 
-function DevHelper.drawCoursePlot()
-    if g_devHelper.coursePlot then
-        g_devHelper.coursePlot:draw()
-    end
-end
 
 -- make sure to recreate the global dev helper whenever this script is (re)loaded
 g_devHelper = DevHelper()

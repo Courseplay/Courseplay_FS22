@@ -5,25 +5,44 @@ CpGuiUtil = {}
 --- TODO: enable custom page icons.
 --- Clones the setting in game menu page.
 ---@param inGameMenu InGameMenu
+---@param parentGui FrameElement
 ---@param class table
 ---@param predicateFunc function function called on inGameMenu:updatePages() and enables/disables the page.
 ---@param position number position in the in game menu.
+---@param uvs table
 ---@return table
-function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,class,predicateFunc,position)
+function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,parentGui,class,predicateFunc,position,uvs)
 	
-	local page = inGameMenu.pageSettingsGeneral:clone(inGameMenu.pageSettingsGeneral.parent,true)
+	local page = parentGui:clone(parentGui.parent,true)
+	CpGuiUtil.replaceFunction(page,"initialize",class.initialize)
+	CpGuiUtil.replaceFunction(page,"onGuiSetupFinished",class.onGuiSetupFinished)
+	CpGuiUtil.replaceFunction(page,"reset",class.reset)
+	CpGuiUtil.replaceFunction(page,"delete",class.delete)
+	CpGuiUtil.replaceFunction(page,"onFrameOpen",class.onFrameOpen)
+	CpGuiUtil.replaceFunction(page,"onFrameClose",class.onFrameClose)
+	CpGuiUtil.replaceFunction(page,"getNumberOfItemsInSection", class.getNumberOfItemsInSection)
+	CpGuiUtil.replaceFunction(page,"populateCellForItemInSection",class.populateCellForItemInSection)
+	CpGuiUtil.replaceFunction(page,"onListSelectionChanged",class.onListSelectionChanged)
+	CpGuiUtil.replaceFunction(page,"onListHighlightChanged",class.onListHighlightChanged)
+	CpGuiUtil.replaceFunction(page,"onClearElementSelection",class.onClearElementSelection)
+	CpGuiUtil.replaceFunction(page,"updateMenuButtons",class.updateMenuButtons)
 	inGameMenu:registerPage(page, nil, predicateFunc)
-	inGameMenu:addPageTab(page,g_iconsUIFilename, GuiUtils.getUVs(InGameMenu.TAB_UV.GENERAL_SETTINGS)) -- use the global here because the value changes with resolution settings
+	local iconFileName = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+	inGameMenu:addPageTab(page,iconFileName, GuiUtils.getUVs(uvs)) -- use the global here because the value changes with resolution settings
 	page:applyScreenAlignment()
 	page:updateAbsolutePosition()
-    page.onGuiSetupFinished = class.onGuiSetupFinished
-	page.initialize = class.initialize
-	page.onFrameOpen = class.onFrameOpen
-	page.onFrameClose = class.onFrameClose
+	
 	page:initialize()
 	--- Fixes the in game menu layout.
 	CpGuiUtil.fixInGameMenuLayout(inGameMenu,page,position)
+	page:onGuiSetupFinished()
 	return page
+end
+
+function CpGuiUtil.replaceFunction(class,funcName,replaceFunc)
+	if replaceFunc ~=nil then 
+		class[funcName] = replaceFunc
+	end
 end
 
 --- Fixes the in game menu layout.

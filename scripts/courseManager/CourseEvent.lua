@@ -21,7 +21,7 @@ function CourseEvent:readStream(streamId, connection) -- wird aufgerufen wenn mi
 	local nCourses = streamReadInt32(streamId)
 	self.courses = {}
 	for _ = 1, nCourses do
-		table.insert(self.courses, Course.createFromStream(streamId, connection))
+		table.insert(self.courses, Course.createFromStream(self.vehicle,streamId, connection))
 	end
 	self:run(connection);
 end
@@ -40,10 +40,10 @@ function CourseEvent:run(connection)
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"run course event")
 	if #self.courses > 0 then
 		for _, course in ipairs(self.courses) do
-			g_courseManager:assignCourseToVehicle(self.vehicle, course)
+			g_courseStorage:assignCourseToVehicle(self.vehicle, course)
 		end
 	else
-		g_courseManager:unloadAllCoursesFromVehicle(self.vehicle)
+		g_courseStorage:unloadAllCoursesFromVehicle(self.vehicle)
 	end
 	if not connection:getIsServer() then
 		-- event was received from a client, so we, the server broadcast it to all other clients now

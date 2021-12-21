@@ -263,6 +263,8 @@ function Course:init(vehicle, waypoints, temporary, first, last)
 	self.numberOfHeadlands = 0
 	self.workWidth = 0
 	self.name = ''
+	--- Is the course saved under the course manager?
+	self.savedAsFile = false
 	-- only for logging purposes
 	self.vehicle = vehicle
 	self.temporary = temporary or false
@@ -279,6 +281,15 @@ end
 
 function Course:setName(name)
 	self.name = name
+end
+
+--- Sets the course saved/unsaved.
+function Course:setSavedAsFile(saved)
+	self.savedAsFile = saved
+end
+
+function Course:isSavedAsFile()
+	return self.savedAsFile
 end
 
 function Course:setVehicle(vehicle)
@@ -1823,11 +1834,12 @@ function Course.deserializeWaypoints(serializedWaypoints)
 	end
 
 	local waypoints = {}
-	local lines = StringUtil.splitString('|', serializedWaypoints)
+
+	local lines = string.split(serializedWaypoints, '|')
 	for _, line in ipairs(lines) do
 		local p = {}
-		local fields = StringUtil.splitString(';', line)
-		p.x, p.y, p.z = StringUtil.getVectorFromString(fields[1])
+		local fields = string.split(line,';')
+		p.x, p.y, p.z = string.getVector(fields[1])
 		-- just skip empty lines
 		if p.x then
 			p.angle = tonumber(fields[2])
@@ -1850,11 +1862,12 @@ function Course.deserializeWaypoints(serializedWaypoints)
 end
 
 function Course:saveToXml(courseXml, courseKey)
-	setXMLString(courseXml, courseKey .. '#name', self.name)
-	setXMLFloat(courseXml, courseKey .. '#workdWidth', self.workWidth or 0)
-	setXMLInt(courseXml, courseKey .. '#numHeadlands', self.numHeadlands or 0 )
-	setXMLInt(courseXml, courseKey .. '#multiTools', self.multiTools or 0)
-	setXMLString(courseXml, courseKey .. '.waypoints', self:serializeWaypoints())
+	courseXml:setValue(courseKey .. '#name',self.name)
+	courseXml:setValue(courseKey  .. '#workWidth',self.workWidth or 0)
+	courseXml:setValue(courseKey  .. '#numHeadlands',self.numHeadlands or 0)
+	courseXml:setValue(courseKey  .. '#multiTools',self.multiTools or 0)
+	courseXml:setValue(courseKey  .. '#isSavedAsFile',self:isSavedAsFile() or false)
+	courseXml:setValue(courseKey  .. '.waypoints',self:serializeWaypoints())
 end
 
 function Course:writeStream(streamId, connection)
@@ -1865,27 +1878,28 @@ function Course:writeStream(streamId, connection)
 	streamWriteString(streamId, self:serializeWaypoints())
 end
 
----@param vehicle : table
----@param courseXml : XML file
----@param courseKey : key to the course in the XML
+---@param vehicle  table
+---@param courseXml XmlFile
+---@param courseKey string key to the course in the XML
 function Course.createFromXml(vehicle, courseXml, courseKey)
-	local name = getXMLString(courseXml, courseKey .. "#name");
-	local workWidth = getXMLFloat(courseXml, courseKey .. "#workWidth");
-	local numHeadlands = getXMLInt(courseXml, courseKey .. "#numHeadlands");
-	local multiTools = getXMLInt(courseXml, courseKey .. "#multiTools");
-	local serializedWaypoints = getXMLString(courseXml, courseKey .. '.waypoints')
+	local name = courseXml:getValue( courseKey .. '#name')
+	local workWidth = courseXml:getValue( courseKey .. '#workWidth')
+	local numHeadlands = courseXml:getValue( courseKey .. '#numHeadlands')
+	local multiTools = courseXml:getValue( courseKey .. '#multiTools')
+	local savedAsFile = courseXml:getValue( courseKey .. '#isSavedAsFile')
+	local serializedWaypoints = courseXml:getValue( courseKey .. '.waypoints')
 
 	local course = Course(vehicle, Course.deserializeWaypoints(serializedWaypoints))
 	course.name = name
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
-
+	course:setSavedAsFile(savedAsFile)
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
 
-function Course.createFromStream(streamId, connection)
+function Course.createFromStream(vehicle,streamId, connection)
 	local name = streamReadString(streamId)
 	local workWidth = streamReadFloat32(streamId)
 	local numHeadlands = streamReadInt32(streamId)
@@ -1901,7 +1915,6 @@ function Course.createFromStream(streamId, connection)
 	return course
 end
 
-
 function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, numHeadlands, multiTools)
 	local waypoints = {}
 	for i, wp in ipairs(generatedCourse) do
@@ -1911,6 +1924,5 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
-	--course.name = courseplay:loc('COURSEPLAY_TEMP_COURSE')
 	return course
 end
