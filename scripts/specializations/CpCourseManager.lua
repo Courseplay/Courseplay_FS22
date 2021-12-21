@@ -177,17 +177,18 @@ end
 
 function CpCourseManager:cpUpdateWaypointVisibility()
     g_courseDisplay:updateWaypointSigns(self)
- --   self.courseDisplay:updateWaypointSigns(self)
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
-    g_courseDisplay:setSignsVisibility(self);
-    
+    if isControlling then
+        g_courseDisplay:setSignsVisibility(self);
+    end
 end
 
-function CpCourseManager:onLeaveVehicle(isControlling)
-    g_courseDisplay:setSignsVisibility(self, true);
-   
+function CpCourseManager:onLeaveVehicle(wasEntered)
+    if wasEntered then
+        g_courseDisplay:setSignsVisibility(self, true);
+    end
 end
 
 function CpCourseManager:cpOnCourseChange(newCourse)
@@ -200,10 +201,11 @@ function CpCourseManager:cpOnCourseChange(newCourse)
         spec.coursePlot:setVisible(false)
     end
     if g_client then
+        CpCourseManager.updateLegacyWaypoints(self)
         g_courseDisplay:updateWaypointSigns(self)
+        g_courseDisplay:setSignsVisibility(self, not self:getIsControlled())
 	end
 
-    CpCourseManager.updateLegacyWaypoints(self)
 end
 
 function CpCourseManager:drawCoursePlot(map)
