@@ -66,6 +66,20 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	self.courseGeneratorLayoutElements:invalidateLayout()
 	self.courseGeneratorLayout:setVisible(false)
+
+	--- Makes the last selected hotspot is not sold before reopening.
+	local function validateCurrentHotspot(currentMission,hotspot)
+		local page = currentMission.inGameMenu.pageAI
+		if page and hotspot then 
+			if hotspot == page.currentHotspot or hotspot == page.lastHotspot then 
+				page.currentHotspot = nil
+				page.lastHotspot = nil
+				page:setMapSelectionItem(nil)
+				currentMission.inGameMenu:updatePages()
+			end
+		end
+	end
+	g_currentMission.removeMapHotspot = Utils.appendedFunction(g_currentMission.removeMapHotspot,validateCurrentHotspot)
 	
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
@@ -171,12 +185,22 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
 		self.contextBox:setVisible(false)
 	end
+	--- Select the last vehicle after reopening of the page.
+	if self.lastHotspot then 
+		local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.lastHotspot)
+		if vehicle ~=nil then 
+			local hotspot = vehicle:getMapHotspot()
+
+			self:setMapSelectionItem(hotspot)
+		end
+	end
 end
 InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
 
 function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.courseGeneratorLayout:setVisible(false)
 	self.contextBox:setVisible(true)
+	self.lastHotspot = self.currentHotspot
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
