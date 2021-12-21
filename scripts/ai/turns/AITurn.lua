@@ -120,12 +120,17 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 	end
 	local turningRadius = AIUtil.getTurningRadius(vehicle)
 	if 2 * turningRadius <= math.abs(turnContext.dx) then
-		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'narrow turn with no reversing (turn radius = %.1f, dx = %.1f',
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Narrow turn with no reversing (turn radius = %.1f, dx = %.1f',
 				turningRadius, math.abs(turnContext.dx))
 		return true
 	end
 	if not AIVehicleUtil.getAttachedImplementsAllowTurnBackward(vehicle) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Not all attached implements allow for reversing, use generated course turn')
+		return false
+	end
+	local reversingImplement, _ = TurnManeuver.getSteeringParameters(vehicle)
+	if reversingImplement then
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Have a towed implement, use generated course turn')
 		return false
 	end
 	if vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) and
