@@ -49,7 +49,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		local colorData = {}
 		GuiOverlay.copyColors(colorData, item.icon)
 		local color = colorData.color
-		color[4] = 1
+		color[4] = 1 -- alpha channel set to max
 		item.icon.color = colorData.colorFocused
 		GuiOverlay.copyColors(colorData, item.overlay)
 		item.overlay.color = colorData.colorFocused

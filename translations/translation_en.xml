@@ -241,7 +241,14 @@
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_basic_page_title"															text="Courseplay"/>
-		<text name="CP_help_basic_page_test"															text="Courseplay"/>
+		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
+		<text name="CP_help_page_courseManager_text"													text="There are 7 different action available:
+- Creating a new directory.
+- Clearing the current vehicle course.
+- Saving the current course.
+- Loading a course.
+- Moving a course in to another directory.
+- Deleting a course or directory.
+- Renaming a course or directory."/>
 	</texts>
 </l10n>
