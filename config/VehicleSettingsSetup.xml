@@ -23,10 +23,11 @@
 		<!--Stop At End-->
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
 		<!--Turn on Field-->
-		<Setting classType="AIParameterBooleanSetting" name="turnOnField"/>
+		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true"/>
 		<!--Avoid Fruit-->
-		<Setting classType="AIParameterBooleanSetting" name="avoidFruit"/>
-		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding"/>
+		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true"/>
+		<!--Pathfinder Reverse-->
+		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">
@@ -82,7 +83,7 @@
 		<!--Ridgemarker-->	
 		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic"/>
 		<!--Fertilizer-->
-		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled"/>
+		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true"/>
 	</SettingSubTitle>
 	
 	<SettingSubTitle title="multitool">
