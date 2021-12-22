@@ -67,7 +67,7 @@ end
 
 --- Makes sure the "H" key for helper starting, starts the cp job and not the giants default job.
 function CpAIFieldWorker:getStartableAIJob(superFunc,...)
-    if self:hasCpCourse() then 
+    if self:hasCpCourse() then
         self:updateAIFieldWorkerImplementData()
         if self:getCanStartFieldWork() then
             local spec = self.spec_cpAIFieldWorker
@@ -85,8 +85,7 @@ end
 
 function CpAIFieldWorker:getStartAIJobText(superFunc,...)
     local text = superFunc(self,...)
-    local job = self:getStartableAIJob()
-	if job and job:isa(AIJobFieldWorkCp) and self:getHasStartableAIJob() then
+	if self:getHasStartableAIJob() and self:hasCpCourse() then
         return text.."(CP)"
     end
     return text
