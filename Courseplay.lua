@@ -101,6 +101,7 @@ function Courseplay:load()
 	self.courseStorage = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
 	g_courseManger = self.courseStorage
 	g_courseDisplay = CourseDisplay()
+	g_vehicleConfigurations:loadFromXml()
 end
 
 function Courseplay:registerConsoleCommands()

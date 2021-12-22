@@ -27,18 +27,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---
 ---@class VehicleConfigurations : CpObject
 VehicleConfigurations = CpObject()
+VehicleConfigurations.XML_KEY = "VehicleConfigurations.Vehicle"
+VehicleConfigurations.MOD_NAME = g_currentModName
 
+--- All attributes and the data type.
 VehicleConfigurations.attributes = {
-    {name = 'toolOffsetX', getXmlFunction = getXMLFloat},
-    {name = 'noReverse', getXmlFunction = getXMLBool},
-    {name = 'turnRadius', getXmlFunction = getXMLFloat},
-    {name = 'workingWidth', getXmlFunction = getXMLFloat},
-    {name = 'balerUnloadDistance', getXmlFunction = getXMLFloat},
-    {name = 'directionNodeOffsetZ', getXmlFunction = getXMLFloat},
-    {name = 'implementWheelAlwaysOnGround', getXmlFunction = getXMLBool},
-    {name = 'ignoreCollisionBoxesWhenFolded', getXmlFunction = getXMLBool},
-	{name = 'baleCollectorOffset', getXmlFunction = getXMLFloat},
+    toolOffsetX = XMLValueType.FLOAT,
+    noReverse = XMLValueType.BOOL,
+    turnRadius = XMLValueType.FLOAT,
+    workingWidth = XMLValueType.FLOAT,
+    balerUnloadDistance = XMLValueType.FLOAT,
+    directionNodeOffsetZ = XMLValueType.FLOAT,
+    implementWheelAlwaysOnGround = XMLValueType.BOOL,
+    ignoreCollisionBoxesWhenFolded = XMLValueType.BOOL,
+    baleCollectorOffset = XMLValueType.FLOAT,
 }
+
 
 function VehicleConfigurations:init()
     self.vehicleConfigurations = {}
@@ -47,57 +51,59 @@ function VehicleConfigurations:init()
     end
 end
 
+function VehicleConfigurations:registerXmlSchema()
+    self.xmlSchema = XMLSchema.new("vehicleConfigurations")
+    self.xmlSchema:register(XMLValueType.STRING,self.XML_KEY.."(?)#name","Configuration name")
+    
+    for name,xmlType in pairs(VehicleConfigurations.attributes) do 
+        self.xmlSchema:register(xmlType,self.XML_KEY.."(?)#"..name,"Configuration value")
+    end
+end
+
 function VehicleConfigurations:loadFromXml()
+    self:registerXmlSchema()
     self.xmlFileName = Utils.getFilename('config/VehicleConfigurations.xml', Courseplay.BASE_DIRECTORY)
     self.xmlFile = self:loadXmlFile(self.xmlFileName)
-    self.userXmlFileName = getUserProfileAppPath() .. 'modsSettings/Courseplay/vehicleConfigurations.xml'
+    self.userXmlFileName = getUserProfileAppPath() .. 'modSettings/'..VehicleConfigurations.MOD_NAME..'/vehicleConfigurations.xml'
 
     self.userXmlFile = self:loadXmlFile(self.userXmlFileName)
 end
 
-function VehicleConfigurations:addAttribute(vehicleConfiguration, xmlFile, vehicleElement, attribute, getXmlFunction)
-    local configValue = getXmlFunction(xmlFile, vehicleElement .. '#' .. attribute)
+--- Saves the xml attributes under the vehicle name.
+function VehicleConfigurations:addAttribute(vehicleConfiguration, xmlFile, vehicleElement, attributeName)
+    local configValue = xmlFile:getValue(vehicleElement.."#"..attributeName) 
     if configValue then
-        vehicleConfiguration[attribute] = configValue
+        vehicleConfiguration[attributeName] = configValue
         local valueAsString = ''
         if type(configValue) == 'number' then
             valueAsString = string.format('%.1f', configValue)
         else
             valueAsString = string.format('%s', tostring(configValue))
         end
-        CpUtil.info('\\__ %s = %s', attribute, valueAsString)
+        CpUtil.info('\\__ %s = %s', attributeName, valueAsString)
     end
 end
 
+--- Reads all vehicle attributes from the xml file.
 function VehicleConfigurations:readVehicle(xmlFile, vehicleElement)
     local vehicleConfiguration = {}
-    local name = getXMLString(xmlFile, vehicleElement .. "#name")
+    local name = xmlFile:getValue(vehicleElement .. "#name")
     CpUtil.info('Reading configuration for %s', name)
-    for _, attribute in ipairs(self.attributes) do
-        self:addAttribute(vehicleConfiguration, xmlFile, vehicleElement, attribute.name, attribute.getXmlFunction)
+    for attributeName, _ in pairs(self.attributes) do
+        self:addAttribute(vehicleConfiguration, xmlFile, vehicleElement, attributeName)
     end
     self.vehicleConfigurations[name] = vehicleConfiguration
 end
 
 function VehicleConfigurations:loadXmlFile(fileName)
     CpUtil.info('Loading vehicle configuration from %s ...', fileName)
-    if fileExists(fileName) then
-        local xmlFile = loadXMLFile('vehicleConfigurations', fileName);
-        local rootElement = 'VehicleConfigurations'
-        if xmlFile and hasXMLProperty(xmlFile, rootElement) then
-            local i = 0
-            while true do
-                local vehicleElement = string.format('%s.Vehicle(%d)', rootElement, i)
-                if hasXMLProperty(xmlFile, vehicleElement) then
-                    self:readVehicle(xmlFile, vehicleElement)
-                else
-                    break
-                end
-                i = i + 1
-            end
-            return xmlFile
-        end
-    else
+    local xmlFile = XMLFile.load("vehicleConfigurationsXmlFile",fileName,self.xmlSchema)
+    if xmlFile then 
+        xmlFile:iterate(self.XML_KEY, function (ix, key)
+            self:readVehicle(xmlFile, key)
+        end)
+        xmlFile:delete()
+    else 
         CpUtil.info('Vehicle configuration file %s does not exist.', fileName)
     end
 end
@@ -125,7 +131,7 @@ end
 --- Get a custom configuration value for an object and its attached implements.
 --- First checks the vehicle itself, then all its attached implements until the attribute is found. If the same
 --- attribute is defined on multiple implements, only the first is returned
---- @param vehicle table vehicle
+--- @param object table vehicle
 --- @param attribute string configuration attribute to get
 --- @return any the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:getRecursively(object, attribute)
