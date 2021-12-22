@@ -17,12 +17,18 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	--- Small translation fix, needs to be removed once giants fixes it.
 	local ai = 	g_currentMission.aiJobTypeManager
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
+
+	self.cpJobParameters = CpJobParameters()
+	--self.startAtParameter = AIParameterSettingList.new(self.cpJobParameters.settingsByName[self.cpJobParameters.start].data)
+	self:addNamedParameter('startAt', self.cpJobParameters.settingsByName[CpJobParameters.startAt])
+	local startAtGroup = AIParameterGroup.new(g_i18n:getText('CP_jobParameter_startAt_title'))
+	startAtGroup:addParameter(self.cpJobParameters.settingsByName[CpJobParameters.startAt])
+	table.insert(self.groupedParameters, startAtGroup)
 	return self
 end
 
 function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
-
 	-- for now, always take the auto work width
 	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Setting work width parameter for course generation to %.1f', WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 	vehicle:setCourseGeneratorSettingFloatValue(CpCourseGeneratorSettings.workWidth,WorkWidthUtil.getAutomaticWorkWidth(vehicle))
@@ -34,6 +40,9 @@ function AIJobFieldWorkCp:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
+
+
+	DebugUtil.printTableRecursively(self.cpJobParameters)
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.positionAngleParameter:getPosition()
@@ -57,6 +66,10 @@ function AIJobFieldWorkCp:validate(farmId)
 		return false, 'Generate a course before starting the job!'
 	end
 	return true, ''
+end
+
+function AIJobFieldWorkCp:getCpJobParameters()
+	return self.cpJobParameters
 end
 
 --- Registers additional jobs.

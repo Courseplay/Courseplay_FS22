@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/courseplay)
-Copyright (C) 2019 Peter Vaiko
+Copyright (C) 2019-2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -164,21 +164,6 @@ end
 function AIDriveStrategyCombineCourse:stop(msgReference)
     self:resetFixMaxRotationLimit()
     UnloadableFieldworkAIDriver.stop(self,msgReference)
-end
-
--- remember a course to start
-function AIDriveStrategyCombineCourse:rememberCourse(course, ix)
-	self.rememberedCourse = course
-	self.rememberedCourseStartIx = ix
-end
-
--- start a remembered course
-function AIDriveStrategyCombineCourse:startRememberedCourse()
-	self:startCourse(self.rememberedCourse, self.rememberedCourseStartIx)
-end
-
-function AIDriveStrategyCombineCourse:getRememberedCourseAndIx()
-	return self.rememberedCourse, self.rememberedCourseStartIx
 end
 
 function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
@@ -1555,7 +1540,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
 		self:debug('No path found to return to fieldwork after self unload',
 				g_currentMission.time - (self.pathfindingStartedAt or 0))
 		local course, ix = self:getRememberedCourseAndIx()
-		local returnCourse = self:setUpAlignmentCourse(course, ix)
+		local returnCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius, course, ix):getCourse()
 		if returnCourse then
 			self:debug('Start an alignment course to fieldwork waypoint %d', ix)
 			self:startCourse(returnCourse, 1)

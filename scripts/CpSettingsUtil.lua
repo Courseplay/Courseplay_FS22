@@ -98,7 +98,7 @@ function CpSettingsUtil.getSettingFromParameters(parameters,...)
     return CpSettingsUtil.classTypes[parameters.classType](parameters,...)
 end
 
-function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
+function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
     local xmlFile = XMLFile.load("settingSetupXml", filePath, CpSettingsUtil.setupXmlSchema)
     class.settings = {}
     class.settingsByName = {}

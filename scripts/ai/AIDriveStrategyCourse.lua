@@ -90,9 +90,25 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
 
     -- TODO: should probably be the closest waypoint to the target?
     local course = vehicle:getFieldWorkCourse()
-    local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
-    self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
-    self:startCourse(course, ixClosestRightDirection)
+
+    local job = vehicle:getJob()
+    local startAt, startIx
+    if job and job.getCpJobParameters then
+        self:debug('Got job parameters, starting at %d', job:getCpJobParameters().settingsByName[CpJobParameters.startAt]:getValue())
+        startAt = job:getCpJobParameters().settingsByName[CpJobParameters.startAt]:getValue()
+    else
+        self:debug('No job parameters found, starting at nearest waypoint')
+        startAt = CpJobParameters.START_AT_NEAREST_POINT
+    end
+    if startAt == CpJobParameters.START_AT_NEAREST_POINT then
+        local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
+        self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
+        startIx = ixClosestRightDirection
+    else
+        self:debug('Starting course at the first waypoint')
+        startIx = 1
+    end
+    self:startCourse(course, startIx)
 end
 
 function AIDriveStrategyCourse:update()

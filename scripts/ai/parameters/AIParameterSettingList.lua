@@ -7,7 +7,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
 	self.type = AIParameterType.SELECTOR
 	self.vehicle = vehicle
-	self.class = class
+	self.klass = class
 	self.name = data.name
 	if next(data.values) ~=nil then 
 		self.values = data.values
@@ -281,13 +281,13 @@ end
 
 --- Raises an event and sends the callback string to the Settings controller class.
 function AIParameterSettingList:raiseCallback(callbackStr)
-	if self.class and self.class.raiseCallback and callbackStr then 
+	if self.klass ~= nil and self.klass.raiseCallback and callbackStr then
 		self:debug("raised Callback %s",callbackStr)
 		--- If the setting is bound to a setting, then call the specialization function with self as vehicle.
 		if self.vehicle ~= nil then 
-			self.class.raiseCallback(self.vehicle,callbackStr)
+			self.klass.raiseCallback(self.vehicle,callbackStr)
 		else
-			self.class:raiseCallback(callbackStr)
+			self.klass:raiseCallback(callbackStr)
 		end
 	end
 end
