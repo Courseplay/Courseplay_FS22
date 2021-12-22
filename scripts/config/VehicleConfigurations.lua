@@ -97,12 +97,14 @@ end
 
 function VehicleConfigurations:loadXmlFile(fileName)
     CpUtil.info('Loading vehicle configuration from %s ...', fileName)
-    local xmlFile = XMLFile.load("vehicleConfigurationsXmlFile",fileName,self.xmlSchema)
-    if xmlFile then 
-        xmlFile:iterate(self.XML_KEY, function (ix, key)
-            self:readVehicle(xmlFile, key)
-        end)
-        xmlFile:delete()
+    if fileExists(fileName) then
+        local xmlFile = XMLFile.load("vehicleConfigurationsXmlFile",fileName,self.xmlSchema)
+        if xmlFile then 
+            xmlFile:iterate(self.XML_KEY, function (ix, key)
+                self:readVehicle(xmlFile, key)
+            end)
+            xmlFile:delete()
+        end
     else 
         CpUtil.info('Vehicle configuration file %s does not exist.', fileName)
     end

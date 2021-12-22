@@ -34,6 +34,10 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 		AIParameterSettingList.setFloatValue(self,data.default)
 		self:debug("set to default %s",data.default)
 	end
+	if data.defaultBool ~= nil then 
+		AIParameterSettingList.setValue(self,data.defaultBool)
+		self:debug("set to default %s",tostring(data.defaultBool))
+	end
 
 	self.callbacks = data.callbacks
 

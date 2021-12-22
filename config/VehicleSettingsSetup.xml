@@ -21,7 +21,7 @@
 			</Texts>
 		</Setting>
 		<!--Stop At End-->
-		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd"/>
+		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
 		<!--Turn on Field-->
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField"/>
 		<!--Avoid Fruit-->

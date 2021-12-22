@@ -30,7 +30,8 @@ CpSettingsUtil.classTypes = {
 				- title (string): title text in the gui menu (optional)
 				- tooltip (string): tooltip text in the gui menu (optional)
 				- default(int) : default value to be set. (optional)
-
+				- defaultBool(bool) : default value to be set. (optional)
+				
 				- min (int): min value
 				- max (int): max value
 				- incremental (float): increment (optional), default "1"
@@ -69,6 +70,7 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.STRING, key.."#title", "Setting tile") -- optional
     schema:register(XMLValueType.STRING, key.."#tooltip", "Setting tooltip") -- optional
 	schema:register(XMLValueType.INT, key.."#default", "Setting default value") -- optional
+	schema:register(XMLValueType.BOOL, key.."#defaultBool", "Setting default bool value") -- optional
 
 	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
 	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
@@ -139,6 +141,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class,filePath)
 				settingParameters.tooltip = g_i18n:getText(setupKey..settingParameters.name.."_tooltip")
 			end
 			settingParameters.default = xmlFile:getValue(baseKey.."#default")
+			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
 
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")
