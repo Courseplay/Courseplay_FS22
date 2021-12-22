@@ -1202,21 +1202,16 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
 end
 
 function AIDriveStrategyCombineCourse:handleChopperPipe()
-	self.isChopperWaitingForTrailer = false
-	if self.state == self.states.WORKING then
-		-- chopper always opens the pipe
-		self:openPipe()
-		-- and stops if there's no trailer in sight
-		local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-		--self:debug('filltype = %s, fillLevel = %.1f', self:getFillType(), fillLevel)
-		-- not using isFillableTrailerUnderPipe() as the chopper sometimes has FillType.UNKNOWN
-		if self:getIsChopperWaitingForTrailer(fillLevel) then
-			self:debugSparse('Chopper waiting for trailer, fill level %f', fillLevel)
-			self.isChopperWaitingForTrailer = true
-			self:setMaxSpeed(0)
-		end
-	else
-		self:closePipe()
+	local trailer = NetworkUtil.getObject(self.combine.spec_pipe.nearestObjectInTriggers.objectId)
+	local currentPipeTargetState = self.combine.spec_pipe.targetState
+	if currentPipeTargetState ~= 2 then
+		self.combine:setPipeState(2)
+	end
+	local dischargeNode = self.combine:getCurrentDischargeNode()
+	local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
+	if targetObject == nil or trailer == nil then
+		self:debugSparse('Chopper waiting for trailer')
+		self:setMaxSpeed(0)
 	end
 end
 
@@ -1289,21 +1284,6 @@ end
 --- Support for AutoDrive mod: they'll only find us if we open the pipe
 function AIDriveStrategyCombineCourse:isAutoDriveWaitingForPipe()
 	return self.vehicle.spec_autodrive and self.vehicle.spec_autodrive.combineIsCallingDriver and self.vehicle.spec_autodrive:combineIsCallingDriver(self.vehicle)
-end
-
-function AIDriveStrategyCombineCourse:getIsChopperWaitingForTrailer()
-	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-	if fillLevel > 0.01 and self:getFillType() ~= FillType.UNKNOWN and not (self:isFillableTrailerUnderPipe() and self:canDischarge()) then
-		-- the above condition (by the time of writing this comment we can't remember which exact one) temporarily
-		-- can return an incorrect value so try to ignore these glitches
-		self.cantDischargeCount = self.cantDischargeCount and self.cantDischargeCount + 1 or 0
-		if self.cantDischargeCount > 10 then
-			return true
-		end
-	else
-		self.cantDischargeCount = 0
-	end
-	return false
 end
 
 function AIDriveStrategyCombineCourse:shouldStopForUnloading()
