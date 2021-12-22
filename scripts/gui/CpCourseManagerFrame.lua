@@ -62,10 +62,7 @@ function CpCourseManagerFrame.init(courseStorage)
 	local function predicateFunc()
 		local inGameMenu = g_gui.screenControllers[InGameMenu]
 		local aiPage = inGameMenu.pageAI
-
-		local allowed = inGameMenu.currentPage == inGameMenu.pageCpVehicleSettings or inGameMenu.currentPage == inGameMenu.pageCourseManager or
-						aiPage.currentHotspot ~= nil
-		return allowed
+		return aiPage.currentHotspot ~= nil
 	end
 	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pagePrices,CpCourseManagerFrame
 												,predicateFunc,3,{256,0,128,128})

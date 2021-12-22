@@ -261,7 +261,11 @@ function CourseDisplay:deleteSign(sign)
 	delete(sign)
 end
 
+--- Changes the visibility of the courses attached to the vehicle. 
+---@param vehicle Vehicle
+---@param forceHide boolean if true, then hide all waypoints.
 function CourseDisplay:setSignsVisibility(vehicle, forceHide)
+	if not forceHide and vehicle:getCpLegacyWaypoints() == nil then return end
 	if self.courses[vehicle] == nil or (#self.courses[vehicle].current == 0 and #self.courses[vehicle].crossing == 0) then
 		return
 	end
@@ -278,9 +282,9 @@ function CourseDisplay:setSignsVisibility(vehicle, forceHide)
 			vis = true
 			local line = getChildAt(signData.sign, 0)
 			if showVisualWaypointsState==CpVehicleSettings.SHOW_COURSE_START_STOP then
-				setVisibility(line, isStartEndPoint)
+				setVisibility(line, isStartEndPoint and not forceHide)
 			else
-				setVisibility(line, true)
+				setVisibility(line, not forceHide)
 			end
 		else
 			if showVisualWaypointsState==CpVehicleSettings.SHOW_COURSE_ALL then
@@ -297,7 +301,7 @@ function CourseDisplay:setSignsVisibility(vehicle, forceHide)
 		--	vis = false
 		--end
 
-		setVisibility(signData.sign, vis)
+		setVisibility(signData.sign, vis and not forceHide)
 	end
 
 	for _,signData in pairs(self.courses[vehicle].crossing) do
@@ -308,7 +312,7 @@ function CourseDisplay:setSignsVisibility(vehicle, forceHide)
 			vis = false
 		end
 
-		setVisibility(signData.sign, vis)
+		setVisibility(signData.sign, vis and not forceHide)
 	end
 end
 

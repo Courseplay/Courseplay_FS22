@@ -7,8 +7,31 @@
 
 <Settings prefixText="CP_global_setting_">
 	<SettingSubTitle prefix="true" title="general">
-		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses">
+		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses"/>
+		<Setting classType="AIParameterSettingList" name="wageModifier" default = "100" unit="4">
+			<Values>
+				<Value>0</Value>
+				<Value>50</Value>
+				<Value>100</Value>
+				<Value>250</Value>
+				<Value>500</Value>
+			</Values>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="autoRepair" default = "70">
+			<Values>
+				<Value>0</Value>
+				<Value>25</Value>
+				<Value>70</Value>
+				<Value>99</Value>
+			</Values>
+			<Texts>
+				<Text>off</Text>
+				<Text>less_than_25</Text>
+				<Text>less_than_70</Text>
+				<Text>always</Text>
+			</Texts>
+		</Setting>
+
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="pathfinder">
 		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoal" min="5" max="90" incremental="5" default="45"/>

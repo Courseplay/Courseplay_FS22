@@ -85,6 +85,7 @@ Die nächste Version von Courseplay.]]>
 		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
 		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
+		<sourceFile filename="scripts/gui/CpAIHotspotExtended.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
@@ -92,6 +93,9 @@ Die nächste Version von Courseplay.]]>
 		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
 		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
+	<!-- TODO: Implement this specialization 
+		<specialization name="cpAIFieldWorkerExtended" className="CpAIFieldWorkerExtended" filename="scripts/specializations/CpAIFieldWorkerExtended.lua"/>
+	-->
 	</specializations>
 
 	<inputBinding>

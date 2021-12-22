@@ -128,6 +128,20 @@ function CpGuiUtil.executeFunctionForElementsWithProfileName(rootElement,profile
 	end
 end
 
+--- Sets a value for all children elements with a given profile name.
+---@param rootElement GuiElement Searches in this element children elements.
+---@param profileName string 
+---@param valueName string
+---@return GuiElement
+function CpGuiUtil.setValueForElementsWithProfileName(rootElement,profileName,valueName,...)
+	local items = CpGuiUtil.getElementsWithProfileName(rootElement,profileName)
+	if items then 
+		for _,item in ipairs(items) do 
+			item[valueName](item,...)
+		end
+	end
+end
+
 --- Executes a function for all children elements.
 ---@param rootElement GuiElement Searches in this element children elements.
 ---@param lambda1 function
@@ -180,4 +194,19 @@ end
 
 function CpGuiUtil.getNormalizedRgb(r, g, b,alpha)
 	return r / 255, g / 255, b / 255, alpha
+end
+---unit_minutesShort
+function CpGuiUtil.getFormatTimeText(seconds)
+	local minutes = math.floor(seconds/60)
+	seconds = seconds %60
+	local hours = math.floor(minutes/60)
+	seconds = seconds %60
+	minutes = minutes %60
+	if hours > 0 then 
+		return string.format("%dhour %dmin %dsec",hours,minutes,seconds)
+	elseif minutes>0 then 
+		return string.format("%dmin %dsec",minutes,seconds)
+	else 
+		return string.format("%dsec",seconds)
+	end
 end

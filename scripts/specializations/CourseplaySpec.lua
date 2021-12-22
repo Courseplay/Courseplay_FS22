@@ -19,7 +19,7 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CourseplaySpec)
---    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
+--    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
 
@@ -27,8 +27,13 @@ end
 
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpAdditionalHotspotDetails', CourseplaySpec.getCpAdditionalHotspotDetails)
 end
 
+function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
+   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CourseplaySpec.getStartAIJobText)
+  
+end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 ---------------------------------------------------------------------------------------------------------------------------
@@ -55,6 +60,11 @@ function CourseplaySpec:onLeaveVehicle(isControlling)
    
 end
 
+--- TODO: return all relevant values that should be displayed under the map hotspot.
+function CourseplaySpec:getCpAdditionalHotspotDetails()
+    --- time remaining in s
+    return 60
+end
 
 
 function CourseplaySpec:getReverseDrivingDirectionNode()

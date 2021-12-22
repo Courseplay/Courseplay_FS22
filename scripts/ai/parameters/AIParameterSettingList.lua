@@ -25,6 +25,11 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	-- index of the previous value/text
 	self.previous = 1
 
+	if self.texts == nil or next(self.texts) == nil then 
+		self.texts = {}
+		AIParameterSettingList.enrichTexts(self,data.unit)
+	end
+
 	if data.default ~=nil then
 		AIParameterSettingList.setFloatValue(self,data.default)
 		self:debug("set to default %s",data.default)
@@ -58,7 +63,8 @@ end
 AIParameterSettingList.UNITS = {
 	AIParameterSettingList.getSpeedText, --- km/h
 	AIParameterSettingList.getDistanceText, --- m
-	AIParameterSettingList.getAreaText --- ha/arcs
+	AIParameterSettingList.getAreaText, --- ha/arcs
+	function () return "%"	end			--- percent
 }
 
 
@@ -80,6 +86,18 @@ function AIParameterSettingList:generateValues(values,texts,min,max,inc,textStr,
 		table.insert(texts,text)
 	end
 end
+
+--- Enriches texts with values of values, if they are not explicit declared. 
+function AIParameterSettingList:enrichTexts(unit)
+	for i,value in ipairs(self.values) do 
+		local text = tostring(value)
+		if unit then 
+			text = text..AIParameterSettingList.UNITS[unit](value)
+		end
+		self.texts[i] = text
+	end
+end
+
 
 -- Is the current value same as the param?
 function AIParameterSettingList:is(value)

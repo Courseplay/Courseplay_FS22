@@ -218,6 +218,12 @@ function Courseplay.error(str,...)
 	Courseplay.info("error: "..str,...)
 end
 
+--- Fixes global translations.
+function Courseplay.getText(i18n,superFunc,name,customEnv)
+	return superFunc(i18n,name,customEnv or Courseplay.MOD_NAME)
+end
+I18N.getText = Utils.overwrittenFunction(I18N.getText,Courseplay.getText)
+
 --- Registers all cp specializations.
 ---@param typeManager TypeManager
 function Courseplay.register(typeManager)
@@ -235,6 +241,8 @@ function Courseplay.register(typeManager)
 		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
+		--- TODO: Implement this specialization
+	--	CpAIFieldWorkerExtended.register(typeManager,typeName,typeEntry.specializations)
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)

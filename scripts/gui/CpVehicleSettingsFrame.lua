@@ -12,10 +12,7 @@ function CpVehicleSettingsFrame.init()
 	local function predicateFunc()
 		local inGameMenu = g_gui.screenControllers[InGameMenu]
 		local aiPage = inGameMenu.pageAI
-
-		local allowed = inGameMenu.currentPage == inGameMenu.pageCpVehicleSettings or 
-						aiPage.currentHotspot ~= nil
-		return allowed
+		return aiPage.currentHotspot ~= nil
 	end
 
 	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pageSettingsGeneral,CpVehicleSettingsFrame
