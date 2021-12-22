@@ -282,11 +282,12 @@ end
 --- Generates Gui button in the ai job menu from settings.
 ---@param settingsBySubTitle table
 ---@param class table
-function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle,class)
+function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle,class,settings)
 	for _,data in ipairs(settingsBySubTitle) do 
 		local parameterGroup = AIParameterGroup.new(data.title)
 		for _,setting in ipairs(data.elements) do 
-			parameterGroup:addParameter(setting)
+			local s = settings[setting:getName()]
+			parameterGroup:addParameter(s)
 		end
 		table.insert(class.groupedParameters, parameterGroup)
 	end

@@ -20,7 +20,7 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 
 	self.cpJobParameters = CpJobParameters()
 
-	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self)
+	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	return self
 end
 
