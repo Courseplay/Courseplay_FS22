@@ -504,7 +504,8 @@ function AIUtil.findLoweringDurationMs(vehicle)
 		if object.spec_animatedVehicle then
 			-- TODO: implement these in the specifications?
 			return math.max(object.spec_animatedVehicle:getAnimationDuration('lowerAnimation'),
-					object.spec_animatedVehicle:getAnimationDuration('rotatePickup'))
+					object.spec_animatedVehicle:getAnimationDuration('rotatePickup'),
+					object.spec_animatedVehicle:getAnimationDuration('folding'))
 		else
 			return 0
 		end
