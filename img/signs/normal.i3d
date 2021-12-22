@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<i3D name="CourseplayWaypointSign" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+<i3D name="diamond" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
   <Asset>
-    <Export program="GIANTS Editor 64bit" version="8.1.0"/>
+    <Export program="GIANTS Editor 64bit" version="9.0.2"/>
   </Asset>
 
   <Files>
-    <File fileId="2" filename="colorShader.xml"/>
-    <File fileId="1" filename="normal.png"/>
+    <File fileId="3" filename="$data/shaders/vehicleShader.xml"/>
   </Files>
 
 
   <Materials>
-    <Material name="line" materialId="4">
-      <Emissivemap fileId="1"/>
+    <Material name="diamond" materialId="4" diffuseColor="0.8 0.8 0.8 1" specularColor="0.486275 1 0" customShaderId="3" customShaderVariation="colorMask">
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.527115 0.01 0.03 1"/>
+      <CustomParameter name="colorMat1" value="0 0 0 0"/>
+      <CustomParameter name="colorMat2" value="0 0 0 0"/>
+      <CustomParameter name="colorMat3" value="0 0 0 0"/>
+      <CustomParameter name="colorMat4" value="0 0 0 0"/>
+      <CustomParameter name="colorMat5" value="0 0 0 1"/>
+      <CustomParameter name="colorMat6" value="0 0.1 0 0"/>
+      <CustomParameter name="colorMat7" value="0 0 0 0"/>
     </Material>
-    <Material name="diamond" materialId="5" customShaderId="2">
-      <Emissivemap fileId="1"/>
-      <CustomParameter name="diffuseColor" value="1 0.212 0 1"/>
+    <Material name="line" materialId="5" diffuseColor="0.8 0.8 0.8 1" specularColor="0.494118 1 0" customShaderId="3" customShaderVariation="colorMask">
+      <CustomParameter name="RDT" value="0 0 0 0"/>
+      <CustomParameter name="dirtColor" value="0.2 0.14 0.08 0"/>
+      <CustomParameter name="colorMat0" value="0.028426 0.768151 1 1"/>
+      <CustomParameter name="colorMat1" value="1 0.1 0.1 1"/>
+      <CustomParameter name="colorMat2" value="0.1 1 0.1 1"/>
+      <CustomParameter name="colorMat3" value="0.1 0.1 1 1"/>
+      <CustomParameter name="colorMat4" value="1 1 0.1 1"/>
+      <CustomParameter name="colorMat5" value="0.05 0.05 0.05 1"/>
+      <CustomParameter name="colorMat6" value="1 0.1 1 1"/>
+      <CustomParameter name="colorMat7" value="0.1 1 1 1"/>
     </Material>
   </Materials>
 
@@ -30,9 +46,9 @@
   </Dynamics>
 
   <Scene>
-    <Shape shapeId="1" name="Waypoint" clipDistance="100" nodeId="9" materialIds="5" castsShadows="true">
-      <Shape shapeId="2" name="Line" nodeId="10" materialIds="4" castsShadows="true"/>
-    </Shape>
+      <Shape shapeId="1" name="diamond" nodeId="9" materialIds="4">
+        <Shape shapeId="2" name="line" nodeId="10" materialIds="5"/>
+      </Shape>
   </Scene>
 
 </i3D>

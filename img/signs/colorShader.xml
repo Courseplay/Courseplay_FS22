@@ -15,9 +15,6 @@ uniform float3 shapeColor;
 ]]>
 			</CodeInjection>
 			<CodeInjection position="EMISSIVE_FS">
-<![CDATA[
-emissiveColor.rgb *= shapeColor.rgb;
-]]>
 			</CodeInjection>
 		</CodeInjections>
 	</LodLevel>
