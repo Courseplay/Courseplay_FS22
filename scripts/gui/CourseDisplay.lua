@@ -269,8 +269,8 @@ function CourseDisplay:setSignsVisibility(vehicle, forceHide)
 		return
 	end
 	local numSigns = #self.courses[vehicle].current
-
-	local showVisualWaypointsState = vehicle:getCpSettingValue(CpVehicleSettings.showCourse)
+	local settings = vehicle:getCpSettings()
+	local showVisualWaypointsState = settings.showCourse:getValue()
 
 	local vis, isStartEndPoint
 	for k,signData in pairs(self.courses[vehicle].current) do

@@ -22,6 +22,7 @@ FillLevelManager = CpObject()
 
 function FillLevelManager:init(vehicle, debugChannel)
     self.vehicle = vehicle
+    self.settings = vehicle:getCpSettings()
     self.debugChannel = debugChannel or CpDebug.DBG_IMPLEMENTS
     self.lastTotalFillLevel = math.huge
 end
@@ -49,7 +50,8 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
     local allOk = true
     local hasSeeds, hasNoFertilizer = false, false
     local liquidFertilizerFillLevel,herbicideFillLevel, seedsFillLevel, fertilizerFillLevel = 0, 0, 0, 0
-    if not self.vehicle:getCpSettingValue(CpVehicleSettings.sowingMachineFertilizerEnabled) and AIUtil.hasAIImplementWithSpecialization(self.vehicle, FertilizingCultivator) then
+
+    if not self.settings.sowingMachineFertilizerEnabled:getValue() and AIUtil.hasAIImplementWithSpecialization(self.vehicle, FertilizingCultivator) then
         -- TODO_22 courseplay:setInfoText(self.vehicle, "skipping loading Seeds/Fertilizer and continue with Cultivator !!!")
         return true
     end

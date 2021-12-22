@@ -47,7 +47,7 @@ function CpVehicleSettingsFrame:onFrameOpen()
 	if vehicle ~=nil then 
 		if vehicle.getCpSettings then 
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "onFrameOpen CpVehicleSettingsFrame" )
-			self.settings = vehicle:getCpSettings()
+			self.settings = vehicle:getCpSettingsTable()
 			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
 		end
 	end

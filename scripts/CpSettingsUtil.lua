@@ -101,7 +101,6 @@ end
 function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
     local xmlFile = XMLFile.load("settingSetupXml", filePath, CpSettingsUtil.setupXmlSchema)
     class.settings = {}
-    class.settingsByName = {}
 	class.settingsBySubTitle = {}
     local uniqueID = 0
 	local setupKey = xmlFile:getValue("Settings#prefixText")
@@ -185,8 +184,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.uniqueID = uniqueID
 
 			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters,nil,class)
-			class.settingsByName[settingParameters.name] = setting
-			class[settingParameters.name] = settingParameters.name
+			class[settingParameters.name] = setting
 			table.insert(class.settings,setting)
 			table.insert(subTitleSettings.elements,setting)
 
@@ -215,18 +213,15 @@ function CpSettingsUtil.getSpecsFromString(str)
 end
 
 --- Clones a settings table.
+---@param class table 
 ---@param settings table
----@return table clonedSettings
----@return table clonedSettingsByNames
-function CpSettingsUtil.cloneSettingsTable(settings,...)
-	local clonedSettings = {}
-	local clonedSettingsByNames = {}
+function CpSettingsUtil.cloneSettingsTable(class,settings,...)
+	class.settings = {}
 	for _,setting in ipairs(settings) do 
 		local settingClone = setting:clone(...)
-		table.insert(clonedSettings,settingClone)
-		clonedSettingsByNames[settingClone:getName()] = settingClone
+		table.insert(class.settings,settingClone)
+		class[settingClone:getName()] = settingClone
 	end
-	return clonedSettings,clonedSettingsByNames
 end
 
 --- Clones for each setting and subtitle generic gui elements and applies basic setups.
@@ -283,6 +278,21 @@ function CpSettingsUtil.unlinkGuiElementsAndSettings(settings,layout)
 		end
 	end
 end
+
+--- Generates Gui button in the ai job menu from settings.
+---@param settingsBySubTitle table
+---@param class table
+function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle,class,settings)
+	for _,data in ipairs(settingsBySubTitle) do 
+		local parameterGroup = AIParameterGroup.new(data.title)
+		for _,setting in ipairs(data.elements) do 
+			local s = settings[setting:getName()]
+			parameterGroup:addParameter(s)
+		end
+		table.insert(class.groupedParameters, parameterGroup)
+	end
+end
+
 
 --- Raises an event for all settings.
 ---@param settings table

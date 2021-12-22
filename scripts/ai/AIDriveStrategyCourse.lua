@@ -82,6 +82,9 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     -- TODO_22 properly implement this in courseplaySpec
     self.storage = vehicle.spec_courseplaySpec
 
+    self.settings = vehicle:getCpSettings()
+    self.courseGeneratorSettings = vehicle:getCourseGeneratorSettings()
+
     -- for now, pathfinding generated courses can't be driven by towed tools
     self.allowReversePathfinding = AIUtil.getFirstReversingImplementWithWheels(self.vehicle) == nil
     self.turningRadius = AIUtil.getTurningRadius(vehicle)
@@ -94,8 +97,8 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     local job = vehicle:getJob()
     local startAt, startIx
     if job and job.getCpJobParameters then
-        self:debug('Got job parameters, starting at %d', job:getCpJobParameters().settingsByName[CpJobParameters.startAt]:getValue())
-        startAt = job:getCpJobParameters().settingsByName[CpJobParameters.startAt]:getValue()
+        self:debug('Got job parameters, starting at %d', job:getCpJobParameters().startAt:getValue())
+        startAt = job:getCpJobParameters().startAt:getValue()
     else
         self:debug('No job parameters found, starting at nearest waypoint')
         startAt = CpJobParameters.START_AT_NEAREST_POINT

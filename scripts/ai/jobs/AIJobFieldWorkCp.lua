@@ -19,11 +19,8 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
 
 	self.cpJobParameters = CpJobParameters()
-	--self.startAtParameter = AIParameterSettingList.new(self.cpJobParameters.settingsByName[self.cpJobParameters.start].data)
-	self:addNamedParameter('startAt', self.cpJobParameters.settingsByName[CpJobParameters.startAt])
-	local startAtGroup = AIParameterGroup.new(g_i18n:getText('CP_jobParameter_startAt_title'))
-	startAtGroup:addParameter(self.cpJobParameters.settingsByName[CpJobParameters.startAt])
-	table.insert(self.groupedParameters, startAtGroup)
+
+	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	return self
 end
 
@@ -31,7 +28,7 @@ function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectSt
 	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 	-- for now, always take the auto work width
 	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Setting work width parameter for course generation to %.1f', WorkWidthUtil.getAutomaticWorkWidth(vehicle))
-	vehicle:setCourseGeneratorSettingFloatValue(CpCourseGeneratorSettings.workWidth,WorkWidthUtil.getAutomaticWorkWidth(vehicle))
+	vehicle:getCourseGeneratorSettings().workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end
 
 --- Called when parameters change, scan field
@@ -42,7 +39,7 @@ function AIJobFieldWorkCp:validate(farmId)
 	end
 
 
-	DebugUtil.printTableRecursively(self.cpJobParameters)
+--	DebugUtil.printTableRecursively(self.cpJobParameters)
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.positionAngleParameter:getPosition()
@@ -85,17 +82,17 @@ end
 --- Button callback to generate a field work course.
 function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
-	local getValue = vehicle.getCourseGeneratorSettingValue
+	local settings = vehicle:getCourseGeneratorSettings()
 	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
 			0,
-			getValue(vehicle,CpCourseGeneratorSettings.workWidth),
+			settings.workWidth:getValue(),
 			AIUtil.getTurningRadius(vehicle),
-			getValue(vehicle,CpCourseGeneratorSettings.numberOfHeadlands),
-			getValue(vehicle,CpCourseGeneratorSettings.startOnHeadland),
-			getValue(vehicle,CpCourseGeneratorSettings.headlandCornerType),
-			getValue(vehicle,CpCourseGeneratorSettings.centerMode),
-			getValue(vehicle,CpCourseGeneratorSettings.rowDirection)
+			settings.numberOfHeadlands:getValue(),
+			settings.startOnHeadland:getValue(),
+			settings.headlandCornerType:getValue(),
+			settings.centerMode:getValue(),
+			settings.rowDirection:getValue()
 	)
 	if not ok then
 		return false, 'could not generate course'
@@ -105,7 +102,7 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 end
 
 function AIJobFieldWorkCp:getPricePerMs()
-	local modifier = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.wageModifier)/100
+	local modifier = g_Courseplay.globalSettings:getSettings().wageModifier:getValue()/100
 	return AIJobFieldWorkCp:superClass().getPricePerMs(self) * modifier
 end
 
@@ -114,7 +111,7 @@ end
 function AIJobFieldWorkCp:onUpdateTickWearable(...)
 	if self:getIsAIActive() and self:getUsageCausesDamage() then 
 	--	if self.rootVehicle then-- and self.rootVehicle.getJob and self.rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
-			local dx = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.autoRepair)
+			local dx =  g_Courseplay.globalSettings:getSettings().autoRepair:getValue()
 			local repairStatus = (1 - self:getDamageAmount())*100
 			if repairStatus < dx then 
 				self:repairVehicle()

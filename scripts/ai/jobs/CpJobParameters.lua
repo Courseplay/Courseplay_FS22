@@ -28,5 +28,5 @@ function CpJobParameters:init()
         -- initialize the class members first so the class can be used to access constants, etc.
         CpSettingsUtil.loadSettingsFromSetup(CpJobParameters, filePath)
     end
-    CpSettingsUtil.loadSettingsFromSetup(self, filePath)
+    CpSettingsUtil.cloneSettingsTable(self,CpJobParameters.settings,nil,self)
 end
