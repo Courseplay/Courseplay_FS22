@@ -45,15 +45,15 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 							text="Fold tools at course end"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Enables/disables automatic folding of implements at the end of the course."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 							text="Tool rasing at the"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 							text="Tool raising at the end of a row or at the start of a headland turn."/>
-		<text name="CP_vehicle_setting_raiseImplementLate_early" 							text="end of a row"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_late" 							text="start of a turn"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 							text="Tool rasing"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 							text="Tool raising early or late at the start of a turn."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_early" 							text="early"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_late" 							text="late"/>
 
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 							text="Tool lowering at the"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 						text="Tool lowering at the start of a row or at the end of a headland turn."/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_early" 							text="start of a row"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_late" 							text="end of a turn"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 							text="Tool lowering"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 						text="Tool lowering early or late at the end of a turn."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" 							text="early"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" 							text="late"/>
 
 		<text name="CP_vehicle_setting_turnOnField_title" 									text="Only turning on the field"/>
 		<text name="CP_vehicle_setting_turnOnField_tooltip" 								text="Only turning on the field"/>
