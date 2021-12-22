@@ -600,8 +600,9 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
 
 	local context = PathfinderUtil.Context(vehicle, vehiclesToIgnore, objectsToIgnore)
 
+    local settings = vehicle:getCpSettings()
 	local constraints = PathfinderConstraints(context,
-            maxFruitPercent or (vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and 50 or math.huge),
+            maxFruitPercent or (settings.avoidFruit:getValue() and 50 or math.huge),
             offFieldPenalty or PathfinderUtil.defaultOffFieldPenalty,
             fieldNum, areaToAvoid)
 
@@ -694,7 +695,8 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local context = PathfinderUtil.Context(
             vehicle,
             vehiclesToIgnore)
-    local constraints = PathfinderConstraints(context, nil, vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) and 10 or nil, fieldNum)
+    local settings = vehicle:getCpSettings()
+    local constraints = PathfinderConstraints(context, nil, settings.turnOnField:getValue() and 10 or nil, fieldNum)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -815,8 +817,9 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode
 
     local context = PathfinderUtil.Context(vehicle, vehiclesToIgnore)
 
+    local settings = vehicle:getCpSettings()
     local constraints = PathfinderConstraints(context,
-            maxFruitPercent or (vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and 50 or math.huge),
+            maxFruitPercent or (settings.avoidFruit:getValue() and 50 or math.huge),
             PathfinderUtil.defaultOffFieldPenalty,
             fieldNum)
 

@@ -23,10 +23,8 @@ function CpVehicleSettings.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
 end
 function CpVehicleSettings.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, 'getCpSetting', CpVehicleSettings.getSetting)
-    SpecializationUtil.registerFunction(vehicleType, 'getCpSettingValue', CpVehicleSettings.getSettingValue)
-    SpecializationUtil.registerFunction(vehicleType, 'setCpSettingValue', CpVehicleSettings.setSettingValue)
-    SpecializationUtil.registerFunction(vehicleType, 'setCpSettingFloatValue', CpVehicleSettings.setSettingFloatValue)
+
+    SpecializationUtil.registerFunction(vehicleType, 'getCpSettingsTable', CpVehicleSettings.getSettingsTable)
     SpecializationUtil.registerFunction(vehicleType, 'getCpSettings', CpVehicleSettings.getSettings)
 end
 
@@ -35,7 +33,7 @@ end
 ---@return AIParameterSettingList
 function CpVehicleSettings:getSetting(name)
     local spec = self.spec_cpVehicleSettings
-    return spec.settingsByName[name]
+    return spec[name]
 end
 
 --- Gets a single setting value by it's name.
@@ -43,7 +41,7 @@ end
 ---@return any
 function CpVehicleSettings:getSettingValue(name)
     local spec = self.spec_cpVehicleSettings
-    return spec.settingsByName[name]:getValue()
+    return spec[name]:getValue()
 end
 
 --- Sets a single setting value by it's name.
@@ -51,7 +49,7 @@ end
 ---@param value any
 function CpVehicleSettings:setSettingValue(name,value)
     local spec = self.spec_cpVehicleSettings
-    return spec.settingsByName[name]:setValue(value)
+    return spec[name]:setValue(value)
 end
 
 --- Sets a single setting float value by it's name.
@@ -59,14 +57,18 @@ end
 ---@param value any
 function CpVehicleSettings:setSettingFloatValue(name,value)
     local spec = self.spec_cpVehicleSettings
-    return spec.settingsByName[name]:setFloatValue(value)
+    return spec[name]:setFloatValue(value)
 end
 
 --- Gets all settings.
 ---@return table
 function CpVehicleSettings:getSettings()
     local spec = self.spec_cpVehicleSettings
-    return spec.settings
+    return spec
+end
+
+function CpVehicleSettings:getSettingsTable()
+    
 end
 
 function CpVehicleSettings:onLoad(savegame)
@@ -76,7 +78,7 @@ function CpVehicleSettings:onLoad(savegame)
     local spec = self.spec_cpVehicleSettings
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
-    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpVehicleSettings.settings,self,CpVehicleSettings)
+    CpSettingsUtil.cloneSettingsTable(spec,CpVehicleSettings.settings,self,CpVehicleSettings)
     
     CpVehicleSettings.loadSettings(self,savegame)
 end
@@ -98,7 +100,7 @@ function CpVehicleSettings:loadSettings(savegame)
     local spec = self.spec_cpVehicleSettings
 	savegame.xmlFile:iterate(savegame.key..CpVehicleSettings.KEY, function (ix, key)
         local name = savegame.xmlFile:getValue(key.."#name")
-        local setting = spec.settingsByName[name]
+        local setting = spec[name]
         if setting then
             setting:loadFromXMLFile(savegame.xmlFile, key)
             CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)

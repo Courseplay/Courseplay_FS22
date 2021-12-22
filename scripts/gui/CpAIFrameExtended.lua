@@ -157,7 +157,7 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 	if vehicle ~=nil then 
 		if vehicle.getCourseGeneratorSettings then 
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )
-			self.settings = vehicle:getCourseGeneratorSettings()
+			self.settings = vehicle:getCourseGeneratorSettingsTable()
 			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
 		end
 	end
@@ -223,7 +223,7 @@ end
 InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onStartGoToJob,CpInGameMenuAIFrameExtended.onStartGoToJob)
 
 function CpInGameMenuAIFrameExtended:draw()	
-	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettingValue(g_Courseplay.globalSettings.showsAllActiveCourses)
+	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettings().showsAllActiveCourses:getValue()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if CoursePlotAlwaysVisible then
 		local vehicles = CpCourseManager.getValidVehicles()

@@ -6,13 +6,14 @@
 		<text name="CP_deactivated" 							text="deactivated" />
 		<text name="CP_unit_meter" 								text="m" />
 
-		<text name="CP_jobParameter_startAt_title"				text="Start at:" />
-		<text name="CP_jobParameter_startAt_tooltip"			text="How to start field work" />
-		<text name="CP_jobParameter_startAt_nearest"			text="nearest waypoint" />
-		<text name="CP_jobParameter_startAt_first"				text="first waypoint" />
-		<text name="CP_jobParameter_startAt_unload"				text="unloading combine/chopper" />
-		<text name="CP_jobParameter_startAt_bales"				text="collecting/wrapping bales" />
-	<!-- -->
+	<!-- AI job menu -->
+		<text name="CP_jobParameters_subTitle_startAt"				text="Start at:" />
+		<text name="CP_jobParameters_startAt_tooltip"			text="How to start field work" />
+		<text name="CP_jobParameters_startAt_nearest"			text="nearest waypoint" />
+		<text name="CP_jobParameters_startAt_first"				text="first waypoint" />
+		<text name="CP_jobParameters_startAt_unload"				text="unloading combine/chopper" />
+		<text name="CP_jobParameters_startAt_bales"				text="collecting/wrapping bales" />
+
 
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"									text="CP: Fieldwork" />

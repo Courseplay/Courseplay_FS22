@@ -88,15 +88,15 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, maxSpeed
-
-    self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed))
+    
+    self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
     ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
         if not gx then
             -- simple reverse (not towing anything), just use PPC
             gx, _, gz = self.ppc:getGoalPointPosition()
-            maxSpeed = self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed)
+            maxSpeed = self.settings.reverseSpeed:getValue()
         end
         self:setMaxSpeed(maxSpeed)
     else
@@ -129,9 +129,9 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         gx, gz = turnGx or gx, turnGz or gz
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
-        self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.ON_ALIGNMENT_COURSE then
-        self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed))
+        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
     end
     self:setAITarget()
     return gx, gz, moveForwards, self.maxSpeed, 100
@@ -543,8 +543,8 @@ end
 -- if the user changed them during the run or the AI driver wants to add an offset
 function AIDriveStrategyFieldWorkCourse:updateFieldworkOffset()
     self.course:setOffset(
-            self.vehicle:getCpSettingValue(CpVehicleSettings.toolOffsetX) + self.aiOffsetX + (self.tightTurnOffset or 0),
-            self.vehicle:getCpSettingValue(CpVehicleSettings.toolOffsetZ) + self.aiOffsetZ)
+        self.settings.toolOffsetX:getValue() + self.aiOffsetX + (self.tightTurnOffset or 0),
+        self.settings.toolOffsetZ:getValue() + self.aiOffsetZ)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

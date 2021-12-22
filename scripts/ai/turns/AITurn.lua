@@ -55,6 +55,7 @@ function AITurn:init(vehicle, driveStrategy, ppc, turnContext, workWidth, name)
 	self:addState('FORWARDING_AFTER_BLOCKED')
 	self:addState('WAITING_FOR_PATHFINDER')
 	self.vehicle = vehicle
+	self.settings = vehicle:getCpSettings()
 	self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
 	---@type PurePursuitController
 	self.ppc = ppc
@@ -128,7 +129,8 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		return false
 	end
 	local turningRadius = AIUtil.getTurningRadius(vehicle)
-	if vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) and
+	local settings = vehicle:getCpSettings()
+	if settings.turnOnField:getValue() and
 			not AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Turn on field is on but there is not enough space, use generated course turn')
 		return false
@@ -151,12 +153,12 @@ function AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius)
 end
 
 function AITurn:getForwardSpeed()
-	return math.min(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed), 
-			self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
+	return math.min(self.settings.fieldWorkSpeed:getValue(), 
+			self.settings.reverseSpeed:getValue())
 end
 
 function AITurn:getReverseSpeed()
-	return self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed)
+	return self.settings.reverseSpeed:getValue()
 end
 
 function AITurn:isForwardOnly()
@@ -512,7 +514,7 @@ end
 function CourseTurn:startTurn()
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
 	-- TODO_22 self.vehicle.cp.settings.turnOnField:is(false)
-	if (canTurnOnField or self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField)) and
+	if (canTurnOnField or self.settings.turnOnField:getValue()) and
 			self.turnContext:isPathfinderTurn(self.turningRadius * 2) and
 			not self.turnContext:isSimpleWideTurn(self.turningRadius * 2) then
 		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
@@ -634,7 +636,7 @@ function CourseTurn:generateCalculatedTurn()
 		self.forceTightTurnOffset = self.steeringLength > 0
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
-		local turnOnField = self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField)
+		local turnOnField = self.settings.turnOnField:getValue()
 		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
 		-- if don't have to turn on field then pretend we have a lot of space
 		distanceToFieldEdge = turnOnField and distanceToFieldEdge or math.huge
@@ -742,11 +744,11 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	local corner = turnContext:createCorner(self.vehicle, self.turningRadius)
 	local d = -self.workWidth / 2 + turnContext.frontMarkerDistance
 	local wp = corner:getPointAtDistanceFromCornerStart(d + 2)
-	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
+	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive forward up to the field edge
 	wp = corner:getPointAtDistanceFromCornerStart(d)
-	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
+	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive back to prepare for making a pocket
 	-- reverse back to set up for the headland after the corner
@@ -769,16 +771,16 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	table.insert(cornerWaypoints, wp)
 	-- drive forward to the field edge on the inner headland
 	wp = corner:getPointAtDistanceFromCornerStart(d, -offset * 0.7)
-	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.75
+	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 1.5)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius / 3, self.turningRadius / 2)
-	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.5
+	wp.speed = self.settings.turnSpeed:getValue() * 0.5
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius, self.turningRadius / 4)
-	wp.speed = self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed) * 0.5
+	wp.speed = self.settings.turnSpeed:getValue() * 0.5
 	table.insert(cornerWaypoints, wp)
 	corner:delete()
 	return Course(self.vehicle, cornerWaypoints, true), turnContext.turnEndWpIx

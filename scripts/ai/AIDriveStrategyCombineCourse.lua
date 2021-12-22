@@ -205,13 +205,13 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			self.unloadState = self.newUnloadStateAfterStopped
 		end
 	elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
+		self:setMaxSpeed(self.settings.reverseSpeed:getValue())
 	elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.reverseSpeed))
+		self:setMaxSpeed(self.settings.reverseSpeed:getValue())
 	elseif self.unloadState == self.states.MAKING_POCKET then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed))
+		self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
 	elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
-		self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.turnSpeed))
+		self:setMaxSpeed(self.settings.turnSpeed:getValue())
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
 			self.unloadState == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
@@ -296,11 +296,11 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
 		if self:isCloseToCourseEnd(25) then
 			-- slow down towards the end of the course, near the trailer
-			self:setMaxSpeed(0.5 * self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
 			-- disable stock collision detection as we have to drive very close to the tractor/trailer
 			self:disableCollisionDetection()
 		else
-			self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
 	elseif self.unloadState == self.states.SELF_UNLOADING then
 		self:setMaxSpeed(0)
@@ -318,9 +318,9 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		end
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
-			self:setMaxSpeed(0.5 * self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+			self:setMaxSpeed(0.5 * self.settings.fieldSpeed.getValue())
 		else
-			self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
 		end
 	end
@@ -355,7 +355,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 
 	-- make sure we start making a pocket while we still have some fill capacity left as we'll be
 	-- harvesting fruit while making the pocket unless we have self unload turned on
-	if self:shouldMakePocket() and not self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) then
+	if self:shouldMakePocket() and not self.settings.selfUnload:getValue() then
 		self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
 	end
 
@@ -414,7 +414,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
 		end
 	elseif self.state == self.states.WORKING and fillLevel > 0 then
-		if self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) and self:startSelfUnload() then
+		if self.settings.selfUnload:getValue() and self:startSelfUnload() then
 			self:debug('Start self unload after fieldwork ended')
 			self:raiseImplements()
 			self.state = self.states.UNLOADING_ON_FIELD
@@ -459,13 +459,13 @@ end
 function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 	self:checkFruit()
 	-- TODO: check around turn maneuvers we may not want to pull back before a turn
-	if self.vehicle:getCpSettingValue(CpVehicleSettings.selfUnload) and self:startSelfUnload() then
+	if self.settings.selfUnload:getValue() and self:startSelfUnload() then
 		self:debug('Start self unload')
 		self:raiseImplements()
 		self.state = self.states.UNLOADING_ON_FIELD
 		self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
 		self.ppc:setShortLookaheadDistance()
-	elseif self.vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and self:shouldMakePocket() then
+	elseif self.settings.avoidFruit:getValue() and self:shouldMakePocket() then
 		-- I'm on the edge of the field or fruit is on both sides, make a pocket on the right side and wait there for the unload
 		local pocketCourse, nextIx = self:createPocketCourse()
 		if pocketCourse then
@@ -481,7 +481,7 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 		else
 			self:startWaitingForUnloadWhenFull()
 		end
-	elseif self.vehicle:getCpSettingValue(CpVehicleSettings.avoidFruit) and self:shouldPullBack() then
+	elseif self.settings.avoidFruit:getValue() and self:shouldPullBack() then
 		-- is our pipe in the fruit? (assuming pipe is on the left side)
 		local pullBackCourse = self:createPullBackCourse()
 		if pullBackCourse then
@@ -693,7 +693,7 @@ function AIDriveStrategyCombineCourse:isWillingToRendezvous()
 	if self.state ~= self.states.WORKING then
 		self:debug('not harvesting, will not rendezvous')
 		return nil
-	elseif not self.vehicle:getCpSettingValue(CpVehicleSettings.unloadOnFirstHeadland) and
+	elseif not self.settings.unloadOnFirstHeadland:getValue() and
 			self.course:isOnHeadland(self.course:getCurrentWaypointIx(), 1) then
 		self:debug('on first headland and unload not allowed on first headland, will not rendezvous')
 		return nil
@@ -741,7 +741,7 @@ function AIDriveStrategyCombineCourse:canUnloadWhileMovingAtWaypoint(ix)
 		self:debug('pipe would be in fruit at the planned rendezvous waypoint %d', ix)
 		return false
 	end
-	if not self.vehicle:getCpSettingValue(CpVehicleSettings.unloadOnFirstHeadland) and self.course:isOnHeadland(ix, 1) then
+	if not self.settings.unloadOnFirstHeadland:getValue() and self.course:isOnHeadland(ix, 1) then
 		self:debug('planned rendezvous waypoint %d is on first headland, no unloading of moving combine there', ix)
 		return false
 	end
@@ -791,7 +791,7 @@ function AIDriveStrategyCombineCourse:findBestWaypointToUnload(ix, isPipeInFruit
 end
 
 function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnHeadland(ix)
-	if not self.vehicle:getCpSettingValue(CpVehicleSettings.unloadOnFirstHeadland) and
+	if not self.settings.unloadOnFirstHeadland:getValue() and
 			self.course:isOnHeadland(ix, 1) then
 		self:debug('planned rendezvous waypoint %d is on first headland, no unloading of moving combine there', ix)
 		return nil
@@ -1058,7 +1058,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 		elseif self.course:isOnConnectingTrack(ix) then
 			self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
 			AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
-		elseif self.course:isOnOutermostHeadland(ix) and self.vehicle:getCpSettingValue(CpVehicleSettings.turnOnField) then
+		elseif self.course:isOnOutermostHeadland(ix) and self.settings.turnOnField:getValue() then
 			self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
 			self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext,
 					self.course, self:getWorkWidth())
@@ -1188,7 +1188,7 @@ end
 function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     
   if self:isFillableTrailerUnderPipe() or self:isAutoDriveWaitingForPipe() or (self:isWaitingForUnload() and 
-		  self.vehicle:getCpSettingValue(CpVehicleSettings.pipeAlwaysUnfold)) then
+		  self.settings.pipeAlwaysUnfold:getValue()) then
 		self:openPipe()
 		if self.pipe and self.pipe.currentState == AIUtil.PIPE_STATE_OPEN then 
 			-- TODO_22 self:isWorkingToolPositionReached(dt,1)
@@ -1307,7 +1307,7 @@ function AIDriveStrategyCombineCourse:getIsChopperWaitingForTrailer()
 end
 
 function AIDriveStrategyCombineCourse:shouldStopForUnloading()
-	if self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.pipe then
+	if self.settings.stopForUnload:getValue() and self.pipe then
 		if self:isDischarging() and not self.stopDisabledAfterEmpty:get() then
 			-- stop only if the pipe is discharging AND we have been emptied a while ago.
 			-- this makes sure the combine will start driving after it is emptied but the trailer
@@ -1735,7 +1735,7 @@ end
 --- Will not move until unload is done? Unloaders like to know this.
 function AIDriveStrategyCombineCourse:willWaitForUnloadToFinish()
 	return self.state == self.states.UNLOADING_ON_FIELD and
-			((self.vehicle:getCpSettingValue(CpVehicleSettings.stopForUnload) and self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD) or
+			((self.settings.stopForUnload:getValue() and self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD) or
 					self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
 					self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
 					self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED)
@@ -1749,7 +1749,7 @@ function AIDriveStrategyCombineCourse:isAboutToReturnFromPocket()
 end
 
 function AIDriveStrategyCombineCourse:shouldStrawSwathBeOn(ix)
-	local strawMode = self.vehicle:getCpSettingValue(CpVehicleSettings.strawSwath)
+	local strawMode = self.settings.strawSwath:getValue()
 	local headland = self.course:isOnHeadland(ix)
 	if self.combine.isSwathActive then 
 		if strawMode == CpVehicleSettings.STRAW_SWATH_OFF or headland and strawMode==CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then 

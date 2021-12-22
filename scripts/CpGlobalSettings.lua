@@ -21,7 +21,7 @@ end
 function CpGlobalSettings:loadFromXMLFile(xmlFile,baseKey)
     xmlFile:iterate(baseKey..CpGlobalSettings.KEY, function (ix, key)
 		local name = xmlFile:getValue(key.."#name")
-        local setting = self.settingsByName[name]
+        local setting = self[name]
         if setting then
             setting:loadFromXMLFile(xmlFile, key)
             CpUtil.debugFormat(CpUtil.DBG_HUD,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
@@ -39,22 +39,26 @@ function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)
 end
 
 function CpGlobalSettings:getSetting(name)
-    return self.settingsByName[name]
+    return self[name]
 end
 
 function CpGlobalSettings:getSettingValue(name)
-    return self.settingsByName[name]:getValue()
+    return self[name]:getValue()
 end
 
 function CpGlobalSettings:setSettingValue(name,value)
-    return self.settingsByName[name]:setValue(value)
+    return self[name]:setValue(value)
 end
 
 function CpGlobalSettings:setSettingFloatValue(name,value)
-    return self.settingsByName[name]:setSettingFloatValue(value)
+    return self[name]:setSettingFloatValue(value)
 end
 
 function CpGlobalSettings:getSettings()
+    return self
+end
+
+function CpGlobalSettings:getSettingsTable()
     return self.settings
 end
 

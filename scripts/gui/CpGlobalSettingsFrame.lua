@@ -21,7 +21,7 @@ function CpGlobalSettingsFrame:initialize()
 		self.boxLayout.elements[i]:delete()
 	end
 --	self.boxLayout:reloadFocusHandling(true)
-	self.settings = g_Courseplay.globalSettings:getSettings()
+	self.settings = g_Courseplay.globalSettings:getSettingsTable()
 	local settingsBySubTitle,pageTitle = g_Courseplay.globalSettings:getSettingSetup()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,genericSettingElement, genericSubTitleElement)

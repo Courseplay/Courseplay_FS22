@@ -23,11 +23,8 @@ function CpCourseGeneratorSettings.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSetting', CpCourseGeneratorSettings.getSetting)
-    SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettingValue', CpCourseGeneratorSettings.getSettingValue)
-    SpecializationUtil.registerFunction(vehicleType, 'setCourseGeneratorSettingValue', CpCourseGeneratorSettings.setSettingValue)
-    SpecializationUtil.registerFunction(vehicleType, 'setCourseGeneratorSettingFloatValue', CpCourseGeneratorSettings.setSettingFloatValue)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
+    SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettingsTable', CpCourseGeneratorSettings.getSettingsTable)
 end
 
 --- Gets a single setting by it's name.
@@ -35,7 +32,7 @@ end
 ---@return AIParameterSettingList
 function CpCourseGeneratorSettings:getSetting(name)
     local spec = self.spec_cpCourseGeneratorSettings
-    return spec.settingsByName[name]
+    return spec[name]
 end
 
 --- Gets a single setting value by it's name.
@@ -43,7 +40,7 @@ end
 ---@return any
 function CpCourseGeneratorSettings:getSettingValue(name)
     local spec = self.spec_cpCourseGeneratorSettings
-    return spec.settingsByName[name]:getValue()
+    return spec[name]:getValue()
 end
 
 --- Sets a single setting value by it's name.
@@ -51,7 +48,7 @@ end
 ---@param value any
 function CpCourseGeneratorSettings:setSettingValue(name,value)
     local spec = self.spec_cpCourseGeneratorSettings
-    return spec.settingsByName[name]:setValue(value)
+    return spec[name]:setValue(value)
 end
 
 --- Sets a single setting float value by it's name.
@@ -60,12 +57,19 @@ end
 function CpCourseGeneratorSettings:setSettingFloatValue(name,value)
    
     local spec = self.spec_cpCourseGeneratorSettings
-    return spec.settingsByName[name]:setFloatValue(value)
+    return spec[name]:setFloatValue(value)
 end
 
 --- Gets all settings.
 ---@return table
 function CpCourseGeneratorSettings:getSettings()
+    local spec = self.spec_cpCourseGeneratorSettings
+    return spec
+end
+
+--- Gets all settings.
+---@return table
+function CpCourseGeneratorSettings:getSettingsTable()
     local spec = self.spec_cpCourseGeneratorSettings
     return spec.settings
 end
@@ -77,7 +81,7 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
-    spec.settings,spec.settingsByName = CpSettingsUtil.cloneSettingsTable(CpCourseGeneratorSettings.settings,self,CpCourseGeneratorSettings)
+    CpSettingsUtil.cloneSettingsTable(spec,CpCourseGeneratorSettings.settings,self,CpCourseGeneratorSettings)
 
     CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
@@ -99,7 +103,7 @@ function CpCourseGeneratorSettings:loadSettings(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
 	savegame.xmlFile:iterate(savegame.key..CpCourseGeneratorSettings.KEY, function (ix, key)
 		local name = savegame.xmlFile:getValue(key.."#name")
-        local setting = spec.settingsByName[name]
+        local setting = spec[name]
         if setting then
             setting:loadFromXMLFile(savegame.xmlFile, key)
             CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)

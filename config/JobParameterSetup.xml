@@ -5,8 +5,8 @@
 	For documentation look up the CpSettingUtil.lua.
 -->
 
-<Settings prefixText="CP_jobParameter_">
-	<SettingSubTitle title="basic">
+<Settings prefixText="CP_jobParameters_">
+	<SettingSubTitle title="startAt">
 		<Setting classType="AIParameterSettingList" name="startAt">
 			<Values>
 				<Value name="START_AT_NEAREST_POINT">1</Value>
