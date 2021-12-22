@@ -704,7 +704,6 @@ end
 ---@class CombineCourseTurn : CourseTurn
 CombineCourseTurn = CpObject(CourseTurn)
 
----@param driver AIDriver
 ---@param turnContext TurnContext
 function CombineCourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, name)
 	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse,workWidth, name or 'CombineCourseTurn')

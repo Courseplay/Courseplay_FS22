@@ -182,12 +182,9 @@ function DevHelper:draw()
         table.insert(data, {name = key, value = value})
     end
     DebugUtil.renderTable(0.65, 0.3, 0.013, data, 0.05)
+
     self:showFillNodes()
-    for _, vehicle in pairs(g_currentMission.vehicles) do
-        if vehicle ~= g_currentMission.controlledVehicle and vehicle.cp and vehicle.cp.driver then
-            vehicle.cp.driver:onDraw()
-        end
-    end
+    self:showAIMarkers()
 
 	if not self.tNode then
 		self.tNode = createTransformGroup("devhelper")
@@ -218,6 +215,47 @@ function DevHelper:showFillNodes()
     end
 end
 
+function DevHelper:showAIMarkers()
+
+    if not self.vehicle then return end
+
+    local function showAIMarkersOfObject(object)
+        if object.getAIMarkers then
+            local aiLeftMarker, aiRightMarker, aiBackMarker = object:getAIMarkers()
+            if aiLeftMarker then
+                DebugUtil.drawDebugNode(aiLeftMarker, object:getName() .. ' AI Left')
+            end
+            if aiRightMarker then
+                DebugUtil.drawDebugNode(aiRightMarker, object:getName() .. ' AI Right')
+            end
+            if aiBackMarker then
+                DebugUtil.drawDebugNode(aiBackMarker, object:getName() .. ' AI Back')
+            end
+        end
+        if object.getAISizeMarkers then
+            local aiSizeLeftMarker, aiSizeRightMarker, aiSizeBackMarker = object:getAISizeMarkers()
+            if aiSizeLeftMarker then
+                DebugUtil.drawDebugNode(aiSizeLeftMarker, object:getName() .. ' AI Size Left')
+            end
+            if aiSizeRightMarker then
+                DebugUtil.drawDebugNode(aiSizeRightMarker, object:getName() .. ' AI Size Right')
+            end
+            if aiSizeBackMarker then
+                DebugUtil.drawDebugNode(aiSizeBackMarker, object:getName() .. ' AI Size Back')
+            end
+        end
+        DebugUtil.drawDebugNode(object.rootNode, object:getName() .. ' root')
+    end
+
+    showAIMarkersOfObject(self.vehicle)
+    -- draw the Giant's supplied AI markers for all implements
+    local implements = AIUtil.getAllAIImplements(self.vehicle)
+    if implements then
+        for _, implement in ipairs(implements) do
+            showAIMarkersOfObject(implement.object)
+        end
+    end
+end
 
 function DevHelper.saveVehiclePosition(vehicle, vehiclePositionData)
     local savePosition = function(object)

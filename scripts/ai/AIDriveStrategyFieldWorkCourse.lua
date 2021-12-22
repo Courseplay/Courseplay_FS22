@@ -27,6 +27,7 @@ AIDriveStrategyFieldWorkCourse.myStates = {
     INITIAL = {},
     WORKING = {},
     ON_CONNECTING_TRACK = {},
+    ON_ALIGNMENT_COURSE = {},
     WAITING_FOR_LOWER = {},
     WAITING_FOR_LOWER_DELAYED = {},
     WAITING_FOR_STOP = {},
@@ -129,6 +130,8 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
         self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldSpeed))
+    elseif self.state == self.states.ON_ALIGNMENT_COURSE then
+        self:setMaxSpeed(self.vehicle:getCpSettingValue(CpVehicleSettings.fieldWorkSpeed))
     end
     self:setAITarget()
     return gx, gz, moveForwards, self.maxSpeed, 100
@@ -148,6 +151,20 @@ function AIDriveStrategyFieldWorkCourse:setAITarget()
     self.vehicle.aiDriveTarget = { x, z }
 end
 
+-- remember a course to start
+function AIDriveStrategyFieldWorkCourse:rememberCourse(course, ix)
+    self.rememberedCourse = course
+    self.rememberedCourseStartIx = ix
+end
+
+-- start a remembered course
+function AIDriveStrategyFieldWorkCourse:startRememberedCourse()
+    self:startCourse(self.rememberedCourse, self.rememberedCourseStartIx)
+end
+
+function AIDriveStrategyFieldWorkCourse:getRememberedCourseAndIx()
+    return self.rememberedCourse, self.rememberedCourseStartIx
+end
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
@@ -282,7 +299,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix)
+function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
     if self.state ~= self.states.TURNING and self.state ~= self.states.ON_CONNECTING_TRACK
             and self.course:isTurnStartAtIx(ix) then
         self:startTurn(ix)
@@ -292,6 +309,14 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix)
             self:debug('connecting track ended, back to work, first lowering implements.')
             self.state = self.states.WORKING
             self:lowerImplements()
+        end
+    elseif self.state == self.states.ON_ALIGNMENT_COURSE then
+        if course:getDistanceToLastWaypoint(ix) < 5 then
+            self:debug('alignment after connecting track ended, back to work, first lowering implements.')
+            self.state = self.states.WORKING
+            self:lowerImplements()
+            self.ppc:setNormalLookaheadDistance()
+            self:startRememberedCourse()
         end
     end
 end
@@ -307,6 +332,23 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
             self:debug('on a connecting track now, raising implements.')
             self:raiseImplements()
             self.state = self.states.ON_CONNECTING_TRACK
+        end
+        if self.course:isOnConnectingTrack(ix) then
+            -- passed a connecting track waypoint
+            -- check transition from connecting track to the up/down rows
+            -- we are close to the end of the connecting track, transition back to the up/down rows with
+            -- an alignment course
+            local d, firstUpDownWpIx = self.course:getDistanceToFirstUpDownRowWaypoint(ix)
+            self:debug('up/down rows start in %d meters.', d or -1)
+            -- (no alignment if there is a turn generated here)
+            if d < 5 * self.turningRadius and firstUpDownWpIx and not self.course:isTurnEndAtIx(firstUpDownWpIx) then
+                self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
+                self:rememberCourse(course, firstUpDownWpIx)
+                self.ppc:setShortLookaheadDistance()
+                self:startCourse(AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+                        course, firstUpDownWpIx, math.min(self.frontMarkerDistance, 0)):getCourse(), 1)
+                self.state = self.states.ON_ALIGNMENT_COURSE
+            end
         end
     end
     if course:isLastWaypointIx(ix) then
@@ -414,9 +456,9 @@ function AIDriveStrategyFieldWorkCourse:setFrontAndBackMarkers()
         self:debug('Finding AI markers of %s', CpUtil.getName(object))
         local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object)
         if aiLeftMarker and aiBackMarker and aiRightMarker then
-            local _, _, leftMarkerDistance = localToLocal(aiLeftMarker, referenceNode, 0, 0, 0)
-            local _, _, rightMarkerDistance = localToLocal(aiRightMarker, referenceNode, 0, 0, 0)
-            local _, _, backMarkerDistance = localToLocal(aiBackMarker, referenceNode, 0, 0, 0)
+            local leftMarkerDistance = ImplementUtil.getDistanceToImplementNode(referenceNode, object, aiLeftMarker)
+            local rightMarkerDistance = ImplementUtil.getDistanceToImplementNode(referenceNode, object, aiRightMarker)
+            local backMarkerDistance = ImplementUtil.getDistanceToImplementNode(referenceNode, object, aiBackMarker)
             table.insert(markers, leftMarkerDistance)
             table.insert(markers, rightMarkerDistance)
             table.insert(markers, backMarkerDistance)

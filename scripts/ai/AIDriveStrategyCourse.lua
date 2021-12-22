@@ -84,6 +84,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
 
     -- for now, pathfinding generated courses can't be driven by towed tools
     self.allowReversePathfinding = AIUtil.getFirstReversingImplementWithWheels(self.vehicle) == nil
+    self.turningRadius = AIUtil.getTurningRadius(vehicle)
 
     self:enableCollisionDetection()
 
@@ -162,34 +163,6 @@ function AIDriveStrategyCourse:updatePathfinding()
             self.pathfindingDoneCallbackFunc(self.pathfindingDoneObject, path)
         end
     end
-end
-
----@param course Course
-function AIDriveStrategyCourse:setUpAlignmentCourse(course, ix)
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode(), 0, 0)
-    local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
-    x, _, z = course:getWaypointPosition(ix)
-    local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
-    local turnRadius = AIUtil.getTurningRadius(self.vehicle)
-
-    local solution
-    if self.allowReversePathfinding then
-        solution = PathfinderUtil.reedSheppSolver:solve(start, goal, turnRadius)
-    else
-        solution = PathfinderUtil.dubinsSolver:solve(start, goal, turnRadius)
-    end
-
-    local alignmentWaypoints = solution:getWaypoints(start, turnRadius)
-    if not alignmentWaypoints then
-        self:debug("Can't find an alignment course, may be too close to target wp?" )
-        return nil
-    end
-    if #alignmentWaypoints < 3 then
-        self:debug("Alignment course would be only %d waypoints, it isn't needed then.", #alignmentWaypoints )
-        return nil
-    end
-    self:debug('Alignment course with %d waypoints started.', #alignmentWaypoints)
-    return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(alignmentWaypoints), true)
 end
 
 ------------------------------------------------------------------------------------------------------------------------

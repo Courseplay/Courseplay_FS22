@@ -452,3 +452,36 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	self.waypoints[#self.waypoints].lowerImplement = true
 	self.course = Course(vehicle, self.waypoints, true)
 end
+
+AlignmentCourse = CpObject(TurnManeuver)
+
+---@param vehicle table only for debugging
+---@param vehicleDirectionNode number node, start of the alignment course
+---@param turningRadius number
+---@param course Course
+---@param ix number end of the alignment course is the ix waypoint of course
+---@param zOffset number forward(+)/backward(-) offset for the target, relative to the waypoint
+function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, course, ix, zOffset)
+	self.debugPrefix = '(AlignmentCourse): '
+	self.vehicle = vehicle
+	self:debug('creating alignment course to waypoint %d, zOffset = %.1f', ix, zOffset)
+	local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleDirectionNode, 0, 0)
+	local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+	local targetWp = course:getWaypoint(ix)
+	x, _, z = targetWp:getOffsetPosition(0, zOffset)
+	local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
+
+	local solution = PathfinderUtil.dubinsSolver:solve(start, goal, turningRadius)
+
+	local alignmentWaypoints = solution:getWaypoints(start, turningRadius)
+	if not alignmentWaypoints then
+		self:debug("Can't find an alignment course, may be too close to target wp?" )
+		return nil
+	end
+	if #alignmentWaypoints < 3 then
+		self:debug("Alignment course would be only %d waypoints, it isn't needed then.", #alignmentWaypoints )
+		return nil
+	end
+	self:debug('Alignment course with %d waypoints started.', #alignmentWaypoints)
+	self.course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(alignmentWaypoints), true)
+end

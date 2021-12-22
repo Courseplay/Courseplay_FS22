@@ -82,25 +82,10 @@ end
 
 --- Calculate the relative coordinates of a rectangle's corners around a reference node, representing the implement
 function PathfinderUtil.VehicleData:getRectangleForImplement(implement, referenceNode, buffer)
-    local rootToReferenceNodeOffset = 0
-    local attacherJoint = implement.object.getActiveInputAttacherJoint and implement.object:getActiveInputAttacherJoint()
-    if attacherJoint and attacherJoint.node then
-        -- the implement may not be aligned with the vehicle so we need to calculate this distance in two
-        -- steps, first the distance between the vehicle's root node and the attacher joint and then
-        -- from the attacher joint to the implement's root node
-        -- < 0 when the attacher joint is behind the reference node
-        local _, _, referenceToAttacherJoint = localToLocal(attacherJoint.node, referenceNode, 0, 0, 0)
-        -- > 0 when the attacher node is in front of the implement's root node (we don't use the attacher joint node
-        -- as a reference as it may point to any direction, we know the implement's root node points forward
-        local _, _, attacherJointToImplementRoot = localToLocal(attacherJoint.node, implement.object.rootNode, 0, 0, 0)
-        -- we call this offset, and is negative when behind the reference node, positive when in front of it
-        -- (need to reverse attacherJointToImplementRoot)
-        rootToReferenceNodeOffset = - attacherJointToImplementRoot + referenceToAttacherJoint
-        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, '%s: ref to attacher joint %.1f, att to implement root %.1f, impl root to ref %.1f',
-            implement.object:getName(), referenceToAttacherJoint, attacherJointToImplementRoot, rootToReferenceNodeOffset)
-    else
-        _, _, rootToReferenceNodeOffset = localToLocal(implement.object.rootNode, referenceNode, 0, 0, 0)
-    end
+
+    local rootToReferenceNodeOffset =
+        ImplementUtil.getDistanceToImplementNode(referenceNode, implement.object, implement.object.rootNode)
+
     -- default size, used by Giants to determine the drop area when buying something
     local rectangle = {
         dFront = rootToReferenceNodeOffset + implement.object.size.length / 2 + implement.object.size.lengthOffset + (buffer or 0),
