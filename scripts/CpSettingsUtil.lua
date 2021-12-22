@@ -186,8 +186,9 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters,nil,class)
 			class[settingParameters.name] = setting
 			table.insert(class.settings,setting)
+			class.settingsNameToIndex[settingParameters.name] = #class.settings
+			class.settingsToIndex[setting] = #class.settings
 			table.insert(subTitleSettings.elements,setting)
-
 			uniqueID = uniqueID + 1
 		end)
 		table.insert(class.settingsBySubTitle,subTitleSettings)

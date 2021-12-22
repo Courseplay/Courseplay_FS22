@@ -69,10 +69,11 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
     
     SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
-    SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'resetCpCoursesFromGui', CpCourseManager.resetCoursesFromGui)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
     
     SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCoursePlot)
@@ -82,6 +83,9 @@ function CpCourseManager.registerFunctions(vehicleType)
 
 
     SpecializationUtil.registerFunction(vehicleType, 'getCpLegacyWaypoints', CpCourseManager.getLegacyWaypoints)
+
+    SpecializationUtil.registerFunction(vehicleType, 'setCpCoursesFromNetworkEvent', CpCourseManager.setCoursesFromNetworkEvent)
+
 end
 
 function CpCourseManager:onLoad(savegame)
@@ -141,7 +145,9 @@ end
 ---@param course  Course
 function CpCourseManager:setFieldWorkCourse(course)
     CpCourseManager.resetCourses(self)
-    CpCourseManager.addCourse(self,course)   
+    CpCourseManager.addCourse(self,course)
+    local spec = self.spec_cpCourseManager
+    CoursesEvent.sendEvent(self,spec.courses)   
 end
 
 function CpCourseManager:addCourse(course)
@@ -219,17 +225,32 @@ function CpCourseManager:onDraw()
 --    self.courseDisplay:draw()
 end
 
-function CpCourseManager:onReadStream(streamId)
-
+function CpCourseManager:onReadStream(streamId,connection)
+    local spec = self.spec_cpCourseManager
+    for i=1,#spec.courses do 
+        table.insert(spec.courses, Course.createFromStream(self,streamId, connection))
+    end
+    SpecializationUtil.raiseEvent(self,"cpOnCourseChange",spec.courses[1])
 end
 
-function CpCourseManager:onWriteStream(streamId)
-	
+function CpCourseManager:onWriteStream(streamId,connection)
+    local courses = self.spec_cpCourseManager.courses
+    for i=1,#courses do 
+        courses[i]:writeStream(self,streamId, connection)
+    end
 end
 
 function CpCourseManager:onPreDelete()
     CpCourseManager.vehicles[self.id] = nil
     CpCourseManager.resetCourses(self)
+end
+
+
+function CpCourseManager:setCoursesFromNetworkEvent(courses)
+    local spec = self.spec_cpCourseManager
+    CpCourseManager.resetCourses(self)
+    spec.courses = courses
+    SpecializationUtil.raiseEvent(self,"cpOnCourseChange",spec.courses[1])
 end
 
 ------------------------------------------------------------------------
@@ -263,11 +284,18 @@ function CpCourseManager:appendLoadedCourse(file)
     CpCourseManager.resetCourses(self)
     file:load(CpCourseManager.xmlSchema,CpCourseManager.xmlKeyFileManager,
     CpCourseManager.loadAssignedCourses,self)
+    local spec = self.spec_cpCourseManager
+    CoursesEvent.sendEvent(self,spec.courses)   
 end
 
 function CpCourseManager:saveCourses(file,text)
     file:save(CpCourseManager.rootKeyFileManager,CpCourseManager.xmlSchema,
     CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
+end
+
+function CpCourseManager:resetCoursesFromGui()
+    CpCourseManager.resetCourses(self)
+    CoursesEvent.sendEvent(self)   
 end
 
 function CpCourseManager.getValidVehicles()

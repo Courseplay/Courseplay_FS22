@@ -23,6 +23,8 @@ function CpCourseGeneratorSettings.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
@@ -35,6 +37,18 @@ function CpCourseGeneratorSettings:getSettings()
     local spec = self.spec_cpCourseGeneratorSettings
     return spec
 end
+
+--- Sets a single setting value from network.
+---@param settingIx number
+---@param currentIx number
+function CpCourseGeneratorSettings:setCourseGeneratorSettingValueFromNetwork(settingIx,currentIx)
+    local spec = self.spec_cpCourseGeneratorSettings
+    local setting = spec.settings[settingIx]
+    if setting then 
+        setting:setFromNetwork(currentIx)
+    end
+end
+
 
 --- Gets all settings.
 ---@return table
@@ -99,7 +113,26 @@ function CpCourseGeneratorSettings:saveToXMLFile(xmlFile, key, usedModNames)
     end
 end
 
+function CpCourseGeneratorSettings:onReadStream(streamId,connection)
+    local settings = self.spec_cpCourseGeneratorSettings.settings
+    for i = 1, #settings do 
+        settings[i]:onReadStream(streamId,connection)
+    end
+end
+
+function CpCourseGeneratorSettings:onWriteStream(streamId,connection)
+    local settings = self.spec_cpCourseGeneratorSettings.settings
+    for i = 1, #settings do 
+        settings[i]:onWriteStream(streamId,connection)
+    end
+end
+
 --- Callback raised by a setting and executed as an vehicle event.
 function CpCourseGeneratorSettings:raiseCallback(callbackStr)
     SpecializationUtil.raiseEvent(self,callbackStr)
+end
+
+function CpCourseGeneratorSettings:raiseDirtyFlag(setting)
+    local spec = self.spec_cpCourseGeneratorSettings
+    CourseGeneratorSettingEvent.sendEvent(spec.settingsToIndex[setting])
 end

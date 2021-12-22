@@ -1870,12 +1870,13 @@ function Course:saveToXml(courseXml, courseKey)
 	courseXml:setValue(courseKey  .. '.waypoints',self:serializeWaypoints())
 end
 
-function Course:writeStream(streamId, connection)
+function Course:writeStream(vehicle,streamId, connection)
 	streamWriteString(streamId, self.name)
 	streamWriteFloat32(streamId, self.workWidth or 0)
 	streamWriteInt32(streamId, self.numHeadlands or 0 )
 	streamWriteInt32(streamId, self.multiTools or 0)
 	streamWriteString(streamId, self:serializeWaypoints())
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints send.', #self.waypoints)
 end
 
 ---@param vehicle  table
@@ -1911,7 +1912,7 @@ function Course.createFromStream(vehicle,streamId, connection)
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
 
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints received.', #course.waypoints)
 	return course
 end
 

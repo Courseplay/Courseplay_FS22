@@ -52,7 +52,12 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/CpUtil.lua"/>
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
-		<sourceFile filename="scripts/courseManager/CourseEvent.lua"/>
+		<sourceFile filename="scripts/events/CourseGeneratorSettingEvent.lua"/>
+		<sourceFile filename="scripts/events/CourseManagerEvent.lua"/>
+		<sourceFile filename="scripts/events/CoursesEvent.lua"/>
+		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
+		<sourceFile filename="scripts/events/GlobalSettingEvent.lua"/>
+		<sourceFile filename="scripts/events/VehicleSettingEvent.lua"/>
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>

@@ -23,6 +23,8 @@ function CpVehicleSettings.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpVehicleSettings)
 end
 function CpVehicleSettings.registerFunctions(vehicleType)
 
@@ -98,7 +100,26 @@ function CpVehicleSettings:saveToXMLFile(xmlFile, key, usedModNames)
     end
 end
 
+function CpVehicleSettings:onReadStream(streamId,connection)
+    local settings = self.spec_cpVehicleSettings.settings
+    for i = 1, #settings do 
+        settings[i]:onReadStream(streamId,connection)
+    end
+end
+
+function CpVehicleSettings:onWriteStream(streamId,connection)
+	local settings = self.spec_cpVehicleSettings.settings
+    for i = 1, #settings do 
+        settings[i]:onWriteStream(streamId,connection)
+    end
+end
+
 --- Callback raised by a setting and executed as an vehicle event.
 function CpVehicleSettings:raiseCallback(callbackStr)
     SpecializationUtil.raiseEvent(self,callbackStr)
+end
+
+function CpVehicleSettings:raiseDirtyFlag(setting)
+    local spec = self.spec_cpVehicleSettings
+    VehicleSettingEvent.sendEvent(spec.settingsToIndex[setting])
 end

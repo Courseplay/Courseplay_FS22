@@ -34,7 +34,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	end
 
 	if data.default ~=nil then
-		AIParameterSettingList.setFloatValue(self,data.default)
+		AIParameterSettingList.setFloatValue(self,data.default,true)
 		self:debug("set to default %s",data.default)
 	end
 	if data.defaultBool ~= nil then
@@ -178,14 +178,29 @@ local function setValueInternal(self, value, comparisonFunc)
 	end
 end
 
-function AIParameterSettingList:setFloatValue(value)
+function AIParameterSettingList:setFloatValue(value,noEventSend)
 	setValueInternal(self, value, function(a, b)
 		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
+	if noEventSend == nil or noEventSend == false then
+		self:raiseDirtyFlag()
+	end
 end
 
 --- Set to a specific value.
-function AIParameterSettingList:setValue(value)
+function AIParameterSettingList:setValue(value,noEventSend)
 	setValueInternal(self, value, function(a, b)  return a == b end)
+	if noEventSend == nil or noEventSend == false then
+		self:raiseDirtyFlag()
+	end
+end
+
+function AIParameterSettingList:setFromNetwork(currentIx)
+	local new = self:checkAndSetValidValue(currentIx)
+	self:setToIx(new)
+end
+
+function AIParameterSettingList:getNetworkValue()
+	return self.current
 end
 
 --- Gets a specific value.
@@ -198,15 +213,21 @@ function AIParameterSettingList:getString()
 end
 
 --- Set the next value
-function AIParameterSettingList:setNextItem()
+function AIParameterSettingList:setNextItem(noEventSend)
 	local new = self:checkAndSetValidValue(self.current + 1)
 	self:setToIx(new)
+--	if noEventSend == nil or noEventSend == false then
+--		self:raiseDirtyFlag()
+--	end
 end
 
 --- Set the previous value
-function AIParameterSettingList:setPreviousItem()
+function AIParameterSettingList:setPreviousItem(noEventSend)
 	local new = self:checkAndSetValidValue(self.current - 1)
 	self:setToIx(new)
+--	if noEventSend == nil or noEventSend == false then
+--		self:raiseDirtyFlag()
+--	end
 end
 
 function AIParameterSettingList:clone(...)
@@ -291,6 +312,16 @@ function AIParameterSettingList:raiseCallback(callbackStr)
 			self.klass.raiseCallback(self.vehicle,callbackStr)
 		else
 			self.klass:raiseCallback(callbackStr)
+		end
+	end
+end
+
+function AIParameterSettingList:raiseDirtyFlag()
+	if self.class and self.class.raiseDirtyFlag then
+		if self.vehicle ~= nil then 
+			self.class.raiseDirtyFlag(self.vehicle,self)
+		else
+			self.class:raiseDirtyFlag(self)
 		end
 	end
 end

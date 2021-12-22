@@ -38,7 +38,6 @@ function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)
     end
 end
 
-
 function CpGlobalSettings:getSettings()
     return self
 end
@@ -55,4 +54,8 @@ function CpGlobalSettings:raiseCallback(callbackStr,...)
     if self[callbackStr] then 
         self[callbackStr](self,...)
     end
+end
+
+function CpGlobalSettings:raiseDirtyFlag(setting)
+    GlobalSettingEvent.sendEvent(self.settingsToIndex[setting])
 end

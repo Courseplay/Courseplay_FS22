@@ -28,7 +28,7 @@ function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectSt
 	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 	-- for now, always take the auto work width
 	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Setting work width parameter for course generation to %.1f', WorkWidthUtil.getAutomaticWorkWidth(vehicle))
-	vehicle:getCourseGeneratorSettings().workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
+	vehicle:getCourseGeneratorSettings().workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle),true)
 end
 
 --- Called when parameters change, scan field
