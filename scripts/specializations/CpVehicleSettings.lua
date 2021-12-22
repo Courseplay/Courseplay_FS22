@@ -28,38 +28,6 @@ function CpVehicleSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCpSettings', CpVehicleSettings.getSettings)
 end
 
---- Gets a single setting by it's name.
----@param name string
----@return AIParameterSettingList
-function CpVehicleSettings:getSetting(name)
-    local spec = self.spec_cpVehicleSettings
-    return spec[name]
-end
-
---- Gets a single setting value by it's name.
----@param name string
----@return any
-function CpVehicleSettings:getSettingValue(name)
-    local spec = self.spec_cpVehicleSettings
-    return spec[name]:getValue()
-end
-
---- Sets a single setting value by it's name.
----@param name string
----@param value any
-function CpVehicleSettings:setSettingValue(name,value)
-    local spec = self.spec_cpVehicleSettings
-    return spec[name]:setValue(value)
-end
-
---- Sets a single setting float value by it's name.
----@param name string
----@param value any
-function CpVehicleSettings:setSettingFloatValue(name,value)
-    local spec = self.spec_cpVehicleSettings
-    return spec[name]:setFloatValue(value)
-end
-
 --- Gets all settings.
 ---@return table
 function CpVehicleSettings:getSettings()
@@ -68,7 +36,8 @@ function CpVehicleSettings:getSettings()
 end
 
 function CpVehicleSettings:getSettingsTable()
-    
+    local spec = self.spec_cpVehicleSettings
+    return spec.settings
 end
 
 function CpVehicleSettings:onLoad(savegame)

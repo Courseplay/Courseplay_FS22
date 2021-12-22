@@ -38,21 +38,6 @@ function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)
     end
 end
 
-function CpGlobalSettings:getSetting(name)
-    return self[name]
-end
-
-function CpGlobalSettings:getSettingValue(name)
-    return self[name]:getValue()
-end
-
-function CpGlobalSettings:setSettingValue(name,value)
-    return self[name]:setValue(value)
-end
-
-function CpGlobalSettings:setSettingFloatValue(name,value)
-    return self[name]:setSettingFloatValue(value)
-end
 
 function CpGlobalSettings:getSettings()
     return self
