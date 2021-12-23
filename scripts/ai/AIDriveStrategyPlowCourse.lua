@@ -55,10 +55,11 @@ function AIDriveStrategyPlowCourse:setAIVehicle(vehicle)
 end
 
 function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
-    if self.state == self.states.INITIALIZING then
+    if self.state == self.states.INITIAL then
         -- When starting work with a plow it first may need to be unfolded and then turned so it is facing to
         -- the unworked side, and then can we start working
-        StartStopWorkEvent:sendStartEvent(self.vehicle)
+
+        self:setMaxSpeed(0)
         self:setOffsetX()
 
         -- this will unfold the plow when necessary
@@ -76,10 +77,10 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.ROTATING_PLOW then
         self:setMaxSpeed(0)
         if not self.plow.spec_plow:getIsAnimationPlaying(self.plow.spec_plow.rotationPart.turnAnimation) then
-            self:debug('Plow rotation finished, ')
             self:setOffsetX()
             self:lowerImplements(self.vehicle)
-            self.state = self.states.WAITING_FOR_LOWER
+            self.state = self.states.WAITING_FOR_LOWER_DELAYED
+            self:debug('Plow rotation finished, ')
         end
     elseif self.state == self.states.UNFOLDING_PLOW then
         self:setMaxSpeed(0)
