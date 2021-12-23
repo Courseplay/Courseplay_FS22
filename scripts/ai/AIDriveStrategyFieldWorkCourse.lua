@@ -67,17 +67,19 @@ end
 
 function AIDriveStrategyFieldWorkCourse:update()
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
-    -- TODO_22 add debug flag
-    if self.state == self.states.TURNING then
-        if self.turnContext then
-            self.turnContext:drawDebug()
+    if CpDebug.isChannelActive(CpDebug.DBG_TURN) then
+        if self.state == self.states.TURNING then
+            if self.turnContext then
+                self.turnContext:drawDebug()
+            end
+            if self.aiTurn then
+                self.aiTurn:drawDebug()
+            end
         end
-        if self.aiTurn then
-            self.aiTurn:drawDebug()
+        -- TODO_22 check user setting
+        if self.course:isTemporary() then
+           self.course:draw()
         end
-    end
-    if self.course:isTemporary() then
-       self.course:draw()
     end
 end
 
