@@ -107,6 +107,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 		<sourceFile filename="scripts/gui/CpAIHotspotExtended.lua"/>
+		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
@@ -115,6 +116,7 @@ La prossima versione di Courseplay.
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
 		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
 		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
+		<specialization name="cpVehicleSettingDisplay" className="CpVehicleSettingDisplay" filename="scripts/specializations/CpVehicleSettingDisplay.lua"/>
 	</specializations>
 
 	<inputBinding>
@@ -130,6 +132,10 @@ La prossima versione di Courseplay.
 		<actionBinding action="CP_DBG_CHANNEL_MENU_VISIBILITY">
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_4" />
 		</actionBinding>
+
+		<actionBinding action="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_5" />
+		</actionBinding>
     </inputBinding>	
 
 	<actions>
@@ -137,5 +143,7 @@ La prossima versione di Courseplay.
 		<action name="CP_DBG_CHANNEL_SELECT_NEXT" />
 		<action name="CP_DBG_CHANNEL_TOGGLE_CURRENT" />
 		<action name="CP_DBG_CHANNEL_MENU_VISIBILITY" />
+
+		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
 	</actions>
 </modDesc>
