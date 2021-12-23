@@ -2,146 +2,156 @@
 <l10n>
 	<texts>
 
-		<text name="CP_activated" 									text="aktiviert" />
-		<text name="CP_deactivated" 								text="deaktiviert" />
-		<text name="CP_unit_meter" 									text="m" />
+		<text name="CP_activated" 																		text="aktiviert" />
+		<text name="CP_deactivated" 																	text="deaktiviert" />
+		<text name="CP_unit_meter" 																		text="m" />
+
+	<!-- AI job menu -->
+		<text name="CP_jobParameters_subTitle_startAt"													text="Start am:" />
+		<text name="CP_jobParameters_startAt_tooltip"													text="Wo wird die Arbeit gestartet." />
+		<text name="CP_jobParameters_startAt_nearest"													text="Nahester Wegpunkt" />
+		<text name="CP_jobParameters_startAt_first"														text="Erster Wegpunkt" />
+		<text name="CP_jobParameters_startAt_unload"													text="Entlade Drescher/Häcksler" />
+		<text name="CP_jobParameters_startAt_bales"														text="Sammel/Wickel Ballen" />
+
 
 	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"									text="CP: Feldarbeit" />
+		<text name="FIELDWORK_CP"																		text="CP: Feldarbeit" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 					text="CP: Generiere Feldkurs." />
-		<text name="CP_ai_page_open_course_generator" 				text="CP: Öffne/schließe Kursgenerator" />
-	<!--AI parameters field work-->
-		<text name="CP_ai_param_workWidth_title"					text="Arbeitsbreite" />
+		<text name="CP_ai_page_generate_course" 														text="CP: Generiere Feldkurs." />
+		<text name="CP_ai_page_open_course_generator" 													text="CP: Öffne/Schließe Kursgenerator." />
 
-		<text name="CP_ai_param_numberOfHeadlands_title"			text="Anzahl an Vorgewende Bahnen" />
-
-		<text name="CP_ai_param_centerMode_title"					text="Feldmitte" />
-		<text name="CP_ai_param_centerMode_up_down" 				text="Hoch/runter" />
-		<text name="CP_ai_param_centerMode_spiral" 					text="Spiralförmig" />
-		<text name="CP_ai_param_centerMode_circular" 				text="Kreisförmig" />
-		<text name="CP_ai_param_centerMode_lands" 					text="Innen nach aussen" />
-
-		<text name="CP_ai_param_headlandCornerType_title"			text="Vorgewende Ecken" />
-		<text name="CP_ai_param_headlandCornerType_smooth" 			text="Weich" />
-		<text name="CP_ai_param_headlandCornerType_sharp" 			text="Scharf" />
-		<text name="CP_ai_param_headlandCornerType_round" 			text="Rund" />
-
-		<text name="CP_ai_param_rowDirection_title"					text="Bahnen Startrichtung" />
-		<text name="CP_ai_param_rowDirection_automatic" 			text="Automatisch" />
-		<text name="CP_ai_param_rowDirection_longest_edge" 			text="Längste Kante" />
-
-		<text name="CP_ai_param_startOnHeadland_title"				text="Arbeit beginnen auf" />
-		<text name="CP_ai_param_startOnHeadland_on_headland" 		text="Vorgewende Bahnen" />
-		<text name="CP_ai_param_startOnHeadland_up_down_rows" 		text="Feldreihen" />
 	<!-- VehicleSettings -->
-		<text name="CP_vehicle_setting_title"												text="Fahrzeug-einstellungen von (%s)"/>
+		<text name="CP_vehicle_setting_title"															text="Fahrzeugeinstellungen für (%s)"/>
 		
-		<text name="CP_vehicle_setting_subTitle_basic"										text="Normale Einstellungen"/>
-		<text name="CP_vehicle_setting_subTitle_implement"									text="Tools Einstellungen"/>
-		<text name="CP_vehicle_setting_subTitle_combine"									text="Drescher Einstellungen"/>
-		<text name="CP_vehicle_setting_subTitle_seeder"										text="Saatmaschine Einstellungen"/>
-		<text name="CP_vehicle_setting_subTitle_multitool"									text="Multitool Einstellungen"/>
+		<!--Titel-->
+		<text name="CP_vehicle_setting_subTitle_basic"													text="Grundeinstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_implement"												text="Geräteeinstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_combine"												text="Einstellungen für Drescher"/>
+		<text name="CP_vehicle_setting_subTitle_seeder"													text="Einstellungen für Saatmaschine"/>
+		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multitooleinstellungen"/>
+		<text name="CP_vehicle_setting_subTitle_speed" 													text="Geschwindigkeiten"/>
 
-		<text name="CP_vehicle_setting_showCourse_title" 									text="Show course"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 									text="Show the current course of the vehicle"/>
+		<!--Settings-->
+		<text name="CP_vehicle_setting_showCourse_title" 												text="Zeige Kurs"/>
+		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Zeigt den Kurs des aktuell gewählten Fahrzeugs."/>
 
-		<text name="CP_vehicle_setting_showCourse_startStop" 								text="Start/stop only"/>
-		<text name="CP_vehicle_setting_showCourse_all" 										text="All waypoints"/>
+		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Nur Start/Ende"/>
+		<text name="CP_vehicle_setting_showCourse_all" 													text="Alle Wegpunkte"/>
 
-		<text name="CP_vehicle_setting_stopAtEnd_title" 									text="Stop am Endpunkt."/>
-		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 									text="Stop am Endpunkt."/>
+		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop am Endpunkt"/>
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Fahrzeug bleibt nach der Arbeit am Endpunkt stehen."/>
 
-		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 							text="Geräte am Kursende einklappen"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 							text="Aktiviert/Deaktiviert das einklappen des Gerätes am Ende der Feldarbeit."/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Pathfinder darf rückwärts fahren"/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Erlaubt dem Pathfinder einen rückwärts Kurs zu generieren."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 							text="Tool anheben"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 							text="Tool anheben am Ende einer Reihe oder am Start des Vorgewende-Wendemanövers."/>
-		<text name="CP_vehicle_setting_raiseImplementLate_early" 							text="früh"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_late" 							text="spät"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Geräte am Ende einklappen"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Geräte am Ende des Kurses einklappen oder nicht."/>
 
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 							text="Tool absenken"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 						text="Tool absenken am Ende einer Reihe oder am Ende des Vorgewende-Wendemanövers."/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_early" 							text="früh"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_late" 							text="spät"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Gerät anheben"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Geräte früh oder spät anheben."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="früh"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="spät"/>
 
-		<text name="CP_vehicle_setting_turnOnField_title" 									text="Wende auf dem Feld:"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 								text="Wende auf dem Feld"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Gerät absenken"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Geräte früh oder spät absenken."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="früh"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="spät"/>
 
-		<text name="CP_vehicle_setting_avoidFruit_title" 									text="Avoid driving in fruit"/>
-		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  		text="The AI will try to avoid driving in the fruit"/>
+		<text name="CP_vehicle_setting_turnOnField_title" 												text="Wenden auf dem Feld"/>
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich."/>
 
-		<text name="CP_vehicle_setting_toolOffsetX_title" 									text="Gerät-Versatz (seitlich)"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 								text="Gerät-Versatz (seitlich)"/>
+		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Fruchtumfahrung"/>
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Versucht nach Möglichst nicht in der Frucht zu fahren."/>
 
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 									text="Gerät-Versatz (längs)"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 								text="Gerät-Versatz (längs)"/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Geräte offset horizontal"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Geräte offset horizontal"/>
 
-		<text name="CP_vehicle_setting_turnDiameter_title" 									text="Wendekreis:"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 								text="Wendekreis:"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Geräte offset vertical"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Geräte offset vertical"/>
+
+		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Wenderadius"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Wenderadius"/>
 	
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 								text="Rohr immer ausfahren."/>
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 							text="Rohr immer ausfahren, solange der Drescher auf einen Abfahrer wartet."/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Rohr immer ausfahren"/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>
 
-		<text name="CP_vehicle_setting_stopForUnload_title" 								text="Während dem Abladen anhalten."/>
-		<text name="CP_vehicle_setting_stopForUnload_tooltip" 								text="Während dem Abladen anhalten."/>
+		<text name="CP_vehicle_setting_stopForUnload_title" 											text="Beim entladen stehen bleiben"/>
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Drescher bleibt stehen, solange er entladen wird."/>
 
-		<text name="CP_vehicle_setting_selfUnload_title" 									text="Combine self unload"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  		text="Combine drives to trailer on or near the field to unload."/>
+		<text name="CP_vehicle_setting_selfUnload_title" 												text="Drescher selbst abtanken"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Drescher sucht sich einen Trailer in der nähe des Feldes um dort selber ab zu tanken."/>
 
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 						text="Unload on first headland"/>
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  		text="Combine will not avoid unloading on the first headland."/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Entladen im ersten Vorgewende"/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Wenn aktiv, wird der Abfaher auf im ersten Vorgewende gerufen."/>
 
-		<text name="CP_vehicle_setting_strawSwath_title" 									text="Drescher Strohablage"/>
-		<text name="CP_vehicle_setting_strawSwath_tooltip" 									text="Drescher Strohablage"/>
-		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 								text="Nur Mitte"/>
+		<text name="CP_vehicle_setting_strawSwath_title" 												text="Strohablage"/>
+		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="Strohablage an, aus oder aus nur im Vorgewende."/>
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="Vorgewende deaktiviert"/>
 
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 						text="Spurreißer"/>
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 						text="Spurreißer an/aus."/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="Spurreißer"/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="Spurreißer benutzen ja oder nein."/>
 
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 				text="Düngefunktion der Sämaschine"/>
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 				text="Aktiviert oder deaktiviert die Düngefunktion der Sämaschine."/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Düngefunktion der Saatmaschine"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Düngefunktion der Saatmaschine ein oder ausschalten."/>
 
-		<text name="CP_vehicle_setting_symmetricLaneChange_title" 							text="Symmetrischer Bahnwechsel"/>
-		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 						text="Symmetrischer Bahnwechsel"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetrischer Bahnenwechsel"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrischer Bahnenwechsel"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 									text="Fahrzeugverband"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 								text="Fahrzeugverband"/>
+		<text name="CP_vehicle_setting_convoyActive_title" 												text="Fahrzeugkonvoy"/>
+		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fahrzeugkonvoy an oder aus"/>
 
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 							text="Fahrzeugverband minimale Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 							text="Fahrzeugverband minimale Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fahrzeugkonvoy min Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fahrzeugkonvoy min Entfernung"/>
 		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 							text="Fahrzeugverband maximale Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 							text="Fahrzeugverband maximale Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fahrzeugkonvoy max Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fahrzeugkonvoy max Entfernung"/>
 
-		<text name="CP_vehicle_setting_subTitle_speed" 										text="Geschwindigkeiten"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit."/>
+		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Feld"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld."/>
+		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Wendemanöver"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver."/>
+		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Rückwärts"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren."/>
 
-		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 								text="Feldarbeit"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 								text="Maximale Geschwindigkeit bei der Feldarbeit"/>
-		<text name="CP_vehicle_setting_fieldSpeed_title" 								text="Feld"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 								text="Maximale Geschwindigkeit auf dem Feld"/>
-		<text name="CP_vehicle_setting_turnSpeed_title" 									text="Wendemanöver"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 									text="Maximale Geschwindigkeit beim Wendemanöver"/>
-		<text name="CP_vehicle_setting_reverseSpeed_title" 									text="Rückwärts"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 								text="Maximale Geschwindigkeit beim Rückwärts fahren"/>
+		<text name="CP_ai_param_centerMode_title"														text="Feldmitte" />
+		<text name="CP_ai_param_centerMode_up_down" 													text="hoch/runter" />
+		<text name="CP_ai_param_centerMode_spiral" 														text="spiralförmig" />
+		<text name="CP_ai_param_centerMode_circular" 													text="kreisförmig" />
+		<text name="CP_ai_param_centerMode_lands" 														text="Beete (innen nach aussen)" />
+
+		<text name="CP_ai_param_headlandCornerType_title"												text="Vorgewende Ecken" />
+		<text name="CP_ai_param_headlandCornerType_smooth" 												text="Weich" />
+		<text name="CP_ai_param_headlandCornerType_sharp" 												text="Scharf" />
+		<text name="CP_ai_param_headlandCornerType_round" 												text="Rund" />
+
+		<text name="CP_ai_param_rowDirection_title"														text="Startrichtung" />
+		<text name="CP_ai_param_rowDirection_automatic" 												text="Automatisch" />
+		<text name="CP_ai_param_rowDirection_longest_edge" 												text="Längeste Kante" />
+
+		<text name="CP_ai_param_startOnHeadland_title"													text="Starte auf" />
+		<text name="CP_ai_param_startOnHeadland_on_headland" 											text="Vorgewende" />
+		<text name="CP_ai_param_startOnHeadland_up_down_rows" 											text="Bahnen" />
 
 
 	<!-- Vehicle course generator settings -->
-		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursgenerator-einstellungen von (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Kursgenerator-einstellungen von (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursgenerator Einstellungen von (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Kursgenerator Einstellungen von (%s)"/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbeitsbreite" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Anzahl an Vorgewende Bahnen" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl an Vorgewende Bahnen" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Anzahl Vorgewende" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Feldmitte" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Feldmitte" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Hoch/runter" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spiralförmig" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Kreisförmig" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Innen nach aussen" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="hoch/runter" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="spiralförmig" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="kreisförmig" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Beete (innen nach außen)" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Vorgewende Ecken" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Vorgewende Ecken" />
@@ -149,53 +159,89 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Scharf" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Rund" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Bahnen Startrichtung" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Bahnen Startrichtung" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Startrichtung" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Richtung in der die Bahnen gefahren werden sollen." />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatisch" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Längste Kante" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Längeste Kante" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Arbeit beginnen auf" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Arbeit beginnen auf" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Vorgewende Bahnen" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Feldreihen" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Starte auf" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Startpunkt auf dem Vorgewende oder auf den Bahnen" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Vorgewende" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Bahnen" />
 
 
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Am Startpunkt enden."/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Am Startpunkt enden."/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="deaktiviert und entlasse CP Fahrer."/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="aktiviert und entlasse CP Fahrer"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stop am Endpunkt"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stop am Endpunkt"/>
+		<!--<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="deactivated and release driver"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="activated and release driver"/>-->
 
-	<!-- GlobalSettings -->	
-		<text name="CP_global_setting_title"															text="Global-settings"/>
-		<text name="CP_global_setting_subTitle_basic"													text="Basic settings."/>
+	<!-- GlobalSettings -->
+		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>
+		<text name="CP_global_setting_subTitle_general"													text="Grundeinstellungen"/>
 
-		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Show all active courses"/>
-		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Show all active courses in the in game map and in game."/>
+		<text name="CP_global_setting_wageModifier_title" 												text="CP Fahrerlohn"/>
+		<text name="CP_global_setting_wageModifier_tooltip" 											text="Fahrerlohn für CP Arbeiter, prozentual von dem standart Lohn."/>
+
+		<text name="CP_global_setting_autoRepair_title" 												text="Automatische Reparatur"/>
+		<text name="CP_global_setting_autoRepair_tooltip" 												text="CP Fahrer reparieren automatisch ihre Fahrzeuge und Geräte."/>
+		<text name="CP_global_setting_autoRepair_off" 													text="Nicht reparieren"/>
+		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
+		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
+		<text name="CP_global_setting_autoRepair_always" 												text="Instandhalten"/>
+		
+		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Einstellungen"/>
+
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Angle difference at goal"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
+
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Delta angle relax factor"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
+
+		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zeige alle Kurse"/>
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zeigt alle geladenen Kurse auf der Map."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManger(current course: %s)"/>
-		<text name="CP_courseManager_no_current_course"													text="none"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary"/>
+		<text name="CP_courseManager_title"																text="Kursmanager(Aktueller Kurs: %s)"/>
+		<text name="CP_courseManager_no_current_course"													text="Keiner"/>
+		<text name="CP_courseManager_temporary_course"													text="Temporär"/>
 
-		<text name="CP_courseManager_course_load"														text="Loads course"/>
-		<text name="CP_courseManager_course_save"														text="Saves course"/>
-		<text name="CP_courseManager_course_clear_current"												text="Clears current course"/>
-		<text name="CP_courseManager_course_delete"														text="Deletes course"/>
-		<text name="CP_courseManager_course_rename"														text="Renames course"/>
+		<text name="CP_courseManager_change_mode"														text="Ändere Modus"/>
 
-		<text name="CP_courseManager_folder_create"														text="Creates new folder"/>
-		<text name="CP_courseManager_folder_delete"														text="Deletes folder"/>
-		<text name="CP_courseManager_folder_move_course"												text="Moves Course to folder"/>
-		<text name="CP_courseManager_folder_rename"														text="Renames folder"/>
-
-		<text name="CP_courseManager_folder_dialog"														text="Folder name:"/>
-		<text name="CP_courseManager_course_dialog"														text="Course name:"/>
-
-		<text name="CP_courseManager_deleteWarning"														text="Are you sure, you want to delete (%s)?"/>
-
-		<text name="CP_courseManager_change_mode"														text="Change mode"/>
-
-
+		<text name="CP_courseManager_load_courses"														text="Kurs laden"/>
+		<text name="CP_courseManager_save_courses"														text="Kurs speichern"/>
+		<text name="CP_courseManager_clear_current_courses"												text="Kurs aus Fahrzeug löschen"/>
+	
+		<text name="CP_courseManager_create_directory"													text="Neuer Ordner"/>
 		
+		<text name="CP_courseManager_move_entry"														text="Eintrag bewegen"/>
+		<text name="CP_courseManager_delete_entry"														text="Eintrag löschen"/>
+		<text name="CP_courseManager_rename_entry"														text="Eintrag umbenennen"/>
+		<text name="CP_courseManager_copy_entry"														text="Eintrag kopieren"/>
+
+		<text name="CP_courseManager_folder_dialog"														text="Ordnername:"/>
+		<text name="CP_courseManager_course_dialog"														text="Kursname:"/>
+		
+		<text name="CP_courseManager_deleteWarning"														text="Sicher, dass du (%s) löschen möchtest ?"/>
+
+		<text name="CP_courseManager_deleteError"														text="Ordner ist nicht leer (%s)!"/>
+		<text name="CP_courseManager_entryExistAlreadyError"											text="Kurs im Ordner (%s) bereits vorhanden!"/>
+		<text name="CP_courseManager_noAccessError"														text="Kein Zugriff auf Ordner (%s)!"/>
+		<text name="CP_courseManager_targetIsNoFolderError"												text="Ziel ist kein Ordner (%s)!"/>
+		<text name="CP_courseManager_targetIsNoCourseError"												text="Ziel ist kein Kurs (%s)!"/>
+	
+		<text name="CP_courseManager_basicSettings"														text="Kurse speichern/laden."/>
+		<text name="CP_courseManager_advancedSettings"													text="Kurse/Ordner editieren."/>
+
+	<!-- In game help menu-->
+		<text name="CP_help_title"																		text="Courseplay"/>
+		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
+		<text name="CP_help_page_courseManager_text"													text="Es gibt 7 unterschiedliche Aktionen für den Kursmanager:
+- Neuen Ordner erstellen.
+- Kurs aus Fahrzeug löschen.
+- Aktuellen Kurs speichern.
+- Kurse laden.
+- Kurse in einen anderen Ordner verschieben.
+- Ordner oder Kurse löschen.
+- Ordner oder Kurse umbenennen."/>
 	</texts>
 </l10n>
