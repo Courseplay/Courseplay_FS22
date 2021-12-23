@@ -21,6 +21,8 @@ end
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpCourseGeneratorSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
@@ -53,6 +55,15 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
 
+function CpCourseGeneratorSettings:onPostAttach()
+    local spec = self.spec_cpCourseGeneratorSettings
+    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+end
+
+function CpCourseGeneratorSettings:onPreDetach()
+    local spec = self.spec_cpCourseGeneratorSettings
+    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+end
 
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()

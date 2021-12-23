@@ -21,6 +21,8 @@ end
 function CpVehicleSettings.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpVehicleSettings)
 end
 function CpVehicleSettings.registerFunctions(vehicleType)
 
@@ -52,6 +54,15 @@ function CpVehicleSettings:onLoad(savegame)
     CpVehicleSettings.loadSettings(self,savegame)
 end
 
+function CpVehicleSettings:onPostAttach()
+    local spec = self.spec_cpVehicleSettings
+
+end
+
+function CpVehicleSettings:onPreDetach()
+    local spec = self.spec_cpVehicleSettings
+
+end
 
 --- Loads the generic settings setup from an xmlFile.
 function CpVehicleSettings.loadSettingsSetup()
