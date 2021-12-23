@@ -546,36 +546,3 @@ function AIDriveStrategyFieldWorkCourse:updateFieldworkOffset()
         self.settings.toolOffsetX:getValue() + self.aiOffsetX + (self.tightTurnOffset or 0),
         self.settings.toolOffsetZ:getValue() + self.aiOffsetZ)
 end
-
------------------------------------------------------------------------------------------------------------------------
---- Install into the stock helper
------------------------------------------------------------------------------------------------------------------------
--- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
--- field work.
-function AIDriveStrategyFieldWorkCourse:updateAIFieldWorkerDriveStrategies()
-    if not self:getFieldWorkCourse() then
-        CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'has no CP field work course, run the built-in helper...')
-        return
-    end
-    -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
-    -- our own specialization
-    for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do
-        if strategy.getDriveStraightData then
-            self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            local cpDriveStrategy
-            if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
-                cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyCombineCourse')
-            else
-                cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
-                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyFieldWorkCourse')
-            end
-            cpDriveStrategy:setAIVehicle(self)
-            self.spec_aiFieldWorker.driveStrategies[i] = cpDriveStrategy
-            return
-        end
-    end
-end
-
-AIFieldWorker.updateAIFieldWorkerDriveStrategies = Utils.appendedFunction(AIFieldWorker.updateAIFieldWorkerDriveStrategies,
-        AIDriveStrategyFieldWorkCourse.updateAIFieldWorkerDriveStrategies)

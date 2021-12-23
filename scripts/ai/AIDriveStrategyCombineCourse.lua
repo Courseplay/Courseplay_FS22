@@ -1870,11 +1870,3 @@ end
 function AIDriveStrategyCombineCourse:setInfoText(text)
 	self:debug(text)
 end
-
--- This is to disable the Giants helper's combine drive strategy
-function AIDriveStrategyCombineCourse:dummyGetDriveData(superfunc, ...)
-	return nil
-end
-
-AIDriveStrategyCombine.getDriveData = Utils.overwrittenFunction(AIDriveStrategyCombine.getDriveData,
-		AIDriveStrategyCombineCourse.dummyGetDriveData)
