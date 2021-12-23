@@ -102,6 +102,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
     local xmlFile = XMLFile.load("settingSetupXml", filePath, CpSettingsUtil.setupXmlSchema)
     class.settings = {}
 	class.settingsBySubTitle = {}
+	class.settingsToIndex = {}
     local uniqueID = 0
 	local setupKey = xmlFile:getValue("Settings#prefixText")
 	local pageTitle = xmlFile:getValue("Settings#title")
@@ -186,9 +187,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters,nil,class)
 			class[settingParameters.name] = setting
 			table.insert(class.settings,setting)
-			class.settingsNameToIndex[settingParameters.name] = #class.settings
-			class.settingsToIndex[setting] = #class.settings
 			table.insert(subTitleSettings.elements,setting)
+			class.settingsToIndex[setting] = #class.settings
 			uniqueID = uniqueID + 1
 		end)
 		table.insert(class.settingsBySubTitle,subTitleSettings)
@@ -218,10 +218,12 @@ end
 ---@param settings table
 function CpSettingsUtil.cloneSettingsTable(class,settings,...)
 	class.settings = {}
+	class.settingsToIndex = {}
 	for _,setting in ipairs(settings) do 
 		local settingClone = setting:clone(...)
 		table.insert(class.settings,settingClone)
 		class[settingClone:getName()] = settingClone
+		class.settingsToIndex[settingClone] = #class.settings
 	end
 end
 
