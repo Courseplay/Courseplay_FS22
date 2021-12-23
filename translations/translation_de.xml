@@ -116,26 +116,6 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Rückwärts"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren."/>
 
-		<text name="CP_ai_param_centerMode_title"														text="Feldmitte" />
-		<text name="CP_ai_param_centerMode_up_down" 													text="hoch/runter" />
-		<text name="CP_ai_param_centerMode_spiral" 														text="spiralförmig" />
-		<text name="CP_ai_param_centerMode_circular" 													text="kreisförmig" />
-		<text name="CP_ai_param_centerMode_lands" 														text="Beete (innen nach aussen)" />
-
-		<text name="CP_ai_param_headlandCornerType_title"												text="Vorgewende Ecken" />
-		<text name="CP_ai_param_headlandCornerType_smooth" 												text="Weich" />
-		<text name="CP_ai_param_headlandCornerType_sharp" 												text="Scharf" />
-		<text name="CP_ai_param_headlandCornerType_round" 												text="Rund" />
-
-		<text name="CP_ai_param_rowDirection_title"														text="Startrichtung" />
-		<text name="CP_ai_param_rowDirection_automatic" 												text="Automatisch" />
-		<text name="CP_ai_param_rowDirection_longest_edge" 												text="Längeste Kante" />
-
-		<text name="CP_ai_param_startOnHeadland_title"													text="Starte auf" />
-		<text name="CP_ai_param_startOnHeadland_on_headland" 											text="Vorgewende" />
-		<text name="CP_ai_param_startOnHeadland_up_down_rows" 											text="Bahnen" />
-
-
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursgenerator Einstellungen von (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Kursgenerator Einstellungen von (%s)"/>
@@ -172,8 +152,6 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stop am Endpunkt"/>
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stop am Endpunkt"/>
-		<!--<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="deactivated and release driver"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="activated and release driver"/>-->
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>
