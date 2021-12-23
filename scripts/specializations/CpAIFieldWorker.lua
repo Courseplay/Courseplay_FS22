@@ -114,6 +114,9 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
             if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
                 cpDriveStrategy = AIDriveStrategyCombineCourse.new()
                 CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyCombineCourse')
+            elseif AIUtil.getImplementWithSpecialization(self, Plow) then
+                cpDriveStrategy = AIDriveStrategyPlowCourse.new()
+                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyPlowCourse')
             else
                 cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
                 CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyFieldWorkCourse')
