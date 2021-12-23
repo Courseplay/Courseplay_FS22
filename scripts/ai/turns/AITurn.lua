@@ -102,8 +102,7 @@ end
 function AITurn:onWaypointChange(ix)
 	self:debug('onWaypointChange %d', ix)
 	-- make sure to set the proper X offset if applicable (for turning plows for example)
-	-- TODO_22
-	--self.driveStrategy:setOffsetX()
+	self.driveStrategy:setOffsetX()
 end
 
 function AITurn:onWaypointPassed(ix, course)
