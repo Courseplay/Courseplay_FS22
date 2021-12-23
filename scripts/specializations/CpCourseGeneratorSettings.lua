@@ -38,18 +38,6 @@ function CpCourseGeneratorSettings:getSettings()
     return spec
 end
 
---- Sets a single setting value from network.
----@param settingIx number
----@param currentIx number
-function CpCourseGeneratorSettings:setCourseGeneratorSettingValueFromNetwork(settingIx,currentIx)
-    local spec = self.spec_cpCourseGeneratorSettings
-    local setting = spec.settings[settingIx]
-    if setting then 
-        setting:setFromNetwork(currentIx)
-    end
-end
-
-
 --- Gets all settings.
 ---@return table
 function CpCourseGeneratorSettings:getSettingsTable()
