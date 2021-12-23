@@ -47,6 +47,7 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
         width = WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     end
     if not width then
+
         -- no AI markers, check work areas
         width = WorkWidthUtil.getWorkAreaWidth(object, logPrefix)
     end
@@ -90,7 +91,7 @@ end
 function WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     logPrefix = logPrefix or ''
     if object.getAIMarkers then
-        local aiLeftMarker, aiRightMarker = object:getAIMarkers()
+        local aiLeftMarker, aiRightMarker = WorkWidthUtil.getRealAIMarkers(object)
         if aiLeftMarker and aiRightMarker then
             local left, _, _ = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0);
             local right, _, _ = localToLocal(aiRightMarker, object.rootNode, 0, 0, 0);
@@ -105,14 +106,28 @@ function WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     end
 end
 
+--- Get the AI Size markers or if those do not exist, just the normal AIMarkers. I'm sure someone somwhere
+--- knows the difference, for plows, the size ones seem to be more accurate.
+function WorkWidthUtil.getRealAIMarkers(object)
+    local aiLeftMarker, aiRightMarker, aiBackMarker
+    if object.getAIMarkers then
+        aiLeftMarker, aiRightMarker, aiBackMarker = object:getAIMarkers()
+        -- TODO: for now, ignore the AI size markers
+        if false and object.getAISizeMarkers then
+            local aiSizeLeftMarker, aiSizeRightMarker, aiSizeBackMarker = object:getAISizeMarkers()
+            aiLeftMarker = aiSizeLeftMarker or aiLeftMarker
+            aiRightMarker = aiSizeRightMarker or aiRightMarker
+            aiBackMarker = aiSizeBackMarker or aiBackMarker
+        end
+    end
+    return aiLeftMarker, aiRightMarker, aiBackMarker
+end
+
 --- Gets ai markers for an object.
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.getAIMarkers(object,logPrefix,suppressLog)
-    local aiLeftMarker, aiRightMarker, aiBackMarker
-    if object.getAIMarkers then
-        aiLeftMarker, aiRightMarker, aiBackMarker = object:getAIMarkers()
-    end
+    local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getRealAIMarkers(object)
     if not aiLeftMarker or not aiRightMarker or not aiBackMarker then
         -- use the root node if there are no AI markers
         if not suppressLog then
@@ -186,12 +201,13 @@ function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
     local firstObject =  AIUtil.getFirstAttachedImplement(vehicle)
     local lastObject =  AIUtil.getLastAttachedImplement(vehicle)
 
+
     local function show(object,workWidth,offsX,offsZ)
         if object == nil then
             return
         end
         local f, b = 0,0
-        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getAIMarkers(object,nil,true)
+        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getAIRealMarkers(object)
         if aiLeftMarker and aiBackMarker then
             _,_,b = localToLocal(aiBackMarker, object.rootNode, 0, 0, 0)
             _,_,f = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)

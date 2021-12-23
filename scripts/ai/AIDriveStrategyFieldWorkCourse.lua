@@ -547,3 +547,7 @@ function AIDriveStrategyFieldWorkCourse:updateFieldworkOffset()
         self.settings.toolOffsetX:getValue() + self.aiOffsetX + (self.tightTurnOffset or 0),
         self.settings.toolOffsetZ:getValue() + self.aiOffsetZ)
 end
+
+function AIDriveStrategyFieldWorkCourse:setOffsetX()
+    -- do nothing by default
+end

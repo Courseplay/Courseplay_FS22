@@ -91,6 +91,8 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
             end
             self.state = self.states.ROTATING_PLOW
         end
+    elseif self.state == self.states.TURNING then
+
     end
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
@@ -120,6 +122,10 @@ end
 --- a tool with offset will be closer to either left or right AI marker.
 function AIDriveStrategyPlowCourse:setOffsetX()
     local aiLeftMarker, aiRightMarker, aiBackMarker = self.plow.spec_plow:getAIMarkers()
+    local aiSizeLeftMarker, aiSizeRightMarker, aiSizeBackMarker = self.plow.spec_plow:getAISizeMarkers()
+    aiLeftMarker = aiSizeLeftMarker or aiLeftMarker
+    aiRightMarker = aiSizeRightMarker or aiRightMarker
+    aiBackMarker = aiSizeBackMarker or aiBackMarker
     if aiLeftMarker and aiBackMarker and aiRightMarker then
         local attacherJoint = self.plow:getActiveInputAttacherJoint()
         local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()
@@ -138,7 +144,7 @@ function AIDriveStrategyPlowCourse:setOffsetX()
         -- TODO: Fix this offset dependency and copy paste
         local newToolOffsetX = -(leftMarkerDistance + rightMarkerDistance) / 2
         -- set to the average of old and new to smooth a little bit to avoid oscillations
-        self.settings.toolOffsetX:setFloatValue((self.settings.toolOffsetX:getValue() + newToolOffsetX) / 2)
+        self.settings.toolOffsetX:setFloatValue((0.5 * self.settings.toolOffsetX:getValue() + 1.5 * newToolOffsetX) / 2)
         self:debug('%s: left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f, setting tool offsetX to %.2f',
                 CpUtil.getName(self.plow), leftMarkerDistance, rightMarkerDistance, leftDx, rightDx, newToolOffsetX,
                 self.settings.toolOffsetX:getValue())
@@ -147,7 +153,7 @@ end
 
 -- If the left/right AI markers had a consistent orientation (rotation) we could use localToLocal to get the
 -- referenceNode's distance in the marker's coordinate system. But that's not the case, so we'll use some vector
--- algebra to calculate how far left/right are the markers from the referenceNode.
+-- algebra to calculate how far left/right the markers are from the referenceNode.
 function AIDriveStrategyPlowCourse:getOffsets(referenceNode, aiLeftMarker, aiRightMarker)
     local refX, _, refZ = getWorldTranslation(referenceNode)
     local lx, _, lz = getWorldTranslation(aiLeftMarker)

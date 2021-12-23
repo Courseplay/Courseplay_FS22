@@ -9,15 +9,18 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.vehicle = vehicle
 	self.klass = class
 	self.name = data.name
-	if next(data.values) ~=nil then 
+	self.data = data
+
+	if next(data.values) ~=nil then
 		self.values = data.values
 		self.texts = data.texts
-	else 
+	else
 		self.values = {}
 		self.texts = {}
 		AIParameterSettingList.generateValues(self,self.values,self.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
 	end
-	self.title = data.title 
+
+	self.title = data.title
 	self.tooltip = data.tooltip
 
 	-- index of the current value/text
@@ -25,7 +28,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	-- index of the previous value/text
 	self.previous = 1
 
-	if self.texts == nil or next(self.texts) == nil then 
+	if self.texts == nil or next(self.texts) == nil then
 		self.texts = {}
 		AIParameterSettingList.enrichTexts(self,data.unit)
 	end
@@ -34,14 +37,13 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 		AIParameterSettingList.setFloatValue(self,data.default)
 		self:debug("set to default %s",data.default)
 	end
-	if data.defaultBool ~= nil then 
+	if data.defaultBool ~= nil then
 		AIParameterSettingList.setValue(self,data.defaultBool)
 		self:debug("set to default %s",tostring(data.defaultBool))
 	end
 
 	self.callbacks = data.callbacks
 
-	self.data = data
 
 	self.guiElementId = data.uniqueID
 
@@ -177,7 +179,8 @@ local function setValueInternal(self, value, comparisonFunc)
 end
 
 function AIParameterSettingList:setFloatValue(value)
-	setValueInternal(self, value, function(a, b)  return MathUtil.equalEpsilon(a, b, 0.01) end)
+	setValueInternal(self, value, function(a, b)
+		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
 end
 
 --- Set to a specific value.
