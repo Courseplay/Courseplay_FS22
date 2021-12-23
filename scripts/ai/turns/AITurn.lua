@@ -282,13 +282,16 @@ end
 
 function KTurn:startTurn()
 	self.state = self.states.FORWARD
+	self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 0, self.turnContext:isLeftTurn())
+	self:debug('Turn progress 0')
 end
 
 function KTurn:turn(dt)
 	-- we end the K turn with a temporary course leading straight into the next row. During this turn the
 	-- AI driver's state remains TURNING and thus calls AITurn:drive() which wil take care of raising the implements
 	local endTurn = function(course)
-		self.vehicle:raiseAIEvent("onAITurnProgress", "onAIImplementTurnProgress", 100, self.turnContext:isLeftTurn())
+		self:debug('Turn progress 100')
+		self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 100, self.turnContext:isLeftTurn())
 		self.state = self.states.ENDING_TURN
 		self.ppc:setCourse(course)
 		self.ppc:initialize(1)
@@ -316,7 +319,8 @@ function KTurn:turn(dt)
 				endTurn(self.endingTurnCourse)
 			else
 				-- reverse until we can make turn to the turn end point
-				self.vehicle:raiseAIEvent("onAITurnProgress", "onAIImplementTurnProgress", 50, self.turnContext:isLeftTurn())
+				self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 50, self.turnContext:isLeftTurn())
+				self:debug('Turn progress 50')
 				self.state = self.states.REVERSE
 				self.endingTurnCourse = TurnEndingManeuver(self.vehicle, self.turnContext,
 						self.vehicle:getAIDirectionNode(), self.turningRadius, self.workWidth, 0):getCourse()
@@ -568,7 +572,7 @@ end
 
 function CourseTurn:updateTurnProgress()
 	local progress = self.turnCourse:getCurrentWaypointIx() / #self.turnCourse
-	self.vehicle:raiseAIEvent("onAITurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
+	self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
 end
 
 function CourseTurn:onWaypointChange(ix)

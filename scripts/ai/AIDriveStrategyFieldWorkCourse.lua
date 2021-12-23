@@ -67,7 +67,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:update()
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
-    if CpDebug.isChannelActive(CpDebug.DBG_TURN) then
+    if CpDebug:isChannelActive(CpDebug.DBG_TURN) then
         if self.state == self.states.TURNING then
             if self.turnContext then
                 self.turnContext:drawDebug()

@@ -41,7 +41,7 @@ function AIDriveStrategyPlowCourse.new(customMt)
     end
     local self = AIDriveStrategyFieldWorkCourse.new(customMt)
     AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyPlowCourse.myStates)
-    self.debugChannel = CpDebug.DBG_MODE_6
+    self.debugChannel = CpDebug.DBG_MODE_4
     return self
 end
 
@@ -121,15 +121,15 @@ function AIDriveStrategyPlowCourse:setOffsetX()
     local aiLeftMarker, aiRightMarker, aiBackMarker = self.plow.spec_plow:getAIMarkers()
     if aiLeftMarker and aiBackMarker and aiRightMarker then
         local attacherJoint = self.plow:getActiveInputAttacherJoint()
-        local referenceNode = attacherJoint and attacherJoint.node or self:getDirectionNode()
+        local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()
         -- find out the left/right AI markers distance from the attacher joint (or, if does not exist, the
         -- vehicle's root node) to calculate the offset.
         self.plowReferenceNode = referenceNode
         local leftMarkerDistance, rightMarkerDistance = self:getOffsets(referenceNode, aiLeftMarker, aiRightMarker)
         -- some plows rotate the markers with the plow, so swap left and right when needed
         -- so find out if the left is really on the left of the vehicle's root node or not
-        local leftDx, _, _ = localToLocal(aiLeftMarker, self:getDirectionNode(), 0, 0, 0)
-        local rightDx, _, _ = localToLocal(aiRightMarker, self:getDirectionNode(), 0, 0, 0)
+        local leftDx, _, _ = localToLocal(aiLeftMarker, self.vehicle:getAIDirectionNode(), 0, 0, 0)
+        local rightDx, _, _ = localToLocal(aiRightMarker, self.vehicle:getAIDirectionNode(), 0, 0, 0)
         if leftDx < rightDx then
             -- left is positive x, so looks like the plow is inverted, swap left/right then
             leftMarkerDistance, rightMarkerDistance = -rightMarkerDistance, -leftMarkerDistance
@@ -137,9 +137,9 @@ function AIDriveStrategyPlowCourse:setOffsetX()
         -- TODO: Fix this offset dependency and copy paste
         local newToolOffsetX = -(leftMarkerDistance + rightMarkerDistance) / 2
         -- set to the average of old and new to smooth a little bit to avoid oscillations
-        self.settings.toolOffsetX:setValue((self.settings.toolOffsetX:getValue() + newToolOffsetX) / 2,true)
-        self:debug('%s: left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, setting tool offsetX to %.2f',
-                CpUtil.getName(self.plow), leftMarkerDistance, rightMarkerDistance, leftDx, rightDx,
+        self.settings.toolOffsetX:setFloatValue((self.settings.toolOffsetX:getValue() + newToolOffsetX) / 2)
+        self:debug('%s: left = %.1f, right = %.1f, leftDx = %.1f, rightDx = %.1f, new = %.1f, setting tool offsetX to %.2f',
+                CpUtil.getName(self.plow), leftMarkerDistance, rightMarkerDistance, leftDx, rightDx, newToolOffsetX,
                 self.settings.toolOffsetX:getValue())
     end
 end
@@ -170,7 +170,7 @@ end
 --- We expect this to be called before the turn starts, so after the turn
 function AIDriveStrategyPlowCourse:getTurnEndSideOffset()
     if self:hasRotatablePlow() then
-        local toolOffsetX = self.settings.toolOffsetX:get()
+        local toolOffsetX = self.settings.toolOffsetX:getValue()
         -- need the double tool offset as the turn end still has the current offset, after the rotation it'll be
         -- on the other side, (one toolOffsetX would put it to 0 only)
         return 2 * toolOffsetX
@@ -183,6 +183,6 @@ function AIDriveStrategyPlowCourse:stop(msg)
     --- Make sure after the driver has finished.
     --- Clients and server values are synced,
     --- as the server updates the value locally during driving.
-    self.settings.toolOffsetX:set(self.settings.toolOffsetX:get())
+    self.settings.toolOffsetX:setFloatValue(self.settings.toolOffsetX:getValue())
     FieldworkAIDriver.stop(self,msg)
 end
