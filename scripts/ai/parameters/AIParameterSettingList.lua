@@ -222,9 +222,13 @@ function AIParameterSettingList:getTooltip()
 end
 
 function AIParameterSettingList:setGenericGuiElementValues(guiElement)
-	guiElement:setLabel(self:getTitle())
+	if guiElement.labelElement and guiElement.labelElement.setText then
+		guiElement:setLabel(self:getTitle())
+	end
 	local toolTipElement = guiElement.elements[6]
-	toolTipElement:setText(self:getTooltip())
+	if toolTipElement then
+		toolTipElement:setText(self:getTooltip())
+	end
 end
 
 function AIParameterSettingList:getGuiElementTexts()

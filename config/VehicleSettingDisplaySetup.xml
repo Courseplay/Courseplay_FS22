@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the vehicle settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings title="CP_vehicle_setting_display">
+	<Setting type="courseGeneratorSettings" name = "workWidth" />
+	<Setting type="vehicleSettings" name = "toolOffsetX" />
+	<Setting type="vehicleSettings" name = "toolOffsetZ" />
+</Settings>

@@ -247,6 +247,24 @@ function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	parentGuiElement:invalidateLayout()
 end
 
+--- Clones for each setting gui elements and applies basic setups.
+---@param settings table
+---@param parentGuiElement GuiElement
+---@param genericSettingElement GuiElement
+function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings,parentGuiElement,genericSettingElementTitle,genericSettingElement)
+	for _,setting in ipairs(settings) do 
+
+		local titleElement = genericSettingElementTitle:clone(parentGuiElement,true)
+		titleElement:setText(setting.data.title)
+		genericSettingElement:unlinkElement()
+		CpUtil.debugFormat(CpDebug.DBG_HUD,"Binded setting %s",setting:getName())
+		local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
+--			parentGuiElement:invalidateLayout()
+		setting:setGenericGuiElementValues(clonedSettingElement)
+	end
+end
+
+
 --- Links the gui elements to the correct settings.
 ---@param settings any
 ---@param layout any

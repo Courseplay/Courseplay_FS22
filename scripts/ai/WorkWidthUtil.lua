@@ -222,15 +222,16 @@ function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
         local p3x, p3y, p3z = localToWorld(object.rootNode, right, 1.6, f - offsZ)
         local p4x, p4y, p4z = localToWorld(object.rootNode, left,  1.6, f - offsZ)
 
-        cpDebug:drawPoint(p1x, p1y, p1z, 1, 1, 0)
-        cpDebug:drawPoint(p2x, p2y, p2z, 1, 1, 0)
-        cpDebug:drawPoint(p3x, p3y, p3z, 1, 1, 0)
-        cpDebug:drawPoint(p4x, p4y, p4z, 1, 1, 0)
+     --   cpDebug:drawPoint(p1x, p1y, p1z, 1, 1, 0)
+       -- cpDebug:drawPoint(p2x, p2y, p2z, 1, 1, 0)
+       -- cpDebug:drawPoint(p3x, p3y, p3z, 1, 1, 0)
+       -- cpDebug:drawPoint(p4x, p4y, p4z, 1, 1, 0)
 
-        cpDebug:drawLine(p1x, p1y, p1z, 1, 0, 0, p2x, p2y, p2z)
-        cpDebug:drawLine(p2x, p2y, p2z, 1, 0, 0, p3x, p3y, p3z)
-        cpDebug:drawLine(p3x, p3y, p3z, 1, 0, 0, p4x, p4y, p4z)
-        cpDebug:drawLine(p4x, p4y, p4z, 1, 0, 0, p1x, p1y, p1z)
+  
+        DebugUtil.drawDebugLine(p1x, p1y, p1z, p2x, p2y, p2z, 1, 0, 0)
+        DebugUtil.drawDebugLine(p2x, p2y, p2z, p3x, p3y, p3z, 1, 0, 0)
+        DebugUtil.drawDebugLine(p3x, p3y, p3z, p4x, p4y, p4z, 1, 0, 0)
+        DebugUtil.drawDebugLine(p4x, p4y, p4z, p1x, p1y, p1z, 1, 0, 0)
     end
     show(firstObject,workWidth,offsX,offsZ)
     if firstObject ~= lastObject then
