@@ -177,8 +177,7 @@ function AIDriveStrategyFieldWorkCourse:lowerImplements()
     if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) or self.ppc:isReversing() then
         -- sowing machines want to stop while the implement is being lowered
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
-        -- TODO_22
-        --self.state = self.states.WAITING_FOR_LOWER_DELAYED
+        self.state = self.states.WAITING_FOR_LOWER_DELAYED
     end
 end
 
