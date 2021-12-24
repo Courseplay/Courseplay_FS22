@@ -1,8 +1,10 @@
 --- This spec is only for overwriting giants function of the AIFieldWorker.
+local modName = CpAIFieldWorker and CpAIFieldWorker.MOD_NAME -- for reload
+
 ---@class CpAIFieldWorker
 CpAIFieldWorker = {}
 
-CpAIFieldWorker.MOD_NAME = g_currentModName
+CpAIFieldWorker.MOD_NAME = g_currentModName or modName
 CpAIFieldWorker.NAME = ".cpAIFieldWorker"
 CpAIFieldWorker.SPEC_NAME = CpAIFieldWorker.MOD_NAME .. CpAIFieldWorker.NAME
 CpAIFieldWorker.KEY = "."..CpAIFieldWorker.MOD_NAME..CpAIFieldWorker.NAME .. "."
@@ -106,9 +108,9 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
     superFunc(self, ...)
     -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
     -- our own specialization
-    local combineDriveStrategyIndex
+    local strategiesToRemove = {}
     for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do
-        if strategy.getDriveStraightData then
+        if strategy:isa(AIDriveStrategyStraight) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             local cpDriveStrategy
             if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
@@ -125,13 +127,21 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
             self.spec_aiFieldWorker.driveStrategies[i] = cpDriveStrategy
             return
         end
-        if strategy.combines then
+        if strategy:isa(AIDriveStrategyCombine) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing fieldwork helper Giants combine drive strategy')
-            combineDriveStrategyIndex = i
+            table.insert(strategiesToRemove, i)
+        elseif FS22_AIVehicleExtension.AIDriveStrategyMogli and strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyMogli) then
+            self.spec_aiFieldWorker.driveStrategies[i]:delete()
+            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing AIVehicleExtension drive strategy')
+            table.insert(strategiesToRemove, i)
+        elseif FS22_AIVehicleExtension.AIDriveStrategyCombine131 and strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyCombine131) then
+            self.spec_aiFieldWorker.driveStrategies[i]:delete()
+            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing AIVehicleExtension combine drive strategy')
+            table.insert(strategiesToRemove, i)
         end
     end
-    if combineDriveStrategyIndex then
-        table.remove(self.spec_cpAIFieldWorker.driveStrategies, combineDriveStrategyIndex)
+    for _, ix in ipairs(strategiesToRemove) do
+        table.remove(self.spec_aiFieldWorker.driveStrategies, ix)
     end
 end
