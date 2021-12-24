@@ -3,13 +3,12 @@ CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR = 10
 --- Adds the course generate button in the ai menu page.
 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
-
-	self.buttonGenerateCourse = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
+	self.buttonGenerateCourse = self.buttonCancelJob:clone(self.buttonCancelJob.parent)
 	self.buttonGenerateCourse:setText(g_i18n:getText("CP_ai_page_generate_course"))
 	self.buttonGenerateCourse:setVisible(false)
 	self.buttonGenerateCourse:setCallback("onClickCallback", "onClickGenerateFieldWorkCourse")
 	self.buttonGotoJob.parent:invalidateLayout()
-	self.buttonOpenCourseGenerator = self.buttonCancelJob:clone(self.buttonGotoJob.parent)
+	self.buttonOpenCourseGenerator = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
 	self.buttonOpenCourseGenerator:setText(g_i18n:getText("CP_ai_page_open_course_generator"))
 	self.buttonOpenCourseGenerator:setVisible(false)
 	self.buttonOpenCourseGenerator:setCallback("onClickCallback", "onClickOpenCloseCourseGenerator")
