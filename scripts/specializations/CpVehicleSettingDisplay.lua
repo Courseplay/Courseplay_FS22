@@ -1,4 +1,4 @@
---- Cp ai driver spec
+--- This specialization is used for visual changing of settings values in a vehicle.
 
 ---@class CpVehicleSettingDisplay
 CpVehicleSettingDisplay = {}
@@ -9,6 +9,7 @@ CpVehicleSettingDisplay.SPEC_NAME = CpVehicleSettingDisplay.MOD_NAME .. CpVehicl
 --CpVehicleSettingDisplay.KEY = "."..CpVehicleSettingDisplay.MOD_NAME..".cpVehicleSettingDisplay."
 CpVehicleSettingDisplay.XML_KEY = "Settings.Setting"
 CpVehicleSettingDisplay.XML_KEY_TITLE = "Settings#title"
+CpVehicleSettingDisplay.GUI_NAME = "CpVehicleSettingDisplayDialog"
 
 CpVehicleSettingDisplay.SETTING_TYPES = {
 	vehicleSettings = CpVehicleSettings,
@@ -54,13 +55,27 @@ function CpVehicleSettingDisplay.loadFromXMLFile(filePath)
         end)
         xmlFile:delete()
 	end
+	--- Enables a few background hud elements, while the vehicle setting display is visible.
+	local function getIsOverlayGuiVisible(gui,superFunc)
+		return gui.currentGuiName == CpVehicleSettingDisplay.GUI_NAME or superFunc(gui) 
+	end
+	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible,getIsOverlayGuiVisible)
+
+	--- Disables the open menu while the display is displayed. Otherwise there is key binding conflict with "ESC".
+	local function onToggleMenu(mission,superFunc,...)
+		if g_gui.currentGuiName and g_gui.currentGuiName == CpVehicleSettingDisplay.GUI_NAME then 
+			return 
+		end
+		return superFunc(mission,...)
+	end
+	FSBaseMission.onToggleMenu = Utils.overwrittenFunction(FSBaseMission.onToggleMenu,onToggleMenu)
+
 end
 
 function CpVehicleSettingDisplay.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettingDisplay)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettingDisplay)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpVehicleSettingDisplay)
---	SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpVehicleSettingDisplay)
 --    SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpVehicleSettingDisplay)
 --    SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpVehicleSettingDisplay)
 
@@ -88,10 +103,9 @@ function CpVehicleSettingDisplay:onLoadFinished()
 		local filePath = Utils.getFilename('config/VehicleSettingDisplaySetup.xml', Courseplay.BASE_DIRECTORY)
 		CpVehicleSettingDisplay.loadFromXMLFile(filePath)
 		CpVehicleSettingDisplay.dialog = VehicleSettingDisplayDialog.new(CpVehicleSettingDisplay.prefabSettingsData)
-		g_gui:loadGui(Utils.getFilename("config/gui/BlankScreenElement.xml",Courseplay.BASE_DIRECTORY), "CpVehicleSettingDisplayDialog", CpVehicleSettingDisplay.dialog)
+		g_gui:loadGui(Utils.getFilename("config/gui/BlankScreenElement.xml",Courseplay.BASE_DIRECTORY), CpVehicleSettingDisplay.GUI_NAME, CpVehicleSettingDisplay.dialog)
 		CpVehicleSettingDisplay.initialized = true
 	end
-
 	CpVehicleSettingDisplay.linkSettings(self)
 end
 
@@ -130,5 +144,5 @@ end
 function CpVehicleSettingDisplay:actionEventOpenCloseDisplay()
 	local spec = self.spec_cpVehicleSettingDisplay
 	CpVehicleSettingDisplay.dialog:setData(self,spec.settings) 
-	g_gui:showGui("CpVehicleSettingDisplayDialog")
+	g_gui:showGui(CpVehicleSettingDisplay.GUI_NAME)
 end

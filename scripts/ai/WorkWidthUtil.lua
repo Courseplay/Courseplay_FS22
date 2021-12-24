@@ -199,8 +199,8 @@ end
 ---@param offsX number
 ---@param offsZ number
 function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
-    local firstObject =  AIUtil.getFirstAttachedImplement(vehicle)
-    local lastObject =  AIUtil.getLastAttachedImplement(vehicle)
+    local firstObject =  AIUtil.getFirstAttachedImplement(vehicle,true)
+    local lastObject =  AIUtil.getLastAttachedImplement(vehicle,true)
 
 
     local function show(object,workWidth,offsX,offsZ)
@@ -208,7 +208,7 @@ function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
             return
         end
         local f, b = 0,0
-        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getAIRealMarkers(object)
+        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getRealAIMarkers(object)
         if aiLeftMarker and aiBackMarker then
             _,_,b = localToLocal(aiBackMarker, object.rootNode, 0, 0, 0)
             _,_,f = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)
