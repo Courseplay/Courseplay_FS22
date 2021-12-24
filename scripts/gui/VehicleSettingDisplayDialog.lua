@@ -51,7 +51,7 @@ end
 
 function VehicleSettingDisplayDialog:keyEvent(unicode, sym, modifier, isDown, eventUsed)
 	VehicleSettingDisplayDialog:superClass().keyEvent(self,unicode, sym, modifier, isDown, eventUsed)
-	if isDown then
+	if not isDown then
 		if sym == Input.KEY_esc then
 			g_gui:showGui("")
 		end

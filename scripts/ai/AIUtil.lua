@@ -288,7 +288,7 @@ end
 
 ---@return table, number frontmost object and the distance between the front of that object and the root node of the vehicle
 --- when > 0 in front of the vehicle
-function AIUtil.getFirstAttachedImplement(vehicle)
+function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's front
 	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
 	local firstImplement = vehicle
@@ -297,7 +297,9 @@ function AIUtil.getFirstAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the front of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				implement.object.size.length / 2 + implement.object.size.lengthOffset)
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
+			if not suppressLog then
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
+			end
 			if d > maxDistance then
 				maxDistance = d
 				firstImplement = implement.object
@@ -308,7 +310,7 @@ function AIUtil.getFirstAttachedImplement(vehicle)
 end
 
 ---@return table, number rearmost object and the distance between the back of that object and the root node of the object
-function AIUtil.getLastAttachedImplement(vehicle)
+function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's back
 	local minDistance = vehicle.size.length / 2 - vehicle.size.lengthOffset
 	-- size.lengthOffset > 0 if the root node is towards the back of the vehicle, < 0 if it is towards the front
@@ -318,7 +320,9 @@ function AIUtil.getLastAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the back of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				- implement.object.size.length / 2 + implement.object.size.lengthOffset)
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			if not suppressLog then
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			end
 			if d < minDistance then
 				minDistance = d
 				lastImplement = implement.object
