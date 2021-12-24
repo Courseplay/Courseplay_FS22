@@ -32,7 +32,7 @@
 
 	<SettingSubTitle title="implement">
 		<!--Fold at End-->
-		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd"/>
+		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true"/>
 		<!--Raise Implement-->
 		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate">
 			<Texts>
