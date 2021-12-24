@@ -103,14 +103,14 @@ end
 function CpVehicleSettings:onReadStream(streamId,connection)
     local settings = self.spec_cpVehicleSettings.settings
     for i = 1, #settings do 
-        settings[i]:onReadStream(streamId,connection)
+        settings[i]:readStream(streamId,connection)
     end
 end
 
 function CpVehicleSettings:onWriteStream(streamId,connection)
 	local settings = self.spec_cpVehicleSettings.settings
     for i = 1, #settings do 
-        settings[i]:onWriteStream(streamId,connection)
+        settings[i]:writeStream(streamId,connection)
     end
 end
 

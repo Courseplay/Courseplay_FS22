@@ -104,14 +104,14 @@ end
 function CpCourseGeneratorSettings:onReadStream(streamId,connection)
     local settings = self.spec_cpCourseGeneratorSettings.settings
     for i = 1, #settings do 
-        settings[i]:onReadStream(streamId,connection)
+        settings[i]:readStream(streamId,connection)
     end
 end
 
 function CpCourseGeneratorSettings:onWriteStream(streamId,connection)
     local settings = self.spec_cpCourseGeneratorSettings.settings
     for i = 1, #settings do 
-        settings[i]:onWriteStream(streamId,connection)
+        settings[i]:writeStream(streamId,connection)
     end
 end
 
