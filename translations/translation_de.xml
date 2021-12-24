@@ -6,6 +6,10 @@
 		<text name="CP_deactivated" 																	text="deaktiviert" />
 		<text name="CP_unit_meter" 																		text="m" />
 
+		<!-- User info text -->
+		<text name="CP_infoText"																		text="Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22." />
+
+
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start am:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Wo wird die Arbeit gestartet." />

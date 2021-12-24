@@ -7,6 +7,36 @@ Courseplay.BASE_KEY = "Courseplay."
 
 function Courseplay:init()
 	self:registerConsoleCommands()
+	self:showUserInformation()
+end
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- User info with github reference and update notification.
+------------------------------------------------------------------------------------------------------------------------
+
+function Courseplay:showUserInformation()
+	local showInfoDialog = true
+	local currentVersion = g_modManager:getModByName(self.MOD_NAME).version
+	local path = getUserProfileAppPath() .. "game.xml"
+	if fileExists(path) then
+		local xmlFile = loadXMLFile("gameXml", path)
+		local lastLoadedVersion = getXMLString(xmlFile,"game.courseplay.lastVersion")		
+		if lastLoadedVersion then 
+			if currentVersion == lastLoadedVersion then 
+				showInfoDialog = false
+			end
+		end
+		if showInfoDialog then
+			g_gui:showInfoDialog({
+				text = string.format(g_i18n:getText("CP_infoText"), currentVersion)
+	
+			})
+			setXMLString(xmlFile,"game.courseplay.lastVersion",currentVersion)
+		end
+		saveXMLFile(xmlFile)
+		delete(xmlFile)
+	end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
