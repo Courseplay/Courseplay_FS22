@@ -52,7 +52,7 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Fold tools at course end"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Enables/disables automatic folding of implements at the end of the course."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Tool rasing"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Tool raising"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Tool raising early or late at the start of a turn."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="early"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="late"/>
@@ -183,7 +183,7 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Shows all active courses on the in game map."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManger(current course: %s)"/>
+		<text name="CP_courseManager_title"																text="CourseManager(current course: %s)"/>
 		<text name="CP_courseManager_no_current_course"													text="none"/>
 		<text name="CP_courseManager_temporary_course"													text="temporary"/>
 
