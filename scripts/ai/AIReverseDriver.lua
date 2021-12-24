@@ -167,7 +167,7 @@ end
 
 ---@param implement table implement.object
 function AIReverseDriver:setReversingProperties(implement)
-	if implement.reversingProperties.frontNode then return end
+	if implement.reversingProperties and implement.reversingProperties.frontNode then return end
 	self:debug('setReversingProperties for %s', CpUtil.getName(implement))
 
 	implement.reversingProperties = {}
