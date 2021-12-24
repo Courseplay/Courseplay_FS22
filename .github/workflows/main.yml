@@ -2,9 +2,11 @@
 name: Run unit tests
 
 # Controls when the workflow will run
+# - push will trigger when a push to any branch is made
 # - pull_request will trigger when a PR is made and when new commits are made on a PR
 # - workflow_dispatch is a manual trigger
 on: 
+  push:
   pull_request:
   workflow_dispatch:
 
@@ -18,5 +20,5 @@ jobs:
       - name: Setup Lua
         uses: xpol/setup-lua@v0.3
       - name: Run unit tests
-        run:  cd scripts/test && lua CourseManagerTest.lua
+        run: cd scripts/test && lua CourseManagerTest.lua
 
