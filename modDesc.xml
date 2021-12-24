@@ -15,18 +15,26 @@
         <en>
 		<![CDATA[Courseplay
 
-The next version of Courseplay.]]>
+The next version of Courseplay.
+
+- Multiplayer support will be added in a future release.
+- Full controller support for the GUI is planned for the future.
+]]>
 		</en>
         <de>
 		<![CDATA[Courseplay
 
-Die nächste Version von Courseplay.]]>
+Die nächste Version von Courseplay.
+
+- Mehrspieler Modus wir mit den nächsten Versionen implementiert.
+- Kompletter Controller Support für das GUI ist geplant für später.
+]]>
 		</de>
     </description>
 
 	<iconFilename>img/icon_courseplay.dds</iconFilename>
 	<l10n filenamePrefix="translations/translation" />
-    <multiplayer supported="true" />
+    <multiplayer supported="false" />
 	
 	<extraSourceFiles>
 		<sourceFile filename="scripts/CpObject.lua"/>
