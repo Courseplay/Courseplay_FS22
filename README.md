@@ -7,11 +7,19 @@
 
 ## Note that the current version has no multiplayer support!
 
+## What Works
+
+* Course generation
+* Field work but no refill or unload, except combine self unload
+* Save/load courses
+
+## Usage
+
+There is now a CP Fieldwork job available on the helper screen. After you select it,
+choose a target position the field you want work on and the Open/Close Course Generator
+button. Generate the course and start the job.
+
 ## Developer version
-
-<!-- **[Download here](https://github.com/Courseplay/Courseplay_FS22_FS22/releases/latest)** -->
-
-**[Download here](https://github.com/Courseplay/Courseplay_FS22/releases/latest)**
 
 Please be aware you're using a developer version, which may and will contain errors, bugs, mistakes and unfinished code. Chances are you computer will explode when using it. Twice. If you have no idea what "beta", "alpha", or "developer" means and entails, steer clear. The Courseplay team will not take any responsibility for crop destroyed, savegames deleted or baby pandas killed.
 
