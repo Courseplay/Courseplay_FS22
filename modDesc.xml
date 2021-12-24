@@ -137,11 +137,4 @@ La prossima versione di Courseplay.
 		<action name="CP_DBG_CHANNEL_TOGGLE_CURRENT" />
 		<action name="CP_DBG_CHANNEL_MENU_VISIBILITY" />
 	</actions>
-
-	<l10n>	
-		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS"><de>CP: Nächster Debug channel auswählen.</de><en>CP: Select next debug channel.</en><it>CP: Seleziona il prossimo canale di debug.</it></text>	
-        <text name="input_CP_DBG_CHANNEL_SELECT_NEXT"><de>CP: Vorheriger Debug channel auswählen.</de><en>CP: Select previous debug channel.</en><it>CP: Seleziona il canale di debug precedente.</it></text>
-		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"><de>CP: Aktuellen Debug channel ändern.</de><en>CP: Change current debug channel.</en><it>CP: Cambia il canale di debug corrente.</it></text>
-		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY"><de>CP: Zeigt debug channels menu ja/nein.</de><en>CP: Shows debug channel menu yes/no.</en><it>CP: Mostra il menù del canale di debug si/no.</it></text>
-	</l10n>
 </modDesc>

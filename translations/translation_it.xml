@@ -6,6 +6,10 @@
 		<text name="CP_deactivated" 																	text="deactivated" />
 		<text name="CP_unit_meter" 																		text="m" />
 
+		<!-- User info text -->
+		<text name="CP_infoText"																		text="Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22." />
+
+
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start at:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Where to start field work" />
@@ -221,5 +225,11 @@
 - Moving a course in to another directory.
 - Deleting a course or directory.
 - Renaming a course or directory."/>
+
+		<!-- Input bindings -->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Seleziona il canale di debug precedente."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Cambia il canale di debug corrente."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostra il menù del canale di debug si/no."/>
 	</texts>
 </l10n>

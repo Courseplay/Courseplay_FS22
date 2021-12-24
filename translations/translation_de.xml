@@ -225,5 +225,11 @@
 - Kurse in einen anderen Ordner verschieben.
 - Ordner oder Kurse löschen.
 - Ordner oder Kurse umbenennen."/>
+
+		<!-- Input bindings -->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Aktuellen Debug channel ändern."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zeigt debug channels menu ja/nein."/>
 	</texts>
 </l10n>
