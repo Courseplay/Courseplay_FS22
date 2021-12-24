@@ -2,12 +2,16 @@
 name: Run unit tests
 
 # Controls when the workflow will run
-# - push will trigger when a push to any branch is made
-# - pull_request will trigger when a PR is made and when new commits are made on a PR
+# - push will trigger when a push to any branch is made (only when any lua file is changed)
+# - pull_request will trigger when a PR is made and when new commits are made on a PR (only when any lua file is changed)
 # - workflow_dispatch is a manual trigger
 on: 
   push:
+    paths:
+      - '**.lua'
   pull_request:
+    paths:
+      - '**.lua'
   workflow_dispatch:
 
 # The list of jobs this workflow executes
