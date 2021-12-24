@@ -1,9 +1,9 @@
 # Courseplay Beta for Farming Simulator 2022
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Courseplay/Courseplay_FS22_FS22?include_prereleases&style=flat-square)](https://github.com/Courseplay/Courseplay_FS22_FS22/releases/latest)
-[![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/FS22_Courseplay/latest/FS22_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22_FS22/releases/latest/download/FS19_Courseplay.zip)
-[![GitHub issues](https://img.shields.io/github/issues/Courseplay/Courseplay_FS22_FS22?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22_FS22/issues)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Courseplay/Courseplay_FS22?include_prereleases&style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest)
+[![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/Courseplay_FS22/latest/FS22_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest/download/FS19_Courseplay.zip)
+[![GitHub issues](https://img.shields.io/github/issues/Courseplay/Courseplay_FS22?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/issues)
 
-**[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22_FS22/releases/latest)** (the file FS22_Courseplay.zip).
+**[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22/releases/latest)** (the file FS22_Courseplay.zip).
 
 ## Note that the current version has no multiplayer support!
 
