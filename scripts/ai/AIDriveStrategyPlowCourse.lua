@@ -41,7 +41,7 @@ function AIDriveStrategyPlowCourse.new(customMt)
     end
     local self = AIDriveStrategyFieldWorkCourse.new(customMt)
     AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyPlowCourse.myStates)
-    self.debugChannel = CpDebug.DBG_MODE_4
+    self.debugChannel = CpDebug.DBG_FIELDWORK
     return self
 end
 
