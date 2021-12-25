@@ -130,7 +130,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Количество поворотных полос" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Количество поворотных полос" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Центр поля" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Headland direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Should the vehicle drive clockwise or counterclockwise on the headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="clockwise" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="counterclockwise" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"								text="Центр поля" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Центр поля" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Вверх/вниз" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Спираль" />

@@ -130,6 +130,11 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Number of headlands" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Headland direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Should the vehicle drive clockwise or counterclockwise on the headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="clockwise" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="counterclockwise" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Up/down" />
@@ -139,19 +144,19 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Headland corners" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Headland corners" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="Smooth" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Sharp" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Round" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="smooth" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="sharp" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="round" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Row start direction" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Row start direction" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatic" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Longest edge" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="automatic" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="longest edge" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start work on" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start work on" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Headland" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="center" />
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stopping at the end"/>

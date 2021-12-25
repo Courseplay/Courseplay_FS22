@@ -85,7 +85,7 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
-			0,
+			settings.isClockwise:getValue(),
 			settings.workWidth:getValue(),
 			AIUtil.getTurningRadius(vehicle),
 			settings.numberOfHeadlands:getValue(),

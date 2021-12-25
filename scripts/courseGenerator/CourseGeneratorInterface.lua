@@ -4,12 +4,12 @@
 CourseGeneratorInterface = {}
 ---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
----@param startAngle number as in AIParameterPositionAngle
+---@param isClockwise boolean
 ---@param workWidth number
 ---@param numberOfHeadlands number
 function CourseGeneratorInterface.generate(fieldPolygon,
 										   startPosition,
-										   startAngle,
+										   isClockwise,
 										   workWidth,
 										   turnRadius,
 										   numberOfHeadlands,
@@ -31,8 +31,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		overlapPercent = 7,
 		nPasses = numberOfHeadlands,
 		-- ignore headland order setting when there's no headland
-		headlandFirst = startOnHeadland or numberOfHeadlands == 0,
-		isClockwise = true, -- calculate from startAngle later
+		headlandFirst = startOnHeadland == CourseGenerator.HEADLAND_START_ON_HEADLAND or numberOfHeadlands == 0,
+		isClockwise = isClockwise == CourseGenerator.HEADLAND_CLOCKWISE,
 		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
 	}
 	local roundCorners = headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND
