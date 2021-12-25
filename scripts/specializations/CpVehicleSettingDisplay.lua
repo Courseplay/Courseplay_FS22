@@ -61,15 +61,6 @@ function CpVehicleSettingDisplay.loadFromXMLFile(filePath)
 	end
 	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible,getIsOverlayGuiVisible)
 
-	--- Disables the open menu while the display is displayed. Otherwise there is key binding conflict with "ESC".
-	local function onToggleMenu(mission,superFunc,...)
-		if g_gui.currentGuiName and g_gui.currentGuiName == CpVehicleSettingDisplay.GUI_NAME then 
-			return 
-		end
-		return superFunc(mission,...)
-	end
-	FSBaseMission.onToggleMenu = Utils.overwrittenFunction(FSBaseMission.onToggleMenu,onToggleMenu)
-
 end
 
 function CpVehicleSettingDisplay.registerEventListeners(vehicleType)	
