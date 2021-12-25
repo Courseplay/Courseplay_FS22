@@ -7,7 +7,7 @@
 		<text name="CP_unit_meter" 																		text="m" />
 
 		<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s): Per aiuto, bug o note sulla patch, vai qui: https://github.com/Courseplay/Courseplay_FS22." />
+		<text name="CP_infoText"																		text="Courseplay(%s): Per aiuto, bug o note sulla patch, vai qui: https://github.com/Courseplay/Courseplay_FS22 " />
 
 
 	<!-- AI job menu -->
@@ -130,6 +130,11 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Numero di capezzagne" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Numero di capezzagne" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Direzione inizio lavoro" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Se il veicolo deve guidare in senso orario o antiorario sul campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Orario" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Antiorario" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Centro campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Centro campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Su/Giù" />
@@ -167,8 +172,8 @@
 		<text name="CP_global_setting_autoRepair_title" 												text="Riparazione automatica"/>
 		<text name="CP_global_setting_autoRepair_tooltip" 												text="Il conducente Cp ripara automaticamente durante la guida."/>
 		<text name="CP_global_setting_autoRepair_off" 													text="Non riparare"/>
-		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&al; 25%"/>
-		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&al; 70%"/>
+		<text name="CP_global_setting_autoRepair_less_than_25" 											text="quando è al; 25%"/>
+		<text name="CP_global_setting_autoRepair_less_than_70" 											text="Quando è al; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Ripara sempre"/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Impostazioni Ricerca percorso"/>
@@ -183,7 +188,7 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Mostra tutti i percorsi attivi sulla mappa di gioco."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManger (percorso attuale: %s)"/>
+		<text name="CP_courseManager_title"																text="Course Manager (percorso attuale: %s)"/>
 		<text name="CP_courseManager_no_current_course"													text="nessuno"/>
 		<text name="CP_courseManager_temporary_course"													text="temporaneo"/>
 
@@ -218,12 +223,18 @@
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
 		<text name="CP_help_page_courseManager_text"													text="Sono disponibili 7 diverse azioni:
-- Creazione di una nuova directory.
+- Creazione di una nuova Cartella.
 - Cancellazione della rotta del veicolo corrente.
 - Salvataggio del percorso corrente.
 - Caricamento di un percorso.
-- Spostare un percorso in un'altra directory.
-- Eliminazione di un percorso o di una directory.
-- Rinominare un percorso o una directory."/>
+- Spostare un percorso in un'altra cartella.
+- Eliminazione di un percorso o di una cartella.
+- Rinominare un percorso o una cartella."/>
+
+		<!-- Input bindings -->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Seleziona il canale di debug precedente."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Cambia il canale di debug corrente."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostra il menù del canale di debug si/no."/>
 	</texts>
 </l10n>

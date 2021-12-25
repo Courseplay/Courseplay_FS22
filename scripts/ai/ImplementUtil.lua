@@ -184,7 +184,7 @@ function ImplementUtil.getRealTrailerFrontNode(implement)
     if jointNode and backtrack and activeInputAttacherJoint.jointType ~= AttacherJoints.JOINTTYPE_IMPLEMENT then
         local rootNode
         for _, joint in ipairs(implement.componentJoints) do
-            if joint.jointNode == jointNode and joint.rotLimit ~= nil and joint.rotLimit[2] ~= nil and joint.rotLimit[2] > rad(15) then
+            if joint.jointNode == jointNode and joint.rotLimit ~= nil and joint.rotLimit[2] ~= nil and joint.rotLimit[2] > math.rad(15) then
                 rootNode = implement.components[joint.componentIndices[2]].node
                 break
             end

@@ -6,6 +6,10 @@
 		<text name="CP_deactivated" 																	text="deactivated" />
 		<text name="CP_unit_meter" 																		text="m" />
 
+		<!-- User info text -->
+		<text name="CP_infoText"																		text="Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22." />
+
+
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start at:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Where to start field work" />
@@ -48,7 +52,7 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Fold tools at course end"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Enables/disables automatic folding of implements at the end of the course."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Tool rasing"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Tool raising"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Tool raising early or late at the start of a turn."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="early"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="late"/>
@@ -126,7 +130,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Number of headlands" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Field center" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Headland direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Should the vehicle drive clockwise or counterclockwise on the headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="clockwise" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="counterclockwise" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"								text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Up/down" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spiral" />
@@ -179,7 +188,7 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Shows all active courses on the in game map."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManger(current course: %s)"/>
+		<text name="CP_courseManager_title"																text="CourseManager(current course: %s)"/>
 		<text name="CP_courseManager_no_current_course"													text="none"/>
 		<text name="CP_courseManager_temporary_course"													text="temporary"/>
 
@@ -221,5 +230,10 @@
 - Moving a course in to another directory.
 - Deleting a course or directory.
 - Renaming a course or directory."/>
+		<!-- Input bindings -->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Select next debug channel."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Shows debug channel menu yes/no."/>
 	</texts>
 </l10n>

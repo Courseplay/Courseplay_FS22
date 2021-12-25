@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.0.1</version>
+    <version>7.0.0.4</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -9,6 +9,7 @@
 		<hu>CoursePlay - A Vezetősegéd</hu>
 		<jp>コースプレイ</jp>
 		<kr>코스 플레이</kr>
+		<it>CoursePlay</it>
 	</title>
 
     <description>
@@ -30,6 +31,15 @@ Die nächste Version von Courseplay.
 - Kompletter Controller Support für das GUI ist geplant für später.
 ]]>
 		</de>
+	 <it>
+		<![CDATA[Courseplay
+
+La prossima versione di Courseplay.
+
+- Il supporto multiplayer verrà aggiunto in una versione futura.
+- Il supporto completo del controller per la GUI è previsto per il futuro.
+]]>
+		</it>
     </description>
 
 	<iconFilename>img/icon_courseplay.dds</iconFilename>
@@ -127,11 +137,4 @@ Die nächste Version von Courseplay.
 		<action name="CP_DBG_CHANNEL_TOGGLE_CURRENT" />
 		<action name="CP_DBG_CHANNEL_MENU_VISIBILITY" />
 	</actions>
-
-	<l10n>	
-		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS"><de>CP: Nächster Debug channel auswählen.</de><en>CP: Select next debug channel.</en></text>	
-        <text name="input_CP_DBG_CHANNEL_SELECT_NEXT"><de>CP: Vorheriger Debug channel auswählen.</de><en>CP: Select previous debug channel.</en></text>
-		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"><de>CP: Aktuellen Debug channel ändern.</de><en>CP: Change current debug channel.</en></text>
-		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY"><de>CP: Zeigt debug channels menu ja/nein.</de><en>CP: Shows debug channel menu yes/no.</en></text>
-	</l10n>
 </modDesc>

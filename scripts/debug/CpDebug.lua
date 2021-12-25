@@ -121,7 +121,7 @@ end
 
 function CpDebug:deactivateEvents()
 	for _,id in pairs(CpDebug.eventIds) do 
-		g_currentMission.inputManager:setActionEventActive(id, true)
+		g_currentMission.inputManager:setActionEventActive(id, false)
 	end
 end
 

@@ -75,7 +75,7 @@ CourseGenerator.HEADLAND_CLOCKWISE = 1
 CourseGenerator.HEADLAND_COUNTERCLOCKWISE = 2
 
 CourseGenerator.HEADLAND_START_ON_HEADLAND = 1
-CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS = 3
+CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS = 2
 
 
 -- headland turn modes

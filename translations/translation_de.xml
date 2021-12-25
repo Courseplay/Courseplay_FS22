@@ -130,6 +130,11 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Anzahl Vorgewende" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Headland direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Should the vehicle drive clockwise or counterclockwise on the headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="clockwise" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="counterclockwise" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Feldmitte" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Feldmitte" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="hoch/runter" />
@@ -225,5 +230,11 @@
 - Kurse in einen anderen Ordner verschieben.
 - Ordner oder Kurse löschen.
 - Ordner oder Kurse umbenennen."/>
+
+		<!-- Input bindings -->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Aktuellen Debug channel ändern."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zeigt debug channels menu ja/nein."/>
 	</texts>
 </l10n>

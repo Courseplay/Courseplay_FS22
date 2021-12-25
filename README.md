@@ -19,6 +19,12 @@ There is now a CP Fieldwork job available on the helper screen. After you select
 choose a target position the field you want work on and the Open/Close Course Generator
 button. Generate the course and start the job.
 
+## Turning on Debug Channels
+
+When there's an issue, you can turn on debug channels so Courseplay will log a lot of information we need for troubleshooting. 
+You can bring up the debug channel menu by pressing Shift+4, then use Shift+1 and Shift+3 to select a channel, and then Shift+2 
+to toggle the selected debug channel (green is on).
+
 ## Developer version
 
 Please be aware you're using a developer version, which may and will contain errors, bugs, mistakes and unfinished code. Chances are you computer will explode when using it. Twice. If you have no idea what "beta", "alpha", or "developer" means and entails, steer clear. The Courseplay team will not take any responsibility for crop destroyed, savegames deleted or baby pandas killed.
