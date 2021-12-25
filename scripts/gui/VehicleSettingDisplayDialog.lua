@@ -1,14 +1,20 @@
 VehicleSettingDisplayDialog = {
 	CONTROLS = {
-		BLANK_ELEMENT = "blankElement"
+		BLANK_ELEMENT = "blankElement",
+		BUTTON_BACK = "backButton"
 	},
 }
 local VehicleSettingDisplayDialog_mt = Class(VehicleSettingDisplayDialog, ScreenElement)
 
 function VehicleSettingDisplayDialog.new(settings,target, custom_mt)
 	local self = ScreenElement.new(target, custom_mt or VehicleSettingDisplayDialog_mt)
+	self:registerControls(VehicleSettingDisplayDialog.CONTROLS)
 
-	self.layout = g_currentMission.inGameMenu.pageAI.jobMenuLayout:clone(self,true)
+
+	local clone = g_currentMission.inGameMenu.pageAI.jobMenuLayout:clone(nil,true)
+	clone:unlinkElement()
+	FocusManager:removeElement(clone)
+	self.layout = clone:clone(self,true)
 	for i = #self.layout.elements, 1, -1 do
 		self.layout.elements[i]:delete()
 	end
@@ -20,9 +26,17 @@ function VehicleSettingDisplayDialog.new(settings,target, custom_mt)
 		invalidElement:setVisible(false)
 	end
 	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings,self.layout,self.titleElement,self.settingElement)
-	self.layout:invalidateLayout()
-
+	
 	return self
+end
+
+function VehicleSettingDisplayDialog:onGuiSetupFinished()
+	self.backButton:unlinkElement()
+	FocusManager:removeElement(self.backButton)
+	self.layout:addElement(self.backButton)
+	self.layout:invalidateLayout()
+	CpGuiUtil.setTarget(self.layout,self)
+	VehicleSettingDisplayDialog:superClass().onGuiSetupFinished(self)
 end
 
 function VehicleSettingDisplayDialog:setData(vehicle,settings) 
@@ -33,7 +47,11 @@ end
 
 function VehicleSettingDisplayDialog:onOpen(element)
 	VehicleSettingDisplayDialog:superClass().onOpen(self)
+	self.layout:invalidateLayout()
 	self.layout:setVisible(true)
+	FocusManager:loadElementFromCustomValues(self.layout)
+	self.layout:invalidateLayout()
+	FocusManager:setFocus(self.layout)
 end
 
 function VehicleSettingDisplayDialog:onClose(element)
@@ -44,16 +62,20 @@ function VehicleSettingDisplayDialog:onClose(element)
 	end
 end
 
+function VehicleSettingDisplayDialog:onClickBack()
+	g_gui:showGui("")
+end
+
 function VehicleSettingDisplayDialog:draw(...)
 	VehicleSettingDisplayDialog:superClass().draw(self,...)
 	CpVehicleSettingDisplay.onDraw(self.vehicle)	
 end
 
-function VehicleSettingDisplayDialog:keyEvent(unicode, sym, modifier, isDown, eventUsed)
-	VehicleSettingDisplayDialog:superClass().keyEvent(self,unicode, sym, modifier, isDown, eventUsed)
-	if not isDown then
-		if sym == Input.KEY_esc then
-			g_gui:showGui("")
-		end
+function CpGuiUtil.setTarget(element,target)
+	for i = 1, #element.elements do
+		CpGuiUtil.setTarget(element.elements[i],target)
 	end
-end
+
+	element.target = target
+	element.targetName = target.name
+end 

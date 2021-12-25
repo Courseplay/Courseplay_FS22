@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose">
 	<GuiElement type="empty" onEscPressed="onEscPressed" id="blankElement" />
+	<GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" id="backButton"/>
 </GUI>
