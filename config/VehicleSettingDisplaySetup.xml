@@ -6,6 +6,7 @@
 -->
 
 <Settings title="CP_vehicle_setting_display">
+	<Setting type="jobParameters" name = "startAt" />
 	<Setting type="courseGeneratorSettings" name = "workWidth" />
 	<Setting type="vehicleSettings" name = "toolOffsetX" />
 	<Setting type="vehicleSettings" name = "toolOffsetZ" />

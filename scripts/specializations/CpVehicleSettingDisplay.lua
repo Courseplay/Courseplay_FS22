@@ -13,7 +13,8 @@ CpVehicleSettingDisplay.GUI_NAME = "CpVehicleSettingDisplayDialog"
 
 CpVehicleSettingDisplay.SETTING_TYPES = {
 	vehicleSettings = CpVehicleSettings,
-	courseGeneratorSettings = CpCourseGeneratorSettings
+	courseGeneratorSettings = CpCourseGeneratorSettings,
+	jobParameters = CpJobParameters
 }
 
 function CpVehicleSettingDisplay.initSpecialization()

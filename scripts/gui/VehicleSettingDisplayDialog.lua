@@ -18,6 +18,7 @@ function VehicleSettingDisplayDialog.new(settings,target, custom_mt)
 	for i = #self.layout.elements, 1, -1 do
 		self.layout.elements[i]:delete()
 	end
+	self.layout:setAbsolutePosition(self.layout.absPosition[1],0.2)
 	self.settingElement = g_currentMission.inGameMenu.pageAI.createMultiOptionTemplate --:clone(self.layout)
 	self.titleElement = g_currentMission.inGameMenu.pageAI.createTitleTemplate
 	local invalidElement = self.settingElement:getDescendantByName("invalid")
