@@ -129,11 +129,13 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing fieldwork helper Giants combine drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
-        elseif FS22_AIVehicleExtension.AIDriveStrategyMogli and strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyMogli) then
+        elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyMogli and
+                strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyMogli) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing AIVehicleExtension drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
-        elseif FS22_AIVehicleExtension.AIDriveStrategyCombine131 and strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyCombine131) then
+        elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyCombine131 and
+                strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyCombine131) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing AIVehicleExtension combine drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
