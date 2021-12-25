@@ -219,6 +219,8 @@
 		<text name="CP_courseManager_basicSettings"														text="Курс взаимодействия."/>
 		<text name="CP_courseManager_advancedSettings"													text="Редактировать файлы."/>
 
+		<text name="CP_courseManager_activate"															text="Activate"/>
+
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<text name="CP_help_page_courseManager_title"													text="Course manager"/>

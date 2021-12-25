@@ -20,8 +20,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	--- Moves the layout slightly to the left
 	local x,y = unpack(g_currentMission.inGameMenu.pagingTabList.size)
 	self.courseGeneratorLayout:setAbsolutePosition(x+0.02,self.courseGeneratorLayout.absPosition[2]-0.1)
-	--- Clears elements from the cloned page.
-	self.courseGeneratorLayoutElements = CpGuiUtil.getFirstElementWithProfileName(self.courseGeneratorLayout,"ingameMenuSettingsLayout")
+	self.courseGeneratorLayoutElements = self.courseGeneratorLayout:getDescendantById("boxLayout")
 	for i = #self.courseGeneratorLayoutElements.elements, 1, -1 do
 		self.courseGeneratorLayoutElements.elements[i]:delete()
 	end
@@ -49,8 +48,10 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		GuiOverlay.copyColors(colorData, item.icon)
 		local color = colorData.color
 		color[4] = 1 -- alpha channel set to max
+		--Arrow
 		item.icon.color = colorData.colorFocused
 		GuiOverlay.copyColors(colorData, item.overlay)
+		--background
 		item.overlay.color = colorData.colorFocused
 	end
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsLeft",changeBtnIconColor)
@@ -64,8 +65,9 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 										CpGuiUtil.getNormalizedRgb(45, 207, 255,1))
 
 	self.courseGeneratorLayoutElements:invalidateLayout()
+--	self.courseGeneratorLayoutElements.targetName = self.jobTypeElement.targetName
 	self.courseGeneratorLayout:setVisible(false)
-
+	CpGuiUtil.setTarget(self.courseGeneratorLayout,self)
 	--- Makes the last selected hotspot is not sold before reopening.
 	local function validateCurrentHotspot(currentMission,hotspot)
 		local page = currentMission.inGameMenu.pageAI
@@ -144,8 +146,11 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 		self:toggleMapInput(false)
 		self:setJobMenuVisible(false)
 		self.contextBox:setVisible(false)
-		FocusManager:setFocus(self.courseGeneratorLayoutElements.elements[2])
 		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
+		FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
+		self.courseGeneratorLayoutElements:invalidateLayout()
+		CpGuiUtil.debugFocus(self.courseGeneratorLayoutElements,nil)
+		FocusManager:setFocus(self.courseGeneratorLayoutElements)
 	end
 end
 
@@ -160,7 +165,6 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
 		end
 	end
-	self.courseGeneratorLayoutElements:invalidateLayout()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()

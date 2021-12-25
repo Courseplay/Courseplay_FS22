@@ -20,6 +20,7 @@ function CpDebug:init()
 	self.isEnabled = true
 	--- Is the debug channel menu active ?
 	self.menuVisible = false
+	FocusManager.DEBUG = true
 end
 
 --- Loads the debug channel configurations.

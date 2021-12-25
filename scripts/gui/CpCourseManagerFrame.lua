@@ -12,6 +12,7 @@ CpCourseManagerFrame.translations = {
 	["clearCurrentCourse"] = "CP_courseManager_clear_current_courses",
 	
 	["changeMode"] = "CP_courseManager_change_mode",
+	["activate"] = "CP_courseManager_activate",
 
 	["deleteEntry"] = "CP_courseManager_delete_entry",
 	["renameEntry"] = "CP_courseManager_rename_entry",
@@ -79,7 +80,6 @@ function CpCourseManagerFrame:initialize()
 	local inGameMenu = g_gui.screenControllers[InGameMenu]
 	self.rightLayout = self.priceList
 	self.leftLayout = self.productList
-	
 	--- Changes titles
 	self.pageTitle = CpGuiUtil.getFirstElementWithProfileName(self,"ingameMenuFrameHeaderText") 
 	local elements = CpGuiUtil.getElementsWithProfileName(self,"ingameCalendarHeaderBox")
@@ -115,7 +115,18 @@ function CpCourseManagerFrame:initialize()
 		callback = function ()
 			CpCourseManagerFrame.onClickChangeMode(self)
 			self:updateMenuButtons()
-		end
+		end,
+		callbackDisabled = CpCourseManagerFrame.modeDisabled,
+	}
+	self.activateButton = {
+		profile = "buttonSelect",
+		inputAction = InputAction.MENU_ACTIVATE,
+		text = g_i18n:getText(CpCourseManagerFrame.translations.activate),
+		callback = function ()
+			CpCourseManagerFrame.onClickActivate(self)
+			self:updateMenuButtons()
+		end,
+		callbackDisabled = CpCourseManagerFrame.activateDisabled,
 	}
 
 	self.modes = {
@@ -123,7 +134,7 @@ function CpCourseManagerFrame:initialize()
 			--- Loads the current course
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
+				inputAction = InputAction.MENU_EXTRA_1,
 				text = g_i18n:getText(CpCourseManagerFrame.translations.loadCourse),
 				callback = function ()
 					self.actionState = CpCourseManagerFrame.actionStates.loadCourse
@@ -234,9 +245,13 @@ function CpCourseManagerFrame:onFrameOpen()
 	local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
 	self.currentVehicle =  InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
 	self:setSoundSuppressed(true)
+	FocusManager:loadElementFromCustomValues(self.leftLayout)
+	FocusManager:loadElementFromCustomValues(self.rightLayout)
+	FocusManager:linkElements(self.leftLayout, FocusManager.RIGHT, self.rightLayout)
+	FocusManager:linkElements(self.rightLayout, FocusManager.LEFT, self.leftLayout)
+	CpCourseManagerFrame.updateLists(self)
 	FocusManager:setFocus(self.leftLayout)
 	self:setSoundSuppressed(false)
-	CpCourseManagerFrame.updateLists(self)
 	self.initialized = true
 end
 	
@@ -472,7 +487,12 @@ function CpCourseManagerFrame:updateMenuButtons()
 	if self.courseStorage:getCanIterateBackwards() then
 		self.menuButtonInfo[1].callback = function () self:onClickIterateBack() end
 	end
---	table.insert(self.menuButtonInfo,self.modeButton)
+	if self.activateButton.callbackDisabled == nil or not self.activateButton.callbackDisabled(self) then
+		table.insert(self.menuButtonInfo,self.activateButton)
+	end
+	if self.modeButton.callbackDisabled == nil or not self.modeButton.callbackDisabled(self) then
+		table.insert(self.menuButtonInfo,self.modeButton)
+	end
 	for i,data in pairs(self.modes[self.curMode]) do 
 		if data.callbackDisabled == nil or not data.callbackDisabled(self) then
 			table.insert(self.menuButtonInfo,data)
@@ -568,6 +588,14 @@ function CpCourseManagerFrame:onClickRenameEntryDialog(text,clickOk,viewEntry)
 	end
 end
 
+function CpCourseManagerFrame:onClickActivate()
+	local layout = FocusManager:getFocusedElement()
+	if layout then  
+		local element = layout:getSelectedElement()
+		self:onClickItem(layout,element)
+	end
+end
+
 ---------------------------------------------------
 --- Gui dialogs
 ---------------------------------------------------
@@ -616,7 +644,7 @@ function CpCourseManagerFrame:clearCurrentCourseDisabled()
 end
 
 function CpCourseManagerFrame:loadCourseDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.currentVehicle:hasCpCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:saveCourseDisabled()
@@ -641,4 +669,12 @@ end
 
 function CpCourseManagerFrame:renameEntryDisabled()
 	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+end
+
+function CpCourseManagerFrame:activateDisabled()
+	return self.actionState == CpCourseManagerFrame.actionStates.disabled
+end
+
+function CpCourseManagerFrame:modeDisabled()
+	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
 end
