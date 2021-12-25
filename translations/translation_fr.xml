@@ -211,8 +211,8 @@
 		<text name="CP_courseManager_targetIsNoFolderError"												text="L'emplacement choisi n'est pas un dossier (%s)!"/>
 		<text name="CP_courseManager_targetIsNoCourseError"												text="L'emplacement choisi n'est pas une course (%s)!"/>
 	
-		<text name="CP_courseManager_basicSettings"														text="Gestion des enregistrements"/>
-		<text name="CP_courseManager_advancedSettings"													text="Affichage des enregistrements."/>
+		<text name="CP_courseManager_basicSettings"														text="Basculer en mode édition"/>
+		<text name="CP_courseManager_advancedSettings"													text="Basculer en mode affichage"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
