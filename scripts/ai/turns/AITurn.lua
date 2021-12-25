@@ -152,8 +152,7 @@ function AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius)
 end
 
 function AITurn:getForwardSpeed()
-	return math.min(self.settings.fieldWorkSpeed:getValue(), 
-			self.settings.reverseSpeed:getValue())
+	return self.settings.turnSpeed:getValue()
 end
 
 function AITurn:getReverseSpeed()
