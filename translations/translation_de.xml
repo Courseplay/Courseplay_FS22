@@ -12,6 +12,7 @@
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start am:" />
+		<text name="CP_jobParameters_startAt_title"														text="Start am:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Wo wird die Arbeit gestartet." />
 		<text name="CP_jobParameters_startAt_nearest"													text="Nahester Wegpunkt" />
 		<text name="CP_jobParameters_startAt_first"														text="Erster Wegpunkt" />
@@ -238,5 +239,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Aktuellen Debug channel ändern."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zeigt debug channels menu ja/nein."/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
 	</texts>
 </l10n>

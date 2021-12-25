@@ -12,6 +12,7 @@
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Rozpocznij od:" />
+		<text name="CP_jobParameters_startAt_title"														text="Rozpocznij od:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Ustala gdzie zacząć pracę polową." />
 		<text name="CP_jobParameters_startAt_nearest"													text="Najbliższego punkt trasy" />
 		<text name="CP_jobParameters_startAt_first"														text="Pierwszego punkt trasy" />
@@ -240,5 +241,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Następny kanał debugowania" />
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" 												text="CP: Zmień obecny kanał debugowania" />
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Menu kanałów debugowania" />
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
 	</texts>
 </l10n>

@@ -12,6 +12,7 @@
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"									text="Начать с:" />
+		<text name="CP_jobParameters_startAt_title"										text="Начать с:" />
 		<text name="CP_jobParameters_startAt_tooltip"									text="С какого момента начать работу." />
 		<text name="CP_jobParameters_startAt_nearest"									text="ближайшей точки" />
 		<text name="CP_jobParameters_startAt_first"										text="начальной точки" />
@@ -239,5 +240,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 									text="CP: Выбрать предыдущий канал отладки."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"								text="CP: Изменить текущий канал отладки."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 								text="CP: Показать меню отладки канала да/нет."/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 						text="CP: Open/close vehicle setting display"/>
 	</texts>
 </l10n>
