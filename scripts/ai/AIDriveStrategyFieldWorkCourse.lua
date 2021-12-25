@@ -91,7 +91,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, maxSpeed
     
-    self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
     ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
@@ -102,19 +101,21 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         end
         self:setMaxSpeed(maxSpeed)
     else
+        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
     ----------------------------------------------------------------
     if self.state == self.states.INITIAL then
+        self:setMaxSpeed(0)
         self:lowerImplements()
         self.state = self.states.WAITING_FOR_LOWER
     elseif self.state == self.states.WAITING_FOR_LOWER then
+        self:setMaxSpeed(0)
         if self.vehicle:getCanAIFieldWorkerContinueWork() then
             self:debug('all tools ready, start working')
             self.state = self.states.WORKING
         else
             self:debugSparse('waiting for all tools to lower')
-            self:setMaxSpeed(0)
         end
     elseif self.state == self.states.WAITING_FOR_LOWER_DELAYED then
         -- getCanAIVehicleContinueWork() seems to return false when the implement being lowered/raised (moving) but
@@ -123,7 +124,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self.state = self.states.WAITING_FOR_LOWER
         self:setMaxSpeed(0)
     elseif self.state == self.states.WORKING then
-        self:setMaxSpeed(self.vehicle:getSpeedLimit(true))
+        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
     elseif self.state == self.states.TURNING then
         local turnGx, turnGz, turnMoveForwards, turnMaxSpeed = self.aiTurn:getDriveData(dt)
         self:setMaxSpeed(turnMaxSpeed)
