@@ -135,7 +135,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Allers-retours" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirale (tourne autour)" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circulaire (par bloc)" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Enrayure à travers (centre)" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Intérieur vers extérieur" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Sens des fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 								text="Sens horaire" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 							text="Sens antihoraire" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Choix du type de fourrières" />
