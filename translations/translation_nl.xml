@@ -130,6 +130,11 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Aantal wendakkers" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Aantal wendakkers" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Wendakker richting" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Moet het voertuig op de wendakker met de klok mee of tegen de klok in rijden?" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="met de klok mee" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="tegen de klok in" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Veld middenpunt" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Veld middenpunt" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Omhoog/omlaag" />
@@ -144,14 +149,14 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Rond" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Rij startrichting" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Rij startrichting" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Richting van de rijen omhoog/omlaag in het midden van het veld" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatisch" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Langste zijde" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Begin met werken op" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Begin met werken op" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Wendakker" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Wendakker" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Midden" />
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stoppen aan het einde"/>

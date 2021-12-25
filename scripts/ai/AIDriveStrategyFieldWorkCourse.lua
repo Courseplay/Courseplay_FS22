@@ -209,9 +209,7 @@ function AIDriveStrategyFieldWorkCourse:shouldRaiseThisImplement(object, turnSta
     -- if something (like a combine) does not have an AI marker it should not prevent from raising other implements
     -- like the header, which does have markers), therefore, return true here
     if not aiBackMarker or not aiFrontMarker then return true end
-    -- TODO_22
-    --local marker = self.vehicle.cp.settings.implementRaiseTime:is(ImplementRaiseLowerTimeSetting.EARLY) and aiFrontMarker or aiBackMarker
-    local marker = aiFrontMarker
+    local marker = self.settings.raiseImplementLate:getValue() and aiBackMarker or aiFrontMarker
     -- turn start node in the back marker node's coordinate system
     local _, _, dz = localToLocal(marker, turnStartNode, 0, 0, 0)
     self:debugSparse('%s: shouldRaiseImplements: dz = %.1f', CpUtil.getName(object), dz)
@@ -267,9 +265,7 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
     local dzFront = (dzLeft + dzRight) / 2
     self:debug('%s: dzLeft = %.1f, dzRight = %.1f, dzFront = %.1f, dzBack = %.1f, loweringDistance = %.1f, reversing %s',
             CpUtil.getName(object), dzLeft, dzRight, dzFront, dzBack, loweringDistance, tostring(reversing))
-    -- TODO_22
-    --local dz = self.vehicle.cp.settings.implementLowerTime:is(ImplementRaiseLowerTimeSetting.EARLY) and dzFront or dzBack
-    local dz = dzFront
+    local dz = self.settings.lowerImplementEarly:getValue() and dzFront or dzBack
     if reversing then
         return dz < 0 , true
     else

@@ -100,8 +100,8 @@
 -- 
 
 function generateCourseForField( field, implementWidth, headlandSettings,
-																 minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside,
-																 turnRadius, islandNodes, islandBypassMode, centerSettings )
+								 minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside,
+								 turnRadius, islandNodes, islandBypassMode, centerSettings )
 
 	local resultIsOk = true
 
@@ -125,6 +125,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 	CourseGenerator.debug("Headland mode %s, number of passes %d, center mode %s, min headland turn angle %.1f",
 			CourseGenerator.headlandModeTexts[headlandSettings.mode], headlandSettings.nPasses,
 			CourseGenerator.centerModeTexts[centerSettings.mode], headlandSettings.minHeadlandTurnAngleDeg)
+	CourseGenerator.debug('Width %.1f, headland first %s, clockwise %s. Skip rows %d', implementWidth,
+			tostring(headlandSettings.headlandFirst), tostring(headlandSettings.isClockwise), centerSettings.nRowsToSkip)
 
 	if headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NORMAL or
 			headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NARROW_FIELD then
