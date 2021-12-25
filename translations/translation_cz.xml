@@ -130,6 +130,11 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Počet souvratí" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Počet souvratí" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Ve směru hodinových ručiček" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Proti směru hodinových ručiček" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Střed pole" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Střed pole" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Nahoru/dolů" />
