@@ -48,15 +48,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsTooltip",function (item) item.textMaxWidth = item.textMaxWidth/2 end)
 
 	self.courseGeneratorLayoutPageTitle = pageTitle
-	
-	local function hasText(element)
-		return element:isa(TextElement)
-	end
-	CpGuiUtil.executeFunctionForElements(self.courseGeneratorLayoutElements,hasText,TextElement.setTextColor,
-										CpGuiUtil.getNormalizedRgb(45, 207, 255,1))
 
 	self.courseGeneratorLayoutElements:invalidateLayout()
---	self.courseGeneratorLayoutElements.targetName = self.jobTypeElement.targetName
 	self.courseGeneratorLayout:setVisible(false)
 	CpGuiUtil.setTarget(self.courseGeneratorLayout,self)
 	--- Makes the last selected hotspot is not sold before reopening.
