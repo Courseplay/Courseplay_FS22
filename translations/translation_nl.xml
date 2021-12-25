@@ -135,7 +135,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Omhoog/omlaag" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spiraal" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Racebaan" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Landen" /> <!-- Unsure if correct, source meaning/usage unclear -->
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Veldsecties" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Wendakker hoeken" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Wendakker hoeken" />
