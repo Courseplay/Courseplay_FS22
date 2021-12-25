@@ -20,10 +20,10 @@
 
 
 	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Travaux" />
+		<text name="FIELDWORK_CP"																		text="CP:Travail" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: Générer une course." />
-		<text name="CP_ai_page_open_course_generator" 													text="CP: Ouvrir/fermer le générateur de courses." />
+		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course." />
+		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses." />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Paramètres du véhicule pour (%s)"/>
