@@ -26,8 +26,13 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	
 	
 	--- Creates a background.
-	CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"multiTextOptionSettingsBg",self.courseGeneratorLayout)
-	local color = {0, 0, 0, 0.9}
+	local bgElement = CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"multiTextOptionSettingsBg")
+	local elements = self.courseGeneratorLayout.elements
+	table.insert(elements,1,bgElement)
+	bgElement.parent = self.courseGeneratorLayout
+	self.courseGeneratorLayout.elements = elements
+
+	local color = {0.0111, 0.0276, 0.0377, 0.95}
 	CpGuiUtil.changeColorForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",color)
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setPosition,self.courseGeneratorLayout.position[1]-0.01,self.courseGeneratorLayout.position[2])
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setSize,self.courseGeneratorLayout.size[1]*1.01,self.courseGeneratorLayout.size[2])
@@ -42,19 +47,6 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsTooltip",function (item) item.textMaxWidth = item.textMaxWidth/2 end)
 
-	local function changeBtnIconColor(item)
-		local colorData = {}
-		GuiOverlay.copyColors(colorData, item.icon)
-		local color = colorData.color
-		color[4] = 1 -- alpha channel set to max
-		--Arrow
-		item.icon.color = colorData.colorFocused
-		GuiOverlay.copyColors(colorData, item.overlay)
-		--background
-		item.overlay.color = colorData.colorFocused
-	end
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsLeft",changeBtnIconColor)
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsRight",changeBtnIconColor)
 	self.courseGeneratorLayoutPageTitle = pageTitle
 	
 	local function hasText(element)
