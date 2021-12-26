@@ -12,7 +12,7 @@ function AIParameterSpeedSetting.new(data,vehicle,class,customMt)
 end
 
 function AIParameterSpeedSetting.getMaxSpeed(vehicle,default)
-	return vehicle and math.min(vehicle:getCruiseControlMaxSpeed(),default) or default
+	return vehicle and math.max(vehicle:getCruiseControlMaxSpeed(),default) or default
 end
 
 function AIParameterSpeedSetting:clone(...)
