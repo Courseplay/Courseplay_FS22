@@ -40,6 +40,7 @@ end
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CpAIFieldWorker.getStartAIJobText)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartFieldWork', CpAIFieldWorker.getCanStartFieldWork)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
 end
 ------------------------------------------------------------------------------------------------------------------------
@@ -66,6 +67,18 @@ end
 
 function CpAIFieldWorker:onLeaveVehicle(isControlling)
    
+end
+
+function CpAIFieldWorker:getCanStartFieldWork(superFunc)
+    local canStart = superFunc(self)
+    if canStart then
+        return true
+    end
+    -- built in helper can't handle it, but we may be able to ...
+    if AIUtil.hasImplementWithSpecialization(self, Baler) then
+        return true
+    end
+    return false
 end
 
 --- Makes sure the "H" key for helper starting, starts the cp job and not the giants default job.
@@ -100,12 +113,21 @@ end
 function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
     local job = self:getJob()
     if not job:isa(AIJobFieldWorkCp) then
-        CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'This is not a CP field work job, run the built-in helper...')
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is not a CP field work job, run the built-in helper...')
         return superFunc(self, ...)
     else
-        CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'This is a CP field work job, setting up drive strategies...')
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP field work job, setting up drive strategies...')
     end
     superFunc(self, ...)
+
+    if #self.spec_aiFieldWorker.driveStrategies == 0 and AIUtil.hasImplementWithSpecialization(self, Baler) then
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a baler, install CP baler drive strategy for it')
+        local cpDriveStrategy = AIDriveStrategyBalerCourse.new()
+        table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
+        cpDriveStrategy:setAIVehicle(self)
+        return
+    end
+
     -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
     -- our own specialization
     local strategiesToRemove = {}
@@ -115,34 +137,34 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
             local cpDriveStrategy
             if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
                 cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyCombineCourse')
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyCombineCourse')
             elseif AIUtil.getImplementWithSpecialization(self, Plow) then
                 cpDriveStrategy = AIDriveStrategyPlowCourse.new()
-                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyPlowCourse')
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyPlowCourse')
             else
                 cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
-                CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyFieldWorkCourse')
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyFieldWorkCourse')
             end
             cpDriveStrategy:setAIVehicle(self)
             self.spec_aiFieldWorker.driveStrategies[i] = cpDriveStrategy
         elseif strategy:isa(AIDriveStrategyCombine) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing fieldwork helper Giants combine drive strategy (%d)', i)
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Removing fieldwork helper Giants combine drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
         elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyMogli and
                 strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyMogli) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing AIVehicleExtension drive strategy (%d)', i)
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Removing AIVehicleExtension drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
         elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyCombine131 and
                 strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyCombine131) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing AIVehicleExtension combine drive strategy (%d)', i)
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Removing AIVehicleExtension combine drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
         end
     end
     for _, ix in ipairs(strategiesToRemove) do
-        CpUtil.debugVehicle(CpDebug.DBG_MODE_4, self, 'Removing strategy %d', ix)
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Removing strategy %d', ix)
         table.remove(self.spec_aiFieldWorker.driveStrategies, ix)
     end
 end

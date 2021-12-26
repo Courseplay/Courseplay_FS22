@@ -158,7 +158,8 @@ function WorkWidthUtil.getAIMarkersFromWorkAreas(object)
     for _, area in WorkWidthUtil.workAreaIterator(object) do
         if WorkWidthUtil.isValidWorkArea(area) then
             -- for now, just use the first valid work area we find
-            WorkWidthUtil.debug(object,nil,'%s: Using %s work area markers as AIMarkers', g_workAreaTypeManager.workAreaTypes[area.type].name)
+            WorkWidthUtil.debug(object,nil,'Using %s work area markers as AIMarkers',
+                    g_workAreaTypeManager.workAreaTypes[area.type].name)
             return area.start, area.width, area.height
         end
     end
@@ -241,5 +242,5 @@ end
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.debug(object,logPrefix,str,...)
-    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: '..str, logPrefix or "", CpUtil.getName(object), ...)
+    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: ' .. str, logPrefix or "", CpUtil.getName(object), ...)
 end
