@@ -51,6 +51,7 @@ function CpVehicleSettingsFrame:onFrameOpen()
 			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
 		end
 	end
+	FocusManager:loadElementFromCustomValues(self.boxLayout)
 	self.boxLayout:invalidateLayout()
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.boxLayout)
