@@ -188,9 +188,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zobrazuje všechny aktivní trasy na herní mapě"/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="Manažer tras (aktuální trasa: %s)"/>
-		<text name="CP_courseManager_no_current_course"													text="Není"/>
-		<text name="CP_courseManager_temporary_course"													text="Dočasná"/>
+		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="no course"/>
+		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
 
 		<text name="CP_courseManager_change_mode"														text="Změnit režim"/>
 

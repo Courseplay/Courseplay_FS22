@@ -243,7 +243,7 @@ function CpCourseManager:getCurrentCourseName()
         for i = 2,#courses do 
             name = string.format("%s + %s",name,CpCourseManager.getCourseName(courses[i]))
         end  
-        name = string.format("%s (%d)",name,#courses)
+      --  name = string.format("%s (%d)",name,#courses)
         return name
     end
     return g_i18n:getText(CpCourseManager.i18n.noCurrentCourse)
@@ -253,7 +253,7 @@ function CpCourseManager.getCourseName(course)
 	local name = course:getName()
     local isSavedAsFile = course:isSavedAsFile()
     if not isSavedAsFile or name == "" then 
-        g_i18n:getText(CpCourseManager.i18n.temporaryCourse)
+       return g_i18n:getText(CpCourseManager.i18n.temporaryCourse)
     end
     return name
 end

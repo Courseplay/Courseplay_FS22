@@ -65,7 +65,19 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		end
 	end
 	g_currentMission.removeMapHotspot = Utils.appendedFunction(g_currentMission.removeMapHotspot,validateCurrentHotspot)
-	
+	--- Reloads the current vehicle on opening the in game menu.
+	local function onOpenInGameMenu(mission)
+		local inGameMenu = mission.inGameMenu
+		--- Select the last vehicle after reopening of the page.
+		local currentVehicle = g_currentMission.controlledVehicle
+		if currentVehicle ~= nil then
+			local hotspot = currentVehicle:getMapHotspot()
+			if inGameMenu.pageAI.isMapOverviewInitialized then
+				inGameMenu.pageAI:setMapSelectionItem(hotspot)
+			end
+		end
+	end
+	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
@@ -175,7 +187,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 		self.contextBox:setVisible(false)
 	end
 	--- Select the last vehicle after reopening of the page.
-	if self.lastHotspot then 
+	if self.lastHotspot and g_currentMission.currentVehicle == nil then 
 		local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.lastHotspot)
 		if vehicle ~=nil then 
 			local hotspot = vehicle:getMapHotspot()
@@ -224,3 +236,4 @@ function CpInGameMenuAIFrameExtended:draw()
 	end
 end
 InGameMenuAIFrame.draw = Utils.appendedFunction(InGameMenuAIFrame.draw, CpInGameMenuAIFrameExtended.draw)
+

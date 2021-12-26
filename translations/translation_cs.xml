@@ -188,9 +188,10 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Shows all active courses on the in game map."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(current course: %s)"/>
-		<text name="CP_courseManager_no_current_course"													text="none"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary"/>
+		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="no course"/>
+		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
+
 
 		<text name="CP_courseManager_change_mode"														text="Change mode"/>
 

@@ -188,9 +188,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Показать все активные курсы на игровой карте."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManger (текущий курс: %s)"/>
-		<text name="CP_courseManager_no_current_course"													text="нет"/>
-		<text name="CP_courseManager_temporary_course"													text="временный"/>
+		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="no course"/>
+		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
 
 		<text name="CP_courseManager_change_mode"														text="Изменить режим"/>
 

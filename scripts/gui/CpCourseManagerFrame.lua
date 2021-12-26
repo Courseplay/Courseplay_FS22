@@ -477,7 +477,8 @@ end
 --- Updates the button at the bottom, which depends on the current select mode.
 function CpCourseManagerFrame:updateMenuButtons()
 	local courseName = self.currentVehicle:getCurrentCpCourseName()
-	local title = string.format(g_i18n:getText(CpCourseManagerFrame.translations.title),courseName)
+	local title = string.format(g_i18n:getText(CpCourseManagerFrame.translations.title),self.currentVehicle:getName(),courseName)
+	
 	self.pageTitle:setText(title)
 	self.menuButtonInfo = {
 		{

@@ -190,9 +190,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Affiche les courses actives sur la carte."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="Gestion de la course(course: %s)"/>
-		<text name="CP_courseManager_no_current_course"													text="aucune"/>
-		<text name="CP_courseManager_temporary_course"													text="temporaire"/>
+		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="no course"/>
+		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
 
 		<text name="CP_courseManager_change_mode"														text="Changer le mode"/>
 
