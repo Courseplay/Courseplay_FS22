@@ -98,7 +98,12 @@ function AIDriveStrategyBalerCourse:handleBaler()
     -- turn.lua will raise/lower as needed, don't touch the balers while the turn maneuver is executed or while on temporary alignment / connecting track
     if not self:isHandlingAllowed() then return end
     if not self.baler:getIsTurnedOn() then
+        if self.baler.setFoldState then
+            -- unfold if there is something to unfold
+            self.baler:setFoldState(-1, false)
+        end
         if self.baler:getCanBeTurnedOn() then
+            self:debug('Turning on baler')
             self.baler:setIsTurnedOn(true, false);
         else --maybe this line is enough to handle bale dropping and waiting ?
             self:setMaxSpeed(0)
