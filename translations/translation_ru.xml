@@ -170,13 +170,13 @@
 		<text name="CP_global_setting_wageModifier_tooltip" 							text="Заработная плата работника CoursePlay в процентах от заработной платы обычного рабочего."/>
 
 		<text name="CP_global_setting_autoRepair_title" 								text="Автоматический ремонт"/>
-		<text name="CP_global_setting_autoRepair_tooltip" 								text="всегда ремонтировать"/>
+		<text name="CP_global_setting_autoRepair_tooltip" 								text="Водитель CP автоматически ремонтирует технику, во время работы."/>
 		<text name="CP_global_setting_autoRepair_off" 									text="не ремонтировать"/>
 		<text name="CP_global_setting_autoRepair_less_than_25" 							text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 							text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 								text="поддерживать текущее состояние"/>
 		
-		<text name="CP_global_setting_subTitle_pathfinder"								text="Настройки точности"/>
+		<text name="CP_global_setting_subTitle_pathfinder"								text="Настройки поиска пути"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 						text="Разница углов у цели"/>
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 						text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
