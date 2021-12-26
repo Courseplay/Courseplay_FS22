@@ -49,7 +49,7 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.turnNodes = {}
     -- course offsets dynamically set by the AI and added to all tool and other offsets
     self.aiOffsetX, self.aiOffsetZ = 0, 0
-
+    self.debugChannel = CpDebug.DBG_FIELDWORK
     return self
 end
 
@@ -337,7 +337,7 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
             -- we are close to the end of the connecting track, transition back to the up/down rows with
             -- an alignment course
             local d, firstUpDownWpIx = self.course:getDistanceToFirstUpDownRowWaypoint(ix)
-            self:debug('up/down rows start in %d meters.', d or -1)
+            self:debug('up/down rows start in %d meters, at waypoint %d.', d or -1, firstUpDownWpIx or -1)
             -- (no alignment if there is a turn generated here)
             if d < 5 * self.turningRadius and firstUpDownWpIx and not self.course:isTurnEndAtIx(firstUpDownWpIx) then
                 self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
