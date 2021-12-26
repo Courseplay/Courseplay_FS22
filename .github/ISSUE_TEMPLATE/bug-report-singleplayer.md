@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Steps to reproduce**
+Steps to reproduce the behavior.
 
-**To Reproduce**
-Steps to reproduce the behavior
+**Actual behavior**
+A clear and concise description of what happen.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
@@ -22,7 +22,14 @@ If applicable, add screenshots to help explain your problem.
 **Log**
 Please attach a log with all debug channels active.
 For help with the debug channels,
-please check out the readme at the github frontpage.
+please check out the readme at the github front page.
 
-**Additional context**
-Add any other context about the problem here.
+**Map**
+Map played on.
+
+**Vehicles/ implements involved**
+Mod yes/no ?
+
+**Relevant script mods**
+Mods like Autodrive or VCA and so on.
+
