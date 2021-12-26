@@ -166,6 +166,11 @@ function AIDriveStrategyCombineCourse:stop(msgReference)
     UnloadableFieldworkAIDriver.stop(self,msgReference)
 end
 
+function AIDriveStrategyCombineCourse:update(dt)
+	AIDriveStrategyFieldWorkCourse.update(self, dt)
+	self:updateChopperFillType()
+end
+
 function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	self:handlePipe(dt)
 	self:disableCutterTimer()
@@ -1201,6 +1206,43 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
 	end
 end
 
+--- Not exactly sure what this does, but without this the chopper just won't move.
+--- Copied from AIDriveStrategyCombine:update()
+function AIDriveStrategyCombineCourse:updateChopperFillType()
+	local capacity = 0
+	local dischargeNode = self.combine:getCurrentDischargeNode()
+
+	if dischargeNode ~= nil then
+		capacity = self.combine:getFillUnitCapacity(dischargeNode.fillUnitIndex)
+	end
+
+	if capacity == math.huge then
+		local rootVehicle = self.vehicle.rootVehicle
+
+		if rootVehicle.getAIFieldWorkerIsTurning ~= nil and not rootVehicle:getAIFieldWorkerIsTurning() then
+			local trailer = NetworkUtil.getObject(self.combine.spec_pipe.nearestObjectInTriggers.objectId)
+
+			if trailer ~= nil then
+				local trailerFillUnitIndex = self.combine.spec_pipe.nearestObjectInTriggers.fillUnitIndex
+				local fillType = self.combine:getDischargeFillType(dischargeNode)
+
+				if fillType == FillType.UNKNOWN then
+					fillType = trailer:getFillUnitFillType(trailerFillUnitIndex)
+
+					if fillType == FillType.UNKNOWN then
+						fillType = trailer:getFillUnitFirstSupportedFillType(trailerFillUnitIndex)
+					end
+
+					self.combine:setForcedFillTypeIndex(fillType)
+				else
+					self.combine:setForcedFillTypeIndex(nil)
+				end
+			end
+		end
+	end
+end
+
+
 function AIDriveStrategyCombineCourse:handleChopperPipe()
 	local trailer = NetworkUtil.getObject(self.combine.spec_pipe.nearestObjectInTriggers.objectId)
 	local currentPipeTargetState = self.combine.spec_pipe.targetState
@@ -1210,7 +1252,8 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 	local dischargeNode = self.combine:getCurrentDischargeNode()
 	local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
 	if targetObject == nil or trailer == nil then
-		self:debugSparse('Chopper waiting for trailer')
+		self:debugSparse('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
+				tostring(dischargeNode), tostring(targetObject), tostring(trailer))
 		self:setMaxSpeed(0)
 	end
 end
