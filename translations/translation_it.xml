@@ -121,8 +121,8 @@
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia"/>
 
 	<!-- Vehicle course generator settings -->
-		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Impostazioni del generatore di corso di (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Impostazioni del generatore di corso di (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Impostazioni del gestore del percorso di (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Impostazioni del gestore del percorso di (%s)"/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Larghezza di lavoro" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Larghezza di lavoro" />
@@ -188,9 +188,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Mostra tutti i percorsi attivi sulla mappa di gioco."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="no course"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
+		<text name="CP_courseManager_title"																text="Gestore percorsi(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="Nessun percorso"/>
+		<text name="CP_courseManager_temporary_course"													text="Percorso temporaneo"/>
 
 		<text name="CP_courseManager_change_mode"														text="Cambia modalità"/>
 
@@ -223,7 +223,7 @@
 		
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
+		<text name="CP_help_page_courseManager_title"													text="Gestione percorsi"/>
 		<text name="CP_help_page_courseManager_text"													text="Sono disponibili 7 diverse azioni:
 - Creazione di una nuova Cartella.
 - Cancellazione della rotta del veicolo corrente.
