@@ -217,10 +217,12 @@ function CpGuiUtil.getFormatTimeText(seconds)
 end
 
 function CpGuiUtil.debugFocus(element,direction)
-	CpUtil.debugFormat(CpDebug.DBG_HUD,"isFocusLocked: %s, canReceiveFocus: %s, targetName: %s",
+	local targetElement = FocusManager.getNestedFocusTarget(element, direction)
+	CpUtil.debugFormat(CpDebug.DBG_HUD,"isFocusLocked: %s, canReceiveFocus: %s, targetName: %s, focusElement: %s",
 										tostring(FocusManager.isFocusLocked),
 										tostring(element:canReceiveFocus()),
-										FocusManager.getNestedFocusTarget(element, direction).targetName
+										FocusManager.getNestedFocusTarget(element, direction).targetName,
+										FocusManager.currentFocusData.focusElement and FocusManager.currentFocusData.focusElement == targetElement and FocusManager.currentFocusData.focusElement.focusActive
 										)	
 end
 function CpGuiUtil.setTarget(element,target)
@@ -231,3 +233,12 @@ function CpGuiUtil.setTarget(element,target)
 	element.target = target
 	element.targetName = target.name
 end
+
+local function fixFocus(self)
+	FocusManager:loadElementFromCustomValues(self.boxLayout)
+	self.boxLayout:invalidateLayout()
+	self:setSoundSuppressed(true)
+	FocusManager:setFocus(self.boxLayout)
+	self:setSoundSuppressed(false)
+end
+InGameMenuGeneralSettingsFrame.onFrameOpen = Utils.appendedFunction(InGameMenuGeneralSettingsFrame.onFrameOpen,fixFocus)

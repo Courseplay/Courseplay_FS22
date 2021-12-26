@@ -222,9 +222,6 @@ function AIParameterSettingList:getTooltip()
 end
 
 function AIParameterSettingList:setGenericGuiElementValues(guiElement)
-	guiElement.leftButtonElement:setCallback("onClickCallback", "setPreviousItem")
-	guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
-	guiElement:setCallback("onClickCallback", "onClick")
 	guiElement:setLabel(self:getTitle())
 	local toolTipElement = guiElement.elements[6]
 	toolTipElement:setText(self:getTooltip())
@@ -257,11 +254,18 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self:validateCurrentValue()
 	self.guiElement = guiElement
 	self.guiElement.target = self
+	self.guiElement.onClickCallback = function(setting,state,element)
+		setting:onClick(state)
+		CpGuiUtil.debugFocus(element.parent)
+		if not FocusManager:setFocus(element.parent) then 
+			FocusManager.currentFocusData.focusElement.focusActive = false 
+			FocusManager:setFocus(element.parent)
+		end
+	end
 	self.guiElement.leftButtonElement.target = self
 	self.guiElement.rightButtonElement.target = self
-	self.guiElement.leftButtonElement.onClickCallback = self.setPreviousItem
-	self.guiElement.rightButtonElement.onClickCallback = self.setNextItem
-	self.guiElement.onClickCallback = self.onClick
+	self.guiElement.leftButtonElement:setCallback("onClickCallback", "setPreviousItem")
+	self.guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
 	self.guiElement:setTexts(self:getGuiElementTexts())
 	self:updateGuiElementValues()
 end
@@ -278,8 +282,9 @@ function AIParameterSettingList:getIsDisabled()
 	return self.isDisabled
 end
 
-function AIParameterSettingList:onClick()
-	
+function AIParameterSettingList:onClick(state)
+	local new = self:checkAndSetValidValue(state)
+	self:setToIx(new)
 end
 
 --- Raises an event and sends the callback string to the Settings controller class.
