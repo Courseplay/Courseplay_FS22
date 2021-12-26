@@ -97,7 +97,6 @@ end
 function AIDriveStrategyBalerCourse:handleBaler()
     -- turn.lua will raise/lower as needed, don't touch the balers while the turn maneuver is executed or while on temporary alignment / connecting track
     if not self:isHandlingAllowed() then return end
-
     if not self.baler:getIsTurnedOn() then
         if self.baler:getCanBeTurnedOn() then
             self.baler:setIsTurnedOn(true, false);
@@ -120,12 +119,13 @@ function AIDriveStrategyBalerCourse:handleBaler()
     local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
     local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
 
-    if not self.balerSpec.nonStopBaling and (self.balerSpec.baleUnloadAnimationName ~= nil or self.balerSpec.allowsBaleUnloading) then
-        self:debugSparse("baleUnloadAnimationName: %s, allowsBaleUnloading: %s, nonStopBaling:%s",tostring(self.balerSpec.baleUnloadAnimationName),tostring(self.balerSpec.allowsBaleUnloading),tostring(self.balerSpec.nonStopBaling))
+    if not self.balerSpec.nonStopBaling and (self.balerSpec.hasUnloadingAnimation or self.balerSpec.allowsBaleUnloading) then
+        self:debugSparse("hasUnloadingAnimation: %s, allowsBaleUnloading: %s, nonStopBaling:%s",
+                tostring(self.balerSpec.hasUnloadingAnimation),tostring(self.balerSpec.allowsBaleUnloading),tostring(self.balerSpec.nonStopBaling))
         --copy of giants code:  AIDriveStrategyBaler:getDriveData(dt, vX,vY,vZ) to avoid leftover when full
         local freeFillLevel = capacity - fillLevel
         if freeFillLevel < self.slowDownFillLevel then
-            maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
+            local maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
             self:setMaxSpeed(maxSpeed)
         end
 
