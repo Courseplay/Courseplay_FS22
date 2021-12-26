@@ -318,7 +318,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		end
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
-			self:setMaxSpeed(0.5 * self.settings.fieldSpeed.getValue())
+			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
 		else
 			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
@@ -1388,7 +1388,15 @@ end
 
 function AIDriveStrategyCombineCourse:getClosestDistanceToFieldEdge(x, z)
 	local closestDistance = math.huge
-	for _, p in ipairs(self.course:getFieldPolygon()) do
+	local fieldPolygon = self.course:getFieldPolygon()
+	-- TODO: this should either be saved with the field or regenerated when the course is loaded...
+	if fieldPolygon == nil then
+		self:debug('Field polygon not found, regenerating it.')
+		local vx, _, vz = getWorldTranslation(self.vehicle.rootNode)
+		fieldPolygon = g_fieldScanner:findContour(vx, vz)
+		self.course:setFieldPolygon(fieldPolygon)
+	end
+	for _, p in ipairs(fieldPolygon) do
 		local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
 		closestDistance = d < closestDistance and d or closestDistance
 	end
