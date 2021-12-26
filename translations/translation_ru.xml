@@ -188,9 +188,10 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 					text="Показать все активные курсы на игровой карте."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"												text="Управление курсами (текущий курс: %s)"/>
-		<text name="CP_courseManager_no_current_course"									text="нет"/>
-		<text name="CP_courseManager_temporary_course"									text="временный"/>
+
+		<text name="CP_courseManager_title"												text="Управление курсами (%s) %s"/>
+		<text name="CP_courseManager_no_current_course"									text="нет курса"/>
+		<text name="CP_courseManager_temporary_course"									text="временный курс"/>
 
 		<text name="CP_courseManager_change_mode"										text="Изменить режим"/>
 
@@ -218,6 +219,8 @@
 	
 		<text name="CP_courseManager_basicSettings"										text="Управление курсами."/>
 		<text name="CP_courseManager_advancedSettings"									text="Управление файлами."/>
+
+		<text name="CP_courseManager_activate"											text="Активировать"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"														text="Courseplay"/>

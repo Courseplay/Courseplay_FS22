@@ -12,8 +12,8 @@ CpGuiUtil = {}
 ---@param uvs table
 ---@return table
 function CpGuiUtil.getNewInGameMenuFrame(inGameMenu,parentGui,class,predicateFunc,position,uvs)
-	
 	local page = parentGui:clone(parentGui.parent,true)
+	FocusManager:removeElement(page)
 	CpGuiUtil.replaceFunction(page,"initialize",class.initialize)
 	CpGuiUtil.replaceFunction(page,"onGuiSetupFinished",class.onGuiSetupFinished)
 	CpGuiUtil.replaceFunction(page,"reset",class.reset)
@@ -91,7 +91,12 @@ end
 ---@return GuiElement
 function CpGuiUtil.cloneElementWithProfileName(rootElement,profileName,parent)
 	local item = CpGuiUtil.getFirstElementWithProfileName(rootElement,profileName)
-	return item and item:clone(parent)
+	local clone = item and item:clone(item.parent,true)
+	if clone then 
+		clone:unlinkElement()
+		FocusManager:removeElement(clone)
+		return clone:clone(parent,true)
+	end	
 end
 
 --- Gets all children elements with a given profile name.
@@ -210,3 +215,30 @@ function CpGuiUtil.getFormatTimeText(seconds)
 		return string.format("%dsec",seconds)
 	end
 end
+
+function CpGuiUtil.debugFocus(element,direction)
+	local targetElement = FocusManager.getNestedFocusTarget(element, direction)
+	CpUtil.debugFormat(CpDebug.DBG_HUD,"isFocusLocked: %s, canReceiveFocus: %s, targetName: %s, focusElement: %s",
+										tostring(FocusManager.isFocusLocked),
+										tostring(element:canReceiveFocus()),
+										FocusManager.getNestedFocusTarget(element, direction).targetName,
+										FocusManager.currentFocusData.focusElement and FocusManager.currentFocusData.focusElement == targetElement and FocusManager.currentFocusData.focusElement.focusActive
+										)	
+end
+function CpGuiUtil.setTarget(element,target)
+	for i = 1, #element.elements do
+		CpGuiUtil.setTarget(element.elements[i],target)
+	end
+
+	element.target = target
+	element.targetName = target.name
+end
+
+local function fixFocus(self)
+	FocusManager:loadElementFromCustomValues(self.boxLayout)
+	self.boxLayout:invalidateLayout()
+	self:setSoundSuppressed(true)
+	FocusManager:setFocus(self.boxLayout)
+	self:setSoundSuppressed(false)
+end
+InGameMenuGeneralSettingsFrame.onFrameOpen = Utils.appendedFunction(InGameMenuGeneralSettingsFrame.onFrameOpen,fixFocus)

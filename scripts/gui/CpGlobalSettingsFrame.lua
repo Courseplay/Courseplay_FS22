@@ -33,6 +33,7 @@ end
 
 function CpGlobalSettingsFrame:onFrameOpen()
 	InGameMenuGeneralSettingsFrame:superClass().onFrameOpen(self)
+	FocusManager:loadElementFromCustomValues(self.boxLayout)
 	self.boxLayout:invalidateLayout()
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.boxLayout)

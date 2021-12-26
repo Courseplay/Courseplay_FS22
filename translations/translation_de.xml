@@ -188,9 +188,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zeigt alle geladenen Kurse auf der Map."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="Kursmanager(Aktueller Kurs: %s)"/>
-		<text name="CP_courseManager_no_current_course"													text="Keiner"/>
-		<text name="CP_courseManager_temporary_course"													text="Temporär"/>
+		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="kein Kurs"/>
+		<text name="CP_courseManager_temporary_course"													text="temporärer Kurs"/>
 
 		<text name="CP_courseManager_change_mode"														text="Ändere Modus"/>
 
@@ -218,6 +218,8 @@
 	
 		<text name="CP_courseManager_basicSettings"														text="Kurse speichern/laden."/>
 		<text name="CP_courseManager_advancedSettings"													text="Kurse/Ordner editieren."/>
+
+		<text name="CP_courseManager_activate"															text="Activate"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
