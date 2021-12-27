@@ -115,7 +115,13 @@ end
 
 function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 	if turnContext:isHeadlandCorner() then
-		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Headland turn, let turn.lua drive for now.')
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Headland turn, not doing a 3 point turn.')
+		return false
+	end
+	local turningRadius = AIUtil.getTurningRadius(vehicle)
+	if turnContext.dx > 2 * turningRadius then
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Next row is too far (%.1f, turning radius is %.1f), no 3 point turn',
+			turnContext.dx, turningRadius)
 		return false
 	end
 	if not AIVehicleUtil.getAttachedImplementsAllowTurnBackward(vehicle) then
@@ -127,13 +133,13 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Have a towed implement, use generated course turn')
 		return false
 	end
-	local turningRadius = AIUtil.getTurningRadius(vehicle)
 	local settings = vehicle:getCpSettings()
 	if settings.turnOnField:getValue() and
 			not AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius) then
-		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Turn on field is on but there is not enough space, use generated course turn')
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Turn on field is on but there is not enough room to stay on field with a 3 point turn')
 		return false
 	end
+	CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Can make a 3 point turn')
 	return true
 end
 
