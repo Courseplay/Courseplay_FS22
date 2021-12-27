@@ -1209,6 +1209,10 @@ end
 --- Not exactly sure what this does, but without this the chopper just won't move.
 --- Copied from AIDriveStrategyCombine:update()
 function AIDriveStrategyCombineCourse:updateChopperFillType()
+
+	-- no pipe, no discharge node
+	if self.combine.getCurrentDischargeNode == nil then return end
+
 	local capacity = 0
 	local dischargeNode = self.combine:getCurrentDischargeNode()
 
