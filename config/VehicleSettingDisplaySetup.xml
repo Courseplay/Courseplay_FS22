@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-	All the vehicle settings can be setup here.
-	For documentation look up the CpSettingUtil.lua.
+	Vehicle,course generator or job settings can be set here to be displayed in the mini hud.
 -->
 
 <Settings title="CP_vehicle_setting_display">

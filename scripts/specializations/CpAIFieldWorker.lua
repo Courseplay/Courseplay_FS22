@@ -69,6 +69,7 @@ function CpAIFieldWorker:onLeaveVehicle(isControlling)
    
 end
 
+--- Directly starts a cp driver or stops a currently active job.
 function CpAIFieldWorker:startStopDriver()
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Start/stop cp helper")
     local spec = self.spec_cpAIFieldWorker
