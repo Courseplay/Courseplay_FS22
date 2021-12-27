@@ -24,12 +24,10 @@ or a trailer to be reversed.
 AIReverseDriver = CpObject()
 
 ---@param course Course
-function AIReverseDriver:init(vehicle, ppc, course)
+function AIReverseDriver:init(vehicle, ppc)
 	self.vehicle = vehicle
 	---@type PurePursuitController
 	self.ppc = ppc
-	---@type Course
-	self.course = course
 	-- the main implement (towed) or trailer we are controlling
 	self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle)
 	if self.reversingImplement then
@@ -146,7 +144,7 @@ function AIReverseDriver:getDriveData()
 	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
 	DebugUtil.drawDebugLine(gx, ty, gz, gx, ty + 3, gz, 1, 0, 0)
 	-- TODO_22 reverse speed
-	return gx, gz, false, 5
+	return gx, gz, false, self.vehicle.settings.reverseSpeed:getValue()
 end
 
 function AIReverseDriver:getLocalYRotationToPoint(node, x, y, z, direction)

@@ -77,13 +77,13 @@ end
 -- return a world position if last/current vehicle position or map position is selected
 function StartingLocationSetting:getWorldPosition()
 	if self:is(CourseGenerator.STARTING_LOCATION_SELECT_ON_MAP) then
-		courseplay.debugVehicle(courseplay.DBG_COURSES, self.vehicle, 'Starting location selected on map')
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Starting location selected on map')
 		return self:getSelectedPosition()
 	elseif self:is(CourseGenerator.STARTING_LOCATION_LAST_VEHICLE_POSITION) then
-		courseplay.debugVehicle(courseplay.DBG_COURSES, self.vehicle, 'Starting location last vehicle position')
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Starting location last vehicle position')
 		return self:getLastVehiclePosition()
 	elseif self:is(CourseGenerator.STARTING_LOCATION_VEHICLE_POSITION) then
-		courseplay.debugVehicle(courseplay.DBG_COURSES, self.vehicle, 'Starting location current vehicle position')
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Starting location current vehicle position')
 		self.lastVehiclePosition = self:getVehiclePosition()
 		self:update()
 		return self.lastVehiclePosition

@@ -24,7 +24,6 @@ AIDriveStrategyFieldWorkCourse = {}
 local AIDriveStrategyFieldWorkCourse_mt = Class(AIDriveStrategyFieldWorkCourse, AIDriveStrategyCourse)
 
 AIDriveStrategyFieldWorkCourse.myStates = {
-    INITIAL = {},
     WORKING = {},
     ON_CONNECTING_TRACK = {},
     ON_ALIGNMENT_COURSE = {},
@@ -59,10 +58,31 @@ function AIDriveStrategyFieldWorkCourse:delete()
     TurnContext.deleteNodes(self.turnNodes)
 end
 
-function AIDriveStrategyFieldWorkCourse:setAIVehicle(vehicle)
-    AIDriveStrategyFieldWorkCourse:superClass().setAIVehicle(self, vehicle)
-    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    self:setAllStaticParameters()
+function AIDriveStrategyFieldWorkCourse:start(course, startIx)
+    if self.frontMarkerDistance < 0 then
+        self:debug('extend course by %.1f m to make sure we do not miss anything when the course ends',
+                -self.frontMarkerDistance)
+        course:extend(-self.frontMarkerDistance)
+    end
+
+    local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
+    local alignmentCourse
+
+    if distance > 2 * self.turningRadius then
+        self:debug('Start waypoint is far (%.1f m), use an alignment course to get there.', distance)
+        alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+                course, startIx, math.min(0, -self.frontMarkerDistance)):getCourse()
+    end
+    if alignmentCourse then
+        self.ppc:setShortLookaheadDistance()
+        self:rememberCourse(course, startIx)
+        self:startCourse(alignmentCourse, 1)
+        self.state = self.states.DRIVING_TO_COURSE_START
+    else
+        self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
+        self:startCourse(course, startIx)
+        self.state = self.states.INITIAL
+    end
 end
 
 function AIDriveStrategyFieldWorkCourse:update()
@@ -79,6 +99,8 @@ function AIDriveStrategyFieldWorkCourse:update()
         -- TODO_22 check user setting
         if self.course:isTemporary() then
            self.course:draw()
+        elseif self.ppc:getCourse():isTemporary() then
+            self.ppc:getCourse():draw()
         end
     end
 end
@@ -107,8 +129,8 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     ----------------------------------------------------------------
     if self.state == self.states.INITIAL then
         self:setMaxSpeed(0)
-        self:lowerImplements()
         self.state = self.states.WAITING_FOR_LOWER
+        self:lowerImplements()
     elseif self.state == self.states.WAITING_FOR_LOWER then
         self:setMaxSpeed(0)
         if self.vehicle:getCanAIFieldWorkerContinueWork() then
@@ -132,6 +154,8 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         gx, gz = turnGx or gx, turnGz or gz
         if turnMoveForwards ~= nil then moveForwards = turnMoveForwards end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
+    elseif self.state == self.states.DRIVING_TO_COURSE_START then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.ON_ALIGNMENT_COURSE then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
@@ -356,9 +380,17 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
-    self:debug('Last waypoint of the course reached.')
-    -- by default, stop the job
-    self:finishFieldWork()
+    if self.state == self.states.DRIVING_TO_COURSE_START then
+        self:debug('Alignment to first waypoint ended, start work, first lowering implements.')
+        self.state = self.states.WAITING_FOR_LOWER
+        self:lowerImplements()
+        self.ppc:setNormalLookaheadDistance()
+        self:startRememberedCourse()
+    else
+        self:debug('Last waypoint of the course reached.')
+        -- by default, stop the job
+        self:finishFieldWork()
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -433,18 +465,12 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Static parameters (won't change while driving)
-----------------------------------------------------------------------``-------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self:setFrontAndBackMarkers()
     self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
-    self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
-    self.reverser = AIReverseDriver(self.vehicle, self.ppc, self.course)
-    if self.frontMarkerDistance < 0 then
-        self:debug('extend course by %.1f m to make sure we do not miss anything when the course ends',
-                -self.frontMarkerDistance)
-        self.course:extend(-self.frontMarkerDistance)
-    end
+    self.reverser = AIReverseDriver(self.vehicle, self.ppc)
 end
 
 --- Find the foremost and rearmost AI marker

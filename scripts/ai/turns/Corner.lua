@@ -187,7 +187,7 @@ function Corner:debug(...)
 end
 
 function Corner:drawDebug()
-	if courseplay.debugChannels[self.debugChannel] then
+	if CpDebug:isChannelActive(self.debugChannel) then
 		local cx, cy, cz
 		local nx, ny, nz
 		if self.cornerNode then

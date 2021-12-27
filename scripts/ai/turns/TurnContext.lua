@@ -478,8 +478,7 @@ function TurnContext:debug(...)
 end
 
 function TurnContext:drawDebug()
-	-- TODO_22: debugChannel
-    if true or courseplay.debugChannels[self.debugChannel] then
+    if CpDebug:isChannelActive(self.debugChannel) then
         local cx, cy, cz
         local nx, ny, nz
         local height = 1
