@@ -2,23 +2,23 @@
 
 <i3D name="Stop" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
   <Asset>
-    <Export program="GIANTS Editor 64bit" version="7.0.0"/>
+    <Export program="GIANTS Editor 64bit" version="9.0.1"/>
   </Asset>
 
   <Files>
-    <File fileId="2" filename="colorShader.xml" relativePath="true"/>
-    <File fileId="1" filename="normal.png" relativePath="true"/>
-    <File fileId="3" filename="stop.png" relativePath="true"/>
+    <File fileId="2" filename="colorShader.xml"/>
+    <File fileId="1" filename="normal.png"/>
+    <File fileId="3" filename="stop.png"/>
   </Files>
 
 
   <Materials>
-    <Material name="Sign" materialId="6" ambientColor="1 1 1" cosPower="20" specularColor="0.25 0.25 0.25">
-      <Texture fileId="3"/>
-    </Material>
-    <Material name="diamond" materialId="8" ambientColor="1 1 1" customShaderId="2">
+    <Material name="diamond" materialId="4" customShaderId="2">
       <Emissivemap fileId="1"/>
-      <CustomParameter name="diffuseColor" value="1 0.212 0 1"/>
+      <CustomParameter name="shapeColor" value="1 0.212 0 1"/>
+    </Material>
+    <Material name="Sign" materialId="5" specularColor="0.247059 1 0.247059">
+      <Texture fileId="3"/>
     </Material>
   </Materials>
 
@@ -31,13 +31,13 @@
   </Dynamics>
 
   <Scene>
-    <Shape shapeId="1" name="Waypoint" clipDistance="175" nodeId="13" materialIds="8" castsShadows="true" receiveShadows="true">
-      <TransformGroup name="dummy" nodeId="14"/>
-      <TransformGroup name="StopSign" nodeId="15">
-        <Shape shapeId="2" name="Front" nodeId="16" materialIds="6" castsShadows="true" receiveShadows="true"/>
-        <Shape shapeId="3" name="Back" nodeId="17" materialIds="6" castsShadows="true" receiveShadows="true"/>
-      </TransformGroup>
-    </Shape>
+      <Shape shapeId="1" name="Waypoint" clipDistance="175" nodeId="10" materialIds="4" castsShadows="true" receiveShadows="true">
+        <TransformGroup name="dummy" nodeId="11"/>
+        <TransformGroup name="StopSign" nodeId="12">
+          <Shape shapeId="2" name="Front" nodeId="13" materialIds="5" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="3" name="Back" nodeId="14" materialIds="5" castsShadows="true" receiveShadows="true"/>
+        </TransformGroup>
+      </Shape>
   </Scene>
 
 </i3D>
