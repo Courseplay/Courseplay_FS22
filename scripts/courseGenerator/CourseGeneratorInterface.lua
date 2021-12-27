@@ -24,15 +24,22 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	--------------------------------------------------------------------------------------------------------------------
 	-- Headland settings
 	-----------------------------------------------------------------------------------------------------------------------
+	-- ignore headland order setting when there's no headland
+	local headlandFirst = startOnHeadland == CourseGenerator.HEADLAND_START_ON_HEADLAND or numberOfHeadlands == 0
+	if headlandFirst then
+		isClockwise = isClockwise == CourseGenerator.HEADLAND_CLOCKWISE
+	else
+		-- reverse clockwise when starting in the middle
+		isClockwise = isClockwise == CourseGenerator.HEADLAND_COUNTERCLOCKWISE
+	end
 	local headlandSettings = {
 		startLocation = CourseGenerator.pointToXy(startPosition),
 		-- use some overlap between headland passes to get better results
 		-- (=less fruit missed) at smooth headland corners
 		overlapPercent = 7,
 		nPasses = numberOfHeadlands,
-		-- ignore headland order setting when there's no headland
-		headlandFirst = startOnHeadland == CourseGenerator.HEADLAND_START_ON_HEADLAND or numberOfHeadlands == 0,
-		isClockwise = isClockwise == CourseGenerator.HEADLAND_CLOCKWISE,
+		headlandFirst = headlandFirst,
+		isClockwise = isClockwise,
 		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
 	}
 	local roundCorners = headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND
