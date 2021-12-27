@@ -306,8 +306,10 @@ function KTurn:turn(dt)
 		local dx, _, dz = self.turnContext:getLocalPositionFromTurnEnd(self.vehicle:getAIDirectionNode())
 		maxSpeed = self:getForwardSpeed()
 		moveForwards = true
-		if dz > 0 then
-			-- drive straight until we are beyond the turn end
+		if dz > -math.max(0, math.max(2, self.turnContext.frontMarkerDistance)) then
+			-- drive straight until we are beyond the turn end (or, if the implement is mounted on the front,
+			-- make sure we end up at least 2 meters before the row start to have time to straighten out, so there
+			-- is no fruit missed)
 			gx, gz = self:getGoalPointForTurn(moveForwards, nil)
 		elseif not self.turnContext:isDirectionPerpendicularToTurnEndDirection(self.vehicle:getAIDirectionNode()) then
 			-- full turn towards the turn end waypoint
