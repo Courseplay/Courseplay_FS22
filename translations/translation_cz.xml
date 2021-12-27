@@ -188,9 +188,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zobrazuje všechny aktivní trasy na herní mapě"/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="no course"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
+		<text name="CP_courseManager_title"																text="Správce Tras(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="žádná trasa"/>
+		<text name="CP_courseManager_temporary_course"													text="dočasná trasa"/>
 
 		<text name="CP_courseManager_change_mode"														text="Změnit režim"/>
 
@@ -219,11 +219,11 @@
 		<text name="CP_courseManager_basicSettings"														text="Interakce trasy"/>
 		<text name="CP_courseManager_advancedSettings"													text="Upravit soubory"/>
 
-		<text name="CP_courseManager_activate"															text="Activate"/>
+		<text name="CP_courseManager_activate"															text="Aktivovat"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="Manažer tras"/>
+		<text name="CP_help_page_courseManager_title"													text="Správce tras"/>
 		<text name="CP_help_page_courseManager_text"													text="K dispozici je 7 různých akcí:
 - Creating a new directory.
 - Clearing the current vehicle course.
