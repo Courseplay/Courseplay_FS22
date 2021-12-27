@@ -19,6 +19,9 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+**Courseplay version**
+Version used: 
+
 **Log**
 Please attach a log with all debug channels active.
 For help with the debug channels,
