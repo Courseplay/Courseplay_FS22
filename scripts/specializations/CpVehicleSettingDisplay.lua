@@ -107,7 +107,7 @@ function CpVehicleSettingDisplay:onRegisterActionEvents(isActiveForInput, isActi
 
 		self:clearActionEventsTable(spec.actionEvents)
 
-		if isActiveForInputIgnoreSelection then
+		if self:getIsActiveForInput(true, true) then
 			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpVehicleSettingDisplay.actionEventOpenCloseDisplay, false, true, false, true, nil)
             g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
             g_inputBinding:setActionEventText(actionEventId, spec.text)

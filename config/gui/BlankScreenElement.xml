@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose">
-	<GuiElement type="empty" onEscPressed="onEscPressed" id="blankElement" />
-	<GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" id="backButton"/>
+<!--	<GuiElement type="flowLayout" profile="buttonBoxDockedOnScreen" id="bottomButtons" size="316px 48px"> -->
+		<GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" id="backButton" margin="0px 5px 0px 5px"/>
+		<GuiElement type="button" profile="buttonOK" text="$l10n_button_ok" onClick="onClickOk" id="startButton"  margin="0px 5px 0px 5px"/>
+<!-- 	</GuiElement> -->
 </GUI>

@@ -10,7 +10,7 @@
 	<DebugChannel active="false" name="DBG_MODE_1" text="mode 1 - grain transport"/>
 	<DebugChannel active="false" name="DBG_MODE_2" text="mode 2 - unload combine"/>
 	<DebugChannel active="false" name="DBG_MODE_3" text="mode 3 - overloader"/>
-	<DebugChannel active="false" name="DBG_FIELDWORK" text="field work"/>
+	<DebugChannel active="true" name="DBG_FIELDWORK" text="field work"/>
 	<DebugChannel active="false" name="DBG_MODE_5" text="mode 5 - transport"/>
 	<DebugChannel active="false" name="DBG_MODE_7" text="mode 7 - bale collector"/>
 	<DebugChannel active="false" name="DBG_MODE_8" text="mode 8 - field supply"/>
