@@ -8,8 +8,8 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"																	text="Générer une course avant de démarrer la tâche" />
+		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 
 	<!-- AI job menu -->
@@ -25,8 +25,8 @@
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"																		text="CP:Travail" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course." />
-		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses." />
+		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
+		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Paramètres du véhicule pour (%s)"/>
@@ -41,16 +41,16 @@
 
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Afficher la course"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Affiche la course actuelle du véhicule"/>
+		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Affiche la course actuelle du véhicule."/>
 
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Points départ/arrivé uniquement"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Tous les points"/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Arrêt à l'arrivée"/>
-		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Arrêt du véhicule lorsqu'il est arrivé"/>
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Arrêt du véhicule lorsqu'il est arrivé."/>
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Autoriser marche AR pour le pathfinding"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Si nécessaire, autorise le pathfinding à générer des trajets contenant des marches arrières"/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Si nécessaire, autorise le pathfinding à générer des trajets contenant des marches arrières."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Replier l'outils à la fin de la course"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Active/Désactive le repli automatique de l'outil à la fin de la course."/>
@@ -69,16 +69,16 @@
 		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Manoeuvres uniquement dans le champ. Impossible avec certains outils."/>
 
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Eviter les cultures"/>
-		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="L'IA essayera d'éviter le plus possible de rouler dans les cultures"/>
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="L'IA essayera d'éviter le plus possible de rouler dans les cultures."/>
 
 		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Décalage horizontal de l'outil"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Décalage horizontal de l'outil"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Décalage horizontal de l'outil."/>
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Décalage vertical de l'outil"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Rayon de braquage"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Toujours déployer la buse"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>
@@ -103,38 +103,38 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Active/Désactive l'utilisation d'engrais pour les semoirs équipés."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Changement de ligne symétrique"/>
-		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
 
 		<text name="CP_vehicle_setting_convoyActive_title" 												text="Convoi de véhicules"/>
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Mode convoi on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distance min dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi."/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distance max dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi."/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Déplacement"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ."/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Manoeuvres"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres."/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières."/>
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Paramètres du générateur pour la course (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Paramètres du générateur pour la course (%s)"/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Largeur de travail" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Nombre de fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Sens des fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières." />
 		
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Sens horaire" />
@@ -165,14 +165,14 @@
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Retour au premier point"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Retourne au premier point à la fin de la course"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Retourne au premier point à la fin de la course."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Paramètres globaux"/>
 		<text name="CP_global_setting_subTitle_general"													text="Paramètres généraux"/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Salaire des ouvriers Courseplay"/>
-		<text name="CP_global_setting_wageModifier_tooltip" 											text="Salaire des ouvriers Courseplay en pourcentage du salaire des ouvriers normaux"/>
+		<text name="CP_global_setting_wageModifier_tooltip" 											text="Salaire des ouvriers Courseplay en pourcentage du salaire des ouvriers normaux."/>
 
 		<text name="CP_global_setting_autoRepair_title" 												text="Réparation automatique"/>
 		<text name="CP_global_setting_autoRepair_tooltip" 												text="Le véhicule et ses outils seront réparés automatiquement lors d'une course active."/>
@@ -193,9 +193,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Affiche les courses actives sur la carte."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="no course"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
+		<text name="CP_courseManager_title"																text="Gestionnaire des courses(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="aucune course"/>
+		<text name="CP_courseManager_temporary_course"													text="course temporaire"/>
 
 		<text name="CP_courseManager_change_mode"														text="Changer le mode"/>
 
@@ -224,7 +224,7 @@
 		<text name="CP_courseManager_basicSettings"														text="Basculer en mode édition"/>
 		<text name="CP_courseManager_advancedSettings"													text="Basculer en mode affichage"/>
 
-		<text name="CP_courseManager_activate"															text="Activate"/>
+		<text name="CP_courseManager_activate"															text="Activer"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
@@ -243,6 +243,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Sélection du précèdent canal de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Canal actif de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Affiche/Masque les paramètres du véhicule"/>
 	</texts>
 </l10n>
