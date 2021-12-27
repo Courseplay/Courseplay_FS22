@@ -8,8 +8,8 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"														text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"													text="Создайте курс до начала работы." />
+		<text name="CP_error_not_on_field"												text="Цель не на поле." />
 
 
 	<!-- AI job menu -->
@@ -40,8 +40,8 @@
 		<text name="CP_vehicle_setting_subTitle_speed" 									text="Скорость"/>
 
 		<!--Settings-->
-		<text name="CP_vehicle_setting_showCourse_title" 								text="Показать курс"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 								text="Показать текущий курс"/>
+		<text name="CP_vehicle_setting_showCourse_title" 								text="Отображать курс"/>
+		<text name="CP_vehicle_setting_showCourse_tooltip" 								text="Отображение путевых точек текущего курса."/>
 
 		<text name="CP_vehicle_setting_showCourse_startStop" 							text="только начало/конец"/>
 		<text name="CP_vehicle_setting_showCourse_all" 									text="все путевые точки"/>
@@ -87,10 +87,10 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 							text="Всегда прекращать движение при разгрузке."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 								text="Саморазгрузка комбайна"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  	text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 								text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 					text="Разгрузка на первой поворотной полосе"/>
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  	text="Комбайн вызовет разгрузчик на первой поворотной полосе."/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 					text="Комбайн вызовет разгрузчик на первой поворотной полосе."/>
 
 		<text name="CP_vehicle_setting_strawSwath_title" 								text="Валкование соломы"/>
 		<text name="CP_vehicle_setting_strawSwath_tooltip" 								text="Включает / отключает валок соломы или отключает его только на поворотной полосе."/>
@@ -99,7 +99,7 @@
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 					text="Маркер"/>
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 					text="Маркер вкл/выкл"/>
 
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 			text="Сеялки используют удобрения"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 			text="Удобрение сеялкой"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 			text="Включает / отключает использование удобрений сеялками."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 						text="Симметричная смена полосы движения"/>
@@ -136,7 +136,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"				text="Направление поворотной полосы" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"				text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе." />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 			text="по часовой стрелке" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 	text="против часовой стрелки" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise"		text="против часовой стрелки" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"					text="Метод движения" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"				text="Метод движения агрегата по полю." />
@@ -146,7 +146,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 				text="загонами" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"			text="Углы поворотной полосы" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"		text="Углы поворотной полосы" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"		text="Каким образом техника будет проходить углы поворотной полосы." />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 		text="сглаженные" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 		text="острые" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 		text="скруглённые" />
@@ -163,7 +163,7 @@
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title"			text="Возврат на стартовую точку"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip"		text="Возвращаться на стартовую точку по завершению работы."/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip"		text="Возвращаться на стартовую точку по завершении работы."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"											text="Глобальные настройки CoursePlay"/>
@@ -177,7 +177,7 @@
 		<text name="CP_global_setting_autoRepair_off" 									text="не ремонтировать"/>
 		<text name="CP_global_setting_autoRepair_less_than_25" 							text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 							text="&lt; 70%"/>
-		<text name="CP_global_setting_autoRepair_always" 								text="поддерживать текущее состояние"/>
+		<text name="CP_global_setting_autoRepair_always" 								text="поддерживать в рабочем состоянии"/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"								text="Настройки поиска пути"/>
 
@@ -242,6 +242,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 									text="CP: Выбрать предыдущий канал отладки."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"								text="CP: Изменить текущий канал отладки."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 								text="CP: Показать меню отладки канала да/нет."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 						text="CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 						text="CP: Открыть/закрыть экран настройки техники"/>
 	</texts>
 </l10n>
