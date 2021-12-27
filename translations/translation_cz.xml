@@ -8,8 +8,8 @@
 		
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Český překlad: SniperKittenCZ" />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"																	text="Před zahájením práce vygenerujte kurz." />
+		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
 
 
 	<!-- AI job menu -->
@@ -241,6 +241,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vyberte předchozí kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Změnit aktuální kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Otevřt/zavřít nastavení vozidla"/>
 	</texts>
 </l10n>
