@@ -298,7 +298,7 @@ function DubinsTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffset, 
 											 xOffset, goalOffset, turningRadius)
 	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
 		vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
-	return Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+	return Course.createFromAnalyticPath(self.vehicle, path, true)
 end
 
 ---@class LeftTurnReedsSheppSolver : ReedsSheppSolver
@@ -335,10 +335,8 @@ function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffs
 	end
 	local path = PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, turnEndNode,
 		0, goalOffset, self.turningRadius)
-	local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-	course:print()
+	local course = Course.createFromAnalyticPath(self.vehicle, path, true)
 	course:adjustForTowedImplements(1.5 * self.steeringLength)
-	course:print()
 	return course
 end
 
@@ -463,6 +461,7 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 	local targetWp = course:getWaypoint(ix)
 	x, _, z = targetWp:getOffsetPosition(0, zOffset)
+	print(course:getWaypointAngleDeg(ix))
 	local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
 
 	local solution = PathfinderUtil.dubinsSolver:solve(start, goal, turningRadius)
@@ -476,6 +475,7 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 		self:debug("Alignment course would be only %d waypoints, it isn't needed then.", #alignmentWaypoints )
 		return nil
 	end
-	self:debug('Alignment course with %d waypoints started.', #alignmentWaypoints)
-	self.course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(alignmentWaypoints), true)
+	self:debug('Alignment course with %d waypoints created.', #alignmentWaypoints)
+	self.course = Course.createFromAnalyticPath(self.vehicle, alignmentWaypoints, true)
+	self.course:print()
 end

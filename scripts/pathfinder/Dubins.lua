@@ -170,13 +170,14 @@ end
 
 function dubins_path_sample_many(path, stepSize)
     local result = {}
-    local x = 0.0
     local length = dubins_path_length(path)
     dps_qi = State3D(0, 0, 0) -- The translated initial configuration */
     dps_q1 = State3D(0, 0, 0) -- end-of segment 1 */
     dps_q2 = State3D(0, 0, 0) -- end-of segment 2 */
 
-    while( x <  length ) do
+    local series = CpMathUtil.getSeries(0, length, stepSize)
+
+    for _, x in ipairs(series) do
         local q = dubins_path_sample(path, x)
         table.insert(result, q)
         x = x + stepSize

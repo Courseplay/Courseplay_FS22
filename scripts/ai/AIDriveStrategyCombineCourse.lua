@@ -128,9 +128,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	-- if this is not nil, we have a pending rendezvous
 	---@type CpTemporaryObject
 	self.unloadAIDriverToRendezvous = CpTemporaryObject()
-
-	local total, pipeInFruit = self.course:setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
-	self:shouldStrawSwathBeOn(self.course:getCurrentWaypointIx())
+	local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
 	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
@@ -150,20 +148,6 @@ end
 --- Get the combine object, this can be different from the vehicle in case of tools towed or mounted on a tractor
 function AIDriveStrategyCombineCourse:getCombine()
 	return self.combine
-end
-
-function AIDriveStrategyCombineCourse:start(startingPoint)
-	self:clearAllUnloaderInformation()
-	self:addBackwardProximitySensor()
-	UnloadableFieldworkAIDriver.start(self, startingPoint)
-	-- we work with the traffic conflict detector and the proximity sensors instead
-	self:disableCollisionDetection()
-	self:fixMaxRotationLimit()
-end
-
-function AIDriveStrategyCombineCourse:stop(msgReference)
-    self:resetFixMaxRotationLimit()
-    UnloadableFieldworkAIDriver.stop(self,msgReference)
 end
 
 function AIDriveStrategyCombineCourse:update(dt)
@@ -1848,7 +1832,7 @@ end
 
 function AIDriveStrategyCombineCourse:onDraw()
 
-	if CpUtil.debugChannels[CpDebug.DBG_IMPLEMENTS] then
+	if CpDebug:isChannelActive(CpDebug.DBG_IMPLEMENTS) then
 
 		local dischargeNode = self:getCurrentDischargeNode()
 		if dischargeNode then
@@ -1860,7 +1844,7 @@ function AIDriveStrategyCombineCourse:onDraw()
 		end
 	end
 
-	if CpUtil.debugChannels[CpDebug.DBG_PATHFINDER] then
+	if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER) then
 		local areaToAvoid = self:getAreaToAvoid()
 		if areaToAvoid then
 			local x, y, z = localToWorld(areaToAvoid.node, areaToAvoid.xOffset, 0, areaToAvoid.zOffset)
