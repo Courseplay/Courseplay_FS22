@@ -47,13 +47,13 @@ function AIJobFieldWorkCp:validate(farmId)
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
 	if not self.fieldPolygon then
 		self.hasValidPosition = false
-		return false, 'target not on field'
+		return false, g_i18n:getText("CP_error_no_course")
 	end
 
 	local vehicle = self.vehicleParameter:getVehicle()
 
 	if vehicle and not vehicle:hasCpCourse() then
-		return false, 'Generate a course before starting the job!'
+		return false, g_i18n:getText("CP_error_not_on_field")
 	end
 	return true, ''
 end
