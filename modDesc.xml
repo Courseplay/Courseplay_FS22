@@ -134,7 +134,7 @@ La prossima versione di Courseplay.
 		</actionBinding>
 
 		<actionBinding action="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY">
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_5" />
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_H" />
 		</actionBinding>
     </inputBinding>	
 

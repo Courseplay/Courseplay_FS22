@@ -1,7 +1,9 @@
 VehicleSettingDisplayDialog = {
 	CONTROLS = {
 		BLANK_ELEMENT = "blankElement",
-		BUTTON_BACK = "backButton"
+		BUTTON_BACK = "backButton",
+		BUTTON_START = "startButton",
+		BUTTON_LAYOUT = "bottomButtons"
 	},
 }
 local VehicleSettingDisplayDialog_mt = Class(VehicleSettingDisplayDialog, ScreenElement)
@@ -32,9 +34,18 @@ function VehicleSettingDisplayDialog.new(settings,target, custom_mt)
 end
 
 function VehicleSettingDisplayDialog:onGuiSetupFinished()
+--	self.bottomButtons:unlinkElement()
+--	FocusManager:removeElement(self.bottomButtons)
+--	self.layout:addElement(self.bottomButtons)
+
+	self.startButton:unlinkElement()
+	FocusManager:removeElement(self.startButton)
+	self.layout:addElement(self.startButton)
+
 	self.backButton:unlinkElement()
 	FocusManager:removeElement(self.backButton)
 	self.layout:addElement(self.backButton)
+
 	self.layout:invalidateLayout()
 	CpGuiUtil.setTarget(self.layout,self)
 	VehicleSettingDisplayDialog:superClass().onGuiSetupFinished(self)
@@ -53,6 +64,11 @@ function VehicleSettingDisplayDialog:onOpen(element)
 	FocusManager:loadElementFromCustomValues(self.layout)
 	self.layout:invalidateLayout()
 	FocusManager:setFocus(self.layout)
+	local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
+	if self.vehicle:getIsAIActive() then 
+		text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
+	end
+	self.startButton:setText(text)
 end
 
 function VehicleSettingDisplayDialog:onClose(element)
@@ -65,6 +81,17 @@ end
 
 function VehicleSettingDisplayDialog:onClickBack()
 	g_gui:showGui("")
+end
+
+function VehicleSettingDisplayDialog:onClickOk()
+	self.vehicle:cpStartStopDriver()
+
+	local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
+	if self.vehicle:getIsAIActive() then 
+		text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
+	end
+
+	self.startButton:setText(text)
 end
 
 function VehicleSettingDisplayDialog:draw(...)

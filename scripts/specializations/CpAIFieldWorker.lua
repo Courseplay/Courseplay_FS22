@@ -34,7 +34,7 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
-
+    SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
@@ -67,6 +67,35 @@ end
 
 function CpAIFieldWorker:onLeaveVehicle(isControlling)
    
+end
+
+function CpAIFieldWorker:startStopDriver()
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Start/stop cp helper")
+    local spec = self.spec_cpAIFieldWorker
+    if self:getIsAIActive() then
+		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Stopped current helper.")
+	else
+        if self:hasCpCourse() then 
+            self:updateAIFieldWorkerImplementData()
+            if self:getCanStartFieldWork() then
+                spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+                spec.cpJob:setValues()
+             --   local success = spec.cpJob:validate(false)
+             --   if success then 
+                if true then
+                    g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Cp helper started.")
+                else 
+                    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Job parameters not valid.")
+                end
+            else 
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Could not start cp helper.")
+            end
+        else
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"No course to start cp helper.")
+        end
+	end 
 end
 
 function CpAIFieldWorker:getCanStartFieldWork(superFunc)
