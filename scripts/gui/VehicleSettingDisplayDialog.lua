@@ -1,3 +1,5 @@
+--- Small gui window to display workWidth, tool offset.
+
 VehicleSettingDisplayDialog = {
 	CONTROLS = {
 		BLANK_ELEMENT = "blankElement",
@@ -51,6 +53,7 @@ function VehicleSettingDisplayDialog:onGuiSetupFinished()
 	VehicleSettingDisplayDialog:superClass().onGuiSetupFinished(self)
 end
 
+--- Links gui elements with the settings.
 function VehicleSettingDisplayDialog:setData(vehicle,settings) 
 	self.vehicle = vehicle
 	self.settings = settings

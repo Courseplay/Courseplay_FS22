@@ -35,6 +35,7 @@ function CpVehicleSettingDisplay.register(typeManager,typeName,specializations)
 	end
 end
 
+--- Creates gui elements for the mini gui.
 function CpVehicleSettingDisplay.loadFromXMLFile(filePath)
 	local xmlFile = XMLFile.load("CpVehicleSettingDisplayXml",filePath,CpVehicleSettingDisplay.xmlSchema)
 	if xmlFile then 
@@ -94,6 +95,7 @@ function CpVehicleSettingDisplay:onLoadFinished()
 	if not CpVehicleSettingDisplay.initialized then 
 		local filePath = Utils.getFilename('config/VehicleSettingDisplaySetup.xml', Courseplay.BASE_DIRECTORY)
 		CpVehicleSettingDisplay.loadFromXMLFile(filePath)
+		--- Setup of the mini gui.
 		CpVehicleSettingDisplay.dialog = VehicleSettingDisplayDialog.new(CpVehicleSettingDisplay.prefabSettingsData)
 		g_gui:loadGui(Utils.getFilename("config/gui/BlankScreenElement.xml",Courseplay.BASE_DIRECTORY), CpVehicleSettingDisplay.GUI_NAME, CpVehicleSettingDisplay.dialog)
 		CpVehicleSettingDisplay.initialized = true
@@ -115,6 +117,7 @@ function CpVehicleSettingDisplay:onRegisterActionEvents(isActiveForInput, isActi
 	end
 end
 
+--- Gets called by the active mini gui, as vehicle:onDraw() is otherwise not displayed.
 function CpVehicleSettingDisplay:onDraw()
 	local spec = self.spec_cpVehicleSettingDisplay
 	WorkWidthUtil.showWorkWidth(self,spec.workWidth:getValue(),spec.toolOffsetX:getValue(),spec.toolOffsetZ:getValue())
