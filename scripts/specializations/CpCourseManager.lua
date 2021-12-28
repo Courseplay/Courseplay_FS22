@@ -251,8 +251,9 @@ end
 
 function CpCourseManager.getCourseName(course)
 	local name = course:getName()
-    local isSavedAsFile = course:isSavedAsFile()
-    if not isSavedAsFile or name == "" then 
+   -- local isSavedAsFile = course:isSavedAsFile()
+  --  if not isSavedAsFile or name == "" then 
+    if name == "" then
        return g_i18n:getText(CpCourseManager.i18n.temporaryCourse)
     end
     return name
