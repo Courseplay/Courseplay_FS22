@@ -67,8 +67,9 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	g_currentMission.removeMapHotspot = Utils.appendedFunction(g_currentMission.removeMapHotspot,validateCurrentHotspot)
 	--- Reloads the current vehicle on opening the in game menu.
 	local function onOpenInGameMenu(mission)
-		local inGameMenu = mission.inGameMenu
-		inGameMenu.pageAI.controlledVehicle = g_currentMission.controlledVehicle
+		local pageAI = mission.inGameMenu.pageAI
+		pageAI.controlledVehicle = g_currentMission.controlledVehicle
+		pageAI.currentHotspot = nil
 	end
 	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
 end

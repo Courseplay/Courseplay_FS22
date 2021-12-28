@@ -242,8 +242,7 @@ function CpCourseManagerFrame:onFrameOpen()
 	self.actionState = CpCourseManagerFrame.actionStates.disabled
 	self.selectedEntry = nil
 	local pageAI = g_currentMission.inGameMenu.pageAI
-	local currentHotspot = pageAI.currentHotspot
-	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
+	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(pageAI.currentHotspot)
 	self:setSoundSuppressed(true)
 	FocusManager:loadElementFromCustomValues(self.leftLayout)
 	FocusManager:loadElementFromCustomValues(self.rightLayout)
