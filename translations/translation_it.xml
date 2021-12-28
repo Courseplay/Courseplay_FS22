@@ -16,8 +16,8 @@
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Da dove iniziare il lavoro sul campo" />
-		<text name="CP_jobParameters_startAt_nearest"													text="punto di passaggio più vicino" />
-		<text name="CP_jobParameters_startAt_first"														text="Primo punto di passaggio" />
+		<text name="CP_jobParameters_startAt_nearest"													text="Primo punto più vicino" />
+		<text name="CP_jobParameters_startAt_first"														text="Primo punto - inizio" />
 		<text name="CP_jobParameters_startAt_unload"													text="scarico mietitrebbia/trincia" />
 		<text name="CP_jobParameters_startAt_bales"														text="raccogliere/avvolgere balle" />
 
@@ -25,8 +25,8 @@
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"																		text="CP: lavoro sul campo" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: Genera percorso di lavoro sul campo." />
-		<text name="CP_ai_page_open_course_generator" 													text="CP: Generatore di percorsi apertura/chiusura." />
+		<text name="CP_ai_page_generate_course" 														text="CP: Genera il percorso di lavoro." />
+		<text name="CP_ai_page_open_course_generator" 													text="CP: Apri/Chiudi il menù del generatore di percorsi" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Impostazioni del veicolo per (%s)"/>
