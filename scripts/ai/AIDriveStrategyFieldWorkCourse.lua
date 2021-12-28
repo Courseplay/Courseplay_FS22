@@ -71,7 +71,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     if distance > 2 * self.turningRadius then
         self:debug('Start waypoint is far (%.1f m), use an alignment course to get there.', distance)
         alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-                course, startIx, math.min(0, -self.frontMarkerDistance)):getCourse()
+                course, startIx, math.min(-2, -self.frontMarkerDistance)):getCourse()
     end
     if alignmentCourse then
         self.ppc:setShortLookaheadDistance()
@@ -384,7 +384,6 @@ function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
         self:debug('Alignment to first waypoint ended, start work, first lowering implements.')
         self.state = self.states.WAITING_FOR_LOWER
         self:lowerImplements()
-        self.ppc:setNormalLookaheadDistance()
         self:startRememberedCourse()
     else
         self:debug('Last waypoint of the course reached.')

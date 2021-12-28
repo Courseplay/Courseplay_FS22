@@ -470,6 +470,8 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	print(course:getWaypointAngleDeg(ix))
 	local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
 
+	-- have a little reserve to make sure vehicles can always follow the course
+	turningRadius = turningRadius * 1.1
 	local solution = PathfinderUtil.dubinsSolver:solve(start, goal, turningRadius)
 
 	local alignmentWaypoints = solution:getWaypoints(start, turningRadius)

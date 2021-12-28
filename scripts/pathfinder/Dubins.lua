@@ -46,7 +46,7 @@ function DubinsSolution:getLength(turnRadius)
 end
 
 function DubinsSolution:getWaypoints(start, turnRadius)
-    return dubins_path_sample_many(self.pathDescriptor, 2)
+    return dubins_path_sample_many(self.pathDescriptor, 1)
 end
 
 

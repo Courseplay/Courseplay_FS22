@@ -42,7 +42,6 @@ end
 function CpMathUtil.getSeries(from, to, step)
 	local nValues = math.max(1, math.floor(math.abs((from - to) / step)))
 	local delta = (to - from) / nValues
-	CpUtil.info('%.1f %.1f %.1f', nValues, delta, step)
 	local value = from
 	local series = {}
 	for i = 0, nValues do
