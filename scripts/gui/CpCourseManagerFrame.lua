@@ -63,7 +63,7 @@ function CpCourseManagerFrame.init(courseStorage)
 	local function predicateFunc()
 		local inGameMenu = g_gui.screenControllers[InGameMenu]
 		local aiPage = inGameMenu.pageAI
-		return aiPage.currentHotspot ~= nil
+		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
 	end
 	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pagePrices,CpCourseManagerFrame
 												,predicateFunc,3,{256,0,128,128})
@@ -241,9 +241,9 @@ function CpCourseManagerFrame:onFrameOpen()
 	self.curMode = CpCourseManagerFrame.minMode
 	self.actionState = CpCourseManagerFrame.actionStates.disabled
 	self.selectedEntry = nil
-
-	local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
-	self.currentVehicle =  InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
+	local pageAI = g_currentMission.inGameMenu.pageAI
+	local currentHotspot = pageAI.currentHotspot
+	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
 	self:setSoundSuppressed(true)
 	FocusManager:loadElementFromCustomValues(self.leftLayout)
 	FocusManager:loadElementFromCustomValues(self.rightLayout)

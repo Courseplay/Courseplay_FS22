@@ -68,14 +68,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	--- Reloads the current vehicle on opening the in game menu.
 	local function onOpenInGameMenu(mission)
 		local inGameMenu = mission.inGameMenu
-		--- Select the last vehicle after reopening of the page.
-		local currentVehicle = g_currentMission.controlledVehicle
-		if currentVehicle ~= nil then
-			local hotspot = currentVehicle:getMapHotspot()
-			if inGameMenu.pageAI.isMapOverviewInitialized then
-				inGameMenu.pageAI:setMapSelectionItem(hotspot)
-			end
-		end
+		inGameMenu.pageAI.controlledVehicle = g_currentMission.controlledVehicle
 	end
 	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
 end
@@ -186,15 +179,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
 		self.contextBox:setVisible(false)
 	end
-	--- Select the last vehicle after reopening of the page.
-	if self.lastHotspot and g_currentMission.currentVehicle == nil then 
-		local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.lastHotspot)
-		if vehicle ~=nil then 
-			local hotspot = vehicle:getMapHotspot()
-
-			self:setMapSelectionItem(hotspot)
-		end
-	end
+	self.controlledVehicle = nil
 end
 InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
 
