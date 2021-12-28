@@ -8,8 +8,8 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Per aiuto, report bug o note sulla patch, vai qui: https://github.com/Courseplay/Courseplay_FS22 " />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"																	text="Generare il percorso prima di iniziare il lavoro." />
+		<text name="CP_error_not_on_field"																text="L'obiettivo non è su un campo." />
 
 
 	<!-- AI job menu -->
@@ -240,6 +240,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Seleziona il canale di debug precedente."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Cambia il canale di debug corrente."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostra il menù del canale di debug si/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Apri/chiudi la pagina delle impostazioni del veicolo"/>
 	</texts>
 </l10n>
