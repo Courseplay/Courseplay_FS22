@@ -161,7 +161,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Allers-retours" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Retour au premier point"/>
