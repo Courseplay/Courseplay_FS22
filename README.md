@@ -57,7 +57,7 @@ ___
 ___
 
 ## Attributions
-Please see [`__Attributions.md`](https://github.com/Courseplay/Courseplay_FS22/blob/master/__Attributions.md) for more information.
+Please see [`__Attributions.md`](https://github.com/Courseplay/Courseplay_FS22/master/__Attributions.md) for more information.
 ___
 
 ## Supporter
