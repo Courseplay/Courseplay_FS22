@@ -8,8 +8,8 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitae: https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"																	text="Criar rota primeiro." />
+		<text name="CP_error_not_on_field"																text="Destino não é um campo." />
 
 
 
