@@ -8,7 +8,7 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Générer une course avant de démarrer la tâche" />
+		<text name="CP_error_no_course"																	text="Veuillez générer une course avant de démarrer la tâche" />
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 
@@ -161,7 +161,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Allers-retours" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Retour au premier point"/>
