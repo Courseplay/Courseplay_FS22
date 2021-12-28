@@ -23,3 +23,5 @@ lu.assertItemsEquals(s, {1, 10})
 s = CpMathUtil.getSeries(10, 1, 100)
 lu.assertItemsEquals(s, {1, 10})
 
+s = CpMathUtil.getSeries(0, 10.5, 1)
+lu.assertItemsEquals(s, {0, 1.05, 2.1, 3.15, 4.2, 5.25, 6.3, 7.35, 8.4, 9.45, 10.5})
