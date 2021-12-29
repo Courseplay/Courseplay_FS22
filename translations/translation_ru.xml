@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"									text="Настройки сеялки"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"								text="Настройки совместной работы агрегатов"/> <!-- орудий -->
 		<text name="CP_vehicle_setting_subTitle_speed" 									text="Скорость"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 									text="Настройки отладки"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 								text="Отображать курс"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 								text="Отображение путевых точек текущего курса."/>
@@ -123,8 +123,8 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 								text="Задний ход"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 							text="Максимальная скорость при движении задним ходом"/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+		<text name="CP_vehicle_setting_debugActive_title" 								text="Отладка техники"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 							text="Вкл/выкл отладку текущей техники."/>
 
 
 	<!-- Vehicle course generator settings -->
