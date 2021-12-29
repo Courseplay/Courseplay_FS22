@@ -352,6 +352,7 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
         self:onLastWaypointPassed()
     end
+    self:handleRidgeMarkers()
 end
 
 --- Called when the last waypoint of a course is passed
@@ -547,4 +548,37 @@ end
 
 function AIDriveStrategyFieldWorkCourse:setOffsetX()
     -- do nothing by default
+end
+
+--- Sets the ridgeMarker position on lowering of an implement.
+function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers()
+	-- no ridge markers with multitools to avoid collisions.
+	if self.settings.ridgeMarkersAutomatic:is(false) 
+
+     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1 
+    then 
+        self:debugSparse('Ridge marker handling disabled.')
+        return
+     end
+
+    local function setRidgeMarkerState(self,vehicle,state)
+        local spec = vehicle.spec_ridgeMarker
+        if spec then
+            if spec.numRigdeMarkers > 0 then
+                if spec.ridgeMarkerState ~= state then
+                    self:debug('Setting ridge markers to %d for %s', state,vehicle:getName())
+                    vehicle:setRidgeMarkerState(state)
+                end
+            end
+        end
+    end
+
+    local state =  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
+    self:debugSparse('Target ridge marker state is %d.',state)
+    setRidgeMarkerState(self,self.vehicle,state)
+
+    for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
+        setRidgeMarkerState(self,implement.object,state)
+    end
+
 end
