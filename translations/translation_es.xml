@@ -133,6 +133,11 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Número de cabeceras" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Número de cabeceras" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Dirección cabecera" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Defina si el vehículo circulará en el sentido de las agujas del reloj o en el sentido contrario a las agujas del reloj" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="sentido agujas del reloj" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="sentido contrario a agujas del reloj" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Desde centro campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Desde centro campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Arriba/Abajo" />
