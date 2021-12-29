@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Ustawienia siewników"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Ustawienia wielu narzędzi"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Prędkości"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Pokaż kurs"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Pokazuje obecny kurs pojazdu."/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Cofanie"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maksymalna prędkość podczas cofania."/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Ustawienia generatora kursu dla (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Ustawienia generatora kursu dla (%s)"/>
@@ -160,12 +164,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Ustala od czego zacząć pracę polową." />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Uwroci" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rzędów" />
-
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Powrót do początku trasy"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Ustala czy pracownik ma zatrzymać się w ostatnim punkcie czy powrócić na początek."/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Zwolnij pracownika"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Powrót na start i zwolnienie pracownika"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Ustawienia globalne"/>

@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Configuración sembradora"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Configuración multi-aperos"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocidades"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Mostrar ruta"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Muestra la ruta actual del vehículo"/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Marcha atrás"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocidad en marcha a trás"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Configuración del generador de rutas de (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Configuración del generador de rutas de (%s)"/>
@@ -160,10 +164,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Iniciar trabajo  en" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Cabecera" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Cabecera" />
-
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Vuelta a punto inicial"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Vuelta a punto inicial"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Ajustes Globales"/>

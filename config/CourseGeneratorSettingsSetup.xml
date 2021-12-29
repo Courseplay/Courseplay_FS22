@@ -66,19 +66,5 @@
 				<Text>up_down_rows</Text> 
 			</Texts> 
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="returnToFirstPoint">
-			<Values>
-				<Value name="DEACTIVATED">1</Value> 
-				<Value name="RETURN_TO_START">2</Value> 
-				<Value name="RELEASE_DRIVER">3</Value> 
-				<Value name="RETURN_TO_START_AND_RELEASE_DRIVER">4</Value> 
-			</Values> 
-			<Texts>
-				<Text prefix="false">CP_activated</Text> 
-				<Text prefix="false">CP_deactivated</Text> 
-				<Text>releaseDriver</Text> 
-				<Text>returnToStartAndReleaseDriver</Text> 
-			</Texts> 
-		</Setting>
 	</SettingSubTitle>
 </Settings>

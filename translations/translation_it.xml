@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Impostazioni seminatrici"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Impostazioni Multiaccessori"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="velocità"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visualizza porcorso"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Mostra il percorso attuale del veicolo"/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Retromarcia"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Impostazioni del gestore del percorso di (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Impostazioni del gestore del percorso di (%s)"/>
@@ -161,9 +165,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Inizio campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Centro" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Ferma alla fine"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Ferma alla fine"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Impostazioni generali"/>

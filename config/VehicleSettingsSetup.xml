@@ -107,4 +107,9 @@
 		<!--Reverse Speed-->
 		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1"/>
 	</SettingSubTitle>
+
+	<SettingSubTitle title="debug">
+		<!--Debug active -->
+		<Setting classType="AIParameterBooleanSetting" name="debugActive"/>
+	</SettingSubTitle>
 </Settings>
