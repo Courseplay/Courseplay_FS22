@@ -52,8 +52,8 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec,CpCourseGeneratorSettings.settings,self,CpCourseGeneratorSettings)
 
-    CpCourseGeneratorSettings.loadSettings(self,savegame)
     spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
 
 function CpCourseGeneratorSettings:onPostAttachImplement()
