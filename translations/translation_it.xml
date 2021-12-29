@@ -36,6 +36,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Seminatrici"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multiaccessori"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocità"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug"/>
 		
         <!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visualizza porcorso"/>
@@ -120,6 +121,9 @@
 		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocità massima durante le manovre di svolta"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Retromarcia"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia"/>
+
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug veicolo"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Abilita/disabilita il debug per questo veicolo"/>
 		
         <!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Impostazioni percorso veicolo (%s)"/>
