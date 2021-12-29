@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"									text="Настройки сеялки"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"								text="Настройки совместной работы агрегатов"/> <!-- орудий -->
 		<text name="CP_vehicle_setting_subTitle_speed" 									text="Скорость"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 								text="Отображать курс"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 								text="Отображение путевых точек текущего курса."/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 								text="Задний ход"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 							text="Максимальная скорость при движении задним ходом"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"							text="Настройки генератора курсов (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"					text="Настройки генератора курсов (%s)"/>
@@ -161,9 +165,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland"		text="поворотной полосы" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows"		text="основного маршрута" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title"			text="Возврат на стартовую точку"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip"		text="Возвращаться на стартовую точку по завершении работы."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"											text="Глобальные настройки CoursePlay"/>

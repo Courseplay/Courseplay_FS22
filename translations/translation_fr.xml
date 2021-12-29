@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Paramètres semoir"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Paramètres outils multiples"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Vitesses"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Afficher la course"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Affiche la course actuelle du véhicule."/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières."/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Paramètres du générateur pour la course (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Paramètres du générateur pour la course (%s)"/>
@@ -163,9 +167,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Retour au premier point"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Retourne au premier point à la fin de la course."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Paramètres globaux"/>
