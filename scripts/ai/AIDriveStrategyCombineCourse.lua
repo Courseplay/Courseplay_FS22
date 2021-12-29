@@ -1789,12 +1789,14 @@ function AIDriveStrategyCombineCourse:shouldStrawSwathBeOn(ix)
 	if self.combine.isSwathActive then 
 		if strawMode == CpVehicleSettings.STRAW_SWATH_OFF or headland and strawMode==CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then 
 			self:setStrawSwath(false)
+			self:debugSparse('straw swath should be off!')
 		end
 	else
 		if strawMode > CpVehicleSettings.STRAW_SWATH_OFF then 
 			if headland and strawMode==CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then 
 				return
 			end
+			self:debugSparse('straw swath should be on!')
 			self:setStrawSwath(true)
 		end
 	end	
