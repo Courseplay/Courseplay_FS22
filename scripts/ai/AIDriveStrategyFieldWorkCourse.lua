@@ -114,6 +114,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         if self.vehicle:getCanAIFieldWorkerContinueWork() then
             self:debug('all tools ready, start working')
             self.state = self.states.WORKING
+            self:handleRidgeMarkers(true)
         else
             self:debugSparse('waiting for all tools to lower')
         end
@@ -189,6 +190,7 @@ function AIDriveStrategyFieldWorkCourse:raiseImplements()
         implement.object:aiImplementEndLine()
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
+    self:handleRidgeMarkers(false)
 end
 
 
@@ -352,7 +354,6 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
         self:onLastWaypointPassed()
     end
-    self:handleRidgeMarkers()
 end
 
 --- Called when the last waypoint of a course is passed
@@ -551,13 +552,14 @@ function AIDriveStrategyFieldWorkCourse:setOffsetX()
 end
 
 --- Sets the ridgeMarker position on lowering of an implement.
-function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers()
+---@param isAllowed boolean is switch ridge markers allowed ?
+function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
 	-- no ridge markers with multitools to avoid collisions.
 	if self.settings.ridgeMarkersAutomatic:is(false) 
 
      -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1 
     then 
-        self:debugSparse('Ridge marker handling disabled.')
+        self:debug('Ridge marker handling disabled.')
         return
      end
 
@@ -573,8 +575,8 @@ function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers()
         end
     end
 
-    local state =  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
-    self:debugSparse('Target ridge marker state is %d.',state)
+    local state = isAllowed and  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
+    self:debug('Target ridge marker state is %d.',state)
     setRidgeMarkerState(self,self.vehicle,state)
 
     for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
