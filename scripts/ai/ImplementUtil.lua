@@ -117,8 +117,7 @@ function ImplementUtil.isWheeledImplement(implement)
             if (activeInputAttacherJoint.jointType ~= AttacherJoints.JOINTTYPE_IMPLEMENT)
                     -- Implements with pivot and wheels that do not lift the wheels from the ground.
                     or (node ~= implement.rootNode and activeInputAttacherJoint.jointType == AttacherJoints.JOINTTYPE_IMPLEMENT and
-                    (not activeInputAttacherJoint.topReferenceNode or true or
-                    -- TODO_22
+                    (not activeInputAttacherJoint.topReferenceNode or
                             g_vehicleConfigurations:get(implement, 'implementWheelAlwaysOnGround')))
             then
                 return true
@@ -265,7 +264,7 @@ function ImplementUtil.getDirectionNodeToTurnNodeLength(vehicle)
             if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
                 local workTool = imp.object
                 local activeInputAttacherJoint = workTool:getActiveInputAttacherJoint()
-                if ImplementUtil.isWheeledWorkTool(workTool) then
+                if ImplementUtil.isWheeledImplement(workTool) then
                     local workToolDistances = workTool.cp.distances
 
                     if workToolDistances.attacherJointToPivot then
