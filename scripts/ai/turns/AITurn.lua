@@ -577,8 +577,10 @@ function CourseTurn:endTurn(dt)
 end
 
 function CourseTurn:updateTurnProgress()
-	local progress = self.turnCourse:getCurrentWaypointIx() / #self.turnCourse
-	self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
+	if self.turnCourse then
+		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
+		self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
+	end
 end
 
 function CourseTurn:onWaypointChange(ix)
