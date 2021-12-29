@@ -53,6 +53,7 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     CpSettingsUtil.cloneSettingsTable(spec,CpCourseGeneratorSettings.settings,self,CpCourseGeneratorSettings)
 
     CpCourseGeneratorSettings.loadSettings(self,savegame)
+    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
 end
 
 function CpCourseGeneratorSettings:onPostAttachImplement()
