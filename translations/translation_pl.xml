@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Ustawienia siewników"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Ustawienia wielu narzędzi"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Prędkości"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Ustawieanie debugowania"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Pokaż kurs"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Pokazuje obecny kurs pojazdu."/>
@@ -123,8 +123,8 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Cofanie"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maksymalna prędkość podczas cofania."/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Debugowanie pojazdu"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Włącz/wyłącz debugowanie dla tego pojazdu pojazdu."/>
 
 
 	<!-- Vehicle course generator settings -->
