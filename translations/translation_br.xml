@@ -39,7 +39,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Configuração Semeadeira "/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Configuração Multi implementos"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocidades"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Configuração do debug"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Mostrar rotas"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Mostrar rota atual do veículo"/>
@@ -124,8 +124,8 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Marcha a ré"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocidade máxima em marcha ré"/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug do veículo"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Ativar/desativar debug para este veículo."/>
 
 
 	<!-- Vehicle course generator settings -->
@@ -242,6 +242,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Selecione canal anterior de debug."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Mudar canal de debug atual."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostrar canal de debug sim/não."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir/fechar configuração do veículo"/>
 	</texts>
 </l10n>
