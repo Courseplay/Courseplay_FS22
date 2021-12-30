@@ -157,7 +157,7 @@ function AIReverseDriver:getLocalYRotationToPoint(node, x, y, z, direction)
 end
 
 function AIReverseDriver:showDirection(node, lx, lz, r, g, b)
-	if CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
+	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
 		local x,y,z = getWorldTranslation(node)
 		local tx,_, tz = localToWorld(node,lx*5,y,lz*5)
 		DebugUtil.drawDebugLine(x, y+5, z, tx, y+5, tz, r or 1, g or 0, b or 0)

@@ -257,7 +257,7 @@ function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings
 		local titleElement = genericSettingElementTitle:clone(parentGuiElement,true)
 		titleElement:setText(setting.data.title)
 		genericSettingElement:unlinkElement()
-		CpUtil.debugFormat(CpDebug.DBG_HUD,"Binded setting %s",setting:getName())
+		CpUtil.debugFormat(CpDebug.DBG_HUD,"Bound setting %s",setting:getName())
 		local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
 --			parentGuiElement:invalidateLayout()
 		setting:setGenericGuiElementValues(clonedSettingElement)

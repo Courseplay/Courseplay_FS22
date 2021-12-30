@@ -1831,6 +1831,7 @@ function AIDriveStrategyCombineCourse:setStrawSwath(enable)
 end
 
 function AIDriveStrategyCombineCourse:onDraw()
+	if not CpUtil.isVehicleDebugActive(self.vehicle) then return end
 
 	if CpDebug:isChannelActive(CpDebug.DBG_IMPLEMENTS) then
 

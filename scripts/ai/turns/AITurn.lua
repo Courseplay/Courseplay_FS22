@@ -708,7 +708,8 @@ function CourseTurn:onPathfindingDone(path)
 end
 
 function CourseTurn:drawDebug()
-	if self.turnCourse and self.turnCourse:isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_COURSES) then
+	if self.turnCourse and self.turnCourse:isTemporary() and
+			CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_TURN) then
 		self.turnCourse:draw()
 	end
 end

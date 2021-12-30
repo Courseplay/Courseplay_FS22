@@ -144,7 +144,7 @@ function CpUtil.debugVehicle(channel, vehicle, ...)
 end
 
 function CpUtil.isVehicleDebugActive(vehicle)
-	return vehicle:getCpSettings() and vehicle:getCpSettings().debugActive and vehicle:getCpSettings().debugActive:getValue()
+	return vehicle and vehicle:getCpSettings() and vehicle:getCpSettings().debugActive and vehicle:getCpSettings().debugActive:getValue()
 end
 
 function CpUtil.info(...)
