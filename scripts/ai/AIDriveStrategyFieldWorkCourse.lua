@@ -367,11 +367,18 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
             -- (no alignment if there is a turn generated here)
             if d < 5 * self.turningRadius and firstUpDownWpIx and not self.course:isTurnEndAtIx(firstUpDownWpIx) then
                 self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
-                self:rememberCourse(course, firstUpDownWpIx)
-                self.ppc:setShortLookaheadDistance()
-                self:startCourse(AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-                        course, firstUpDownWpIx, math.min(self.frontMarkerDistance, 0)):getCourse(), 1)
-                self.state = self.states.ON_ALIGNMENT_COURSE
+                local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+                        course, firstUpDownWpIx, math.min(self.frontMarkerDistance, 0)):getCourse()
+                if alignmentCourse then
+                    self:rememberCourse(course, firstUpDownWpIx)
+                    self.ppc:setShortLookaheadDistance()
+                    self:startCourse(alignmentCourse, 1)
+                    self.state = self.states.ON_ALIGNMENT_COURSE
+                else
+                    self:debug('Could not create alignment course to first up/down row waypoint, continue without it')
+                    self.state = self.states.WAITING_FOR_LOWER
+                    self:lowerImplements()
+                end
             end
         end
     end
@@ -386,6 +393,13 @@ function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
         self:debug('Alignment to first waypoint ended, start work, first lowering implements.')
         self.state = self.states.WAITING_FOR_LOWER
         self:lowerImplements()
+        self.ppc:setNormalLookaheadDistance()
+        self:startRememberedCourse()
+    elseif self.state == self.states.ON_ALIGNMENT_COURSE then
+        self:debug('Alignment after connecting track ended, start work, first lowering implements.')
+        self.state = self.states.WAITING_FOR_LOWER
+        self:lowerImplements()
+        self.ppc:setNormalLookaheadDistance()
         self:startRememberedCourse()
     else
         self:debug('Last waypoint of the course reached.')

@@ -479,5 +479,4 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	end
 	self:debug('Alignment course with %d waypoints created.', #alignmentWaypoints)
 	self.course = Course.createFromAnalyticPath(self.vehicle, alignmentWaypoints, true)
-	self.course:print()
 end
