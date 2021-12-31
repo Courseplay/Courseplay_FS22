@@ -185,6 +185,13 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
             self.spec_aiFieldWorker.driveStrategies[i]:delete()
             CpUtil.infoVehicle(self, 'Removing fieldwork helper Giants combine drive strategy (%d)', i)
             table.insert(strategiesToRemove, i)
+        elseif strategy:isa(AIDriveStrategyBaler) then
+            self.spec_aiFieldWorker.driveStrategies[i]:delete()
+            local cpDriveStrategy = AIDriveStrategyBalerCourse.new()
+            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
+            cpDriveStrategy:setAIVehicle(self)
+            CpUtil.infoVehicle(self, 'Removing fieldwork helper Giants baler drive strategy (%d)', i)
+            table.insert(strategiesToRemove, i)
         elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyMogli and
                 strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyMogli) then
             self.spec_aiFieldWorker.driveStrategies[i]:delete()

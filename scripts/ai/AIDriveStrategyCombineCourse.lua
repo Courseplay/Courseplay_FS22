@@ -529,6 +529,11 @@ function AIDriveStrategyCombineCourse:isUnloadFinished()
 end
 
 function AIDriveStrategyCombineCourse:isFull()
+	--- Is a cotton harvester
+	if not self.pipe then 
+		return false
+	end
+
 	local fillLevelInfo = {}
 	self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
 	for fillType, info in pairs(fillLevelInfo) do
@@ -547,6 +552,11 @@ function AIDriveStrategyCombineCourse:isFull()
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
+	--- Only make pockets for harvesters with a pipe.
+	if not self.pipe then 
+		return false
+	end
+
 	if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
 		-- fruit both sides
 		return true
