@@ -24,6 +24,8 @@ PathfinderUtil.reedsSheppSolver = ReedsSheppSolver()
 PathfinderUtil.defaultOffFieldPenalty = 7.5
 PathfinderUtil.defaultAreaToAvoidPenalty = 2000
 PathfinderUtil.visualDebugLevel = 0
+-- for troubleshooting
+PathfinderUtil.overlapBoxes = {}
 
 ------------------------------------------------------------------------------------------------------------------------
 ---Size/turn radius all other information on the vehicle and its implements
@@ -675,6 +677,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 
+    PathfinderUtil.overlapBoxes = {}
     local pathfinder
     if course:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
