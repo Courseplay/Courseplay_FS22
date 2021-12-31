@@ -149,11 +149,11 @@ function Waypoint:setOffsetPosition(offsetX, offsetZ, dx, dz)
 end
 
 function Waypoint:getDistanceFromPoint(x, z)
-	return courseplay:distance(x, z, self.x, self.z)
+	return MathUtil.getPointPointDistance(x, z, self.x, self.z)
 end
 
 function Waypoint:getDistanceFromVehicle(vehicle)
-	local vx, _, vz = getWorldTranslation(vehicle.cp.directionNode or vehicle.rootNode)
+	local vx, _, vz = getWorldTranslation(vehicle:getAIDirectionNode() or vehicle.rootNode)
 	return self:getDistanceFromPoint(vx, vz)
 end
 
@@ -378,10 +378,13 @@ end
 -- PPC relies on waypoint angles, the world direction is needed to calculate offsets
 function Course:enrichWaypointData(startIx)
 	if #self.waypoints < 2 then return end
-	self.length = 0
-	self.headlandLength = 0
-	self.firstHeadlandWpIx = nil
-	self.firstCenterWpIx = nil
+	if not startIx then
+		-- initialize only if recalculating the whole course, otherwise keep (and update) the old values)
+		self.length = 0
+		self.headlandLength = 0
+		self.firstHeadlandWpIx = nil
+		self.firstCenterWpIx = nil
+	end
 	for i = startIx or 1, #self.waypoints - 1 do
 		self.waypoints[i].dToHere = self.length
 		self.waypoints[i].dToHereOnHeadland = self.headlandLength
@@ -1924,5 +1927,21 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
+	return course
+end
+
+--- When creating a course from an analytic path, we want to have the direction of the last waypoint correct
+function Course.createFromAnalyticPath(vehicle, path, isTemporary)
+	State3D.printPath(path)
+	local course = Course(vehicle, CourseGenerator.pointsToXzInPlace(path), isTemporary)
+	-- enrichWaypointData rotated the last waypoint in the direction of the second to last,
+	-- correct that according to the analytic path's last waypoint
+	local yRot = CourseGenerator.toCpAngle(path[#path].t)
+	course.waypoints[#course.waypoints].yRot = yRot
+	course.waypoints[#course.waypoints].angle = math.deg(yRot)
+	course.waypoints[#course.waypoints].dx, course.waypoints[#course.waypoints].dz =
+		MathUtil.getDirectionFromYRotation(yRot)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle,
+			'Last waypoint of the course created from analytical path: angle set to %.1f°', math.deg(yRot))
 	return course
 end

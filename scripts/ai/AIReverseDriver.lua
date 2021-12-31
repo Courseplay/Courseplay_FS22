@@ -24,12 +24,11 @@ or a trailer to be reversed.
 AIReverseDriver = CpObject()
 
 ---@param course Course
-function AIReverseDriver:init(vehicle, ppc, course)
+function AIReverseDriver:init(vehicle, ppc)
 	self.vehicle = vehicle
+	self.settings = vehicle:getCpSettings()
 	---@type PurePursuitController
 	self.ppc = ppc
-	---@type Course
-	self.course = course
 	-- the main implement (towed) or trailer we are controlling
 	self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle)
 	if self.reversingImplement then
@@ -146,7 +145,7 @@ function AIReverseDriver:getDriveData()
 	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
 	DebugUtil.drawDebugLine(gx, ty, gz, gx, ty + 3, gz, 1, 0, 0)
 	-- TODO_22 reverse speed
-	return gx, gz, false, 5
+	return gx, gz, false, self.settings.reverseSpeed:getValue()
 end
 
 function AIReverseDriver:getLocalYRotationToPoint(node, x, y, z, direction)
@@ -158,7 +157,7 @@ function AIReverseDriver:getLocalYRotationToPoint(node, x, y, z, direction)
 end
 
 function AIReverseDriver:showDirection(node, lx, lz, r, g, b)
-	if CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
+	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
 		local x,y,z = getWorldTranslation(node)
 		local tx,_, tz = localToWorld(node,lx*5,y,lz*5)
 		DebugUtil.drawDebugLine(x, y+5, z, tx, y+5, tz, r or 1, g or 0, b or 0)

@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Zaaimachine instellingen"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multi tool instellingen"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Snelheden"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Koers tonen"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Toon de huidige koers van het voertuig"/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Achteruit"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale snelheid tijdens het achteruitrijden"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Instellingen koersgenerator van (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Instellingen koersgenerator van (%s)"/>
@@ -161,9 +165,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Wendakker" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Midden" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stoppen aan het einde"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stoppen aan het einde"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale instellingen"/>

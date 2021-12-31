@@ -35,3 +35,17 @@ function CpMathUtil.getNodeDirection(node)
 	local lx, _, lz = localDirectionToWorld(node, 0, 0, 1)
 	return math.atan2( lx, lz )
 end
+
+--- Get a series of values, the first value is 'from', the last is 'to', and as many values as needed between the
+--- two with a maximum of 'step' difference.
+--- Always returns at least from and to
+function CpMathUtil.getSeries(from, to, step)
+	local nValues = math.max(1, math.floor(math.abs((from - to) / step)))
+	local delta = (to - from) / nValues
+	local value = from
+	local series = {}
+	for i = 0, nValues do
+		table.insert(series, value + i * delta)
+	end
+	return series
+end

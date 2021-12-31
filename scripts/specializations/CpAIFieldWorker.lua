@@ -71,11 +71,11 @@ end
 
 --- Directly starts a cp driver or stops a currently active job.
 function CpAIFieldWorker:startStopDriver()
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Start/stop cp helper")
+    CpUtil.infoVehicle(self,"Start/stop cp helper")
     local spec = self.spec_cpAIFieldWorker
     if self:getIsAIActive() then
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Stopped current helper.")
+        CpUtil.infoVehicle(self,"Stopped current helper.")
 	else
         if self:hasCpCourse() then 
             self:updateAIFieldWorkerImplementData()
@@ -86,15 +86,15 @@ function CpAIFieldWorker:startStopDriver()
              --   if success then 
                 if true then
                     g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
-                    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Cp helper started.")
+                    CpUtil.infoVehicle(self,"Cp helper started.")
                 else 
-                    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Job parameters not valid.")
+                    CpUtil.infoVehicle(self,"Job parameters not valid.")
                 end
             else 
-                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"Could not start cp helper.")
+                CpUtil.infoVehicle(self,"Could not start cp helper.")
             end
         else
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK,self,"No course to start cp helper.")
+            CpUtil.infoVehicle(self,"No course to start cp helper.")
         end
 	end 
 end

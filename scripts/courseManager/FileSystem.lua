@@ -83,6 +83,7 @@ end
 function File:delete()
 	getfenv(0).deleteFile(self:getFullPath())
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'deleted file %s', self:getFullPath())
+	return true
 end
 
 --- Saves the xml file.

@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocità"/>
 		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug"/>
 		
-        <!--Settings-->
+		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visualizza porcorso"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Mostra il percorso attuale del veicolo"/>
 		

@@ -316,7 +316,6 @@ function linkHeadlandTracks( field, implementWidth, isClockwise, startLocation, 
 	local headlandPath = Polyline:new()
 	-- find closest point to starting position on outermost headland track
 	local fromIndex = field.headlandTracks[ 1 ]:getClosestPointIndex(startLocation)
-	table.insert(headlandPath, shallowCopy(field.headlandTracks[ 1 ][fromIndex + (isClockwise and 1 or -1)]))
 	-- start one waypoint back to have an overlap with the transition to the next headland so nothing is missed
 	local toIndex = field.headlandTracks[ 1 ]:getIndex( fromIndex + 1 )
 	vectors = {}

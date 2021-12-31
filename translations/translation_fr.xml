@@ -8,7 +8,7 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Veuillez générer une course avant de démarrer la tâche" />
+		<text name="CP_error_no_course"																	text="Générez ou chargez une course avant de démarrer la tâche" />
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 
@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Paramètres semoir"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Paramètres outils multiples"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Vitesses"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Paramètres de deboggage"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Afficher la course"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Affiche la course actuelle du véhicule."/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières."/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Deboggage du vehicule"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Active/Desactive le deboggage du vehicule."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Paramètres du générateur pour la course (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Paramètres du générateur pour la course (%s)"/>
@@ -163,9 +167,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Retour au premier point"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Retourne au premier point à la fin de la course."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Paramètres globaux"/>
