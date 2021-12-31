@@ -38,6 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Såmaskins inställningar"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multi-Redskaps inställningar"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Hastighet"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug inställningar"/>
 
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visa kurs"/>
@@ -122,6 +123,9 @@
 		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximal hastighet när CP ska vända"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Backning"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximal hastighet när CP backar"/>
+		
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Fordons debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Akrivera/inaktivera debug för detta fordon."/>
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursskapandeinställningar för (%s)"/>
@@ -163,7 +167,9 @@
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stoppar i slutet"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stoppar i slutet"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Avgör om medarbetaren ska stanna vid den sista punkten eller återgå till början."/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Avskeda medarbetaren"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Återgå till start och avskeda den anställde"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globalainställningar"/>
@@ -199,7 +205,7 @@
 
 		<text name="CP_courseManager_load_courses"														text="Ladda kurs"/>
 		<text name="CP_courseManager_save_courses"														text="Spara kurs"/>
-		<text name="CP_courseManager_clear_current_courses"												text="Sudda den aktiva kursen"/>
+		<text name="CP_courseManager_clear_current_courses"												text="Sluta använd den aktiva kursen"/>
 	
 		<text name="CP_courseManager_create_directory"													text="Skapa en ny mapp"/>
 		

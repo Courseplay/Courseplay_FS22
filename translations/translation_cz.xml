@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Nastavení secího stroje"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Nastavení pro více strojů"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Rychlosti"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Nastavení ladění"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Ukázat trasu"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Ukázat aktuální trasu vozidla"/>
@@ -123,6 +123,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Couvání"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximální rychlost při couvání"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Ladění vozidla"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Aktivovat/deaktivovat ladění tohoto vozidla."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Nastavení generátoru kurzů (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Nastavení generátoru kurzů (%s)"/>
@@ -160,10 +164,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kde začít pracovat" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Souvrati" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Řádku" />
-
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Zastavení na konci"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Zastavení na konci"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>

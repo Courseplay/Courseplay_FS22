@@ -23,6 +23,7 @@ function WorkWidthUtil.hasValidWorkArea(object)
     return object and object.getWorkAreaByIndex and object.spec_workArea.workAreas
 end
 
+--- Shovel/shield calculation disabled for now.
 --- Gets an automatic calculated work width or a pre configured in vehicle configurations.
 ---@param object table
 ---@param logPrefix string
@@ -34,12 +35,12 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
 
     if not width then
         --- Gets the work width if the object is a shield.
-        width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
+     --   width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
     end
 
     if not width then
         --- Gets the work width if the object is a shovel.
-        width = WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
+   --     width = WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
     end
 
     if not width then
@@ -186,7 +187,7 @@ end
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
-    if object.spec_shovel then
+    if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
         WorkWidthUtil.debug(object,logPrefix,'is a shovel with work width: %.1f',width)
         return width

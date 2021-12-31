@@ -204,7 +204,7 @@ end
 
 --- Reverse a course. This is to build a sowing/cultivating etc. course
 -- from a harvester course.
--- We build our courses working from the outside inwards (harverster).
+-- We build our courses working from the outside inwards (harvester).
 -- This function reverses that course so it can be used for fieldwork
 -- starting in the middle of the course.
 --

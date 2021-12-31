@@ -376,15 +376,19 @@ end
 --- Course to end a pathfinder turn, a straight line from where pathfinder ended, into to next row,
 --- making sure it is long enough so the vehicle reaches the point to lower the implements on this course
 ---@param course Course pathfinding course to append the ending course to
-function TurnContext:appendEndingTurnCourse(course)
+---@param extraLength number add so many meters to the calculated course (for example to allow towed implements to align
+--- before reversing)
+function TurnContext:appendEndingTurnCourse(course, extraLength)
     -- make sure course reaches the front marker node so end it well behind that node
     local _, _, dzFrontMarker = course:getWaypointLocalPosition(self.vehicleAtTurnEndNode, course:getNumberOfWaypoints())
     local _, _, dzWorkStart = course:getWaypointLocalPosition(self.workStartNode, course:getNumberOfWaypoints())
     local waypoints = {}
     -- A line between the front marker and the work start node, regardless of which one is first
     local startNode = dzFrontMarker < dzWorkStart and self.vehicleAtTurnEndNode or self.workStartNode
+	-- extra length at the end to allow for alignment
+	extraLength = extraLength and (extraLength + 3) or 3
     -- +1 so the first waypoint of the appended line won't overlap with the last wp of course
-    for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + 3, 1 do
+    for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + extraLength, 1 do
         local x, y, z = localToWorld(startNode, 0, 0, d)
         table.insert(waypoints, {x = x, y = y, z = z})
     end
@@ -478,8 +482,7 @@ function TurnContext:debug(...)
 end
 
 function TurnContext:drawDebug()
-	-- TODO_22: debugChannel
-    if true or courseplay.debugChannels[self.debugChannel] then
+    if CpDebug:isChannelActive(self.debugChannel) then
         local cx, cy, cz
         local nx, ny, nz
         local height = 1

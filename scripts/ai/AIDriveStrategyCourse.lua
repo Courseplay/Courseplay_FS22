@@ -24,7 +24,8 @@ AIDriveStrategyCourse = {}
 local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 
 AIDriveStrategyCourse.myStates = {
-    DEFAULT = {},
+    INITIAL = {},
+    DRIVING_TO_COURSE_START = {}
 }
 
 function AIDriveStrategyCourse.new(customMt)
@@ -79,6 +80,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     ---@type FillLevelManager
     self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
+    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     -- TODO_22 properly implement this in courseplaySpec
     self.storage = vehicle.spec_courseplaySpec
 
@@ -91,13 +93,13 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
 
     self:enableCollisionDetection()
 
-    -- TODO: should probably be the closest waypoint to the target?
+    -- TODO: this may or may not be the course we need for the strategy
     local course = vehicle:getFieldWorkCourse()
 
     local job = vehicle:getJob()
     local startAt, startIx
     if job and job.getCpJobParameters then
-        self:debug('Got job parameters, starting at %d', job:getCpJobParameters().startAt:getValue())
+        self:debug('Got job parameters, starting at %s', job:getCpJobParameters().startAt)
         startAt = job:getCpJobParameters().startAt:getValue()
     else
         self:debug('No job parameters found, starting at nearest waypoint')
@@ -111,7 +113,20 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
         self:debug('Starting course at the first waypoint')
         startIx = 1
     end
+    self:setAllStaticParameters()
+    self:start(course, startIx)
+end
+
+function AIDriveStrategy:start(course, startIx)
     self:startCourse(course, startIx)
+    self.state = self.states.INITIAL
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Static parameters (won't change while driving)
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:setAllStaticParameters()
+    -- set strategy specific parameters before starting
 end
 
 function AIDriveStrategyCourse:update()
@@ -142,7 +157,7 @@ end
 ---@param nextCourse Course
 ---@param ix number
 function AIDriveStrategyCourse:startCourse(course, ix)
-    self:debug('Starting a course, at waypoint %d, no next course set.', ix)
+    self:debug('Starting a course, at waypoint %d (of %d).', ix, course:getNumberOfWaypoints())
     self.course = course
     self.ppc:setCourse(self.course)
     self.ppc:initialize(ix)
@@ -160,6 +175,15 @@ function AIDriveStrategyCourse:getFillLevelInfoText()
     -- TODO_22
     self:debug('getFillLevelInfoText')
     return 'getFillLevelInfoText'
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Event listeners
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:onWaypointChange(ix, course)
+end
+
+function AIDriveStrategyCourse:onWaypointPassed(ix, course)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
