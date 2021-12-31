@@ -32,21 +32,22 @@ end
 
 
 function CpFieldUtil.saveAllFields()
-    local fileName = createXMLFile("cpFields", string.format('%s/cpFields.xml', g_Courseplay.debugPrintDir), "CPFields");
-    print(string.format('Saving fields to %s', fileName))
-    if fileName and fileName ~= 0 then
+    local fileName = string.format('%s/cpFields.xml', g_Courseplay.debugPrintDir)
+    local xmlFile = createXMLFile("cpFields", fileName, "CPFields");
+    if xmlFile and xmlFile ~= 0 then
         for _, field in pairs(g_fieldManager:getFields()) do
             local key = ("CPFields.field(%d)"):format(field.fieldId);
-            setXMLInt(fileName, key .. '#fieldNum',	field.fieldId);
+            setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
             local points = g_fieldScanner:findContour(field.posX, field.posZ)
-            setXMLInt(fileName, key .. '#numPoints', #points);
+            setXMLInt(xmlFile, key .. '#numPoints', #points);
             for i,point in ipairs(points) do
-                setXMLString(fileName, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
+                setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
             end;
 
         end
-        saveXMLFile(fileName);
-        delete(fileName);
+        saveXMLFile(xmlFile);
+        delete(xmlFile);
+        print(string.format('Saved all fields to %s', fileName))
     else
         print("Error: Courseplay's custom fields could not be saved to " .. CpManager.cpCoursesFolderPath);
     end;
