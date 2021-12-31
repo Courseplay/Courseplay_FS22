@@ -14,6 +14,9 @@ TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED = 'changeDirectionWhenAligned'
 -- Change to forward when a given waypoint is reached (dz > 0 as we assume we are reversing)
 -- value : index of waypoint to reach
 TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED = 'changeToFwdWhenReached'
+-- Ending turn, from here, lower implement whenever needed (depending on the lowering duration,
+-- making sure it is lowered when we reach the start of the next row)
+TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END = 'lowerImplementAtTurnEnd'
 
 ---@param course Course
 function TurnManeuver.getTurnControl(course, ix, control)

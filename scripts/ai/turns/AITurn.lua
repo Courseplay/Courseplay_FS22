@@ -108,7 +108,7 @@ end
 function AITurn:onWaypointPassed(ix, course)
 	self:debug('onWaypointPassed %d', ix)
 	if ix == course:getNumberOfWaypoints() then
-		self:debug('Last waypoint reached, this should not happen, resuming fieldwork')
+		self:debug('Last waypoint reached, resuming fieldwork')
 		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 	end
 end
@@ -208,7 +208,10 @@ function AITurn:getDriveData(dt)
 		self:finishRow(dt)
 	elseif self.state == self.states.ENDING_TURN then
 		-- Ending the turn (starting next row)
-		self:endTurn(dt)
+		local allowedToDrive = self:endTurn(dt)
+		if not allowedToDrive then
+			maxSpeed = 0
+		end
 	elseif self.state == self.states.WAITING_FOR_PATHFINDER then
 		maxSpeed = 0
 	else
@@ -238,6 +241,7 @@ function AITurn:finishRow(dt)
 	--end
 end
 
+---@return boolean true if it is ok the continure driving, false when the vehicle should stop
 function AITurn:endTurn(dt)
 	-- keep driving on the turn ending temporary course until we need to lower our implements
 	-- check implements only if we are more or less in the right direction (next row's direction)
@@ -246,6 +250,7 @@ function AITurn:endTurn(dt)
 		self:debug('Turn ended, resume fieldwork')
 		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 	end
+	return true
 end
 
 function AITurn:drawDebug()
@@ -555,25 +560,41 @@ function CourseTurn:turn()
 	self:changeDirectionWhenAligned()
 	self:changeToFwdWhenWaypointReached()
 
-	if self.turnCourse:isTurnEndAtIx(self.turnCourse:getCurrentWaypointIx()) then
+	-- TODO keep only the turn control, remove this turnEnd thing as it overlaps with turnStart/turnEnd
+	if self.turnCourse:isTurnEndAtIx(self.turnCourse:getCurrentWaypointIx()) or
+			TurnManeuver.getTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(),
+					TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END) then
 		self.state = self.states.ENDING_TURN
 		self:debug('About to end turn')
 	end
 	return gx, gz, moveForwards, maxSpeed
 end
 
+---@return boolean true if it is ok the continure driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
 -- keep driving on the turn course until we need to lower our implements
-	if not self.implementsLowered and self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing()) then
-		self:debug('Turn ending, lowering implements')
-		self.driveStrategy:lowerImplements()
-		self.implementsLowered = true
-		if self.ppc:isReversing() then
-			-- when ending a turn in reverse, don't drive the rest of the course, switch right back to fieldwork
-			self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+	local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
+	if shouldLower then
+		if not self.implementsLowered then
+			-- have not started lowering implements yet
+			self:debug('Turn ending, lowering implements')
+			self.driveStrategy:lowerImplements()
+			self.implementsLowered = true
+			if self.ppc:isReversing() then
+				-- when ending a turn in reverse, don't drive the rest of the course, switch right back to fieldwork
+				self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+			end
+		else
+			-- implements already lowering
+			if dz and dz > -1 and not self.vehicle:getCanAIFieldWorkerContinueWork() then
+				self:debug('waiting for lower at dz=%.1f', dz)
+				-- we are almost at the start of the row but still not lowered everything,
+				-- hold.
+				return false
+			end
 		end
 	end
-	return false
+	return true
 end
 
 function CourseTurn:updateTurnProgress()

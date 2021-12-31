@@ -157,7 +157,7 @@ end
 ---@param nextCourse Course
 ---@param ix number
 function AIDriveStrategyCourse:startCourse(course, ix)
-    self:debug('Starting a course, at waypoint %d, no next course set.', ix)
+    self:debug('Starting a course, at waypoint %d (of %d).', ix, course:getNumberOfWaypoints())
     self.course = course
     self.ppc:setCourse(self.course)
     self.ppc:initialize(ix)

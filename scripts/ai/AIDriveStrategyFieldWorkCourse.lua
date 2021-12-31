@@ -249,7 +249,7 @@ end
 -- TODO: remove the reversing parameter and use ppc to find out once not called from turn.lua
 function AIDriveStrategyFieldWorkCourse:shouldLowerImplements(turnEndNode, reversing)
     -- see if the vehicle has AI markers -> has work areas (built-in implements like a mower or cotton harvester)
-    local doLower, vehicleHasMarkers = self:shouldLowerThisImplement(self.vehicle, turnEndNode, reversing)
+    local doLower, vehicleHasMarkers, dz = self:shouldLowerThisImplement(self.vehicle, turnEndNode, reversing)
     if not vehicleHasMarkers and reversing then
         -- making sure the 'and' below will work if reversing and the vehicle has no markers
         doLower = true
@@ -261,10 +261,12 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerImplements(turnEndNode, rever
             doLower = doLower and self:shouldLowerThisImplement(implement.object, turnEndNode, reversing)
         else
             -- when driving forward, if it is time to lower any implement, we'll lower all, hence the 'or'
-            doLower = doLower or self:shouldLowerThisImplement(implement.object, turnEndNode, reversing)
+            local lowerThis, _, thisDz = self:shouldLowerThisImplement(implement.object, turnEndNode, reversing)
+            dz = dz and math.max(dz , thisDz) or thisDz
+            doLower = doLower or lowerThis
         end
     end
-    return doLower
+    return doLower, dz
 end
 
 ---@param object table is a vehicle or implement object with AI markers (marking the working area of the implement)
@@ -272,10 +274,11 @@ end
 --- the implement should be in the working position after a turn
 ---@param reversing boolean are we reversing? When reversing towards the turn end point, we must lower the implements
 --- when we are _behind_ the turn end node (dz < 0), otherwise once we reach it (dz > 0)
----@return boolean, boolean the second one is true when the first is valid
+---@return boolean, boolean, number the second one is true when the first is valid, and the distance to the work start
+--- in meters (<0) when driving forward, nil when driving backwards.
 function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEndNode, reversing)
     local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object, nil, true)
-    if not aiLeftMarker then return false, false end
+    if not aiLeftMarker then return false, false, nil end
     local _, _, dzLeft = localToLocal(aiLeftMarker, turnEndNode, 0, 0, 0)
     local _, _, dzRight = localToLocal(aiRightMarker, turnEndNode, 0, 0, 0)
     local _, _, dzBack = localToLocal(aiBackMarker, turnEndNode, 0, 0, 0)
@@ -294,10 +297,10 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
             CpUtil.getName(object), dzLeft, dzRight, dzFront, dzBack, loweringDistance, tostring(reversing))
     local dz = self.settings.lowerImplementEarly:getValue() and dzFront or dzBack
     if reversing then
-        return dz < 0 , true
+        return dz < 0 , true, nil
     else
         -- dz will be negative as we are behind the target node
-        return dz > - loweringDistance, true
+        return dz > - loweringDistance, true, dz
     end
 end
 
