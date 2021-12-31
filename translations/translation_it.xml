@@ -5,12 +5,12 @@
 		<text name="CP_deactivated" 																	text="Disattivato" />
 		<text name="CP_unit_meter" 																		text="m" />
 		
-        <!-- User info text -->
+		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay (%s): Per aiuto, report bug o note sulla patch, visita: https://github.com/Courseplay/Courseplay_FS22 " />
 		<text name="CP_error_no_course"																	text="Genera il percorso prima di iniziare il lavoro sul campo!" />
 		<text name="CP_error_not_on_field"																text="L'obiettivo non si trova su di un campo!" />
 		
-        <!-- AI job menu -->
+		<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Da dove iniziare il lavoro sul campo" />
@@ -19,17 +19,17 @@
 		<text name="CP_jobParameters_startAt_unload"													text="scarico mietitrebbia/trincia" />
 		<text name="CP_jobParameters_startAt_bales"														text="raccogliere/avvolgere balle" />
 		
-        <!--Drivemodes-->
+		<!--Drivemodes-->
 		<text name="FIELDWORK_CP"																		text="Courseplay" />
 		
-        <!--Generate course button-->
+		<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="[Courseplay] Genera percorso di lavoro" />
 		<text name="CP_ai_page_open_course_generator" 													text="[Courseplay] Apri/Chiudi menù" />
 		
-        <!-- VehicleSettings -->
+		<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Impostazioni del veicolo (%s)"/>
 		
-        <!--Titel-->
+		<!--Titel-->
 		<text name="CP_vehicle_setting_subTitle_basic"													text="Generali"/>
 		<text name="CP_vehicle_setting_subTitle_implement"												text="Attrezzi"/>
 		<text name="CP_vehicle_setting_subTitle_combine"												text="Mietritrebbia"/>
@@ -38,7 +38,7 @@
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocità"/>
 		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug"/>
 		
-        <!--Settings-->
+		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visualizza porcorso"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Mostra il percorso attuale del veicolo"/>
 		
@@ -125,7 +125,7 @@
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug veicolo"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Abilita/disabilita il debug per questo veicolo"/>
 		
-        <!-- Vehicle course generator settings -->
+		<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Impostazioni percorso veicolo (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Impostazioni percorso veicolo (%s)"/>
 		
@@ -169,7 +169,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Torna al primo punto e licenzia autista"/>
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Torna all'inizio e licenzia autista"/>
 		
-        <!-- GlobalSettings -->
+		<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Impostazioni Courseplay"/>
 		<text name="CP_global_setting_subTitle_general"													text="Generali"/>
 		
@@ -194,7 +194,7 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Visualizza percorsicorsi attivi"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Mostra tutti i percorsi attivi sulla mappa di gioco"/>
 		
-        <!-- CourseManager -->
+		<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestore percorsi (%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="Nessun percorso"/>
 		<text name="CP_courseManager_temporary_course"													text="Percorso temporaneo"/>
