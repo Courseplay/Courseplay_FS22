@@ -122,10 +122,6 @@ end
 --- a tool with offset will be closer to either left or right AI marker.
 function AIDriveStrategyPlowCourse:setOffsetX()
     local aiLeftMarker, aiRightMarker, aiBackMarker = self.plow.spec_plow:getAIMarkers()
-    local aiSizeLeftMarker, aiSizeRightMarker, aiSizeBackMarker = self.plow.spec_plow:getAISizeMarkers()
-    aiLeftMarker = aiSizeLeftMarker or aiLeftMarker
-    aiRightMarker = aiSizeRightMarker or aiRightMarker
-    aiBackMarker = aiSizeBackMarker or aiBackMarker
     if aiLeftMarker and aiBackMarker and aiRightMarker then
         local attacherJoint = self.plow:getActiveInputAttacherJoint()
         local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()
