@@ -70,7 +70,7 @@ AIParameterSettingList.UNITS_TEXTS = {
 	AIParameterSettingList.getSpeedText, --- km/h
 	AIParameterSettingList.getDistanceText, --- m
 	AIParameterSettingList.getAreaText, --- ha/arcs
-	function () return "%"	end			--- percent
+	function (value) return string.format("%d", value) .. "%" end			--- percent
 }
 
 
