@@ -395,6 +395,7 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
 	self.debugPrefix = '(HeadlandTurn): '
 	self:debug('Start generating')
+	self:debug('r=%.1f, w=%.1f, steeringLength=%.1f', turningRadius, workWidth, steeringLength)
 	local fromPoint, toPoint = {}, {}
 
 	local corner = turnContext:createCorner(vehicle, self.turningRadius)

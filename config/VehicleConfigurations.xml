@@ -53,6 +53,8 @@ You can define the following custom settings:
 
 - implementWheelAlwaysOnGround:	boolean
     Implements that have the topReferenceNode set, but still have the wheels on the ground all the time.
+    In general, set this to true for implements which have a wheel and looked like any towed implement
+    but are attached to the tractor with the 3 point hitch (and not the tow hitch).
 
 - ignoreCollisionBoxesWhenFolded: boolean
 	This is for the case where the collision boxes of the vehicle are very wide, for example
