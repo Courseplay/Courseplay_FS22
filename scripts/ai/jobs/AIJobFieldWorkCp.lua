@@ -84,8 +84,11 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.numberOfHeadlands:getValue(),
 			settings.startOnHeadland:getValue(),
 			settings.headlandCornerType:getValue(),
+			settings.headlandOverlapPercent:getValue(),
 			settings.centerMode:getValue(),
-			settings.rowDirection:getValue()
+			settings.rowDirection:getValue(),
+			settings.rowsToSkip:getValue(),
+			settings.rowsPerLand:getValue()
 	)
 	if not ok then
 		return false, 'could not generate course'

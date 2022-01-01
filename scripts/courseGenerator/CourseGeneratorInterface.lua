@@ -15,11 +15,19 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   numberOfHeadlands,
 										   startOnHeadland,
 										   headlandCornerType,
+										   headlandOverlapPercent,
 										   centerMode,
-										   rowDirection
+										   rowDirection,
+										   rowsToSkip,
+										   rowsPerLand
 )
 
-	CourseGenerator.debug('Generating course, width %.1f m, headlands %d', workWidth, numberOfHeadlands)
+	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
+			tostring(isClockwise), workWidth, turnRadius, numberOfHeadlands, tostring(startOnHeadland))
+	CourseGenerator.debug('                   headland corner %d, headland overlap %d, center mode %d',
+			headlandCornerType, headlandOverlapPercent, centerMode)
+	CourseGenerator.debug('                   row direction %d, rows to skip %d, rows per land %d',
+			rowDirection, rowsToSkip, rowsPerLand)
 
 	--------------------------------------------------------------------------------------------------------------------
 	-- Headland settings
@@ -36,7 +44,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		startLocation = CourseGenerator.pointToXy(startPosition),
 		-- use some overlap between headland passes to get better results
 		-- (=less fruit missed) at smooth headland corners
-		overlapPercent = 7,
+		overlapPercent = headlandOverlapPercent,
 		nPasses = numberOfHeadlands,
 		headlandFirst = headlandFirst,
 		isClockwise = isClockwise,
@@ -52,9 +60,9 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		useBestAngle = rowDirection == CourseGenerator.ROW_DIRECTION_AUTOMATIC,
 		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
 		rowAngle = 0,
-		nRowsToSkip = 0,
+		nRowsToSkip = rowsToSkip,
 		mode = centerMode,
-		nRowsPerLand = centerMode ~= CourseGenerator.CENTER_MODE_LANDS and 0 or 6,
+		nRowsPerLand = rowsPerLand or 6,
 		pipeOnLeftSide = true
 	}
 

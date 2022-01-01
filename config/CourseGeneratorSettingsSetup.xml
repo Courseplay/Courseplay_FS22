@@ -46,6 +46,9 @@
 				<Text>counterclockwise</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4"/>
+		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
+		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6"/>
 		<Setting classType="AIParameterSettingList" name="rowDirection" >
 			<Values>
 				<Value name="ROW_DIRECTION_AUTOMATIC">5</Value> 

@@ -135,6 +135,13 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Numero traccie perimetrali" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Numero di traccie perimetrali" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Direzione lavoro" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Se il veicolo deve guidare in senso orario o antiorario sul campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Orario" />
