@@ -74,6 +74,11 @@ You can define the following custom settings:
 
     <!-- Harvesters -->
     <!-- Implements -->
+
+    <!--\Vehicles\amazone-->
+    <Vehicle name="citan15001C.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
     <!--\vehicles\arcusin-->
     <Vehicle name="arcusinFSX6372.xml"
              toolOffsetX="-2.4"
@@ -126,6 +131,9 @@ You can define the following custom settings:
              implementWheelAlwaysOnGround = "true"
     />
     <Vehicle name="karat12.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
+    <Vehicle name="koralin9840"
              implementWheelAlwaysOnGround = "true"
     />
     <!--vehicles\gregoireBesson-->
