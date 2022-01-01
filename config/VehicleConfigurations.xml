@@ -123,6 +123,9 @@ You can define the following custom settings:
              turnRadius = "4.5"
              implementWheelAlwaysOnGround = "true"
     />
+    <Vehicle name="karat12.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
     <!--vehicles\gregoireBesson-->
     <Vehicle name="SPSL9.xml"
              toolOffsetX="2.1"
