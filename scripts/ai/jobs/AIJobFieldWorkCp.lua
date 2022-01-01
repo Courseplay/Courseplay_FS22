@@ -43,7 +43,8 @@ function AIJobFieldWorkCp:validate(farmId)
 		self.lastPositionX, self.lastPositionZ = tx, tz
 		self.hasValidPosition = true
 	end
-
+	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
+	CpUtil.info('Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
 	if not self.fieldPolygon then
 		self.hasValidPosition = false

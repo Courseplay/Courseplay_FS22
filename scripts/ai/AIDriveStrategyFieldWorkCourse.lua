@@ -59,6 +59,7 @@ function AIDriveStrategyFieldWorkCourse:delete()
 end
 
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
+    self:showAllInfo('Starting field work')
     if self.frontMarkerDistance < 0 then
         self:debug('extend course by %.1f m to make sure we do not miss anything when the course ends',
                 -self.frontMarkerDistance)
@@ -625,4 +626,14 @@ function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
         setRidgeMarkerState(self,implement.object,state)
     end
 
+end
+
+function AIDriveStrategyFieldWorkCourse:showAllInfo(note)
+    self:debug('%s: work width %.1f, turning radius %.1f, front marker %.1f, back marker %.1f',
+            note, self.workWidth, self.turningRadius, self.frontMarkerDistance, self.backMarkerDistance)
+    self:debug(' - map: %s, field %s', g_currentMission.missionInfo.mapTitle,
+            CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
+    for _, implement in pairs(self.vehicle:getAttachedImplements()) do
+        self:debug(' - %s', CpUtil.getName(implement.object))
+    end
 end

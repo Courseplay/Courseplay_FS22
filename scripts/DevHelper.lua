@@ -70,7 +70,7 @@ function DevHelper:update()
 
 --    self.data.hasFruit, self.data.fruitValue, self.data.fruit = PathfinderUtil.hasFruit(self.data.x, self.data.z, 5, 3.6)
 
-    --self.data.landId =  PathfinderUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
+    --self.data.landId =  CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
     --self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
 	self.data.farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(self.data.x, self.data.z)
 	self.data.farmland = g_farmlandManager:getFarmlandAtWorldPosition(self.data.x, self.data.z)
@@ -146,7 +146,7 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         self:debug('Calculate')
         self:startPathfinding()
     elseif bitAND(modifier, Input.MOD_LCTRL) ~= 0 and isDown and sym == Input.KEY_comma then
-        self.fieldNumForPathfinding = PathfinderUtil.getFieldNumUnderNode(self.node)
+        self.fieldNumForPathfinding = CpFieldUtil.getFieldNumUnderNode(self.node)
         self:debug('Set field %d for pathfinding', self.fieldNumForPathfinding)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_space then
         -- save vehicle position

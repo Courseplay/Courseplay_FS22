@@ -17,6 +17,19 @@ function CpFieldUtil.isOnField(x, z)
     return isOnField
 end
 
+--- Which field this node is on.
+---@param node table Giants engine node
+---@return number 0 if not on any field, otherwise the number of field, see note on getFieldItAtWorldPosition()
+function CpFieldUtil.getFieldNumUnderNode(node)
+    local x, _, z = getWorldTranslation(node)
+    return CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+end
+
+--- Which field this node is on. See above for more info
+function CpFieldUtil.getFieldNumUnderVehicle(vehicle)
+    return CpFieldUtil.getFieldNumUnderNode(vehicle.rootNode)
+end
+
 --- Returns the field ID (actually, land ID) for a position. The land is what you can buy in the game,
 --- including the area around an actual field.
 function CpFieldUtil.getFieldIdAtWorldPosition(posX, posZ)

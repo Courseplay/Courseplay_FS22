@@ -160,32 +160,6 @@ function PathfinderUtil.isNodeOnField(node)
     return PathfinderUtil.isPosOnField(x, y, z)
 end
 
---- Which field this node is on.
----@param node table Giants engine node
----@return number 0 if not on any field, otherwise the number of field, see note on getFieldItAtWorldPosition()
-function PathfinderUtil.getFieldNumUnderNode(node)
-    local x, _, z = getWorldTranslation(node)
-    return PathfinderUtil.getFieldIdAtWorldPosition(x, z)
-end
-
---- Which field this node is on. See above for more info
-function PathfinderUtil.getFieldNumUnderVehicle(vehicle)
-    return PathfinderUtil.getFieldNumUnderNode(vehicle.rootNode)
-end
-
---- Returns the field ID (actually, land ID) for a position. The land is what you can buy in the game,
---- including the area around an actual field.
-function PathfinderUtil.getFieldIdAtWorldPosition(posX, posZ)
-    local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
-    if farmland ~= nil then
-        local fieldMapping = g_fieldManager.farmlandIdFieldMapping[farmland.id]
-        if fieldMapping ~= nil and fieldMapping[1] ~= nil then
-            return fieldMapping[1].fieldId
-        end
-    end
-    return 0
-end
-
 --- Is the land at this position owned by me?
 function PathfinderUtil.isWorldPositionOwned(posX, posZ)
 	local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
@@ -462,7 +436,7 @@ function PathfinderConstraints:getNodePenalty(node)
         self.offFieldPenaltyNodeCount = self.offFieldPenaltyNodeCount + 1
         node.offField = true
     end
-    --local fieldId = PathfinderUtil.getFieldIdAtWorldPosition(node.x, -node.y)
+    --local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
     if not offField then
         local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4)
         if hasFruit and fruitValue > self.maxFruitPercent then
@@ -694,7 +668,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 3, 200, 10000)
     end
 
-    local fieldNum = PathfinderUtil.getFieldNumUnderVehicle(vehicle)
+    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
     local context = PathfinderUtil.Context(
             vehicle,
             vehiclesToIgnore)
