@@ -338,6 +338,11 @@ function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffs
 	end
 	local path = PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffset, turnEndNode,
 		0, goalOffset, self.turningRadius)
+	if not path or #path == 0 then
+		self:debug('Could not find ReedsShepp path, retry with Dubins')
+		path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, vehicleDirectionNode, startOffset,
+				turnEndNode, 0, goalOffset, self.turningRadius)
+	end
 	local course = Course.createFromAnalyticPath(self.vehicle, path, true)
 	course:adjustForTowedImplements(1.5 * self.steeringLength)
 	return course
