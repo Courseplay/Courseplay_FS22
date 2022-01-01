@@ -78,7 +78,7 @@ function DevHelper:update()
 
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
     self.data.isOnField, self.data.densityBits = FSDensityMapUtil.getFieldDataAtWorldPosition(self.data.x, y, self.data.z)
-
+    self.data.isOnFieldArea, self.data.onFieldArea, self.data.totalOnFieldArea = CpFieldUtil.isOnFieldArea(self.data.x, self.data.z)
     self.data.nx, self.data.ny, self.data.nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, y, self.data.z)
 
     self.data.collidingShapes = ''
@@ -159,7 +159,6 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         self:debug('Finding contour of current field')
         local points = g_fieldScanner:findContour(self.data.x, self.data.z)
         local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
-        CpFieldUtil.saveField(fieldId, points)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
         self:debug('Generate course')
         local status, ok, course = CourseGeneratorInterface.generate(g_fieldScanner:findContour(self.data.x, self.data.z),

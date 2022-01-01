@@ -13,9 +13,9 @@ function FieldScanner:init(resolution)
     -- minimum practical resolution depends on how many meters a pixel in the density map really is, I'm not
     -- sure if it is 1 or 0.5, so 0.2 seems to be a safe bet
     self.resolution = resolution or 0.2
-    self.highResolution = 0.01
-    self.normalTracerLookahead = 1.0
-    self.shortTracerLookahead = self.normalTracerLookahead / 20
+    self.highResolution = 0.1
+    self.normalTracerLookahead = 2.0
+    self.shortTracerLookahead = self.normalTracerLookahead / 10
     self.angleStep = self.highResolution / self.normalTracerLookahead
 end
 
@@ -146,14 +146,11 @@ function FieldScanner:findContour(x, z)
         end
         i = i + 1
     end
-    self.points = self:simplifyPolygon(self.points, 1.75)
+    self.points = self:simplifyPolygon(self.points, 1)
     self:debug('Field contour simplified, has now %d points', #self.points)
     self:sharpenCorners(self.points)
     self.points = self:addIntermediatePoints(self.points, 5)
     self:debug('Intermediate points added, has now %d points', #self.points)
-    for i, p in ipairs(self.points) do
-       -- self:debug('%d %.1f/%.1f', i, p.x, p.z)
-    end
     CpUtil.destroyNode(probe)
     return self.points
 end
@@ -162,6 +159,7 @@ function FieldScanner:draw()
     if self.points then
         for i = 2, #self.points do
             local p, n = self.points[i - 1], self.points[i]
+            Utils.renderTextAtWorldPosition(p.x, p.y + 1.2, p.z, tostring(i), getCorrectTextSize(0.012), 0)
             DebugUtil.drawDebugLine(p.x, p.y + 1, p.z, n.x, n.y + 1, n.z, 0, 1, 0)
         end
     end

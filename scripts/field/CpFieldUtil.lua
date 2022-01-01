@@ -1,9 +1,16 @@
 CpFieldUtil = {}
+-- force reload
+CpFieldUtil.groundTypeModifier = nil
 
 function CpFieldUtil.isNodeOnField(node)
     local x, y, z = getWorldTranslation(node)
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
     return isOnField
+end
+
+function CpFieldUtil.isNodeOnFieldArea(node)
+    local x, _, z = getWorldTranslation(node)
+    return CpFieldUtil.isOnFieldArea(x, z)
 end
 
 --- Is the relative position dx/dz on the same field as node?
@@ -15,6 +22,25 @@ function CpFieldUtil.isOnField(x, z)
     local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z);
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
     return isOnField
+end
+
+function CpFieldUtil.initFieldMod()
+    local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels =
+        g_currentMission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
+    CpFieldUtil.groundTypeModifier = DensityMapModifier.new(groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels,
+            g_currentMission.terrainRootNode)
+    CpFieldUtil.groundTypeFilter = DensityMapFilter.new(CpFieldUtil.groundTypeModifier)
+end
+
+function CpFieldUtil.isOnFieldArea(x, z)
+    if CpFieldUtil.groundTypeModifier == nil then
+        CpFieldUtil.initFieldMod()
+    end
+    local w, h = 1, 1
+    CpFieldUtil.groundTypeModifier:setParallelogramWorldCoords(x - w / 2, z - h / 2, w, 0, 0, h, DensityCoordType.POINT_VECTOR_VECTOR)
+    CpFieldUtil.groundTypeFilter:setValueCompareParams(DensityValueCompareType.GREATER, 0)
+    local density, area, totalArea = CpFieldUtil.groundTypeModifier:executeGet(CpFieldUtil.groundTypeFilter)
+    return area > 0, area, totalArea
 end
 
 --- Which field this node is on.
