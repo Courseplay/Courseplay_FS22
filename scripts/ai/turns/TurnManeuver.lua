@@ -284,7 +284,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge)
 	end
-	self.course:setTurnEndForLastWaypoints(5)
+	self.course:setTurnEndForLastWaypoints(math.max(turnContext.frontMarkerDistance + 2, 5))
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
