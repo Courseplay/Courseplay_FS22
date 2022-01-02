@@ -125,10 +125,12 @@ You can define the following custom settings:
              turnRadius = "9"
     />
     <!--\vehicles\lemken-->
-    <Vehicle name="titan11.xml"
+    <Vehicle name="titan18.xml"
+			 workingWidth = "4.2"
              noReverse="true"
-             turnRadius = "4.5"
+             turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
+			 turnAnimTime="3.500000"
     />
     <Vehicle name="karat12.xml"
              implementWheelAlwaysOnGround = "true"
