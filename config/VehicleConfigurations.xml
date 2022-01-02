@@ -133,7 +133,7 @@ You can define the following custom settings:
     <Vehicle name="karat12.xml"
              implementWheelAlwaysOnGround = "true"
     />
-    <Vehicle name="koralin9840"
+    <Vehicle name="koralin9840.xml"
              implementWheelAlwaysOnGround = "true"
     />
     <!--vehicles\gregoireBesson-->
