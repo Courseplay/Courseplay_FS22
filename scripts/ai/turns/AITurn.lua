@@ -598,7 +598,8 @@ function CourseTurn:endTurn(dt)
 end
 
 function CourseTurn:updateTurnProgress()
-	if self.turnCourse then
+	if self.turnCourse and not self.turnContext:isHeadlandCorner() then
+		-- turn progress is for example rotating plows, no need to worry about that during headland turns
 		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
 		self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
 	end

@@ -206,6 +206,10 @@ You can define the following custom settings:
     <Vehicle name="wrapper7850C.xml"
              baleCollectorOffset="1.5"
     />
+    <Vehicle name="pw10012.xml"
+             implementWheelAlwaysOnGround = "true"
+             noReverse="true"
+    />
     <!--Bourgault-->
     <Vehicle name="series3320.xml"
              noReverse="true"
