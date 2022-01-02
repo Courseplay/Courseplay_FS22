@@ -50,7 +50,7 @@
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 								text="Остановить по окончании работы на маршруте."/>
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 					text="Разрешить реверс для поиска пути"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 				text="Если возможно, разрешите поисковику маршрута генерировать курсы, содержащие движение задним ходом."/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 				text="Если возможно, разрешить поисковику маршрута генерировать курсы, содержащие движение задним ходом."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 						text="Сложить инструмент в конце курса"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 						text="Включает / отключает автоматическое складывание орудий в конце курса."/>
@@ -121,7 +121,7 @@
 		<text name="CP_vehicle_setting_turnSpeed_title" 								text="Поворот"/>
 		<text name="CP_vehicle_setting_turnSpeed_tooltip" 								text="Максимальная скорость при поворотах"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 								text="Задний ход"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 							text="Максимальная скорость при движении задним ходом"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 							text="Максимальная скорость при движении задним ходом."/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 								text="Отладка техники"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 							text="Вкл/выкл отладку текущей техники."/>
@@ -137,12 +137,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"			text="Количество поворотных полос" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"		text="Количество поворотных полос." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"		text="Перекрытие поворотных полос" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"	text="Перекрытие проходов поворотных полос в процентах от рабочей ширины." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"					text="Пропускать проходов" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"				text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"				text="Проходов в загоне" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"				text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке." />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"				text="Направление поворотной полосы" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"				text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе." />
