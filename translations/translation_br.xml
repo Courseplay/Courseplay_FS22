@@ -12,7 +12,6 @@
 		<text name="CP_error_not_on_field"																text="Destino não é um campo." />
 
 
-
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniciar em:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniciar em:" />
@@ -137,7 +136,14 @@
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Total de cabeceiras" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Total de cabeceiras" />
-		
+	
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sobreposição de cabeceira" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sobrepor largura faixa de cabeceira por porcentagem" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Pular faixas" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Pular faixas para cima ou para baixo ao mudar para próxima faixa" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Faixas por campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Quando o modo central é 'terras', essas várias faixas estão em cada bloco" />
+	
         <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Direção da cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Dirigir no sentido horário ou anti-horário na cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="horário" />
@@ -165,7 +171,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Iniciar em" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Cabeceira" />
-
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Configurações global"/>
