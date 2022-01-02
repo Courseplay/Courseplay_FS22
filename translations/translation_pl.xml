@@ -137,12 +137,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Liczba uwroci" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Liczba uwroci." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Nakładka na uwrociach" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Nakładanie się ścieżki na uwrociach jako procent szerokości roboczej." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rzędy do pominięcia" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rzędy na spiralę od środka" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="W trybie spirali od środka określa ilość rzędów dla każdej 'wysepki'." />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Kierunek na uwrociach" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Ustala w którym kierunku ma jechać pracownik na uwrociach" />
