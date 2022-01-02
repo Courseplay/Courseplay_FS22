@@ -137,12 +137,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Nombre de fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rangs par blocs" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné." />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Sens des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières." />
@@ -155,8 +155,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Choix du type de rangées" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Allers-retours" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirale (tourne autour)" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circulaire (par bloc)" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Intérieur vers extérieur" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circulaire (extérieur vers intérieur)" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Par blocs (Intérieur vers extérieur)" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Choix du type de fourrières" />
