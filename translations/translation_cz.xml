@@ -137,12 +137,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Počet souvratí" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Počet souvratí" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Souvraťový přesah" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Řádky k přeskočení" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'země'" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'země', je tolik řádků v každém bloku" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček" />
@@ -188,10 +188,10 @@
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Nastavení generování trasy"/>
 
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlu v cíli"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlů v cíli"/>
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné"/>
 
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Faktor Delta úhlu"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Faktor Delta úhlů"/>
 		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší"/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zobrazit všechny aktivní trasy"/>
@@ -199,8 +199,8 @@
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Správce Tras(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="žádná trasa"/>
-		<text name="CP_courseManager_temporary_course"													text="dočasná trasa"/>
+		<text name="CP_courseManager_no_current_course"													text="Žádná trasa"/>
+		<text name="CP_courseManager_temporary_course"													text="Dočasná trasa"/>
 
 		<text name="CP_courseManager_change_mode"														text="Změnit režim"/>
 
@@ -242,12 +242,11 @@
 - Moving a course in to another directory.
 - Deleting a course or directory.
 - Renaming a course or directory."/>
-
 <!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vyberte předchozí kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Změnit aktuální kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Otevřt/zavřít nastavení vozidla"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otevřt/zavřít nastavení vozidla"/>
 	</texts>
 </l10n>
