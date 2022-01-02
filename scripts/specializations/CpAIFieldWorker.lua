@@ -143,10 +143,14 @@ end
 function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
     local job = self:getJob()
     if not job:isa(AIJobFieldWorkCp) then
-        CpUtil.infoVehicle(self, 'This is not a CP field work job, run the built-in helper...')
-        return superFunc(self, ...)
+        if not self:getFieldWorkCourse() then
+            CpUtil.infoVehicle(self, 'This is not a CP field work job, run the built-in helper...')
+            return superFunc(self, ...)
+        else
+            CpUtil.infoVehicle(self, 'The vehicle has a CP field work course, start the CP AI driver.')
+        end
     else
-        CpUtil.infoVehicle(self, 'This is a CP field work job, setting up drive strategies...')
+        CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     end
     superFunc(self, ...)
 

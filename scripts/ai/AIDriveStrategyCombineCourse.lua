@@ -386,6 +386,8 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 		elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
 			self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
 			self:lowerImplements()
+			-- TODO: maybe lowerImplements should not set the WAITING_FOR_LOWER_DELAYED state...
+			self.state = self.states.UNLOADING_ON_FIELD
 			self.unloadState = self.states.MAKING_POCKET
 			-- offset the main fieldwork course and start on it
 			self.aiOffsetX = math.min(self.pullBackRightSideOffset, self:getWorkWidth())
