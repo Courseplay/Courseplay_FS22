@@ -14,7 +14,7 @@ function FieldScanner:init(resolution)
     -- sure if it is 1 or 0.5, so 0.2 seems to be a safe bet
     self.resolution = resolution or 0.2
     self.highResolution = 0.1
-    self.normalTracerLookahead = 2.0
+    self.normalTracerLookahead = 5.0
     self.shortTracerLookahead = self.normalTracerLookahead / 10
     self.angleStep = self.highResolution / self.normalTracerLookahead
 end
@@ -76,12 +76,15 @@ end
 
 function FieldScanner:traceFieldEdge(probe)
     self.points = {}
-    local startX, _, startZ = getWorldTranslation(probe)
+    local helperNode = CpUtil.createNode('helperNode', 0, 0, 0)
+    local startX, startY, startZ = getWorldTranslation(probe)
+    table.insert(self.points, {x = startX, y = startY, z = startZ})
     local distanceFromStart = math.huge
     local tracerLookahead = self.normalTracerLookahead
     local prevYRot
     local totalYRot = 0
-    local approachingCorner = false
+    local ignoreCornerAtIx = -1
+    local sharpCornerDeltaAngle = math.rad(15)
     local i = 0
     -- limit the number of iterations, also, must be close to the start and have made almost a full circle (pi is just
     -- a half circle, but should be ok to protect us from edge cases like starting with a corner
@@ -89,34 +92,37 @@ function FieldScanner:traceFieldEdge(probe)
         local yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
         -- how much we just turned?
         local deltaYRot = yRot - (prevYRot or yRot)
-        if prevYRot and math.abs(deltaYRot) > math.rad(15) then
-            if approachingCorner then
-                -- approaching the corner and there was a big rotation change so we just passed the corner
-                tracerLookahead = self.normalTracerLookahead
-                totalYRot = totalYRot + deltaYRot
-                approachingCorner = false
-                -- self:debug('Looks like just passed a corner at %.1f/%.1f (%d, %.1f°)', pX, pZ, i, math.deg(deltaYRot))
-            else
-                -- there is a big rotation change, a corner may be ahead,
-                -- switch to shorter tracer length while approaching the corner
-                tracerLookahead = self.normalTracerLookahead / 20
-                approachingCorner = true
-                -- rotate probe back to original direction
-                setRotation(probe, 0, prevYRot, 0)
-                yRot = prevYRot
-                --self:debug('Approaching a corner at %.1f/%.1f (%d, %.1f°)', pX, pZ, i, math.deg(deltaYRot))
+        self:moveProbeForward(probe, tracerLookahead)
+
+        if prevYRot and math.abs(deltaYRot) > sharpCornerDeltaAngle and i ~= ignoreCornerAtIx then
+            -- we probably just cut a corner. Calculate where the corner exactly is and insert a point there
+            -- see which way the edge goes here
+            yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
+            deltaYRot = yRot - prevYRot
+            local lastWp = self.points[#self.points]
+            -- this is just geometry, we figure out here how far forward the corner is from the previous waypoint
+            local dx, _, _ = worldToLocal(probe, lastWp.x, lastWp.y, lastWp.z)
+            setTranslation(helperNode, lastWp.x, lastWp.y, lastWp.z)
+            setRotation(helperNode, 0, lastWp.yRot, 0)
+            local moveForward = math.abs(dx) / math.sin(math.pi - math.abs(deltaYRot))
+            local x, y, z = localToWorld(helperNode, 0, 0, moveForward)
+            if moveForward < tracerLookahead and math.abs(deltaYRot) > sharpCornerDeltaAngle then
+                -- only add plausible points and only when the delta angle is still above the threshold
+                table.insert(self.points, {x = x, y = y, z = z, yRot = yRot})
+                self:debug('Inserted a corner waypoint (%d, %.1f°), %.1f ahead of the last', i, math.deg(deltaYRot), dx / math.sin(math.pi - math.abs(deltaYRot)))
+                i = i + 1
             end
-        else
-            self:moveProbeForward(probe, tracerLookahead)
-            local pX, pY, pZ = getWorldTranslation(probe)
-            table.insert(self.points, {x = pX, y = pY, z = pZ, yRot = yRot})
-            distanceFromStart = MathUtil.getPointPointDistance(pX, pZ, startX, startZ)
-            totalYRot = totalYRot + deltaYRot
         end
+
+        local pX, pY, pZ = getWorldTranslation(probe)
+        table.insert(self.points, {x = pX, y = pY, z = pZ, yRot = yRot})
+        distanceFromStart = MathUtil.getPointPointDistance(pX, pZ, startX, startZ)
+        totalYRot = totalYRot + deltaYRot
         -- more or less in the same direction, continue with the longer tracer beam
         prevYRot = yRot
         i = i + 1
     end
+    CpUtil.destroyNode(helperNode)
     self:debug('Field contour with %d points generated, total rotation %.1f°', #self.points, math.deg(totalYRot))
     -- a negative totalYRot means we went around the field clockwise, which we always should if we start in the
     -- middle of the field
@@ -146,10 +152,11 @@ function FieldScanner:findContour(x, z)
         end
         i = i + 1
     end
-    self.points = self:simplifyPolygon(self.points, 1)
+    -- TODO: see if we still need these commented out processors, if not, remove
+    --self.points = self:simplifyPolygon(self.points, 1)
     self:debug('Field contour simplified, has now %d points', #self.points)
-    self:sharpenCorners(self.points)
-    self.points = self:addIntermediatePoints(self.points, 5)
+    --self:sharpenCorners(self.points)
+    --self.points = self:addIntermediatePoints(self.points, 5)
     self:debug('Intermediate points added, has now %d points', #self.points)
     CpUtil.destroyNode(probe)
     return self.points
@@ -159,7 +166,7 @@ function FieldScanner:draw()
     if self.points then
         for i = 2, #self.points do
             local p, n = self.points[i - 1], self.points[i]
-            Utils.renderTextAtWorldPosition(p.x, p.y + 1.2, p.z, tostring(i), getCorrectTextSize(0.012), 0)
+            Utils.renderTextAtWorldPosition(p.x, p.y + 1.2, p.z, tostring(i - 1), getCorrectTextSize(0.012), 0)
             DebugUtil.drawDebugLine(p.x, p.y + 1, p.z, n.x, n.y + 1, n.z, 0, 1, 0)
         end
     end
@@ -172,6 +179,7 @@ function FieldScanner:sharpenCorners(points)
     local indicesToRemove = {}
     for i, p in ipairs(points) do
         local d = MathUtil.getPointPointDistance(p.x, p.z, prev.x, prev.z)
+        self:debug('%d %.1f', i, d)
         if d < self.shortTracerLookahead then
             self:debug('There seems to be a corner at %i: %.1f, %.1f', i, p.x, p.z)
             table.insert(indicesToRemove, i)
