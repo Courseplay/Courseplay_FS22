@@ -239,7 +239,7 @@ function FillLevelManager:isValidFillType(object,fillType)
     --- TODO: maybe implement a setting if it is necessary to enable/disable detection.
     local spec = object.spec_combine or object.spec_forageWagon 
     if spec and spec.additives and spec.additives.fillUnitIndex then 
-        local f = object:getFillUnitFillType(fillType)
+        local f = object:getFillUnitFillType(spec.additives.fillUnitIndex)
         if f == fillType then 
             return false
         end
