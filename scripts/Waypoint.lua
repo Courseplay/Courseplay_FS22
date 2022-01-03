@@ -422,6 +422,7 @@ function Course:enrichWaypointData(startIx)
 		end
 		self.waypoints[i].angle = math.deg(self.waypoints[i].yRot)
 		self.waypoints[i].calculatedRadius = i == 1 and math.huge or self:calculateRadius(i)
+		self.waypoints[i].curvature = i == 1 and 0 or 1 / self:calculateSignedRadius(i)
 		if (self:isReverseAt(i) and not self:switchingToForwardAt(i)) or self:switchingToReverseAt(i) then
 			-- X offset must be reversed at waypoints where we are driving in reverse
 			self.waypoints[i].reverseOffset = true
@@ -444,6 +445,7 @@ function Course:enrichWaypointData(startIx)
 			self.waypoints[#self.waypoints - 1].dToHereOnHeadland
 	self.waypoints[#self.waypoints].turnsToHere = self.totalTurns
 	self.waypoints[#self.waypoints].calculatedRadius = math.huge
+	self.waypoints[#self.waypoints].curvature = 0
 	self.waypoints[#self.waypoints].reverseOffset = self:isReverseAt(#self.waypoints)
 	-- now add some metadata for the combines
 	local dToNextTurn, lNextRow, nextRowStartIx = 0, 0, 0
@@ -465,9 +467,13 @@ function Course:enrichWaypointData(startIx)
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
 end
 
-function Course:calculateRadius(ix)
+function Course:calculateSignedRadius(ix)
 	local deltaAngle = getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
-	return math.abs( self:getDistanceToNextWaypoint(ix) / ( 2 * math.sin(deltaAngle / 2 )))
+	return self:getDistanceToNextWaypoint(ix) / ( 2 * math.sin(deltaAngle / 2 ))
+end
+
+function Course:calculateRadius(ix)
+	return math.abs(self:calculateSignedRadius(ix))
 end
 
 --- Is this the same course as otherCourse?
