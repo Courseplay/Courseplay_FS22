@@ -119,7 +119,7 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		return false
 	end
 	local turningRadius = AIUtil.getTurningRadius(vehicle)
-	if turnContext.dx > 2 * turningRadius then
+	if math.abs(turnContext.dx) > 2 * turningRadius then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Next row is too far (%.1f, turning radius is %.1f), no 3 point turn',
 			turnContext.dx, turningRadius)
 		return false

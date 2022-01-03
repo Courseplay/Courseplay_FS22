@@ -333,14 +333,6 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
             self.state = self.states.WORKING
             self:lowerImplements()
         end
-    elseif self.state == self.states.ON_ALIGNMENT_COURSE then
-        if course:getDistanceToLastWaypoint(ix) < 5 then
-            self:debug('alignment after connecting track ended, back to work, first lowering implements.')
-            self.state = self.states.WORKING
-            self:lowerImplements()
-            self.ppc:setNormalLookaheadDistance()
-            self:startRememberedCourse()
-        end
     elseif self.state == self.states.WORKING then
         -- towards the end of the field course make sure the implement reaches the last waypoint
         -- TODO: this needs refactoring, for now don't do this for temporary courses like a turn as it messes up reversing
@@ -365,30 +357,9 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
             self:raiseImplements()
             self.state = self.states.ON_CONNECTING_TRACK
         end
-        if self.course:isOnConnectingTrack(ix) then
-            -- passed a connecting track waypoint
-            -- check transition from connecting track to the up/down rows
-            -- we are close to the end of the connecting track, transition back to the up/down rows with
-            -- an alignment course
-            local d, firstUpDownWpIx = self.course:getDistanceToFirstUpDownRowWaypoint(ix)
-            self:debug('up/down rows start in %d meters, at waypoint %d.', d or -1, firstUpDownWpIx or -1)
-            -- (no alignment if there is a turn generated here)
-            if d < 5 * self.turningRadius and firstUpDownWpIx and not self.course:isTurnEndAtIx(firstUpDownWpIx) then
-                self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
-                local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-                        course, firstUpDownWpIx, math.min(self.frontMarkerDistance, 0)):getCourse()
-                if alignmentCourse then
-                    self:rememberCourse(course, firstUpDownWpIx)
-                    self.ppc:setShortLookaheadDistance()
-                    self:startCourse(alignmentCourse, 1)
-                    self.state = self.states.ON_ALIGNMENT_COURSE
-                else
-                    self:debug('Could not create alignment course to first up/down row waypoint, continue without it')
-                    self.state = self.states.WAITING_FOR_LOWER
-                    self:lowerImplements()
-                end
-            end
-        end
+            self:checkTransitionFromConnectingTrack(ix, course)
+    elseif self.state == self.states.ON_CONNECTING_TRACK then
+        self:checkTransitionFromConnectingTrack(ix, course)
     end
     if course:isLastWaypointIx(ix) then
         self:onLastWaypointPassed()
@@ -484,6 +455,33 @@ function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix, self.vehicle:getAIDirectionNode(), 0)
     self:startCourse(self.course, startIx)
+end
+
+function AIDriveStrategyFieldWorkCourse:checkTransitionFromConnectingTrack(ix, course)
+    if self.course:isOnConnectingTrack(ix) then
+        -- passed a connecting track waypoint
+        -- check transition from connecting track to the up/down rows
+        -- we are close to the end of the connecting track, transition back to the up/down rows with
+        -- an alignment course
+        local d, firstUpDownWpIx = self.course:getDistanceToFirstUpDownRowWaypoint(ix)
+        self:debug('up/down rows start in %d meters, at waypoint %d.', d or -1, firstUpDownWpIx or -1)
+        -- (no alignment if there is a turn generated here)
+        if d < 5 * self.turningRadius and firstUpDownWpIx and not self.course:isTurnEndAtIx(firstUpDownWpIx) then
+            self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
+            local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+                    course, firstUpDownWpIx, math.min(self.frontMarkerDistance, 0)):getCourse()
+            if alignmentCourse then
+                self:rememberCourse(course, firstUpDownWpIx)
+                self.ppc:setShortLookaheadDistance()
+                self:startCourse(alignmentCourse, 1)
+                self.state = self.states.ON_ALIGNMENT_COURSE
+            else
+                self:debug('Could not create alignment course to first up/down row waypoint, continue without it')
+                self.state = self.states.WAITING_FOR_LOWER
+                self:lowerImplements()
+            end
+        end
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------
