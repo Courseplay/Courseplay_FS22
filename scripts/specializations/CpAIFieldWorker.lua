@@ -108,6 +108,10 @@ function CpAIFieldWorker:getCanStartFieldWork(superFunc)
     if AIUtil.hasImplementWithSpecialization(self, Baler) then
         return true
     end
+    -- built in helper can't handle forage harvesters.
+    if AIUtil.hasImplementWithSpecialization(self, Cutter) then
+        return true
+    end
     return false
 end
 
@@ -154,6 +158,8 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
     end
     superFunc(self, ...)
 
+    --- TODO: figure out a good way to handle the insertion or selection of the drive strategies.
+
     if #self.spec_aiFieldWorker.driveStrategies == 0 and AIUtil.hasImplementWithSpecialization(self, Baler) then
         CpUtil.infoVehicle(self, 'Found a baler, install CP baler drive strategy for it')
         local cpDriveStrategy = AIDriveStrategyBalerCourse.new()
@@ -161,7 +167,13 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
         cpDriveStrategy:setAIVehicle(self)
         return
     end
-
+    if #self.spec_aiFieldWorker.driveStrategies == 0 and AIUtil.hasImplementWithSpecialization(self, Cutter) then
+        CpUtil.infoVehicle(self, 'Found a forage cutter, install CP combine drive strategy for it')
+        local cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+        table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
+        cpDriveStrategy:setAIVehicle(self)
+        return
+    end
     -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
     -- our own specialization
     local strategiesToRemove = {}
