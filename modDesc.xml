@@ -51,6 +51,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="Courseplay.lua"/>
 		<sourceFile filename="scripts/CpUtil.lua"/>
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
+		<sourceFile filename="scripts/debug/CourseRecorder.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/courseManager/CourseEvent.lua"/>
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>

@@ -56,6 +56,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
 end
 
 function CpCourseManager.registerEvents(vehicleType)
@@ -80,8 +81,10 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
 
-
     SpecializationUtil.registerFunction(vehicleType, 'getCpLegacyWaypoints', CpCourseManager.getLegacyWaypoints)
+
+    SpecializationUtil.registerFunction(vehicleType, 'cpStartCourseRecorder', CpCourseManager.cpStartCourseRecorder)
+    SpecializationUtil.registerFunction(vehicleType, 'cpStopCourseRecorder', CpCourseManager.cpStopCourseRecorder)
 end
 
 function CpCourseManager:onLoad(savegame)
@@ -90,7 +93,8 @@ function CpCourseManager:onLoad(savegame)
     self.spec_cpCourseManager  = self["spec_" .. specName]
     local spec = self.spec_cpCourseManager 
     spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
- 
+    spec.courseRecorder = CourseRecorder()
+
     spec.courses = {}
     
  --   TODO: make this an instance similar to course plot
@@ -307,4 +311,25 @@ end
 function CpCourseManager:getLegacyWaypoints()
     local spec = self.spec_cpCourseManager 
 	return spec and spec.legacyWaypoints
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Recording
+------------------------------------------------------------------------------------------------------------------------
+function CpCourseManager:onUpdate()
+    local spec = self.spec_cpCourseManager
+    spec.courseRecorder:update()
+end
+
+function CpCourseManager:cpStartCourseRecorder()
+    local spec = self.spec_cpCourseManager
+    spec.courseRecorder:start(self)
+end
+
+function CpCourseManager:cpStopCourseRecorder()
+    local spec = self.spec_cpCourseManager
+    spec.courseRecorder:stop()
+    local recordedCourse = spec.courseRecorder:getRecordedCourse()
+    CpCourseManager.resetCourses(self)
+    CpCourseManager.addCourse(self, recordedCourse)
 end
