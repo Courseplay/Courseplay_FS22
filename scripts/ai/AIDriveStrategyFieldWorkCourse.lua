@@ -60,11 +60,6 @@ end
 
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     self:showAllInfo('Starting field work')
-    if self.frontMarkerDistance < 0 then
-        self:debug('extend course by %.1f m to make sure we do not miss anything when the course ends',
-                -self.frontMarkerDistance)
-        course:extend(-self.frontMarkerDistance)
-    end
 
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
     local alignmentCourse
@@ -345,6 +340,15 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
             self:lowerImplements()
             self.ppc:setNormalLookaheadDistance()
             self:startRememberedCourse()
+        end
+    elseif self.state == self.states.WORKING then
+        -- towards the end of the field course make sure the implement reaches the last waypoint
+        -- TODO: this needs refactoring, for now don't do this for temporary courses like a turn as it messes up reversing
+        if ix > self.course:getNumberOfWaypoints() - 3 and not self.course:isTemporary() then
+            if self.frontMarkerDistance then
+                self:debug('adding offset (%.1f front marker) to make sure we do not miss anything when the course ends', self.frontMarkerDistance)
+                self.aiDriverOffsetZ = -self.frontMarkerDistance
+            end
         end
     end
 end
