@@ -19,7 +19,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   centerMode,
 										   rowDirection,
 										   rowsToSkip,
-										   rowsPerLand
+										   rowsPerLand,
+										   fieldMargin
 )
 
 	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
@@ -72,6 +73,36 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local islandNodes = Island.findIslands(Polygon:new(CourseGenerator.pointsToXy(fieldPolygon)))
 
 	--------------------------------------------------------------------------------------------------------------------
+	-- Field Margin
+	-----------------------------------------------------------------------------------------------------------------------
+	poly = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
+	local centerX, centerZ = poly:getCenter()
+	centerZ = centerZ * -1
+	
+	local fieldPolygonWithMargin = {}
+
+	if fieldMargin > 0 then
+		for i, point in ipairs(fieldPolygon) do
+			local p = shallowCopy(point)
+			if p.x > centerX then
+				p.x = p.x + fieldMargin
+			else
+				p.x = p.x - fieldMargin
+			end
+
+			if p.z > centerZ then
+				p.z= p.z + fieldMargin
+			else
+				p.z = p.z - fieldMargin
+			end
+
+			table.insert(fieldPolygonWithMargin, p)
+		end
+	else
+		fieldPolygonWithMargin = fieldPolygon
+	end
+
+	--------------------------------------------------------------------------------------------------------------------
 	-- General settings
 	-----------------------------------------------------------------------------------------------------------------------
 	local minDistanceBetweenPoints = 0.5
@@ -79,7 +110,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local islandBypassMode = Island.BYPASS_MODE_CIRCLE
 
 	local field = {}
-	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
+	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygonWithMargin))
 	field.boundary:calculateData()
 
 	local status, ok = xpcall(generateCourseForField, function(err)

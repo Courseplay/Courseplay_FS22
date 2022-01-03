@@ -317,6 +317,22 @@ function HeadlandOverlapPercent:init(vehicle)
 	self:set(7)
 end
 
+--- Field Margin
+---@class FieldMargin
+FieldMargin = CpObject(SettingList)
+
+function FieldMargin:init(vehicle)
+	local values, texts = {}, {}
+	for i = 0, 10 do
+		table.insert(values, i)
+		table.insert(texts, string.format('%d m', i))
+	end
+	SettingList.init(self, 'fieldMargin', 'COURSEPLAY_FIELD_MARGIN',
+		'COURSEPLAY_FIELD_MARGIN_TOOLTIP', vehicle,
+		values, texts)
+	self:set(0)
+end
+
 ---@class ShowSeedCalculatorSetting : BooleanSetting
 ShowSeedCalculatorSetting = CpObject(BooleanSetting)
 function ShowSeedCalculatorSetting:init(vehicle)
