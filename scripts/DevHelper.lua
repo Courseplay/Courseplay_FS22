@@ -64,6 +64,8 @@ function DevHelper:update()
 
     self.yRot = math.atan2( lx, lz )
     self.data.yRotDeg = math.deg(self.yRot)
+    local _, yRot, _ = getWorldRotation(self.node)
+    self.data.yRotFromRotation = math.deg(yRot)
     self.data.yRotDeg2 = math.deg(MathUtil.getYRotationFromDirection(lx, lz))
     self.data.x, self.data.y, self.data.z = getWorldTranslation(self.node)
 --    self.data.fieldNum = courseplay.fields:getFieldNumForPosition(self.data.x, self.data.z)

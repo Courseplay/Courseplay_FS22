@@ -582,6 +582,10 @@ function PurePursuitController:getCurrentWaypointPosition()
 	return self:getGoalPointPosition()
 end
 
+function PurePursuitController:getCrossTrackError()
+	return self.crossTrackError
+end
+
 function PurePursuitController:reachedLastWaypoint()
 	return self.relevantWpNode.ix >= self.course:getNumberOfWaypoints()
 end
