@@ -66,7 +66,7 @@ function AIDriveStrategyBalerCourse:startTurn(ix)
             if self.course:isOnConnectingTrack(ix) then
                 self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
                 AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-            elseif self.course:isOnOutermostHeadland(ix) and self.vehicle.cp.settings.turnOnField:is(true) then
+            elseif self.course:isOnOutermostHeadland(ix) and self.settings.turnOnField:getValue() then
                 self:debug('Creating a pocket in the corner so the harvester stays on the field during the turn')
                 self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext,
                         self.course, self:getWorkWidth())
