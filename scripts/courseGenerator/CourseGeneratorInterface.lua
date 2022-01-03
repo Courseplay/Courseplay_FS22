@@ -73,36 +73,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local islandNodes = Island.findIslands(Polygon:new(CourseGenerator.pointsToXy(fieldPolygon)))
 
 	--------------------------------------------------------------------------------------------------------------------
-	-- Field Margin
-	-----------------------------------------------------------------------------------------------------------------------
-	poly = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
-	local centerX, centerZ = poly:getCenter()
-	centerZ = centerZ * -1
-	
-	local fieldPolygonWithMargin = {}
-
-	if fieldMargin > 0 then
-		for i, point in ipairs(fieldPolygon) do
-			local p = shallowCopy(point)
-			if p.x > centerX then
-				p.x = p.x + fieldMargin
-			else
-				p.x = p.x - fieldMargin
-			end
-
-			if p.z > centerZ then
-				p.z= p.z + fieldMargin
-			else
-				p.z = p.z - fieldMargin
-			end
-
-			table.insert(fieldPolygonWithMargin, p)
-		end
-	else
-		fieldPolygonWithMargin = fieldPolygon
-	end
-
-	--------------------------------------------------------------------------------------------------------------------
 	-- General settings
 	-----------------------------------------------------------------------------------------------------------------------
 	local minDistanceBetweenPoints = 0.5
@@ -110,7 +80,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local islandBypassMode = Island.BYPASS_MODE_CIRCLE
 
 	local field = {}
-	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygonWithMargin))
+	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
 	field.boundary:calculateData()
 
 	local status, ok = xpcall(generateCourseForField, function(err)
@@ -122,7 +92,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		minSmoothAngle, maxSmoothAngle, doSmooth,
 		roundCorners, turnRadius,
 		islandNodes,
-		islandBypassMode, centerSettings
+		islandBypassMode, centerSettings, fieldMargin
 	)
 
 	-- return on exception (but continue on not ok as that is just a warning)
