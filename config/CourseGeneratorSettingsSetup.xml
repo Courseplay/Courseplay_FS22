@@ -47,7 +47,7 @@
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4"/>
-		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="2.2" default="0" incremental=".2"/>
+		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-2" max="6" default="0" incremental="0.2"/>
 		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
 		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6"/>
 		<Setting classType="AIParameterSettingList" name="rowDirection" >

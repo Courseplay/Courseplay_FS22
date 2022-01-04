@@ -102,12 +102,28 @@
 function generateCourseForField( field, implementWidth, headlandSettings,
 								 minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside,
 								 turnRadius, islandNodes, islandBypassMode, centerSettings, fieldMargin )
+	CourseGenerator.debug("####### COURSE GENERATOR START ##########################################################")
+	CourseGenerator.debug("Headland mode %s, number of passes %d, center mode %s, min headland turn angle %.1f",
+			CourseGenerator.headlandModeTexts[headlandSettings.mode], headlandSettings.nPasses,
+			CourseGenerator.centerModeTexts[centerSettings.mode], headlandSettings.minHeadlandTurnAngleDeg)
+	CourseGenerator.debug('Width %.1f, headland first %s, clockwise %s. Skip rows %d', implementWidth,
+			tostring(headlandSettings.headlandFirst), tostring(headlandSettings.isClockwise), centerSettings.nRowsToSkip)
 
 	local resultIsOk = true
 
-	field.boundingBox =  field.boundary:getBoundingBox()
 	field.boundary = Polygon:new( field.boundary )
 	field.boundary:calculateData()
+
+	if fieldMargin ~= 0 then
+		CourseGenerator.debug('Applying %.1f field margin', fieldMargin)
+		-- calculate a headland track inwards (fieldMargin > 0) or outwards (fieldMargin < 0) to use as the new field
+		-- boundary.
+		field.boundary = calculateHeadlandTrack(field.boundary, CourseGenerator.HEADLAND_MODE_NORMAL, field.boundary.isClockwise,
+			math.abs(fieldMargin), minDistanceBetweenPoints, math.rad( 25 ), math.rad( 60 ), 0,
+				true, fieldMargin > 0, {}, 1)
+	end
+
+	field.boundingBox =  field.boundary:getBoundingBox()
 
 	field.smallIslands = {}
 	field.bigIslands = {}
@@ -121,17 +137,11 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 
 	field.headlandTracks = {}
 
-	CourseGenerator.debug("####### COURSE GENERATOR START ##########################################################")
-	CourseGenerator.debug("Headland mode %s, number of passes %d, center mode %s, min headland turn angle %.1f",
-			CourseGenerator.headlandModeTexts[headlandSettings.mode], headlandSettings.nPasses,
-			CourseGenerator.centerModeTexts[centerSettings.mode], headlandSettings.minHeadlandTurnAngleDeg)
-	CourseGenerator.debug('Width %.1f, headland first %s, clockwise %s. Skip rows %d', implementWidth,
-			tostring(headlandSettings.headlandFirst), tostring(headlandSettings.isClockwise), centerSettings.nRowsToSkip)
 
 	if headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NORMAL or
 			headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NARROW_FIELD then
 		generateAllHeadlandTracks(field, implementWidth, headlandSettings, centerSettings,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside, turnRadius, fieldMargin)
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside, turnRadius)
 
 		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
 
@@ -140,7 +150,9 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 	elseif headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NONE then
 		-- no headland pass wanted, still generate a dummy one on the field boundary so
 		-- we have something to work with when generating the up/down tracks
-		field.headlandTracks[ 1 ] = calculateHeadlandTrack( field.boundary, CourseGenerator.HEADLAND_MODE_NORMAL, field.boundary.isClockwise, 0, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, not fromInside, nil, nil, fieldMargin )
+		field.headlandTracks[ 1 ] = calculateHeadlandTrack( field.boundary, CourseGenerator.HEADLAND_MODE_NORMAL,
+				field.boundary.isClockwise, 0, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
+				0, doSmooth, not fromInside, nil, nil)
 		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
 		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks( field.headlandTracks, field.bigIslands,
 			implementWidth, 0, centerSettings )
@@ -150,7 +162,7 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		-- start with rows over the field with no headland.
 		local boundary
 		field.headlandPath, boundary = generateTwoSideHeadlands( field.boundary, field.bigIslands,
-			implementWidth, headlandSettings, centerSettings, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, fieldMargin)
+			implementWidth, headlandSettings, centerSettings, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
 		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks({ boundary }, field.bigIslands,
 			implementWidth, 0, centerSettings )
 	end

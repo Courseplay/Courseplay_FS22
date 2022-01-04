@@ -141,7 +141,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Enlarge field size by the margin to reduce unworked edges" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Řádky k přeskočení" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů" />
