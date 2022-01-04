@@ -144,7 +144,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"	text="Перекрытие проходов поворотных полос в процентах от рабочей ширины." />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"				text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"				text="Enlarge field size by the margin to reduce unworked edges" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"				text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"					text="Пропускать проходов" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"				text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе." />
