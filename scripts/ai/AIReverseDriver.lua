@@ -110,25 +110,8 @@ function AIReverseDriver:getDriveData()
 
 		lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
 	else
-		lxTractor, lzTractor = AIVehicleUtil.getDriveDirection(tractorNode, xTipper, yTipper, zTipper)
-		self:showDirection(tractorNode, lxTractor, lzTractor, 1, 1, 0)
-
-		local rotDelta = self.reversingImplement.reversingProperties.nodeDistance * 0.5
-		local trailerToWaypointAngle = self:getLocalYRotationToPoint(trailerNode, tx, yTipper, tz, -1) * rotDelta
-
-
-		trailerToWaypointAngle = MathUtil.clamp(trailerToWaypointAngle, -math.rad(90), math.rad(90))
-
-		local tractorToTrailerAngle = self:getLocalYRotationToPoint(tractorNode, xTipper, yTipper, zTipper, -1)
-
-		angleDiff = (tractorToTrailerAngle - trailerToWaypointAngle) * (1 + rotDelta)
-
-		-- If we only have steering axle on the worktool and they turn when reversing, we need to steer a lot more to counter this.
-		if self.reversingImplement.reversingProperties.steeringAxleUpdateBackwards then
-			angleDiff = angleDiff * 4
-		end
-
-		angleDiff = self:calculateHitchAngle(tractorNode, trailerNode)
+		local crossTrackError, orientationError, curvatureError, currentHitchAngle = self:calculateErrors(tractorNode, trailerNode)
+		angleDiff = self:calculateHitchCorrectionAngle(crossTrackError, orientationError, curvatureError, currentHitchAngle)
 		angleDiff = MathUtil.clamp(angleDiff, -maxTractorAngle, maxTractorAngle)
 
 		lx, lz = MathUtil.getDirectionFromYRotation(angleDiff)
@@ -199,24 +182,67 @@ function AIReverseDriver:setReversingProperties(implement)
 			tostring(implement.reversingProperties.isPivot), tostring(implement.reversingProperties.frontNode))
 end
 
-function AIReverseDriver:calculateHitchAngle(tractorNode, trailerNode)
+--- The reversing algorithm here is based on the papers:
+--- 	Peter Ridley and Peter Corke. Load haul dump vehicle kinematics and control.
+--- 		Journal of dynamic systems, measurement, and control, 125(1):54–59, 2003.
+--- and
+---		Amro Elhassan. Autonomous driving system for reversing an articulated vehicle, 2015
 
+--- Calculate the path following errors (also called path disturbance inputs in the context of a controller)
+function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
+
+	-- PPC already has the cross track error (lateral error)
 	local crossTrackError = self.ppc:getCrossTrackError()
+
+	-- Calculate the orientation error, the angle between the trailers current direction and
+	-- the path direction
 	local currentWp = self.ppc:getCurrentWaypoint()
-	local referenceAngle = currentWp.yRot
+	local referencePathAngle = currentWp.yRot
+
 	local dx, _, dz = localDirectionToWorld(trailerNode, 0, 0, -1)
 	local trailerAngle = MathUtil.getYRotationFromDirection(dx, dz)
 
-	local orientationError = getDeltaAngle(trailerAngle, referenceAngle)
+	local orientationError = getDeltaAngle(trailerAngle, referencePathAngle)
 
+	-- The curvature (1/r) error is between the curvature of the path and the curvature of the tractor-trailer.
+	-- This is really needed only when we are trying to follow a curved path in reverse
 	local _, tractorAngle, _ = getWorldRotation(tractorNode)
 	dx, _, dz = localDirectionToWorld(tractorNode, 0, 0, -1)
 	tractorAngle = MathUtil.getYRotationFromDirection(dx, dz)
 
 	local currentHitchAngle = getDeltaAngle(tractorAngle, trailerAngle)
+
 	local curvature = ( 2 * math.sin(currentHitchAngle / 2 )) / calcDistanceFrom(tractorNode, trailerNode)
 	local curvatureError = currentWp.curvature - curvature
-	local hitchAngle = -0.2 * crossTrackError + 0.4 * orientationError + 0.1 * curvatureError
+
+	return crossTrackError, orientationError, curvatureError, currentHitchAngle
+end
+
+--- Based on the current errors, calculate the required correction (in controller terms, use different gains for
+--- different disturbances to calculate the controller's output, which in our case is just an angle the tractor
+--- needs to drive to, in the tractor's local coordinate system.)
+function AIReverseDriver:calculateHitchCorrectionAngle(crossTrackError, orientationError, curvatureError, currentHitchAngle)
+
+	-- the following constants must be tuned based on experiments.
+
+	-- base cross track error gain. 0.6-0.7 for longer implements, 0.5 for shorter ones, should be adjusted based on
+	-- the steering length
+	local kXeBase = -0.5
+	-- base orientation error gain
+	local kOeBase = 6
+	-- base curvature error gain. 0 for now, as currently we only drive straight reverse
+	local kCeBase = 0
+
+	-- gain correction
+	local gainCorrection = 1.5
+
+	local hitchAngle = gainCorrection * (
+					kXeBase * crossTrackError +
+					kOeBase * orientationError +
+					kCeBase * curvatureError
+	)
+	hitchAngle = MathUtil.clamp(hitchAngle, -math.rad(35), math.rad(35))
+
 	local correctionAngle = -(hitchAngle - currentHitchAngle)
 
 	local text = string.format('xte=%.1f oe=%.1f ce=%.1f current=%.1f reference=%.1f correction=%.1f',
