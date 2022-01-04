@@ -339,7 +339,7 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
         if ix > self.course:getNumberOfWaypoints() - 3 and not self.course:isTemporary() then
             if self.frontMarkerDistance then
                 self:debug('adding offset (%.1f front marker) to make sure we do not miss anything when the course ends', self.frontMarkerDistance)
-                self.aiDriverOffsetZ = -self.frontMarkerDistance
+                self.aiOffsetZ = -self.frontMarkerDistance
             end
         end
     end
