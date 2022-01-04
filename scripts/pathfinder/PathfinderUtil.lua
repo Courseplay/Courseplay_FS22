@@ -299,7 +299,9 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 					'pathfinder colliding shapes %s with %s at x = %.1f, z = %.1f, (%.1fx%.1f), yRot = %d',
 					self.collidingShapesText, vehicleData.name, x, z, width, length, math.deg(yRot))
     end
-    DebugUtil.drawOverlapBox(x, y, z, xRot, yRot, zRot, width, 1, length, 100, 0, 0)
+    if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER) then
+        DebugUtil.drawOverlapBox(x, y, z, xRot, yRot, zRot, width, 1, length, 100, 0, 0)
+    end
 
     return self.collidingShapes
 end
