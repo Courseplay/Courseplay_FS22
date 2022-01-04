@@ -108,7 +108,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.centerMode:getValue(),
 			settings.rowDirection:getValue(),
 			settings.rowsToSkip:getValue(),
-			settings.rowsPerLand:getValue()
+			settings.rowsPerLand:getValue(),
+			settings.fieldMargin:getValue()
 	)
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then

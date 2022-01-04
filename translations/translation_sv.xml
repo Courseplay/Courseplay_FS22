@@ -142,11 +142,12 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vändtegens överlapp" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Överlappa vändtegens spår med så många procent av arbetsbredden" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Enlarge field size by the margin to reduce unworked edges" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rader att hoppa över" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rader att hoppa över när du byter till nästa Upp/Ner rad" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rader per land" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="När fältcentrum är 'Lands' är det här många rader i varje block" />
-
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Vändtegens riktining" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Ska fordonet köra medurs eller moturs på vändtegen" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="medurs" />

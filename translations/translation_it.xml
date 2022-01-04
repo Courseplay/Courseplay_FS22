@@ -139,6 +139,8 @@
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sovrapposizione fine campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sovrapposizione delle traccie a fine campo come percentuale della larghezza di lavoro" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Enlarge field size by the margin to reduce unworked edges" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="File da saltare" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="File da saltare quando si passa alla linea Su/Giù successiva" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Righe per terra" />

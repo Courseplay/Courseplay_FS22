@@ -142,6 +142,8 @@
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Wendakker overlap" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Wendakkersporen overlappen als percentage van werkbreedte" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Enlarge field size by the margin to reduce unworked edges" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rijen om over te slaan" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rijen die moeten worden overgeslagen bij het wisselen naar de volgende rij omhoog/omlaag" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rijen per veldsectie" />
