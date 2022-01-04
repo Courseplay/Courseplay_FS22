@@ -88,7 +88,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.centerMode:getValue(),
 			settings.rowDirection:getValue(),
 			settings.rowsToSkip:getValue(),
-			settings.rowsPerLand:getValue()
+			settings.rowsPerLand:getValue(),
+			settings.fieldMargin:getValue()
 	)
 	if not ok then
 		return false, 'could not generate course'

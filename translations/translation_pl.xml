@@ -139,6 +139,10 @@
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Nakładka na uwrociach" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Nakładanie się ścieżki na uwrociach jako procent szerokości roboczej." />
+
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Enlarge field size by the margin to reduce unworked edges" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rzędy do pominięcia" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem." />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rzędy na spiralę od środka" />

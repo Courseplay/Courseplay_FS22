@@ -19,7 +19,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   centerMode,
 										   rowDirection,
 										   rowsToSkip,
-										   rowsPerLand
+										   rowsPerLand,
+										   fieldMargin
 )
 
 	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
@@ -91,7 +92,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		minSmoothAngle, maxSmoothAngle, doSmooth,
 		roundCorners, turnRadius,
 		islandNodes,
-		islandBypassMode, centerSettings
+		islandBypassMode, centerSettings, fieldMargin
 	)
 
 	-- return on exception (but continue on not ok as that is just a warning)

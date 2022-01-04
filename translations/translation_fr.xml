@@ -139,6 +139,10 @@
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail." />
+
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Enlarge field size by the margin to reduce unworked edges" />
+		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour." />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rangs par blocs" />
