@@ -49,6 +49,8 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     -- course offsets dynamically set by the AI and added to all tool and other offsets
     self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_FIELDWORK
+    ---@type ImplementController[]
+    self.controllers = {}
     return self
 end
 
@@ -105,6 +107,7 @@ end
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
     self:updateFieldworkOffset()
+    self:updateImplementControllers()
 
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, maxSpeed
@@ -192,6 +195,31 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
+    if AIUtil.hasImplementWithSpecialization(vehicle, Baler) then
+        local balerController = BalerController(vehicle)
+        balerController:setDisabledStates({
+            self.states.ON_CONNECTING_TRACK,
+            self.states.TEMPORARY,
+            self.states.TURNING
+        })
+        table.insert(self.controllers, balerController)
+    end
+end
+
+function AIDriveStrategyFieldWorkCourse:updateImplementControllers()
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
+            -- we don't know yet if we even need anything from the controller other than the speed.
+            local _, _, _, maxSpeed = controller:update()
+            if maxSpeed then
+                self:setMaxSpeed(maxSpeed)
+            end
+        end
+    end
+end
+
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementStartLine()
