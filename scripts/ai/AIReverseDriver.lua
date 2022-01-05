@@ -222,12 +222,12 @@ end
 --- different disturbances to calculate the controller's output, which in our case is just an angle the tractor
 --- needs to drive to, in the tractor's local coordinate system.)
 function AIReverseDriver:calculateHitchCorrectionAngle(crossTrackError, orientationError, curvatureError, currentHitchAngle)
-
+	local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
 	-- the following constants must be tuned based on experiments.
 
 	-- base cross track error gain. 0.6-0.7 for longer implements, 0.5 for shorter ones, should be adjusted based on
 	-- the steering length
-	local kXeBase = -0.5
+	local kXeBase = -0.5 - steeringLength / 50
 	-- base orientation error gain
 	local kOeBase = 6
 	-- base curvature error gain. 0 for now, as currently we only drive straight reverse

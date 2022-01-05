@@ -66,7 +66,7 @@ function AITurn:init(vehicle, driveStrategy, ppc, turnContext, workWidth, name)
 	self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
 	---@type TurnContext
 	self.turnContext = turnContext
-	self.reversingImplement, self.steeringLength = TurnManeuver.getSteeringParameters(self.vehicle)
+	self.reversingImplement, self.steeringLength = AIUtil.getSteeringParameters(self.vehicle)
 	self.state = self.states.INITIALIZING
 	self.name = name or 'AITurn'
 end
@@ -128,7 +128,7 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Not all attached implements allow for reversing, use generated course turn')
 		return false
 	end
-	local reversingImplement, _ = TurnManeuver.getSteeringParameters(vehicle)
+	local reversingImplement, _ = AIUtil.getSteeringParameters(vehicle)
 	if reversingImplement then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Have a towed implement, use generated course turn')
 		return false

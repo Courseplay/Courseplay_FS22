@@ -125,6 +125,16 @@ function AIUtil.getTowBarLength(vehicle)
 	return towBarLength
 end
 
+---@return boolean, number true if this is a towed reversing implement/steeringLength
+function AIUtil.getSteeringParameters(vehicle)
+	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if not implement then
+		return false, 0
+	else
+		return true, AIUtil.getTowBarLength(vehicle)
+	end
+end
+
 function AIUtil.getOffsetForTowBarLength(r, towBarLength)
 	local rTractor = math.sqrt( r * r + towBarLength * towBarLength ) -- the radius the tractor should be on
 	return rTractor - r
