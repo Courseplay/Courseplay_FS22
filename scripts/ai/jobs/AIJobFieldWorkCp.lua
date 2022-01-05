@@ -127,3 +127,7 @@ if g_currentMission then
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)
+
+function AIJobFieldWorkCp:getIsAvailableForVehicle(vehicle)
+	return vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork()
+end

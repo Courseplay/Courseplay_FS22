@@ -35,12 +35,11 @@ end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
+    SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CpAIFieldWorker.getStartAIJobText)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartFieldWork', CpAIFieldWorker.getCanStartFieldWork)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
 end
 ------------------------------------------------------------------------------------------------------------------------
@@ -79,7 +78,7 @@ function CpAIFieldWorker:startStopDriver()
 	else
         if self:hasCpCourse() then 
             self:updateAIFieldWorkerImplementData()
-            if self:getCanStartFieldWork() then
+            if self:getCanStartCpFieldWork() then
                 spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
                 spec.cpJob:setValues()
              --   local success = spec.cpJob:validate(false)
@@ -99,11 +98,8 @@ function CpAIFieldWorker:startStopDriver()
 	end 
 end
 
-function CpAIFieldWorker:getCanStartFieldWork(superFunc)
-    local canStart = superFunc(self)
-    if canStart then
-        return true
-    end
+
+function CpAIFieldWorker:getCanStartCpFieldWork()
     -- built in helper can't handle it, but we may be able to ...
     if AIUtil.hasImplementWithSpecialization(self, Baler) then
         return true
@@ -112,7 +108,7 @@ function CpAIFieldWorker:getCanStartFieldWork(superFunc)
     if AIUtil.hasImplementWithSpecialization(self, Cutter) then
         return true
     end
-    return false
+    return self:getCanStartFieldWork()
 end
 
 --- Makes sure the "H" key for helper starting, starts the cp job and not the giants default job.
@@ -134,25 +130,13 @@ function CpAIFieldWorker:getStartableAIJob(superFunc,...)
     return superFunc(self,...)
 end
 
-function CpAIFieldWorker:getStartAIJobText(superFunc,...)
-    local text = superFunc(self,...)
-	if self:getHasStartableAIJob() and self:hasCpCourse() then
-        return text.."(CP)"
-    end
-    return text
-end
-
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
 function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
     local job = self:getJob()
     if not job:isa(AIJobFieldWorkCp) then
-        if not self:getFieldWorkCourse() then
-            CpUtil.infoVehicle(self, 'This is not a CP field work job, run the built-in helper...')
-            return superFunc(self, ...)
-        else
-            CpUtil.infoVehicle(self, 'The vehicle has a CP field work course, start the CP AI driver.')
-        end
+        CpUtil.infoVehicle(self, 'Never use the default field work key binding for cp. Continue with default configurations.')
+        return superFunc(self, ...)
     else
         CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     end
