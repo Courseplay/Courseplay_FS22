@@ -47,12 +47,13 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
         -- no manual config, check AI markers
         width = WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     end
-    if not width then
 
+    if not width then
         -- no AI markers, check work areas
         width = WorkWidthUtil.getWorkAreaWidth(object, logPrefix)
     end
-    local implements = object:getAttachedImplements()
+
+    local implements = object.getAttachedImplements and object:getAttachedImplements()
     if implements then
         -- get width of all implements
         for _, implement in ipairs(implements) do
