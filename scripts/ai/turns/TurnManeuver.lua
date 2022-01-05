@@ -24,16 +24,6 @@ function TurnManeuver.getTurnControl(course, ix, control)
 	return controls and controls[control]
 end
 
----@return boolean, number true if this is a towed reversing implement/steeringLength
-function TurnManeuver.getSteeringParameters(vehicle)
-	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
-	if not implement then
-		return false, 0
-	else
-		return true, AIUtil.getTowBarLength(vehicle)
-	end
-end
-
 ---@param vehicle table only used for debug, to get the name of the vehicle
 ---@param turnContext TurnContext
 ---@param vehicleDirectionNode number Giants node, pointing in the vehicle's front direction
