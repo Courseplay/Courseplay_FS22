@@ -72,6 +72,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		pageAI.currentHotspot = nil
 	end
 	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
+
+	self.ingameMapBase.drawHotspotsOnly = Utils.appendedFunction(self.ingameMapBase.drawHotspotsOnly , CpInGameMenuAIFrameExtended.draw)
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
@@ -211,15 +213,13 @@ InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onSt
 
 function CpInGameMenuAIFrameExtended:draw()	
 	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettings().showsAllActiveCourses:getValue()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.selectedHotspot)
 	if CoursePlotAlwaysVisible then
 		local vehicles = CpCourseManager.getValidVehicles()
 		for i,v in pairs(vehicles) do 
-			v:drawCpCoursePlot(self.ingameMapBase)
+			v:drawCpCoursePlot(self)
 		end
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
-		vehicle:drawCpCoursePlot(self.ingameMapBase)
+		vehicle:drawCpCoursePlot(self)
 	end
 end
-InGameMenuAIFrame.draw = Utils.appendedFunction(InGameMenuAIFrame.draw, CpInGameMenuAIFrameExtended.draw)
-
