@@ -61,7 +61,8 @@ function BalerController:handleBaler()
             maxSpeed = 0
             --baler needs refilling of some sort (net,...)
             if self.balerSpec.unloadingState == Baler.UNLOADING_CLOSED then
-                self:setInfoText('NEEDS_REFILLING')
+                -- TODO: info texts no notify user
+                self:debug('NEEDS_REFILLING')
             end
         end
     end
