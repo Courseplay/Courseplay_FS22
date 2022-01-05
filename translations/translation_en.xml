@@ -11,7 +11,6 @@
 		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
 		<text name="CP_error_not_on_field"																text="Target is not on a field." />
 
-
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start at:" />
 		<text name="CP_jobParameters_startAt_title"														text="Start at:" />
@@ -247,6 +246,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Shows debug channel menu yes/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open/close vehicle setting display"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 	</texts>
 </l10n>

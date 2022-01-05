@@ -24,13 +24,13 @@ function CpAIFieldWorker.register(typeManager,typeName,specializations)
 end
 
 function CpAIFieldWorker.registerEventListeners(vehicleType)
---	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIFieldWorker)
+	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIFieldWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpAIFieldWorker)
 --    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIFieldWorker)
-
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIFieldWorker)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
@@ -67,6 +67,43 @@ end
 function CpAIFieldWorker:onLeaveVehicle(isControlling)
    
 end
+
+function CpAIFieldWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
+	if self.isClient then
+		local spec = self.spec_cpAIFieldWorker
+
+		self:clearActionEventsTable(spec.actionEvents)
+
+        if self.spec_aiJobVehicle.supportsAIJobs and self:getIsActiveForInput(true, true) then
+			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_START_STOP, self, CpAIFieldWorker.startStopDriver, false, true, false, true, nil)
+            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+            CpAIFieldWorker.updateActionEvents(self)
+		end
+	end
+end
+
+function CpAIFieldWorker:updateActionEvents()
+    local spec = self.spec_cpAIFieldWorker
+    local giantsSpec = self.spec_aiJobVehicle
+	local actionEvent = spec.actionEvents[InputAction.CP_START_STOP]
+
+	if actionEvent ~= nil and self.isActiveForInputIgnoreSelectionIgnoreAI then
+		if self:getShowAIToggleActionEvent() and not self:getIsAIActive() then
+
+			g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.hireEmployee)
+	
+
+			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
+		else
+			g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
+		end
+	end
+end
+
+function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
+	CpAIFieldWorker.updateActionEvents(self)
+end
+
 
 --- Directly starts a cp driver or stops a currently active job.
 function CpAIFieldWorker:startStopDriver()
