@@ -529,6 +529,7 @@ end
 function CourseTurn:startTurn()
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
 	if (canTurnOnField or self.settings.turnOnField:getValue()) and
+			not self.turnContext:isHeadlandCorner() and
 			not self.turnContext:isSimpleWideTurn(self.turningRadius * 2, self.workWidth) then
 		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
 		-- but we don't have enough space and have to reverse, fall back to the generated turns
