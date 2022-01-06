@@ -36,7 +36,12 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
     if not width then
         if object.getVariableWorkWidth then 
             --- Gets the variable work width to the left + to the right.
-            width = math.abs(object:getVariableWorkWidth(true)) + math.abs(object:getVariableWorkWidth())
+            local w1,_,isValid1 = object:getVariableWorkWidth(true) 
+            local w2,_,isValid2 =    object:getVariableWorkWidth()
+            if isValid1 and isValid2 then 
+                width = math.abs(w1) + math.abs(w2)
+                WorkWidthUtil.debug(object,logPrefix,'setting variable work width of %.1f.',width)
+            end
         end
     end
 
