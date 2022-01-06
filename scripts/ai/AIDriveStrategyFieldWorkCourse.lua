@@ -205,6 +205,15 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
         })
         table.insert(self.controllers, balerController)
     end
+    if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
+        local baleWrapperController = BaleWrapperController(vehicle)
+        baleWrapperController:setDisabledStates({
+            self.states.ON_CONNECTING_TRACK,
+            self.states.TEMPORARY,
+            self.states.TURNING
+        })
+        table.insert(self.controllers, baleWrapperController)
+    end
 end
 
 function AIDriveStrategyFieldWorkCourse:updateImplementControllers()
