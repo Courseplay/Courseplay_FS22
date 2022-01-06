@@ -19,7 +19,6 @@ function CpCourseGeneratorSettings.prerequisitesPresent(specializations)
 end
 
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
---	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpCourseGeneratorSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpCourseGeneratorSettings)
@@ -65,6 +64,17 @@ function CpCourseGeneratorSettings:onPreDetachImplement()
     local spec = self.spec_cpCourseGeneratorSettings
     spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
 end
+
+--- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
+function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
+    --- Object could be an implement, so make sure we use the root vehicle.
+    local self = object.rootVehicle
+    if self:getIsSynchronized() and self.spec_cpCourseGeneratorSettings then
+        local spec = self.spec_cpCourseGeneratorSettings
+        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    end
+end
+VariableWorkWidth.updateSections = Utils.appendedFunction(VariableWorkWidth.updateSections,CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged)
 
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()

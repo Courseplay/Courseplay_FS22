@@ -34,6 +34,13 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
     local width = g_vehicleConfigurations:get(object, 'workingWidth')
 
     if not width then
+        if object.getVariableWorkWidth then 
+            --- Gets the variable work width to the left + to the right.
+            width = math.abs(object:getVariableWorkWidth(true)) + math.abs(object:getVariableWorkWidth())
+        end
+    end
+
+    if not width then
         --- Gets the work width if the object is a shield.
      --   width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
     end

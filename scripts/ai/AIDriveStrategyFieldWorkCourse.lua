@@ -667,3 +667,21 @@ function AIDriveStrategyFieldWorkCourse:showAllInfo(note)
         self:debug(' - %s', CpUtil.getName(implement.object))
     end
 end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Overwrite implement functions, to enable a different cp functionality compared to giants fieldworker.
+--- TODO: might have to find a better solution for these kind of problems.
+-----------------------------------------------------------------------------------------------------------------------
+
+local function emptyFunction(object,superFunc,...)
+    local rootVehicle = object.rootVehicle
+    if rootVehicle.getJob then 
+        if rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+            return
+        end
+    end
+    return superFunc(object,...)
+end
+--- Makes sure the automatic work width isn't being reset.
+VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart,emptyFunction)
+VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart,emptyFunction)
