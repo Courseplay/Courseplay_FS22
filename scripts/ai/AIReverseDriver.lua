@@ -125,8 +125,6 @@ function AIReverseDriver:getDriveData()
 	lx, lz = -lx * self.ppc:getLookaheadDistance(), -lz * self.ppc:getLookaheadDistance()
 	-- AIDriveStrategy wants a global position to drive to (which it later converts to local, but whatever...)
 	local gx, _, gz = localToWorld(self.vehicle:getAIDirectionNode(), lx, 0, lz)
-	DebugUtil.drawDebugLine(gx, ty, gz, gx, ty + 3, gz, 1, 0, 0)
-	-- TODO_22 reverse speed
 	return gx, gz, false, self.settings.reverseSpeed:getValue()
 end
 
@@ -245,11 +243,12 @@ function AIReverseDriver:calculateHitchCorrectionAngle(crossTrackError, orientat
 
 	local correctionAngle = -(hitchAngle - currentHitchAngle)
 
-	local text = string.format('xte=%.1f oe=%.1f ce=%.1f current=%.1f reference=%.1f correction=%.1f',
-			crossTrackError, math.deg(orientationError), curvatureError, math.deg(currentHitchAngle), math.deg(hitchAngle), math.deg(correctionAngle))
-	print(text)
-	setTextColor(1, 1, 0, 1)
-	renderText(0.3, 0.3, 0.015, text)
+	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
+		local text = string.format('xte=%.1f oe=%.1f ce=%.1f current=%.1f reference=%.1f correction=%.1f',
+				crossTrackError, math.deg(orientationError), curvatureError, math.deg(currentHitchAngle), math.deg(hitchAngle), math.deg(correctionAngle))
+		setTextColor(1, 1, 0, 1)
+		renderText(0.3, 0.3, 0.015, text)
+	end
 
 	return correctionAngle
 end
