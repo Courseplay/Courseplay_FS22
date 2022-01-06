@@ -38,15 +38,6 @@ function BalerController:update()
     return nil, nil, nil, maxSpeed
 end
 
-function BalerController:isHandlingAllowed()
-    if self.state == self.states.ON_CONNECTING_TRACK or
-            self.state == self.states.TEMPORARY or self.state == self.states.TURNING then
-        return false
-    end
-    return true
-end
-
---- TODO: Automatic baler are currently slowing down.
 function BalerController:handleBaler()
     local maxSpeed
 
