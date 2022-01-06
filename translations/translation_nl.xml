@@ -9,8 +9,8 @@
 		
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Ga voor hulp, bugrapporten of patch-opmerkingen naar: https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"																	text="Genereer een koers voordat u aan de taak begint." />
+		<text name="CP_error_not_on_field"																text="Het doelwit bevindt zich niet op een veld." />
 
 
 	<!-- AI job menu -->
@@ -39,7 +39,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Zaaimachine instellingen"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multi tool instellingen"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Snelheden"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Foutopsporings instellingen"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Koers tonen"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Toon de huidige koers van het voertuig"/>
@@ -54,7 +54,7 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Laat de padvinder, indien van toepassing, koersen genereren met achteruitrijden"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Klap werktuigen aan het einde van de koers in"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Enables/disables automatic folding of implements at the end of the course."/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Schakelt automatisch inklappen van werktuigen aan het einde van de koers in/uit."/>
 
 		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Werktuig heffen"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Werktuig vroeg of laat heffen aan het begin van een draai."/>
@@ -124,8 +124,8 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Achteruit"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale snelheid tijdens het achteruitrijden"/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Voertuig foutopsporing"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Schakelt foutopsporing in/uit voor dit voertuig."/>
 
 
 	<!-- Vehicle course generator settings -->
@@ -138,12 +138,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Aantal wendakkers" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Aantal wendakkers" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Wendakker overlap" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Wendakkersporen overlappen als percentage van werkbreedte" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rijen om over te slaan" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rijen die moeten worden overgeslagen bij het wisselen naar de volgende rij omhoog/omlaag" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rijen per veldsectie" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Als de veld middenpunt modus 'Veldsecties' is, zitten er zoveel rijen in elk blok" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Wendakker richting" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Moet het voertuig op de wendakker met de klok mee of tegen de klok in rijden?" />
@@ -200,9 +200,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Toont alle actieve koersen op de in-game kaart."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="no course"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
+		<text name="CP_courseManager_title"																text="KoersManager(%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="geen koers"/>
+		<text name="CP_courseManager_temporary_course"													text="tijdelijke koers"/>
 
 		<text name="CP_courseManager_change_mode"														text="Modus wijzigen"/>
 
@@ -231,7 +231,7 @@
 		<text name="CP_courseManager_basicSettings"														text="Koers interactie."/>
 		<text name="CP_courseManager_advancedSettings"													text="Wijzig bestanden."/>
 
-		<text name="CP_courseManager_activate"															text="Activate"/>
+		<text name="CP_courseManager_activate"															text="Activeren"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
@@ -250,6 +250,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Selecteer het vorige debug-kanaal."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Huidige debug-kanaal wijzigen."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Toont debug kanaalmenu ja/nee."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Weergave voertuiginstellingen openen/sluiten"/>
 	</texts>
 </l10n>
