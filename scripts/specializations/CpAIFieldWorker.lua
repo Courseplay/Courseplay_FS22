@@ -176,6 +176,9 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
     if AIUtil.hasImplementWithSpecialization(self, Baler) then
         return true
     end
+    if AIUtil.hasImplementWithSpecialization(self, BaleWrapper) then
+        return true
+    end
     -- built in helper can't handle forage harvesters.
     if AIUtil.hasImplementWithSpecialization(self, Cutter) then
         return true
