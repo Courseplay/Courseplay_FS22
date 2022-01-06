@@ -181,19 +181,22 @@ function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
 
     --- TODO: figure out a good way to handle the insertion or selection of the drive strategies.
 
-    if #self.spec_aiFieldWorker.driveStrategies == 0 and AIUtil.hasImplementWithSpecialization(self, Baler) then
-        CpUtil.infoVehicle(self, 'Found a baler, install CP baler drive strategy for it')
-        local cpDriveStrategy = AIDriveStrategyBalerCourse.new()
-        table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
-        cpDriveStrategy:setAIVehicle(self)
-        return
-    end
-    if #self.spec_aiFieldWorker.driveStrategies == 0 and AIUtil.hasImplementWithSpecialization(self, Cutter) then
-        CpUtil.infoVehicle(self, 'Found a forage cutter, install CP combine drive strategy for it')
-        local cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-        table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
-        cpDriveStrategy:setAIVehicle(self)
-        return
+    if #self.spec_aiFieldWorker.driveStrategies == 0 then
+        CpUtil.infoVehicle(self, 'The built-in AI helper is not able to handle these implements, see if Courseplay can.')
+        if AIUtil.hasImplementWithSpecialization(self, Baler) then
+            CpUtil.infoVehicle(self, 'Found a baler, install CP drive strategy for it')
+            local cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
+            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
+            cpDriveStrategy:setAIVehicle(self)
+            return
+        end
+        if AIUtil.hasImplementWithSpecialization(self, Cutter) then
+            CpUtil.infoVehicle(self, 'Found a forage cutter, install CP combine drive strategy for it')
+            local cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
+            cpDriveStrategy:setAIVehicle(self)
+            return
+        end
     end
     -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
     -- our own specialization

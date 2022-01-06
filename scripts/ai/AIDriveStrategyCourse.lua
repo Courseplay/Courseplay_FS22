@@ -77,6 +77,7 @@ end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
+    self:initializeImplementControllers(vehicle)
     ---@type FillLevelManager
     self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
@@ -120,6 +121,12 @@ end
 function AIDriveStrategy:start(course, startIx)
     self:startCourse(course, startIx)
     self.state = self.states.INITIAL
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Implement handling
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
