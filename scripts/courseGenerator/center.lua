@@ -189,7 +189,7 @@ function findBestTrackAngle( polygon, islands, width, distanceFromBoundary, cent
 	return b.angle, b.nTracks, b.nBlocks, b.smallBlockScore == 0 or centerSettings.useBestAngle
 end
 
-local function addWaypointsToBlocks(blocks, width, extendTracks)
+local function addWaypointsToBlocks(blocks, width, nHeadlandPasses)
 	-- using a while loop as we'll remove blocks if they have no tracks
 	local nTotalTracks = 0
 	local i = 1
@@ -197,7 +197,7 @@ local function addWaypointsToBlocks(blocks, width, extendTracks)
 		local block = blocks[i]
 		nTotalTracks = nTotalTracks + #block
 		CourseGenerator.debug( "Block %d has %d tracks", i, #block )
-		block.tracksWithWaypoints = addWaypointsToTracks( block, width, extendTracks )
+		block.tracksWithWaypoints = addWaypointsToTracks( block, width, nHeadlandPasses )
 		block.covered = false
 		-- we may end up with blocks without tracks in case we did not find a single track
 		-- with at least two waypoints. Now remove those blocks
@@ -229,14 +229,10 @@ end
 --- Generate up/down tracks covering a polygon at the optimum angle
 -- 
 function generateTracks( headlands, islands, width, nHeadlandPasses, centerSettings )
-	local distanceFromBoundary, extendTracks
+	local distanceFromBoundary
 	if nHeadlandPasses == 0 then
-		-- ugly hack: if there are no headlands, our tracks go right up to the field boundary. So extend tracks
-		-- exactly width / 2
-		extendTracks = width / 2
 		distanceFromBoundary = width / 2
 	else
-		extendTracks = 0
 		distanceFromBoundary = width
 	end
 
@@ -281,7 +277,7 @@ function generateTracks( headlands, islands, width, nHeadlandPasses, centerSetti
 
 	local blocks = splitCenterIntoBlocks( parallelTracks, width )
 
-	local nTotalTracks = addWaypointsToBlocks(blocks, width, extendTracks)
+	local nTotalTracks = addWaypointsToBlocks(blocks, width, nHeadlandPasses)
 
 	if #blocks > 30 or ( #blocks > 1 and ( nTotalTracks / #blocks ) < 2 ) then
 		-- don't waste time on unrealistic problems
@@ -323,8 +319,7 @@ function generateTracks( headlands, islands, width, nHeadlandPasses, centerSetti
 			track[ #track ].turnStart = true
 		end
 		local linkedTracks = linkParallelTracks(block.tracksWithWaypoints,
-				isCornerOnTheBottom( block.entryCorner ), isCornerOnTheLeft( block.entryCorner ), centerSettings, continueWithTurn,
-				transformedHeadlands, rotatedIslands, width)
+				isCornerOnTheBottom( block.entryCorner ), isCornerOnTheLeft( block.entryCorner ), centerSettings, continueWithTurn)
 		-- remember where the up/down rows start (transition from headland to up/down rows)
 		if i == 1 then
 			linkedTracks[1].upDownRowStart = #track
@@ -452,18 +447,28 @@ end
 --
 -- Also, we expect the tracks already have the intersection points with
 -- the field boundary (or innermost headland) and there are exactly two intersection points
-function addWaypointsToTracks( tracks, width, extendTracks )
+function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 	local result = {}
 	for i = 1, #tracks do
 		if #tracks[ i ].intersections > 1 then
 			local isFromIx = tracks[ i ].intersections[ 1 ].x < tracks[ i ].intersections[ 2 ].x and 1 or 2
-			local newFrom = tracks[ i ].intersections[ isFromIx ].x +
-				getDistanceBetweenTrackAndHeadland( width, tracks[ i ].intersections[ isFromIx ].angle ) -
-				math.max( extendTracks, width * 0.05 ) -- always overlap a bit with the headland to avoid missing fruit
+			-- if there are no headlands, tracks intersect with the field boundary, not the headland
+			-- therefore, this offset (distance from the intersection to the point where the up/down row ends),
+			-- is calculated differently in each case
+			local offset
+			if nHeadlandPasses == 0 then
+				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isFromIx ].angle )
+			else
+				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isFromIx ].angle )
+			end
+			local newFrom = tracks[ i ].intersections[ isFromIx ].x + offset - width * 0.00  -- always overlap a bit with the headland to avoid missing fruit
 			local isToIx = tracks[ i ].intersections[ 1 ].x >= tracks[ i ].intersections[ 2 ].x and 1 or 2
-			local newTo = tracks[ i ].intersections[ isToIx ].x -
-				getDistanceBetweenTrackAndHeadland( width, tracks[ i ].intersections[ isToIx ].angle ) +
-				math.max( extendTracks, width * 0.05 ) -- always overlap a bit with the headland to avoid missing fruit
+			if nHeadlandPasses == 0 then
+				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isToIx ].angle )
+			else
+				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isToIx ].angle )
+			end
+			local newTo = tracks[ i ].intersections[ isToIx ].x - offset + width * 0.00  -- always overlap a bit with the headland to avoid missing fruit
 			-- if a track is very short (shorter than width) we may end up with newTo being
 			-- less than newFrom. Just skip that track
 			if newTo > newFrom then
@@ -500,14 +505,20 @@ end
 -- Note, this also works on unrotated polygons/tracks, all we need is to use the 
 -- angle difference between the up/down and headland tracks instead of just the angle
 -- of the headland track
-function getDistanceBetweenTrackAndHeadland( width, angle )
-	-- distance between headland center and side at an angle
+function getDistanceBetweenRowEndAndHeadland(width, angle )
+	-- distance between headland centerline and side at an angle
 	-- (is width / 2 when angle is 90 degrees)
 	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
-	-- and we need to move further so much so even the side of the up/down track
-	-- reaches the area covered by the headland (this is 0 when angle is 90 degrees)
-	local offset = math.abs( width / 2 / math.tan( angle ))
-	return dHeadlandCenterAndSide - offset
+	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
+end
+
+-- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
+function getDistanceToFullCover( width, angle )
+	-- with very low angles this becomes too much, in that case you need a headland, so limit it here
+	if math.abs(math.deg(angle)) < 15 then
+		angle = math.rad(15)
+	end
+	return math.abs( width / 2 / math.tan( angle ))
 end
 
 --- Link the parallel tracks in the center of the field to one 
@@ -516,8 +527,7 @@ end
 -- if leftToRight == true then start the first track on the left 
 -- centerSettings - all center related settings
 -- tracks
-function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, centerSettings, startWithTurn, headlands,
-														islands, workWidth)
+function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, centerSettings, startWithTurn)
 	if not bottomToTop then
 		-- we start at the top, so reverse order of tracks as after the generation,
 		-- the last one is on the top
