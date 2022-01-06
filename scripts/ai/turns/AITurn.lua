@@ -695,7 +695,7 @@ function CourseTurn:generatePathfinderTurn()
 
 	self:debug('Wide turn: generate turn with hybrid A*, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
 	self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
-			self.turningRadius, self.driveStrategy:getAllowReversePathfinding(), self.fieldworkCourse)
+			self.turningRadius, false, self.fieldworkCourse)
 	if done then
 		return self:onPathfindingDone(path)
 	else
