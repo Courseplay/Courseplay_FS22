@@ -77,7 +77,7 @@ function BalerController:handleBaler()
     local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
     local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
 
-    if not self.balerSpec.nonStopBaling and (self.balerSpec.hasUnloadingAnimation or self.balerSpec.allowsBaleUnloading) then
+    if not self.balerSpec.nonStopBaling and self.balerSpec.allowsBaleUnloading then
         self:debugSparse("hasUnloadingAnimation: %s, allowsBaleUnloading: %s, nonStopBaling:%s",
                 tostring(self.balerSpec.hasUnloadingAnimation),tostring(self.balerSpec.allowsBaleUnloading),tostring(self.balerSpec.nonStopBaling))
         --copy of giants code:  AIDriveStrategyBaler:getDriveData(dt, vX,vY,vZ) to avoid leftover when full
@@ -90,6 +90,8 @@ function BalerController:handleBaler()
         if fillLevel == capacity or self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
             maxSpeed = 0
         end
+    elseif self.balerSpec.platformDropInProgress then
+        maxSpeed = self.balerSpec.platformAIDropSpeed
     end
     return maxSpeed
 end
