@@ -22,6 +22,7 @@ function CpCourseGeneratorSettings.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
@@ -53,6 +54,14 @@ function CpCourseGeneratorSettings:onLoad(savegame)
 
     spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
     CpCourseGeneratorSettings.loadSettings(self,savegame)
+end
+
+--- Apply auto work width after everything is loaded and no settings are saved in the save game. 
+function CpCourseGeneratorSettings:onLoadFinished(savegame)
+    local spec = self.spec_cpCourseGeneratorSettings
+    if not spec.wasLoaded then
+        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    end
 end
 
 function CpCourseGeneratorSettings:onPostAttachImplement()
@@ -97,6 +106,7 @@ function CpCourseGeneratorSettings:loadSettings(savegame)
             setting:loadFromXMLFile(savegame.xmlFile, key)
             CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
         end
+        spec.wasLoaded = true
     end)
 end
 
