@@ -227,6 +227,10 @@ You can define the following custom settings:
     <Vehicle name="series71300.xml"
              noReverse="true"
     />
+    <!--Claas-->
+    <Vehicle name="optiJect8.xml"
+             workingWidth = "6"
+    />
 	
     <!--[MODS]-->
 
