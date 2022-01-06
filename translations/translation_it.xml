@@ -4,7 +4,8 @@
 		<text name="CP_activated" 																		text="Attivato" />
 		<text name="CP_deactivated" 																	text="Disattivato" />
 		<text name="CP_unit_meter" 																		text="m" />
-		
+		<text name="CP_unit_foot" 																		text="ft" />
+
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay (%s): Per aiuto, report bug o note sulla patch, visita: https://github.com/Courseplay/Courseplay_FS22 " />
 		<text name="CP_error_no_course"																	text="Genera il percorso prima di iniziare il lavoro sul campo!" />

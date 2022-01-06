@@ -5,7 +5,8 @@
 		<text name="CP_activated" 																		text="geactiveerd" />
 		<text name="CP_deactivated" 																	text="gedeactiveerd" />
 		<text name="CP_unit_meter" 																		text="m" />
-
+		<text name="CP_unit_foot" 																		text="ft" />
+		
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Ga voor hulp, bugrapporten of patch-opmerkingen naar: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />

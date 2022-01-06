@@ -5,6 +5,7 @@
 		<text name="CP_activated" 																		text="activado" />
 		<text name="CP_deactivated" 																	text="desactivado" />
 		<text name="CP_unit_meter" 																		text="m" />
+		<text name="CP_unit_foot" 																		text="ft" />
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s):Para obtener ayuda, informar de errores o notas de parches, visite:https://github.com/Courseplay/Courseplay_FS22." />

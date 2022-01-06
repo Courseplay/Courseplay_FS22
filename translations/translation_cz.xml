@@ -5,7 +5,8 @@
 		<text name="CP_activated" 																		text="Aktivní" />
 		<text name="CP_deactivated" 																	text="Neaktivní" />
 		<text name="CP_unit_meter" 																		text="m" />
-		
+		<text name="CP_unit_foot" 																		text="ft" />
+
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Český překlad: SniperKittenCZ" />
 		<text name="CP_error_no_course"																	text="Před zahájením práce vygenerujte kurz." />

@@ -59,7 +59,10 @@ function AIParameterSettingList.getSpeedText(value)
 end
 
 function AIParameterSettingList.getDistanceText(value)
-	return string.format("%.1f %s",g_i18n:getDistance(value),g_i18n:getText("CP_unit_meter"))
+	if g_i18n.useMiles then 
+		return string.format("%.2f %s",value*0.3048,g_i18n:getText("CP_unit_foot"))
+	end
+	return string.format("%.1f %s",value,g_i18n:getText("CP_unit_meter"))
 end
 
 function AIParameterSettingList.getAreaText(value)
