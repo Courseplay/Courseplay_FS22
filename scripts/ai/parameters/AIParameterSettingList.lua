@@ -60,7 +60,7 @@ end
 
 function AIParameterSettingList.getDistanceText(value)
 	if g_i18n.useMiles then 
-		return string.format("%.2f %s",value*0.3048,g_i18n:getText("CP_unit_foot"))
+		return string.format("%.1f %s",value*3.28,g_i18n:getText("CP_unit_foot"))
 	end
 	return string.format("%.1f %s",value,g_i18n:getText("CP_unit_meter"))
 end
