@@ -418,6 +418,15 @@ function CombineHeadlandTurn:startTurn()
 	self:debug('Starting combine headland turn')
 end
 
+function CombineHeadlandTurn:onWaypointChange(ix, course)
+	-- nothing to do
+end
+
+function CombineHeadlandTurn:onWaypointPassed(ix, course)
+	-- nothing to do, especially because the row finishing course is still active in the PPC and we may
+	-- pass the last waypoint which causes the turn to end and return to field work
+end
+
 -- in a combine headland turn we want to raise the header after it reached the field edge (or headland edge on an inner
 -- headland.
 function CombineHeadlandTurn:getRaiseImplementNode()
