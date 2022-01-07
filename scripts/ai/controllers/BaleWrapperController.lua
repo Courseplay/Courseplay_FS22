@@ -51,10 +51,11 @@ function BaleWrapperController:handleBaleWrapper()
     -- Yes, Giants has a typo in the state (and yes, in FS22 as well...)
     if self.baleWrapper.spec_baleWrapper.baleWrapperState == BaleWrapper.STATE_WRAPPER_FINSIHED then
         local loweringDropTime, turnDropTime
+        -- TODO_22: state of strategy not known here!
         -- inserts unload threshold after lowering the implement, useful after e.g. transition from connecting track to fieldwork
-        if self.fieldworkState == self.states.WAITING_FOR_LOWER then
+        if false and self.fieldworkState == self.states.WAITING_FOR_LOWER then
             local unloadThreshold = 2500 --delay in msecs, 2.5 secs seems to work well
-            loweringDropTime = self.vehicle.timer + unloadThreshold
+            loweringDropTime = g_timer + unloadThreshold
         elseif loweringDropTime == nil then
             loweringDropTime = 0
         end
@@ -65,7 +66,7 @@ function BaleWrapperController:handleBaleWrapper()
         else
             turnDropTime = 0 --avoids problems in case of condition variables not existing / empty e.g. before the first turn
         end
-        if self.vehicle.timer > math.max(loweringDropTime,turnDropTime) then --chooses the bigger delay
+        if g_timer > math.max(loweringDropTime,turnDropTime) then --chooses the bigger delay
             self.baleWrapper:doStateChange(BaleWrapper.CHANGE_WRAPPER_START_DROP_BALE)
         end
     end

@@ -5,7 +5,7 @@ local AIJobFieldWorkCp_mt = Class(AIJobFieldWorkCp, AIJobFieldWork)
 
 ---Localization text symbols.
 AIJobFieldWorkCp.translations = {
-    JobName = "FIELDWORK_CP",
+    JobName = "CP_job_fieldWork",
     GenerateButton = "FIELDWORK_BUTTON"
 }
 

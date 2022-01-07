@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="recogiendo/envolviendo pacas" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Trabajo de campo" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Trabajo de campo" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Crear ruta de trabajo de campo." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Abrir/cerrar generador de rutas." />

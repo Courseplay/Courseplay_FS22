@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="Samla in/plastade balar" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Fältarbete" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Fältarbete" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Skapa en kurs för fältarbete." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Öppna/Stäng kurs skaparen." />

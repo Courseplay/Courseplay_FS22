@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="Zbierania/Owijania bel" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Prace polowe" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Prace polowe" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Wygeneruj kurs pracy polowej." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Otwórz/Zamknij generator kursu." />

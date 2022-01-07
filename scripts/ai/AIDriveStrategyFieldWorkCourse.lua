@@ -216,19 +216,6 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     end
 end
 
-function AIDriveStrategyFieldWorkCourse:updateImplementControllers()
-    for _, controller in pairs(self.controllers) do
-        ---@type ImplementController
-        if controller:isEnabled() then
-            -- we don't know yet if we even need anything from the controller other than the speed.
-            local _, _, _, maxSpeed = controller:update()
-            if maxSpeed then
-                self:setMaxSpeed(maxSpeed)
-            end
-        end
-    end
-end
-
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementStartLine()

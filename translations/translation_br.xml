@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="coletando / embalando fardos" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Trabalho no campo" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Trabalho no campo" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Gerar rotas no campo." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Abrir / fechar gerador de rotas." />
