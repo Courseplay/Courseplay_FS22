@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"										text="сбора / упаковки тюков" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"														text="CP: Работа в поле" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"														text="CP: Работа в поле" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 										text="CP: Сгенерировать курс" />
 		<text name="CP_ai_page_open_course_generator" 									text="CP: Откр/закр. генератор курсов" />

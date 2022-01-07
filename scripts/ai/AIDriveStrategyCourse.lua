@@ -35,6 +35,7 @@ function AIDriveStrategyCourse.new(customMt)
     local self = AIDriveStrategy.new(customMt)
     self.debugChannel = CpDebug.DBG_AI_DRIVER
     self:initStates(AIDriveStrategyCourse.myStates)
+    self.controllers = {}
     return self
 end
 
@@ -93,40 +94,63 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     self.turningRadius = AIUtil.getTurningRadius(vehicle)
 
     self:enableCollisionDetection()
+    self:setAllStaticParameters()
 
     -- TODO: this may or may not be the course we need for the strategy
     local course = vehicle:getFieldWorkCourse()
-
-    local job = vehicle:getJob()
-    local startAt, startIx
-    if job and job.getCpJobParameters then
-        self:debug('Got job parameters, starting at %s', job:getCpJobParameters().startAt)
-        startAt = job:getCpJobParameters().startAt:getValue()
+    if course then
+        self:debug('Vehicle has a fieldwork course, figure out where to start')
+        local job = vehicle:getJob()
+        local startAt, startIx
+        if job and job.getCpJobParameters then
+            self:debug('Got job parameters, starting at %s', job:getCpJobParameters().startAt)
+            startAt = job:getCpJobParameters().startAt:getValue()
+        else
+            self:debug('No job parameters found, starting at nearest waypoint')
+            startAt = CpJobParameters.START_AT_NEAREST_POINT
+        end
+        if startAt == CpJobParameters.START_AT_NEAREST_POINT then
+            local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
+            self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
+            startIx = ixClosestRightDirection
+        else
+            self:debug('Starting course at the first waypoint')
+            startIx = 1
+        end
+        self:start(course, startIx)
     else
-        self:debug('No job parameters found, starting at nearest waypoint')
-        startAt = CpJobParameters.START_AT_NEAREST_POINT
+        -- some strategies do not need a recorded or generated course to work, they
+        -- will create the courses on the fly.
+        self:debug('Vehicle has no course, start work without it.')
+        self:startWithoutCourse()
     end
-    if startAt == CpJobParameters.START_AT_NEAREST_POINT then
-        local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
-        self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
-        startIx = ixClosestRightDirection
-    else
-        self:debug('Starting course at the first waypoint')
-        startIx = 1
-    end
-    self:setAllStaticParameters()
-    self:start(course, startIx)
 end
 
-function AIDriveStrategy:start(course, startIx)
+function AIDriveStrategyCourse:start(course, startIx)
     self:startCourse(course, startIx)
     self.state = self.states.INITIAL
+end
+
+function AIDriveStrategyCourse:startWithoutCourse()
 end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
+end
+
+function AIDriveStrategyCourse:updateImplementControllers()
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
+            -- we don't know yet if we even need anything from the controller other than the speed.
+            local _, _, _, maxSpeed = controller:update()
+            if maxSpeed then
+                self:setMaxSpeed(maxSpeed)
+            end
+        end
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------

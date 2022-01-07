@@ -3,7 +3,12 @@ ImplementController = CpObject()
 
 function ImplementController:init(vehicle, implement)
     self.vehicle = vehicle
-    self.implement = implement -- for logging
+    self.implement = implement
+end
+
+--- Get the controlled implement
+function ImplementController:getImplement()
+    return self.implement
 end
 
 ---@param disabledStates table list of drive strategy states where the controlling of this implement is disabled

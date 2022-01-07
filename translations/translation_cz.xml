@@ -22,8 +22,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="Svoz balíků" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Polní práce" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Polní práce" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Vypočítat polní práce" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Zapnout/vypnout generátor tras" />

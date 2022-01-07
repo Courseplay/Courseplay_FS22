@@ -173,14 +173,11 @@ end
 
 function CpAIFieldWorker:getCanStartCpFieldWork()
     -- built in helper can't handle it, but we may be able to ...
-    if AIUtil.hasImplementWithSpecialization(self, Baler) then
-        return true
-    end
-    if AIUtil.hasImplementWithSpecialization(self, BaleWrapper) then
-        return true
-    end
-    -- built in helper can't handle forage harvesters.
-    if AIUtil.hasImplementWithSpecialization(self, Cutter) then
+    if AIUtil.hasImplementWithSpecialization(self, Baler) or
+            AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
+            AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
+            -- built in helper can't handle forage harvesters.
+            AIUtil.hasImplementWithSpecialization(self, Cutter) then
         return true
     end
     return self:getCanStartFieldWork()
@@ -210,6 +207,13 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
+        if job:isa(AIJobBaleCollectCp) then
+            CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
+            local cpDriveStrategy = AIDriveStrategyFindBales.new()
+            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
+            cpDriveStrategy:setAIVehicle(self)
+            return
+        end
     if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
