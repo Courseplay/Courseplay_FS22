@@ -88,10 +88,12 @@ function CpAIFieldWorker:updateActionEvents()
 	local actionEvent = spec.actionEvents[InputAction.CP_START_STOP]
 
 	if actionEvent ~= nil and self.isActiveForInputIgnoreSelectionIgnoreAI then
-		if self:getShowAIToggleActionEvent() and not self:getIsAIActive() then
-
-			g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.hireEmployee)
-	
+		if self:getShowAIToggleActionEvent() then
+            if self:getIsAIActive() then 
+                g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
+            else
+			    g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.hireEmployee)
+            end
 
 			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
 		else
