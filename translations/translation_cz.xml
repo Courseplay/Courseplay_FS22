@@ -142,20 +142,20 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Řádky k přeskočení" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'země'" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'země', je tolik řádků v každém bloku" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'záhon" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Ve směru hodinových ručiček" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Proti směru hodinových ručiček" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Střed pole" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Střed pole" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Postup práce" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Postup práce" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Nahoru/dolů" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirála" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Kruh" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Země" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Záhom" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Souvraťové rohy" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Souvraťové rohy" />
@@ -170,8 +170,8 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Začít pracovat na" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kde začít pracovat" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Souvrati" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Řádku" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Na souvrati" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="V řádku" />
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>
