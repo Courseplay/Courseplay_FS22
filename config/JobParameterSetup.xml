@@ -7,7 +7,7 @@
 
 <Settings prefixText="CP_jobParameters_">
 	<SettingSubTitle title="startAt">
-		<Setting classType="AIParameterSettingList" name="startAt">
+		<Setting classType="AIParameterSettingList" name="startAt" default="2">
 			<Values>
 				<Value name="START_AT_NEAREST_POINT">1</Value>
 				<Value name="START_AT_FIRST_POINT">2</Value>
