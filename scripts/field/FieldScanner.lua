@@ -40,15 +40,15 @@ function FieldScanner:rotateProbeBy(probe, angleStep)
 end
 
 --- Rotate the probe until it aligns with the field edge
-function FieldScanner:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
+function FieldScanner:rotateProbeInFieldEdgeDirection(probe, tracerLookahead, fieldId)
     local x, y, z = localToWorld(probe, 0, 0, tracerLookahead)
-    local startOnField = CpFieldUtil.isOnField(x, z)
+    local startOnField = CpFieldUtil.isOnField(x, z, fieldId)
     -- rotate the probe and see if a point in front of us is still on the field or not.
     local a, isOnField, targetOnFieldState = 0, startOnField, not startOnField
     -- rotate probe clockwise
     while a < 2 * math.pi and isOnField ~= targetOnFieldState do
         x, y, z = localToWorld(probe, 0, 0, tracerLookahead)
-        isOnField = CpFieldUtil.isOnField(x, z)
+        isOnField = CpFieldUtil.isOnField(x, z, fieldId)
         self:rotateProbeBy(probe, (isOnField and 1 or -1) * self.angleStep)
         a = a + self.angleStep
     end
@@ -60,21 +60,23 @@ end
 --- back up with small steps until we are back on the field.
 --- At the end, we'll be very close to the field edge.
 ---@return boolean true if the edge was found
-function FieldScanner:findFieldEdge(probe)
+function FieldScanner:findFieldEdge(probe, fieldId)
     local i = 0
-    while i < 100000 and CpFieldUtil.isNodeOnField(probe) do
+    while i < 100000 and CpFieldUtil.isNodeOnField(probe, fieldId) do
         -- move probe forward
         self:moveProbeForward(probe, self.resolution)
         i = i + 1
     end
-    while not CpFieldUtil.isNodeOnField(probe) do
+    while not CpFieldUtil.isNodeOnField(probe, fieldId) do
         self:moveProbeForward(probe, -self.highResolution)
     end
     local x, _, z = getWorldTranslation(probe)
     self:debug('Field edge found at %.1f/%.1f after %d steps', x, z, i)
+    -- rotate probe here with a very short tracer to the field edge direction to avoid hitting a neighboring field
+    self:rotateProbeInFieldEdgeDirection(probe, self.shortTracerLookahead, fieldId)
 end
 
-function FieldScanner:traceFieldEdge(probe)
+function FieldScanner:traceFieldEdge(probe, fieldId)
     self.points = {}
     local helperNode = CpUtil.createNode('helperNode', 0, 0, 0)
     local startX, startY, startZ = getWorldTranslation(probe)
@@ -88,8 +90,8 @@ function FieldScanner:traceFieldEdge(probe)
     local i = 0
     -- limit the number of iterations, also, must be close to the start and have made almost a full circle (pi is just
     -- a half circle, but should be ok to protect us from edge cases like starting with a corner
-    while i < 100000 and (i == 1 or distanceFromStart > tracerLookahead or math.abs(totalYRot) < math.pi) do
-        local yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
+    while i < 20000 and (i == 1 or distanceFromStart > tracerLookahead or math.abs(totalYRot) < math.pi) do
+        local yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead, fieldId)
         -- how much we just turned?
         local deltaYRot = yRot - (prevYRot or yRot)
         self:moveProbeForward(probe, tracerLookahead)
@@ -97,7 +99,7 @@ function FieldScanner:traceFieldEdge(probe)
         if prevYRot and math.abs(deltaYRot) > sharpCornerDeltaAngle and i ~= ignoreCornerAtIx then
             -- we probably just cut a corner. Calculate where the corner exactly is and insert a point there
             -- see which way the edge goes here
-            yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead)
+            yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead, fieldId)
             deltaYRot = yRot - prevYRot
             local lastWp = self.points[#self.points]
             -- this is just geometry, we figure out here how far forward the corner is from the previous waypoint
@@ -139,11 +141,12 @@ function FieldScanner:findContour(x, z)
         self:debug('%.1f/%.1f is not on a field, can\'t start scanning here', x, z)
         return
     end
-    self:debug('Start field scanning at %.1f/%.1f', x, z)
+    local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    self:debug('Start scanning field %d at %.1f/%.1f', fieldId, x, z)
     local i = 1
     while i < 10 do
-        self:findFieldEdge(probe)
-        if self:traceFieldEdge(probe) then
+        self:findFieldEdge(probe, fieldId)
+        if self:traceFieldEdge(probe, fieldId) then
             break
         else
             self:debug('Edge not, found we may have hit an island, reset/rotate the probe a bit and retry')
