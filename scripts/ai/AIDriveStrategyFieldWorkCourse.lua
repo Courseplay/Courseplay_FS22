@@ -196,7 +196,7 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
-    if AIUtil.hasImplementWithSpecialization(vehicle, Baler) then
+    if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler) then
         local balerController = BalerController(vehicle)
         balerController:setDisabledStates({
             self.states.ON_CONNECTING_TRACK,

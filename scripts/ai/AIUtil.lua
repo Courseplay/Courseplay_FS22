@@ -383,7 +383,7 @@ end
 --- Additionally checks if the vehicle has the specialization and returns it, if no implement was found.
 --- For example a self driving overloader.
 function AIUtil.getImplementOrVehicleWithSpecialization(vehicle, specialization)
-	return  AIUtil.getImplementWithSpecialization(vehicle, specialization) or  
+	return AIUtil.getImplementWithSpecialization(vehicle, specialization) or
 			SpecializationUtil.hasSpecialization(specialization, vehicle.specializations) and vehicle
 end
 

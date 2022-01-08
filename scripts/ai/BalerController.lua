@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 BalerController = CpObject(ImplementController)
 
 function BalerController:init(vehicle)
-    self.baler = AIUtil.getImplementWithSpecialization(vehicle, Baler)
+    self.baler = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler)
     ImplementController.init(self, vehicle, self.baler)
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 20
