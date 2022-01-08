@@ -197,7 +197,7 @@ end
 --- Pathfinding
 ---------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:getAllowReversePathfinding()
-    return self.allowReversePathfinding -- TODO_22 and self.settings.allowReverseForPathfindingInTurns:is(true)
+    return self.allowReversePathfinding and self.settings.allowReversePathfinding:getValue()
 end
 
 function AIDriveStrategyCourse:setPathfindingDoneCallback(object, func)
