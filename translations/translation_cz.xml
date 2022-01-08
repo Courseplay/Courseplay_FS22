@@ -12,7 +12,6 @@
 		<text name="CP_error_no_course"																	text="Před zahájením práce vygenerujte kurz." />
 		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
 
-
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Začátek trasy:" />
 		<text name="CP_jobParameters_startAt_title"														text="Začátek trasy:" />
@@ -155,7 +154,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Nahoru/dolů" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirála" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Kruh" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Záhom" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Záhon" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Souvraťové rohy" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Souvraťové rohy" />
@@ -170,8 +169,8 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Začít pracovat na" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kde začít pracovat" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Na souvrati" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="V řádku" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Souvrati" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Řádku" />
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>
@@ -249,5 +248,6 @@
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Změnit aktuální kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otevřt/zavřít nastavení vozidla"/>
+		<text name="input_CP_START_STOP" 																text="CP: Spustit/zastavit pracovníka"/>
 	</texts>
 </l10n>
