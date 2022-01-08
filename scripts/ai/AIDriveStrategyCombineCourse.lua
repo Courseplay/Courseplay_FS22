@@ -1251,7 +1251,8 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 	end
 	local dischargeNode = self.combine:getCurrentDischargeNode()
 	local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
-	if targetObject == nil or trailer == nil then
+	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
+	if fillLevel > 0.01 and (targetObject == nil or trailer == nil) then
 		self:debugSparse('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
 				tostring(dischargeNode), tostring(targetObject), tostring(trailer))
 		self:setMaxSpeed(0)
