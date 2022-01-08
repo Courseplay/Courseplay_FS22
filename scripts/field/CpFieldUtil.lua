@@ -2,9 +2,12 @@ CpFieldUtil = {}
 -- force reload
 CpFieldUtil.groundTypeModifier = nil
 
-function CpFieldUtil.isNodeOnField(node)
+function CpFieldUtil.isNodeOnField(node, fieldId)
     local x, y, z = getWorldTranslation(node)
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
+    if isOnField and fieldId then
+        return fieldId == CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    end
     return isOnField
 end
 
@@ -18,9 +21,12 @@ function CpFieldUtil.isOnSameField(node, dx, dy)
 
 end
 
-function CpFieldUtil.isOnField(x, z)
+function CpFieldUtil.isOnField(x, z, fieldId)
     local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z);
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
+    if isOnField and fieldId then
+        return fieldId == CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    end
     return isOnField
 end
 
