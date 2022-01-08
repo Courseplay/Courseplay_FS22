@@ -547,6 +547,10 @@ function AIDriveStrategyCombineCourse:isFull()
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
+	if not self.pipe then
+		-- no pipe, no sense making a pocket (like cotton harvesters)
+		return false
+	end
 	if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
 		-- fruit both sides
 		return true
