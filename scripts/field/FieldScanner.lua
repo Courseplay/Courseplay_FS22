@@ -142,7 +142,9 @@ function FieldScanner:findContour(x, z)
         return
     end
     local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
-    self:debug('Start scanning field %d at %.1f/%.1f', fieldId, x, z)
+    self:debug('Start scanning field %d at %.1f/%.1f', fieldId or '', x, z)
+    -- for now, ignore field ID as with it we can't handle merged fields.
+    fieldId = nil
     local i = 1
     while i < 10 do
         self:findFieldEdge(probe, fieldId)
