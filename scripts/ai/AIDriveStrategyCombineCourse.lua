@@ -131,7 +131,13 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
-	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
+	-- TODO: need a cleaner way to keep a cotton harvester going (otherwise it won't drop the bale)
+	if self:isCottonHarvester() then
+		self:debug('Cotton harvester, set max fill level to 100 to trigger bale unload when full')
+		self.fillLevelFullPercentage = 100
+	else
+		self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
+	end
 end
 
 -- This part of an ugly workaround to make the chopper pickups work
@@ -1369,6 +1375,17 @@ function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
 		if self.vehicle:getFillUnitSupportsFillType(i, FillType.POTATO) or
 			self.vehicle:getFillUnitSupportsFillType(i, FillType.SUGARBEET) then
 			self:debug('This is a potato or sugar beet harvester.')
+			return true
+		end
+	end
+	return false
+end
+
+
+function AIDriveStrategyCombineCourse:isCottonHarvester()
+	for i, fillUnit in ipairs(self.vehicle:getFillUnits()) do
+		if self.vehicle:getFillUnitSupportsFillType(i, FillType.COTTON) then
+			self:debug('This is a cotton harvester.')
 			return true
 		end
 	end
