@@ -145,3 +145,20 @@ AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapDa
 function AIJobFieldWorkCp:getIsAvailableForVehicle(vehicle)
 	return vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork()
 end
+
+--- Copy the cp job parameter values form the mini gui into the in game menu job on opening of the job for the first time.
+function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+	AIJobFieldWorkCp:superClass().applyCurrentState(self,vehicle, mission, farmId, isDirectStart)
+	if not isDirectStart then 
+		CpSettingsUtil.copySettingsValues(self.cpJobParameters,vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters())
+	end
+end
+
+--- Applies the cp job parameter on change to the vehicle intern job parameters.
+function AIJobFieldWorkCp:onParameterValueChanged()
+	AIJobFieldWorkCp:superClass().onParameterValueChanged(self)
+	local vehicle = self.vehicleParameter:getVehicle()
+	if vehicle and self ~= vehicle.spec_cpAIFieldWorker.cpJob then 
+		CpSettingsUtil.copySettingsValues(vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters(),self.cpJobParameters)
+	end
+end

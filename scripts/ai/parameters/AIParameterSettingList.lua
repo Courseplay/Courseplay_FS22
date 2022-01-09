@@ -233,6 +233,15 @@ function AIParameterSettingList:clone(...)
 	return AIParameterSettingList.new(self.data,...)
 end
 
+--- Copy the value to another setting.
+function AIParameterSettingList:copy(setting)
+	if self.data.incremental and self.data.incremental ~= 1 then 
+		self:setFloatValue(setting:getValue())
+	else 
+		self:setValue(setting:getValue())
+	end
+end
+
 function AIParameterSettingList:getTitle()
 	return self.title	
 end

@@ -224,6 +224,13 @@ function CpSettingsUtil.cloneSettingsTable(class,settings,...)
 	end
 end
 
+--- Copies settings values from a settings tables to another.
+function CpSettingsUtil.copySettingsValues(settingsTable,settingsTableToCopy)
+    for i,p in ipairs(settingsTable.settings) do 
+        p:copy(settingsTableToCopy.settings[i])
+    end
+end
+
 --- Clones for each setting and subtitle generic gui elements and applies basic setups.
 ---@param settingsBySubTitle table
 ---@param parentGuiElement GuiElement
