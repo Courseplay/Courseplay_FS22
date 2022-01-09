@@ -36,6 +36,8 @@ end
 function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIFieldWorker.getIsCpActive)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpFieldWorkActive", CpAIFieldWorker.getIsCpFieldWorkActive)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnload", CpAIFieldWorker.getIsCpHarvesterWaitingForUnload)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterManeuvering", CpAIFieldWorker.getIsCpHarvesterManeuvering)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
@@ -109,6 +111,9 @@ function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgno
 	CpAIFieldWorker.updateActionEvents(self)
 end
 
+------------------------------------------------------------------------------------------------------------------------
+--- Interface for other mods, like AutoDrive
+------------------------------------------------------------------------------------------------------------------------
 --- Is a cp helper active ?
 --- TODO: add other possible jobs here.
 function CpAIFieldWorker:getIsCpActive()
@@ -120,6 +125,20 @@ function CpAIFieldWorker:getIsCpFieldWorkActive()
     return self:getIsAIActive() and self:getJob() and self:getJob():isa(AIJobFieldWorkCp)
 end
 
+--- To find out if a harvester is waiting to be unloaded, either because it is full or ended the fieldwork course
+--- with some grain in the tank.
+---@return boolean true when the harvester is waiting to be unloaded
+function CpAIFieldWorker:getIsCpHarvesterWaitingForUnload()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnload()
+end
+
+--- Maneuvering means turning or working on a pocket or pulling back due to the pipe in fruit
+---@return boolean true when the harvester is maneuvering so that an unloader should stay away.
+function CpAIFieldWorker:getIsCpHarvesterManeuvering()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isManeuvering()
+end
 
 --- Directly starts a cp driver or stops a currently active job.
 function CpAIFieldWorker:startStopDriver()
@@ -191,6 +210,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
     if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+        self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
     elseif AIUtil.hasImplementWithSpecialization(self, Plow) then
         CpUtil.infoVehicle(self, 'Found a plow, install CP plow drive strategy for it')
         cpDriveStrategy = AIDriveStrategyPlowCourse.new()
