@@ -175,7 +175,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-    if AIUtil.hasImplementWithSpecialization(self, Combine) then
+    if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
     elseif AIUtil.hasImplementWithSpecialization(self, Plow) then
