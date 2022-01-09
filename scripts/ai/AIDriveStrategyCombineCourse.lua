@@ -71,6 +71,7 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.pipeOffsetX = 0
 	self.unloaders = {}
 	self:initUnloadStates()
+	self.chopperCanDischarge = CpTemporaryObject(false)
 	return self
 end
 
@@ -1251,12 +1252,31 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 	end
 	local dischargeNode = self.combine:getCurrentDischargeNode()
 	local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
-	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-	if fillLevel > 0.01 and (targetObject == nil or trailer == nil) then
-		self:debugSparse('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
+	if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
+		self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
 				tostring(dischargeNode), tostring(targetObject), tostring(trailer))
-		self:setMaxSpeed(0)
+		self.waitingForTrailer = true
 	end
+	if self.waitingForTrailer then
+		self:setMaxSpeed(0)
+		if not(targetObject == nil or trailer == nil) then
+			self:debug('Chopper has trailer now, continue')
+			self.waitingForTrailer = false
+		end
+	end
+end
+
+function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()
+	for _, implement in pairs(self.vehicle:getAttachedImplements()) do
+		if implement.object.spec_workArea ~= nil then
+			for i, workArea in pairs(implement.object.spec_workArea.workAreas) do
+				if self.vehicle:getIsWorkAreaProcessing(workArea) then
+					return true
+				end
+			end
+		end
+	end
+	return false
 end
 
 function AIDriveStrategyCombineCourse:needToOpenPipe()
