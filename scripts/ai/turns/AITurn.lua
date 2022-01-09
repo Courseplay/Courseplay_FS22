@@ -107,7 +107,7 @@ end
 
 function AITurn:onWaypointPassed(ix, course)
 	self:debug('onWaypointPassed %d', ix)
-	if ix == course:getNumberOfWaypoints() then
+	if ix == course:getNumberOfWaypoints() and self.state == self.states.ENDING_TURN then
 		self:debug('Last waypoint reached, resuming fieldwork')
 		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 	end
