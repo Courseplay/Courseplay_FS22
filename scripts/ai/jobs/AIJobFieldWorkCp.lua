@@ -11,6 +11,20 @@ AIJobFieldWorkCp.translations = {
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
+	
+	self.fieldWorkTask = AITaskFieldworkCp.new(isServer, self)
+	-- Switches the AITaskFieldWork with AITaskFieldworkCp.
+	-- TODO: Consider deriving AIJobFieldWorkCp of AIJob and implement our own logic instead.
+	local ix
+	for i,task in pairs(self.tasks) do 
+		if self.tasks[i]:isa(AITaskFieldWork) then 
+			ix = i
+			break
+		end
+	end
+	self.fieldWorkTask.taskIndex = ix
+	self.tasks[ix] = self.fieldWorkTask
+	
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
 
