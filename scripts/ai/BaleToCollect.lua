@@ -40,12 +40,8 @@ function BaleToCollect.isValidBale(object, baleWrapper)
 	-- nodeId is sometimes 0, causing issues for the BaleToCollect constructor
 	if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
 		if baleWrapper then
-			-- if there is a bale wrapper, the bale must be wrappable and the wrapper does not want to skip this fill type
-			-- (and yes, this is another typo in Giants code
-			local wrappedBaleType = baleWrapper:getWrapperBaleType(object)
-			CpUtil.debugFormat(CpDebug.DBG_FIELDWORK, '  bale %d wrapping state: %d, wrapped bale type: %s',
-				object.id, tostring(object.wrappingState), tostring(wrappedBaleType))
-			return wrappedBaleType and object.wrappingState < 0.99
+			-- if there is a bale wrapper, the bale must be wrappable
+			return baleWrapper:getIsBaleWrappable(object)
 		else
 			return true
 		end
@@ -99,9 +95,9 @@ end
 --- when driving by in any direction
 function BaleToCollect:getSafeDistance()
 	-- round bales don't have length, just diameter
-	local length = self.bale.baleDiameter and self.bale.baleDiameter or self.bale.baleLength
+	local length = self.bale.diameter and self.bale.diameter or self.bale.length
 	-- no matter what kind of bale, the footprint is a rectangle, get the diagonal (which, is BTW, not
 	-- exact math as it depends on the angle we are approaching the bale, so add a little buffer instead of
 	-- thinking about the math...
-	return math.sqrt(length * length + self.bale.baleWidth * self.bale.baleWidth) / 2 + 0.2
+	return math.sqrt(length * length + self.bale.width * self.bale.width) / 2 + 0.2
 end

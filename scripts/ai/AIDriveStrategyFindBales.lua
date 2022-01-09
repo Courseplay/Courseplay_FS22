@@ -74,9 +74,32 @@ function AIDriveStrategyFindBales:startWithoutCourse()
         self:info(' - %s', CpUtil.getName(implement.object))
     end
 
+    self.field = myField
     self.bales = self:findBales(myField)
 
     self:collectNextBale()
+end
+
+function AIDriveStrategyFindBales:collectNextBale()
+    self.state = self.states.SEARCHING_FOR_NEXT_BALE
+    if #self.bales > 0 then
+        self:findPathToNextBale()
+    else
+        self:info('No bales found, scan the field once more before leaving for the unload course.')
+        self.bales = self:findBales(self.field)
+        if #self.bales > 0 then
+            self:info('Found more bales, collecting them')
+            self:findPathToNextBale()
+            return
+        end
+        self:info('There really are no more bales on the field')
+        if false and self.baleLoader and self:getFillLevel() > 0.1 then
+            -- TODO: start AD?
+            self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
+        else
+            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+        end
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -85,23 +108,13 @@ end
 function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
     if false and AIUtil.hasImplementWithSpecialization(vehicle, BaleLoader) then
         local baleLoaderController = BalerLoaderController(vehicle)
-        baleLoaderController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
         self.baleLoader = baleLoaderController:getImplement()
         table.insert(self.controllers, baleLoaderController)
     end
     if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
-        local baleWrapperController = BaleWrapperController(vehicle)
-        baleWrapperController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        self.baleWrapper = baleWrapperController:getImplement()
-        table.insert(self.controllers, baleWrapperController)
+        self.baleWrapperController = BaleWrapperController(vehicle)
+        self.baleWrapper = self.baleWrapperController:getImplement()
+        table.insert(self.controllers, self.baleWrapperController)
     end
 end
 
@@ -219,7 +232,7 @@ end
 ---@param bale BaleToCollect
 function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     if not self.pathfinder or not self.pathfinder:isActive() then
-        self.pathfindingStartedAt = g_timer
+        self.pathfindingStartedAt = g_currentMission.time
         local safeDistanceFromBale = bale:getSafeDistance()
         local halfVehicleWidth = self.vehicle.size.width and self.vehicle.size.width / 2 or 1.5
         self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f',
@@ -248,7 +261,7 @@ end
 function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInvalid)
     if path and #path > 2 then
         self.pathfinderFailureCount = 0
-        self:debug('Found path (%d waypoints, %d ms)', #path, g_timer - (self.pathfindingStartedAt or 0))
+        self:debug('Found path (%d waypoints, %d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         self.fieldworkCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         self:startCourse(self.fieldworkCourse, 1)
         self:debug('Driving to next bale')
@@ -286,7 +299,7 @@ function AIDriveStrategyFindBales:isObstacleAhead()
     -- TODO_22 check the proximity sensor first
     if self.forwardLookingProximitySensorPack then
         local d, vehicle, _, deg, dAvg = self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
-        if d < 1.2 * self.turnRadius then
+        if d < 1.2 * self.turningRadius then
             self:debug('Obstacle ahead at %.1f m', d)
             return true
         end
@@ -295,7 +308,7 @@ function AIDriveStrategyFindBales:isObstacleAhead()
     -- to the baler. This happens for example to the Andersen bale wrapper.
     self:debug('Check obstacles ahead, ignoring bale object %s', self.lastBale and self.lastBale or 'nil')
     local leftOk, rightOk, straightOk =
-    PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turnRadius, self.lastBale and{self.lastBale})
+    PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, self.lastBale and{self.lastBale})
     -- if at least one is ok, we are good to go.
     return not (leftOk or rightOk or straightOk)
 end
@@ -303,7 +316,7 @@ end
 function AIDriveStrategyFindBales:isNearFieldEdge()
     local x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 0)
     local vehicleIsOnField = courseplay:isField(x, z, 1, 1)
-    x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1.2 * self.turnRadius)
+    x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1.2 * self.turningRadius)
     local isFieldInFrontOfVehicle = CpFieldUtil.isOnFieldArea(x, z)
     self:debug('vehicle is on field: %s, field in front of vehicle: %s',
             tostring(vehicleIsOnField), tostring(isFieldInFrontOfVehicle))
@@ -313,24 +326,23 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyFindBales:onLastWaypoint()
-    if self.state == self.states.DRIVING_TO_NEXT_BALE then
-        self:debug('last waypoint while driving to next bale reached')
-        self:startApproachingBale()
-    elseif self.state == self.states.WORKING_ON_BALE then
-        self:debug('last waypoint on bale pickup reached, start collecting bales again')
-        self:collectNextBale()
-    elseif self.state == self.states.APPROACHING_BALE then
-        self:debug('looks like somehow we missed a bale, rescanning field')
-        self.bales = self:findBales(self.vehicle.cp.settings.baleCollectionField:get())
-        self:collectNextBale()
-    elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
-        self:debug('backed up after pathfinder failed, trying again')
-        self.state = self.states.SEARCHING_FOR_NEXT_BALE
+function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
+    if course:isLastWaypointIx(ix) then
+        if self.state == self.states.DRIVING_TO_NEXT_BALE then
+            self:debug('last waypoint while driving to next bale reached')
+            self:startApproachingBale()
+        elseif self.state == self.states.WORKING_ON_BALE then
+            self:debug('last waypoint on bale pickup reached, start collecting bales again')
+            self:collectNextBale()
+        elseif self.state == self.states.APPROACHING_BALE then
+            self:debug('looks like somehow we missed a bale, rescanning field')
+            self.bales = self:findBales(self.vehicle.cp.settings.baleCollectionField:get())
+            self:collectNextBale()
+        elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
+            self:debug('backed up after pathfinder failed, trying again')
+            self.state = self.states.SEARCHING_FOR_NEXT_BALE
+        end
     end
-end
-
-function AIDriveStrategyFindBales:onEndCourse()
 end
 
 function AIDriveStrategyFindBales:startApproachingBale()
@@ -339,9 +351,9 @@ function AIDriveStrategyFindBales:startApproachingBale()
     self.state = self.states.APPROACHING_BALE
 end
 
---- Called from the generic driveFieldwork(), this the part doing the actual work on the field after/before all
+--- this the part doing the actual work on the field after/before all
 --- implements are started/lowered etc.
-function AIDriveStrategyFindBales:work()
+function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     if self.state == self.states.SEARCHING_FOR_NEXT_BALE then
         self:setMaxSpeed(0)
         self:debug('work: searching for next bale')
@@ -349,17 +361,17 @@ function AIDriveStrategyFindBales:work()
     elseif self.state == self.states.WAITING_FOR_PATHFINDER then
         self:setMaxSpeed(0)
     elseif self.state == self.states.DRIVING_TO_NEXT_BALE then
-        self:setMaxSpeed(self.vehicle:getSpeedLimit())
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.APPROACHING_BALE then
-        self:setMaxSpeed(self:getWorkSpeed() / 2)
+        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
         self:approachBale()
     elseif self.state == self.states.WORKING_ON_BALE then
         self:workOnBale()
         self:setMaxSpeed(0)
     elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
-        self:setMaxSpeed(self.vehicle.cp.speeds.reverse)
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     end
-    self:checkFillLevels()
+    return AIDriveStrategyFindBales.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
 function AIDriveStrategyFindBales:approachBale()
@@ -370,8 +382,8 @@ function AIDriveStrategyFindBales:approachBale()
         end
     end
     if self.baleWrapper then
-        BaleWrapperAIDriver.handleBaleWrapper(self)
-        if self.baleWrapper.spec_baleWrapper.baleWrapperState ~= BaleWrapper.STATE_NONE then
+        self.baleWrapperController:handleBaleWrapper()
+        if self.baleWrapperController:isWorking() then
             self:debug('Start wrapping bale')
             self.state = self.states.WORKING_ON_BALE
         end
@@ -386,9 +398,9 @@ function AIDriveStrategyFindBales:workOnBale()
         end
     end
     if self.baleWrapper then
-        BaleWrapperAIDriver.handleBaleWrapper(self)
-        if self.baleWrapper.spec_baleWrapper.baleWrapperState == BaleWrapper.STATE_NONE then
-            self.lastBale = self.baleWrapper.spec_baleWrapper.lastDroppedBale
+        self.baleWrapperController:handleBaleWrapper()
+        if not self.baleWrapperController:isWorking() then
+            self.lastBale = self.baleWrapperController:getLastDroppedBale()
             self:debug('Bale wrapped, moving on to the next, last dropped bale %s', self.lastBale)
             self:collectNextBale()
         end

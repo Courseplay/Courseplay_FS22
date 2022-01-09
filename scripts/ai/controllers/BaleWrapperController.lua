@@ -41,6 +41,14 @@ function BaleWrapperController:update()
     return nil, nil, nil, maxSpeed
 end
 
+function BaleWrapperController:isWorking()
+    return self.baleWrapper.spec_baleWrapper.baleWrapperState ~= BaleWrapper.STATE_NONE
+end
+
+function BaleWrapperController:getLastDroppedBale()
+    return self.baleWrapper.spec_baleWrapper.lastDroppedBale
+end
+
 function BaleWrapperController:handleBaleWrapper()
     local maxSpeed
     -- stop while wrapping only if we don't have a baler. If we do we should continue driving and working
