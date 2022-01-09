@@ -34,13 +34,14 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
+    SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
+   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
+   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -158,7 +159,6 @@ function CpAIFieldWorker:startFieldworker()
         --- Replaces drive strategies.
         CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self)
     end
-    return superFunc(self,...)
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
