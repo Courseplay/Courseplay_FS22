@@ -537,7 +537,7 @@ end
 -- now use turn.lua to generate the turn maneuver waypoints
 function CourseTurn:startTurn()
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
-	if (canTurnOnField or self.settings.turnOnField:getValue()) and
+	if (canTurnOnField or not self.settings.turnOnField:getValue()) and
 			not self.turnContext:isHeadlandCorner() and
 			not self.turnContext:isSimpleWideTurn(self.turningRadius * 2, self.workWidth) then
 		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
