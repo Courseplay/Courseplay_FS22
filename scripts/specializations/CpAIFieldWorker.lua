@@ -34,6 +34,8 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIFieldWorker.getIsCpActive)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpFieldWorkActive", CpAIFieldWorker.getIsCpFieldWorkActive)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
@@ -105,6 +107,17 @@ end
 
 function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
 	CpAIFieldWorker.updateActionEvents(self)
+end
+
+--- Is a cp helper active ?
+--- TODO: add other possible jobs here.
+function CpAIFieldWorker:getIsCpActive()
+    return self:getIsAIActive() and self:getIsCpFieldWorkActive()
+end
+
+--- Is a cp fieldwork helper active ?
+function CpAIFieldWorker:getIsCpFieldWorkActive()
+    return self:getIsAIActive() and self:getJob():isa(AIJobFieldWorkCp)
 end
 
 
