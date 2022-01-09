@@ -148,28 +148,33 @@ function CpAIFieldWorker:startStopDriver()
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
         CpUtil.infoVehicle(self,"Stopped current helper.")
 	else
-        if self:hasCpCourse() then 
-            self:updateAIFieldWorkerImplementData()
-            if self:getCanStartCpFieldWork() then
-                spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-                spec.cpJob:setValues()
-             --   local success = spec.cpJob:validate(false)
-             --   if success then 
-                if true then
-                    g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
-                    CpUtil.infoVehicle(self,"Cp helper started.")
-                else 
-                    CpUtil.infoVehicle(self,"Job parameters not valid.")
-                end
-            else 
-                CpUtil.infoVehicle(self,"Could not start cp helper.")
+        self:updateAIFieldWorkerImplementData()
+        if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or CpAIFieldWorker.getCanStartFindingBales(self) then
+            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+            spec.cpJob:setValues()
+         --   local success = spec.cpJob:validate(false)
+         --   if success then
+            if true then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                CpUtil.infoVehicle(self,"Cp helper started.")
+            else
+                CpUtil.infoVehicle(self,"Job parameters not valid.")
             end
         else
-            CpUtil.infoVehicle(self,"No course to start cp helper.")
+            CpUtil.infoVehicle(self,"Could not start CP helper, it needs a course when not collecting bales.")
         end
-	end 
+	end
 end
 
+function CpAIFieldWorker:getCanStartFindingBales()
+    if (AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
+            AIUtil.hasImplementWithSpecialization(self, BaleLoader)) and
+            self.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt:getValue() == CpJobParameters.START_FINDING_BALES then
+        return true
+    else
+        return false
+    end
+end
 
 function CpAIFieldWorker:getCanStartCpFieldWork()
     -- built in helper can't handle it, but we may be able to ...
@@ -207,14 +212,10 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-        if job:isa(AIJobBaleCollectCp) then
-            CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
-            local cpDriveStrategy = AIDriveStrategyFindBales.new()
-            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
-            cpDriveStrategy:setAIVehicle(self)
-            return
-        end
-    if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
+    if CpAIFieldWorker.getCanStartFindingBales(self) then
+        CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
+        cpDriveStrategy = AIDriveStrategyFindBales.new()
+    elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
         self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy

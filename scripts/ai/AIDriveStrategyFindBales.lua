@@ -52,7 +52,6 @@ end
 
 function AIDriveStrategyFindBales:delete()
     AIDriveStrategyFindBales:superClass().delete(self)
-    self:raiseImplements()
     TurnContext.deleteNodes(self.turnNodes)
 end
 
@@ -431,4 +430,16 @@ end
 
 function AIDriveStrategyFindBales:isStoppingAtWaitPointAllowed()
     return true
+end
+
+--- Helper functions to generate a straight course
+function AIDriveStrategyFindBales:getStraightForwardCourse(length)
+    local l = length or 100
+    return Course.createFromNode(self.vehicle, self.vehicle.rootNode, 0, 0, l, 5, false)
+end
+
+function AIDriveStrategyFindBales:getStraightReverseCourse(length)
+    local lastTrailer = AIUtil.getLastAttachedImplement(self.vehicle)
+    local l = length or 100
+    return Course.createFromNode(self.vehicle, lastTrailer.rootNode or self.vehicle.rootNode, 0, 0, -l, -5, true)
 end

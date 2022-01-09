@@ -88,6 +88,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ImplementController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
@@ -100,7 +101,6 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
 		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
-		<sourceFile filename="scripts/ai/jobs/AIJobBaleCollectCp.lua"/>
 		<sourceFile filename="scripts/ai/tasks/AITaskFieldworkCp.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
