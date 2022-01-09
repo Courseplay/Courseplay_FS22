@@ -854,6 +854,16 @@ function CombinePocketHeadlandTurn:turn(dt)
 	return gx, gy, moveForwards, maxSpeed
 end
 
+--- No turn ending phase here, we just have one course for the entire turn and when it ends, we are done
+function CombinePocketHeadlandTurn:onWaypointPassed(ix, course)
+	if ix == course:getNumberOfWaypoints() then
+		self:debug('onWaypointPassed %d', ix)
+		self:debug('Last waypoint reached, resuming fieldwork')
+		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+	end
+end
+
+
 --- A turn type which isn't really a turn, we only use this to finish a row (drive straight until the implement
 --- reaches the end of the row, don't drive towards the next waypoint until then)
 --- This is to make sure the last row before transitioning to the headland is properly finished, otherwise
