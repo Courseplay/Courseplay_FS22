@@ -162,71 +162,38 @@ function CpAIFieldWorker:startFieldworker()
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIFieldWorker.updateAIFieldWorkerDriveStrategies(self)
+        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self)
     end
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(...)
+function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
     CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
+    local spec = self.spec_aiFieldWorker
+    if spec.driveStrategies ~= nil then
+        for i = #spec.driveStrategies, 1, -1 do
+            spec.driveStrategies[i]:delete()
+            table.remove(spec.driveStrategies, i)
+        end
 
-    --- TODO: figure out a good way to handle the insertion or selection of the drive strategies.
-
-    if #self.spec_aiFieldWorker.driveStrategies == 0 then
-        CpUtil.infoVehicle(self, 'The built-in AI helper is not able to handle these implements, see if Courseplay can.')
-        if AIUtil.hasImplementWithSpecialization(self, Baler) then
-            CpUtil.infoVehicle(self, 'Found a baler, install CP drive strategy for it')
-            local cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
-            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
-            cpDriveStrategy:setAIVehicle(self)
-            return
-        end
-        if AIUtil.hasImplementWithSpecialization(self, Cutter) then
-            CpUtil.infoVehicle(self, 'Found a forage cutter, install CP combine drive strategy for it')
-            local cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-            table.insert(self.spec_aiFieldWorker.driveStrategies, cpDriveStrategy)
-            cpDriveStrategy:setAIVehicle(self)
-            return
-        end
+        spec.driveStrategies = {}
     end
-    -- TODO: messing around with AIFieldWorker spec internals is not the best idea, should rather implement
-    -- our own specialization
-    local strategiesToRemove = {}
-    for i, strategy in ipairs(self.spec_aiFieldWorker.driveStrategies) do
-        if strategy:isa(AIDriveStrategyStraight) then
-            self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            local cpDriveStrategy
-            if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
-                cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-                CpUtil.infoVehicle(self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyCombineCourse')
-            elseif AIUtil.getImplementWithSpecialization(self, Plow) then
-                cpDriveStrategy = AIDriveStrategyPlowCourse.new()
-                CpUtil.infoVehicle(self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyPlowCourse')
-            else
-                cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
-                CpUtil.infoVehicle(self, 'Replacing fieldwork helper drive strategy with AIDriveStrategyFieldWorkCourse')
-            end
-            cpDriveStrategy:setAIVehicle(self)
-            self.spec_aiFieldWorker.driveStrategies[i] = cpDriveStrategy
-        elseif strategy:isa(AIDriveStrategyCombine) then
-            self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            CpUtil.infoVehicle(self, 'Removing fieldwork helper Giants combine drive strategy (%d)', i)
-            table.insert(strategiesToRemove, i)
-        elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyMogli and
-                strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyMogli) then
-            self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            CpUtil.infoVehicle(self, 'Removing AIVehicleExtension drive strategy (%d)', i)
-            table.insert(strategiesToRemove, i)
-        elseif FS22_AIVehicleExtension and FS22_AIVehicleExtension.AIDriveStrategyCombine131 and
-                strategy:isa(FS22_AIVehicleExtension.AIDriveStrategyCombine131) then
-            self.spec_aiFieldWorker.driveStrategies[i]:delete()
-            CpUtil.infoVehicle(self, 'Removing AIVehicleExtension combine drive strategy (%d)', i)
-            table.insert(strategiesToRemove, i)
-        end
+    local cpDriveStrategy
+    if AIUtil.hasImplementWithSpecialization(self, Combine) then
+        CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
+        cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+    elseif AIUtil.hasImplementWithSpecialization(self, Plow) then
+        CpUtil.infoVehicle(self, 'Found a plow, install CP plow drive strategy for it')
+        cpDriveStrategy = AIDriveStrategyPlowCourse.new()
+    else
+        CpUtil.infoVehicle(self, 'Installing default CP fieldwork drive strategy')
+        cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
     end
-    for _, ix in ipairs(strategiesToRemove) do
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Removing strategy %d', ix)
-        table.remove(self.spec_aiFieldWorker.driveStrategies, ix)
-    end
+    cpDriveStrategy:setAIVehicle(self)
+    table.insert(spec.driveStrategies, cpDriveStrategy)
+    --- TODO: Correctly implement this strategy.
+	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
+    driveStrategyCollision:setAIVehicle(self)
+    table.insert(spec.driveStrategies, driveStrategyCollision)
 end

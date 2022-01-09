@@ -12,6 +12,4 @@ function AITaskFieldworkCp:start()
 	if self.isServer then
 		self.vehicle:cpStartFieldworker()
 	end
-
-	AITaskFieldworkCp:superClass().start(self)
 end
