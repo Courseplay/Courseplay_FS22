@@ -37,12 +37,11 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
-    SpecializationUtil.registerFunction(vehicleType, "isCpFieldworkActive", CpAIFieldWorker.isCpFieldworkActive)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
- --   SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
- --   SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
+   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
+   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -108,10 +107,6 @@ function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgno
 	CpAIFieldWorker.updateActionEvents(self)
 end
 
-function CpAIFieldWorker:isCpFieldworkActive()
-    local job = self:getJob()
-    return job and job:isa(AIJobFieldWorkCp)
-end
 
 --- Directly starts a cp driver or stops a currently active job.
 function CpAIFieldWorker:startStopDriver()
@@ -180,7 +175,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-    if AIUtil.hasImplementWithSpecialization(self, Combine) then
+    if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
     elseif AIUtil.hasImplementWithSpecialization(self, Plow) then
