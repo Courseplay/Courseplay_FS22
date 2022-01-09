@@ -253,5 +253,6 @@
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Canal actif de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Affiche/Masque les paramètres du véhicule"/>
+		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
 	</texts>
 </l10n>
