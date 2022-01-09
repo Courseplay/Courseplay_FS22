@@ -185,7 +185,7 @@ function AIDriveStrategyFindBales:findClosestBale(bales)
             self:debug('%d. bale (%d, %s) INVALID', i, bale:getId(), bale:getBaleObject())
             invalidBales = invalidBales + 1
             self:debug('Found an invalid bales, rescanning field', invalidBales)
-            self.bales = self:findBales(self.vehicle.cp.settings.baleCollectionField:get())
+            self.bales = self:findBales(self.field)
             -- return empty, next time this is called everything should be ok
             return
         end
@@ -336,7 +336,7 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
             self:collectNextBale()
         elseif self.state == self.states.APPROACHING_BALE then
             self:debug('looks like somehow we missed a bale, rescanning field')
-            self.bales = self:findBales(self.vehicle.cp.settings.baleCollectionField:get())
+            self.bales = self:findBales(self.field)
             self:collectNextBale()
         elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
             self:debug('backed up after pathfinder failed, trying again')
