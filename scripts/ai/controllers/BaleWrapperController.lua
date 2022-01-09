@@ -63,7 +63,7 @@ function BaleWrapperController:handleBaleWrapper()
         -- inserts unload threshold after lowering the implement, useful after e.g. transition from connecting track to fieldwork
         if false and self.fieldworkState == self.states.WAITING_FOR_LOWER then
             local unloadThreshold = 2500 --delay in msecs, 2.5 secs seems to work well
-            loweringDropTime = g_timer + unloadThreshold
+            loweringDropTime = g_currentMission.time + unloadThreshold
         elseif loweringDropTime == nil then
             loweringDropTime = 0
         end
@@ -74,7 +74,7 @@ function BaleWrapperController:handleBaleWrapper()
         else
             turnDropTime = 0 --avoids problems in case of condition variables not existing / empty e.g. before the first turn
         end
-        if g_timer > math.max(loweringDropTime,turnDropTime) then --chooses the bigger delay
+        if g_currentMission.time > math.max(loweringDropTime,turnDropTime) then --chooses the bigger delay
             self.baleWrapper:doStateChange(BaleWrapper.CHANGE_WRAPPER_START_DROP_BALE)
         end
     end
