@@ -497,7 +497,7 @@ function AIDriveStrategyFieldWorkCourse:checkTransitionFromConnectingTrack(ix, c
         if d < 5 * self.turningRadius and firstUpDownWpIx and not self.course:isTurnEndAtIx(firstUpDownWpIx) then
             self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
             local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-                    course, firstUpDownWpIx, math.min(self.frontMarkerDistance, 0)):getCourse()
+                    course, firstUpDownWpIx, math.min(-self.frontMarkerDistance, 0)):getCourse()
             if alignmentCourse then
                 self:rememberCourse(course, firstUpDownWpIx)
                 self.ppc:setShortLookaheadDistance()
