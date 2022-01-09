@@ -417,7 +417,7 @@ end
 function AIDriveStrategyFieldWorkCourse:startTurn(ix)
     local fm, bm = self:getFrontAndBackMarkers()
     self.ppc:setShortLookaheadDistance()
-    self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(), fm, bm,
+    self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
     if AITurn.canMakeKTurn(self.vehicle, self.turnContext, self.workWidth) then
         self.aiTurn = KTurn(self.vehicle, self, self.ppc, self.turnContext, self.workWidth)

@@ -510,7 +510,7 @@ A turn maneuver following a course (waypoints created by turn.lua)
 
 ---@class CourseTurn : AITurn
 CourseTurn = CpObject(AITurn)
-
+---@param fieldworkCourse Course needed only when generating a pathfinder turn, this is where it gets the headland
 function CourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, name)
 	AITurn.init(self, vehicle, driveStrategy, ppc, turnContext, workWidth, name or 'CourseTurn')
 
@@ -883,4 +883,20 @@ function FinishRowOnly:finishRow()
 		self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx, true)
 	end
 	return false
+end
+
+--- A turn which really isn't a turn just using the turn logic to start a row, making sure the implements are
+--- lowered correctly when starting a new row.
+---@class StartRowOnly : CourseTurn
+StartRowOnly = CpObject(CourseTurn)
+
+---@param rowStartCourse Course the course to drive to the start of the row
+function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, rowStartCourse, fieldworkCourse, workWidth)
+	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, 'StartRowOnly')
+	self.turnCourse = rowStartCourse
+
+end
+
+function StartRowOnly:updateTurnProgress()
+	-- do nothing since this isn't really a turn
 end

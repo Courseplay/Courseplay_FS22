@@ -1048,7 +1048,7 @@ end
 function AIDriveStrategyCombineCourse:startTurn(ix)
 	self:debug('Starting a combine turn.')
 
-	self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(),
+	self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
 			self.frontMarkerDistance, self.backMarkerDistance,
 			self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
 

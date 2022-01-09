@@ -32,6 +32,7 @@ TurnContext = CpObject()
 -- TODO: could this be done a lot easier with child nodes sitting on a single corner node?
 ---@param course Course
 ---@param turnStartIx number
+---@param turnEndIx number
 ---@param turnNodes table to store the turn start/end waypoint nodes (which are created if nil passed in)
 --- we store the nodes some global, long lived table to avoid creating new nodes every time a TurnContext object
 --- is created
@@ -49,7 +50,7 @@ TurnContext = CpObject()
 ---@param turnEndForwardOffset number offset of the turn end in meters forward (>0) or back (<0), additional to the
 --- frontMarkerDistance. This can be used to compensate for edge cases like sprayers where the working width is
 --- much bigger than the turning diameter so the implement's tip on the turn inside is ahead of the vehicle.
-function TurnContext:init(course, turnStartIx, turnNodes, workWidth,
+function TurnContext:init(course, turnStartIx, turnEndIx, turnNodes, workWidth,
                           frontMarkerDistance, backMarkerDistance, turnEndSideOffset, turnEndForwardOffset)
     self.debugChannel = CpDebug.DBG_TURN
     self.workWidth = workWidth
@@ -62,10 +63,10 @@ function TurnContext:init(course, turnStartIx, turnNodes, workWidth,
     self.turnStartWp = course.waypoints[turnStartIx]
     self.turnStartWpIx = turnStartIx
     ---@type Waypoint
-    self.turnEndWp = course.waypoints[turnStartIx + 1]
-    self.turnEndWpIx = turnStartIx + 1
+    self.turnEndWp = course.waypoints[turnEndIx]
+    self.turnEndWpIx = turnEndIx
     ---@type Waypoint
-    self.afterTurnEndWp = course.waypoints[math.min(course:getNumberOfWaypoints(), turnStartIx + 2)]
+    self.afterTurnEndWp = course.waypoints[math.min(course:getNumberOfWaypoints(), turnEndIx + 1)]
     self.directionChangeDeg = math.deg( getDeltaAngle( math.rad(self.turnEndWp.angle), math.rad(self.beforeTurnStartWp.angle)))
 
     self:setupTurnStart(course, turnNodes)
@@ -515,4 +516,16 @@ function TurnContext:drawDebug()
             DebugUtil.drawDebugNode(self.vehicleAtTurnStartNode, 'vehicle\nat turn start')
         end
     end
+end
+
+--- A special turn context for the row start/finish turn (up/down <-> headland transition). All this does
+--- is making sure the implements are raised/lowered properly when finishing or starting a row
+---@class RowStartOrFinishContext : TurnContext
+RowStartOrFinishContext = CpObject(TurnContext)
+
+--- Force the 180 turn behavior so the row start/finishing course is created properly. Without this
+--- it would calculate a transition to the headland or up/down rows as a headland turn as such transitions are always
+--- less then 180 and then the row finishing course would be offset
+function RowStartOrFinishContext:isHeadlandCorner()
+    return false
 end
