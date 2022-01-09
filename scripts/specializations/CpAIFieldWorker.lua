@@ -34,13 +34,15 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
+    SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
+    SpecializationUtil.registerFunction(vehicleType, "isCpFieldworkActive", CpAIFieldWorker.isCpFieldworkActive)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
+ --   SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
+ --   SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -106,6 +108,10 @@ function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgno
 	CpAIFieldWorker.updateActionEvents(self)
 end
 
+function CpAIFieldWorker:isCpFieldworkActive()
+    local job = self:getJob()
+    return job and job:isa(AIJobFieldWorkCp)
+end
 
 --- Directly starts a cp driver or stops a currently active job.
 function CpAIFieldWorker:startStopDriver()
@@ -150,36 +156,20 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
     return self:getCanStartFieldWork()
 end
 
---- Makes sure the "H" key for helper starting, starts the cp job and not the giants default job.
-function CpAIFieldWorker:getStartableAIJob(superFunc,...)
-    local lastJob = self:getLastJob()
-    if lastJob and lastJob:isa(AIJobFieldWorkCp) then
-        self:updateAIFieldWorkerImplementData()
-        if self:getCanStartFieldWork() then
-            local spec = self.spec_cpAIFieldWorker
-            local fieldJob = spec.cpJob
-            fieldJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-            fieldJob:setValues()
-            local success = fieldJob:validate(false)
-            if success then
-                return fieldJob
-            end
-        end
+--- Custom version of AIFieldWorker:startFieldWorker()
+function CpAIFieldWorker:startFieldworker()
+    --- Calls the giants startFieldWorker function.
+    self:startFieldWorker()
+    if self.isServer then 
+        --- Replaces drive strategies.
+        CpAIFieldWorker.updateAIFieldWorkerDriveStrategies(self)
     end
-    return superFunc(self,...)
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(superFunc, ...)
-    local job = self:getJob()
-    if not job:isa(AIJobFieldWorkCp) then
-        CpUtil.infoVehicle(self, 'Never use the default field work key binding for cp. Continue with default configurations.')
-        return superFunc(self, ...)
-    else
-        CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
-    end
-    superFunc(self, ...)
+function CpAIFieldWorker:updateAIFieldWorkerDriveStrategies(...)
+    CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
 
     --- TODO: figure out a good way to handle the insertion or selection of the drive strategies.
 

@@ -676,7 +676,7 @@ end
 local function emptyFunction(object,superFunc,...)
     local rootVehicle = object.rootVehicle
     if rootVehicle.getJob then 
-        if rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+        if rootVehicle:isCpFieldworkActive() then 
             return
         end
     end

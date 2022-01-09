@@ -13,6 +13,19 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
+	self.fieldWorkTask = AITaskFieldworkCp.new(isServer, self)
+
+	-- Switches the AITaskFieldWork with AITaskFieldworkCp.
+	-- TODO: Consider deriving AIJobFieldWorkCp of AIJob and implement our own logic instead.
+	local ix
+	for i,task in pairs(self.tasks) do 
+		if self.tasks[i]:isa(AITaskFieldWork) then 
+			ix = i
+			break
+		end
+	end
+	self.fieldWorkTask.taskIndex = ix
+	self.tasks[ix] = self.fieldWorkTask
 
 	--- Small translation fix, needs to be removed once giants fixes it.
 	local ai = 	g_currentMission.aiJobTypeManager
@@ -106,13 +119,13 @@ end
 --- Currently repairs all AI drivers.
 function AIJobFieldWorkCp:onUpdateTickWearable(...)
 	if self:getIsAIActive() and self:getUsageCausesDamage() then 
-	--	if self.rootVehicle then-- and self.rootVehicle.getJob and self.rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+		if self.rootVehicle and self.rootVehicle:isCpFieldworkActive() then 
 			local dx =  g_Courseplay.globalSettings:getSettings().autoRepair:getValue()
 			local repairStatus = (1 - self:getDamageAmount())*100
 			if repairStatus < dx then 
 				self:repairVehicle()
 			end		
-	--	end
+		end
 	end
 end
 Wearable.onUpdateTick = Utils.appendedFunction(Wearable.onUpdateTick, AIJobFieldWorkCp.onUpdateTickWearable)
