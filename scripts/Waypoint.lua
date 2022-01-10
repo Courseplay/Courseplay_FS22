@@ -157,6 +157,11 @@ function Waypoint:getDistanceFromVehicle(vehicle)
 	return self:getDistanceFromPoint(vx, vz)
 end
 
+function Waypoint:getDistanceFromNode(node)
+	local x, _, z = getWorldTranslation(node)
+	return self:getDistanceFromPoint(x, z)
+end
+
 -- a node related to a waypoint
 ---@class WaypointNode
 WaypointNode = CpObject()
@@ -1432,15 +1437,6 @@ function Course:executeFunctionForLastWaypoints(d, lambda)
 	local i = self:getNumberOfWaypoints()
 	while i > 1 and self:getDistanceToLastWaypoint(i) < d do
 		lambda(self.waypoints[i])
-		i = i - 1
-	end
-end
-
-function Course:setTurnEndForLastWaypoints(d)
-	local i = self:getNumberOfWaypoints()
-	-- only set turn end for forward waypoints, we don't want to lower implements while reversing
-	while i > 1 and not self:isReverseAt(i) and self:getDistanceToLastWaypoint(i) < d do
-		self.waypoints[i].turnEnd = true
 		i = i - 1
 	end
 end

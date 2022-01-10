@@ -19,7 +19,7 @@ TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED = 'changeToFwdWhenReached'
 TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END = 'lowerImplementAtTurnEnd'
 
 ---@param course Course
-function TurnManeuver.getTurnControl(course, ix, control)
+function TurnManeuver.hasTurnControl(course, ix, control)
 	local controls = course:getTurnControls(ix)
 	return controls and controls[control]
 end
@@ -210,14 +210,24 @@ function TurnManeuver:addWaypoint(x, z, turnEnd, reverse, dontPrint)
 	end
 end
 
-function TurnManeuver:addTurnControl(waypoints, fromIx, toIx, control, value)
-	self:debug('addTurnControl %d - %d %s %s', fromIx, toIx, control, tostring(value))
-	for i = fromIx, toIx do
-		if not waypoints[i].turnControls then
-			waypoints[i].turnControls = {}
-		end
-		waypoints[i].turnControls[control] = value
+function TurnManeuver.addTurnControlToWaypoint(wp, control, value)
+	if not wp.turnControls then
+		wp.turnControls = {}
 	end
+	wp.turnControls[control] = value
+end
+
+function TurnManeuver.addTurnControl(waypoints, fromIx, toIx, control, value)
+	for i = fromIx, toIx do
+		TurnManeuver.addTurnControlToWaypoint(waypoints[i], control, value)
+	end
+end
+
+--- Set the given control to value for all waypoints of course within d meters of the course end
+function TurnManeuver.setTurnControlForLastWaypoints(course, d, control, value)
+	course:executeFunctionForLastWaypoints( d, function(wp)
+		TurnManeuver.addTurnControlToWaypoint(wp, control, value)
+	end)
 end
 
 ---@param course Course
@@ -238,7 +248,7 @@ function TurnManeuver:moveCourseBack(course, dBack)
 	if dFromTurnEnd > 0 then
 		-- allow early direction change when aligned
 		local toIx = reverseBeforeTurn:getNumberOfWaypoints()
-		self:addTurnControl(reverseBeforeTurn.waypoints, toIx - 5, toIx, TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true)
+		TurnManeuver.addTurnControl(reverseBeforeTurn.waypoints, toIx - 5, toIx, TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true)
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
 			0, dFromTurnEnd - self.steeringLength, -self.steeringLength, -1, true)
 		reverseBeforeTurn:append(reverseAfterTurn)
@@ -274,7 +284,8 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge)
 	end
-	self.course:setTurnEndForLastWaypoints(math.max(turnContext.frontMarkerDistance + 2, 5))
+	TurnManeuver.setTurnControlForLastWaypoints(self.course, math.max(turnContext.frontMarkerDistance + 2, 5),
+			TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
@@ -369,7 +380,7 @@ function TurnEndingManeuver:init(vehicle, turnContext, vehicleDirectionNode, tur
 	myCorner:delete()
 	self.course = Course(vehicle, self.waypoints, true)
 	self.course:setUseTightTurnOffsetForLastWaypoints(10)
-	self.course:setTurnEndForLastWaypoints(5)
+	TurnManeuver.setTurnControlForLastWaypoints(self.course, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 end
 
 ---@class HeadlandCornerTurnManeuver : TurnManeuver
@@ -422,7 +433,7 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	local startDir = corner:getArcStart()
 	local stopDir = corner:getArcEnd()
 	self:generateTurnCircle(centerForward, startDir, stopDir, self.turningRadius, self.direction * -1, true)
-	self:addTurnControl(self.waypoints, fromIx, toIx, TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED, changeToFwdIx)
+	TurnManeuver.addTurnControl(self.waypoints, fromIx, toIx, TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED, changeToFwdIx)
 
 	-- Drive forward until our implement reaches the circle end and a bit more so it is hopefully aligned with the tractor
 	-- and we can start reversing more or less straight.
@@ -431,7 +442,7 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	self:debug("from ( %.2f %.2f ), to ( %.2f %.2f)", fromPoint.x, fromPoint.z, toPoint.x, toPoint.z)
 
 	fromIx, toIx = self:generateStraightSection(fromPoint, toPoint, false, false, 0, true)
-	self:addTurnControl(self.waypoints, fromIx, toIx, TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true)
+	TurnManeuver.addTurnControl(self.waypoints, fromIx, toIx, TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true)
 
 	-- now back up the implement to the edge of the field (or headland)
 	fromPoint = corner:getArcEnd()
@@ -460,7 +471,6 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 	local targetWp = course:getWaypoint(ix)
 	x, _, z = targetWp:getOffsetPosition(0, zOffset)
-	print(course:getWaypointAngleDeg(ix))
 	local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
 
 	-- have a little reserve to make sure vehicles can always follow the course

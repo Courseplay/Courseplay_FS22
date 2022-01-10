@@ -241,7 +241,7 @@ function AITurn:finishRow(dt)
 	--end
 end
 
----@return boolean true if it is ok the continure driving, false when the vehicle should stop
+---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function AITurn:endTurn(dt)
 	-- keep driving on the turn ending temporary course until we need to lower our implements
 	-- check implements only if we are more or less in the right direction (next row's direction)
@@ -254,7 +254,6 @@ function AITurn:endTurn(dt)
 end
 
 function AITurn:drawDebug()
-
 end
 
 --[[
@@ -569,16 +568,15 @@ function CourseTurn:turn()
 	self:changeToFwdWhenWaypointReached()
 
 	-- TODO keep only the turn control, remove this turnEnd thing as it overlaps with turnStart/turnEnd
-	if self.turnCourse:isTurnEndAtIx(self.turnCourse:getCurrentWaypointIx()) or
-			TurnManeuver.getTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(),
-					TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END) then
+	if TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(),
+			TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END) then
 		self.state = self.states.ENDING_TURN
 		self:debug('About to end turn')
 	end
 	return gx, gz, moveForwards, maxSpeed
 end
 
----@return boolean true if it is ok the continure driving, false when the vehicle should stop
+---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
 -- keep driving on the turn course until we need to lower our implements
 	local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
@@ -633,7 +631,7 @@ end
 --- change direction as soon as the implement is aligned.
 --- So check that here and force a direction change when possible.
 function CourseTurn:changeDirectionWhenAligned()
-	if TurnManeuver.getTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED) then
+	if TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED) then
 		local aligned = self.driveStrategy:areAllImplementsAligned(self.turnContext.turnEndWpNode.node)
 		self:debug('aligned: %s', tostring(aligned))
 		if aligned then
@@ -652,7 +650,7 @@ end
 --- before we make a U turn
 function CourseTurn:changeToFwdWhenWaypointReached()
 	local changeWpIx =
-		TurnManeuver.getTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED)
+		TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(), TurnManeuver.CHANGE_TO_FWD_WHEN_REACHED)
 	if changeWpIx and self.ppc:isReversing() then
 		local _, _, dz = self.turnCourse:getWaypointLocalPosition(self.vehicle:getAIDirectionNode(), changeWpIx)
 		-- is the change waypoint now in front of us?
@@ -721,7 +719,7 @@ function CourseTurn:onPathfindingDone(path)
 		else
 			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
-		self.turnCourse:setTurnEndForLastWaypoints(5)
+		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
 		self.turnContext:appendEndingTurnCourse(self.turnCourse)
@@ -885,16 +883,20 @@ function FinishRowOnly:finishRow()
 	return false
 end
 
---- A turn which really isn't a turn just using the turn logic to start a row, making sure the implements are
---- lowered correctly when starting a new row.
----@class StartRowOnly : CourseTurn
+--- A turn which really isn't a turn just a course to start a field work row using the supplied course and
+--- making sure we start working at that waypoint with all implements lowered in time.
+---@class StartRowOnly: CourseTurn
 StartRowOnly = CpObject(CourseTurn)
-
----@param rowStartCourse Course the course to drive to the start of the row
-function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, rowStartCourse, fieldworkCourse, workWidth)
-	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, 'StartRowOnly')
-	self.turnCourse = rowStartCourse
-
+---@param startRowCourse Course course leading to the first waypoint of the row to start
+---@param fieldWorkCourse Course field work course
+---@param fieldWorkWpIx number waypoint of fieldWorkCourse to align to and start working
+function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
+	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'AlignmentTurn')
+	self.turnCourse = startRowCourse
+	TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+	self.ppc:setCourse(self.turnCourse)
+	self.ppc:initialize(1)
+	self.state = self.states.TURNING
 end
 
 function StartRowOnly:updateTurnProgress()
