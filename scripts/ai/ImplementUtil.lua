@@ -339,3 +339,13 @@ function ImplementUtil.getDistanceToImplementNode(referenceNode, implementObject
     end
     return rootToReferenceNodeOffset
 end
+
+-- Bale loaders / wrappers have no AI markers
+function ImplementUtil.getAIMarkersFromGrabberNode(object, spec)
+    -- use the grabber node for all markers if exists
+    if spec.baleGrabber and spec.baleGrabber.grabNode then
+        return spec.baleGrabber.grabNode, spec.baleGrabber.grabNode, spec.baleGrabber.grabNode
+    else
+        return object.rootNode, object.rootNode, object.rootNode
+    end
+end

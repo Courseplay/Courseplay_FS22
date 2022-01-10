@@ -205,18 +205,14 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
         })
         table.insert(self.controllers, balerController)
     end
-end
-
-function AIDriveStrategyFieldWorkCourse:updateImplementControllers()
-    for _, controller in pairs(self.controllers) do
-        ---@type ImplementController
-        if controller:isEnabled() then
-            -- we don't know yet if we even need anything from the controller other than the speed.
-            local _, _, _, maxSpeed = controller:update()
-            if maxSpeed then
-                self:setMaxSpeed(maxSpeed)
-            end
-        end
+    if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
+        local baleWrapperController = BaleWrapperController(vehicle)
+        baleWrapperController:setDisabledStates({
+            self.states.ON_CONNECTING_TRACK,
+            self.states.TEMPORARY,
+            self.states.TURNING
+        })
+        table.insert(self.controllers, baleWrapperController)
     end
 end
 

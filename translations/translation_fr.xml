@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="ramassage/enrubannage des bottes" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP:Travail" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP:Travail" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses" />

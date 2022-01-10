@@ -5,7 +5,7 @@ local AIJobFieldWorkCp_mt = Class(AIJobFieldWorkCp, AIJobFieldWork)
 
 ---Localization text symbols.
 AIJobFieldWorkCp.translations = {
-    JobName = "FIELDWORK_CP",
+    JobName = "CP_job_fieldWork",
     GenerateButton = "FIELDWORK_BUTTON"
 }
 
@@ -84,6 +84,12 @@ end
 --- Is course generation allowed ?
 function AIJobFieldWorkCp:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
+end
+
+function AIJobFieldWorkCp:getCanStartJob()
+	local vehicle = self.vehicleParameter:getVehicle()
+	return vehicle and (vehicle:hasCpCourse() or
+			self.cpJobParameters.startAt:getValue() == CpJobParameters.START_FINDING_BALES)
 end
 
 --- Button callback to generate a field work course.

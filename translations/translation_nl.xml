@@ -23,8 +23,9 @@
 		<text name="CP_jobParameters_startAt_bales"														text="balen verzamelen/verpakken" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Veldwerk" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Veldwerk" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Veldwerk baan genereren." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Koersgenerator openen/sluiten." />
