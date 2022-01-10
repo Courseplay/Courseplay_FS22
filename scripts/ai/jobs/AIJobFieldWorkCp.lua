@@ -110,8 +110,13 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.rowsToSkip:getValue(),
 			settings.rowsPerLand:getValue()
 	)
-	if not ok then
-		return false, 'could not generate course'
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
+	if not status then
+		g_gui:showInfoDialog({
+			dialogType = DialogElement.TYPE_ERROR,
+			text = g_i18n:getText('CP_error_could_not_generate_course')
+		})
+		return false
 	end
 
 	vehicle:setFieldWorkCourse(course)

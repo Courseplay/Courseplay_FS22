@@ -10,6 +10,7 @@
 		<!-- User info text -->
 		<text name="CP_infoText"														text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"													text="Создайте курс до начала работы." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"												text="Цель не на поле." />
 
 

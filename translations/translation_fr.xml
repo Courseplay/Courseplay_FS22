@@ -10,6 +10,7 @@
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Générez ou chargez une course avant de démarrer la tâche" />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 

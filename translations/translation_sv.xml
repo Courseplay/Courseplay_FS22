@@ -10,6 +10,7 @@
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): För hjälp, bug rapport och uppdaterings info, vänligen besök: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Generera en kurs innan du startat ett arbete." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Målet är inte på ett fält." />
 
 
