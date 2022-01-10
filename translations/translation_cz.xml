@@ -141,7 +141,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Řádky k přeskočení" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'záhon" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'záhon'" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
