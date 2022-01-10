@@ -106,10 +106,10 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
-    if false and AIUtil.hasImplementWithSpecialization(vehicle, BaleLoader) then
-        local baleLoaderController = BalerLoaderController(vehicle)
-        self.baleLoader = baleLoaderController:getImplement()
-        table.insert(self.controllers, baleLoaderController)
+    if AIUtil.hasImplementWithSpecialization(vehicle, BaleLoader) then
+        self.baleLoaderController = BaleLoaderController(vehicle)
+        self.baleLoader = self.baleLoaderController:getImplement()
+        table.insert(self.controllers, self.baleLoaderController)
     end
     if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
         self.baleWrapperController = BaleWrapperController(vehicle)
@@ -138,7 +138,7 @@ function AIDriveStrategyFindBales:findBales(fieldId)
     self:debug('Finding bales on field %d...', fieldId or 0)
     local balesFound = {}
     for _, object in pairs(g_currentMission.nodeToObject) do
-        if BaleToCollect.isValidBale(object, self.baleWrapper) then
+        if BaleToCollect.isValidBale(object, self.baleWrapper, self.baleLoader) then
             local bale = BaleToCollect(object)
             -- if the bale has a mountObject it is already on the loader so ignore it
             if (not fieldId or fieldId == 0 or bale:getFieldId() == fieldId) and
@@ -376,7 +376,7 @@ end
 
 function AIDriveStrategyFindBales:approachBale()
     if self.baleLoader then
-        if self.baleLoader.spec_baleLoader.grabberMoveState then
+        if self.baleLoaderController:isGrabbingBale() then
             self:debug('Start picking up bale')
             self.state = self.states.WORKING_ON_BALE
         end
@@ -392,7 +392,7 @@ end
 
 function AIDriveStrategyFindBales:workOnBale()
     if self.baleLoader then
-        if not self.baleLoader.spec_baleLoader.grabberMoveState then
+        if not self.baleLoaderController:isGrabbingBale() then
             self:debug('Bale picked up, moving on to the next')
             self:collectNextBale()
         end

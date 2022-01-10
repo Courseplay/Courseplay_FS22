@@ -36,12 +36,14 @@ end
 
 --- Call this before attempting to construct a BaleToCollect to check the validity of the object
 ---@param baleWrapper table bale wrapper, if exists
-function BaleToCollect.isValidBale(object, baleWrapper)
+function BaleToCollect.isValidBale(object, baleWrapper, baleLoader)
 	-- nodeId is sometimes 0, causing issues for the BaleToCollect constructor
 	if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
 		if baleWrapper then
 			-- if there is a bale wrapper, the bale must be wrappable
 			return baleWrapper:getIsBaleWrappable(object)
+		elseif baleLoader then
+			return baleLoader:getBaleTypeByBale(object) ~= nil
 		else
 			return true
 		end
