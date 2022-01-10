@@ -21,9 +21,8 @@
 		<text name="CP_jobParameters_startAt_bales"														text="raccogliere/avvolgere balle" />
 		
 		<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="Courseplay" />
-		
-			<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
+		<text name="CP_job_fieldWork"																	text="Courseplay" />
+		<text name="CP_job_baleCollect"																	text="CP: Raccogli/Avvolgi balle" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="[Courseplay] Genera percorso di lavoro" />
 		<text name="CP_ai_page_open_course_generator" 													text="[Courseplay] Apri/Chiudi menù" />
