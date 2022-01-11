@@ -340,6 +340,11 @@ end
 function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
     if self.state ~= self.states.TURNING and self.state ~= self.states.ON_CONNECTING_TRACK
             and self.course:isTurnStartAtIx(ix) then
+        if self.state == self.states.INITIAL then
+            self:debug('Waypoint change (%d) to turn start right after starting work, lowering implements.', ix)
+            self:lowerImplements()
+            -- otherwise we'd skip the wait for lowering states.
+        end
         self:startTurn(ix)
     elseif self.state == self.states.ON_CONNECTING_TRACK then
         if not self.course:isOnConnectingTrack(ix) then
@@ -392,6 +397,7 @@ end
 --- Turn
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:startTurn(ix)
+    self:debug('Starting a turn at waypoint %d', ix)
     local fm, bm = self:getFrontAndBackMarkers()
     self.ppc:setShortLookaheadDistance()
     self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(), fm, bm,

@@ -70,13 +70,8 @@ function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnE
 	local numPointsNeeded = math.ceil(dist / TurnManeuver.wpDistance)
 	local dx, dz = (toPoint.x - fromPoint.x) / dist, (toPoint.z - fromPoint.z) / dist
 
-	if turnEnd == true then
-		endTurn = turnEnd
-	end
-
-
 	-- add first point
-	self:addWaypoint(fromPoint.x, fromPoint.z, endTurn, reverse, nil)
+	self:addWaypoint(fromPoint.x, fromPoint.z, turnEnd, reverse, nil)
 	local fromIx = #self.waypoints
 
 	-- add points between the first and last
@@ -198,7 +193,9 @@ function TurnManeuver:addWaypoint(x, z, turnEnd, reverse, dontPrint)
 	local wp = {}
 	wp.x = x
 	wp.z = z
-	wp.turnEnd = turnEnd
+	if turnEnd then
+		TurnManeuver.addTurnControlToWaypoint(wp, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+	end
 	wp.reverse = reverse
 	table.insert(self.waypoints, wp)
 	local dz = worldToLocal(self.vehicleDirectionNode, wp.x, 0, wp.z)
@@ -387,8 +384,9 @@ end
 HeadlandCornerTurnManeuver = CpObject(TurnManeuver)
 
 ------------------------------------------------------------------------
--- Drive past turnEnd, up to implement width from the edge of the field (or current headland), raise implements, then
--- reverse back straight, then forward on a curve, then back up to the corner, lower implements there.
+-- When this maneuver is created, the vehicle already finished the row, the implement is raised when
+-- it reached the headland. Now reverse back straight, then forward on a curve, then back up to the
+-- corner, lower implements there.
 ------------------------------------------------------------------------
 ---@param turnContext TurnContext
 function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth,
@@ -404,18 +402,6 @@ function HeadlandCornerTurnManeuver:init(vehicle, turnContext, vehicleDirectionN
 	local centerForward = corner:getArcCenter()
 	local helperNode = CpUtil.createNode('tmp', 0, 0, 0, self.vehicleDirectionNode)
 
-	-- drive forward until our implement reaches the headland after the turn
-	fromPoint.x, _, fromPoint.z = localToWorld( helperNode, 0, 0, 0 )
-	-- drive forward only until our implement reaches the headland area after the turn so we leave an unworked area here at the corner
-	toPoint = corner:getPointAtDistanceFromCornerStart((turnContext.workWidth / 2) + turnContext.frontMarkerDistance - self.forwardBuffer)
-	-- is this now in front of us? We may not need to drive forward
-	local dx, dy, dz = worldToLocal( helperNode, toPoint.x, toPoint.y, toPoint.z )
-	-- at which waypoint we have to raise the implement
-	if dz > 0 then
-		self:debug("now driving forward so implement reaches headland")
-		self:generateStraightSection(fromPoint, toPoint, false )
-		setTranslation(helperNode, dx, dy, dz)
-	end
 	-- in reverse our reference point is the implement's turn node so put the first reverse waypoint behind us
 	fromPoint.x, _, fromPoint.z = localToWorld(self.vehicleDirectionNode, 0, 0, - self.steeringLength )
 

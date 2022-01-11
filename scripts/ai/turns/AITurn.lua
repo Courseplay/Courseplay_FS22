@@ -231,8 +231,8 @@ function AITurn:finishRow(dt)
 	-- keep driving straight until we need to raise our implements
 	if self.driveStrategy:shouldRaiseImplements(self:getRaiseImplementNode()) then
 		self.driveStrategy:raiseImplements()
-		self:startTurn()
 		self:debug('Row finished, starting turn.')
+		self:startTurn()
 	end
 	-- TODO_22: the giants combine strategy should probably handle this too
 	--if self.driveStrategy:holdInTurnManeuver(true, self.turnContext:isHeadlandCorner()) then
