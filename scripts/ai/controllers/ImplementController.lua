@@ -4,6 +4,18 @@ ImplementController = CpObject()
 function ImplementController:init(vehicle, implement)
     self.vehicle = vehicle
     self.implement = implement
+    self.overwrittenFunctions = {}
+    self.additionalAIEvents = {}
+end
+
+function ImplementController:delete()
+    self:unregisterOverwrittenFunctions()
+    self:unregisterAIEvents()
+end
+
+function ImplementController:setAllStaticParameters(settings,fillLevelManager)
+    self.settings = settings
+    self.fillLevelManager = fillLevelManager
 end
 
 --- Get the controlled implement
@@ -48,4 +60,45 @@ end
 ---@return number maximum speed or nil
 function ImplementController:update()
     return nil, nil, nil, nil
+end
+
+--- Overwrites a function and stores it, so the basic functionality gets restored after cp is finished.
+function ImplementController:registerOverwrittenFunction(class,funcName,newFunc)    
+    local oldFunc = class[funcName]
+    class[funcName] = Utils.overwrittenFunction(oldFunc, newFunc)
+    local reference = {}
+    reference.class = class
+    reference.funcName = funcName
+    reference.oldFunc = oldFunc
+
+    table.insert(self.overwrittenFunctions, reference)
+end
+
+--- Restores basic functionality as cp is finished.
+function ImplementController:unregisterOverwrittenFunctions()
+    for i=#self.overwrittenFunctions, 1, -1 do
+        local reference = self.overwrittenFunctions[i]
+        reference.class[reference.funcName] = reference.oldFunc
+        self.overwrittenFunctions[i] = nil
+    end
+end
+
+--- Register additional AI events, like onAIImplementStartLine and so on, that were not already initialized.
+function ImplementController:registerAIEvents(class,eventName,...)
+    SpecializationUtil.registerEventListener(self.implement, eventName, class)
+    
+    local data = {
+        eventName = eventName,
+        class = class
+    }
+    table.insert(self.additionalAIEvents,data)
+end
+
+--- Removes the cp additional AI events, like onAIImplementStartLine and so on.
+function ImplementController:unregisterAIEvents()    
+    for i=#self.additionalAIEvents,1,-1 do 
+        local data = self.additionalAIEvents[i]
+        SpecializationUtil.removeEventListener(self.implement, data.eventName, data.class)
+        self.additionalAIEvents[i] = nil
+    end
 end

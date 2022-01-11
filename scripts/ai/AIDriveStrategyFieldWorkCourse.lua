@@ -184,24 +184,27 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
-    if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler) then
-        local balerController = BalerController(vehicle)
-        balerController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        table.insert(self.controllers, balerController)
+    local function addController(class,spec,states)
+        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then
+            local controller = class(vehicle)
+            controller:setDisabledStates(states)
+            table.insert(self.controllers, controller)
+        end
     end
-    if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
-        local baleWrapperController = BaleWrapperController(vehicle)
-        baleWrapperController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        table.insert(self.controllers, baleWrapperController)
-    end
+    local defaultDisabledStates = {
+        self.states.ON_CONNECTING_TRACK,
+        self.states.TEMPORARY,
+        self.states.TURNING
+    }
+    addController(BalerController,Baler,defaultDisabledStates)
+    addController(BaleWrapperController,BaleWrapper,defaultDisabledStates)
+
+    addController(SowingMachineController,SowingMachine,defaultDisabledStates)
+    addController(FertilizingSowingMachineController,FertilizingSowingMachine,defaultDisabledStates)
+    addController(SprayerController,Sprayer,defaultDisabledStates)
+
+    addController(PickupController,Pickup,defaultDisabledStates)
+    addController(ForageWagonController,ForageWagon,defaultDisabledStates)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
@@ -439,6 +442,7 @@ end
 function AIDriveStrategyFieldWorkCourse:finishFieldWork()
     self:debug('Course ended, stopping job.')
     self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+    SpecializationUtil.raiseEvent(self.vehicle,"onCpFinished")
 end
 
 function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
@@ -507,6 +511,7 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
+    AIDriveStrategyFieldWorkCourse:superClass().setAllStaticParameters(self)
     self:setFrontAndBackMarkers()
     self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)

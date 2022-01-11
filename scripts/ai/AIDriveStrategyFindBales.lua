@@ -122,6 +122,7 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:setAllStaticParameters()
+    AIDriveStrategyFindBales:superClass().setAllStaticParameters(self)
     -- make sure we have a good turning radius set
     self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
     -- Set the offset to 0, we'll take care of getting the grabber to the right place

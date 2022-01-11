@@ -23,14 +23,19 @@ function CpAIFieldWorker.register(typeManager,typeName,specializations)
 	end
 end
 
+function CpAIFieldWorker.registerEvents(vehicleType)
+    SpecializationUtil.registerEvent(vehicleType, "onCpFinished")
+	SpecializationUtil.registerEvent(vehicleType, "onCpEmptyOrFull")
+end
+
 function CpAIFieldWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIFieldWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpAIFieldWorker)
---    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpEmptyOrFull", CpAIFieldWorker)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
@@ -46,12 +51,14 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "holdCpHarvesterTemporarily", CpAIFieldWorker.holdCpHarvesterTemporarily)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
+    SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
-   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
-   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerImplementData',CpAIFieldWorker.updateAIFieldWorkerImplementData)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopCurrentAIJob',CpAIFieldWorker.stopCurrentAIJob)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopFieldWorker',CpAIFieldWorker.stopFieldWorker)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -61,6 +68,7 @@ function CpAIFieldWorker:onLoad(savegame)
     self.spec_cpAIFieldWorker = self["spec_" .. CpAIFieldWorker.SPEC_NAME]
     local spec = self.spec_cpAIFieldWorker
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
+    spec.isActive = false
 end
 
 function CpAIFieldWorker:onPostLoad(savegame)
@@ -117,52 +125,34 @@ function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgno
 	CpAIFieldWorker.updateActionEvents(self)
 end
 
-------------------------------------------------------------------------------------------------------------------------
---- Interface for other mods, like AutoDrive
-------------------------------------------------------------------------------------------------------------------------
---- Is a cp helper active ?
---- TODO: add other possible jobs here.
-function CpAIFieldWorker:getIsCpActive()
-    return self:getIsAIActive() and self:getIsCpFieldWorkActive()
-end
+--- Makes sure the ai implements are set correctly otherwise a few of the ai events might not be working.
+function CpAIFieldWorker:updateAIFieldWorkerImplementData(superFunc)
 
---- Is a cp fieldwork helper active ?
-function CpAIFieldWorker:getIsCpFieldWorkActive()
-    return self:getIsAIActive() and self:getJob() and self:getJob():isa(AIJobFieldWorkCp)
-end
+    local function isValid(object)
+        local function validSpec(o)
+            return SpecializationUtil.hasSpecialization(Spec,object.specializations)
+        end
+        return object:getCanImplementBeUsedForAI() or 
+                validSpec(object,Baler) or validSpec(object,BaleWrapper) or validSpec(object,BaleLoader) 
+                or validSpec(object,Cutter) or validSpec(object,ForageWagon)
+    end
 
---- To find out if a harvester is waiting to be unloaded, either because it is full or ended the fieldwork course
---- with some grain in the tank.
----@return boolean true when the harvester is waiting to be unloaded
-function CpAIFieldWorker:getIsCpHarvesterWaitingForUnload()
-    return self.spec_cpAIFieldWorker.combineDriveStrategy and
-            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnload()
-end
-
---- To find out if a harvester is waiting to be unloaded in a pocket. Harvesters may cut a pocket on the opposite
---- side of the pipe to make room for an unloader if:
---- * working on the first headland (so the unloader can get under the pipe while staying on the headland)
---- * cutting the first row in the middle of the field
----@return boolean true when the harvester is waiting to be unloaded in a pocket
-function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadInPocket()
-    return self.spec_cpAIFieldWorker.combineDriveStrategy and
-            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingInPocket()
-end
-
---- To find out if a harvester is waiting to be unloaded after it pulled back to the side. This
---- is similar to a pocket but in this case there is no fruit on the opposite side of the pipe,
---- so the harvester just moves to the side and backwards without cutting a pocket.
----@return boolean
-function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadAfterPulledBack()
-    return self.spec_cpAIFieldWorker.combineDriveStrategy and
-            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnloadAfterPulledBack()
-end
-
---- Maneuvering means turning or working on a pocket or pulling back due to the pipe in fruit
----@return boolean true when the harvester is maneuvering so that an unloader should stay away.
-function CpAIFieldWorker:getIsCpHarvesterManeuvering()
-    return self.spec_cpAIFieldWorker.combineDriveStrategy and
-            self.spec_cpAIFieldWorker.combineDriveStrategy:isManeuvering()
+    if self:getIsCpActive() then 
+        local spec = self.spec_aiFieldWorker
+	    spec.aiImplementList = {}
+        for i,implement in pairs(AIUtil.getAllAttachedImplements(self)) do 
+            if self:isValid(implement.object) then 
+                table.insert(spec.aiImplementList,
+                    {
+                        object = implement.object
+                    }
+                )
+            end
+        end
+        
+    else 
+        superFunc(self)
+    end
 end
 
 --- Hold the harvester (set its speed to 0) for a period of periodMs milliseconds.
@@ -182,7 +172,6 @@ function CpAIFieldWorker:startStopDriver()
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
         CpUtil.infoVehicle(self,"Stopped current helper.")
 	else
-        self:updateAIFieldWorkerImplementData()
         if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or CpAIFieldWorker.getCanStartFindingBales(self) then
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
@@ -216,7 +205,9 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
             AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
             -- built in helper can't handle forage harvesters.
-            AIUtil.hasImplementWithSpecialization(self, Cutter) then
+            AIUtil.hasImplementWithSpecialization(self, Cutter) or
+
+            AIUtil.getImplementOrVehicleWithSpecialization(self, ForageWagon) then
         return true
     end
     return self:getCanStartFieldWork()
@@ -224,12 +215,19 @@ end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
 function CpAIFieldWorker:startFieldworker()
+    self.spec_cpAIFieldWorker.isActive = true
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
         CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self)
     end
+end
+
+function CpAIFieldWorker:stopFieldWorker(superFunc,...)
+    superFunc(self,...)
+    self.spec_cpAIFieldWorker.isActive = false
+    self:updateAIFieldWorkerImplementData()
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
@@ -266,4 +264,78 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
     driveStrategyCollision:setAIVehicle(self)
     table.insert(spec.driveStrategies, driveStrategyCollision)
+end
+
+--- Makes sure the cp driver doesn't stop automatically, if a fill type is empty.
+function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,force,...)
+    if self:getIsCpActive() and not force then 
+        if message:isa(AIMessageErrorOutOfMoney) then 
+         --   return 
+        elseif message:isa(AIMessageErrorOutOfFill) then 
+            return
+        end
+    end
+    return superFunc(self,message,...)
+end
+
+--- Stops the driver for now as it is either empty or filled.
+function CpAIFieldWorker:onCpEmptyOrFull()
+    self:stopCurrentAIJob(AIMessageErrorOutOfFill.new(),true)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Interface for other mods, like AutoDrive
+------------------------------------------------------------------------------------------------------------------------
+--- Is a cp helper active ?
+--- TODO: add other possible jobs here.
+function CpAIFieldWorker:getIsCpActive()
+    return self.spec_cpAIFieldWorker.isActive
+end
+
+--- Is a cp fieldwork helper active ?
+function CpAIFieldWorker:getIsCpFieldWorkActive()
+    return self:getIsAIActive() and self:getJob() and self:getJob():isa(AIJobFieldWorkCp)
+end
+
+--- To find out if a harvester is waiting to be unloaded, either because it is full or ended the fieldwork course
+--- with some grain in the tank.
+---@return boolean true when the harvester is waiting to be unloaded
+function CpAIFieldWorker:getIsCpHarvesterWaitingForUnload()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnload()
+end
+
+--- Maneuvering means turning or working on a pocket or pulling back due to the pipe in fruit
+---@return boolean true when the harvester is maneuvering so that an unloader should stay away.
+function CpAIFieldWorker:getIsCpHarvesterManeuvering()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isManeuvering()
+end
+
+--- To find out if a harvester is waiting to be unloaded in a pocket. Harvesters may cut a pocket on the opposite
+--- side of the pipe to make room for an unloader if:
+--- * working on the first headland (so the unloader can get under the pipe while staying on the headland)
+--- * cutting the first row in the middle of the field
+---@return boolean true when the harvester is waiting to be unloaded in a pocket
+function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadInPocket()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingInPocket()
+end
+
+--- To find out if a harvester is waiting to be unloaded after it pulled back to the side. This
+--- is similar to a pocket but in this case there is no fruit on the opposite side of the pipe,
+--- so the harvester just moves to the side and backwards without cutting a pocket.
+---@return boolean
+function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadAfterPulledBack()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnloadAfterPulledBack()
+end
+
+--- Starts the drive at the first waypoint of the course.
+function CpAIFieldWorker:startCpAtFirstWp()
+    local setting = self.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt
+    local backup = setting:getValue()
+    setting:setValue(CpJobParameters.START_AT_FIRST_POINT)
+    self:cpStartStopDriver()
+    setting:setValue(backup)
 end

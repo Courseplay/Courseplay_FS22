@@ -29,9 +29,10 @@ function BaleWrapperController:init(vehicle)
     if not self.haveBaler and self.baleWrapper then
         -- Bale wrappers which aren't balers have no AI markers as they have no pick up so add a function here
         -- to get the markers
-        self.baleWrapper.getAIMarkers = function(object)
-            return ImplementUtil.getAIMarkersFromGrabberNode(object, object.spec_baleWrapper)
-        end
+        self:registerOverwrittenFunction(self.baleWrapper,"getAIMarkers",
+            function(object)
+                return ImplementUtil.getAIMarkersFromGrabberNode(object, object.spec_baleLoader)
+            end)
     end
     self:debug('Bale wrapper controller initialized')
 end

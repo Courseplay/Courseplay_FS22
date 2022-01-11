@@ -153,11 +153,21 @@ function AIDriveStrategyCourse:updateImplementControllers()
     end
 end
 
+function AIDriveStrategyCourse:delete()
+    AIDriveStrategyCourse:superClass().delete(self)
+    for _, controller in pairs(self.controllers) do
+        controller:delete()
+    end
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:setAllStaticParameters()
-    -- set strategy specific parameters before starting
+    -- set strategy specific parameters before starting, also set all ImplementController static values.
+    for _, controller in pairs(self.controllers) do
+        controller:setAllStaticParameters(self.settings,self.fillLevelManager)
+    end
 end
 
 function AIDriveStrategyCourse:update()
