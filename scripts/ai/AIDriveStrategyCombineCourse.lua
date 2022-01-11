@@ -92,7 +92,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	if self.vehicle.spec_combine then
 		self.combine = self.vehicle.spec_combine
 	else
-		local combineImplement = AIUtil.getAIImplementWithSpecialization(self.vehicle, Combine)
+		local combineImplement = AIUtil.getImplementWithSpecialization(self.vehicle, Combine)
         local peletizerImplement = FS19_addon_strawHarvest and
 				AIUtil.getAIImplementWithSpecialization(self.vehicle, FS19_addon_strawHarvest.StrawHarvestPelletizer) or nil
 		if combineImplement then
@@ -107,6 +107,10 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 		else
 			self:error('Vehicle is not a combine and could not find implement with spec_combine')
 		end
+	end
+
+	if self:isChopper() then
+		self:debug('This is a chopper.')
 	end
 
 	self:setUpPipe()
@@ -1118,7 +1122,7 @@ function AIDriveStrategyCombineCourse:setUpPipe()
 		self.pipe = self.vehicle.spec_pipe
 		self.objectWithPipe = self.vehicle
 	else
-		local implementWithPipe = AIUtil.getAIImplementWithSpecialization(self.vehicle, Pipe)
+		local implementWithPipe = AIUtil.getImplementWithSpecialization(self.vehicle, Pipe)
 		if implementWithPipe then
 			self.pipe = implementWithPipe.spec_pipe
 			self.objectWithPipe = implementWithPipe
@@ -1252,6 +1256,7 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 	end
 	local dischargeNode = self.combine:getCurrentDischargeNode()
 	local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
+	self:debug('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
 	if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
 		self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
 				tostring(dischargeNode), tostring(targetObject), tostring(trailer))
@@ -1267,10 +1272,10 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 end
 
 function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()
-	for _, implement in pairs(self.vehicle:getAttachedImplements()) do
-		if implement.object.spec_workArea ~= nil then
-			for i, workArea in pairs(implement.object.spec_workArea.workAreas) do
-				if self.vehicle:getIsWorkAreaProcessing(workArea) then
+	for _, implement in pairs(self.vehicle:getChildVehicles()) do
+		if implement.spec_workArea ~= nil then
+			for i, workArea in pairs(implement.spec_workArea.workAreas) do
+				if implement:getIsWorkAreaProcessing(workArea) then
 					return true
 				end
 			end
