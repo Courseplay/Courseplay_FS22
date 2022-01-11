@@ -371,7 +371,17 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     end
+    self:checkFillLevel()
     return AIDriveStrategyFindBales.superClass().getDriveData(self, dt, vX, vY, vZ)
+end
+
+function AIDriveStrategyFindBales:checkFillLevel()
+    if self.baleLoader then
+        if self.fillLevelManager:getTotalFillLevelPercentage(self.baleLoader) > 99 then
+            self:info('Bale loader is full, stopping job.')
+            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+        end
+    end
 end
 
 function AIDriveStrategyFindBales:approachBale()
