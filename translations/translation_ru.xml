@@ -10,7 +10,7 @@
 		<!-- User info text -->
 		<text name="CP_infoText"														text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"													text="Создайте курс до начала работы." />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
+		<text name="CP_error_could_not_generate_course"									text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация." />
 		<text name="CP_error_not_on_field"												text="Цель не на поле." />
 
 
@@ -143,8 +143,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"		text="Перекрытие поворотных полос" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"	text="Перекрытие проходов поворотных полос в процентах от рабочей ширины." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"				text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"				text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"				text="Сдвиг границ поля" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"				text="Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны, отрицательные - увеличивают рабочее пространство за пределы поля." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"					text="Пропускать проходов" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"				text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе." />
