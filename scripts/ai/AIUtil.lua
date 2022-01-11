@@ -140,6 +140,20 @@ function AIUtil.getOffsetForTowBarLength(r, towBarLength)
 	return rTractor - r
 end
 
+function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
+	local reverserNode, debugText
+	-- articulated axis vehicles have a special reverser node
+	-- and yes, Giants has a typo in there...
+	if vehicle.spec_articulatedAxis.aiRevereserNode ~= nil then
+		reverserNode = vehicle.spec_articulatedAxis.aiRevereserNode
+		debugText = 'vehicle articulated axis reverese'
+	elseif vehicle.spec_articulatedAxis.aiReverserNode ~= nil then
+		reverserNode = vehicle.spec_articulatedAxis.aiReverserNode
+		debugText = 'vehicle articulated axis reverse'
+	end
+	return reverserNode, debugText
+end
+
 -- Find the node to use by the PPC when driving in reverse
 function AIUtil.getReverserNode(vehicle)
 	local reverserNode, debugText
@@ -153,15 +167,7 @@ function AIUtil.getReverserNode(vehicle)
 		reverserNode = reversingWheeledWorkTool.steeringAxleNode
 		debugText = 'implement reverse (Courseplay)'
 	elseif vehicle.spec_articulatedAxis ~= nil then
-		-- articulated axis vehicles have a special reverser node
-		-- and yes, Giants has a typo in there...
-		if vehicle.spec_articulatedAxis.aiRevereserNode ~= nil then
-			reverserNode = vehicle.spec_articulatedAxis.aiRevereserNode
-			debugText = 'vehicle articulated axis reverese'
-		elseif vehicle.spec_articulatedAxis.aiReverserNode ~= nil then
-			reverserNode = vehicle.spec_articulatedAxis.aiReverserNode
-			debugText = 'vehicle articulated axis reverse'
-		end
+		reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 	else
 		-- otherwise see if the vehicle has a reverser node
 		if vehicle.getAIVehicleReverserNode then

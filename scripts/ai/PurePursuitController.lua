@@ -233,6 +233,9 @@ function PurePursuitController:switchControlledNode()
 		if not reverserNode then
 			reverserNode, debugText = self.vehicle:getAIReverserNode(), 'AIReverserNode'
 		end
+		if not reverserNode and self.vehicle.spec_articulatedAxis ~= nil then
+			reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(self.vehicle)
+		end
 		if reverserNode then
 			self:setControlledNode(reverserNode)
 		else
