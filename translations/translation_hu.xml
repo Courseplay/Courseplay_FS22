@@ -148,7 +148,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="óramutató járásával megegyező" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="óramutató járásával ellentétes irányban" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"								text="Mezőközpont" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Mezőközpont" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Mezőközpont" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="fel/le" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirál" />
@@ -248,6 +248,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Shows debug channel menu yes/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open mini GUI"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 	</texts>
 </l10n>
