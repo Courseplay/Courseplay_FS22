@@ -1149,6 +1149,8 @@ function AIDriveStrategyCombineCourse:setUpPipe()
 				-- as seen in the Giants pipe code
 				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
 				self.objectWithPipe:updatePipeNodes(999999, nil)
+				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
+				self.objectWithPipe:updatePipeNodes(999999, nil)
 			end
 		end
 		local dischargeNode = self:getCurrentDischargeNode()
@@ -1166,11 +1168,17 @@ function AIDriveStrategyCombineCourse:setUpPipe()
 			else
 				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
 				self.objectWithPipe:updatePipeNodes(999999, nil)
+				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
+				self.objectWithPipe:updatePipeNodes(999999, nil)
 			end
 		end
 		if self.vehicle.spec_foldable then
 			if wasFolded then
 				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
+				-- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
+				-- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
+				Foldable.actionControllerFoldEvent(self.vehicle, -1)
+				Foldable.actionControllerFoldEvent(self.vehicle, 1)
 			end
 		end
 	else
