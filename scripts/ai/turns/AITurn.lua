@@ -128,6 +128,10 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Not all attached implements allow for reversing, use generated course turn')
 		return false
 	end
+	if SpecializationUtil.hasSpecialization(ArticulatedAxis, vehicle.specializations) then
+		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Has articulated axis, use generated course turn')
+		return false
+	end
 	local reversingImplement, _ = AIUtil.getSteeringParameters(vehicle)
 	if reversingImplement then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Have a towed implement, use generated course turn')
