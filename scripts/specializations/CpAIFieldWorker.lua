@@ -25,7 +25,8 @@ end
 
 function CpAIFieldWorker.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpFinished")
-	SpecializationUtil.registerEvent(vehicleType, "onCpEmptyOrFull")
+	SpecializationUtil.registerEvent(vehicleType, "onCpEmpty")
+    SpecializationUtil.registerEvent(vehicleType, "onCpFull")
 end
 
 function CpAIFieldWorker.registerEventListeners(vehicleType)
@@ -35,7 +36,8 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIFieldWorker)
-    SpecializationUtil.registerEventListener(vehicleType, "onCpEmptyOrFull", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpEmpty", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
@@ -279,10 +281,14 @@ function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,force,...)
 end
 
 --- Stops the driver for now as it is either empty or filled.
-function CpAIFieldWorker:onCpEmptyOrFull()
+function CpAIFieldWorker:onCpEmpty()
     self:stopCurrentAIJob(AIMessageErrorOutOfFill.new(),true)
 end
 
+--- Stops the driver for now as it is either empty or filled.
+function CpAIFieldWorker:onCpFull()
+    self:stopCurrentAIJob(AIMessageErrorOutOfFill.new(),true)
+end
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface for other mods, like AutoDrive
 ------------------------------------------------------------------------------------------------------------------------

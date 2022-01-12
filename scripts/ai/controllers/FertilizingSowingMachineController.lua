@@ -22,7 +22,7 @@ function FertilizingSowingMachineController:update()
 	if self.settings.sowingMachineFertilizerEnabled:getValue() then 
 		local fillUnitIndex = self.sowingMachine:getSprayerFillUnitIndex()
 		if self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
-			SpecializationUtil.raiseEvent(self.vehicle,"onCpEmptyOrFull")
+			SpecializationUtil.raiseEvent(self.vehicle,"onCpEmpty")
 			maxSpeed = 0
 		end
 	end

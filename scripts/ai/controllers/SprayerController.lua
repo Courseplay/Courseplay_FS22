@@ -11,7 +11,7 @@ function SprayerController:update()
 	if self.sprayer:getUseSprayerAIRequirements() then 
 		local fillUnitIndex = self.sowingMachine:getSprayerFillUnitIndex()
 		if self.sprayer:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
-			SpecializationUtil.raiseEvent(self.vehicle,"onCpEmptyOrFull")
+			SpecializationUtil.raiseEvent(self.vehicle,"onCpEmpty")
 			maxSpeed = 0
 		end
 	end

@@ -12,7 +12,7 @@ function ForageWagonController:update()
 	local spec = self.forageWagon.spec_forageWagon
 	local fillUnitIndex = spec.fillUnitIndex
 	if self.forageWagon:getFillUnitFillLevelPercentage(fillUnitIndex) >= self.maxFillLevelPercentage then 
-		SpecializationUtil.raiseEvent(self.vehicle,"onCpEmptyOrFull")
+		SpecializationUtil.raiseEvent(self.vehicle,"onCpFull")
 		maxSpeed = 0
 	end
 	--- Additive fill unit index
