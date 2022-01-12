@@ -25,7 +25,7 @@
 
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Prace polowe" />
+		<text name="CP_job_fieldWork"																	text="CP: Prace polowe" />
 		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Wygeneruj kurs pracy polowej." />
@@ -256,6 +256,6 @@
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" 												text="CP: Zmień obecny kanał debugowania" />
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Menu kanałów debugowania" />
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otwórz mini GUI"/>
-		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
+		<text name="input_CP_START_STOP" 																text="CP: Uruchom/Zatrzymaj kierowcę"/>
 	</texts>
 </l10n>
