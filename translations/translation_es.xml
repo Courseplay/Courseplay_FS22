@@ -9,9 +9,9 @@
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s):Para obtener ayuda, informar de errores o notas de parches, visite:https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
-		<text name="CP_error_not_on_field"																text="Target is not on a field." />
+		<text name="CP_error_no_course"																	text="Genera una ruta antes de iniciar el trabajo." />
+		<text name="CP_error_could_not_generate_course"													text="No puedo generar una ruta. Quizás el log le dará mayor información." />
+		<text name="CP_error_not_on_field"																text="El objetivo no esta en un campo." />
 
 
 	<!-- AI job menu -->
@@ -41,7 +41,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Configuración sembradora"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Configuración multi-aperos"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocidades"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Configuración Debug"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Mostrar ruta"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Muestra la ruta actual del vehículo"/>
@@ -140,16 +140,16 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Número de cabeceras" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Número de cabeceras" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sobrecobertura cabecera" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="De una sobrecobertura a la cabecera como porcentaje del ancho de trabajo" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Márgenes del campoargin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Los valores positivos reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los negativos amplían el área trabajada más allá del límite del campo." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Filas a evitar" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Número de filas a evitar al hacer el prximo giro arriba abajo" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Filas por bloque" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="En el modo centre es 'lands', define las filas en cada bloque" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Dirección cabecera" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Defina si el vehículo circulará en el sentido de las agujas del reloj o en el sentido contrario a las agujas del reloj" />
@@ -206,8 +206,8 @@
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="no course"/>
-		<text name="CP_courseManager_temporary_course"													text="temporary course"/>
+		<text name="CP_courseManager_no_current_course"													text="Sin ruta"/>
+		<text name="CP_courseManager_temporary_course"													text="ruta temporal"/>
 
 		<text name="CP_courseManager_change_mode"														text="Cambiar modo"/>
 
@@ -236,7 +236,7 @@
 		<text name="CP_courseManager_basicSettings"														text="Interacción con ruta."/>
 		<text name="CP_courseManager_advancedSettings"													text="Editar archivos."/>
 
-		<text name="CP_courseManager_activate"															text="Activate"/>
+		<text name="CP_courseManager_activate"															text="Activar"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
@@ -256,6 +256,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Seleccione el canal de depuración anterior ."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Cambiar canal de depuración actual ."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Muestra el menú del canal de depuración sí/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Abrir/cerrar la configuración de vehículo"/>
 	</texts>
 </l10n>
