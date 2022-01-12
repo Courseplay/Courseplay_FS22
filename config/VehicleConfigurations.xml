@@ -130,7 +130,8 @@ You can define the following custom settings:
              noReverse="true"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
-			 />
+			 turnAnimTime="3.500000"
+    />
     <Vehicle name="karat12.xml"
              implementWheelAlwaysOnGround = "true"
     />
