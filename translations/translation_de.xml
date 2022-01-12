@@ -255,7 +255,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Aktuellen Debug channel ändern."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zeigt debug channels menu ja/nein."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
-		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Öffne mini GUI"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop CP Helfer"/>
 	</texts>
 </l10n>

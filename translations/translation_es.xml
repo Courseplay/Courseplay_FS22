@@ -256,6 +256,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Seleccione el canal de depuración anterior ."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Cambiar canal de depuración actual ."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Muestra el menú del canal de depuración sí/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Abrir/cerrar la configuración de vehículo"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir mini GUI"/>
 	</texts>
 </l10n>

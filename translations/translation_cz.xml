@@ -254,6 +254,6 @@
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Změnit aktuální kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otevřt/zavřít nastavení vozidla"/>
-		<text name="input_CP_START_STOP" 																text="CP: Spustit/zastavit pracovníka"/>
+		<text name="input_CP_START_STOP" 																text="CP: Spustit mini GUI"/>
 	</texts>
 </l10n>

@@ -25,7 +25,7 @@
 
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP:Travail" />
+		<text name="CP_job_fieldWork"																	text="CP:Travail" />
 		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
@@ -258,7 +258,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Sélection du précèdent canal de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Canal actif de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Affiche/Masque les paramètres du véhicule"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
 	</texts>
 </l10n>

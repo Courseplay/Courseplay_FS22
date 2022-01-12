@@ -25,7 +25,7 @@
 
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Fältarbete" />
+		<text name="CP_job_fieldWork"																	text="CP: Fältarbete" />
 		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Skapa en kurs för fältarbete." />
@@ -257,6 +257,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Välj föregående felsökningskanal."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Ändra aktuell felsökningskanal."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Visa felsökningskanalsmeny Ja/Nej."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Öppna/Stäng fordonsinställningsdisplay"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Öppna mini GUI"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 	</texts>
 </l10n>
