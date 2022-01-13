@@ -72,6 +72,8 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.unloaders = {}
 	self:initUnloadStates()
 	self.chopperCanDischarge = CpTemporaryObject(false)
+	-- hold the harvester temporarily
+	self.temporaryHold = CpTemporaryObject(false)
 	return self
 end
 
@@ -166,9 +168,20 @@ function AIDriveStrategyCombineCourse:update(dt)
 	self:updateChopperFillType()
 end
 
+--- Hold the harvester for a period of periodMs milliseconds
+function AIDriveStrategyCombineCourse:hold(periodMs)
+	if not self.temporaryHold:get() then
+		self:debug('Temporary hold request for %d milliseconds', periodMs)
+	end
+	self.temporaryHold:set(true, math.min(math.max(0, periodMs), 30000))
+end
+
 function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	self:handlePipe(dt)
 	self:disableCutterTimer()
+	if self.temporaryHold:get() then
+		self:setMaxSpeed(0)
+	end
 	if self.state == self.states.WORKING then
 		-- Harvesting
 		self:checkRendezvous()

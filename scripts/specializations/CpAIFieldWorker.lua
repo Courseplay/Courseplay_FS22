@@ -37,7 +37,9 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIFieldWorker.getIsCpActive)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpFieldWorkActive", CpAIFieldWorker.getIsCpFieldWorkActive)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnload", CpAIFieldWorker.getIsCpHarvesterWaitingForUnload)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnloadInPocket", CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadInPocket)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterManeuvering", CpAIFieldWorker.getIsCpHarvesterManeuvering)
+    SpecializationUtil.registerFunction(vehicleType, "holdCpHarvesterTemporarily", CpAIFieldWorker.holdCpHarvesterTemporarily)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
@@ -133,11 +135,27 @@ function CpAIFieldWorker:getIsCpHarvesterWaitingForUnload()
             self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnload()
 end
 
+--- To find out if a harvester is waiting to be unloaded in a pocket
+---@return boolean true when the harvester is waiting to be unloaded in a pocket
+function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadInPocket()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingInPocket()
+end
+
 --- Maneuvering means turning or working on a pocket or pulling back due to the pipe in fruit
 ---@return boolean true when the harvester is maneuvering so that an unloader should stay away.
 function CpAIFieldWorker:getIsCpHarvesterManeuvering()
     return self.spec_cpAIFieldWorker.combineDriveStrategy and
             self.spec_cpAIFieldWorker.combineDriveStrategy:isManeuvering()
+end
+
+--- Hold the harvester (set its speed to 0) for a period of periodMs milliseconds.
+--- Calling this again will restart the timer with the new value. Calling with 0 will end the temporary hold
+--- immediately.
+---@param periodMs number
+function CpAIFieldWorker:holdCpHarvesterTemporarily(periodMs)
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:hold(periodMs)
 end
 
 --- Directly starts a cp driver or stops a currently active job.
