@@ -10,7 +10,7 @@
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Générez ou chargez une course avant de démarrer la tâche" />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
+		<text name="CP_error_could_not_generate_course"													text="Impossible de générer la course. Plus d'informations dans le journal." />
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 
@@ -26,7 +26,7 @@
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />
-		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
+		<text name="CP_job_baleCollect"																	text="CP:Bottes(collecte/enrub.)" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses" />
@@ -143,8 +143,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Bordures du champ" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ pour définir une zone non travaillée autour du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour." />
@@ -153,12 +153,13 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Sens des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières." />
-		
-
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Sens horaire" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Sens antihoraire" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Gestion des rangs" />
+		
+		
+		
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Choix du type de rangées" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Allers-retours" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirale (tourne autour)" />
