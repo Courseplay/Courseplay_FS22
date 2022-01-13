@@ -664,7 +664,8 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         end
         pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath)
     else
-        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 3, 200, 10000)
+        -- only use a middle section when the target is really far away
+        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true)
     end
 
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
