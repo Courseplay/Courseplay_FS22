@@ -80,22 +80,21 @@ function FieldScanner:traceFieldEdge(probe, fieldId)
     self.points = {}
     local helperNode = CpUtil.createNode('helperNode', 0, 0, 0)
     local startX, startY, startZ = getWorldTranslation(probe)
-    table.insert(self.points, {x = startX, y = startY, z = startZ})
+    local _, prevYRot, _ = getRotation(probe)
+    table.insert(self.points, {x = startX, y = startY, z = startZ, yRot = prevYRot})
     local distanceFromStart = math.huge
     local tracerLookahead = self.normalTracerLookahead
-    local prevYRot
     local totalYRot = 0
     local ignoreCornerAtIx = -1
     local sharpCornerDeltaAngle = math.rad(15)
     local i = 0
-    -- limit the number of iterations, also, must be close to the start and have made almost a full circle (pi is just
+    -- limit the number of iterations, also, must be close  to the start and have made almost a full circle (pi is just
     -- a half circle, but should be ok to protect us from edge cases like starting with a corner
     while i < 20000 and (i == 1 or distanceFromStart > tracerLookahead or math.abs(totalYRot) < math.pi) do
         local yRot = self:rotateProbeInFieldEdgeDirection(probe, tracerLookahead, fieldId)
         -- how much we just turned?
         local deltaYRot = yRot - (prevYRot or yRot)
         self:moveProbeForward(probe, tracerLookahead)
-
         if prevYRot and math.abs(deltaYRot) > sharpCornerDeltaAngle and i ~= ignoreCornerAtIx then
             -- we probably just cut a corner. Calculate where the corner exactly is and insert a point there
             -- see which way the edge goes here
@@ -109,6 +108,13 @@ function FieldScanner:traceFieldEdge(probe, fieldId)
             local moveForward = math.abs(dx) / math.sin(math.pi - math.abs(deltaYRot))
             local x, y, z = localToWorld(helperNode, 0, 0, moveForward)
             if moveForward < tracerLookahead and math.abs(deltaYRot) > sharpCornerDeltaAngle then
+                if i == 0 then
+                    -- corner detection does not work if we don't have a proper previous waypoint, so abort here
+                    -- and the caller will readjust the probe so we start at a different spot, hopefully not
+                    -- right in the corner
+                    self:debug('Hit a corner right after starting to trace the field edge, restart tracing')
+                    return false
+                end
                 -- only add plausible points and only when the delta angle is still above the threshold
                 table.insert(self.points, {x = x, y = y, z = z, yRot = yRot})
                 self:debug('Inserted a corner waypoint (%d, %.1f°), %.1f ahead of the last', i, math.deg(deltaYRot), dx / math.sin(math.pi - math.abs(deltaYRot)))
@@ -136,7 +142,11 @@ end
 ---@param x number
 ---@param z number
 function FieldScanner:findContour(x, z)
-    local probe = CpUtil.createNode('FieldScannerProbe', x, z, 0)
+    -- don't start exactly at yRot 0 as folks tend to put the starting point (and so the probe)
+    -- near the edge of the field. On rectangular fields, this may lead to finding the edge very
+    -- close to the corner which then again, screws up our corner detection.
+    -- This pi / 7 reduces the likelyhood of ending up in a corner.
+    local probe = CpUtil.createNode('FieldScannerProbe', x, z, math.pi / 7)
     if not CpFieldUtil.isNodeOnField(probe) then
         self:debug('%.1f/%.1f is not on a field, can\'t start scanning here', x, z)
         return
@@ -145,13 +155,13 @@ function FieldScanner:findContour(x, z)
     self:debug('Start scanning field %d at %.1f/%.1f', fieldId or '', x, z)
     -- for now, ignore field ID as with it we can't handle merged fields.
     fieldId = nil
-    local i = 1
-    while i < 10 do
+    local i = 2
+    while i < 11 do
         self:findFieldEdge(probe, fieldId)
         if self:traceFieldEdge(probe, fieldId) then
             break
         else
-            self:debug('Edge not, found we may have hit an island, reset/rotate the probe a bit and retry')
+            self:debug('%d. try, edge not found, we may have hit an island or corner, reset/rotate the probe a bit and retry', i)
             self:setProbePosition(probe, x, z)
             setRotation(probe, 0, i * math.pi / 7, 0)
         end
