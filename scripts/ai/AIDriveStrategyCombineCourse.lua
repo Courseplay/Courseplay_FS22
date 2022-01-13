@@ -183,6 +183,10 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		-- Unloading
 		self:driveUnloadOnField()
+	elseif self:isTurning() and not self:isTurningOnHeadland() then
+		if self:shouldHoldInTurnManeuver() then
+			self:setMaxSpeed(0)
+		end
 	end
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
@@ -991,17 +995,14 @@ function AIDriveStrategyCombineCourse:isEngineAutoStopEnabled()
 	end
 end
 
---- Compatibility function for turn.lua to check if the vehicle should stop during a turn (for example while it
+--- Check if the vehicle should stop during a turn (for example while it
 --- is held for unloading or waiting for the straw swath to stop
---- Turn.lua calls this in every cycle during the turn and will stop the vehicle if this returns true.
----@param isApproaching boolean if true we are still in the turn approach phase (still working on the field,
----not yet reached the turn start
----@param isHeadlandCorner boolean is this a headland turn?
-function AIDriveStrategyCombineCourse:holdInTurnManeuver(isApproaching, isHeadlandCorner)
+function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
 	local discharging = self:isDischarging() and not self:isChopper()
-	local waitForStraw = self.combine.strawPSenabled and not isApproaching and not isHeadlandCorner
-	self:debugSparse('discharging %s, held for unload %s, straw active %s, approaching = %s',
-		tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isApproaching))
+	local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
+	local waitForStraw = self.combine.strawPSenabled and not isFinishingRow
+	self:debugSparse('discharging %s, held for unload %s, straw active %s, finishing row = %s',
+		tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isFinishingRow))
 	return discharging or self.heldForUnloadRefill or waitForStraw
 end
 

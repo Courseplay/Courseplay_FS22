@@ -238,11 +238,6 @@ function AITurn:finishRow(dt)
 		self:debug('Row finished, starting turn.')
 		self:startTurn()
 	end
-	-- TODO_22: the giants combine strategy should probably handle this too
-	--if self.driveStrategy:holdInTurnManeuver(true, self.turnContext:isHeadlandCorner()) then
-		-- tell driver to stop while straw swath is active
-	--	self.driveStrategy:setSpeed(0)
-	--end
 end
 
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
