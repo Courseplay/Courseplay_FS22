@@ -18,8 +18,10 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   headlandOverlapPercent,
 										   centerMode,
 										   rowDirection,
+										   manualRowAngleDeg,
 										   rowsToSkip,
 										   rowsPerLand,
+										   islandBypassMode,
 										   fieldMargin
 )
 
@@ -60,7 +62,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local centerSettings = {
 		useBestAngle = rowDirection == CourseGenerator.ROW_DIRECTION_AUTOMATIC,
 		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
-		rowAngle = 0,
+		rowAngle = CourseGenerator.fromCpAngleDeg(manualRowAngleDeg),
 		nRowsToSkip = rowsToSkip,
 		mode = centerMode,
 		nRowsPerLand = rowsPerLand or 6,
@@ -77,7 +79,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	-----------------------------------------------------------------------------------------------------------------------
 	local minDistanceBetweenPoints = 0.5
 	local doSmooth = true
-	local islandBypassMode = Island.BYPASS_MODE_CIRCLE
 
 	local field = {}
 	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))

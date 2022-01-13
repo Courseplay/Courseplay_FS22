@@ -36,7 +36,7 @@ CpSettingsUtil.classTypes = {
 				- max (int): max value
 				- incremental (float): increment (optional), default "1"
 				- text(string): string to format the setting value with in the gui element.
-				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional), 4 = percent (%)
+				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional), 4 = percent (%), 5 = degrees (°)
 
 				- onChangeCallback(string): callback function raised on setting value changed. 
 

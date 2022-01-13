@@ -168,13 +168,23 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="sharp" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="round" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Row start direction" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Row start direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Up/down row direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Direction of the rows in the center of the field" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="automatic" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="longest edge" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0° is North) when manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start work on" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start work on" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start working on the headland (harvest) or center of the field (other works)" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="headland" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="center" />
 

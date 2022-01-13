@@ -190,7 +190,7 @@ function AIUtil.getTurningRadius(vehicle)
 
 	if g_vehicleConfigurations:get(vehicle, 'turnRadius') then
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
 	end
 
 	-- TODO_22

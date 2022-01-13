@@ -48,7 +48,7 @@
 			</Texts>
 		</Setting>
 		<!--Turn Diameter-->
-		<Setting classType="AIParameterSettingList" name="turnDiameter" min="0" max="50" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="turnDiameter" min="2" max="50" unit="2"/>
 		<!--Tool Offset X-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
 		<!--Tool Offset Y-->

@@ -107,8 +107,10 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.headlandOverlapPercent:getValue(),
 			settings.centerMode:getValue(),
 			settings.rowDirection:getValue(),
+			settings.manualRowAngleDeg:getValue(),
 			settings.rowsToSkip:getValue(),
 			settings.rowsPerLand:getValue(),
+			settings.islandBypassMode:getValue(),
 			settings.fieldMargin:getValue()
 	)
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
