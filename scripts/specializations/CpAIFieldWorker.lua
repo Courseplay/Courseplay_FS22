@@ -36,8 +36,12 @@ end
 function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIFieldWorker.getIsCpActive)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpFieldWorkActive", CpAIFieldWorker.getIsCpFieldWorkActive)
-    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnload", CpAIFieldWorker.getIsCpHarvesterWaitingForUnload)
-    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnloadInPocket", CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadInPocket)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnload",
+            CpAIFieldWorker.getIsCpHarvesterWaitingForUnload)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnloadInPocket",
+            CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadInPocket)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnloadAfterPulledBack",
+            CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadAfterPulledBack)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterManeuvering", CpAIFieldWorker.getIsCpHarvesterManeuvering)
     SpecializationUtil.registerFunction(vehicleType, "holdCpHarvesterTemporarily", CpAIFieldWorker.holdCpHarvesterTemporarily)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
@@ -135,11 +139,23 @@ function CpAIFieldWorker:getIsCpHarvesterWaitingForUnload()
             self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnload()
 end
 
---- To find out if a harvester is waiting to be unloaded in a pocket
+--- To find out if a harvester is waiting to be unloaded in a pocket. Harvesters may cut a pocket on the opposite
+--- side of the pipe to make room for an unloader if:
+--- * working on the first headland (so the unloader can get under the pipe while staying on the headland)
+--- * cutting the first row in the middle of the field
 ---@return boolean true when the harvester is waiting to be unloaded in a pocket
 function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadInPocket()
     return self.spec_cpAIFieldWorker.combineDriveStrategy and
             self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingInPocket()
+end
+
+--- To find out if a harvester is waiting to be unloaded after it pulled back to the side. This
+--- is similar to a pocket but in this case there is no fruit on the opposite side of the pipe,
+--- so the harvester just moves to the side and backwards without cutting a pocket.
+---@return boolean
+function CpAIFieldWorker:getIsCpHarvesterWaitingForUnloadAfterPulledBack()
+    return self.spec_cpAIFieldWorker.combineDriveStrategy and
+            self.spec_cpAIFieldWorker.combineDriveStrategy:isWaitingForUnloadAfterPulledBack()
 end
 
 --- Maneuvering means turning or working on a pocket or pulling back due to the pipe in fruit

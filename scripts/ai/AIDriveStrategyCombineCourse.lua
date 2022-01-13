@@ -452,10 +452,6 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 	end
 end
 
-function AIDriveStrategyCombineCourse:isWaitingInPocket()
- 	return self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET
-end
-
 -----------------------------------------------------------------------------------------------------------------------
 --- State changes
 -----------------------------------------------------------------------------------------------------------------------
@@ -1041,6 +1037,11 @@ end
 function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterCourseEnded()
 	return self.state == self.states.UNLOADING_ON_FIELD and
 		self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
+end
+
+function AIDriveStrategyCombineCourse:isWaitingInPocket()
+	return self.state == self.states.UNLOADING_ON_FIELD and
+			self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET
 end
 
 --- Interface for Mode 2
