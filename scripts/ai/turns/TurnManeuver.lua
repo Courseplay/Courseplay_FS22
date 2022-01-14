@@ -65,7 +65,6 @@ end
 
 function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnEnd,
 											  secondaryReverseDistance, doNotAddLastPoint)
-	local endTurn = false
 	local dist = MathUtil.getPointPointDistance(fromPoint.x, fromPoint.z, toPoint.x, toPoint.z)
 	local numPointsNeeded = math.ceil(dist / TurnManeuver.wpDistance)
 	local dx, dz = (toPoint.x - fromPoint.x) / dist, (toPoint.z - fromPoint.z) / dist
@@ -82,7 +81,7 @@ function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnE
 			x = fromPoint.x + (i * wpDistance * dx)
 			z = fromPoint.z + (i * wpDistance * dz)
 
-			self:addWaypoint(x, z, endTurn, reverse, nil)
+			self:addWaypoint(x, z, turnEnd, reverse, nil)
 		end
 	end
 
@@ -98,7 +97,7 @@ function TurnManeuver:generateStraightSection(fromPoint, toPoint, reverse, turnE
 	x = toPoint.x
 	z = toPoint.z
 
-	self:addWaypoint(x, z, endTurn, reverse, revx, revz, nil)
+	self:addWaypoint(x, z, turnEnd, reverse, revx, revz, nil)
 	return fromIx, #self.waypoints
 end
 
