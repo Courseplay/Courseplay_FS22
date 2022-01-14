@@ -388,6 +388,8 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
+    -- reset offset we used for the course ending to not miss anything
+    self.aiOffsetZ = 0
     self:debug('Last waypoint of the course reached.')
     -- by default, stop the job
     self:finishFieldWork()

@@ -433,6 +433,8 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
 		end
 	elseif self.state == self.states.WORKING and fillLevel > 0 then
+		-- reset offset we used for the course ending to not miss anything
+		self.aiOffsetZ = 0
 		if self.settings.selfUnload:getValue() and self:startSelfUnload() then
 			self:debug('Start self unload after fieldwork ended')
 			self:raiseImplements()

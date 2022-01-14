@@ -763,7 +763,7 @@ function PathfinderUtil.startPathfindingFromVehicleToNode(vehicle, goalNode,
                                                           xOffset, zOffset, allowReverse,
                                                           fieldNum, vehiclesToIgnore, maxFruitPercent,
 														  offFieldPenalty, areaToAvoid, mustBeAccurate)
-    x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     return PathfinderUtil.startPathfindingFromVehicleToGoal(
             vehicle, goal, allowReverse, fieldNum,
