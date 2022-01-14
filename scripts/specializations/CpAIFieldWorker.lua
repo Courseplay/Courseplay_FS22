@@ -4,6 +4,16 @@ local modName = CpAIFieldWorker and CpAIFieldWorker.MOD_NAME -- for reload
 ---@class CpAIFieldWorker
 CpAIFieldWorker = {}
 
+--- Additional Specs for vehicle/implements to use cp with,
+--- as these are not supported by the giants helper.  
+CpAIFieldWorker.validImplementSpecs = {
+    Baler,
+    BaleWrapper,
+    BaleLoader,
+    Cutter,
+    ForageWagon
+}
+
 CpAIFieldWorker.MOD_NAME = g_currentModName or modName
 CpAIFieldWorker.NAME = ".cpAIFieldWorker"
 CpAIFieldWorker.SPEC_NAME = CpAIFieldWorker.MOD_NAME .. CpAIFieldWorker.NAME
@@ -131,19 +141,21 @@ end
 function CpAIFieldWorker:updateAIFieldWorkerImplementData(superFunc)
 
     local function isValid(object)
-        local function validSpec(o)
-            return SpecializationUtil.hasSpecialization(Spec,object.specializations)
+        local isAllowed = false 
+        --- Add missing implements, that are not enabled for the giants helper.
+        for i,spec in pairs(CpAIFieldWorker.validImplementSpecs) do 
+            if SpecializationUtil.hasSpecialization(spec,object.specializations) then 
+                return true
+            end
         end
-        return object:getCanImplementBeUsedForAI() or 
-                validSpec(object,Baler) or validSpec(object,BaleWrapper) or validSpec(object,BaleLoader) 
-                or validSpec(object,Cutter) or validSpec(object,ForageWagon)
+        return object:getCanImplementBeUsedForAI() 
     end
 
     if self:getIsCpActive() then 
         local spec = self.spec_aiFieldWorker
 	    spec.aiImplementList = {}
         for i,implement in pairs(AIUtil.getAllAttachedImplements(self)) do 
-            if self:isValid(implement.object) then 
+            if isValid(implement.object) then 
                 table.insert(spec.aiImplementList,
                     {
                         object = implement.object
@@ -203,14 +215,10 @@ end
 
 function CpAIFieldWorker:getCanStartCpFieldWork()
     -- built in helper can't handle it, but we may be able to ...
-    if AIUtil.hasImplementWithSpecialization(self, Baler) or
-            AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
-            AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
-            -- built in helper can't handle forage harvesters.
-            AIUtil.hasImplementWithSpecialization(self, Cutter) or
-
-            AIUtil.getImplementOrVehicleWithSpecialization(self, ForageWagon) then
-        return true
+    for i,spec in pairs(CpAIFieldWorker.validImplementSpecs) do 
+        if AIUtil.getImplementOrVehicleWithSpecialization(self, spec) then
+            return true
+        end
     end
     return self:getCanStartFieldWork()
 end
