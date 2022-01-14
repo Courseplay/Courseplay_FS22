@@ -250,13 +250,13 @@
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<text name="CP_help_page_courseManager_title"													text="Gestión de Cursos"/>
 		<text name="CP_help_page_courseManager_text"													text="Hay 7 acciones diferentes disponibles:
-																											- Creación de una nueva carpeta.
-																											- Descartar el curso actual del vehículo. 
-																											- Guardar el curso actual. 
-																											- Cargar otro curso.
-																											- Mover curso a otro directorio.
-																											- Eliminar un curso o carpeta.
-																											- Cambiar el nombre de un curso o carpeta." />
+		- Creación de una nueva carpeta.
+		- Descartar el curso actual del vehículo. 
+		- Guardar el curso actual. 
+		- Cargar otro curso.
+		- Mover curso a otro directorio.
+		- Eliminar un curso o carpeta.
+		- Cambiar el nombre de un curso o carpeta." />
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleccione el siguiente canal de depuración."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Seleccione el canal de depuración anterior."/>
