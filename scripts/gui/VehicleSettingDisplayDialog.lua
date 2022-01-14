@@ -72,6 +72,7 @@ function VehicleSettingDisplayDialog:onOpen(element)
 		text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
 	end
 	self.startButton:setText(text)
+	local _, eventId = g_inputBinding:registerActionEvent(InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, self.onClickBack, false, true, false, true)
 end
 
 function VehicleSettingDisplayDialog:onClose(element)
@@ -80,6 +81,7 @@ function VehicleSettingDisplayDialog:onClose(element)
 	if self.settings then
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.layout)
 	end
+	g_inputBinding:removeActionEventsByTarget(self)
 end
 
 function VehicleSettingDisplayDialog:onClickBack()
@@ -101,12 +103,3 @@ function VehicleSettingDisplayDialog:draw(...)
 	VehicleSettingDisplayDialog:superClass().draw(self,...)
 	CpVehicleSettingDisplay.onDraw(self.vehicle)	
 end
-
-function CpGuiUtil.setTarget(element,target)
-	for i = 1, #element.elements do
-		CpGuiUtil.setTarget(element.elements[i],target)
-	end
-
-	element.target = target
-	element.targetName = target.name
-end 
