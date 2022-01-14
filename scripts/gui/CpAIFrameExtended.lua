@@ -73,13 +73,22 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	end
 	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
 
+	--- Closes the course generator settings with the back button.
+	local function onClickBack(pageAI,superFunc)
+		if pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
+			pageAI:onClickOpenCloseCourseGenerator()
+			return
+		end
+		return superFunc(pageAI)
+	end 
+	self.buttonBack.onClickCallback = Utils.overwrittenFunction(self.buttonBack.onClickCallback,onClickBack)
 	self.ingameMapBase.drawHotspotsOnly = Utils.appendedFunction(self.ingameMapBase.drawHotspotsOnly , CpInGameMenuAIFrameExtended.draw)
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
 
 --- Updates the generate button visibility in the ai menu page.
-function CpInGameMenuAIFrameExtended:updateContextInputBarVisibilityIngameMenu()
+function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
 	local isPaused = g_currentMission.paused
 	
 	if self.buttonGenerateCourse then
@@ -90,10 +99,11 @@ function CpInGameMenuAIFrameExtended:updateContextInputBarVisibilityIngameMenu()
 		self.buttonOpenCourseGenerator:setVisible(CpInGameMenuAIFrameExtended.getCanOpenCloseCourseGenerator(self))
 --		self.buttonOpenCourseGenerator:setDisabled(isPaused)
 	end
+	self.buttonBack:setVisible(self:getCanGoBack() or self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR)
 	self.buttonGotoJob.parent:invalidateLayout()
 end
 
-InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,CpInGameMenuAIFrameExtended.updateContextInputBarVisibilityIngameMenu)
+InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,CpInGameMenuAIFrameExtended.updateContextInputBarVisibility)
 
 --- Button callback of the ai menu button.
 function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
