@@ -63,6 +63,9 @@ function ImplementController:update()
 end
 
 --- Overwrites a function and stores it, so the basic functionality gets restored after cp is finished.
+---@param class table
+---@param funcName string 
+---@param newFunc function
 function ImplementController:registerOverwrittenFunction(class,funcName,newFunc)    
     local oldFunc = class[funcName]
     class[funcName] = Utils.overwrittenFunction(oldFunc, newFunc)

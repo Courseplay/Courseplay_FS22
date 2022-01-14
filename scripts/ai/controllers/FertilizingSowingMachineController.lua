@@ -4,17 +4,6 @@ FertilizingSowingMachineController = CpObject(ImplementController)
 function FertilizingSowingMachineController:init(vehicle)
     self.sowingMachine = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, FertilizingSowingMachine)
     ImplementController.init(self, vehicle, self.sowingMachine)
-
-	self.oldProcessSowingMachineAreaFunc = self.sowingMachine.processSowingMachineArea
-	local function processSowingMachineArea(sowingMachine,superFunc,...)
-		local rootVehicle = sowingMachine.rootVehicle
-		local fertilizingEnabled = rootVehicle:getCpSettings() and rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
-		if not fertilizingEnabled then 
-			sowingMachine.spec_sprayer.workAreaParameters.sprayFillLevel = 0
-		end
-		return superFunc(sowingMachine, ...)
-	end
-	self:registerOverwrittenFunction(self.sowingMachine,"processSowingMachineArea",processSowingMachineArea)
 end
 
 function FertilizingSowingMachineController:update()
@@ -29,5 +18,21 @@ function FertilizingSowingMachineController:update()
 	end
 	return nil,nil,nil,maxSpeed
 end
+
+local function processSowingMachineArea(sowingMachine,superFunc,...)
+	local rootVehicle = sowingMachine.rootVehicle
+	if not rootVehicle:getIsCpActive() then 
+		return superFunc(sowingMachine, ...)
+	end
+	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
+	if not fertilizingEnabled then 
+		local specSpray = sowingMachine.spec_sprayer
+		local sprayerParams = specSpray.workAreaParameters
+		sprayerParams.sprayFillLevel = 0
+	end
+	return superFunc(sowingMachine, ...)
+end
+FertilizingSowingMachine.processSowingMachineArea = Utils.overwrittenFunction(
+	FertilizingSowingMachine.processSowingMachineArea,processSowingMachineArea)
 
 
