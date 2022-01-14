@@ -3,12 +3,11 @@ CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR = 10
 --- Adds the course generate button in the ai menu page.
 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
-	self.buttonGenerateCourse = self.buttonCancelJob:clone(self.buttonCancelJob.parent)
+	self.buttonGenerateCourse = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
 	self.buttonGenerateCourse:setText(g_i18n:getText("CP_ai_page_generate_course"))
 	self.buttonGenerateCourse:setVisible(false)
 	self.buttonGenerateCourse:setCallback("onClickCallback", "onClickGenerateFieldWorkCourse")
-	self.buttonGotoJob.parent:invalidateLayout()
-	self.buttonOpenCourseGenerator = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
+	self.buttonOpenCourseGenerator = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
 	self.buttonOpenCourseGenerator:setText(g_i18n:getText("CP_ai_page_open_course_generator"))
 	self.buttonOpenCourseGenerator:setVisible(false)
 	self.buttonOpenCourseGenerator:setCallback("onClickCallback", "onClickOpenCloseCourseGenerator")
@@ -20,16 +19,20 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	--- Moves the layout slightly to the left
 	local x,y = unpack(g_currentMission.inGameMenu.pagingTabList.size)
 	self.courseGeneratorLayout:setAbsolutePosition(x+0.02,self.courseGeneratorLayout.absPosition[2]-0.1)
-	--- Clears elements from the cloned page.
-	self.courseGeneratorLayoutElements = CpGuiUtil.getFirstElementWithProfileName(self.courseGeneratorLayout,"ingameMenuSettingsLayout")
+	self.courseGeneratorLayoutElements = self.courseGeneratorLayout:getDescendantById("boxLayout")
 	for i = #self.courseGeneratorLayoutElements.elements, 1, -1 do
 		self.courseGeneratorLayoutElements.elements[i]:delete()
 	end
 	
 	
 	--- Creates a background.
-	CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"multiTextOptionSettingsBg",self.courseGeneratorLayout)
-	local color = {0, 0, 0, 0.9}
+	local bgElement = CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"multiTextOptionSettingsBg")
+	local elements = self.courseGeneratorLayout.elements
+	table.insert(elements,1,bgElement)
+	bgElement.parent = self.courseGeneratorLayout
+	self.courseGeneratorLayout.elements = elements
+
+	local color = {0.0111, 0.0276, 0.0377, 0.95}
 	CpGuiUtil.changeColorForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",color)
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setPosition,self.courseGeneratorLayout.position[1]-0.01,self.courseGeneratorLayout.position[2])
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setSize,self.courseGeneratorLayout.size[1]*1.01,self.courseGeneratorLayout.size[2])
@@ -44,28 +47,11 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	
 	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsTooltip",function (item) item.textMaxWidth = item.textMaxWidth/2 end)
 
-	local function changeBtnIconColor(item)
-		local colorData = {}
-		GuiOverlay.copyColors(colorData, item.icon)
-		local color = colorData.color
-		color[4] = 1 -- alpha channel set to max
-		item.icon.color = colorData.colorFocused
-		GuiOverlay.copyColors(colorData, item.overlay)
-		item.overlay.color = colorData.colorFocused
-	end
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsLeft",changeBtnIconColor)
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsRight",changeBtnIconColor)
 	self.courseGeneratorLayoutPageTitle = pageTitle
-	
-	local function hasText(element)
-		return element:isa(TextElement)
-	end
-	CpGuiUtil.executeFunctionForElements(self.courseGeneratorLayoutElements,hasText,TextElement.setTextColor,
-										CpGuiUtil.getNormalizedRgb(45, 207, 255,1))
 
 	self.courseGeneratorLayoutElements:invalidateLayout()
 	self.courseGeneratorLayout:setVisible(false)
-
+	CpGuiUtil.setTarget(self.courseGeneratorLayout,self)
 	--- Makes the last selected hotspot is not sold before reopening.
 	local function validateCurrentHotspot(currentMission,hotspot)
 		local page = currentMission.inGameMenu.pageAI
@@ -79,13 +65,30 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		end
 	end
 	g_currentMission.removeMapHotspot = Utils.appendedFunction(g_currentMission.removeMapHotspot,validateCurrentHotspot)
-	
+	--- Reloads the current vehicle on opening the in game menu.
+	local function onOpenInGameMenu(mission)
+		local pageAI = mission.inGameMenu.pageAI
+		pageAI.controlledVehicle = g_currentMission.controlledVehicle
+		pageAI.currentHotspot = nil
+	end
+	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
+
+	--- Closes the course generator settings with the back button.
+	local function onClickBack(pageAI,superFunc)
+		if pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
+			pageAI:onClickOpenCloseCourseGenerator()
+			return
+		end
+		return superFunc(pageAI)
+	end 
+	self.buttonBack.onClickCallback = Utils.overwrittenFunction(self.buttonBack.onClickCallback,onClickBack)
+	self.ingameMapBase.drawHotspotsOnly = Utils.appendedFunction(self.ingameMapBase.drawHotspotsOnly , CpInGameMenuAIFrameExtended.draw)
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
 
 --- Updates the generate button visibility in the ai menu page.
-function CpInGameMenuAIFrameExtended:updateContextInputBarVisibilityIngameMenu()
+function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
 	local isPaused = g_currentMission.paused
 	
 	if self.buttonGenerateCourse then
@@ -96,10 +99,11 @@ function CpInGameMenuAIFrameExtended:updateContextInputBarVisibilityIngameMenu()
 		self.buttonOpenCourseGenerator:setVisible(CpInGameMenuAIFrameExtended.getCanOpenCloseCourseGenerator(self))
 --		self.buttonOpenCourseGenerator:setDisabled(isPaused)
 	end
+	self.buttonBack:setVisible(self:getCanGoBack() or self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR)
 	self.buttonGotoJob.parent:invalidateLayout()
 end
 
-InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,CpInGameMenuAIFrameExtended.updateContextInputBarVisibilityIngameMenu)
+InGameMenuAIFrame.updateContextInputBarVisibility = Utils.appendedFunction(InGameMenuAIFrame.updateContextInputBarVisibility,CpInGameMenuAIFrameExtended.updateContextInputBarVisibility)
 
 --- Button callback of the ai menu button.
 function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
@@ -110,42 +114,47 @@ end
 
 function CpInGameMenuAIFrameExtended:getCanStartJob(superFunc,...)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	if vehicle and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse then 
-		return vehicle:hasCpCourse() and superFunc(self,...)
+	if vehicle and self.currentJob and self.currentJob:isa(AIJobFieldWorkCp) then
+		return self.currentJob:getCanStartJob() and superFunc(self,...)
 	end 
 	return superFunc(self,...)
 end
 InGameMenuAIFrame.getCanStartJob = Utils.overwrittenFunction(InGameMenuAIFrame.getCanStartJob,CpInGameMenuAIFrameExtended.getCanStartJob)
 
 function CpInGameMenuAIFrameExtended:getCanGenerateCourse()
-	return self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse()
+	return self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse() and not self:getIsPicking()
 end
 
 function CpInGameMenuAIFrameExtended:getCanOpenCloseCourseGenerator()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	local visible = vehicle ~= nil and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse
-	return visible and self.mode ~= InGameMenuAIFrame.MODE_OVERVIEW
+	return visible and self.mode ~= InGameMenuAIFrame.MODE_OVERVIEW and not self:getIsPicking()
 end
 
 function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
-	if self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
-		self.courseGeneratorLayout:setVisible(false)
-		self.contextBox:setVisible(true)
-		self:toggleMapInput(true)
-		self.ingameMap:onOpen()
-		self.ingameMap:registerActionEvents()
-		self.mode = InGameMenuAIFrame.MODE_CREATE
-		self:setJobMenuVisible(true)
-		FocusManager:setFocus(self.jobTypeElement)
-		CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
-	else
-		self.mode = CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR
-		self.courseGeneratorLayout:setVisible(true)
-		self:toggleMapInput(false)
-		self:setJobMenuVisible(false)
-		self.contextBox:setVisible(false)
-		FocusManager:setFocus(self.courseGeneratorLayoutElements.elements[2])
-		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
+	if CpInGameMenuAIFrameExtended.getCanOpenCloseCourseGenerator(self) then 
+		if self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
+			self.courseGeneratorLayout:setVisible(false)
+			self.contextBox:setVisible(true)
+			self:toggleMapInput(true)
+			self.ingameMap:onOpen()
+			self.ingameMap:registerActionEvents()
+			self.mode = InGameMenuAIFrame.MODE_CREATE
+			self:setJobMenuVisible(true)
+			FocusManager:setFocus(self.jobTypeElement)
+			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
+		else
+			self.mode = CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR
+			self.courseGeneratorLayout:setVisible(true)
+			self:toggleMapInput(false)
+			self:setJobMenuVisible(false)
+			self.contextBox:setVisible(false)
+			CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
+			FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
+			self.courseGeneratorLayoutElements:invalidateLayout()
+			CpGuiUtil.debugFocus(self.courseGeneratorLayoutElements,nil)
+			FocusManager:setFocus(self.courseGeneratorLayoutElements)
+		end
 	end
 end
 
@@ -160,7 +169,6 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
 		end
 	end
-	self.courseGeneratorLayoutElements:invalidateLayout()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
@@ -184,15 +192,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
 		self.contextBox:setVisible(false)
 	end
-	--- Select the last vehicle after reopening of the page.
-	if self.lastHotspot then 
-		local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.lastHotspot)
-		if vehicle ~=nil then 
-			local hotspot = vehicle:getMapHotspot()
-
-			self:setMapSelectionItem(hotspot)
-		end
-	end
+	self.controlledVehicle = nil
 end
 InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
 
@@ -203,19 +203,19 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
-function CpInGameMenuAIFrameExtended:onStartCancelJob()
+function CpInGameMenuAIFrameExtended:onCreateJob()
 	if not g_currentMission.paused then
-		if CpInGameMenuAIFrameExtended.getCanOpenCloseCourseGenerator(self) then 
-			self:onClickOpenCloseCourseGenerator()
+		if CpInGameMenuAIFrameExtended.getCanGenerateCourse(self) then 
+			self:onClickGenerateFieldWorkCourse()
 		end
 	end
 end
-InGameMenuAIFrame.onStartCancelJob = Utils.appendedFunction(InGameMenuAIFrame.onStartCancelJob,CpInGameMenuAIFrameExtended.onStartCancelJob)
+InGameMenuAIFrame.onCreateJob = Utils.appendedFunction(InGameMenuAIFrame.onCreateJob,CpInGameMenuAIFrameExtended.onCreateJob)
 
 function CpInGameMenuAIFrameExtended:onStartGoToJob()
 	if not g_currentMission.paused then
-		if CpInGameMenuAIFrameExtended.getCanGenerateCourse(self) then
-			self:onClickGenerateFieldWorkCourse()
+		if CpInGameMenuAIFrameExtended.getCanOpenCloseCourseGenerator(self) then
+			self:onClickOpenCloseCourseGenerator()
 		end
 	end
 end
@@ -223,14 +223,13 @@ InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onSt
 
 function CpInGameMenuAIFrameExtended:draw()	
 	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettings().showsAllActiveCourses:getValue()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.selectedHotspot)
 	if CoursePlotAlwaysVisible then
 		local vehicles = CpCourseManager.getValidVehicles()
 		for i,v in pairs(vehicles) do 
-			v:drawCpCoursePlot(self.ingameMapBase)
+			v:drawCpCoursePlot(self)
 		end
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
-		vehicle:drawCpCoursePlot(self.ingameMapBase)
+		vehicle:drawCpCoursePlot(self)
 	end
 end
-InGameMenuAIFrame.draw = Utils.appendedFunction(InGameMenuAIFrame.draw, CpInGameMenuAIFrameExtended.draw)

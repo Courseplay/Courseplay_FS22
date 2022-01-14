@@ -36,7 +36,7 @@ CpSettingsUtil.classTypes = {
 				- max (int): max value
 				- incremental (float): increment (optional), default "1"
 				- text(string): string to format the setting value with in the gui element.
-				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional)
+				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional), 4 = percent (%), 5 = degrees (°)
 
 				- onChangeCallback(string): callback function raised on setting value changed. 
 
@@ -224,32 +224,53 @@ function CpSettingsUtil.cloneSettingsTable(class,settings,...)
 	end
 end
 
+--- Copies settings values from a settings tables to another.
+function CpSettingsUtil.copySettingsValues(settingsTable,settingsTableToCopy)
+    for i,p in ipairs(settingsTable.settings) do 
+        p:copy(settingsTableToCopy.settings[i])
+    end
+end
+
 --- Clones for each setting and subtitle generic gui elements and applies basic setups.
 ---@param settingsBySubTitle table
 ---@param parentGuiElement GuiElement
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,parentGuiElement,genericSettingElement,genericSubTitleElement)
-	local prevSetting = parentGuiElement
-	local firstSetting = settingsBySubTitle[1][1]
+	local subTitleElement = genericSubTitleElement:clone(genericSubTitleElement.parent,true)
+	subTitleElement:unlinkElement()
+	FocusManager:removeElement(subTitleElement)
+	local settingElement = genericSettingElement:clone(genericSettingElement.parent,true)
+	settingElement:unlinkElement()
+	FocusManager:removeElement(settingElement)
 	for _,data in ipairs(settingsBySubTitle) do 
-		genericSubTitleElement:unlinkElement()
-		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement,true)
-		parentGuiElement:invalidateLayout()
-	--	FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
+		local clonedSubTitleElement = subTitleElement:clone(parentGuiElement,true)
 		clonedSubTitleElement:setText(data.title)
 		for _,setting in ipairs(data.elements) do 
-			genericSettingElement:unlinkElement()
-			local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
---			parentGuiElement:invalidateLayout()
+			local clonedSettingElement = settingElement:clone(parentGuiElement,true)
 			setting:setGenericGuiElementValues(clonedSettingElement)
-			clonedSettingElement:reloadFocusHandling(true)
-		--	FocusManager:linkElements(prevSetting,FocusManager.BOTTOM,clonedSettingElement)
-			prevSetting = clonedSettingElement
 		end
 	end
-	FocusManager:linkElements(prevSetting,FocusManager.BOTTOM,firstSetting)
+	parentGuiElement:invalidateLayout()
 end
+
+--- Clones for each setting gui elements and applies basic setups.
+---@param settings table
+---@param parentGuiElement GuiElement
+---@param genericSettingElement GuiElement
+function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings,parentGuiElement,genericSettingElementTitle,genericSettingElement)
+	for _,setting in ipairs(settings) do 
+
+		local titleElement = genericSettingElementTitle:clone(parentGuiElement,true)
+		titleElement:setText(setting.data.title)
+		genericSettingElement:unlinkElement()
+		CpUtil.debugFormat(CpDebug.DBG_HUD,"Bound setting %s",setting:getName())
+		local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
+--			parentGuiElement:invalidateLayout()
+		setting:setGenericGuiElementValues(clonedSettingElement)
+	end
+end
+
 
 --- Links the gui elements to the correct settings.
 ---@param settings any

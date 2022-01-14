@@ -1,9 +1,19 @@
 CpFieldUtil = {}
+-- force reload
+CpFieldUtil.groundTypeModifier = nil
 
-function CpFieldUtil.isNodeOnField(node)
+function CpFieldUtil.isNodeOnField(node, fieldId)
     local x, y, z = getWorldTranslation(node)
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
+    if isOnField and fieldId then
+        return fieldId == CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    end
     return isOnField
+end
+
+function CpFieldUtil.isNodeOnFieldArea(node)
+    local x, _, z = getWorldTranslation(node)
+    return CpFieldUtil.isOnFieldArea(x, z)
 end
 
 --- Is the relative position dx/dz on the same field as node?
@@ -11,10 +21,45 @@ function CpFieldUtil.isOnSameField(node, dx, dy)
 
 end
 
-function CpFieldUtil.isOnField(x, z)
+function CpFieldUtil.isOnField(x, z, fieldId)
     local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z);
     local isOnField, _ = FSDensityMapUtil.getFieldDataAtWorldPosition(x, y, z)
+    if isOnField and fieldId then
+        return fieldId == CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    end
     return isOnField
+end
+
+function CpFieldUtil.initFieldMod()
+    local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels =
+        g_currentMission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
+    CpFieldUtil.groundTypeModifier = DensityMapModifier.new(groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels,
+            g_currentMission.terrainRootNode)
+    CpFieldUtil.groundTypeFilter = DensityMapFilter.new(CpFieldUtil.groundTypeModifier)
+end
+
+function CpFieldUtil.isOnFieldArea(x, z)
+    if CpFieldUtil.groundTypeModifier == nil then
+        CpFieldUtil.initFieldMod()
+    end
+    local w, h = 1, 1
+    CpFieldUtil.groundTypeModifier:setParallelogramWorldCoords(x - w / 2, z - h / 2, w, 0, 0, h, DensityCoordType.POINT_VECTOR_VECTOR)
+    CpFieldUtil.groundTypeFilter:setValueCompareParams(DensityValueCompareType.GREATER, 0)
+    local density, area, totalArea = CpFieldUtil.groundTypeModifier:executeGet(CpFieldUtil.groundTypeFilter)
+    return area > 0, area, totalArea
+end
+
+--- Which field this node is on.
+---@param node table Giants engine node
+---@return number 0 if not on any field, otherwise the number of field, see note on getFieldItAtWorldPosition()
+function CpFieldUtil.getFieldNumUnderNode(node)
+    local x, _, z = getWorldTranslation(node)
+    return CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+end
+
+--- Which field this node is on. See above for more info
+function CpFieldUtil.getFieldNumUnderVehicle(vehicle)
+    return CpFieldUtil.getFieldNumUnderNode(vehicle.rootNode)
 end
 
 --- Returns the field ID (actually, land ID) for a position. The land is what you can buy in the game,
@@ -32,21 +77,22 @@ end
 
 
 function CpFieldUtil.saveAllFields()
-    local fileName = createXMLFile("cpFields", string.format('%s/cpFields.xml', g_Courseplay.debugPrintDir), "CPFields");
-    print(string.format('Saving fields to %s', fileName))
-    if fileName and fileName ~= 0 then
+    local fileName = string.format('%s/cpFields.xml', g_Courseplay.debugPrintDir)
+    local xmlFile = createXMLFile("cpFields", fileName, "CPFields");
+    if xmlFile and xmlFile ~= 0 then
         for _, field in pairs(g_fieldManager:getFields()) do
             local key = ("CPFields.field(%d)"):format(field.fieldId);
-            setXMLInt(fileName, key .. '#fieldNum',	field.fieldId);
+            setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
             local points = g_fieldScanner:findContour(field.posX, field.posZ)
-            setXMLInt(fileName, key .. '#numPoints', #points);
+            setXMLInt(xmlFile, key .. '#numPoints', #points);
             for i,point in ipairs(points) do
-                setXMLString(fileName, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
+                setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
             end;
 
         end
-        saveXMLFile(fileName);
-        delete(fileName);
+        saveXMLFile(xmlFile);
+        delete(xmlFile);
+        print(string.format('Saved all fields to %s', fileName))
     else
         print("Error: Courseplay's custom fields could not be saved to " .. CpManager.cpCoursesFolderPath);
     end;

@@ -32,6 +32,7 @@ TurnContext = CpObject()
 -- TODO: could this be done a lot easier with child nodes sitting on a single corner node?
 ---@param course Course
 ---@param turnStartIx number
+---@param turnEndIx number
 ---@param turnNodes table to store the turn start/end waypoint nodes (which are created if nil passed in)
 --- we store the nodes some global, long lived table to avoid creating new nodes every time a TurnContext object
 --- is created
@@ -49,7 +50,7 @@ TurnContext = CpObject()
 ---@param turnEndForwardOffset number offset of the turn end in meters forward (>0) or back (<0), additional to the
 --- frontMarkerDistance. This can be used to compensate for edge cases like sprayers where the working width is
 --- much bigger than the turning diameter so the implement's tip on the turn inside is ahead of the vehicle.
-function TurnContext:init(course, turnStartIx, turnNodes, workWidth,
+function TurnContext:init(course, turnStartIx, turnEndIx, turnNodes, workWidth,
                           frontMarkerDistance, backMarkerDistance, turnEndSideOffset, turnEndForwardOffset)
     self.debugChannel = CpDebug.DBG_TURN
     self.workWidth = workWidth
@@ -62,10 +63,10 @@ function TurnContext:init(course, turnStartIx, turnNodes, workWidth,
     self.turnStartWp = course.waypoints[turnStartIx]
     self.turnStartWpIx = turnStartIx
     ---@type Waypoint
-    self.turnEndWp = course.waypoints[turnStartIx + 1]
-    self.turnEndWpIx = turnStartIx + 1
+    self.turnEndWp = course.waypoints[turnEndIx]
+    self.turnEndWpIx = turnEndIx
     ---@type Waypoint
-    self.afterTurnEndWp = course.waypoints[math.min(course:getNumberOfWaypoints(), turnStartIx + 2)]
+    self.afterTurnEndWp = course.waypoints[math.min(course:getNumberOfWaypoints(), turnEndIx + 1)]
     self.directionChangeDeg = math.deg( getDeltaAngle( math.rad(self.turnEndWp.angle), math.rad(self.beforeTurnStartWp.angle)))
 
     self:setupTurnStart(course, turnNodes)
@@ -236,17 +237,15 @@ function TurnContext:isHeadlandCorner()
     return math.abs( self.directionChangeDeg ) < 150
 end
 
-function TurnContext:isPathfinderTurn(turnDiameter)
-    local d = math.sqrt(self.dx * self.dx + self.dz * self.dz)
-    return not self:isHeadlandCorner() and (math.abs(self.dx) > turnDiameter or d > 2 * turnDiameter)
-end
-
 --- A simple wide turn is where there's no corner to avoid, no headland to follow, there is a straight line on the
 --- field between the turn start and end
 --- Currently we don't have a really good way to find this out so assume that if the turn end is reasonably close
 --- to the turn start, there'll be nothing in our way.
-function TurnContext:isSimpleWideTurn(turnDiameter)
-    return not self:isHeadlandCorner() and math.abs(self.dx) > turnDiameter and math.abs(self.dx) < turnDiameter * 1.5 and math.abs(self.dz) < turnDiameter
+function TurnContext:isSimpleWideTurn(turnDiameter, workWidth)
+    return not self:isHeadlandCorner() and
+            math.abs(self.dx) > turnDiameter and
+            math.abs(self.dx) < workWidth * 2.1 and
+            math.abs(self.dz) < workWidth * 2.1
 end
 
 function TurnContext:isWideTurn(turnDiameter)
@@ -376,15 +375,19 @@ end
 --- Course to end a pathfinder turn, a straight line from where pathfinder ended, into to next row,
 --- making sure it is long enough so the vehicle reaches the point to lower the implements on this course
 ---@param course Course pathfinding course to append the ending course to
-function TurnContext:appendEndingTurnCourse(course)
+---@param extraLength number add so many meters to the calculated course (for example to allow towed implements to align
+--- before reversing)
+function TurnContext:appendEndingTurnCourse(course, extraLength)
     -- make sure course reaches the front marker node so end it well behind that node
     local _, _, dzFrontMarker = course:getWaypointLocalPosition(self.vehicleAtTurnEndNode, course:getNumberOfWaypoints())
     local _, _, dzWorkStart = course:getWaypointLocalPosition(self.workStartNode, course:getNumberOfWaypoints())
     local waypoints = {}
     -- A line between the front marker and the work start node, regardless of which one is first
     local startNode = dzFrontMarker < dzWorkStart and self.vehicleAtTurnEndNode or self.workStartNode
+	-- extra length at the end to allow for alignment
+	extraLength = extraLength and (extraLength + 3) or 3
     -- +1 so the first waypoint of the appended line won't overlap with the last wp of course
-    for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + 3, 1 do
+    for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + extraLength, 1 do
         local x, y, z = localToWorld(startNode, 0, 0, d)
         table.insert(waypoints, {x = x, y = y, z = z})
     end
@@ -478,8 +481,7 @@ function TurnContext:debug(...)
 end
 
 function TurnContext:drawDebug()
-	-- TODO_22: debugChannel
-    if true or courseplay.debugChannels[self.debugChannel] then
+    if CpDebug:isChannelActive(self.debugChannel) then
         local cx, cy, cz
         local nx, ny, nz
         local height = 1
@@ -514,4 +516,16 @@ function TurnContext:drawDebug()
             DebugUtil.drawDebugNode(self.vehicleAtTurnStartNode, 'vehicle\nat turn start')
         end
     end
+end
+
+--- A special turn context for the row start/finish turn (up/down <-> headland transition). All this does
+--- is making sure the implements are raised/lowered properly when finishing or starting a row
+---@class RowStartOrFinishContext : TurnContext
+RowStartOrFinishContext = CpObject(TurnContext)
+
+--- Force the 180 turn behavior so the row start/finishing course is created properly. Without this
+--- it would calculate a transition to the headland or up/down rows as a headland turn as such transitions are always
+--- less then 180 and then the row finishing course would be offset
+function RowStartOrFinishContext:isHeadlandCorner()
+    return false
 end

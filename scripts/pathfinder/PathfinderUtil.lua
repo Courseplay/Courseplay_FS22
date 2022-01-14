@@ -24,6 +24,8 @@ PathfinderUtil.reedsSheppSolver = ReedsSheppSolver()
 PathfinderUtil.defaultOffFieldPenalty = 7.5
 PathfinderUtil.defaultAreaToAvoidPenalty = 2000
 PathfinderUtil.visualDebugLevel = 0
+-- for troubleshooting
+PathfinderUtil.overlapBoxes = {}
 
 ------------------------------------------------------------------------------------------------------------------------
 ---Size/turn radius all other information on the vehicle and its implements
@@ -156,32 +158,6 @@ end
 function PathfinderUtil.isNodeOnField(node)
     local x, y, z = getWorldTranslation(node)
     return PathfinderUtil.isPosOnField(x, y, z)
-end
-
---- Which field this node is on.
----@param node table Giants engine node
----@return number 0 if not on any field, otherwise the number of field, see note on getFieldItAtWorldPosition()
-function PathfinderUtil.getFieldNumUnderNode(node)
-    local x, _, z = getWorldTranslation(node)
-    return PathfinderUtil.getFieldIdAtWorldPosition(x, z)
-end
-
---- Which field this node is on. See above for more info
-function PathfinderUtil.getFieldNumUnderVehicle(vehicle)
-    return PathfinderUtil.getFieldNumUnderNode(vehicle.rootNode)
-end
-
---- Returns the field ID (actually, land ID) for a position. The land is what you can buy in the game,
---- including the area around an actual field.
-function PathfinderUtil.getFieldIdAtWorldPosition(posX, posZ)
-    local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
-    if farmland ~= nil then
-        local fieldMapping = g_fieldManager.farmlandIdFieldMapping[farmland.id]
-        if fieldMapping ~= nil and fieldMapping[1] ~= nil then
-            return fieldMapping[1].fieldId
-        end
-    end
-    return 0
 end
 
 --- Is the land at this position owned by me?
@@ -323,7 +299,6 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 					'pathfinder colliding shapes %s with %s at x = %.1f, z = %.1f, (%.1fx%.1f), yRot = %d',
 					self.collidingShapesText, vehicleData.name, x, z, width, length, math.deg(yRot))
     end
-    DebugUtil.drawOverlapBox(x, y, z, xRot, yRot, zRot, width, 1, length, 100, 0, 0)
 
     return self.collidingShapes
 end
@@ -460,7 +435,7 @@ function PathfinderConstraints:getNodePenalty(node)
         self.offFieldPenaltyNodeCount = self.offFieldPenaltyNodeCount + 1
         node.offField = true
     end
-    --local fieldId = PathfinderUtil.getFieldIdAtWorldPosition(node.x, -node.y)
+    --local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
     if not offField then
         local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4)
         if hasFruit and fruitValue > self.maxFruitPercent then
@@ -675,6 +650,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 
+    PathfinderUtil.overlapBoxes = {}
     local pathfinder
     if course:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
@@ -688,10 +664,11 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         end
         pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath)
     else
-        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 3, 200, 10000)
+        -- only use a middle section when the target is really far away
+        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true)
     end
 
-    local fieldNum = PathfinderUtil.getFieldNumUnderVehicle(vehicle)
+    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
     local context = PathfinderUtil.Context(
             vehicle,
             vehiclesToIgnore)

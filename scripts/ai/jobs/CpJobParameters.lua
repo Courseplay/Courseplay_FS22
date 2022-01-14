@@ -30,3 +30,7 @@ function CpJobParameters:init()
     end
     CpSettingsUtil.cloneSettingsTable(self,CpJobParameters.settings,nil,self)
 end
+
+function CpJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters()
+end

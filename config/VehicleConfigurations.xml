@@ -53,6 +53,8 @@ You can define the following custom settings:
 
 - implementWheelAlwaysOnGround:	boolean
     Implements that have the topReferenceNode set, but still have the wheels on the ground all the time.
+    In general, set this to true for implements which have a wheel and looked like any towed implement
+    but are attached to the tractor with the 3 point hitch (and not the tow hitch).
 
 - ignoreCollisionBoxesWhenFolded: boolean
 	This is for the case where the collision boxes of the vehicle are very wide, for example
@@ -72,6 +74,11 @@ You can define the following custom settings:
 
     <!-- Harvesters -->
     <!-- Implements -->
+
+    <!--\Vehicles\amazone-->
+    <Vehicle name="citan15001C.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
     <!--\vehicles\arcusin-->
     <Vehicle name="arcusinFSX6372.xml"
              toolOffsetX="-2.4"
@@ -120,7 +127,17 @@ You can define the following custom settings:
     <!--\vehicles\lemken-->
     <Vehicle name="titan11.xml"
              noReverse="true"
-             turnRadius = "4.5"
+             turnRadius = "7.5"
+             implementWheelAlwaysOnGround = "true"
+	/>
+    <Vehicle name="titan18.xml"
+             turnRadius = "7.5"
+             implementWheelAlwaysOnGround = "true"
+	/>
+    <Vehicle name="karat12.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
+    <Vehicle name="koralin9840.xml"
              implementWheelAlwaysOnGround = "true"
     />
     <!--vehicles\gregoireBesson-->
@@ -193,6 +210,10 @@ You can define the following custom settings:
     <Vehicle name="wrapper7850C.xml"
              baleCollectorOffset="1.5"
     />
+    <Vehicle name="pw10012.xml"
+             implementWheelAlwaysOnGround = "true"
+             noReverse="true"
+    />
     <!--Bourgault-->
     <Vehicle name="series3320.xml"
              noReverse="true"
@@ -205,6 +226,10 @@ You can define the following custom settings:
     />
     <Vehicle name="series71300.xml"
              noReverse="true"
+    />
+    <!--Claas-->
+    <Vehicle name="optiJect8.xml"
+             workingWidth = "6"
     />
 	
     <!--[MODS]-->

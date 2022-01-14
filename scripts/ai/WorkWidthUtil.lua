@@ -23,6 +23,7 @@ function WorkWidthUtil.hasValidWorkArea(object)
     return object and object.getWorkAreaByIndex and object.spec_workArea.workAreas
 end
 
+--- Shovel/shield calculation disabled for now.
 --- Gets an automatic calculated work width or a pre configured in vehicle configurations.
 ---@param object table
 ---@param logPrefix string
@@ -33,25 +34,38 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
     local width = g_vehicleConfigurations:get(object, 'workingWidth')
 
     if not width then
+        if object.getVariableWorkWidth then 
+            --- Gets the variable work width to the left + to the right.
+            local w1,_,isValid1 = object:getVariableWorkWidth(true) 
+            local w2,_,isValid2 =    object:getVariableWorkWidth()
+            if isValid1 and isValid2 then 
+                width = math.abs(w1) + math.abs(w2)
+                WorkWidthUtil.debug(object,logPrefix,'setting variable work width of %.1f.',width)
+            end
+        end
+    end
+
+    if not width then
         --- Gets the work width if the object is a shield.
-        width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
+     --   width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
     end
 
     if not width then
         --- Gets the work width if the object is a shovel.
-        width = WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
+   --     width = WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
     end
 
     if not width then
         -- no manual config, check AI markers
         width = WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     end
-    if not width then
 
+    if not width then
         -- no AI markers, check work areas
         width = WorkWidthUtil.getWorkAreaWidth(object, logPrefix)
     end
-    local implements = object:getAttachedImplements()
+
+    local implements = object.getAttachedImplements and object:getAttachedImplements()
     if implements then
         -- get width of all implements
         for _, implement in ipairs(implements) do
@@ -158,7 +172,8 @@ function WorkWidthUtil.getAIMarkersFromWorkAreas(object)
     for _, area in WorkWidthUtil.workAreaIterator(object) do
         if WorkWidthUtil.isValidWorkArea(area) then
             -- for now, just use the first valid work area we find
-            WorkWidthUtil.debug(object,nil,'%s: Using %s work area markers as AIMarkers', g_workAreaTypeManager.workAreaTypes[area.type].name)
+            WorkWidthUtil.debug(object,nil,'Using %s work area markers as AIMarkers',
+                    g_workAreaTypeManager.workAreaTypes[area.type].name)
             return area.start, area.width, area.height
         end
     end
@@ -185,7 +200,7 @@ end
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
-    if object.spec_shovel then
+    if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
         WorkWidthUtil.debug(object,logPrefix,'is a shovel with work width: %.1f',width)
         return width
@@ -198,8 +213,8 @@ end
 ---@param offsX number
 ---@param offsZ number
 function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
-    local firstObject =  AIUtil.getFirstAttachedImplement(vehicle)
-    local lastObject =  AIUtil.getLastAttachedImplement(vehicle)
+    local firstObject =  AIUtil.getFirstAttachedImplement(vehicle,true)
+    local lastObject =  AIUtil.getLastAttachedImplement(vehicle,true)
 
 
     local function show(object,workWidth,offsX,offsZ)
@@ -207,7 +222,7 @@ function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
             return
         end
         local f, b = 0,0
-        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getAIRealMarkers(object)
+        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getRealAIMarkers(object)
         if aiLeftMarker and aiBackMarker then
             _,_,b = localToLocal(aiBackMarker, object.rootNode, 0, 0, 0)
             _,_,f = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)
@@ -221,15 +236,16 @@ function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
         local p3x, p3y, p3z = localToWorld(object.rootNode, right, 1.6, f - offsZ)
         local p4x, p4y, p4z = localToWorld(object.rootNode, left,  1.6, f - offsZ)
 
-        cpDebug:drawPoint(p1x, p1y, p1z, 1, 1, 0)
-        cpDebug:drawPoint(p2x, p2y, p2z, 1, 1, 0)
-        cpDebug:drawPoint(p3x, p3y, p3z, 1, 1, 0)
-        cpDebug:drawPoint(p4x, p4y, p4z, 1, 1, 0)
+     --   cpDebug:drawPoint(p1x, p1y, p1z, 1, 1, 0)
+       -- cpDebug:drawPoint(p2x, p2y, p2z, 1, 1, 0)
+       -- cpDebug:drawPoint(p3x, p3y, p3z, 1, 1, 0)
+       -- cpDebug:drawPoint(p4x, p4y, p4z, 1, 1, 0)
 
-        cpDebug:drawLine(p1x, p1y, p1z, 1, 0, 0, p2x, p2y, p2z)
-        cpDebug:drawLine(p2x, p2y, p2z, 1, 0, 0, p3x, p3y, p3z)
-        cpDebug:drawLine(p3x, p3y, p3z, 1, 0, 0, p4x, p4y, p4z)
-        cpDebug:drawLine(p4x, p4y, p4z, 1, 0, 0, p1x, p1y, p1z)
+  
+        DebugUtil.drawDebugLine(p1x, p1y, p1z, p2x, p2y, p2z, 1, 0, 0)
+        DebugUtil.drawDebugLine(p2x, p2y, p2z, p3x, p3y, p3z, 1, 0, 0)
+        DebugUtil.drawDebugLine(p3x, p3y, p3z, p4x, p4y, p4z, 1, 0, 0)
+        DebugUtil.drawDebugLine(p4x, p4y, p4z, p1x, p1y, p1z, 1, 0, 0)
     end
     show(firstObject,workWidth,offsX,offsZ)
     if firstObject ~= lastObject then
@@ -241,5 +257,5 @@ end
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.debug(object,logPrefix,str,...)
-    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: '..str, logPrefix or "", CpUtil.getName(object), ...)
+    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: ' .. str, logPrefix or "", CpUtil.getName(object), ...)
 end

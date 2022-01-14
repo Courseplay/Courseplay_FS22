@@ -9,11 +9,9 @@ CourseGenerator.ROW_DIRECTION_NORTH = 1
 CourseGenerator.ROW_DIRECTION_EAST = 2
 CourseGenerator.ROW_DIRECTION_SOUTH = 3
 CourseGenerator.ROW_DIRECTION_WEST = 4
-CourseGenerator.ROW_DIRECTION_MIN = 5
 CourseGenerator.ROW_DIRECTION_AUTOMATIC = 5
 CourseGenerator.ROW_DIRECTION_LONGEST_EDGE = 6
 CourseGenerator.ROW_DIRECTION_MANUAL = 7
-CourseGenerator.ROW_DIRECTION_MAX = 7
 
 CourseGenerator.trackDirectionRanges = {
 	{ angle =  0  },
@@ -75,7 +73,7 @@ CourseGenerator.HEADLAND_CLOCKWISE = 1
 CourseGenerator.HEADLAND_COUNTERCLOCKWISE = 2
 
 CourseGenerator.HEADLAND_START_ON_HEADLAND = 1
-CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS = 3
+CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS = 2
 
 
 -- headland turn modes
@@ -261,7 +259,7 @@ function CourseGenerator.pointToXz( point )
 	return({ x = point.x, z = -point.y })
 end
 
---- Convert our angle representation (measured from the x axis up in radians)
+	--- Convert our angle representation (measured from the x axis up in radians)
 -- into CP's, where 0 is to the south, to our negative y axis.
 --
 function CourseGenerator.toCpAngleDeg( angle )

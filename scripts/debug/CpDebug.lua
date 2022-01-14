@@ -20,6 +20,9 @@ function CpDebug:init()
 	self.isEnabled = true
 	--- Is the debug channel menu active ?
 	self.menuVisible = false
+
+	self.activatedColor = {1,0.5,0, 1.0}
+	self.disabledColor = {1,1, 1, 1}
 end
 
 --- Loads the debug channel configurations.
@@ -98,9 +101,11 @@ function CpDebug:draw()
 		local x = partSize * (channelIx-maxLineSize*math.floor(i/maxLineSize))
 		local y = math.ceil(channelIx/maxLineSize)*0.02
 		if self.channels[channelIx].active then
-			setTextColor(0, 1, 0, 1)
+			local r,g,b,a = unpack(self.activatedColor)
+			setTextColor(r,g,b,a)
 		else
-			setTextColor(1, 1, 0, 1)
+			local r,g,b,a = unpack(self.disabledColor)
+			setTextColor(r,g,b,a)
 		end
 		local text = string.format("%s", self.channels[channelIx].text)
 		if channelIx == self.currentIx then 

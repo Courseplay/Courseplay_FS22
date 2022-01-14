@@ -8,7 +8,7 @@
 <Settings prefixText="CP_global_setting_">
 	<SettingSubTitle prefix="true" title="general">
 		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses"/>
-		<Setting classType="AIParameterSettingList" name="wageModifier" default = "100" unit="4">
+		<Setting classType="AIParameterSettingList" name="wageModifier" default="100" unit="4">
 			<Values>
 				<Value>0</Value>
 				<Value>50</Value>
@@ -17,7 +17,7 @@
 				<Value>500</Value>
 			</Values>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="autoRepair" default = "70">
+		<Setting classType="AIParameterSettingList" name="autoRepair" default="70">
 			<Values>
 				<Value>0</Value>
 				<Value>25</Value>

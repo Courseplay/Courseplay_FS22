@@ -12,7 +12,7 @@ function CpVehicleSettingsFrame.init()
 	local function predicateFunc()
 		local inGameMenu = g_gui.screenControllers[InGameMenu]
 		local aiPage = inGameMenu.pageAI
-		return aiPage.currentHotspot ~= nil
+		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
 	end
 
 	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pageSettingsGeneral,CpVehicleSettingsFrame
@@ -37,20 +37,22 @@ end
 --- Binds the settings of the selected vehicle to the gui elements.
 function CpVehicleSettingsFrame:onFrameOpen()
 	InGameMenuGeneralSettingsFrame:superClass().onFrameOpen(self)
-	local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
+	local pageAI = g_currentMission.inGameMenu.pageAI
+	local currentHotspot = pageAI.currentHotspot
+	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
 	
 	--- Changes the page title.
-	local title = string.format(self.pageTitle,vehicle:getName())
+	local title = string.format(self.pageTitle,self.currentVehicle:getName())
 	CpGuiUtil.changeTextForElementsWithProfileName(self,"ingameMenuFrameHeaderText",title)
 	
-	if vehicle ~=nil then 
-		if vehicle.getCpSettings then 
-			CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "onFrameOpen CpVehicleSettingsFrame" )
-			self.settings = vehicle:getCpSettingsTable()
+	if self.currentVehicle ~=nil then 
+		if self.currentVehicle.getCpSettings then 
+			CpUtil.debugVehicle( CpUtil.DBG_HUD,self.currentVehicle, "onFrameOpen CpVehicleSettingsFrame" )
+			self.settings = self.currentVehicle:getCpSettingsTable()
 			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
 		end
 	end
+	FocusManager:loadElementFromCustomValues(self.boxLayout)
 	self.boxLayout:invalidateLayout()
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.boxLayout)

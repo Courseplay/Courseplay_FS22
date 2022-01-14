@@ -19,10 +19,10 @@ function CpCourseGeneratorSettings.prerequisitesPresent(specializations)
 end
 
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
---	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpCourseGeneratorSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
@@ -55,15 +55,34 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     CpCourseGeneratorSettings.loadSettings(self,savegame)
 end
 
-function CpCourseGeneratorSettings:onPostAttach()
+--- Apply auto work width after everything is loaded and no settings are saved in the save game. 
+function CpCourseGeneratorSettings:onLoadFinished(savegame)
+    local spec = self.spec_cpCourseGeneratorSettings
+    if not spec.wasLoaded then
+        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    end
+end
+
+function CpCourseGeneratorSettings:onPostAttachImplement()
     local spec = self.spec_cpCourseGeneratorSettings
     spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
 end
 
-function CpCourseGeneratorSettings:onPreDetach()
+function CpCourseGeneratorSettings:onPreDetachImplement()
     local spec = self.spec_cpCourseGeneratorSettings
     spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
 end
+
+--- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
+function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
+    --- Object could be an implement, so make sure we use the root vehicle.
+    local self = object.rootVehicle
+    if self:getIsSynchronized() and self.spec_cpCourseGeneratorSettings then
+        local spec = self.spec_cpCourseGeneratorSettings
+        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    end
+end
+VariableWorkWidth.updateSections = Utils.appendedFunction(VariableWorkWidth.updateSections,CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged)
 
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()
@@ -86,6 +105,7 @@ function CpCourseGeneratorSettings:loadSettings(savegame)
             setting:loadFromXMLFile(savegame.xmlFile, key)
             CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
         end
+        spec.wasLoaded = true
     end)
 end
 

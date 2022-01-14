@@ -41,13 +41,15 @@ function AIDriveStrategyPlowCourse.new(customMt)
     end
     local self = AIDriveStrategyFieldWorkCourse.new(customMt)
     AIDriveStrategyFieldWorkCourse.initStates(self, AIDriveStrategyPlowCourse.myStates)
-    self.debugChannel = CpDebug.DBG_MODE_4
+    self.debugChannel = CpDebug.DBG_FIELDWORK
     return self
 end
 
 function AIDriveStrategyPlowCourse:setAIVehicle(vehicle)
-    AIDriveStrategyPlowCourse:superClass().setAIVehicle(self, vehicle)
+    -- need to set the plow before calling the parent's setAIVehicle so if it calls any
+    -- overwritten functions, we have the plow set up already
     self.plow = AIUtil.getAIImplementWithSpecialization(vehicle, Plow)
+    AIDriveStrategyPlowCourse:superClass().setAIVehicle(self, vehicle)
     self:setOffsetX()
     if self:hasRotatablePlow() then
         self:debug('has rotatable plow.')
@@ -122,10 +124,6 @@ end
 --- a tool with offset will be closer to either left or right AI marker.
 function AIDriveStrategyPlowCourse:setOffsetX()
     local aiLeftMarker, aiRightMarker, aiBackMarker = self.plow.spec_plow:getAIMarkers()
-    local aiSizeLeftMarker, aiSizeRightMarker, aiSizeBackMarker = self.plow.spec_plow:getAISizeMarkers()
-    aiLeftMarker = aiSizeLeftMarker or aiLeftMarker
-    aiRightMarker = aiSizeRightMarker or aiRightMarker
-    aiBackMarker = aiSizeBackMarker or aiBackMarker
     if aiLeftMarker and aiBackMarker and aiRightMarker then
         local attacherJoint = self.plow:getActiveInputAttacherJoint()
         local referenceNode = attacherJoint and attacherJoint.node or self.vehicle:getAIDirectionNode()

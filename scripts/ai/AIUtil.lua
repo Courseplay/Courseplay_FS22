@@ -125,9 +125,33 @@ function AIUtil.getTowBarLength(vehicle)
 	return towBarLength
 end
 
+---@return boolean, number true if this is a towed reversing implement/steeringLength
+function AIUtil.getSteeringParameters(vehicle)
+	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if not implement then
+		return false, 0
+	else
+		return true, AIUtil.getTowBarLength(vehicle)
+	end
+end
+
 function AIUtil.getOffsetForTowBarLength(r, towBarLength)
 	local rTractor = math.sqrt( r * r + towBarLength * towBarLength ) -- the radius the tractor should be on
 	return rTractor - r
+end
+
+function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
+	local reverserNode, debugText
+	-- articulated axis vehicles have a special reverser node
+	-- and yes, Giants has a typo in there...
+	if vehicle.spec_articulatedAxis.aiRevereserNode ~= nil then
+		reverserNode = vehicle.spec_articulatedAxis.aiRevereserNode
+		debugText = 'vehicle articulated axis reverese'
+	elseif vehicle.spec_articulatedAxis.aiReverserNode ~= nil then
+		reverserNode = vehicle.spec_articulatedAxis.aiReverserNode
+		debugText = 'vehicle articulated axis reverse'
+	end
+	return reverserNode, debugText
 end
 
 -- Find the node to use by the PPC when driving in reverse
@@ -143,15 +167,7 @@ function AIUtil.getReverserNode(vehicle)
 		reverserNode = reversingWheeledWorkTool.steeringAxleNode
 		debugText = 'implement reverse (Courseplay)'
 	elseif vehicle.spec_articulatedAxis ~= nil then
-		-- articulated axis vehicles have a special reverser node
-		-- and yes, Giants has a typo in there...
-		if vehicle.spec_articulatedAxis.aiRevereserNode ~= nil then
-			reverserNode = vehicle.spec_articulatedAxis.aiRevereserNode
-			debugText = 'vehicle articulated axis reverese'
-		elseif vehicle.spec_articulatedAxis.aiReverserNode ~= nil then
-			reverserNode = vehicle.spec_articulatedAxis.aiReverserNode
-			debugText = 'vehicle articulated axis reverse'
-		end
+		reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 	else
 		-- otherwise see if the vehicle has a reverser node
 		if vehicle.getAIVehicleReverserNode then
@@ -174,7 +190,7 @@ function AIUtil.getTurningRadius(vehicle)
 
 	if g_vehicleConfigurations:get(vehicle, 'turnRadius') then
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
 	end
 
 	-- TODO_22
@@ -288,7 +304,7 @@ end
 
 ---@return table, number frontmost object and the distance between the front of that object and the root node of the vehicle
 --- when > 0 in front of the vehicle
-function AIUtil.getFirstAttachedImplement(vehicle)
+function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's front
 	local maxDistance = vehicle.size.length / 2 + vehicle.size.lengthOffset
 	local firstImplement = vehicle
@@ -297,7 +313,9 @@ function AIUtil.getFirstAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the front of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				implement.object.size.length / 2 + implement.object.size.lengthOffset)
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
+			if not suppressLog then
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
+			end
 			if d > maxDistance then
 				maxDistance = d
 				firstImplement = implement.object
@@ -308,7 +326,7 @@ function AIUtil.getFirstAttachedImplement(vehicle)
 end
 
 ---@return table, number rearmost object and the distance between the back of that object and the root node of the object
-function AIUtil.getLastAttachedImplement(vehicle)
+function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 	-- by default, it is the vehicle's back
 	local minDistance = vehicle.size.length / 2 - vehicle.size.lengthOffset
 	-- size.lengthOffset > 0 if the root node is towards the back of the vehicle, < 0 if it is towards the front
@@ -318,7 +336,9 @@ function AIUtil.getLastAttachedImplement(vehicle)
 			-- the distance from the vehicle's root node to the back of the implement
 			local _, _, d = localToLocal(implement.object.rootNode, vehicle.rootNode, 0, 0,
 				- implement.object.size.length / 2 + implement.object.size.lengthOffset)
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			if not suppressLog then
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			end
 			if d < minDistance then
 				minDistance = d
 				lastImplement = implement.object
@@ -369,7 +389,7 @@ end
 --- Additionally checks if the vehicle has the specialization and returns it, if no implement was found.
 --- For example a self driving overloader.
 function AIUtil.getImplementOrVehicleWithSpecialization(vehicle, specialization)
-	return  AIUtil.getImplementWithSpecialization(vehicle, specialization) or  
+	return AIUtil.getImplementWithSpecialization(vehicle, specialization) or
 			SpecializationUtil.hasSpecialization(specialization, vehicle.specializations) and vehicle
 end
 

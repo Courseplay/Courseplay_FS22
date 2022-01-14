@@ -235,6 +235,16 @@ end
 ---@param object table
 ---@param fillType number
 function FillLevelManager:isValidFillType(object,fillType)
+    --- Ignore silage additives for now. 
+    --- TODO: maybe implement a setting if it is necessary to enable/disable detection.
+    local spec = object.spec_combine or object.spec_forageWagon 
+    if spec and spec.additives and spec.additives.fillUnitIndex then 
+        local f = object:getFillUnitFillType(spec.additives.fillUnitIndex)
+        if f == fillType then 
+            return false
+        end
+    end
+
     return not self:isValidFuelType(object, fillType) and fillType ~= FillType.DEF and fillType ~= FillType.AIR
 end
 

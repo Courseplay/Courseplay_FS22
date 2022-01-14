@@ -61,7 +61,6 @@ end
 
 function CpVehicleSettings:onPreDetach()
     local spec = self.spec_cpVehicleSettings
-
 end
 
 --- Loads the generic settings setup from an xmlFile.

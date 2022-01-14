@@ -5,12 +5,26 @@ local AIJobFieldWorkCp_mt = Class(AIJobFieldWorkCp, AIJobFieldWork)
 
 ---Localization text symbols.
 AIJobFieldWorkCp.translations = {
-    JobName = "FIELDWORK_CP",
+    JobName = "CP_job_fieldWork",
     GenerateButton = "FIELDWORK_BUTTON"
 }
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
+	
+	self.fieldWorkTask = AITaskFieldworkCp.new(isServer, self)
+	-- Switches the AITaskFieldWork with AITaskFieldworkCp.
+	-- TODO: Consider deriving AIJobFieldWorkCp of AIJob and implement our own logic instead.
+	local ix
+	for i,task in pairs(self.tasks) do 
+		if self.tasks[i]:isa(AITaskFieldWork) then 
+			ix = i
+			break
+		end
+	end
+	self.fieldWorkTask.taskIndex = ix
+	self.tasks[ix] = self.fieldWorkTask
+	
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
 
@@ -22,13 +36,6 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	return self
-end
-
-function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
-	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
-	-- for now, always take the auto work width
-	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Setting work width parameter for course generation to %.1f', WorkWidthUtil.getAutomaticWorkWidth(vehicle))
-	vehicle:getCourseGeneratorSettings().workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(vehicle))
 end
 
 --- Called when parameters change, scan field
@@ -50,17 +57,17 @@ function AIJobFieldWorkCp:validate(farmId)
 		self.lastPositionX, self.lastPositionZ = tx, tz
 		self.hasValidPosition = true
 	end
-
+	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
+	CpUtil.info('Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
 	if not self.fieldPolygon then
 		self.hasValidPosition = false
-		return false, 'target not on field'
+		return false, g_i18n:getText("CP_error_not_on_field")
 	end
 
 	local vehicle = self.vehicleParameter:getVehicle()
-
 	if vehicle and not vehicle:hasCpCourse() then
-		return false, 'Generate a course before starting the job!'
+		return false, g_i18n:getText("CP_error_no_course")
 	end
 	return true, ''
 end
@@ -79,23 +86,40 @@ function AIJobFieldWorkCp:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
 end
 
+function AIJobFieldWorkCp:getCanStartJob()
+	local vehicle = self.vehicleParameter:getVehicle()
+	return vehicle and (vehicle:hasCpCourse() or
+			self.cpJobParameters.startAt:getValue() == CpJobParameters.START_FINDING_BALES)
+end
+
 --- Button callback to generate a field work course.
 function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = self.lastPositionX, z = self.lastPositionZ},
-			0,
+			settings.isClockwise:getValue(),
 			settings.workWidth:getValue(),
 			AIUtil.getTurningRadius(vehicle),
 			settings.numberOfHeadlands:getValue(),
 			settings.startOnHeadland:getValue(),
 			settings.headlandCornerType:getValue(),
+			settings.headlandOverlapPercent:getValue(),
 			settings.centerMode:getValue(),
-			settings.rowDirection:getValue()
+			settings.rowDirection:getValue(),
+			settings.manualRowAngleDeg:getValue(),
+			settings.rowsToSkip:getValue(),
+			settings.rowsPerLand:getValue(),
+			settings.islandBypassMode:getValue(),
+			settings.fieldMargin:getValue()
 	)
-	if not ok then
-		return false, 'could not generate course'
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
+	if not status then
+		g_gui:showInfoDialog({
+			dialogType = DialogElement.TYPE_ERROR,
+			text = g_i18n:getText('CP_error_could_not_generate_course')
+		})
+		return false
 	end
 
 	vehicle:setFieldWorkCourse(course)
@@ -131,3 +155,24 @@ if g_currentMission then
 end
 
 AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapData,AIJobFieldWorkCp.registerJob)
+
+function AIJobFieldWorkCp:getIsAvailableForVehicle(vehicle)
+	return vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork()
+end
+
+--- Copy the cp job parameter values form the mini gui into the in game menu job on opening of the job for the first time.
+function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+	AIJobFieldWorkCp:superClass().applyCurrentState(self,vehicle, mission, farmId, isDirectStart)
+	if not isDirectStart then 
+		CpSettingsUtil.copySettingsValues(self.cpJobParameters,vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters())
+	end
+end
+
+--- Applies the cp job parameter on change to the vehicle intern job parameters.
+function AIJobFieldWorkCp:onParameterValueChanged()
+	AIJobFieldWorkCp:superClass().onParameterValueChanged(self)
+	local vehicle = self.vehicleParameter:getVehicle()
+	if vehicle and self ~= vehicle.spec_cpAIFieldWorker.cpJob then 
+		CpSettingsUtil.copySettingsValues(vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters(),self.cpJobParameters)
+	end
+end

@@ -4,35 +4,53 @@
 CourseGeneratorInterface = {}
 ---@param fieldPolygon table [{x, z}]
 ---@param startPosition table {x, z}
----@param startAngle number as in AIParameterPositionAngle
+---@param isClockwise boolean
 ---@param workWidth number
 ---@param numberOfHeadlands number
 function CourseGeneratorInterface.generate(fieldPolygon,
 										   startPosition,
-										   startAngle,
+										   isClockwise,
 										   workWidth,
 										   turnRadius,
 										   numberOfHeadlands,
 										   startOnHeadland,
 										   headlandCornerType,
+										   headlandOverlapPercent,
 										   centerMode,
-										   rowDirection
+										   rowDirection,
+										   manualRowAngleDeg,
+										   rowsToSkip,
+										   rowsPerLand,
+										   islandBypassMode,
+										   fieldMargin
 )
 
-	CourseGenerator.debug('Generating course, width %.1f m, headlands %d', workWidth, numberOfHeadlands)
+	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
+			tostring(isClockwise), workWidth, turnRadius, numberOfHeadlands, tostring(startOnHeadland))
+	CourseGenerator.debug('                   headland corner %d, headland overlap %d, center mode %d',
+			headlandCornerType, headlandOverlapPercent, centerMode)
+	CourseGenerator.debug('                   row direction %d, rows to skip %d, rows per land %d',
+			rowDirection, rowsToSkip, rowsPerLand)
 
 	--------------------------------------------------------------------------------------------------------------------
 	-- Headland settings
 	-----------------------------------------------------------------------------------------------------------------------
+	-- ignore headland order setting when there's no headland
+	local headlandFirst = startOnHeadland == CourseGenerator.HEADLAND_START_ON_HEADLAND or numberOfHeadlands == 0
+	if headlandFirst then
+		isClockwise = isClockwise == CourseGenerator.HEADLAND_CLOCKWISE
+	else
+		-- reverse clockwise when starting in the middle
+		isClockwise = isClockwise == CourseGenerator.HEADLAND_COUNTERCLOCKWISE
+	end
 	local headlandSettings = {
 		startLocation = CourseGenerator.pointToXy(startPosition),
 		-- use some overlap between headland passes to get better results
 		-- (=less fruit missed) at smooth headland corners
-		overlapPercent = 7,
+		overlapPercent = headlandOverlapPercent,
 		nPasses = numberOfHeadlands,
-		-- ignore headland order setting when there's no headland
-		headlandFirst = startOnHeadland or numberOfHeadlands == 0,
-		isClockwise = true, -- calculate from startAngle later
+		headlandFirst = headlandFirst,
+		isClockwise = isClockwise,
 		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
 	}
 	local roundCorners = headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND
@@ -44,10 +62,10 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local centerSettings = {
 		useBestAngle = rowDirection == CourseGenerator.ROW_DIRECTION_AUTOMATIC,
 		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
-		rowAngle = 0,
-		nRowsToSkip = 0,
+		rowAngle = CourseGenerator.fromCpAngleDeg(manualRowAngleDeg),
+		nRowsToSkip = rowsToSkip,
 		mode = centerMode,
-		nRowsPerLand = centerMode ~= CourseGenerator.CENTER_MODE_LANDS and 0 or 6,
+		nRowsPerLand = rowsPerLand or 6,
 		pipeOnLeftSide = true
 	}
 
@@ -61,7 +79,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	-----------------------------------------------------------------------------------------------------------------------
 	local minDistanceBetweenPoints = 0.5
 	local doSmooth = true
-	local islandBypassMode = Island.BYPASS_MODE_CIRCLE
 
 	local field = {}
 	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
@@ -76,7 +93,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		minSmoothAngle, maxSmoothAngle, doSmooth,
 		roundCorners, turnRadius,
 		islandNodes,
-		islandBypassMode, centerSettings
+		islandBypassMode, centerSettings, fieldMargin
 	)
 
 	-- return on exception (but continue on not ok as that is just a warning)

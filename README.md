@@ -1,6 +1,6 @@
 # Courseplay Beta for Farming Simulator 2022
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Courseplay/Courseplay_FS22?include_prereleases&style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest)
-[![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/Courseplay_FS22/latest/FS22_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest/download/FS19_Courseplay.zip)
+[![GitHub Pre-Releases (by Asset)](https://img.shields.io/github/downloads-pre/Courseplay/Courseplay_FS22/latest/FS22_Courseplay.zip?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/releases/latest/download/FS22_Courseplay.zip)
 [![GitHub issues](https://img.shields.io/github/issues/Courseplay/Courseplay_FS22?style=flat-square)](https://github.com/Courseplay/Courseplay_FS22/issues)
 
 **[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22/releases/latest)** (the file FS22_Courseplay.zip).
@@ -21,9 +21,16 @@ button. Generate the course and start the job.
 
 ## Turning on Debug Channels
 
-When there's an issue, you can turn on debug channels so Courseplay will log a lot of information we need for troubleshooting. 
-You can bring up the debug channel menu by pressing Shift+4, then use Shift+1 and Shift+3 to select a channel, and then Shift+2 
-to toggle the selected debug channel (green is on).
+When there's an issue, you can turn on debug logging on the Courseplay vehicle settings page for each vehicle. This will
+enable loggin debug information for that vehicle only. Devs need those logs when troubleshooting and fixing bugs.
+ 
+What information is logged when you activated the debug logging for the vehicle depends on the active debug channels. This
+are similar to those we had in CP 19, but the way to turn them on/off is different: you can bring up the debug channel menu 
+by pressing Shift+4, then use Shift+1 and Shift+3 to select a channel, and then Shift+2 to toggle the selected debug channel 
+(green is on).
+
+Remember, you have to activate debug mode for the vehicle in the vehicle settings page, otherwise nothing is logged, even if
+the channel is active.
 
 ## Developer version
 
