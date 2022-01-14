@@ -1,9 +1,9 @@
 ---@class FertilizingSowingMachineController : ImplementController
 FertilizingSowingMachineController = CpObject(ImplementController)
 
-function FertilizingSowingMachineController:init(vehicle)
-    self.sowingMachine = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, FertilizingSowingMachine)
-    ImplementController.init(self, vehicle, self.sowingMachine)
+function FertilizingSowingMachineController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+	self.sowingMachine = implement
 end
 
 function FertilizingSowingMachineController:update()

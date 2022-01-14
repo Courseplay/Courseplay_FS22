@@ -19,9 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class BalerController : ImplementController
 BalerController = CpObject(ImplementController)
 
-function BalerController:init(vehicle)
-    self.baler = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler)
-    ImplementController.init(self, vehicle, self.baler)
+function BalerController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+    self.baler = implement
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 20
     self.balerSpec = self.baler.spec_baler

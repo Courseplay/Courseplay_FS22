@@ -22,10 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class BaleLoaderController : ImplementController
 BaleLoaderController = CpObject(ImplementController)
 
-function BaleLoaderController:init(vehicle)
-    self.baleLoader = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
-    ImplementController.init(self, vehicle, self.baleLoader)
-
+function BaleLoaderController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+    self.baleLoader = implement
     if self.baleLoader then
         -- Bale loaders have no AI markers (as they are not AIImplements according to Giants) so add a function here
         -- to get the markers

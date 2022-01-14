@@ -393,6 +393,23 @@ function AIUtil.getImplementOrVehicleWithSpecialization(vehicle, specialization)
 			SpecializationUtil.hasSpecialization(specialization, vehicle.specializations) and vehicle
 end
 
+--- Gets all directly attached implement to the vehicle with a given specialization.
+--- Additionally checks if the vehicle has the specialization and returns it, if no implement was found.
+--- For example a self driving overloader.
+---@param vehicle Vehicle
+---@param specialization table
+---@return table
+---@return boolean vehicle/implement was found
+function AIUtil.getAllImplementOrVehicleWithSpecialization(vehicle, specialization)
+	local vehicles = {}
+	for i,v in pairs(vehicle:getChildVehicles()) do 
+		if AIUtil.getImplementWithSpecialization(vehicle, specialization) then 
+			table.insert(vehicles,v)
+		end
+	end
+	return vehicles,#vehicles>0
+end
+
 function AIUtil.getImplementWithSpecializationFromList(specialization, implements)
 	for _, implement in ipairs(implements) do
 		if SpecializationUtil.hasSpecialization(specialization, implement.object.specializations) then

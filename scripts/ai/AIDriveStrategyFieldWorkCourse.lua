@@ -185,10 +185,13 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     local function addController(class,spec,states)
-        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then
-            local controller = class(vehicle)
-            controller:setDisabledStates(states)
-            table.insert(self.controllers, controller)
+        local implements,foundImplement = AIUtil.getAllImplementOrVehicleWithSpecialization(vehicle, spec)
+        if foundImplement then 
+            for i,v in pairs(implements) do 
+                local controller = class(vehicle,v)
+                controller:setDisabledStates(states)
+                table.insert(self.controllers, controller)
+            end
         end
     end
     local defaultDisabledStates = {

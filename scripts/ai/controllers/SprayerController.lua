@@ -1,9 +1,9 @@
 ---@class SprayerController : ImplementController
 SprayerController = CpObject(ImplementController)
 
-function SprayerController:init(vehicle)
-    self.sprayer = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Sprayer)
-    ImplementController.init(self, vehicle, self.sprayer)
+function SprayerController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+	self.sprayer = implement
 end
 
 function SprayerController:update()

@@ -2,9 +2,9 @@
 ForageWagonController = CpObject(ImplementController)
 ForageWagonController.maxFillLevelPercentage = 0.99
 
-function ForageWagonController:init(vehicle)
-    self.forageWagon = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, ForageWagon)
-    ImplementController.init(self, vehicle, self.forageWagon)
+function ForageWagonController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+	self.forageWagon = implement
 end
 
 function ForageWagonController:update()

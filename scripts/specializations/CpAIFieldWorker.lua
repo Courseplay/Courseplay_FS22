@@ -250,7 +250,6 @@ function CpAIFieldWorker:startFieldworker()
         --- Replaces drive strategies.
         CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self)
     end
-    self:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
 end
 
 function CpAIFieldWorker:stopFieldWorker(superFunc,...)

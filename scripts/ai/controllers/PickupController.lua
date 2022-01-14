@@ -2,9 +2,9 @@
 PickupController = CpObject(ImplementController)
 PickupController.maxFillLevelPercentage = 0.99
 
-function PickupController:init(vehicle)
-    self.pickup = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pickup)
-    ImplementController.init(self, vehicle, self.pickup)
+function PickupController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+	self.pickup = implement
 end
 --- Registers event listeners for lowering/raising of the pickup.
 local function lowerPickup(pickup,superFunc,...)

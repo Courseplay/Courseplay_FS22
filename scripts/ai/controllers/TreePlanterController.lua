@@ -1,9 +1,9 @@
 ---@class TreePlanterController : ImplementController
 TreePlanterController = CpObject(ImplementController)
 
-function TreePlanterController:init(vehicle)
-    self.treePlanter = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, TreePlanter)
-    ImplementController.init(self, vehicle, self.treePlanter)
+function TreePlanterController:init(vehicle,implement)
+    ImplementController.init(self, vehicle, implement)
+	self.treePlanter = implement
 end
 
 function TreePlanterController:update()
