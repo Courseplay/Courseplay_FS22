@@ -167,14 +167,14 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Leghosszabb él" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Fel/le sorszög" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="A fel/le sorok szöge (0 az észak), ha kézi" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Sziget kikerülő mód" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Hogyan kell a pályának megkerülni a szigeteket a terepen" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="nincs kikerűlés" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="egyszerű" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="körbe" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Kezdje el a munkát" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kezdje el a munkát" />
@@ -243,8 +243,8 @@
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
-		<text name="CP_help_page_courseManager_text"													text="There are 7 different action available:
+		<text name="CP_help_page_courseManager_title"													text="Tanfolyamvezető"/>
+		<text name="CP_help_page_courseManager_text"													text="7 különböző művelet áll rendelkezésre:
 - Creating a new directory.
 - Clearing the current vehicle course.
 - Saving the current course.
@@ -254,11 +254,11 @@
 - Renaming a course or directory."/>
 
 		<!-- Input bindings -->
-		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Select next debug channel."/>
-		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>
-		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
-		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Shows debug channel menu yes/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open mini GUI"/>
-		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Válassza ki a következő hibakeresési csatornát."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Válassza ki az előző hibakeresési csatornát."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Az aktuális hibakeresési csatorna módosítása."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Megjeleníti a csatorna hibakeresési menüjét igen/nem."/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Nyissa meg a mini GUI-t"/>
+		<text name="input_CP_START_STOP" 																text="CP: Sofőr indítás/leállítás"/>
 	</texts>
 </l10n>
