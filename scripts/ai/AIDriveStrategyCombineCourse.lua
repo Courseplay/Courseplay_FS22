@@ -1543,15 +1543,19 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 		local targetNode = fillRootNode or bestTrailer.rootNode
 		local trailerRootNode = bestTrailer.rootNode
 		local trailerLength = bestTrailer.size.length
+		local trailerWidth = bestTrailer.size.width
 
 		local _, _, dZ = localToLocal(trailerRootNode, targetNode, 0, 0, 0)
 
-		local offsetX = -self.pipeOffsetX - 0.2
+		-- this should put the pipe's end 75 cm from the trailer's edge towards the middle. We are not aiming for
+		-- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
+		-- than what is absolutely necessary.
+		local offsetX = -(self.pipeOffsetX + trailerWidth / 2 - 0.75)
 		local alignLength = (trailerLength / 2) + dZ + 3
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
 		local offsetZ = -self.pipeOffsetZ - alignLength
-		self:debug('Trailer Length : %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
-				trailerLength, alignLength, offsetZ, offsetX)
+		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
+				trailerLength, trailerWidth, alignLength, offsetZ, offsetX)
 		-- little straight section parallel to the trailer to align better
 		self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
 				offsetX, offsetZ + 1, offsetZ + 1 + alignLength, 1, false)
