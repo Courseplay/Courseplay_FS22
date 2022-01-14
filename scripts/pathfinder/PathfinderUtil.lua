@@ -291,7 +291,9 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 	self.collidingShapes = 0
 	self.collidingShapesText = 'unknown'
 
-    overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, CollisionFlag.AI_BLOCKING, true, true, true)
+    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+
+    overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, collisionMask, true, true, true)
     if true and self.collidingShapes > 0 then
         table.insert(PathfinderUtil.overlapBoxes,
                 { x = x, y = y + 0.2, z = z, xRot = xRot, yRot = yRot, zRot = zRot, width = width, length = length})
