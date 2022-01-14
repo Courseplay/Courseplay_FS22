@@ -63,7 +63,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
                 allOk = false
             end
         else
-            if self:isValidFillType(nil, fillType) and info.fillLevel == 0 and info.capacity > 0 and not self:helperBuysThisFillType(fillType) then
+            if self:isValidFillType(nil, fillType) and info.fillLevel == 0 and info.capacity > 0 and not self.helperBuysThisFillType(fillType) then
                 allOk = false
                 if fillType == FillType.FERTILIZER or fillType == FillType.LIQUIDFERTILIZER then hasNoFertilizer = true end
             else
@@ -104,7 +104,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
 end
 
 --- Does the helper buy this fill unit (according to the game settings)? If yes, we don't have to stop or refill when empty.
-function FillLevelManager:helperBuysThisFillType(fillType)
+function FillLevelManager.helperBuysThisFillType(fillType)
     if g_currentMission.missionInfo.helperBuySeeds and fillType == FillType.SEEDS then
         return true
     end

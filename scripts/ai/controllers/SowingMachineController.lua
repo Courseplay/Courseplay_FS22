@@ -10,7 +10,7 @@ end
 function SowingMachineController:update()
 	local maxSpeed
 	local fillUnitIndex = self.sowingMachine:getSowingMachineFillUnitIndex()
-	if self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
+	if not g_currentMission.missionInfo.helperBuySeeds and self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
 		SpecializationUtil.raiseEvent(self.vehicle,"onCpEmpty")
 		maxSpeed = 0
 	end

@@ -201,10 +201,27 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
     addController(SowingMachineController,SowingMachine,defaultDisabledStates)
     addController(FertilizingSowingMachineController,FertilizingSowingMachine,defaultDisabledStates)
+    addController(FertilizingCultivatorController,FertilizingCultivator,defaultDisabledStates)
     addController(SprayerController,Sprayer,defaultDisabledStates)
+    addController(TreePlanterController,TreePlanter,defaultDisabledStates)
 
     addController(PickupController,Pickup,defaultDisabledStates)
     addController(ForageWagonController,ForageWagon,defaultDisabledStates)
+
+    addController(VariableWorkWidthController,VariableWorkWidth,defaultDisabledStates)
+    --[[
+        TODO: Figure out if implement controllers for these are needed 
+              and thing about the edge case, that maybe more the one implement attached has the needed spec.
+        Cover
+        Crab steering
+        Foldable 
+        Pipe
+        Plow
+        RidgeMarker
+        Stone Picker 
+    ]]--
+
+
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
@@ -664,20 +681,3 @@ function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)
     end
 end
 
------------------------------------------------------------------------------------------------------------------------
---- Overwrite implement functions, to enable a different cp functionality compared to giants fieldworker.
---- TODO: might have to find a better solution for these kind of problems.
------------------------------------------------------------------------------------------------------------------------
-
-local function emptyFunction(object,superFunc,...)
-    local rootVehicle = object.rootVehicle
-    if rootVehicle.getJob then 
-        if rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
-            return
-        end
-    end
-    return superFunc(object,...)
-end
---- Makes sure the automatic work width isn't being reset.
-VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart,emptyFunction)
-VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart,emptyFunction)
