@@ -226,12 +226,31 @@ end
 --- Custom version of AIFieldWorker:startFieldWorker()
 function CpAIFieldWorker:startFieldworker()
     self.spec_cpAIFieldWorker.isActive = true
+    
+    local spec = self.spec_aiFieldWorker
+	spec.isActive = true
+
+	if self.isServer then
+		self:updateAIFieldWorkerImplementData()
+	--	self:updateAIFieldWorkerDriveStrategies()
+
+	--	spec.checkImplementDirection = true
+	end
+
+	AIFieldWorker.hiredHirables[self] = self
+
+	if self:getAINeedsTrafficCollisionBox() and AIFieldWorker.TRAFFIC_COLLISION ~= nil and AIFieldWorker.TRAFFIC_COLLISION ~= 0 and spec.aiTrafficCollision == nil then
+		local collision = clone(AIFieldWorker.TRAFFIC_COLLISION, true, false, true)
+		spec.aiTrafficCollision = collision
+	end
+    
     --- Calls the giants startFieldWorker function.
-    self:startFieldWorker()
+  --  self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
         CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self)
     end
+    self:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
 end
 
 function CpAIFieldWorker:stopFieldWorker(superFunc,...)

@@ -29,27 +29,9 @@ function BaleLoaderController:init(vehicle)
     if self.baleLoader then
         -- Bale loaders have no AI markers (as they are not AIImplements according to Giants) so add a function here
         -- to get the markers
-        self:registerOverwrittenFunction(self.baleLoader,"getAIMarkers",
-            function(object)
-                return ImplementUtil.getAIMarkersFromGrabberNode(object, object.spec_baleLoader)
-            end)
-    
-        --- Registers event listeners for folding/unfolding of the bale loader.
-        local function unfoldLoader(loader,superFunc,...)
-            if superFunc ~= nil then superFunc(loader,...) end
-            loader:doStateChange(BaleLoader.CHANGE_MOVE_TO_WORK)
+        self.baleLoader.getAIMarkers = function(object)
+            return ImplementUtil.getAIMarkersFromGrabberNode(object, object.spec_baleLoader)
         end
-        local function foldLoader(loader,superFunc,...)
-            if superFunc ~= nil then superFunc(loader,...) end
-            local spec = loader.spec_baleLoader
-            if not spec.grabberIsMoving and spec.grabberMoveState == nil and spec.isInWorkPosition then
-                loader:doStateChange(BaleLoader.CHANGE_MOVE_TO_TRANSPORT);
-            end
-        end
-        self:registerOverwrittenFunction(BaleLoader,"onAIImplementStart",unfoldLoader)
-        self:registerAIEvents(BaleLoader,"onAIImplementStart")
-        self:registerOverwrittenFunction(BaleLoader,"onAIImplementEnd",foldLoader)
-        self:registerAIEvents(BaleLoader,"onAIImplementStart")
     end
     self:debug('Bale loader controller initialized')
 end
@@ -58,3 +40,26 @@ function BaleLoaderController:isGrabbingBale()
     return self.baleLoader.spec_baleLoader.grabberMoveState
 end
 
+BaleLoader.onAIImplementStart = Utils.overwrittenFunction(BaleLoader.onAIImplementStart,
+        function(self, superFunc)
+            if superFunc ~= nil then superFunc(self) end
+            self:doStateChange(BaleLoader.CHANGE_MOVE_TO_WORK);
+        end)
+
+BaleLoader.onAIImplementEnd = Utils.overwrittenFunction(BaleLoader.onAIImplementEnd,
+        function(self, superFunc)
+            if superFunc ~= nil then superFunc(self) end
+            local spec = self.spec_baleLoader
+            if not spec.grabberIsMoving and spec.grabberMoveState == nil and spec.isInWorkPosition then
+                self:doStateChange(BaleLoader.CHANGE_MOVE_TO_TRANSPORT);
+            end
+        end)
+
+local baleLoaderRegisterEventListeners = function(vehicleType)
+    print('## Courseplay: Registering event listeners for bale loader')
+    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementStart", BaleLoader)
+    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementEnd", BaleLoader)
+end
+
+print('## Courseplay: Appending event listener for bale loaders')
+BaleLoader.registerEventListeners = Utils.appendedFunction(BaleLoader.registerEventListeners, baleLoaderRegisterEventListeners)
