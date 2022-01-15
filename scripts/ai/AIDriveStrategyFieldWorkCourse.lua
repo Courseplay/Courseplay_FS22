@@ -93,13 +93,14 @@ function AIDriveStrategyFieldWorkCourse:update()
             self.ppc:getCourse():draw()
         end
     end
+    self:updateImplementControllers()
 end
 
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
     self:updateFieldworkOffset()
-    self:updateImplementControllers()
+    self:updateLowFrequencyImplementControllers()
 
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, maxSpeed

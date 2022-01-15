@@ -8,7 +8,6 @@ function FertilizingSowingMachineController:init(vehicle)
 end
 
 function FertilizingSowingMachineController:update()
-	local maxSpeed
 	if self.settings.sowingMachineFertilizerEnabled:getValue() then 
 		local fillUnitIndex = self.sowingMachine:getSprayerFillUnitIndex()
 		if not self.sowingMachine:getIsSprayerExternallyFilled() and self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
@@ -16,10 +15,8 @@ function FertilizingSowingMachineController:update()
 			--- For some reason the sowing machine isn't being turned off here.
 			--- Might be a problem from giants not sure.
 			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-			maxSpeed = 0
 		end
 	end
-	return nil,nil,nil,maxSpeed
 end
 
 local function processSowingMachineArea(sowingMachine,superFunc,...)

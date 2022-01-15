@@ -36,7 +36,7 @@ function BaleWrapperController:init(vehicle)
     self:debug('Bale wrapper controller initialized')
 end
 
-function BaleWrapperController:update()
+function BaleWrapperController:getDriveData()
     local maxSpeed = self:handleBaleWrapper()
     return nil, nil, nil, maxSpeed
 end

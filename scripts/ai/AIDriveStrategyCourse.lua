@@ -140,12 +140,24 @@ end
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
 end
 
+--- Normal update function called every frame.
+--- For releasing the helper in the controller, use this one.
 function AIDriveStrategyCourse:updateImplementControllers()
     for _, controller in pairs(self.controllers) do
         ---@type ImplementController
         if controller:isEnabled() then
+            controller:update()
+        end
+    end
+end
+
+--- Called in the low frequency function for the helper.
+function AIDriveStrategyCourse:updateLowFrequencyImplementControllers()
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
             -- we don't know yet if we even need anything from the controller other than the speed.
-            local _, _, _, maxSpeed = controller:update()
+            local _, _, _, maxSpeed = controller:getDriveData()
             if maxSpeed then
                 self:setMaxSpeed(maxSpeed)
             end
