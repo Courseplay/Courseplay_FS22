@@ -6,6 +6,8 @@ labels: bug
 assignees: ''
 
 ---
+**READ FIRST**
+https://github.com/Courseplay/Courseplay_FS22/wiki
 
 **Steps to reproduce**
 Steps to reproduce the behavior.
