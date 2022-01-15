@@ -261,9 +261,10 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
     end
     cpDriveStrategy:setAIVehicle(self)
-    table.insert(spec.driveStrategies, cpDriveStrategy)
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
     driveStrategyCollision:setAIVehicle(self)
     table.insert(spec.driveStrategies, driveStrategyCollision)
+    --- Only the last driving strategy can stop the helper, while it is running.
+    table.insert(spec.driveStrategies, cpDriveStrategy)
 end
