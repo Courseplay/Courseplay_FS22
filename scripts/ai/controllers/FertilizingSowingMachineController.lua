@@ -10,7 +10,6 @@ function FertilizingSowingMachineController:update()
 	local maxSpeed
 	if self.settings.sowingMachineFertilizerEnabled:getValue() then 
 		local fillUnitIndex = self.sowingMachine:getSprayerFillUnitIndex()
-		local fillType = self.sowingMachine:getFillUnitFillType(fillUnitIndex)
 		if not self.sowingMachine:getIsSprayerExternallyFilled() and self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
 			SpecializationUtil.raiseEvent(self.vehicle,"onCpEmpty")
 			maxSpeed = 0

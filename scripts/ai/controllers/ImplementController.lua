@@ -105,3 +105,59 @@ function ImplementController:unregisterAIEvents()
         self.additionalAIEvents[i] = nil
     end
 end
+
+
+------------------------------------------------------------
+--- Overwritten functions
+------------------------------------------------------------
+
+--- Disabled resetting the auto work width.
+local function emptyFunction(implement,superFunc,...)
+	if implement.rootVehicle and implement.rootVehicle:getIsCpActive() then 
+		return
+	end
+	return superFunc(implement,...)
+end
+VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart,emptyFunction)
+VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart,emptyFunction)
+
+--- Registers event listeners for lowering/raising of the pickup.
+local function lowerPickup(pickup,superFunc,...)
+    if superFunc ~= nil then superFunc(pickup,...) end
+    if pickup.rootVehicle and pickup.rootVehicle:getIsCpActive() then
+        pickup:setPickupState(true)
+    end
+end
+local function raisePickup(pickup,superFunc,...)
+    if superFunc ~= nil then superFunc(pickup,...) end
+    if pickup.rootVehicle and pickup.rootVehicle:getIsCpActive() then
+        pickup:setPickupState(false)
+    end
+end
+Pickup.onAIImplementStartLine = Utils.overwrittenFunction(Pickup.onAIImplementStartLine,lowerPickup)
+Pickup.onAIImplementEndLine = Utils.overwrittenFunction(Pickup.onAIImplementEndLine,raisePickup)
+Pickup.onAIImplementEnd = Utils.overwrittenFunction(Pickup.onAIImplementEnd,raisePickup)
+
+local registerPickupListeners = function(vehicleType)
+    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementStartLine", Pickup)
+    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementEndLine", Pickup)
+    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementEnd", Pickup)
+end
+Pickup.registerEventListeners = Utils.appendedFunction(Pickup.registerEventListeners, registerPickupListeners)
+
+
+--- Folds the implement at the end.
+local function fold(implement,superFunc,...)
+    if superFunc ~= nil then superFunc(implement,...) end
+    if implement.rootVehicle and implement.rootVehicle:getIsCpActive() then
+        implement:setFoldState(-1, false)
+    end
+end
+Foldable.onAIFieldWorkerEnd = Utils.overwrittenFunction(Foldable.onAIFieldWorkerEnd,fold)
+Foldable.onAIImplementEnd = Utils.overwrittenFunction(Foldable.onAIImplementEnd,fold)
+
+local registerFoldableListeners = function(vehicleType)
+    SpecializationUtil.registerEventListener(vehicleType, "onAIFieldWorkerEnd", Foldable)
+    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementEnd", Foldable)
+end
+Foldable.registerEventListeners = Utils.appendedFunction(Foldable.registerEventListeners, registerFoldableListeners)

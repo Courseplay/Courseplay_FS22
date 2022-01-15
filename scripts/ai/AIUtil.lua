@@ -403,7 +403,7 @@ end
 function AIUtil.getAllImplementOrVehicleWithSpecialization(vehicle, specialization)
 	local vehicles = {}
 	for i,v in pairs(vehicle:getChildVehicles()) do 
-		if AIUtil.getImplementWithSpecialization(vehicle, specialization) then 
+		if SpecializationUtil.hasSpecialization(specialization,v.specializations) then 
 			table.insert(vehicles,v)
 		end
 	end
