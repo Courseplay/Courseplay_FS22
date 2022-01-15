@@ -173,16 +173,16 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"				text="Направление первого прохода." />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 			text="автоматическое" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 		text="длинная сторона" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 				text="вручную" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"			text="Угол челночных проходов" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"		text="Угол проходов в челночном режиме (0 это север) при указании направления вручную." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 			text="Обход островков" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 		text="Как курс должен обходить островки на поле." />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 			text="без обхода" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 			text="простой" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 			text="по кругу" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"			text="Начать работу с" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"			text="С какой части курса начать работу." />
