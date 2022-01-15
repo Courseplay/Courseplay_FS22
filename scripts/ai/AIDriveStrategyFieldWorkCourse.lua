@@ -72,6 +72,8 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx)
         self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
         self:startCourse(course, startIx)
         self.state = self.states.INITIAL
+        --- TODO: Validate if this is the correct position.
+        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
     end
 end
 
