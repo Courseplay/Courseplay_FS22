@@ -1,9 +1,9 @@
 ---@class FertilizingCultivatorController : ImplementController
 FertilizingCultivatorController = CpObject(ImplementController)
 
-function FertilizingCultivatorController:init(vehicle,implement)
-    ImplementController.init(self, vehicle, implement)
-	self.cultivator = implement
+function FertilizingCultivatorController:init(vehicle)
+	self.cultivator = AIUtil.getImplementOrVehicleWithSpecialization(vehicle,FertilizingCultivator)
+    ImplementController.init(self, vehicle, self.cultivator)
 	self.settings = vehicle:getCpSettings()
 end
 
