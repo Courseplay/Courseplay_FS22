@@ -12,6 +12,7 @@ function FertilizingCultivatorController:update()
 	if self.settings.sowingMachineFertilizerEnabled:getValue() then 
 		local fillUnitIndex = self.cultivator:getSprayerFillUnitIndex()
 		if not self.cultivator:getIsSprayerExternallyFilled() and self.cultivator:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
+			self:debug("Stopped Cp, as the fertilizer is empty.")
 			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 			maxSpeed = 0
 		end
