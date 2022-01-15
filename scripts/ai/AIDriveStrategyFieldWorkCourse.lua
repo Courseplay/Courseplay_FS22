@@ -184,24 +184,23 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
-    if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler) then
-        local balerController = BalerController(vehicle)
-        balerController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        table.insert(self.controllers, balerController)
+    local function addController(class,spec,states)
+        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then 
+            local controller = class(vehicle)
+            controller:setDisabledStates(states)
+            table.insert(self.controllers, controller)
+        end
     end
-    if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
-        local baleWrapperController = BaleWrapperController(vehicle)
-        baleWrapperController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        table.insert(self.controllers, baleWrapperController)
-    end
+    local defaultDisabledStates = {
+        self.states.ON_CONNECTING_TRACK,
+        self.states.TEMPORARY,
+        self.states.TURNING
+    }
+    addController(BalerController,Baler,defaultDisabledStates)
+    addController(BaleWrapperController,BaleWrapper,defaultDisabledStates)
+    
+    addController(FertilizingSowingMachineController,FertilizingSowingMachine,defaultDisabledStates)
+    addController(FertilizingCultivatorController,FertilizingCultivator,defaultDisabledStates)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()

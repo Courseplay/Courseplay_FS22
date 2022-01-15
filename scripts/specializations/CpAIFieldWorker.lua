@@ -23,6 +23,12 @@ function CpAIFieldWorker.register(typeManager,typeName,specializations)
 	end
 end
 
+function CpAIFieldWorker.registerEvents(vehicleType)
+    SpecializationUtil.registerEvent(vehicleType, "onCpFinished")
+	SpecializationUtil.registerEvent(vehicleType, "onCpEmpty")
+    SpecializationUtil.registerEvent(vehicleType, "onCpFull")
+end
+
 function CpAIFieldWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIFieldWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIFieldWorker)
@@ -31,6 +37,10 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIFieldWorker)
+
+    SpecializationUtil.registerEventListener(vehicleType, "onCpEmpty", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpFinished", CpAIFieldWorker)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
@@ -172,6 +182,29 @@ end
 function CpAIFieldWorker:holdCpHarvesterTemporarily(periodMs)
     return self.spec_cpAIFieldWorker.combineDriveStrategy and
             self.spec_cpAIFieldWorker.combineDriveStrategy:hold(periodMs)
+end
+
+function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,...)
+    if self:getIsCpActive() then 
+        if message:isa(AIMessageErrorOutOfFill) then 
+            SpecializationUtil.raiseEvent(self,"onCpEmpty")
+        end
+    end
+    superFunc(message,...)
+end
+
+--- TODO: implement this event listeners correctly.
+
+function CpAIFieldWorker:onCpFull()
+  
+end
+
+function CpAIFieldWorker:onCpEmpty()
+  
+end
+
+function CpAIFieldWorker:onCpFinished()
+ 
 end
 
 --- Directly starts a cp driver or stops a currently active job.
