@@ -19,6 +19,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Where to start field work" />
 		<text name="CP_jobParameters_startAt_nearest"													text="nearest waypoint" />
 		<text name="CP_jobParameters_startAt_first"														text="first waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="unloading combine/chopper" />
 		<text name="CP_jobParameters_startAt_bales"														text="collecting/wrapping bales" />
 
@@ -30,6 +31,8 @@
 		<text name="CP_ai_page_generate_course" 														text="CP: Generate fieldwork course." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Open/close course generator." />
 
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Vehicle settings for (%s)"/>
 		

@@ -12,8 +12,8 @@ AIJobFieldWorkCp.translations = {
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
 	
-	self.fieldWorkTask = AITaskFieldworkCp.new(isServer, self)
-	-- Switches the AITaskFieldWork with AITaskFieldworkCp.
+	self.fieldWorkTask = AITaskFieldWorkCp.new(isServer, self)
+	-- Switches the AITaskFieldWork with AITaskFieldWorkCp.
 	-- TODO: Consider deriving AIJobFieldWorkCp of AIJob and implement our own logic instead.
 	local ix
 	for i,task in pairs(self.tasks) do 
@@ -64,10 +64,13 @@ function AIJobFieldWorkCp:validate(farmId)
 		self.hasValidPosition = false
 		return false, g_i18n:getText("CP_error_not_on_field")
 	end
-
 	local vehicle = self.vehicleParameter:getVehicle()
-	if vehicle and not vehicle:hasCpCourse() then
-		return false, g_i18n:getText("CP_error_no_course")
+	if vehicle then 
+		if not vehicle:getCanStartCpBaleFinder(self.cpJobParameters) then 
+			if not vehicle:hasCpCourse() then 
+				return false, g_i18n:getText("CP_error_no_course")
+			end
+		end
 	end
 	return true, ''
 end
@@ -134,13 +137,13 @@ end
 --- Currently repairs all AI drivers.
 function AIJobFieldWorkCp:onUpdateTickWearable(...)
 	if self:getIsAIActive() and self:getUsageCausesDamage() then 
-	--	if self.rootVehicle then-- and self.rootVehicle.getJob and self.rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+		if self.rootVehicle and self.rootVehicle.getIsCpActive and self.rootVehicle:getIsCpActive() then 
 			local dx =  g_Courseplay.globalSettings:getSettings().autoRepair:getValue()
 			local repairStatus = (1 - self:getDamageAmount())*100
 			if repairStatus < dx then 
 				self:repairVehicle()
 			end		
-	--	end
+		end
 	end
 end
 Wearable.onUpdateTick = Utils.appendedFunction(Wearable.onUpdateTick, AIJobFieldWorkCp.onUpdateTickWearable)
@@ -158,21 +161,4 @@ AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapDa
 
 function AIJobFieldWorkCp:getIsAvailableForVehicle(vehicle)
 	return vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork()
-end
-
---- Copy the cp job parameter values form the mini gui into the in game menu job on opening of the job for the first time.
-function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
-	AIJobFieldWorkCp:superClass().applyCurrentState(self,vehicle, mission, farmId, isDirectStart)
-	if not isDirectStart then 
-		CpSettingsUtil.copySettingsValues(self.cpJobParameters,vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters())
-	end
-end
-
---- Applies the cp job parameter on change to the vehicle intern job parameters.
-function AIJobFieldWorkCp:onParameterValueChanged()
-	AIJobFieldWorkCp:superClass().onParameterValueChanged(self)
-	local vehicle = self.vehicleParameter:getVehicle()
-	if vehicle and self ~= vehicle.spec_cpAIFieldWorker.cpJob then 
-		CpSettingsUtil.copySettingsValues(vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters(),self.cpJobParameters)
-	end
 end

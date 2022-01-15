@@ -379,7 +379,7 @@ function AIDriveStrategyFindBales:checkFillLevel()
     if self.baleLoader then
         if self.fillLevelManager:getTotalFillLevelPercentage(self.baleLoader) > 99 then
             self:info('Bale loader is full, stopping job.')
-            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         end
     end
 end

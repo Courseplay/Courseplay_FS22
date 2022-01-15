@@ -20,6 +20,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="С какого момента начать работу." />
 		<text name="CP_jobParameters_startAt_nearest"													text="ближайшей точки" />
 		<text name="CP_jobParameters_startAt_first"														text="начальной точки" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="разгрузки комбайна уборочного/силосного" />
 		<text name="CP_jobParameters_startAt_bales"														text="сбора/обмотки тюков" />
 
@@ -30,6 +31,9 @@
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Сгенерировать курс" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Откр/закр. генератор курсов" />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Настройки техники CoursePlay"/>

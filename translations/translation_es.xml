@@ -19,6 +19,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Dónde comenzar el trabajo de campo" />
 		<text name="CP_jobParameters_startAt_nearest"													text="Punto más cercano" />
 		<text name="CP_jobParameters_startAt_first"														text="Primer punto" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="Descargando Cosechadora/Picadora" />
 		<text name="CP_jobParameters_startAt_bales"														text="Recogiendo/Envolviendo fardos" />
 
@@ -28,6 +29,9 @@
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Crear curso de trabajo de campo." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Abrir/cerrar generador de rutas." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuración del vehículo (%s)"/>

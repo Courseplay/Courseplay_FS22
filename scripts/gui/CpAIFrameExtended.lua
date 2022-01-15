@@ -114,8 +114,8 @@ end
 
 function CpInGameMenuAIFrameExtended:getCanStartJob(superFunc,...)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	if vehicle and self.currentJob and self.currentJob:isa(AIJobFieldWorkCp) then
-		return self.currentJob:getCanStartJob() and superFunc(self,...)
+	if vehicle and vehicle.getIsCpActive and vehicle:getIsCpActive() then
+		return self.currentJob and self.currentJob:getCanStartJob() and superFunc(self,...)
 	end 
 	return superFunc(self,...)
 end

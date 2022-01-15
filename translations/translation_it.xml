@@ -18,16 +18,20 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Da dove iniziare il lavoro sul campo" />
 		<text name="CP_jobParameters_startAt_nearest"													text="Primo punto più vicino" />
 		<text name="CP_jobParameters_startAt_first"														text="Primo punto - inizio" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="scarico mietitrebbia/trincia" />
 		<text name="CP_jobParameters_startAt_bales"														text="raccogliere/avvolgere balle" />
 		
 		<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="Courseplay" />
 		<text name="CP_job_baleCollect"																	text="CP: Raccogli/Avvolgi balle" />
-	<!--Generate course button-->
+		<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="[Courseplay] Genera percorso di lavoro" />
 		<text name="CP_ai_page_open_course_generator" 													text="[Courseplay] Apri/Chiudi menù" />
-		
+
+		<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+
 		<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Impostazioni del veicolo (%s)"/>
 		

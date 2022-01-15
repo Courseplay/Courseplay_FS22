@@ -1,16 +1,16 @@
-AITaskFieldworkCp = {}
-local AITaskFieldworkCp_mt = Class(AITaskFieldworkCp, AITaskFieldWork)
+AITaskFieldWorkCp = {}
+local AITaskFieldWorkCp_mt = Class(AITaskFieldWorkCp, AITaskFieldWork)
 
-function AITaskFieldworkCp.new(isServer, job, customMt)
-	local self = AITaskFieldWork.new(isServer, job, customMt or AITaskFieldworkCp_mt)
+function AITaskFieldWorkCp.new(isServer, job, customMt)
+	local self = AITaskFieldWork.new(isServer, job, customMt or AITaskFieldWorkCp_mt)
 
 	return self
 end
 
 --- Makes sure Cp driver gets started.
-function AITaskFieldworkCp:start()
+function AITaskFieldWorkCp:start()
 	if self.isServer then
-		self.vehicle:cpStartFieldworker()
+		self.vehicle:cpStartFieldWorker(self.job:getCpJobParameters())
 	end
 	AITask.start(self)
 end

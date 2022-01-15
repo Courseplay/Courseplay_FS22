@@ -11,14 +11,16 @@
 			<Values>
 				<Value name="START_AT_NEAREST_POINT">1</Value>
 				<Value name="START_AT_FIRST_POINT">2</Value>
-				<Value name="START_FINDING_BALES">3</Value>
+				<Value name="START_AT_LAST_POINT">3</Value>
+				<Value name="START_FINDING_BALES">4</Value>
 				<!-- Value name="START_WITH_UNLOAD">4</Value-->
 			</Values>
 			<Texts>
 				<Text>nearest</Text>
 				<Text>first</Text>
+				<Text>last</Text>
 				<Text>bales</Text>
-<!--
+<!--			
 				<Text>unload</Text>
 -->
 			</Texts>

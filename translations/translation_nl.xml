@@ -20,6 +20,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Waar te beginnen met veldwerk" />
 		<text name="CP_jobParameters_startAt_nearest"													text="dichtsbijzijnde tussenpunt" />
 		<text name="CP_jobParameters_startAt_first"														text="eerste tussenpunt" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="maaidorser/hakselaar lossen" />
 		<text name="CP_jobParameters_startAt_bales"														text="balen verzamelen/verpakken" />
 
@@ -30,6 +31,9 @@
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Veldwerk baan genereren." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Koersgenerator openen/sluiten." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Voertuiginstellingen voor (%s)"/>
