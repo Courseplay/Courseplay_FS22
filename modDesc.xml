@@ -93,6 +93,8 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>

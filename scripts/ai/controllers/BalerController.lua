@@ -33,7 +33,7 @@ function BalerController:init(vehicle)
     self:debug('Baler controller initialized')
 end
 
-function BalerController:update()
+function BalerController:getDriveData()
     local maxSpeed = self:handleBaler()
     return nil, nil, nil, maxSpeed
 end

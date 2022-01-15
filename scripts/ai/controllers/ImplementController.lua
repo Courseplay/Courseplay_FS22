@@ -46,6 +46,10 @@ end
 ---@return number gz world z coordinate to drive to or nil
 ---@return boolean direction is forwards if true or nil
 ---@return number maximum speed or nil
-function ImplementController:update()
+function ImplementController:getDriveData()
     return nil, nil, nil, nil
+end
+
+function ImplementController:update(dt)
+    
 end
