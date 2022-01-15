@@ -146,11 +146,13 @@ end
 Pickup.registerEventListeners = Utils.appendedFunction(Pickup.registerEventListeners, registerPickupListeners)
 
 
---- Folds the implement at the end.
+--- Folds the implement at the end, if the setting is true.
 local function fold(implement,superFunc,...)
     if superFunc ~= nil then superFunc(implement,...) end
     if implement.rootVehicle and implement.rootVehicle:getIsCpActive() then
-        implement:setFoldState(-1, false)
+        if implement.rootVehicle:getCpSettings().foldImplementAtEnd:getValue() then
+            implement:setFoldState(1)
+        end
     end
 end
 Foldable.onAIFieldWorkerEnd = Utils.overwrittenFunction(Foldable.onAIFieldWorkerEnd,fold)

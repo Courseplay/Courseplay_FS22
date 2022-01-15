@@ -208,10 +208,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     addController(SprayerController,Sprayer,defaultDisabledStates)
     addController(TreePlanterController,TreePlanter,defaultDisabledStates)
 
-    addController(PickupController,Pickup,defaultDisabledStates)
     addController(ForageWagonController,ForageWagon,defaultDisabledStates)
-
-    addController(VariableWorkWidthController,VariableWorkWidth,defaultDisabledStates)
     --[[
         TODO: Figure out if implement controllers for these are needed 
               and thing about the edge case, that maybe more the one implement attached has the needed spec.
