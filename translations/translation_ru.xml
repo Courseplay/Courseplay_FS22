@@ -2,258 +2,258 @@
 <l10n>
 	<texts>
 
-		<text name="CP_activated" 														text="активно" />
-		<text name="CP_deactivated" 													text="неактивно" />
-		<text name="CP_unit_meter" 														text="м" />
-		<text name="CP_unit_foot" 														text="ft" />
+		<text name="CP_activated" 																		text="активно" />
+		<text name="CP_deactivated" 																	text="неактивно" />
+		<text name="CP_unit_meter" 																		text="м" />
+		<text name="CP_unit_foot" 																		text="ft" />
 
 		<!-- User info text -->
-		<text name="CP_infoText"														text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"													text="Создайте курс до начала работы." />
-		<text name="CP_error_could_not_generate_course"									text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация." />
-		<text name="CP_error_not_on_field"												text="Цель не на поле." />
+		<text name="CP_infoText"																		text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />
+		<text name="CP_error_no_course"																	text="Создайте курс до начала работы." />
+		<text name="CP_error_could_not_generate_course"													text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация." />
+		<text name="CP_error_not_on_field"																text="Цель не на поле." />
 
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_subTitle_startAt"									text="Начать с:" />
-		<text name="CP_jobParameters_startAt_title"										text="Начать с:" />
-		<text name="CP_jobParameters_startAt_tooltip"									text="С какого момента начать работу." />
-		<text name="CP_jobParameters_startAt_nearest"									text="ближайшей точки" />
-		<text name="CP_jobParameters_startAt_first"										text="начальной точки" />
-		<text name="CP_jobParameters_startAt_unload"									text="разгрузки комбайна уборочного/силосного" />
-		<text name="CP_jobParameters_startAt_bales"										text="сбора/обмотки тюков" />
+		<text name="CP_jobParameters_subTitle_startAt"													text="Начать с:" />
+		<text name="CP_jobParameters_startAt_title"														text="Начать с:" />
+		<text name="CP_jobParameters_startAt_tooltip"													text="С какого момента начать работу." />
+		<text name="CP_jobParameters_startAt_nearest"													text="ближайшей точки" />
+		<text name="CP_jobParameters_startAt_first"														text="начальной точки" />
+		<text name="CP_jobParameters_startAt_unload"													text="разгрузки комбайна уборочного/силосного" />
+		<text name="CP_jobParameters_startAt_bales"														text="сбора/обмотки тюков" />
 
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"													text="CP: Работа в поле" />
-		<text name="CP_job_baleCollect"													text="CP: Сбор/обмотка тюков" />
+		<text name="CP_job_fieldWork"																	text="CP: Работа в поле" />
+		<text name="CP_job_baleCollect"																	text="CP: Сбор/обмотка тюков" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 										text="CP: Сгенерировать курс" />
-		<text name="CP_ai_page_open_course_generator" 									text="CP: Откр/закр. генератор курсов" />
+		<text name="CP_ai_page_generate_course" 														text="CP: Сгенерировать курс" />
+		<text name="CP_ai_page_open_course_generator" 													text="CP: Откр/закр. генератор курсов" />
 
 	<!-- VehicleSettings -->
-		<text name="CP_vehicle_setting_title"											text="Настройки техники CoursePlay"/>
+		<text name="CP_vehicle_setting_title"															text="Настройки техники CoursePlay"/>
 		
 		<!--Titel-->
-		<text name="CP_vehicle_setting_subTitle_basic"									text="Основные настройки"/>
-		<text name="CP_vehicle_setting_subTitle_implement"								text="Настройки инструментов"/>
-		<text name="CP_vehicle_setting_subTitle_combine"								text="Настройки комбайна"/>
-		<text name="CP_vehicle_setting_subTitle_seeder"									text="Настройки сеялки"/>
-		<text name="CP_vehicle_setting_subTitle_multitool"								text="Настройки совместной работы агрегатов"/> <!-- орудий -->
-		<text name="CP_vehicle_setting_subTitle_speed" 									text="Скорость"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 									text="Настройки отладки"/>
+		<text name="CP_vehicle_setting_subTitle_basic"													text="Основные настройки"/>
+		<text name="CP_vehicle_setting_subTitle_implement"												text="Настройки инструментов"/>
+		<text name="CP_vehicle_setting_subTitle_combine"												text="Настройки комбайна"/>
+		<text name="CP_vehicle_setting_subTitle_seeder"													text="Настройки сеялки"/>
+		<text name="CP_vehicle_setting_subTitle_multitool"												text="Настройки совместной работы агрегатов"/> <!-- орудий -->
+		<text name="CP_vehicle_setting_subTitle_speed" 													text="Скорость"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Настройки отладки"/>
 		<!--Settings-->
-		<text name="CP_vehicle_setting_showCourse_title" 								text="Отображать курс"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 								text="Отображение путевых точек текущего курса."/>
+		<text name="CP_vehicle_setting_showCourse_title" 												text="Отображать курс"/>
+		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Отображение путевых точек текущего курса."/>
 
-		<text name="CP_vehicle_setting_showCourse_startStop" 							text="только начало/конец"/>
-		<text name="CP_vehicle_setting_showCourse_all" 									text="все путевые точки"/>
+		<text name="CP_vehicle_setting_showCourse_startStop" 											text="только начало/конец"/>
+		<text name="CP_vehicle_setting_showCourse_all" 													text="все путевые точки"/>
 
-		<text name="CP_vehicle_setting_stopAtEnd_title" 								text="Остановить в конце"/>
-		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 								text="Остановить по окончании работы на маршруте."/>
+		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Остановить в конце"/>
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Остановить по окончании работы на маршруте."/>
 
-		<text name="CP_vehicle_setting_allowReversePathfinding_title" 					text="Разрешить реверс для поиска пути"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 				text="Если возможно, разрешить поисковику пути генерировать курсы, содержащие движение задним ходом."/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Разрешить реверс для поиска пути"/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Если возможно, разрешить поисковику пути генерировать курсы, содержащие движение задним ходом."/>
 
-		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 						text="Сложить инструмент в конце курса"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 						text="Включает / отключает автоматическое складывание орудий в конце курса."/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Сложить инструмент в конце курса"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Включает / отключает автоматическое складывание орудий в конце курса."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 						text="Поднимать инструмент"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 						text="Поднять инструмент на разворотной полосе заранее или с опозданием."/>
-		<text name="CP_vehicle_setting_raiseImplementLate_early" 						text="заранее"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_late" 						text="с опозданием"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Поднимать инструмент"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Поднять инструмент на разворотной полосе заранее или с опозданием."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="заранее"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="с опозданием"/>
 
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 						text="Опускать инструмент"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 					text="Опустить инструмент на разворотной полосе заранее или с опозданием."/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_early" 						text="заранее"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_late" 						text="с опозданием"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Опускать инструмент"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Опустить инструмент на разворотной полосе заранее или с опозданием."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="заранее"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="с опозданием"/>
 
-		<text name="CP_vehicle_setting_turnOnField_title" 								text="Разворот в пределах поля"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 							text="Разворот в пределах поля. Доступно не со всеми инструментами."/>
+		<text name="CP_vehicle_setting_turnOnField_title" 												text="Разворот в пределах поля"/>
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Разворот в пределах поля. Доступно не со всеми инструментами."/>
 
-		<text name="CP_vehicle_setting_avoidFruit_title" 								text="Избегать посевов"/>
-		<text name="CP_vehicle_setting_avoidFruit_tooltip" 								text="ИИ будет стараться не ехать по посевам."/>
+		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Избегать посевов"/>
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" 												text="ИИ будет стараться не ехать по посевам."/>
 
-		<text name="CP_vehicle_setting_toolOffsetX_title" 								text="Поперечное смещение инструмента"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 							text="Поперечное смещение инструмента."/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Поперечное смещение инструмента"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Поперечное смещение инструмента."/>
 
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 								text="Продольное смещение инструмента"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 							text="Продольное смещение инструмента."/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Продольное смещение инструмента"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Продольное смещение инструмента."/>
 
-		<text name="CP_vehicle_setting_turnDiameter_title" 								text="Диаметр круга поворота"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 							text="Диаметр круга поворота."/>
+		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Диаметр круга поворота"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Диаметр круга поворота."/>
 	
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 							text="Всегда разворачивать трубу"/>
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 						text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Всегда разворачивать трубу"/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>
 
-		<text name="CP_vehicle_setting_stopForUnload_title" 							text="Стоять при разгрузке"/>
-		<text name="CP_vehicle_setting_stopForUnload_tooltip" 							text="Всегда прекращать движение при разгрузке."/>
+		<text name="CP_vehicle_setting_stopForUnload_title" 											text="Стоять при разгрузке"/>
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Всегда прекращать движение при разгрузке."/>
 
-		<text name="CP_vehicle_setting_selfUnload_title" 								text="Саморазгрузка комбайна"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 								text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки."/>
+		<text name="CP_vehicle_setting_selfUnload_title" 												text="Саморазгрузка комбайна"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 												text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки."/>
 
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 					text="Разгрузка на первой поворотной полосе"/>
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 					text="Комбайн вызовет разгрузчик на первой поворотной полосе."/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Разгрузка на первой поворотной полосе"/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 									text="Комбайн вызовет разгрузчик на первой поворотной полосе."/>
 
-		<text name="CP_vehicle_setting_strawSwath_title" 								text="Валкование соломы"/>
-		<text name="CP_vehicle_setting_strawSwath_tooltip" 								text="Включает / отключает валок соломы или отключает его только на поворотной полосе."/>
-		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 							text="откл. на поворотной полосе"/>
+		<text name="CP_vehicle_setting_strawSwath_title" 												text="Валкование соломы"/>
+		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="Включает / отключает валок соломы или отключает его только на поворотной полосе."/>
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="откл. на поворотной полосе"/>
 
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 					text="Маркер"/>
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 					text="Маркер вкл/выкл"/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="Маркер"/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="Маркер вкл/выкл"/>
 
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 			text="Удобрение сеялкой"/>
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 			text="Включает / отключает использование удобрений сеялками."/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Удобрение сеялкой"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Включает / отключает использование удобрений сеялками."/>
 
-		<text name="CP_vehicle_setting_symmetricLaneChange_title" 						text="Симметричная смена полосы движения"/>
-		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 					text="Симметричная смена полосы движения"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Симметричная смена полосы движения"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Симметричная смена полосы движения"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 								text="Несколько орудий на этом курсе"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 							text="Разрешить работать нескольким одинаковым орудиям по одному курсу."/>
+		<text name="CP_vehicle_setting_convoyActive_title" 												text="Несколько орудий на этом курсе"/>
+		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Разрешить работать нескольким одинаковым орудиям по одному курсу."/>
 
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 						text="Мин. дистанция до предыдущего"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 						text="Минимальная дистанция до предыдущего при совместной работе."/>
+		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Мин. дистанция до предыдущего"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Минимальная дистанция до предыдущего при совместной работе."/>
 		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 						text="Макс. дистанция до предыдущего"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 						text="Максимальная дистанция до предыдущего при совместной работе."/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Макс. дистанция до предыдущего"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Максимальная дистанция до предыдущего при совместной работе."/>
 
-		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 							text="Полевые работы"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 							text="Максимальная скорость при работе на поле"/>
-		<text name="CP_vehicle_setting_fieldSpeed_title" 								text="Поле"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 								text="Максимальная скорость при движении по полю"/>
-		<text name="CP_vehicle_setting_turnSpeed_title" 								text="Поворот"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 								text="Максимальная скорость при поворотах"/>
-		<text name="CP_vehicle_setting_reverseSpeed_title" 								text="Задний ход"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 							text="Максимальная скорость при движении задним ходом."/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Полевые работы"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле"/>
+		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Поле"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Максимальная скорость при движении по полю"/>
+		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Поворот"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Максимальная скорость при поворотах"/>
+		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Задний ход"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Максимальная скорость при движении задним ходом."/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 								text="Отладка техники"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 							text="Вкл/выкл отладку текущей техники."/>
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Отладка техники"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Вкл/выкл отладку текущей техники."/>
 
 
 	<!-- Vehicle course generator settings -->
-		<text name="CP_vehicle_courseGeneratorSetting_title"							text="Настройки генератора курсов (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"					text="Настройки генератора курсов (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Настройки генератора курсов (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Настройки генератора курсов (%s)"/>
 		
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"					text="Рабочая ширина" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"				text="Рабочая ширина орудия." />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Рабочая ширина" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Рабочая ширина орудия." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"			text="Количество поворотных полос" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"		text="Количество поворотных полос." />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Количество поворотных полос" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Количество поворотных полос." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"		text="Перекрытие поворотных полос" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"	text="Перекрытие проходов поворотных полос в процентах от рабочей ширины." />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Перекрытие поворотных полос" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Перекрытие проходов поворотных полос в процентах от рабочей ширины." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"				text="Сдвиг границ поля" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"				text="Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны, отрицательные - увеличивают рабочее пространство за пределы поля." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Сдвиг границ поля" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны, отрицательные - увеличивают рабочее пространство за пределы поля." />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"					text="Пропускать проходов" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"				text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе." />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"				text="Проходов в загоне" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"				text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Пропускать проходов" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Проходов в загоне" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"				text="Направление поворотной полосы" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"				text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе." />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 			text="по часовой стрелке" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise"		text="против часовой стрелки" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Направление поворотной полосы" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе." />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="по часовой стрелке" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise"						text="против часовой стрелки" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"					text="Метод движения" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"				text="Метод движения агрегата по полю." />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 				text="челночный" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 				text="круговой" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 				text="всвал/вразвал" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 				text="загонами" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Метод движения" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Метод движения агрегата по полю." />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="челночный" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="круговой" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="всвал/вразвал" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="загонами" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"			text="Углы поворотной полосы" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"		text="Каким образом техника будет проходить углы поворотной полосы." />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 		text="сглаженные" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 		text="острые" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 		text="скруглённые" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Углы поворотной полосы" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Каким образом техника будет проходить углы поворотной полосы." />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="сглаженные" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="острые" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="скруглённые" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"				text="Направление старта" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"				text="Направление первого прохода." />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 			text="автоматическое" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 		text="длинная сторона" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Направление старта" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Направление первого прохода." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="автоматическое" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="длинная сторона" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="вручную" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Угол челночных проходов" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Угол проходов в челночном режиме (0 это север) при указании направления вручную." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Обход островков" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Как курс должен обходить островки на поле." />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="без обхода" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="простой" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="по кругу" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"			text="Начать работу с" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"			text="С какой части курса начать работу." />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland"		text="поворотной полосы" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows"		text="основного маршрута" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Начать работу с" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="С какой части курса начать работу." />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland"						text="поворотной полосы" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows"						text="основного маршрута" />
 
 
 	<!-- GlobalSettings -->
-		<text name="CP_global_setting_title"											text="Глобальные настройки CoursePlay"/>
-		<text name="CP_global_setting_subTitle_general"									text="Основные настройки"/>
+		<text name="CP_global_setting_title"															text="Глобальные настройки CoursePlay"/>
+		<text name="CP_global_setting_subTitle_general"													text="Основные настройки"/>
 
-		<text name="CP_global_setting_wageModifier_title" 								text="Заработная плата работника"/>
-		<text name="CP_global_setting_wageModifier_tooltip" 							text="Заработная плата работника CoursePlay в процентах от заработной платы обычного рабочего."/>
+		<text name="CP_global_setting_wageModifier_title" 												text="Заработная плата работника"/>
+		<text name="CP_global_setting_wageModifier_tooltip" 											text="Заработная плата работника CoursePlay в процентах от заработной платы обычного рабочего."/>
 
-		<text name="CP_global_setting_autoRepair_title" 								text="Автоматический ремонт"/>
-		<text name="CP_global_setting_autoRepair_tooltip" 								text="Водитель CP автоматически ремонтирует технику, во время работы."/>
-		<text name="CP_global_setting_autoRepair_off" 									text="не ремонтировать"/>
-		<text name="CP_global_setting_autoRepair_less_than_25" 							text="&lt; 25%"/>
-		<text name="CP_global_setting_autoRepair_less_than_70" 							text="&lt; 70%"/>
-		<text name="CP_global_setting_autoRepair_always" 								text="поддерживать в рабочем состоянии"/>
+		<text name="CP_global_setting_autoRepair_title" 												text="Автоматический ремонт"/>
+		<text name="CP_global_setting_autoRepair_tooltip" 												text="Водитель CP автоматически ремонтирует технику, во время работы."/>
+		<text name="CP_global_setting_autoRepair_off" 													text="не ремонтировать"/>
+		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
+		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
+		<text name="CP_global_setting_autoRepair_always" 												text="поддерживать в рабочем состоянии"/>
 		
-		<text name="CP_global_setting_subTitle_pathfinder"								text="Настройки поиска пути"/>
+		<text name="CP_global_setting_subTitle_pathfinder"												text="Настройки поиска пути"/>
 
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 						text="Разница углов у цели"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 						text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Разница углов у цели"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
 
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 						text="Фактор угла сглаживания"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 					text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Фактор угла сглаживания"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
 
-		<text name="CP_global_setting_showsAllActiveCourses_title" 						text="Показать все активные курсы"/>
-		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 					text="Показать все активные курсы на игровой карте."/>
+		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Показать все активные курсы"/>
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Показать все активные курсы на игровой карте."/>
 
 	<!-- CourseManager -->
 
-		<text name="CP_courseManager_title"												text="Управление курсами (%s) %s"/>
-		<text name="CP_courseManager_no_current_course"									text="нет курса"/>
-		<text name="CP_courseManager_temporary_course"									text="временный курс"/>
+		<text name="CP_courseManager_title"																text="Управление курсами (%s) %s"/>
+		<text name="CP_courseManager_no_current_course"													text="нет курса"/>
+		<text name="CP_courseManager_temporary_course"													text="временный курс"/>
 
-		<text name="CP_courseManager_change_mode"										text="Изменить режим"/>
+		<text name="CP_courseManager_change_mode"														text="Изменить режим"/>
 
-		<text name="CP_courseManager_load_courses"										text="Загрузить курс"/>
-		<text name="CP_courseManager_save_courses"										text="Сохранить курс"/>
-		<text name="CP_courseManager_clear_current_courses"								text="Очистить текущий курс"/>
+		<text name="CP_courseManager_load_courses"														text="Загрузить курс"/>
+		<text name="CP_courseManager_save_courses"														text="Сохранить курс"/>
+		<text name="CP_courseManager_clear_current_courses"												text="Очистить текущий курс"/>
 	
-		<text name="CP_courseManager_create_directory"									text="Создать новую папку"/>
+		<text name="CP_courseManager_create_directory"													text="Создать новую папку"/>
 		
-		<text name="CP_courseManager_move_entry"										text="Переместить запись"/>
-		<text name="CP_courseManager_delete_entry"										text="Удалить запись"/>
-		<text name="CP_courseManager_rename_entry"										text="Переименовать запись"/>
-		<text name="CP_courseManager_copy_entry"										text="Копировать запись"/>
+		<text name="CP_courseManager_move_entry"														text="Переместить запись"/>
+		<text name="CP_courseManager_delete_entry"														text="Удалить запись"/>
+		<text name="CP_courseManager_rename_entry"														text="Переименовать запись"/>
+		<text name="CP_courseManager_copy_entry"														text="Копировать запись"/>
 
-		<text name="CP_courseManager_folder_dialog"										text="Название папки:"/>
-		<text name="CP_courseManager_course_dialog"										text="Название курса:"/>
+		<text name="CP_courseManager_folder_dialog"														text="Название папки:"/>
+		<text name="CP_courseManager_course_dialog"														text="Название курса:"/>
 		
-		<text name="CP_courseManager_deleteWarning"										text="Вы уверены, что хотите удалить (%s)?"/>
+		<text name="CP_courseManager_deleteWarning"														text="Вы уверены, что хотите удалить (%s)?"/>
 
-		<text name="CP_courseManager_deleteError"										text="Папка не пуста (%s)!"/>
-		<text name="CP_courseManager_entryExistAlreadyError"							text="Файл уже существует в целевой папке (%s)!"/>
-		<text name="CP_courseManager_noAccessError"										text="Нет доступа к папке (%s)!"/>
-		<text name="CP_courseManager_targetIsNoFolderError"								text="Выбранный пункт не является папкой (%s)!"/>
-		<text name="CP_courseManager_targetIsNoCourseError"								text="Выбранный пункт - это не курс (%s)!"/>
+		<text name="CP_courseManager_deleteError"														text="Папка не пуста (%s)!"/>
+		<text name="CP_courseManager_entryExistAlreadyError"											text="Файл уже существует в целевой папке (%s)!"/>
+		<text name="CP_courseManager_noAccessError"														text="Нет доступа к папке (%s)!"/>
+		<text name="CP_courseManager_targetIsNoFolderError"												text="Выбранный пункт не является папкой (%s)!"/>
+		<text name="CP_courseManager_targetIsNoCourseError"												text="Выбранный пункт - это не курс (%s)!"/>
 	
-		<text name="CP_courseManager_basicSettings"										text="Управление курсами."/>
-		<text name="CP_courseManager_advancedSettings"									text="Управление файлами."/>
+		<text name="CP_courseManager_basicSettings"														text="Управление курсами."/>
+		<text name="CP_courseManager_advancedSettings"													text="Управление файлами."/>
 
-		<text name="CP_courseManager_activate"											text="Активировать"/>
+		<text name="CP_courseManager_activate"															text="Активировать"/>
 
 	<!-- In game help menu-->
-		<text name="CP_help_title"														text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"									text="Управление курсами"/>
-		<text name="CP_help_page_courseManager_text"									text="Доступно 7 различных действий:
+		<text name="CP_help_title"																		text="Courseplay"/>
+		<text name="CP_help_page_courseManager_title"													text="Управление курсами"/>
+		<text name="CP_help_page_courseManager_text"													text="Доступно 7 различных действий:
 - Создание новой папки.
 - Очистка текущего курса автомобиля.
 - Сохранение текущего курса.
@@ -263,10 +263,10 @@
 - Переименование курса или папки."/>
 
 		<!-- Input bindings -->
-		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 								text="CP: Выбрать следующий канал отладки."/>
-		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 									text="CP: Выбрать предыдущий канал отладки."/>
-		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"								text="CP: Изменить текущий канал отладки."/>
-		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 								text="CP: Показать меню отладки канала да/нет."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 						text="CP: Открыть mini GUI"/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Выбрать следующий канал отладки."/>
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Выбрать предыдущий канал отладки."/>
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Изменить текущий канал отладки."/>
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Показать меню отладки канала да/нет."/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Открыть mini GUI"/>
 	</texts>
 </l10n>
