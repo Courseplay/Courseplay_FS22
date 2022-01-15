@@ -168,16 +168,16 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Direzione inizio riga" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatico" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Lato più lungo" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuale" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Orientamento angolo della riga su/giù" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Regola l&#39;angolo in gradi delle righe su/giù (0° è il nord) in modalità manuale" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestione dell&#39;isola" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportamento del percorso quando ci sono isole nel campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="Nessun evitamento" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="Semplice" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Cerchio" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Inizia a lavorare da" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Inizia a lavorare da" />
@@ -188,7 +188,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Specifica cosa fare a fine lavoro"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Torna al primo punto e licenzia autista"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Torna all'inizio e licenzia autista"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Torna all&#39;inizio e licenzia autista"/>
 		
 		<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Impostazioni Courseplay"/>
@@ -207,7 +207,7 @@
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Differenza angolare obiettivo"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Differenza angolare massima consentita dall'obiettivo. I valori più grandi sono più veloci ma meno precisi"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Differenza angolare massima consentita dall&#39;obiettivo. I valori più grandi sono più veloci ma meno precisi"/>
 		
 		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Precisione angolo delta"/>
 		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Fattore di diminuzione della precisione di ricerca percorsi con iterazioni non riuscite. I valori più grandi sono più veloci"/>
