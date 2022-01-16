@@ -20,7 +20,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Ustala gdzie zacząć pracę polową." />
 		<text name="CP_jobParameters_startAt_nearest"													text="Najbliższego punkt trasy" />
 		<text name="CP_jobParameters_startAt_first"														text="Pierwszego punkt trasy" />
-		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="Ostatni punkt trasy" />
 		<text name="CP_jobParameters_startAt_unload"													text="Rozładunku kombajnu/sieczkarni" />
 		<text name="CP_jobParameters_startAt_bales"														text="Zbierania/Owijania bel" />
 
@@ -33,7 +33,7 @@
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Otwórz/Zamknij generator kursu." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Pracownik SI %s niespodziewanie przerwał pracę - zbiornik jest pełny!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Ustawienia pojazdu dla (%s)"/>
@@ -147,8 +147,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Nakładka na uwrociach" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Nakładanie się ścieżki na uwrociach jako procent szerokości roboczej." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Granica pola" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru, a ujemne powiększają obrabiany obszar poza granicę pola." />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rzędy do pominięcia" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem." />
