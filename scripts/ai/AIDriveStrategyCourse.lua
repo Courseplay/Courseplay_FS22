@@ -97,7 +97,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle,jobParameters)
     self:setAllStaticParameters()
 
     -- TODO: this may or may not be the course we need for the strategy
-    local course = vehicle:getFieldWorkCourse()
+    local course = self:getGeneratedCourse(jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
         
@@ -109,6 +109,10 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle,jobParameters)
         self:debug('Vehicle has no course, start work without it.')
         self:startWithoutCourse()
     end
+end
+
+function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
+    return self.vehicle:getFieldWorkCourse()
 end
 
 function AIDriveStrategyCourse:getStartingPointWaypointIx(course,startAt)

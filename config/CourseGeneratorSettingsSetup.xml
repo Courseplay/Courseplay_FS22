@@ -8,7 +8,7 @@
 
 <Settings prefixText="CP_vehicle_courseGeneratorSetting_">
 	<SettingSubTitle title="basic">
-		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidth"/>
 		<Setting classType="AIParameterSettingList" name="centerMode">
 			<Values>
 				<Value name="CENTER_MODE_UP_DOWN">1</Value> 
@@ -72,6 +72,7 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1"/>
 		<Setting classType="AIParameterSettingList" name="islandBypassMode">
 			<Values>
 				<Value name="ISLAND_BYPASS_MODE_CIRCLE">3</Value>

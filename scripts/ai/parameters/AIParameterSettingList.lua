@@ -9,17 +9,25 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.vehicle = vehicle
 	self.klass = class
 	self.name = data.name
+	--- We keep the config data, as we might need to fall back to it.
+	--- For example to reenable specific values after they were deactivated in self:refresh().  
 	self.data = data
-
+	self.textInputAllowed = data.textInputAllowed
 	if next(data.values) ~=nil then
-		self.values = data.values
-		self.texts = data.texts
+		self.values = table.copy(data.values)
+		self.texts = table.copy(data.texts)
 	else
-		self.values = {}
-		self.texts = {}
-		AIParameterSettingList.generateValues(self,self.values,self.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
+		self.data.values = {}
+		self.data.texts = {}
+		AIParameterSettingList.generateValues(self,self.data.values,self.data.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
+		self.values = table.copy(self.data.values)
+		if self.data.texts ~= nil then
+			self.texts = table.copy(self.data.texts)
+		end
+		data.textInputAllowed = true
 	end
-
+	self.textInputAllowed = data.textInputAllowed
+--	self:debug("textInputAllowed: %s",tostring(self.textInputAllowed))
 	self.title = data.title
 	self.tooltip = data.tooltip
 
@@ -29,8 +37,9 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.previous = 1
 
 	if self.texts == nil or next(self.texts) == nil then
-		self.texts = {}
-		AIParameterSettingList.enrichTexts(self,data.unit)
+		self.data.texts = {}
+		AIParameterSettingList.enrichTexts(self,self.data.texts,data.unit)
+		self.texts = table.copy(self.data.texts)
 	end
 
 	if data.default ~=nil then
@@ -43,14 +52,16 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	end
 
 	self.callbacks = data.callbacks
-
+	self.disabledValuesFuncs = data.disabledValuesFuncs
 
 	self.guiElementId = data.uniqueID
 
 	self.guiElement = nil
 
 	self.isDisabled = false
+	self.isVisible = true
 	self.setupDone = true
+
 	return self
 end
 
@@ -98,13 +109,13 @@ function AIParameterSettingList:generateValues(values,texts,min,max,inc,textStr,
 end
 
 --- Enriches texts with values of values, if they are not explicit declared. 
-function AIParameterSettingList:enrichTexts(unit)
+function AIParameterSettingList:enrichTexts(texts,unit)
 	for i,value in ipairs(self.values) do 
 		local text = tostring(value)
 		if unit then 
 			text = text..AIParameterSettingList.UNITS_TEXTS[unit](value)
 		end
-		self.texts[i] = text
+		texts[i] = text
 	end
 end
 
@@ -126,6 +137,7 @@ function AIParameterSettingList:setToIx(ix)
 		self.current = ix
 		self:onChange()
 		self:updateGuiElementValues()
+		self:validateCurrentValue()
 	end
 end
 
@@ -143,6 +155,30 @@ function AIParameterSettingList:onChange()
 	if self.setupDone then
 		self:raiseCallback(self.callbacks.onChangeCallbackStr)
 	end
+end
+
+function AIParameterSettingList:isValueDisabled(value)
+	local disabledFunc = self.disabledValuesFuncs and self.disabledValuesFuncs[value]
+	if disabledFunc ~= nil and self:hasCallback(disabledFunc) then 
+		if self:getCallback(disabledFunc) then 
+			self:debug("value %s is disabled",tostring(value))
+			return true
+		end 
+	end
+--	self:debug("value %s is valid",tostring(value))
+end
+
+--- Excludes deactivated values from the current values and texts tables.
+function AIParameterSettingList:refresh()
+	self.values = {}
+	self.texts = {}
+	for ix,v in ipairs(self.data.values) do 
+		if not self:isValueDisabled(v) then
+			table.insert(self.values,v)
+			table.insert(self.texts,self.data.texts[ix])
+		end	
+	end
+	self:validateCurrentValue()
 end
 
 function AIParameterSettingList:validateCurrentValue()
@@ -187,6 +223,11 @@ function AIParameterSettingList:writeStream(streamId, connection)
 	streamWriteInt32(streamId, self.current)
 end
 
+--- Sets the value.
+---@param self AIParameterSettingList
+---@param value number
+---@param comparisonFunc function
+---@return boolean value is not valid and could not be set.
 local function setValueInternal(self, value, comparisonFunc)
 	local new
 	-- find the value requested
@@ -197,16 +238,39 @@ local function setValueInternal(self, value, comparisonFunc)
 			return
 		end
 	end
+	return value ~= new
 end
 
+--- Sets a float value relative to the incremental.
+---@param value number
+---@return boolean value is not valid and could not be set.
 function AIParameterSettingList:setFloatValue(value)
-	setValueInternal(self, value, function(a, b)
+	return setValueInternal(self, value, function(a, b)
 		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
 end
 
---- Set to a specific value.
+--- Sets a value.
+---@param value number
+---@return boolean value is not valid and could not be set.
 function AIParameterSettingList:setValue(value)
-	setValueInternal(self, value, function(a, b)  return a == b end)
+	return setValueInternal(self, value, function(a, b)  return a == b end)
+end
+
+function AIParameterSettingList:setDefault()
+	if self:hasCallback(self.data.setDefaultFunc) then 
+		self:getCallback(self.data.setDefaultFunc)
+		self:debug("set to default by extern function.")
+		return
+	end
+
+	if self.data.default ~=nil then
+		AIParameterSettingList.setFloatValue(self,self.data.default)
+		self:debug("set to default %s",self.data.default)
+	end
+	if self.data.defaultBool ~= nil then
+		AIParameterSettingList.setValue(self,self.data.defaultBool)
+		self:debug("set to default %s",tostring(self.data.defaultBool))
+	end
 end
 
 --- Gets a specific value.
@@ -215,7 +279,7 @@ function AIParameterSettingList:getValue()
 end
 
 function AIParameterSettingList:getString()
-	return self.texts[self.current]
+	return self.texts[self.current] or ""
 end
 
 --- Set the next value
@@ -292,9 +356,9 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self.guiElement.onClickCallback = function(setting,state,element)
 		setting:onClick(state)
 		CpGuiUtil.debugFocus(element.parent)
-		if not FocusManager:setFocus(element.parent) then 
-			FocusManager.currentFocusData.focusElement.focusActive = false 
-			FocusManager:setFocus(element.parent)
+		if not FocusManager:setFocus(element) then 
+			element.focusActive = false
+			FocusManager:setFocus(element)
 		end
 	end
 	self.guiElement.leftButtonElement.target = self
@@ -303,6 +367,68 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self.guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
 	self.guiElement:setTexts(self:getGuiElementTexts())
 	self:updateGuiElementValues()
+	self.guiElement:setVisible(self:getIsVisible())
+	self.guiElement:setDisabled(self:getIsDisabled())
+	if self.textInputAllowed then
+		self:registerMouseInputEvent()
+	end
+	local max = FocusManager.FIRST_LOCK
+	local min = 50
+	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
+end
+
+--- Adds text input option to the setting.
+function AIParameterSettingList:registerMouseInputEvent()
+	local function mouseClick(element,superFunc,posX, posY, isDown, isUp, button, eventUsed)
+		local eventUsed = superFunc(element,posX, posY, isDown, isUp, button, eventUsed)
+	--	CpUtil.debugFormat(CpDebug.DBG_HUD,"Settings text pressed, pre event used: %s",tostring(eventUsed))
+		local x, y = unpack(element.textElement.absPosition)
+		local width, height = unpack(element.textElement.absSize)
+		local cursorInElement = GuiUtils.checkOverlayOverlap(posX, posY, x, y, width, height)
+		if not eventUsed and cursorInElement then 
+			if isDown and button == Input.MOUSE_BUTTON_LEFT  then 
+				element.mouseDown = true
+			end
+			if isUp and button == Input.MOUSE_BUTTON_LEFT and element.mouseDown then
+				element.mouseDown = false
+				if not FocusManager:setFocus(element) then 
+					element.focusActive = false
+					FocusManager:setFocus(element)
+				end
+				self:showInputTextDialog()
+			end
+		end
+		return eventUsed
+	end
+	self.guiElement.mouseEvent = Utils.overwrittenFunction(self.guiElement.mouseEvent, mouseClick)
+end
+
+--- Used for text input settings.
+function AIParameterSettingList:showInputTextDialog()
+	g_gui:showTextInputDialog({
+		disableFilter = true,
+		callback = function (self,value,clickOk)
+			if clickOk and value ~= nil then
+				local v = value:match("-%d[%d.,]*")
+				v = v or value:match("%d[%d.,]*")
+				if v then
+					if self:setFloatValue(tonumber(v)) then 
+						self:setDefault()
+					end
+				else 
+					self:setDefault()
+				end
+				if not FocusManager:setFocus(self.guiElement) then 
+					self.guiElement.focusActive = false
+					FocusManager:setFocus(self.guiElement)
+				end
+			end
+		end,
+		maxCharacters = 7,
+		target = self,
+		dialogPrompt = self.data.title,
+		confirmText = g_i18n:getText("button_ok"),
+	})
 end
 
 function AIParameterSettingList:resetGuiElement()
@@ -314,7 +440,21 @@ function AIParameterSettingList:getName()
 end
 
 function AIParameterSettingList:getIsDisabled()
+	if self:hasCallback(self.data.isDisabledFunc) then 
+		return self:getCallback(self.data.isDisabledFunc)
+	end
 	return self.isDisabled
+end
+
+function AIParameterSettingList:getCanBeChanged()
+	return not self:getIsDisabled()
+end
+
+function AIParameterSettingList:getIsVisible()
+	if self:hasCallback(self.data.isVisibleFunc) then 
+		return self:getCallback(self.data.isVisibleFunc)
+	end
+	return self.isVisible
 end
 
 function AIParameterSettingList:onClick(state)
@@ -331,6 +471,24 @@ function AIParameterSettingList:raiseCallback(callbackStr)
 			self.klass.raiseCallback(self.vehicle,callbackStr)
 		else
 			self.klass:raiseCallback(callbackStr)
+		end
+	end
+end
+
+function AIParameterSettingList:hasCallback(callbackStr)
+	if self.klass ~= nil and callbackStr then
+		if self.klass[callbackStr] ~= nil then 
+			return true
+		end
+	end
+end
+
+function AIParameterSettingList:getCallback(callbackStr)
+	if self:hasCallback(callbackStr) then
+		if self.vehicle ~= nil then 
+			return self.klass[callbackStr](self.vehicle)
+		else
+			return self.klass[callbackStr](self.klass)
 		end
 	end
 end

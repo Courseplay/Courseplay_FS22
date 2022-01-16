@@ -186,5 +186,9 @@ function CpUtil.destroyNode(node)
 end
 
 function CpUtil.callErrorCorrectedFunction(func,...)
-	return xpcall(func, function(err) printCallstack(); return err end, ...)
+	local status,error = xpcall(func, function(err) printCallstack(); return err end, ...)
+	if not status then 
+		print(tostring(error))
+	end
+	return status,error
 end

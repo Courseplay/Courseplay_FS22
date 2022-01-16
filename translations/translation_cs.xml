@@ -24,9 +24,17 @@
 		<text name="CP_jobParameters_startAt_unload"													text="unloading combine/chopper" />
 		<text name="CP_jobParameters_startAt_bales"														text="collecting/wrapping bales" />
 
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Fieldwork" />
+		<text name="CP_job_fieldWork"																	text="CP: Fieldwork" />
 		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Generate fieldwork course." />
@@ -88,7 +96,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Tool offset vertical"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Turning circle width"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Turning circle width"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Turning circle width. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Always unfold the pipe"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Always unfold the pipe when combine is full and waiting for unloader."/>
@@ -119,19 +127,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Vehicle convoy on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Vehicle convoy min distance"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Vehicle convoy min distance"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Vehicle convoy min distance. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Vehicle convoy max distance"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Vehicle convoy max distance"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Vehicle convoy max distance. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fieldwork"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximum speed while working on the field"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximum speed while working on the field. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Field"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximum speed while driving on field"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximum speed while driving on field. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Turn"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximum speed during turn maneuvers"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximum speed during turn maneuvers. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Reverse"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximum speed while reversing"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximum speed while reversing. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
@@ -139,31 +147,32 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Course generator settings of (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Course generator settings of (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Work width" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Work width" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Work width. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Number of headlands" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands. Value: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width. Value: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row. Value: 0 - 6" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block. Value: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Headland direction" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Should the vehicle drive clockwise or counterclockwise on the headland" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="clockwise" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="counterclockwise" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"								text="Field center" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Up/down" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spiral" />
@@ -182,8 +191,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Longest edge" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
@@ -195,6 +204,9 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start work on" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Headland" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Headland" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
 
 
 	<!-- GlobalSettings -->

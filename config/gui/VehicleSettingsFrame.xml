@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI name="cpVehicleSettings">
+    <GuiElement type="empty" profile="uiInGameMenuFrame">
+        <GuiElement type="empty" profile="ingameMenuFrameHeaderPanel">
+            <GuiElement type="bitmap" profile="menuHeaderIcon" size="64px 64px"/>
+            <GuiElement type="text" profile="ingameMenuFrameHeaderText" id="header"/>
+        </GuiElement>
+
+		<GuiElement type="text" profile="settingsMenuSubtitle" id="subTitlePrefab"/>
+
+		<GuiElement type="multiTextOption" profile="multiTextOptionSettings" id="multiTextOptionPrefab">
+			<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
+			<GuiElement type="button" profile="multiTextOptionSettingsRight"/>
+			<GuiElement type="text"   profile="multiTextOptionSettingsText" />
+			<GuiElement type="text"   profile="multiTextOptionSettingsTitle"/>
+			<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
+			<GuiElement type="text"   profile="multiTextOptionSettingsTooltip"/>
+		</GuiElement>
+
+		<GuiElement type="empty" profile="ingameMenuSettingsBox" id="settingsContainer">
+            <GuiElement type="bitmap" profile="topScrollClipper" name="topClipper" />
+            <GuiElement type="bitmap" profile="bottomScrollClipper" name="bottomClipper" />
+
+            <GuiElement type="scrollingLayout" profile="ingameMenuSettingsLayout" id="boxLayout" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper">
+
+        
+            </GuiElement>
+        </GuiElement>
+
+        <GuiElement type="threePartBitmap" profile="verticalListSliderRightDocked">
+            <GuiElement type="slider" profile="verticalListSliderBar" dataElementId="boxLayout" handleFocus="false" />
+        </GuiElement>
+    </GuiElement>
+</GUI>

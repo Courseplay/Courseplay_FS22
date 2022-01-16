@@ -8,6 +8,7 @@ Courseplay.BASE_KEY = "Courseplay."
 function Courseplay:init()
 	self:registerConsoleCommands()
 	self:showUserInformation()
+	g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml",Courseplay.BASE_DIRECTORY) )
 end
 
 
@@ -66,9 +67,28 @@ end
 
 
 function Courseplay:setupGui()
-	CpVehicleSettingsFrame.init()
-	CpGlobalSettingsFrame.init()
-	CpCourseManagerFrame.init(self.courseStorage)
+	local vehicleSettingsFrame = CpVehicleSettingsFrame.new()
+	local globalSettingsFrame = CpGlobalSettingsFrame.new()
+	local courseManagerFrame = CpCourseManagerFrame.new(self.courseStorage)
+	g_gui:loadGui(Utils.getFilename("config/gui/VehicleSettingsFrame.xml",Courseplay.BASE_DIRECTORY),
+				 "CpVehicleSettingsFrame", vehicleSettingsFrame,true)
+	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml",Courseplay.BASE_DIRECTORY),
+				 "CpGlobalSettingsFrame", globalSettingsFrame,true)
+	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml",Courseplay.BASE_DIRECTORY),
+				 "CpCourseManagerFrame", courseManagerFrame,true)
+	local function predicateFunc()
+		local inGameMenu = g_gui.screenControllers[InGameMenu]
+		local aiPage = inGameMenu.pageAI
+		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
+	end
+	
+	CpGuiUtil.fixInGameMenu(vehicleSettingsFrame,"pageCpVehicleSettings",
+			{896, 0, 128, 128},3,predicateFunc)
+	CpGuiUtil.fixInGameMenu(globalSettingsFrame,"pageCpGlobalSettings",
+			{768, 0, 128, 128},4,function () return true end)
+	CpGuiUtil.fixInGameMenu(courseManagerFrame,"pageCpCourseManager",
+			{256,0,128,128},5,predicateFunc)
+	
 end
 
 function Courseplay:loadMapDataHelpLineManager(xmlFile, missionInfo)
@@ -78,7 +98,8 @@ HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapDat
 
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
-		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", "Courseplay", g_Courseplay.schema)
+		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", 
+				"Courseplay", g_Courseplay.schema)
 		g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.BASE_KEY)
 		xmlFile:save()
 		xmlFile:delete()
@@ -285,3 +306,15 @@ TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, C
 
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)
+
+--- Adds possibility to use giants gui functionality with custom image filenames.
+--- Every special filename needs to start with CP_ as prefix, with will be ignored for the path.
+local function getFilename(filename,superFunc, baseDir)
+	if Courseplay and string.startsWith(filename,"CP_") then 
+		filename = string.gsub(filename, "CP_", "")
+		return superFunc(filename,g_Courseplay.BASE_DIRECTORY)
+	else
+		return superFunc(filename,baseDir)
+	end
+end
+Utils.getFilename = Utils.overwrittenFunction(Utils.getFilename,getFilename)

@@ -89,14 +89,16 @@ function VehicleSettingDisplayDialog:onClickBack()
 end
 
 function VehicleSettingDisplayDialog:onClickOk()
-	self.vehicle:cpStartStopDriver()
+	if self.vehicle then
+		self.vehicle:cpStartStopDriver()
 
-	local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
-	if self.vehicle:getIsAIActive() then 
-		text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
+		local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
+		if self.vehicle:getIsAIActive() then 
+			text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
+		end
+
+		self.startButton:setText(text)
 	end
-
-	self.startButton:setText(text)
 end
 
 function VehicleSettingDisplayDialog:draw(...)
