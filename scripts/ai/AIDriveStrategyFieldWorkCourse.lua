@@ -74,7 +74,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
-
+    self.fieldWorkCourse = course
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
     if distance > 2 * self.turningRadius then
@@ -674,6 +674,16 @@ function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)
             CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:debug(' - %s', CpUtil.getName(implement.object))
+    end
+end
+
+
+--- Updates the status variables.
+---@param status CpStatus
+function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
+    ---@type Course
+    if self.fieldWorkCourse then
+        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
     end
 end
 
