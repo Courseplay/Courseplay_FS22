@@ -10,7 +10,7 @@
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Aby uzyskać pomoc, zgłosić błąd lub przeczytać informacje o aktualizacji, odwiedź: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Wygeneruj kurs przed ropoczęciem pracy." />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
+		<text name="CP_error_could_not_generate_course"													text="Nie udało się wygenerować kursu. Więcej informacji w pliku LOG." />
 		<text name="CP_error_not_on_field"																text="Cel nie jest na polu." />
 
 
@@ -177,16 +177,16 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Ustala kierunek startu rzędu." />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatyczny" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Wzdłuż najdłużej krawędzi" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Ręczny" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Kąt w tą i z powrotem" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Kąt dla rzędów w tą i z powrotem (0 to północ) w trybie ręcznym." />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Omijanie przeszkód" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Określa jak pracownik powinien omijać przeszkody na polu." />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="Nie omijaj" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="Uproszczone" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Na około" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Rozpocznij pracę od" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Ustala od czego zacząć pracę polową." />
