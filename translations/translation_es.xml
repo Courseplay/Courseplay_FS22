@@ -19,7 +19,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Dónde comenzar el trabajo de campo" />
 		<text name="CP_jobParameters_startAt_nearest"													text="Punto más cercano" />
 		<text name="CP_jobParameters_startAt_first"														text="Primer punto" />
-		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="Ultimo punto" />
 		<text name="CP_jobParameters_startAt_unload"													text="Descargando Cosechadora/Picadora" />
 		<text name="CP_jobParameters_startAt_bales"														text="Recogiendo/Envolviendo fardos" />
 
@@ -31,13 +31,13 @@
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Abrir/cerrar generador de rutas." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuración del vehículo (%s)"/>
 		
 		<!--Titel-->
-		<text name="CP_vehicle_setting_subTitle_basic"													text="Configuración Básica  "/>
+		<text name="CP_vehicle_setting_subTitle_basic"													text="Configuración Básica"/>
 		<text name="CP_vehicle_setting_subTitle_implement"												text="Configuración de Aperos"/>
 		<text name="CP_vehicle_setting_subTitle_combine"												text="Configuración de Cosechadoras"/>
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Configuración de Sembradora"/>
@@ -49,7 +49,7 @@
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Mostrar Curso"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Muestra el curso actual del vehículo"/>
 
-		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Solo al Inicio/Final"/>
+		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Sólo al Inicio/Final"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Todos los puntos"/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Parar al final"/>
@@ -105,7 +105,7 @@
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="Marcadores de surcos"/>
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="Marcadores de surcos Activado/Desactivado."/>
 
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Sembradoras: Aplicación de Fertilizantes"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Aplicación de Fertilizantes"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Habilita/Deshabilita la aplicación de fertilizantes en sembradoras."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio a carril simétrico"/>
