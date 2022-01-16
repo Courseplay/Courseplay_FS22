@@ -252,14 +252,23 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
 		-- an object we want to ignore
 		return
 	end
-    if collidingObject and collidingObject.getRootVehicle then
-        local rootVehicle = collidingObject:getRootVehicle()
+    if collidingObject then
+        local rootVehicle
+        if collidingObject.getRootVehicle then
+            rootVehicle = collidingObject:getRootVehicle()
+        elseif collidingObject:isa(Bale) and collidingObject.mountObject then
+            rootVehicle = collidingObject.mountObject:getRootVehicle()
+        end
         if rootVehicle == self.vehicleData.rootVehicle or
                 PathfinderUtil.elementOf(self.vehiclesToIgnore, rootVehicle) then
             -- just bumped into myself or a vehicle we want to ignore
             return
         end
-        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
+        if collidingObject:isa(Bale) then
+            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision with bale %d', collidingObject.id)
+        else
+            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
+        end
     end
    	if not getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
         local text = ''

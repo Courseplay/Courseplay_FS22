@@ -97,7 +97,7 @@ end
 --- when driving by in any direction
 function BaleToCollect:getSafeDistance()
 	-- round bales don't have length, just diameter
-	local length = self.bale.diameter and self.bale.diameter or self.bale.length
+	local length = self.bale.isRoundbale and self.bale.diameter or self.bale.length
 	-- no matter what kind of bale, the footprint is a rectangle, get the diagonal (which, is BTW, not
 	-- exact math as it depends on the angle we are approaching the bale, so add a little buffer instead of
 	-- thinking about the math...
