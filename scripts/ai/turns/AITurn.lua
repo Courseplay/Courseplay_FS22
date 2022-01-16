@@ -288,6 +288,7 @@ function KTurn:onWaypointPassed(ix, course)
 end
 
 function KTurn:startTurn()
+	AITurn.startTurn(self)
 	self.state = self.states.FORWARD
 	self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 0, self.turnContext:isLeftTurn())
 	self:debug('Turn progress 0')
@@ -534,6 +535,7 @@ end
 -- this turn starts when the vehicle reached the point where the implements are raised.
 -- now use turn.lua to generate the turn maneuver waypoints
 function CourseTurn:startTurn()
+	AITurn.startTurn(self)
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
 	if (canTurnOnField or not self.settings.turnOnField:getValue()) and
 			not self.turnContext:isHeadlandCorner() and
@@ -606,7 +608,11 @@ function CourseTurn:updateTurnProgress()
 	if self.turnCourse and not self.turnContext:isHeadlandCorner() then
 		-- turn progress is for example rotating plows, no need to worry about that during headland turns
 		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
-		self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
+		if (progress - (self.lastProgress or 0)) > 0.1 then
+			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
+			self:debug('progress %.1f (left: %s)', progress, self.turnContext:isLeftTurn())
+			self.lastProgress = progress
+		end
 	end
 end
 
