@@ -252,6 +252,11 @@ function TurnContext:isWideTurn(turnDiameter)
     return not self:isHeadlandCorner() and math.abs(self.dx) > turnDiameter
 end
 
+function TurnContext:isPathfinderTurn(turnDiameter, workWidth)
+    local d = math.sqrt(self.dx * self.dx + self.dz * self.dz)
+    return not self:isSimpleWideTurn(turnDiameter, workWidth) and d > 3 * workWidth
+end
+
 function TurnContext:isLeftTurn()
     if self:isHeadlandCorner() then
         local cornerAngle = self:getCornerAngle()

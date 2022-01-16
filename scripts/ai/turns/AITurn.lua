@@ -533,21 +533,77 @@ function CourseTurn:getForwardSpeed()
 end
 
 -- this turn starts when the vehicle reached the point where the implements are raised.
--- now use turn.lua to generate the turn maneuver waypoints
+-- Types of Turns
+--
+-- 1. 3 point (K) turn (forward)
+--    This turn does not use a course, instead it drives by steering only, first forward (left or right),
+--    then straight backwards, and then forward again (left or right)
+--
+-- 2. Calculated turn
+--    This is using a precalculated curve to get from the turn start to the turn end. Calculation is based on
+--    the geometry only, it does not take obstacles or fruit in account. We use two different algorithms to
+--    calculate the path: Dubins (forward only) and Reeds-Shepp (forward or reverse).
+--
+-- 3. Pathfinder turn
+--    We use the hybrid A* pathfinding algorithm to generate the path between the turn start and turn end. This
+--    algorithm can avoid collisions and fruit. There are two variations:
+--    a) free pathfinding from turn start to end, where the path is determined only by obstacles and fruit on the field
+--    b) drive as much as possible on the outermost headland between turn start and end
+--
+-- Which 180° turn we use when (headland turns are different):
+--
+-- * First, we check if we can make a 3 point turn (canMakeKTurn()):
+--   - the lateral distance to the next row is less than the turn diameter
+--   - can reverse with the attached implements (nothing towed allowed here)
+--   - not an articulated axis vehicle (we can't yet reverse correctly with those)
+--   - there's enough room on the field to make the turn, that is, turning radius + half work width
+--
+-- * If there is no 3 point turn possible, then:
+--   - if the turn end is very far and there are headlands, we always use the pathfinder to find a way
+--     to the turn end through the outermost headland
+--   - if there's enough room to turn on the field:
+--      = if pathfinder turns are enabled in the settings, use the pathfinder to generate the turn path
+--      = otherwise, use a calculated turn
+--   - if there's not enough room to turn on the field (no or not enough headlands):
+--      = if turn on field setting is on, always use calculated turns
+--      = if turn on field setting is off, use pathfinder turns if enabled in settings, calculated turns otherwise
+--
 function CourseTurn:startTurn()
 	AITurn.startTurn(self)
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
-	if (canTurnOnField or not self.settings.turnOnField:getValue()) and
-			not self.turnContext:isHeadlandCorner() and
-			not self.turnContext:isSimpleWideTurn(self.turningRadius * 2, self.workWidth) then
-		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
-		-- but we don't have enough space and have to reverse, fall back to the generated turns
-		self:generatePathfinderTurn()
-	else
+	if self.turnContext:isHeadlandCorner() then
+		self:debug('Starting a headland corner turn')
 		self:generateCalculatedTurn()
+		self.state = self.states.TURNING
+	elseif self.turnContext:isPathfinderTurn(2 * self.turningRadius, self.workWidth) then
+		self:debug('Starting a pathfinder turn on headland')
+		self:generatePathfinderTurn(true)
+	elseif canTurnOnField then
+		if self.settings.allowPathfinderTurns:getValue() then
+			self:debug('Starting a pathfinder turn: plenty of room on field to turn and pathfinder turns are enabled')
+			self:generatePathfinderTurn(false)
+		else
+			self:debug('Starting a calculated turn: plenty of room on field to turn and pathfinder turns are disabled')
+			self:generateCalculatedTurn()
+			self.state = self.states.TURNING
+		end
+	else
+		if self.settings.turnOnField:getValue() then
+			self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is on')
+			self:generateCalculatedTurn()
+			self.state = self.states.TURNING
+		elseif not self.settings.allowPathfinderTurns:getValue() then
+			self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is off and pathfinder turns are disabled')
+			self:generateCalculatedTurn()
+			self.state = self.states.TURNING
+		else
+			self:debug('Starting a pathfinder turn: not enough room on field to turn, turn on field is or pathfinder turns are enabled')
+			self:generatePathfinderTurn(false)
+		end
+	end
+	if self.state == self.states.TURNING then
 		self.ppc:setCourse(self.turnCourse)
 		self.ppc:initialize(1)
-		self.state = self.states.TURNING
 	end
 end
 
@@ -699,14 +755,16 @@ function CourseTurn:generateCalculatedTurn()
 	self.turnCourse = turnManeuver:getCourse()
 end
 
-function CourseTurn:generatePathfinderTurn()
+function CourseTurn:generatePathfinderTurn(useHeadland)
 	self.pathfindingStartedAt = g_currentMission.time
 	local done, path
 	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
-	self:debug('Wide turn: generate turn with hybrid A*, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
+	self:debug('Pathfinder turn (useHeadland: %s): generate turn with hybrid A*, start offset %.1f, goal offset %.1f',
+			useHeadland, startOffset, goalOffset)
 	self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
-			self.turningRadius, false, self.fieldworkCourse)
+			self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
+			useHeadland and self.fieldworkCourse or nil)
 	if done then
 		return self:onPathfindingDone(path)
 	else
@@ -724,13 +782,13 @@ function CourseTurn:onPathfindingDone(path)
 		else
 			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
-		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
 		self.turnContext:appendEndingTurnCourse(self.turnCourse)
 		-- and once again, if there is an ending course, keep adjusting the tight turn offset
 		-- TODO: should probably better done on onWaypointChange, to reset to 0
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
+		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 	else
 		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))
 		self:generateCalculatedTurn()

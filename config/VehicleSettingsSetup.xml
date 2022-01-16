@@ -28,6 +28,7 @@
 		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true"/>
 		<!--Pathfinder Reverse-->
 		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="true"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">

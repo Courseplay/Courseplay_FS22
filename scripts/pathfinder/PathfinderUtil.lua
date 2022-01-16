@@ -653,9 +653,10 @@ end
 --- Together with the goalReferenceNode defines the goal
 ---@param turnRadius number vehicle turning radius
 ---@param allowReverse boolean allow reverse driving
----@param course Course fieldwork course, needed to find the headland
+---@param courseWithHeadland Course fieldwork course, needed to find the headland
 ---@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection
-function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse, course, vehiclesToIgnore)
+function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
+                                        courseWithHeadland, vehiclesToIgnore)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
@@ -663,9 +664,9 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
 
     PathfinderUtil.overlapBoxes = {}
     local pathfinder
-    if course:getNumberOfHeadlands() > 0 then
+    if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
-        local headlandPath = findShortestPathOnHeadland(start, goal, course, turnRadius)
+        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius)
         -- is the first wp of the headland in front of us?
         local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
         local dx, _, dz = worldToLocal(vehicle:getAIDirectionNode(), headlandPath[1].x, y, - headlandPath[1].y)
@@ -673,7 +674,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         if dirDeg > 45 or true then
             CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
         end
-        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath)
+        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true)
     else
         -- only use a middle section when the target is really far away
         pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true)
