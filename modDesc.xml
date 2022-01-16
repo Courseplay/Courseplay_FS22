@@ -118,6 +118,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 		<sourceFile filename="scripts/gui/CpAIHotspotExtended.lua"/>
 		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
+		<sourceFile filename="scripts/gui/CoursePlayHud.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

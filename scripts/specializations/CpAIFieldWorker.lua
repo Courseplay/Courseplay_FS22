@@ -57,10 +57,14 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpStartFieldWorker", CpAIFieldWorker.startFieldWorker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
+<<<<<<< HEAD
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBaleFinder", CpAIFieldWorker.getCanStartCpBaleFinder)
 
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
     SpecializationUtil.registerFunction(vehicleType, "startCpALastWp", CpAIFieldWorker.startCpAtLastWp)
+=======
+    SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIFieldWorker.getCpDriveStrategy)
+>>>>>>> df44165 (A simple HUD)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
@@ -152,6 +156,10 @@ end
 --- Is a cp fieldwork helper active ?
 function CpAIFieldWorker:getIsCpFieldWorkActive()
     return self:getIsAIActive() and self:getJob() and self:getJob():isa(AIJobFieldWorkCp)
+end
+
+function CpAIFieldWorker:getCpDriveStrategy()
+    return self.spec_cpAIFieldWorker.driveStrategy
 end
 
 --- To find out if a harvester is waiting to be unloaded, either because it is full or ended the fieldwork course
@@ -348,6 +356,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
         cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
     end
     cpDriveStrategy:setAIVehicle(self,jobParameters)
+    self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
     driveStrategyCollision:setAIVehicle(self)

@@ -22,12 +22,13 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 --    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
-
+    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
 end
 
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
     SpecializationUtil.registerFunction(vehicleType, 'getCpAdditionalHotspotDetails', CourseplaySpec.getCpAdditionalHotspotDetails)
+    SpecializationUtil.registerFunction(vehicleType, 'cpInit', CourseplaySpec.cpInit)
 end
 
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
@@ -42,6 +43,7 @@ function CourseplaySpec:onLoad(savegame)
     local specName = CourseplaySpec.MOD_NAME .. ".courseplaySpec"
     self.spec_courseplaySpec = self["spec_" .. specName]
     local spec = self.spec_courseplaySpec
+    spec.hud = CourseplayHud(self)
 end
 
 function CourseplaySpec:onPostLoad(savegame)
@@ -96,6 +98,14 @@ function CourseplaySpec:getCollisionCheckActive(superFunc,...)
     else
         return false
     end
+end
+
+function CourseplaySpec:onDraw()
+    self.spec_courseplaySpec.hud:draw()
+end
+
+function CourseplaySpec:cpInit()
+    self.spec_courseplaySpec.hud = CourseplayHud(self)
 end
 
 AIDriveStrategyCollision.getCollisionCheckActive = Utils.overwrittenFunction(
