@@ -1538,7 +1538,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 	if not bestTrailer then return false end
 
 	if not self.pathfinder or not self.pathfinder:isActive() then
-		self:rememberCourse(self.course, self:getBestWaypointToContinueFieldwork())
+		self:rememberCourse(self.course, self:getBestWaypointToContinueFieldWork())
 		self.pathfindingStartedAt = g_currentMission.time
 		self.courseAfterPathfinding = nil
 		self.waypointIxAfterPathfinding = nil

@@ -76,7 +76,7 @@ function AIDriveStrategyCourse:setInfoText(text)
     self:debug(text)
 end
 
-function AIDriveStrategyCourse:setAIVehicle(vehicle)
+function AIDriveStrategyCourse:setAIVehicle(vehicle,jobParameters)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self:initializeImplementControllers(vehicle)
     ---@type FillLevelManager
@@ -100,29 +100,25 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     local course = vehicle:getFieldWorkCourse()
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
-        local job = vehicle:getJob()
-        local startAt, startIx
-        if job and job.getCpJobParameters then
-            self:debug('Got job parameters, starting at %s', job:getCpJobParameters().startAt)
-            startAt = job:getCpJobParameters().startAt:getValue()
-        else
-            self:debug('No job parameters found, starting at nearest waypoint')
-            startAt = CpJobParameters.START_AT_NEAREST_POINT
-        end
-        if startAt == CpJobParameters.START_AT_NEAREST_POINT then
-            local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
-            self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
-            startIx = ixClosestRightDirection
-        else
-            self:debug('Starting course at the first waypoint')
-            startIx = 1
-        end
+        
+        local startIx = self:getStartingPointWaypointIx(course,jobParameters.startAt:getValue())
         self:start(course, startIx)
     else
         -- some strategies do not need a recorded or generated course to work, they
         -- will create the courses on the fly.
         self:debug('Vehicle has no course, start work without it.')
         self:startWithoutCourse()
+    end
+end
+
+function AIDriveStrategyCourse:getStartingPointWaypointIx(course,startAt)
+    if startAt == CpJobParameters.START_AT_NEAREST_POINT then 
+        local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
+        self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
+        return ixClosestRightDirection
+    else 
+        self:debug('Starting course at the first waypoint')
+        return 1
     end
 end
 

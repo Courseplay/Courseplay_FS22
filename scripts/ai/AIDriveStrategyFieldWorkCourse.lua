@@ -57,6 +57,19 @@ function AIDriveStrategyFieldWorkCourse:delete()
     AIDriveStrategyFieldWorkCourse:superClass().delete(self)
     self:raiseImplements()
     TurnContext.deleteNodes(self.turnNodes)
+    self:rememberWaypointToContinueFieldWork()
+end
+
+--- If the startAt setting is START_AT_LAST_POINT and a waypoint ix was saved the start at this wp.
+function AIDriveStrategyFieldWorkCourse:getStartingPointWaypointIx(course,startAt)
+    if startAt == CpJobParameters.START_AT_LAST_POINT then 
+        local lastWpIx = self:getRememberedWaypointToContinueFieldWork()
+        if lastWpIx then 
+            self:debug('Starting course at the last waypoint %d',lastWpIx)
+            return lastWpIx
+        end
+    end
+    return AIDriveStrategyFieldWorkCourse:superClass().getStartingPointWaypointIx(self,course,startAt)
 end
 
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
@@ -67,7 +80,8 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     if distance > 2 * self.turningRadius then
         self:debug('Start waypoint is far (%.1f m), use an alignment course to get there.', distance)
         self.course = course
-        self:startAlignmentTurn(course, startIx, 1)
+        --- Find the closest waypoint and create a alignment course form there to the start ix.
+        self:startAlignmentTurn(course, startIx, startIx)
     else
         self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
         self:startCourse(course, startIx)
@@ -450,14 +464,14 @@ end
 function AIDriveStrategyFieldWorkCourse:stopAndChangeToUnload()
     -- TODO_22 run unload/refill with the vanilla helper?
     if false and self.unloadRefillCourse and not self.heldForUnloadRefill then
-        self:rememberWaypointToContinueFieldwork()
+        self:rememberWaypointToContinueFieldWork()
         self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.storage.continueFieldworkAtWaypoint or -1)
         self:changeToUnloadOrRefill()
         self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
     else
         if self.vehicle.spec_autodrive and self.vehicle.cp.settings.autoDriveMode:useForUnloadOrRefill() then
             -- Switch to AutoDrive when enabled
-            self:rememberWaypointToContinueFieldwork()
+            self:rememberWaypointToContinueFieldWork()
             self:stopWork()
             self:foldImplements()
             self.state = self.states.ON_UNLOAD_OR_REFILL_WITH_AUTODRIVE
@@ -582,12 +596,17 @@ function AIDriveStrategyFieldWorkCourse:getTurnEndForwardOffset()
     return 0
 end
 
-function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldwork()
-    self.storage.continueFieldworkAtWaypoint = self:getBestWaypointToContinueFieldwork()
+function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldWork()
+    local ix = self:getBestWaypointToContinueFieldWork()
+    self.vehicle:rememberCpLastWaypointIx(ix)
 end
 
-function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldwork()
-    local bestKnownCurrentWpIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getCurrentWaypointIx()
+function AIDriveStrategyFieldWorkCourse:getRememberedWaypointToContinueFieldWork()
+    return self.vehicle:getCpLastRememberedWaypointIx()
+end
+
+function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldWork()
+    local bestKnownCurrentWpIx = self.course:getLastPassedWaypointIx() or self.course:getCurrentWaypointIx()
     -- after we return from a refill/unload, continue a bit before the point where we left to
     -- make sure not leaving any unworked patches
     local bestWpIx = self.course:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
@@ -667,7 +686,7 @@ end
 local function emptyFunction(object,superFunc,...)
     local rootVehicle = object.rootVehicle
     if rootVehicle.getJob then 
-        if rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+        if rootVehicle:getIsCpActive() then
             return
         end
     end

@@ -54,13 +54,17 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
             CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadAfterPulledBack)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterManeuvering", CpAIFieldWorker.getIsCpHarvesterManeuvering)
     SpecializationUtil.registerFunction(vehicleType, "holdCpHarvesterTemporarily", CpAIFieldWorker.holdCpHarvesterTemporarily)
-    SpecializationUtil.registerFunction(vehicleType, "cpStartFieldworker", CpAIFieldWorker.startFieldworker)
+    SpecializationUtil.registerFunction(vehicleType, "cpStartFieldWorker", CpAIFieldWorker.startFieldWorker)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
+    SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBaleFinder", CpAIFieldWorker.getCanStartCpBaleFinder)
+
+    SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
+    SpecializationUtil.registerFunction(vehicleType, "startCpALastWp", CpAIFieldWorker.startCpAtLastWp)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
-   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getStartableAIJob', CpAIFieldWorker.getStartableAIJob)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopCurrentAIJob', CpAIFieldWorker.stopCurrentAIJob)
    -- SpecializationUtil.registerOverwrittenFunction(vehicleType, 'updateAIFieldWorkerDriveStrategies', CpAIFieldWorker.updateAIFieldWorkerDriveStrategies)
 end
 ------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +74,14 @@ function CpAIFieldWorker:onLoad(savegame)
 	--- Register the spec: spec_CpAIFieldWorker
     self.spec_cpAIFieldWorker = self["spec_" .. CpAIFieldWorker.SPEC_NAME]
     local spec = self.spec_cpAIFieldWorker
+    --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
+    spec.cpJob:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_NEAREST_POINT)
+    --- Theses jobs are used for external mod, for example AutoDrive.
+    spec.cpJobStartAtFirstWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
+    spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
+    spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
+    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
 end
 
 function CpAIFieldWorker:onPostLoad(savegame)
@@ -113,7 +124,9 @@ function CpAIFieldWorker:updateActionEvents()
             if self:getIsAIActive() then 
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
-			    g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.hireEmployee)
+                local staringPoint = spec.cpJob:getCpJobParameters().startAt:getString()
+                local text = string.format("CP: %s\n(%s)",giantsSpec.texts.hireEmployee,staringPoint)
+			    g_inputBinding:setActionEventText(actionEvent.actionEventId,text)
             end
 
 			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
@@ -184,27 +197,67 @@ function CpAIFieldWorker:holdCpHarvesterTemporarily(periodMs)
             self.spec_cpAIFieldWorker.combineDriveStrategy:hold(periodMs)
 end
 
-function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,...)
-    if self:getIsCpActive() then 
-        if message:isa(AIMessageErrorOutOfFill) then 
-            SpecializationUtil.raiseEvent(self,"onCpEmpty")
-        end
+--- Starts the cp driver at the first waypoint.
+function CpAIFieldWorker:startCpAtFirstWp()
+    local spec = self.spec_cpAIFieldWorker
+    self:updateAIFieldWorkerImplementData()
+    if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or self:getCanStartCpBaleFinder(spec.cpJobStartAtFirstWp:getCpJobParameters()) then
+        spec.cpJobStartAtFirstWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+        spec.cpJobStartAtFirstWp:setValues()
+        g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtFirstWp, self:getOwnerFarmId()))
     end
-    superFunc(message,...)
 end
 
---- TODO: implement this event listeners correctly.
+--- Starts the cp driver at the last driven waypoint.
+function CpAIFieldWorker:startCpAtLastWp()
+    local spec = self.spec_cpAIFieldWorker
+    self:updateAIFieldWorkerImplementData()
+    if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or self:getCanStartCpBaleFinder(spec.cpJobStartAtLastWp:getCpJobParameters()) then
+        spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+        spec.cpJobStartAtLastWp:setValues()
+        g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
+    end
+end
 
+--- Event listener called, when an implement is full.
 function CpAIFieldWorker:onCpFull()
   
 end
 
+--- Event listener called, when an implement is empty.
 function CpAIFieldWorker:onCpEmpty()
   
 end
 
+--- Event listener called, when the cp job is finished.
 function CpAIFieldWorker:onCpFinished()
  
+end
+
+--- Post cp helper release handling.
+--- Is used for the communication to external mods with events.
+function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,...)
+    local wasCpActive = self:getIsCpActive()
+    superFunc(self,message,...)
+    if wasCpActive then 
+        if message then
+            local foldAtEndAllowed
+            if message:isa(AIMessageErrorOutOfFill) then 
+                SpecializationUtil.raiseEvent(self,"onCpEmpty")
+                foldAtEndAllowed = true
+            elseif message:isa(AIMessageErrorIsFull) then 
+                SpecializationUtil.raiseEvent(self,"onCpFull")
+                foldAtEndAllowed = true
+            elseif message:isa(AIMessageSuccessFinishedJob) then 
+                SpecializationUtil.raiseEvent(self,"onCpFinished")
+                foldAtEndAllowed = true
+            end
+            if foldAtEndAllowed and self:getCpSettings().foldImplementAtEnd:getValue() then
+                --- Folds implements at the end if the setting is set
+                self:prepareForAIDriving()
+            end
+        end
+    end
 end
 
 --- Directly starts a cp driver or stops a currently active job.
@@ -216,7 +269,7 @@ function CpAIFieldWorker:startStopDriver()
         CpUtil.infoVehicle(self,"Stopped current helper.")
 	else
         self:updateAIFieldWorkerImplementData()
-        if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or CpAIFieldWorker.getCanStartFindingBales(self) then
+        if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or self:getCanStartCpBaleFinder(spec.cpJob:getCpJobParameters()) then
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
          --   local success = spec.cpJob:validate(false)
@@ -233,10 +286,11 @@ function CpAIFieldWorker:startStopDriver()
 	end
 end
 
-function CpAIFieldWorker:getCanStartFindingBales()
+--- Is the bale finder with out a course possible and correctly setup.
+function CpAIFieldWorker:getCanStartCpBaleFinder(jobParameters)
     if (AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
             AIUtil.hasImplementWithSpecialization(self, BaleLoader)) and
-            self.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt:getValue() == CpJobParameters.START_FINDING_BALES then
+            jobParameters.startAt:getValue() == CpJobParameters.START_FINDING_BALES then
         return true
     else
         return false
@@ -256,18 +310,18 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIFieldWorker:startFieldworker()
+function CpAIFieldWorker:startFieldWorker(jobParameters)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self)
+        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self,jobParameters)
     end
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
+function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
     CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -279,7 +333,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-    if CpAIFieldWorker.getCanStartFindingBales(self) then
+    if self:getCanStartCpBaleFinder(jobParameters) then
         CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
         cpDriveStrategy = AIDriveStrategyFindBales.new()
     elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
@@ -293,7 +347,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies()
         CpUtil.infoVehicle(self, 'Installing default CP fieldwork drive strategy')
         cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
     end
-    cpDriveStrategy:setAIVehicle(self)
+    cpDriveStrategy:setAIVehicle(self,jobParameters)
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
     driveStrategyCollision:setAIVehicle(self)

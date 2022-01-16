@@ -20,6 +20,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Wo wird die Arbeit gestartet." />
 		<text name="CP_jobParameters_startAt_nearest"													text="Nahester Wegpunkt" />
 		<text name="CP_jobParameters_startAt_first"														text="Erster Wegpunkt" />
+		<text name="CP_jobParameters_startAt_last"														text="Letzter Wegpunkt" />
 		<text name="CP_jobParameters_startAt_unload"													text="Entlade Drescher/Häcksler" />
 		<text name="CP_jobParameters_startAt_bales"														text="Sammel/Wickel Ballen" />
 
@@ -30,6 +31,9 @@
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Generiere Feldkurs." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Öffne/Schließe Kursgenerator." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Fahrzeugeinstellungen für (%s)"/>

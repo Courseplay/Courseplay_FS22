@@ -18,6 +18,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Mikor kezdje el a munkát" />
 		<text name="CP_jobParameters_startAt_nearest"													text="legközelebbi pont" />
 		<text name="CP_jobParameters_startAt_first"														text="első útpont" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="kirakodó kombájn/aprító" />
 		<text name="CP_jobParameters_startAt_bales"														text="bálák összegyűjtése/csomagolása" />
 
@@ -27,6 +28,9 @@
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Terepmunka tanfolyam létrehozása." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Kurzusgenerátor megnyitása/zárása." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="CoursePlay technika beállításai"/>

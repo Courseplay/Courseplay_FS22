@@ -12,8 +12,6 @@ function FertilizingSowingMachineController:update()
 		local fillUnitIndex = self.sowingMachine:getSprayerFillUnitIndex()
 		if not self.sowingMachine:getIsSprayerExternallyFilled() and self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
 			self:debug("Stopped Cp, as the fertilizer is empty.")
-			--- For some reason the sowing machine isn't being turned off here.
-			--- Might be a problem from giants not sure.
 			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 		end
 	end
