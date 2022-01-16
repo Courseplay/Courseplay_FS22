@@ -284,7 +284,7 @@ function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInva
         else
             self:info('Pathfinding failed three times, giving up')
             self.pathfinderFailureCount = 0
-            self:stop('WORK_END')
+            self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
         end
         return false
     end
@@ -315,7 +315,7 @@ end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
     local x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 0)
-    local vehicleIsOnField = courseplay:isField(x, z, 1, 1)
+    local vehicleIsOnField = CpFieldUtil.isOnField(x, z)
     x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1.2 * self.turningRadius)
     local isFieldInFrontOfVehicle = CpFieldUtil.isOnFieldArea(x, z)
     self:debug('vehicle is on field: %s, field in front of vehicle: %s',
