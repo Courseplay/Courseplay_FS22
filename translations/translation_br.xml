@@ -20,7 +20,7 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Onde começar o trabalho no campo" />
 		<text name="CP_jobParameters_startAt_nearest"													text="próximo waypoint" />
 		<text name="CP_jobParameters_startAt_first"														text="primeiro waypoint" />
-		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="último waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="descarregando colheitadeira" />
 		<text name="CP_jobParameters_startAt_bales"														text="coletando / embalando fardos" />
 
@@ -33,7 +33,7 @@
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Abrir / fechar gerador de rotas." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuração do veículo para (%s)"/>
