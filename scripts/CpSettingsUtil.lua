@@ -24,6 +24,9 @@ CpSettingsUtil.classTypes = {
 			- prefix (bool): prefix used yes/no?, default = true
 			- title (string): sub title text in the gui menu
 
+			- isDisabled (string): function called from the parent container, to disable all setting under the subtitle.
+			- isVisible (string): function called from the parent container, to change the visibility of all setting under the subtitle.
+
 			- Setting(?)
 				- classType (string): class name
 				- name (string): name of the setting 
@@ -40,8 +43,8 @@ CpSettingsUtil.classTypes = {
 
 				- onChangeCallback(string): callback function raised on setting value changed. 
 
-				- neededSpecs(string): all specializations separated "," that are needed, default is enabled for every combo.
-				- disabledSpecs(string): all specializations separated "," that are disallowed , default is every combo is allowed.
+				- isDisabled (string): function called by the setting from the parent container, to disable the setting.
+				- isVisible (string): function called by the setting from the parent container, to change the setting visibility.
 
 				- Values : 
 					- Value(?) :
@@ -63,6 +66,9 @@ function CpSettingsUtil.init()
 	local key = "Settings.SettingSubTitle(?)"
 	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title",nil,true)
 	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix",true)
+	
+	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
+	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?)"
     schema:register(XMLValueType.STRING, key.."#name", "Setting name",nil,true)
@@ -81,8 +87,8 @@ function CpSettingsUtil.init()
 	--- callbacks:
 	schema:register(XMLValueType.STRING, key.."#onChangeCallback", "Setting callback on change") -- optional
 
-	schema:register(XMLValueType.STRING, key.."#neededSpecs", "Specializations needed for this setting to be enabled.") -- optional
-	schema:register(XMLValueType.STRING, key.."#disabledSpecs", "Specializations that disable this setting.") -- optional
+	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
+	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?).Values.Value(?)"
 	schema:register(XMLValueType.INT, key, "Setting value", nil)
@@ -119,9 +125,16 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		else 
 			subTitle = g_i18n:getText(subTitle)
 		end
+
+		local isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
+		local isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
+
 		local subTitleSettings = {
 			title = subTitle,
-			elements = {}
+			elements = {},
+			isDisabledFunc = isDisabledFunc,
+			isVisibleFunc = isVisibleFunc,
+			class = class
 		}
 		xmlFile:iterate(masterKey..".Setting", function (i, baseKey)
 			local settingParameters = {}
@@ -151,12 +164,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.callbacks = {}
 			settingParameters.callbacks.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
 
-
-			local neededSpecsStr = xmlFile:getValue(baseKey.."#neededSpecs")
-			settingParameters.neededSpecs = CpSettingsUtil.getSpecsFromString(neededSpecsStr)
-
-			local disabledSpecs = xmlFile:getValue(baseKey.."#disabledSpecs")
-			settingParameters.disabledSpecs = CpSettingsUtil.getSpecsFromString(disabledSpecs)
+			settingParameters.isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
+			settingParameters.isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
 
 			settingParameters.values = {}
 			xmlFile:iterate(baseKey..".Values.Value", function (i, key)
@@ -193,23 +202,6 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		table.insert(class.settingsBySubTitle,subTitleSettings)
 	end)
 	xmlFile:delete()
-end
-
-
---- Gets Specializations form a string, where each is separated by a ",".
----@param str string
----@return table
-function CpSettingsUtil.getSpecsFromString(str)
-	if str then
-		local substrings = str:split(",")
-		local results = {}
-		if substrings ~= nil then
-			for i = 1, #substrings do
-				results[i] = g_specializationManager:getSpecializationByName(substrings[i])
-			end
-		end
-		return results
-	end
 end
 
 --- Clones a settings table.
@@ -275,13 +267,41 @@ end
 --- Links the gui elements to the correct settings.
 ---@param settings any
 ---@param layout any
-function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout)
+function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout,settingsBySubTitle,vehicle)
+	local valid = true
 	local i = 1
+	local j = 1
 	for _,element in ipairs(layout.elements) do 
 		if element:isa(MultiTextOptionElement) then 
-			CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s",settings[i]:getName())
-			settings[i]:setGuiElement(element)
+			if valid then
+				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s",settings[i]:getName())
+				settings[i]:setGuiElement(element)
+			else 
+				element:setVisible(false)
+			end
 			i = i + 1
+		elseif settingsBySubTitle then  
+			valid = true
+			local isDisabledFunc = settingsBySubTitle[j].isDisabledFunc
+			local isVisibleFunc = settingsBySubTitle[j].isVisibleFunc
+			local class = settingsBySubTitle[j].class
+			if vehicle then 
+				if class[isVisibleFunc] then 
+					valid = class[isVisibleFunc](vehicle)
+				end
+				if class[isDisabledFunc] then 
+					element:setDisabled(class[isDisabledFunc](vehicle))
+				end
+			else 
+				if class[isVisibleFunc] then 
+					valid = class[isVisibleFunc](class)
+				end
+				if class[isDisabledFunc] then 
+					element:setDisabled(class[isDisabledFunc](vehicle))
+				end
+			end
+			element:setVisible(valid)
+			j =  j + 1
 		end
 	end
 end

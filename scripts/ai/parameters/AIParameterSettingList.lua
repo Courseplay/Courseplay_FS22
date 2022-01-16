@@ -50,6 +50,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.guiElement = nil
 
 	self.isDisabled = false
+	self.isVisible = true
 	self.setupDone = true
 	return self
 end
@@ -303,6 +304,8 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self.guiElement.rightButtonElement:setCallback("onClickCallback", "setNextItem")
 	self.guiElement:setTexts(self:getGuiElementTexts())
 	self:updateGuiElementValues()
+	self.guiElement:setVisible(self:getIsVisible())
+	self.guiElement:setDisabled(self:getIsDisabled())
 end
 
 function AIParameterSettingList:resetGuiElement()
@@ -314,7 +317,17 @@ function AIParameterSettingList:getName()
 end
 
 function AIParameterSettingList:getIsDisabled()
+	if self:hasCallback(self.data.isDisabledFunc) then 
+		return self:getCallback(self.data.isDisabledFunc)
+	end
 	return self.isDisabled
+end
+
+function AIParameterSettingList:getIsVisible()
+	if self:hasCallback(self.data.isVisibleFunc) then 
+		return self:getCallback(self.data.isVisibleFunc)
+	end
+	return self.isVisible
 end
 
 function AIParameterSettingList:onClick(state)
@@ -331,6 +344,24 @@ function AIParameterSettingList:raiseCallback(callbackStr)
 			self.klass.raiseCallback(self.vehicle,callbackStr)
 		else
 			self.klass:raiseCallback(callbackStr)
+		end
+	end
+end
+
+function AIParameterSettingList:hasCallback(callbackStr)
+	if self.klass ~= nil and callbackStr then
+		if self.klass[callbackStr] ~= nil then 
+			return true
+		end
+	end
+end
+
+function AIParameterSettingList:getCallback(callbackStr)
+	if self:hasCallback(callbackStr) then
+		if self.vehicle ~= nil then 
+			return self.klass[callbackStr](self.vehicle)
+		else
+			return self.klass[callbackStr](self.klass)
 		end
 	end
 end

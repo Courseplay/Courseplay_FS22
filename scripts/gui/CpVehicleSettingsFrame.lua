@@ -49,7 +49,8 @@ function CpVehicleSettingsFrame:onFrameOpen()
 		if self.currentVehicle.getCpSettings then 
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,self.currentVehicle, "onFrameOpen CpVehicleSettingsFrame" )
 			self.settings = self.currentVehicle:getCpSettingsTable()
-			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
+			local settingsBySubTitle = CpVehicleSettings.getSettingSetup()
+			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout,settingsBySubTitle,self.currentVehicle)
 		end
 	end
 	FocusManager:loadElementFromCustomValues(self.boxLayout)

@@ -101,3 +101,19 @@ end
 function CpVehicleSettings:raiseCallback(callbackStr)
     SpecializationUtil.raiseEvent(self,callbackStr)
 end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Callbacks for the settings to manipulate the gui elements.
+------------------------------------------------------------------------------------------------------------------------
+
+--- Are the combine settings needed.
+function CpVehicleSettings:areCombineSettingsVisible()
+    local implement = AIUtil.getImplementOrVehicleWithSpecialization(self,Combine)
+    return implement and not ImplementUtil.isChopper(implement)
+end
+
+--- Are the sowing machine settings needed.
+function CpVehicleSettings:areSowingMachineSettingsVisible()
+    return AIUtil.getImplementOrVehicleWithSpecialization(self,SowingMachine)
+            or AIUtil.getImplementOrVehicleWithSpecialization(self,FertilizingCultivator)
+end

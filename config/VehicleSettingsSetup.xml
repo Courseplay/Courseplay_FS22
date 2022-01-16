@@ -56,9 +56,9 @@
 		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
 	</SettingSubTitle>
 
-	<SettingSubTitle title="combine">
+	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
 		<!--Pipe always unfold-->
-		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold"/>
+		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold" />
 		<!--Stop for unload-->
 		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
 		<!--Selfunload-->
@@ -80,7 +80,7 @@
 		</Setting>
 	</SettingSubTitle>
 
-	<SettingSubTitle title="seeder">
+	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">
 		<!--Ridgemarker-->	
 		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic"/>
 		<!--Fertilizer-->
