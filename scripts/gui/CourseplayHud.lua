@@ -14,8 +14,9 @@ function CourseplayHud:init(vehicle)
     self.x, self.y = getNormalizedScreenValues(960 - 150, 60)
     self.width, self.height = getNormalizedScreenValues(300 * uiScale, 60 * uiScale)
     self.lines = 1
-    self.margin = self.width / 30
     self.textSize = self.height / 3
+    self.hMargin = self.textSize / 3
+    self.wMargin = self.hMargin
 
     local width, height = getNormalizedScreenValues(18 * uiScale, 18 * uiScale)
     self.onOffIndicator = Overlay.new(g_baseUIFilename, 0, 0, width, height)
@@ -23,7 +24,7 @@ function CourseplayHud:init(vehicle)
     self.onOffIndicator:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
     self.onOffIndicator:setUVs(GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW))
     self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
-    self.onOffIndicator:setPosition(self.x + self.width - self.margin, self.y + self.height - self.margin)
+    self.onOffIndicator:setPosition(self.x + self.width - self.wMargin, self.y + self.height - self.hMargin)
 end
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
@@ -42,7 +43,8 @@ function CourseplayHud:draw(status)
 
     setTextAlignment(RenderText.ALIGN_LEFT)
     local textSize = 0.8 * self.textSize
-    renderText(self.x + self.margin, self.y + self.height - self.margin - textSize, textSize, self.vehicle:getName())
+    renderText(self.x + self.wMargin, self.y + self.height - textSize - self.hMargin, textSize, self.vehicle:getName())
+    renderText(self.x + self.wMargin, self.y + self.hMargin, textSize, self.vehicle:getCurrentCpCourseName())
 
     setTextAlignment(RenderText.ALIGN_RIGHT)
     local waypointProgress = '--/--'
@@ -52,7 +54,7 @@ function CourseplayHud:draw(status)
     else
         self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
     end
-    renderText(self.x + self.width - self.margin, self.y + self.margin, self.textSize, waypointProgress)
+    renderText(self.x + self.width - self.wMargin, self.y + self.hMargin, self.textSize, waypointProgress)
 
     self.onOffIndicator:render()
 end
