@@ -16,7 +16,7 @@ function CourseplaySpec.prerequisitesPresent(specializations)
 end
 
 function CourseplaySpec.registerEventListeners(vehicleType)	
---	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
+	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CourseplaySpec)
 --    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CourseplaySpec)
@@ -35,6 +35,29 @@ function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
    -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CourseplaySpec.getStartAIJobText)
   
 end
+
+function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
+    if self.isClient then
+        local spec = self.spec_courseplaySpec
+        self:clearActionEventsTable(spec.actionEvents)
+
+        --- Toggle mouse cursor action event
+        local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
+                CourseplaySpec.actionEventToggleMouse, false, true, false, true, nil)
+        g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
+        g_inputBinding:setActionEventText(actionEventId, "Toggle mouse")
+        g_inputBinding:setActionEventActive(true)
+    end
+end
+
+function CourseplaySpec:actionEventToggleMouse()
+    local showMouseCursor = not g_inputBinding:getShowMouseCursor()
+    CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'show mouse cursor %s', showMouseCursor)
+    g_inputBinding:setShowMouseCursor(showMouseCursor)
+    ---While mouse cursor is active, disable the camera rotations
+    CpGuiUtil.setCameraRotation(self, not showMouseCursor)
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 ---------------------------------------------------------------------------------------------------------------------------
@@ -55,7 +78,8 @@ function CourseplaySpec:saveToXMLFile(xmlFile, baseKey, usedModNames)
 end
 
 function CourseplaySpec:onEnterVehicle(isControlling)
-    
+    -- if the mouse cursor is shown when we enter the vehicle, disable camera rotations
+    CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor())
 end
 
 function CourseplaySpec:onLeaveVehicle(isControlling)

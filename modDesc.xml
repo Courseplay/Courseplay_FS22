@@ -151,7 +151,11 @@ La prossima versione di Courseplay.
 		<actionBinding action="CP_START_STOP">
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_h" />
 		</actionBinding>
-    </inputBinding>	
+
+		<actionBinding action="CP_TOGGLE_MOUSE">
+			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_RIGHT" />
+		</actionBinding>
+    </inputBinding>
 
 	<actions>
 		<action name="CP_DBG_CHANNEL_SELECT_PREVIOUS" />
@@ -161,5 +165,7 @@ La prossima versione di Courseplay.
 
 		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
 		<action name="CP_START_STOP" />
+
+		<action name="CP_TOGGLE_MOUSE" />
 	</actions>
 </modDesc>

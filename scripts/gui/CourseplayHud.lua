@@ -16,9 +16,6 @@ function CourseplayHud:init(vehicle)
 end
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
-    if button == 3 and isDown then
-        self:toggleMouseCursor()
-    end
     if button == 1 and isDown and
             posX > self.x and posX < self.x + self.width and
             posY > self.y and posY < self.y + self.height then
@@ -40,13 +37,4 @@ function CourseplayHud:draw()
     end
     renderText(self.x + self.width - self.margin, self.y + self.margin, self.textSize, waypointProgress)
 
-end
-
-function CourseplayHud:toggleMouseCursor()
-    local showMouseCursor = not g_inputBinding:getShowMouseCursor()
-    g_inputBinding:setShowMouseCursor(showMouseCursor)
-    ---While mouse cursor is active, disable the camera rotations
-    for _, camera in pairs(self.vehicle.spec_enterable.cameras) do
-        camera.isRotatable = not showMouseCursor
-    end
 end

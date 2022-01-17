@@ -234,6 +234,13 @@ function CpGuiUtil.setTarget(element,target)
 	element.targetName = target.name
 end
 
+function CpGuiUtil.setCameraRotation(vehicle, isRotatable)
+	for i, camera in pairs(vehicle.spec_enterable.cameras) do
+		CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, '    camera %d rotatable %s', i, isRotatable)
+		camera.isRotatable = isRotatable
+	end
+end
+
 local function fixFocus(self)
 	FocusManager:loadElementFromCustomValues(self.boxLayout)
 	self.boxLayout:invalidateLayout()
