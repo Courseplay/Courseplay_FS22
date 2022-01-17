@@ -196,7 +196,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		-- Unloading
 		self:driveUnloadOnField()
-	elseif self:isTurning() and not self:isTurningOnHeadland() then
+	elseif self:isTurning() then
 		if self:shouldHoldInTurnManeuver() then
 			self:setMaxSpeed(0)
 		end
