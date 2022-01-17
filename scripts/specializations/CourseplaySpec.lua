@@ -19,7 +19,7 @@ function CourseplaySpec.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CourseplaySpec)
---    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
@@ -53,7 +53,7 @@ end
 function CourseplaySpec:actionEventToggleMouse()
     local showMouseCursor = not g_inputBinding:getShowMouseCursor()
     CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'show mouse cursor %s', showMouseCursor)
-    g_inputBinding:setShowMouseCursor(showMouseCursor)
+    --g_inputBinding:setShowMouseCursor(showMouseCursor)
     ---While mouse cursor is active, disable the camera rotations
     CpGuiUtil.setCameraRotation(self, not showMouseCursor)
 end
@@ -67,6 +67,8 @@ function CourseplaySpec:onLoad(savegame)
     self.spec_courseplaySpec = self["spec_" .. specName]
     local spec = self.spec_courseplaySpec
     spec.hud = CourseplayHud(self)
+    self.status = CourseplayStatus(false)
+
 end
 
 function CourseplaySpec:onPostLoad(savegame)
@@ -124,8 +126,20 @@ function CourseplaySpec:getCollisionCheckActive(superFunc,...)
     end
 end
 
+function CourseplaySpec:onUpdateTick()
+    local strategy
+    if self:getIsCpFieldWorkActive() then
+        strategy = self:getCpDriveStrategy()
+    end
+    if strategy then
+        self.spec_courseplaySpec.status = strategy:getStatus()
+    else
+        self.spec_courseplaySpec.status = CourseplayStatus(false)
+    end
+end
+
 function CourseplaySpec:onDraw()
-    self.spec_courseplaySpec.hud:draw()
+    self.spec_courseplaySpec.hud:draw(self.spec_courseplaySpec.status)
 end
 
 function CourseplaySpec:cpInit()
