@@ -20,20 +20,20 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Début du travail dans le champ" />
 		<text name="CP_jobParameters_startAt_nearest"													text="point le plus proche" />
 		<text name="CP_jobParameters_startAt_first"														text="premier point" />
-		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="dernier point" />
 		<text name="CP_jobParameters_startAt_unload"													text="déchargement de la batteuse/ensileuse" />
 		<text name="CP_jobParameters_startAt_bales"														text="ramassage/enrubannage des bottes" />
 
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />
-		<text name="CP_job_baleCollect"																	text="CP:Bottes(collecte/enrub.)" />
+		<text name="CP_job_baleCollect"																	text="CP:Bottes(ramassage/enrub.)" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses" />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="L'ouvrier %s a interrompu son travail - la tremie est pleine!" />
 
 
 	<!-- VehicleSettings -->
@@ -60,8 +60,8 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Autoriser marche AR pour le pathfinding"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Si nécessaire, autorise le pathfinding à générer des trajets contenant des marches arrières."/>
 
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Autoriser les détours pour le pathfinding"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Si nécessaire, autorise le pathfinding à générer des trajets avec des détours, par exemple pour éviter des obstacles ou des cultures/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Replier l'outils à la fin de la course"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Active/Désactive le repli automatique de l'outil à la fin de la course."/>
@@ -274,7 +274,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Sélection du précèdent canal de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Canal actif de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini GUI"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini ATH"/>
 		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
 	</texts>
 </l10n>
