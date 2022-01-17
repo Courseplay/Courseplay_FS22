@@ -736,7 +736,7 @@ function CourseTurn:generateCalculatedTurn()
 		-- adjust turn course for tight turns only for headland corners by default
 		self.forceTightTurnOffset = self.steeringLength > 0
 	else
-		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
+		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.vehicle:getAIDirectionNode())
 		local turnOnField = self.settings.turnOnField:getValue()
 		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
 		-- if don't have to turn on field then pretend we have a lot of space
