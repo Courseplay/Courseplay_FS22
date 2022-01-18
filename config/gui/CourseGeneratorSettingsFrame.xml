@@ -10,7 +10,7 @@
 				<GuiElement type="bitmap" profile="topScrollClipper" name="topClipper" />
 				<GuiElement type="bitmap" profile="bottomScrollClipper"  name="bottomClipper" /> 
 				<GuiElement type="scrollingLayout" profile="ingameMenuSettingsLayout" id="courseGeneratorLayoutElements" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper">
-					
+						
 				</GuiElement>
 
 

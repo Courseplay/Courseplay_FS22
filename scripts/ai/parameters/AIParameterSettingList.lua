@@ -316,9 +316,9 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self.guiElement:setVisible(self:getIsVisible())
 	self.guiElement:setDisabled(self:getIsDisabled())
 
---	local max = FocusManager.FIRST_LOCK
---	local min = 50
---	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
+	local max = FocusManager.FIRST_LOCK
+	local min = 50
+	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
 end
 
 function AIParameterSettingList:resetGuiElement()
