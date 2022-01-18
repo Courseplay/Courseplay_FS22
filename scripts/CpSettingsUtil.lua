@@ -50,6 +50,7 @@ CpSettingsUtil.classTypes = {
 					- Value(?) :
 						- name (string): Global name, should be unique for all settings in this xml file.
 						- value (int): value
+						- isDisabled(string): function called by the setting from the parent container, to disable this value.
 				- Texts : 
 					- Text(?) :
 						- prefix (string): prefix used yes/no?, default = true
@@ -93,7 +94,8 @@ function CpSettingsUtil.init()
 	key = "Settings.SettingSubTitle(?).Setting(?).Values.Value(?)"
 	schema:register(XMLValueType.INT, key, "Setting value", nil)
 	schema:register(XMLValueType.STRING, key.."#name", "Setting value name", nil)
-	
+	schema:register(XMLValueType.STRING, key.."#isDisabled", "Setting value disabled", nil)
+
 	key = "Settings.SettingSubTitle(?).Setting(?).Texts.Text(?)"
 	schema:register(XMLValueType.STRING, key, "Setting value text", nil)
 	schema:register(XMLValueType.BOOL, key.."#prefix", "Setting value text is a prefix", true)
@@ -168,6 +170,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
 
 			settingParameters.values = {}
+			settingParameters.disabledValuesFuncs = {}
 			xmlFile:iterate(baseKey..".Values.Value", function (i, key)
 				local name = xmlFile:getValue(key.."#name")
 				local value = xmlFile:getValue(key)
@@ -175,6 +178,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 				if name ~= nil and name ~= "" then
 					class[name] = value
 				end
+				local isDisabled = xmlFile:getValue(key.."#isDisabled")
+				settingParameters.disabledValuesFuncs[value] = isDisabled
 			end)
 
 			settingParameters.texts = {}
@@ -229,18 +234,14 @@ end
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,parentGuiElement,genericSettingElement,genericSubTitleElement)
-	local subTitleElement = genericSubTitleElement:clone(genericSubTitleElement.parent,true)
-	subTitleElement:unlinkElement()
-	FocusManager:removeElement(subTitleElement)
-	local settingElement = genericSettingElement:clone(genericSettingElement.parent,true)
-	settingElement:unlinkElement()
-	FocusManager:removeElement(settingElement)
 	for _,data in ipairs(settingsBySubTitle) do 
-		local clonedSubTitleElement = subTitleElement:clone(parentGuiElement,true)
+		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
 		clonedSubTitleElement:setText(data.title)
+		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		for _,setting in ipairs(data.elements) do 
-			local clonedSettingElement = settingElement:clone(parentGuiElement,true)
+			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
 			setting:setGenericGuiElementValues(clonedSettingElement)
+			FocusManager:loadElementFromCustomValues(clonedSettingElement)
 		end
 	end
 	parentGuiElement:invalidateLayout()

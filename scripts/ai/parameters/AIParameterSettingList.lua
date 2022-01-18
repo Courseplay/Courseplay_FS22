@@ -10,10 +10,9 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.klass = class
 	self.name = data.name
 	self.data = data
-
 	if next(data.values) ~=nil then
-		self.values = data.values
-		self.texts = data.texts
+		self.values = table.copy(data.values)
+		self.texts = table.copy(data.texts)
 	else
 		self.values = {}
 		self.texts = {}
@@ -43,7 +42,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	end
 
 	self.callbacks = data.callbacks
-
+	self.disabledValuesFuncs = data.disabledValuesFuncs
 
 	self.guiElementId = data.uniqueID
 
@@ -127,6 +126,7 @@ function AIParameterSettingList:setToIx(ix)
 		self.current = ix
 		self:onChange()
 		self:updateGuiElementValues()
+		self:validateCurrentValue()
 	end
 end
 
@@ -147,8 +147,17 @@ function AIParameterSettingList:onChange()
 end
 
 function AIParameterSettingList:validateCurrentValue()
-	local new = self:checkAndSetValidValue(self.current)
-	self:setToIx(new)
+	local disabledFunc = self.disabledValuesFuncs and self.disabledValuesFuncs[self.values[self.current]]
+	if disabledFunc ~= nil and self:hasCallback(disabledFunc) then 
+		if self:getCallback(disabledFunc) then
+			self:debug("value %s is disabled",tostring(self.values[self.current]))
+			local new = self:checkAndSetValidValue(self.current+1)
+			self:setToIx(new)
+			return
+		end
+	end
+	self:debug("value %s is valid",tostring(self.values[self.current]))
+
 end
 
 --- Refresh the texts, if it depends on a changeable measurement unit.
@@ -293,9 +302,9 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self.guiElement.onClickCallback = function(setting,state,element)
 		setting:onClick(state)
 		CpGuiUtil.debugFocus(element.parent)
-		if not FocusManager:setFocus(element.parent) then 
-			FocusManager.currentFocusData.focusElement.focusActive = false 
-			FocusManager:setFocus(element.parent)
+		if not FocusManager:setFocus(element) then 
+			element.focusActive = false
+			FocusManager:setFocus(element)
 		end
 	end
 	self.guiElement.leftButtonElement.target = self
@@ -306,6 +315,10 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self:updateGuiElementValues()
 	self.guiElement:setVisible(self:getIsVisible())
 	self.guiElement:setDisabled(self:getIsDisabled())
+
+--	local max = FocusManager.FIRST_LOCK
+--	local min = 50
+--	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
 end
 
 function AIParameterSettingList:resetGuiElement()

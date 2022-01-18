@@ -13,45 +13,31 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.buttonOpenCourseGenerator:setCallback("onClickCallback", "onClickOpenCloseCourseGenerator")
 	self.buttonOpenCourseGenerator.parent:invalidateLayout()
 
-	local inGameMenu = g_currentMission.inGameMenu
-	self.courseGeneratorLayout = CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"ingameMenuSettingsBox",self)
-	self.courseGeneratorLayout:setSize(self.courseGeneratorLayout.size[1]-0.15,nil)
-	--- Moves the layout slightly to the left
-	local x,y = unpack(g_currentMission.inGameMenu.pagingTabList.size)
-	self.courseGeneratorLayout:setAbsolutePosition(x+0.02,self.courseGeneratorLayout.absPosition[2]-0.1)
-	self.courseGeneratorLayoutElements = self.courseGeneratorLayout:getDescendantById("boxLayout")
-	for i = #self.courseGeneratorLayoutElements.elements, 1, -1 do
-		self.courseGeneratorLayoutElements.elements[i]:delete()
-	end
-	
-	
-	--- Creates a background.
-	local bgElement = CpGuiUtil.cloneElementWithProfileName(inGameMenu.pageSettingsGeneral,"multiTextOptionSettingsBg")
-	local elements = self.courseGeneratorLayout.elements
-	table.insert(elements,1,bgElement)
-	bgElement.parent = self.courseGeneratorLayout
-	self.courseGeneratorLayout.elements = elements
 
-	local color = {0.0111, 0.0276, 0.0377, 0.95}
-	CpGuiUtil.changeColorForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",color)
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setPosition,self.courseGeneratorLayout.position[1]-0.01,self.courseGeneratorLayout.position[2])
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayout,"multiTextOptionSettingsBg",GuiElement.setSize,self.courseGeneratorLayout.size[1]*1.01,self.courseGeneratorLayout.size[2])
-	
-	--- Adds Setting elements to the layout.
-	local layout = g_currentMission.inGameMenu.pageSettingsGeneral.boxLayout
-	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(layout)
-	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(layout)
+	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements","courseGeneratorLayout","courseGeneratorHeader"})
+
+
+	local element = self:getDescendantByName("ingameMenuAI")
+
+	local xmlFile = loadXMLFile("Temp", Utils.getFilename("config/gui/CourseGeneratorSettingsFrame.xml",Courseplay.BASE_DIRECTORY))
+	g_gui:loadGuiRec(xmlFile, "CourseGeneratorLayout", element, self)
+	element:updateAbsolutePosition()
+	delete(xmlFile)
+	self:exposeControlsAsFields()
+
+
+	self.subTitlePrefab:unlinkElement()
+	FocusManager:removeElement(self.subTitlePrefab)
+	self.multiTextOptionPrefab:unlinkElement()
+	FocusManager:removeElement(self.multiTextOptionPrefab)
+
 	local settingsBySubTitle,pageTitle = CpCourseGeneratorSettings.getSettingSetup()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.courseGeneratorLayoutElements,genericSettingElement, genericSubTitleElement)
-	
-	CpGuiUtil.executeFunctionForElementsWithProfileName(self.courseGeneratorLayoutElements,"multiTextOptionSettingsTooltip",function (item) item.textMaxWidth = item.textMaxWidth/2 end)
-
+	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.courseGeneratorLayoutPageTitle = pageTitle
-
 	self.courseGeneratorLayoutElements:invalidateLayout()
 	self.courseGeneratorLayout:setVisible(false)
-	CpGuiUtil.setTarget(self.courseGeneratorLayout,self)
+	
 	--- Makes the last selected hotspot is not sold before reopening.
 	local function validateCurrentHotspot(currentMission,hotspot)
 		local page = currentMission.inGameMenu.pageAI
@@ -161,7 +147,7 @@ end
 function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	local title = string.format(self.courseGeneratorLayoutPageTitle,vehicle:getName())
-	CpGuiUtil.changeTextForElementsWithProfileName(self,"settingsMenuSubtitle",title)
+	self.courseGeneratorHeader:setText(title)
 	if vehicle ~=nil then 
 		if vehicle.getCourseGeneratorSettings then 
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )

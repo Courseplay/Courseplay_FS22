@@ -56,11 +56,12 @@ end
 
 function CpVehicleSettings:onPostAttach()
     local spec = self.spec_cpVehicleSettings
-
+    CpVehicleSettings.validateSettings(self)
 end
 
 function CpVehicleSettings:onPreDetach()
     local spec = self.spec_cpVehicleSettings
+    CpVehicleSettings.validateSettings(self)
 end
 
 --- Loads the generic settings setup from an xmlFile.
@@ -100,6 +101,13 @@ end
 --- Callback raised by a setting and executed as an vehicle event.
 function CpVehicleSettings:raiseCallback(callbackStr)
     SpecializationUtil.raiseEvent(self,callbackStr)
+end
+
+function CpVehicleSettings:validateSettings()
+    local spec = self.spec_cpVehicleSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:validateCurrentValue()
+    end
 end
 
 ------------------------------------------------------------------------------------------------------------------------

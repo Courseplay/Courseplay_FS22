@@ -41,6 +41,9 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onCpEmpty", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFinished", CpAIFieldWorker)
+
+    SpecializationUtil.registerEventListener(vehicleType, "onPostDetachImplement", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIFieldWorker)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
@@ -77,6 +80,7 @@ function CpAIFieldWorker:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJob:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_NEAREST_POINT)
+    spec.cpJob:setVehicle(self)
     --- Theses jobs are used for external mod, for example AutoDrive.
     spec.cpJobStartAtFirstWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
@@ -98,6 +102,16 @@ end
 
 function CpAIFieldWorker:onLeaveVehicle(isControlling)
    
+end
+
+function CpAIFieldWorker:onPostDetachImplement()
+    local spec = self.spec_cpAIFieldWorker
+    spec.cpJob:getCpJobParameters():validateSettings()
+end
+
+function CpAIFieldWorker:onPostAttachImplement()
+    local spec = self.spec_cpAIFieldWorker
+    spec.cpJob:getCpJobParameters():validateSettings()
 end
 
 function CpAIFieldWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<CourseGeneratorLayout>
+	<GuiElement type="empty">
+		<GuiElement type="bitmap" profile="cpCourseGeneratorBackground" position="30px -150px"  id="courseGeneratorLayout">
+			<GuiElement type="empty" profile="ingameMenuSettingsBox" position="10px -10px">
+				<!-- Static page header -->
+				<GuiElement type="empty" profile="ingameMenuFrameHeaderPanel">
+					<GuiElement type="text" profile="ingameMenuFrameHeaderText" id="courseGeneratorHeader"/>
+				</GuiElement>
+				<GuiElement type="bitmap" profile="topScrollClipper" name="topClipper" />
+				<GuiElement type="bitmap" profile="bottomScrollClipper"  name="bottomClipper" /> 
+				<GuiElement type="scrollingLayout" profile="ingameMenuSettingsLayout" id="courseGeneratorLayoutElements" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper">
+					
+				</GuiElement>
+
+
+				<!--	<GuiElement type="threePartBitmap" profile="verticalListSliderRightDocked">
+						<GuiElement type="slider" profile="verticalListSliderBar" dataElementId="courseGeneratorLayoutElements" handleFocus="false" />
+					</GuiElement> -->
+
+				<GuiElement type="text" profile="settingsMenuSubtitle" id="subTitlePrefab"/>
+
+				<GuiElement type="multiTextOption"  profile="multiTextOptionSettings" id="multiTextOptionPrefab">
+					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
+					<GuiElement type="button" profile="multiTextOptionSettingsRight"/>
+					<GuiElement type="text"   profile="multiTextOptionSettingsText" />
+					<GuiElement type="text"   profile="multiTextOptionSettingsTitle"/>
+					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
+					<GuiElement type="text"   profile="multiTextOptionSettingsTooltip"/> 
+				</GuiElement>
+			</GuiElement>
+		</GuiElement>
+	</GuiElement>
+</CourseGeneratorLayout>

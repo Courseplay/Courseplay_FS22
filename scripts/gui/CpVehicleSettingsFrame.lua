@@ -5,46 +5,54 @@
 	All the layout, gui elements are cloned from the general settings page of the in game menu.
 ]]--
 
-CpVehicleSettingsFrame = {}
+--VehicleSettingFrame
 
-function CpVehicleSettingsFrame.init()
-	local inGameMenu = g_gui.screenControllers[InGameMenu]
-	local function predicateFunc()
-		local inGameMenu = g_gui.screenControllers[InGameMenu]
-		local aiPage = inGameMenu.pageAI
-		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
-	end
+CpVehicleSettingsFrame = {
+	CONTROLS = {
+		HEADER = "header",
+		SUB_TITLE_PREFAB = "subTitlePrefab",
+		MULTI_TEXT_OPTION_PREFAB = "multiTextOptionPrefab",
+		SETTINGS_CONTAINER = "settingsContainer",
+		BOX_LAYOUT = "boxLayout"
+	},
+}
 
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pageSettingsGeneral,CpVehicleSettingsFrame
-									,predicateFunc,3,{896, 0, 128, 128})
-	inGameMenu.pageCpVehicleSettings = page
+local CpVehicleSettingsFrame_mt = Class(CpVehicleSettingsFrame, TabbedMenuFrameElement)
+
+function CpVehicleSettingsFrame.new(target, custom_mt)
+	local self = TabbedMenuFrameElement.new(target, custom_mt or CpVehicleSettingsFrame_mt)
+	self:registerControls(CpVehicleSettingsFrame.CONTROLS)
+	return self
 end
 
-function CpVehicleSettingsFrame:initialize()
-	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(self.boxLayout)
-	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(self.boxLayout)
+function CpVehicleSettingsFrame:onGuiSetupFinished()
+	CpVehicleSettingsFrame:superClass().onGuiSetupFinished(self)
+	
+	self.subTitlePrefab:unlinkElement()
+	FocusManager:removeElement(self.subTitlePrefab)
+	self.multiTextOptionPrefab:unlinkElement()
+	FocusManager:removeElement(self.multiTextOptionPrefab)
+
 	for i = #self.boxLayout.elements, 1, -1 do
 		self.boxLayout.elements[i]:delete()
 	end
 	local settingsBySubTitle,pageTitle = CpVehicleSettings.getSettingSetup()
 	self.pageTitle = pageTitle
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.boxLayout,genericSettingElement, genericSubTitleElement)
-
+	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.boxLayout:invalidateLayout()
 end
 
 --- Binds the settings of the selected vehicle to the gui elements.
 function CpVehicleSettingsFrame:onFrameOpen()
-	InGameMenuGeneralSettingsFrame:superClass().onFrameOpen(self)
+	CpVehicleSettingsFrame:superClass().onFrameOpen(self)
 	local pageAI = g_currentMission.inGameMenu.pageAI
 	local currentHotspot = pageAI.currentHotspot
 	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
-	
+	self.header:setText()
 	--- Changes the page title.
 	local title = string.format(self.pageTitle,self.currentVehicle:getName())
-	CpGuiUtil.changeTextForElementsWithProfileName(self,"ingameMenuFrameHeaderText",title)
-	
+	self.header:setText(title)	
 	if self.currentVehicle ~=nil then 
 		if self.currentVehicle.getCpSettings then 
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,self.currentVehicle, "onFrameOpen CpVehicleSettingsFrame" )
@@ -62,7 +70,7 @@ end
 
 --- Unbinds the settings of the selected vehicle to the gui elements.
 function CpVehicleSettingsFrame:onFrameClose()
-	InGameMenuGeneralSettingsFrame:superClass().onFrameClose(self)
+	CpVehicleSettingsFrame:superClass().onFrameClose(self)
 	if self.settings then
 		local currentHotspot = g_currentMission.inGameMenu.pageAI.currentHotspot
 		local vehicle = InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
