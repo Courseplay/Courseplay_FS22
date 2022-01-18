@@ -18,22 +18,46 @@ function CourseplayHud:init(vehicle)
     self.hMargin = self.textSize / 3
     self.wMargin = self.hMargin
 
+    self.dragLimit = 2
+
     local width, height = getNormalizedScreenValues(18 * uiScale, 18 * uiScale)
-    self.onOffIndicator = Overlay.new(g_baseUIFilename, 0, 0, width, height)
+    self.onOffIndicator = HudOverlayButton.new(g_baseUIFilename, 0, 0, width, height)
 
     self.onOffIndicator:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
     self.onOffIndicator:setUVs(GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW))
     self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
-    self.onOffIndicator:setPosition(self.x + self.width - self.wMargin, self.y + self.height - self.hMargin)
+    self:moveTo(self.x, self.y)
 end
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
-    if button == 1 and isDown and
-            posX > self.x and posX < self.x + self.width and
-            posY > self.y and posY < self.y + self.height then
-        self.vehicle:cpStartStopDriver()
+    if button == Input.MOUSE_BUTTON_LEFT then
+        if isDown and
+                posX > self.x and posX < self.x + self.width and
+                posY > self.y and posY < self.y + self.height then
+            if not self.dragging then
+                self.dragStartX = posX
+                self.dragOffsetX = posX - self.x
+                self.dragStartY = posY
+                self.dragOffsetY = posY - self.y
+                self.dragging = true
+            end
+        elseif isUp then
+            if self.dragging and (math.abs(posX - self.dragStartX) > self.dragLimit / g_screenWidth or
+                    math.abs(posY - self.dragStartY) > self.dragLimit / g_screenHeight) then
+                self:moveTo(posX - self.dragOffsetX, posY - self.dragOffsetY)
+            end
+            self.dragging = false
+        end
+        -- self.vehicle:cpStartStopDriver()
     end
 end
+
+function CourseplayHud:moveTo(x, y)
+    self.x, self.y = x, y
+    -- TODO: make this automatic for all elements of the HUD
+    self.onOffIndicator:setPosition(self.x + self.width - self.wMargin, self.y + self.height - self.hMargin)
+end
+
 
 ---@param status CourseplayStatus
 function CourseplayHud:draw(status)
