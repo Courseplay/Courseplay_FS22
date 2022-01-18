@@ -21,6 +21,10 @@ function CpHudElement:debug(str,...)
 end
 
 function CpHudElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
+    if wasUsed == nil then 
+        wasUsed = false
+    end
+    
     if self:isMouseOverArea(posX,posY) then 
         self.hovered = true
     else 
@@ -28,15 +32,21 @@ function CpHudElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
     end
 
     for _, child in ipairs(self.children) do
-        wasUsed = wasUsed or child:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
+        if child:mouseEvent(posX, posY, isDown, isUp, button,wasUsed) then 
+            wasUsed = true
+        end
     end
     return wasUsed
 end
 
 --- WIP: Not working for the on/off overlay
 function CpHudElement:isMouseOverArea(posX,posY)
-    local x,y = self:getPosition()
-    return GuiUtils.checkOverlayOverlap(posX, posY, x,y, self:getWidth(), self:getHeight())
+    local x = self.overlay.x
+	local y = self.overlay.y
+	local width = self.overlay.width
+	local height = self.overlay.height
+    local offsetX,offsetY = self.overlay.offsetX,self.overlay.offsetY
+    return GuiUtils.checkOverlayOverlap(posX, posY, x + offsetX, y + offsetY, width, height)
 end
 
 function CpHudElement:setCallback(callbackStr,class,func,...)
@@ -77,7 +87,7 @@ end
 function CpHudButtonElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
     if self:isMouseOverArea(posX,posY) then 
         if button == Input.MOUSE_BUTTON_LEFT then
-            if isUp then 
+            if isDown then 
                 self:onClickPrimary(posX,posY)
                 wasUsed = true
             end
@@ -93,9 +103,9 @@ function CpHudButtonElement:onClickPrimary(posX,posY)
 end
 
 --- Generic Hud text element.
----@class CpTextHudElement : CpHudElement
+---@class CpTextHudElement : CpHudButtonElement
 CpTextHudElement = {}
-local CpTextHudElement_mt = Class(CpTextHudElement, CpHudElement)
+local CpTextHudElement_mt = Class(CpTextHudElement, CpHudButtonElement)
 CpTextHudElement.SHADOW_OFFSET_FACTOR = 0.05
 function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignment, textColor, textBold,customMt)
     if customMt == nil then
@@ -105,7 +115,7 @@ function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignme
     local backgroundOverlay = Overlay.new(nil, 0, 0, 0, 0)
 
 	backgroundOverlay:setColor(1, 1, 1, 1)
-    local self = CpHudElement.new(backgroundOverlay, parentHudElement, customMt)
+    local self = CpHudButtonElement.new(backgroundOverlay, parentHudElement, customMt)
  
     self.text = ""
 	self.textSize = textSize or 0

@@ -11,12 +11,14 @@ CourseplayHud.basePosition = {
 
 CourseplayHud.baseSize = {
     x = 300,
-    y = 60
+    y = 120
 }
 
 CourseplayHud.defaultFontSize = 20
 
 CourseplayHud.dragDelayMs = 15
+
+CourseplayHud.numLines = 3
 
 function CourseplayHud:init(vehicle)
     self.vehicle = vehicle
@@ -36,10 +38,12 @@ function CourseplayHud:init(vehicle)
     self.baseHud:setDimension(self.width, self.height)
     
 
+    self.lineHeight = self.height/5
+
     self.lines = 1
     self.textSize = self.height / 3
-    self.hMargin = self.textSize / 3
-    self.wMargin = self.hMargin
+    self.hMargin = self.lineHeight
+    self.wMargin = self.lineHeight/2
 
     self.dragLimit = 2
 
@@ -52,13 +56,23 @@ function CourseplayHud:init(vehicle)
     self.onOffIndicator = CpHudButtonElement.new(onOffIndicatorOverlay,self.baseHud)
     self.onOffIndicator:setPosition(self.x + self.width - self.wMargin, self.y + self.height - self.hMargin)
     self.onOffIndicator:setCallback("onClickPrimary",self.vehicle,self.vehicle.cpStartStopDriver)
-    --- Creates vehicle name text
-    local textSize = 0.8 * self.textSize
-    local x,y = self.x + self.wMargin, self.y + self.height - textSize - self.hMargin
-    self.vehicleName = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize)
+    
+    
     --- Creates course name text
-    x,y = self.x + self.wMargin, self.y + self.hMargin
+    local x,y = self.x + self.wMargin, self.y + self.hMargin
     self.courseName = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
+
+    --- Creates starting point text
+    local x,y = self.x + self.wMargin, self.y + self.lineHeight + self.hMargin
+    self.startingPoint = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
+    self.startingPoint:setCallback("onClickPrimary",self.vehicle,function (vehicle)
+        vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt:setNextItem()
+    end)
+
+    --- Creates vehicle name text
+    local x,y = self.x + self.wMargin, self.y + 2* self.lineHeight + self.hMargin
+    self.vehicleName = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize)
+
     --- Creates waypoint progress text
     x,y = self.x + self.width - self.wMargin, self.y + self.hMargin
     self.waypointProgress = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize+2,RenderText.ALIGN_RIGHT)
@@ -68,7 +82,6 @@ end
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
     if not self.dragging then 
-        --- WIP click callbacks are not yet working
         if not self.baseHud:isMouseOverArea(posX,posY) then 
             return
         end
@@ -97,7 +110,6 @@ function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
             end
             self.dragging = false
         end
-        -- self.vehicle:cpStartStopDriver()
     end
     --- Handles the dragging
     if self.dragging and g_time > (self.lastDragTimeStamp + self.dragDelayMs) then 
@@ -123,9 +135,9 @@ end
 function CourseplayHud:draw(status)
     
     --- Set variable data.
-    self.courseName.text = self.vehicle:getCurrentCpCourseName()
-    self.vehicleName.text = self.vehicle:getName()
-
+    self.courseName:setTextDetails(self.vehicle:getCurrentCpCourseName())
+    self.vehicleName:setTextDetails(self.vehicle:getName())
+    self.startingPoint:setTextDetails(self.vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt:getString())
     local waypointProgress = '--/--'
     if status.isActive and status.currentWaypointIx then
         self.onOffIndicator:setColor(unpack(CourseplayHud.ON_COLOR))
@@ -133,7 +145,7 @@ function CourseplayHud:draw(status)
     else
         self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
     end
-    self.waypointProgress.text = waypointProgress
+    self.waypointProgress:setTextDetails(waypointProgress)
     self.baseHud:draw()
 end
 
