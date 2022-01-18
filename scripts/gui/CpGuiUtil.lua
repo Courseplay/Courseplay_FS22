@@ -234,10 +234,29 @@ function CpGuiUtil.setTarget(element,target)
 	element.targetName = target.name
 end
 
-function CpGuiUtil.setCameraRotation(vehicle, isRotatable)
+--- Enable/disable camera rotation when a vehicle is selected. We want to disable camera rotation per mouse
+--- when we enable the mouse cursor so it can be used click controls on a GUI
+---@param vehicle table
+---@param enableRotation boolean
+---@param savedRotatableInfo boolean[] the caller may want to pass in a variable to save the original isRotatable
+--- setting of the camera so it will only enabled again when it was originally enabled
+function CpGuiUtil.setCameraRotation(vehicle, enableRotation, savedRotatableInfo)
+	if not savedRotatableInfo then
+		savedRotatableInfo = {}
+	end
 	for i, camera in pairs(vehicle.spec_enterable.cameras) do
-		CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, '    camera %d rotatable %s', i, isRotatable)
-		--camera.isRotatable = isRotatable
+		local isRotatable
+		if enableRotation then
+			-- restore original setting if exists
+			isRotatable = savedRotatableInfo[camera] or true
+			CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, '    camera %d restore isRotatable %s', i, isRotatable)
+		else
+			-- save original rotatable setting
+			CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, '    camera %d disable rotation, current %s', i, camera.isRotatable)
+			savedRotatableInfo[camera] = camera.isRotatable
+			camera.isRotatable = false
+		end
+		camera.isRotatable = isRotatable
 	end
 end
 

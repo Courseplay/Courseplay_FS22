@@ -37,13 +37,12 @@ function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
 end
 
 function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
-    if self.isClient then
-        local spec = self.spec_courseplaySpec
-        self:clearActionEventsTable(spec.actionEvents)
-
+    --print(string.format('%s %s %s', self:getName(), isActiveForInput, isActiveForInputIgnoreSelection))
+    if isActiveForInputIgnoreSelection or self == g_currentMission.controlledVehicle then
         --- Toggle mouse cursor action event
-        local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
-                CourseplaySpec.actionEventToggleMouse, false, true, false, true, nil)
+        local _, actionEventId = g_inputBinding:registerActionEvent(InputAction.CP_TOGGLE_MOUSE, self,
+                CourseplaySpec.actionEventToggleMouse, false, true, false, true)
+
         g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
         g_inputBinding:setActionEventText(actionEventId, "Toggle mouse")
         g_inputBinding:setActionEventActive(true)
@@ -53,9 +52,9 @@ end
 function CourseplaySpec:actionEventToggleMouse()
     local showMouseCursor = not g_inputBinding:getShowMouseCursor()
     CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'show mouse cursor %s', showMouseCursor)
-    --g_inputBinding:setShowMouseCursor(showMouseCursor)
+    g_inputBinding:setShowMouseCursor(showMouseCursor)
     ---While mouse cursor is active, disable the camera rotations
-    CpGuiUtil.setCameraRotation(self, not showMouseCursor)
+    CpGuiUtil.setCameraRotation(self, not showMouseCursor, self.spec_courseplaySpec.savedCameraRotatableInfo)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -81,7 +80,8 @@ end
 
 function CourseplaySpec:onEnterVehicle(isControlling)
     -- if the mouse cursor is shown when we enter the vehicle, disable camera rotations
-    CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor())
+    CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor(),
+            self.spec_courseplaySpec.savedCameraRotatableInfo)
 end
 
 function CourseplaySpec:onLeaveVehicle(isControlling)
