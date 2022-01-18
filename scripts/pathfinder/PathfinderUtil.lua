@@ -64,8 +64,8 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
             rootVehicle = self.trailer:getRootVehicle(),
             dFront = buffer or 0,
             dRear = - self.trailer.size.length - (buffer or 0),
-            dLeft = self.trailer.size.width / 2 + (buffer or 0),
-            dRight = -self.trailer.size.width / 2 - (buffer or 0)
+            dLeft = AIUtil.getWidth(self.trailer) / 2 + (buffer or 0),
+            dRight = -AIUtil.getWidth(self.trailer) / 2 - (buffer or 0)
         }
 				local inputAttacherJoint = self.trailer:getActiveInputAttacherJoint()
 				if inputAttacherJoint then
@@ -92,8 +92,8 @@ function PathfinderUtil.VehicleData:getRectangleForImplement(implement, referenc
     local rectangle = {
         dFront = rootToReferenceNodeOffset + implement.object.size.length / 2 + implement.object.size.lengthOffset + (buffer or 0),
         dRear = rootToReferenceNodeOffset - implement.object.size.length / 2 + implement.object.size.lengthOffset - (buffer or 0),
-        dLeft = implement.object.size.width / 2,
-        dRight = -implement.object.size.width / 2
+        dLeft = AIUtil.getWidth(implement.object) / 2,
+        dRight = -AIUtil.getWidth(implement.object) / 2
     }
     -- now see if we have something better, then use that. Since any of the six markers may be missing, we
     -- check them one by one.

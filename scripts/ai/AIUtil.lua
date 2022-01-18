@@ -560,3 +560,12 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
 	return loweringDurationMs
 end
+
+function AIUtil.getWidth(vehicle)
+	if vehicle.getAIAgentSize then
+		local width, length, lengthOffset, frontOffset, height = vehicle:getAIAgentSize()
+		return width
+	else
+		return vehicle.size.width
+	end
+end

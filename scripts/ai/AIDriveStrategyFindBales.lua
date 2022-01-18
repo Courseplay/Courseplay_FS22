@@ -234,14 +234,15 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     if not self.pathfinder or not self.pathfinder:isActive() then
         self.pathfindingStartedAt = g_currentMission.time
         local safeDistanceFromBale = bale:getSafeDistance()
-        local halfVehicleWidth = self.vehicle.size.width and self.vehicle.size.width / 2 or 1.5
-        self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f',
-                bale:getId(), safeDistanceFromBale, halfVehicleWidth)
+        local halfVehicleWidth = AIUtil.getWidth(self.vehicle) / 2
         local goal = self:getBaleTarget(bale)
         local configuredOffset = self:getConfiguredOffset()
         local offset = Vector(0, safeDistanceFromBale +
                 (configuredOffset and configuredOffset or (halfVehicleWidth + 0.2)))
         goal:add(offset:rotate(goal.t))
+        self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f, configured offset %s',
+                bale:getId(), safeDistanceFromBale, halfVehicleWidth,
+                configuredOffset and string.format('%.1f', configuredOffset) or 'n/a')
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid =
         PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, self.fieldId,
