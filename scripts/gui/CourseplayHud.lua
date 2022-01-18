@@ -61,7 +61,34 @@ function CourseplayHud:init(vehicle)
     --- Creates course name text
     local x,y = self.x + self.wMargin, self.y + self.hMargin
     self.courseName = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
+    self.courseName:setCallback("onClickPrimary",self.vehicle,function (vehicle)
+        local inGameMenu =  g_currentMission.inGameMenu
+        local pageAI = inGameMenu.pageAI
+		pageAI.controlledVehicle = vehicle
+		pageAI.currentHotspot = nil
+        inGameMenu:updatePages()
+        g_gui:showGui("InGameMenu")
+        inGameMenu:changeScreen(InGameMenu)
+        --- With a current course the course manager will be opened and with no course the course generator.
+        if vehicle:hasCpCourse() then
+            --- Opens the course manager if possible.
+            local courseManagerPageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCourseManager)
 
+            inGameMenu.pageSelector:setState(courseManagerPageIx, true)
+        else 
+            --- Opens the course generator if possible.
+            local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageAI)
+            inGameMenu.pageSelector:setState(pageIx, true)
+            inGameMenu.pageAI:onCreateJob()
+            for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
+                if inGameMenu.pageAI.jobTypeInstances[index]:isa(AIJobFieldWorkCp) then 
+                    inGameMenu.pageAI:setActiveJobTypeSelection(index)
+                    break
+                end
+            end
+            inGameMenu.pageAI:onClickOpenCloseCourseGenerator()
+        end  
+    end)
     --- Creates starting point text
     local x,y = self.x + self.wMargin, self.y + self.lineHeight + self.hMargin
     self.startingPoint = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
@@ -72,6 +99,19 @@ function CourseplayHud:init(vehicle)
     --- Creates vehicle name text
     local x,y = self.x + self.wMargin, self.y + 2* self.lineHeight + self.hMargin
     self.vehicleName = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize)
+    self.vehicleName:setCallback("onClickPrimary",self.vehicle,function ()
+         --- Opens the vehicle settings if possible.
+        local inGameMenu =  g_currentMission.inGameMenu
+        local pageAI = inGameMenu.pageAI
+		pageAI.controlledVehicle = g_currentMission.controlledVehicle
+		pageAI.currentHotspot = nil
+        inGameMenu:updatePages()
+        g_gui:showGui("InGameMenu")
+        inGameMenu:changeScreen(InGameMenu)
+        local vehiclePageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpVehicleSettings)
+
+		inGameMenu.pageSelector:setState(vehiclePageIx, true)
+    end)
 
     --- Creates waypoint progress text
     x,y = self.x + self.width - self.wMargin, self.y + self.hMargin

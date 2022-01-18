@@ -107,6 +107,7 @@ end
 CpTextHudElement = {}
 local CpTextHudElement_mt = Class(CpTextHudElement, CpHudButtonElement)
 CpTextHudElement.SHADOW_OFFSET_FACTOR = 0.05
+CpTextHudElement.highlightedColor = {0,0,1,1}
 function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignment, textColor, textBold,customMt)
     if customMt == nil then
         customMt = CpTextHudElement_mt
@@ -211,9 +212,12 @@ function CpTextHudElement:draw()
 		setTextColor(r, g, b, a * self.overlay.a)
 		renderText(posX + offset, posY - offset, self.screenTextSize, self.text)
 	end
-
-	local r, g, b, a = unpack(self.textColor)
-
+    local r, g, b, a
+    if self.hovered then 
+        r, g, b, a = unpack(CpTextHudElement.highlightedColor)
+    else 
+        r, g, b, a = unpack(self.textColor)
+    end
 	setTextColor(r, g, b, a * self.overlay.a)
 	renderText(posX, posY, self.screenTextSize, self.text)
 	setTextAlignment(RenderText.ALIGN_LEFT)
