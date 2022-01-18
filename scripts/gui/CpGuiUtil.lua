@@ -2,7 +2,7 @@
 ---@class CpGuiUtil
 CpGuiUtil = {}
 
-function CpGuiUtil.fixInGameMenu(frame,pageName,uvs,position)
+function CpGuiUtil.fixInGameMenu(frame,pageName,uvs,position,predicateFunc)
 	local inGameMenu = g_gui.screenControllers[InGameMenu]
 
 	-- remove all to avoid warnings
@@ -38,12 +38,7 @@ function CpGuiUtil.fixInGameMenu(frame,pageName,uvs,position)
 
 	inGameMenu.pagingElement:updateAbsolutePosition()
 	inGameMenu.pagingElement:updatePageMapping()
-
-	local function predicateFunc()
-		local inGameMenu = g_gui.screenControllers[InGameMenu]
-		local aiPage = inGameMenu.pageAI
-		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
-	end
+	
 	inGameMenu:registerPage(inGameMenu[pageName], position, predicateFunc)
 	local iconFileName = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
 	inGameMenu:addPageTab(inGameMenu[pageName],iconFileName, GuiUtils.getUVs(uvs))

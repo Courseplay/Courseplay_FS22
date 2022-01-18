@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI name="cpGlobalSettings">
     <GuiElement type="empty" profile="uiInGameMenuFrame">
-        <!-- Static page header -->
         <GuiElement type="empty" profile="ingameMenuFrameHeaderPanel">
             <GuiElement type="bitmap" profile="menuHeaderIcon" size="64px 64px"/>
             <GuiElement type="text" profile="ingameMenuFrameHeaderText" id="header"/>
@@ -18,7 +17,6 @@
 			<GuiElement type="text"   profile="multiTextOptionSettingsTooltip"/>
 		</GuiElement>
 
-        <!-- Layouted settings box -->
         <GuiElement type="empty" profile="ingameMenuSettingsBox" id="settingsContainer">
             <GuiElement type="bitmap" profile="topScrollClipper" name="topClipper" />
             <GuiElement type="bitmap" profile="bottomScrollClipper" name="bottomClipper" />

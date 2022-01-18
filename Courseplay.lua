@@ -70,12 +70,24 @@ function Courseplay:setupGui()
 	local vehicleSettingsFrame = CpVehicleSettingsFrame.new()
 	local globalSettingsFrame = CpGlobalSettingsFrame.new()
 	local courseManagerFrame = CpCourseManagerFrame.new(self.courseStorage)
-	g_gui:loadGui(Utils.getFilename("config/gui/VehicleSettingsFrame.xml",Courseplay.BASE_DIRECTORY), "CpVehicleSettingsFrame", vehicleSettingsFrame,true)
-	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml",Courseplay.BASE_DIRECTORY), "CpGlobalSettingsFrame", globalSettingsFrame,true)
-	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml",Courseplay.BASE_DIRECTORY), "CpCourseManagerFrame", courseManagerFrame,true)
-	CpGuiUtil.fixInGameMenu(vehicleSettingsFrame,"pageCpVehicleSettings",{896, 0, 128, 128},3)
-	CpGuiUtil.fixInGameMenu(globalSettingsFrame,"pageCpGlobalSettings",{768, 0, 128, 128},4)
-	CpGuiUtil.fixInGameMenu(courseManagerFrame,"pageCpCourseManager",{256,0,128,128},5)
+	g_gui:loadGui(Utils.getFilename("config/gui/VehicleSettingsFrame.xml",Courseplay.BASE_DIRECTORY),
+				 "CpVehicleSettingsFrame", vehicleSettingsFrame,true)
+	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml",Courseplay.BASE_DIRECTORY),
+				 "CpGlobalSettingsFrame", globalSettingsFrame,true)
+	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml",Courseplay.BASE_DIRECTORY),
+				 "CpCourseManagerFrame", courseManagerFrame,true)
+	local function predicateFunc()
+		local inGameMenu = g_gui.screenControllers[InGameMenu]
+		local aiPage = inGameMenu.pageAI
+		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
+	end
+	
+	CpGuiUtil.fixInGameMenu(vehicleSettingsFrame,"pageCpVehicleSettings",
+			{896, 0, 128, 128},3,predicateFunc)
+	CpGuiUtil.fixInGameMenu(globalSettingsFrame,"pageCpGlobalSettings",
+			{768, 0, 128, 128},4,function () return true end)
+	CpGuiUtil.fixInGameMenu(courseManagerFrame,"pageCpCourseManager",
+			{256,0,128,128},5,predicateFunc)
 	
 end
 
@@ -86,7 +98,8 @@ HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapDat
 
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
-		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", "Courseplay", g_Courseplay.schema)
+		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", 
+				"Courseplay", g_Courseplay.schema)
 		g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.BASE_KEY)
 		xmlFile:save()
 		xmlFile:delete()
