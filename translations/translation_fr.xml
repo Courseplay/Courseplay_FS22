@@ -61,7 +61,7 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Si nécessaire, autorise le pathfinding à générer des trajets contenant des marches arrières."/>
 
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Autoriser les détours pour le pathfinding"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Si nécessaire, autorise le pathfinding à générer des trajets avec des détours, par exemple pour éviter des obstacles ou des cultures/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Si nécessaire, autorise le pathfinding à générer des trajets avec des détours, par exemple pour éviter des obstacles ou des cultures"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Replier l'outils à la fin de la course"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Active/Désactive le repli automatique de l'outil à la fin de la course."/>
@@ -183,8 +183,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Bords longs" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manuel" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Orientation des rangs" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle des rangs (0 = Nord) en manuel" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Orientation des rangs" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle des rangs (0 = Nord) en manuel" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestion des îlots" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportement du tracé lors de la présence d'îlots dans le champ" />
