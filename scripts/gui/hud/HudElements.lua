@@ -107,7 +107,7 @@ end
 CpTextHudElement = {}
 local CpTextHudElement_mt = Class(CpTextHudElement, CpHudButtonElement)
 CpTextHudElement.SHADOW_OFFSET_FACTOR = 0.05
-CpTextHudElement.highlightedColor = {0,0,1,1}
+CpTextHudElement.highlightedColor = {42 / 255, 193 / 255, 237 / 255, 1}
 function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignment, textColor, textBold,customMt)
     if customMt == nil then
         customMt = CpTextHudElement_mt
