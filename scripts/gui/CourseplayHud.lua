@@ -122,7 +122,7 @@ function CourseplayHud:openCourseGeneratorGui(vehicle)
         local job = inGameMenu.pageAI.jobTypeInstances[index]
         if job:isa(AIJobFieldWorkCp) then 
             if not vehicle:hasCpCourse() then 
-                -- Sets the start position relative to the vehicle position, but only if 
+                -- Sets the start position relative to the vehicle position, but only if no course is set.
                 job:resetStartPositionAngle(vehicle)
                 job:setValues()
                 local x, z, rot = job:getTarget()
