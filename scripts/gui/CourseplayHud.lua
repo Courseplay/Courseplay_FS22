@@ -59,7 +59,7 @@ function CourseplayHud:init(vehicle)
     
     --- Cp icon 
     local cpIconWidth, height = getNormalizedScreenValues(30 * self.uiScale, 30 * self.uiScale)
-    local cpIconOverlay =  Overlay.new(Utils.getFilename("img/icon_courseplay.dds",Courseplay.BASE_DIRECTORY), 0, 0,cpIconWidth, height)
+    local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds",Courseplay.BASE_DIRECTORY), 0, 0,cpIconWidth, height)
     cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
     cpIconOverlay:setUVs(GuiUtils.getUVs({80,26,144,144},{256,256}))
     self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
