@@ -49,26 +49,26 @@ function CourseplayHud:init(vehicle)
 
     --- Create start/stop button
     local width, height = getNormalizedScreenValues(18 * self.uiScale, 18 * self.uiScale)
-    local onOffIndicatorOverlay =  Overlay.new(g_baseUIFilename, 0, 0,width, height)
+    local onOffIndicatorOverlay =  Overlay.new(g_baseUIFilename, 0, 0, width, height)
     onOffIndicatorOverlay:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
     onOffIndicatorOverlay:setUVs(GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW))
     onOffIndicatorOverlay:setColor(unpack(CourseplayHud.OFF_COLOR))
     self.onOffIndicator = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)
     self.onOffIndicator:setPosition(self.x + self.width - self.wMargin, self.y + self.height - self.hMargin)
-    self.onOffIndicator:setCallback("onClickPrimary",self.vehicle,self.vehicle.cpStartStopDriver)
+    self.onOffIndicator:setCallback("onClickPrimary", self.vehicle, self.vehicle.cpStartStopDriver)
     
     --- Cp icon 
     local cpIconWidth, height = getNormalizedScreenValues(30 * self.uiScale, 30 * self.uiScale)
     local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds",Courseplay.BASE_DIRECTORY), 0, 0,cpIconWidth, height)
     cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-    cpIconOverlay:setUVs(GuiUtils.getUVs({80,26,144,144},{256,256}))
+    cpIconOverlay:setUVs(GuiUtils.getUVs({80, 26, 144, 144}, {256,256}))
     self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
     self.cpIcon:setPosition(self.x + self.wMargin, self.y + self.height - self.hMargin)
     
     --- Creates course name text
     local x, y = self.x + self.wMargin, self.y + self.hMargin
-    self.courseName = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
-    self.courseName:setCallback("onClickPrimary",self.vehicle,function (vehicle)
+    self.courseName = CpTextHudElement.new(self.baseHud, x, y, self.defaultFontSize)
+    self.courseName:setCallback("onClickPrimary", self.vehicle, function (vehicle)
        self:openCourseGeneratorGui(vehicle)
     end)
     --- Creates starting point text
@@ -80,18 +80,18 @@ function CourseplayHud:init(vehicle)
 
     --- Creates vehicle name text
     x, y = self.x +  2*self.wMargin + cpIconWidth, self.y + self.height - self.hMargin
-    self.vehicleName = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize)
-    self.vehicleName:setCallback("onClickPrimary",self.vehicle,function (vehicle)
+    self.vehicleName = CpTextHudElement.new(self.baseHud, x, y,  self.defaultFontSize)
+    self.vehicleName:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         self:openVehicleSettingsGui(vehicle)
     end)
 
     --- Creates waypoint progress text
     x,y = self.x + self.width - self.wMargin, self.y + self.hMargin
-    self.waypointProgress = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize+2,RenderText.ALIGN_RIGHT)
+    self.waypointProgress = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize+2, RenderText.ALIGN_RIGHT)
 
     --- Creates course time progress text
     x,y = self.x + self.width - self.wMargin, self.y + self.lineHeight + self.hMargin
-    self.timeProgress = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize+2,RenderText.ALIGN_RIGHT)
+    self.timeProgress = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize+2, RenderText.ALIGN_RIGHT)
 
 end
 
@@ -115,16 +115,28 @@ end
 function CourseplayHud:openCourseGeneratorGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
      --- Opens the course generator if possible.
-     local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageAI)
-     inGameMenu.pageSelector:setState(pageIx, true)
-     inGameMenu.pageAI:onCreateJob()
-     for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
-         if inGameMenu.pageAI.jobTypeInstances[index]:isa(AIJobFieldWorkCp) then 
-             inGameMenu.pageAI:setActiveJobTypeSelection(index)
-             break
-         end
-     end
-     inGameMenu.pageAI:onClickOpenCloseCourseGenerator()
+    local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageAI)
+    inGameMenu.pageSelector:setState(pageIx, true)
+    inGameMenu.pageAI:onCreateJob()
+    for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
+        local job = inGameMenu.pageAI.jobTypeInstances[index]
+        if job:isa(AIJobFieldWorkCp) then 
+            if not vehicle:hasCpCourse() then 
+                -- Sets the start position relative to the vehicle position, but only if 
+                job:resetStartPositionAngle(vehicle)
+                job:setValues()
+                local x, z, rot = job:getTarget()
+                inGameMenu.pageAI.aiTargetMapHotspot:setWorldPosition(x, z)
+                if rot ~= nil then
+                    inGameMenu.pageAI.aiTargetMapHotspot:setWorldRotation(rot + math.pi)
+                end
+
+            end
+            inGameMenu.pageAI:setActiveJobTypeSelection(index)
+            break
+        end
+    end
+    inGameMenu.pageAI:onClickOpenCloseCourseGenerator()
 end
 
 function CourseplayHud:openVehicleSettingsGui(vehicle)
@@ -136,17 +148,17 @@ end
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
     if not self.dragging then 
-        if not self.baseHud:isMouseOverArea(posX,posY) then 
+        if not self.baseHud:isMouseOverArea(posX, posY) then 
             return
         end
-        local wasUsed = self.baseHud:mouseEvent(posX,posY, isDown, isUp, button)
+        local wasUsed = self.baseHud:mouseEvent(posX, posY, isDown, isUp, button)
         if wasUsed then 
             return
         end
     end
 
     if button == Input.MOUSE_BUTTON_LEFT then
-        if isDown and self.baseHud:isMouseOverArea(posX,posY) then
+        if isDown and self.baseHud:isMouseOverArea(posX, posY) then
             if not self.dragging then
                 self.dragStartX = posX
                 self.dragOffsetX = posX - self.x
@@ -181,7 +193,7 @@ end
 
 function CourseplayHud:moveTo(x, y)
     self.x, self.y = x, y
-    self.baseHud:setPosition(x,y)
+    self.baseHud:setPosition(x, y)
 end
 
 

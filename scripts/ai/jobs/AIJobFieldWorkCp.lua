@@ -162,3 +162,13 @@ AIJobTypeManager.loadMapData = Utils.appendedFunction(AIJobTypeManager.loadMapDa
 function AIJobFieldWorkCp:getIsAvailableForVehicle(vehicle)
 	return vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork()
 end
+
+
+function AIJobFieldWorkCp:resetStartPositionAngle(vehicle)
+	local x, _, z = getWorldTranslation(vehicle.rootNode) 
+	local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
+
+	self.positionAngleParameter:setPosition(x, z)
+	local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
+	self.positionAngleParameter:setAngle(angle)
+end
