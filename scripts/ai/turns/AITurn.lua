@@ -524,7 +524,7 @@ function CourseTurn:getForwardSpeed()
 		if self.turnCourse:getDistanceFromFirstWaypoint(currentWpIx) > 10 and
 				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 10 then
 			-- in the middle of a long turn maneuver we can drive faster...
-			return 1.5 * AITurn.getForwardSpeed(self)
+			return self.settings.fieldSpeed:getValue()
 		else
 			return AITurn.getForwardSpeed(self)
 		end

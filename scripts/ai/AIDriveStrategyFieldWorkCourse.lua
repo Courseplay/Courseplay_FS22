@@ -129,7 +129,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         end
         self:setMaxSpeed(maxSpeed)
     else
-        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
     ----------------------------------------------------------------
