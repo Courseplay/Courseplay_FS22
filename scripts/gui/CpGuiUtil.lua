@@ -208,11 +208,11 @@ function CpGuiUtil.getFormatTimeText(seconds)
 	seconds = seconds %60
 	minutes = minutes %60
 	if hours > 0 then 
-		return string.format("%dhour %dmin %dsec",hours,minutes,seconds)
+		return string.format("%dh/%dm/%ds",hours,minutes,seconds)
 	elseif minutes>0 then 
-		return string.format("%dmin %dsec",minutes,seconds)
+		return string.format("%dm/%ds",minutes,seconds)
 	else 
-		return string.format("%dsec",seconds)
+		return string.format("%ds",seconds)
 	end
 end
 

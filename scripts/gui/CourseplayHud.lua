@@ -10,7 +10,7 @@ CourseplayHud.basePosition = {
 }
 
 CourseplayHud.baseSize = {
-    x = 300,
+    x = 360,
     y = 120
 }
 
@@ -93,7 +93,7 @@ function CourseplayHud:init(vehicle)
     x, y = self.x + self.wMargin, self.y + self.lineHeight + self.hMargin
     self.startingPoint = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
     self.startingPoint:setCallback("onClickPrimary",self.vehicle,function (vehicle)
-        vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt:setNextItem()
+        vehicle:getCpStartingPointSetting():setNextItem()
     end)
 
     --- Creates vehicle name text
@@ -116,6 +116,10 @@ function CourseplayHud:init(vehicle)
     --- Creates waypoint progress text
     x,y = self.x + self.width - self.wMargin, self.y + self.hMargin
     self.waypointProgress = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize+2,RenderText.ALIGN_RIGHT)
+
+    --- Creates course time progress text
+    x,y = self.x + self.width - self.wMargin, self.y + self.lineHeight + self.hMargin
+    self.timeProgress = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize+2,RenderText.ALIGN_RIGHT)
 
     
 end
@@ -177,15 +181,14 @@ function CourseplayHud:draw(status)
     --- Set variable data.
     self.courseName:setTextDetails(self.vehicle:getCurrentCpCourseName())
     self.vehicleName:setTextDetails(self.vehicle:getName())
-    self.startingPoint:setTextDetails(self.vehicle.spec_cpAIFieldWorker.cpJob:getCpJobParameters().startAt:getString())
-    local waypointProgress = '--/--'
-    if status.isActive and status.currentWaypointIx then
+    self.startingPoint:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
+    if status:getIsActive() then
         self.onOffIndicator:setColor(unpack(CourseplayHud.ON_COLOR))
-        waypointProgress = string.format('%d/%d', status.currentWaypointIx, status.numberOfWaypoints)
     else
         self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
     end
-    self.waypointProgress:setTextDetails(waypointProgress)
+    self.waypointProgress:setTextDetails(status:getWaypointText())
+    self.timeProgress:setTextDetails(status:getTimeRemainingText())
     self.baseHud:draw()
 end
 

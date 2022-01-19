@@ -62,6 +62,7 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
     SpecializationUtil.registerFunction(vehicleType, "startCpALastWp", CpAIFieldWorker.startCpAtLastWp)
     SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIFieldWorker.getCpDriveStrategy)
+    SpecializationUtil.registerFunction(vehicleType, "getCpStartingPointSetting", CpAIFieldWorker.getCpStartingPointSetting)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
@@ -139,6 +140,11 @@ end
 
 function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
 	CpAIFieldWorker.updateActionEvents(self)
+end
+
+function CpAIFieldWorker:getCpStartingPointSetting()
+    local spec = self.spec_cpAIFieldWorker
+    return spec.cpJob:getCpJobParameters().startAt
 end
 
 ------------------------------------------------------------------------------------------------------------------------
