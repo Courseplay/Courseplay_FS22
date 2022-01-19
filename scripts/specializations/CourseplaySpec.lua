@@ -84,8 +84,10 @@ function CourseplaySpec:onEnterVehicle(isControlling)
             self.spec_courseplaySpec.savedCameraRotatableInfo)
 end
 
-function CourseplaySpec:onLeaveVehicle(isControlling)
-   
+function CourseplaySpec:onLeaveVehicle(wasEntered)
+    -- turn off mouse when leaving the vehicle
+    g_inputBinding:setShowMouseCursor(false)
+    CpGuiUtil.setCameraRotation(self, true, self.spec_courseplaySpec.savedCameraRotatableInfo)
 end
 
 --- TODO: return all relevant values that should be displayed under the map hotspot.
