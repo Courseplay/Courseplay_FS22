@@ -133,12 +133,18 @@ end
 -- CpUtil.debugVehicle( CpDebug.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
 function CpUtil.debugVehicle(channel, vehicle, ...)
-	if CpDebug and CpDebug:isChannelActive(channel) then
+	local rootVehicle = vehicle and vehicle.rootVehicle
+	local active = rootVehicle == nil or rootVehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(rootVehicle)
+	if CpDebug and active and CpDebug:isChannelActive(channel) then
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
 		print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
 	end
+end
+
+function CpUtil.isVehicleDebugActive(vehicle)
+	return vehicle and vehicle:getCpSettings() and vehicle:getCpSettings().debugActive and vehicle:getCpSettings().debugActive:getValue()
 end
 
 function CpUtil.info(...)
@@ -180,5 +186,5 @@ function CpUtil.destroyNode(node)
 end
 
 function CpUtil.callErrorCorrectedFunction(func,...)
-	xpcall(func, function(err) printCallstack(); return err end, ...)
+	return xpcall(func, function(err) printCallstack(); return err end, ...)
 end

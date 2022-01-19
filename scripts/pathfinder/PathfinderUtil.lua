@@ -24,6 +24,8 @@ PathfinderUtil.reedsSheppSolver = ReedsSheppSolver()
 PathfinderUtil.defaultOffFieldPenalty = 7.5
 PathfinderUtil.defaultAreaToAvoidPenalty = 2000
 PathfinderUtil.visualDebugLevel = 0
+-- for troubleshooting
+PathfinderUtil.overlapBoxes = {}
 
 ------------------------------------------------------------------------------------------------------------------------
 ---Size/turn radius all other information on the vehicle and its implements
@@ -62,8 +64,8 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
             rootVehicle = self.trailer:getRootVehicle(),
             dFront = buffer or 0,
             dRear = - self.trailer.size.length - (buffer or 0),
-            dLeft = self.trailer.size.width / 2 + (buffer or 0),
-            dRight = -self.trailer.size.width / 2 - (buffer or 0)
+            dLeft = AIUtil.getWidth(self.trailer) / 2 + (buffer or 0),
+            dRight = -AIUtil.getWidth(self.trailer) / 2 - (buffer or 0)
         }
 				local inputAttacherJoint = self.trailer:getActiveInputAttacherJoint()
 				if inputAttacherJoint then
@@ -90,8 +92,8 @@ function PathfinderUtil.VehicleData:getRectangleForImplement(implement, referenc
     local rectangle = {
         dFront = rootToReferenceNodeOffset + implement.object.size.length / 2 + implement.object.size.lengthOffset + (buffer or 0),
         dRear = rootToReferenceNodeOffset - implement.object.size.length / 2 + implement.object.size.lengthOffset - (buffer or 0),
-        dLeft = implement.object.size.width / 2,
-        dRight = -implement.object.size.width / 2
+        dLeft = AIUtil.getWidth(implement.object) / 2,
+        dRight = -AIUtil.getWidth(implement.object) / 2
     }
     -- now see if we have something better, then use that. Since any of the six markers may be missing, we
     -- check them one by one.
@@ -156,32 +158,6 @@ end
 function PathfinderUtil.isNodeOnField(node)
     local x, y, z = getWorldTranslation(node)
     return PathfinderUtil.isPosOnField(x, y, z)
-end
-
---- Which field this node is on.
----@param node table Giants engine node
----@return number 0 if not on any field, otherwise the number of field, see note on getFieldItAtWorldPosition()
-function PathfinderUtil.getFieldNumUnderNode(node)
-    local x, _, z = getWorldTranslation(node)
-    return PathfinderUtil.getFieldIdAtWorldPosition(x, z)
-end
-
---- Which field this node is on. See above for more info
-function PathfinderUtil.getFieldNumUnderVehicle(vehicle)
-    return PathfinderUtil.getFieldNumUnderNode(vehicle.rootNode)
-end
-
---- Returns the field ID (actually, land ID) for a position. The land is what you can buy in the game,
---- including the area around an actual field.
-function PathfinderUtil.getFieldIdAtWorldPosition(posX, posZ)
-    local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
-    if farmland ~= nil then
-        local fieldMapping = g_fieldManager.farmlandIdFieldMapping[farmland.id]
-        if fieldMapping ~= nil and fieldMapping[1] ~= nil then
-            return fieldMapping[1].fieldId
-        end
-    end
-    return 0
 end
 
 --- Is the land at this position owned by me?
@@ -276,14 +252,23 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
 		-- an object we want to ignore
 		return
 	end
-    if collidingObject and collidingObject.getRootVehicle then
-        local rootVehicle = collidingObject:getRootVehicle()
+    if collidingObject then
+        local rootVehicle
+        if collidingObject.getRootVehicle then
+            rootVehicle = collidingObject:getRootVehicle()
+        elseif collidingObject:isa(Bale) and collidingObject.mountObject then
+            rootVehicle = collidingObject.mountObject:getRootVehicle()
+        end
         if rootVehicle == self.vehicleData.rootVehicle or
                 PathfinderUtil.elementOf(self.vehiclesToIgnore, rootVehicle) then
             -- just bumped into myself or a vehicle we want to ignore
             return
         end
-        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
+        if collidingObject:isa(Bale) then
+            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision with bale %d', collidingObject.id)
+        else
+            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
+        end
     end
    	if not getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
         local text = ''
@@ -315,7 +300,9 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 	self.collidingShapes = 0
 	self.collidingShapesText = 'unknown'
 
-    overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, CollisionFlag.AI_BLOCKING, true, true, true)
+    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+
+    overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, collisionMask, true, true, true)
     if true and self.collidingShapes > 0 then
         table.insert(PathfinderUtil.overlapBoxes,
                 { x = x, y = y + 0.2, z = z, xRot = xRot, yRot = yRot, zRot = zRot, width = width, length = length})
@@ -323,7 +310,6 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 					'pathfinder colliding shapes %s with %s at x = %.1f, z = %.1f, (%.1fx%.1f), yRot = %d',
 					self.collidingShapesText, vehicleData.name, x, z, width, length, math.deg(yRot))
     end
-    DebugUtil.drawOverlapBox(x, y, z, xRot, yRot, zRot, width, 1, length, 100, 0, 0)
 
     return self.collidingShapes
 end
@@ -460,7 +446,7 @@ function PathfinderConstraints:getNodePenalty(node)
         self.offFieldPenaltyNodeCount = self.offFieldPenaltyNodeCount + 1
         node.offField = true
     end
-    --local fieldId = PathfinderUtil.getFieldIdAtWorldPosition(node.x, -node.y)
+    --local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
     if not offField then
         local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4)
         if hasFruit and fruitValue > self.maxFruitPercent then
@@ -667,18 +653,20 @@ end
 --- Together with the goalReferenceNode defines the goal
 ---@param turnRadius number vehicle turning radius
 ---@param allowReverse boolean allow reverse driving
----@param course Course fieldwork course, needed to find the headland
+---@param courseWithHeadland Course fieldwork course, needed to find the headland
 ---@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection
-function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse, course, vehiclesToIgnore)
+function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
+                                        courseWithHeadland, vehiclesToIgnore)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 
+    PathfinderUtil.overlapBoxes = {}
     local pathfinder
-    if course:getNumberOfHeadlands() > 0 then
+    if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
-        local headlandPath = findShortestPathOnHeadland(start, goal, course, turnRadius)
+        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius)
         -- is the first wp of the headland in front of us?
         local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
         local dx, _, dz = worldToLocal(vehicle:getAIDirectionNode(), headlandPath[1].x, y, - headlandPath[1].y)
@@ -686,12 +674,13 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         if dirDeg > 45 or true then
             CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
         end
-        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath)
+        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true)
     else
-        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 3, 200, 10000)
+        -- only use a middle section when the target is really far away
+        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true)
     end
 
-    local fieldNum = PathfinderUtil.getFieldNumUnderVehicle(vehicle)
+    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
     local context = PathfinderUtil.Context(
             vehicle,
             vehiclesToIgnore)
@@ -786,7 +775,7 @@ function PathfinderUtil.startPathfindingFromVehicleToNode(vehicle, goalNode,
                                                           xOffset, zOffset, allowReverse,
                                                           fieldNum, vehiclesToIgnore, maxFruitPercent,
 														  offFieldPenalty, areaToAvoid, mustBeAccurate)
-    x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalNode, xOffset, zOffset)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     return PathfinderUtil.startPathfindingFromVehicleToGoal(
             vehicle, goal, allowReverse, fieldNum,

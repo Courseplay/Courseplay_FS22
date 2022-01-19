@@ -117,8 +117,7 @@ function ImplementUtil.isWheeledImplement(implement)
             if (activeInputAttacherJoint.jointType ~= AttacherJoints.JOINTTYPE_IMPLEMENT)
                     -- Implements with pivot and wheels that do not lift the wheels from the ground.
                     or (node ~= implement.rootNode and activeInputAttacherJoint.jointType == AttacherJoints.JOINTTYPE_IMPLEMENT and
-                    (not activeInputAttacherJoint.topReferenceNode or true or
-                    -- TODO_22
+                    (not activeInputAttacherJoint.topReferenceNode or
                             g_vehicleConfigurations:get(implement, 'implementWheelAlwaysOnGround')))
             then
                 return true
@@ -265,26 +264,26 @@ function ImplementUtil.getDirectionNodeToTurnNodeLength(vehicle)
             if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
                 local workTool = imp.object
                 local activeInputAttacherJoint = workTool:getActiveInputAttacherJoint()
-                if ImplementUtil.isWheeledWorkTool(workTool) then
+                if ImplementUtil.isWheeledImplement(workTool) then
                     local workToolDistances = workTool.cp.distances
 
                     if workToolDistances.attacherJointToPivot then
                         totalDistance = totalDistance + workToolDistances.attacherJointToPivot
                         ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointToPivot=%.2fm'):format(
-                                nameNum(workTool), workToolDistances.attacherJointToPivot), courseplay.DBG_IMPLEMENTS)
+                                nameNum(workTool), workToolDistances.attacherJointToPivot), CpDebug.DBG_IMPLEMENTS)
                     end
 
                     totalDistance = totalDistance + workToolDistances.attacherJointOrPivotToTurningNode
                     ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointOrPivotToTurningNode=%.2fm'):format(
-                            nameNum(workTool), workToolDistances.attacherJointOrPivotToTurningNode), courseplay.DBG_IMPLEMENTS)
+                            nameNum(workTool), workToolDistances.attacherJointOrPivotToTurningNode), CpDebug.DBG_IMPLEMENTS)
                     ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointToTurningNode=%.2fm'):format(
-                            nameNum(workTool), totalDistance), courseplay.DBG_IMPLEMENTS)
+                            nameNum(workTool), totalDistance), CpDebug.DBG_IMPLEMENTS)
                 else
                     if not distances.attacherJointOrPivotToTurningNode and distances.attacherJointToRearTrailerAttacherJoints then
                         totalDistance = totalDistance + distances.attacherJointToRearTrailerAttacherJoints[activeInputAttacherJoint.jointType]
                     end
                     totalDistance = totalDistance + ImplementUtil.getDirectionNodeToTurnNodeLength(workTool)
-                    --ImplementUtil.debug(('%s: directionNodeToTurnNodeLength=%.2fm'):format(nameNum(workTool), totalDistance), courseplay.DBG_IMPLEMENTS)
+                    --ImplementUtil.debug(('%s: directionNodeToTurnNodeLength=%.2fm'):format(nameNum(workTool), totalDistance), CpDebug.DBG_IMPLEMENTS)
                 end
                 break
             end
@@ -301,7 +300,7 @@ function ImplementUtil.getDirectionNodeToTurnNodeLength(vehicle)
             end
             vehicle.cp.directionNodeToTurnNodeLength = totalDistance
             ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: directionNodeToTurnNodeLength=%.2fm'):format(
-                    nameNum(vehicle), totalDistance), courseplay.DBG_IMPLEMENTS)
+                    nameNum(vehicle), totalDistance), CpDebug.DBG_IMPLEMENTS)
         end
 
     return vehicle.cp.directionNodeToTurnNodeLength or totalDistance
@@ -339,4 +338,14 @@ function ImplementUtil.getDistanceToImplementNode(referenceNode, implementObject
         _, _, rootToReferenceNodeOffset = localToLocal(implementNode, referenceNode, 0, 0, 0)
     end
     return rootToReferenceNodeOffset
+end
+
+-- Bale loaders / wrappers have no AI markers
+function ImplementUtil.getAIMarkersFromGrabberNode(object, spec)
+    -- use the grabber node for all markers if exists
+    if spec.baleGrabber and spec.baleGrabber.grabNode then
+        return spec.baleGrabber.grabNode, spec.baleGrabber.grabNode, spec.baleGrabber.grabNode
+    else
+        return object.rootNode, object.rootNode, object.rootNode
+    end
 end

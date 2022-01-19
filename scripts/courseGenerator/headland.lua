@@ -79,11 +79,11 @@ end
 
 --- Calculate a headland track inside polygon in offset distance
 function calculateHeadlandTrack( polygon, mode, isClockwise, targetOffset, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
-                                 currentOffset, doSmooth, inward, centerSettings, currentPassNumber )
-	-- recursion limit
+                                 currentOffset, doSmooth, inward, centerSettings, currentPassNumber)
+	
 	if currentOffset == 0 then
 		n = 1
-		CourseGenerator.debug( "Generating headland track with offset %.2f, clockwise %s, inward %s",
+		CourseGenerator.debug( "Generating headland track (or field margin) with offset %.2f, clockwise %s, inward %s",
 				targetOffset, tostring(isClockwise), tostring(inward))
 	else
 		n = n + 1
@@ -316,7 +316,6 @@ function linkHeadlandTracks( field, implementWidth, isClockwise, startLocation, 
 	local headlandPath = Polyline:new()
 	-- find closest point to starting position on outermost headland track
 	local fromIndex = field.headlandTracks[ 1 ]:getClosestPointIndex(startLocation)
-	table.insert(headlandPath, shallowCopy(field.headlandTracks[ 1 ][fromIndex + (isClockwise and 1 or -1)]))
 	-- start one waypoint back to have an overlap with the transition to the next headland so nothing is missed
 	local toIndex = field.headlandTracks[ 1 ]:getIndex( fromIndex + 1 )
 	vectors = {}
@@ -417,7 +416,7 @@ function generateAllHeadlandTracks(field, implementWidth, headlandSettings, cent
 		CourseGenerator.debug( "Generating innermost headland track" )
 		local distanceOfInnermostHeadlandFromBoundary = ( implementWidth - implementWidth * headlandSettings.overlapPercent / 100 ) * ( headlandSettings.nPasses - 1 ) + implementWidth / 2
 		field.headlandTracks[ headlandSettings.nPasses ] = calculateHeadlandTrack( field.boundary, headlandSettings.mode, field.boundary.isClockwise, distanceOfInnermostHeadlandFromBoundary,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, true, centerSettings, nil )
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, true, centerSettings, nil)
 		roundCorners( field.headlandTracks[ headlandSettings.nPasses ], turnRadius )
 		previousTrack = field.headlandTracks[ headlandSettings.nPasses ]
 		startHeadlandPass = headlandSettings.nPasses - 1
@@ -447,7 +446,7 @@ function generateAllHeadlandTracks(field, implementWidth, headlandSettings, cent
 
 		field.headlandTracks[ j ] = calculateHeadlandTrack( previousTrack, headlandSettings.mode, previousTrack.isClockwise, width,
 			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, not fromInside,
-			centerSettings, j )
+			centerSettings, j)
 		CourseGenerator.debug( "Generated headland track #%d, area %1.f, clockwise = %s", j, field.headlandTracks[ j ].area, tostring( field.headlandTracks[ j ].isClockwise ))
 		-- check if the area within the last headland has a reasonable size
 		local minArea = 0.75 * width * field.headlandTracks[ j ].circumference / 2
@@ -689,4 +688,3 @@ function extendLineToOtherLine(line, otherLine, extension)
 	if is then table.insert(line, is) end
 	line:calculateData()
 end
-

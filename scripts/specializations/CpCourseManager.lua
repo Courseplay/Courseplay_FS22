@@ -38,6 +38,8 @@ function CpCourseManager.initSpecialization()
     local key = "vehicles.vehicle(?)" .. CpCourseManager.KEY .. CpCourseManager.rootKey
 ---    schema:register(XMLValueType.BOOL, key .. "#hasTemporaryCourses","Are the courses a temporary and not saved?",false)
 	CpCourseManager.registerXmlSchemaValues(schema,key.."(?)")
+    --- Saves the remembered wp ix to start fieldwork from, if it's set.
+    schema:register(XMLValueType.INT, key .. "#rememberedWpIx", "Last waypoint driven with the saved course.")
 end
 
 function CpCourseManager.prerequisitesPresent(specializations)
@@ -56,6 +58,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
 end
 
 function CpCourseManager.registerEvents(vehicleType)
@@ -80,8 +83,13 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
 
-
     SpecializationUtil.registerFunction(vehicleType, 'getCpLegacyWaypoints', CpCourseManager.getLegacyWaypoints)
+
+    SpecializationUtil.registerFunction(vehicleType, 'cpStartCourseRecorder', CpCourseManager.cpStartCourseRecorder)
+    SpecializationUtil.registerFunction(vehicleType, 'cpStopCourseRecorder', CpCourseManager.cpStopCourseRecorder)
+
+    SpecializationUtil.registerFunction(vehicleType, 'rememberCpLastWaypointIx', CpCourseManager.rememberCpLastWaypointIx)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpLastRememberedWaypointIx', CpCourseManager.getCpLastRememberedWaypointIx)
 end
 
 function CpCourseManager:onLoad(savegame)
@@ -90,7 +98,8 @@ function CpCourseManager:onLoad(savegame)
     self.spec_cpCourseManager  = self["spec_" .. specName]
     local spec = self.spec_cpCourseManager 
     spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
- 
+    spec.courseRecorder = CourseRecorder()
+
     spec.courses = {}
     
  --   TODO: make this an instance similar to course plot
@@ -102,7 +111,9 @@ end
 
 function CpCourseManager:onPostLoad(savegame)
     if savegame == nil or savegame.resetVehicles then return end
-    CpCourseManager.loadAssignedCourses(self,savegame.xmlFile,savegame.key..CpCourseManager.KEY..CpCourseManager.rootKey)
+    local baseKey = savegame.key..CpCourseManager.KEY..CpCourseManager.rootKey
+    CpCourseManager.loadAssignedCourses(self,savegame.xmlFile,baseKey)
+    self:rememberCpLastWaypointIx(savegame.xmlFile:getValue(baseKey.."#rememberedWpIx"))
 end
 
 function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
@@ -121,6 +132,10 @@ end
 
 function CpCourseManager:saveToXMLFile(xmlFile, baseKey, usedModNames)
     CpCourseManager.saveAssignedCourses(self,xmlFile, baseKey.."."..CpCourseManager.rootKey)
+    local ix = self:getCpLastRememberedWaypointIx()
+    if ix then
+        xmlFile:setValue(baseKey.."."..CpCourseManager.rootKey.."#rememberedWpIx",ix)
+    end
 end
 
 function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
@@ -199,13 +214,13 @@ function CpCourseManager:cpOnCourseChange(newCourse)
         spec.coursePlot:setVisible(true)
     else 
         spec.coursePlot:setVisible(false)
+        self:rememberCpLastWaypointIx()
     end
     if g_client then
         CpCourseManager.updateLegacyWaypoints(self)
         g_courseDisplay:updateWaypointSigns(self)
         g_courseDisplay:setSignsVisibility(self, not self:getIsControlled())
 	end
-
 end
 
 function CpCourseManager:drawCoursePlot(map)
@@ -288,6 +303,16 @@ function CpCourseManager:getFieldworkCourseLegacy(vehicle)
 	end
 end
 
+function CpCourseManager:rememberCpLastWaypointIx(ix)
+    local spec = self.spec_cpCourseManager
+    spec.rememberedWpIx = ix
+end
+
+function CpCourseManager:getCpLastRememberedWaypointIx()
+    local spec = self.spec_cpCourseManager
+    return spec.rememberedWpIx
+end
+
 --- For backwards compatibility, create all waypoints of all loaded courses for this vehicle, as it
 --- used to be stored in the terrible global Waypoints variable
 --- Update all the legacy (as usual global) data structures related to a vehicle's loaded course
@@ -307,4 +332,25 @@ end
 function CpCourseManager:getLegacyWaypoints()
     local spec = self.spec_cpCourseManager 
 	return spec and spec.legacyWaypoints
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Recording
+------------------------------------------------------------------------------------------------------------------------
+function CpCourseManager:onUpdate()
+    local spec = self.spec_cpCourseManager
+    spec.courseRecorder:update()
+end
+
+function CpCourseManager:cpStartCourseRecorder()
+    local spec = self.spec_cpCourseManager
+    spec.courseRecorder:start(self)
+end
+
+function CpCourseManager:cpStopCourseRecorder()
+    local spec = self.spec_cpCourseManager
+    spec.courseRecorder:stop()
+    local recordedCourse = spec.courseRecorder:getRecordedCourse()
+    CpCourseManager.resetCourses(self)
+    CpCourseManager.addCourse(self, recordedCourse)
 end

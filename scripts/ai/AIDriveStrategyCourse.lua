@@ -24,7 +24,8 @@ AIDriveStrategyCourse = {}
 local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 
 AIDriveStrategyCourse.myStates = {
-    DEFAULT = {},
+    INITIAL = {},
+    DRIVING_TO_COURSE_START = {}
 }
 
 function AIDriveStrategyCourse.new(customMt)
@@ -34,6 +35,7 @@ function AIDriveStrategyCourse.new(customMt)
     local self = AIDriveStrategy.new(customMt)
     self.debugChannel = CpDebug.DBG_AI_DRIVER
     self:initStates(AIDriveStrategyCourse.myStates)
+    self.controllers = {}
     return self
 end
 
@@ -74,11 +76,13 @@ function AIDriveStrategyCourse:setInfoText(text)
     self:debug(text)
 end
 
-function AIDriveStrategyCourse:setAIVehicle(vehicle)
+function AIDriveStrategyCourse:setAIVehicle(vehicle,jobParameters)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
+    self:initializeImplementControllers(vehicle)
     ---@type FillLevelManager
     self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
+    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     -- TODO_22 properly implement this in courseplaySpec
     self.storage = vehicle.spec_courseplaySpec
 
@@ -90,28 +94,78 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     self.turningRadius = AIUtil.getTurningRadius(vehicle)
 
     self:enableCollisionDetection()
+    self:setAllStaticParameters()
 
-    -- TODO: should probably be the closest waypoint to the target?
+    -- TODO: this may or may not be the course we need for the strategy
     local course = vehicle:getFieldWorkCourse()
+    if course then
+        self:debug('Vehicle has a fieldwork course, figure out where to start')
+        
+        local startIx = self:getStartingPointWaypointIx(course,jobParameters.startAt:getValue())
+        self:start(course, startIx)
+    else
+        -- some strategies do not need a recorded or generated course to work, they
+        -- will create the courses on the fly.
+        self:debug('Vehicle has no course, start work without it.')
+        self:startWithoutCourse()
+    end
+end
 
-    local job = vehicle:getJob()
-    local startAt, startIx
-    if job and job.getCpJobParameters then
-        self:debug('Got job parameters, starting at %d', job:getCpJobParameters().startAt:getValue())
-        startAt = job:getCpJobParameters().startAt:getValue()
-    else
-        self:debug('No job parameters found, starting at nearest waypoint')
-        startAt = CpJobParameters.START_AT_NEAREST_POINT
-    end
-    if startAt == CpJobParameters.START_AT_NEAREST_POINT then
-        local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
+function AIDriveStrategyCourse:getStartingPointWaypointIx(course,startAt)
+    if startAt == CpJobParameters.START_AT_NEAREST_POINT then 
+        local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
         self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
-        startIx = ixClosestRightDirection
-    else
+        return ixClosestRightDirection
+    else 
         self:debug('Starting course at the first waypoint')
-        startIx = 1
+        return 1
     end
+end
+
+function AIDriveStrategyCourse:start(course, startIx)
     self:startCourse(course, startIx)
+    self.state = self.states.INITIAL
+end
+
+function AIDriveStrategyCourse:startWithoutCourse()
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Implement handling
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
+end
+
+--- Normal update function called every frame.
+--- For releasing the helper in the controller, use this one.
+function AIDriveStrategyCourse:updateImplementControllers()
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
+            controller:update()
+        end
+    end
+end
+
+--- Called in the low frequency function for the helper.
+function AIDriveStrategyCourse:updateLowFrequencyImplementControllers()
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
+            -- we don't know yet if we even need anything from the controller other than the speed.
+            local _, _, _, maxSpeed = controller:getDriveData()
+            if maxSpeed then
+                self:setMaxSpeed(maxSpeed)
+            end
+        end
+    end
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Static parameters (won't change while driving)
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:setAllStaticParameters()
+    -- set strategy specific parameters before starting
 end
 
 function AIDriveStrategyCourse:update()
@@ -142,7 +196,7 @@ end
 ---@param nextCourse Course
 ---@param ix number
 function AIDriveStrategyCourse:startCourse(course, ix)
-    self:debug('Starting a course, at waypoint %d, no next course set.', ix)
+    self:debug('Starting a course, at waypoint %d (of %d).', ix, course:getNumberOfWaypoints())
     self.course = course
     self.ppc:setCourse(self.course)
     self.ppc:initialize(ix)
@@ -162,11 +216,20 @@ function AIDriveStrategyCourse:getFillLevelInfoText()
     return 'getFillLevelInfoText'
 end
 
+-----------------------------------------------------------------------------------------------------------------------
+--- Event listeners
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:onWaypointChange(ix, course)
+end
+
+function AIDriveStrategyCourse:onWaypointPassed(ix, course)
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Pathfinding
 ---------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:getAllowReversePathfinding()
-    return self.allowReversePathfinding -- TODO_22 and self.settings.allowReverseForPathfindingInTurns:is(true)
+    return self.allowReversePathfinding and self.settings.allowReversePathfinding:getValue()
 end
 
 function AIDriveStrategyCourse:setPathfindingDoneCallback(object, func)

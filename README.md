@@ -21,9 +21,16 @@ button. Generate the course and start the job.
 
 ## Turning on Debug Channels
 
-When there's an issue, you can turn on debug channels so Courseplay will log a lot of information we need for troubleshooting. 
-You can bring up the debug channel menu by pressing Shift+4, then use Shift+1 and Shift+3 to select a channel, and then Shift+2 
-to toggle the selected debug channel (green is on).
+When there's an issue, you can turn on debug logging on the Courseplay vehicle settings page for each vehicle. This will
+enable loggin debug information for that vehicle only. Devs need those logs when troubleshooting and fixing bugs.
+ 
+What information is logged when you activated the debug logging for the vehicle depends on the active debug channels. This
+are similar to those we had in CP 19, but the way to turn them on/off is different: you can bring up the debug channel menu 
+by pressing Shift+4, then use Shift+1 and Shift+3 to select a channel, and then Shift+2 to toggle the selected debug channel 
+(green is on).
+
+Remember, you have to activate debug mode for the vehicle in the vehicle settings page, otherwise nothing is logged, even if
+the channel is active.
 
 ## Developer version
 

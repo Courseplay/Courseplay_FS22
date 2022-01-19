@@ -67,6 +67,8 @@ function CoursePlot:setWaypoints( waypoints )
 	end
 	table.insert(self.waypoints, waypoints[#waypoints])
 	self.waypoints[1].progress = 1
+	self:setStartPosition(self.waypoints[1].x, self.waypoints[1].z)
+	self:setStopPosition(self.waypoints[#self.waypoints].x, self.waypoints[#self.waypoints].z)
 end
 
 -- start position used when generating the course, either first course wp
@@ -123,7 +125,7 @@ function CoursePlot:draw(map)
 				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5;
 				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress)
 
-				setOverlayColor( self.courseOverlayId, r, g, b, 1 )
+				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
 				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
 			end
@@ -131,15 +133,15 @@ function CoursePlot:draw(map)
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
 
-	local signSizeMeters = 20
+	local signSizeMeters = 0.02
 	local zoom = map.fullScreenLayout:getIconZoom()
-	local signWidth, signHeight = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom
+	local signWidth, signHeight = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom * g_screenAspectRatio
 
 	-- render a sign marking the end of the course
 	if self.stopPosition.x and self.stopPosition.z then
 		local x, y = self:worldToScreen( map,self.stopPosition.x, self.stopPosition.z )
 		if x and y then
-			setOverlayColor( self.stopSignOverlayId, 1, 1, 1, 0.8 )
+			setOverlayColor( self.stopSignOverlayId, 1, 1, 1, 1 )
 			renderOverlay( self.stopSignOverlayId,
 				x - signWidth / 2, -- offset so the middle of the sign is on the stopping location
 				y - signHeight / 2,
@@ -158,10 +160,5 @@ function CoursePlot:draw(map)
 				signWidth, signHeight)
 		end
 	end
-end
-
--- force recreating it after reload (for development
-if g_coursePlot then
-	g_coursePlot = nil
 end
 

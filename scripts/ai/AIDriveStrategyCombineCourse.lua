@@ -71,6 +71,9 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.pipeOffsetX = 0
 	self.unloaders = {}
 	self:initUnloadStates()
+	self.chopperCanDischarge = CpTemporaryObject(false)
+	-- hold the harvester temporarily
+	self.temporaryHold = CpTemporaryObject(false)
 	return self
 end
 
@@ -91,7 +94,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	if self.vehicle.spec_combine then
 		self.combine = self.vehicle.spec_combine
 	else
-		local combineImplement = AIUtil.getAIImplementWithSpecialization(self.vehicle, Combine)
+		local combineImplement = AIUtil.getImplementWithSpecialization(self.vehicle, Combine)
         local peletizerImplement = FS19_addon_strawHarvest and
 				AIUtil.getAIImplementWithSpecialization(self.vehicle, FS19_addon_strawHarvest.StrawHarvestPelletizer) or nil
 		if combineImplement then
@@ -106,6 +109,10 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 		else
 			self:error('Vehicle is not a combine and could not find implement with spec_combine')
 		end
+	end
+
+	if self:isChopper() then
+		self:debug('This is a chopper.')
 	end
 
 	self:setUpPipe()
@@ -128,12 +135,16 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	-- if this is not nil, we have a pending rendezvous
 	---@type CpTemporaryObject
 	self.unloadAIDriverToRendezvous = CpTemporaryObject()
-
-	local total, pipeInFruit = self.course:setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
-	self:shouldStrawSwathBeOn(self.course:getCurrentWaypointIx())
+	local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
-	self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
+	-- TODO: need a cleaner way to keep a cotton harvester going (otherwise it won't drop the bale)
+	if self:isCottonHarvester() then
+		self:debug('Cotton harvester, set max fill level to 100 to trigger bale unload when full')
+		self.fillLevelFullPercentage = 100
+	else
+		self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
+	end
 end
 
 -- This part of an ugly workaround to make the chopper pickups work
@@ -152,28 +163,25 @@ function AIDriveStrategyCombineCourse:getCombine()
 	return self.combine
 end
 
-function AIDriveStrategyCombineCourse:start(startingPoint)
-	self:clearAllUnloaderInformation()
-	self:addBackwardProximitySensor()
-	UnloadableFieldworkAIDriver.start(self, startingPoint)
-	-- we work with the traffic conflict detector and the proximity sensors instead
-	self:disableCollisionDetection()
-	self:fixMaxRotationLimit()
-end
-
-function AIDriveStrategyCombineCourse:stop(msgReference)
-    self:resetFixMaxRotationLimit()
-    UnloadableFieldworkAIDriver.stop(self,msgReference)
-end
-
 function AIDriveStrategyCombineCourse:update(dt)
 	AIDriveStrategyFieldWorkCourse.update(self, dt)
 	self:updateChopperFillType()
 end
 
+--- Hold the harvester for a period of periodMs milliseconds
+function AIDriveStrategyCombineCourse:hold(periodMs)
+	if not self.temporaryHold:get() then
+		self:debug('Temporary hold request for %d milliseconds', periodMs)
+	end
+	self.temporaryHold:set(true, math.min(math.max(0, periodMs), 30000))
+end
+
 function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	self:handlePipe(dt)
 	self:disableCutterTimer()
+	if self.temporaryHold:get() then
+		self:setMaxSpeed(0)
+	end
 	if self.state == self.states.WORKING then
 		-- Harvesting
 		self:checkRendezvous()
@@ -188,6 +196,10 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		-- Unloading
 		self:driveUnloadOnField()
+	elseif self:isTurning() and not self:isTurningOnHeadland() then
+		if self:shouldHoldInTurnManeuver() then
+			self:setMaxSpeed(0)
+		end
 	end
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
@@ -402,6 +414,8 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 		elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
 			self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
 			self:lowerImplements()
+			-- TODO: maybe lowerImplements should not set the WAITING_FOR_LOWER_DELAYED state...
+			self.state = self.states.UNLOADING_ON_FIELD
 			self.unloadState = self.states.MAKING_POCKET
 			-- offset the main fieldwork course and start on it
 			self.aiOffsetX = math.min(self.pullBackRightSideOffset, self:getWorkWidth())
@@ -419,6 +433,8 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
 		end
 	elseif self.state == self.states.WORKING and fillLevel > 0 then
+		-- reset offset we used for the course ending to not miss anything
+		self.aiOffsetZ = 0
 		if self.settings.selfUnload:getValue() and self:startSelfUnload() then
 			self:debug('Start self unload after fieldwork ended')
 			self:raiseImplements()
@@ -436,10 +452,6 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 	else
 		AIDriveStrategyCombineCourse.superClass().onLastWaypointPassed(self)
 	end
-end
-
-function AIDriveStrategyCombineCourse:isWaitingInPocket()
- 	return self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -561,6 +573,10 @@ function AIDriveStrategyCombineCourse:isFull()
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
+	if not self.pipe then
+		-- no pipe, no sense making a pocket (like cotton harvesters)
+		return false
+	end
 	if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
 		-- fruit both sides
 		return true
@@ -990,17 +1006,14 @@ function AIDriveStrategyCombineCourse:isEngineAutoStopEnabled()
 	end
 end
 
---- Compatibility function for turn.lua to check if the vehicle should stop during a turn (for example while it
+--- Check if the vehicle should stop during a turn (for example while it
 --- is held for unloading or waiting for the straw swath to stop
---- Turn.lua calls this in every cycle during the turn and will stop the vehicle if this returns true.
----@param isApproaching boolean if true we are still in the turn approach phase (still working on the field,
----not yet reached the turn start
----@param isHeadlandCorner boolean is this a headland turn?
-function AIDriveStrategyCombineCourse:holdInTurnManeuver(isApproaching, isHeadlandCorner)
+function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
 	local discharging = self:isDischarging() and not self:isChopper()
-	local waitForStraw = self.combine.strawPSenabled and not isApproaching and not isHeadlandCorner
-	self:debugSparse('discharging %s, held for unload %s, straw active %s, approaching = %s',
-		tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isApproaching))
+	local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
+	local waitForStraw = self.combine.strawPSenabled and not isFinishingRow
+	self:debugSparse('discharging %s, held for unload %s, straw active %s, finishing row = %s',
+		tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isFinishingRow))
 	return discharging or self.heldForUnloadRefill or waitForStraw
 end
 
@@ -1028,6 +1041,11 @@ function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterCourseEnded()
 		self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
 end
 
+function AIDriveStrategyCombineCourse:isWaitingInPocket()
+	return self.state == self.states.UNLOADING_ON_FIELD and
+			self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET
+end
+
 --- Interface for Mode 2
 ---@return boolean true when the combine is waiting to after it pulled back.
 function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterPulledBack()
@@ -1051,7 +1069,7 @@ end
 function AIDriveStrategyCombineCourse:startTurn(ix)
 	self:debug('Starting a combine turn.')
 
-	self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(),
+	self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
 			self.frontMarkerDistance, self.backMarkerDistance,
 			self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
 
@@ -1121,7 +1139,7 @@ function AIDriveStrategyCombineCourse:setUpPipe()
 		self.pipe = self.vehicle.spec_pipe
 		self.objectWithPipe = self.vehicle
 	else
-		local implementWithPipe = AIUtil.getAIImplementWithSpecialization(self.vehicle, Pipe)
+		local implementWithPipe = AIUtil.getImplementWithSpecialization(self.vehicle, Pipe)
 		if implementWithPipe then
 			self.pipe = implementWithPipe.spec_pipe
 			self.objectWithPipe = implementWithPipe
@@ -1148,6 +1166,8 @@ function AIDriveStrategyCombineCourse:setUpPipe()
 				-- as seen in the Giants pipe code
 				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
 				self.objectWithPipe:updatePipeNodes(999999, nil)
+				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
+				self.objectWithPipe:updatePipeNodes(999999, nil)
 			end
 		end
 		local dischargeNode = self:getCurrentDischargeNode()
@@ -1165,11 +1185,17 @@ function AIDriveStrategyCombineCourse:setUpPipe()
 			else
 				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
 				self.objectWithPipe:updatePipeNodes(999999, nil)
+				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
+				self.objectWithPipe:updatePipeNodes(999999, nil)
 			end
 		end
 		if self.vehicle.spec_foldable then
 			if wasFolded then
 				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
+				-- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
+				-- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
+				Foldable.actionControllerFoldEvent(self.vehicle, -1)
+				Foldable.actionControllerFoldEvent(self.vehicle, 1)
 			end
 		end
 	else
@@ -1255,11 +1281,32 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 	end
 	local dischargeNode = self.combine:getCurrentDischargeNode()
 	local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
-	if targetObject == nil or trailer == nil then
-		self:debugSparse('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
+	self:debug('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
+	if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
+		self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
 				tostring(dischargeNode), tostring(targetObject), tostring(trailer))
-		self:setMaxSpeed(0)
+		self.waitingForTrailer = true
 	end
+	if self.waitingForTrailer then
+		self:setMaxSpeed(0)
+		if not(targetObject == nil or trailer == nil) then
+			self:debug('Chopper has trailer now, continue')
+			self.waitingForTrailer = false
+		end
+	end
+end
+
+function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()
+	for _, implement in pairs(self.vehicle:getChildVehicles()) do
+		if implement.spec_workArea ~= nil then
+			for i, workArea in pairs(implement.spec_workArea.workAreas) do
+				if implement:getIsWorkAreaProcessing(workArea) then
+					return true
+				end
+			end
+		end
+	end
+	return false
 end
 
 function AIDriveStrategyCombineCourse:needToOpenPipe()
@@ -1385,6 +1432,17 @@ function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
 	return false
 end
 
+
+function AIDriveStrategyCombineCourse:isCottonHarvester()
+	for i, fillUnit in ipairs(self.vehicle:getFillUnits()) do
+		if self.vehicle:getFillUnitSupportsFillType(i, FillType.COTTON) then
+			self:debug('This is a cotton harvester.')
+			return true
+		end
+	end
+	return false
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
 -----------------------------------------------------------------------------------------------------------------------
@@ -1400,8 +1458,8 @@ function AIDriveStrategyCombineCourse:findBestTrailer()
 			if SpecializationUtil.hasSpecialization(Attachable, vehicle.specializations) then
 				attacherVehicle = vehicle.spec_attachable:getAttacherVehicle()
 			end
-			local fieldNum = PathfinderUtil.getFieldNumUnderVehicle(vehicle)
-			local myFieldNum = PathfinderUtil.getFieldNumUnderVehicle(self.vehicle)
+			local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
+			local myFieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
 			local x, _, z = getWorldTranslation(vehicle.rootNode)
 			local closestDistance = self:getClosestDistanceToFieldEdge(x, z)
 			local lastSpeed = rootVehicle:getLastSpeed()
@@ -1480,27 +1538,31 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 	if not bestTrailer then return false end
 
 	if not self.pathfinder or not self.pathfinder:isActive() then
-		self:rememberCourse(self.course, self:getBestWaypointToContinueFieldwork())
+		self:rememberCourse(self.course, self:getBestWaypointToContinueFieldWork())
 		self.pathfindingStartedAt = g_currentMission.time
 		self.courseAfterPathfinding = nil
 		self.waypointIxAfterPathfinding = nil
 		local targetNode = fillRootNode or bestTrailer.rootNode
 		local trailerRootNode = bestTrailer.rootNode
 		local trailerLength = bestTrailer.size.length
+		local trailerWidth = bestTrailer.size.width
 
 		local _, _, dZ = localToLocal(trailerRootNode, targetNode, 0, 0, 0)
 
-		local offsetX = -self.pipeOffsetX - 0.2
+		-- this should put the pipe's end 75 cm from the trailer's edge towards the middle. We are not aiming for
+		-- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
+		-- than what is absolutely necessary.
+		local offsetX = -(self.pipeOffsetX + trailerWidth / 2 - 0.75)
 		local alignLength = (trailerLength / 2) + dZ + 3
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
 		local offsetZ = -self.pipeOffsetZ - alignLength
-		self:debug('Trailer Length : %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
-				trailerLength, alignLength, offsetZ, offsetX)
+		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
+				trailerLength, trailerWidth, alignLength, offsetZ, offsetX)
 		-- little straight section parallel to the trailer to align better
 		self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
 				offsetX, offsetZ + 1, offsetZ + 1 + alignLength, 1, false)
 		self.selfUnloadAlignCourse:print()
-	local fieldNum = PathfinderUtil.getFieldNumUnderVehicle(self.vehicle)
+	local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
 		local done, path
 		-- require full accuracy from pathfinder as we must exactly line up with the trailer
 		self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
@@ -1789,12 +1851,14 @@ function AIDriveStrategyCombineCourse:shouldStrawSwathBeOn(ix)
 	if self.combine.isSwathActive then 
 		if strawMode == CpVehicleSettings.STRAW_SWATH_OFF or headland and strawMode==CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then 
 			self:setStrawSwath(false)
+			self:debugSparse('straw swath should be off!')
 		end
 	else
 		if strawMode > CpVehicleSettings.STRAW_SWATH_OFF then 
 			if headland and strawMode==CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then 
 				return
 			end
+			self:debugSparse('straw swath should be on!')
 			self:setStrawSwath(true)
 		end
 	end	
@@ -1845,8 +1909,9 @@ function AIDriveStrategyCombineCourse:setStrawSwath(enable)
 end
 
 function AIDriveStrategyCombineCourse:onDraw()
+	if not CpUtil.isVehicleDebugActive(self.vehicle) then return end
 
-	if CpUtil.debugChannels[CpDebug.DBG_IMPLEMENTS] then
+	if CpDebug:isChannelActive(CpDebug.DBG_IMPLEMENTS) then
 
 		local dischargeNode = self:getCurrentDischargeNode()
 		if dischargeNode then
@@ -1858,7 +1923,7 @@ function AIDriveStrategyCombineCourse:onDraw()
 		end
 	end
 
-	if CpUtil.debugChannels[CpDebug.DBG_PATHFINDER] then
+	if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER) then
 		local areaToAvoid = self:getAreaToAvoid()
 		if areaToAvoid then
 			local x, y, z = localToWorld(areaToAvoid.node, areaToAvoid.xOffset, 0, areaToAvoid.zOffset)

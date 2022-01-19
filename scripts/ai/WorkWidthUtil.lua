@@ -23,6 +23,7 @@ function WorkWidthUtil.hasValidWorkArea(object)
     return object and object.getWorkAreaByIndex and object.spec_workArea.workAreas
 end
 
+--- Shovel/shield calculation disabled for now.
 --- Gets an automatic calculated work width or a pre configured in vehicle configurations.
 ---@param object table
 ---@param logPrefix string
@@ -33,25 +34,38 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
     local width = g_vehicleConfigurations:get(object, 'workingWidth')
 
     if not width then
+        if object.getVariableWorkWidth then 
+            --- Gets the variable work width to the left + to the right.
+            local w1,_,isValid1 = object:getVariableWorkWidth(true) 
+            local w2,_,isValid2 =    object:getVariableWorkWidth()
+            if isValid1 and isValid2 then 
+                width = math.abs(w1) + math.abs(w2)
+                WorkWidthUtil.debug(object,logPrefix,'setting variable work width of %.1f.',width)
+            end
+        end
+    end
+
+    if not width then
         --- Gets the work width if the object is a shield.
-        width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
+     --   width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
     end
 
     if not width then
         --- Gets the work width if the object is a shovel.
-        width = WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
+   --     width = WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
     end
 
     if not width then
         -- no manual config, check AI markers
         width = WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     end
-    if not width then
 
+    if not width then
         -- no AI markers, check work areas
         width = WorkWidthUtil.getWorkAreaWidth(object, logPrefix)
     end
-    local implements = object:getAttachedImplements()
+
+    local implements = object.getAttachedImplements and object:getAttachedImplements()
     if implements then
         -- get width of all implements
         for _, implement in ipairs(implements) do
@@ -186,7 +200,7 @@ end
 ---@param object table
 ---@param logPrefix string
 function WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
-    if object.spec_shovel then
+    if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
         WorkWidthUtil.debug(object,logPrefix,'is a shovel with work width: %.1f',width)
         return width

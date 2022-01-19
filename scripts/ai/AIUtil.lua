@@ -125,9 +125,33 @@ function AIUtil.getTowBarLength(vehicle)
 	return towBarLength
 end
 
+---@return boolean, number true if this is a towed reversing implement/steeringLength
+function AIUtil.getSteeringParameters(vehicle)
+	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if not implement then
+		return false, 0
+	else
+		return true, AIUtil.getTowBarLength(vehicle)
+	end
+end
+
 function AIUtil.getOffsetForTowBarLength(r, towBarLength)
 	local rTractor = math.sqrt( r * r + towBarLength * towBarLength ) -- the radius the tractor should be on
 	return rTractor - r
+end
+
+function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
+	local reverserNode, debugText
+	-- articulated axis vehicles have a special reverser node
+	-- and yes, Giants has a typo in there...
+	if vehicle.spec_articulatedAxis.aiRevereserNode ~= nil then
+		reverserNode = vehicle.spec_articulatedAxis.aiRevereserNode
+		debugText = 'vehicle articulated axis reverese'
+	elseif vehicle.spec_articulatedAxis.aiReverserNode ~= nil then
+		reverserNode = vehicle.spec_articulatedAxis.aiReverserNode
+		debugText = 'vehicle articulated axis reverse'
+	end
+	return reverserNode, debugText
 end
 
 -- Find the node to use by the PPC when driving in reverse
@@ -143,15 +167,7 @@ function AIUtil.getReverserNode(vehicle)
 		reverserNode = reversingWheeledWorkTool.steeringAxleNode
 		debugText = 'implement reverse (Courseplay)'
 	elseif vehicle.spec_articulatedAxis ~= nil then
-		-- articulated axis vehicles have a special reverser node
-		-- and yes, Giants has a typo in there...
-		if vehicle.spec_articulatedAxis.aiRevereserNode ~= nil then
-			reverserNode = vehicle.spec_articulatedAxis.aiRevereserNode
-			debugText = 'vehicle articulated axis reverese'
-		elseif vehicle.spec_articulatedAxis.aiReverserNode ~= nil then
-			reverserNode = vehicle.spec_articulatedAxis.aiReverserNode
-			debugText = 'vehicle articulated axis reverse'
-		end
+		reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 	else
 		-- otherwise see if the vehicle has a reverser node
 		if vehicle.getAIVehicleReverserNode then
@@ -174,7 +190,7 @@ function AIUtil.getTurningRadius(vehicle)
 
 	if g_vehicleConfigurations:get(vehicle, 'turnRadius') then
 		radius = g_vehicleConfigurations:get(vehicle, 'turnRadius')
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from configfile to %.1f', radius)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
 	end
 
 	-- TODO_22
@@ -373,7 +389,7 @@ end
 --- Additionally checks if the vehicle has the specialization and returns it, if no implement was found.
 --- For example a self driving overloader.
 function AIUtil.getImplementOrVehicleWithSpecialization(vehicle, specialization)
-	return  AIUtil.getImplementWithSpecialization(vehicle, specialization) or  
+	return AIUtil.getImplementWithSpecialization(vehicle, specialization) or
 			SpecializationUtil.hasSpecialization(specialization, vehicle.specializations) and vehicle
 end
 
@@ -543,4 +559,13 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	end
 	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
 	return loweringDurationMs
+end
+
+function AIUtil.getWidth(vehicle)
+	if vehicle.getAIAgentSize then
+		local width, length, lengthOffset, frontOffset, height = vehicle:getAIAgentSize()
+		return width
+	else
+		return vehicle.size.width
+	end
 end

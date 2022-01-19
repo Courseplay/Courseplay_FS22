@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.0.9</version>
+    <version>7.0.0.20</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -51,6 +51,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="Courseplay.lua"/>
 		<sourceFile filename="scripts/CpUtil.lua"/>
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
+		<sourceFile filename="scripts/debug/CourseRecorder.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/courseManager/CourseEvent.lua"/>
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
@@ -87,15 +88,24 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
-		<sourceFile filename="scripts/ai/AIDriveStrategyBalerCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
+		<sourceFile filename="scripts/ai/controllers/ImplementController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
+		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
+		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
 		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
+		<sourceFile filename="scripts/ai/tasks/AITaskFieldWorkCp.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
@@ -134,7 +144,11 @@ La prossima versione di Courseplay.
 		</actionBinding>
 
 		<actionBinding action="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY">
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_H" />
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_delete" />
+		</actionBinding>
+
+		<actionBinding action="CP_START_STOP">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_h" />
 		</actionBinding>
     </inputBinding>	
 
@@ -145,5 +159,6 @@ La prossima versione di Courseplay.
 		<action name="CP_DBG_CHANNEL_MENU_VISIBILITY" />
 
 		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
+		<action name="CP_START_STOP" />
 	</actions>
 </modDesc>

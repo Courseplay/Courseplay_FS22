@@ -5,10 +5,12 @@
 		<text name="CP_activated" 																		text="Aktiverad" />
 		<text name="CP_deactivated" 																	text="Avaktiverad" />
 		<text name="CP_unit_meter" 																		text="m" />
-
+		<text name="CP_unit_foot" 																		text="ft" />
+		
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): För hjälp, bug rapport och uppdaterings info, vänligen besök: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Generera en kurs innan du startat ett arbete." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Målet är inte på ett fält." />
 
 
@@ -18,15 +20,20 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Vart ska fältarbetet börja" />
 		<text name="CP_jobParameters_startAt_nearest"													text="Närmast vägpunkt" />
 		<text name="CP_jobParameters_startAt_first"														text="Första vägpunkt" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="Lasta av tröska/Sträng" />
 		<text name="CP_jobParameters_startAt_bales"														text="Samla in/plastade balar" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Fältarbete" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																	text="CP: Fältarbete" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Skapa en kurs för fältarbete." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Öppna/Stäng kurs skaparen." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Fordons inställningar för (%s)"/>
@@ -38,6 +45,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Såmaskins inställningar"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multi-Redskaps inställningar"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Hastighet"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug inställningar"/>
 
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visa kurs"/>
@@ -51,6 +59,9 @@
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Tillåt Backning för pathfinding"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Om tillämpligt, låt pathfinder generera kurser som innehåller backkörning"/>
+
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Fäll ihop redskap i slutet av kursen"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Aktiverar/inaktiverar automatisk hopfällning av redskap i slutet av kursen."/>
@@ -122,6 +133,9 @@
 		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximal hastighet när CP ska vända"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Backning"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximal hastighet när CP backar"/>
+		
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Fordons debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Akrivera/inaktivera debug för detta fordon."/>
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursskapandeinställningar för (%s)"/>
@@ -133,6 +147,14 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Antal vändtegar" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Antal vändtegar" />
 
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vändtegens överlapp" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Överlappa vändtegens spår med så många procent av arbetsbredden" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rader att hoppa över" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rader att hoppa över när du byter till nästa Upp/Ner rad" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rader per land" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="När fältcentrum är 'Lands' är det här många rader i varje block" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Vändtegens riktining" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Ska fordonet köra medurs eller moturs på vändtegen" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="medurs" />
@@ -155,6 +177,16 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Riktning för radens start" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="automatisk" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="längsta dragen" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Börja arbeta på" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Börja arbeta på" />
@@ -163,7 +195,9 @@
 
 
 		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stoppar i slutet"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stoppar i slutet"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Avgör om medarbetaren ska stanna vid den sista punkten eller återgå till början."/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Avskeda medarbetaren"/>
+		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Återgå till start och avskeda den anställde"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globalainställningar"/>
@@ -199,7 +233,7 @@
 
 		<text name="CP_courseManager_load_courses"														text="Ladda kurs"/>
 		<text name="CP_courseManager_save_courses"														text="Spara kurs"/>
-		<text name="CP_courseManager_clear_current_courses"												text="Sudda den aktiva kursen"/>
+		<text name="CP_courseManager_clear_current_courses"												text="Sluta använd den aktiva kursen"/>
 	
 		<text name="CP_courseManager_create_directory"													text="Skapa en ny mapp"/>
 		
@@ -240,6 +274,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Välj föregående felsökningskanal."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Ändra aktuell felsökningskanal."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Visa felsökningskanalsmeny Ja/Nej."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Öppna/Stäng fordonsinställningsdisplay"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Öppna mini GUI"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 	</texts>
 </l10n>

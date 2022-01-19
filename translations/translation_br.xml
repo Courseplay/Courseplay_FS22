@@ -5,12 +5,13 @@
 		<text name="CP_activated" 																		text="ativado" />
 		<text name="CP_deactivated" 																	text="desativado" />
 		<text name="CP_unit_meter" 																		text="m" />
+		<text name="CP_unit_foot" 																		text="ft" />
 
 		<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitae: https://github.com/Courseplay/Courseplay_FS22." />
+		<text name="CP_infoText"																		text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Criar rota primeiro." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Destino não é um campo." />
-
 
 
 	<!-- AI job menu -->
@@ -19,15 +20,20 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Onde começar o trabalho no campo" />
 		<text name="CP_jobParameters_startAt_nearest"													text="próximo waypoint" />
 		<text name="CP_jobParameters_startAt_first"														text="primeiro waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="último waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="descarregando colheitadeira" />
 		<text name="CP_jobParameters_startAt_bales"														text="coletando / embalando fardos" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Trabalho no campo" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Trabalho no campo" />
+		<text name="CP_job_baleCollect"																	text="CP: Fardo coletar/embalar" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Gerar rotas no campo." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Abrir / fechar gerador de rotas." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuração do veículo para (%s)"/>
@@ -39,7 +45,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Configuração Semeadeira "/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Configuração Multi implementos"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocidades"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Configuração do debug"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Mostrar rotas"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Mostrar rota atual do veículo"/>
@@ -52,6 +58,9 @@
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Permitir marcha a ré no caminho da rota"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Quando aplicável, permitir gere rotas contendo marcha a ré"/>
+
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Permiti a rota nas manobras"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Permite usar rotas em curvas, para evitar obstáculos e plantações"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Dobrar implemento no final da rota"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Ativar / desativar dobrar o implemento no final da rota."/>
@@ -124,6 +133,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Marcha a ré"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocidade máxima em marcha ré"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug do veículo"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Ativar/desativar debug para este veículo."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Configuração do gerador de rota de (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Configuração do gerador de rota de (%s)"/>
@@ -133,7 +146,14 @@
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Total de cabeceiras" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Total de cabeceiras" />
-		
+	
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sobreposição de cabeceira" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sobrepor largura faixa de cabeceira por porcentagem" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Pular faixas" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Pular faixas para cima ou para baixo ao mudar para próxima faixa" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Faixas por campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Quando o modo central é 'terras', essas várias faixas estão em cada bloco" />
+	
         <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Direção da cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Dirigir no sentido horário ou anti-horário na cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="horário" />
@@ -156,15 +176,21 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Iniair na direção da faixa" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automático" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Borda mais longa" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Ângulo das linhas para cima/para baixo" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Ângulo das linhas para cima/para baixo (0 será norte) quando for manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Modo desvio nas ilhas" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Como a rota deve contornar ilhas no campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="sem desvio" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simples" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="círculo" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Iniciar em" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Iniciar em" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Cabeceira" />
-
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Parar no final"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Parar no final"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Configurações global"/>
@@ -241,6 +267,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Selecione canal anterior de debug."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Mudar canal de debug atual."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostrar canal de debug sim/não."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir mini GUI"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 	</texts>
 </l10n>

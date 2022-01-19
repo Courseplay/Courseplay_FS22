@@ -5,12 +5,13 @@
 		<text name="CP_activated" 																		text="Aktivní" />
 		<text name="CP_deactivated" 																	text="Neaktivní" />
 		<text name="CP_unit_meter" 																		text="m" />
-		
+		<text name="CP_unit_foot" 																		text="ft" />
+
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Český překlad: SniperKittenCZ" />
 		<text name="CP_error_no_course"																	text="Před zahájením práce vygenerujte kurz." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
-
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Začátek trasy:" />
@@ -18,15 +19,20 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Kde začít polní práce" />
 		<text name="CP_jobParameters_startAt_nearest"													text="Na nejbližším bodě" />
 		<text name="CP_jobParameters_startAt_first"														text="Na prvním bodě" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="Vykládání" />
 		<text name="CP_jobParameters_startAt_bales"														text="Svoz balíků" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Polní práce" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Polní práce" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Vypočítat polní práce" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Zapnout/vypnout generátor tras" />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Nastavení pro vozidlo (%s)"/>
@@ -38,7 +44,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Nastavení secího stroje"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Nastavení pro více strojů"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Rychlosti"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Nastavení ladění"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Ukázat trasu"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Ukázat aktuální trasu vozidla"/>
@@ -51,6 +57,9 @@
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Povolit couvání pro hledání trasy"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Pokud je aktivní, použije se při generování trasy i couvání"/>
+
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Složit nářadí na konci trasy"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Zapnout/vypnout složení nářadí do transportní pozice po ukončení práce"/>
@@ -123,6 +132,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Couvání"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximální rychlost při couvání"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Ladění vozidla"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Aktivovat/deaktivovat ladění tohoto vozidla."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Nastavení generátoru kurzů (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Nastavení generátoru kurzů (%s)"/>
@@ -133,17 +146,28 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Počet souvratí" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Počet souvratí" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Souvraťový přesah" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Řádky k přeskočení" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'záhon'" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Ve směru hodinových ručiček" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Proti směru hodinových ručiček" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Střed pole" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Střed pole" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Postup práce" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Postup práce" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Nahoru/dolů" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirála" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Kruh" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Země" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Záhon" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Souvraťové rohy" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Souvraťové rohy" />
@@ -155,15 +179,21 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Zvolit směr na začátku řádku" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatický" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Nejdelší okraj" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Začít pracovat na" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kde začít pracovat" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Souvrati" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Řádku" />
-
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Zastavení na konci"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Zastavení na konci"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>
@@ -181,10 +211,10 @@
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Nastavení generování trasy"/>
 
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlu v cíli"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlů v cíli"/>
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné"/>
 
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Faktor Delta úhlu"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Faktor Delta úhlů"/>
 		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší"/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zobrazit všechny aktivní trasy"/>
@@ -192,8 +222,8 @@
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Správce Tras(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="žádná trasa"/>
-		<text name="CP_courseManager_temporary_course"													text="dočasná trasa"/>
+		<text name="CP_courseManager_no_current_course"													text="Žádná trasa"/>
+		<text name="CP_courseManager_temporary_course"													text="Dočasná trasa"/>
 
 		<text name="CP_courseManager_change_mode"														text="Změnit režim"/>
 
@@ -235,12 +265,12 @@
 - Moving a course in to another directory.
 - Deleting a course or directory.
 - Renaming a course or directory."/>
-
 <!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vyberte předchozí kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Změnit aktuální kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Otevřt/zavřít nastavení vozidla"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otevřt/zavřít nastavení vozidla"/>
+		<text name="input_CP_START_STOP" 																text="CP: Spustit mini GUI"/>
 	</texts>
 </l10n>

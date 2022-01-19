@@ -28,6 +28,7 @@
 		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true"/>
 		<!--Pathfinder Reverse-->
 		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="true"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">
@@ -48,7 +49,7 @@
 			</Texts>
 		</Setting>
 		<!--Turn Diameter-->
-		<Setting classType="AIParameterSettingList" name="turnDiameter" min="0" max="50" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="turnDiameter" min="2" max="50" unit="2"/>
 		<!--Tool Offset X-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
 		<!--Tool Offset Y-->
@@ -65,15 +66,15 @@
 		<!--Unload on first Headland-->
 		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland"/>
 		<!--Strawswath-->
-		<Setting classType="AIParameterSettingList" name="strawSwath">
+		<Setting classType="AIParameterSettingList" name="strawSwath" default="2">
 			<Values>
-				<Value name="STRAW_SWATH_ON">1</Value>
-				<Value name="STRAW_SWATH_OFF">2</Value>
+				<Value name="STRAW_SWATH_OFF">1</Value>
+				<Value name="STRAW_SWATH_ON">2</Value>
 				<Value name="STRAW_SWATH_ONLY_CENTER">3</Value>
 			</Values>
 			<Texts>
-				<Text prefix="false">CP_activated</Text>
 				<Text prefix="false">CP_deactivated</Text>
+				<Text prefix="false">CP_activated</Text>
 				<Text>onlyCenter</Text>
 			</Texts>
 		</Setting>
@@ -99,12 +100,17 @@
 
 	<SettingSubTitle title="speed">
 		<!--Fieldwork Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="15" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="25" unit="1"/>
 		<!--Field Speed-->
 		<Setting classType="AIParameterSpeedSetting" name="fieldSpeed" min="5" max="50" default="20" unit="1"/>
 		<!--Turn Speed-->
 		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" default="8" unit="1"/>
 		<!--Reverse Speed-->
 		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1"/>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="debug">
+		<!--Debug active -->
+		<Setting classType="AIParameterBooleanSetting" name="debugActive"/>
 	</SettingSubTitle>
 </Settings>

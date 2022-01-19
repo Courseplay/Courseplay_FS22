@@ -5,10 +5,12 @@
 		<text name="CP_activated" 																		text="activé" />
 		<text name="CP_deactivated" 																	text="désactivé" />
 		<text name="CP_unit_meter" 																		text="m" />
+		<text name="CP_unit_foot" 																		text="pieds" />
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Veuillez générer une course avant de démarrer la tâche" />
+		<text name="CP_error_no_course"																	text="Générez ou chargez une course avant de démarrer la tâche" />
+		<text name="CP_error_could_not_generate_course"													text="Impossible de générer la course. Plus d'informations dans le journal." />
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 
@@ -18,15 +20,21 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Début du travail dans le champ" />
 		<text name="CP_jobParameters_startAt_nearest"													text="point le plus proche" />
 		<text name="CP_jobParameters_startAt_first"														text="premier point" />
+		<text name="CP_jobParameters_startAt_last"														text="dernier point" />
 		<text name="CP_jobParameters_startAt_unload"													text="déchargement de la batteuse/ensileuse" />
 		<text name="CP_jobParameters_startAt_bales"														text="ramassage/enrubannage des bottes" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP:Travail" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																	text="CP:Travail" />
+		<text name="CP_job_baleCollect"																	text="CP:Bottes(ramassage/enrub.)" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses" />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="L'ouvrier %s a interrompu son travail - la tremie est pleine!" />
+
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Paramètres du véhicule pour (%s)"/>
@@ -38,7 +46,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Paramètres semoir"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Paramètres outils multiples"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Vitesses"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Paramètres de deboggage"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Afficher la course"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Affiche la course actuelle du véhicule."/>
@@ -51,6 +59,9 @@
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Autoriser marche AR pour le pathfinding"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Si nécessaire, autorise le pathfinding à générer des trajets contenant des marches arrières."/>
+
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Autoriser les détours pour le pathfinding"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Si nécessaire, autorise le pathfinding à générer des trajets avec des détours, par exemple pour éviter des obstacles ou des cultures"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Replier l'outils à la fin de la course"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Active/Désactive le repli automatique de l'outil à la fin de la course."/>
@@ -123,6 +134,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières."/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Deboggage du vehicule"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Active/Desactive le deboggage du vehicule."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Paramètres du générateur pour la course (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Paramètres du générateur pour la course (%s)"/>
@@ -133,10 +148,19 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Nombre de fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières." />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail." />
+
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Bordures du champ" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ pour définir une zone non travaillée autour du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ." />
+		
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rangs par blocs" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné." />
+
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Sens des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières." />
-		
-
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Sens horaire" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Sens antihoraire" />
 		
@@ -144,8 +168,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Choix du type de rangées" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Allers-retours" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirale (tourne autour)" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circulaire (par bloc)" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Intérieur vers extérieur" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circulaire (extérieur vers intérieur)" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Par blocs (Intérieur vers extérieur)" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Choix du type de fourrières" />
@@ -157,15 +181,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Choix de l'orientation des rangées" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatique" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Bords longs" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manuel" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Orientation des rangs" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle des rangs (0 = Nord) en manuel" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestion des îlots" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportement du tracé lors de la présence d'îlots dans le champ" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="pas d'évitement" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="normal" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circulaire" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Retour au premier point"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Retourne au premier point à la fin de la course."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Paramètres globaux"/>
@@ -243,6 +274,7 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Sélection du précèdent canal de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Canal actif de deboggage."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Affiche/Masque les paramètres du véhicule"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini ATH"/>
+		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
 	</texts>
 </l10n>

@@ -59,18 +59,22 @@ function AIParameterSettingList.getSpeedText(value)
 end
 
 function AIParameterSettingList.getDistanceText(value)
-	return string.format("%.1f %s",g_i18n:getDistance(value),g_i18n:getText("CP_unit_meter"))
+	if g_i18n.useMiles then 
+		return string.format("%.1f %s",value*3.28,g_i18n:getText("CP_unit_foot"))
+	end
+	return string.format("%.1f %s",value,g_i18n:getText("CP_unit_meter"))
 end
 
 function AIParameterSettingList.getAreaText(value)
 	return g_i18n:formatArea(value, 1, true)
 end
 
-AIParameterSettingList.UNITS = {
+AIParameterSettingList.UNITS_TEXTS = {
 	AIParameterSettingList.getSpeedText, --- km/h
 	AIParameterSettingList.getDistanceText, --- m
 	AIParameterSettingList.getAreaText, --- ha/arcs
-	function () return "%"	end			--- percent
+	function (value) return string.format("%d", value) .. "%" end,			--- percent
+	function (value) return string.format("%d", value) .. "°" end			--- degrees
 }
 
 
@@ -87,7 +91,7 @@ function AIParameterSettingList:generateValues(values,texts,min,max,inc,textStr,
 	for i=min,max,inc do 
 		table.insert(values,i)
 		local value = MathUtil.round(i,2)
-		local text = unit and AIParameterSettingList.UNITS[unit] and AIParameterSettingList.UNITS[unit](value) or tostring(value)
+		local text = unit and AIParameterSettingList.UNITS_TEXTS[unit] and AIParameterSettingList.UNITS_TEXTS[unit](value) or tostring(value)
 		local text = textStr and string.format(textStr,value) or text
 		table.insert(texts,text)
 	end
@@ -98,7 +102,7 @@ function AIParameterSettingList:enrichTexts(unit)
 	for i,value in ipairs(self.values) do 
 		local text = tostring(value)
 		if unit then 
-			text = text..AIParameterSettingList.UNITS[unit](value)
+			text = text..AIParameterSettingList.UNITS_TEXTS[unit](value)
 		end
 		self.texts[i] = text
 	end
@@ -144,6 +148,23 @@ end
 function AIParameterSettingList:validateCurrentValue()
 	local new = self:checkAndSetValidValue(self.current)
 	self:setToIx(new)
+end
+
+--- Refresh the texts, if it depends on a changeable measurement unit.
+--- For all units that are not an SI unit ...
+function AIParameterSettingList:validateTexts()
+	local unit = self.data.unit
+	if unit then 
+		local unitStrFunc = AIParameterSettingList.UNITS_TEXTS[unit]
+		local fixedTexts = {}
+		for ix,value in ipairs(self.values) do 
+			local value = MathUtil.round(value,2)
+			local text = unitStrFunc(value)
+			local text = self.data.textStr and string.format(self.data.textStr,value) or text
+			fixedTexts[ix] = text
+		end
+		self.texts = fixedTexts
+	end
 end
 
 function AIParameterSettingList:getDebugString()
@@ -213,6 +234,15 @@ function AIParameterSettingList:clone(...)
 	return AIParameterSettingList.new(self.data,...)
 end
 
+--- Copy the value to another setting.
+function AIParameterSettingList:copy(setting)
+	if self.data.incremental and self.data.incremental ~= 1 then 
+		self:setFloatValue(setting:getValue())
+	else 
+		self:setValue(setting:getValue())
+	end
+end
+
 function AIParameterSettingList:getTitle()
 	return self.title	
 end
@@ -256,6 +286,7 @@ end
 
 function AIParameterSettingList:setGuiElement(guiElement)
 	self:validateCurrentValue()
+	self:validateTexts()
 	self.guiElement = guiElement
 	self.guiElement.target = self
 	self.guiElement.onClickCallback = function(setting,state,element)

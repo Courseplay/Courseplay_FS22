@@ -6,6 +6,8 @@ labels: bug
 assignees: ''
 
 ---
+**READ FIRST**
+https://github.com/Courseplay/Courseplay_FS22/wiki
 
 **Steps to reproduce**
 Steps to reproduce the behavior.
@@ -31,6 +33,7 @@ please check out the readme at the github front page.
 Map played on.
 
 **Vehicles/ implements involved**
+Wich vehicle or implement?
 Mod yes/no ?
 
 **Relevant script mods**

@@ -149,12 +149,17 @@ function Waypoint:setOffsetPosition(offsetX, offsetZ, dx, dz)
 end
 
 function Waypoint:getDistanceFromPoint(x, z)
-	return courseplay:distance(x, z, self.x, self.z)
+	return MathUtil.getPointPointDistance(x, z, self.x, self.z)
 end
 
 function Waypoint:getDistanceFromVehicle(vehicle)
-	local vx, _, vz = getWorldTranslation(vehicle.cp.directionNode or vehicle.rootNode)
+	local vx, _, vz = getWorldTranslation(vehicle:getAIDirectionNode() or vehicle.rootNode)
 	return self:getDistanceFromPoint(vx, vz)
+end
+
+function Waypoint:getDistanceFromNode(node)
+	local x, _, z = getWorldTranslation(node)
+	return self:getDistanceFromPoint(x, z)
 end
 
 -- a node related to a waypoint
@@ -378,10 +383,13 @@ end
 -- PPC relies on waypoint angles, the world direction is needed to calculate offsets
 function Course:enrichWaypointData(startIx)
 	if #self.waypoints < 2 then return end
-	self.length = 0
-	self.headlandLength = 0
-	self.firstHeadlandWpIx = nil
-	self.firstCenterWpIx = nil
+	if not startIx then
+		-- initialize only if recalculating the whole course, otherwise keep (and update) the old values)
+		self.length = 0
+		self.headlandLength = 0
+		self.firstHeadlandWpIx = nil
+		self.firstCenterWpIx = nil
+	end
 	for i = startIx or 1, #self.waypoints - 1 do
 		self.waypoints[i].dToHere = self.length
 		self.waypoints[i].dToHereOnHeadland = self.headlandLength
@@ -419,6 +427,7 @@ function Course:enrichWaypointData(startIx)
 		end
 		self.waypoints[i].angle = math.deg(self.waypoints[i].yRot)
 		self.waypoints[i].calculatedRadius = i == 1 and math.huge or self:calculateRadius(i)
+		self.waypoints[i].curvature = i == 1 and 0 or 1 / self:calculateSignedRadius(i)
 		if (self:isReverseAt(i) and not self:switchingToForwardAt(i)) or self:switchingToReverseAt(i) then
 			-- X offset must be reversed at waypoints where we are driving in reverse
 			self.waypoints[i].reverseOffset = true
@@ -441,6 +450,7 @@ function Course:enrichWaypointData(startIx)
 			self.waypoints[#self.waypoints - 1].dToHereOnHeadland
 	self.waypoints[#self.waypoints].turnsToHere = self.totalTurns
 	self.waypoints[#self.waypoints].calculatedRadius = math.huge
+	self.waypoints[#self.waypoints].curvature = 0
 	self.waypoints[#self.waypoints].reverseOffset = self:isReverseAt(#self.waypoints)
 	-- now add some metadata for the combines
 	local dToNextTurn, lNextRow, nextRowStartIx = 0, 0, 0
@@ -462,9 +472,13 @@ function Course:enrichWaypointData(startIx)
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
 end
 
-function Course:calculateRadius(ix)
+function Course:calculateSignedRadius(ix)
 	local deltaAngle = getDeltaAngle(self.waypoints[ix].yRot, self.waypoints[ix - 1].yRot)
-	return math.abs( self:getDistanceToNextWaypoint(ix) / ( 2 * math.sin(deltaAngle / 2 )))
+	return self:getDistanceToNextWaypoint(ix) / ( 2 * math.sin(deltaAngle / 2 ))
+end
+
+function Course:calculateRadius(ix)
+	return math.abs(self:calculateSignedRadius(ix))
 end
 
 --- Is this the same course as otherCourse?
@@ -1427,15 +1441,6 @@ function Course:executeFunctionForLastWaypoints(d, lambda)
 	end
 end
 
-function Course:setTurnEndForLastWaypoints(d)
-	local i = self:getNumberOfWaypoints()
-	-- only set turn end for forward waypoints, we don't want to lower implements while reversing
-	while i > 1 and not self:isReverseAt(i) and self:getDistanceToLastWaypoint(i) < d do
-		self.waypoints[i].turnEnd = true
-		i = i - 1
-	end
-end
-
 function Course:setUseTightTurnOffsetForLastWaypoints(d)
 	self:executeFunctionForLastWaypoints(d, function(wp) wp.useTightTurnOffset = true end)
 end
@@ -1924,5 +1929,21 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
+	return course
+end
+
+--- When creating a course from an analytic path, we want to have the direction of the last waypoint correct
+function Course.createFromAnalyticPath(vehicle, path, isTemporary)
+	State3D.printPath(path)
+	local course = Course(vehicle, CourseGenerator.pointsToXzInPlace(path), isTemporary)
+	-- enrichWaypointData rotated the last waypoint in the direction of the second to last,
+	-- correct that according to the analytic path's last waypoint
+	local yRot = CourseGenerator.toCpAngle(path[#path].t)
+	course.waypoints[#course.waypoints].yRot = yRot
+	course.waypoints[#course.waypoints].angle = math.deg(yRot)
+	course.waypoints[#course.waypoints].dx, course.waypoints[#course.waypoints].dz =
+		MathUtil.getDirectionFromYRotation(yRot)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle,
+			'Last waypoint of the course created from analytical path: angle set to %.1f°', math.deg(yRot))
 	return course
 end

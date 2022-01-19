@@ -5,10 +5,12 @@
 		<text name="CP_activated" 																		text="activated" />
 		<text name="CP_deactivated" 																	text="deactivated" />
 		<text name="CP_unit_meter" 																		text="m" />
+		<text name="CP_unit_foot" 																		text="ft" />
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Target is not on a field." />
 
 
@@ -18,15 +20,20 @@
 		<text name="CP_jobParameters_startAt_tooltip"													text="Where to start field work" />
 		<text name="CP_jobParameters_startAt_nearest"													text="nearest waypoint" />
 		<text name="CP_jobParameters_startAt_first"														text="first waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="unloading combine/chopper" />
 		<text name="CP_jobParameters_startAt_bales"														text="collecting/wrapping bales" />
 
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Fieldwork" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																		text="CP: Fieldwork" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Generate fieldwork course." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Open/close course generator." />
+
+	<!-- AI messages -->
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Vehicle settings for (%s)"/>
@@ -38,7 +45,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Seeder settings"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multitool settings"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Speeds"/>
-
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug settings"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Show course"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Show the current course of the vehicle"/>
@@ -51,6 +58,9 @@
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Allow reverse for pathfinding"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="When applicable, allow the pathfinder to generate courses containing reverse driving"/>
+
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Fold tools at course end"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Enables/disables automatic folding of implements at the end of the course."/>
@@ -123,6 +133,10 @@
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Reverse"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximum speed while reversing"/>
 
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+
+
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Course generator settings of (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Course generator settings of (%s)"/>
@@ -133,6 +147,17 @@
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Number of headlands" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands" />
 		
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rows per land" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="When the center mode is 'lands', this many rows are in each block" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Headland direction" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Should the vehicle drive clockwise or counterclockwise on the headland" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="clockwise" />
@@ -155,15 +180,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Row start direction" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatic" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Longest edge" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start work on" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start work on" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Headland" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Headland" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stopping at the end"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Stopping at the end"/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Global settings"/>
@@ -242,6 +274,6 @@
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Shows debug channel menu yes/no."/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text = "CP: Open/close vehicle setting display"/>
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open mini GUI"/>
 	</texts>
 </l10n>

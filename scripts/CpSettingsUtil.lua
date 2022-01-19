@@ -36,7 +36,7 @@ CpSettingsUtil.classTypes = {
 				- max (int): max value
 				- incremental (float): increment (optional), default "1"
 				- text(string): string to format the setting value with in the gui element.
-				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional)
+				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional), 4 = percent (%), 5 = degrees (°)
 
 				- onChangeCallback(string): callback function raised on setting value changed. 
 
@@ -224,6 +224,13 @@ function CpSettingsUtil.cloneSettingsTable(class,settings,...)
 	end
 end
 
+--- Copies settings values from a settings tables to another.
+function CpSettingsUtil.copySettingsValues(settingsTable,settingsTableToCopy)
+    for i,p in ipairs(settingsTable.settings) do 
+        p:copy(settingsTableToCopy.settings[i])
+    end
+end
+
 --- Clones for each setting and subtitle generic gui elements and applies basic setups.
 ---@param settingsBySubTitle table
 ---@param parentGuiElement GuiElement
@@ -257,7 +264,7 @@ function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings
 		local titleElement = genericSettingElementTitle:clone(parentGuiElement,true)
 		titleElement:setText(setting.data.title)
 		genericSettingElement:unlinkElement()
-		CpUtil.debugFormat(CpDebug.DBG_HUD,"Binded setting %s",setting:getName())
+		CpUtil.debugFormat(CpDebug.DBG_HUD,"Bound setting %s",setting:getName())
 		local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
 --			parentGuiElement:invalidateLayout()
 		setting:setGenericGuiElementValues(clonedSettingElement)

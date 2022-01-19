@@ -853,10 +853,11 @@ HybridAStarWithPathInTheMiddle = CpObject(HybridAStarWithAStarInTheMiddle)
 ---@param hybridRange number range in meters around start/goal to use hybrid A *
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param path State3D[] path to use in the middle part
-function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path)
+---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
+function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate)
 	self.path = path
 	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', hybridRange, #path)
-	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000)
+	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()

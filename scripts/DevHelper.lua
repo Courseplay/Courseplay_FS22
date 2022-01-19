@@ -64,13 +64,15 @@ function DevHelper:update()
 
     self.yRot = math.atan2( lx, lz )
     self.data.yRotDeg = math.deg(self.yRot)
+    local _, yRot, _ = getWorldRotation(self.node)
+    self.data.yRotFromRotation = math.deg(yRot)
     self.data.yRotDeg2 = math.deg(MathUtil.getYRotationFromDirection(lx, lz))
     self.data.x, self.data.y, self.data.z = getWorldTranslation(self.node)
 --    self.data.fieldNum = courseplay.fields:getFieldNumForPosition(self.data.x, self.data.z)
 
 --    self.data.hasFruit, self.data.fruitValue, self.data.fruit = PathfinderUtil.hasFruit(self.data.x, self.data.z, 5, 3.6)
 
-    --self.data.landId =  PathfinderUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
+    self.data.landId =  CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
     --self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
 	self.data.farmlandId = g_farmlandManager:getFarmlandIdAtWorldPosition(self.data.x, self.data.z)
 	self.data.farmland = g_farmlandManager:getFarmlandAtWorldPosition(self.data.x, self.data.z)
@@ -78,11 +80,12 @@ function DevHelper:update()
 
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
     self.data.isOnField, self.data.densityBits = FSDensityMapUtil.getFieldDataAtWorldPosition(self.data.x, y, self.data.z)
-
+    self.data.isOnFieldArea, self.data.onFieldArea, self.data.totalOnFieldArea = CpFieldUtil.isOnFieldArea(self.data.x, self.data.z)
     self.data.nx, self.data.ny, self.data.nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, y, self.data.z)
 
+    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
     self.data.collidingShapes = ''
-    overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, bitOR(CollisionMask.VEHICLE, 2), true, true, true)
+    overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, collisionMask, true, true, true)
 
 end
 
@@ -94,7 +97,7 @@ function DevHelper:overlapBoxCallback(transformId)
             text = 'vehicle' .. collidingObject:getName()
         else
 			if collidingObject:isa(Bale) then
-				text = 'Bale ' .. tostring(collidingObject) .. ' ' .. tostring(NetworkUtil.getObjectId(collidingObject))
+				text = 'Bale ' .. tostring(collidingObject.id) .. ' ' .. tostring(collidingObject.nodeId)
 			else
             	text = collidingObject.getName and collidingObject:getName() or 'N/A'
 			end
@@ -146,7 +149,7 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         self:debug('Calculate')
         self:startPathfinding()
     elseif bitAND(modifier, Input.MOD_LCTRL) ~= 0 and isDown and sym == Input.KEY_comma then
-        self.fieldNumForPathfinding = PathfinderUtil.getFieldNumUnderNode(self.node)
+        self.fieldNumForPathfinding = CpFieldUtil.getFieldNumUnderNode(self.node)
         self:debug('Set field %d for pathfinding', self.fieldNumForPathfinding)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_space then
         -- save vehicle position
@@ -159,7 +162,6 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         self:debug('Finding contour of current field')
         local points = g_fieldScanner:findContour(self.data.x, self.data.z)
         local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
-        CpFieldUtil.saveField(fieldId, points)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
         self:debug('Generate course')
         local status, ok, course = CourseGeneratorInterface.generate(g_fieldScanner:findContour(self.data.x, self.data.z),
@@ -192,13 +194,14 @@ function DevHelper:draw()
 	end
 
 	DebugUtil.drawDebugNode(self.tNode, 'Terrain normal')
-	local nx, ny, nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
+	--local nx, ny, nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
 
-	local x, y, z = localToWorld(self.node, 0, -1, -3)
+	--local x, y, z = localToWorld(self.node, 0, -1, -3)
 
-	drawDebugLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz, 1, 1, 1)
-	local xRot, yRot, zRot = getWorldRotation(self.tNode)
-	DebugUtil.drawOverlapBox(self.data.x, self.data.y, self.data.z, xRot, yRot, zRot, 4, 1, 4, 0, 100, 0)
+	--drawDebugLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz, 1, 1, 1)
+	--local xRot, yRot, zRot = getWorldRotation(self.tNode)
+	--DebugUtil.drawOverlapBox(self.data.x, self.data.y, self.data.z, xRot, yRot, zRot, 4, 1, 4, 0, 100, 0)
+    PathfinderUtil.showOverlapBoxes()
     g_fieldScanner:draw()
 end
 

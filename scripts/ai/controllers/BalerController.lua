@@ -16,87 +16,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
----@class AIDriveStrategyBalerCourse : AIDriveStrategyFieldWorkCourse
-AIDriveStrategyBalerCourse = {}
-local AIDriveStrategyBalerCourse_mt = Class(AIDriveStrategyBalerCourse, AIDriveStrategyFieldWorkCourse)
+---@class BalerController : ImplementController
+BalerController = CpObject(ImplementController)
 
-function AIDriveStrategyBalerCourse.new(customMt)
-    if customMt == nil then
-        customMt = AIDriveStrategyBalerCourse_mt
-    end
-    local self = AIDriveStrategyFieldWorkCourse.new(customMt)
+function BalerController:init(vehicle)
+    self.baler = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler)
+    ImplementController.init(self, vehicle, self.baler)
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 20
-    return self
+    self.balerSpec = self.baler.spec_baler
+    --use giants automaticDrop, so we don't have to do it
+    if self.balerSpec then
+        self.oldAutomaticDrop = self.balerSpec.automaticDrop
+        self.balerSpec.automaticDrop = true
+    end
+    self:debug('Baler controller initialized')
 end
 
-function AIDriveStrategyBalerCourse:setAIVehicle(vehicle)
-    AIDriveStrategyBalerCourse:superClass().setAIVehicle(self, vehicle)
-
-    if SpecializationUtil.hasSpecialization(Combine, vehicle.specializations) or
-            AIUtil.hasAIImplementWithSpecialization(vehicle, Combine) then
-        self.isCombine = true
-    end
-    self.baler = AIUtil.getImplementWithSpecialization(self.vehicle, Baler)
-    if self.baler then
-        self.balerSpec = self.baler.spec_baler
-        --use giants automaticDrop, so we don't have to do it
-        if self.balerSpec then
-            self.oldAutomaticDrop = self.balerSpec.automaticDrop
-            self.balerSpec.automaticDrop = true
-        end
-    end
+function BalerController:getDriveData()
+    local maxSpeed = self:handleBaler()
+    return nil, nil, nil, maxSpeed
 end
 
-function AIDriveStrategyBalerCourse:getDriveData(dt, vX, vY, vZ)
-    if self.baler then
-        self:handleBaler()
-    end
-    return AIDriveStrategyBalerCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
-end
+function BalerController:handleBaler()
+    local maxSpeed
 
-function AIDriveStrategyBalerCourse:startTurn(ix)
-    if self.isCombine then
-        self:debug('This vehicle is also a harvester, check check for special headland turns.')
-        local fm, bm = self:getFrontAndBackMarkers()
-        self.turnContext = TurnContext(self.course, ix, self.turnNodes, self:getWorkWidth(), fm, bm,
-                self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-
-        if self.turnContext:isHeadlandCorner() then
-            if self.course:isOnConnectingTrack(ix) then
-                self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
-                AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-            elseif self.course:isOnOutermostHeadland(ix) and self.vehicle.cp.settings.turnOnField:is(true) then
-                self:debug('Creating a pocket in the corner so the harvester stays on the field during the turn')
-                self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext,
-                        self.course, self:getWorkWidth())
-                self.fieldworkState = self.states.TURNING
-                self.ppc:setShortLookaheadDistance()
-            else
-                self:debug('Use combine headland turn.')
-                self.aiTurn = CombineHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext)
-                self.fieldworkState = self.states.TURNING
-            end
-        else
-            self:debug('Non headland turn.')
-            AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-        end
-    else
-        AIDriveStrategyFieldWorkCourse.startTurn(self, ix)
-    end
-end
-
-function AIDriveStrategyBalerCourse:isHandlingAllowed()
-    if self.state == self.states.ON_CONNECTING_TRACK or
-            self.state == self.states.TEMPORARY or self.state == self.states.TURNING then
-        return false
-    end
-    return true
-end
-
-function AIDriveStrategyBalerCourse:handleBaler()
-    -- turn.lua will raise/lower as needed, don't touch the balers while the turn maneuver is executed or while on temporary alignment / connecting track
-    if not self:isHandlingAllowed() then return end
     if not self.baler:getIsTurnedOn() then
         if self.baler.setFoldState then
             -- unfold if there is something to unfold
@@ -106,10 +50,11 @@ function AIDriveStrategyBalerCourse:handleBaler()
             self:debug('Turning on baler')
             self.baler:setIsTurnedOn(true, false);
         else --maybe this line is enough to handle bale dropping and waiting ?
-            self:setMaxSpeed(0)
+            maxSpeed = 0
             --baler needs refilling of some sort (net,...)
             if self.balerSpec.unloadingState == Baler.UNLOADING_CLOSED then
-                self:setInfoText('NEEDS_REFILLING')
+                -- TODO: info texts no notify user
+                self:debug('NEEDS_REFILLING')
             end
         end
     end
@@ -125,21 +70,23 @@ function AIDriveStrategyBalerCourse:handleBaler()
     local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
 
     if not self.balerSpec.nonStopBaling and (self.balerSpec.hasUnloadingAnimation or self.balerSpec.allowsBaleUnloading) then
+    --if not self.balerSpec.nonStopBaling and self.balerSpec.allowsBaleUnloading then
         self:debugSparse("hasUnloadingAnimation: %s, allowsBaleUnloading: %s, nonStopBaling:%s",
                 tostring(self.balerSpec.hasUnloadingAnimation),tostring(self.balerSpec.allowsBaleUnloading),tostring(self.balerSpec.nonStopBaling))
         --copy of giants code:  AIDriveStrategyBaler:getDriveData(dt, vX,vY,vZ) to avoid leftover when full
         local freeFillLevel = capacity - fillLevel
         if freeFillLevel < self.slowDownFillLevel then
-            local maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
-            self:setMaxSpeed(maxSpeed)
+            maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
         end
 
         --baler is full or is unloading so wait!
         if fillLevel == capacity or self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
-            self:setMaxSpeed(0)
+            maxSpeed = 0
         end
+ --   elseif self.balerSpec.platformDropInProgress then
+  --      maxSpeed = self.balerSpec.platformAIDropSpeed
     end
-    return true
+    return maxSpeed
 end
 
 Pickup.onAIImplementStartLine = Utils.overwrittenFunction(Pickup.onAIImplementStartLine,
