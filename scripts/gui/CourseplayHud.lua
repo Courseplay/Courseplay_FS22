@@ -57,37 +57,19 @@ function CourseplayHud:init(vehicle)
     self.onOffIndicator:setPosition(self.x + self.width - self.wMargin, self.y + self.height - self.hMargin)
     self.onOffIndicator:setCallback("onClickPrimary",self.vehicle,self.vehicle.cpStartStopDriver)
     
+    --- Cp icon 
+    local cpIconWidth, height = getNormalizedScreenValues(30 * self.uiScale, 30 * self.uiScale)
+    local cpIconOverlay =  Overlay.new(Utils.getFilename("img/icon_courseplay.dds",Courseplay.BASE_DIRECTORY), 0, 0,cpIconWidth, height)
+    cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+    cpIconOverlay:setUVs(GuiUtils.getUVs({80,26,144,144},{256,256}))
+    self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
+    self.cpIcon:setPosition(self.x + self.wMargin, self.y + self.height - self.hMargin)
     
     --- Creates course name text
     local x, y = self.x + self.wMargin, self.y + self.hMargin
     self.courseName = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize)
     self.courseName:setCallback("onClickPrimary",self.vehicle,function (vehicle)
-        local inGameMenu =  g_currentMission.inGameMenu
-        local pageAI = inGameMenu.pageAI
-		pageAI.controlledVehicle = vehicle
-		pageAI.currentHotspot = nil
-        inGameMenu:updatePages()
-        g_gui:showGui("InGameMenu")
-        inGameMenu:changeScreen(InGameMenu)
-        --- With a current course the course manager will be opened and with no course the course generator.
-        if vehicle:hasCpCourse() then
-            --- Opens the course manager if possible.
-            local courseManagerPageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCourseManager)
-
-            inGameMenu.pageSelector:setState(courseManagerPageIx, true)
-        else 
-            --- Opens the course generator if possible.
-            local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageAI)
-            inGameMenu.pageSelector:setState(pageIx, true)
-            inGameMenu.pageAI:onCreateJob()
-            for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
-                if inGameMenu.pageAI.jobTypeInstances[index]:isa(AIJobFieldWorkCp) then 
-                    inGameMenu.pageAI:setActiveJobTypeSelection(index)
-                    break
-                end
-            end
-            inGameMenu.pageAI:onClickOpenCloseCourseGenerator()
-        end  
+       self:openCourseGeneratorGui(vehicle)
     end)
     --- Creates starting point text
     x, y = self.x + self.wMargin, self.y + self.lineHeight + self.hMargin
@@ -97,20 +79,10 @@ function CourseplayHud:init(vehicle)
     end)
 
     --- Creates vehicle name text
-    x, y = self.x + self.wMargin, self.y + self.height - self.hMargin
+    x, y = self.x +  2*self.wMargin + cpIconWidth, self.y + self.height - self.hMargin
     self.vehicleName = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize)
-    self.vehicleName:setCallback("onClickPrimary",self.vehicle,function ()
-         --- Opens the vehicle settings if possible.
-        local inGameMenu =  g_currentMission.inGameMenu
-        local pageAI = inGameMenu.pageAI
-		pageAI.controlledVehicle = g_currentMission.controlledVehicle
-		pageAI.currentHotspot = nil
-        inGameMenu:updatePages()
-        g_gui:showGui("InGameMenu")
-        inGameMenu:changeScreen(InGameMenu)
-        local vehiclePageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpVehicleSettings)
-
-		inGameMenu.pageSelector:setState(vehiclePageIx, true)
+    self.vehicleName:setCallback("onClickPrimary",self.vehicle,function (vehicle)
+        self:openVehicleSettingsGui(vehicle)
     end)
 
     --- Creates waypoint progress text
@@ -121,8 +93,46 @@ function CourseplayHud:init(vehicle)
     x,y = self.x + self.width - self.wMargin, self.y + self.lineHeight + self.hMargin
     self.timeProgress = CpTextHudElement.new(self.baseHud,x, y,  self.defaultFontSize+2,RenderText.ALIGN_RIGHT)
 
-    
 end
+
+function CourseplayHud:preOpeningInGameMenu(vehicle)
+    local inGameMenu =  g_currentMission.inGameMenu
+    local pageAI = inGameMenu.pageAI
+    pageAI.controlledVehicle = vehicle
+    pageAI.currentHotspot = nil
+    inGameMenu:updatePages()
+    g_gui:showGui("InGameMenu")
+    inGameMenu:changeScreen(InGameMenu)
+    return inGameMenu
+end
+
+function CourseplayHud:openCourseManagerGui(vehicle)
+    local inGameMenu = self:preOpeningInGameMenu(vehicle)
+    local courseManagerPageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCourseManager)
+    inGameMenu.pageSelector:setState(courseManagerPageIx, true)
+end
+
+function CourseplayHud:openCourseGeneratorGui(vehicle)
+    local inGameMenu = self:preOpeningInGameMenu(vehicle)
+     --- Opens the course generator if possible.
+     local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageAI)
+     inGameMenu.pageSelector:setState(pageIx, true)
+     inGameMenu.pageAI:onCreateJob()
+     for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
+         if inGameMenu.pageAI.jobTypeInstances[index]:isa(AIJobFieldWorkCp) then 
+             inGameMenu.pageAI:setActiveJobTypeSelection(index)
+             break
+         end
+     end
+     inGameMenu.pageAI:onClickOpenCloseCourseGenerator()
+end
+
+function CourseplayHud:openVehicleSettingsGui(vehicle)
+    local inGameMenu = self:preOpeningInGameMenu(vehicle)
+    local vehiclePageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpVehicleSettings)
+    inGameMenu.pageSelector:setState(vehiclePageIx, true)
+end
+
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
     if not self.dragging then 
@@ -188,7 +198,8 @@ function CourseplayHud:draw(status)
         self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
     end
     self.waypointProgress:setTextDetails(status:getWaypointText())
-    self.timeProgress:setTextDetails(status:getTimeRemainingText())
+    --- WIP: implement time course progress
+ --   self.timeProgress:setTextDetails(status:getTimeRemainingText())
     self.baseHud:draw()
 end
 
