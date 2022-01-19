@@ -139,7 +139,7 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursskapandeinställningar för (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Kursskapandeinställningar för (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbetsbredd" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbetsbredd" />

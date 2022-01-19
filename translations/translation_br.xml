@@ -139,7 +139,7 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Configuração do gerador de rota de (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Configuração do gerador de rota de (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Largura do implemento" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largura do implemento" />

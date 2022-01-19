@@ -139,7 +139,7 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Настройки генератора курсов (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Настройки генератора курсов (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Рабочая ширина" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Рабочая ширина орудия." />

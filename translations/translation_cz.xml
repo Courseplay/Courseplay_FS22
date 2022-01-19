@@ -138,7 +138,7 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Nastavení generátoru kurzů (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Nastavení generátoru kurzů (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Pracovní šířka" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Pracovní šířka" />
