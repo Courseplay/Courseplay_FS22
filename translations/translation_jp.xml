@@ -94,7 +94,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Tool offset vertical"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Turning circle width"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Turning circle width"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Turning circle width. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Always unfold the pipe"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Always unfold the pipe when combine is full and waiting for unloader."/>
@@ -125,19 +125,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Vehicle convoy on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Vehicle convoy min distance"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Vehicle convoy min distance"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Vehicle convoy min distance. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Vehicle convoy max distance"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Vehicle convoy max distance"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Vehicle convoy max distance. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fieldwork"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximum speed while working on the field"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximum speed while working on the field. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Field"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximum speed while driving on field"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximum speed while driving on field. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Turn"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximum speed during turn maneuvers"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximum speed during turn maneuvers. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Reverse"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximum speed while reversing"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximum speed while reversing. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>

@@ -91,7 +91,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Szerszámeltolás függőleges"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Fordulókör szélessége"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Fordulókör szélessége"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Fordulókör szélessége. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Mindig hajtsa ki a csövet"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Mindig hajtsa ki a csövet, amikor a kombájn megtelt és a kirakodóra vár."/>
@@ -122,19 +122,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Jármű konvoj be/ki"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Jármű konvoj min távolság"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Jármű konvoj min távolság"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Jármű konvoj min távolság. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Jármű konvoj max távolság"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Jármű konvoj max távolság"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Jármű konvoj max távolság. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Terepmunka"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximális sebesség terepen végzett munka közben"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximális sebesség terepen végzett munka közben. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Terület"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximális sebesség terepen történő vezetés közben"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximális sebesség terepen történő vezetés közben. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Forduláskor"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximális sebesség kanyarodás közben"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximális sebesség kanyarodás közben. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Tolatás"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximális sebesség tolatás közben"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximális sebesség tolatás közben. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Jármű hibakeresés"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Engedélyezi/letiltja a hibakeresést ennél a járműnél."/>

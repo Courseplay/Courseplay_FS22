@@ -95,7 +95,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskapsskjutning vertikalt"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Vändcirkelns bredd"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Fäll alltid ut röret"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Fäll alltid ut röret när skördetröskan är full och väntar på tömmning."/>
@@ -126,19 +126,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fordonskonvoj På/Av"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fordonskonvojens minsta distans"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fordonskonvojens minsta distans"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fordonskonvojens minsta distans. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fordonskonvojens högsta distans"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fordonskonvojens högsta distans"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fordonskonvojens högsta distans. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fältjobb"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximal hastighet när CP arbetar på fältet"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximal hastighet när CP arbetar på fältet. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Fält"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximal hastighet när CP kör på fältet"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximal hastighet när CP kör på fältet. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Vända"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximal hastighet när CP ska vända"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximal hastighet när CP ska vända. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Backning"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximal hastighet när CP backar"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximal hastighet när CP backar. Value: 2 - 25"/>
 		
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Fordons debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Akrivera/inaktivera debug för detta fordon."/>

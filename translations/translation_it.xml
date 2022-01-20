@@ -93,7 +93,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Calibrazione attrezzo verticale"/>
 		
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raggio di sterzata"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Value: 2 - 50"/>
 		
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Aprire sempre il tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Aprire sempre il tubo quando la mietitrebbia è piena e attende lo scaricatore"/>
@@ -124,19 +124,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Abilita il convoglio veicoli"/>
 		
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distanza minima del convoglio"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distanza minima del convoglio"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distanza minima del convoglio. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distanza massima del convoglio"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distanza massima del convoglio"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distanza massima del convoglio. Value: 40 - 300"/>
 		
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Lavoro"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Guida"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Velocità massima durante la guida sul campo"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Velocità massima durante la guida sul campo. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Svolta"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocità massima durante le manovre di svolta"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocità massima durante le manovre di svolta. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Retromarcia"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug veicolo"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Abilita/disabilita il debug per questo veicolo"/>

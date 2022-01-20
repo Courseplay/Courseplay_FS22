@@ -94,7 +94,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Geräte Versatz vertikal"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Wenderadius"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Wenderadius"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Wenderadius. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Rohr immer ausfahren"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>
@@ -125,19 +125,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fahrzeugkonvoi an oder aus"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fahrzeugkonvoi min Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fahrzeugkonvoi min Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fahrzeugkonvoi min Entfernung. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fahrzeugkonvoi max Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fahrzeugkonvoi max Entfernung"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fahrzeugkonvoi max Entfernung. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit."/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Feld"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld."/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Wendemanöver"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver."/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Rückwärts"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren."/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>

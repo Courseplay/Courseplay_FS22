@@ -93,7 +93,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Nastaví vertikální odsazení nástroje"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Poloměr otáčení"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Nastaví poloměr otáčení"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Nastaví poloměr otáčení. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Stále otevřený komín"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Otevřít komín, když je kombajn plný a čeká na vykládku"/>
@@ -124,19 +124,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Zapíná/vypíná konvoj vozidel"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Minimální vzdálenost konvoje vozidel"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Nastavuje minimální vzdálenost konvoje vozidel"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Nastavuje minimální vzdálenost konvoje vozidel. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Maximální vzdálenost konvoje vozidel"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Nastavuje maximální vzdálenost konvoje vozidel"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Nastavuje maximální vzdálenost konvoje vozidel. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Polní práce"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Jízda na poli"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximální rychlost při jízdě na poli"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximální rychlost při jízdě na poli. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Zatáčky"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximální rychlost při zatáčení"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximální rychlost při zatáčení. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Couvání"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximální rychlost při couvání"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximální rychlost při couvání. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Ladění vozidla"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Aktivovat/deaktivovat ladění tohoto vozidla."/>

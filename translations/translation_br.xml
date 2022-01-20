@@ -94,7 +94,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Distancia vertical do implemento"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raio do giro"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Raio do giro"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Raio do giro. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Manter o tubo desdobrado"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Desdobrar o tubo quando a colheitadeira estiver cheia ou aguardando descarregar."/>
@@ -125,19 +125,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Ativar / desativar comboio de veículos"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Comboio de veículos distance mínima"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Comboio de veículos distance mínima"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Comboio de veículos distance mínima. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Comboio de veículos distance máxima"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Comboio de veículos distancia máxims"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Comboio de veículos distancia máxims. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabalho no campo"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidade máxima ao trabalhar no campo"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidade máxima ao trabalhar no campo. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Campo"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Velocidade máxima no campo"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Velocidade máxima no campo. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Virar"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocidade máxima nas manobras"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocidade máxima nas manobras. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Marcha a ré"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocidade máxima em marcha ré"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocidade máxima em marcha ré. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug do veículo"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Ativar/desativar debug para este veículo."/>

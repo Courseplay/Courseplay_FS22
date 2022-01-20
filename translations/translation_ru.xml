@@ -94,7 +94,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Продольное смещение инструмента."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Диаметр круга поворота"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Диаметр круга поворота."/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Диаметр круга поворота. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Всегда разворачивать трубу"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>
@@ -125,19 +125,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Разрешить работать нескольким одинаковым орудиям по одному курсу."/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Мин. дистанция до предыдущего"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Минимальная дистанция до предыдущего при совместной работе."/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Минимальная дистанция до предыдущего при совместной работе. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Макс. дистанция до предыдущего"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Максимальная дистанция до предыдущего при совместной работе."/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Максимальная дистанция до предыдущего при совместной работе. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Полевые работы"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Поле"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Максимальная скорость при движении по полю"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Максимальная скорость при движении по полю. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Поворот"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Максимальная скорость при поворотах"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Максимальная скорость при поворотах. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Задний ход"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Максимальная скорость при движении задним ходом."/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Максимальная скорость при движении задним ходом. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Отладка техники"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Вкл/выкл отладку текущей техники."/>

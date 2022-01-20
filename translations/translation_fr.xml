@@ -95,7 +95,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Rayon de braquage"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage."/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Toujours déployer la buse"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>
@@ -126,19 +126,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Mode convoi on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distance min dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi."/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distance max dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi."/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Déplacement"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ."/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Manoeuvres"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres."/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières."/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Deboggage du vehicule"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Active/Desactive le deboggage du vehicule."/>

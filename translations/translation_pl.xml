@@ -94,7 +94,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne dla narzędzi."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Szerokość zawracania"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Szerokość zawracania."/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Szerokość zawracania. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Zawsze rozłóż rurę"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
@@ -125,19 +125,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Ustala czy podczas pracy będzie używane kilka pojazdów"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Minimalny dystans pojazdów w konwoju"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Minimalny dystans pojazdów w konwoju."/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Minimalny dystans pojazdów w konwoju. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Maksymalny dystans pojazdów w konwoju"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Maksymalny dystans pojazdów w konwoju."/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Maksymalny dystans pojazdów w konwoju. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Prace polowe"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych."/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Jazda przez pole"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maksymalna prędkość podczas jazdy po polu."/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maksymalna prędkość podczas jazdy po polu. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Zawracanie"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maksymalna prędkość podczas zawracania."/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maksymalna prędkość podczas zawracania. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Cofanie"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maksymalna prędkość podczas cofania."/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maksymalna prędkość podczas cofania. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Debugowanie pojazdu"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Włącz/wyłącz debugowanie dla tego pojazdu pojazdu."/>
