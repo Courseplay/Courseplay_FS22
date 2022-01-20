@@ -46,6 +46,7 @@ CpSettingsUtil.classTypes = {
 
 				- isDisabled (string): function called by the setting from the parent container, to disable the setting.
 				- isVisible (string): function called by the setting from the parent container, to change the setting visibility.
+				- setDefault (string): function called by the setting from the parent container, to set a default value, for example work width.
 
 				- Values : 
 					- Value(?) :
@@ -92,6 +93,7 @@ function CpSettingsUtil.init()
 
 	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
 	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
+	schema:register(XMLValueType.STRING, key.."#setDefault", "Callback function, to set the default value.") -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?).Values.Value(?)"
 	schema:register(XMLValueType.INT, key, "Setting value", nil)
@@ -169,8 +171,9 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.callbacks = {}
 			settingParameters.callbacks.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
 
-			settingParameters.isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
-			settingParameters.isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
+			settingParameters.isDisabledFunc = xmlFile:getValue(baseKey.."#isDisabled")
+			settingParameters.isVisibleFunc = xmlFile:getValue(baseKey.."#isVisible")
+			settingParameters.setDefaultFunc = xmlFile:getValue(baseKey.."#setDefault")
 
 			settingParameters.values = {}
 			settingParameters.disabledValuesFuncs = {}

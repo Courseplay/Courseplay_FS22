@@ -8,7 +8,7 @@
 
 <Settings prefixText="CP_vehicle_courseGeneratorSetting_">
 	<SettingSubTitle title="basic">
-		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidth"/>
 		<Setting classType="AIParameterSettingList" name="centerMode">
 			<Values>
 				<Value name="CENTER_MODE_UP_DOWN">1</Value> 

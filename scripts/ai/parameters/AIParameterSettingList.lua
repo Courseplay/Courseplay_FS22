@@ -200,6 +200,11 @@ function AIParameterSettingList:writeStream(streamId, connection)
 	streamWriteInt32(streamId, self.current)
 end
 
+--- Sets the value.
+---@param self AIParameterSettingList
+---@param value number
+---@param comparisonFunc function
+---@return boolean value is not valid and could not be set.
 local function setValueInternal(self, value, comparisonFunc)
 	local new
 	-- find the value requested
@@ -210,16 +215,39 @@ local function setValueInternal(self, value, comparisonFunc)
 			return
 		end
 	end
+	return value ~= new
 end
 
+--- Sets a float value relative to the incremental.
+---@param value number
+---@return boolean value is not valid and could not be set.
 function AIParameterSettingList:setFloatValue(value)
-	setValueInternal(self, value, function(a, b)
+	return setValueInternal(self, value, function(a, b)
 		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
 end
 
---- Set to a specific value.
+--- Sets a value.
+---@param value number
+---@return boolean value is not valid and could not be set.
 function AIParameterSettingList:setValue(value)
-	setValueInternal(self, value, function(a, b)  return a == b end)
+	return setValueInternal(self, value, function(a, b)  return a == b end)
+end
+
+function AIParameterSettingList:setDefault()
+	if self:hasCallback(self.data.setDefaultFunc) then 
+		self:getCallback(self.data.setDefaultFunc)
+		self:debug("set to default by extern function.")
+		return
+	end
+
+	if self.data.default ~=nil then
+		AIParameterSettingList.setFloatValue(self,self.data.default)
+		self:debug("set to default %s",self.data.default)
+	end
+	if self.data.defaultBool ~= nil then
+		AIParameterSettingList.setValue(self,self.data.defaultBool)
+		self:debug("set to default %s",tostring(self.data.defaultBool))
+	end
 end
 
 --- Gets a specific value.
@@ -360,7 +388,11 @@ function AIParameterSettingList:showInputTextDialog()
 				local v = value:match("-%d[%d.,]*")
 				v = v or value:match("%d[%d.,]*")
 				if v then
-					self:setFloatValue(tonumber(v))
+					if self:setFloatValue(tonumber(v)) then 
+						self:setDefault()
+					end
+				else 
+					self:setDefault()
 				end
 				if not FocusManager:setFocus(self.guiElement) then 
 					self.guiElement.focusActive = false
