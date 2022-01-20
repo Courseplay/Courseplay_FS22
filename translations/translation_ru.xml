@@ -270,11 +270,11 @@
 - Переименование курса или папки."/>
 		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+A: Клик на название техники открывает страницу её настройки.
+B: Одним кликом, можете переключать, откуда начать работу на курсе.
+C: Нажав на название курса, откроете меню ИИ с запущенным генератором курса.
+D: Запуск помощника по курсу.
+E: Отображение текущих / общих путевых точек."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Выбрать следующий канал отладки."/>
@@ -282,7 +282,7 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Изменить текущий канал отладки."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Показать меню отладки канала да/нет."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Открыть mini GUI"/>
-		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_START_STOP" 																text="CP: Отправить/становить водителя"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Курсор вкл/выкл"/>
 	</texts>
 </l10n>
