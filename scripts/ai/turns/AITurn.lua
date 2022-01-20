@@ -665,8 +665,10 @@ function CourseTurn:updateTurnProgress()
 		-- turn progress is for example rotating plows, no need to worry about that during headland turns
 		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
 		if (progress - (self.lastProgress or 0)) > 0.1 then
-			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
-			self:debug('progress %.1f (left: %s)', progress, self.turnContext:isLeftTurn())
+			-- make sure we always send a 0 at the beginning and a 1 at the end)
+			local progressToSend = progress <= 0.3 and 0 or (progress >= 0.7 and 1 or progress)
+			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progressToSend, self.turnContext:isLeftTurn())
+			self:debug('progress %.1f (left: %s)', progressToSend, self.turnContext:isLeftTurn())
 			self.lastProgress = progress
 		end
 	end
