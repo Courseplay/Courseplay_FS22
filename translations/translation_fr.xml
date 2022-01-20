@@ -268,6 +268,13 @@
 - Déplacer une course vers un dossier.
 - Supprimer une course ou un dossier.
 - Renommer une course ou un dossier."/>
+		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"													text="
+A: Clicking on the vehicle name opens the vehicle configurations page.
+B: Toggle where to start the course with one click.
+C: Clicking on the coursename you will open the AI Menu with the course generator open.
+D: Start the Courseplay helper.
+E: Shows current waypoint / total waypoints."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Sélection du prochain canal de deboggage."/>
@@ -276,5 +283,6 @@
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini ATH"/>
 		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 	</texts>
 </l10n>

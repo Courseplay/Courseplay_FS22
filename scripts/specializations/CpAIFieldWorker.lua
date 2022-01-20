@@ -61,6 +61,8 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
 
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
     SpecializationUtil.registerFunction(vehicleType, "startCpALastWp", CpAIFieldWorker.startCpAtLastWp)
+    SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIFieldWorker.getCpDriveStrategy)
+    SpecializationUtil.registerFunction(vehicleType, "getCpStartingPointSetting", CpAIFieldWorker.getCpStartingPointSetting)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
@@ -140,6 +142,11 @@ function CpAIFieldWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgno
 	CpAIFieldWorker.updateActionEvents(self)
 end
 
+function CpAIFieldWorker:getCpStartingPointSetting()
+    local spec = self.spec_cpAIFieldWorker
+    return spec.cpJob:getCpJobParameters().startAt
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface for other mods, like AutoDrive
 ------------------------------------------------------------------------------------------------------------------------
@@ -152,6 +159,10 @@ end
 --- Is a cp fieldwork helper active ?
 function CpAIFieldWorker:getIsCpFieldWorkActive()
     return self:getIsAIActive() and self:getJob() and self:getJob():isa(AIJobFieldWorkCp)
+end
+
+function CpAIFieldWorker:getCpDriveStrategy()
+    return self.spec_cpAIFieldWorker.driveStrategy
 end
 
 --- To find out if a harvester is waiting to be unloaded, either because it is full or ended the fieldwork course
@@ -348,6 +359,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
         cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
     end
     cpDriveStrategy:setAIVehicle(self,jobParameters)
+    self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
     driveStrategyCollision:setAIVehicle(self)

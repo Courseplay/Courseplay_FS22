@@ -266,6 +266,13 @@
 - Moving a course in to another directory.
 - Deleting a course or directory.
 - Renaming a course or directory."/>
+		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"													text="
+A: Clicking on the vehicle name opens the vehicle configurations page.
+B: Toggle where to start the course with one click.
+C: Clicking on the coursename you will open the AI Menu with the course generator open.
+D: Start the Courseplay helper.
+E: Shows current waypoint / total waypoints."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Select next debug channel."/>
@@ -273,5 +280,7 @@
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Shows debug channel menu yes/no."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open mini GUI"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 	</texts>
 </l10n>
