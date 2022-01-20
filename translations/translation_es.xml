@@ -266,11 +266,11 @@
 - Cambiar el nombre de un curso o carpeta." />
 		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+A: Al hacer clic en el nombre del vehículo, se abrirá la página de configuración del vehículo.
+B: Alternar dónde comenzar el curso con un clic.
+C: Al hacer clic en el nombre del curso, se abrirá el menú AI con el generador de cursos abierto.
+D: Iniciar el asistente de Courseplay.
+E: Muestra los Puntos de Ruta: Actual/Total."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleccione el siguiente canal de depuración."/>
@@ -278,7 +278,7 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Cambiar canal de depuración actual."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Muestra el menú del canal de depuración sí/no."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir/Cerrar GUI del vehículo."/>
-		<text name="input_CP_START_STOP" 																text="CP: Iniciar/Detener Conductor"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_START_STOP" 																text="CP: Iniciar/Detener Conductor."/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mostrar/Ocultar cursor del Mouse."/>
 	</texts>
 </l10n>
