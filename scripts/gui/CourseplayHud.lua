@@ -148,7 +148,7 @@ end
 
 function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
     if not self.dragging then 
-        if not self.baseHud:isMouseOverArea(posX, posY) then 
+        if not self:isMouseOverArea(posX, posY) then 
             return
         end
         local wasUsed = self.baseHud:mouseEvent(posX, posY, isDown, isUp, button)
@@ -158,7 +158,7 @@ function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
     end
 
     if button == Input.MOUSE_BUTTON_LEFT then
-        if isDown and self.baseHud:isMouseOverArea(posX, posY) then
+        if isDown and self:isMouseOverArea(posX, posY) then
             if not self.dragging then
                 self.dragStartX = posX
                 self.dragOffsetX = posX - self.x
@@ -189,6 +189,10 @@ function CourseplayHud:mouseEvent(posX, posY, isDown, isUp, button)
             self.lastDragTimeStamp = g_time
         end
     end
+end
+
+function CourseplayHud:isMouseOverArea(posX, posY)
+    return self.baseHud:isMouseOverArea(posX, posY) 
 end
 
 function CourseplayHud:moveTo(x, y)

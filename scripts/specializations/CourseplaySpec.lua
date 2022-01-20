@@ -32,12 +32,26 @@ function CourseplaySpec.registerFunctions(vehicleType)
 end
 
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
-   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CourseplaySpec.getStartAIJobText)
+   if g_modIsLoaded["FS22_ClickToSwitch"] then 
+        SpecializationUtil.registerOverwrittenFunction(vehicleType, "enterVehicleRaycastClickToSwitch", CourseplaySpec.enterVehicleRaycastClickToSwitch)
+   end
   
 end
 
+--- Disables the click to switch action, while the mouse is over the cp hud.
+function CourseplaySpec:enterVehicleRaycastClickToSwitch(superFunc, x, y)
+    local spec = self.spec_courseplaySpec
+    if not spec.hud:isMouseOverArea(x, y) then 
+        superFunc(self, x, y)
+    end
+end
+
 function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
-    --print(string.format('%s %s %s', self:getName(), isActiveForInput, isActiveForInputIgnoreSelection))
+    --- Disables mouse key bind for these mods.
+    if g_modIsLoaded["FS22_ClickToSwitch"] or g_modIsLoaded["FS22_AutoDrive"] then 
+        return
+    end
+
     if isActiveForInputIgnoreSelection or self == g_currentMission.controlledVehicle then
         --- Toggle mouse cursor action event
         local _, actionEventId = g_inputBinding:registerActionEvent(InputAction.CP_TOGGLE_MOUSE, self,
