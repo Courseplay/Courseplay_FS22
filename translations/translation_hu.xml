@@ -22,6 +22,12 @@
 		<text name="CP_jobParameters_startAt_unload"													text="kirakodó kombájn/aprító" />
 		<text name="CP_jobParameters_startAt_bales"														text="bálák összegyűjtése/csomagolása" />
 
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right" />
 
 	<!--Drivemodes-->
 		<text name="FIELDWORK_CP"																		text="CP: Terepmunka" />

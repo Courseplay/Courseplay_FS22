@@ -44,6 +44,13 @@
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocità"/>
 		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug"/>
 		
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right" />
+
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visualizza porcorso"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Mostra il percorso attuale del veicolo"/>

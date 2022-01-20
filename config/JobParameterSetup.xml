@@ -20,9 +20,21 @@
 				<Text>first</Text>
 				<Text>last</Text>
 				<Text>bales</Text>
-<!--			
-				<Text>unload</Text>
--->
+			<!--	<Text>unload</Text> -->
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+	<SettingSubTitle title="laneOffset">
+		<Setting classType="AIParameterSettingList" name="laneOffset" default="1">
+			<Values>
+				<Value name="LANE_CENTER">1</Value>
+				<Value name="LANE_RIGHT">2</Value>
+				<Value name="LANE_LEFT">3</Value>
+			</Values>
+			<Texts>
+				<Text>center</Text>
+				<Text>right</Text>
+				<Text>left</Text>
 			</Texts>
 		</Setting>
 	</SettingSubTitle>

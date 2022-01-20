@@ -24,6 +24,12 @@
 		<text name="CP_jobParameters_startAt_unload"													text="unloading combine/chopper" />
 		<text name="CP_jobParameters_startAt_bales"														text="collecting/wrapping bales" />
 
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																		text="CP: Fieldwork" />
