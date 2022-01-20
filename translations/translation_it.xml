@@ -263,11 +263,11 @@
 - Rinominare un percorso o una cartella."/>
 		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+A: Cliccando sul nome del veicolo si apre la pagina delle configurazioni del veicolo.
+B: Seleziona da dove iniziare il percorso con un clic.
+C: Cliccando sul nome del percorso si aprirà il Menu IA con il generatore di percorsi aperto.
+D: Avvia il lavoratore del Courseplay.
+E: Mostra il punto corrente/i punti totali."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>
@@ -276,6 +276,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostra il menù del canale di debug si/no"/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Apri mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Avvia/Ferma autista"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Cursore Mouse on/off"/>
 	</texts>
 </l10n>
