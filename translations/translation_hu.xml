@@ -144,17 +144,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Munkaszélesség" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Munkaszélesség" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Munkaszélesség. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Körbejárások száma" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Körbejárások száma" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Körbejárások száma. Value: 0 - 40" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Fordulófedés" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="A táblavégi nyomvonalak átfedése a munkaszélesség százalékában" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="A táblavégi nyomvonalak átfedése a munkaszélesség százalékában. Value: 0 - 25" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Kihagyandó sorok" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="A következő fel/le sorra váltáskor átugorandó sorok" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="A következő fel/le sorra váltáskor átugorandó sorok. Value: 0 - 6" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Sorok földenként" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Amikor a középső mód a „leszállás”, ennyi sor van minden blokkban" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Amikor a középső mód a „leszállás”, ennyi sor van minden blokkban. Value: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Forduló iránya" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="A járműnek az óramutató járásával megegyező vagy ellentétes irányba kell haladnia a fordulóban" />
@@ -180,8 +185,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Leghosszabb él" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Fel/le sorszög" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="A fel/le sorok szöge (0 az észak), ha kézi" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Fel/le sorszög" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="A fel/le sorok szöge (0 az észak), ha kézi. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Sziget kikerülő mód" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Hogyan kell a pályának megkerülni a szigeteket a terepen" />

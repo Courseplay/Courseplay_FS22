@@ -147,21 +147,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Ancho de trabajo" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Ancho de trabajo" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Ancho de trabajo. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Número de cabeceras" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Número de cabeceras" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Número de cabeceras. Value: 0 - 40" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Superposición de Cabeceras" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Superposición de las pistas de cabecera como porcentaje del ancho de trabajo" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Superposición de las pistas de cabecera como porcentaje del ancho de trabajo. Value: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Margen del Campo" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Los valores positivos reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los negativos aumentan el área trabajada más allá del límite del campo." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Los valores positivos reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los negativos aumentan el área trabajada más allá del límite del campo.  Value: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Filas a saltar" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Filas a omitir al cambiar a la siguiente fila Arriba/Abajo" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Filas a omitir al cambiar a la siguiente fila Arriba/Abajo. Value: 0 - 6" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Filas por bloques" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Cuando el modo central es 'Circular', habrá esta cantidad de filas en cada bloque" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Cuando el modo central es 'Circular', habrá esta cantidad de filas en cada bloque. Value: 0 - 24" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Dirección de cabeceras" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Permite al vehículo conducir en sentido o contrario a las agujas del reloj en las cabeceras" />
@@ -188,7 +189,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manual" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Angulo de filas Arriba/Abajo" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Ajusta el ángulo en grados de las filas Arriba/Abajo (0° es Norte) cuando está en modo manual." />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Ajusta el ángulo en grados de las filas Arriba/Abajo (0° es Norte) cuando está en modo manual. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Modo de Rodear las Islas" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Cómo el curso rodeará las islas en los campos." />
