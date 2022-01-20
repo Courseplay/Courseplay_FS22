@@ -666,7 +666,7 @@ function CourseTurn:updateTurnProgress()
 		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
 		if (progress - (self.lastProgress or 0)) > 0.1 then
 			-- make sure we always send a 0 at the beginning and a 1 at the end)
-			local progressToSend = progress <= 0.3 and 0 or (progress >= 0.7 and 1 or progress)
+			local progressToSend = progress <= 0.3 and 0 or (progress >= 0.5 and 1 or progress)
 			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progressToSend, self.turnContext:isLeftTurn())
 			self:debug('progress %.1f (left: %s)', progressToSend, self.turnContext:isLeftTurn())
 			self.lastProgress = progress
