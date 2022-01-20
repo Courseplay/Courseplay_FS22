@@ -10,6 +10,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.klass = class
 	self.name = data.name
 	self.data = data
+	self.textInputAllowed = data.textInputAllowed
 	if next(data.values) ~=nil then
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
@@ -17,6 +18,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 		self.values = {}
 		self.texts = {}
 		AIParameterSettingList.generateValues(self,self.values,self.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
+		self.textInputAllowed = true
 	end
 
 	self.title = data.title
@@ -51,6 +53,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	self.isDisabled = false
 	self.isVisible = true
 	self.setupDone = true
+
 	return self
 end
 
@@ -315,10 +318,61 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self:updateGuiElementValues()
 	self.guiElement:setVisible(self:getIsVisible())
 	self.guiElement:setDisabled(self:getIsDisabled())
-
+	if self.textInputAllowed then
+		self:registerMouseInputEvent()
+	end
 	local max = FocusManager.FIRST_LOCK
 	local min = 50
 	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
+end
+
+--- Adds text input option to the setting.
+function AIParameterSettingList:registerMouseInputEvent()
+	local function mouseClick(element,superFunc,posX, posY, isDown, isUp, button, eventUsed)
+		local eventUsed = superFunc(element,posX, posY, isDown, isUp, button, eventUsed)
+		local x, y = unpack(element.textElement.absPosition)
+		local width, height = unpack(element.textElement.absSize)
+		local cursorInElement = GuiUtils.checkOverlayOverlap(posX, posY, x, y, width, height)
+		if not eventUsed and cursorInElement then 
+			if isDown and button == Input.MOUSE_BUTTON_LEFT  then 
+				element.mouseDown = true
+			end
+			if isUp and button == Input.MOUSE_BUTTON_LEFT and element.mouseDown then
+				element.mouseDown = false
+				if not FocusManager:setFocus(element) then 
+					element.focusActive = false
+					FocusManager:setFocus(element)
+				end
+				self:showInputTextDialog()
+			end
+		end
+		return eventUsed
+	end
+	self.guiElement.mouseEvent = Utils.overwrittenFunction(self.guiElement.mouseEvent, mouseClick)
+end
+
+--- Used for text input settings.
+function AIParameterSettingList:showInputTextDialog()
+	g_gui:showTextInputDialog({
+		disableFilter = true,
+		callback = function (self,value,clickOk)
+			if clickOk and value ~= nil then
+				local v = value:match("-%d[%d.,]*")
+				v = v or value:match("%d[%d.,]*")
+				if v then
+					self:setFloatValue(tonumber(v))
+				end
+				if not FocusManager:setFocus(self.guiElement) then 
+					self.guiElement.focusActive = false
+					FocusManager:setFocus(self.guiElement)
+				end
+			end
+		end,
+		maxCharacters = 7,
+		target = self,
+		dialogPrompt = self.data.title,
+		confirmText = g_i18n:getText("button_ok"),
+	})
 end
 
 function AIParameterSettingList:resetGuiElement()
