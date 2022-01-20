@@ -41,6 +41,8 @@ VehicleConfigurations.attributes = {
     implementWheelAlwaysOnGround = XMLValueType.BOOL,
     ignoreCollisionBoxesWhenFolded = XMLValueType.BOOL,
     baleCollectorOffset = XMLValueType.FLOAT,
+    raiseLate = XMLValueType.BOOL,
+    lowerEarly = XMLValueType.BOOL,
 }
 
 

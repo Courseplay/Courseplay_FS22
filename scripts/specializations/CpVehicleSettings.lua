@@ -21,8 +21,8 @@ end
 function CpVehicleSettings.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPreDetach", CpVehicleSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttach", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpVehicleSettings)
 end
 function CpVehicleSettings.registerFunctions(vehicleType)
 
@@ -54,13 +54,36 @@ function CpVehicleSettings:onLoad(savegame)
     CpVehicleSettings.loadSettings(self,savegame)
 end
 
-function CpVehicleSettings:onPostAttach()
+function CpVehicleSettings:onPostAttachImplement(object)
     local spec = self.spec_cpVehicleSettings
-
+    local raiseLate = g_vehicleConfigurations:get(object, 'raiseLate')
+    if raiseLate then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: setting configured raise implement late to %s',
+                CpUtil.getName(object), raiseLate)
+        spec.raiseImplementLate:setValue(raiseLate)
+    end
+    local lowerEarly = g_vehicleConfigurations:get(object, 'lowerEarly')
+    if lowerEarly then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: setting configured lower implement early to %s',
+                CpUtil.getName(object), lowerEarly)
+        spec.lowerImplementEarly:setValue(lowerEarly)
+    end
 end
 
-function CpVehicleSettings:onPreDetach()
+function CpVehicleSettings:onPreDetachImplement(implement)
     local spec = self.spec_cpVehicleSettings
+    local raiseLate = g_vehicleConfigurations:get(implement.object, 'raiseLate')
+    if raiseLate then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: resetting raise implement to default early',
+                CpUtil.getName(implement.object))
+        spec.raiseImplementLate:setValue(false)
+    end
+    local lowerEarly = g_vehicleConfigurations:get(implement.object, 'lowerEarly')
+    if lowerEarly then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: resetting lower implement to default late',
+                CpUtil.getName(implement.object))
+        spec.lowerImplementEarly:setValue(false)
+    end
 end
 
 --- Loads the generic settings setup from an xmlFile.

@@ -63,13 +63,13 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Fold tools at course end"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Enables/disables automatic folding of implements at the end of the course."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Tool raising"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Tool raising early or late at the start of a turn."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Raise tools"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Raise tools early or late at the start of a turn."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="early"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="late"/>
 
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Tool lowering"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Tool lowering early or late at the end of a turn."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Lower tools"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Lower tools early or late at the end of a turn."/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="early"/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="late"/>
 
