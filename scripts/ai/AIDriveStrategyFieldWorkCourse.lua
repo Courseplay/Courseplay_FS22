@@ -680,7 +680,7 @@ end
 
 --- Updates the status variables.
 ---@param status CpStatus
-function AIDriveStrategyFieldWorkCourse:enrichCpStatus(status)
+function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
     ---@type Course
     if self.fieldWorkCourse then
         status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())

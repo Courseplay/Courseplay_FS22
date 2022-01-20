@@ -130,7 +130,7 @@ end
 function AIDriveStrategyCourse:startWithoutCourse()
 end
 
-function AIDriveStrategyCourse:enrichCpStatus(status)
+function AIDriveStrategyCourse:updateCpStatus(status)
     --- override
 end
 

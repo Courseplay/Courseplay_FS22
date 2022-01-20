@@ -155,7 +155,7 @@ function CourseplaySpec:onUpdateTick()
     if self:getIsCpActive() then 
         strategy = self:getCpDriveStrategy()
         if strategy then
-            strategy:enrichCpStatus(spec.status)
+            strategy:updateCpStatus(spec.status)
             spec.status:setActive(true)
         end
     else 
