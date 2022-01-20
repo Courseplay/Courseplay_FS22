@@ -279,5 +279,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Huidige debug-kanaal wijzigen."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Toont debug kanaalmenu ja/nee."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: mini GUI openen"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 	</texts>
 </l10n>

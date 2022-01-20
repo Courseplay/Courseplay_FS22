@@ -281,5 +281,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zeigt debug channels menu ja/nein."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Öffne mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Start/stop CP Helfer"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 	</texts>
 </l10n>

@@ -274,5 +274,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Megjeleníti a csatorna hibakeresési menüjét igen/nem."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Nyissa meg a mini GUI-t"/>
 		<text name="input_CP_START_STOP" 																text="CP: Sofőr indítás/leállítás"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 	</texts>
 </l10n>
