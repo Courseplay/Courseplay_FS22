@@ -193,12 +193,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Vändtegen" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Upp/Ner dragen" />
 
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Stoppar i slutet"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Avgör om medarbetaren ska stanna vid den sista punkten eller återgå till början."/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Avskeda medarbetaren"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Återgå till start och avskeda den anställde"/>
-
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globalainställningar"/>
 		<text name="CP_global_setting_subTitle_general"													text="Standardinställningar"/>

@@ -191,12 +191,6 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Inizio campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Centro" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_title" 						text="Ferma alla fine"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_tooltip" 						text="Specifica cosa fare a fine lavoro"/>
-
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_releaseDriver" 				text="Torna al primo punto e licenzia autista"/>
-		<text name="CP_vehicle_courseGeneratorSetting_returnToFirstPoint_returnToStartAndReleaseDriver" text="Torna all&#39;inizio e licenzia autista"/>
-		
 		<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Impostazioni Courseplay"/>
 		<text name="CP_global_setting_subTitle_general"													text="Generali"/>
