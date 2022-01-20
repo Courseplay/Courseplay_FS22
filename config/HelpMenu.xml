@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Every image filename needs to start with CP_ as prefix, with will be ignored for the path. -->
 <helpLines>
 	<category title="$l10n_CP_help_title">
         <page title="$l10n_CP_help_page_courseManager_title">
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManager_text" />
+				<image filename="CP_img/icon_courseplay.dds" size="512px 512px"/>
+				<!-- 
+					heightScale
+					aspectRatio
+					size
+					uvs
+				-->
             </paragraph>
 
        <!-- <paragraph>
@@ -14,6 +22,18 @@
                 <image filename="$dataS/menu/helpline/helplineAtlas-1.png" uvs="25px 25px 277px 200px" />
             </paragraph>
 			-->
+		</page>
+		<page title="$l10n_CP_help_page_minihud_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_text" />
+				<image filename="CP_img/minihudhelp.dds" size="700px 312px"/>
+				<!-- 
+					heightScale
+					aspectRatio
+					size
+					uvs
+				-->
+            </paragraph>
 		</page>
 	</category>
 </helpLines>

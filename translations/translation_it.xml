@@ -267,6 +267,13 @@
 - Spostare un percorso in un'altra cartella.
 - Eliminazione di un percorso o di una cartella.
 - Rinominare un percorso o una cartella."/>
+		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"													text="
+A: Clicking on the vehicle name opens the vehicle configurations page.
+B: Toggle where to start the course with one click.
+C: Clicking on the coursename you will open the AI Menu with the course generator open.
+D: Start the Courseplay helper.
+E: Shows current waypoint / total waypoints."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>
