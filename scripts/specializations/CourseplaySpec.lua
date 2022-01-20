@@ -49,14 +49,20 @@ end
 
 function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
     --- Disables mouse key bind for these mods.
-    if g_modIsLoaded["FS22_ClickToSwitch"] or g_modIsLoaded["FS22_AutoDrive"] then 
+    if g_modIsLoaded["FS22_AutoDrive"] then 
         return
     end
+    local spec = self.spec_courseplaySpec
+    self:clearActionEventsTable(spec.actionEvents)
 
-    if isActiveForInputIgnoreSelection or self == g_currentMission.controlledVehicle then
+    if self.isActiveForInputIgnoreSelectionIgnoreAI then
         --- Toggle mouse cursor action event
-        local _, actionEventId = g_inputBinding:registerActionEvent(InputAction.CP_TOGGLE_MOUSE, self,
-                CourseplaySpec.actionEventToggleMouse, false, true, false, true)
+        --- Parameters: 
+        --- (actionEventsTable, inputAction, target,
+        ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
+        ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
+        local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
+                CourseplaySpec.actionEventToggleMouse, false, true, false, true,nil,nil,true)
 
         g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
         g_inputBinding:setActionEventText(actionEventId, "Toggle mouse")
