@@ -32,7 +32,7 @@
 		<text name="CP_jobParameters_laneOffset_right"													text="right" />
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Feldarbeit" />
+		<text name="CP_job_fieldWork"																	text="CP: Feldarbeit" />
 		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Generiere Feldkurs." />
@@ -148,21 +148,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbeitsbreite" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Anzahl Vorgewende" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende. Value: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vorgewende Überlappung" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite. Value: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Reihen zum überspringen" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Value: 0 - 6" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Reihen pro Beet" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Value: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Vorgewende Richtung" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Soll das Fahrzeug auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren" />
@@ -188,8 +189,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Längeste Kante" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
