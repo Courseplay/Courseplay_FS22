@@ -29,6 +29,7 @@ function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
     SpecializationUtil.registerFunction(vehicleType, 'getCpAdditionalHotspotDetails', CourseplaySpec.getCpAdditionalHotspotDetails)
     SpecializationUtil.registerFunction(vehicleType, 'cpInit', CourseplaySpec.cpInit)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpStatus', CourseplaySpec.getCpStatus)
 end
 
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
@@ -80,8 +81,13 @@ function CourseplaySpec:onLoad(savegame)
     self.spec_courseplaySpec = self["spec_" .. specName]
     local spec = self.spec_courseplaySpec
     spec.hud = CourseplayHud(self)
-    self.status = CourseplayStatus(false)
+    spec.status = CpStatus(false)
 
+end
+
+function CourseplaySpec:getCpStatus()
+    local spec = self.spec_courseplaySpec
+    return spec.status
 end
 
 function CourseplaySpec:onPostLoad(savegame)
@@ -142,20 +148,24 @@ function CourseplaySpec:getCollisionCheckActive(superFunc,...)
     end
 end
 
+--- Enriches the status data for the hud here.
 function CourseplaySpec:onUpdateTick()
+    local spec = self.spec_courseplaySpec
     local strategy
-    if self:getIsCpFieldWorkActive() then
+    if self:getIsCpActive() then 
         strategy = self:getCpDriveStrategy()
-    end
-    if strategy then
-        self.spec_courseplaySpec.status = strategy:getStatus()
-    else
-        self.spec_courseplaySpec.status = CourseplayStatus(false)
+        if strategy then
+            strategy:enrichCpStatus(spec.status)
+            spec.status:setActive(true)
+        end
+    else 
+        spec.status:reset()
     end
 end
 
 function CourseplaySpec:onDraw()
-    self.spec_courseplaySpec.hud:draw(self.spec_courseplaySpec.status)
+    local spec = self.spec_courseplaySpec
+    spec.hud:draw(spec.status)
 end
 
 function CourseplaySpec:cpInit()

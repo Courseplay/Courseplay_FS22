@@ -678,13 +678,12 @@ function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)
 end
 
 
-function AIDriveStrategyFieldWorkCourse:getStatus()
+--- Updates the status variables.
+---@param status CpStatus
+function AIDriveStrategyFieldWorkCourse:enrichCpStatus(status)
     ---@type Course
     if self.fieldWorkCourse then
-        return CourseplayStatus(true, self.vehicle,
-                self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
-    else
-        return CourseplayStatus(false)
+        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
     end
 end
 

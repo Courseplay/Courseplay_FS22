@@ -201,7 +201,7 @@ function CourseplayHud:moveTo(x, y)
 end
 
 
----@param status CourseplayStatus
+---@param status CpStatus
 function CourseplayHud:draw(status)
     
     --- Set variable data.
