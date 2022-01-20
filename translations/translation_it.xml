@@ -26,11 +26,11 @@
 		<text name="CP_job_fieldWork"																	text="Courseplay" />
 		<text name="CP_job_baleCollect"																	text="CP: Raccogli/Avvolgi balle" />
 		<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="[Courseplay] Genera percorso di lavoro" />
-		<text name="CP_ai_page_open_course_generator" 													text="[Courseplay] Apri/Chiudi menù" />
+		<text name="CP_ai_page_generate_course" 														text="[CP] Genera percorso di lavoro" />
+		<text name="CP_ai_page_open_course_generator" 													text="[CP] Apri/Chiudi menù" />
 
 		<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="Il lavoratore AI %s ha feramto il lavoro - il serbatoio è pieno!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Il lavoratore IA %s ha feramto il lavoro - il cassone è pieno!" />
 
 		<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Impostazioni del veicolo (%s)"/>
@@ -177,8 +177,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Lato più lungo" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuale" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Orientamento angolo della riga su/giù" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Regola l&#39;angolo in gradi delle righe su/giù (0° è il nord) in modalità manuale" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							Text="Orientamento angolo della riga su/giù" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Regola l&#39;angolo in gradi delle righe su/giù (0° è il nord) in modalità manuale" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestione dell&#39;isola" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportamento del percorso quando ci sono isole nel campo" />
