@@ -405,6 +405,7 @@ end
 --- rear axle of the trailer), can be nil
 function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints, hitchLength)
 	self:debug('Start pathfinding between %s and %s', tostring(start), tostring(goal))
+	self:debug('  turnRadius = %.1f, allowReverse: %s', turnRadius, tostring(allowReverse))
 	self.constraints = constraints
 	-- a motion primitive is straight or a few degree turn to the right or left
 	local hybridMotionPrimitives = self:getMotionPrimitives(turnRadius, allowReverse)
