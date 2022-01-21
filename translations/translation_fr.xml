@@ -27,7 +27,7 @@
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />
-		<text name="CP_job_baleCollect"																	text="CP:Bottes(ramassage/enrub.)" />
+		<text name="CP_job_baleCollect"																	text="CP:Ramassage/enrub. bottes" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP:Générer une course" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP:Ouvrir/fermer le générateur de courses" />
@@ -268,13 +268,13 @@
 - Déplacer une course vers un dossier.
 - Supprimer une course ou un dossier.
 - Renommer une course ou un dossier."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
+		<text name="CP_help_page_minihud_title"													text="Mini ATH"/>
 		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+A: Cliquez sur le nom du véhicule pour ouvrir sa page de configuration.
+B: Cliquez sur le mode de démarrage pour le changer.
+C: Cliquez sur le nom de la course pour ouvrir le générateur de course.
+D: Cliquez sur l'icone play pour démarrer le courseplay.
+E: Affiche le point de passage actuel / points totaux."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Sélection du prochain canal de deboggage."/>
@@ -283,6 +283,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Affiche/masque les canaux de deboggage."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini ATH"/>
 		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Curseur de la souris on/off"/>
 	</texts>
 </l10n>
