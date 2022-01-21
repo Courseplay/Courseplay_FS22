@@ -522,7 +522,8 @@ function CourseTurn:getForwardSpeed()
 	if self.turnCourse then
 		local currentWpIx = self.turnCourse:getCurrentWaypointIx()
 		if self.turnCourse:getDistanceFromFirstWaypoint(currentWpIx) > 10 and
-				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 10 then
+			-- TODO: Instead of a fixed value for DistanceToLastWaypoint, consider the radius of the waypoints to calculate the maximum speed.
+				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 20 then
 			-- in the middle of a long turn maneuver we can drive faster...
 			return self.settings.fieldSpeed:getValue()
 		else
