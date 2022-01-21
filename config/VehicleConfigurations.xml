@@ -151,9 +151,12 @@ You can define the following custom settings:
     <Vehicle name="titan18.xml"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
+             raiseLate = "true"
+             lowerEarly = "true"
 	/>
     <Vehicle name="karat12.xml"
              implementWheelAlwaysOnGround = "true"
+             lowerEarly = "true"
     />
     <Vehicle name="koralin9840.xml"
              implementWheelAlwaysOnGround = "true"
@@ -231,6 +234,10 @@ You can define the following custom settings:
     <Vehicle name="pw10012.xml"
              implementWheelAlwaysOnGround = "true"
              noReverse="true"
+    />
+    <Vehicle name="ecomat.xml"
+             raiseLate = "true"
+             lowerEarly = "true"
     />
     <!--Bourgault-->
     <Vehicle name="series3320.xml"
