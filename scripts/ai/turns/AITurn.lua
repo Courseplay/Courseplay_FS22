@@ -83,6 +83,7 @@ end
 --- Start the actual turn maneuver after the row is finished
 function AITurn:startTurn()
 	-- implement in derived classes
+	-- self.vehicle:raiseAIEvent("onAIFieldWorkerStartTurn", "onAIImplementStartTurn", self.turnContext:isLeftTurn(), turnStrategy)
 end
 
 --- Stuff we need to do during the turn no matter what turn type we are using

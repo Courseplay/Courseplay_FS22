@@ -43,8 +43,10 @@ AIDriveStrategyCombineCourse.myStates = {
 	RETURNING_FROM_POCKET = {},
 	DRIVING_TO_SELF_UNLOAD = {},
 	SELF_UNLOADING = {},
+	SELF_UNLOADING_WAITING_FOR_DISCHARGE = {},
 	DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED = {},
 	SELF_UNLOADING_AFTER_FIELDWORK_ENDED = {},
+	SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE = {},
 	RETURNING_FROM_SELF_UNLOAD = {}
 }
 
@@ -319,19 +321,35 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		else
 			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
+	elseif self.unloadState == self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE then
+		self:setMaxSpeed(0)
+		self:debugSparse('Waiting for the self unloading to start')
+		if self:isDischarging() then
+			self.unloadState = self.states.SELF_UNLOADING
+		end
 	elseif self.unloadState == self.states.SELF_UNLOADING then
 		self:setMaxSpeed(0)
 		if self:isUnloadFinished() then
-			self:debug('Self unloading finished, returning to fieldwork')
-			self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
-			self.ppc:setNormalLookaheadDistance()
-			self:returnToFieldworkAfterSelfUnload()
+			if not self:continueSelfUnloadToNextTrailer() then
+				self:debug('Self unloading finished, returning to fieldwork')
+				self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
+				self.ppc:setNormalLookaheadDistance()
+				self:returnToFieldworkAfterSelfUnload()
+			end
+		end
+	elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE then
+		self:setMaxSpeed(0)
+		self:debugSparse('Fieldwork ended, waiting for the self unloading to start')
+		if self:isDischarging() then
+			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
 		end
 	elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED then
 		self:setMaxSpeed(0)
 		if self:isUnloadFinished() then
-			self:debug('Self unloading finished after fieldwork ended, returning to fieldwork')
-			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+			if not self:continueSelfUnloadToNextTrailer() then
+				self:debug('Self unloading finished after fieldwork ended, finishing fieldwork')
+				AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+			end
 		end
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
@@ -426,11 +444,11 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self:debug('Pulled back, now wait for unload')
 			self:setInfoText(self:getFillLevelInfoText())
 		elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
-			self:debug('Self unloading point reached, fill level %.1f.', fillLevel)
-			self.unloadState = self.states.SELF_UNLOADING
+			self:debug('Self unloading point reached, fill level %.1f, waiting for unload to start to start.', fillLevel)
+			self.unloadState = self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE
 		elseif 	self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
-			self:debug('Self unloading point reached after fieldwork ended, fill level %.1f.', fillLevel)
-			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
+			self:debug('Self unloading point reached after fieldwork ended, fill level %.1f, waiting for unload to start.', fillLevel)
+			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE
 		end
 	elseif self.state == self.states.WORKING and fillLevel > 0 then
 		-- reset offset we used for the course ending to not miss anything
@@ -1538,7 +1556,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 	if not bestTrailer then return false end
 
 	if not self.pathfinder or not self.pathfinder:isActive() then
-		self:rememberCourse(self.course, self:getBestWaypointToContinueFieldWork())
+		self:rememberCourse(self.fieldWorkCourse, self:getBestWaypointToContinueFieldWork())
 		self.pathfindingStartedAt = g_currentMission.time
 		self.courseAfterPathfinding = nil
 		self.waypointIxAfterPathfinding = nil
@@ -1649,6 +1667,20 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
 	end
 end
 
+function AIDriveStrategyCombineCourse:continueSelfUnloadToNextTrailer()
+	local fillLevel = self.fillLevelManager:getTotalFillLevelPercentage(self.vehicle)
+	if fillLevel > 20 then
+		self:debug('Self unloading finished, but fill level is %.1f, is there another trailer around we can unload to?', fillLevel)
+		if self:startSelfUnload() then
+			self:raiseImplements()
+			self.state = self.states.UNLOADING_ON_FIELD
+			self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
+			self.ppc:setShortLookaheadDistance()
+			return true
+		end
+	end
+	return false
+end
 
 --- Let unloaders register for events. This is different from the CombineUnloadManager registration, these
 --- events are for the low level coordination between the combine and its unloader(s). CombineUnloadManager
