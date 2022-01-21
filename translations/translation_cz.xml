@@ -259,19 +259,19 @@
 		<text name="CP_help_page_courseManager_title"													text="Správce tras"/>
 		<text name="CP_help_page_courseManager_text"													text="K dispozici je 7 různých akcí:
 - Vytvoření nového adresáře.
-- Vymazání aktuálního kurzu vozidla.
-- Uložení aktuálního kurzu.
-- Načítání kurzu.
-- Přesunutí kurzu do jiného adresáře.
-- Smazání kurzu nebo adresáře.
-- Přejmenování kurzu nebo adresáře."/>
+- Vymazání aktuální trasy vozidla.
+- Uložení aktuální trasy.
+- Načítání trasy.
+- Přesunutí trasy do jiného adresáře.
+- Smazání trasy nebo adresáře.
+- Přejmenování trasy nebo adresáře."/>
 		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+A: Kliknutím na název vozidla se otevře stránka konfigurace vozidla.
+B: Jedním kliknutím vyberte, kde má začít trasa.
+C: Kliknutím na název trasy otevřete nabídku AI s otevřeným generátorem trasy.
+D: Spusťte pomocníka Courseplay.
+E: Zobrazuje aktuální trasový bod / celkový počet trasových bodů. "/>
 
 <!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>
@@ -280,6 +280,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otevřt/zavřít nastavení vozidla"/>
 		<text name="input_CP_START_STOP" 																text="CP: Spustit mini GUI"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Kurzor myši zap/vyp"/>
 	</texts>
 </l10n>
