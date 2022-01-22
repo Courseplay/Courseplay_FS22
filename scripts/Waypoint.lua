@@ -286,7 +286,7 @@ function Course:getDebugTable()
 		{name = "workWidth",value=self.workWidth},
 		{name = "curWpIx",value=self:getCurrentWaypointIx()},
 		{name = "length",value=self.length},
-		{name = "numWp",value=self.totalTurns},
+		{name = "numTurns",value=self.totalTurns},
 		{name = "offsetX",value=self.offsetX},
 		{name = "offsetZ",value=self.offsetZ},
 		{name = "multiTools",value=self.multiTools},
