@@ -9,5 +9,5 @@ end
 
 function AIMessageErrorIsFull:getMessage()
 	-- return g_i18n:getText("Cp_ai_messageErrorIsFull")
-	return "Cp_ai_messageErrorIsFull"
+	return "CP_ai_messageErrorIsFull"
 end
