@@ -144,6 +144,15 @@ function CpDebug:isMenuVisible()
 	return self.menuVisible and self.isEnabled
 end
 
+function CpDebug:drawVehicleDebugTable(vehicle,table)
+	
+	local d = DebugInfoTable.new()
+
+	d:createWithNodeToCamera(vehicle.rootNode, 4, table, 0.05)
+	g_debugManager:addFrameElement(d)
+
+end
+
 
 CpDebug = CpDebug()
 

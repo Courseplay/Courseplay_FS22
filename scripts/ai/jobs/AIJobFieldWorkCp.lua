@@ -32,7 +32,7 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	local ai = 	g_currentMission.aiJobTypeManager
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
 
-	self.cpJobParameters = CpJobParameters()
+	self.cpJobParameters = CpJobParameters(self)
 
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	return self
@@ -72,6 +72,7 @@ function AIJobFieldWorkCp:validate(farmId)
 			end
 		end
 	end
+	self.cpJobParameters:validateSettings()
 	return true, ''
 end
 
@@ -114,7 +115,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.rowsToSkip:getValue(),
 			settings.rowsPerLand:getValue(),
 			settings.islandBypassMode:getValue(),
-			settings.fieldMargin:getValue()
+			settings.fieldMargin:getValue(),
+			settings.multiTools:getValue()
 	)
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then
@@ -163,7 +165,6 @@ function AIJobFieldWorkCp:getIsAvailableForVehicle(vehicle)
 	return vehicle.getCanStartCpFieldWork and vehicle:getCanStartCpFieldWork()
 end
 
-
 function AIJobFieldWorkCp:resetStartPositionAngle(vehicle)
 	local x, _, z = getWorldTranslation(vehicle.rootNode) 
 	local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
@@ -171,4 +172,11 @@ function AIJobFieldWorkCp:resetStartPositionAngle(vehicle)
 	self.positionAngleParameter:setPosition(x, z)
 	local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	self.positionAngleParameter:setAngle(angle)
+end
+function AIJobFieldWorkCp:getVehicle()
+	return self.vehicleParameter:getVehicle() or self.vehicle
+end
+
+function AIJobFieldWorkCp:setVehicle(v)
+	self.vehicle = v
 end

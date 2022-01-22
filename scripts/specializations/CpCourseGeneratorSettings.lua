@@ -64,13 +64,13 @@ function CpCourseGeneratorSettings:onLoadFinished(savegame)
 end
 
 function CpCourseGeneratorSettings:onPostAttachImplement()
-    local spec = self.spec_cpCourseGeneratorSettings
-    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    CpCourseGeneratorSettings.setAutomaticWorkWidth(self)
+    CpCourseGeneratorSettings.validateSettings(self)
 end
 
 function CpCourseGeneratorSettings:onPreDetachImplement()
-    local spec = self.spec_cpCourseGeneratorSettings
-    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    CpCourseGeneratorSettings.setAutomaticWorkWidth(self)
+    CpCourseGeneratorSettings.validateSettings(self)
 end
 
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
@@ -122,4 +122,16 @@ end
 --- Callback raised by a setting and executed as an vehicle event.
 function CpCourseGeneratorSettings:raiseCallback(callbackStr)
     SpecializationUtil.raiseEvent(self,callbackStr)
+end
+
+function CpCourseGeneratorSettings:setAutomaticWorkWidth()
+    local spec = self.spec_cpCourseGeneratorSettings
+    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+end
+
+function CpCourseGeneratorSettings:validateSettings()
+    local spec = self.spec_cpCourseGeneratorSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:refresh()
+    end
 end

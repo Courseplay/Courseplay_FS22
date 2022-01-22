@@ -3,44 +3,53 @@
 	All the layout, gui elements are cloned from the general settings page of the in game menu.
 ]]--
 
-CpGlobalSettingsFrame = {}
+CpGlobalSettingsFrame = {
+	CONTROLS = {
+		HEADER = "header",
+		SUB_TITLE_PREFAB = "subTitlePrefab",
+		MULTI_TEXT_OPTION_PREFAB = "multiTextOptionPrefab",
+		SETTINGS_CONTAINER = "settingsContainer",
+		BOX_LAYOUT = "boxLayout"
+	},
+}
 
----Creates the in game menu page.
-function CpGlobalSettingsFrame.init()
-	local inGameMenu = g_gui.screenControllers[InGameMenu]
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pageSettingsGeneral,CpGlobalSettingsFrame
-												,function () return true end,3,{768, 0, 128, 128})
-	inGameMenu.pageCpGlobalSettings = page
+local CpGlobalSettingsFrame_mt = Class(CpGlobalSettingsFrame, TabbedMenuFrameElement)
+
+function CpGlobalSettingsFrame.new(target, custom_mt)
+	local self = TabbedMenuFrameElement.new(target, custom_mt or CpGlobalSettingsFrame_mt)
+	self:registerControls(CpGlobalSettingsFrame.CONTROLS)
+
+    
+	return self
 end
 
---- Setup of the gui elements and binds the settings to the gui elements.
-function CpGlobalSettingsFrame:initialize()
-	local genericSettingElement = CpGuiUtil.getGenericSettingElementFromLayout(self.boxLayout)
-	local genericSubTitleElement = CpGuiUtil.getGenericSubTitleElementFromLayout(self.boxLayout)
-	for i = #self.boxLayout.elements, 1, -1 do
-		self.boxLayout.elements[i]:delete()
-	end
---	self.boxLayout:reloadFocusHandling(true)
+function CpGlobalSettingsFrame:onGuiSetupFinished()
+	CpGlobalSettingsFrame:superClass().onGuiSetupFinished(self)
+	
+	self.subTitlePrefab:unlinkElement()
+	FocusManager:removeElement(self.subTitlePrefab)
+	self.multiTextOptionPrefab:unlinkElement()
+	FocusManager:removeElement(self.multiTextOptionPrefab)
+
 	self.settings = g_Courseplay.globalSettings:getSettingsTable()
 	local settingsBySubTitle,pageTitle = g_Courseplay.globalSettings:getSettingSetup()
+	self.header:setText(pageTitle)	
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.boxLayout,genericSettingElement, genericSubTitleElement)
-	CpGuiUtil.changeTextForElementsWithProfileName(self,"ingameMenuFrameHeaderText",pageTitle)
+	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
 	CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
 	self.boxLayout:invalidateLayout()
-
 end
 
 function CpGlobalSettingsFrame:onFrameOpen()
-	InGameMenuGeneralSettingsFrame:superClass().onFrameOpen(self)
+	CpGlobalSettingsFrame:superClass().onFrameOpen(self)
 	FocusManager:loadElementFromCustomValues(self.boxLayout)
 	self.boxLayout:invalidateLayout()
 	self:setSoundSuppressed(true)
 	FocusManager:setFocus(self.boxLayout)
 	self:setSoundSuppressed(false)
-	
 end
-	
+
 function CpGlobalSettingsFrame:onFrameClose()
-	InGameMenuGeneralSettingsFrame:superClass().onFrameClose(self)
+	CpGlobalSettingsFrame:superClass().onFrameClose(self)
+
 end

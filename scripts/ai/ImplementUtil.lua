@@ -349,3 +349,9 @@ function ImplementUtil.getAIMarkersFromGrabberNode(object, spec)
         return object.rootNode, object.rootNode, object.rootNode
     end
 end
+
+--- Is the vehicle/implement a Chopper 
+function ImplementUtil.isChopper(implement)
+    local spec = implement and  implement.spec_combine
+	return spec and implement:getFillUnitCapacity(spec.fillUnitIndex) > 10000000
+end
