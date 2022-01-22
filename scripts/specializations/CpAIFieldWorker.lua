@@ -87,7 +87,7 @@ function CpAIFieldWorker:onLoad(savegame)
 end
 
 function CpAIFieldWorker:onPostLoad(savegame)
-
+    g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
 end
 
 function CpAIFieldWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
@@ -313,6 +313,7 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
     if AIUtil.hasImplementWithSpecialization(self, Baler) or
             AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
             AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
+            AIUtil.hasImplementWithSpecialization(self, ForageWagon) or
             -- built in helper can't handle forage harvesters.
             AIUtil.hasImplementWithSpecialization(self, Cutter) then
         return true

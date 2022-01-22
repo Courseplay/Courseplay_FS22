@@ -8,5 +8,6 @@ function AIMessageErrorIsFull.new(customMt)
 end
 
 function AIMessageErrorIsFull:getMessage()
-	return g_i18n:getText("Cp_ai_messageErrorIsFull")
+	-- return g_i18n:getText("Cp_ai_messageErrorIsFull")
+	return "Cp_ai_messageErrorIsFull"
 end

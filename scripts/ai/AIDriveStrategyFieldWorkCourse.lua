@@ -214,6 +214,8 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     addController(BaleWrapperController,BaleWrapper,defaultDisabledStates)
     
     addController(FertilizingSowingMachineController,FertilizingSowingMachine,defaultDisabledStates)
+    addController(ForageWagonController,ForageWagon,defaultDisabledStates)
+
     addController(FertilizingCultivatorController,FertilizingCultivator,defaultDisabledStates)
 end
 
