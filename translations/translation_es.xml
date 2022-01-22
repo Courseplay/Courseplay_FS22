@@ -277,8 +277,8 @@
 - Mover curso a otro directorio.
 - Eliminar un curso o carpeta.
 - Cambiar el nombre de un curso o carpeta." />
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Al hacer clic en el nombre del vehículo, se abrirá la página de configuración del vehículo.
 B: Alternar dónde comenzar el curso con un clic.
 C: Al hacer clic en el nombre del curso, se abrirá el menú AI con el generador de cursos abierto.
