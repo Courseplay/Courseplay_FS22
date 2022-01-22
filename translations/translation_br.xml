@@ -7,7 +7,7 @@
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
-		<!-- User info text -->
+	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Criar rota primeiro." />
 		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
@@ -25,7 +25,7 @@
 
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Trabalho no campo" />
+		<text name="CP_job_fieldWork"																	text="CP: Trabalho no campo" />
 		<text name="CP_job_baleCollect"																	text="CP: Fardo coletar/embalar" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Gerar rotas no campo." />
