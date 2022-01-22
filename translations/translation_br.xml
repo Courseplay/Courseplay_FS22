@@ -7,12 +7,11 @@
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
-		<!-- User info text -->
+	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Criar rota primeiro." />
 		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Destino não é um campo." />
-
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniciar em:" />
@@ -26,7 +25,7 @@
 
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Trabalho no campo" />
+		<text name="CP_job_fieldWork"																	text="CP: Trabalho no campo" />
 		<text name="CP_job_baleCollect"																	text="CP: Fardo coletar/embalar" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Gerar rotas no campo." />
@@ -34,7 +33,6 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!" />
-
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuração do veículo para (%s)"/>
 		
@@ -149,7 +147,11 @@
 	
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sobreposição de cabeceira" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sobrepor largura faixa de cabeceira por porcentagem" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Pular faixas" />
+	    
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Margem do campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Valores positivos reduzem o tamanho do campo para adicionar um buffer ao redor da área trabalhada, valores negativos aumentam a área trabalhada além do limite do campo." />
+	
+	    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Pular faixas" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Pular faixas para cima ou para baixo ao mudar para próxima faixa" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Faixas por campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Quando o modo central é 'terras', essas várias faixas estão em cada bloco" />
@@ -264,11 +266,11 @@
 - Renomear rota ou pasta."/>
 		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+A: Clicar no nome do veículo abre a página de configurações do veículo.
+B: Alternar onde iniciar a rota com um clique.
+C: Clicando no nome da rota abrirá o Menu AI com o gerador de rotas aberto.
+D: Inicie o auxiliar do Courseplay.
+E: Mostra o waypoint atual/total de waypoints."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecione próximo canal debug."/>
