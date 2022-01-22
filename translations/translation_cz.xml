@@ -277,8 +277,8 @@
 - Přesunutí trasy do jiného adresáře.
 - Smazání trasy nebo adresáře.
 - Přejmenování trasy nebo adresáře."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Kliknutím na název vozidla se otevře stránka konfigurace vozidla.
 B: Jedním kliknutím vyberte, kde má začít trasa.
 C: Kliknutím na název trasy otevřete nabídku AI s otevřeným generátorem trasy.

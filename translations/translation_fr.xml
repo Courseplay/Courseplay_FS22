@@ -280,8 +280,8 @@
 - Déplacer une course vers un dossier.
 - Supprimer une course ou un dossier.
 - Renommer une course ou un dossier."/>
-		<text name="CP_help_page_minihud_title"													text="Mini ATH"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini ATH"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Cliquez sur le nom du véhicule pour ouvrir sa page de configuration.
 B: Cliquez sur le mode de démarrage pour le changer.
 C: Cliquez sur le nom de la course pour ouvrir le générateur de course.

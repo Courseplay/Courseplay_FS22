@@ -10,7 +10,7 @@
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Erstelle zuerst einen Kurs vor dem starten." />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
+		<text name="CP_error_could_not_generate_course"													text="Konnte keinen Kurs generieren. Das Logfile könnte weitere Informationen enthalten." />
 		<text name="CP_error_not_on_field"																text="Ziel ist nicht auf einem Feld." />
 
 
@@ -24,24 +24,24 @@
 		<text name="CP_jobParameters_startAt_unload"													text="Entlade Drescher/Häcksler" />
 		<text name="CP_jobParameters_startAt_bales"														text="Sammel/Wickel Ballen" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Bahn:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Bahn:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Bahnauswahl wenn ein Multitoolkurs erstellt wurde." />
+		<text name="CP_jobParameters_laneOffset_center"													text="Mitte" />
+		<text name="CP_jobParameters_laneOffset_left"													text="Links(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="Rechts(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="Links(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="Rechts(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Feldarbeit" />
-		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
+		<text name="CP_job_baleCollect"																	text="CP: Ballen sammeln/wickeln" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Generiere Feldkurs." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Öffne/Schließe Kursgenerator." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Helfer %s hat die Arbeit gestoppt - Gerät ist voll!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Fahrzeugeinstellungen für (%s)"/>
@@ -67,8 +67,8 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Pathfinder darf rückwärts fahren"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Erlaubt dem Pathfinder einen rückwärts Kurs zu generieren."/>
 
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Benutze Pathfinder im Wendemanöver"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Aktiviert den Pathfinder für Wendemanöver, zum Beispiel um Objekten oder der Frucht aus zu weichen."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Geräte am Ende einklappen"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Geräte am Ende des Kurses einklappen oder nicht."/>
@@ -142,7 +142,7 @@
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Enables/disables debug for this vehicle."/>
+		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge"/>
 
 
 	<!-- Vehicle course generator settings -->
@@ -158,8 +158,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vorgewende Überlappung" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite. Value: 0 - 25" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Feldgrenze" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße um einen Puffer zum Feldrand erhalten, negative Werte vergrößern den Arbeitsbereich um über den Feldrand hinaus zu arbeiten. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Reihen zum überspringen" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Value: 0 - 6" />
@@ -189,24 +189,24 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Richtung in der die Bahnen gefahren werden sollen." />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatisch" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Längeste Kante" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuell" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Richtungswinkel der Bahnen" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Winkel der Bahnen (0 ist Norden) wenn Einstellung auf Manuell gesetzt ist. Value: 0 - 175 Steps: 5" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Inselumfahrung" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Wie soll die Insel auf dem Feld umfahren werden." />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="keine Umfahrung" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="einfach" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Kreis" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Starte auf" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Startpunkt auf dem Vorgewende oder auf den Bahnen" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Vorgewende" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Bahnen" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Fahrzeuge auf dem Kurs" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Wieviele Fahrzeuge sollten zusammen auf dem Kurs fahren." />
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>
@@ -278,13 +278,13 @@
 - Kurse in einen anderen Ordner verschieben.
 - Ordner oder Kurse löschen.
 - Ordner oder Kurse umbenennen."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
+A: Auf den Fahrzeugname klicken um die Fahrzeugeinstellungen auf zu rufen.
+B: Stellt die Startposition beim draufklicken um.
+C: Mit dem klick auf den Kursnamen wird das Helfer Menü mit geöffnetem Kursgenerator aufgerufen.
+D: Starte Courseplay Helfer.
+E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>

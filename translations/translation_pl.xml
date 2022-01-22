@@ -279,8 +279,8 @@
 - Przenoszenie kursu do innego katalogu.
 - Usuwanie kursu lub katalogu.
 - Zmiana nazwy kursu lub katalogu."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Kliknięcie nazwy pojazdu otwiera stronę konfiguracji pojazdu.
 B: Przełącz miejsce rozpoczęcia kursu jednym kliknięciem.
 C: Klikając na nazwę kursu, otworzysz menu AI z otwartym generatorem kursów.

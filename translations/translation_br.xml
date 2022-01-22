@@ -276,8 +276,8 @@
 - Mover rota para outra pasta.
 - Excluir rota ou pasta.
 - Renomear rota ou pasta."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Clicar no nome do veículo abre a página de configurações do veículo.
 B: Alternar onde iniciar a rota com um clique.
 C: Clicando no nome da rota abrirá o Menu AI com o gerador de rotas aberto.

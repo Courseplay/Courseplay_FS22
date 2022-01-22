@@ -277,8 +277,8 @@
 - Spostare un percorso in un'altra cartella.
 - Eliminazione di un percorso o di una cartella.
 - Rinominare un percorso o una cartella."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Cliccando sul nome del veicolo si apre la pagina delle configurazioni del veicolo.
 B: Seleziona da dove iniziare il percorso con un clic.
 C: Cliccando sul nome del percorso si aprirà il Menu IA con il generatore di percorsi aperto.
