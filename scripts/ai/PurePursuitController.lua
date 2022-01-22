@@ -113,7 +113,7 @@ function PurePursuitController:setCourse(course)
 	self.course = course
 end
 
-function PurePursuitController:getCourse(course)
+function PurePursuitController:getCourse()
 	return self.course
 end
 

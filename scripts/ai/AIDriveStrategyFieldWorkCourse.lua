@@ -163,6 +163,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
     self:setAITarget()
+    self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
@@ -178,6 +179,22 @@ function AIDriveStrategyFieldWorkCourse:setAITarget()
     self.vehicle.aiDriveDirection = { dx, dz }
     local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
     self.vehicle.aiDriveTarget = { x, z }
+end
+
+--- Slow down a bit towards the end of course or near direction changes, and later maybe where the turn radius is
+--- small, unless we are reversing, as then (hopefully) we already have a slow speed set
+function AIDriveStrategyFieldWorkCourse:limitSpeed()
+    if self.maxSpeed > self.settings.turnSpeed:getValue() and
+            not self.ppc:isReversing() and
+            (self.ppc:getCourse():isCloseToLastWaypoint(15) or
+                    self.ppc:getCourse():isCloseToNextDirectionChange(15)) then
+
+        local maxSpeed = self.maxSpeed
+        self:setMaxSpeed(self.settings.turnSpeed:getValue())
+        self:debugSparse('speed %.1f limited to turn speed %.1f', maxSpeed, self.maxSpeed)
+    else
+        self:debugSparse('speed %.1f', self.maxSpeed)
+    end
 end
 
 -- remember a course to start
