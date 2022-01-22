@@ -339,7 +339,7 @@ function findArcBetweenEdges( e1, e2, r )
 	-- arc for just a few degree turn. This then results in weird artifacts like spikes. This
 	-- is mainly becuase we don't handle cleanly the case where the intersection of e1 and e2
 	-- is _behind_ e1.
-	if alpha < math.pi / 12 then return nil end
+	if math.abs(alpha) < math.pi / 12 then return nil end
 	-- delta angle for one step
 	local deltaAlpha = alpha / ( nSteps + 1 )
 	-- length of a step, with a magic constant to cover up the calculation errors
