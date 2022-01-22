@@ -317,7 +317,7 @@ function PurePursuitController:havePassedWaypoint(wpNode)
 		if not self.lastPassedWaypointIx or (self.lastPassedWaypointIx ~= wpNode.ix) then
 			self.lastPassedWaypointIx = wpNode.ix
 			self:debug('waypoint %d passed, dz: %.1f %s %s', wpNode.ix, dz,
-				self.course.waypoints[wpNode.ix].rev and 'reversed' or '',
+				self.course.waypoints[wpNode.ix].rev and 'reverse' or '',
 				self.course:switchingDirectionAt(wpNode.ix) and 'switching direction' or '')
 			-- notify listeners about the passed waypoint
 			self.sendWaypointPassed = self.lastPassedWaypointIx

@@ -461,14 +461,14 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isFromIx ].angle )
 			end
-			local newFrom = tracks[ i ].intersections[ isFromIx ].x + offset - width * 0.00  -- always overlap a bit with the headland to avoid missing fruit
+			local newFrom = tracks[ i ].intersections[ isFromIx ].x + offset - width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			local isToIx = tracks[ i ].intersections[ 1 ].x >= tracks[ i ].intersections[ 2 ].x and 1 or 2
 			if nHeadlandPasses == 0 then
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isToIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isToIx ].angle )
 			end
-			local newTo = tracks[ i ].intersections[ isToIx ].x - offset + width * 0.00  -- always overlap a bit with the headland to avoid missing fruit
+			local newTo = tracks[ i ].intersections[ isToIx ].x - offset + width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			-- if a track is very short (shorter than width) we may end up with newTo being
 			-- less than newFrom. Just skip that track
 			if newTo > newFrom then

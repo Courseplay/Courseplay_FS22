@@ -83,6 +83,7 @@ end
 --- Start the actual turn maneuver after the row is finished
 function AITurn:startTurn()
 	-- implement in derived classes
+	-- self.vehicle:raiseAIEvent("onAIFieldWorkerStartTurn", "onAIImplementStartTurn", self.turnContext:isLeftTurn(), turnStrategy)
 end
 
 --- Stuff we need to do during the turn no matter what turn type we are using
@@ -522,9 +523,10 @@ function CourseTurn:getForwardSpeed()
 	if self.turnCourse then
 		local currentWpIx = self.turnCourse:getCurrentWaypointIx()
 		if self.turnCourse:getDistanceFromFirstWaypoint(currentWpIx) > 10 and
-				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 10 then
+			-- TODO: Instead of a fixed value for DistanceToLastWaypoint, consider the radius of the waypoints to calculate the maximum speed.
+				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 20 then
 			-- in the middle of a long turn maneuver we can drive faster...
-			return 1.5 * AITurn.getForwardSpeed(self)
+			return self.settings.fieldSpeed:getValue()
 		else
 			return AITurn.getForwardSpeed(self)
 		end
@@ -665,8 +667,10 @@ function CourseTurn:updateTurnProgress()
 		-- turn progress is for example rotating plows, no need to worry about that during headland turns
 		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
 		if (progress - (self.lastProgress or 0)) > 0.1 then
-			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
-			self:debug('progress %.1f (left: %s)', progress, self.turnContext:isLeftTurn())
+			-- make sure we always send a 0 at the beginning and a 1 at the end)
+			local progressToSend = progress <= 0.3 and 0 or (progress >= 0.5 and 1 or progress)
+			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progressToSend, self.turnContext:isLeftTurn())
+			self:debug('progress %.1f (left: %s)', progressToSend, self.turnContext:isLeftTurn())
 			self.lastProgress = progress
 		end
 	end

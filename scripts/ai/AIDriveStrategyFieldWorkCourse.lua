@@ -74,7 +74,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
-
+    self.fieldWorkCourse = course
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
     if distance > 2 * self.turningRadius then
@@ -129,7 +129,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         end
         self:setMaxSpeed(maxSpeed)
     else
-        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
     ----------------------------------------------------------------
@@ -606,13 +605,13 @@ function AIDriveStrategyFieldWorkCourse:getRememberedWaypointToContinueFieldWork
 end
 
 function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldWork()
-    local bestKnownCurrentWpIx = self.course:getLastPassedWaypointIx() or self.course:getCurrentWaypointIx()
+    local bestKnownCurrentWpIx = self.fieldWorkCourse:getLastPassedWaypointIx() or self.fieldWorkCourse:getCurrentWaypointIx()
     -- after we return from a refill/unload, continue a bit before the point where we left to
     -- make sure not leaving any unworked patches
-    local bestWpIx = self.course:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
+    local bestWpIx = self.fieldWorkCourse:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
     if bestWpIx then
         -- anything other than a turn start wp will work fine
-        if self.course:isTurnStartAtIx(bestWpIx) then
+        if self.fieldWorkCourse:isTurnStartAtIx(bestWpIx) then
             bestWpIx = bestWpIx - 1
         end
     else
@@ -675,6 +674,16 @@ function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)
             CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:debug(' - %s', CpUtil.getName(implement.object))
+    end
+end
+
+
+--- Updates the status variables.
+---@param status CpStatus
+function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
+    ---@type Course
+    if self.fieldWorkCourse then
+        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
     end
 end
 

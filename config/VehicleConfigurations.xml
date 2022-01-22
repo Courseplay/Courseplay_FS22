@@ -68,12 +68,30 @@ You can define the following custom settings:
 	and the edge of the bale when the bale grabber is right where it should be to pick up the bale.
 	Courseplay will adjust this offset according to the bale's dimensions but you may want to add a little buffer.
 
+- raiseLate: boolean
+    The default behavior is to raise the implement when the front of the work area reaches the end of the row or
+    the field edge. This works great for rectangular shaped work areas but with other shapes (like a plow) it may
+    lead to unworked patches. With this setting true, Courseplay will wait until the end of the work area reaches
+    the field edge or row end before raising the implements.
+
+- lowerEarly: boolean
+    Similar to the above, the default behavior when starting to work is lower the implement when the back of the
+    work area reaches to row start/field edge. Setting this to true will make Courseplay lowere the implement as
+    soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
+    work areas such as a plow.
+
 -->
 <VehicleConfigurations>
     <!--[GIANTS]-->
 
     <!-- Harvesters -->
     <!-- Implements -->
+
+    <!-- Agromasz POV 5XL -->
+    <Vehicle name="pov5xl.xml"
+             raiseLate="true"
+             lowerEarly="true"
+    />
 
     <!--\Vehicles\amazone-->
     <Vehicle name="citan15001C.xml"
@@ -133,9 +151,12 @@ You can define the following custom settings:
     <Vehicle name="titan18.xml"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
+             raiseLate = "true"
+             lowerEarly = "true"
 	/>
     <Vehicle name="karat12.xml"
              implementWheelAlwaysOnGround = "true"
+             lowerEarly = "true"
     />
     <Vehicle name="koralin9840.xml"
              implementWheelAlwaysOnGround = "true"
@@ -213,6 +234,10 @@ You can define the following custom settings:
     <Vehicle name="pw10012.xml"
              implementWheelAlwaysOnGround = "true"
              noReverse="true"
+    />
+    <Vehicle name="ecomat.xml"
+             raiseLate = "true"
+             lowerEarly = "true"
     />
     <!--Bourgault-->
     <Vehicle name="series3320.xml"

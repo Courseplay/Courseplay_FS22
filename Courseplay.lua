@@ -101,7 +101,10 @@ end
 ---@param isUp boolean
 ---@param button number
 function Courseplay:mouseEvent(posX, posY, isDown, isUp, button)
-	
+	local vehicle = g_currentMission.controlledVehicle
+	if vehicle and vehicle.spec_courseplaySpec then
+		vehicle.spec_courseplaySpec.hud:mouseEvent(posX, posY, isDown, isUp, button)
+	end
 end
 
 ---@param unicode number
@@ -140,7 +143,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
-	addConsoleCommand( 'printStrategyVariable', 'Print g_currentMission.controlledVehicle.spec_aiFieldWorker.driveStrategies[2].variable', 'printStrategyVariable', self )
+	addConsoleCommand( 'printStrategyVariable', 'Print a CP drive strategy variable', 'printStrategyVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
 	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'saveAllFields', self )
@@ -191,7 +194,7 @@ function Courseplay:printVehicleVariable(variableName, maxDepth, printToXML,prin
 end
 
 function Courseplay:printStrategyVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
-	local prefix = 'g_currentMission.controlledVehicle.spec_aiFieldWorker.driveStrategies[2]'
+	local prefix = 'g_currentMission.controlledVehicle:getCpDriveStrategy()'
 	self:printVariableInternal( prefix, variableName, maxDepth, printToXML,printToSeparateXmlFiles)
 end
 
