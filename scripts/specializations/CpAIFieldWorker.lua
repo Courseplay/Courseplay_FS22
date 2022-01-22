@@ -66,6 +66,7 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpAtLastWp", CpAIFieldWorker.startCpAtLastWp)
     SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIFieldWorker.getCpDriveStrategy)
     SpecializationUtil.registerFunction(vehicleType, "getCpStartingPointSetting", CpAIFieldWorker.getCpStartingPointSetting)
+    SpecializationUtil.registerFunction(vehicleType, "getCpLaneOffsetSetting", CpAIFieldWorker.getCpLaneOffsetSetting)
 end
 
 function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
@@ -164,6 +165,11 @@ end
 function CpAIFieldWorker:getCpStartingPointSetting()
     local spec = self.spec_cpAIFieldWorker
     return spec.cpJob:getCpJobParameters().startAt
+end
+
+function CpAIFieldWorker:getCpLaneOffsetSetting()
+    local spec = self.spec_cpAIFieldWorker
+    return spec.cpJob:getCpJobParameters().laneOffset
 end
 
 ------------------------------------------------------------------------------------------------------------------------
