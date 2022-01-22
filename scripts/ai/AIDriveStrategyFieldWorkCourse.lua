@@ -727,7 +727,7 @@ function AIDriveStrategyFieldWorkCourse:hasSameCourse(otherVehicle)
 end
 
 function AIDriveStrategyFieldWorkCourse:getProgress()
-    return self.fieldworkCourse:getProgress()
+    return self.fieldWorkCourse:getProgress()
 end
 
 --- When working in a group (convoy), do I have to hold so I don't get too close to the
