@@ -49,6 +49,7 @@ end
 function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIFieldWorker.getIsCpActive)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpFieldWorkActive", CpAIFieldWorker.getIsCpFieldWorkActive)
+    SpecializationUtil.registerFunction(vehicleType, "getCpFieldWorkProgress", CpAIFieldWorker.getCpFieldWorkProgress)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnload",
             CpAIFieldWorker.getIsCpHarvesterWaitingForUnload)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterWaitingForUnloadInPocket",
@@ -184,6 +185,10 @@ end
 --- Is a cp fieldwork helper active ?
 function CpAIFieldWorker:getIsCpFieldWorkActive()
     return self:getIsAIActive() and self:getJob() and self:getJob():isa(AIJobFieldWorkCp)
+end
+
+function CpAIFieldWorker:getCpFieldWorkProgress()
+    return self.spec_cpAIFieldWorker.driveStrategy and self.spec_cpAIFieldWorker.driveStrategy:getProgress()
 end
 
 function CpAIFieldWorker:getCpDriveStrategy()

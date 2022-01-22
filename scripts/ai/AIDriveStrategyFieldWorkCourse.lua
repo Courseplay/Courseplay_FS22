@@ -131,7 +131,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, maxSpeed
-    
+
     ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
@@ -176,6 +176,9 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
     self:setAITarget()
+    -- we put this to the end after everyone already set a a max speed as it reduces the current max speed setting
+    -- to slow vehicles down
+    self:keepConvoyTogether()
     self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
@@ -718,6 +721,64 @@ function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
         status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
     end
 end
+
+function AIDriveStrategyFieldWorkCourse:hasSameCourse(otherVehicle)
+    return self.fieldWorkCourse:equals(otherVehicle:getFieldWorkCourse())
+end
+
+function AIDriveStrategyFieldWorkCourse:getProgress()
+    return self.fieldworkCourse:getProgress()
+end
+
+--- When working in a group (convoy), do I have to hold so I don't get too close to the
+-- other vehicles in front of me?
+--- We can't just use the waypoint index as each vehicle in the convoy has its own course
+--- generated and for instance on the headland the vehicles on the inside will have less
+--- waypoints, so we operate with progress percentage
+function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
+    --get my position in convoy and look for the closest combine
+    local position = 1
+    local total = 1
+    local closestDistance = math.huge
+    for _, otherVehicle in pairs(g_currentMission.vehicles) do
+        if otherVehicle ~= self.vehicle and
+                otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive()
+                and self:hasSameCourse(otherVehicle) then
+            local myProgress, myWpIx = self:getProgress()
+            local length = self.fieldworkCourse:getLength()
+            local otherProgress, otherWpIx = otherVehicle:getCpFieldWorkProgress()
+            self:debugSparse(
+                    'convoy: my progress at waypoint %d is %.3f%%, %s progress at waypoint %d is %.3f%%, 100%% %d m',
+                    myWpIx, myProgress * 100, CpUtil.getName(otherVehicle), otherWpIx, otherProgress * 100, length)
+            total = total + 1
+            if myProgress < otherProgress then
+                position = position + 1
+                local distance = (otherProgress - myProgress) * length
+                if distance < closestDistance then
+                    closestDistance = distance
+                end
+                self:debugSparse('convoy: my position %d, calculated distance from %s is %.3f m',
+                        position, CpUtil.getName(otherVehicle), distance)
+            end
+        end
+    end
+    -- stop when I'm too close to the combine in front of me
+    if position > 1 then
+        if closestDistance < self.settings.convoyMinDistance:getValue() then
+            self:debugSparse('too close (%.1f m < %.1f) to other vehicles in convoy, holding.',
+                    closestDistance, self.settings.convoyMinDistance:getValue())
+            self:setMaxSpeed(0.5 * self.maxSpeed)
+        end
+    else
+        closestDistance = 0
+    end
+
+    -- TODO: multiplayer?
+    self.convoyCurrentDistance=closestDistance
+    self.convoyCurrentPosition=position
+    self.convoyTotalMembers=total
+end
+
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Overwrite implement functions, to enable a different cp functionality compared to giants fieldworker.
