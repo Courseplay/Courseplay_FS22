@@ -44,14 +44,14 @@
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Velocità"/>
 		<text name="CP_vehicle_setting_subTitle_debug" 													text="Debug"/>
 		
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Calibrazione corsia:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Calibrazione corsia:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Calibrazione corsia" />
+		<text name="CP_jobParameters_laneOffset_center"													text="Al centro" />
+		<text name="CP_jobParameters_laneOffset_left"													text="A sinistra(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="A destra(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="A sinistra(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="A destra(2)" />
 
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Visualizza porcorso"/>
@@ -95,7 +95,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Calibrazione attrezzo verticale"/>
 		
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raggio di sterzata"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Value: 2 - 50"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Intervallo: 2 - 50"/>
 		
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Aprire sempre il tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Aprire sempre il tubo quando la mietitrebbia è piena e attende lo scaricatore"/>
@@ -126,19 +126,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Abilita il convoglio veicoli"/>
 		
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distanza minima del convoglio"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distanza minima del convoglio. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distanza minima del convoglio. Intervallo: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distanza massima del convoglio"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distanza massima del convoglio. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distanza massima del convoglio. Intervallo: 40 - 300"/>
 		
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Lavoro"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo. Intervallo: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Guida"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Velocità massima durante la guida sul campo. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Velocità massima durante la guida sul campo. Intervallo: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Svolta"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocità massima durante le manovre di svolta. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Velocità massima durante le manovre di svolta. Intervallo: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Retromarcia"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Velocità massima in retromarcia. Intervallo: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Debug veicolo"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Abilita/disabilita il debug per questo veicolo"/>
@@ -148,22 +148,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Larghezza lavoro" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Larghezza di lavoro del veicolo e/o degli attrezzi connessi. Value: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Larghezza di lavoro del veicolo e/o degli attrezzi connessi. Intervallo: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Numero traccie perimetrali" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Numero di traccie perimetrali. Value: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Numero di traccie perimetrali. Intervallo: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sovrapposizione fine campo" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sovrapposizione delle traccie a fine campo come percentuale della larghezza di lavoro. Value: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sovrapposizione delle traccie a fine campo come percentuale della larghezza di lavoro. Intervallo: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Margine di campo" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="I valori positivi diminuiscono le dimensioni del campo per aggiungere un buffer attorno all&#39;area lavorata. Quelli negativi ingrandiscono l&#39;area lavorata che va oltre il limite del campo. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="I valori positivi diminuiscono le dimensioni del campo per aggiungere un buffer attorno all&#39;area lavorata. Quelli negativi ingrandiscono l&#39;area lavorata che va oltre il limite del campo. Intervallo: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="File da saltare" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="File da saltare quando si passa alla linea Su/Giù successiva. Value: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="File da saltare quando si passa alla linea Su/Giù successiva. Intervallo: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Righe per terra" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Determina la quantità di righe per terra quando questa modalità è selezionata. Value: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Determina la quantità di righe per terra quando questa modalità è selezionata. Intervallo: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Direzione lavoro" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Se il veicolo deve guidare in senso orario o antiorario sul campo" />
@@ -190,7 +190,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuale" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Orientamento angolo della riga su/giù" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Regola l&#39;angolo in gradi delle righe su/giù (0° è il nord) in modalità manuale. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Regola l&#39;angolo in gradi delle righe su/giù (0° è il nord) in modalità manuale. Intervallo: 0° - 175° Passo: 5°" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestione dell&#39;isola" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportamento del percorso quando ci sono isole nel campo" />
@@ -203,8 +203,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Inizio campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Centro" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Strumenti multipli" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Numero di veicoli sullo stesso percorso." />
 
 
 		<!-- GlobalSettings -->
