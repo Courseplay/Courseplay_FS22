@@ -745,7 +745,7 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
                 otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive()
                 and self:hasSameCourse(otherVehicle) then
             local myProgress, myWpIx = self:getProgress()
-            local length = self.fieldworkCourse:getLength()
+            local length = self.fieldWorkCourse:getLength()
             local otherProgress, otherWpIx = otherVehicle:getCpFieldWorkProgress()
             self:debugSparse(
                     'convoy: my progress at waypoint %d is %.3f%%, %s progress at waypoint %d is %.3f%%, 100%% %d m',
