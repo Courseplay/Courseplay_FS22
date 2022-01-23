@@ -14,6 +14,7 @@ function CpHudElement.new(overlay,parentHudElement,customMt)
     self.callbacks = {}
     self.visible = true
     self.disabled = false
+    self.hovered = false
     return self
 end
 
@@ -27,9 +28,9 @@ function CpHudElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
     end
     
     if self:isMouseOverArea(posX,posY) then 
-        self.hovered = true
+        self:setHovered(true)
     else 
-        self.hovered = false
+        self:setHovered(false)
     end
 
     for _, child in ipairs(self.children) do
@@ -38,6 +39,17 @@ function CpHudElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
         end
     end
     return wasUsed
+end
+
+function CpHudElement:setHovered(hovered)
+    if hovered ~= self.hovered then 
+        self:debug("hover state changed to %s",tostring(hovered))
+    end
+    self.hovered = hovered
+end
+
+function CpHudElement:getIsHovered()
+    return self.hovered    
 end
 
 --- WIP: Not working for the on/off overlay
@@ -50,19 +62,17 @@ function CpHudElement:isMouseOverArea(posX,posY)
     return GuiUtils.checkOverlayOverlap(posX, posY, x + offsetX, y + offsetY, width, height)
 end
 
-function CpHudElement:setCallback(callbackStr,class,func,...)
+function CpHudElement:setCallback(callbackStr,class,func)
     self.callbacks[callbackStr] = {
         class = class,
         func = func,
-        args = ...
     }
 end
 
-function CpHudElement:raiseCallback(callbackStr)
+function CpHudElement:raiseCallback(callbackStr,args)
     if self.callbacks[callbackStr] then 
         local func = self.callbacks[callbackStr].func
         local class = self.callbacks[callbackStr].class
-        local args = self.callbacks[callbackStr].args
         if args~= nil then
             func(class,unpack(args))
         else 
@@ -84,12 +94,13 @@ end
 ---@class CpHudButtonElement : CpHudElement
 CpHudButtonElement = {}
 local CpHudButtonElement_mt = Class(CpHudButtonElement, CpHudElement)
-
+CpHudButtonElement.scrollDelayMs = 10
 function CpHudButtonElement.new(overlay,parentHudElement,customMt)
     if customMt == nil then
         customMt = CpHudButtonElement_mt
     end
     local self = CpHudElement.new(overlay, parentHudElement, customMt)
+    self.lastScrollTimeStamp = g_time
     return self
 end
 
@@ -102,6 +113,15 @@ function CpHudButtonElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
                 wasUsed = true
             end
         end
+        if self.lastScrollTimeStamp + self.scrollDelayMs < g_time then
+            if Input.isMouseButtonPressed(Input.MOUSE_BUTTON_WHEEL_UP) then
+                self.lastScrollTimeStamp =  g_time
+                self:onClickMouseWheel(1,posX,posY)
+            elseif Input.isMouseButtonPressed(Input.MOUSE_BUTTON_WHEEL_DOWN) then
+                self.lastScrollTimeStamp =  g_time
+                self:onClickMouseWheel(-1,posX,posY)
+            end
+        end
     end
     
    return CpHudButtonElement:superClass().mouseEvent(self,posX, posY, isDown, isUp, button,wasUsed)
@@ -111,6 +131,12 @@ function CpHudButtonElement:onClickPrimary(posX,posY)
     self:debug("onClickPrimary")
     self:raiseCallback("onClickPrimary")
 end
+
+function CpHudButtonElement:onClickMouseWheel(dir,posX,posY)
+    self:debug("onClickMouseWheel")
+    self:raiseCallback("onClickMouseWheel",{dir})
+end
+
 
 --- Generic Hud text element.
 ---@class CpTextHudElement : CpHudButtonElement
@@ -149,6 +175,7 @@ function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignme
     if textAlignment == RenderText.ALIGN_RIGHT then 
         self:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM,Overlay.ALIGN_HORIZONTAL_RIGHT)
     end
+    self:setTextDetails("")
     self:setPosition(posX, posY)
     return self
 end
@@ -241,4 +268,154 @@ function CpTextHudElement:draw()
 	setTextWrapWidth(0)
 	setTextBold(false)
 	setTextColor(1, 1, 1, 1)
+end
+
+--- Moveable Hud element.
+---@class CpHudMoveableElement : CpHudElement
+CpHudMoveableElement = {
+    dragDelayMs = 15
+}
+local CpHudMoveableElement_mt = Class(CpHudMoveableElement, CpHudElement)
+
+function CpHudMoveableElement.new(overlay,parentHudElement,customMt)
+    if customMt == nil then
+        customMt = CpHudMoveableElement_mt
+    end
+    local self = CpHudElement.new(overlay, parentHudElement, customMt)
+
+    self.dragging = false
+    self.dragStartX = nil
+    self.dragOffsetX = nil
+    self.dragStartY = nil
+    self.dragOffsetY = nil
+    self.lastDragTimeStamp = nil
+    self.dragLimit = 2
+    return self
+end
+
+function CpHudMoveableElement:setPosition(x,y)
+    self.x, self.y = x, y 
+    CpHudMoveableElement:superClass().setPosition(self,x,y)
+end
+
+function CpHudMoveableElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
+    if not self.dragging then 
+        local wasUsed = CpHudMoveableElement:superClass().mouseEvent(self,posX, posY, isDown, isUp, button,wasUsed)
+        if wasUsed then 
+            return
+        end
+        if not self:isMouseOverArea(posX, posY) then 
+            return 
+        end
+    end
+    if button == Input.MOUSE_BUTTON_LEFT then
+        if isDown and self:isMouseOverArea(posX, posY) then
+            if not self.dragging then
+                self.dragStartX = posX
+                self.dragOffsetX = posX - self.x
+                self.dragStartY = posY
+                self.dragOffsetY = posY - self.y
+                self.dragging = true
+                self.lastDragTimeStamp =  g_time
+            end
+        elseif isUp then
+            if self.dragging and (math.abs(posX - self.dragStartX) > self.dragLimit / g_screenWidth or
+                    math.abs(posY - self.dragStartY) > self.dragLimit / g_screenHeight) then
+                self:moveTo(posX - self.dragOffsetX, posY - self.dragOffsetY)
+            else 
+
+            end
+            self.dragging = false
+        end
+    end
+    --- Handles the dragging
+    if self.dragging and g_time > (self.lastDragTimeStamp + CpHudMoveableElement.dragDelayMs) then 
+        if  math.abs(posX - self.dragStartX) > self.dragLimit / g_screenWidth or
+        math.abs(posY - self.dragStartY) > self.dragLimit / g_screenHeight then
+            self:moveTo(posX - self.dragOffsetX, posY - self.dragOffsetY)
+            self.dragStartX = posX
+            self.dragOffsetX = posX - self.x
+            self.dragStartY = posY
+            self.dragOffsetY = posY - self.y
+            self.lastDragTimeStamp = g_time
+        end
+    end
+end
+
+function CpHudMoveableElement:moveTo(x, y)
+    self:setPosition(x, y)
+    self:raiseCallback("onMove", {x, y})
+end
+
+
+--- Hud element for setting list settings.
+---@class CpHudSettingElement : CpTextHudElement
+CpHudSettingElement = {}
+local CpHudSettingElement_mt = Class(CpHudSettingElement, CpHudButtonElement)
+function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, maxPosY, incrementalOverlay, decrementalOverlay, 
+                                    textSize, textAlignment, textColor, textBold, customMt)
+    if customMt == nil then
+        customMt = CpHudSettingElement_mt
+    end
+    --- Not used, but needed for inheritance form HUDElement, similar to HUDDisplayElement
+    local backgroundOverlay = Overlay.new(nil, 0, 0, 0, 0)
+
+	backgroundOverlay:setColor(1, 1, 1, 1)
+    local self = CpHudButtonElement.new(backgroundOverlay, parentHudElement, customMt)
+    self:setPosition(posX, posY)
+    self.labelElement = CpTextHudElement.new(parentHudElement, posX, posY, textSize)
+    self.labelElement:setTextDetails("Label")
+
+    self.incrementalElement = CpHudButtonElement.new(incrementalOverlay, parentHudElement)
+    self.incrementalElement:setPosition(maxPosX,maxPosY)
+    local w = self.incrementalElement:getWidth()
+    local x = maxPosX - w*1.5
+    self.textElement = CpTextHudElement.new(parentHudElement, x, posY, textSize-2,RenderText.ALIGN_RIGHT)
+    self.textElement:setTextDetails("100.00")
+    w = self.textElement:getWidth()
+    self.decrementalElement = CpHudButtonElement.new(decrementalOverlay, parentHudElement)
+    self.decrementalElement:setPosition(x-w*1.5, posY)
+
+    return self
+end
+
+function CpHudSettingElement:setTextDetails(labelText, text, labelTextDetails, textDetails)
+    labelTextDetails = labelTextDetails or {}
+    textDetails = textDetails or {}
+    self.textElement:setTextDetails(text, textDetails.textSize, textDetails.textAlignment,
+                                     textDetails.textColor, textDetails.textBold)
+    self.labelElement:setTextDetails(labelText, labelTextDetails.textSize, labelTextDetails.textAlignment,
+                                     labelTextDetails.textColor, labelTextDetails.textBold)
+    
+end
+
+function CpHudSettingElement:setCallback(callbackLabel,callbackText,callbackIncremental,callbackDecremental)
+    if callbackLabel then
+        self.labelElement:setCallback(callbackLabel.callbackStr, 
+                                    callbackLabel.class,
+                                    callbackLabel.func
+                                 --   unpack(callbackLabel.args)
+                                )
+    end
+    if callbackText then
+        self.textElement:setCallback(callbackText.callbackStr, 
+                                    callbackText.class,
+                                    callbackText.func
+                                --    unpack(callbackText.args)
+                            )
+    end                 
+    if callbackIncremental then                        
+        self.incrementalElement:setCallback(callbackIncremental.callbackStr, 
+                                        callbackIncremental.class,
+                                        callbackIncremental.func
+                                   --     unpack(callbackIncremental.args)
+                                    )
+    end                 
+    if callbackDecremental then  
+        self.decrementalElement:setCallback(callbackDecremental.callbackStr, 
+                                        callbackDecremental.class,
+                                        callbackDecremental.func
+                                    --    unpack(callbackDecremental.args)
+                                    )
+    end
 end

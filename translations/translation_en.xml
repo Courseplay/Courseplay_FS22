@@ -59,6 +59,9 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Start/stop only"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="All waypoints"/>
 
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop at end"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Stop at end"/>
 
@@ -219,6 +222,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Keep it healthy"/>
+
+		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder settings"/>
 
@@ -292,5 +300,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Open mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
 	</texts>
 </l10n>
