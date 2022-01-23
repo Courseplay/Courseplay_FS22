@@ -93,7 +93,7 @@ function CpAIFieldWorker:onLoad(savegame)
 end
 
 function CpAIFieldWorker:onPostLoad(savegame)
-    g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
+    
 end
 
 function CpAIFieldWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)

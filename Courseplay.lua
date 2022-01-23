@@ -156,6 +156,9 @@ function Courseplay:load()
 	g_courseManger = self.courseStorage
 	g_courseDisplay = CourseDisplay()
 	g_vehicleConfigurations:loadFromXml()
+
+	--- Register additional AI messages.
+	g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
 end
 
 function Courseplay:registerConsoleCommands()
