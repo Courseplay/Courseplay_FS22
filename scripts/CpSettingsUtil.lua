@@ -24,6 +24,9 @@ CpSettingsUtil.classTypes = {
 			- prefix (bool): prefix used yes/no?, default = true
 			- title (string): sub title text in the gui menu
 
+			- isDisabled (string): function called from the parent container, to disable all setting under the subtitle.
+			- isVisible (string): function called from the parent container, to change the visibility of all setting under the subtitle.
+
 			- Setting(?)
 				- classType (string): class name
 				- name (string): name of the setting 
@@ -31,7 +34,8 @@ CpSettingsUtil.classTypes = {
 				- tooltip (string): tooltip text in the gui menu (optional)
 				- default(int) : default value to be set. (optional)
 				- defaultBool(bool) : default value to be set. (optional)
-				
+				- textInput(bool) : is text input allowed ? (optional), every automatic generated number sequence is automatically allowed.
+
 				- min (int): min value
 				- max (int): max value
 				- incremental (float): increment (optional), default "1"
@@ -40,13 +44,15 @@ CpSettingsUtil.classTypes = {
 
 				- onChangeCallback(string): callback function raised on setting value changed. 
 
-				- neededSpecs(string): all specializations separated "," that are needed, default is enabled for every combo.
-				- disabledSpecs(string): all specializations separated "," that are disallowed , default is every combo is allowed.
+				- isDisabled (string): function called by the setting from the parent container, to disable the setting.
+				- isVisible (string): function called by the setting from the parent container, to change the setting visibility.
+				- setDefault (string): function called by the setting from the parent container, to set a default value, for example work width.
 
 				- Values : 
 					- Value(?) :
 						- name (string): Global name, should be unique for all settings in this xml file.
 						- value (int): value
+						- isDisabled(string): function called by the setting from the parent container, to disable this value.
 				- Texts : 
 					- Text(?) :
 						- prefix (string): prefix used yes/no?, default = true
@@ -63,6 +69,9 @@ function CpSettingsUtil.init()
 	local key = "Settings.SettingSubTitle(?)"
 	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title",nil,true)
 	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix",true)
+	
+	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
+	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?)"
     schema:register(XMLValueType.STRING, key.."#name", "Setting name",nil,true)
@@ -71,6 +80,7 @@ function CpSettingsUtil.init()
     schema:register(XMLValueType.STRING, key.."#tooltip", "Setting tooltip") -- optional
 	schema:register(XMLValueType.INT, key.."#default", "Setting default value") -- optional
 	schema:register(XMLValueType.BOOL, key.."#defaultBool", "Setting default bool value") -- optional
+	schema:register(XMLValueType.BOOL, key .. "#textInput", "Setting input text allowed.") --optional
 
 	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
 	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
@@ -81,13 +91,15 @@ function CpSettingsUtil.init()
 	--- callbacks:
 	schema:register(XMLValueType.STRING, key.."#onChangeCallback", "Setting callback on change") -- optional
 
-	schema:register(XMLValueType.STRING, key.."#neededSpecs", "Specializations needed for this setting to be enabled.") -- optional
-	schema:register(XMLValueType.STRING, key.."#disabledSpecs", "Specializations that disable this setting.") -- optional
+	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
+	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
+	schema:register(XMLValueType.STRING, key.."#setDefault", "Callback function, to set the default value.") -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?).Values.Value(?)"
 	schema:register(XMLValueType.INT, key, "Setting value", nil)
 	schema:register(XMLValueType.STRING, key.."#name", "Setting value name", nil)
-	
+	schema:register(XMLValueType.STRING, key.."#isDisabled", "Setting value disabled", nil)
+
 	key = "Settings.SettingSubTitle(?).Setting(?).Texts.Text(?)"
 	schema:register(XMLValueType.STRING, key, "Setting value text", nil)
 	schema:register(XMLValueType.BOOL, key.."#prefix", "Setting value text is a prefix", true)
@@ -119,9 +131,16 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		else 
 			subTitle = g_i18n:getText(subTitle)
 		end
+
+		local isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
+		local isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
+
 		local subTitleSettings = {
 			title = subTitle,
-			elements = {}
+			elements = {},
+			isDisabledFunc = isDisabledFunc,
+			isVisibleFunc = isVisibleFunc,
+			class = class
 		}
 		xmlFile:iterate(masterKey..".Setting", function (i, baseKey)
 			local settingParameters = {}
@@ -141,6 +160,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			end
 			settingParameters.default = xmlFile:getValue(baseKey.."#default")
 			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
+			settingParameters.textInputAllowed = xmlFile:getValue(baseKey.."#textInput",false)
 
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")
@@ -151,14 +171,12 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.callbacks = {}
 			settingParameters.callbacks.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
 
-
-			local neededSpecsStr = xmlFile:getValue(baseKey.."#neededSpecs")
-			settingParameters.neededSpecs = CpSettingsUtil.getSpecsFromString(neededSpecsStr)
-
-			local disabledSpecs = xmlFile:getValue(baseKey.."#disabledSpecs")
-			settingParameters.disabledSpecs = CpSettingsUtil.getSpecsFromString(disabledSpecs)
+			settingParameters.isDisabledFunc = xmlFile:getValue(baseKey.."#isDisabled")
+			settingParameters.isVisibleFunc = xmlFile:getValue(baseKey.."#isVisible")
+			settingParameters.setDefaultFunc = xmlFile:getValue(baseKey.."#setDefault")
 
 			settingParameters.values = {}
+			settingParameters.disabledValuesFuncs = {}
 			xmlFile:iterate(baseKey..".Values.Value", function (i, key)
 				local name = xmlFile:getValue(key.."#name")
 				local value = xmlFile:getValue(key)
@@ -166,6 +184,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 				if name ~= nil and name ~= "" then
 					class[name] = value
 				end
+				local isDisabled = xmlFile:getValue(key.."#isDisabled")
+				settingParameters.disabledValuesFuncs[value] = isDisabled
 			end)
 
 			settingParameters.texts = {}
@@ -195,23 +215,6 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 	xmlFile:delete()
 end
 
-
---- Gets Specializations form a string, where each is separated by a ",".
----@param str string
----@return table
-function CpSettingsUtil.getSpecsFromString(str)
-	if str then
-		local substrings = str:split(",")
-		local results = {}
-		if substrings ~= nil then
-			for i = 1, #substrings do
-				results[i] = g_specializationManager:getSpecializationByName(substrings[i])
-			end
-		end
-		return results
-	end
-end
-
 --- Clones a settings table.
 ---@param class table 
 ---@param settings table
@@ -237,18 +240,14 @@ end
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,parentGuiElement,genericSettingElement,genericSubTitleElement)
-	local subTitleElement = genericSubTitleElement:clone(genericSubTitleElement.parent,true)
-	subTitleElement:unlinkElement()
-	FocusManager:removeElement(subTitleElement)
-	local settingElement = genericSettingElement:clone(genericSettingElement.parent,true)
-	settingElement:unlinkElement()
-	FocusManager:removeElement(settingElement)
 	for _,data in ipairs(settingsBySubTitle) do 
-		local clonedSubTitleElement = subTitleElement:clone(parentGuiElement,true)
+		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
 		clonedSubTitleElement:setText(data.title)
+		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		for _,setting in ipairs(data.elements) do 
-			local clonedSettingElement = settingElement:clone(parentGuiElement,true)
+			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
 			setting:setGenericGuiElementValues(clonedSettingElement)
+			FocusManager:loadElementFromCustomValues(clonedSettingElement)
 		end
 	end
 	parentGuiElement:invalidateLayout()
@@ -275,13 +274,41 @@ end
 --- Links the gui elements to the correct settings.
 ---@param settings any
 ---@param layout any
-function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout)
+function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout,settingsBySubTitle,vehicle)
+	local valid = true
 	local i = 1
+	local j = 1
 	for _,element in ipairs(layout.elements) do 
 		if element:isa(MultiTextOptionElement) then 
-			CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s",settings[i]:getName())
-			settings[i]:setGuiElement(element)
+			if valid then
+				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s",settings[i]:getName())
+				settings[i]:setGuiElement(element)
+			else 
+				element:setVisible(false)
+			end
 			i = i + 1
+		elseif settingsBySubTitle then  
+			valid = true
+			local isDisabledFunc = settingsBySubTitle[j].isDisabledFunc
+			local isVisibleFunc = settingsBySubTitle[j].isVisibleFunc
+			local class = settingsBySubTitle[j].class
+			if vehicle then 
+				if class[isVisibleFunc] then 
+					valid = class[isVisibleFunc](vehicle)
+				end
+				if class[isDisabledFunc] then 
+					element:setDisabled(class[isDisabledFunc](vehicle))
+				end
+			else 
+				if class[isVisibleFunc] then 
+					valid = class[isVisibleFunc](class)
+				end
+				if class[isDisabledFunc] then 
+					element:setDisabled(class[isDisabledFunc](vehicle))
+				end
+			end
+			element:setVisible(valid)
+			j =  j + 1
 		end
 	end
 end
@@ -311,6 +338,15 @@ function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubT
 			parameterGroup:addParameter(s)
 		end
 		table.insert(class.groupedParameters, parameterGroup)
+	end
+end
+
+function CpSettingsUtil.updateAiParameters(currentJobElements)
+	for i,element in pairs(currentJobElements) do 
+		if element.setDataSource then
+			element:setDataSource(element.aiParameter)
+			element:setDisabled(element.aiParameter:getIsDisabled())
+		end
 	end
 end
 

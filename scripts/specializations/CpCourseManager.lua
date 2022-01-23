@@ -52,7 +52,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpCourseManager)
-    SpecializationUtil.registerEventListener(vehicleType, "cpOnCourseChange", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpCourseChange", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
@@ -62,8 +62,8 @@ function CpCourseManager.registerEventListeners(vehicleType)
 end
 
 function CpCourseManager.registerEvents(vehicleType)
-    SpecializationUtil.registerEvent(vehicleType, 'cpUpdateWaypointVisibility', CpCourseManager.cpUpdateWaypointVisibility)
-    SpecializationUtil.registerEvent(vehicleType, 'cpOnCourseChange', CpCourseManager.cpOnCourseChange)
+    SpecializationUtil.registerEvent(vehicleType, 'cpUpdateWaypointVisibility')
+    SpecializationUtil.registerEvent(vehicleType, 'onCpCourseChange')
 end
 
 function CpCourseManager.registerFunctions(vehicleType)
@@ -126,7 +126,7 @@ function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
     end)    
     if courses ~= nil and next(courses) then
         spec.courses = courses
-        SpecializationUtil.raiseEvent(self,"cpOnCourseChange",courses[1])
+        SpecializationUtil.raiseEvent(self,"onCpCourseChange",courses[1])
     end
 end
 
@@ -163,13 +163,13 @@ function CpCourseManager:addCourse(course)
     local spec = self.spec_cpCourseManager 
     course:setVehicle(self)
     table.insert(spec.courses,course)
-    SpecializationUtil.raiseEvent(self,"cpOnCourseChange",course)
+    SpecializationUtil.raiseEvent(self,"onCpCourseChange",course)
 end
 
 function CpCourseManager:resetCourses()
     local spec = self.spec_cpCourseManager 
     spec.courses = {}
-    SpecializationUtil.raiseEvent(self,"cpOnCourseChange")
+    SpecializationUtil.raiseEvent(self,"onCpCourseChange")
 end
 
 ---@return Course
@@ -206,7 +206,7 @@ function CpCourseManager:onLeaveVehicle(wasEntered)
     end
 end
 
-function CpCourseManager:cpOnCourseChange(newCourse)
+function CpCourseManager:onCpCourseChange(newCourse)
     local spec = self.spec_cpCourseManager
     if newCourse then 
         -- we have course, show the course plot on the AI helper screen
@@ -231,7 +231,17 @@ function CpCourseManager:drawCoursePlot(map)
 end
 
 function CpCourseManager:onDraw()
---    self.courseDisplay:draw()
+    --- Draw debug information of the generated fieldwork course.
+    local course = self:getFieldWorkCourse()
+    if course then 
+        if CpUtil.isVehicleDebugActive(self) and CpDebug:isChannelActive(CpDebug.DBG_COURSES) then
+            local info = {
+                title = self:getCurrentCpCourseName(),
+                content = course:getDebugTable()
+            }
+            CpDebug:drawVehicleDebugTable(self,{info})
+        end
+    end
 end
 
 function CpCourseManager:onReadStream(streamId)

@@ -12,7 +12,8 @@ function CpHudElement.new(overlay,parentHudElement,customMt)
     local self = HUDElement.new(overlay, parentHudElement, customMt)
 
     self.callbacks = {}
-
+    self.visible = true
+    self.disabled = false
     return self
 end
 
@@ -68,6 +69,15 @@ function CpHudElement:raiseCallback(callbackStr)
             func(class)
         end
     end
+end
+
+function CpHudElement:setVisible(visible)
+    CpHudElement:superClass().setVisible(self,visible)
+    self.visible = visible
+end
+
+function CpHudElement:setDisabled(disabled)
+    self.disabled = disabled
 end
 
 --- Generic Hud button element with overlay.
@@ -136,6 +146,9 @@ function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignme
 		0,
 		1
 	}
+    if textAlignment == RenderText.ALIGN_RIGHT then 
+        self:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM,Overlay.ALIGN_HORIZONTAL_RIGHT)
+    end
     self:setPosition(posX, posY)
     return self
 end
@@ -198,6 +211,10 @@ function CpTextHudElement:update(dt)
 end
 
 function CpTextHudElement:draw()
+    if not self.visible then 
+        return
+    end
+
 	setTextBold(self.textBold)
 
 	local posX, posY = self:getPosition()

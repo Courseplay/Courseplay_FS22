@@ -280,6 +280,22 @@ function Course:init(vehicle, waypoints, temporary, first, last)
 	self:enrichWaypointData()
 end
 
+function Course:getDebugTable()
+	return {
+		{name = "numWp",value=self:getNumberOfWaypoints()},
+		{name = "workWidth",value=self.workWidth},
+		{name = "curWpIx",value=self:getCurrentWaypointIx()},
+		{name = "length",value=self.length},
+		{name = "numTurns",value=self.totalTurns},
+		{name = "offsetX",value=self.offsetX},
+		{name = "offsetZ",value=self.offsetZ},
+		{name = "multiTools",value=self.multiTools},
+		{name = "numHeadlands",value=self.numberOfHeadlands},
+		{name = "totalTurns",value=self.totalTurns},
+	}
+	
+end
+
 function Course:isFieldworkCourse()
 	return (self.workWidth and self.workWidth > 0) or (self.numberOfHeadlands and self.numberOfHeadlands > 0)
 end
@@ -373,6 +389,10 @@ function Course:getWaypoint(ix)
 	return self.waypoints[ix]
 end
 
+function Course:getNumberOfMultiTools()
+	return self.multiTools
+end
+
 --- Is this a temporary course? Can be used to differentiate between recorded and dynamically generated courses
 -- The Course() object does not use this attribute for anything
 function Course:isTemporary()
@@ -454,7 +474,9 @@ function Course:enrichWaypointData(startIx)
 	self.waypoints[#self.waypoints].reverseOffset = self:isReverseAt(#self.waypoints)
 	-- now add some metadata for the combines
 	local dToNextTurn, lNextRow, nextRowStartIx = 0, 0, 0
+	local dToNextDirectionChange, nextDirectionChangeIx = 0, 0
 	local turnFound = false
+	local directionChangeFound = false
 	for i = #self.waypoints - 1, 1, -1 do
 		if turnFound then
 			dToNextTurn = dToNextTurn + self.waypoints[i].dToNext
@@ -467,6 +489,16 @@ function Course:enrichWaypointData(startIx)
 			nextRowStartIx = i + 1
 			dToNextTurn = 0
 			turnFound = true
+		end
+		if directionChangeFound then
+			dToNextDirectionChange = dToNextDirectionChange + self.waypoints[i].dToNext
+			self.waypoints[i].dToNextDirectionChange = dToNextDirectionChange
+			self.waypoints[i].nextDirectionChangeIx = nextDirectionChangeIx
+		end
+		if self:switchingDirectionAt(i) then
+			dToNextDirectionChange = 0
+			nextDirectionChangeIx = i
+			directionChangeFound = true
 		end
 	end
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
@@ -1298,6 +1330,10 @@ function Course:getDistanceFromLastTurn(ix)
 	return self.waypoints[ix].dFromLastTurn
 end
 
+function Course:getDistanceToNextDirectionChange(ix)
+	return self.waypoints[ix].dToNextDirectionChange
+end
+
 --- Are we closer than distance to the next turn?
 ---@param distance number
 ---@return boolean true when we are closer than distance to the next turn, false otherwise, even
@@ -1317,21 +1353,41 @@ function Course:isCloseToNextTurn(distance)
 	return false
 end
 
---- Are we closer than distance to the next turn?
+--- Is the current waypoint within distance of a property, where getDistanceFunc() is a function which
+--- determines this distance
 ---@param distance number
----@return boolean true when we are closer than distance to the next turn, false otherwise, even
---- if we can't determine the distance to the next turn.
-function Course:isCloseToLastTurn(distance)
+---@param getDistanceFunc function(ix)
+function Course:isCloseToProperty(distance, getDistanceFunc)
 	local ix = self.currentWaypoint
 	if ix then
-		local dFromLastTurn = self:getDistanceFromLastTurn(ix)
-		if dFromLastTurn and dFromLastTurn < distance then
+		local d = getDistanceFunc(self, ix)
+		if d and d < distance then
 			return true
 		else
 			return false
 		end
 	end
 	return false
+end
+
+--- Are we closer than distance from the last turn?
+---@param distance number
+---@return boolean true when we are closer than distance to the last turn, false otherwise, even
+--- if we can't determine the distance to the last turn.
+function Course:isCloseToLastTurn(distance)
+	return self:isCloseToProperty(distance, Course.getDistanceFromLastTurn)
+end
+
+--- Are we closer than distance to the next direction change?
+---@param distance number
+---@return boolean true when we are closer than distance to the next direction change, false otherwise, or when
+--- the distance is not known
+function Course:isCloseToNextDirectionChange(distance)
+	return self:isCloseToProperty(distance, Course.getDistanceToNextDirectionChange)
+end
+
+function Course:isCloseToLastWaypoint(distance)
+	return self:isCloseToProperty(distance, Course.getDistanceToLastWaypoint)
 end
 
 --- Get the length of the up/down row where waypoint ix is located

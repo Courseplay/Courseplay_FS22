@@ -68,6 +68,7 @@ function CpVehicleSettings:onPostAttachImplement(object)
                 CpUtil.getName(object), lowerEarly)
         spec.lowerImplementEarly:setValue(lowerEarly)
     end
+    CpVehicleSettings.validateSettings(self)
 end
 
 function CpVehicleSettings:onPreDetachImplement(implement)
@@ -84,9 +85,9 @@ function CpVehicleSettings:onPreDetachImplement(implement)
                 CpUtil.getName(implement.object))
         spec.lowerImplementEarly:setValue(false)
     end
+    CpVehicleSettings.validateSettings(self)
 end
 
---- Loads the generic settings setup from an xmlFile.
 function CpVehicleSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/VehicleSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpVehicleSettings,filePath)
@@ -123,4 +124,27 @@ end
 --- Callback raised by a setting and executed as an vehicle event.
 function CpVehicleSettings:raiseCallback(callbackStr)
     SpecializationUtil.raiseEvent(self,callbackStr)
+end
+
+function CpVehicleSettings:validateSettings()
+    local spec = self.spec_cpVehicleSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:refresh()
+    end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Callbacks for the settings to manipulate the gui elements.
+------------------------------------------------------------------------------------------------------------------------
+
+--- Are the combine settings needed.
+function CpVehicleSettings:areCombineSettingsVisible()
+    local implement = AIUtil.getImplementOrVehicleWithSpecialization(self,Combine)
+    return implement and not ImplementUtil.isChopper(implement)
+end
+
+--- Are the sowing machine settings needed.
+function CpVehicleSettings:areSowingMachineSettingsVisible()
+    return AIUtil.getImplementOrVehicleWithSpecialization(self,SowingMachine)
+            or AIUtil.getImplementOrVehicleWithSpecialization(self,FertilizingCultivator)
 end

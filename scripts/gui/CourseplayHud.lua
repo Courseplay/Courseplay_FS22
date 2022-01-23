@@ -91,8 +91,14 @@ function CourseplayHud:init(vehicle)
 
     --- Creates course time progress text
     x,y = self.x + self.width - self.wMargin, self.y + self.lineHeight + self.hMargin
-    self.timeProgress = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize+2, RenderText.ALIGN_RIGHT)
+ --   self.timeProgress = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize+2, RenderText.ALIGN_RIGHT)
 
+    --- lane offset selection.
+    x,y = self.x + self.width - self.wMargin, self.y + self.lineHeight + self.hMargin
+    self.laneOffsetText = CpTextHudElement.new(self.baseHud,x, y, self.defaultFontSize+2, RenderText.ALIGN_RIGHT)
+    self.laneOffsetText:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        vehicle:getCpLaneOffsetSetting():setNextItem()
+    end)
 end
 
 function CourseplayHud:preOpeningInGameMenu(vehicle)
@@ -214,8 +220,10 @@ function CourseplayHud:draw(status)
         self.onOffIndicator:setColor(unpack(CourseplayHud.OFF_COLOR))
     end
     self.waypointProgress:setTextDetails(status:getWaypointText())
-    --- WIP: implement time course progress
- --   self.timeProgress:setTextDetails(status:getTimeRemainingText())
+    
+    local laneOffset = self.vehicle:getCpLaneOffsetSetting()
+    self.laneOffsetText:setVisible(laneOffset:getCanBeChanged())
+    self.laneOffsetText:setTextDetails(laneOffset:getString())
     self.baseHud:draw()
 end
 

@@ -1,9 +1,22 @@
 
+
 --[[
 	This frame is a page for the course manager.
 ]]--
 
-CpCourseManagerFrame = {}
+CpCourseManagerFrame = {
+	CONTROLS = {
+		HEADER = "header",
+		MAIN_BOC = "mainBox",
+		LEFT_COLUMN = "leftColumn",
+		RIGHT_COLUMN = "rightColumn",
+		LEFT_LIST = "leftList",
+		RIGHT_LIST = "rightList",
+		LEFT_COLUMN_HEADER ="leftColumnHeader",
+		RIGHT_COLUMN_HEADER = "rightColumnHeader",
+	},
+}
+
 CpCourseManagerFrame.translations = {
 	["title"] = "CP_courseManager_title",
 
@@ -56,77 +69,41 @@ CpCourseManagerFrame.colors = {
 	default = {0.3140, 0.8069, 1.0000, 0.02}
 }
 
----Creates the in game menu page.
-function CpCourseManagerFrame.init(courseStorage)
+local CpCourseManagerFrame_mt = Class(CpCourseManagerFrame, TabbedMenuFrameElement)
 
-	local inGameMenu = g_gui.screenControllers[InGameMenu]
-	local function predicateFunc()
-		local inGameMenu = g_gui.screenControllers[InGameMenu]
-		local aiPage = inGameMenu.pageAI
-		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
-	end
-	local page = CpGuiUtil.getNewInGameMenuFrame(inGameMenu,inGameMenu.pagePrices,CpCourseManagerFrame
-												,predicateFunc,3,{256,0,128,128})
-	inGameMenu.pageCourseManager = page
-	inGameMenu.pageCourseManager.onClickItem = CpCourseManagerFrame.onClickItem
-	inGameMenu.pageCourseManager.onClickLeftItem = CpCourseManagerFrame.onClickLeftItem
-	inGameMenu.pageCourseManager.onClickRightItem = CpCourseManagerFrame.onClickRightItem
-	inGameMenu.pageCourseManager.onClickIterateBack = CpCourseManagerFrame.onClickIterateBack
-	inGameMenu.pageCourseManager.courseStorage = courseStorage
+function CpCourseManagerFrame.new(courseStorage,target, custom_mt)
+	local self = TabbedMenuFrameElement.new(target, custom_mt or CpCourseManagerFrame_mt)
+	self:registerControls(CpCourseManagerFrame.CONTROLS)
+	self.courseStorage = courseStorage
+	return self
 end
 
---- Setup of the gui elements and binds the settings to the gui elements.
-function CpCourseManagerFrame:initialize()
-	local inGameMenu = g_gui.screenControllers[InGameMenu]
-	self.rightLayout = self.priceList
-	self.leftLayout = self.productList
-	--- Changes titles
-	self.pageTitle = CpGuiUtil.getFirstElementWithProfileName(self,"ingameMenuFrameHeaderText") 
-	local elements = CpGuiUtil.getElementsWithProfileName(self,"ingameCalendarHeaderBox")
 
-	self.leftLayoutTitle = elements[1].elements[1]
-	self.leftLayoutTitle:setText("")
-	self.leftLayoutTitle.textUpperCase = false
-	elements[1].elements[2]:delete()
-	local rightLayoutTitle = elements[2].elements[1]
-	self.rightToggleBtn = ButtonElement.new(self)
-	TextElement.copyAttributes(self.rightToggleBtn,rightLayoutTitle)
-	rightLayoutTitle.parent:addElement(self.rightToggleBtn)
-	rightLayoutTitle.parent:invalidateLayout()
-	self.rightToggleBtn.target = self
-	self.rightToggleBtn.onClickCallback = function(self) 
-												CpCourseManagerFrame.onClickChangeMode(self) 
-												self:updateMenuButtons()
-											end 
-	self.rightToggleBtn:setVisible(true)
-	self.rightToggleBtn.textUpperCase = false
-	elements[2].elements[2]:delete()
-	elements[2].elements[2]:delete()
-	rightLayoutTitle:delete()
-	--- Deletes unused layout.
-	self:getDescendantById("fluctuationsColumn"):delete()
-	self.noSellpointsText:delete()
+function CpCourseManagerFrame:onGuiSetupFinished()
+	CpCourseManagerFrame:superClass().onGuiSetupFinished(self)
+	
 
+	
 	--- Changes the input actions.
 	self.modeButton = {
 		profile = "buttonActivate",
 		inputAction = InputAction.MENU_ACTIVATE,
-		text = g_i18n:getText(CpCourseManagerFrame.translations.changeMode),
+		text = g_i18n:getText(self.translations.changeMode),
 		callback = function ()
-			CpCourseManagerFrame.onClickChangeMode(self)
+			self.onClickChangeMode(self)
 			self:updateMenuButtons()
 		end,
-		callbackDisabled = CpCourseManagerFrame.modeDisabled,
+		callbackDisabled = self.modeDisabled,
 	}
 	self.activateButton = {
 		profile = "buttonSelect",
 		inputAction = InputAction.MENU_ACTIVATE,
-		text = g_i18n:getText(CpCourseManagerFrame.translations.activate),
+		text = g_i18n:getText(self.translations.activate),
 		callback = function ()
-			CpCourseManagerFrame.onClickActivate(self)
+			self.onClickActivate(self)
 			self:updateMenuButtons()
 		end,
-		callbackDisabled = CpCourseManagerFrame.activateDisabled,
+		callbackDisabled = self.activateDisabled,
 	}
 
 	self.modes = {
@@ -135,61 +112,61 @@ function CpCourseManagerFrame:initialize()
 			{
 				profile = "buttonActivate",
 				inputAction = InputAction.MENU_EXTRA_1,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.loadCourse),
+				text = g_i18n:getText(self.translations.loadCourse),
 				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.loadCourse
+					self.actionState = self.actionStates.loadCourse
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.loadCourseDisabled,
+				callbackDisabled = self.loadCourseDisabled,
 			},
 			---  Clears the current course
 			{
 				profile = "buttonActivate",
 				inputAction = InputAction.MENU_CANCEL,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.clearCurrentCourse),
+				text = g_i18n:getText(self.translations.clearCurrentCourse),
 				callback = function ()
-					CpCourseManagerFrame.onClickClearCurrentCourse(self)
+					self.onClickClearCurrentCourse(self)
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.clearCurrentCourseDisabled
+				callbackDisabled = self.clearCurrentCourseDisabled
 			},
 			--- Saves the current courses.
 			{
 				profile = "buttonActivate",
 				inputAction = InputAction.MENU_EXTRA_1,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.saveCourse),
+				text = g_i18n:getText(self.translations.saveCourse),
 				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.saveCourse
+					self.actionState = self.actionStates.saveCourse
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.saveCourseDisabled,
+				callbackDisabled = self.saveCourseDisabled,
 			},
 			--- Creates a new directory
 			{
 				profile = "buttonActivate",
 				inputAction = InputAction.MENU_EXTRA_2,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.createDirectory),
+				text = g_i18n:getText(self.translations.createDirectory),
 				callback = function ()
 					CpCourseManagerFrame.showInputTextDialog(
-					self,CpCourseManagerFrame.translations.folderDialogTitle,
-						CpCourseManagerFrame.onClickCreateDirectoryDialog)
+					self,self.translations.folderDialogTitle,
+					self.onClickCreateDirectoryDialog)
 				--	self.actionState = CpCourseManagerFrame.actionStates.createDirectory
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.createDirectoryDisabled,
+				callbackDisabled = self.createDirectoryDisabled,
 			},
 		},
 		{
 			--- Moves an entry
 			{
 				profile = "buttonActivate",
-				inputAction = InputAction.MENU_ACTIVATE,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.moveEntry),
+				inputAction = InputAction.MENU_CANCEL,
+				text = g_i18n:getText(self.translations.moveEntry),
 				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.moveEntrySelect
+					self.actionState = self.actionStates.moveEntrySelect
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.moveEntryDisabled
+				callbackDisabled = self.moveEntryDisabled
 			},
 			--- Copy an entry
 --			{
@@ -206,50 +183,43 @@ function CpCourseManagerFrame:initialize()
 			{
 				profile = "buttonActivate",
 				inputAction = InputAction.MENU_EXTRA_1,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.deleteEntry),
+				text = g_i18n:getText(self.translations.deleteEntry),
 				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.deleteEntry
+					self.actionState = self.actionStates.deleteEntry
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.deleteEntryDisabled
+				callbackDisabled = self.deleteEntryDisabled
 			},
 			--- Rename
 			{
 				profile = "buttonActivate",
 				inputAction = InputAction.MENU_EXTRA_2,
-				text = g_i18n:getText(CpCourseManagerFrame.translations.renameEntry),
+				text = g_i18n:getText(self.translations.renameEntry),
 				callback = function ()
-					self.actionState = CpCourseManagerFrame.actionStates.renameEntry
+					self.actionState = self.actionStates.renameEntry
 					self:updateMenuButtons()
 				end,
-				callbackDisabled = CpCourseManagerFrame.renameEntryDisabled
+				callbackDisabled = self.renameEntryDisabled
 			}
 		},
 	}
+	self.leftList:setDataSource(self)
+	self.rightList:setDataSource(self)
 end
-
-function CpCourseManagerFrame:onGuiSetupFinished()
-	InGameMenuPricesFrame:superClass().onGuiSetupFinished(self)
-	self.leftLayout:setDataSource(self)
-	self.leftLayout.delegate = self
-	self.rightLayout:setDataSource(self)
-	self.rightLayout.delegate = self
-end
-
 function CpCourseManagerFrame:onFrameOpen()
 	InGameMenuPricesFrame:superClass().onFrameOpen(self)
-	self.curMode = CpCourseManagerFrame.minMode
-	self.actionState = CpCourseManagerFrame.actionStates.disabled
+	self.curMode = self.minMode
+	self.actionState = self.actionStates.disabled
 	self.selectedEntry = nil
 	local pageAI = g_currentMission.inGameMenu.pageAI
 	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(pageAI.currentHotspot)
 	self:setSoundSuppressed(true)
-	FocusManager:loadElementFromCustomValues(self.leftLayout)
-	FocusManager:loadElementFromCustomValues(self.rightLayout)
-	FocusManager:linkElements(self.leftLayout, FocusManager.RIGHT, self.rightLayout)
-	FocusManager:linkElements(self.rightLayout, FocusManager.LEFT, self.leftLayout)
-	CpCourseManagerFrame.updateLists(self)
-	FocusManager:setFocus(self.leftLayout)
+	FocusManager:loadElementFromCustomValues(self.leftList)
+	FocusManager:loadElementFromCustomValues(self.rightList)
+	FocusManager:linkElements(self.leftList, FocusManager.RIGHT, self.rightList)
+	FocusManager:linkElements(self.rightList, FocusManager.LEFT, self.leftList)
+	self:updateLists()
+	FocusManager:setFocus(self.leftList)
 	self:setSoundSuppressed(false)
 	self.initialized = true
 end
@@ -264,22 +234,22 @@ end
 
 function CpCourseManagerFrame:updateLists()
 	self.courseStorage:refresh()
-	self.leftLayoutTitle:setText(self.courseStorage:getCurrentDirectoryViewPath())
-	self.leftLayout:reloadData()
-	self.rightLayout:reloadData()
+	self.leftColumnHeader:setText(self.courseStorage:getCurrentDirectoryViewPath())
+	self.leftList:reloadData()
+	self.rightList:reloadData()
 	self:updateMenuButtons()
 end
 
 function CpCourseManagerFrame:getNumberOfItemsInSection(list, section)
 	local numOfDirs = self.courseStorage:getNumberOfEntries()
 	
-	if list == self.leftLayout then
+	if list == self.leftList then
 		return numOfDirs
 	else
 		if numOfDirs <=0 then 
 			return 0
 		end
-		local ix = self.leftLayout:getSelectedIndexInSection()
+		local ix = self.leftList:getSelectedIndexInSection()
 		return self.courseStorage:getNumberOfEntriesForIndex(ix) or 0
 	end
 end
@@ -300,13 +270,13 @@ end
 
 
 function CpCourseManagerFrame:populateCellForItemInSection(list, section, index, cell)
-	if list == self.leftLayout then
+	if list == self.leftList then
 		local entry =  self.courseStorage:getEntryByIndex(index)
 		cell.viewEntry = entry
 		if entry:isDirectory() then
-			CpCourseManagerFrame.setFolderIcon(cell:getAttribute("icon"))
+			self.setFolderIcon(cell:getAttribute("icon"))
 		else 
-			CpCourseManagerFrame.setCourseIcon(cell:getAttribute("icon"))
+			self.setCourseIcon(cell:getAttribute("icon"))
 		end
 		cell:getAttribute("icon"):setVisible(true)
 		cell:getAttribute("title"):setText(entry and entry:getName() or "unknown: "..index)
@@ -314,22 +284,17 @@ function CpCourseManagerFrame:populateCellForItemInSection(list, section, index,
 		cell:setCallback("onClickCallback", "onClickLeftItem")
 	else
 	--	cell.alternateBackgroundColor =  CpCourseManagerFrame.colors.move
-		local ix = self.leftLayout:getSelectedIndexInSection()
+		local ix = self.leftList:getSelectedIndexInSection()
 		local entry = self.courseStorage:getSubEntryByIndex(ix,index)
 		cell.viewEntry = entry
 		if entry:isDirectory() then
-			CpCourseManagerFrame.setFolderIcon(cell:getAttribute("hotspot"))
+			self.setFolderIcon(cell:getAttribute("icon"))
 		else 
-			CpCourseManagerFrame.setCourseIcon(cell:getAttribute("hotspot"))
+			self.setCourseIcon(cell:getAttribute("icon"))
 		end
-		cell:getAttribute("hotspot"):setVisible(true)
+		cell:getAttribute("icon"):setVisible(true)
 
 		cell:getAttribute("title"):setText(entry and entry:getName() or "unknown: "..index)
-
-		cell:getAttribute("price"):setVisible(false)
-		cell:getAttribute("buyPrice"):setVisible(false)
-		cell:getAttribute("priceTrend"):setVisible(false)
-
 		cell.target = self
 		cell:setCallback("onClickCallback", "onClickRightItem")
 		
@@ -338,12 +303,12 @@ end
 
 
 function CpCourseManagerFrame:onClickLeftItem(element)
-	self:onClickItem(self.leftLayout,element)
+	self:onClickItem(self.leftList,element)
 end
 
 
 function CpCourseManagerFrame:onClickRightItem(element)
-	self:onClickItem(self.rightLayout,element)
+	self:onClickItem(self.rightList,element)
 end
 
 function CpCourseManagerFrame:onClickItem(layout,element)
@@ -351,124 +316,124 @@ function CpCourseManagerFrame:onClickItem(layout,element)
 	if viewEntry == nil then 
 		return 
 	end
-	if self.actionState == CpCourseManagerFrame.actionStates.disabled then
+	if self.actionState == self.actionStates.disabled then
 		--- If no action is taking place, then allow traversing the file system in the left layout.
-		if viewEntry:isDirectory() and layout == self.leftLayout and layout:getSelectedElement() == element then 
+		if viewEntry:isDirectory() and layout == self.leftList and layout:getSelectedElement() == element then 
 			self.courseStorage:iterateForwards(element.viewEntry)
 		end
-	elseif self.actionState == CpCourseManagerFrame.actionStates.loadCourse then 
+	elseif self.actionState == self.actionStates.loadCourse then 
 		--- If a file/course was select then allow loading of the course.
 		if not viewEntry:isDirectory() then
 			self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
 		else
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.targetIsNoCourse,viewEntry)
+			self.showInfoDialog(
+				self.translations.targetIsNoCourse,viewEntry)
 		end
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
-	elseif self.actionState == CpCourseManagerFrame.actionStates.saveCourse then 
+		self.actionState = self.actionStates.disabled
+	elseif self.actionState == self.actionStates.saveCourse then 
 		--- Saves the course under a selected directory.
 		if viewEntry:isDirectory() then 
-			CpCourseManagerFrame.showInputTextDialog(
-				self,CpCourseManagerFrame.translations.courseDialogTitle,
-					CpCourseManagerFrame.onClickSaveEntryDialog,viewEntry)
+			self.showInputTextDialog(
+				self,self.translations.courseDialogTitle,
+				self.onClickSaveEntryDialog,viewEntry)
 		else 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.targetIsNoFolder,viewEntry)
+			self.showInfoDialog(
+				self.translations.targetIsNoFolder,viewEntry)
 		end
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
-	elseif self.actionState == CpCourseManagerFrame.actionStates.createDirectory then
+		self.actionState = self.actionStates.disabled
+	elseif self.actionState == self.actionStates.createDirectory then
 		--- Creates a new sub directory under a selected directory.
 		if viewEntry:isDirectory() then 
-			CpCourseManagerFrame.showInputTextDialog(
-				self,CpCourseManagerFrame.translations.folderDialogTitle,
-					CpCourseManagerFrame.onClickCreateDirectoryDialog,viewEntry)
+			self.showInputTextDialog(
+				self,self.translations.folderDialogTitle,
+				self.onClickCreateDirectoryDialog,viewEntry)
 		else 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.targetIsNoFolder,viewEntry)
+			self.showInfoDialog(
+				self.translations.targetIsNoFolder,viewEntry)
 		end
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
-	elseif self.actionState == CpCourseManagerFrame.actionStates.moveEntrySelect then
+		self.actionState = self.actionStates.disabled
+	elseif self.actionState == self.actionStates.moveEntrySelect then
 		--- Selected a entity to move.
 		if viewEntry:hasAccess() then
 			self.selectedEntry = viewEntry 
-			self.actionState = CpCourseManagerFrame.actionStates.moveEntryDestination
+			self.actionState = self.actionStates.moveEntryDestination
 		else 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.noAccessError,viewEntry)
-			self.actionState = CpCourseManagerFrame.actionStates.disabled
+			self.showInfoDialog(
+				self.translations.noAccessError,viewEntry)
+			self.actionState = self.actionStates.disabled
 		end
-	elseif self.actionState == CpCourseManagerFrame.actionStates.moveEntryDestination then
+	elseif self.actionState == self.actionStates.moveEntryDestination then
 		--- Moves the previous selected entity to a given directory.
 		if viewEntry:isDirectory() then 
 			self.courseStorage:validate(viewEntry)
 			local wasMoved = self.selectedEntry:move(viewEntry)
 			if not wasMoved then 
-				CpCourseManagerFrame.showInfoDialog(
-					CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
+				self.showInfoDialog(
+					self.translations.entryExistAlreadyError,viewEntry)
 			end
 		else 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.targetIsNoFolder,viewEntry)
+			self.showInfoDialog(
+				self.translations.targetIsNoFolder,viewEntry)
 		end
 		self.selectedEntry = nil
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
-	elseif self.actionState == CpCourseManagerFrame.actionStates.deleteEntry then
+		self.actionState = self.actionStates.disabled
+	elseif self.actionState == self.actionStates.deleteEntry then
 		--- Deletes a selected entity.
 		if viewEntry:isDeleteAllowed() then 
-			CpCourseManagerFrame.showYesNoDialog(
-				self,CpCourseManagerFrame.translations.deleteWarning,
-					CpCourseManagerFrame.onClickDeleteEntryDialog,viewEntry)
+			self.showYesNoDialog(
+				self,self.translations.deleteWarning,
+				self.onClickDeleteEntryDialog,viewEntry)
 		else 
-			CpCourseManagerFrame.showInfoDialog(
-			CpCourseManagerFrame.translations.noAccessError,viewEntry)
+			self.showInfoDialog(
+				self.translations.noAccessError,viewEntry)
 		end
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
-	elseif self.actionState == CpCourseManagerFrame.actionStates.renameEntry then 
+		self.actionState = self.actionStates.disabled
+	elseif self.actionState == self.actionStates.renameEntry then 
 		--- Renames a selected entity.
 		if viewEntry:isRenameAllowed() then
-			CpCourseManagerFrame.showInputTextDialog(
-						self,CpCourseManagerFrame.translations.renameEntry,
-							CpCourseManagerFrame.onClickRenameEntryDialog,viewEntry)
+			self.showInputTextDialog(
+						self,self.translations.renameEntry,
+						self.onClickRenameEntryDialog,viewEntry)
 		else 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.noAccessError,viewEntry)
+			self.showInfoDialog(
+				self.translations.noAccessError,viewEntry)
 		end
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
-	elseif self.actionState == CpCourseManagerFrame.actionStates.copyEntrySelect then 
+		self.actionState = self.actionStates.disabled
+	elseif self.actionState == self.actionStates.copyEntrySelect then 
 		--- Selected a entity to copy.
 		if viewEntry:hasAccess() then
 			self.selectedEntry = viewEntry 
-			self.actionState = CpCourseManagerFrame.actionStates.copyEntryDestination
+			self.actionState = self.actionStates.copyEntryDestination
 		else
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.noAccessError,viewEntry)
-			self.actionState = CpCourseManagerFrame.actionStates.disabled
+			self.showInfoDialog(
+				self.translations.noAccessError,viewEntry)
+			self.actionState = self.actionStates.disabled
 		end
-	elseif self.actionState == CpCourseManagerFrame.actionStates.copyEntryDestination then 
+	elseif self.actionState == self.actionStates.copyEntryDestination then 
 		--- Copies the previous selected entity to a given directory.
 		if viewEntry:isDirectory() then 
 			local wasCopied = self.selectedEntry:copy(viewEntry)
 			if not wasCopied then 
-				CpCourseManagerFrame.showInfoDialog(
-					CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
+				self.showInfoDialog(
+					self.translations.entryExistAlreadyError,viewEntry)
 			end
 		else
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.targetIsNoFolder,viewEntry)
+			self.showInfoDialog(
+				self.translations.targetIsNoFolder,viewEntry)
 		end
 		self.selectedEntry = nil
-		self.actionState = CpCourseManagerFrame.actionStates.disabled
+		self.actionState = self.actionStates.disabled
 	end
-	CpCourseManagerFrame.updateLists(self)
+	self:updateLists()
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"actionState -> %d",self.actionState)
 end
 
 function CpCourseManagerFrame:onListSelectionChanged(list, section, index)
-	if list == self.leftLayout then 
-		self.rightLayout:reloadData()
---		CpUtil.debugFormat(CpUtil.DBG_HUD,"leftLayout -> onListSelectionChanged")
+	if list == self.leftList then 
+		self.rightList:reloadData()
+--		CpUtil.debugFormat(CpUtil.DBG_HUD,"leftList -> onListSelectionChanged")
 	else
---		CpUtil.debugFormat(CpUtil.DBG_HUD,"rightLayout -> onListSelectionChanged")
+--		CpUtil.debugFormat(CpUtil.DBG_HUD,"rightList -> onListSelectionChanged")
 	end
 	self:updateMenuButtons()
 end
@@ -476,9 +441,9 @@ end
 --- Updates the button at the bottom, which depends on the current select mode.
 function CpCourseManagerFrame:updateMenuButtons()
 	local courseName = self.currentVehicle:getCurrentCpCourseName()
-	local title = string.format(g_i18n:getText(CpCourseManagerFrame.translations.title),self.currentVehicle:getName(),courseName)
+	local title = string.format(g_i18n:getText(self.translations.title),self.currentVehicle:getName(),courseName)
 	
-	self.pageTitle:setText(title)
+	self.header:setText(title)
 	self.menuButtonInfo = {
 		{
 			inputAction = InputAction.MENU_BACK,
@@ -499,9 +464,10 @@ function CpCourseManagerFrame:updateMenuButtons()
 		end
 	end	
 	self:setMenuButtonInfoDirty()
-	local text = self.curMode == CpCourseManagerFrame.minMode and g_i18n:getText(CpCourseManagerFrame.translations.basicSettings)
-					or  g_i18n:getText(CpCourseManagerFrame.translations.advancedSettings)
-	self.rightToggleBtn:setText(text)
+	local text = self.curMode == self.minMode and g_i18n:getText(self.translations.basicSettings)
+					or  g_i18n:getText(self.translations.advancedSettings)
+	self.rightColumnHeader:setText(text)
+	--self.rightToggleBtn:setText(text)
 end
 
 ---------------------------------------------------
@@ -511,17 +477,17 @@ end
 --- Traverse back a directory.
 function CpCourseManagerFrame:onClickIterateBack()
 	self.courseStorage:iterateBackwards()
-	CpCourseManagerFrame.updateLists(self)
+	self:updateLists()
 end
 
 --- Changes the current possible actions.
 function CpCourseManagerFrame:onClickChangeMode()
 	self.curMode = self.curMode + 1
-	if self.curMode > CpCourseManagerFrame.maxMode then 
-		self.curMode = CpCourseManagerFrame.minMode
+	if self.curMode > self.maxMode then 
+		self.curMode = self.minMode
 	end
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickChangeMode")
-	self.actionState = CpCourseManagerFrame.actionStates.disabled
+	self.actionState = self.actionStates.disabled
 	self.selectedEntry = nil
 	--- CpCourseManagerFrame.updateLists(self)
 end
@@ -533,7 +499,7 @@ function CpCourseManagerFrame:onClickClearCurrentCourse()
 	if hasCourse then 
 		self.currentVehicle:resetCpCourses()
 	end
-	CpCourseManagerFrame.updateLists(self)
+	self:updateLists()
 end
 
 --- Saves the current vehicle courses with a given name.
@@ -543,8 +509,8 @@ function CpCourseManagerFrame:onClickSaveEntryDialog(text,clickOk,viewEntry)
 
 		local file,fileCreated = viewEntry:addFile(text)
 		if not fileCreated then 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
+			self.showInfoDialog(
+				self.translations.entryExistAlreadyError,viewEntry)
 			return 
 		end
 		self.currentVehicle:saveCpCourses(file,text)
@@ -557,8 +523,8 @@ function CpCourseManagerFrame:onClickCreateDirectoryDialog(text,clickOk,viewEntr
 		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickCreateDirectoryDialog - > %s",text)
 		local wasAdded = self.courseStorage:createDirectory(text)
 		if not wasAdded then 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
+			self.showInfoDialog(
+				self.translations.entryExistAlreadyError,viewEntry)
 		end
 	end
 end
@@ -570,8 +536,8 @@ function CpCourseManagerFrame:onClickDeleteEntryDialog(clickOk,viewEntry)
 		self.courseStorage:validate(viewEntry)
 		local wasDeleted = viewEntry:delete()
 		if not wasDeleted then 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.deleteError,viewEntry)
+			self.showInfoDialog(
+				self.translations.deleteError,viewEntry)
 		end
 	end
 end
@@ -582,8 +548,8 @@ function CpCourseManagerFrame:onClickRenameEntryDialog(text,clickOk,viewEntry)
 		self.courseStorage:validate(viewEntry)
 		local wasRenamed = viewEntry:rename(text)
 		if not wasRenamed then 
-			CpCourseManagerFrame.showInfoDialog(
-				CpCourseManagerFrame.translations.entryExistAlreadyError,viewEntry)
+			self.showInfoDialog(
+				self.translations.entryExistAlreadyError,viewEntry)
 		end
 	end
 end
@@ -606,7 +572,7 @@ function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
 		disableFilter = true,
 		callback = function (self,text,clickOk,viewEntry)
 			callbackFunc(self,text,clickOk,viewEntry)
-			CpCourseManagerFrame.updateLists(self)
+			self:updateLists()
 		end,
 		target = self,
 		defaultText = "",
@@ -622,7 +588,7 @@ function CpCourseManagerFrame:showYesNoDialog(title,callbackFunc,viewEntry)
 		text = string.format(g_i18n:getText(title),viewEntry:getName()),
 		callback = function (self,clickOk,viewEntry)
 			callbackFunc(self,clickOk,viewEntry)
-			CpCourseManagerFrame.updateLists(self)
+			self:updateLists()
 		end,
 		target = self,
 		args = viewEntry
@@ -640,41 +606,41 @@ end
 ---------------------------------------------------
 
 function CpCourseManagerFrame:clearCurrentCourseDisabled()
-	return not self.currentVehicle:hasCpCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return not self.currentVehicle:hasCpCourse() or self.actionState ~= self.actionStates.disabled
 end
 
 function CpCourseManagerFrame:loadCourseDisabled()
-	return self.currentVehicle:hasCpCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.currentVehicle:hasCpCourse() or self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:saveCourseDisabled()
-	return not self.currentVehicle:hasCpCourse() or self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return not self.currentVehicle:hasCpCourse() or self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:createDirectoryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:moveEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:copyEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:deleteEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:renameEntryDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
+	return self.actionState ~= self.actionStates.disabled or not self.courseStorage.currentDirectoryView:areEntriesVisible()
 end
 
 function CpCourseManagerFrame:activateDisabled()
-	return self.actionState == CpCourseManagerFrame.actionStates.disabled
+	return self.actionState == self.actionStates.disabled
 end
 
 function CpCourseManagerFrame:modeDisabled()
-	return self.actionState ~= CpCourseManagerFrame.actionStates.disabled
+	return self.actionState ~= self.actionStates.disabled
 end

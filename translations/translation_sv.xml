@@ -24,6 +24,14 @@
 		<text name="CP_jobParameters_startAt_unload"													text="Lasta av tröska/Sträng" />
 		<text name="CP_jobParameters_startAt_bales"														text="Samla in/plastade balar" />
 
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Fältarbete" />
@@ -89,7 +97,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskapsskjutning vertikalt"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Vändcirkelns bredd"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Fäll alltid ut röret"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Fäll alltid ut röret när skördetröskan är full och väntar på tömmning."/>
@@ -120,41 +128,45 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fordonskonvoj På/Av"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fordonskonvojens minsta distans"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fordonskonvojens minsta distans"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fordonskonvojens minsta distans. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fordonskonvojens högsta distans"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fordonskonvojens högsta distans"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fordonskonvojens högsta distans. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fältjobb"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximal hastighet när CP arbetar på fältet"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximal hastighet när CP arbetar på fältet. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Fält"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximal hastighet när CP kör på fältet"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximal hastighet när CP kör på fältet. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Vända"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximal hastighet när CP ska vända"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximal hastighet när CP ska vända. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Backning"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximal hastighet när CP backar"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximal hastighet när CP backar. Value: 2 - 25"/>
 		
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Fordons debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Akrivera/inaktivera debug för detta fordon."/>
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursskapandeinställningar för (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Kursskapandeinställningar för (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbetsbredd" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbetsbredd" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbetsbredd. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Antal vändtegar" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Antal vändtegar" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Antal vändtegar. Value: 0 - 40" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vändtegens överlapp" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Överlappa vändtegens spår med så många procent av arbetsbredden" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Överlappa vändtegens spår med så många procent av arbetsbredden. Value: 0 - 25" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rader att hoppa över" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rader att hoppa över när du byter till nästa Upp/Ner rad" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rader att hoppa över när du byter till nästa Upp/Ner rad. Value: 0 - 6" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rader per land" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="När fältcentrum är 'Lands' är det här många rader i varje block" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="När fältcentrum är 'Lands' är det här många rader i varje block. Value: 0 - 24" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Vändtegens riktining" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Ska fordonet köra medurs eller moturs på vändtegen" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="medurs" />
@@ -179,8 +191,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="längsta dragen" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Angle of up/down rows (0 is North) when manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
@@ -192,6 +204,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Börja arbeta på" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Vändtegen" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Upp/Ner dragen" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globalainställningar"/>
@@ -263,8 +279,8 @@
 - Flytta en kurs till en annan mapp.
 - Ta bort en kurs eller mapp.
 - Byta namn på en kurs eller mapp."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Clicking on the vehicle name opens the vehicle configurations page.
 B: Toggle where to start the course with one click.
 C: Clicking on the coursename you will open the AI Menu with the course generator open.

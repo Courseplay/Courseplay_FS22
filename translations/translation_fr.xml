@@ -24,6 +24,14 @@
 		<text name="CP_jobParameters_startAt_unload"													text="déchargement de la batteuse/ensileuse" />
 		<text name="CP_jobParameters_startAt_bales"														text="ramassage/enrubannage des bottes" />
 
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />
@@ -89,7 +97,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Rayon de braquage"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage."/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Toujours déployer la buse"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>
@@ -120,19 +128,19 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Mode convoi on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distance min dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi."/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi. Value: 10 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distance max dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi."/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi. Value: 40 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Déplacement"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ."/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Manoeuvres"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres."/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières."/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Deboggage du vehicule"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Active/Desactive le deboggage du vehicule."/>
@@ -140,24 +148,25 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Paramètres du générateur pour la course (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Paramètres du générateur pour la course (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Largeur de travail" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail." />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Nombre de fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières." />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières. Value: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail." />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail. Value: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Bordures du champ" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ pour définir une zone non travaillée autour du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ." />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ pour définir une zone non travaillée autour du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ.  Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour. Value: 0 - 6" />
+
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rangs par blocs" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné." />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné. Value: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Sens des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Sens horaire ou antihoraire pour les fourrières." />
@@ -184,7 +193,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manuel" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Orientation des rangs" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle des rangs (0 = Nord) en manuel" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle des rangs (0 = Nord) en manuel. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestion des îlots" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportement du tracé lors de la présence d'îlots dans le champ" />
@@ -196,6 +205,9 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Début des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
+
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
 
 
 	<!-- GlobalSettings -->
@@ -268,8 +280,8 @@
 - Déplacer une course vers un dossier.
 - Supprimer une course ou un dossier.
 - Renommer une course ou un dossier."/>
-		<text name="CP_help_page_minihud_title"													text="Mini ATH"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini ATH"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Cliquez sur le nom du véhicule pour ouvrir sa page de configuration.
 B: Cliquez sur le mode de démarrage pour le changer.
 C: Cliquez sur le nom de la course pour ouvrir le générateur de course.
