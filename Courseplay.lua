@@ -143,10 +143,12 @@ end
 ---@param isUp boolean
 ---@param button number
 function Courseplay:mouseEvent(posX, posY, isDown, isUp, button)
-	local vehicle = g_currentMission.controlledVehicle
-	local hud = vehicle and vehicle.getCpHud and vehicle:getCpHud()
-	if hud then
-		hud:mouseEvent(posX, posY, isDown, isUp, button)
+	if not g_gui:getIsGuiVisible() then
+		local vehicle = g_currentMission.controlledVehicle
+		local hud = vehicle and vehicle.getCpHud and vehicle:getCpHud()
+		if hud then
+			hud:mouseEvent(posX, posY, isDown, isUp, button)
+		end
 	end
 end
 
