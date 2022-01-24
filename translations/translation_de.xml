@@ -165,7 +165,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße um einen Puffer zum Feldrand erhalten, negative Werte vergrößern den Arbeitsbereich um über den Feldrand hinaus zu arbeiten. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Reihen zum überspringen" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Value: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Wert: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Reihen pro Beet" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Value: 0 - 24" />
@@ -232,11 +232,11 @@
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Einstellungen"/>
 
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Angle difference at goal"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ankunftswinkel am Ziel"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller"/>
 
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Delta angle relax factor"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Änderungsfaktor Pathfinder"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller"/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zeige alle Kurse"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zeigt alle geladenen Kurse auf der Map."/>
