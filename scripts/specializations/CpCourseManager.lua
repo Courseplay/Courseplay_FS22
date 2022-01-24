@@ -363,4 +363,5 @@ function CpCourseManager:cpStopCourseRecorder()
     local recordedCourse = spec.courseRecorder:getRecordedCourse()
     CpCourseManager.resetCourses(self)
     CpCourseManager.addCourse(self, recordedCourse)
+    g_customFieldManager:addField(spec.courseRecorder:getRecordedWaypoints())
 end

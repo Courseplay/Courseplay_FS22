@@ -38,6 +38,10 @@ function CourseRecorder:getRecordedCourse()
     return Course(self.vehicle, self.waypoints)
 end
 
+function CourseRecorder:getRecordedWaypoints()
+    return self.waypoints
+end
+
 function CourseRecorder:addWaypoint(waypoint)
     table.insert(self.waypoints, waypoint)
     g_courseDisplay:addSign(self.vehicle, nil, waypoint.x, waypoint.z, nil,

@@ -186,7 +186,7 @@ end
 ---@class Directory : FileSystemEntity
 Directory = CpObject(FileSystemEntity)
 
-function Directory:init(parentPath,name,parent)
+function Directory:init(parentPath, name, parent)
 	FileSystemEntity.init(self, parentPath,name,parent)
 	self.entries = {}
 	CpUtil.debugFormat(CpDebug.DBG_COURSES,"Created directory at %s",self.fullPath)
@@ -485,8 +485,6 @@ function FileView:init(file,parent, level)
 	FileSystemEntityView.init(self, file,parent, level)
 end
 
-
-
 --- View of a directory of saved courses
 ---@class DirectoryView : FileSystemEntityView
 DirectoryView = CpObject(FileSystemEntityView)
@@ -620,9 +618,11 @@ end
 ---@class FileSystem 
 FileSystem = CpObject()
 FileSystem.debugChannel = CpDebug.DBG_COURSES
-function FileSystem:init(baseDir,name)
+---@param baseDir string base path of this file system, baseDir/name will be the full path
+---@param name string name of the directory containing this file system
+function FileSystem:init(baseDir, name)
 	self.baseDir = baseDir
-	self.rootDirectory = Directory(baseDir,name)
+	self.rootDirectory = Directory(baseDir, name)
 	self.rootDirectoryView = DirectoryView(self.rootDirectory,nil,0)
 	self.rootDirectoryView:addDirectory("Singleplayer")
 	self:refresh()
@@ -717,7 +717,11 @@ function FileSystem:createDirectory(name)
 	return self.currentDirectoryView:addDirectory(name)
 end
 
+function FileSystem:getRootDirectory()
+	return self.rootDirectory
+end
 
 function FileSystem:debug(...)
 	return CpUtil.debugFormat(FileSystem.debugChannel,...)	
 end
+

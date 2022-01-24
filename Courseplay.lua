@@ -188,8 +188,12 @@ function Courseplay:load()
 
 	self.courseDir = self.baseDir .. "Courses"
 	createFolder(self.courseDir) 
-	self.courseStorage = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
-	g_courseManger = self.courseStorage
+	self.courseStorage = FileSystem(self.courseDir, g_currentMission.missionInfo.mapId)
+
+	self.customFieldDir = self.baseDir .. "CustomFields"
+	createFolder(self.courseDir)
+	g_customFieldManager = CustomFieldManager(FileSystem(self.customFieldDir, g_currentMission.missionInfo.mapId))
+
 	g_courseDisplay = CourseDisplay()
 	g_vehicleConfigurations:loadFromXml()
 

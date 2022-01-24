@@ -60,7 +60,7 @@ function CoursePlot:setWaypoints( waypoints )
 	table.insert(self.waypoints, waypoints[1])
 	self.waypoints[1].progress = 1 / #waypoints
 	for i = 2, #waypoints - 1 do
-		if math.abs(waypoints[i].angle - waypoints[i - 1].angle) > math.pi / 1800 then
+		if not waypoints[i].angle or math.abs(waypoints[i].angle - waypoints[i - 1].angle) > 2 then
 			table.insert(self.waypoints, waypoints[i])
 			self.waypoints[#self.waypoints].progress = i / #waypoints
 		end

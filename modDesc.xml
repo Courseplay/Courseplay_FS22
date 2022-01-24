@@ -66,6 +66,8 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
+		<sourceFile filename="scripts/field/CustomField.lua"/>
+		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
