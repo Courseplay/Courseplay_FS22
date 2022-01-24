@@ -294,7 +294,14 @@ A: Cliquez sur le nom du véhicule pour ouvrir sa page de configuration.
 B: Cliquez sur le mode de démarrage pour le changer.
 C: Cliquez sur le nom de la course pour ouvrir le générateur de course.
 D: Cliquez sur l'icone play pour démarrer le courseplay.
-E: Affiche le point de passage actuel / points totaux."/>
+E: Affiche le point de passage actuel / points totaux. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Sélection du prochain canal de deboggage."/>

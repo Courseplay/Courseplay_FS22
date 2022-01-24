@@ -291,7 +291,14 @@ A: Kliknutím na název vozidla se otevře stránka konfigurace vozidla.
 B: Jedním kliknutím vyberte, kde má začít trasa.
 C: Kliknutím na název trasy otevřete nabídku AI s otevřeným generátorem trasy.
 D: Spusťte pomocníka Courseplay.
-E: Zobrazuje aktuální trasový bod / celkový počet trasových bodů. "/>
+E: Zobrazuje aktuální trasový bod / celkový počet trasových bodů. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
 
 <!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>

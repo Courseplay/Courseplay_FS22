@@ -293,7 +293,14 @@ A: Kliknięcie nazwy pojazdu otwiera stronę konfiguracji pojazdu.
 B: Przełącz miejsce rozpoczęcia kursu jednym kliknięciem.
 C: Klikając na nazwę kursu, otworzysz menu AI z otwartym generatorem kursów.
 D: Uruchom pomocnika Courseplay.
-E: Pokazuje aktualne/wszystkie punkty trasy."/>
+E: Pokazuje aktualne/wszystkie punkty trasy. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
 
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Poprzedni kanał debugowania" />

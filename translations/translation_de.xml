@@ -292,7 +292,14 @@ A: Auf den Fahrzeugname klicken um die Fahrzeugeinstellungen auf zu rufen.
 B: Stellt die Startposition beim draufklicken um.
 C: Mit dem klick auf den Kursnamen wird das Helfer Menü mit geöffnetem Kursgenerator aufgerufen.
 D: Starte Courseplay Helfer.
-E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte."/>
+E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte. Klick zum öffnen des Kursmanagers.
+F: Klick auf das Icon öffnet die Grundeinstellungen.
+G: Schließt das HUD.
+H: Verkleinert oder vergrößert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug, zeigt die Einstellung.
+I: Wert für den horizontalen Versatz, + links, - rechts.
+J: Wert für den vertikalen Versatz, + hinten, - vorne.
+K, L and M: Klick auf den Text zum zurücksetzen der Werte.
+N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>

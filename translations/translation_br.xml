@@ -290,7 +290,14 @@ A: Clicar no nome do veículo abre a página de configurações do veículo.
 B: Alternar onde iniciar a rota com um clique.
 C: Clicando no nome da rota abrirá o Menu AI com o gerador de rotas aberto.
 D: Inicie o auxiliar do Courseplay.
-E: Mostra o waypoint atual/total de waypoints."/>
+E: Mostra o waypoint atual/total de waypoints. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecione próximo canal debug."/>
