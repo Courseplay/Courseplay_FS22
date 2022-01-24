@@ -38,6 +38,7 @@ function CpBaseHud:init(vehicle)
 
     if CpBaseHud.savedPositions then 
         CpBaseHud.x, CpBaseHud.y = unpack(CpBaseHud.savedPositions)
+        CpBaseHud.savedPositions = nil
     end
 
     if CpBaseHud.x == nil or CpBaseHud.y == nil then
