@@ -60,8 +60,8 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Solo Partenza/Fine"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Tutti i punti di passaggio"/>
 
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Apri la Mini HUD con il mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Quando è disattivato, la Hud può essere aperto solo con la combinazione di tasti.."/>
 		
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Ferma alla fine"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ferma il veicolo alla fine"/>
@@ -224,10 +224,10 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="Ripara al 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Ripara sempre"/>
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="Impostazioni utente"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatibile con il gamepad"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllato con un Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
@@ -301,6 +301,6 @@ E: Mostra il punto corrente/i punti totali."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Apri mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Avvia/Ferma autista"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Cursore Mouse on/off"/>
-		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Apri/Chiudi la hud"/>
 	</texts>
 </l10n>
