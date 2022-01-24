@@ -7,36 +7,55 @@ Courseplay.BASE_KEY = "Courseplay."
 
 function Courseplay:init()
 	self:registerConsoleCommands()
-	self:showUserInformation()
 	g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml",Courseplay.BASE_DIRECTORY) )
 end
 
+function Courseplay:loadUserSettings()
+	local path = getUserProfileAppPath() .. "game.xml"
+	if fileExists(path) then
+		local xmlFile = loadXMLFile("gameXml", path)
+		if xmlFile then
+			local baseKey = "game.courseplay."
+			self:showUserInformation(xmlFile,baseKey)
+			self.globalSettings:loadUserSettingsFromXmlFile(xmlFile,baseKey)
+			saveXMLFile(xmlFile)
+			delete(xmlFile)
+		end
+	end
+end
+
+function Courseplay:saveUserSettings()
+	local path = getUserProfileAppPath() .. "game.xml"
+	if fileExists(path) then
+		local xmlFile = loadXMLFile("gameXml", path)
+		if xmlFile then
+			local baseKey = "game.courseplay."
+			self.globalSettings:saveUserSettingsToXmlFile(xmlFile,baseKey)
+			saveXMLFile(xmlFile)
+			delete(xmlFile)
+		end
+	end
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- User info with github reference and update notification.
 ------------------------------------------------------------------------------------------------------------------------
 
-function Courseplay:showUserInformation()
+function Courseplay:showUserInformation(xmlFile,key)
 	local showInfoDialog = true
 	local currentVersion = g_modManager:getModByName(self.MOD_NAME).version
-	local path = getUserProfileAppPath() .. "game.xml"
-	if fileExists(path) then
-		local xmlFile = loadXMLFile("gameXml", path)
-		local lastLoadedVersion = getXMLString(xmlFile,"game.courseplay.lastVersion")		
-		if lastLoadedVersion then 
-			if currentVersion == lastLoadedVersion then 
-				showInfoDialog = false
-			end
+	local lastLoadedVersion = getXMLString(xmlFile,key.."lastVersion")		
+	if lastLoadedVersion then 
+		if currentVersion == lastLoadedVersion then 
+			showInfoDialog = false
 		end
-		if showInfoDialog then
-			g_gui:showInfoDialog({
-				text = string.format(g_i18n:getText("CP_infoText"), currentVersion)
-	
-			})
-			setXMLString(xmlFile,"game.courseplay.lastVersion",currentVersion)
-		end
-		saveXMLFile(xmlFile)
-		delete(xmlFile)
+	end
+	if showInfoDialog then
+		g_gui:showInfoDialog({
+			text = string.format(g_i18n:getText("CP_infoText"), currentVersion)
+
+		})
+		setXMLString(xmlFile,key.."lastVersion",currentVersion)
 	end
 end
 
@@ -48,6 +67,7 @@ end
 ---@param filename string
 function Courseplay:loadMap(filename)
 	self.globalSettings = CpGlobalSettings()
+	self:loadUserSettings()
 	self:registerSchema()
 	self:load()
 	self:setupGui()
@@ -103,6 +123,7 @@ function Courseplay.saveToXMLFile(missionInfo)
 		g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.BASE_KEY)
 		xmlFile:save()
 		xmlFile:delete()
+		g_Courseplay:saveUserSettings()
 	end
 end
 FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
@@ -123,8 +144,9 @@ end
 ---@param button number
 function Courseplay:mouseEvent(posX, posY, isDown, isUp, button)
 	local vehicle = g_currentMission.controlledVehicle
-	if vehicle and vehicle.spec_courseplaySpec then
-		vehicle.spec_courseplaySpec.hud:mouseEvent(posX, posY, isDown, isUp, button)
+	local hud = vehicle and vehicle.getCpHud and vehicle:getCpHud()
+	if hud then
+		hud:mouseEvent(posX, posY, isDown, isUp, button)
 	end
 end
 
@@ -303,6 +325,7 @@ function Courseplay.register(typeManager)
 		--- TODO: Implement this specialization
 		CpAIFieldWorker.register(typeManager,typeName,typeEntry.specializations)
 		CpVehicleSettingDisplay.register(typeManager,typeName,typeEntry.specializations)
+		CpHud.register(typeManager,typeName,typeEntry.specializations)
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)

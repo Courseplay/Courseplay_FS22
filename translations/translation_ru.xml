@@ -61,6 +61,9 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="только начало/конец"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="все путевые точки"/>
 
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Остановить в конце"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Остановить по окончании работы на маршруте."/>
 
@@ -222,6 +225,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="поддерживать в рабочем состоянии"/>
+
+		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Настройки поиска пути"/>
 
@@ -296,5 +304,6 @@ E: Отображение текущих / общих путевых точек.
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Открыть mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Отправить/становить водителя"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Курсор вкл/выкл"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
 	</texts>
 </l10n>

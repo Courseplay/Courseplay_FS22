@@ -35,6 +35,7 @@ CpSettingsUtil.classTypes = {
 				- default(int) : default value to be set. (optional)
 				- defaultBool(bool) : default value to be set. (optional)
 				- textInput(bool) : is text input allowed ? (optional), every automatic generated number sequence is automatically allowed.
+				- isUserSetting(bool): should the setting be saved in the game settings and not in the savegame dir.
 
 				- min (int): min value
 				- max (int): max value
@@ -81,6 +82,7 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.INT, key.."#default", "Setting default value") -- optional
 	schema:register(XMLValueType.BOOL, key.."#defaultBool", "Setting default bool value") -- optional
 	schema:register(XMLValueType.BOOL, key .. "#textInput", "Setting input text allowed.") --optional
+	schema:register(XMLValueType.BOOL, key .. "#isUserSetting", "Setting will be saved in the gameSettings file.") --optional
 
 	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
 	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
@@ -161,6 +163,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.default = xmlFile:getValue(baseKey.."#default")
 			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
 			settingParameters.textInputAllowed = xmlFile:getValue(baseKey.."#textInput",false)
+			settingParameters.isUserSetting = xmlFile:getValue(baseKey.."#isUserSetting",false)
 
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")

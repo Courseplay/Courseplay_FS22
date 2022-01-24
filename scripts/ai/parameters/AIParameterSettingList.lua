@@ -211,8 +211,16 @@ function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
 	xmlFile:setInt(key .. "#value", self.current)
 end
 
+function AIParameterSettingList:saveToRawXMLFile(xmlFile, key)
+	setXMLInt(xmlFile,key.."#value",self.current)
+end
+
 function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
+end
+
+function AIParameterSettingList:loadFromRawXMLFile(xmlFile, key)
+	self:setToIx(getXMLInt(xmlFile,key .. "#value") or 1)
 end
 
 function AIParameterSettingList:readStream(streamId, connection)
@@ -456,6 +464,11 @@ function AIParameterSettingList:getIsVisible()
 	end
 	return self.isVisible
 end
+
+function AIParameterSettingList:getIsUserSetting()
+	return self.data.isUserSetting	
+end
+
 
 function AIParameterSettingList:onClick(state)
 	local new = self:checkAndSetValidValue(state)
