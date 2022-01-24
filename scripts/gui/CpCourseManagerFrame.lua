@@ -578,6 +578,7 @@ function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
 		defaultText = "",
 		dialogPrompt = string.format(g_i18n:getText(title),viewEntry and viewEntry:getName()),
 		imePrompt = g_i18n:getText(title),
+		maxCharacters = 50,
 		confirmText = g_i18n:getText("button_ok"),
 		args = viewEntry
 	})
