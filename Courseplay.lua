@@ -18,6 +18,7 @@ function Courseplay:loadUserSettings()
 			local baseKey = "game.courseplay."
 			self:showUserInformation(xmlFile,baseKey)
 			self.globalSettings:loadUserSettingsFromXmlFile(xmlFile,baseKey)
+			CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
 			saveXMLFile(xmlFile)
 			delete(xmlFile)
 		end
@@ -31,6 +32,7 @@ function Courseplay:saveUserSettings()
 		if xmlFile then
 			local baseKey = "game.courseplay."
 			self.globalSettings:saveUserSettingsToXmlFile(xmlFile,baseKey)
+			CpBaseHud.saveToXmlFile(xmlFile,baseKey)
 			saveXMLFile(xmlFile)
 			delete(xmlFile)
 		end

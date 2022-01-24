@@ -36,6 +36,10 @@ function CpBaseHud:init(vehicle)
 
     self.uiScale = g_gameSettings:getValue("uiScale")
 
+    if CpBaseHud.savedPositions then 
+        CpBaseHud.x, CpBaseHud.y = unpack(CpBaseHud.savedPositions)
+    end
+
     if CpBaseHud.x == nil or CpBaseHud.y == nil then
         CpBaseHud.x, CpBaseHud.y = getNormalizedScreenValues(self.basePosition.x, self.basePosition.y)
     end
@@ -375,4 +379,23 @@ function CpBaseHud:openGlobalSettingsGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
     local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpGlobalSettings)
     inGameMenu.pageSelector:setState(pageIx, true)
+end
+
+--- Saves hud position.
+function CpBaseHud.saveToXmlFile(xmlFile,baseKey)
+    local key = baseKey.."Hud"
+    setXMLFloat(xmlFile,key.."#posX",CpBaseHud.x)
+    setXMLFloat(xmlFile,key.."#posY",CpBaseHud.y)
+end
+
+--- Loads hud position.
+function CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
+    local key = baseKey.."Hud"
+    local posX = getXMLFloat(xmlFile,key.."#posX")
+    local posY = getXMLFloat(xmlFile,key.."#posY")
+    if posX ~= nil and posY ~= nil then 
+        CpBaseHud.savedPositions = {
+           posX, posY
+        }
+    end
 end
