@@ -39,9 +39,9 @@ function CpBaseHud:init(vehicle)
     if CpBaseHud.x == nil or CpBaseHud.y == nil then
         CpBaseHud.x, CpBaseHud.y = getNormalizedScreenValues(self.basePosition.x, self.basePosition.y)
     end
-    self.width, self.height = getNormalizedScreenValues(self.baseSize.x * self.uiScale, self.baseSize.y * self.uiScale)
+    self.width, self.height = getNormalizedScreenValues(self.baseSize.x, self.baseSize.y)
 
-    local background = Overlay.new(g_baseUIFilename, 0, 0, 1, 1)
+    local background = Overlay.new(g_baseUIFilename, 0, 0, self.width, self.height)
     background:setUVs(g_colorBgUVs)
     background:setColor(0, 0, 0, 0.7)
 
@@ -75,7 +75,7 @@ function CpBaseHud:init(vehicle)
     --------------------------------------
 
     --- Cp icon 
-    local cpIconWidth, height = getNormalizedScreenValues(30 * self.uiScale, 30 * self.uiScale)
+    local cpIconWidth, height = getNormalizedScreenValues(30, 30)
     local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds",Courseplay.BASE_DIRECTORY), 0, 0,cpIconWidth, height)
     cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
     cpIconOverlay:setUVs(GuiUtils.getUVs({80, 26, 144, 144}, {256,256}))
@@ -113,7 +113,7 @@ function CpBaseHud:init(vehicle)
     --------------------------------------
 
     --- Exit button                                                  
-    local width, height = getNormalizedScreenValues(18 * self.uiScale, 18 * self.uiScale)
+    local width, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local exitBtnOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
     exitBtnOverlay:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
@@ -128,7 +128,7 @@ function CpBaseHud:init(vehicle)
 
 
     --- Create start/stop button
-    local width, height = getNormalizedScreenValues(18 * self.uiScale, 18 * self.uiScale)
+    local width, height = getNormalizedScreenValues(18, 18)
     local onOffIndicatorOverlay =  Overlay.new(g_baseUIFilename, 0, 0, width, height)
     onOffIndicatorOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
     onOffIndicatorOverlay:setUVs(GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW))
@@ -180,6 +180,8 @@ function CpBaseHud:init(vehicle)
     Enterable.actionEventCameraZoomOut = Utils.overwrittenFunction(Enterable.actionEventCameraZoomOut,disableCameraZoomOverHud)
 
     self.baseHud:setVisible(false)
+
+    self.baseHud:setScale(self.uiScale,self.uiScale)
 end
 
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc,callbackClass)
@@ -200,7 +202,7 @@ end
 function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
 
-    local width, height = getNormalizedScreenValues(16 * self.uiScale, 16 * self.uiScale)
+    local width, height = getNormalizedScreenValues(16, 16)
     local incrementalOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
     incrementalOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
     incrementalOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.plusSymbol)))

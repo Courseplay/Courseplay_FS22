@@ -193,8 +193,8 @@ function CpTextHudElement:setTextDetails(text, textSize, textAlignment, textColo
 	self:setDimension(width, height)
 end
 
-function CpTextHudElement:setScale(uiScale)
-	CpTextHudElement:superClass().setScale(self, uiScale)
+function CpTextHudElement:setScale(uiScale,uiScale)
+	CpTextHudElement:superClass().setScale(self, uiScale,uiScale)
 
 	self.screenTextSize = self:scalePixelToScreenHeight(self.textSize)
 end
