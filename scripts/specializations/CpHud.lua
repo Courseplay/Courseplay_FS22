@@ -157,7 +157,7 @@ function CpHud:onLoad(savegame)
     local spec = self.spec_cpHud
     spec.status = CpStatus(false)
 	spec.lastShownWorkWidthTimeStamp = g_time
-    spec.openCloseText = g_i18n("input_CP_OPEN_CLOSE_HUD")
+    spec.openCloseText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
 end
 
 function CpHud:getCpStatus()
