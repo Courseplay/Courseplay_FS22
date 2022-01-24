@@ -71,12 +71,7 @@ function CpHud:getIsMouseOverCpHud()
     return spec.hud:getIsOpen() and spec.hud:getIsHovered()
 end
 
-function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
-    --- Disables mouse key bind for these mods.
-    if g_modIsLoaded["FS22_AutoDrive"] then 
-        return
-    end
-    
+function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)    
     local spec = self.spec_cpHud
     self:clearActionEventsTable(spec.actionEvents)
 
