@@ -91,11 +91,11 @@
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Evita il raccolto"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="L'IA cercherà di evitare di guidare sul raccolto"/>
 		
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Calibrazione attrezzo orizzontale"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Calibrazione attrezzo orizzontale"/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Correzione oriz."/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Correzione oriz."/>
 		
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Calibrazione attrezzo verticale"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Calibrazione attrezzo verticale"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Correzione vert."/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Correzione vert."/>
 		
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raggio di sterzata"/>
 		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Intervallo: 2 - 50"/>
@@ -227,7 +227,7 @@
 		<text name="CP_global_setting_subTitle_userSettings"											text="Impostazioni utente"/>
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatibile con il gamepad"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllato con un Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllata con un Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
@@ -292,13 +292,13 @@ B: Seleziona da dove iniziare il percorso con un clic.
 C: Cliccando sul nome del percorso si aprirà il Menu IA con il generatore di percorsi aperto.
 D: Avvia il lavoratore del Courseplay.
 E: Mostra il punto corrente/i punti totali. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+F: Cliccando sull'icona si apre la pagina delle impostazioni generali.
+G: Chiude la HUD.
+H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo mostra l'impostazione corrente.
+I: Valore per la correzione orizzontale, + a sinistra, - a destra.
+J: Valore per la correzione verticale, + indietro, - avanti.
+K, L e M: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
+N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>
