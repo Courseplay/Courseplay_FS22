@@ -13,7 +13,6 @@
 		<text name="CP_error_could_not_generate_course"													text="Impossible de générer la course. Plus d'informations dans le journal." />
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
-
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_subTitle_startAt"													text="Démarre à:" />
 		<text name="CP_jobParameters_startAt_title"														text="Démarre à:" />
@@ -294,14 +293,14 @@ A: Cliquez sur le nom du véhicule pour ouvrir sa page de configuration.
 B: Cliquez sur le mode de démarrage pour le changer.
 C: Cliquez sur le nom de la course pour ouvrir le générateur de course.
 D: Cliquez sur l'icone play pour démarrer le courseplay.
-E: Affiche le point de passage actuel / points totaux. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+E: Affiche le point de passage actuel / points totaux. Cliquez pour ouvrir le gestionnaire de courses.
+F: Cliquez sur l'icone pour ouvrir les paramètres généraux.
+G: Ferme l'ATH.
+H: Augmente ou diminue la largeur de travail. Visible via une ligne rouge sur le véhicule.
+I: Valeur du décalage horizontal, + gauche, - droite.
+J: Valeur du décalage vertical, + arrière, - avant.
+K, L and M: Cliquez sur le texte pour rétablir les valeurs automatiques.
+N: Affichage du décalage de rang lorsque vous avez chargé une course multi-outils. Cliquez sur le texte pour intervertir les positions."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Sélection du prochain canal de deboggage."/>
@@ -311,6 +310,6 @@ N: This area shows the lane offset if you have a multitool course loaded. Clicki
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Affiche mini ATH"/>
 		<text name="input_CP_START_STOP" 																text="CP: Ouvrier Courseplay"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Curseur de la souris on/off"/>
-		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Affiche/masque l'ATH"/>
 	</texts>
 </l10n>
