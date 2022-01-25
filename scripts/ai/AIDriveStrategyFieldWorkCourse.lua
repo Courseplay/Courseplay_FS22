@@ -764,7 +764,8 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
                     position = position + 1
                 end
                 local distance = math.abs((otherProgress - myProgress)) * length
-                if distance < closestDistance then
+                -- try to remember the ones in front of us, so store only when its progress is bigger
+                if distance < closestDistance and otherProgress > myProgress then
                     closestDistance = distance
                     closestVehicle = otherVehicle
                 end
