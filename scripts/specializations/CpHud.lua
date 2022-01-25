@@ -71,13 +71,13 @@ function CpHud:getIsMouseOverCpHud()
     return spec.hud:getIsOpen() and spec.hud:getIsHovered()
 end
 
-function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)    
+function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
     local spec = self.spec_cpHud
     self:clearActionEventsTable(spec.actionEvents)
 
-    if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
-        return 
-    end
+    -- if g_Courseplay.globalSettings.controllerHudSelected:getValue()then 
+    --     return 
+    -- end
 
     if self.isActiveForInputIgnoreSelectionIgnoreAI then
         --- Toggle mouse cursor action event
@@ -85,18 +85,18 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
         --- (actionEventsTable, inputAction, target,
         ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
         ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
-		if self:getCpSettings().openHudWithMouse:getValue() then
+        if g_Courseplay.globalSettings:getSettings().openHudWithMouse:getValue() then
 			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
 					CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
 			g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
        		g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
-        else
+        end
+        if not g_Courseplay.globalSettings.controllerHudSelected:getValue() then
             local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
                     CpHud.openClose, false, true, false, true, nil)
             g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
             g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
         end
-
     end
 end
 
@@ -106,40 +106,49 @@ function CpHud:actionEventMouse()
     g_inputBinding:setShowMouseCursor(showMouseCursor)
     ---While mouse cursor is active, disable the camera rotations
     CpGuiUtil.setCameraRotation(self, not showMouseCursor, self.spec_cpHud.savedCameraRotatableInfo)
-	if showMouseCursor then
-		local spec = self.spec_cpHud
-		spec.hud:openClose(true)
-		CpHud.isHudActive = true
-	end
+    if showMouseCursor then
+        CpHud.openCpHud(self)
+    end
+end
+
+function CpHud:openCpHud()
+    local spec = self.spec_cpHud
+    spec.hud:openClose(true)
+    spec.isHudActive = true
 end
 
 function CpHud:resetCpHud()
 	g_inputBinding:setShowMouseCursor(false)
 	CpGuiUtil.setCameraRotation(self, true, self.spec_cpHud.savedCameraRotatableInfo)
     local spec = self.spec_cpHud
---    spec.hud:openClose(false)
+    spec.hud:openClose(false)
 end
 
 function CpHud:closeCpHud()
 	self:resetCpHud()
 	local spec = self.spec_cpHud
     spec.hud:openClose(false)
-	CpHud.isHudActive = false
+	spec.isHudActive = false
 end
 
 function CpHud:getCpHud()
-	local spec = self.spec_cpHud
-	return spec.hud
+    local spec = self.spec_cpHud
+    if spec.isHudActive then
+        return spec.hud
+    else return
+    end
 end
 
 function CpHud:openClose()
-	local spec = self.spec_cpHud
-	if g_inputBinding:getShowMouseCursor() then 
-		self:resetCpHud()
-		spec.hud:openClose(false)
-		CpHud.isHudActive = false
-	else 
-		CpHud.actionEventMouse(self)
+    local spec = self.spec_cpHud
+	if spec.isHudActive then 
+        CpHud.closeCpHud(self)
+	else
+        if g_inputBinding:getShowMouseCursor() then
+		    CpHud.openCpHud(self)
+        else
+            CpHud.actionEventMouse(self)
+        end
 	end
 end
 
@@ -174,7 +183,7 @@ function CpHud:onEnterVehicle(isControlling)
     CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor(),
             self.spec_cpHud.savedCameraRotatableInfo)
 	local spec = self.spec_cpHud
-	spec.hud:openClose(CpHud.isHudActive)
+	spec.hud:openClose(spec.isHudActive)
 end
 
 function CpHud:onLeaveVehicle(wasEntered)
@@ -195,6 +204,11 @@ function CpHud:onUpdateTick()
     else 
         spec.status:reset()
     end
+    if g_inputBinding:getShowMouseCursor() and not g_gui:getIsGuiVisible() then
+        if not spec.isHudActive and g_Courseplay.globalSettings:getSettings().openHudWithMouse:getValue() then
+            CpHud.openCpHud(self)
+        end
+    end
 end
 
 function CpHud:onDraw()
@@ -204,8 +218,8 @@ function CpHud:onDraw()
 		if spec.lastShownWorkWidthTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
 			WorkWidthUtil.showWorkWidth(self,
 										self:getCourseGeneratorSettings().workWidth:getValue(),
-											self:getCpSettings().toolOffsetX:getValue(),
-											self:getCpSettings().toolOffsetZ:getValue())
+										self:getCpSettings().toolOffsetX:getValue(),
+										self:getCpSettings().toolOffsetZ:getValue())
 		end
 	end
 end
