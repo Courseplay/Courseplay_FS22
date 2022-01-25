@@ -155,7 +155,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail. Valeurs: 0 - 25" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Bordures du champ" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Délimitations du champ" />
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ pour définir une zone non travaillée autour du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ.  Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
