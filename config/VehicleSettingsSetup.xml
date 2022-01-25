@@ -96,9 +96,9 @@
 		<!--Convoy (still needed? even if on on single course, will have no effect)-->
 		<Setting classType="AIParameterBooleanSetting" name="convoyActive"/>
 		<!--Min Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyMinDistance" min="10" max="200" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="convoyMinDistance" min="20" max="150" unit="2"/>
 		<!--Max Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyMaxDistance" min="40" max="300" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="convoyMaxDistance" min="100" max="300" unit="2"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="speed">
