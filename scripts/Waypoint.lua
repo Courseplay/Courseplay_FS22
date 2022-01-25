@@ -389,7 +389,7 @@ function Course:getWaypoint(ix)
 	return self.waypoints[ix]
 end
 
-function Course:getNumberOfMultiTools()
+function Course:getMultiTools()
 	return self.multiTools
 end
 
@@ -1608,6 +1608,8 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 	offset = position >= 0 and offset or -offset
 
 	local offsetCourse = Course(self.vehicle, {})
+	offsetCourse.multiTools = nVehicles
+	offsetCourse.name = self.name
 	local ix = 1
 	while ix and (ix < #self.waypoints) do
 		local origHeadlandsCourse
