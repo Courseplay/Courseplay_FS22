@@ -12,6 +12,7 @@
 * Course generation
 * Field work but no refill or unload, except combine self unload
 * Save/load courses
+* Vehicle Convoy 
 
 ## Usage
 
