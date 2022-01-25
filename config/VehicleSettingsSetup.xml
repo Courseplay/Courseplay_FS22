@@ -94,7 +94,7 @@
 		<!--Symetric Langechange-->
 		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
 		<!--Convoy Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyDistance" min="20" max="200" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="convoyDistance" min="20" max="200" default ="50" unit="2"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="speed">
