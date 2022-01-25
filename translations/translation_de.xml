@@ -126,14 +126,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetrischer Bahnenwechsel"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrischer Bahnenwechsel"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Fahrzeugkonvoi"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fahrzeugkonvoi an oder aus"/>
-
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fahrzeugkonvoi min Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fahrzeugkonvoi min Entfernung. Value: 20 - 200"/>
-		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fahrzeugkonvoi max Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fahrzeugkonvoi max Entfernung. Value: 100 - 300"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Fahrzeugverband Entfernung"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Entfernung zwischen den Fahrzeugen. Wert: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50"/>
