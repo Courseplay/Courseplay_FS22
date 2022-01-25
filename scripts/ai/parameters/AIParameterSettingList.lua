@@ -408,6 +408,7 @@ function AIParameterSettingList:registerMouseInputEvent()
 		end
 		return eventUsed
 	end
+	self.oldMouseEvent = self.guiElement.mouseEvent
 	self.guiElement.mouseEvent = Utils.overwrittenFunction(self.guiElement.mouseEvent, mouseClick)
 end
 
@@ -442,6 +443,12 @@ function AIParameterSettingList:showInputTextDialog()
 end
 
 function AIParameterSettingList:resetGuiElement()
+	if self.guiElement then
+		if self.oldMouseEvent then
+			self.guiElement.mouseEvent = self.oldMouseEvent
+		end
+	end
+
 	self.guiElement = nil
 end
 
