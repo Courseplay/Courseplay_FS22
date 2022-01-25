@@ -126,17 +126,17 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Changement de ligne symétrique"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distance en convoi"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Valeurs: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Déplacement"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ. Valeurs: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Manoeuvres"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres. Valeurs: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières. Valeurs: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Deboggage du vehicule"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Active/Desactive le deboggage du vehicule."/>
@@ -202,8 +202,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Outils multiples" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course. La distance entre les véhicules est fixée avec le paramètre convoi." />
 
 
 	<!-- GlobalSettings -->
