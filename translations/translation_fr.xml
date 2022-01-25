@@ -14,23 +14,23 @@
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_subTitle_startAt"													text="Démarre à:" />
-		<text name="CP_jobParameters_startAt_title"														text="Démarre à:" />
+		<text name="CP_jobParameters_subTitle_startAt"													text="Démarrage" />
+		<text name="CP_jobParameters_startAt_title"														text="Démarrage" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Début du travail dans le champ" />
-		<text name="CP_jobParameters_startAt_nearest"													text="point le plus proche" />
-		<text name="CP_jobParameters_startAt_first"														text="premier point" />
-		<text name="CP_jobParameters_startAt_last"														text="dernier point" />
-		<text name="CP_jobParameters_startAt_unload"													text="déchargement de la batteuse/ensileuse" />
-		<text name="CP_jobParameters_startAt_bales"														text="ramassage/enrubannage des bottes" />
+		<text name="CP_jobParameters_startAt_nearest"													text="Point le plus proche" />
+		<text name="CP_jobParameters_startAt_first"														text="Premier point" />
+		<text name="CP_jobParameters_startAt_last"														text="Dernier point" />
+		<text name="CP_jobParameters_startAt_unload"													text="Déchargement de la batteuse/ensileuse" />
+		<text name="CP_jobParameters_startAt_bales"														text="Ramassage/enrubannage des bottes" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Position dans la rangée" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Position dans la rangée" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Choix de la rangée lors d'un travail à plusieurs outils (maximum 5)." />
+		<text name="CP_jobParameters_laneOffset_center"													text="centre" />
+		<text name="CP_jobParameters_laneOffset_left"														text="gauche(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="droite(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="gauche(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="droite(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />
@@ -220,10 +220,10 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Maintenir à 100%"/>
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="Paramètres utilisateur"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="ATH compatible manettes"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="L'ATH (interface du CP en jeu) est utilisable avec une manette."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Réglages du Pathfinder"/>
 
@@ -238,8 +238,8 @@
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestionnaire des courses(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="aucune course"/>
-		<text name="CP_courseManager_temporary_course"													text="course temporaire"/>
+		<text name="CP_courseManager_no_current_course"													text="Aucune course"/>
+		<text name="CP_courseManager_temporary_course"													text="Course temporaire"/>
 
 		<text name="CP_courseManager_change_mode"														text="Changer le mode"/>
 
