@@ -769,7 +769,7 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
                     closestDistanceFront = distance
                     closestVehicleFront = otherVehicle
                 end
-                if distance < closestDistanceBack and otherProgress < myProgress then
+                if distance < closestDistanceBack and otherProgress <= myProgress then
                     closestDistanceBack = distance
                     closestVehicleBack = otherVehicle
                 end
