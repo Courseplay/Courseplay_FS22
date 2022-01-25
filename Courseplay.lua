@@ -86,11 +86,14 @@ function Courseplay:loadMap(filename)
 	self:load()
 	self:setupGui()
 	if g_currentMission.missionInfo.savegameDirectory ~= nil then
-		local filePath = g_currentMission.missionInfo.savegameDirectory .. "/Courseplay.xml"
+		local saveGamePath = g_currentMission.missionInfo.savegameDirectory
+		local filePath = saveGamePath .. "/Courseplay.xml"
 		self.xmlFile = XMLFile.load("cpXml", filePath , self.xmlSchema)
 		if self.xmlFile == nil then return end
 		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.xmlKey)
 		self.xmlFile:delete()
+
+		g_assignedCoursesManager:loadAssignedCourses(saveGamePath)
 	end
 
 	--- Ugly hack to get access to the global AutoDrive table, as this global is dependent on the auto drive folder name.
@@ -132,7 +135,8 @@ HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapDat
 --- Saves all global data, for example global settings.
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
-		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", 
+		local saveGamePath = missionInfo.savegameDirectory
+		local xmlFile = XMLFile.create("cpXml",saveGamePath.. "/Courseplay.xml", 
 				"Courseplay", g_Courseplay.xmlSchema)
 		if xmlFile then	
 			g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.xmlKey)
@@ -140,9 +144,10 @@ function Courseplay.saveToXMLFile(missionInfo)
 			xmlFile:delete()
 		end
 		g_Courseplay:saveUserSettings()
+		g_assignedCoursesManager:saveAssignedCourses(saveGamePath)
 	end
 end
-FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
+FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
 	g_devHelper:update()
@@ -192,6 +197,7 @@ function Courseplay:load()
 	g_courseManger = self.courseStorage
 	g_courseDisplay = CourseDisplay()
 	g_vehicleConfigurations:loadFromXml()
+	g_assignedCoursesManager:registerXmlSchema()
 
 	--- Register additional AI messages.
 	g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
