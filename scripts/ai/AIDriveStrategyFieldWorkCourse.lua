@@ -743,8 +743,8 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
     --get my position in convoy and look for the closest combine
     local position = 1
     local vehiclesInConvoy = 1
-    local closestDistance = math.huge
-    local closestVehicle
+    local closestDistanceFront, closestDistanceBack = math.huge, math.huge
+    local closestVehicleFront, closestVehicleBack
     for _, otherVehicle in pairs(g_currentMission.vehicles) do
         if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) then
             vehiclesInConvoy = vehiclesInConvoy + 1
@@ -765,12 +765,16 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
                 end
                 local distance = math.abs((otherProgress - myProgress)) * length
                 -- try to remember the ones in front of us, so store only when its progress is bigger
-                if distance < closestDistance and otherProgress > myProgress then
-                    closestDistance = distance
-                    closestVehicle = otherVehicle
+                if distance < closestDistanceFront and otherProgress > myProgress then
+                    closestDistanceFront = distance
+                    closestVehicleFront = otherVehicle
+                end
+                if distance < closestDistanceBack and otherProgress < myProgress then
+                    closestDistanceBack = distance
+                    closestVehicleBack = otherVehicle
                 end
                 self:debugSparse('convoy: my position %d, calculated distance from %s is %.2f m (closest %.3f m)',
-                        position, CpUtil.getName(otherVehicle), distance, closestDistance)
+                        position, CpUtil.getName(otherVehicle), distance, closestDistanceFront)
 
             else
                 self:debugSparse('convoy: waiting for %s to start', CpUtil.getName(otherVehicle))
@@ -786,25 +790,25 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
     -- stop when I'm too close to the combine in front of me
     if position > 1 then
         local minDistance = self.settings.convoyMinDistance:getValue()
-        if closestDistance < minDistance then
+        if closestDistanceFront < minDistance then
             self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
-                    closestDistance, minDistance)
+                    closestDistanceFront, minDistance)
             -- the closer we are, the slower we drive
-            local factor = math.max(0, (1 - (minDistance - closestDistance) / minDistance))
+            local factor = math.max(0, (1 - (minDistance - closestDistanceFront) / minDistance))
             self:setMaxSpeed(factor * self.maxSpeed)
         end
     elseif position == 1 then
-        if closestDistance > self.settings.convoyMaxDistance:getValue() then
+        if closestDistanceBack > self.settings.convoyMaxDistance:getValue() then
             self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
-                    closestDistance, self.settings.convoyMaxDistance:getValue())
-            self:setMaxSpeed(closestVehicle and 0.5 * closestVehicle:getLastSpeed() or 0.5 * self.maxSpeed)
+                    closestDistanceBack, self.settings.convoyMaxDistance:getValue())
+            self:setMaxSpeed(closestVehicleBack and 0.5 * closestVehicleBack:getLastSpeed() or 0.5 * self.maxSpeed)
         end
 
-        closestDistance = 0
+        closestDistanceFront = 0
     end
 
     -- TODO: multiplayer?
-    self.convoyCurrentDistance=closestDistance
+    self.convoyCurrentDistance= closestDistanceFront
     self.convoyCurrentPosition=position
     self.convoyTotalMembers= vehiclesInConvoy
 end
