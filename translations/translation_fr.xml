@@ -203,7 +203,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Outils multiples" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course. La distance entre les véhicules est fixée avec le paramètre convoi." />
 
 
 	<!-- GlobalSettings -->
