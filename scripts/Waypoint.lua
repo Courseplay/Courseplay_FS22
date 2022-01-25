@@ -304,15 +304,6 @@ function Course:setName(name)
 	self.name = name
 end
 
---- Sets the course saved/unsaved.
-function Course:setSavedAsFile(saved)
-	self.savedAsFile = saved
-end
-
-function Course:isSavedAsFile()
-	return self.savedAsFile
-end
-
 function Course:setVehicle(vehicle)
 	self.vehicle = vehicle
 end
@@ -1925,12 +1916,11 @@ function Course.deserializeWaypoints(serializedWaypoints)
 end
 
 function Course:saveToXml(courseXml, courseKey)
-	courseXml:setValue(courseKey .. '#name',self.name)
-	courseXml:setValue(courseKey  .. '#workWidth',self.workWidth or 0)
-	courseXml:setValue(courseKey  .. '#numHeadlands',self.numHeadlands or 0)
-	courseXml:setValue(courseKey  .. '#multiTools',self.multiTools or 0)
-	courseXml:setValue(courseKey  .. '#isSavedAsFile',self:isSavedAsFile() or false)
-	courseXml:setValue(courseKey  .. '.waypoints',self:serializeWaypoints())
+	courseXml:setValue(courseKey .. '#name', self.name)
+	courseXml:setValue(courseKey  .. '#workWidth', self.workWidth or 0)
+	courseXml:setValue(courseKey  .. '#numHeadlands', self.numHeadlands or 0)
+	courseXml:setValue(courseKey  .. '#multiTools', self.multiTools or 0)
+	courseXml:setValue(courseKey  .. '.waypoints', self:serializeWaypoints())
 end
 
 function Course:writeStream(streamId, connection)
@@ -1949,7 +1939,6 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	local workWidth = courseXml:getValue( courseKey .. '#workWidth')
 	local numHeadlands = courseXml:getValue( courseKey .. '#numHeadlands')
 	local multiTools = courseXml:getValue( courseKey .. '#multiTools')
-	local savedAsFile = courseXml:getValue( courseKey .. '#isSavedAsFile')
 	local serializedWaypoints = courseXml:getValue( courseKey .. '.waypoints')
 
 	local course = Course(vehicle, Course.deserializeWaypoints(serializedWaypoints))
@@ -1957,7 +1946,6 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
-	course:setSavedAsFile(savedAsFile)
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end

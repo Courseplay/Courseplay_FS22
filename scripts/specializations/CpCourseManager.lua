@@ -6,7 +6,7 @@ CpCourseManager = {}
 
 CpCourseManager.MOD_NAME = g_currentModName
 
-CpCourseManager.KEY = "."..CpCourseManager.MOD_NAME..".cpCourseManager."
+CpCourseManager.KEY = "."..CpCourseManager.MOD_NAME..".cpCourseManager"
 CpCourseManager.xmlKey = "Course"
 CpCourseManager.rootKey = "AssignedCourses"
 CpCourseManager.rootKeyFileManager = "Courses"
@@ -16,7 +16,6 @@ CpCourseManager.i18n = {
 	["noCurrentCourse"] = "CP_courseManager_no_current_course",
 	["temporaryCourse"] = "CP_courseManager_temporary_course",
 }
-CpCourseManager.vehicles = {}
 
 --- generic xml course schema for saving/loading.
 function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
@@ -25,7 +24,6 @@ function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
 	schema:register(XMLValueType.FLOAT, baseKey  .. "#workWidth", "Course work width")
 	schema:register(XMLValueType.INT, baseKey .. "#numHeadlands", "Course number of headlands")
 	schema:register(XMLValueType.INT, baseKey .. "#multiTools", "Course multi tools")
-    schema:register(XMLValueType.BOOL, baseKey .. "#isSavedAsFile", "Course is saved as file or temporary ?",false)
 	schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints")
 end
 
@@ -35,11 +33,11 @@ function CpCourseManager.initSpecialization()
 	CpCourseManager.registerXmlSchemaValues(schema,CpCourseManager.xmlKeyFileManager .."(?)")
 
     local schema = Vehicle.xmlSchemaSavegame
-    local key = "vehicles.vehicle(?)" .. CpCourseManager.KEY .. CpCourseManager.rootKey
----    schema:register(XMLValueType.BOOL, key .. "#hasTemporaryCourses","Are the courses a temporary and not saved?",false)
-	CpCourseManager.registerXmlSchemaValues(schema,key.."(?)")
+    local key = "vehicles.vehicle(?)" .. CpCourseManager.KEY
     --- Saves the remembered wp ix to start fieldwork from, if it's set.
     schema:register(XMLValueType.INT, key .. "#rememberedWpIx", "Last waypoint driven with the saved course.")
+    --- Saves the assigned courses id.
+    schema:register(XMLValueType.INT, key .. "#assignedCoursesID", "Assigned Courses id.")
 end
 
 function CpCourseManager.prerequisitesPresent(specializations)
@@ -92,6 +90,10 @@ function CpCourseManager.registerFunctions(vehicleType)
 
     SpecializationUtil.registerFunction(vehicleType, 'rememberCpLastWaypointIx', CpCourseManager.rememberCpLastWaypointIx)
     SpecializationUtil.registerFunction(vehicleType, 'getCpLastRememberedWaypointIx', CpCourseManager.getCpLastRememberedWaypointIx)
+
+    SpecializationUtil.registerFunction(vehicleType, 'getCpAssignedCoursesID', CpCourseManager.getCpAssignedCoursesID)
+    SpecializationUtil.registerFunction(vehicleType, 'setCpAssignedCoursesID', CpCourseManager.setCpAssignedCourseID)
+
 end
 
 function CpCourseManager:onLoad(savegame)
@@ -106,22 +108,26 @@ function CpCourseManager:onLoad(savegame)
     
  --   TODO: make this an instance similar to course plot
  --   self.courseDisplay = CourseDisplay() 
-    CpCourseManager.vehicles[self.id] = self
+    g_assignedCoursesManager:registerVehicle(self, self.id)
 
     spec.legacyWaypoints = {}
+
+    spec.assignedCoursesID = nil
 end
 
 function CpCourseManager:onPostLoad(savegame)
     if savegame == nil or savegame.resetVehicles then return end
-    local baseKey = savegame.key..CpCourseManager.KEY..CpCourseManager.rootKey
-    CpCourseManager.loadAssignedCourses(self,savegame.xmlFile,baseKey)
+    local baseKey = savegame.key..CpCourseManager.KEY
     self:rememberCpLastWaypointIx(savegame.xmlFile:getValue(baseKey.."#rememberedWpIx"))
+    local id = savegame.xmlFile:getValue(baseKey.."#assignedCoursesID")
+    g_assignedCoursesManager:loadAssignedCoursesByVehicle(self,id)
 end
 
 function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
     local spec = self.spec_cpCourseManager 
     local courses = {}
     xmlFile:iterate(baseKey,function (i,key)
+        CpUtil.debugVehicle(CpDebug.DBG_COURSES,self,"Loading assigned course: %s",key)
         local course = Course.createFromXml(self,xmlFile,key)
         course:setVehicle(self)
         table.insert(courses,course)
@@ -133,10 +139,13 @@ function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
 end
 
 function CpCourseManager:saveToXMLFile(xmlFile, baseKey, usedModNames)
-    CpCourseManager.saveAssignedCourses(self,xmlFile, baseKey.."."..CpCourseManager.rootKey)
     local ix = self:getCpLastRememberedWaypointIx()
     if ix then
-        xmlFile:setValue(baseKey.."."..CpCourseManager.rootKey.."#rememberedWpIx",ix)
+        xmlFile:setValue(baseKey.."#rememberedWpIx",ix)
+    end
+    local id = self:getCpAssignedCoursesID()
+    if id then
+        xmlFile:setValue(baseKey.."#assignedCoursesID",id)
     end
 end
 
@@ -153,6 +162,16 @@ function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
             course:saveToXml(xmlFile, key)
         end
     end
+end
+
+function CpCourseManager:setCpAssignedCourseID(id)
+    local spec = self.spec_cpCourseManager 
+    spec.assignedCoursesID = id
+end
+
+function CpCourseManager:getCpAssignedCoursesID()
+    local spec = self.spec_cpCourseManager 
+    return spec.assignedCoursesID
 end
 
 ---@param course  Course
@@ -254,7 +273,7 @@ function CpCourseManager:onWriteStream(streamId)
 end
 
 function CpCourseManager:onPreDelete()
-    CpCourseManager.vehicles[self.id] = nil
+    g_assignedCoursesManager:unregisterVehicle(self,self.id)
     CpCourseManager.resetCourses(self)
 end
 
@@ -277,8 +296,6 @@ end
 
 function CpCourseManager.getCourseName(course)
 	local name = course:getName()
-   -- local isSavedAsFile = course:isSavedAsFile()
-  --  if not isSavedAsFile or name == "" then 
     if name == "" then
        return g_i18n:getText(CpCourseManager.i18n.temporaryCourse)
     end
@@ -295,10 +312,6 @@ end
 function CpCourseManager:saveCourses(file,text)
     file:save(CpCourseManager.rootKeyFileManager,CpCourseManager.xmlSchema,
     CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
-end
-
-function CpCourseManager.getValidVehicles()
-    return CpCourseManager.vehicles
 end
 
 function CpCourseManager:appendCourse(course)
