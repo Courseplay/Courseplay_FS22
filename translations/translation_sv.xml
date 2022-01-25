@@ -131,10 +131,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fordonskonvoj På/Av"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fordonskonvojens minsta distans"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fordonskonvojens minsta distans. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fordonskonvojens minsta distans. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fordonskonvojens högsta distans"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fordonskonvojens högsta distans. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fordonskonvojens högsta distans. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fältjobb"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximal hastighet när CP arbetar på fältet. Value: 5 - 50"/>

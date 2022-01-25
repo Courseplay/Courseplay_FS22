@@ -130,10 +130,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Ustala czy podczas pracy będzie używane kilka pojazdów"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Minimalny dystans pojazdów w konwoju"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Minimalny dystans pojazdów w konwoju. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Minimalny dystans pojazdów w konwoju. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Maksymalny dystans pojazdów w konwoju"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Maksymalny dystans pojazdów w konwoju. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Maksymalny dystans pojazdów w konwoju. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Prace polowe"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Value: 5 - 50"/>

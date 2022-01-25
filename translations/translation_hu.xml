@@ -127,10 +127,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Jármű konvoj be/ki"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Jármű konvoj min távolság"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Jármű konvoj min távolság. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Jármű konvoj min távolság. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Jármű konvoj max távolság"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Jármű konvoj max távolság. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Jármű konvoj max távolság. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Terepmunka"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximális sebesség terepen végzett munka közben. Value: 5 - 50"/>

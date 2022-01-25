@@ -130,10 +130,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Разрешить работать нескольким одинаковым орудиям по одному курсу."/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Мин. дистанция до предыдущего"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Минимальная дистанция до предыдущего при совместной работе. Значение: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Минимальная дистанция до предыдущего при совместной работе. Значение: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Макс. дистанция до предыдущего"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Максимальная дистанция до предыдущего при совместной работе. Значение: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Максимальная дистанция до предыдущего при совместной работе. Значение: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Полевые работы"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле. Значение: 5 - 50"/>

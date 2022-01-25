@@ -130,10 +130,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Habilita/Desabilita Convoy de vehículos"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Mínima distancia en convoy"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Mínima distancia en convoy. Valor: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Mínima distancia en convoy. Valor: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Máxima distancia en convoy"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Máxima distancia en convoy. Valor: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Máxima distancia en convoy. Valor: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabajo en campos"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidad máxima de trabajo en campos. Valor: 5 - 50"/>

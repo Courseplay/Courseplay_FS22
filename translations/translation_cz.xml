@@ -129,10 +129,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Zapíná/vypíná konvoj vozidel"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Minimální vzdálenost konvoje vozidel"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Nastavuje minimální vzdálenost konvoje vozidel. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Nastavuje minimální vzdálenost konvoje vozidel. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Maximální vzdálenost konvoje vozidel"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Nastavuje maximální vzdálenost konvoje vozidel. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Nastavuje maximální vzdálenost konvoje vozidel. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Polní práce"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli. Value: 5 - 50"/>

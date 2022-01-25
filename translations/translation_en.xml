@@ -128,10 +128,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Vehicle convoy on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Vehicle convoy min distance"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Vehicle convoy min distance. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Vehicle convoy min distance. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Vehicle convoy max distance"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Vehicle convoy max distance. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Vehicle convoy max distance. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fieldwork"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximum speed while working on the field. Value: 5 - 50"/>

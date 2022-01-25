@@ -130,10 +130,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Mode convoi on/off"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distance min dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distance minimum entre les véhicules du convoi. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distance max dans le convoi"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distance maximum entre les véhicules du convoi. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Value: 5 - 50"/>

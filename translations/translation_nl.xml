@@ -130,10 +130,10 @@
 		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Voertuig konvooi aan/uit"/>
 
 		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Voertuig konvooi minimale afstand"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Voertuig konvooi maximale afstand. Value: 10 - 200"/>
+		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Voertuig konvooi maximale afstand. Value: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Voertuig konvooi minimale afstand"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Voertuig konvooi maximale afstand. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Voertuig konvooi maximale afstand. Value: 100 - 300"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Veldwerk"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale snelheid tijdens het werken op het veld. Value: 5 - 50"/>
