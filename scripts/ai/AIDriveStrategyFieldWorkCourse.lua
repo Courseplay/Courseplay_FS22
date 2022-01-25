@@ -789,7 +789,7 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
     end
     -- stop when I'm too close to the combine in front of me
     if position > 1 then
-        local minDistance = self.settings.convoyMinDistance:getValue()
+        local minDistance = self.settings.convoyDistance:getValue()
         if closestDistanceFront < minDistance then
             self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
                     closestDistanceFront, minDistance)
@@ -798,10 +798,12 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
             self:setMaxSpeed(factor * self.maxSpeed)
         end
     elseif position == 1 then
-        if closestDistanceBack > self.settings.convoyMaxDistance:getValue() then
+        local maxDistance = self.settings.convoyDistance:getValue()
+        if closestDistanceBack > maxDistance then
             self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
-                    closestDistanceBack, self.settings.convoyMaxDistance:getValue())
-            self:setMaxSpeed(closestVehicleBack and 0.5 * closestVehicleBack:getLastSpeed() or 0.5 * self.maxSpeed)
+                    closestDistanceBack, maxDistance)
+            local factor = math.max(0, (1 - (closestDistanceBack - maxDistance) / maxDistance))
+            self:setMaxSpeed(closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed)
         end
 
         closestDistanceFront = 0
