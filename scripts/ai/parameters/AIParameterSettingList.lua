@@ -426,9 +426,11 @@ function AIParameterSettingList:showInputTextDialog()
 				else 
 					self:setDefault()
 				end
-				if not FocusManager:setFocus(self.guiElement) then 
-					self.guiElement.focusActive = false
-					FocusManager:setFocus(self.guiElement)
+				if self.guiElement then
+					if not FocusManager:setFocus(self.guiElement) then 
+						self.guiElement.focusActive = false
+						FocusManager:setFocus(self.guiElement)
+					end
 				end
 			end
 		end,
