@@ -202,8 +202,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Outils multiples" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course." />
 
 
 	<!-- GlobalSettings -->
