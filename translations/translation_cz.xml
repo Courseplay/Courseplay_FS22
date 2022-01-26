@@ -14,6 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Začátek trasy:" />
 		<text name="CP_jobParameters_startAt_title"														text="Začátek trasy:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Kde začít polní práce" />

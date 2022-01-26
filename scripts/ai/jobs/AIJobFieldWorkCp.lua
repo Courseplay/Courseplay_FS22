@@ -32,10 +32,45 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	local ai = 	g_currentMission.aiJobTypeManager
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
 
+	self.fieldPositionParameter = AIParameterPosition.new()
+	self.fieldPositionParameter.setValue = function (self, x, z)
+		self:setPosition(x, z)		
+	end
+	self.fieldPositionParameter.isCpFieldPositionTarget = true
+
+	self:addNamedParameter("fieldPosition", self.fieldPositionParameter )
+	local positionGroup = AIParameterGroup.new(g_i18n:getText("CP_jobParameters_fieldPosition_title"))
+	positionGroup:addParameter(self.fieldPositionParameter )
+	table.insert(self.groupedParameters, positionGroup)
+
 	self.cpJobParameters = CpJobParameters(self)
 
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	return self
+end
+
+function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+	
+	local x, z = nil
+
+	if vehicle.getLastJob ~= nil then
+		local lastJob = vehicle:getLastJob()
+
+		if not isDirectStart and lastJob ~= nil and lastJob.cpJobParameters then
+			x, z = lastJob.fieldPositionParameter:getPosition()
+		end
+	end
+
+	if x == nil or z == nil then
+		x, _, z = getWorldTranslation(vehicle.rootNode)
+	end
+
+	self.fieldPositionParameter:setPosition(x, z)
+end
+
+function AIJobFieldWorkCp:setValues()
+	AIJobFieldWorkCp:superClass().setValues(self)
 end
 
 --- Called when parameters change, scan field
@@ -49,7 +84,7 @@ function AIJobFieldWorkCp:validate(farmId)
 --	DebugUtil.printTableRecursively(self.cpJobParameters)
 
 	-- everything else is valid, now find the field
-	local tx, tz = self.positionAngleParameter:getPosition()
+	local tx, tz = self.fieldPositionParameter:getPosition()
 	if tx == self.lastPositionX and tz == self.lastPositionZ then
 		CpUtil.debugFormat(CpDebug.DBG_HUD, 'Position did not change, do not generate course again')
 		return isValid, errorMessage
@@ -78,6 +113,10 @@ end
 
 function AIJobFieldWorkCp:getCpJobParameters()
 	return self.cpJobParameters
+end
+
+function AIJobFieldWorkCp:getFieldPositionTarget()
+	return self.fieldPositionParameter:getPosition()
 end
 
 --- Registers additional jobs.
@@ -172,6 +211,8 @@ function AIJobFieldWorkCp:resetStartPositionAngle(vehicle)
 	self.positionAngleParameter:setPosition(x, z)
 	local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	self.positionAngleParameter:setAngle(angle)
+
+	self.fieldPositionParameter:setPosition(x, z)
 end
 function AIJobFieldWorkCp:getVehicle()
 	return self.vehicleParameter:getVehicle() or self.vehicle

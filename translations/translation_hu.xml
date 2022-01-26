@@ -13,6 +13,7 @@
 
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Kezdd:" />
 		<text name="CP_jobParameters_startAt_title"														text="Kezdd:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Mikor kezdje el a munkát" />
