@@ -66,12 +66,12 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 end
 
 function AIParameterSettingList.getSpeedText(value)
-	return string.format("%1d %s",g_i18n:getSpeed(value),g_i18n:getSpeedMeasuringUnit())
+	return string.format("%.1f %s",g_i18n:getSpeed(value),g_i18n:getSpeedMeasuringUnit())
 end
 
 function AIParameterSettingList.getDistanceText(value)
 	if g_i18n.useMiles then 
-		return string.format("%.1f %s",value*3.28,g_i18n:getText("CP_unit_foot"))
+		return string.format("%.1f %s",value*AIParameterSettingList.FOOT_FACTOR,g_i18n:getText("CP_unit_foot"))
 	end
 	return string.format("%.1f %s",value,g_i18n:getText("CP_unit_meter"))
 end
@@ -88,7 +88,16 @@ AIParameterSettingList.UNITS_TEXTS = {
 	function (value) return string.format("%d", value) .. "°" end			--- degrees
 }
 
+AIParameterSettingList.UNITS_CONVERSION = {
+	function (value) return g_i18n.useMiles and value/AIParameterSettingList.MILES_FACTOR or value end,
+	function (value) return g_i18n.useMiles and value/AIParameterSettingList.FOOT_FACTOR or value end,
+	function (value) return g_i18n.useAcre and value/AIParameterSettingList.ACRE_FACTOR or value end
+}
 
+AIParameterSettingList.MILES_FACTOR = 0.62137
+AIParameterSettingList.FOOT_FACTOR = 3.28
+AIParameterSettingList.ACRE_FACTOR = 2.4711
+AIParameterSettingList.INPUT_VALUE_THRESHOLD = 2
 --- Generates numeric values and texts from min to max with incremental of inc or 1.
 ---@param values table
 ---@param texts table
@@ -257,6 +266,25 @@ function AIParameterSettingList:setFloatValue(value)
 		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
 end
 
+--- Gets the closest value ix and absolute difference, relative to the value searched for.
+---@param value number
+---@return number closest ix
+---@return number difference
+function AIParameterSettingList:getClosestIx(value)
+	-- find the value requested
+	local closestIx = 0
+	local closestDifference = math.huge
+	for i = 1, #self.values do
+		local v = self.values[i]
+		local d = math.abs(v-value)
+		if d < closestDifference then
+			closestIx = i
+			closestDifference = d
+		end
+	end
+	return closestIx,closestDifference
+end
+
 --- Sets a value.
 ---@param value number
 ---@return boolean value is not valid and could not be set.
@@ -420,8 +448,19 @@ function AIParameterSettingList:showInputTextDialog()
 			if clickOk and value ~= nil then
 				local v = value:match("-%d[%d.,]*")
 				v = v or value:match("%d[%d.,]*")
+				v = v and tonumber(v)
 				if v then
-					if self:setFloatValue(tonumber(v)) then 
+					local unit = self.data.unit
+					if unit then 
+						local unitStrFunc = AIParameterSettingList.UNITS_CONVERSION[unit]
+						if unitStrFunc then
+							v = unitStrFunc(v)
+						end
+					end
+					local ix,diff = self:getClosestIx(v)
+					if diff < self.INPUT_VALUE_THRESHOLD then
+						self:setToIx(ix)
+					else 
 						self:setDefault()
 					end
 				else 
