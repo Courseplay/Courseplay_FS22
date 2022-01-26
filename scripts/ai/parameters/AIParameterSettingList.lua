@@ -299,11 +299,14 @@ function AIParameterSettingList:setDefault()
 	if self.data.default ~=nil then
 		AIParameterSettingList.setFloatValue(self,self.data.default)
 		self:debug("set to default %s",self.data.default)
+		return
 	end
 	if self.data.defaultBool ~= nil then
 		AIParameterSettingList.setValue(self,self.data.defaultBool)
 		self:debug("set to default %s",tostring(self.data.defaultBool))
+		return
 	end
+	self:setToIx(1)
 end
 
 --- Gets a specific value.
