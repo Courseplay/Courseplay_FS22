@@ -740,6 +740,12 @@ end
 --- generated and for instance on the headland the vehicles on the inside will have less
 --- waypoints, so we operate with progress percentage
 function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
+
+    if self.fieldWorkCourse:getName() == '' or self.fieldWorkCourse:getMultiTools() < 2 then
+        -- course has no name or non-multitool course, nothing to do here
+        return
+    end
+
     --get my position in convoy and look for the closest combine
     local position = 1
     local vehiclesInConvoy = 1
