@@ -19,7 +19,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	else
 		self.data.values = {}
 		self.data.texts = {}
-		AIParameterSettingList.generateValues(self,self.data.values,self.data.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
+		AIParameterSettingList.generateValues(self,self.data.values,self.data.texts,data.min,data.max,data.incremental,data.unit)
 		self.values = table.copy(self.data.values)
 		if self.data.texts ~= nil then
 			self.texts = table.copy(self.data.texts)
@@ -104,15 +104,13 @@ AIParameterSettingList.INPUT_VALUE_THRESHOLD = 2
 ---@param min number
 ---@param max number
 ---@param inc number
----@param textStr string
 ---@param unit number
-function AIParameterSettingList:generateValues(values,texts,min,max,inc,textStr,unit)
+function AIParameterSettingList:generateValues(values,texts,min,max,inc,unit)
 	inc = inc or 1
 	for i=min,max,inc do 
 		table.insert(values,i)
 		local value = MathUtil.round(i,2)
 		local text = unit and AIParameterSettingList.UNITS_TEXTS[unit] and AIParameterSettingList.UNITS_TEXTS[unit](value) or tostring(value)
-		local text = textStr and string.format(textStr,value) or text
 		table.insert(texts,text)
 	end
 end
@@ -122,7 +120,7 @@ function AIParameterSettingList:enrichTexts(texts,unit)
 	for i,value in ipairs(self.values) do 
 		local text = tostring(value)
 		if unit then 
-			text = text..AIParameterSettingList.UNITS_TEXTS[unit](value)
+			text = AIParameterSettingList.UNITS_TEXTS[unit](value)
 		end
 		texts[i] = text
 	end
@@ -205,7 +203,6 @@ function AIParameterSettingList:validateTexts()
 		for ix,value in ipairs(self.values) do 
 			local value = MathUtil.round(value,2)
 			local text = unitStrFunc(value)
-			local text = self.data.textStr and string.format(self.data.textStr,value) or text
 			fixedTexts[ix] = text
 		end
 		self.texts = fixedTexts
