@@ -386,7 +386,6 @@ end
 
 function AIParameterSettingList:setGuiElement(guiElement)
 	self:validateCurrentValue()
-	self:validateTexts()
 	self.guiElement = guiElement
 	self.guiElement.target = self
 	self.guiElement.onClickCallback = function(setting,state,element)

@@ -25,6 +25,10 @@ function CourseplaySpec.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
 end
 
+function CourseplaySpec.registerEvents(vehicleType)	
+    SpecializationUtil.registerEvent(vehicleType, "onCpUnitChanged")
+end
+
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
 end
@@ -47,10 +51,14 @@ function CourseplaySpec:onLoad(savegame)
 	--- Register the spec: spec_courseplaySpec
     local specName = CourseplaySpec.MOD_NAME .. ".courseplaySpec"
     self.spec_courseplaySpec = self["spec_" .. specName]
-
-
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], CourseplaySpec.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], CourseplaySpec.onUnitChanged, self)
 end
 
+
+function CourseplaySpec:onUnitChanged()
+    SpecializationUtil.raiseEvent(self,"onCpUnitChanged")
+end
 
 function CourseplaySpec:onPostLoad(savegame)
   

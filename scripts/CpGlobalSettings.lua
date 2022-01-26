@@ -5,6 +5,8 @@ CpGlobalSettings.KEY = "GlobalSettings.GlobalSetting"
 
 function CpGlobalSettings:init()
 	self:loadSettingsSetup()
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], self.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], self.onUnitChanged, self)
 end
 
 function CpGlobalSettings:registerSchema(schema,baseKey)
@@ -97,6 +99,12 @@ function CpGlobalSettings:onHudSelectionChanged()
     --    g_inputBinding:setShowMouseCursor(false)
         CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_courseplaySpec.savedCameraRotatableInfo)
         vehicle:requestActionEventUpdate()
+    end
+end
+
+function CpGlobalSettings:onUnitChanged()
+    for i,setting in ipairs(self.settings) do 
+        setting:validateTexts()
     end
 end
 
