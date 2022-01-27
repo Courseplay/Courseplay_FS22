@@ -189,9 +189,10 @@ function Courseplay:load()
 	self.courseDir = self.baseDir .. "Courses"
 	createFolder(self.courseDir) 
 	self.courseStorage = FileSystem(self.courseDir, g_currentMission.missionInfo.mapId)
+	self.courseStorage:createDirectory("Singleplayer")
 
 	self.customFieldDir = self.baseDir .. "CustomFields"
-	createFolder(self.courseDir)
+	createFolder(self.customFieldDir)
 	g_customFieldManager = CustomFieldManager(FileSystem(self.customFieldDir, g_currentMission.missionInfo.mapId))
 
 	g_courseDisplay = CourseDisplay()

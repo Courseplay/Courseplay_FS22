@@ -29,17 +29,23 @@ CustomFieldManager = CpObject()
 function CustomFieldManager:init(fileSystem)
     ---@type FileSystem
     self.fileSystem = fileSystem
+    self.fields = {}
+    self:load()
+end
+
+function CustomFieldManager:load()
+    local entries = self.fileSystem:getRootDirectory():getEntries(false, true)
+    for i, entry in pairs(entries) do
+        table.insert(self.fields, CustomField.createFromXmlFile(entry:getFullPath()))
+    end
 end
 
 function CustomFieldManager:getNewFieldNumber()
     local entries = self.fileSystem:getRootDirectory():getEntries(false, true)
     -- custom field file names are always numbers
     -- sort them numerically
-    for _, entry in ipairs(entries) do
-        entry = tonumber(entry)
-    end
-    table.sort(entries)
-    for i, entry in ipairs(entries) do
+    table.sort(entries, function (a, b) return tonumber(a:getName()) < tonumber(b:getName()) end)
+    for i, entry in pairs(entries) do
         if i ~= tonumber(entry:getName()) then
             -- the i. entry is not i, so we can use i as a new number (entries is sorted)
             return i
@@ -51,5 +57,18 @@ end
 function CustomFieldManager:addField(waypoints)
     ---@type CustomField
     local field = CustomField(self:getNewFieldNumber(), waypoints)
-    field:saveToXml(self.fileSystem:getRootDirectory():getName())
+    table.insert(self.fields, field)
+    field:saveToXml(self.fileSystem:getRootDirectory())
+    self.fileSystem:refresh()
+end
+
+function CustomFieldManager:draw(map)
+    for _, field in pairs(self.fields) do
+        field:draw(map)
+    end
+end
+
+-- for reload only:
+if g_customFieldManager then
+    g_customFieldManager = CustomFieldManager(FileSystem(g_Courseplay.customFieldDir, g_currentMission.missionInfo.mapId))
 end

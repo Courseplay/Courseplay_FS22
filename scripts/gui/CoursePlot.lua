@@ -34,6 +34,7 @@ function CoursePlot:init()
 	self.lightColor = {self:normalizeRgb(45, 207, 255)}
 	-- a darker shade of the same color
 	self.darkColor = {self:normalizeRgb(19, 87, 107)}
+	self.lineThickness = 2 / g_screenHeight -- 2 pixels
 end
 
 function CoursePlot:normalizeRgb(r, g, b)
@@ -95,13 +96,9 @@ function CoursePlot:screenToWorld( x, y )
 	return worldX, worldZ
 end
 
--- Draw the course in the screen area defined in new(), the bottom left corner
+-- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
-function CoursePlot:draw(map)
-
-	if not self.isVisible then return end
-	local lineThickness = 2 / g_screenHeight -- 2 pixels
-
+function CoursePlot:drawPoints(map)
 	if self.waypoints and #self.waypoints > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.
@@ -127,11 +124,21 @@ function CoursePlot:draw(map)
 
 				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
-				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
+				renderOverlay( self.courseOverlayId, startX, startY, width, self.lineThickness )
 			end
 		end;
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
+end
+
+
+function CoursePlot:draw(map)
+
+	if not self.isVisible then return end
+
+	self:drawPoints(map)
+
+	-- render the start and stop signs
 
 	local signSizeMeters = 0.02
 	local zoom = map.fullScreenLayout:getIconZoom()

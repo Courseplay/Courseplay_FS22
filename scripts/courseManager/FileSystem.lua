@@ -201,6 +201,10 @@ function Directory:isDirectory()
 	return true
 end
 
+function Directory:getFullPathForFile(fileName)
+	return self:getFullPath() .. '/' .. fileName
+end
+
 function Directory:getEntries(directories, files)
 	local entries = {}
 	for _, entry in pairs(self.entries) do
@@ -214,7 +218,6 @@ function Directory:getEntries(directories, files)
 	table.sort(entries)
 	return entries
 end
-
 
 function Directory:getDirectories()
 	return self:getEntries(true, false)
@@ -624,7 +627,6 @@ function FileSystem:init(baseDir, name)
 	self.baseDir = baseDir
 	self.rootDirectory = Directory(baseDir, name)
 	self.rootDirectoryView = DirectoryView(self.rootDirectory,nil,0)
-	self.rootDirectoryView:addDirectory("Singleplayer")
 	self:refresh()
 	self.currentDirectoryView = self.rootDirectoryView
 	if not g_currentMission.missionDynamicInfo.isMultiplayer then 
