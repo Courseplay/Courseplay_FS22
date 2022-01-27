@@ -92,10 +92,10 @@
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Избегать посевов"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 												text="ИИ будет стараться не ехать по посевам."/>
 
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Поперечное смещение инструмента"/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Поперечное смещение"/>
 		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Поперечное смещение инструмента."/>
 
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Продольное смещение инструмента"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Продольное смещение"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Продольное смещение инструмента."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Диаметр круга поворота"/>
@@ -126,8 +126,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Симметричная смена полосы движения"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Симметричная смена полосы движения"/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Дистанция следования"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Расстояние между техникой при работе нескольких орудий. Значение: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Полевые работы"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле. Значение: 5 - 50"/>
@@ -286,16 +286,16 @@
 		<text name="CP_help_page_minihud_text"															text="
 A: Клик на название техники открывает страницу её настройки.
 B: Одним кликом, можете переключать, откуда начать работу на курсе.
-C: Нажав на название курса, откроете меню ИИ с запущенным генератором курса.
+C: Нажав на название курса, откроется меню ИИ с запущенным генератором курса.
 D: Запуск помощника по курсу.
-E: Отображение текущих / общих путевых точек. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+E: Отображение количества текущих / общих путевых точек. Клик на них открывает менеджер курсов.
+F: Клик на иконке открывает страницу глобальных настроек.
+G: Можно закрыть HUD.
+H: Увеличение и уменьшение рабочей ширины. Красная линия возле техники отображаете текущие настройки.
+I: Значение для поперечного смещения: + влево, - вправо.
+J: Значение для продольного смещения: + назад, - вперёд.
+K, L и M: Нажатие на текст сбросит ваши изменения до автоматически определённых значений.
+N: Эта область показывает смещение полосы движения, если у вас будет загруженный курс для работы нескольких орудий. Нажатие на текст переключает позиции."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Выбрать следующий канал отладки."/>
