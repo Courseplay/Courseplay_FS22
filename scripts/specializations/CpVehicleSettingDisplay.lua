@@ -109,7 +109,7 @@ function CpVehicleSettingDisplay:onRegisterActionEvents(isActiveForInput, isActi
 		local spec = self.spec_cpVehicleSettingDisplay
 		self:clearActionEventsTable(spec.actionEvents)
 		--- Key bind gets switch between opening hud or controller friendly gui.
-		if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
+		if not g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
 			if self.isActiveForInputIgnoreSelectionIgnoreAI then
 				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpHud.openClose, false, true, false, true, nil)
 				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
