@@ -200,6 +200,10 @@ function AIDriveStrategyCourse:setMaxSpeed(speed)
     self.maxSpeed = math.min(self.maxSpeed, speed)
 end
 
+function AIDriveStrategyCourse:getMaxSpeed()
+    return self.maxSpeed
+end
+
 --- Start a course and continue with nextCourse at ix when done
 ---@param tempCourse Course
 ---@param nextCourse Course
