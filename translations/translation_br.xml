@@ -59,6 +59,9 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Iniciar / parar somente"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Todos os waypoints"/>
 
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Parar no final"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Parar no final"/>
 
@@ -121,14 +124,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Mudança de faixa simétrica"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Mudança de faixa simétrica"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Comboio de veículos"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Ativar / desativar comboio de veículos"/>
-
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Comboio de veículos distance mínima"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Comboio de veículos distance mínima. Value: 10 - 200"/>
-		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Comboio de veículos distance máxima"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Comboio de veículos distancia máxims. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distância do comboio"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distância entre veículos. Valor: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabalho no campo"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidade máxima ao trabalhar no campo. Value: 5 - 50"/>
@@ -219,6 +216,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Manter sempre reparado"/>
+
+		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Configurações Pathfinder"/>
 
@@ -282,7 +284,14 @@ A: Clicar no nome do veículo abre a página de configurações do veículo.
 B: Alternar onde iniciar a rota com um clique.
 C: Clicando no nome da rota abrirá o Menu AI com o gerador de rotas aberto.
 D: Inicie o auxiliar do Courseplay.
-E: Mostra o waypoint atual/total de waypoints."/>
+E: Mostra o waypoint atual/total de waypoints. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecione próximo canal debug."/>
@@ -292,5 +301,6 @@ E: Mostra o waypoint atual/total de waypoints."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
 	</texts>
 </l10n>

@@ -61,6 +61,9 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Nur Start/Ende"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Alle Wegpunkte"/>
 
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Hud mit Maus öffnen"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Wenn deaktiviert, kann das Hud nur über die Tastenbelegung geöffnet werden."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop am Endpunkt"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Fahrzeug bleibt nach der Arbeit am Endpunkt stehen."/>
 
@@ -123,14 +126,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetrischer Bahnenwechsel"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrischer Bahnenwechsel"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Fahrzeugkonvoi"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Fahrzeugkonvoi an oder aus"/>
-
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Fahrzeugkonvoi min Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Fahrzeugkonvoi min Entfernung. Value: 10 - 200"/>
-		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Fahrzeugkonvoi max Entfernung"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Fahrzeugkonvoi max Entfernung. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Fahrzeugverband Entfernung"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Entfernung zwischen den Fahrzeugen. Wert: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50"/>
@@ -162,7 +159,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße um einen Puffer zum Feldrand erhalten, negative Werte vergrößern den Arbeitsbereich um über den Feldrand hinaus zu arbeiten. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Reihen zum überspringen" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Value: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Wert: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Reihen pro Beet" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Value: 0 - 24" />
@@ -222,13 +219,18 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Instandhalten"/>
 		
+		<text name="CP_global_setting_subTitle_userSettings"											text="Benutzereinstellungen"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller freundliches Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über den Controller bedienen lässt."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Einstellungen"/>
 
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Angle difference at goal"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ankunftswinkel am Ziel"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller"/>
 
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Delta angle relax factor"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Änderungsfaktor Pathfinder"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller"/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zeige alle Kurse"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zeigt alle geladenen Kurse auf der Map."/>
@@ -284,7 +286,14 @@ A: Auf den Fahrzeugname klicken um die Fahrzeugeinstellungen auf zu rufen.
 B: Stellt die Startposition beim draufklicken um.
 C: Mit dem klick auf den Kursnamen wird das Helfer Menü mit geöffnetem Kursgenerator aufgerufen.
 D: Starte Courseplay Helfer.
-E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte."/>
+E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte. Klick zum öffnen des Kursmanagers.
+F: Klick auf das Icon öffnet die Grundeinstellungen.
+G: Schließt das HUD.
+H: Verkleinert oder vergrößert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug, zeigt die Einstellung.
+I: Wert für den horizontalen Versatz, + links, - rechts.
+J: Wert für den vertikalen Versatz, + hinten, - vorne.
+K, L and M: Klick auf den Text zum zurücksetzen der Werte.
+N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
@@ -294,5 +303,6 @@ E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Öffne mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Start/stop CP Helfer"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Öffne/schließe Hud"/>
 	</texts>
 </l10n>

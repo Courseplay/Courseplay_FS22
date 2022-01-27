@@ -58,6 +58,9 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Csak start/stop"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Minden útpont"/>
 
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Álljon meg a végén"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Álljon meg a végén"/>
 
@@ -120,14 +123,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Szimmetrikus sávváltás"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Szimmetrikus sávváltás"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Jármű konvoj"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Jármű konvoj be/ki"/>
-
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Jármű konvoj min távolság"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Jármű konvoj min távolság. Value: 10 - 200"/>
-		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Jármű konvoj max távolság"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Jármű konvoj max távolság. Value: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Terepmunka"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximális sebesség terepen végzett munka közben. Value: 5 - 50"/>
@@ -218,6 +215,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Javítsa"/>
+
+		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Úttörő beállításai"/>
 
@@ -281,7 +283,14 @@ A: Clicking on the vehicle name opens the vehicle configurations page.
 B: Toggle where to start the course with one click.
 C: Clicking on the coursename you will open the AI Menu with the course generator open.
 D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints."/>
+E: Shows current waypoint / total waypoints. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Válassza ki a következő hibakeresési csatornát."/>
@@ -291,5 +300,6 @@ E: Shows current waypoint / total waypoints."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Nyissa meg a mini GUI-t"/>
 		<text name="input_CP_START_STOP" 																text="CP: Sofőr indítás/leállítás"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
 	</texts>
 </l10n>

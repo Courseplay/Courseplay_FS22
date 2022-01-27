@@ -61,6 +61,9 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Sólo al Inicio/Final"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Todos los puntos"/>
 
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Abrir Hud con el mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Cuando es desactivado, el Hud sólo puede ser abierto con la combinación de teclas."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Parar al final"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="El conductor se detendrá al llegar al final del curso"/>
 
@@ -123,14 +126,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio a carril simétrico"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio a carril simétrico"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Convoy de vehículos"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Habilita/Desabilita Convoy de vehículos"/>
-
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Mínima distancia en convoy"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Mínima distancia en convoy. Valor: 10 - 200"/>
-		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Máxima distancia en convoy"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Máxima distancia en convoy. Valor: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distancia del Convoy"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Establece la distancia entre vehículos. Valor: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabajo en campos"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidad máxima de trabajo en campos. Valor: 5 - 50"/>
@@ -220,6 +217,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Mantener siempre apunto"/>
+
+		<text name="CP_global_setting_subTitle_userSettings"											text="Ajustes de usuario"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatible con gamepad"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad ."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ajustes del Generador de Cursos"/>
 
@@ -283,7 +285,14 @@ A: Al hacer clic en el nombre del vehículo, se abrirá la página de configurac
 B: Alternar dónde comenzar el curso con un clic.
 C: Al hacer clic en el nombre del curso, se abrirá el menú AI con el generador de cursos abierto.
 D: Iniciar el asistente de Courseplay.
-E: Muestra los Puntos de Ruta: Actual/Total."/>
+E: Muestra los Puntos de Ruta: Actual/Total. Haga clic para abrir el Administrador de Cursos.
+F: Al hacer clic en el icono se abre la Página de Configuración General.
+G: Cierra el HUD.
+H: Disminuir/Aumentar el ancho de trabajo. Una línea roja en su vehículo muestra la configuración actual.
+I: Valor del desplazamiento horizontal, + Izquierda, - Derecha.
+J: Valor del desplazamiento vertical, + Atrás, - Adelante.
+K: L y M: Al hacer clic en el texto, se restablecerán los cambios a los valores automáticos.
+N: Esta área muestra el desplazamiento del carril si tiene cargado un curso multiherramienta. Al hacer clic en el texto, se alternan las posiciones."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleccione el siguiente canal de depuración."/>
@@ -293,5 +302,6 @@ E: Muestra los Puntos de Ruta: Actual/Total."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir/Cerrar GUI del vehículo."/>
 		<text name="input_CP_START_STOP" 																text="CP: Iniciar/Detener Conductor."/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mostrar/Ocultar cursor del Mouse."/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Abrir/Cerrar Hud"/>
 	</texts>
 </l10n>

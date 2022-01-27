@@ -21,6 +21,9 @@
 			</Texts>
 		</Setting>
 		<!--Stop At End-->
+		<Setting classType="AIParameterBooleanSetting" name="openHudWithMouse" defaultBool="true" onChangeCallback="cpUpdateMouseAction"/>
+
+		<!--Stop At End-->
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
 		<!--Turn on Field-->
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true"/>
@@ -51,9 +54,9 @@
 		<!--Turn Diameter-->
 		<Setting classType="AIParameterSettingList" name="turnDiameter" min="2" max="50" unit="2"/>
 		<!--Tool Offset X-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth"/>
 		<!--Tool Offset Y-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
@@ -90,12 +93,8 @@
 	<SettingSubTitle title="multitool">
 		<!--Symetric Langechange-->
 		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
-		<!--Convoy (still needed? even if on on single course, will have no effect)-->
-		<Setting classType="AIParameterBooleanSetting" name="convoyActive"/>
-		<!--Min Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyMinDistance" min="10" max="200" unit="2"/>
-		<!--Max Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyMaxDistance" min="40" max="300" unit="2"/>
+		<!--Convoy Distance-->
+		<Setting classType="AIParameterSettingList" name="convoyDistance" min="20" max="200" default ="50" unit="2"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="speed">

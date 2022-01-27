@@ -23,6 +23,7 @@ function CpCourseGeneratorSettings.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpCourseGeneratorSettings)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
@@ -133,5 +134,12 @@ function CpCourseGeneratorSettings:validateSettings()
     local spec = self.spec_cpCourseGeneratorSettings
     for i,setting in ipairs(spec.settings) do 
         setting:refresh()
+    end
+end
+
+function CpCourseGeneratorSettings:onCpUnitChanged()
+    local spec = self.spec_cpCourseGeneratorSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:validateTexts()
     end
 end

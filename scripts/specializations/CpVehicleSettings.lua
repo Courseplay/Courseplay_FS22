@@ -23,6 +23,7 @@ function CpVehicleSettings.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
 end
 function CpVehicleSettings.registerFunctions(vehicleType)
 
@@ -52,6 +53,7 @@ function CpVehicleSettings:onLoad(savegame)
     CpSettingsUtil.cloneSettingsTable(spec,CpVehicleSettings.settings,self,CpVehicleSettings)
     
     CpVehicleSettings.loadSettings(self,savegame)
+    
 end
 
 function CpVehicleSettings:onPostAttachImplement(object)
@@ -132,6 +134,14 @@ function CpVehicleSettings:validateSettings()
         setting:refresh()
     end
 end
+
+function CpVehicleSettings:onCpUnitChanged()
+    local spec = self.spec_cpVehicleSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:validateTexts()
+    end
+end
+
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Callbacks for the settings to manipulate the gui elements.

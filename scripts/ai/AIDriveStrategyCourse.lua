@@ -58,7 +58,9 @@ function AIDriveStrategyCourse:debug(...)
 end
 
 function AIDriveStrategyCourse:debugSparse(...)
-    if g_updateLoopIndex % 100 == 0 then
+    -- since we are not called on every loop (maybe every 4th) use a prime number which should
+    -- make sure that we are called once in a while
+    if g_updateLoopIndex % 17 == 0 then
         self:debug(...)
     end
 end
@@ -100,8 +102,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle,jobParameters)
     local course = self:getGeneratedCourse(jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
-        
-        local startIx = self:getStartingPointWaypointIx(course,jobParameters.startAt:getValue())
+        local startIx = self:getStartingPointWaypointIx(course, jobParameters.startAt:getValue())
         self:start(course, startIx)
     else
         -- some strategies do not need a recorded or generated course to work, they

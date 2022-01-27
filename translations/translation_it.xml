@@ -59,6 +59,9 @@
 		
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Solo Partenza/Fine"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Tutti i punti di passaggio"/>
+
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Apri la Mini HUD con il mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Quando è disattivato, la Hud può essere aperto solo con la combinazione di tasti.."/>
 		
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Ferma alla fine"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ferma il veicolo alla fine"/>
@@ -88,11 +91,11 @@
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Evita il raccolto"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="L'IA cercherà di evitare di guidare sul raccolto"/>
 		
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Calibrazione attrezzo orizzontale"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Calibrazione attrezzo orizzontale"/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Correzione oriz."/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Correzione oriz."/>
 		
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Calibrazione attrezzo verticale"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Calibrazione attrezzo verticale"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Correzione vert."/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Correzione vert."/>
 		
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raggio di sterzata"/>
 		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Intervallo: 2 - 50"/>
@@ -122,14 +125,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio di corsia simmetrico"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio di corsia simmetrico"/>
 		
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Convoglio"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Abilita il convoglio veicoli"/>
-		
-		<text name="CP_vehicle_setting_convoyMinDistance_title" 										text="Distanza minima del convoglio"/>
-		<text name="CP_vehicle_setting_convoyMinDistance_tooltip" 										text="Distanza minima del convoglio. Intervallo: 10 - 200"/>
-		
-		<text name="CP_vehicle_setting_convoyMaxDistance_title" 										text="Distanza massima del convoglio"/>
-		<text name="CP_vehicle_setting_convoyMaxDistance_tooltip" 										text="Distanza massima del convoglio. Intervallo: 40 - 300"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distanza convoglio"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distanza tra i veicoli. Intervallo: 20 - 200"/>
 		
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Lavoro"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo. Intervallo: 5 - 50"/>
@@ -220,6 +217,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="Ripara al 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="Ripara al 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Ripara sempre"/>
+
+		<text name="CP_global_setting_subTitle_userSettings"											text="Impostazioni utente"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatibile con il gamepad"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllata con un Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
@@ -283,7 +285,14 @@ A: Cliccando sul nome del veicolo si apre la pagina delle configurazioni del vei
 B: Seleziona da dove iniziare il percorso con un clic.
 C: Cliccando sul nome del percorso si aprirà il Menu IA con il generatore di percorsi aperto.
 D: Avvia il lavoratore del Courseplay.
-E: Mostra il punto corrente/i punti totali."/>
+E: Mostra il punto corrente/i punti totali. Click to open the course manager.
+F: Cliccando sull'icona si apre la pagina delle impostazioni generali.
+G: Chiude la HUD.
+H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo mostra l'impostazione corrente.
+I: Valore per la correzione orizzontale, + a sinistra, - a destra.
+J: Valore per la correzione verticale, + indietro, - avanti.
+K, L e M: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
+N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>
@@ -293,5 +302,6 @@ E: Mostra il punto corrente/i punti totali."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Apri mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Avvia/Ferma autista"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Cursore Mouse on/off"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Apri/Chiudi la hud"/>
 	</texts>
 </l10n>

@@ -62,7 +62,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
     local course = self.vehicle:getFieldWorkCourse()
-    local numMultiTools = course:getNumberOfMultiTools()
+    local numMultiTools = course:getMultiTools()
     --- Lane number needs to be zero for only one vehicle.
     local laneNumber = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
     --- Work width of a single vehicle.
@@ -683,9 +683,10 @@ function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
     local function setRidgeMarkerState(self,vehicle,state)
         local spec = vehicle.spec_ridgeMarker
         if spec then
+            -- yes, another Giants typo
             if spec.numRigdeMarkers > 0 then
                 if spec.ridgeMarkerState ~= state then
-                    self:debug('Setting ridge markers to %d for %s', state,vehicle:getName())
+                    self:debug('Setting ridge markers to %d for %s', state, vehicle:getName())
                     vehicle:setRidgeMarkerState(state)
                 end
             end
@@ -723,7 +724,10 @@ function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
 end
 
 function AIDriveStrategyFieldWorkCourse:hasSameCourse(otherVehicle)
-    return self.fieldWorkCourse:equals(otherVehicle:getFieldWorkCourse())
+    local otherCourse = otherVehicle.getFieldWorkCourse and otherVehicle:getFieldWorkCourse()
+     return otherCourse and
+            otherCourse:getName() == self.fieldWorkCourse:getName() and
+            otherCourse:getMultiTools() == self.fieldWorkCourse:getMultiTools()
 end
 
 function AIDriveStrategyFieldWorkCourse:getProgress()
@@ -736,53 +740,85 @@ end
 --- generated and for instance on the headland the vehicles on the inside will have less
 --- waypoints, so we operate with progress percentage
 function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
+
+    if self.fieldWorkCourse:getName() == '' or self.fieldWorkCourse:getMultiTools() < 2 then
+        -- course has no name or non-multitool course, nothing to do here
+        return
+    end
+
     --get my position in convoy and look for the closest combine
     local position = 1
-    local total = 1
-    local closestDistance = math.huge
+    local vehiclesInConvoy = 1
+    local closestDistanceFront, closestDistanceBack = math.huge, math.huge
+    local closestVehicleFront, closestVehicleBack
     for _, otherVehicle in pairs(g_currentMission.vehicles) do
-        if otherVehicle ~= self.vehicle and
-                otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive()
-                and self:hasSameCourse(otherVehicle) then
-            local myProgress, myWpIx = self:getProgress()
-            local length = self.fieldWorkCourse:getLength()
-            local otherProgress, otherWpIx = otherVehicle:getCpFieldWorkProgress()
-            self:debugSparse(
-                    'convoy: my progress at waypoint %d is %.3f%%, %s progress at waypoint %d is %.3f%%, 100%% %d m',
-                    myWpIx, myProgress * 100, CpUtil.getName(otherVehicle), otherWpIx, otherProgress * 100, length)
-            total = total + 1
-            if myProgress < otherProgress then
-                position = position + 1
+        if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) then
+            vehiclesInConvoy = vehiclesInConvoy + 1
+            self:debugSparse('has same course as %s', CpUtil.getName(otherVehicle))
+            if otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
+                local myProgress, myWpIx = self:getProgress()
+                local length = self.fieldWorkCourse:getLength()
+                local otherProgress, otherWpIx = otherVehicle:getCpFieldWorkProgress()
+                if not otherProgress or not otherWpIx then
+                    self:debugSparse('other vehicle (%s) progress not known', CpUtil.getName(otherVehicle))
+                    return
+                end
+                self:debugSparse(
+                        'convoy: my progress at waypoint %d is %.3f, %s progress at waypoint %d is %.3f, 100 %d m',
+                        myWpIx, myProgress * 100, CpUtil.getName(otherVehicle), otherWpIx, otherProgress * 100, length)
+                if myProgress < otherProgress then
+                    position = position + 1
+                end
+                local distance = math.abs((otherProgress - myProgress)) * length
+                -- try to remember the ones in front of us, so store only when its progress is bigger
+                if distance < closestDistanceFront and otherProgress > myProgress then
+                    closestDistanceFront = distance
+                    closestVehicleFront = otherVehicle
+                end
+                if distance < closestDistanceBack and otherProgress <= myProgress then
+                    closestDistanceBack = distance
+                    closestVehicleBack = otherVehicle
+                end
+                self:debugSparse('convoy: my position %d, calculated distance from %s is %.2f m (closest %.3f m)',
+                        position, CpUtil.getName(otherVehicle), distance, closestDistanceFront)
+
+            else
+                self:debugSparse('convoy: waiting for %s to start', CpUtil.getName(otherVehicle))
+                self:setMaxSpeed(0)
+                return
             end
-            local distance = math.abs((otherProgress - myProgress)) * length
-            if distance < closestDistance then
-                closestDistance = distance
-            end
-            self:debugSparse('convoy: my position %d, calculated distance from %s is %.3f m',
-                    position, CpUtil.getName(otherVehicle), distance)
         end
+    end
+    if vehiclesInConvoy == 1 then
+        self:debugSparse('convoy: no other vehicles found')
+        return
     end
     -- stop when I'm too close to the combine in front of me
     if position > 1 then
-        if closestDistance < self.settings.convoyMinDistance:getValue() then
+        local minDistance = self.settings.convoyDistance:getValue()
+        if closestDistanceFront < minDistance then
             self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
-                    closestDistance, self.settings.convoyMinDistance:getValue())
-            self:setMaxSpeed(0.5 * self.maxSpeed)
+                    closestDistanceFront, minDistance)
+            -- the closer we are, the slower we drive
+            local factor = math.max(0, (1 - (minDistance - closestDistanceFront) / minDistance))
+            self:setMaxSpeed(factor * self.maxSpeed)
         end
-    elseif  position == 1 then
-        if closestDistance < self.settings.convoyMaxDistance:getValue() then
+    elseif position == 1 then
+        local maxDistance = self.settings.convoyDistance:getValue()
+        if closestDistanceBack > maxDistance then
             self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
-                    closestDistance, self.settings.convoyMaxDistance:getValue())
-            self:setMaxSpeed(0.5 * self.maxSpeed)
+                    closestDistanceBack, maxDistance)
+            local factor = math.max(0, (1 - (closestDistanceBack - maxDistance) / maxDistance))
+            self:setMaxSpeed(closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed)
         end
 
-        closestDistance = 0
+        closestDistanceFront = 0
     end
 
     -- TODO: multiplayer?
-    self.convoyCurrentDistance=closestDistance
+    self.convoyCurrentDistance= closestDistanceFront
     self.convoyCurrentPosition=position
-    self.convoyTotalMembers=total
+    self.convoyTotalMembers= vehiclesInConvoy
 end
 
 

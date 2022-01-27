@@ -188,7 +188,9 @@ function CpAIFieldWorker:getIsCpFieldWorkActive()
 end
 
 function CpAIFieldWorker:getCpFieldWorkProgress()
-    return self.spec_cpAIFieldWorker.driveStrategy and self.spec_cpAIFieldWorker.driveStrategy:getProgress()
+    if self.spec_cpAIFieldWorker.driveStrategy then
+        return self.spec_cpAIFieldWorker.driveStrategy:getProgress()
+    end
 end
 
 function CpAIFieldWorker:getCpDriveStrategy()

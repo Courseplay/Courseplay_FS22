@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.0.21</version>
+    <version>7.0.0.23</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -122,7 +122,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/gui/CpAIHotspotExtended.lua"/>
 		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
-		<sourceFile filename="scripts/gui/CourseplayHud.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
@@ -132,6 +132,7 @@ La prossima versione di Courseplay.
 		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
 		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
 		<specialization name="cpVehicleSettingDisplay" className="CpVehicleSettingDisplay" filename="scripts/specializations/CpVehicleSettingDisplay.lua"/>
+		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
 	</specializations>
 
 	<inputBinding>

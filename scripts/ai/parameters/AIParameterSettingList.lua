@@ -19,7 +19,7 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	else
 		self.data.values = {}
 		self.data.texts = {}
-		AIParameterSettingList.generateValues(self,self.data.values,self.data.texts,data.min,data.max,data.incremental,data.textStr,data.unit)
+		AIParameterSettingList.generateValues(self,self.data.values,self.data.texts,data.min,data.max,data.incremental,data.unit)
 		self.values = table.copy(self.data.values)
 		if self.data.texts ~= nil then
 			self.texts = table.copy(self.data.texts)
@@ -66,12 +66,12 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 end
 
 function AIParameterSettingList.getSpeedText(value)
-	return string.format("%1d %s",g_i18n:getSpeed(value),g_i18n:getSpeedMeasuringUnit())
+	return string.format("%.1f %s",g_i18n:getSpeed(value),g_i18n:getSpeedMeasuringUnit())
 end
 
 function AIParameterSettingList.getDistanceText(value)
 	if g_i18n.useMiles then 
-		return string.format("%.1f %s",value*3.28,g_i18n:getText("CP_unit_foot"))
+		return string.format("%.1f %s",value*AIParameterSettingList.FOOT_FACTOR,g_i18n:getText("CP_unit_foot"))
 	end
 	return string.format("%.1f %s",value,g_i18n:getText("CP_unit_meter"))
 end
@@ -88,22 +88,29 @@ AIParameterSettingList.UNITS_TEXTS = {
 	function (value) return string.format("%d", value) .. "°" end			--- degrees
 }
 
+AIParameterSettingList.UNITS_CONVERSION = {
+	function (value) return g_i18n.useMiles and value/AIParameterSettingList.MILES_FACTOR or value end,
+	function (value) return g_i18n.useMiles and value/AIParameterSettingList.FOOT_FACTOR or value end,
+	function (value) return g_i18n.useAcre and value/AIParameterSettingList.ACRE_FACTOR or value end
+}
 
+AIParameterSettingList.MILES_FACTOR = 0.62137
+AIParameterSettingList.FOOT_FACTOR = 3.28
+AIParameterSettingList.ACRE_FACTOR = 2.4711
+AIParameterSettingList.INPUT_VALUE_THRESHOLD = 2
 --- Generates numeric values and texts from min to max with incremental of inc or 1.
 ---@param values table
 ---@param texts table
 ---@param min number
 ---@param max number
 ---@param inc number
----@param textStr string
 ---@param unit number
-function AIParameterSettingList:generateValues(values,texts,min,max,inc,textStr,unit)
+function AIParameterSettingList:generateValues(values,texts,min,max,inc,unit)
 	inc = inc or 1
 	for i=min,max,inc do 
 		table.insert(values,i)
 		local value = MathUtil.round(i,2)
 		local text = unit and AIParameterSettingList.UNITS_TEXTS[unit] and AIParameterSettingList.UNITS_TEXTS[unit](value) or tostring(value)
-		local text = textStr and string.format(textStr,value) or text
 		table.insert(texts,text)
 	end
 end
@@ -113,7 +120,7 @@ function AIParameterSettingList:enrichTexts(texts,unit)
 	for i,value in ipairs(self.values) do 
 		local text = tostring(value)
 		if unit then 
-			text = text..AIParameterSettingList.UNITS_TEXTS[unit](value)
+			text = AIParameterSettingList.UNITS_TEXTS[unit](value)
 		end
 		texts[i] = text
 	end
@@ -196,7 +203,6 @@ function AIParameterSettingList:validateTexts()
 		for ix,value in ipairs(self.values) do 
 			local value = MathUtil.round(value,2)
 			local text = unitStrFunc(value)
-			local text = self.data.textStr and string.format(self.data.textStr,value) or text
 			fixedTexts[ix] = text
 		end
 		self.texts = fixedTexts
@@ -211,8 +217,16 @@ function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
 	xmlFile:setInt(key .. "#value", self.current)
 end
 
+function AIParameterSettingList:saveToRawXMLFile(xmlFile, key)
+	setXMLInt(xmlFile,key.."#value",self.current)
+end
+
 function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
+end
+
+function AIParameterSettingList:loadFromRawXMLFile(xmlFile, key)
+	self:setToIx(getXMLInt(xmlFile,key .. "#value") or 1)
 end
 
 function AIParameterSettingList:readStream(streamId, connection)
@@ -249,6 +263,25 @@ function AIParameterSettingList:setFloatValue(value)
 		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
 end
 
+--- Gets the closest value ix and absolute difference, relative to the value searched for.
+---@param value number
+---@return number closest ix
+---@return number difference
+function AIParameterSettingList:getClosestIx(value)
+	-- find the value requested
+	local closestIx = 0
+	local closestDifference = math.huge
+	for i = 1, #self.values do
+		local v = self.values[i]
+		local d = math.abs(v-value)
+		if d < closestDifference then
+			closestIx = i
+			closestDifference = d
+		end
+	end
+	return closestIx,closestDifference
+end
+
 --- Sets a value.
 ---@param value number
 ---@return boolean value is not valid and could not be set.
@@ -266,11 +299,14 @@ function AIParameterSettingList:setDefault()
 	if self.data.default ~=nil then
 		AIParameterSettingList.setFloatValue(self,self.data.default)
 		self:debug("set to default %s",self.data.default)
+		return
 	end
 	if self.data.defaultBool ~= nil then
 		AIParameterSettingList.setValue(self,self.data.defaultBool)
 		self:debug("set to default %s",tostring(self.data.defaultBool))
+		return
 	end
+	self:setToIx(1)
 end
 
 --- Gets a specific value.
@@ -350,7 +386,6 @@ end
 
 function AIParameterSettingList:setGuiElement(guiElement)
 	self:validateCurrentValue()
-	self:validateTexts()
 	self.guiElement = guiElement
 	self.guiElement.target = self
 	self.guiElement.onClickCallback = function(setting,state,element)
@@ -400,6 +435,7 @@ function AIParameterSettingList:registerMouseInputEvent()
 		end
 		return eventUsed
 	end
+	self.oldMouseEvent = self.guiElement.mouseEvent
 	self.guiElement.mouseEvent = Utils.overwrittenFunction(self.guiElement.mouseEvent, mouseClick)
 end
 
@@ -411,16 +447,29 @@ function AIParameterSettingList:showInputTextDialog()
 			if clickOk and value ~= nil then
 				local v = value:match("-%d[%d.,]*")
 				v = v or value:match("%d[%d.,]*")
+				v = v and tonumber(v)
 				if v then
-					if self:setFloatValue(tonumber(v)) then 
+					local unit = self.data.unit
+					if unit then 
+						local unitStrFunc = AIParameterSettingList.UNITS_CONVERSION[unit]
+						if unitStrFunc then
+							v = unitStrFunc(v)
+						end
+					end
+					local ix,diff = self:getClosestIx(v)
+					if diff < self.INPUT_VALUE_THRESHOLD then
+						self:setToIx(ix)
+					else 
 						self:setDefault()
 					end
 				else 
 					self:setDefault()
 				end
-				if not FocusManager:setFocus(self.guiElement) then 
-					self.guiElement.focusActive = false
-					FocusManager:setFocus(self.guiElement)
+				if self.guiElement then
+					if not FocusManager:setFocus(self.guiElement) then 
+						self.guiElement.focusActive = false
+						FocusManager:setFocus(self.guiElement)
+					end
 				end
 			end
 		end,
@@ -432,6 +481,12 @@ function AIParameterSettingList:showInputTextDialog()
 end
 
 function AIParameterSettingList:resetGuiElement()
+	if self.guiElement then
+		if self.oldMouseEvent then
+			self.guiElement.mouseEvent = self.oldMouseEvent
+		end
+	end
+
 	self.guiElement = nil
 end
 
@@ -456,6 +511,11 @@ function AIParameterSettingList:getIsVisible()
 	end
 	return self.isVisible
 end
+
+function AIParameterSettingList:getIsUserSetting()
+	return self.data.isUserSetting	
+end
+
 
 function AIParameterSettingList:onClick(state)
 	local new = self:checkAndSetValidValue(state)
