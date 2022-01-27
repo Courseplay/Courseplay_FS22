@@ -49,7 +49,7 @@
 		<!--Titel-->
 		<text name="CP_vehicle_setting_subTitle_basic"													text="Paramètres de base"/>
 		<text name="CP_vehicle_setting_subTitle_implement"												text="Paramètres outil"/>
-		<text name="CP_vehicle_setting_subTitle_combine"												text="Paramètres batteuse"/>
+		<text name="CP_vehicle_setting_subTitle_combine"												text="Paramètres moissonneuse-batteuse"/>
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Paramètres semoir"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Paramètres outils multiples"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Vitesses"/>
@@ -61,8 +61,8 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Points départ/arrivé uniquement"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Tous les points"/>
 
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Ouvrir l'ATH à la souris"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Un clic droit ouvre l'ATH. Si désactivé, ouverture de l'ATH uniquement avec un raccourci clavier."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Arrêt à l'arrivée"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Arrêt du véhicule lorsqu'il est arrivé."/>
@@ -73,7 +73,7 @@
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Autoriser les détours pour le pathfinding"/>
 		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Si nécessaire, autorise le pathfinding à générer des trajets avec des détours, par exemple pour éviter des obstacles ou des cultures"/>
 
-		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Replier l'outils à la fin de la course"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Replier l'outil à la fin de la course"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Active/Désactive le repli automatique de l'outil à la fin de la course."/>
 
 		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Relevage de l'outil"/>
@@ -126,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Changement de ligne symétrique"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distance en convoi"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distance entre les véhicules"/>
 		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
@@ -135,7 +135,7 @@
 		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Vitesse max lors des déplacements dans le champ. Valeurs: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Manoeuvres"/>
 		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Vitesse max lors des manoeuvres. Valeurs: 2 - 25"/>
-		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Arrière"/>
+		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Marche arrière"/>
 		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Vitesse max lors des marches arrières. Valeurs: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Deboggage du vehicule"/>
@@ -155,8 +155,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Chevauchement des fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Exprimé en pourcentage de la largeur de travail. Valeurs: 0 - 25" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Délimitations du champ" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ pour définir une zone non travaillée autour du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ.  Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Délimitation du champ" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ. Valeurs: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour. Valeurs: 0 - 6" />
@@ -176,8 +176,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circulaire (extérieur vers intérieur)" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Par blocs (Intérieur vers extérieur)" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Choix du type de fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Angle des fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Détermine la manière de travailler les angles dans les fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="Virages lissés" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Manoeuvres" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Circulaires" />
@@ -188,8 +188,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Bords longs" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manuel" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Orientation des rangs" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle des rangs (0 = Nord) en manuel. Valeurs: 0 - 175 Incrément: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Angle de l'orientation (en mode manuel)" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="0 = Nord. Valeurs: 0 - 175 Incrément: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestion des îlots" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportement du tracé lors de la présence d'îlots dans le champ" />
@@ -197,8 +197,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="normal" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circulaire" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Début des fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Début des fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Début du travail" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Détermine par quoi commencer le travail dans le champ" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
@@ -222,7 +222,7 @@
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Paramètres utilisateur"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="ATH compatible manettes"/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="ATH compatible manette"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="L'ATH (interface du CP en jeu) est utilisable avec une manette."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Réglages du Pathfinder"/>
