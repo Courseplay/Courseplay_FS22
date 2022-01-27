@@ -80,7 +80,7 @@ function CpGlobalSettings:onHudSelectionChanged()
     if vehicle then 
         self:debug("reset action events for %s",vehicle:getName())
     --    g_inputBinding:setShowMouseCursor(false)
-        CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_courseplaySpec.savedCameraRotatableInfo)
+        CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_cpHud.savedCameraRotatableInfo)
         vehicle:requestActionEventUpdate()
     end
 end

@@ -72,29 +72,27 @@ function CpHud:getIsMouseOverCpHud()
 end
 
 function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)    
-    local spec = self.spec_cpHud
-    self:clearActionEventsTable(spec.actionEvents)
+    if self.isClient then
+        local spec = self.spec_cpHud
+        self:clearActionEventsTable(spec.actionEvents)
 
-    if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
-        return 
-    end
-
-    if self.isActiveForInputIgnoreSelectionIgnoreAI then
-        --- Toggle mouse cursor action event
-        --- Parameters: 
-        --- (actionEventsTable, inputAction, target,
-        ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
-        ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
-		if self:getCpSettings().openHudWithMouse:getValue() then
-			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
-					CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
-			g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
-       		g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+        if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
+            return 
         end
-        local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
-                CpHud.openClose, false, true, false, true, nil)
-        g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+
+        if self.isActiveForInputIgnoreSelectionIgnoreAI then
+            --- Toggle mouse cursor action event
+            --- Parameters: 
+            --- (actionEventsTable, inputAction, target,
+            ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
+            ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
+            if self:getCpSettings().openHudWithMouse:getValue() then
+                local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
+                        CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
+                g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+            end
+        end
     end
 end
 

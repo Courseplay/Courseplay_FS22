@@ -89,6 +89,7 @@ function CpVehicleSettingDisplay:onLoad(savegame)
     self.spec_cpVehicleSettingDisplay = self["spec_" .. CpVehicleSettingDisplay.SPEC_NAME]
     local spec = self.spec_cpVehicleSettingDisplay
 	spec.text = g_i18n:getText("input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY")
+	spec.hudText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
 end
 
 function CpVehicleSettingDisplay:onLoadFinished()
@@ -106,15 +107,20 @@ end
 function CpVehicleSettingDisplay:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
 	if self.isClient then
 		local spec = self.spec_cpVehicleSettingDisplay
-
 		self:clearActionEventsTable(spec.actionEvents)
-		if not g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
-			return 
-		end
-		if self.isActiveForInputIgnoreSelectionIgnoreAI then
-			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpVehicleSettingDisplay.actionEventOpenCloseDisplay, false, true, false, true, nil)
-            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
-            g_inputBinding:setActionEventText(actionEventId, spec.text)
+		--- Key bind gets switch between opening hud or controller friendly gui.
+		if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
+			if self.isActiveForInputIgnoreSelectionIgnoreAI then
+				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpHud.openClose, false, true, false, true, nil)
+				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+				g_inputBinding:setActionEventText(actionEventId, spec.hudText)
+			end
+		else
+			if self.isActiveForInputIgnoreSelectionIgnoreAI then
+				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpVehicleSettingDisplay.actionEventOpenCloseDisplay, false, true, false, true, nil)
+				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+				g_inputBinding:setActionEventText(actionEventId, spec.text)
+			end
 		end
 	end
 end
