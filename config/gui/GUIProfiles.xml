@@ -86,16 +86,16 @@
     </Traits>
 
 	<Profile name="cpCourseGeneratorBackground" extends="emptyFullPanel" with="anchorTopLeft">
-		<Value name="size" value="1220px 840px"/>
+		<Value name="size" value="1220px 790px"/>
 		<Value name="imageColor" value="0.0111 0.0276 0.0377 0.95"/>
     </Profile>
 	
 	<Profile name="cpIngameMenuSettingsBox" extends="ingameMenuSettingsBox">
-		<Value name="size" value="1200px 756px"/>
+		<Value name="size" value="1200px 706px"/>
     </Profile>
 
 	<Profile name="cpIngameMenuSettingsLayout" extends="ingameMenuSettingsLayout">
-		<Value name="size" value="1200px 756px"/>
+		<Value name="size" value="1200px 706px"/>
     </Profile>
 	
 	<Profile name="cpMultiTextOptionSettingsTooltip" extends="multiTextOptionSettingsTooltip">

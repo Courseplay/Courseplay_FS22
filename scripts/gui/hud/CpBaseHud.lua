@@ -31,6 +31,13 @@ CpBaseHud.uvs = {
     }
 }
 
+CpBaseHud.xmlKey = "Hud"
+
+function CpBaseHud.registerXmlSchema(xmlSchema,baseKey)
+    xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posX","Hud position x.")
+    xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posY","Hud position y.")
+end
+
 function CpBaseHud:init(vehicle)
     self.vehicle = vehicle
 
@@ -384,16 +391,14 @@ end
 
 --- Saves hud position.
 function CpBaseHud.saveToXmlFile(xmlFile,baseKey)
-    local key = baseKey.."Hud"
-    setXMLFloat(xmlFile,key.."#posX",CpBaseHud.x)
-    setXMLFloat(xmlFile,key.."#posY",CpBaseHud.y)
+    xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posX",CpBaseHud.x)
+    xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posY",CpBaseHud.y)
 end
 
 --- Loads hud position.
 function CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
-    local key = baseKey.."Hud"
-    local posX = getXMLFloat(xmlFile,key.."#posX")
-    local posY = getXMLFloat(xmlFile,key.."#posY")
+    local posX = xmlFile:getValue(baseKey..CpBaseHud.xmlKey.."#posX")
+    local posY = xmlFile:getValue(baseKey..CpBaseHud.xmlKey.."#posY")
     if posX ~= nil and posY ~= nil then 
         CpBaseHud.savedPositions = {
            posX, posY
