@@ -90,13 +90,11 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
 					CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
 			g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
        		g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
-        else
-            local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
-                    CpHud.openClose, false, true, false, true, nil)
-            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
-            g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
         end
-
+        local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
+                CpHud.openClose, false, true, false, true, nil)
+        g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
+        g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
     end
 end
 
@@ -134,7 +132,7 @@ end
 
 function CpHud:openClose()
 	local spec = self.spec_cpHud
-	if g_inputBinding:getShowMouseCursor() then 
+	if spec.hud:getIsOpen() then 
 		self:resetCpHud()
 		spec.hud:openClose(false)
 		CpHud.isHudActive = false
