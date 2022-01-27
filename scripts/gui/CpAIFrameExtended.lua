@@ -35,9 +35,18 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.courseGeneratorLayoutPageTitle = pageTitle
-	self.courseGeneratorLayoutElements:invalidateLayout()
 	self.courseGeneratorLayout:setVisible(false)
-	
+	--- Disables button, if they are outside of the visible scroll layout box.
+	local function validateElements(layout)
+		for i,element in pairs(layout.elements) do 
+			local x,y = element.absPosition[1]+element.absSize[1]/2,element.absPosition[2]+element.absSize[2]/2
+			local valid = GuiUtils.checkOverlayOverlap(x,y, layout.absPosition[1], layout.absPosition[2], layout.absSize[1], layout.absSize[2])
+			element:setDisabled(not valid)
+		end
+	end
+	self.courseGeneratorLayoutElements.smoothScrollTo = Utils.appendedFunction(self.courseGeneratorLayoutElements.smoothScrollTo,validateElements)
+	self.courseGeneratorLayoutElements.invalidateLayout = Utils.appendedFunction(self.courseGeneratorLayoutElements.invalidateLayout,validateElements)
+	self.courseGeneratorLayoutElements:invalidateLayout()
 	--- Makes the last selected hotspot is not sold before reopening.
 	local function validateCurrentHotspot(currentMission,hotspot)
 		local page = currentMission.inGameMenu.pageAI
