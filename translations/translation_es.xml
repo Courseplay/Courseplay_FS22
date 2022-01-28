@@ -93,11 +93,11 @@
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Evitar conducir sobre los cultivos"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="El conductor intentará evitar conducir sobre los cultivos"/>
 
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Desp. horizontal del apero"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Desplazamiento horizontal del apero"/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Desp. Izq/Der del apero"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Desp. Izq/Der del apero"/>
 
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. longitudinal del apero"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desplazamiento longitudinal del apero"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. Del/Atr del apero"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desp. Del/Atr del apero"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Ancho radio de giro"/>
 		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Ancho radio de giro. Valor: 2 - 50"/>
@@ -156,7 +156,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Superposición de las pistas de cabecera como porcentaje del ancho de trabajo. Valor: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Margen del Campo" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Los valores positivos reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los negativos aumentan el área trabajada más allá del límite del campo.  Valor: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Valores positivos reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los negativos aumentan el área trabajada más allá del límite del campo.  Valor: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Filas a saltar" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Filas a omitir al cambiar a la siguiente fila Arriba/Abajo. Valor: 0 - 6" />
