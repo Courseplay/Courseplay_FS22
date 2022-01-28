@@ -62,6 +62,15 @@ function CustomFieldManager:addField(waypoints)
     self.fileSystem:refresh()
 end
 
+function CustomFieldManager:getCustomField(x, z)
+    for _, field in pairs(self.fields) do
+        if field:isPointOnField(x, z) then
+            return field
+        end
+    end
+    return nil
+end
+
 function CustomFieldManager:draw(map)
     for _, field in pairs(self.fields) do
         field:draw(map)

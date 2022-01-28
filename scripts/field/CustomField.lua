@@ -42,21 +42,35 @@ function CustomField:init(name, vertices)
     self.fieldPlot = CustomFieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setWaypoints(vertices)
     self.fieldPlot:setVisible(true)
+end
 
+function CustomField:addHotspot()
     self.fieldHotspot = FieldHotspot.new()
     self.fieldHotspot:setField(self)
     self.fieldHotspot:setOwnerFarmId(g_currentMission.player.farmId)
     g_currentMission:addMapHotspot(self.fieldHotspot)
+end
 
+function CustomField:isPointOnField(x, z)
+    return CpMathUtil.isPointInPolygon(self.vertices, x, z)
 end
 
 function CustomField:draw(map)
+    if not self.fieldHotspot then
+        -- add hotspot when draw first called. Can't create in the constructor as on game load
+        -- when the custom fields are loaded there's no player yet
+        self:addHotspot()
+    end
     self.fieldPlot:draw(map)
 end
 
 -- FieldHotspot needs this
 function CustomField:getName()
-    return 'CP-' + self.name
+    return 'CP-' .. self.name
+end
+
+function CustomField:getVertices()
+    return self.vertices
 end
 
 function CustomField:findFieldCenter()

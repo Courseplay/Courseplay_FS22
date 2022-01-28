@@ -80,27 +80,31 @@ function AIJobFieldWorkCp:validate(farmId)
 		return isValid, errorMessage
 	end
 
-
---	DebugUtil.printTableRecursively(self.cpJobParameters)
+	local vehicle = self.vehicleParameter:getVehicle()
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
 	if tx == self.lastPositionX and tz == self.lastPositionZ then
-		CpUtil.debugFormat(CpDebug.DBG_HUD, 'Position did not change, do not generate course again')
+		CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Position did not change, do not generate course again')
 		return isValid, errorMessage
 	else
 		self.lastPositionX, self.lastPositionZ = tx, tz
 		self.hasValidPosition = true
 	end
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
-	CpUtil.info('Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
+	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
 	if not self.fieldPolygon then
-		self.hasValidPosition = false
-		return false, g_i18n:getText("CP_error_not_on_field")
+		local customField = g_customFieldManager:getCustomField(tx, tz)
+		if not customField then
+			self.hasValidPosition = false
+			return false, g_i18n:getText("CP_error_not_on_field")
+		else
+			CpUtil.infoVehicle(vehicle, 'Custom field found: %s', customField:getName())
+			self.fieldPolygon = customField:getVertices()
+		end
 	end
-	local vehicle = self.vehicleParameter:getVehicle()
-	if vehicle then 
+	if vehicle then
 		if not vehicle:getCanStartCpBaleFinder(self.cpJobParameters) then 
 			if not vehicle:hasCpCourse() then 
 				return false, g_i18n:getText("CP_error_no_course")
