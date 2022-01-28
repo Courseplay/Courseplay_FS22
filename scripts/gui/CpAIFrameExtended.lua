@@ -2,6 +2,13 @@ CpInGameMenuAIFrameExtended = {}
 CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR = 10
 --- Adds the course generate button in the ai menu page.
 
+CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
+	768,
+	4,
+	100,
+	100
+}, AITargetHotspot.FILE_RESOLUTION)
+
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.buttonGenerateCourse = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
 	self.buttonGenerateCourse:setText(g_i18n:getText("CP_ai_page_generate_course"))
@@ -78,6 +85,13 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	end 
 	self.buttonBack.onClickCallback = Utils.overwrittenFunction(self.buttonBack.onClickCallback,onClickBack)
 	self.ingameMapBase.drawHotspotsOnly = Utils.appendedFunction(self.ingameMapBase.drawHotspotsOnly , CpInGameMenuAIFrameExtended.draw)
+	
+	--- Adds a second map hotspot for field position.
+	self.secondAiTargetMapHotspot = AITargetHotspot.new()
+	self.secondAiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
+	self.createPositionTemplate.onClickCallback = Utils.prependedFunction(self.createPositionTemplate.onClickCallback,
+															CpInGameMenuAIFrameExtended.onClickPositionParameter)
+
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
@@ -179,8 +193,27 @@ end
 
 
 --- Updates the visibility of the vehicle settings on select/unselect of a vehicle in the ai menu page.
-function CpInGameMenuAIFrameExtended:setMapSelectionItem()
+--- Also updates the field position map hotspot.
+function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 	g_currentMission.inGameMenu:updatePages()
+	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	if hotspot ~= nil then
+		local vehicle = InGameMenuMapUtil.getHotspotVehicle(hotspot)
+		if vehicle then 
+			if vehicle.getJob ~= nil and vehicle.getCanGenerateFieldWorkCourse then
+				local job = vehicle:getJob()
+
+				if job ~= nil and job.getFieldPositionTarget ~= nil then
+					local x, z = job:getFieldPositionTarget()
+
+					self.secondAiTargetMapHotspot:setWorldPosition(x, z)
+
+					g_currentMission:addMapHotspot(self.secondAiTargetMapHotspot)
+				end
+			end
+		end
+	end
+
 end
 InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem,CpInGameMenuAIFrameExtended.setMapSelectionItem)
 
@@ -197,6 +230,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.courseGeneratorLayout:setVisible(false)
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
+	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
@@ -230,3 +264,82 @@ function CpInGameMenuAIFrameExtended:draw()
 		vehicle:drawCpCoursePlot(self)
 	end
 end
+
+function CpInGameMenuAIFrameExtended:delete()
+	if self.secondAiTargetMapHotspot ~= nil then
+		self.secondAiTargetMapHotspot:delete()
+
+		self.secondAiTargetMapHotspot = nil
+	end
+end
+InGameMenuAIFrame.delete = Utils.appendedFunction(InGameMenuAIFrame.delete,CpInGameMenuAIFrameExtended.delete)
+
+--- Ugly hack to swap the main AI hotspot with the field position hotspot,
+--- as only the main hotspot can be moved by the player.
+function CpInGameMenuAIFrameExtended:onClickPositionParameter(element,...)
+	local parameter = element.aiParameter
+	if parameter and parameter.isCpFieldPositionTarget then 
+		local x, z = self.aiTargetMapHotspot:getWorldPosition()
+		local rot = self.aiTargetMapHotspot:getWorldRotation()
+		local dx, dz = self.secondAiTargetMapHotspot:getWorldPosition()
+		self.aiTargetMapHotspot:setWorldPosition(dx, dz)
+		self.aiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
+		self.secondAiTargetMapHotspot:setWorldPosition(x, z)
+		self.secondAiTargetMapHotspot:setWorldRotation(rot)
+		self.secondAiTargetMapHotspot.icon:setUVs(AITargetHotspot.UVS)
+	end
+end
+
+--- Custom version of InGameMenuAIFrame:updateParameterValueTexts(), as 
+--- there is no support for our field position hotspot.
+function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc)
+	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	local addedPositionHotspot = false
+	for _, element in ipairs(self.currentJobElements) do
+		local parameter = element.aiParameter
+		local parameterType = parameter:getType()
+
+		if parameterType == AIParameterType.TEXT then
+			local title = element:getDescendantByName("title")
+
+			title:setText(parameter:getString())
+		elseif parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
+			element:setText(parameter:getString())
+
+			if parameter.isCpFieldPositionTarget then
+				g_currentMission:addMapHotspot(self.secondAiTargetMapHotspot)
+				local x, z = parameter:getPosition()
+
+				self.secondAiTargetMapHotspot:setWorldPosition(x, z)
+				self.secondAiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
+			else
+				g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+
+				local x, z = parameter:getPosition()
+
+				self.aiTargetMapHotspot:setWorldPosition(x, z)
+				self.aiTargetMapHotspot.icon:setUVs(AITargetHotspot.UVS)
+				if parameterType == AIParameterType.POSITION_ANGLE then
+					local angle = parameter:getAngle() + math.pi
+
+					self.aiTargetMapHotspot:setWorldRotation(angle)
+				end
+			end
+		else
+			element:updateTitle()
+		end
+	end
+
+end
+InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,
+															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
+
+--- After the position of the hotspot is set, makes sure the positions of the hot spots are correct.
+function CpInGameMenuAIFrameExtended:executePickingCallback(...)
+	if not self:getIsPicking() then
+		self:updateParameterValueTexts()
+	end
+end
+InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFrame.executePickingCallback,
+															CpInGameMenuAIFrameExtended.executePickingCallback)

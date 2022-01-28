@@ -15,6 +15,7 @@
 
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Rozpocznij od:" />
 		<text name="CP_jobParameters_startAt_title"														text="Rozpocznij od:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Ustala gdzie zacząć pracę polową." />

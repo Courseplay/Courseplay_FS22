@@ -13,6 +13,7 @@
 		<text name="CP_error_not_on_field"																text="L'obiettivo non si trova su di un campo!" />
 		
 		<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Da dove iniziare il lavoro sul campo" />
