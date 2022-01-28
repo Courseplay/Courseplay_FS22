@@ -92,6 +92,10 @@ function Courseplay:loadMap(filename)
 		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.xmlKey)
 		self.xmlFile:delete()
 	end
+
+	--- Ugly hack to get access to the global AutoDrive table, as this global is dependent on the auto drive folder name.
+	self.autoDrive = FS22_AutoDrive and FS22_AutoDrive.AutoDrive
+	CpUtil.info("Auto drive found: %s",tostring(self.autoDrive~=nil))
 end
 
 function Courseplay:setupGui()

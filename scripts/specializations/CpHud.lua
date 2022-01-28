@@ -96,20 +96,31 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
     end
 end
 
-function CpHud:actionEventMouse()
+function CpHud:actionEventMouse(isMouseEvent)
+    --- Disables closing of the hud with the mouse button, while auto drive is in editor mode.
+    if isMouseEvent and g_Courseplay.autoDrive and g_Courseplay.autoDrive.isEditorModeEnabled() then 
+        return
+    end
+    local spec = self.spec_cpHud
     local showMouseCursor = not g_inputBinding:getShowMouseCursor()
+    if not spec.hud:getIsOpen() then
+        showMouseCursor = true
+    end
     CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'show mouse cursor %s', showMouseCursor)
     g_inputBinding:setShowMouseCursor(showMouseCursor)
     ---While mouse cursor is active, disable the camera rotations
     CpGuiUtil.setCameraRotation(self, not showMouseCursor, self.spec_cpHud.savedCameraRotatableInfo)
 	if showMouseCursor then
-		local spec = self.spec_cpHud
 		spec.hud:openClose(true)
 		CpHud.isHudActive = true
 	end
 end
 
 function CpHud:resetCpHud()
+    --- Prevents turning the mouse button off, if auto drive editor is enabled.
+    if g_Courseplay.autoDrive and g_Courseplay.autoDrive.isEditorModeEnabled() then 
+        return
+    end
 	g_inputBinding:setShowMouseCursor(false)
 	CpGuiUtil.setCameraRotation(self, true, self.spec_cpHud.savedCameraRotatableInfo)
     local spec = self.spec_cpHud
