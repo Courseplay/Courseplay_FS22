@@ -87,6 +87,8 @@ function CpCourseManager.registerFunctions(vehicleType)
 
     SpecializationUtil.registerFunction(vehicleType, 'cpStartCourseRecorder', CpCourseManager.cpStartCourseRecorder)
     SpecializationUtil.registerFunction(vehicleType, 'cpStopCourseRecorder', CpCourseManager.cpStopCourseRecorder)
+    SpecializationUtil.registerFunction(vehicleType, 'getIsCpCourseRecorderActive', CpCourseManager.getIsCpCourseRecorderActive)
+    SpecializationUtil.registerFunction(vehicleType, 'getCanStartCpCourseRecorder', CpCourseManager.getCanStartCpCourseRecorder)
 
     SpecializationUtil.registerFunction(vehicleType, 'rememberCpLastWaypointIx', CpCourseManager.rememberCpLastWaypointIx)
     SpecializationUtil.registerFunction(vehicleType, 'getCpLastRememberedWaypointIx', CpCourseManager.getCpLastRememberedWaypointIx)
@@ -364,4 +366,16 @@ function CpCourseManager:cpStopCourseRecorder()
     CpCourseManager.resetCourses(self)
     CpCourseManager.addCourse(self, recordedCourse)
     g_customFieldManager:addField(spec.courseRecorder:getRecordedWaypoints())
+end
+
+--- TODO
+function CpCourseManager:getIsCpCourseRecorderActive()
+    local spec = self.spec_cpCourseManager
+ --   return spec.courseRecorder
+end
+
+--- TODO
+function CpCourseManager:getCanStartCpCourseRecorder()
+    local spec = self.spec_cpCourseManager
+    
 end
