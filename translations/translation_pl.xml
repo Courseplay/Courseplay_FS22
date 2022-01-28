@@ -25,14 +25,14 @@
 		<text name="CP_jobParameters_startAt_unload"													text="Rozładunku kombajnu/sieczkarni" />
 		<text name="CP_jobParameters_startAt_bales"														text="Zbierania/Owijania bel" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Przesunięcie linii:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Przesunięcie linii:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Przesunięcie linii" />
+		<text name="CP_jobParameters_laneOffset_center"													text="Środek" />
+		<text name="CP_jobParameters_laneOffset_left"													text="Lewo(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="Prawo(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="Lewo(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="Prawo(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Prace polowe" />
@@ -127,17 +127,17 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetryczna zmiana ścieżki"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetryczna zmiana ścieżki."/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Dystans komwoju"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w komwoju. Zakres: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Prace polowe"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Zakres: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Jazda przez pole"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maksymalna prędkość podczas jazdy po polu. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maksymalna prędkość podczas jazdy po polu. Zakres: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Zawracanie"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maksymalna prędkość podczas zawracania. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maksymalna prędkość podczas zawracania. Zakres: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Cofanie"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maksymalna prędkość podczas cofania. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maksymalna prędkość podczas cofania. Zakres: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Debugowanie pojazdu"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Włącz/wyłącz debugowanie dla tego pojazdu pojazdu."/>
@@ -148,22 +148,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Szerokość robocza" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Szerokość robocza. Value: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Szerokość robocza. Zakres: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Liczba uwroci" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Liczba uwroci. Value: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Liczba uwroci. Zakres: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Nakładka na uwrociach" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Nakładanie się ścieżki na uwrociach jako procent szerokości roboczej. Value: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Nakładanie się ścieżki na uwrociach jako procent szerokości roboczej. Zakres: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Granica pola" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru, a ujemne powiększają obrabiany obszar poza granicę pola. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru, a ujemne powiększają obrabiany obszar poza granicę pola. Zakres: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rzędy do pominięcia" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem. Value: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rzędy do pominięcia przy przejściu do następnego rzędu tam /z powrotem. Zakres: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rzędy na spiralę od środka" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="W trybie spirali od środka określa ilość rzędów dla każdej 'wysepki'. Value: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="W trybie spirali od środka określa ilość rzędów dla każdej 'wysepki'. Zakres: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Kierunek na uwrociach" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Ustala w którym kierunku ma jechać pracownik na uwrociach" />
@@ -190,7 +190,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Ręczny" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Kąt w tą i z powrotem" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Kąt dla rzędów w tą i z powrotem (0 to północ) w trybie ręcznym. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Kąt dla rzędów w tą i z powrotem (0 to północ) w trybie ręcznym. Zakres: 0 - 175, przeskok co: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Omijanie przeszkód" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Określa jak pracownik powinien omijać przeszkody na polu." />
@@ -203,8 +203,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Uwroci" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rzędów" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Wiele maszyn" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Ilość pojazdów pracyujących na tym samym kurcie." />
 
 
 	<!-- GlobalSettings -->
@@ -221,10 +221,10 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Zawsze"/>
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="Ustawienia użytkownika"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="HUD przyjazny kontrolerom"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Używa HUDa, który może być ustawiany przez kontrolery gier."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ustawienia szukania ścieżki"/>
 
@@ -289,13 +289,13 @@ B: Przełącz miejsce rozpoczęcia kursu jednym kliknięciem.
 C: Klikając na nazwę kursu, otworzysz menu AI z otwartym generatorem kursów.
 D: Uruchom pomocnika Courseplay.
 E: Pokazuje aktualne/wszystkie punkty trasy. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+F: Kliknięcie na ikonę otwiera stornę z głównymi ustawieniami.
+G: Zamyka HUD.
+H: Zwiększa i zmniejsza szerokość roboczą. Czerwona linia na twoim pojeździe pokazuje obece ustawienia.
+I: Wartość przesunięcia horyzontalnego, + w lewo, - w prawo.
+J: Wartość przesunięcia wertykalnego, + do tyłu, - do przodu.
+K, L i M: Kliknięcie na tekst zresetuje ustawienia do wartości automatycznych.
+N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję."/>
 
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Poprzedni kanał debugowania" />
@@ -304,7 +304,7 @@ N: This area shows the lane offset if you have a multitool course loaded. Clicki
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Menu kanałów debugowania" />
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Otwórz mini GUI"/>
 		<text name="input_CP_START_STOP" 																text="CP: Uruchom/Zatrzymaj kierowcę"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
-		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Pokaż/Ukryj kursor myszy"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Otwórz/Zamknij HUD"/>
 	</texts>
 </l10n>
