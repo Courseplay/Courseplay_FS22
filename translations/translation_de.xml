@@ -7,7 +7,7 @@
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
-		<!-- User info text -->
+	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Erstelle zuerst einen Kurs vor dem starten." />
 		<text name="CP_error_could_not_generate_course"													text="Konnte keinen Kurs generieren. Das Logfile könnte weitere Informationen enthalten." />
