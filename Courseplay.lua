@@ -86,8 +86,8 @@ function Courseplay:loadMap(filename)
 	self:load()
 	self:setupGui()
 	if g_currentMission.missionInfo.savegameDirectory ~= nil then
-		local saveGamePath = g_currentMission.missionInfo.savegameDirectory
-		local filePath = saveGamePath .. "/Courseplay.xml"
+		local saveGamePath = g_currentMission.missionInfo.savegameDirectory .."/"
+		local filePath = saveGamePath .. "Courseplay.xml"
 		self.xmlFile = XMLFile.load("cpXml", filePath , self.xmlSchema)
 		if self.xmlFile == nil then return end
 		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.xmlKey)
@@ -135,8 +135,8 @@ HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapDat
 --- Saves all global data, for example global settings.
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
-		local saveGamePath = missionInfo.savegameDirectory
-		local xmlFile = XMLFile.create("cpXml",saveGamePath.. "/Courseplay.xml", 
+		local saveGamePath = missionInfo.savegameDirectory .."/"
+		local xmlFile = XMLFile.create("cpXml",saveGamePath.. "Courseplay.xml", 
 				"Courseplay", g_Courseplay.xmlSchema)
 		if xmlFile then	
 			g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.xmlKey)
