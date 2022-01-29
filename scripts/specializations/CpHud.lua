@@ -52,7 +52,7 @@ function CpHud.registerFunctions(vehicleType)
 end
 
 function CpHud.registerOverwrittenFunctions(vehicleType)
-   if g_modIsLoaded["FS22_ClickToSwitch"] then 
+   if vehicleType.functions["enterVehicleRaycastClickToSwitch"] ~= nil then 
         SpecializationUtil.registerOverwrittenFunction(vehicleType, "enterVehicleRaycastClickToSwitch", CpHud.enterVehicleRaycastClickToSwitch)
    end
   
@@ -62,7 +62,10 @@ end
 function CpHud:enterVehicleRaycastClickToSwitch(superFunc, x, y)
     local spec = self.spec_cpHud
     if not spec.hud:isMouseOverArea(x, y) then 
+        CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'Entering for cts is allowed.')
         superFunc(self, x, y)
+    else 
+        CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'Entering for cts is not allowed.')
     end
 end
 
