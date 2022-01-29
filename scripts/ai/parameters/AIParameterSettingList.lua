@@ -515,14 +515,14 @@ function AIParameterSettingList:onClick(state)
 end
 
 --- Raises an event and sends the callback string to the Settings controller class.
-function AIParameterSettingList:raiseCallback(callbackStr)
+function AIParameterSettingList:raiseCallback(callbackStr, ...)
 	if self.klass ~= nil and self.klass.raiseCallback and callbackStr then
-		self:debug("raised Callback %s",callbackStr)
+		self:debug("raised Callback %s", callbackStr)
 		--- If the setting is bound to a setting, then call the specialization function with self as vehicle.
 		if self.vehicle ~= nil then 
-			self.klass.raiseCallback(self.vehicle,callbackStr)
+			self.klass.raiseCallback(self.vehicle, callbackStr, self, ...)
 		else
-			self.klass:raiseCallback(callbackStr)
+			self.klass:raiseCallback(callbackStr, self, ...)
 		end
 	end
 end

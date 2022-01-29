@@ -121,8 +121,10 @@ function CpCourseGeneratorSettings:saveToXMLFile(xmlFile, key, usedModNames)
 end
 
 --- Callback raised by a setting and executed as an vehicle event.
-function CpCourseGeneratorSettings:raiseCallback(callbackStr)
-    SpecializationUtil.raiseEvent(self,callbackStr)
+---@param callbackStr string event to be raised
+---@param setting AIParameterSettingList setting that raised the callback.
+function CpCourseGeneratorSettings:raiseCallback(callbackStr, setting, ...)
+    SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
 end
 
 function CpCourseGeneratorSettings:setAutomaticWorkWidth()

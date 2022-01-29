@@ -69,9 +69,12 @@ function CpGlobalSettings:getSettingSetup()
 	return self.settingsBySubTitle,self.pageTitle
 end
 
-function CpGlobalSettings:raiseCallback(callbackStr,...)
+--- Callback raised by a setting.
+---@param callbackStr string function to be executed.
+---@param setting AIParameterSettingList setting that raised the callback.
+function CpGlobalSettings:raiseCallback(callbackStr, setting, ...)
     if self[callbackStr] then 
-        self[callbackStr](self,...)
+        self[callbackStr](self, setting, ...)
     end
 end
 
