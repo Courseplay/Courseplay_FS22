@@ -1854,8 +1854,8 @@ function Course:addWaypointsForRows()
 	self:enrichWaypointData()
 end
 
---- Gets waypoints without waypoints in between a row start and row end. 
-function Course:removeWaypointsBetweenRows()
+--- Removes waypoints between the rows, as they can be generated after the loading of the course.
+function Course:removesWaypointsBetweenRows()
 	local waypoints = {}
 	local lastTurnStart = nil
 	for i = 1, #self.waypoints do
@@ -1887,7 +1887,7 @@ function Course:serializeWaypoints()
 	end
 
 	local serializedWaypoints = '\n' -- (pure cosmetic)
-	for _, p in ipairs(self:removeWaypointsBetweenRows()) do
+	for _, p in ipairs(self:removesWaypointsBetweenRows()) do
 		-- we are going to celebrate once we get rid of the cx, cz variables!
 		local x, z = p.x or p.cx, p.z or p.cz
 		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
@@ -1948,6 +1948,8 @@ function Course:saveToXml(courseXml, courseKey)
 	courseXml:setValue(courseKey  .. '#workWidth',self.workWidth or 0)
 	courseXml:setValue(courseKey  .. '#numHeadlands',self.numHeadlands or 0)
 	courseXml:setValue(courseKey  .. '#multiTools',self.multiTools or 0)
+	--- For backward compatibility a flag is set to indicate, that the waypoints between rows are not saved. 
+	courseXml:setValue(courseKey  .. '#isCompressed',true)
 	courseXml:setValue(courseKey  .. '#isSavedAsFile',self:isSavedAsFile() or false)
 	courseXml:setValue(courseKey  .. '.waypoints',self:serializeWaypoints())
 end
@@ -1969,6 +1971,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	local numHeadlands = courseXml:getValue( courseKey .. '#numHeadlands')
 	local multiTools = courseXml:getValue( courseKey .. '#multiTools')
 	local savedAsFile = courseXml:getValue( courseKey .. '#isSavedAsFile')
+	local isCompressed = courseXml:getValue(courseKey  .. '#isCompressed')
 	local serializedWaypoints = courseXml:getValue( courseKey .. '.waypoints')
 
 	local course = Course(vehicle, Course.deserializeWaypoints(serializedWaypoints))
@@ -1977,7 +1980,9 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
 	course:setSavedAsFile(savedAsFile)
-	course:addWaypointsForRows()
+	if isCompressed then
+		course:addWaypointsForRows()
+	end
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
