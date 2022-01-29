@@ -69,6 +69,16 @@ function CustomFieldManager:addField(waypoints)
     })
 end
 
+
+function CustomFieldManager:deleteField(fieldToDelete)
+    g_gui:showYesNoDialog({
+        text = string.format(g_i18n:getText("CP_customFieldManager_confirm_delete"), fieldToDelete:getName()),
+        callback = CustomFieldManager.onClickDeleteDialog,
+        target = self,
+        args = fieldToDelete
+    })
+end
+
 --- Creates a new directory with a given name.
 function CustomFieldManager:onClickSaveDialog(clickOk, field)
     if clickOk then
@@ -76,6 +86,22 @@ function CustomFieldManager:onClickSaveDialog(clickOk, field)
         table.insert(self.fields, field)
         field:saveToXml(self.fileSystem:getRootDirectory())
         self.fileSystem:refresh()
+    end
+end
+
+function CustomFieldManager:onClickDeleteDialog(clickOk, fieldToDelete)
+    if clickOk then
+        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Deleting custom field %s', fieldToDelete:getName())
+        for i, field in pairs(self.fields) do
+            if field == fieldToDelete then
+                self.fileSystem:getRootDirectory():deleteFile(field:getFileName())
+                field:delete()
+                table.remove(self.fields, i)
+                self.fileSystem:refresh()
+                return
+            end
+        end
+        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Custom field %s not found, not deleted', fieldToDelete:getName())
     end
 end
 

@@ -14,7 +14,7 @@ function CustomFieldHotspot:getCategory()
 end
 
 function CustomFieldHotspot:setField(field)
-	CustomFieldHotspot:superClass().setField(self,field)
+	CustomFieldHotspot:superClass().setField(self, field)
 
 	self.clickArea = MapHotspot.getClickArea(
 		{
@@ -31,6 +31,6 @@ function CustomFieldHotspot:setField(field)
 end
 
 function CustomFieldHotspot:onClick()
-	CpUtil.debugFormat(CpDebug.DBG_HUD,"Custom field hotspot %s pressed.",self.name)	
-	
+	CpUtil.debugFormat(CpDebug.DBG_HUD,"Custom field hotspot %s clicked.", self.name)
+	g_customFieldManager:deleteField(self.field)
 end

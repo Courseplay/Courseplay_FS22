@@ -44,6 +44,13 @@ function CustomField:init(name, vertices)
     self.fieldPlot:setVisible(true)
 end
 
+function CustomField:delete()
+    if self.fieldHotspot then
+        g_currentMission:removeMapHotspot(self.fieldHotspot)
+        self.fieldHotspot:delete()
+    end
+end
+
 function CustomField:addHotspot()
     self.fieldHotspot = CustomFieldHotspot.new()
     self.fieldHotspot:setField(self)
@@ -66,7 +73,12 @@ end
 
 -- FieldHotspot needs this
 function CustomField:getName()
+    -- prefix custom field numbers
     return 'CP-' .. self.name
+end
+
+function CustomField:getFileName()
+    return self.name
 end
 
 function CustomField:getVertices()
