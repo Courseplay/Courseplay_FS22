@@ -1854,6 +1854,25 @@ function Course:addWaypointsForRows()
 	self:enrichWaypointData()
 end
 
+--- Gets waypoints without waypoints in between a row start and row end. 
+function Course:removeWaypointsBetweenRows()
+	local waypoints = {}
+	local lastTurnStart = nil
+	for i = 1, #self.waypoints do
+		local p = self.waypoints[i]
+		if self:isTurnEndAtIx(i) then 
+			lastTurnStart = nil
+		end
+		if lastTurnStart == nil then 
+			table.insert(waypoints,p)
+		end
+		if self:isTurnStartAtIx(i) then 
+			lastTurnStart = i
+		end
+	end
+	return waypoints
+end
+
 --- Use a single XML node to store all waypoints. Waypoints are separated by a '|' and a newline, latter for better
 --- readability only.
 --- The attributes of individual waypoints are separated by a ';', the order of the attributes can be read from the
@@ -1868,7 +1887,7 @@ function Course:serializeWaypoints()
 	end
 
 	local serializedWaypoints = '\n' -- (pure cosmetic)
-	for _, p in ipairs(self.waypoints) do
+	for _, p in ipairs(self:removeWaypointsBetweenRows()) do
 		-- we are going to celebrate once we get rid of the cx, cz variables!
 		local x, z = p.x or p.cx, p.z or p.cz
 		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
@@ -1958,6 +1977,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
 	course:setSavedAsFile(savedAsFile)
+	course:addWaypointsForRows()
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
@@ -1973,7 +1993,6 @@ function Course.createFromStream(vehicle,streamId, connection)
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
-
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
