@@ -14,7 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Destino não é um campo." />
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Posição no campo:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniciar em:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniciar em:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Onde começar o trabalho no campo" />
@@ -22,16 +22,16 @@
 		<text name="CP_jobParameters_startAt_first"														text="primeiro waypoint" />
 		<text name="CP_jobParameters_startAt_last"														text="último waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="descarregando colheitadeira" />
-		<text name="CP_jobParameters_startAt_bales"														text="coletando / embalando fardos" />
+		<text name="CP_jobParameters_startAt_bales"														text="coletar / embalar fardos" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Distância da faixa:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Distância da faixa:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Distância da faixa" />
+		<text name="CP_jobParameters_laneOffset_center"													text="centro" />
+		<text name="CP_jobParameters_laneOffset_left"													text="esquerda(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="direita(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="esquerda(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="direita(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Trabalho no campo" />
