@@ -93,31 +93,17 @@ end
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
 	self:debug('AIDriveStrategyCombineCourse set')
-	if self.vehicle.spec_combine then
-		self.combine = self.vehicle.spec_combine
-	else
-		local combineImplement = AIUtil.getImplementWithSpecialization(self.vehicle, Combine)
-        local peletizerImplement = FS19_addon_strawHarvest and
-				AIUtil.getAIImplementWithSpecialization(self.vehicle, FS19_addon_strawHarvest.StrawHarvestPelletizer) or nil
-		if combineImplement then
-			self.combine = combineImplement.spec_combine
-        elseif peletizerImplement then
-            self.combine = peletizerImplement
-            self.combine.fillUnitIndex = 1
-            self.combine.spec_aiImplement.rightMarker = self.combine.rootNode
-            self.combine.spec_aiImplement.leftMarker  = self.combine.rootNode
-            self.combine.spec_aiImplement.backMarker  = self.combine.rootNode
-			self.combine.isPremos = true --- This is needed as there is some logic in the CombineUnloadManager for it.
-		else
-			self:error('Vehicle is not a combine and could not find implement with spec_combine')
-		end
-	end
+
+	self.combine = ImplementUtil.findCombineObject(self.vehicle)
+	ImplementUtil.setPipeAttributes(self, self.vehicle, self.combine)
 
 	if self:isChopper() then
 		self:debug('This is a chopper.')
 	end
 
-	self:setUpPipe()
+	local dischargeNode = self:getCurrentDischargeNode()
+	self:fixDischargeDistance(dischargeNode)
+
 	self:checkMarkers()
 
 	-- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
@@ -1152,78 +1138,6 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Pipe handling
 -----------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyCombineCourse:setUpPipe()
-	if self.vehicle.spec_pipe then
-		self.pipe = self.vehicle.spec_pipe
-		self.objectWithPipe = self.vehicle
-	else
-		local implementWithPipe = AIUtil.getImplementWithSpecialization(self.vehicle, Pipe)
-		if implementWithPipe then
-			self.pipe = implementWithPipe.spec_pipe
-			self.objectWithPipe = implementWithPipe
-		else
-			self:info('Could not find implement with pipe')
-		end
-	end
-
-	if self.pipe then
-		-- check the pipe length:
-		-- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
-		local wasFolded, wasClosed
-		if self.vehicle.spec_foldable then
-			wasFolded = not self.vehicle.spec_foldable:getIsUnfolded()
-			if wasFolded then
-				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 0 or 1, true)
-			end
-		end
-		if self.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
-			wasClosed = true
-			if self.pipe.animation.name then
-				self.pipe:setAnimationTime(self.pipe.animation.name, 1, true)
-			else
-				-- as seen in the Giants pipe code
-				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-			end
-		end
-		local dischargeNode = self:getCurrentDischargeNode()
-		self:fixDischargeDistance(dischargeNode)
-		local dx, _, _ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
-		self.pipeOnLeftSide = dx >= 0
-		self:debug('Pipe on left side %s', tostring(self.pipeOnLeftSide))
-		-- use self.combine so attached harvesters have the offset relative to the harvester's root node
-		-- (and thus, does not depend on the angle between the tractor and the harvester)
-		self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
-		self:debug('Pipe offset: x = %.1f, z = %.1f', self.pipeOffsetX, self.pipeOffsetZ)
-		if wasClosed then
-			if self.pipe.animation.name then
-				self.pipe:setAnimationTime(self.pipe.animation.name, 0, true)
-			else
-				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-			end
-		end
-		if self.vehicle.spec_foldable then
-			if wasFolded then
-				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
-				-- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
-				-- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
-				Foldable.actionControllerFoldEvent(self.vehicle, -1)
-				Foldable.actionControllerFoldEvent(self.vehicle, 1)
-			end
-		end
-	else
-		-- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
-		-- periodically even when CP isn't driving, and even for cotton harvesters...
-		self.pipeOffsetX, self.pipeOffsetZ = 0, 0
-		self.pipeOnLeftSide = true
-	end
-end
-
 function AIDriveStrategyCombineCourse:handlePipe(dt)
 	if self.pipe then
 		if self:isChopper() then

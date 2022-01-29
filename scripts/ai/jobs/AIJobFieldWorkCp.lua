@@ -155,7 +155,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.rowsPerLand:getValue(),
 			settings.islandBypassMode:getValue(),
 			settings.fieldMargin:getValue(),
-			settings.multiTools:getValue()
+			settings.multiTools:getValue(),
+			self:isPipeOnLeftSide(vehicle)
 	)
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then
@@ -167,6 +168,17 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	end
 
 	vehicle:setFieldWorkCourse(course)
+end
+
+function AIJobFieldWorkCp:isPipeOnLeftSide(vehicle)
+	if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Combine) then
+		local pipeAttributes = {}
+		local combine = ImplementUtil.findCombineObject(vehicle)
+		ImplementUtil.setPipeAttributes(pipeAttributes, vehicle, combine)
+		return pipeAttributes.pipeOnLeftSide
+	else
+		return true
+	end
 end
 
 function AIJobFieldWorkCp:getPricePerMs()

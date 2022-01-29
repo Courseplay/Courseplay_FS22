@@ -355,3 +355,105 @@ function ImplementUtil.isChopper(implement)
     local spec = implement and  implement.spec_combine
 	return spec and implement:getFillUnitCapacity(spec.fillUnitIndex) > 10000000
 end
+
+--- Find the object to use as the combine
+function ImplementUtil.findCombineObject(vehicle)
+    local combine
+    if vehicle.spec_combine then
+        combine = vehicle.spec_combine
+    else
+        local combineImplement = AIUtil.getImplementWithSpecialization(vehicle, Combine)
+        local peletizerImplement = FS19_addon_strawHarvest and
+                AIUtil.getAIImplementWithSpecialization(vehicle, FS19_addon_strawHarvest.StrawHarvestPelletizer) or nil
+        if combineImplement then
+            combine = combineImplement.spec_combine
+        elseif peletizerImplement then
+            combine = peletizerImplement
+            combine.fillUnitIndex = 1
+            combine.spec_aiImplement.rightMarker = combine.rootNode
+            combine.spec_aiImplement.leftMarker  = combine.rootNode
+            combine.spec_aiImplement.backMarker  = combine.rootNode
+            combine.isPremos = true --- This is needed as there is some logic in the CombineUnloadManager for it.
+        else
+            CpUtil.infoVehicle(vehicle, 'Vehicle is not a combine and could not find implement with spec_combine')
+        end
+    end
+    return combine
+end
+
+--- Set all pipe related attributes on object for a vehicle:
+--- pipe, objectWithPipe, pipeOnLeftSide, pipeOffsetX, pipeOffsetZ
+---@param object table object we want to decorate with these attributes
+---@param vehicle table
+---@param combine table combine object, see ImplementUtil.findCombineObject()
+function ImplementUtil.setPipeAttributes(object, vehicle, combine)
+    if vehicle.spec_pipe then
+        object.pipe = vehicle.spec_pipe
+        object.objectWithPipe = vehicle
+    else
+        local implementWithPipe = AIUtil.getImplementWithSpecialization(vehicle, Pipe)
+        if implementWithPipe then
+            object.pipe = implementWithPipe.spec_pipe
+            object.objectWithPipe = implementWithPipe
+        else
+            CpUtil.infoVehicle(vehicle, 'Could not find implement with pipe')
+        end
+    end
+
+    if object.pipe then
+        -- check the pipe length:
+        -- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
+        local wasFolded, wasClosed
+        if vehicle.spec_foldable then
+            wasFolded = not vehicle.spec_foldable:getIsUnfolded()
+            if wasFolded then
+                Foldable.setAnimTime(vehicle.spec_foldable, vehicle.spec_foldable.startAnimTime == 1 and 0 or 1, true)
+            end
+        end
+        if object.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
+            wasClosed = true
+            if object.pipe.animation.name then
+                object.pipe:setAnimationTime(object.pipe.animation.name, 1, true)
+            else
+                -- as seen in the Giants pipe code
+                object.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
+                object.objectWithPipe:updatePipeNodes(999999, nil)
+                -- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
+                object.objectWithPipe:updatePipeNodes(999999, nil)
+            end
+        end
+        local dischargeNode = combine:getCurrentDischargeNode()
+        local dx, _, _ = localToLocal(dischargeNode.node, combine.rootNode, 0, 0, 0)
+        object.pipeOnLeftSide = dx >= 0
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe on left side %s', tostring(object.pipeOnLeftSide))
+        -- use combine so attached harvesters have the offset relative to the harvester's root node
+        -- (and thus, does not depend on the angle between the tractor and the harvester)
+        object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node, combine.rootNode, 0, 0, 0)
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle,'Pipe offset: x = %.1f, z = %.1f',
+                object.pipeOffsetX, object.pipeOffsetZ)
+        if wasClosed then
+            if object.pipe.animation.name then
+                object.pipe:setAnimationTime(object.pipe.animation.name, 0, true)
+            else
+                object.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
+                object.objectWithPipe:updatePipeNodes(999999, nil)
+                -- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
+                object.objectWithPipe:updatePipeNodes(999999, nil)
+            end
+        end
+        if vehicle.spec_foldable then
+            if wasFolded then
+                Foldable.setAnimTime(vehicle.spec_foldable, vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
+                -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
+                -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
+                Foldable.actionControllerFoldEvent(vehicle, -1)
+                Foldable.actionControllerFoldEvent(vehicle, 1)
+            end
+        end
+    else
+        -- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
+        -- periodically even when CP isn't driving, and even for cotton harvesters...
+        object.pipeOffsetX, object.pipeOffsetZ = 0, 0
+        object.pipeOnLeftSide = true
+    end
+end
