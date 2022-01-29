@@ -55,6 +55,10 @@ function CustomFieldManager:getNewFieldNumber()
 end
 
 function CustomFieldManager:addField(waypoints)
+    if #waypoints < 10 then
+        CpUtil.info('Recorded course has less than 10 waypoints, ignoring.')
+        return
+    end
     ---@type CustomField
     local newField = CustomField(self:getNewFieldNumber(), waypoints)
     g_gui:showYesNoDialog({

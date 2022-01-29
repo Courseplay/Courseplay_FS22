@@ -193,18 +193,18 @@ end
 
 
 function CpCourseManager:cpUpdateWaypointVisibility()
-    g_courseDisplay:updateWaypointSigns(self)
+    g_courseDisplay:setSignsVisibility(self, true, self:getCpSettings().showCourse:getValue());
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
     if isControlling then
-        g_courseDisplay:setSignsVisibility(self);
+        g_courseDisplay:setSignsVisibility(self, true, self:getCpSettings().showCourse:getValue());
     end
 end
 
 function CpCourseManager:onLeaveVehicle(wasEntered)
     if wasEntered then
-        g_courseDisplay:setSignsVisibility(self, true);
+        g_courseDisplay:setSignsVisibility(self, false, self:getCpSettings().showCourse:getValue());
     end
 end
 
@@ -220,8 +220,8 @@ function CpCourseManager:onCpCourseChange(newCourse)
     end
     if g_client then
         CpCourseManager.updateLegacyWaypoints(self)
-        g_courseDisplay:updateWaypointSigns(self)
-        g_courseDisplay:setSignsVisibility(self, not self:getIsControlled())
+        g_courseDisplay:updateWaypointSigns(self, self:getCpLegacyWaypoints())
+        g_courseDisplay:setSignsVisibility(self, self:getIsControlled(), self:getCpSettings().showCourse:getValue())
 	end
 end
 
@@ -362,9 +362,6 @@ end
 function CpCourseManager:cpStopCourseRecorder()
     local spec = self.spec_cpCourseManager
     spec.courseRecorder:stop()
-    --local recordedCourse = spec.courseRecorder:getRecordedCourse()
-    --CpCourseManager.resetCourses(self)
-    --CpCourseManager.addCourse(self, recordedCourse)
     g_customFieldManager:addField(spec.courseRecorder:getRecordedWaypoints())
 end
 

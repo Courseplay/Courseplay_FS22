@@ -27,11 +27,14 @@ function CourseRecorder:start(vehicle)
     self:debug('Course recording started')
     self.waypoints = {}
     self:addWaypoint(self:getVehiclePositionAsWaypoint())
+    g_courseDisplay:updateWaypointSigns(self, self.waypoints)
+    g_courseDisplay:setSignsVisibility(self, true, CpVehicleSettings.SHOW_COURSE_ALL)
 end
 
 function CourseRecorder:stop()
     self.recording = false
     self:debug('Course recording stopped, recorded %d waypoints', #self.waypoints)
+    g_courseDisplay:setSignsVisibility(self, false, CpVehicleSettings.SHOW_COURSE_ALL)
 end
 
 function CourseRecorder:isRecording()
@@ -48,7 +51,7 @@ end
 
 function CourseRecorder:addWaypoint(waypoint)
     table.insert(self.waypoints, waypoint)
-    g_courseDisplay:addSign(self.vehicle, nil, waypoint.x, waypoint.z, nil,
+    g_courseDisplay:addSign(self, nil, waypoint.x, waypoint.z, nil,
             math.deg(waypoint.yRot), nil, nil, 'regular');
 end
 
