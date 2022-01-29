@@ -191,9 +191,8 @@ function CpCourseManager:hasCourse()
     return next(spec.courses) ~= nil
 end
 
-
-function CpCourseManager:cpUpdateWaypointVisibility()
-    g_courseDisplay:setSignsVisibility(self, true, self:getCpSettings().showCourse:getValue());
+function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
+    g_courseDisplay:setSignsVisibility(self, true, showCourseSetting:getValue());
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
