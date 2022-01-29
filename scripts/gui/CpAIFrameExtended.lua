@@ -85,21 +85,18 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	end 
 	self.buttonBack.onClickCallback = Utils.overwrittenFunction(self.buttonBack.onClickCallback,onClickBack)
 	self.ingameMapBase.drawHotspotsOnly = Utils.appendedFunction(self.ingameMapBase.drawHotspotsOnly , CpInGameMenuAIFrameExtended.draw)
-<<<<<<< HEAD
-	
+
 	--- Adds a second map hotspot for field position.
 	self.secondAiTargetMapHotspot = AITargetHotspot.new()
 	self.secondAiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
 	self.createPositionTemplate.onClickCallback = Utils.prependedFunction(self.createPositionTemplate.onClickCallback,
 															CpInGameMenuAIFrameExtended.onClickPositionParameter)
-=======
-	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback, CpInGameMenuAIFrameExtended.onClickHotspot)
-
-
->>>>>>> fc949a6 (Added on clickable callback for custom field hot spots.)
+	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
+			CpInGameMenuAIFrameExtended.onClickHotspot)
 
 end
-InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
+InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,
+		CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
 
 --- Updates the generate button visibility in the ai menu page.
@@ -274,7 +271,6 @@ function CpInGameMenuAIFrameExtended:draw()
 	g_customFieldManager:draw(self)
 end
 
-<<<<<<< HEAD
 function CpInGameMenuAIFrameExtended:delete()
 	if self.secondAiTargetMapHotspot ~= nil then
 		self.secondAiTargetMapHotspot:delete()
