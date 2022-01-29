@@ -58,7 +58,7 @@ function CustomFieldManager:addField(waypoints)
     ---@type CustomField
     local newField = CustomField(self:getNewFieldNumber(), waypoints)
     g_gui:showYesNoDialog({
-        text = string.format('Do you want to save the recorded course as custom field %s?', newField:getName()),
+        text = string.format(g_i18n:getText("CP_customFieldManager_confirm_save"), newField:getName()),
         callback = CustomFieldManager.onClickSaveDialog,
         target = self,
         args = newField
