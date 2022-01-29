@@ -45,7 +45,7 @@ function CustomField:init(name, vertices)
 end
 
 function CustomField:addHotspot()
-    self.fieldHotspot = FieldHotspot.new()
+    self.fieldHotspot = CustomFieldHotspot.new()
     self.fieldHotspot:setField(self)
     self.fieldHotspot:setOwnerFarmId(g_currentMission.player.farmId)
     g_currentMission:addMapHotspot(self.fieldHotspot)
