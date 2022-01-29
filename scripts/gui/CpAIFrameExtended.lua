@@ -349,3 +349,9 @@ function CpInGameMenuAIFrameExtended:executePickingCallback(...)
 end
 InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFrame.executePickingCallback,
 															CpInGameMenuAIFrameExtended.executePickingCallback)
+
+function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
+	if hotspot and hotspot:isa(CustomFieldHotspot) then 
+		hotspot:onClick()
+	end
+end
