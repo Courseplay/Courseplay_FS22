@@ -25,7 +25,7 @@ function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
 	schema:register(XMLValueType.INT, baseKey .. "#numHeadlands", "Course number of headlands")
 	schema:register(XMLValueType.INT, baseKey .. "#multiTools", "Course multi tools")
     schema:register(XMLValueType.BOOL, baseKey .. "#isSavedAsFile", "Course is saved as file or temporary ?",false)
-    schema:register(XMLValueType.STRING, baseKey .. "#isCompressed", "Waypoints between rows were removed.")
+    schema:register(XMLValueType.BOOL, baseKey .. "#isCompressed", "Waypoints between rows were removed.")
 	schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints")
 end
 
