@@ -100,8 +100,9 @@ function AIJobFieldWorkCp:validate(farmId)
 			self.hasValidPosition = false
 			return false, g_i18n:getText("CP_error_not_on_field")
 		else
-			CpUtil.infoVehicle(vehicle, 'Custom field found: %s', customField:getName())
+			CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
 			self.fieldPolygon = customField:getVertices()
+			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
 		end
 	end
 	if vehicle then

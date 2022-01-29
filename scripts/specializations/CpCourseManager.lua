@@ -362,20 +362,19 @@ end
 function CpCourseManager:cpStopCourseRecorder()
     local spec = self.spec_cpCourseManager
     spec.courseRecorder:stop()
-    local recordedCourse = spec.courseRecorder:getRecordedCourse()
-    CpCourseManager.resetCourses(self)
-    CpCourseManager.addCourse(self, recordedCourse)
+    --local recordedCourse = spec.courseRecorder:getRecordedCourse()
+    --CpCourseManager.resetCourses(self)
+    --CpCourseManager.addCourse(self, recordedCourse)
     g_customFieldManager:addField(spec.courseRecorder:getRecordedWaypoints())
 end
 
---- TODO
+
 function CpCourseManager:getIsCpCourseRecorderActive()
     local spec = self.spec_cpCourseManager
- --   return spec.courseRecorder
+    return spec.courseRecorder and spec.courseRecorder:isRecording()
 end
 
---- TODO
+--- can only start recording when CP is not driving (actually, it would work, should later consider)
 function CpCourseManager:getCanStartCpCourseRecorder()
-    local spec = self.spec_cpCourseManager
-    
+    return not self:getIsCpActive()
 end

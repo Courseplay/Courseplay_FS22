@@ -29,16 +29,12 @@ function CoursePlot:init()
 	self.stopPosition = {}
 	self.isVisible = false
 	-- the normal FS22 blue
-	self.color = {self:normalizeRgb(42, 193, 237)}
+	self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
 	-- a lighter shade of the same color
-	self.lightColor = {self:normalizeRgb(45, 207, 255)}
+	self.lightColor = {CpGuiUtil.getNormalizedRgb(45, 207, 255)}
 	-- a darker shade of the same color
-	self.darkColor = {self:normalizeRgb(19, 87, 107)}
+	self.darkColor = {CpGuiUtil.getNormalizedRgb(19, 87, 107)}
 	self.lineThickness = 2 / g_screenHeight -- 2 pixels
-end
-
-function CoursePlot:normalizeRgb(r, g, b)
-	return r / 255, g / 255, b / 255
 end
 
 function CoursePlot:delete()

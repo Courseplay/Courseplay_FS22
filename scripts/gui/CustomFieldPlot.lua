@@ -23,8 +23,8 @@ CustomFieldPlot = CpObject(CoursePlot)
 function CustomFieldPlot:init()
 	CoursePlot.init(self)
 	-- use same color for the entire plot
-	self.lightColor = {self:normalizeRgb(38, 174, 214)}
-	self.darkColor = {self:normalizeRgb(38, 174, 214)}
+	self.lightColor = {CpGuiUtil.getNormalizedRgb(38, 174, 214)}
+	self.darkColor = {CpGuiUtil.getNormalizedRgb(38, 174, 214)}
 	-- use a thicker line
 	self.lineThickness = 4 / g_screenHeight
 end

@@ -56,10 +56,23 @@ end
 
 function CustomFieldManager:addField(waypoints)
     ---@type CustomField
-    local field = CustomField(self:getNewFieldNumber(), waypoints)
-    table.insert(self.fields, field)
-    field:saveToXml(self.fileSystem:getRootDirectory())
-    self.fileSystem:refresh()
+    local newField = CustomField(self:getNewFieldNumber(), waypoints)
+    g_gui:showYesNoDialog({
+        text = string.format('Do you want to save the recorded course as custom field %s?', newField:getName()),
+        callback = CustomFieldManager.onClickSaveDialog,
+        target = self,
+        args = newField
+    })
+end
+
+--- Creates a new directory with a given name.
+function CustomFieldManager:onClickSaveDialog(clickOk, field)
+    if clickOk then
+        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Saving custom field %s', field:getName())
+        table.insert(self.fields, field)
+        field:saveToXml(self.fileSystem:getRootDirectory())
+        self.fileSystem:refresh()
+    end
 end
 
 function CustomFieldManager:getCustomField(x, z)

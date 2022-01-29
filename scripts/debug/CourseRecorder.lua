@@ -15,7 +15,7 @@ function CourseRecorder:update()
     local previousWaypoint = self.waypoints[#self.waypoints]
     local dist = previousWaypoint:getDistanceFromVehicle(self.vehicle)
     local angleDiff = math.abs(waypoint.yRot - previousWaypoint.yRot)
-    if dist > 5 or angleDiff > math.rad(5) then
+    if dist > 5 or angleDiff > math.rad(10) then
         self:addWaypoint(waypoint)
         self:debug('Recorded waypoint %d.', #self.waypoints)
     end
@@ -32,6 +32,10 @@ end
 function CourseRecorder:stop()
     self.recording = false
     self:debug('Course recording stopped, recorded %d waypoints', #self.waypoints)
+end
+
+function CourseRecorder:isRecording()
+    return self.recording
 end
 
 function CourseRecorder:getRecordedCourse()
