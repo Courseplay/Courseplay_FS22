@@ -9,13 +9,13 @@
 		
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Aby uzyskać pomoc, zgłosić błąd lub przeczytać informacje o aktualizacji, odwiedź: https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="Wygeneruj kurs przed ropoczęciem pracy." />
+		<text name="CP_error_no_course"																	text="Wygeneruj kurs przed rozpoczęciem pracy." />
 		<text name="CP_error_could_not_generate_course"													text="Nie udało się wygenerować kursu. Więcej informacji w pliku LOG." />
 		<text name="CP_error_not_on_field"																text="Cel nie jest na polu." />
 
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Pozycja na polu:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Rozpocznij od:" />
 		<text name="CP_jobParameters_startAt_title"														text="Rozpocznij od:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Ustala gdzie zacząć pracę polową." />
@@ -54,7 +54,7 @@
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Ustawienia siewników"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Ustawienia wielu narzędzi"/>
 		<text name="CP_vehicle_setting_subTitle_speed" 													text="Prędkości"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="Ustawieanie debugowania"/>
+		<text name="CP_vehicle_setting_subTitle_debug" 													text="Ustawienia debugowania"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="Pokaż kurs"/>
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Pokazuje obecny kurs pojazdu."/>
@@ -62,8 +62,8 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Tylko początek i koniec"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Wszystkie punkty trasy"/>
 
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otwieranie HUDa myszką"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Gdy wyłączone, HUD może być otwarty tylko za pomocą skrótu klawiszowego."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zatrzymaj na końcu"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ustala czy kierowca powinien zatrzymać się w ostatnim punkcie trasy."/>
@@ -72,7 +72,7 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Czy zezwolić w określonych przypadkach na generowanie kursów zawierających jazdę do tyłu w celu znalezienia ścieżki trasy."/>
 
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Zezwól na zawracanie dla znalezienia ścieżki"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Czy zezwolić na używanie znajdywania ściężki przy zawracaniu, aby np. omijać przeszkody i rośliny."/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Czy zezwolić na używanie znajdywania ścieżki przy zawracaniu, aby np. omijać przeszkody i rośliny."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Złóż narzędzie po zakończeniu kursu"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Ustala czy pracownik ma złożyć narzędzie po zakończeniu kursu."/>
@@ -93,14 +93,14 @@
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Unikaj ugniatania upraw"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Pracownik spróbuje uniknąć jazdy na skróty przez uprawy."/>
 
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Przesunięcie horyzontalne dla narzędzi"/>
+		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Przes. poziome dla narzędzi"/>
 		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Przesunięcie horyzontalne dla narzędzi."/>
 
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Przesunięcie wertykalne dla narzędzi"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Przes. pionowe dla narzędzi"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne dla narzędzi."/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Szerokość zawracania"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Szerokość zawracania. Value: 2 - 50"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Szerokość zawracania. Zakres: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Zawsze rozłóż rurę"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
@@ -127,8 +127,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetryczna zmiana ścieżki"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetryczna zmiana ścieżki."/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Dystans komwoju"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w komwoju. Zakres: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Dystans konwoju"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w konwoju. Zakres: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Prace polowe"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Zakres: 5 - 50"/>
@@ -204,7 +204,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rzędów" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Wiele maszyn" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Ilość pojazdów pracyujących na tym samym kurcie." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Ilość pojazdów pracujących na tym samym kurcie." />
 
 
 	<!-- GlobalSettings -->
@@ -272,8 +272,8 @@
 		<text name="CP_courseManager_activate"															text="Aktywuj"/>
 
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Czy chcesz zapisać nagrany kurs jako nowe pole %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Czy chcesz usunąć nowe pole %s?"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
@@ -292,10 +292,10 @@ A: Kliknięcie nazwy pojazdu otwiera stronę konfiguracji pojazdu.
 B: Przełącz miejsce rozpoczęcia kursu jednym kliknięciem.
 C: Klikając na nazwę kursu, otworzysz menu AI z otwartym generatorem kursów.
 D: Uruchom pomocnika Courseplay.
-E: Pokazuje aktualne/wszystkie punkty trasy. Click to open the course manager.
-F: Kliknięcie na ikonę otwiera stornę z głównymi ustawieniami.
+E: Pokazuje aktualne/wszystkie punkty trasy. Kliknij aby otworzyć menadżer kursów.
+F: Kliknięcie na ikonę otwiera stronę z głównymi ustawieniami.
 G: Zamyka HUD.
-H: Zwiększa i zmniejsza szerokość roboczą. Czerwona linia na twoim pojeździe pokazuje obece ustawienia.
+H: Zwiększa i zmniejsza szerokość roboczą. Czerwona linia na twoim pojeździe pokazuje obecne ustawienia.
 I: Wartość przesunięcia horyzontalnego, + w lewo, - w prawo.
 J: Wartość przesunięcia wertykalnego, + do tyłu, - do przodu.
 K, L i M: Kliknięcie na tekst zresetuje ustawienia do wartości automatycznych.
