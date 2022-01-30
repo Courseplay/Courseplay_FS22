@@ -276,6 +276,10 @@
 		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
 
+	<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<text name="CP_help_page_courseManager_title"													text="Управление курсами"/>
