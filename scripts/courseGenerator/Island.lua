@@ -199,7 +199,7 @@ end
 
 function Island.showPassOrTrackNumber( p )
 	if p.passNumber then return string.format( 'pass %d', p.passNumber ) end
-	if p.trackNumber then return string.format( 'track %d', p.trackNumber ) end
+	if p.rowNumber then return string.format( 'row %d', p.rowNumber ) end
 end
 
 function Island.findNodeWithinDistance( node, otherNodes, d )
@@ -327,7 +327,7 @@ function Island:insertWaypoint( course, ix, wp, sampleWp )
 	CourseGenerator.debug( "Island %d: adding a waypoint (%.1f, %.1f) at %d.",
 		self.id, wp.x, wp.y, ix )
 	table.insert( course, ix, wp )
-	course[ ix ].trackNumber = sampleWp.trackNumber
+	course[ ix ].rowNumber = sampleWp.rowNumber
 	course[ ix ].passNumber = sampleWp.passNumber
 end
 
@@ -345,10 +345,10 @@ function Island:getIntersectionWithCourse( course, startIx, p1, p2 )
 					course[ i ].passNumber, i )
 				return i, intersectionPoint
 			end
-			if course[ startIx ].trackNumber and course[ i ].trackNumber and
-				course[ startIx ].trackNumber == course[ i ].trackNumber then
+			if course[ startIx ].rowNumber and course[ i ].rowNumber and
+				course[ startIx ].rowNumber == course[ i ].rowNumber then
 				CourseGenerator.debug( "Island %d: headland intersects track number %d at wp %d again.", self.id,
-					course[ i ].trackNumber, i )
+					course[ i ].rowNumber, i )
 				return i, intersectionPoint
 			end
 		end
@@ -485,6 +485,28 @@ function Island:rotate( angle )
 	end
 end
 
+function Island.removeTurn(course, i)
+	if course[ i ].turnStart then
+		course[ i ].turnStart = nil
+		course[ i + 1 ].turnEnd = nil
+	end
+end
+
+--- starting at i, find the first turn start waypoint in a reasonable distance
+-- and return the index of it
+function Island.skipToTurnStart(course, start, step)
+	local ix = start
+	local d = 0
+	while d < 4 * CourseGenerator.waypointDistance and ix < #course and ix > 1 do
+		if course[ ix ].turnStart then return ix end
+		d = d + course[ ix ].nextEdge.length
+		ix = ix + step
+	end
+	return start
+end
+
+
+
 --- Add island headlands to a course. 
 -- Find the first waypoint on the course which is close enough to an island headland.
 -- Switch to the island headland at that spot,
@@ -518,10 +540,10 @@ function Island.circleBigIslands( course, islands, headlandFirst, width, minSmoo
 						-- although we are close to the island, we may not be at the turn start wp yet, so
 						-- continue forward until we find it.
 						course[ i ].text = "Beforeskip"
-						i = skipToTurnStart( course, i, step )
+						i = Island.skipToTurnStart( course, i, step )
 						course[ i ].text = "Afterskip"
 						-- make sure we don't insert anything between a turn start and turn end
-						removeTurn( course, i, step )
+						Island.removeTurn(course, i)
 					else
 						-- we are on a track or headland adjacent to the island.
 						-- TODO: continue on the track for a few waypoints straight and then reverse back before

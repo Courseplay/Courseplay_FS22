@@ -233,12 +233,6 @@ function reverseCourse( course )
 		elseif newPoint.turnEnd then
 			newPoint.turnEnd = nil
 			newPoint.turnStart = true
-		elseif newPoint.mustReach then
-			newPoint.mustReach = nil
-			newPoint.align = true
-		elseif newPoint.align then
-			newPoint.align = nil
-			newPoint.mustReach = true
 		end
 		table.insert( result, newPoint )
 	end
@@ -269,8 +263,8 @@ function addTurnsToCorners( vertices, minHeadlandTurnAngle, headlandOnly)
 		local cp = vertices[ i ]
 		local np = vertices[ i + 1 ]
 		local nnp = vertices[ i + 2 ]
-		if not headlandOnly or (headlandOnly and not cp.trackNumber and not np.trackNumber) then
-			-- cp.trackNumber is set for the up/down rows where we don't want to add turn start/ends when headlandOnly is true
+		if not headlandOnly or (headlandOnly and not cp.rowNumber and not np.rowNumber) then
+			-- cp.rowNumber is set for the up/down rows where we don't want to add turn start/ends when headlandOnly is true
 			if cp.prevEdge and np.nextEdge then
 				-- start a turn at the current point only if the next one is not a start of the turn already
 				-- or not an island bypass point or a reversing waypoint
