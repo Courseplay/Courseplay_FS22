@@ -265,11 +265,9 @@ local function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, cent
 	local endTrack = #parallelTracks
 	for i = startTrack, endTrack do
 		if parallelTracks[ i ].waypoints then
-			-- use turn maneuver from one track to the other if they are close to each other
-			local useHeadlandFromPreviousRow = useHeadlandToNextRow
-			for j, point in ipairs( parallelTracks[ i ].waypoints) do
+			for j, point in ipairs(parallelTracks[ i ].waypoints) do
 				-- the first point of a track is the end of the turn (except for the first track)
-				if ( j == 1 and ( i ~= startTrack or startWithTurn ) and not useHeadlandFromPreviousRow) then
+				if ( j == 1 and ( i ~= startTrack or startWithTurn )) then
 					point.turnEnd = true
 				end
 				-- these will come in handy for the ridge markers
@@ -506,6 +504,28 @@ function findIntersections( headland, tracks, islandId )
 	end
 end
 
+-- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
+local function getDistanceToFullCover( width, angle )
+	-- with very low angles this becomes too much, in that case you need a headland, so limit it here
+	if math.abs(math.deg(angle)) < 15 then
+		angle = math.rad(15)
+	end
+	return math.abs( width / 2 / math.tan( angle ))
+end
+
+-- if the up/down tracks were perpendicular to the boundary, we'd have to cut them off
+-- width/2 meters from the intersection point with the boundary. But if we drive on to the
+-- boundary at an angle, we have to drive further if we don't want to miss fruit.
+-- Note, this also works on unrotated polygons/tracks, all we need is to use the
+-- angle difference between the up/down and headland tracks instead of just the angle
+-- of the headland track
+local function getDistanceBetweenRowEndAndHeadland(width, angle )
+	-- distance between headland centerline and side at an angle
+	-- (is width / 2 when angle is 90 degrees)
+	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
+	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
+end
+
 --- convert a list of tracks to waypoints, also cutting off
 -- the part of the track which is outside of the field.
 --
@@ -565,28 +585,6 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 	end
 	CourseGenerator.debug('Generated %d tracks for this block', #result)
 	return result
-end
-
--- if the up/down tracks were perpendicular to the boundary, we'd have to cut them off
--- width/2 meters from the intersection point with the boundary. But if we drive on to the 
--- boundary at an angle, we have to drive further if we don't want to miss fruit.
--- Note, this also works on unrotated polygons/tracks, all we need is to use the 
--- angle difference between the up/down and headland tracks instead of just the angle
--- of the headland track
-function getDistanceBetweenRowEndAndHeadland(width, angle )
-	-- distance between headland centerline and side at an angle
-	-- (is width / 2 when angle is 90 degrees)
-	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
-	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
-end
-
--- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
-function getDistanceToFullCover( width, angle )
-	-- with very low angles this becomes too much, in that case you need a headland, so limit it here
-	if math.abs(math.deg(angle)) < 15 then
-		angle = math.rad(15)
-	end
-	return math.abs( width / 2 / math.tan( angle ))
 end
 
 --- Check parallel tracks to see if the turn start and turn end waypoints
