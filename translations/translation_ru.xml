@@ -15,7 +15,7 @@
 
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Полжение на поле:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Начать с:" />
 		<text name="CP_jobParameters_startAt_title"														text="Начать с:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="С какого момента начать работу." />
@@ -273,12 +273,12 @@
 		<text name="CP_courseManager_activate"															text="Активировать"/>
 
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Вы хотите сохранить записанный курс как пользовательское поле %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Вы хотите удалить пользовательское поле %s?"/>
 
 	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
-		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+		<text name="CP_controllerGui_startRecording"													text="Начать запись пользовательского поля."/>
+		<text name="CP_controllerGui_stopRecording"														text="Завершить запись пользовательского поля."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
