@@ -492,6 +492,12 @@ end
 ---@class DirectoryView : FileSystemEntityView
 DirectoryView = CpObject(FileSystemEntityView)
 
+DirectoryView.deleteAllowed = 2 -- every level entry >= x can be deleted
+DirectoryView.renameAllowed = 2 -- every level entry >= x can be renamed
+DirectoryView.accessLevel = 2 -- every level entry >= x can be access and modified
+DirectoryView.entriesVisible = 1 -- every level entry >= x are visible
+DirectoryView.canBeOpened = 1 -- every directory entry <= x can be opened
+
 ---@param directory Directory
 function DirectoryView:init(directory,parent, level)
 	FileSystemEntityView.init(self, directory,parent, level)
@@ -549,7 +555,7 @@ end
 --- Entries with parent added.
 function DirectoryView:getEntriesWithParent()
 	local entries = {}
-	if self.level > 1 then
+	if self.level > self.entriesVisible then
 		table.insert(entries, self.parent)
 	end
 	self:collectEntries(entries)
@@ -586,19 +592,19 @@ function DirectoryView:getEntryByIndex(ix)
 end
 
 function DirectoryView:isDeleteAllowed()
-	return self.level >= 2
+	return self.level >= self.deleteAllowed
 end
 
 function DirectoryView:isRenameAllowed()
-	return self.level >= 2
+	return self.level >= self.renameAllowed
 end
 
 function DirectoryView:hasAccess()
-	return self.level > 2
+	return self.level >= self.accessLevel
 end
 
 function DirectoryView:areEntriesVisible()
-	return self.level >=1
+	return self.level >=self.entriesVisible
 end
 
 function DirectoryView:addDirectory(name)
@@ -610,7 +616,7 @@ function DirectoryView:addFile(name)
 end
 
 function DirectoryView:canOpen()
-	return self.level <2
+	return self.level <= self.canBeOpened
 end
 
 function DirectoryView:getEntryByName(name)
@@ -629,10 +635,6 @@ function FileSystem:init(baseDir, name)
 	self.rootDirectoryView = DirectoryView(self.rootDirectory,nil,0)
 	self:refresh()
 	self.currentDirectoryView = self.rootDirectoryView
-	if not g_currentMission.missionDynamicInfo.isMultiplayer then 
-		local entries = self.currentDirectoryView:getEntries()
-		self.currentDirectoryView = entries[1]
-	end
 end
 
 --- Refresh everything from disk
@@ -652,11 +654,7 @@ end
 --- Is moving backwards in the current file system tree allowed ?
 ---@return boolean
 function FileSystem:getCanIterateBackwards()
-	if not g_currentMission.missionDynamicInfo.isMultiplayer then 
-		return false
-	end
-
-	return self.currentDirectoryView ~= self.rootDirectoryView
+	return false
 end
 
 --- Moves to the parent element of the current directory.
@@ -727,3 +725,9 @@ function FileSystem:debug(...)
 	return CpUtil.debugFormat(FileSystem.debugChannel,...)	
 end
 
+--- TODO: figure out a better solution for this!
+function FileSystem:fixCourseStorageRoot()
+	self.rootDirectoryView:addDirectory("Singleplayer")
+	local entries = self.currentDirectoryView:getEntries()
+	self.currentDirectoryView = entries[1]
+end
