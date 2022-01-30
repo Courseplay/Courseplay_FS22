@@ -14,10 +14,10 @@
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Position du champ" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Sélection du champ" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Démarrage" />
 		<text name="CP_jobParameters_startAt_title"														text="Démarrage" />
-		<text name="CP_jobParameters_startAt_tooltip"													text="Début du travail dans le champ" />
+		<text name="CP_jobParameters_startAt_tooltip"													text="Point de départ du travail dans le champ" />
 		<text name="CP_jobParameters_startAt_nearest"													text="Point le plus proche" />
 		<text name="CP_jobParameters_startAt_first"														text="Premier point" />
 		<text name="CP_jobParameters_startAt_last"														text="Dernier point" />
@@ -160,7 +160,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Une valeur positive réduit la taille du champ. Une valeur négative agrandit la zone travaillée au-delà des limites du champ. Valeurs: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rangs à ignorer" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rangées qui seront ignorées lors de basculement vers la suivante pour le retour. Valeurs: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Une fois arrivé en bout de rang à l'aller, détermine combien seront ignorer pour le retour. Valeurs: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Rangs par blocs" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Détermine la quantité de rangs par blocs lorsque ce mode est sélectionné. Valeurs: 0 - 24" />
@@ -178,13 +178,13 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Par blocs (Intérieur vers extérieur)" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Angle des fourrières" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Détermine la manière de travailler les angles dans les fourrières" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Détermine la manière de travailler les coins dans les fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="Virages lissés" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Manoeuvres" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Circulaires" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Orientation des rangs" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Choix de l'orientation des rangées" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Détermine le sens des rangées" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatique" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Bords longs" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Selon un angle" />
@@ -193,10 +193,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Exprimé en degrés. 0=Nord. Utilisé uniquement lorsque votre choix d'orientation est en mode -selon un angle-. Valeurs: 0 - 175 Incrément: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Gestion des îlots" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportement du tracé lors de la présence d'îlots dans le champ" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="pas d'évitement" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="normal" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circulaire" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Comportement du tracé lors de la présence d'îlots (obstacles) dans le champ" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="Pas d'évitement" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="Evitement simple" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Circulaire" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Début du travail" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Détermine par quoi commencer le travail dans le champ" />
@@ -204,7 +204,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Rangées" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Outils multiples" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course. La distance entre les véhicules est fixée avec le paramètre convoi." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course avec le même outil. La distance entre les véhicules est fixée avec le paramètre convoi." />
 
 
 	<!-- GlobalSettings -->
@@ -272,8 +272,8 @@
 		<text name="CP_courseManager_activate"															text="Activer"/>
 
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Souhaitez-vous sauvegarder la course enregistrée comme contour de champ personnalisé %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Souhaitez-vous supprimer le champ personnalisé %s?"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
