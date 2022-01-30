@@ -98,7 +98,7 @@ function CpVehicleSettingDisplay:onLoadFinished()
 		CpVehicleSettingDisplay.loadFromXMLFile(filePath)
 		--- Setup of the mini gui.
 		CpVehicleSettingDisplay.dialog = VehicleSettingDisplayDialog.new(CpVehicleSettingDisplay.prefabSettingsData)
-		g_gui:loadGui(Utils.getFilename("config/gui/BlankScreenElement.xml",Courseplay.BASE_DIRECTORY), CpVehicleSettingDisplay.GUI_NAME, CpVehicleSettingDisplay.dialog)
+		g_gui:loadGui(Utils.getFilename("config/gui/ControllerGuiScreen.xml",Courseplay.BASE_DIRECTORY), CpVehicleSettingDisplay.GUI_NAME, CpVehicleSettingDisplay.dialog)
 		CpVehicleSettingDisplay.initialized = true
 	end
 	CpVehicleSettingDisplay.linkSettings(self)

@@ -2,12 +2,17 @@
 
 VehicleSettingDisplayDialog = {
 	CONTROLS = {
-		BLANK_ELEMENT = "blankElement",
 		BUTTON_BACK = "backButton",
 		BUTTON_START = "startButton",
+		BUTTON_RECORD= "recordButton",
 		BUTTON_LAYOUT = "bottomButtons"
 	},
 }
+VehicleSettingDisplayDialog.texts = {
+	startRecording = g_i18n:getText("CP_controllerGui_startRecording"),
+	stopRecording = g_i18n:getText("CP_controllerGui_stopRecording")
+}
+
 local VehicleSettingDisplayDialog_mt = Class(VehicleSettingDisplayDialog, ScreenElement)
 
 function VehicleSettingDisplayDialog.new(settings,target, custom_mt)
@@ -47,6 +52,10 @@ function VehicleSettingDisplayDialog:onGuiSetupFinished()
 	self.backButton:unlinkElement()
 	FocusManager:removeElement(self.backButton)
 	self.layout:addElement(self.backButton)
+
+	self.recordButton:unlinkElement()
+	FocusManager:removeElement(self.recordButton)
+	self.layout:addElement(self.recordButton)
 
 	self.layout:invalidateLayout()
 	CpGuiUtil.setTarget(self.layout,self)
@@ -98,6 +107,33 @@ function VehicleSettingDisplayDialog:onClickOk()
 		end
 
 		self.startButton:setText(text)
+	end
+end
+
+function VehicleSettingDisplayDialog:update(...)
+	VehicleSettingDisplayDialog:superClass().update(self,...)
+	if not self.vehicle then
+		return
+	end
+	if self.vehicle:getIsCpCourseRecorderActive() then 
+		self.recordButton:setDisabled(false)
+		self.recordButton:setText(self.texts.stopRecording)
+	elseif self.vehicle:getCanStartCpCourseRecorder() then 
+		self.recordButton:setDisabled(false)
+		self.recordButton:setText(self.texts.startRecording)
+	else 
+		self.recordButton:setDisabled(true)
+	end
+end
+
+function VehicleSettingDisplayDialog:onClickRecord()
+	if not self.vehicle then
+		return
+	end
+	if self.vehicle:getIsCpCourseRecorderActive() then 
+		self.vehicle:cpStopCourseRecorder()
+	elseif self.vehicle:getCanStartCpCourseRecorder() then 
+		self.vehicle:cpStartCourseRecorder()
 	end
 end
 
