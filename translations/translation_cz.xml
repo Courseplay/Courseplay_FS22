@@ -14,7 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Umístění pole:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Začátek trasy:" />
 		<text name="CP_jobParameters_startAt_title"														text="Začátek trasy:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Kde začít polní práce" />
@@ -99,7 +99,7 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Nastaví vertikální odsazení nástroje"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Poloměr otáčení"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Nastaví poloměr otáčení. Value: 2 - 50"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Nastaví poloměr otáčení. Hodnota: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Stále otevřený komín"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Otevřít komín, když je kombajn plný a čeká na vykládku"/>
@@ -130,13 +130,13 @@
 		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Vzdálenost mezi vozidly. Hodnota: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Polní práce"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli. Hodnota: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Jízda na poli"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximální rychlost při jízdě na poli. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximální rychlost při jízdě na poli. Hodnota: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Zatáčky"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximální rychlost při zatáčení. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximální rychlost při zatáčení. Hodnota: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Couvání"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximální rychlost při couvání. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximální rychlost při couvání. Hodnota: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Ladění vozidla"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Aktivovat/deaktivovat ladění tohoto vozidla."/>
@@ -147,22 +147,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Pracovní šířka" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Pracovní šířka. Value: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Pracovní šířka. Hodnota: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Počet souvratí" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Počet souvratí. Value: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Počet souvratí. Hodnota: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Souvraťový přesah" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky. Value: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Překrývání tras na souvrati jako procento pracovní šířky. Hodnota: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Okraj pole" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Kladné hodnoty zmenšují velikost pole - pro přidání bezpečné plochy kolem hranice pole. Záporné hodnoty zvětšují obdělanou plochu za hranicí pole. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Kladné hodnoty zmenšují velikost pole. Záporné hodnoty zvětšují velikost pole. Hodnota: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Řádky k přeskočení" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů. Value: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Řádky, které se mají přeskočit při přechodu na další řádek nahoru/dolů. Hodnota: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Řádků v režimu 'záhon'" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku. Value: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku. Hodnota: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček" />
@@ -189,7 +189,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuální" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Úhel trasy řádku" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Úhel trasy řádku pokud je manuální (0° je sever). Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Úhel trasy řádku pokud je manuální (0° je sever). Hodnota: 0 - 175 Krok: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Režim ostrova" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Jak má trasa obcházet remízky na poli." />
@@ -270,8 +270,8 @@
 		<text name="CP_courseManager_activate"															text="Aktivovat"/>
 
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Chcete odstranit vlastní pole %s?"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
