@@ -113,6 +113,7 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.turnEnd = wp.turnEnd
 	waypoint.isConnectingTrack = wp.isConnectingTrack or nil
 	waypoint.lane = wp.passNumber and -wp.passNumber
+	waypoint.rowNumber = wp.rowNumber
 	waypoint.ridgeMarker = wp.ridgeMarker
 	return waypoint
 end
