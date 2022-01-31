@@ -2,8 +2,8 @@
 <l10n>
 	<texts>
 
-		<text name="CP_activated" 																		text="aktiverert" />
-		<text name="CP_deactivated" 																	text="deaktiverert" />
+		<text name="CP_activated" 																		text="Aktiverert" />
+		<text name="CP_deactivated" 																	text="Deaktiverert" />
 		<text name="CP_unit_meter" 																		text="Meter" />
 		<text name="CP_unit_foot" 																		text="Fod" />
 
@@ -40,7 +40,7 @@
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Åbne/Lukke rutegenerator." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper %s stoppet arbejdet - Enheden er fyldt!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Køretøjsinstillinger (%s)"/>
@@ -73,15 +73,15 @@
 		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Aktiver Pathfinder for vendemanøvre, f.eks. for at undvige objekter eller afgrøde."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Sammenklap redskab"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Redskab ved afslutning sammenklappe eller ikke."/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Sammenklap redskab ved afslutning ja/nej."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Redskab hæve"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Redskab tidligt eller sent hæve."/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="hæv redskab"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Hæv redskab tidligt eller sent."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="Tidligt"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="Sent"/>
 
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Redskab sænke"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Redskab tidligt eller sent sænke."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Sænk Redskab"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Sænk redskab tidligt eller sent."/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="Tidligt"/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="Sent"/>
 
@@ -117,7 +117,7 @@
 		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="Forager deaktiveret"/>
 
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="Spormarkør"/>
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="benyt spormarkør ja eller nej."/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="Benyt spormarkør ja eller nej."/>
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Gødningsfunktion på såmaskine"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Gødningsfunktion på såmaskine til/fra."/>
@@ -143,11 +143,12 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Rutegenerator indstilling for (%s)"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Rutegenerator indstilling for (%s)"/>
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basal"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Forager"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Mitte"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Advanceret"/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbejdsbredde" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbejdsbredde. Værdi: 0 - 50" />
@@ -205,7 +206,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Forager" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Inde i marken" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Antal af køretøjer" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Antal af køretøjer på ruten" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Hvor mange køre på ruten samtidig." />
 
 	<!-- GlobalSettings -->
@@ -232,7 +233,7 @@
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ankomstvinkel ved mål"/>
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maksimal tilladt vinkel ved målet. Små vinkler er mere nøjagtige, store er hurtigere"/>
 
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="ændringsfaktor pathfinder"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Ændringsfaktor pathfinder"/>
 		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor for at reducere pathfinder nøjagtighed ved mislykkede forsøg. Større værdier er hurtigere"/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Vis alle ruter"/>
@@ -273,12 +274,12 @@
 		<text name="CP_courseManager_activate"															text="Activatere"/>
 
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Ønsker du at slette den brugerdefinerede mark	%s?"/>
 
-	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
-		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+    <!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Start brugerdefineret markoptegnelse."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stop brugerdefineret markoptegnelse."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
