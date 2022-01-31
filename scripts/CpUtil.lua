@@ -199,3 +199,46 @@ function CpUtil.callErrorCorrectedFunction(func,...)
 	end
 	return status,error
 end
+
+--- Gets the saved values from an xml string.
+function CpUtil.getXmlVectorValues(str)
+	if str == nil then
+		printCallstack()
+		return nil
+	end
+
+	local values = str:trim():split(" ")
+
+	if values == nil or #values <= 0 then 
+		printCallstack()
+		return 
+	end
+
+	local results = {}
+	local v 
+	for i = 1, #values do
+		v = tonumber(values[i])
+		if not v then 
+			if values[i] == "true" then 
+				v = true
+			elseif values[i] == "false" then 
+				v = false
+			else
+				v = nil
+			end
+		end
+		results[i] = v
+	end
+
+	return results
+end
+
+--- Adds all values to a string, separated by " ".
+--- Converts boolean values to "true" or "false" and nil to "-".
+function CpUtil.getXmlVectorString(data)
+	local values = {}
+	for i,k in ipairs(data) do 
+		table.insert(values,k ~= nil and tostring(k) or "-")
+	end
+	return table.concat(values, " ")
+end
