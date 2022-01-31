@@ -7,7 +7,7 @@
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
-		<!-- User info text -->
+	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Criar rota primeiro." />
 		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
@@ -34,7 +34,7 @@
 		<text name="CP_jobParameters_laneOffset_right_2"												text="direita(2)" />
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																		text="CP: Trabalho no campo" />
+		<text name="CP_job_fieldWork"																	text="CP: Trabalho no campo" />
 		<text name="CP_job_baleCollect"																	text="CP: Fardo coletar/embalar" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Gerar rotas no campo." />
@@ -191,8 +191,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Borda mais longa" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"								text="Ângulo das linhas para cima/para baixo" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"							text="Ângulo das linhas para cima/para baixo (0 será norte) quando for manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Ângulo das linhas para cima/para baixo" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Ângulo das linhas para cima/para baixo (0 será norte) quando for manual" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Modo desvio nas ilhas" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Como a rota deve contornar ilhas no campo" />
@@ -292,8 +292,8 @@
 - Mover rota para outra pasta.
 - Excluir rota ou pasta.
 - Renomear rota ou pasta."/>
-		<text name="CP_help_page_minihud_title"													text="Mini HUD"/>
-		<text name="CP_help_page_minihud_text"													text="
+		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
+		<text name="CP_help_page_minihud_text"															text="
 A: Clicar no nome do veículo abre a página de configurações do veículo.
 B: Alternar onde iniciar a rota com um clique.
 C: Clicando no nome da rota abrirá o Menu AI com o gerador de rotas aberto.
