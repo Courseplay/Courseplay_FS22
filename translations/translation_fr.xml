@@ -14,7 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Sélection du champ" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Point de départ" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Démarrage" />
 		<text name="CP_jobParameters_startAt_title"														text="Démarrage" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Point de départ du travail dans le champ" />
@@ -22,7 +22,7 @@
 		<text name="CP_jobParameters_startAt_first"														text="Premier point" />
 		<text name="CP_jobParameters_startAt_last"														text="Dernier point" />
 		<text name="CP_jobParameters_startAt_unload"													text="Déchargement de la batteuse/ensileuse" />
-		<text name="CP_jobParameters_startAt_bales"														text="Ramassage/enrubannage des bottes" />
+		<text name="CP_jobParameters_startAt_bales"														text="Ramassage/enrub. des bottes" />
 
 		<text name="CP_jobParameters_subTitle_laneOffset"												text="Position dans la rangée" />
 		<text name="CP_jobParameters_laneOffset_title"													text="Position dans la rangée" />
@@ -281,8 +281,8 @@
 		<text name="CP_customFieldManager_confirm_delete"												text="Souhaitez-vous supprimer le champ personnalisé %s?"/>
 
 	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
-		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+		<text name="CP_controllerGui_startRecording"													text="Démarrer l'enregistrement du champ personnalisé"/>
+		<text name="CP_controllerGui_stopRecording"														text="Arrêter l'enregistrement du champ personnalisé"/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
