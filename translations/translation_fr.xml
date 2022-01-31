@@ -14,7 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Le point de départ n'est pas dans un champ" />
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Point de départ" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Point de départ dans le champ" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Démarrage" />
 		<text name="CP_jobParameters_startAt_title"														text="Démarrage" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Point de départ du travail dans le champ" />
