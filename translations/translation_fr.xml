@@ -147,10 +147,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Paramètres du générateur pour la course (%s)"/>
 		
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Paramètres principaux"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Paramètres des fourrières"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Paramètres des rangs"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Paramètres avancés"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Largeur de travail" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail. Valeurs: 0 - 50" />
