@@ -14,6 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Destino não é um campo." />
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Posição no campo:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniciar em:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniciar em:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Onde começar o trabalho no campo" />
@@ -21,16 +22,16 @@
 		<text name="CP_jobParameters_startAt_first"														text="primeiro waypoint" />
 		<text name="CP_jobParameters_startAt_last"														text="último waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="descarregando colheitadeira" />
-		<text name="CP_jobParameters_startAt_bales"														text="coletando / embalando fardos" />
+		<text name="CP_jobParameters_startAt_bales"														text="coletar / embalar fardos" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Distância da faixa:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Distância da faixa:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Distância da faixa" />
+		<text name="CP_jobParameters_laneOffset_center"													text="centro" />
+		<text name="CP_jobParameters_laneOffset_left"													text="esquerda(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="direita(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="esquerda(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="direita(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Trabalho no campo" />
@@ -142,8 +143,13 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Configuração do gerador de rota de (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Largura do implemento" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largura do implemento. Value: 0 - 50" />
 		
@@ -217,10 +223,10 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Manter sempre reparado"/>
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="Configurações do usuário"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatível com gamepad"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use o Hud, que pode ser controlado com um Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Configurações Pathfinder"/>
 
@@ -238,7 +244,7 @@
 		<text name="CP_courseManager_no_current_course"													text="nenhum"/>
 		<text name="CP_courseManager_temporary_course"													text="temporário"/>
 
-		<text name="CP_courseManager_change_mode"														text="Change mode"/>
+		<text name="CP_courseManager_change_mode"														text="Alterar modo"/>
 
 		<text name="CP_courseManager_load_courses"														text="Carregar rota"/>
 		<text name="CP_courseManager_save_courses"														text="Salvar rota"/>
@@ -266,6 +272,14 @@
 		<text name="CP_courseManager_advancedSettings"													text="Editar arquivos."/>
 
 		<text name="CP_courseManager_activate"															text="Ativado"/>
+
+	<!--Custom Field-->
+		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo personalizado %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Deseja excluir o campo personalizado%s?"/>
+
+	<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Iniciar gravação de campo personalizado."/>
+		<text name="CP_controllerGui_stopRecording"														text="Parar gravação de campo personalizado."/>
 	
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>

@@ -23,7 +23,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   rowsPerLand,
 										   islandBypassMode,
 										   fieldMargin,
-										   multiTools	--- TODO: implement multiTools
+										   multiTools,
+										   pipeOnLeftSide
 )
 	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
 			tostring(isClockwise), workWidth, turnRadius, numberOfHeadlands, tostring(startOnHeadland))
@@ -31,8 +32,8 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 			headlandCornerType, headlandOverlapPercent, centerMode)
 	CourseGenerator.debug('                   row direction %d, rows to skip %d, rows per land %d',
 			rowDirection, rowsToSkip, rowsPerLand)
-	CourseGenerator.debug('					  multiTools %d',
-			multiTools)
+	CourseGenerator.debug('					  multiTools %d, pipe on left %s',
+			multiTools, pipeOnLeftSide)
 
 
 	--------------------------------------------------------------------------------------------------------------------
@@ -69,7 +70,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		nRowsToSkip = rowsToSkip,
 		mode = centerMode,
 		nRowsPerLand = rowsPerLand or 6,
-		pipeOnLeftSide = true
+		pipeOnLeftSide = pipeOnLeftSide
 	}
 
 	--------------------------------------------------------------------------------------------------------------------

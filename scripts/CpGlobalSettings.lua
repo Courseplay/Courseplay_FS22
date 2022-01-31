@@ -9,7 +9,7 @@ function CpGlobalSettings:init()
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], self.onUnitChanged, self)
 end
 
-function CpGlobalSettings:registerSchema(schema,baseKey)
+function CpGlobalSettings:registerXmlSchema(schema,baseKey)
 	schema:register(XMLValueType.INT,baseKey..CpGlobalSettings.KEY.."(?)#value","Setting value")
     schema:register(XMLValueType.STRING,baseKey..CpGlobalSettings.KEY.."(?)#name","Setting name")
 end
@@ -49,28 +49,11 @@ function CpGlobalSettings:saveUserSettingsToXmlFile(xmlFile,baseKey)
     for i,setting in ipairs(self.settings) do 
         if setting:getIsUserSetting() then
             local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,ix)         
-            setting:saveToRawXMLFile(xmlFile, key)
-            setXMLString(xmlFile,key.."#name",setting:getName())
+            setting:saveToXMLFile(xmlFile, key)
+            xmlFile:setValue(key.."#name",setting:getName())
             CpUtil.debugFormat(CpUtil.DBG_HUD,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
             ix = ix + 1
         end
-    end
-end
-
-function CpGlobalSettings:loadUserSettingsFromXmlFile(xmlFile,baseKey)
-    local ix = 0
-    while true do 
-        local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,ix)      
-        if not hasXMLProperty(xmlFile, key) then
-			break
-		end
-		local name = getXMLString(xmlFile,key.."#name")
-        local setting = self[name]
-        if setting then
-            setting:loadFromRawXMLFile(xmlFile, key)
-            CpUtil.debugFormat(CpUtil.DBG_HUD,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-        end
-        ix = ix + 1
     end
 end
 
@@ -86,9 +69,12 @@ function CpGlobalSettings:getSettingSetup()
 	return self.settingsBySubTitle,self.pageTitle
 end
 
-function CpGlobalSettings:raiseCallback(callbackStr,...)
+--- Callback raised by a setting.
+---@param callbackStr string function to be executed.
+---@param setting AIParameterSettingList setting that raised the callback.
+function CpGlobalSettings:raiseCallback(callbackStr, setting, ...)
     if self[callbackStr] then 
-        self[callbackStr](self,...)
+        self[callbackStr](self, setting, ...)
     end
 end
 
@@ -97,7 +83,7 @@ function CpGlobalSettings:onHudSelectionChanged()
     if vehicle then 
         self:debug("reset action events for %s",vehicle:getName())
     --    g_inputBinding:setShowMouseCursor(false)
-        CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_courseplaySpec.savedCameraRotatableInfo)
+        CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_cpHud.savedCameraRotatableInfo)
         vehicle:requestActionEventUpdate()
     end
 end

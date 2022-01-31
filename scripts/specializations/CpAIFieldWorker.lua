@@ -281,6 +281,18 @@ end
 --- Is used for the communication to external mods with events.
 function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,...)
     local wasCpActive = self:getIsCpActive()
+    if wasCpActive then
+        local maxSpeed = self.spec_cpAIFieldWorker.driveStrategy and self.spec_cpAIFieldWorker.driveStrategy:getMaxSpeed()
+        if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
+         message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 0.1 then
+            -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
+            -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
+            -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
+            -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
+            return
+        end
+    end
     superFunc(self,message,...)
     if wasCpActive then 
         if message then

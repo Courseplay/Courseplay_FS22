@@ -32,10 +32,45 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	local ai = 	g_currentMission.aiJobTypeManager
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
 
+	self.fieldPositionParameter = AIParameterPosition.new()
+	self.fieldPositionParameter.setValue = function (self, x, z)
+		self:setPosition(x, z)		
+	end
+	self.fieldPositionParameter.isCpFieldPositionTarget = true
+
+	self:addNamedParameter("fieldPosition", self.fieldPositionParameter )
+	local positionGroup = AIParameterGroup.new(g_i18n:getText("CP_jobParameters_fieldPosition_title"))
+	positionGroup:addParameter(self.fieldPositionParameter )
+	table.insert(self.groupedParameters, positionGroup)
+
 	self.cpJobParameters = CpJobParameters(self)
 
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	return self
+end
+
+function AIJobFieldWorkCp:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+	AIJobFieldWorkCp:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+	
+	local x, z = nil
+
+	if vehicle.getLastJob ~= nil then
+		local lastJob = vehicle:getLastJob()
+
+		if not isDirectStart and lastJob ~= nil and lastJob.cpJobParameters then
+			x, z = lastJob.fieldPositionParameter:getPosition()
+		end
+	end
+
+	if x == nil or z == nil then
+		x, _, z = getWorldTranslation(vehicle.rootNode)
+	end
+
+	self.fieldPositionParameter:setPosition(x, z)
+end
+
+function AIJobFieldWorkCp:setValues()
+	AIJobFieldWorkCp:superClass().setValues(self)
 end
 
 --- Called when parameters change, scan field
@@ -45,27 +80,32 @@ function AIJobFieldWorkCp:validate(farmId)
 		return isValid, errorMessage
 	end
 
-
---	DebugUtil.printTableRecursively(self.cpJobParameters)
+	local vehicle = self.vehicleParameter:getVehicle()
 
 	-- everything else is valid, now find the field
-	local tx, tz = self.positionAngleParameter:getPosition()
+	local tx, tz = self.fieldPositionParameter:getPosition()
 	if tx == self.lastPositionX and tz == self.lastPositionZ then
-		CpUtil.debugFormat(CpDebug.DBG_HUD, 'Position did not change, do not generate course again')
+		CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Position did not change, do not generate course again')
 		return isValid, errorMessage
 	else
 		self.lastPositionX, self.lastPositionZ = tx, tz
 		self.hasValidPosition = true
 	end
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
-	CpUtil.info('Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
+	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
 	if not self.fieldPolygon then
-		self.hasValidPosition = false
-		return false, g_i18n:getText("CP_error_not_on_field")
+		local customField = g_customFieldManager:getCustomField(tx, tz)
+		if not customField then
+			self.hasValidPosition = false
+			return false, g_i18n:getText("CP_error_not_on_field")
+		else
+			CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
+			self.fieldPolygon = customField:getVertices()
+			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+		end
 	end
-	local vehicle = self.vehicleParameter:getVehicle()
-	if vehicle then 
+	if vehicle then
 		if not vehicle:getCanStartCpBaleFinder(self.cpJobParameters) then 
 			if not vehicle:hasCpCourse() then 
 				return false, g_i18n:getText("CP_error_no_course")
@@ -78,6 +118,10 @@ end
 
 function AIJobFieldWorkCp:getCpJobParameters()
 	return self.cpJobParameters
+end
+
+function AIJobFieldWorkCp:getFieldPositionTarget()
+	return self.fieldPositionParameter:getPosition()
 end
 
 --- Registers additional jobs.
@@ -116,7 +160,8 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 			settings.rowsPerLand:getValue(),
 			settings.islandBypassMode:getValue(),
 			settings.fieldMargin:getValue(),
-			settings.multiTools:getValue()
+			settings.multiTools:getValue(),
+			self:isPipeOnLeftSide(vehicle)
 	)
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then
@@ -128,6 +173,17 @@ function AIJobFieldWorkCp:onClickGenerateFieldWorkCourse()
 	end
 
 	vehicle:setFieldWorkCourse(course)
+end
+
+function AIJobFieldWorkCp:isPipeOnLeftSide(vehicle)
+	if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Combine) then
+		local pipeAttributes = {}
+		local combine = ImplementUtil.findCombineObject(vehicle)
+		ImplementUtil.setPipeAttributes(pipeAttributes, vehicle, combine)
+		return pipeAttributes.pipeOnLeftSide
+	else
+		return true
+	end
 end
 
 function AIJobFieldWorkCp:getPricePerMs()
@@ -172,6 +228,8 @@ function AIJobFieldWorkCp:resetStartPositionAngle(vehicle)
 	self.positionAngleParameter:setPosition(x, z)
 	local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	self.positionAngleParameter:setAngle(angle)
+
+	self.fieldPositionParameter:setPosition(x, z)
 end
 function AIJobFieldWorkCp:getVehicle()
 	return self.vehicleParameter:getVehicle() or self.vehicle

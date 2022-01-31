@@ -15,6 +15,7 @@
 
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start am:" />
 		<text name="CP_jobParameters_startAt_title"														text="Start am:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Wo wird die Arbeit gestartet." />
@@ -144,8 +145,13 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursgenerator Einstellungen von (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
-		
+	
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+	
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbeitsbreite" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite. Value: 0 - 50" />
 		
@@ -268,6 +274,14 @@
 		<text name="CP_courseManager_advancedSettings"													text="Kurse/Ordner editieren."/>
 
 		<text name="CP_courseManager_activate"															text="Activate"/>
+
+	<!--Custom Field-->
+		<text name="CP_customFieldManager_confirm_save"													text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Möchtest du den Randkurs %s löschen?"/>
+
+		<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Starte Feldrandaufnahme."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stoppe Feldrandaufnahme."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>

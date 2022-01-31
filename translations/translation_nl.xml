@@ -10,38 +10,39 @@
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Ga voor hulp, bugrapporten of patch-opmerkingen naar: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Genereer een koers voordat u aan de taak begint." />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
+		<text name="CP_error_could_not_generate_course"													text="Kan koers niet genereren. De log bevat mogelijk meer informatie." />
 		<text name="CP_error_not_on_field"																text="Het doelwit bevindt zich niet op een veld." />
 
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Veld positie:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Begin bij:" />
 		<text name="CP_jobParameters_startAt_title"														text="Begin bij:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Waar te beginnen met veldwerk" />
 		<text name="CP_jobParameters_startAt_nearest"													text="dichtsbijzijnde tussenpunt" />
 		<text name="CP_jobParameters_startAt_first"														text="eerste tussenpunt" />
-		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
+		<text name="CP_jobParameters_startAt_last"														text="laatste tussenpunt" />
 		<text name="CP_jobParameters_startAt_unload"													text="maaidorser/hakselaar lossen" />
 		<text name="CP_jobParameters_startAt_bales"														text="balen verzamelen/verpakken" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Baan afwijking:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Baan afwijking:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Baan afwijking" />
+		<text name="CP_jobParameters_laneOffset_center"													text="midden" />
+		<text name="CP_jobParameters_laneOffset_left"													text="links(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="rechts(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="links(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="rechts(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Veldwerk" />
-		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
+		<text name="CP_job_baleCollect"																	text="CP: Baal verzamelen/wikkelen" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Veldwerk baan genereren." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Koersgenerator openen/sluiten." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="AI-werker %s is onverwacht gestopt met werken - tank is vol!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Voertuiginstellingen voor (%s)"/>
@@ -61,8 +62,8 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Alleen starten/stoppen"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Alle tussenpunten"/>
 
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud met huis"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Wanneer gedeactiveerd, kan Hud alleen worden geopend met de Keybind."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop aan het einde"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Stop aan het einde"/>
@@ -70,8 +71,8 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Omgekeerd toestaan voor padvinding"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Laat de padvinder, indien van toepassing, koersen genereren met achteruitrijden"/>
 
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Toestaan dat de padvinder in bochten wordt gebruikt"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Maakt het mogelijk om de padvinder in bochten te gebruiken, bijvoorbeeld om obstakels en fruit te vermijden"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Klap werktuigen aan het einde van de koers in"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Schakelt automatisch inklappen van werktuigen aan het einde van de koers in/uit."/>
@@ -126,8 +127,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrische rijstrookwisseling"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrische rijstrookwisseling"/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Konvooi afstand"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand tussen voertuigen. Waarde: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Veldwerk"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale snelheid tijdens het werken op het veld. Value: 5 - 50"/>
@@ -144,8 +145,13 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Instellingen koersgenerator van (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
-		
+	
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basis"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="wendakker"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="midden"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="geavanceerd"/>
+
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Werkbreedte" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Werkbreedte. Value: 0 - 50" />
 		
@@ -155,8 +161,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Wendakker overlap" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Wendakkersporen overlappen als percentage van werkbreedte. Value: 0 - 25" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Veld marge" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positieve waarden verkleinen de veldgrootte om een buffer rond het bewerkte gebied toe te voegen, negatieve waarden vergroten het bewerkte gebied buiten de veldgrens. Waarde: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rijen om over te slaan" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rijen die moeten worden overgeslagen bij het wisselen naar de volgende rij omhoog/omlaag. Value: 0 - 6" />
@@ -186,24 +192,24 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Richting van de rijen omhoog/omlaag in het midden van het veld" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatisch" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Langste zijde" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Handmatig" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Rijhoek omhoog/omlaag" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Hoek van rijen omhoog/omlaag (0 is het noorden) indien handmatig. Waarde: 0 - 175 Stappen: 5" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Eiland omzeilen" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Hoe de koers eilanden in het veld moet omzeilen?" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="niet omzeilen" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simpel" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="cirkel" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Begin met werken op" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Begin met werken op" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Wendakker" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Midden" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Meerdere voertuigen" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Aantal voertuigen op dezelfde koers." />
 
 
 	<!-- GlobalSettings -->
@@ -220,10 +226,10 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Altijd"/> <!-- Not a strict 1:1 but the direct translation would make not much sense, therefore a more logical text -->
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="Gebruikersinstellingen"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad vriendelijke Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Gebruik de Hud, die kan worden bestuurd met een Gamepad."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Padvinder instellingen"/>
 
@@ -270,6 +276,14 @@
 
 		<text name="CP_courseManager_activate"															text="Activeren"/>
 
+	<!--Custom Field-->
+		<text name="CP_customFieldManager_confirm_save"													text="Wil je de geregistreerde koers opslaan als aangepast veld %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Wilt u het aangepaste veld %s verwijderen?"/>
+
+	<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Start aangepaste veldopname."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stop aangepaste veldopname."/>
+
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<text name="CP_help_page_courseManager_title"													text="Koers manager"/>
@@ -283,18 +297,18 @@
 - De naam van een koers of map wijzigen."/>
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+A: Als u op de voertuignaam klikt, wordt de pagina met voertuigconfiguraties geopend.
+B: Wissel met één klik waar de koers moet beginnen.
+C: Door op de koersnaam te klikken, opent u het AI-menu met de koersgenerator open.
+D: Start de Courseplay-helper.
+E: Toont huidige tussenpunt / totaal aantal tussenpunten. Klik om de koersmanager te openen.
+F: Als u op het pictogram klikt, wordt de pagina met algemene instellingen geopend.
+G: Sluit de HUD.
+H: Verklein en vergroot de werkbreedte. Een rode lijn op uw voertuig geeft de huidige instelling aan.
+I: Waarde voor horizontale offset, + links, - rechts.
+J: Waarde voor verticale offset, + achteruit, - vooruit.
+K, L en M: Als u op de tekst klikt, worden uw wijzigingen teruggezet naar de automatische waarden.
+N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecteer het volgende debug-kanaal."/>

@@ -102,4 +102,8 @@
 		<Value name="textMaxWidth" value="332px" />
     </Profile>
 
+	<Profile name="cpControllerGuiLayout" extends="ingameMenuAICreateLayout">
+        <Value name="position" value="-40px 0px" />
+    </Profile>
+
 </GUIProfiles>

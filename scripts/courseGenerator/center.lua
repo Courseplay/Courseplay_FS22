@@ -132,6 +132,21 @@ local function isCornerOnTheLeft( entryCorner )
 	return entryCorner == CourseGenerator.BLOCK_CORNER_TOP_LEFT or entryCorner == CourseGenerator.BLOCK_CORNER_BOTTOM_LEFT
 end
 
+--- Count the blocks with just a few tracks
+local function countSmallBlockScore( blocks )
+	local nResult = 0
+	-- if there's only one block, we don't care
+	if #blocks == 1 then return nResult end
+	for _, b in ipairs( blocks ) do
+		-- TODO: consider implement width
+		if #b < smallBlockTrackCountLimit then
+			nResult = nResult + smallBlockTrackCountLimit - #b
+			--nResult = nResult + 1
+		end
+	end
+	return nResult
+end
+
 --- Find the best angle to use for the tracks in a polygon.
 --  The best angle results in the minimum number of tracks
 --  (and thus, turns) needed to cover the polygon.
@@ -211,22 +226,72 @@ local function addWaypointsToBlocks(blocks, width, nHeadlandPasses)
 	return nTotalTracks
 end
 
---- Count the blocks with just a few tracks 
-function countSmallBlockScore( blocks )
-	local nResult = 0
-	-- if there's only one block, we don't care
-	if #blocks == 1 then return nResult end
-	for _, b in ipairs( blocks ) do
-		-- TODO: consider implement width
-		if #b < smallBlockTrackCountLimit then
-			nResult = nResult + smallBlockTrackCountLimit - #b
-			--nResult = nResult + 1
+--- Link the parallel tracks in the center of the field to one
+-- continuous track.
+-- if bottomToTop == true then start at the bottom and work our way up
+-- if leftToRight == true then start the first track on the left
+-- centerSettings - all center related settings
+-- tracks
+local function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, centerSettings, startWithTurn)
+	if not bottomToTop then
+		-- we start at the top, so reverse order of tracks as after the generation,
+		-- the last one is on the top
+		parallelTracks = reverseTracks( parallelTracks )
+	end
+	local start
+	if centerSettings.mode == CourseGenerator.CENTER_MODE_UP_DOWN then
+		parallelTracks = reorderTracksForAlternateFieldwork(parallelTracks, centerSettings.nRowsToSkip)
+		start = leftToRight and 2 or 1
+	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_SPIRAL then
+		parallelTracks = reorderTracksForSpiralFieldwork(parallelTracks)
+		start = leftToRight and 2 or 1
+	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_CIRCULAR then
+		parallelTracks = reorderTracksForCircularFieldwork(parallelTracks)
+		start = leftToRight and 2 or 1
+	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_LANDS then
+		parallelTracks = reorderTracksForLandsFieldwork(parallelTracks, leftToRight, bottomToTop,
+			centerSettings.nRowsPerLand, centerSettings.pipeOnLeftSide)
+		start = leftToRight and 2 or 1
+	end
+	-- now make sure that the we work on the tracks in alternating directions
+	-- we generate track from left to right, so the ones which we'll traverse
+	-- in the other direction must be reversed.
+	-- reverse every second track
+	for i = start, #parallelTracks, 2 do
+		parallelTracks[ i ].waypoints = reverse( parallelTracks[ i ].waypoints)
+	end
+	local result = Polyline:new()
+	local startTrack = 1
+	local endTrack = #parallelTracks
+	for i = startTrack, endTrack do
+		if parallelTracks[ i ].waypoints then
+			for j, point in ipairs(parallelTracks[ i ].waypoints) do
+				-- the first point of a track is the end of the turn (except for the first track)
+				if ( j == 1 and ( i ~= startTrack or startWithTurn )) then
+					point.turnEnd = true
+				end
+				-- these will come in handy for the ridge markers
+				point.rowNumber = i
+				point.originalRowNumber = parallelTracks[ i ].originalRowNumber
+				point.adjacentIslands = parallelTracks[ i ].adjacentIslands
+				point.lastTrack = i == endTrack
+				point.firstTrack = i == startTrack
+				-- the last point of a track is the start of the turn (except for the last track)
+				if ( j == #parallelTracks[ i ].waypoints and i ~= endTrack ) then
+					point.turnStart = true
+					table.insert( result, point )
+				else
+					table.insert( result, point )
+				end
+			end
+		else
+			CourseGenerator.debug( "Track %d has no waypoints, skipping.", i )
 		end
 	end
-	return nResult
+	return result
 end
 
---- Generate up/down tracks covering a polygon at the optimum angle
+--- Generate up/down rows covering a polygon at the optimum angle
 -- 
 function generateTracks( headlands, islands, width, nHeadlandPasses, centerSettings )
 	local distanceFromBoundary
@@ -244,6 +309,7 @@ function generateTracks( headlands, islands, width, nHeadlandPasses, centerSetti
 	local dx, dy = boundary:getCenter()
 	-- headlands transformed in the field centered coordinate system. First, just translate, will rotate once
 	-- we figure out the angle
+
 	local transformedHeadlands = {}
 	for _, headland in ipairs(headlands) do
 		local h = Polygon:copy(headland)
@@ -367,7 +433,7 @@ function generateParallelTracks( polygon, islands, width, distanceFromBoundary )
 		local to = { x = toX, y = y, track=ix }
 		-- for now, all tracks go from min to max, we'll take care of
 		-- alternating directions later.
-		table.insert( tracks, { from=from, to=to, intersections={}, originalTrackNumber = ix } )
+		table.insert( tracks, { from=from, to=to, intersections={}, originalRowNumber = ix } )
 	end
 	local trackIndex = 1
 	for y = polygon.boundingBox.minY + distanceFromBoundary, polygon.boundingBox.maxY - distanceFromBoundary, width do
@@ -413,7 +479,7 @@ function findIntersections( headland, tracks, islandId )
 				is.headland = headland
 				-- remember where we intersect the headland.
 				is.headlandEdge = {fromIx = i, toIx = i + 1}
-				is.originalTrackNumber = t.originalTrackNumber
+				is.originalRowNumber = t.originalRowNumber
 				t.onIsland = islandId
 				addPointToListOrderedByX( t.intersections, is )
 			end
@@ -424,7 +490,7 @@ function findIntersections( headland, tracks, islandId )
 		for i = 1, #tracks do
 			local previousTrack = tracks[ i - 1 ]
 			local t = tracks[ i ]
-			--print( t.originalTrackNumber, previousTrack and previousTrack.onIsland or nil, t.onIsland )
+			--print( t.originalRowNumber, previousTrack and previousTrack.onIsland or nil, t.onIsland )
 			if previousTrack and previousTrack.onIsland and not t.onIsland then
 				if not t.adjacentIslands then t.adjacentIslands = {} end
 				t.adjacentIslands[ islandId ] = true
@@ -436,6 +502,28 @@ function findIntersections( headland, tracks, islandId )
 			previousTrack = t
 		end
 	end
+end
+
+-- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
+local function getDistanceToFullCover( width, angle )
+	-- with very low angles this becomes too much, in that case you need a headland, so limit it here
+	if math.abs(math.deg(angle)) < 15 then
+		angle = math.rad(15)
+	end
+	return math.abs( width / 2 / math.tan( angle ))
+end
+
+-- if the up/down tracks were perpendicular to the boundary, we'd have to cut them off
+-- width/2 meters from the intersection point with the boundary. But if we drive on to the
+-- boundary at an angle, we have to drive further if we don't want to miss fruit.
+-- Note, this also works on unrotated polygons/tracks, all we need is to use the
+-- angle difference between the up/down and headland tracks instead of just the angle
+-- of the headland track
+local function getDistanceBetweenRowEndAndHeadland(width, angle )
+	-- distance between headland centerline and side at an angle
+	-- (is width / 2 when angle is 90 degrees)
+	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
+	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
 end
 
 --- convert a list of tracks to waypoints, also cutting off
@@ -496,95 +584,6 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 		end
 	end
 	CourseGenerator.debug('Generated %d tracks for this block', #result)
-	return result
-end
-
--- if the up/down tracks were perpendicular to the boundary, we'd have to cut them off
--- width/2 meters from the intersection point with the boundary. But if we drive on to the 
--- boundary at an angle, we have to drive further if we don't want to miss fruit.
--- Note, this also works on unrotated polygons/tracks, all we need is to use the 
--- angle difference between the up/down and headland tracks instead of just the angle
--- of the headland track
-function getDistanceBetweenRowEndAndHeadland(width, angle )
-	-- distance between headland centerline and side at an angle
-	-- (is width / 2 when angle is 90 degrees)
-	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
-	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
-end
-
--- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
-function getDistanceToFullCover( width, angle )
-	-- with very low angles this becomes too much, in that case you need a headland, so limit it here
-	if math.abs(math.deg(angle)) < 15 then
-		angle = math.rad(15)
-	end
-	return math.abs( width / 2 / math.tan( angle ))
-end
-
---- Link the parallel tracks in the center of the field to one 
--- continuous track.
--- if bottomToTop == true then start at the bottom and work our way up
--- if leftToRight == true then start the first track on the left 
--- centerSettings - all center related settings
--- tracks
-function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, centerSettings, startWithTurn)
-	if not bottomToTop then
-		-- we start at the top, so reverse order of tracks as after the generation,
-		-- the last one is on the top
-		parallelTracks = reverseTracks( parallelTracks )
-	end
-	local start
-	if centerSettings.mode == CourseGenerator.CENTER_MODE_UP_DOWN then
-		parallelTracks = reorderTracksForAlternateFieldwork(parallelTracks, centerSettings.nRowsToSkip)
-		start = leftToRight and 2 or 1
-	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_SPIRAL then
-		parallelTracks = reorderTracksForSpiralFieldwork(parallelTracks)
-		start = leftToRight and 2 or 1
-	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_CIRCULAR then
-		parallelTracks = reorderTracksForCircularFieldwork(parallelTracks)
-		start = leftToRight and 2 or 1
-	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_LANDS then
-		parallelTracks = reorderTracksForLandsFieldwork(parallelTracks, leftToRight, bottomToTop,
-				centerSettings.nRowsPerLand, centerSettings.pipeOnLeftSide)
-		start = leftToRight and 2 or 1
-	end
-	-- now make sure that the we work on the tracks in alternating directions
-	-- we generate track from left to right, so the ones which we'll traverse
-	-- in the other direction must be reversed.
-	-- reverse every second track
-	for i = start, #parallelTracks, 2 do
-		parallelTracks[ i ].waypoints = reverse( parallelTracks[ i ].waypoints)
-	end
-	local result = Polyline:new()
-	local startTrack = 1
-	local endTrack = #parallelTracks
-	for i = startTrack, endTrack do
-		if parallelTracks[ i ].waypoints then
-			-- use turn maneuver from one track to the other if they are close to each other
-			local useHeadlandFromPreviousRow = useHeadlandToNextRow
-			for j, point in ipairs( parallelTracks[ i ].waypoints) do
-				-- the first point of a track is the end of the turn (except for the first track)
-				if ( j == 1 and ( i ~= startTrack or startWithTurn ) and not useHeadlandFromPreviousRow) then
-					point.turnEnd = true
-				end
-				-- these will come in handy for the ridge markers
-				point.trackNumber = i
-				point.originalTrackNumber = parallelTracks[ i ].originalTrackNumber
-				point.adjacentIslands = parallelTracks[ i ].adjacentIslands
-				point.lastTrack = i == endTrack
-				point.firstTrack = i == startTrack
-				-- the last point of a track is the start of the turn (except for the last track)
-				if ( j == #parallelTracks[ i ].waypoints and i ~= endTrack ) then
-					point.turnStart = true
-					table.insert( result, point )
-				else
-					table.insert( result, point )
-				end
-			end
-		else
-			CourseGenerator.debug( "Track %d has no waypoints, skipping.", i )
-		end
-	end
 	return result
 end
 
@@ -865,7 +864,7 @@ function splitCenterIntoBlocks( tracks, width )
 		for i = 1, #t.intersections, 2 do
 			local track = { from=t.from, to=t.to,
 			                intersections={ shallowCopy( t.intersections[ i ]), shallowCopy( t.intersections[ i + 1 ])},
-			                originalTrackNumber = t.originalTrackNumber,
+			                originalRowNumber = t.originalRowNumber,
 			                adjacentIslands = t.adjacentIslands }
 			table.insert( splitTracks, track )
 		end
@@ -981,7 +980,7 @@ function addRidgeMarkers( track )
 	function getNextTurnDir(startIx)
 		for i = startIx, #track do
 			-- it is an up/down row if it has track number. Otherwise ignore turns
-			if track[i].trackNumber and track[i].turnStart and track[i].deltaAngle then
+			if track[i].rowNumber and track[i].turnStart and track[i].deltaAngle then
 				if track[i].deltaAngle >= 0 then
 					return i, CourseGenerator.RIDGEMARKER_RIGHT
 				else
@@ -1002,7 +1001,7 @@ function addRidgeMarkers( track )
 		while (i < startTurnIx) do
 			-- don't use ridge markers at the first and the last row of the block as
 			-- blocks can be worked in any order and we may screw up the adjacent block
-			if track[i].trackNumber and not track[i].lastTrack and not track[i].firstTrack then
+			if track[i].rowNumber and not track[i].lastTrack and not track[i].firstTrack then
 				if turnDirection == CourseGenerator.RIDGEMARKER_RIGHT then
 					track[i].ridgeMarker = CourseGenerator.RIDGEMARKER_RIGHT
 				else
@@ -1040,45 +1039,6 @@ function removeRidgeMarkersFromLastTrack( course, isReversed )
 	end
 end
 
---- Fix long turns. These show up when the up/down rows intersect the headland at a 
--- low angle, the turn end may be far away from the start. The turn system can handle these
--- fine but the turn maneuvers are slow and we may end up reversing hundreds of meters.
--- This function makes sure the turn start and end waypoints are close enough
-function fixLongTurns( track, width )
-	local i = 1
-	track:calculateData()
-	while i < #track - 1 do
-		if track[ i ].turnStart and track[ i + 1 ].turnEnd then
-			local d = getDistanceBetweenPoints( track[ i ], track[ i + 1 ])
-			if d > 2 * width then
-				-- we'll add a new point between the start and end
-				local newPoint
-				-- move to about width distance 
-				local moveDistance = d - width
-				if inFrontOf( track[ i + 1 ], track[ i ]) then
-					newPoint = shallowCopy( track[ i ])
-					-- turn end is in front of turn start so move the turn start closer 
-					newPoint.x, newPoint.y = getPointBetween( track[ i ], track[ i + 1 ], moveDistance )
-					-- the new point is the turn start
-					newPoint.turnStart = true
-					-- old turn start is not turn start anymore
-					track[ i ].turnStart = nil
-				else
-					-- turn end is behind the turn start, move turn end closer 
-					newPoint = shallowCopy( track[ i + 1 ])
-					newPoint.x, newPoint.y = getPointBetween( track[ i + 1 ], track[ i ], moveDistance )
-					newPoint.turnEnd = true
-					track[ i + 1 ].turnEnd = nil
-				end
-				CourseGenerator.debug( "Fixing a long (%.0fm) turn on track %d.", d, track[ i ].originalTrackNumber )
-				-- insert the new point 
-				table.insert( track, i + 1, newPoint )
-				i = i + 1
-			end
-		end
-		i = i + 1
-	end
-end
 -- We are using a genetic algorithm to find the optimum sequence of the blocks to work on.
 -- In case of a non-convex field or a field with island(s) in it, the field is divided into
 -- multiple areas (blocks) which are covered by the up/down rows independently. 
@@ -1309,8 +1269,8 @@ function linkBlocks( blocksInSequence, innermostHeadland, circleStart, firstBloc
 			local previousBlock = blocksInSequence[ i - 1 ]
 			local previousBlockExitCorner = getBlockExitCorner( previousBlock.entryCorner, #previousBlock, nRowsToSkip )
 			local headland = block.polygon[ block.entryCorner ].headland
-			local previousOriginalTrackNumber = previousBlock.polygon[ previousBlockExitCorner ].originalTrackNumber
-			local thisOriginalTrackNumber = block.polygon[ block.entryCorner ].originalTrackNumber
+			local previousOriginalTrackNumber = previousBlock.polygon[ previousBlockExitCorner ].originalRowNumber
+			local thisOriginalTrackNumber = block.polygon[ block.entryCorner ].originalRowNumber
 			-- Don't need a connecting track when these were originally adjacent tracks.
 			if math.abs( previousOriginalTrackNumber - thisOriginalTrackNumber ) ~= 1 then
 				block.trackToThisBlock = getTrackBetweenPointsOnHeadland( headland,
@@ -1324,25 +1284,3 @@ function linkBlocks( blocksInSequence, innermostHeadland, circleStart, firstBloc
 	end
 	return workedBlocks
 end
-
-
---- starting at i, find the first turn start waypoint in a reasonable distance 
--- and return the index of it
-function skipToTurnStart( course, start, step )
-	local ix = start
-	local d = 0
-	while d < 4 * CourseGenerator.waypointDistance and ix < #course and ix > 1 do
-		if course[ ix ].turnStart then return ix end
-		d = d + course[ ix ].nextEdge.length
-		ix = ix + step
-	end
-	return start
-end
-
-function removeTurn( course, i, step )
-	if course[ i ].turnStart then
-		course[ i ].turnStart = nil
-		course[ i + 1 ].turnEnd = nil
-	end
-end
-

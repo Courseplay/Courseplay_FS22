@@ -2,6 +2,8 @@
 CpBaseHud = CpObject()
 
 CpBaseHud.OFF_COLOR = {0.2, 0.2, 0.2, 0.9}
+
+CpBaseHud.RECORDER_ON_COLOR = {1, 0, 0, 0.9}
 CpBaseHud.ON_COLOR = {0, 0.6, 0, 0.9}
 
 CpBaseHud.basePosition = {
@@ -28,8 +30,18 @@ CpBaseHud.uvs = {
     },
     exitSymbol = {
         {148, 184, 32, 32}
-    }
+    },
+    circleSymbol = {
+        {0, 366, 28, 28}
+    },
 }
+
+CpBaseHud.xmlKey = "Hud"
+
+function CpBaseHud.registerXmlSchema(xmlSchema,baseKey)
+    xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posX","Hud position x.")
+    xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posY","Hud position y.")
+end
 
 function CpBaseHud:init(vehicle)
     self.vehicle = vehicle
@@ -133,8 +145,8 @@ function CpBaseHud:init(vehicle)
 
 
     --- Create start/stop button
-    local width, height = getNormalizedScreenValues(18, 18)
-    local onOffIndicatorOverlay =  Overlay.new(g_baseUIFilename, 0, 0, width, height)
+    local onOffBtnWidth, height = getNormalizedScreenValues(20, 20)
+    local onOffIndicatorOverlay =  Overlay.new(g_baseUIFilename, 0, 0, onOffBtnWidth, height)
     onOffIndicatorOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
     onOffIndicatorOverlay:setUVs(GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW))
     onOffIndicatorOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
@@ -142,6 +154,26 @@ function CpBaseHud:init(vehicle)
     local x, y = unpack(self.lines[6].right)
     self.onOffButton:setPosition(x, y)
     self.onOffButton:setCallback("onClickPrimary", self.vehicle, self.vehicle.cpStartStopDriver)
+    
+    --- Create start/stop field boarder record button
+    local width, height = getNormalizedScreenValues(18, 18)
+    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local circleOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    circleOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    circleOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.circleSymbol),{256,512}))
+    circleOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    self.startStopRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
+    local x, y = unpack(self.lines[6].right)
+    x = x - onOffBtnWidth - self.wMargin/2
+    self.startStopRecordingBtn:setPosition(x, y)
+    self.startStopRecordingBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        if vehicle:getIsCpCourseRecorderActive() then 
+            vehicle:cpStopCourseRecorder()
+        elseif vehicle:getCanStartCpCourseRecorder() then 
+            vehicle:cpStartCourseRecorder()
+        end
+    end)
+    
     
     
     
@@ -296,6 +328,13 @@ function CpBaseHud:draw(status)
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
     end
+
+    if self.vehicle:getIsCpCourseRecorderActive() then
+        self.startStopRecordingBtn:setColor(unpack(CpBaseHud.RECORDER_ON_COLOR))
+    else 
+        self.startStopRecordingBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
+    end
+
     self.waypointProgressBtn:setTextDetails(status:getWaypointText())
     
     local laneOffset = self.vehicle:getCpLaneOffsetSetting()
@@ -384,16 +423,14 @@ end
 
 --- Saves hud position.
 function CpBaseHud.saveToXmlFile(xmlFile,baseKey)
-    local key = baseKey.."Hud"
-    setXMLFloat(xmlFile,key.."#posX",CpBaseHud.x)
-    setXMLFloat(xmlFile,key.."#posY",CpBaseHud.y)
+    xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posX",CpBaseHud.x)
+    xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posY",CpBaseHud.y)
 end
 
 --- Loads hud position.
 function CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
-    local key = baseKey.."Hud"
-    local posX = getXMLFloat(xmlFile,key.."#posX")
-    local posY = getXMLFloat(xmlFile,key.."#posY")
+    local posX = xmlFile:getValue(baseKey..CpBaseHud.xmlKey.."#posX")
+    local posY = xmlFile:getValue(baseKey..CpBaseHud.xmlKey.."#posY")
     if posX ~= nil and posY ~= nil then 
         CpBaseHud.savedPositions = {
            posX, posY

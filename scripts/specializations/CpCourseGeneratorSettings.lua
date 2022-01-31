@@ -18,6 +18,10 @@ function CpCourseGeneratorSettings.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
 
+function CpCourseGeneratorSettings.registerEvents(vehicleType)
+ --   SpecializationUtil.registerEvent(vehicleType,"cpUpdateGui")
+end
+
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
@@ -27,6 +31,7 @@ function CpCourseGeneratorSettings.registerEventListeners(vehicleType)
 end
 function CpCourseGeneratorSettings.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettings', CpCourseGeneratorSettings.getSettings)
+    SpecializationUtil.registerFunction(vehicleType, 'validateCourseGeneratorSettings', CpCourseGeneratorSettings.validateSettings)
     SpecializationUtil.registerFunction(vehicleType, 'getCourseGeneratorSettingsTable', CpCourseGeneratorSettings.getSettingsTable)
 end
 
@@ -49,7 +54,7 @@ function CpCourseGeneratorSettings:onLoad(savegame)
     local specName = CpCourseGeneratorSettings.MOD_NAME .. ".cpCourseGeneratorSettings"
     self.spec_cpCourseGeneratorSettings = self["spec_" .. specName]
     local spec = self.spec_cpCourseGeneratorSettings
-
+    spec.gui = g_currentMission.inGameMenu.pageAI
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec,CpCourseGeneratorSettings.settings,self,CpCourseGeneratorSettings)
 
@@ -121,8 +126,10 @@ function CpCourseGeneratorSettings:saveToXMLFile(xmlFile, key, usedModNames)
 end
 
 --- Callback raised by a setting and executed as an vehicle event.
-function CpCourseGeneratorSettings:raiseCallback(callbackStr)
-    SpecializationUtil.raiseEvent(self,callbackStr)
+---@param callbackStr string event to be raised
+---@param setting AIParameterSettingList setting that raised the callback.
+function CpCourseGeneratorSettings:raiseCallback(callbackStr, setting, ...)
+    SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
 end
 
 function CpCourseGeneratorSettings:setAutomaticWorkWidth()
@@ -142,4 +149,17 @@ function CpCourseGeneratorSettings:onCpUnitChanged()
     for i,setting in ipairs(spec.settings) do 
         setting:validateTexts()
     end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Callbacks for the settings to manipulate the gui elements.
+------------------------------------------------------------------------------------------------------------------------
+function CpCourseGeneratorSettings:hasHeadlandsSelected()
+    local spec = self.spec_cpCourseGeneratorSettings
+    return spec.numberOfHeadlands:getValue()>0
+end
+
+function CpCourseGeneratorSettings:updateGui()
+    local spec = self.spec_cpCourseGeneratorSettings
+    CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(spec.gui)
 end

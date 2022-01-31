@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.0.23</version>
+    <version>7.0.0.25</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -55,6 +55,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/DevHelper.lua"/>
 		<sourceFile filename="scripts/courseManager/CourseEvent.lua"/>
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
+		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Genetic.lua"/>
@@ -65,7 +66,10 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
+		<sourceFile filename="scripts/Course.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
+		<sourceFile filename="scripts/field/CustomField.lua"/>
+		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
@@ -113,13 +117,14 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
 		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
+		<sourceFile filename="scripts/gui/CustomFieldPlot.lua"/>
 		<sourceFile filename="scripts/gui/CpStatus.lua"/>
 		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>
 		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>
 		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
 		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
-		<sourceFile filename="scripts/gui/CpAIHotspotExtended.lua"/>
+		<sourceFile filename="scripts/gui/CpAIHotspots.lua"/>
 		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>

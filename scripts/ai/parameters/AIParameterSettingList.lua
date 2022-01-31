@@ -161,6 +161,9 @@ end
 function AIParameterSettingList:onChange()
 	if self.setupDone then
 		self:raiseCallback(self.callbacks.onChangeCallbackStr)
+		if self.data.autoUpdateGui then 
+			self:getCallback("updateGui")
+		end
 	end
 end
 
@@ -217,16 +220,8 @@ function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
 	xmlFile:setInt(key .. "#value", self.current)
 end
 
-function AIParameterSettingList:saveToRawXMLFile(xmlFile, key)
-	setXMLInt(xmlFile,key.."#value",self.current)
-end
-
 function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
-end
-
-function AIParameterSettingList:loadFromRawXMLFile(xmlFile, key)
-	self:setToIx(getXMLInt(xmlFile,key .. "#value") or 1)
 end
 
 function AIParameterSettingList:readStream(streamId, connection)
@@ -415,8 +410,15 @@ end
 --- Adds text input option to the setting.
 function AIParameterSettingList:registerMouseInputEvent()
 	local function mouseClick(element,superFunc,posX, posY, isDown, isUp, button, eventUsed)
+		--- Disables not visible settings in a scrolling layout.
+		if element.parent then 
+			local x,y = element.absPosition[1]+element.absSize[1]/2,element.absPosition[2]+element.absSize[2]/2
+			local valid = GuiUtils.checkOverlayOverlap(x,y, element.parent.absPosition[1], element.parent.absPosition[2], element.parent.absSize[1], element.parent.absSize[2])
+			if not valid then 
+				return
+			end
+		end
 		local eventUsed = superFunc(element,posX, posY, isDown, isUp, button, eventUsed)
-	--	CpUtil.debugFormat(CpDebug.DBG_HUD,"Settings text pressed, pre event used: %s",tostring(eventUsed))
 		local x, y = unpack(element.textElement.absPosition)
 		local width, height = unpack(element.textElement.absSize)
 		local cursorInElement = GuiUtils.checkOverlayOverlap(posX, posY, x, y, width, height)
@@ -523,14 +525,14 @@ function AIParameterSettingList:onClick(state)
 end
 
 --- Raises an event and sends the callback string to the Settings controller class.
-function AIParameterSettingList:raiseCallback(callbackStr)
+function AIParameterSettingList:raiseCallback(callbackStr, ...)
 	if self.klass ~= nil and self.klass.raiseCallback and callbackStr then
-		self:debug("raised Callback %s",callbackStr)
+		self:debug("raised Callback %s", callbackStr)
 		--- If the setting is bound to a setting, then call the specialization function with self as vehicle.
 		if self.vehicle ~= nil then 
-			self.klass.raiseCallback(self.vehicle,callbackStr)
+			self.klass.raiseCallback(self.vehicle, callbackStr, self, ...)
 		else
-			self.klass:raiseCallback(callbackStr)
+			self.klass:raiseCallback(callbackStr, self, ...)
 		end
 	end
 end

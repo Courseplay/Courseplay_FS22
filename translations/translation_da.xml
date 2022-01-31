@@ -144,6 +144,11 @@
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Rutegenerator indstilling for (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Rutegenerator indstilling for (%s)"/>
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basal"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Forager"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Mitte"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Advanceret"/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbejdsbredde" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbejdsbredde. Værdi: 0 - 50" />

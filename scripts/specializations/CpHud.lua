@@ -52,7 +52,7 @@ function CpHud.registerFunctions(vehicleType)
 end
 
 function CpHud.registerOverwrittenFunctions(vehicleType)
-   if g_modIsLoaded["FS22_ClickToSwitch"] then 
+   if vehicleType.functions["enterVehicleRaycastClickToSwitch"] ~= nil then 
         SpecializationUtil.registerOverwrittenFunction(vehicleType, "enterVehicleRaycastClickToSwitch", CpHud.enterVehicleRaycastClickToSwitch)
    end
   
@@ -62,7 +62,10 @@ end
 function CpHud:enterVehicleRaycastClickToSwitch(superFunc, x, y)
     local spec = self.spec_cpHud
     if not spec.hud:isMouseOverArea(x, y) then 
+        CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'Entering for cts is allowed.')
         superFunc(self, x, y)
+    else 
+        CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'Entering for cts is not allowed.')
     end
 end
 
@@ -72,48 +75,55 @@ function CpHud:getIsMouseOverCpHud()
 end
 
 function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)    
-    local spec = self.spec_cpHud
-    self:clearActionEventsTable(spec.actionEvents)
+    if self.isClient then
+        local spec = self.spec_cpHud
+        self:clearActionEventsTable(spec.actionEvents)
 
-    if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
-        return 
-    end
-
-    if self.isActiveForInputIgnoreSelectionIgnoreAI then
-        --- Toggle mouse cursor action event
-        --- Parameters: 
-        --- (actionEventsTable, inputAction, target,
-        ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
-        ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
-		if self:getCpSettings().openHudWithMouse:getValue() then
-			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
-					CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
-			g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
-       		g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
-        else
-            local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, 
-                    CpHud.openClose, false, true, false, true, nil)
-            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
-            g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+        if g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
+            return 
         end
 
+        if self.isActiveForInputIgnoreSelectionIgnoreAI then
+            --- Toggle mouse cursor action event
+            --- Parameters: 
+            --- (actionEventsTable, inputAction, target,
+            ---  callback, triggerUp, triggerDown, triggerAlways, startActive,
+            ---  callbackState, customIconName, ignoreCollisions, reportAnyDeviceCollision)
+            if self:getCpSettings().openHudWithMouse:getValue() then
+                local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_TOGGLE_MOUSE, self,
+                        CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
+                g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
+                g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+            end
+        end
     end
 end
 
-function CpHud:actionEventMouse()
+function CpHud:actionEventMouse(isMouseEvent)
+    --- Disables closing of the hud with the mouse button, while auto drive is in editor mode.
+    if isMouseEvent and g_Courseplay.autoDrive and g_Courseplay.autoDrive.isEditorModeEnabled() then 
+        return
+    end
+    local spec = self.spec_cpHud
     local showMouseCursor = not g_inputBinding:getShowMouseCursor()
+    if not spec.hud:getIsOpen() then
+        showMouseCursor = true
+    end
     CpUtil.debugVehicle(CpDebug.DBG_HUD, self, 'show mouse cursor %s', showMouseCursor)
     g_inputBinding:setShowMouseCursor(showMouseCursor)
     ---While mouse cursor is active, disable the camera rotations
     CpGuiUtil.setCameraRotation(self, not showMouseCursor, self.spec_cpHud.savedCameraRotatableInfo)
 	if showMouseCursor then
-		local spec = self.spec_cpHud
 		spec.hud:openClose(true)
 		CpHud.isHudActive = true
 	end
 end
 
 function CpHud:resetCpHud()
+    --- Prevents turning the mouse button off, if auto drive editor is enabled.
+    if g_Courseplay.autoDrive and g_Courseplay.autoDrive.isEditorModeEnabled() then 
+        return
+    end
 	g_inputBinding:setShowMouseCursor(false)
 	CpGuiUtil.setCameraRotation(self, true, self.spec_cpHud.savedCameraRotatableInfo)
     local spec = self.spec_cpHud
@@ -134,7 +144,7 @@ end
 
 function CpHud:openClose()
 	local spec = self.spec_cpHud
-	if g_inputBinding:getShowMouseCursor() then 
+	if spec.hud:getIsOpen() then 
 		self:resetCpHud()
 		spec.hud:openClose(false)
 		CpHud.isHudActive = false

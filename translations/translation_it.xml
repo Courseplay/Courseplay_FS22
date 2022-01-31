@@ -13,6 +13,7 @@
 		<text name="CP_error_not_on_field"																text="L'obiettivo non si trova su di un campo!" />
 		
 		<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Posizione del campo:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_title"														text="Iniziare da:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Da dove iniziare il lavoro sul campo" />
@@ -142,8 +143,13 @@
 		
 		<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Impostazioni percorso veicolo (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Base"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="testa campo"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="centro"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="avanzato"/>
+
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Larghezza lavoro" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Larghezza di lavoro del veicolo e/o degli attrezzi connessi. Intervallo: 0 - 50" />
 		
@@ -268,7 +274,15 @@
 		
 		<text name="CP_courseManager_activate"															text="Attiva"/>
 
-		<!-- In game help menu-->
+	<!--Custom Field-->
+		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Vuoi eliminare il campo personalizzato %s?"/>
+
+	<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Avvia registrazione campo personalizzato."/>
+		<text name="CP_controllerGui_stopRecording"														text="Ferma registrazione campo personalizzato."/>
+
+	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<text name="CP_help_page_courseManager_title"													text="Gestione percorsi"/>
 		<text name="CP_help_page_courseManager_text"													text="Sono disponibili 7 diverse azioni:

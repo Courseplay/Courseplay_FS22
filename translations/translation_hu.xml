@@ -13,6 +13,7 @@
 
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Kezdd:" />
 		<text name="CP_jobParameters_startAt_title"														text="Kezdd:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Mikor kezdje el a munkát" />
@@ -140,8 +141,13 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="A tanfolyam generátor beállításai (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Munkaszélesség" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Munkaszélesség. Value: 0 - 50" />
 		
@@ -265,6 +271,14 @@
 		<text name="CP_courseManager_advancedSettings"													text="Fájlok szerkesztése."/>
 
 		<text name="CP_courseManager_activate"															text="Aktiválja"/>
+
+	<!--Custom Field-->
+		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+
+	<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>

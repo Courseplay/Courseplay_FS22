@@ -3,39 +3,50 @@
 Courseplay = CpObject()
 Courseplay.MOD_NAME = g_currentModName
 Courseplay.BASE_DIRECTORY = g_currentModDirectory
-Courseplay.BASE_KEY = "Courseplay."
+Courseplay.baseXmlKey = "Courseplay"
+Courseplay.xmlKey = Courseplay.baseXmlKey.."."
 
 function Courseplay:init()
 	self:registerConsoleCommands()
 	g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml",Courseplay.BASE_DIRECTORY) )
+
+	--- Base cp folder
+	self.baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME ..  "/"
+	createFolder(self.baseDir)
+	--- Base cp folder
+	self.cpFilePath = self.baseDir.."courseplay.xml"
 end
 
+function Courseplay:registerXmlSchema()
+	self.xmlSchema = XMLSchema.new("Courseplay")
+	self.xmlSchema:register(XMLValueType.STRING,self.baseXmlKey.."#lastVersion")
+	self.globalSettings:registerXmlSchema(self.xmlSchema,self.xmlKey)
+	CpBaseHud.registerXmlSchema(self.xmlSchema,self.xmlKey)
+end
+
+--- Loads data not tied to a savegame.
 function Courseplay:loadUserSettings()
-	local path = getUserProfileAppPath() .. "game.xml"
-	if fileExists(path) then
-		local xmlFile = loadXMLFile("gameXml", path)
-		if xmlFile then
-			local baseKey = "game.courseplay."
-			self:showUserInformation(xmlFile,baseKey)
-			self.globalSettings:loadUserSettingsFromXmlFile(xmlFile,baseKey)
-			CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
-			saveXMLFile(xmlFile)
-			delete(xmlFile)
-		end
+	local xmlFile = XMLFile.loadIfExists("cpXmlFile",self.cpFilePath,self.xmlSchema)
+	if xmlFile then
+		self:showUserInformation(xmlFile,self.baseXmlKey)
+		self.globalSettings:loadFromXMLFile(xmlFile,self.xmlKey)
+		CpBaseHud.loadFromXmlFile(xmlFile,self.xmlKey)
+		xmlFile:save()
+		xmlFile:delete()
 	end
 end
 
+--- Saves data not tied to a savegame.
 function Courseplay:saveUserSettings()
-	local path = getUserProfileAppPath() .. "game.xml"
-	if fileExists(path) then
-		local xmlFile = loadXMLFile("gameXml", path)
-		if xmlFile then
-			local baseKey = "game.courseplay."
-			self.globalSettings:saveUserSettingsToXmlFile(xmlFile,baseKey)
-			CpBaseHud.saveToXmlFile(xmlFile,baseKey)
-			saveXMLFile(xmlFile)
-			delete(xmlFile)
+	local xmlFile = XMLFile.create("cpXmlFile",self.cpFilePath,self.baseXmlKey,self.xmlSchema)
+	if xmlFile then 
+		self.globalSettings:saveUserSettingsToXmlFile(xmlFile,self.xmlKey)
+		CpBaseHud.saveToXmlFile(xmlFile,self.xmlKey)
+		if self.currentVersion then
+			xmlFile:setValue(self.baseXmlKey.."#lastVersion",self.currentVersion)
 		end
+		xmlFile:save()
+		xmlFile:delete()
 	end
 end
 
@@ -46,7 +57,7 @@ end
 function Courseplay:showUserInformation(xmlFile,key)
 	local showInfoDialog = true
 	local currentVersion = g_modManager:getModByName(self.MOD_NAME).version
-	local lastLoadedVersion = getXMLString(xmlFile,key.."lastVersion")		
+	local lastLoadedVersion = xmlFile:getValue(key.."#lastVersion")
 	if lastLoadedVersion then 
 		if currentVersion == lastLoadedVersion then 
 			showInfoDialog = false
@@ -57,7 +68,8 @@ function Courseplay:showUserInformation(xmlFile,key)
 			text = string.format(g_i18n:getText("CP_infoText"), currentVersion)
 
 		})
-		setXMLString(xmlFile,key.."lastVersion",currentVersion)
+		self.currentVersion = currentVersion
+		xmlFile:setValue(key.."#lastVersion",currentVersion)
 	end
 end
 
@@ -69,24 +81,25 @@ end
 ---@param filename string
 function Courseplay:loadMap(filename)
 	self.globalSettings = CpGlobalSettings()
+	self:registerXmlSchema()
 	self:loadUserSettings()
-	self:registerSchema()
 	self:load()
 	self:setupGui()
 	if g_currentMission.missionInfo.savegameDirectory ~= nil then
-		local filePath = g_currentMission.missionInfo.savegameDirectory .. "/Courseplay.xml"
-		self.xmlFile = XMLFile.load("cpXml", filePath , self.schema)
+		local saveGamePath = g_currentMission.missionInfo.savegameDirectory .."/"
+		local filePath = saveGamePath .. "Courseplay.xml"
+		self.xmlFile = XMLFile.load("cpXml", filePath , self.xmlSchema)
 		if self.xmlFile == nil then return end
-		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.BASE_KEY)
+		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.xmlKey)
 		self.xmlFile:delete()
+
+		g_assignedCoursesManager:loadAssignedCourses(saveGamePath)
 	end
-end
 
-function Courseplay:registerSchema()
-	self.schema = XMLSchema.new("Courseplay")
-	self.globalSettings:registerSchema(self.schema,self.BASE_KEY)
+	--- Ugly hack to get access to the global AutoDrive table, as this global is dependent on the auto drive folder name.
+	self.autoDrive = FS22_AutoDrive and FS22_AutoDrive.AutoDrive
+	CpUtil.info("Auto drive found: %s",tostring(self.autoDrive~=nil))
 end
-
 
 function Courseplay:setupGui()
 	local vehicleSettingsFrame = CpVehicleSettingsFrame.new()
@@ -113,22 +126,28 @@ function Courseplay:setupGui()
 	
 end
 
+--- Adds cp help info to the in game help menu.
 function Courseplay:loadMapDataHelpLineManager(xmlFile, missionInfo)
 	self:loadFromXML(Utils.getFilename("config/HelpMenu.xml",Courseplay.BASE_DIRECTORY))
 end
 HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapData,Courseplay.loadMapDataHelpLineManager)
 
+--- Saves all global data, for example global settings.
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
-		local xmlFile = XMLFile.create("cpXml",missionInfo.savegameDirectory.. "/Courseplay.xml", 
-				"Courseplay", g_Courseplay.schema)
-		g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.BASE_KEY)
-		xmlFile:save()
-		xmlFile:delete()
+		local saveGamePath = missionInfo.savegameDirectory .."/"
+		local xmlFile = XMLFile.create("cpXml",saveGamePath.. "Courseplay.xml", 
+				"Courseplay", g_Courseplay.xmlSchema)
+		if xmlFile then	
+			g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.xmlKey)
+			xmlFile:save()
+			xmlFile:delete()
+		end
 		g_Courseplay:saveUserSettings()
+		g_assignedCoursesManager:saveAssignedCourses(saveGamePath)
 	end
 end
-FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
+FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
 	g_devHelper:update()
@@ -163,10 +182,6 @@ function Courseplay:keyEvent(unicode, sym, modifier, isDown)
 end
 
 function Courseplay:load()
-	--- Base cp folder
-	self.baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME ..  "/"
-	createFolder(self.baseDir)
-
 	--- Sub folder for debug information
 	self.debugDir = self.baseDir .. "Debug/"
 	createFolder(self.debugDir) 
@@ -178,10 +193,16 @@ function Courseplay:load()
 
 	self.courseDir = self.baseDir .. "Courses"
 	createFolder(self.courseDir) 
-	self.courseStorage = FileSystem(self.courseDir,g_currentMission.missionInfo.mapId)
-	g_courseManger = self.courseStorage
+	self.courseStorage = FileSystem(self.courseDir, g_currentMission.missionInfo.mapId)
+	self.courseStorage:fixCourseStorageRoot()
+
+	self.customFieldDir = self.baseDir .. "CustomFields"
+	createFolder(self.customFieldDir)
+	g_customFieldManager = CustomFieldManager(FileSystem(self.customFieldDir, g_currentMission.missionInfo.mapId))
+
 	g_courseDisplay = CourseDisplay()
 	g_vehicleConfigurations:loadFromXml()
+	g_assignedCoursesManager:registerXmlSchema()
 
 	--- Register additional AI messages.
 	g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
@@ -326,7 +347,6 @@ function Courseplay.register(typeManager)
 		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
-		--- TODO: Implement this specialization
 		CpAIFieldWorker.register(typeManager,typeName,typeEntry.specializations)
 		CpVehicleSettingDisplay.register(typeManager,typeName,typeEntry.specializations)
 		CpHud.register(typeManager,typeName,typeEntry.specializations)

@@ -14,6 +14,7 @@
 		<text name="CP_error_not_on_field"																text="Target is not on a field." />
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start at:" />
 		<text name="CP_jobParameters_startAt_title"														text="Start at:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Where to start field work" />
@@ -142,7 +143,11 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Course generator settings of (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
 		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Work width" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Work width. Value: 0 - 50" />
@@ -266,6 +271,15 @@
 		<text name="CP_courseManager_advancedSettings"													text="Edit files."/>
 
 		<text name="CP_courseManager_activate"															text="Activate"/>
+
+	<!--Custom Field-->
+		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+
+	<!--Hud texts-->
+		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
