@@ -43,16 +43,6 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.courseGeneratorLayoutPageTitle = pageTitle
 	self.courseGeneratorLayout:setVisible(false)
-	--- Disables button, if they are outside of the visible scroll layout box.
-	local function validateElements(layout)
-		for i,element in pairs(layout.elements) do 
-			local x,y = element.absPosition[1]+element.absSize[1]/2,element.absPosition[2]+element.absSize[2]/2
-			local valid = GuiUtils.checkOverlayOverlap(x,y, layout.absPosition[1], layout.absPosition[2], layout.absSize[1], layout.absSize[2])
-			element:setDisabled(not valid)
-		end
-	end
-	self.courseGeneratorLayoutElements.smoothScrollTo = Utils.appendedFunction(self.courseGeneratorLayoutElements.smoothScrollTo,validateElements)
-	self.courseGeneratorLayoutElements.invalidateLayout = Utils.appendedFunction(self.courseGeneratorLayoutElements.invalidateLayout,validateElements)
 	self.courseGeneratorLayoutElements:invalidateLayout()
 	--- Makes the last selected hotspot is not sold before reopening.
 	local function validateCurrentHotspot(currentMission,hotspot)
@@ -163,11 +153,7 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 			self:toggleMapInput(false)
 			self:setJobMenuVisible(false)
 			self.contextBox:setVisible(false)
-			CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
-			FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
-			self.courseGeneratorLayoutElements:invalidateLayout()
-			CpGuiUtil.debugFocus(self.courseGeneratorLayoutElements,nil)
-			FocusManager:setFocus(self.courseGeneratorLayoutElements)
+			CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(self)
 		end
 	end
 end
@@ -178,10 +164,23 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 	self.courseGeneratorHeader:setText(title)
 	if vehicle ~=nil then 
 		if vehicle.getCourseGeneratorSettings then 
+			vehicle:validateCourseGeneratorSettings()
 			CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )
 			self.settings = vehicle:getCourseGeneratorSettingsTable()
-			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
+			local settingsBySubTitle = CpCourseGeneratorSettings.getSettingSetup()
+			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements,settingsBySubTitle,vehicle)
 		end
+	end
+end
+
+function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
+	if self.courseGeneratorLayout:getIsVisible() then 
+		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
+		FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
+		self.courseGeneratorLayoutElements:invalidateLayout()
+		self:setSoundSuppressed(true)
+		FocusManager:setFocus(self.courseGeneratorLayoutElements)
+		self:setSoundSuppressed(false)
 	end
 end
 

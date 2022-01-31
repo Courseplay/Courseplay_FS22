@@ -19,7 +19,8 @@ CpSettingsUtil.classTypes = {
 
 	Settings :
 		- prefixText (string):  pre fix text used for translations
-		
+		- autoUpdateGui (bool): automatically updates the gui, optional
+
 		- SettingSubTitle(?) :
 			- prefix (bool): prefix used yes/no?, default = true
 			- title (string): sub title text in the gui menu
@@ -66,7 +67,8 @@ function CpSettingsUtil.init()
 	-- valueTypeId, path, description, defaultValue, isRequired
 	schema:register(XMLValueType.STRING, "Settings#title","Settings prefix text",nil,true)
 	schema:register(XMLValueType.STRING, "Settings#prefixText","Settings prefix text",nil,true)
-	
+	schema:register(XMLValueType.STRING, "Settings#autoUpdateGui","Gui gets updated automatically")
+
 	local key = "Settings.SettingSubTitle(?)"
 	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title",nil,true)
 	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix",true)
@@ -117,6 +119,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
     class.settings = {}
 	class.settingsBySubTitle = {}
     local uniqueID = 0
+	local autoUpdateGui = xmlFile:getValue("Settings#autoUpdateGui")
 	local setupKey = xmlFile:getValue("Settings#prefixText")
 	local pageTitle = xmlFile:getValue("Settings#title")
 	if pageTitle then
@@ -146,6 +149,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		}
 		xmlFile:iterate(masterKey..".Setting", function (i, baseKey)
 			local settingParameters = {}
+			settingParameters.autoUpdateGui = autoUpdateGui
 			settingParameters.classType = xmlFile:getValue(baseKey.."#classType")
 			settingParameters.name = xmlFile:getValue(baseKey.."#name")
 			local title = xmlFile:getValue(baseKey.."#title")

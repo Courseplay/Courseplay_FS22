@@ -6,22 +6,23 @@
 	For documentation look up the CpSettingUtil.lua.
 -->
 
-<Settings prefixText="CP_vehicle_courseGeneratorSetting_">
+<Settings prefixText="CP_vehicle_courseGeneratorSetting_" autoUpdateGui="true">
 	<SettingSubTitle title="basic">
 		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidth" onChangeCallback="cpShowWorkWidth"/>
-		<Setting classType="AIParameterSettingList" name="centerMode">
+		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1"/>
+		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
+	</SettingSubTitle>
+	<!-- Only active with one or more headlands -->
+	<SettingSubTitle title="headland" isVisible="hasHeadlandsSelected">	
+		<Setting classType="AIParameterSettingList" name="startOnHeadland">
 			<Values>
-				<Value name="CENTER_MODE_UP_DOWN">1</Value> 
-				<Value name="CENTER_MODE_SPIRAL">2</Value> 
-				<Value name="CENTER_MODE_CIRCULAR">3</Value> 
-				<Value name="CENTER_MODE_LANDS">4</Value> 
-			</Values> 
+				<Value name="HEADLAND_START_ON_HEADLAND">1</Value>
+				<Value name="HEADLAND_START_ON_UP_DOWN_ROWS">2</Value>
+			</Values>
 			<Texts>
-				<Text>up_down</Text> 
-				<Text>spiral</Text> 
-				<Text>circular</Text> 
-				<Text>lands</Text> 
-			</Texts> 
+				<Text>on_headland</Text>
+				<Text>up_down_rows</Text>
+			</Texts>
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="headlandCornerType" >
 			<Values>
@@ -35,7 +36,6 @@
 				<Text>round</Text> 
 			</Texts> 
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
 		<Setting classType="AIParameterSettingList" name="isClockwise">
 			<Values>
 				<Value name="HEADLAND_CLOCKWISE">1</Value>
@@ -47,8 +47,22 @@
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4"/>
-		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
-		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="center">
+		<Setting classType="AIParameterSettingList" name="centerMode">
+			<Values>
+				<Value name="CENTER_MODE_UP_DOWN">1</Value> 
+				<Value name="CENTER_MODE_SPIRAL">2</Value> 
+				<Value name="CENTER_MODE_CIRCULAR">3</Value> 
+				<Value name="CENTER_MODE_LANDS">4</Value> 
+			</Values> 
+			<Texts>
+				<Text>up_down</Text> 
+				<Text>spiral</Text> 
+				<Text>circular</Text> 
+				<Text>lands</Text> 
+			</Texts> 
+		</Setting>	
 		<Setting classType="AIParameterSettingList" name="rowDirection" >
 			<Values>
 				<Value name="ROW_DIRECTION_AUTOMATIC">5</Value>
@@ -61,18 +75,11 @@
 				<Text>manual</Text>
 			</Texts>
 		</Setting>
+		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
+		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6"/>
 		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5"/>
-		<Setting classType="AIParameterSettingList" name="startOnHeadland">
-			<Values>
-				<Value name="HEADLAND_START_ON_HEADLAND">1</Value>
-				<Value name="HEADLAND_START_ON_UP_DOWN_ROWS">2</Value>
-			</Values>
-			<Texts>
-				<Text>on_headland</Text>
-				<Text>up_down_rows</Text>
-			</Texts>
-		</Setting>
-		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="advanced">
 		<Setting classType="AIParameterSettingList" name="islandBypassMode">
 			<Values>
 				<Value name="ISLAND_BYPASS_MODE_CIRCLE">3</Value>
