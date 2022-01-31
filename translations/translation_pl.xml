@@ -145,8 +145,13 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Ustawienia generatora kursu dla (%s)"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text=""/>
 		
+		<!-- Subtitles-->	
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Szerokość robocza" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Szerokość robocza. Zakres: 0 - 50" />
 		
