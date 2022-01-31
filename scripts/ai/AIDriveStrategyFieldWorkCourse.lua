@@ -799,8 +799,8 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
         if closestDistanceFront < minDistance then
             self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
                     closestDistanceFront, minDistance)
-            -- the closer we are, the slower we drive
-            local factor = math.max(0, (1 - (minDistance - closestDistanceFront) / minDistance))
+            -- the closer we are, the slower we drive, but stop at half the minDistance
+            local factor = math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
             self:setMaxSpeed(factor * self.maxSpeed)
         end
     elseif position == 1 then
