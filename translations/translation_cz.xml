@@ -145,10 +145,10 @@
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Nastavení generátoru kurzů (%s)"/>
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Základní"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Souvrať"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Střed"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Pokročilý"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Pracovní šířka" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Pracovní šířka. Hodnota: 0 - 50" />
