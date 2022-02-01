@@ -147,10 +147,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Настройки генератора курсов (%s)"/>
 		
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="основные"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="поворотная полоса"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="метод движения"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="расширенные"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Рабочая ширина" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Рабочая ширина орудия. Значение: 0 - 50" />
@@ -195,7 +195,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="вручную" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Угол челночных проходов" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Угол проходов в челночном режиме (0 это север) при указании направления вручную. Значение: 0 - 175 с шагом: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Угол проходов в челночном режиме  при указании направления вручную (0 = север). Значение: 0 - 175 с шагом: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Обход островков" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Как курс должен обходить островки на поле." />
