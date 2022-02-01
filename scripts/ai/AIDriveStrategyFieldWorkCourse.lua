@@ -73,7 +73,7 @@ function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
         self:debug('Multitool course, center vehicle, using original course')
         return course
     else
-        self:debug('Multitool course, non-center vehicle, generating offset course')
+        self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d',laneNumber)
         --- Lane number needs to be zero for only one vehicle.
         --- Work width of a single vehicle.
         local width = course:getWorkWidth() / numMultiTools

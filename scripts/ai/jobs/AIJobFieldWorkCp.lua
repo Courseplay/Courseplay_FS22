@@ -11,7 +11,7 @@ AIJobFieldWorkCp.translations = {
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
-	
+	self.jobName = "FIELDWORK_CP"
 	self.fieldWorkTask = AITaskFieldWorkCp.new(isServer, self)
 	-- Switches the AITaskFieldWork with AITaskFieldWorkCp.
 	-- TODO: Consider deriving AIJobFieldWorkCp of AIJob and implement our own logic instead.
@@ -48,7 +48,7 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 
 	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
 	self.selectedFieldPlot:setVisible(false)
-
+	self.cpJobParameters:validateSettings()
 	return self
 end
 
@@ -130,6 +130,16 @@ function AIJobFieldWorkCp:drawSelectedField(map)
 	if self.selectedFieldPlot then
 		self.selectedFieldPlot:draw(map)
 	end
+end
+
+function AIJobFieldWorkCp:writeStream(streamId, connection)
+	AIJobFieldWorkCp:superClass().writeStream(self, streamId, connection)
+	self.cpJobParameters:writeStream(streamId, connection)
+end
+
+function AIJobFieldWorkCp:readStream(streamId, connection)
+	AIJobFieldWorkCp:superClass().readStream(self, streamId, connection)
+	self.cpJobParameters:readStream(streamId, connection)
 end
 
 function AIJobFieldWorkCp:getCpJobParameters()
@@ -258,4 +268,26 @@ end
 
 function AIJobFieldWorkCp:setVehicle(v)
 	self.vehicle = v
+end
+
+--- Ugly hack to fix a mp problem from giants, where the job class can not be found.
+function AIJobFieldWorkCp:getJobTypeIndex(superFunc,job)
+	local ret = superFunc(self,job)
+	if ret == nil then 
+		if job.jobName then 
+			return self.nameToIndex[job.jobName]
+		end
+	end
+	return ret
+end
+AIJobTypeManager.getJobTypeIndex = Utils.overwrittenFunction(AIJobTypeManager.getJobTypeIndex ,AIJobFieldWorkCp.getJobTypeIndex)
+
+--- Ugly hack to fix a mp problem from giants, where the helper is not always reset correctly on the client side.
+function AIJobFieldWorkCp:stop(aiMessage)	
+	AIJobFieldWorkCp:superClass().stop(self, aiMessage)
+
+	local vehicle = self.vehicleParameter:getVehicle()
+	if vehicle and vehicle.spec_aiFieldWorker.isActive then 
+		vehicle.spec_aiFieldWorker.isActive = false
+	end
 end

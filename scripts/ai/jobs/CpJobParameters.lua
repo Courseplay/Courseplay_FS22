@@ -42,6 +42,18 @@ function CpJobParameters:validateSettings()
     end
 end
 
+function CpJobParameters:writeStream(streamId, connection)
+    for i,setting in ipairs(self.settings) do 
+        setting:writeStream(streamId, connection)
+    end
+end
+
+function CpJobParameters:readStream(streamId, connection)
+    for i,setting in ipairs(self.settings) do 
+        setting:readStream(streamId, connection)
+    end
+end
+
 function CpJobParameters:isBaleFinderNotAllowed()
     local vehicle = self.job:getVehicle()
     if vehicle then
@@ -59,7 +71,7 @@ function CpJobParameters:getMultiTools()
             return course:getMultiTools() or 1
         end
     end
-    return 1
+    return 5
 end
 
 function CpJobParameters:noMultiToolsCourseSelected()

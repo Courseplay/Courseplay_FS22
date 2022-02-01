@@ -25,11 +25,6 @@ function BalerController:init(vehicle)
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 20
     self.balerSpec = self.baler.spec_baler
-    --use giants automaticDrop, so we don't have to do it
-    if self.balerSpec then
-        self.oldAutomaticDrop = self.balerSpec.automaticDrop
-        self.balerSpec.automaticDrop = true
-    end
     self:debug('Baler controller initialized')
 end
 
@@ -51,11 +46,6 @@ function BalerController:handleBaler()
             self.baler:setIsTurnedOn(true, false);
         else --maybe this line is enough to handle bale dropping and waiting ?
             maxSpeed = 0
-            --baler needs refilling of some sort (net,...)
-            if self.balerSpec.unloadingState == Baler.UNLOADING_CLOSED then
-                -- TODO: info texts no notify user
-                self:debug('NEEDS_REFILLING')
-            end
         end
     end
 
@@ -65,27 +55,23 @@ function BalerController:handleBaler()
             self:debug('lowering baler pickup')
         end
     end
-
-    local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
-    local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
-
-    if not self.balerSpec.nonStopBaling and (self.balerSpec.hasUnloadingAnimation or self.balerSpec.allowsBaleUnloading) then
-    --if not self.balerSpec.nonStopBaling and self.balerSpec.allowsBaleUnloading then
-        self:debugSparse("hasUnloadingAnimation: %s, allowsBaleUnloading: %s, nonStopBaling:%s",
-                tostring(self.balerSpec.hasUnloadingAnimation),tostring(self.balerSpec.allowsBaleUnloading),tostring(self.balerSpec.nonStopBaling))
-        --copy of giants code:  AIDriveStrategyBaler:getDriveData(dt, vX,vY,vZ) to avoid leftover when full
+    
+    if not self.balerSpec.nonStopBaling then
+        local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
+        local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
         local freeFillLevel = capacity - fillLevel
+
         if freeFillLevel < self.slowDownFillLevel then
-            maxSpeed = 2 + (freeFillLevel / self.slowDownFillLevel) * self.slowDownStartSpeed
+            maxSpeed = 2 + freeFillLevel / self.slowDownFillLevel * self.slowDownStartSpeed
         end
 
-        --baler is full or is unloading so wait!
         if fillLevel == capacity or self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
             maxSpeed = 0
         end
- --   elseif self.balerSpec.platformDropInProgress then
-  --      maxSpeed = self.balerSpec.platformAIDropSpeed
+    elseif self.balerSpec.platformDropInProgress then
+        maxSpeed = self.balerSpec.platformAIDropSpeed
     end
+
     return maxSpeed
 end
 

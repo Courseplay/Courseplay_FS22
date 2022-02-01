@@ -160,7 +160,7 @@ end
 --- Button callback of the ai menu button.
 function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
 	if CpInGameMenuAIFrameExtended.getCanGenerateCourse(self) then 
-		self.currentJob:onClickGenerateFieldWorkCourse()
+		CpUtil.callErrorCorrectedFunction(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
 		--CpSettingsUtil.updateAiParameters(self.currentJobElements)
 	end
 end

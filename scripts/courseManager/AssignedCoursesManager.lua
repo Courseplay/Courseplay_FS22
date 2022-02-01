@@ -78,7 +78,7 @@ function AssignedCoursesManager:loadAssignedCoursesByVehicle(vehicle,id)
 						tostring(id), self.numVehiclesWithCourses)
 	if self.xmlFile~=nil and  id and id <= self.numVehiclesWithCourses then 
 		local key = string.format("%s(%d).Course", self.baseXmlKey, id)
-		vehicle:loadAssignedCpCourses(self.xmlFile, key)
+		vehicle:loadAssignedCpCourses(self.xmlFile, key, true)
 	end
 end
 

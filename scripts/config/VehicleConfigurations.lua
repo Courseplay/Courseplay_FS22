@@ -116,10 +116,6 @@ end
 --- @param attribute string configuration attribute to get
 --- @return any the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:get(object, attribute)
-    if not g_server then
-        CpUtil.info("Error: VehicleConfigurations:get() %s",attribute)
-        return
-    end
     -- TODO: use configFileNameClean, that is just the file name without the extension, or just use getName()
     if object and object.configFileName then
         local vehicleXmlFileName = Utils.getFilenameFromPath(object.configFileName)

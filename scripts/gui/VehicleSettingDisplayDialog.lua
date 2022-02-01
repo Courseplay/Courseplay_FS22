@@ -139,7 +139,7 @@ function VehicleSettingDisplayDialog:onClickClearCourse()
 		return
 	end
 	if self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive() then 
-		self.vehicle:resetCpCourses()
+		self.vehicle:resetCpCoursesFromGui()
 	end
 end
 

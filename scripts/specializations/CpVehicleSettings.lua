@@ -24,6 +24,8 @@ function CpVehicleSettings.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpVehicleSettings)
 end
 function CpVehicleSettings.registerFunctions(vehicleType)
 
@@ -72,6 +74,20 @@ function CpVehicleSettings:onPreDetachImplement(implement)
     CpVehicleSettings.validateSettings(self)
 end
 
+function CpVehicleSettings:onReadStream(streamId)
+    local spec = self.spec_cpVehicleSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:readStream(streamId)
+    end
+end
+
+function CpVehicleSettings:onWriteStream(streamId)
+    local spec = self.spec_cpVehicleSettings
+    for i,setting in ipairs(spec.settings) do 
+        setting:writeStream(streamId)
+    end
+end
+
 function CpVehicleSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/VehicleSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpVehicleSettings,filePath)
@@ -111,6 +127,10 @@ end
 function CpVehicleSettings:raiseCallback(callbackStr, setting, ...)
     SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
 end
+
+function CpVehicleSettings:raiseDirtyFlag(setting)
+    VehicleSettingsEvent.sendEvent(self,setting)
+end 
 
 function CpVehicleSettings:validateSettings()
     local spec = self.spec_cpVehicleSettings

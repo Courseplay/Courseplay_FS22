@@ -44,7 +44,7 @@ La prossima versione di Courseplay.
 
 	<iconFilename>img/icon_courseplay.dds</iconFilename>
 	<l10n filenamePrefix="translations/translation" />
-    <multiplayer supported="false" />
+    <multiplayer supported="true" />
 	
 	<extraSourceFiles>
 		<sourceFile filename="scripts/CpObject.lua"/>
@@ -53,7 +53,6 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/debug/CpDebug.lua"/>
 		<sourceFile filename="scripts/debug/CourseRecorder.lua"/>
 		<sourceFile filename="scripts/DevHelper.lua"/>
-		<sourceFile filename="scripts/courseManager/CourseEvent.lua"/>
 		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
 		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
 		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
@@ -129,6 +128,10 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
+		<sourceFile filename="scripts/events/CoursesEvent.lua"/>
+		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
+		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
+		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

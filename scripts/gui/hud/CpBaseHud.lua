@@ -190,7 +190,7 @@ function CpBaseHud:init(vehicle)
     self.clearCourseBtn:setPosition(x, y)
     self.clearCourseBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         if vehicle:hasCpCourse() then
-            vehicle:resetCpCourses()
+            vehicle:resetCpCoursesFromGui()
         end
     end)
     

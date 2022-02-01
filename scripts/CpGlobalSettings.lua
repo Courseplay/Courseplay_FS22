@@ -78,6 +78,10 @@ function CpGlobalSettings:raiseCallback(callbackStr, setting, ...)
     end
 end
 
+function CpGlobalSettings:raiseDirtyFlag(setting)
+    GlobalSettingsEvent.sendEvent(setting)
+end 
+
 function CpGlobalSettings:onHudSelectionChanged()
     local vehicle = g_currentMission.controlledVehicle
     if vehicle then 
