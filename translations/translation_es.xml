@@ -146,10 +146,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Configuración del generador de rutas de (%s)"/>
 		
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Básica"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Cabecera"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Centro"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Avanzada"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Ancho de trabajo" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Ancho de trabajo. Valor: 0 - 50" />
