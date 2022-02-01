@@ -178,9 +178,11 @@ function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
 		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
 		FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
 		self.courseGeneratorLayoutElements:invalidateLayout()
-		self:setSoundSuppressed(true)
-		FocusManager:setFocus(self.courseGeneratorLayoutElements)
-		self:setSoundSuppressed(false)
+		if FocusManager:getFocusedElement() == nil then
+			self:setSoundSuppressed(true)
+			FocusManager:setFocus(self.courseGeneratorLayoutElements)
+			self:setSoundSuppressed(false)
+		end
 	end
 end
 
