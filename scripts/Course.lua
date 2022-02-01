@@ -1571,6 +1571,8 @@ function Course:setPipeInFruitMap(pipeOffsetX, workWidth)
 	return totalNonHeadlandWps, pipeInFruitWps
 end
 
+---@param ix number waypoint where we want to get the progress, when nil, uses the current waypoint
+---@return number, number, boolean 0-1 progress, waypoint where the progress is calculated, true if last waypoint
 function Course:getProgress(ix)
 	ix = ix or self:getCurrentWaypointIx()
 	if self.originalCourseLength then
@@ -1584,9 +1586,9 @@ function Course:getProgress(ix)
 		-- original headland.
 		local dToHere = self.nonHeadlandLengthRatio * dToHereOnNonHeadland +
 			self.headlandLengthRatio * self.waypoints[ix].dToHereOnHeadland
-		return dToHere / self.originalCourseLength, ix
+		return dToHere / self.originalCourseLength, ix, ix == #self.waypoints
 	else
-		return self.waypoints[ix].dToHere / self.length, ix
+		return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 	end
 end
 

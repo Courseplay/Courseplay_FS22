@@ -755,20 +755,22 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
         if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) then
             self:debugSparse('has same course as %s', CpUtil.getName(otherVehicle))
             if otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
-                local otherProgress, otherWpIx = otherVehicle:getCpFieldWorkProgress()
+                local otherProgress, otherWpIx, otherIsDone = otherVehicle:getCpFieldWorkProgress()
                 if otherProgress and otherWpIx then
                     vehiclesInConvoy = vehiclesInConvoy + 1
                     local myProgress, myWpIx = self:getProgress()
                     local length = self.fieldWorkCourse:getLength()
                     self:debugSparse(
-                            'convoy: my progress at waypoint %d is %.3f, %s progress at waypoint %d is %.3f, 100 %d m',
-                            myWpIx, myProgress * 100, CpUtil.getName(otherVehicle), otherWpIx, otherProgress * 100, length)
+                            'convoy: my progress at waypoint %d is %.3f, %s progress at waypoint %d is %.3f (done %s), 100 %d m',
+                            myWpIx, myProgress * 100, CpUtil.getName(otherVehicle),
+                            otherWpIx, otherProgress * 100, otherIsDone, length)
                     if myProgress < otherProgress then
                         position = position + 1
                     end
                     local distance = math.abs((otherProgress - myProgress)) * length
                     -- try to remember the ones in front of us, so store only when its progress is bigger
-                    if distance < closestDistanceFront and otherProgress > myProgress then
+                    -- ignore whoever is done in front of us so we can finish our course too and don't just stop
+                    if distance < closestDistanceFront and otherProgress > myProgress and not otherIsDone then
                         closestDistanceFront = distance
                         closestVehicleFront = otherVehicle
                     end
