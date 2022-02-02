@@ -258,18 +258,23 @@ function CpInGameMenuAIFrameExtended:onStartGoToJob()
 end
 InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onStartGoToJob,CpInGameMenuAIFrameExtended.onStartGoToJob)
 
+-- this is appended to ingameMapBase.drawHotspotsOnly so self is the ingameMapBase!
 function CpInGameMenuAIFrameExtended:draw()	
 	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettings().showsAllActiveCourses:getValue()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.selectedHotspot)
 	if CoursePlotAlwaysVisible then
 		local vehicles = g_assignedCoursesManager:getRegisteredVehicles()
-		for i,v in pairs(vehicles) do 
+		for _, v in pairs(vehicles) do
 			v:drawCpCoursePlot(self)
 		end
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
 		vehicle:drawCpCoursePlot(self)
 	end
 	g_customFieldManager:draw(self)
+	local job = g_currentMission.inGameMenu.pageAI.currentJob
+	if job and job.drawSelectedField then
+		job:drawSelectedField(self)
+	end
 end
 
 function CpInGameMenuAIFrameExtended:delete()

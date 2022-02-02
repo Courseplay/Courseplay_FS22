@@ -39,7 +39,7 @@ function CustomField:init(name, vertices)
 
     self:findFieldCenter()
 
-    self.fieldPlot = CustomFieldPlot(g_currentMission.inGameMenu.ingameMap)
+    self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setWaypoints(vertices)
     self.fieldPlot:setVisible(true)
 end

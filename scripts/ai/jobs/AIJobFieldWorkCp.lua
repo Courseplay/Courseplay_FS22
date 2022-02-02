@@ -29,7 +29,7 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	self.hasValidPosition = false
 
 	--- Small translation fix, needs to be removed once giants fixes it.
-	local ai = 	g_currentMission.aiJobTypeManager
+	local ai = g_currentMission.aiJobTypeManager
 	ai:getJobTypeByIndex(ai:getJobTypeIndexByName("FIELDWORK_CP")).title = g_i18n:getText(AIJobFieldWorkCp.translations.JobName)
 
 	self.fieldPositionParameter = AIParameterPosition.new()
@@ -44,8 +44,11 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 	table.insert(self.groupedParameters, positionGroup)
 
 	self.cpJobParameters = CpJobParameters(self)
-
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
+
+	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
+	self.selectedFieldPlot:setVisible(false)
+
 	return self
 end
 
@@ -98,12 +101,19 @@ function AIJobFieldWorkCp:validate(farmId)
 		local customField = g_customFieldManager:getCustomField(tx, tz)
 		if not customField then
 			self.hasValidPosition = false
+			self.selectedFieldPlot:setVisible(false)
 			return false, g_i18n:getText("CP_error_not_on_field")
 		else
 			CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
 			self.fieldPolygon = customField:getVertices()
+			self.customField = customField
 			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
 		end
+	end
+	if self.fieldPolygon then
+		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+		self.selectedFieldPlot:setVisible(true)
+		self.selectedFieldPlot:setBrightColor(true)
 	end
 	if vehicle then
 		if not vehicle:getCanStartCpBaleFinder(self.cpJobParameters) then 
@@ -114,6 +124,12 @@ function AIJobFieldWorkCp:validate(farmId)
 	end
 	self.cpJobParameters:validateSettings()
 	return true, ''
+end
+
+function AIJobFieldWorkCp:drawSelectedField(map)
+	if self.selectedFieldPlot then
+		self.selectedFieldPlot:draw(map)
+	end
 end
 
 function AIJobFieldWorkCp:getCpJobParameters()

@@ -78,7 +78,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
     
-    SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCoursePlot)
+    SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
     
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
@@ -245,7 +245,7 @@ function CpCourseManager:onCpCourseChange(newCourse)
 	end
 end
 
-function CpCourseManager:drawCoursePlot(map)
+function CpCourseManager:drawCpCoursePlot(map)
     if CpCourseManager.hasCourse(self) then
         local spec = self.spec_cpCourseManager
         spec.coursePlot:draw(map)
