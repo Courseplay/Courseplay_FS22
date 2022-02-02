@@ -552,6 +552,11 @@ function DirectoryView:getEntries()
 	return entries
 end
 
+function DirectoryView:getFileViews()
+	self:refresh()
+	return self.fileViews
+end
+
 --- Entries with parent added.
 function DirectoryView:getEntriesWithParent()
 	local entries = {}
@@ -620,7 +625,11 @@ function DirectoryView:canOpen()
 end
 
 function DirectoryView:getEntryByName(name)
-
+	for i,entry in pairs(self:getEntries()) do 
+		if entry:getName() == name then 
+			return entry
+		end
+	end
 end
 
 --- File system to handle multiple files/directions.

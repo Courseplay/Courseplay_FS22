@@ -20,6 +20,15 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.buttonOpenCourseGenerator:setCallback("onClickCallback", "onClickOpenCloseCourseGenerator")
 	self.buttonOpenCourseGenerator.parent:invalidateLayout()
 
+	self.buttonDeleteCustomField = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
+	self.buttonDeleteCustomField:setText(g_i18n:getText("CP_customFieldManager_delete"))
+	self.buttonDeleteCustomField:setVisible(false)
+	self.buttonDeleteCustomField:setCallback("onClickCallback", "onClickDeleteCustomField")
+	self.buttonRenameCustomField = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
+	self.buttonRenameCustomField:setText(g_i18n:getText("CP_customFieldManager_rename"))
+	self.buttonRenameCustomField:setVisible(false)
+	self.buttonRenameCustomField:setCallback("onClickCallback", "onClickRenameCustomField")
+	self.buttonRenameCustomField.parent:invalidateLayout()
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements","courseGeneratorLayout","courseGeneratorHeader"})
 
@@ -83,6 +92,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 															CpInGameMenuAIFrameExtended.onClickPositionParameter)
 	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
 			CpInGameMenuAIFrameExtended.onClickHotspot)
+	
+	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
 
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,
@@ -102,6 +113,10 @@ function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
 --		self.buttonOpenCourseGenerator:setDisabled(isPaused)
 	end
 	self.buttonBack:setVisible(self:getCanGoBack() or self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR)
+	
+	self.buttonDeleteCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
+	self.buttonRenameCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
+	
 	self.buttonGotoJob.parent:invalidateLayout()
 end
 
@@ -361,6 +376,23 @@ InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFr
 
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
 	if hotspot and hotspot:isa(CustomFieldHotspot) then 
-		hotspot:onClick()
+	--	hotspot:onClick()
+		local pageAI = g_currentMission.inGameMenu.pageAI
+		InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot.name)
+		self.currentHotspot = hotspot
+	end
+end
+
+function InGameMenuAIFrame:onClickDeleteCustomField()
+	local hotspot = self.currentHotspot
+	if hotspot and hotspot:isa(CustomFieldHotspot) then 
+		hotspot:onClickDelete()
+	end
+end
+
+function InGameMenuAIFrame:onClickRenameCustomField()
+	local hotspot = self.currentHotspot
+	if hotspot and hotspot:isa(CustomFieldHotspot) then 
+		hotspot:onClickRename()
 	end
 end

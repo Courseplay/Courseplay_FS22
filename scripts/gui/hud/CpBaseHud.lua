@@ -34,6 +34,9 @@ CpBaseHud.uvs = {
     circleSymbol = {
         {0, 366, 28, 28}
     },
+    clearCourseSymbol = {
+        {40, 256, 32, 32}
+    },
 }
 
 CpBaseHud.xmlKey = "Hud"
@@ -156,9 +159,9 @@ function CpBaseHud:init(vehicle)
     self.onOffButton:setCallback("onClickPrimary", self.vehicle, self.vehicle.cpStartStopDriver)
     
     --- Create start/stop field boarder record button
-    local width, height = getNormalizedScreenValues(18, 18)
+    local recordingBtnWidth, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local circleOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    local circleOverlay =  Overlay.new(imageFilename, 0, 0, recordingBtnWidth, height)
     circleOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
     circleOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.circleSymbol),{256,512}))
     circleOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
@@ -174,6 +177,22 @@ function CpBaseHud:init(vehicle)
         end
     end)
     
+    --- Clear course button.
+    local width, height = getNormalizedScreenValues(18, 18)
+    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local clearCourseOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    clearCourseOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol),{256,512}))
+    clearCourseOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
+    local x, y = unpack(self.lines[6].right)
+    x = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth - self.wMargin/4
+    self.clearCourseBtn:setPosition(x, y)
+    self.clearCourseBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        if vehicle:hasCpCourse() then
+            vehicle:resetCpCourses()
+        end
+    end)
     
     
     
@@ -327,6 +346,7 @@ function CpBaseHud:draw(status)
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
+        self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse())
     end
 
     if self.vehicle:getIsCpCourseRecorderActive() then
@@ -334,6 +354,7 @@ function CpBaseHud:draw(status)
     else 
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
     end
+
 
     self.waypointProgressBtn:setTextDetails(status:getWaypointText())
     

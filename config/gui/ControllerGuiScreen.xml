@@ -18,5 +18,6 @@
 	<GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" id="backButton" margin="0px 5px 0px 5px"/>
 	<GuiElement type="button" profile="buttonOK" text="$l10n_button_ok" onClick="onClickOk" id="startButton"  margin="0px 5px 0px 5px"/>
 	<GuiElement type="button" profile="buttonActivate" text="$l10n_button_ok" onClick="onClickRecord" id="recordButton"  margin="0px 5px 0px 5px"/>
+	<GuiElement type="button" profile="buttonExtra1" text="$l10n_button_ok" onClick="onClickClearCourse" id="clearButton"  margin="0px 5px 0px 5px"/>
 <!-- 	</GuiElement> -->
 </GUI>

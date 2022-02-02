@@ -30,7 +30,12 @@ function CustomFieldHotspot:setField(field)
 	)	
 end
 
-function CustomFieldHotspot:onClick()
-	CpUtil.debugFormat(CpDebug.DBG_HUD,"Custom field hotspot %s clicked.", self.name)
+function CustomFieldHotspot:onClickDelete()
+	CpUtil.debugFormat(CpDebug.DBG_HUD,"Delete custom field %s.", self.name)
 	g_customFieldManager:deleteField(self.field)
+end
+
+function CustomFieldHotspot:onClickRename()
+	CpUtil.debugFormat(CpDebug.DBG_HUD,"Rename custom field %s.", self.name)
+	g_customFieldManager:renameField(self.field,self)
 end
