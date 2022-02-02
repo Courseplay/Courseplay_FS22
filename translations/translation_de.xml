@@ -278,6 +278,8 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Möchtest du den Randkurs %s löschen?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
 
 		<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Starte Feldrandaufnahme."/>
@@ -307,7 +309,9 @@ H: Verkleinert oder vergrößert die Arbeitsbreite. Eine rote Linie auf dem Fahr
 I: Wert für den horizontalen Versatz, + links, - rechts.
 J: Wert für den vertikalen Versatz, + hinten, - vorne.
 K, L and M: Klick auf den Text zum zurücksetzen der Werte.
-N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel."/>
+N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel.
+O: Startet und stoppt die Aufzeichnung eines Feldrandkurses.
+P: Löscht den Kurs aus dem Fahrzeug"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>

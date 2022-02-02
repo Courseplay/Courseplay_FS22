@@ -24,34 +24,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ---@class CustomFieldManager
 CustomFieldManager = CpObject()
+CustomFieldManager.namePrefix = "CP-"
 
 ---@param fileSystem FileSystem
 function CustomFieldManager:init(fileSystem)
     ---@type FileSystem
     self.fileSystem = fileSystem
-    self.fields = {}
+    self.currentView = fileSystem.currentDirectoryView
+    self.rootDir = fileSystem.rootDirectory
     self:load()
 end
 
 function CustomFieldManager:load()
-    local entries = self.fileSystem:getRootDirectory():getEntries(false, true)
+    self.fields = {}
+    self.fileSystem:refresh()
+    local entries = self.rootDir:getEntries(false,true)
     for i, entry in pairs(entries) do
-        table.insert(self.fields, CustomField.createFromXmlFile(entry:getFullPath()))
+        table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
 end
 
+--- New fields are created with a prefix and the next available number.
 function CustomFieldManager:getNewFieldNumber()
-    local entries = self.fileSystem:getRootDirectory():getEntries(false, true)
-    -- custom field file names are always numbers
-    -- sort them numerically
-    table.sort(entries, function (a, b) return tonumber(a:getName()) < tonumber(b:getName()) end)
-    for i, entry in pairs(entries) do
-        if i ~= tonumber(entry:getName()) then
+    local entries = self.rootDir:getEntries(false,true)
+    local numbers = {}
+
+    for i, entry in pairs(entries) do 
+        local name = entry:getName()
+        if name:startsWith("CP-") then 
+            local n = name:getFieldNumber()
+            if n then 
+                table.insert(numbers,entry)
+            end
+        end
+    end
+    table.sort(numbers, function (a, b) return a:getFieldNumber() < b:getFieldNumber() end)
+    for i, entry in pairs(numbers) do
+        if i ~= entry:getFieldNumber() then
             -- the i. entry is not i, so we can use i as a new number (entries is sorted)
             return i
         end
     end
-    return #entries + 1
+    return #numbers + 1
 end
 
 function CustomFieldManager:addField(waypoints)
@@ -60,7 +74,8 @@ function CustomFieldManager:addField(waypoints)
         return
     end
     ---@type CustomField
-    local newField = CustomField(self:getNewFieldNumber(), waypoints)
+    local newField = CustomField()
+    newField:setup(self.namePrefix..self:getNewFieldNumber(), waypoints)
     g_gui:showYesNoDialog({
         text = string.format(g_i18n:getText("CP_customFieldManager_confirm_save"), newField:getName()),
         callback = CustomFieldManager.onClickSaveDialog,
@@ -79,13 +94,39 @@ function CustomFieldManager:deleteField(fieldToDelete)
     })
 end
 
---- Creates a new directory with a given name.
+function CustomFieldManager:renameField(field,hotspot)
+    g_gui:showTextInputDialog({
+		disableFilter = true,
+		callback = CustomFieldManager.onClickRenameDialog,
+		target = self,
+		defaultText = "",
+		dialogPrompt = g_i18n:getText("CP_customFieldManager_rename"),
+		maxCharacters = 30,
+		confirmText = g_i18n:getText("button_ok"),
+		args = field
+	})
+end
+
+--- Creates a new file with a given name.
 function CustomFieldManager:onClickSaveDialog(clickOk, field)
+    local fieldValid = false
     if clickOk then
         CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Saving custom field %s', field:getName())
-        table.insert(self.fields, field)
-        field:saveToXml(self.fileSystem:getRootDirectory())
-        self.fileSystem:refresh()
+        local file,fileCreated = self.currentView:addFile(field:getName())
+        if fileCreated then 
+            file:save(CustomField.rootXmlKey, 
+            CustomField.xmlSchema,
+            CustomField.rootXmlKey, 
+            CustomField.saveToXml, 
+            field,
+            field:getName())
+            fieldValid = true
+            table.insert(self.fields, field)
+            self.fileSystem:refresh()
+        end
+    end
+    if not fieldValid then 
+        field:delete()
     end
 end
 
@@ -94,14 +135,38 @@ function CustomFieldManager:onClickDeleteDialog(clickOk, fieldToDelete)
         CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Deleting custom field %s', fieldToDelete:getName())
         for i, field in pairs(self.fields) do
             if field == fieldToDelete then
-                self.fileSystem:getRootDirectory():deleteFile(field:getFileName())
-                field:delete()
-                table.remove(self.fields, i)
-                self.fileSystem:refresh()
+                local file = self.currentView:getEntryByName(fieldToDelete:getName())
+                if file then 
+                    file:delete()
+                    field:delete()
+                    table.remove(self.fields, i)
+                    self.fileSystem:refresh()
+                else 
+                    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Custom field %s was found, but the file not.', fieldToDelete:getName())
+                end
                 return
             end
         end
         CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Custom field %s not found, not deleted', fieldToDelete:getName())
+    end
+end
+
+function CustomFieldManager:onClickRenameDialog(newName,clickOk,fieldToRename)
+    if clickOk then
+        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Trying to rename custom field from %s to %s.', fieldToRename:getName(),newName)
+        for i, field in pairs(self.fields) do
+            if field == fieldToRename then
+                local file = self.currentView:getEntryByName(fieldToRename.name)
+                if file then 
+                    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(),newName)
+                    if file:rename(newName) then 
+                        fieldToRename:setName(newName)
+                        self.fileSystem:refresh()
+                        return
+                    end
+                end
+            end
+        end
     end
 end
 
@@ -117,6 +182,39 @@ end
 function CustomFieldManager:draw(map)
     for _, field in pairs(self.fields) do
         field:draw(map)
+    end
+end
+
+function CustomFieldManager:delete()
+    for _,field in pairs(self.fields) do 
+        field:delete()
+    end
+end
+
+--- Makes sure all custom fields are valid and in the filesystem.
+--- Gets refresh on opening of the ai page in the in game menu.
+function CustomFieldManager:refresh()
+    self.fileSystem:refresh()
+    local entries = self.rootDir:getEntries(false,true)
+    for i = #self.fields, 1, -1 do 
+        local foundIx = nil
+        for j = #entries, 1, -1 do 
+            if self.fields[i] and entries[j] and self.fields[i]:getName() == entries[j]:getName() then 
+                foundIx = j 
+                break
+            end
+        end
+        if foundIx then 
+            table.remove(entries,foundIx)
+        else 
+            CpUtil.debugFormat(CpDebug.DBG_COURSES,"Removed not saved hotspot %s.", self.fields[i]:getName())
+            self.fields[i]:delete()
+            table.remove(self.fields,i)
+        end
+    end
+    for i, entry in pairs(entries) do
+        CpUtil.debugFormat(CpDebug.DBG_COURSES,"Added new hotspot %s from filesystem.", entry:getName())
+        table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
 end
 

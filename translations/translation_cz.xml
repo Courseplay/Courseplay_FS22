@@ -276,7 +276,9 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Chcete odstranit vlastní pole %s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Spustit nahrávání vlastního pole."/>
 		<text name="CP_controllerGui_stopRecording"														text="Ukončit nahrávání vlastního pole"/>
@@ -305,7 +307,9 @@ H: Snižte a zvětšete pracovní šířku. Červená čára na vašem vozidle u
 I: Hodnota pro horizontální posun, + vlevo, - vpravo.
 J: Hodnota pro vertikální posun, + dozadu, - dopředu.
 K, L a M: Kliknutím na text resetujete změny na automatické hodnoty.
-N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice."/>
+N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 <!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>

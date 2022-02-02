@@ -10,16 +10,31 @@ CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
 }, AITargetHotspot.FILE_RESOLUTION)
 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
-	self.buttonGenerateCourse = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
-	self.buttonGenerateCourse:setText(g_i18n:getText("CP_ai_page_generate_course"))
-	self.buttonGenerateCourse:setVisible(false)
-	self.buttonGenerateCourse:setCallback("onClickCallback", "onClickGenerateFieldWorkCourse")
-	self.buttonOpenCourseGenerator = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
-	self.buttonOpenCourseGenerator:setText(g_i18n:getText("CP_ai_page_open_course_generator"))
-	self.buttonOpenCourseGenerator:setVisible(false)
-	self.buttonOpenCourseGenerator:setCallback("onClickCallback", "onClickOpenCloseCourseGenerator")
-	self.buttonOpenCourseGenerator.parent:invalidateLayout()
 
+	local function createBtn(prefab, text, callback)
+		local btn = prefab:clone(prefab.parent)
+		btn:setText(g_i18n:getText(text))
+		btn:setVisible(false)
+		btn:setCallback("onClickCallback", callback)
+		btn.parent:invalidateLayout()
+		return btn
+	end
+
+	self.buttonGenerateCourse = createBtn(self.buttonCreateJob,
+											"CP_ai_page_generate_course",
+											"onClickGenerateFieldWorkCourse")
+	
+	self.buttonOpenCourseGenerator = createBtn(self.buttonGotoJob,
+											"CP_ai_page_open_course_generator",
+											"onClickOpenCloseCourseGenerator")
+
+	self.buttonDeleteCustomField = createBtn(self.buttonCreateJob,
+											"CP_customFieldManager_delete",
+											"onClickDeleteCustomField")	
+	
+	self.buttonRenameCustomField = createBtn(self.buttonGotoJob,
+											"CP_customFieldManager_rename",
+											"onClickRenameCustomField")										
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements","courseGeneratorLayout","courseGeneratorHeader"})
 
@@ -83,6 +98,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 															CpInGameMenuAIFrameExtended.onClickPositionParameter)
 	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
 			CpInGameMenuAIFrameExtended.onClickHotspot)
+	
+	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
 
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,
@@ -102,6 +119,10 @@ function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
 --		self.buttonOpenCourseGenerator:setDisabled(isPaused)
 	end
 	self.buttonBack:setVisible(self:getCanGoBack() or self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR)
+	
+	self.buttonDeleteCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
+	self.buttonRenameCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
+	
 	self.buttonGotoJob.parent:invalidateLayout()
 end
 
@@ -228,6 +249,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	end
 	self.controlledVehicle = nil
 	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+	g_customFieldManager:refresh()
 end
 InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
 
@@ -361,6 +383,23 @@ InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFr
 
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
 	if hotspot and hotspot:isa(CustomFieldHotspot) then 
-		hotspot:onClick()
+	--	hotspot:onClick()
+		local pageAI = g_currentMission.inGameMenu.pageAI
+		InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot.name)
+		self.currentHotspot = hotspot
+	end
+end
+
+function InGameMenuAIFrame:onClickDeleteCustomField()
+	local hotspot = self.currentHotspot
+	if hotspot and hotspot:isa(CustomFieldHotspot) then 
+		hotspot:onClickDelete()
+	end
+end
+
+function InGameMenuAIFrame:onClickRenameCustomField()
+	local hotspot = self.currentHotspot
+	if hotspot and hotspot:isa(CustomFieldHotspot) then 
+		hotspot:onClickRename()
 	end
 end

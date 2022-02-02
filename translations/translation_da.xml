@@ -276,7 +276,9 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Ønsker du at slette den brugerdefinerede mark	%s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		
     <!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start brugerdefineret markoptegnelse."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stop brugerdefineret markoptegnelse."/>
@@ -304,7 +306,9 @@ H: Reducerer eller øger arbejdsbredden. En rød streg på køretøjet viser ind
 I: Vandret offset værdi, + venstre, - højre.
 J: Lodret offset værdi, + tilbage, - frem.
 K, L og M: Klik på teksten for at nulstille værdierne.
-N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen."/>
+N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>
