@@ -270,9 +270,12 @@ function CpInGameMenuAIFrameExtended:draw()
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
 		vehicle:drawCpCoursePlot(self)
 	end
+	-- show the custom fields on the AI map
 	g_customFieldManager:draw(self)
-	local job = g_currentMission.inGameMenu.pageAI.currentJob
-	if job and job.drawSelectedField then
+	-- show the selected field on the AI screen map when creating a job
+	local pageAI = g_currentMission.inGameMenu.pageAI
+	local job = pageAI.currentJob
+	if pageAI.jobMenu:getIsVisible() and job and job.drawSelectedField then
 		job:drawSelectedField(self)
 	end
 end
