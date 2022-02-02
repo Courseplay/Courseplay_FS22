@@ -813,8 +813,11 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
             self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
                     closestDistanceFront, minDistance)
             -- the closer we are, the slower we drive, but stop at half the minDistance
-            local factor = math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
-            self:setMaxSpeed(factor * self.maxSpeed)
+            local maxSpeed = self.maxSpeed *
+                    math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
+            -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
+            -- only when the maxSpeed we return in getDriveData is exactly 0
+            self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
         end
     -- if I am the first one and there are other vehicles, slow down if I'm too far ahead
     elseif position == 1 and vehiclesInConvoyActive > 1 then
@@ -823,7 +826,8 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
             self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
                     closestDistanceBack, maxDistance)
             local factor = math.max(0, (1 - (closestDistanceBack - maxDistance) / maxDistance))
-            self:setMaxSpeed(closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed)
+            local maxSpeed = closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed
+            self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
         end
 
         closestDistanceFront = 0

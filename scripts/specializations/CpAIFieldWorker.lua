@@ -282,6 +282,7 @@ end
 function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,...)
     local wasCpActive = self:getIsCpActive()
     if wasCpActive then
+        -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
         local maxSpeed = self.spec_cpAIFieldWorker.driveStrategy and self.spec_cpAIFieldWorker.driveStrategy:getMaxSpeed()
         if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
          message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 1 then
