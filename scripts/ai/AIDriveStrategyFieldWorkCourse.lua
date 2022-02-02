@@ -88,6 +88,7 @@ end
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
     self.fieldWorkCourse = course
+    self.vehiclesInConvoy = {}
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
     if distance > 2 * self.turningRadius then
@@ -232,7 +233,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     local function addController(class,spec,states)
-        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then 
+        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then
             local controller = class(vehicle)
             controller:setDisabledStates(states)
             table.insert(self.controllers, controller)
@@ -245,7 +246,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     }
     addController(BalerController,Baler,defaultDisabledStates)
     addController(BaleWrapperController,BaleWrapper,defaultDisabledStates)
-    
+
     addController(FertilizingSowingMachineController,FertilizingSowingMachine,defaultDisabledStates)
     addController(ForageWagonController,ForageWagon,defaultDisabledStates)
 
@@ -672,10 +673,10 @@ end
 ---@param isAllowed boolean is switch ridge markers allowed ?
 function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
 	-- no ridge markers with multitools to avoid collisions.
-	if self.settings.ridgeMarkersAutomatic:is(false) 
+	if self.settings.ridgeMarkersAutomatic:is(false)
 
-     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1 
-    then 
+     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1
+    then
         self:debug('Ridge marker handling disabled.')
         return
      end
@@ -748,16 +749,17 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
 
     --get my position in convoy and look for the closest combine
     local position = 1
-    local vehiclesInConvoy = 1
     local closestDistanceFront, closestDistanceBack = math.huge, math.huge
     local closestVehicleFront, closestVehicleBack
+    -- remember every vehicle who was ever part of this convoy since we started
+    self.vehiclesInConvoy[self.vehicle] = true
     for _, otherVehicle in pairs(g_currentMission.vehicles) do
         if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) then
             self:debugSparse('has same course as %s', CpUtil.getName(otherVehicle))
             if otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
                 local otherProgress, otherWpIx, otherIsDone = otherVehicle:getCpFieldWorkProgress()
                 if otherProgress and otherWpIx then
-                    vehiclesInConvoy = vehiclesInConvoy + 1
+                    self.vehiclesInConvoy[otherVehicle] = true
                     local myProgress, myWpIx = self:getProgress()
                     local length = self.fieldWorkCourse:getLength()
                     self:debugSparse(
@@ -786,9 +788,21 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
             end
         end
     end
-    if vehiclesInConvoy < self.fieldWorkCourse:getMultiTools() then
-        self:debugSparse('convoy: need %d vehicles, only %d started, waiting...',
-                self.fieldWorkCourse:getMultiTools(), vehiclesInConvoy)
+    -- check if everyone is still there
+    local vehiclesInConvoyDone, vehiclesInConvoyActive = 0, 0
+    for v, _ in pairs(self.vehiclesInConvoy) do
+        local _, _, done = v:getCpFieldWorkProgress()
+        if done then
+            vehiclesInConvoyDone = vehiclesInConvoyDone + 1
+        elseif v:getIsCpFieldWorkActive() then
+            vehiclesInConvoyActive = vehiclesInConvoyActive + 1
+        end
+    end
+    self:debugSparse('convoy: need %d vehicles, %d active, %d done',
+            self.fieldWorkCourse:getMultiTools(), vehiclesInConvoyActive, vehiclesInConvoyDone)
+    -- we do not have to wait for those members who are now done
+    if vehiclesInConvoyActive + vehiclesInConvoyDone < self.fieldWorkCourse:getMultiTools() then
+        self:debugSparse('convoy: ... waiting ...')
         self:setMaxSpeed(0)
         return
     end
@@ -802,7 +816,8 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
             local factor = math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
             self:setMaxSpeed(factor * self.maxSpeed)
         end
-    elseif position == 1 then
+    -- if I am the first one and there are other vehicles, slow down if I'm too far ahead
+    elseif position == 1 and vehiclesInConvoyActive > 1 then
         local maxDistance = self.settings.convoyDistance:getValue()
         if closestDistanceBack > maxDistance then
             self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
