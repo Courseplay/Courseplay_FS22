@@ -382,7 +382,7 @@ end
 ---@param course Course pathfinding course to append the ending course to
 ---@param extraLength number add so many meters to the calculated course (for example to allow towed implements to align
 --- before reversing)
-function TurnContext:appendEndingTurnCourse(course, extraLength)
+function TurnContext:appendEndingTurnCourse(course, extraLength, useTightTurnOffset)
     -- make sure course reaches the front marker node so end it well behind that node
     local _, _, dzFrontMarker = course:getWaypointLocalPosition(self.vehicleAtTurnEndNode, course:getNumberOfWaypoints())
     local _, _, dzWorkStart = course:getWaypointLocalPosition(self.workStartNode, course:getNumberOfWaypoints())
@@ -394,7 +394,7 @@ function TurnContext:appendEndingTurnCourse(course, extraLength)
     -- +1 so the first waypoint of the appended line won't overlap with the last wp of course
     for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + extraLength, 1 do
         local x, y, z = localToWorld(startNode, 0, 0, d)
-        table.insert(waypoints, {x = x, y = y, z = z})
+        table.insert(waypoints, {x = x, y = y, z = z, useTightTurnOffset = useTightTurnOffset or nil})
     end
     course:appendWaypoints(waypoints)
 end

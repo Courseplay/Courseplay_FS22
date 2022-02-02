@@ -788,11 +788,9 @@ function CourseTurn:onPathfindingDone(path)
 			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
-		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
-		self.turnContext:appendEndingTurnCourse(self.turnCourse)
+		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
 		-- and once again, if there is an ending course, keep adjusting the tight turn offset
-		-- TODO: should probably better done on onWaypointChange, to reset to 0
-		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
+		self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
 		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 	else
 		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))

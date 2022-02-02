@@ -266,11 +266,8 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 	self.course:setUseTightTurnOffsetForLastWaypoints(10)
-	self.turnContext:appendEndingTurnCourse(self.course, steeringLength)
-
 	-- and once again, if there is an ending course, keep adjusting the tight turn offset
-	-- TODO: should probably better done on onWaypointChange, to reset to 0
-	self.course:setUseTightTurnOffsetForLastWaypoints(10)
+	self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 
 	local dzMax = self:getDzMax(self.course)
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
@@ -375,7 +372,7 @@ function TurnEndingManeuver:init(vehicle, turnContext, vehicleDirectionNode, tur
 	self:generateStraightSection(endArc, endStraight)
 	myCorner:delete()
 	self.course = Course(vehicle, self.waypoints, true)
-	self.course:setUseTightTurnOffsetForLastWaypoints(10)
+	self.course:setUseTightTurnOffsetForLastWaypoints(20)
 	TurnManeuver.setTurnControlForLastWaypoints(self.course, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 end
 
