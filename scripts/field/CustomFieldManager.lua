@@ -121,10 +121,9 @@ function CustomFieldManager:onClickSaveDialog(clickOk, field)
             field,
             field:getName())
             fieldValid = true
+            table.insert(self.fields, field)
+            self.fileSystem:refresh()
         end
-      
-        table.insert(self.fields, field)
-        self.fileSystem:refresh()
     end
     if not fieldValid then 
         field:delete()
@@ -192,9 +191,31 @@ function CustomFieldManager:delete()
     end
 end
 
+--- Makes sure all custom fields are valid and in the filesystem.
+--- Gets refresh on opening of the ai page in the in game menu.
 function CustomFieldManager:refresh()
-    self:delete()
-    self:load()
+    self.fileSystem:refresh()
+    local entries = self.rootDir:getEntries(false,true)
+    for i = #self.fields, 1, -1 do 
+        local foundIx = nil
+        for j = #entries, 1, -1 do 
+            if self.fields[i] and entries[j] and self.fields[i]:getName() == entries[j]:getName() then 
+                foundIx = j 
+                break
+            end
+        end
+        if foundIx then 
+            table.remove(entries,foundIx)
+        else 
+            CpUtil.debugFormat(CpDebug.DBG_COURSES,"Removed not saved hotspot %s.", self.fields[i]:getName())
+            self.fields[i]:delete()
+            table.remove(self.fields,i)
+        end
+    end
+    for i, entry in pairs(entries) do
+        CpUtil.debugFormat(CpDebug.DBG_COURSES,"Added new hotspot %s from filesystem.", entry:getName())
+        table.insert(self.fields, CustomField.createFromXmlFile(entry))
+    end
 end
 
 -- for reload only:

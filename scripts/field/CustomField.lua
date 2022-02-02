@@ -109,7 +109,7 @@ function CustomField:findFieldCenter()
 end
 
 
-function CustomField:saveToXml(xmlFile, baseKey,name)
+function CustomField:saveToXml(xmlFile, baseKey)
     xmlFile:setValue(baseKey  .. '.vertices', self:serializeVertices())
 end
 

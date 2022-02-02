@@ -10,25 +10,31 @@ CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
 }, AITargetHotspot.FILE_RESOLUTION)
 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
-	self.buttonGenerateCourse = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
-	self.buttonGenerateCourse:setText(g_i18n:getText("CP_ai_page_generate_course"))
-	self.buttonGenerateCourse:setVisible(false)
-	self.buttonGenerateCourse:setCallback("onClickCallback", "onClickGenerateFieldWorkCourse")
-	self.buttonOpenCourseGenerator = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
-	self.buttonOpenCourseGenerator:setText(g_i18n:getText("CP_ai_page_open_course_generator"))
-	self.buttonOpenCourseGenerator:setVisible(false)
-	self.buttonOpenCourseGenerator:setCallback("onClickCallback", "onClickOpenCloseCourseGenerator")
-	self.buttonOpenCourseGenerator.parent:invalidateLayout()
 
-	self.buttonDeleteCustomField = self.buttonCreateJob:clone(self.buttonCreateJob.parent)
-	self.buttonDeleteCustomField:setText(g_i18n:getText("CP_customFieldManager_delete"))
-	self.buttonDeleteCustomField:setVisible(false)
-	self.buttonDeleteCustomField:setCallback("onClickCallback", "onClickDeleteCustomField")
-	self.buttonRenameCustomField = self.buttonGotoJob:clone(self.buttonGotoJob.parent)
-	self.buttonRenameCustomField:setText(g_i18n:getText("CP_customFieldManager_rename"))
-	self.buttonRenameCustomField:setVisible(false)
-	self.buttonRenameCustomField:setCallback("onClickCallback", "onClickRenameCustomField")
-	self.buttonRenameCustomField.parent:invalidateLayout()
+	local function createBtn(prefab, text, callback)
+		local btn = prefab:clone(prefab.parent)
+		btn:setText(g_i18n:getText(text))
+		btn:setVisible(false)
+		btn:setCallback("onClickCallback", callback)
+		btn.parent:invalidateLayout()
+		return btn
+	end
+
+	self.buttonGenerateCourse = createBtn(self.buttonCreateJob,
+											"CP_ai_page_generate_course",
+											"onClickGenerateFieldWorkCourse")
+	
+	self.buttonOpenCourseGenerator = createBtn(self.buttonGotoJob,
+											"CP_ai_page_open_course_generator",
+											"onClickOpenCloseCourseGenerator")
+
+	self.buttonDeleteCustomField = createBtn(self.buttonCreateJob,
+											"CP_customFieldManager_delete",
+											"onClickDeleteCustomField")	
+	
+	self.buttonRenameCustomField = createBtn(self.buttonGotoJob,
+											"CP_customFieldManager_rename",
+											"onClickRenameCustomField")										
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements","courseGeneratorLayout","courseGeneratorHeader"})
 
@@ -243,6 +249,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	end
 	self.controlledVehicle = nil
 	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+	g_customFieldManager:refresh()
 end
 InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
 
