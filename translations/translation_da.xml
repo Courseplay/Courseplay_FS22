@@ -107,7 +107,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Mejetærsker bliver stående ved aflæsning, så længe den bliver tømt."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Mejetærsker aflæser selv"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark.Not supported in multitools or convoy mode.
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Not supported in multitools or convoy mode.
 "/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Aflæsning i første forager"/>
