@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="S'arrête pour effectuer les déchargements."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Déchargement autonome de la batteuse"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="La batteuse rejoindra la remorque dans ou à proximité du champ pour se décharger."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="La batteuse rejoindra la remorque dans ou à proximité du champ pour se décharger. Ne fonctionne pas en mode multi-outils ou convoi."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Déchargement à la première fourrière"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="La batteuse appellera une remorque à la première fourrière."/>
