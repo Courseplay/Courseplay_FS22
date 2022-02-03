@@ -683,7 +683,7 @@ function CourseTurn:onWaypointChange(ix)
 		if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
-			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse,
+			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turningRadius, self.turnCourse,
 					self.tightTurnOffset, true)
 			self.turnCourse:setOffset(self.tightTurnOffset, 0)
 		end
@@ -754,8 +754,13 @@ function CourseTurn:generateCalculatedTurn()
 			turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 				self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
 		end
-		-- only use tight turn offset if we are towing something
-		self.enableTightTurnOffset = self.steeringLength > 0
+		-- only use tight turn offset if we are towing something and not an articulated axis or track vehicle
+		-- as those usually have a very small turn radius anyway, causing jackknifing
+		if self.steeringLength > 0 and not (SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) or
+				SpecializationUtil.hasSpecialization(Crawler, self.vehicle.specializations)) then
+			self:debug('Enabling tight turn offset')
+			self.enableTightTurnOffset = 1
+		end
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
