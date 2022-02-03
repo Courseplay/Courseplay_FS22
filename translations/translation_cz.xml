@@ -276,7 +276,9 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Chcete odstranit vlastní pole %s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Spustit nahrávání vlastního pole."/>
 		<text name="CP_controllerGui_stopRecording"														text="Ukončit nahrávání vlastního pole"/>

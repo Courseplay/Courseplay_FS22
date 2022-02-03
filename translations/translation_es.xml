@@ -277,6 +277,8 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="¿Quieres guardar la ruta como campo personalizado %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="¿Quieres eliminar el campo personalizado %s?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Inicir grabación de ruta personalizada."/>

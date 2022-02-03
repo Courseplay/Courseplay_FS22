@@ -280,7 +280,9 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Вы хотите сохранить записанный курс как пользовательское поле %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Вы хотите удалить пользовательское поле %s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Начать запись пользовательского поля."/>
 		<text name="CP_controllerGui_stopRecording"														text="Завершить запись пользовательского поля."/>

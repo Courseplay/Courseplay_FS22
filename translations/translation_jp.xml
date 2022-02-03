@@ -279,7 +279,9 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>

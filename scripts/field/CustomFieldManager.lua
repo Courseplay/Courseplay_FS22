@@ -100,7 +100,7 @@ function CustomFieldManager:renameField(field,hotspot)
 		callback = CustomFieldManager.onClickRenameDialog,
 		target = self,
 		defaultText = "",
-		dialogPrompt = field.name,--string.format(g_i18n:getText(title),viewEntry and viewEntry:getName()),
+		dialogPrompt = g_i18n:getText("CP_customFieldManager_rename"),
 		maxCharacters = 30,
 		confirmText = g_i18n:getText("button_ok"),
 		args = field

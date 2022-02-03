@@ -277,6 +277,8 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Vuoi eliminare il campo personalizzato %s?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Avvia registrazione campo personalizzato."/>
