@@ -89,7 +89,8 @@ end
 
 --- If the course was not renamed, then get the field number.
 function CustomField:getFieldNumber()
-    return tonumber(string.gsub(self.name,"CP-",""))
+    local s = string.gsub(self.name,"CP--","")
+    return s and tonumber(s)
 end
 
 function CustomField:getVertices()

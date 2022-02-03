@@ -46,13 +46,11 @@ end
 
 --- New fields are created with a prefix and the next available number.
 function CustomFieldManager:getNewFieldNumber()
-    local entries = self.rootDir:getEntries(false,true)
     local numbers = {}
-
-    for i, entry in pairs(entries) do 
+    for i, entry in pairs(self.fields) do 
         local name = entry:getName()
         if name:startsWith("CP-") then 
-            local n = name:getFieldNumber()
+            local n = entry:getFieldNumber()
             if n then 
                 table.insert(numbers,entry)
             end
