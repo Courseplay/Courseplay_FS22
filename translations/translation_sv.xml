@@ -110,7 +110,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Stanna alltid vid tömming"/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Skördetröskan tömmer själv"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Skördetröskan kör till vagnar på eller nära fältet för att lasta av."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Skördetröskan kör till vagnar på eller nära fältet för att lasta av. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Lasta av på första vändtegen"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Skördetröskan kommer att lasta av på den fösta vändtegen."/>
