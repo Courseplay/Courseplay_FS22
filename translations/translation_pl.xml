@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Zatrzymuje pojazd na czas rozładunku."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Samoczynny rozładunek"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Kombajn podjedzie do najbliżej znalezionej przyczepy w celu rozładunku.Not supported in multitools or convoy mode."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Kombajn podjedzie do najbliżej znalezionej przyczepy w celu rozładunku. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Rozładunek na pierwszym uwrociu"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Kombajn wezwie pracownika w celu rozładowania na pierwszym uwrociu."/>
