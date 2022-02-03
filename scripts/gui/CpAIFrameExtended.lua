@@ -327,8 +327,11 @@ function CpInGameMenuAIFrameExtended:draw()
 	-- show the selected field on the AI screen map when creating a job
 	local pageAI = g_currentMission.inGameMenu.pageAI
 	local job = pageAI.currentJob
-	if pageAI.jobMenu:getIsVisible() and job and job.drawSelectedField then
-		job:drawSelectedField(self)
+	if job and job.drawSelectedField then
+		if pageAI.mode == InGameMenuAIFrame.MODE_CREATE or 
+		   pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then
+			job:drawSelectedField(self)
+		end
 	end
 	--- Draws the current progress, while creating a custom field.
 	if pageAI.mode == CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER and next(CpInGameMenuAIFrameExtended.curDrawPositions) then
