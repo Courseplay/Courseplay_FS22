@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Always stops driving, while unloading."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Combine self unload"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Combine drives to trailer on or near the field to unload.Not supported in multitools or convoy mode."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Combine drives to trailer on or near the field to unload. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Unload on first headland"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Combine will call the unloader on the first headland."/>
