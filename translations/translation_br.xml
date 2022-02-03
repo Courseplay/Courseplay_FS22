@@ -275,6 +275,12 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo personalizado %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Deseja excluir o campo personalizado %s?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
+		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Iniciar gravação de campo personalizado."/>
