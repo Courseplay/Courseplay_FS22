@@ -106,4 +106,8 @@
         <Value name="position" value="-40px 0px" />
     </Profile>
 
+	<Profile name="cpDrawingCustomFieldHeader" extends="ingameMenuFrameHeaderText" with="anchorTopCenter">
+        <Value name="position" value="0px -40px" />
+    </Profile>
+
 </GUIProfiles>

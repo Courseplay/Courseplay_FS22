@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <CourseGeneratorLayout>
+	<GuiElement type="text" profile="cpDrawingCustomFieldHeader" id="drawingCustomFieldHeader"/>
 	<GuiElement type="bitmap" profile="cpCourseGeneratorBackground" position="30px -86px" id="courseGeneratorLayout">
 		<GuiElement type="empty" position="0px -64px">
 			<GuiElement type="empty" profile="cpIngameMenuSettingsBox" position="10px -10px">

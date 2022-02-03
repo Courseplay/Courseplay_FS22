@@ -282,9 +282,10 @@ end
 function CpAIFieldWorker:stopCurrentAIJob(superFunc,message,...)
     local wasCpActive = self:getIsCpActive()
     if wasCpActive then
+        -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
         local maxSpeed = self.spec_cpAIFieldWorker.driveStrategy and self.spec_cpAIFieldWorker.driveStrategy:getMaxSpeed()
         if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
-         message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 0.1 then
+         message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 1 then
             -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
             -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
             -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will

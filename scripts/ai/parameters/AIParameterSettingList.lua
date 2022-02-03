@@ -399,9 +399,7 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self:updateGuiElementValues()
 	self.guiElement:setVisible(self:getIsVisible())
 	self.guiElement:setDisabled(self:getIsDisabled())
-	if self.textInputAllowed then
-		self:registerMouseInputEvent()
-	end
+	self:registerMouseInputEvent()
 	local max = FocusManager.FIRST_LOCK
 	local min = 50
 	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
@@ -410,29 +408,36 @@ end
 --- Adds text input option to the setting.
 function AIParameterSettingList:registerMouseInputEvent()
 	local function mouseClick(element,superFunc,posX, posY, isDown, isUp, button, eventUsed)
+
 		--- Disables not visible settings in a scrolling layout.
+		--- This fixes a bug from giants.
 		if element.parent then 
-			local x,y = element.absPosition[1]+element.absSize[1]/2,element.absPosition[2]+element.absSize[2]/2
-			local valid = GuiUtils.checkOverlayOverlap(x,y, element.parent.absPosition[1], element.parent.absPosition[2], element.parent.absSize[1], element.parent.absSize[2])
-			if not valid then 
+			local parent = element.parent
+			local x,y = element.absPosition[1]+element.absSize[1]/2,element.absPosition[2]+element.absSize[2]/3
+			local cursorInElement = GuiUtils.checkOverlayOverlap(x,y, parent.absPosition[1], parent.absPosition[2], parent.absSize[1], parent.absSize[2], parent.hotspot)
+			if not cursorInElement then 
+								
 				return
 			end
 		end
+		
 		local eventUsed = superFunc(element,posX, posY, isDown, isUp, button, eventUsed)
-		local x, y = unpack(element.textElement.absPosition)
-		local width, height = unpack(element.textElement.absSize)
-		local cursorInElement = GuiUtils.checkOverlayOverlap(posX, posY, x, y, width, height)
-		if not eventUsed and cursorInElement then 
-			if isDown and button == Input.MOUSE_BUTTON_LEFT  then 
-				element.mouseDown = true
-			end
-			if isUp and button == Input.MOUSE_BUTTON_LEFT and element.mouseDown then
-				element.mouseDown = false
-				if not FocusManager:setFocus(element) then 
-					element.focusActive = false
-					FocusManager:setFocus(element)
+		if self.textInputAllowed then
+			local x, y = unpack(element.textElement.absPosition)
+			local width, height = unpack(element.textElement.absSize)
+			local cursorInElement = GuiUtils.checkOverlayOverlap(posX, posY, x, y, width, height)
+			if not eventUsed and cursorInElement then 
+				if isDown and button == Input.MOUSE_BUTTON_LEFT  then 
+					element.mouseDown = true
 				end
-				self:showInputTextDialog()
+				if isUp and button == Input.MOUSE_BUTTON_LEFT and element.mouseDown then
+					element.mouseDown = false
+					if not FocusManager:setFocus(element) then 
+						element.focusActive = false
+						FocusManager:setFocus(element)
+					end
+					self:showInputTextDialog()
+				end
 			end
 		end
 		return eventUsed

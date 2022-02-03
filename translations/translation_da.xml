@@ -2,45 +2,45 @@
 <l10n>
 	<texts>
 
-		<text name="CP_activated" 																		text="Aktiverert" />
-		<text name="CP_deactivated" 																	text="Deaktiverert" />
-		<text name="CP_unit_meter" 																		text="Meter" />
-		<text name="CP_unit_foot" 																		text="Fod" />
+		<text name="CP_activated" 																		text="Aktiverert"/>
+		<text name="CP_deactivated" 																	text="Deaktiverert"/>
+		<text name="CP_unit_meter" 																		text="Meter"/>
+		<text name="CP_unit_foot" 																		text="Fod"/>
 
 	<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s): Få hjælp, ved fejl eller spørgsmål om patch noter, besøg da: https://github.com/Courseplay/Courseplay_FS22." />
-    	<text name="CP_error_no_course"																	text="Opret først en rute inden start." />
-		<text name="CP_error_could_not_generate_course"													text="Kunne ikke oprette en rute. Logfilen kan indeholde yderligere informationer." />
-		<text name="CP_error_not_on_field"																text="Målet er ikke på en mark." />
+		<text name="CP_infoText"																		text="Courseplay(%s): Få hjælp, ved fejl eller spørgsmål om patch noter, besøg da: https://github.com/Courseplay/Courseplay_FS22."/>
+    	<text name="CP_error_no_course"																	text="Opret først en rute inden start."/>
+		<text name="CP_error_could_not_generate_course"													text="Kunne ikke oprette en rute. Logfilen kan indeholde yderligere informationer."/>
+		<text name="CP_error_not_on_field"																text="Målet er ikke på en mark."/>
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_subTitle_startAt"													text="Start ved:" />
-		<text name="CP_jobParameters_startAt_title"														text="Start ved:" />
-		<text name="CP_jobParameters_startAt_tooltip"													text="Hvor bliver arbejdet startet." />
-		<text name="CP_jobParameters_startAt_nearest"													text="Næste vejpunkt" />
-		<text name="CP_jobParameters_startAt_first"														text="Første vejpunkt" />
-		<text name="CP_jobParameters_startAt_last"														text="Sidste vejpunkt" />
-		<text name="CP_jobParameters_startAt_unload"													text="Aflad mejetærsker/snitter" />
-		<text name="CP_jobParameters_startAt_bales"														text="Saml/Wrap Baller" />
+		<text name="CP_jobParameters_subTitle_startAt"													text="Start ved:"/>
+		<text name="CP_jobParameters_startAt_title"														text="Start ved:"/>
+		<text name="CP_jobParameters_startAt_tooltip"													text="Hvor bliver arbejdet startet."/>
+		<text name="CP_jobParameters_startAt_nearest"													text="Næste vejpunkt"/>
+		<text name="CP_jobParameters_startAt_first"														text="Første vejpunkt"/>
+		<text name="CP_jobParameters_startAt_last"														text="Sidste vejpunkt"/>
+		<text name="CP_jobParameters_startAt_unload"													text="Aflad mejetærsker/snitter"/>
+		<text name="CP_jobParameters_startAt_bales"														text="Saml/Wrap Baller"/>
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Bane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Bane offset ved konvøj:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Rutevalg, når et konvøjforløb blev oprettet." />
-		<text name="CP_jobParameters_laneOffset_center"													text="Mitte" />
-		<text name="CP_jobParameters_laneOffset_left"													text="Venstre(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="Højre(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="Venstre(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="Højre(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Bane offset:"/>
+		<text name="CP_jobParameters_laneOffset_title"													text="Bane offset ved konvøj:"/>
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Rutevalg, når et konvøjforløb blev oprettet."/>
+		<text name="CP_jobParameters_laneOffset_center"													text="Mitte"/>
+		<text name="CP_jobParameters_laneOffset_left"													text="Venstre(1)"/>
+		<text name="CP_jobParameters_laneOffset_right"													text="Højre(1)"/>
+		<text name="CP_jobParameters_laneOffset_left_2"													text="Venstre(2)"/>
+		<text name="CP_jobParameters_laneOffset_right_2"												text="Højre(2)"/>
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																	text="CP: Markarbejde" />
-		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe" />
+		<text name="CP_job_fieldWork"																	text="CP: Markarbejde"/>
+		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe"/>
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute." />
-		<text name="CP_ai_page_open_course_generator" 													text="CP: Åbne/Lukke rutegenerator." />
+		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute."/>
+		<text name="CP_ai_page_open_course_generator" 													text="CP: Åbne/Lukke rutegenerator."/>
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!"/>
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Køretøjsinstillinger (%s)"/>
@@ -107,8 +107,8 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Mejetærsker bliver stående ved aflæsning, så længe den bliver tømt."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Mejetærsker aflæser selv"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Ikke understøttet med multiredskaber eller i konvojtilstand.
-"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Ikke understøttet med multiredskaber eller i konvojtilstand."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Aflæsning i første forager"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Hvis aktiv, bliver vogn tilkaldt i forager."/>
@@ -328,6 +328,7 @@ Du må ikke sidde i et køretøj (venstreklik på kortet), du for nu mulighed fo
 Når den startes, vil teksten Optegn brugerdefineret mark med højre museknap blive vist.
 Brug den højre museknap til at klikke på en position, hvor du vil starte.
 Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje."/>
+
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>

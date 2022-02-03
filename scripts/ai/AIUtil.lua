@@ -50,7 +50,7 @@ end
 --- making sure that the towed implement's trajectory remains closer to the
 --- course.
 ---@param course Course
-function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCalculatedRadius)
+function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, previousOffset, useCalculatedRadius)
 	local tightTurnOffset
 
 	local function smoothOffset(offset)
@@ -71,8 +71,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCal
 	-- limit the radius we are trying to follow to the vehicle's turn radius.
 	-- TODO: there's some potential here as the towed implement can move on a radius less than the vehicle's
 	-- turn radius so this limit may be too pessimistic
-	local turnDiameter = r or vehicle.cp.settings.turnDiameter:get() -- TODO_22
-	r = math.max(r, turnDiameter / 2)
+	r = math.max(r, vehicleTurningRadius)
 
 	local towBarLength = AIUtil.getTowBarLength(vehicle)
 
@@ -222,10 +221,15 @@ function AIUtil.getTurningRadius(vehicle)
 			end
 		end
 		if turnRadius == 0 then
-			-- TODO
-			--turnRadius = courseplay:getToolTurnRadius(implement.object)
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, we assume %.1f',
-				implement.object:getName(), turnRadius)
+			local towed, _ = AIUtil.getSteeringParameters(vehicle)
+			if towed then
+				turnRadius = 6
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
+						implement.object:getName(), turnRadius)
+			else
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
+					implement.object:getName())
+			end
 		end
 		maxToolRadius = math.max(maxToolRadius, turnRadius)
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)

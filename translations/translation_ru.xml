@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Всегда прекращать движение при разгрузке."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Саморазгрузка комбайна"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 												text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 												text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Разгрузка на первой поворотной полосе"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 									text="Комбайн вызовет разгрузчик на первой поворотной полосе."/>
@@ -147,10 +147,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Настройки генератора курсов (%s)"/>
 		
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="основные"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="поворотная полоса"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="метод движения"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="расширенные"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Рабочая ширина" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Рабочая ширина орудия. Значение: 0 - 50" />
@@ -195,7 +195,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="вручную" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Угол челночных проходов" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Угол проходов в челночном режиме (0 это север) при указании направления вручную. Значение: 0 - 175 с шагом: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Угол проходов в челночном режиме при указании направления вручную (0 = север). Значение: 0 - 175 с шагом: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Обход островков" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Как курс должен обходить островки на поле." />
@@ -280,7 +280,12 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Вы хотите сохранить записанный курс как пользовательское поле %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Вы хотите удалить пользовательское поле %s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
+		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Начать запись пользовательского поля."/>
 		<text name="CP_controllerGui_stopRecording"														text="Завершить запись пользовательского поля."/>
@@ -309,7 +314,24 @@ H: Увеличение и уменьшение рабочей ширины. К�
 I: Значение для поперечного смещения: + влево, - вправо.
 J: Значение для продольного смещения: + назад, - вперёд.
 K, L и M: Нажатие на текст сбросит ваши изменения до автоматически определённых значений.
-N: Эта область показывает смещение полосы движения, если у вас будет загруженный курс для работы нескольких орудий. Нажатие на текст переключает позиции."/>
+N: Эта область показывает смещение полосы движения, если у вас будет загруженный курс для работы нескольких орудий. Нажатие на текст переключает позиции.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
+		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customFieldRecord_text"												text="
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it."/>
+		<text name="CP_help_page_customFieldDone_text"													text="
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it."/>
+		<text name="CP_help_page_customFieldDraw_text"													text="
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Выбрать следующий канал отладки."/>

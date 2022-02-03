@@ -24,9 +24,9 @@ function CpCourseManager.registerXmlSchemaValues(schema,baseKey)
 	schema:register(XMLValueType.FLOAT, baseKey  .. "#workWidth", "Course work width")
 	schema:register(XMLValueType.INT, baseKey .. "#numHeadlands", "Course number of headlands")
 	schema:register(XMLValueType.INT, baseKey .. "#multiTools", "Course multi tools")
-    schema:register(XMLValueType.BOOL, baseKey .. "#isSavedAsFile", "Course is saved as file or temporary ?",false)
     schema:register(XMLValueType.BOOL, baseKey .. "#isCompressed", "Waypoints between rows were removed.")
-	schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints")
+	schema:register(XMLValueType.STRING, baseKey .. ".waypoints", "Course serialized waypoints") -- old save format
+    schema:register(XMLValueType.VECTOR_N, baseKey .. Waypoint.xmlKey.."(?)", "Course serialized waypoints")
 end
 
 function CpCourseManager.initSpecialization()
@@ -78,7 +78,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
     
-    SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCoursePlot)
+    SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
     
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
@@ -245,7 +245,7 @@ function CpCourseManager:onCpCourseChange(newCourse)
 	end
 end
 
-function CpCourseManager:drawCoursePlot(map)
+function CpCourseManager:drawCpCoursePlot(map)
     if CpCourseManager.hasCourse(self) then
         local spec = self.spec_cpCourseManager
         spec.coursePlot:draw(map)

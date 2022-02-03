@@ -117,7 +117,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
 		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
-		<sourceFile filename="scripts/gui/CustomFieldPlot.lua"/>
+		<sourceFile filename="scripts/gui/FieldPlot.lua"/>
 		<sourceFile filename="scripts/gui/CpStatus.lua"/>
 		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>
 		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>

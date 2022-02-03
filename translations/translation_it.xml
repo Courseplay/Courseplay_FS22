@@ -108,7 +108,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="L'autista si ferma durante la fase di scarico"/>
 		
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Scarico automatico"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="L'autista cercherà un rimorchio vicino al campo dove poter scaricare"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="L'autista cercherà un rimorchio vicino al campo dove poter scaricare. Non supportato con multiattrezzi e modalita convoglio."/>
 		
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Scarico alla fine del campo"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="L'autista chiamerà lo scaricatore a fine lavoro"/>
@@ -277,6 +277,11 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Vuoi eliminare il campo personalizzato %s?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
+		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Avvia registrazione campo personalizzato."/>
@@ -306,7 +311,24 @@ H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo
 I: Valore per la correzione orizzontale, + a sinistra, - a destra.
 J: Valore per la correzione verticale, + indietro, - avanti.
 K, L e M: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
-N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni."/>
+N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
+		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customFieldRecord_text"												text="
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it."/>
+		<text name="CP_help_page_customFieldDone_text"													text="
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it."/>
+		<text name="CP_help_page_customFieldDraw_text"													text="
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>

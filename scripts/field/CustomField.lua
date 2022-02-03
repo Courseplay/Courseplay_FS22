@@ -27,19 +27,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 CustomField = CpObject()
 
 CustomField.xmlSchema = XMLSchema.new("customField")
-CustomField.xmlSchema:register(XMLValueType.STRING, "customField#name", "Custom field name")
+CustomField.xmlSchema:register(XMLValueType.STRING ,"customField#name", "Name") -- for backwards compatibility
 CustomField.xmlSchema:register(XMLValueType.STRING ,"customField.vertices", "Vertices of the field polygon")
 
-function CustomField:init(name, vertices)
-    if type(name) == 'number' then
-        name = string.format('%d', name)
-    end
+CustomField.rootXmlKey = "customField"
+
+function CustomField:init()
+    
+end
+
+function CustomField:setup(name, vertices)
+
     self.name = name
     self.vertices = vertices
-
     self:findFieldCenter()
 
-    self.fieldPlot = CustomFieldPlot(g_currentMission.inGameMenu.ingameMap)
+    self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setWaypoints(vertices)
     self.fieldPlot:setVisible(true)
 end
@@ -74,11 +77,20 @@ end
 -- FieldHotspot needs this
 function CustomField:getName()
     -- prefix custom field numbers
-    return 'CP-' .. self.name
+    return self.name
 end
 
-function CustomField:getFileName()
-    return self.name
+function CustomField:setName(name)
+    self.name = name
+    if self.fieldHotspot then 
+        self.fieldHotspot.name = name
+    end
+end
+
+--- If the course was not renamed, then get the field number.
+function CustomField:getFieldNumber()
+    local s = string.gsub(self.name,"CP--","")
+    return s and tonumber(s)
 end
 
 function CustomField:getVertices()
@@ -98,20 +110,15 @@ function CustomField:findFieldCenter()
     self.posZ = z / #self.vertices
 end
 
----@param directory Directory
-function CustomField:saveToXml(directory)
-    local key = 'customField'
-    local fullPath = directory:getFullPathForFile(self.name)
-    local xmlFile = createXMLFile("customField", fullPath, key);
-    if xmlFile and xmlFile ~= 0 then
-        setXMLString(xmlFile, key .. '#name', self.name)
-        setXMLString(xmlFile, key  .. '.vertices', self:serializeVertices())
-        saveXMLFile(xmlFile)
-        delete(xmlFile)
-        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Saved custom field %s', fullPath)
-    else
-        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Could not save custom field %s', fullPath)
-    end
+
+function CustomField:saveToXml(xmlFile, baseKey,name)
+    xmlFile:setValue(baseKey  .. '#name', name)
+    xmlFile:setValue(baseKey  .. '.vertices', self:serializeVertices())
+end
+
+function CustomField:loadFromXml(xmlFile,baseKey)
+    local vertices = CustomField.deserializeVertices(xmlFile:getValue(baseKey  .. '.vertices'))
+    self:setup(nil,vertices)
 end
 
 function CustomField:writeStream(streamId, connection)
@@ -144,22 +151,19 @@ function CustomField.deserializeVertices(serializedVertices)
     return vertices
 end
 
-function CustomField.createFromXmlFile(fullPath)
-    local xmlFile = XMLFile.loadIfExists("customFieldXmlFile", fullPath, CustomField.xmlSchema)
-    local key = 'customField'
-    local name = xmlFile:getValue( key .. '#name')
-    local serializedVertices = xmlFile:getValue( key .. '.vertices')
-    xmlFile:delete()
-    local customField = CustomField(name, CustomField.deserializeVertices(serializedVertices))
-    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Custom field with %d vertices loaded from %s.',
-            #customField.vertices, fullPath)
-    return customField
+function CustomField.createFromXmlFile(file)
+    local field = CustomField()
+    file:load(CustomField.xmlSchema,CustomField.rootXmlKey,
+    CustomField.loadFromXml,field)
+    field:setName(file:getName())
+    return field
 end
 
 function CustomField.createFromStream(streamId, connection)
     local name = streamReadString(streamId)
     local serializedVertices = streamReadString(streamId)
-    local customField = CustomField(name, CustomField.deserializeVertices(serializedVertices))
-    CpUtil.debugFormat(CpDebug.DBG_COURSES, vehicle, 'Custom field with %d points loaded from stream.', #customField.vertices)
+    local customField = CustomField()
+    customField:setup(name, CustomField.deserializeVertices(serializedVertices))
+    CpUtil.debugFormat(CpDebug.DBG_COURSES,'Custom field with %d points loaded from stream.', #customField.vertices)
     return customField
 end

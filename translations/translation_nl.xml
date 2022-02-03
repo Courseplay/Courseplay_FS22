@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Stopt altijd met rijden tijdens het lossen."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Maaidorser zelflossen"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Maaidorser rijdt naar trailer op of nabij het veld om te lossen."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Maaidorser rijdt naar trailer op of nabij het veld om te lossen. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Lossen op eerste wendakker"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Maaidorser roept de losser op de eerste wendakker"/>
@@ -279,6 +279,11 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Wil je de geregistreerde koers opslaan als aangepast veld %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Wilt u het aangepaste veld %s verwijderen?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
+		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start aangepaste veldopname."/>
@@ -308,7 +313,24 @@ H: Verklein en vergroot de werkbreedte. Een rode lijn op uw voertuig geeft de hu
 I: Waarde voor horizontale offset, + links, - rechts.
 J: Waarde voor verticale offset, + achteruit, - vooruit.
 K, L en M: Als u op de tekst klikt, worden uw wijzigingen teruggezet naar de automatische waarden.
-N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld."/>
+N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
+		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customFieldRecord_text"												text="
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it."/>
+		<text name="CP_help_page_customFieldDone_text"													text="
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it."/>
+		<text name="CP_help_page_customFieldDraw_text"													text="
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecteer het volgende debug-kanaal."/>

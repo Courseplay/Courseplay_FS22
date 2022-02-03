@@ -683,7 +683,7 @@ function CourseTurn:onWaypointChange(ix)
 		if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
-			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse,
+			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turningRadius, self.turnCourse,
 					self.tightTurnOffset, true)
 			self.turnCourse:setOffset(self.tightTurnOffset, 0)
 		end
@@ -754,8 +754,13 @@ function CourseTurn:generateCalculatedTurn()
 			turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 				self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
 		end
-		-- only use tight turn offset if we are towing something
-		self.enableTightTurnOffset = self.steeringLength > 0
+		-- only use tight turn offset if we are towing something and not an articulated axis or track vehicle
+		-- as those usually have a very small turn radius anyway, causing jackknifing
+		if self.steeringLength > 0 and not (SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) or
+				SpecializationUtil.hasSpecialization(Crawler, self.vehicle.specializations)) then
+			self:debug('Enabling tight turn offset')
+			self.enableTightTurnOffset = 1
+		end
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
@@ -788,11 +793,9 @@ function CourseTurn:onPathfindingDone(path)
 			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
-		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
-		self.turnContext:appendEndingTurnCourse(self.turnCourse)
+		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
 		-- and once again, if there is an ending course, keep adjusting the tight turn offset
-		-- TODO: should probably better done on onWaypointChange, to reset to 0
-		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
+		self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
 		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 	else
 		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))

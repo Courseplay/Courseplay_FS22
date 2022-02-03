@@ -16,20 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
----@class CustomFieldPlot : CoursePlot
-CustomFieldPlot = CpObject(CoursePlot)
+---@class FieldPlot : CoursePlot
+FieldPlot = CpObject(CoursePlot)
 
 --- Shows custom fields on the in-game map
-function CustomFieldPlot:init()
+function FieldPlot:init()
 	CoursePlot.init(self)
-	-- use same color for the entire plot
-	self.lightColor = {CpGuiUtil.getNormalizedRgb(38, 174, 214)}
-	self.darkColor = {CpGuiUtil.getNormalizedRgb(38, 174, 214)}
+	self:setNormalColor()
 	-- use a thicker line
 	self.lineThickness = 4 / g_screenHeight
 end
 
-function CustomFieldPlot:draw(map)
+function FieldPlot:setNormalColor()
+	-- use same color for the entire plot
+	self.lightColor = {CpGuiUtil.getNormalizedRgb(38, 174, 214)}
+	self.darkColor = {CpGuiUtil.getNormalizedRgb(38, 174, 214)}
+end
+
+function FieldPlot:setBrightColor()
+	self.lightColor = {CpGuiUtil.getNormalizedRgb(255, 255, 255)}
+	self.darkColor = {CpGuiUtil.getNormalizedRgb(255, 255, 255)}
+end
+
+function FieldPlot:draw(map)
 	if not self.isVisible then return end
 	self:drawPoints(map)
 end

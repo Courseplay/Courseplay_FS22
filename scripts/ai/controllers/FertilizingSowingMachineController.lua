@@ -8,13 +8,7 @@ function FertilizingSowingMachineController:init(vehicle)
 end
 
 function FertilizingSowingMachineController:update()
-	if self.settings.sowingMachineFertilizerEnabled:getValue() then 
-		local fillUnitIndex = self.sowingMachine:getSprayerFillUnitIndex()
-		if not self.sowingMachine:getIsSprayerExternallyFilled() and self.sowingMachine:getFillUnitFillLevel(fillUnitIndex) <= 0 then 
-			self:debug("Stopped Cp, as the fertilizer is empty.")
-			self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
-		end
-	end
+
 end
 
 local function processSowingMachineArea(sowingMachine,superFunc,...)
@@ -22,11 +16,14 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	if not rootVehicle.getIsCpActive or not rootVehicle:getIsCpActive() then 
 		return superFunc(sowingMachine, ...)
 	end
+	local specSpray = sowingMachine.spec_sprayer
+	local sprayerParams = specSpray.workAreaParameters
 	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
 	if not fertilizingEnabled then 
-		local specSpray = sowingMachine.spec_sprayer
-		local sprayerParams = specSpray.workAreaParameters
 		sprayerParams.sprayFillLevel = 0
+	elseif sprayerParams.sprayFillLevel <=0 then
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,sowingMachine,"Stopped Cp, as the fertilizer is empty.")
+		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 	end
 	return superFunc(sowingMachine, ...)
 end

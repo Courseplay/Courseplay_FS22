@@ -69,6 +69,7 @@ end
 
 ---@class Waypoint : Point
 Waypoint = CpObject(Point)
+Waypoint.xmlKey = ".waypoints.wp"
 
 -- constructor from the legacy Courseplay waypoint
 function Waypoint:init(cpWp, cpIndex)
@@ -115,7 +116,45 @@ function Waypoint.initFromGeneratedWp(wp, ix)
 	waypoint.lane = wp.passNumber and -wp.passNumber
 	waypoint.rowNumber = wp.rowNumber
 	waypoint.ridgeMarker = wp.ridgeMarker
+	--- Todo check if the course generator side is correctly implement.
+	waypoint.rev = wp.rev
 	return waypoint
+end
+
+--- Set from a saved waypoint in a xml file.
+function Waypoint.initFromXmlFile(data,ix)
+	local waypoint = Waypoint({})
+	waypoint.x = data[1]
+	waypoint.z = data[2]
+	waypoint.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, waypoint.x, 0, waypoint.z)
+	waypoint.cpIndex = ix or 0
+	waypoint.turnStart = data[3]
+	waypoint.turnEnd = data[4]
+	waypoint.isConnectingTrack = data[5]
+	waypoint.lane = data[6]
+	waypoint.rowNumber = data[7]
+	waypoint.ridgeMarker = data[8]
+	waypoint.rev = data[9]
+	return waypoint
+end
+
+--- Gets the data to saves this waypoint in a xml file.
+--- New attributes can be added at the bottom and should'nt break old courses.
+--- To remove attributes, they should be filled with a zero otherwise old course might be broken.
+--- Every attribute needs to be a number.
+function Waypoint:getXmlString()
+	local v = {
+		MathUtil.round(self.x,2),
+		MathUtil.round(self.z,2),
+		self.turnStart,
+		self.turnEnd,
+		self.isConnectingTrack,
+		self.lane,
+		self.rowNumber,
+		self.ridgeMarker,
+		self.rev,
+	}
+	return CpUtil.getXmlVectorString(v)
 end
 
 --- Get the (original, non-offset) position of a waypoint

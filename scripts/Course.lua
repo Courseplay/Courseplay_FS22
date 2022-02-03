@@ -40,8 +40,6 @@ function Course:init(vehicle, waypoints, temporary, first, last)
 	self.numberOfHeadlands = 0
 	self.workWidth = 0
 	self.name = ''
-	--- Is the course saved under the course manager?
-	self.savedAsFile = false
 	-- only for logging purposes
 	self.vehicle = vehicle
 	self.temporary = temporary or false
@@ -74,15 +72,6 @@ end
 
 function Course:setName(name)
 	self.name = name
-end
-
---- Sets the course saved/unsaved.
-function Course:setSavedAsFile(saved)
-	self.savedAsFile = saved
-end
-
-function Course:isSavedAsFile()
-	return self.savedAsFile
 end
 
 function Course:setVehicle(vehicle)
@@ -1571,6 +1560,8 @@ function Course:setPipeInFruitMap(pipeOffsetX, workWidth)
 	return totalNonHeadlandWps, pipeInFruitWps
 end
 
+---@param ix number waypoint where we want to get the progress, when nil, uses the current waypoint
+---@return number, number, boolean 0-1 progress, waypoint where the progress is calculated, true if last waypoint
 function Course:getProgress(ix)
 	ix = ix or self:getCurrentWaypointIx()
 	if self.originalCourseLength then
@@ -1584,9 +1575,9 @@ function Course:getProgress(ix)
 		-- original headland.
 		local dToHere = self.nonHeadlandLengthRatio * dToHereOnNonHeadland +
 			self.headlandLengthRatio * self.waypoints[ix].dToHereOnHeadland
-		return dToHere / self.originalCourseLength, ix
+		return dToHere / self.originalCourseLength, ix, ix == #self.waypoints
 	else
-		return self.waypoints[ix].dToHere / self.length, ix
+		return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 	end
 end
 
@@ -1708,9 +1699,11 @@ function Course:saveToXml(courseXml, courseKey)
 	courseXml:setValue(courseKey  .. '#numHeadlands',self.numHeadlands or 0)
 	courseXml:setValue(courseKey  .. '#multiTools',self.multiTools or 0)
 	--- For backward compatibility a flag is set to indicate, that the waypoints between rows are not saved.
-	courseXml:setValue(courseKey  .. '#isCompressed',true)
-	courseXml:setValue(courseKey  .. '#isSavedAsFile',self:isSavedAsFile() or false)
-	courseXml:setValue(courseKey  .. '.waypoints',self:serializeWaypoints(false))
+	--courseXml:setValue(courseKey  .. '#isCompressed',true)
+	for i,p in ipairs(self.waypoints) do 
+		local key = string.format("%s%s(%d)",courseKey,Waypoint.xmlKey,i-1)
+		courseXml:setString(key,p:getXmlString())
+	end
 end
 
 function Course:writeStream(streamId, connection)
@@ -1729,16 +1722,25 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	local workWidth = courseXml:getValue( courseKey .. '#workWidth')
 	local numHeadlands = courseXml:getValue( courseKey .. '#numHeadlands')
 	local multiTools = courseXml:getValue( courseKey .. '#multiTools')
-	local savedAsFile = courseXml:getValue( courseKey .. '#isSavedAsFile')
 	local isCompressed = courseXml:getValue(courseKey  .. '#isCompressed')
-	local serializedWaypoints = courseXml:getValue( courseKey .. '.waypoints')
+	local waypoints = {}
+	if courseXml:hasProperty(courseKey  .. Waypoint.xmlKey) then 
+		local d
+		courseXml:iterate(courseKey..Waypoint.xmlKey,function (ix,key)
+			d = CpUtil.getXmlVectorValues(courseXml:getString(key))
+			table.insert(waypoints,Waypoint.initFromXmlFile(d,ix))
+		end)
+	else
+		--- old course save format for backwards compatibility
+		local serializedWaypoints = courseXml:getValue(courseKey  .. '.waypoints')
+		waypoints = Course.deserializeWaypoints(serializedWaypoints)
+	end
 
-	local course = Course(vehicle, Course.deserializeWaypoints(serializedWaypoints))
+	local course = Course(vehicle,waypoints)
 	course.name = name
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
-	course:setSavedAsFile(savedAsFile)
 	if isCompressed then
 		course:addWaypointsForRows()
 	end

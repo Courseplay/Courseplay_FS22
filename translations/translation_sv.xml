@@ -110,7 +110,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Stanna alltid vid tömming"/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Skördetröskan tömmer själv"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Skördetröskan kör till vagnar på eller nära fältet för att lasta av."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Skördetröskan kör till vagnar på eller nära fältet för att lasta av. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Lasta av på första vändtegen"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Skördetröskan kommer att lasta av på den fösta vändtegen."/>
@@ -279,7 +279,12 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
-
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
+		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
@@ -308,7 +313,24 @@ H: Decrease and increase the working width. A red line on your vehicle shows the
 I: Value for horizontal offset, + left, - right.
 J: Value for vertical offset, + backward, - forward.
 K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
+		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customFieldRecord_text"												text="
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it."/>
+		<text name="CP_help_page_customFieldDone_text"													text="
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it."/>
+		<text name="CP_help_page_customFieldDraw_text"													text="
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Välj nästa felsökningskanal."/>

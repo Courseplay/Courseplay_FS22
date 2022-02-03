@@ -5,6 +5,7 @@ VehicleSettingDisplayDialog = {
 		BUTTON_BACK = "backButton",
 		BUTTON_START = "startButton",
 		BUTTON_RECORD= "recordButton",
+		BUTTON_CLEAR = "clearButton",
 		BUTTON_LAYOUT = "bottomButtons",
 		SETTING_TEMPLATE = "settingTemplate",
 		SETTING_TITLE = "settingTitle",
@@ -38,13 +39,19 @@ function VehicleSettingDisplayDialog:onGuiSetupFinished()
 	FocusManager:removeElement(self.startButton)
 	self.layout:addElement(self.startButton)
 
+	self.recordButton:unlinkElement()
+	FocusManager:removeElement(self.recordButton)
+	self.layout:addElement(self.recordButton)
+
+	self.clearButton:unlinkElement()
+	FocusManager:removeElement(self.clearButton)
+	self.clearButton:setText(g_i18n:getText("CP_courseManager_clear_current_courses"))
+	self.layout:addElement(self.clearButton)
+
 	self.backButton:unlinkElement()
 	FocusManager:removeElement(self.backButton)
 	self.layout:addElement(self.backButton)
 
-	self.recordButton:unlinkElement()
-	FocusManager:removeElement(self.recordButton)
-	self.layout:addElement(self.recordButton)
 
 	self.layout:invalidateLayout()
 
@@ -105,14 +112,15 @@ function VehicleSettingDisplayDialog:update(...)
 		return
 	end
 	if self.vehicle:getIsCpCourseRecorderActive() then 
-		self.recordButton:setDisabled(false)
+		self.recordButton:setVisible(true)
 		self.recordButton:setText(self.texts.stopRecording)
 	elseif self.vehicle:getCanStartCpCourseRecorder() then 
-		self.recordButton:setDisabled(false)
+		self.recordButton:setVisible(true)
 		self.recordButton:setText(self.texts.startRecording)
 	else 
-		self.recordButton:setDisabled(true)
+		self.recordButton:setVisible(false)
 	end
+	self.clearButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
 end
 
 function VehicleSettingDisplayDialog:onClickRecord()
@@ -123,6 +131,15 @@ function VehicleSettingDisplayDialog:onClickRecord()
 		self.vehicle:cpStopCourseRecorder()
 	elseif self.vehicle:getCanStartCpCourseRecorder() then 
 		self.vehicle:cpStartCourseRecorder()
+	end
+end
+
+function VehicleSettingDisplayDialog:onClickClearCourse()
+	if not self.vehicle then
+		return
+	end
+	if self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive() then 
+		self.vehicle:resetCpCourses()
 	end
 end
 
