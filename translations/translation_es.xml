@@ -314,21 +314,21 @@ K: L y M: Al hacer clic en el texto, se restablecerán los cambios a los valores
 N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
 O: Start/stop recording a custom field course.
 P: Removes course from vehicle"/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customField_title"														text="Campos Personalizados"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Existen dos maneras de crear un campo personalizado.
+Primera: Usar la función de grabación del HUD.
+Inicie la grabación y grabe el borde de su campo.
+Una vez hecho esto, presione el botón nuevamente y se le preguntará si desea guardarlo."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Echando un vistazo al menú AI, verá el borde de su campo grabado.
+Al hacer clic en el Nombre, tendrá la opción de eliminarlo o cambiarle el nombre. "/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+Segunda: Dibujarlo en el Mapa del Menú de IA.
+No tiene ningún tractor u otro vehículo seleccionado (haga clic con el botón izquierdo en algún lugar del mapa), tiene la opción de dibujar un campo personalizado.
+Cuando se inicie, se mostrará el texto: Dibujar líneas de campo personalizadas con el botón derecho.
+Use el botón derecho del mouse para hacer clic en una posición en la que desea comenzar.
+El siguiente clic derecho dibujará una línea desde su punto de inicio hasta su segunda posición, que será el punto de inicio de la siguiente línea."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleccione el canal de depuración siguiente."/>
