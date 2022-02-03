@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 CustomField = CpObject()
 
 CustomField.xmlSchema = XMLSchema.new("customField")
+CustomField.xmlSchema:register(XMLValueType.STRING ,"customField#name", "Name") -- for backwards compatibility
 CustomField.xmlSchema:register(XMLValueType.STRING ,"customField.vertices", "Vertices of the field polygon")
 
 CustomField.rootXmlKey = "customField"
@@ -109,7 +110,8 @@ function CustomField:findFieldCenter()
 end
 
 
-function CustomField:saveToXml(xmlFile, baseKey)
+function CustomField:saveToXml(xmlFile, baseKey,name)
+    xmlFile:setValue(baseKey  .. '#name', name)
     xmlFile:setValue(baseKey  .. '.vertices', self:serializeVertices())
 end
 
