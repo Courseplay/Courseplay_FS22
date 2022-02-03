@@ -277,8 +277,11 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Ønsker du at slette den brugerdefinerede mark	%s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_delete"														text="Slet brugerdefineret mark"/>
+		<text name="CP_customFieldManager_rename"														text="Omdøb brugerdefineret mark"/>
+		<text name="CP_customFieldManager_draw"															text="Optegn brugerdefineret mark"/>
+		<text name="CP_customFieldManager_draw_header"													text="Optegn brugerdefineret mark med højre museknap."/>
+		<text name="CP_customFieldManager_save"                                                         text="Gem brugerdefineret mark"/>
 		
     <!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start brugerdefineret markoptegnelse."/>
@@ -308,8 +311,23 @@ I: Vandret offset værdi, + venstre, - højre.
 J: Lodret offset værdi, + tilbage, - frem.
 K, L og M: Klik på teksten for at nulstille værdierne.
 N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
+O: Start/stop Optegning af brugerdefineret mark.
+P: fjern rute fra køretøj"/>
+		<text name="CP_help_page_customField_title"														text="Brugerdefineret marker"/>
+		<text name="CP_help_page_customFieldRecord_text"												text="
+Du kan oprette brugerdefineret mark på to måder.
+Den første er ved at benytte markoptegnelse i HUD.
+Start markoptegnelse ved at trykke på record knappen.
+når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne."/>
+		<text name="CP_help_page_customFieldDone_text"													text="
+Den optegnede mark AI hjælper menu.
+Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den."/>
+		<text name="CP_help_page_customFieldDraw_text"													text="
+Den næste mulighed er at optegne den inde i AI hjælper menu på kortet.
+Du må ikke sidde i et køretøj (venstreklik på kortet), du for nu mulighed for at optagne marken.
+Når den startes, vil teksten Optegn brugerdefineret mark med højre museknap blive vist.
+Brug den højre museknap til at klikke på en position, hvor du vil starte.
+Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>
