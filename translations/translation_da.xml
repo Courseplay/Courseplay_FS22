@@ -306,7 +306,9 @@ H: Reducerer eller øger arbejdsbredden. En rød streg på køretøjet viser ind
 I: Vandret offset værdi, + venstre, - højre.
 J: Lodret offset værdi, + tilbage, - frem.
 K, L og M: Klik på teksten for at nulstille værdierne.
-N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen."/>
+N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>

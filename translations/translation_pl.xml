@@ -310,7 +310,9 @@ H: Zwiększa i zmniejsza szerokość roboczą. Czerwona linia na twoim pojeździ
 I: Wartość przesunięcia horyzontalnego, + w lewo, - w prawo.
 J: Wartość przesunięcia wertykalnego, + do tyłu, - do przodu.
 K, L i M: Kliknięcie na tekst zresetuje ustawienia do wartości automatycznych.
-N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję."/>
+N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Poprzedni kanał debugowania" />

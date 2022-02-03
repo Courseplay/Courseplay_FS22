@@ -307,7 +307,9 @@ H: Diminuir e aumentar a largura de trabalho. Uma linha vermelha no seu veículo
 I: Valor para deslocamento horizontal, + esquerda, - direita.
 J: Valor para deslocamento vertical, + para trás, - para frente.
 K, L e M: Clicar no texto irá redefinir suas alterações para os valores automáticos.
-N: Esta área mostra a distãncia da faixa se você tiver uam rota com multiferramentas carregado. Clicar no texto alterna as posições."/>
+N: Esta área mostra a distãncia da faixa se você tiver uam rota com multiferramentas carregado. Clicar no texto alterna as posições.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecione próximo canal debug."/>

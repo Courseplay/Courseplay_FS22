@@ -310,7 +310,9 @@ H: Decrease and increase the working width. A red line on your vehicle shows the
 I: Value for horizontal offset, + left, - right.
 J: Value for vertical offset, + backward, - forward.
 K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions."/>
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Select next debug channel."/>

@@ -310,7 +310,9 @@ H: Verklein en vergroot de werkbreedte. Een rode lijn op uw voertuig geeft de hu
 I: Waarde voor horizontale offset, + links, - rechts.
 J: Waarde voor verticale offset, + achteruit, - vooruit.
 K, L en M: Als u op de tekst klikt, worden uw wijzigingen teruggezet naar de automatische waarden.
-N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld."/>
+N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecteer het volgende debug-kanaal."/>

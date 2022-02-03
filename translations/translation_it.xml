@@ -308,7 +308,9 @@ H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo
 I: Valore per la correzione orizzontale, + a sinistra, - a destra.
 J: Valore per la correzione verticale, + indietro, - avanti.
 K, L e M: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
-N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni."/>
+N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>

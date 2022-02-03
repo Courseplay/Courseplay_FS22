@@ -308,7 +308,9 @@ H: Disminuir/Aumentar el ancho de trabajo. Una línea roja en su vehículo muest
 I: Valor del desplazamiento horizontal, (+)Izquierda, (-)Derecha.
 J: Valor del desplazamiento vertical, (+)Atrás, (-)Adelante.
 K: L y M: Al hacer clic en el texto, se restablecerán los cambios a los valores automáticos.
-N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones."/>
+N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleccione el canal de depuración siguiente."/>
