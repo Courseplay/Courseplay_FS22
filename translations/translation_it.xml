@@ -108,7 +108,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="L'autista si ferma durante la fase di scarico"/>
 		
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Scarico automatico"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="L'autista cercherà un rimorchio vicino al campo dove poter scaricare. Not supported in multitools or convoy mode."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="L'autista cercherà un rimorchio vicino al campo dove poter scaricare. Non supportato con multiattrezzi e modalita convoglio."/>
 		
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Scarico alla fine del campo"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="L'autista chiamerà lo scaricatore a fine lavoro"/>
