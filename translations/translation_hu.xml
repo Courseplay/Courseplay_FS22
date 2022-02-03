@@ -106,7 +106,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Kirakodáskor mindig hagyja abba a vezetést."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Önkirakodó betakarítógép"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="A kombájn a szántóföldön vagy annak közelében önállóan mozog a pótkocsihoz kirakodás céljából."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="A kombájn a szántóföldön vagy annak közelében önállóan mozog a pótkocsihoz kirakodás céljából. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Kirakodás az első fordulóban"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="A kombájn az első fordulóban hívja a kirakodót."/>

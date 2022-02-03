@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Всегда прекращать движение при разгрузке."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Саморазгрузка комбайна"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 												text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 												text="Комбайн самостоятельно двигается к прицепу на поле или возле него для разгрузки. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Разгрузка на первой поворотной полосе"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 									text="Комбайн вызовет разгрузчик на первой поворотной полосе."/>
