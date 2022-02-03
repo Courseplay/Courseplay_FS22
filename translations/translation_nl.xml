@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Stopt altijd met rijden tijdens het lossen."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Maaidorser zelflossen"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Maaidorser rijdt naar trailer op of nabij het veld om te lossen."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Maaidorser rijdt naar trailer op of nabij het veld om te lossen. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Lossen op eerste wendakker"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Maaidorser roept de losser op de eerste wendakker"/>

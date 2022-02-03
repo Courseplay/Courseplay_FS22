@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Al conducir se detendrá durante la descarga."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Auto-Descarga"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="La cosechadora irá al remolque más cercano al campo para descargar"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="La cosechadora irá al remolque más cercano al campo para descargar. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Descargar en primera cabecera"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="La cosechadora llamará al descargador en primera cabecera."/>

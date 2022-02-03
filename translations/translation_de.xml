@@ -109,7 +109,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Drescher bleibt stehen, solange er entladen wird."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Drescher selbst abtanken"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Drescher sucht sich einen Trailer in der nähe des Feldes um dort selber ab zu tanken."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Drescher sucht sich einen Trailer in der nähe des Feldes um dort selber ab zu tanken. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Entladen im ersten Vorgewende"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Wenn aktiv, wird der Abfaher auf im ersten Vorgewende gerufen."/>
