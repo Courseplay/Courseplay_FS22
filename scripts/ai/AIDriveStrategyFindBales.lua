@@ -45,7 +45,7 @@ function AIDriveStrategyFindBales.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     ---@type ImplementController[]
     self.controllers = {}
-    self.fieldIdId = 0
+    self.fieldId = 0
     self.bales = {}
     return self
 end
@@ -61,18 +61,18 @@ function AIDriveStrategyFindBales:startWithoutCourse()
     self:startCourse(self.course, 1)
 
     self:info('Starting bale collect/wrap')
-    local job = self.vehicle:getJob()
 
     -- We either collect bales on a normal field or a custom field.
-    -- On a normal field, we use the field ID under the position of the bale to find bales on a field.
-    -- On a custom field, we use the field polygon of the custom field, finding the bales which are within
-    -- this polygon
-    if job and job:isa(AIJobFieldWorkCp) and job:getCustomField() then
-        ---@type CustomField
-        self.customField = job:getCustomField()
+    -- If the vehicle is on a custom field, find all bales which are in the field polygon of the custom field.
+    local x, _, z = getWorldTranslation(self.vehicle.rootNode)
+    ---@type CustomField
+    self.customField = g_customFieldManager:getCustomField(x, z)
+    -- Custom field takes precedence over normal field.
+    if self.customField then
         self.fieldName = self.customField:getName()
         self:info(' - map: %s, custom field %s', g_currentMission.missionInfo.mapTitle, self.customField:getName())
     else
+        -- On a normal field, we use the field ID under the position of the bale to find bales.
         local myField = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
         if myField == 0 then
             self:error('Vehicle not on field, cannot start bale collect/wrap job.')
@@ -266,9 +266,10 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
                 bale:getId(), safeDistanceFromBale, halfVehicleWidth,
                 configuredOffset and string.format('%.1f', configuredOffset) or 'n/a')
         local done, path, goalNodeInvalid
+        -- use no off-field penalty if we are on a custom field
         self.pathfinder, done, path, goalNodeInvalid =
-        PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, self.fieldIdId,
-                {}, self.lastBale and {self.lastBale} or {})
+        PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, self.fieldId,
+                {}, self.lastBale and {self.lastBale} or {}, nil, self.fieldId and nil or 0)
         if done then
             return self:onPathfindingDoneToNextBale(path, goalNodeInvalid)
         else
