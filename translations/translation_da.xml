@@ -2,45 +2,45 @@
 <l10n>
 	<texts>
 
-		<text name="CP_activated" 																		text="Aktiverert" />
-		<text name="CP_deactivated" 																	text="Deaktiverert" />
-		<text name="CP_unit_meter" 																		text="Meter" />
-		<text name="CP_unit_foot" 																		text="Fod" />
+		<text name="CP_activated" 																		text="Aktiverert"/>
+		<text name="CP_deactivated" 																	text="Deaktiverert"/>
+		<text name="CP_unit_meter" 																		text="Meter"/>
+		<text name="CP_unit_foot" 																		text="Fod"/>
 
 	<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s): Få hjælp, ved fejl eller spørgsmål om patch noter, besøg da: https://github.com/Courseplay/Courseplay_FS22." />
-    	<text name="CP_error_no_course"																	text="Opret først en rute inden start." />
-		<text name="CP_error_could_not_generate_course"													text="Kunne ikke oprette en rute. Logfilen kan indeholde yderligere informationer." />
-		<text name="CP_error_not_on_field"																text="Målet er ikke på en mark." />
+		<text name="CP_infoText"																		text="Courseplay(%s): Få hjælp, ved fejl eller spørgsmål om patch noter, besøg da: https://github.com/Courseplay/Courseplay_FS22."/>
+    	<text name="CP_error_no_course"																	text="Opret først en rute inden start."/>
+		<text name="CP_error_could_not_generate_course"													text="Kunne ikke oprette en rute. Logfilen kan indeholde yderligere informationer."/>
+		<text name="CP_error_not_on_field"																text="Målet er ikke på en mark."/>
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_subTitle_startAt"													text="Start ved:" />
-		<text name="CP_jobParameters_startAt_title"														text="Start ved:" />
-		<text name="CP_jobParameters_startAt_tooltip"													text="Hvor bliver arbejdet startet." />
-		<text name="CP_jobParameters_startAt_nearest"													text="Næste vejpunkt" />
-		<text name="CP_jobParameters_startAt_first"														text="Første vejpunkt" />
-		<text name="CP_jobParameters_startAt_last"														text="Sidste vejpunkt" />
-		<text name="CP_jobParameters_startAt_unload"													text="Aflad mejetærsker/snitter" />
-		<text name="CP_jobParameters_startAt_bales"														text="Saml/Wrap Baller" />
+		<text name="CP_jobParameters_subTitle_startAt"													text="Start ved:"/>
+		<text name="CP_jobParameters_startAt_title"														text="Start ved:"/>
+		<text name="CP_jobParameters_startAt_tooltip"													text="Hvor bliver arbejdet startet."/>
+		<text name="CP_jobParameters_startAt_nearest"													text="Næste vejpunkt"/>
+		<text name="CP_jobParameters_startAt_first"														text="Første vejpunkt"/>
+		<text name="CP_jobParameters_startAt_last"														text="Sidste vejpunkt"/>
+		<text name="CP_jobParameters_startAt_unload"													text="Aflad mejetærsker/snitter"/>
+		<text name="CP_jobParameters_startAt_bales"														text="Saml/Wrap Baller"/>
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Bane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Bane offset ved konvøj:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Rutevalg, når et konvøjforløb blev oprettet." />
-		<text name="CP_jobParameters_laneOffset_center"													text="Mitte" />
-		<text name="CP_jobParameters_laneOffset_left"													text="Venstre(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="Højre(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="Venstre(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="Højre(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Bane offset:"/>
+		<text name="CP_jobParameters_laneOffset_title"													text="Bane offset ved konvøj:"/>
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Rutevalg, når et konvøjforløb blev oprettet."/>
+		<text name="CP_jobParameters_laneOffset_center"													text="Mitte"/>
+		<text name="CP_jobParameters_laneOffset_left"													text="Venstre(1)"/>
+		<text name="CP_jobParameters_laneOffset_right"													text="Højre(1)"/>
+		<text name="CP_jobParameters_laneOffset_left_2"													text="Venstre(2)"/>
+		<text name="CP_jobParameters_laneOffset_right_2"												text="Højre(2)"/>
 
 	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																	text="CP: Markarbejde" />
-		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe" />
+		<text name="CP_job_fieldWork"																	text="CP: Markarbejde"/>
+		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe"/>
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute." />
-		<text name="CP_ai_page_open_course_generator" 													text="CP: Åbne/Lukke rutegenerator." />
+		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute."/>
+		<text name="CP_ai_page_open_course_generator" 													text="CP: Åbne/Lukke rutegenerator."/>
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!"/>
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Køretøjsinstillinger (%s)"/>
@@ -86,7 +86,7 @@
 		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="Sent"/>
 
 		<text name="CP_vehicle_setting_turnOnField_title" 												text="Vende i mark"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Forsøger at lave vendemanøvre i marken. Ikke muligt med alle redskaber."/>0
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Forsøger at lave vendemanøvre i marken. Ikke muligt med alle redskaber."/>
 
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Udenomskørsel af afgrøde"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Forsøger så vidt muligt at køre udenom afgrøder."/>
@@ -107,8 +107,8 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Mejetærsker bliver stående ved aflæsning, så længe den bliver tømt."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Mejetærsker aflæser selv"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Not supported in multitools or convoy mode.
-"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Ikke understøttet med multiredskaber eller i konvojtilstand."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Aflæsning i første forager"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Hvis aktiv, bliver vogn tilkaldt i forager."/>
@@ -277,11 +277,11 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Ønsker du at slette den brugerdefinerede mark	%s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_delete"														text="Slet brugerdefineret mark"/>
+		<text name="CP_customFieldManager_rename"														text="Omdøb brugerdefineret mark"/>
+		<text name="CP_customFieldManager_draw"															text="Optegn brugerdefineret mark"/>
+		<text name="CP_customFieldManager_draw_header"													text="Optegn brugerdefineret mark med højre museknap."/>
+		<text name="CP_customFieldManager_save"                                                         text="Gem brugerdefineret mark"/>
 		
     <!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start brugerdefineret markoptegnelse."/>
@@ -311,23 +311,24 @@ I: Vandret offset værdi, + venstre, - højre.
 J: Lodret offset værdi, + tilbage, - frem.
 K, L og M: Klik på teksten for at nulstille værdierne.
 N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+O: Start/stop Optegning af brugerdefineret mark.
+P: fjern rute fra køretøj"/>
+		<text name="CP_help_page_customField_title"														text="Brugerdefineret marker"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Du kan oprette brugerdefineret mark på to måder.
+Den første er ved at benytte markoptegnelse i HUD.
+Start markoptegnelse ved at trykke på record knappen.
+når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Den optegnede mark AI hjælper menu.
+Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+Den næste mulighed er at optegne den inde i AI hjælper menu på kortet.
+Du må ikke sidde i et køretøj (venstreklik på kortet), du for nu mulighed for at optagne marken.
+Når den startes, vil teksten Optegn brugerdefineret mark med højre museknap blive vist.
+Brug den højre museknap til at klikke på en position, hvor du vil starte.
+Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje."/>
+
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>
