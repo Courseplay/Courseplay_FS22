@@ -372,7 +372,7 @@ function CpAIFieldWorker:startFieldWorker(jobParameters)
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self,jobParameters)
+        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters)
     end
 end
 
@@ -404,7 +404,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
         CpUtil.infoVehicle(self, 'Installing default CP fieldwork drive strategy')
         cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
     end
-    cpDriveStrategy:setAIVehicle(self,jobParameters)
+    cpDriveStrategy:setAIVehicle(self, jobParameters)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)

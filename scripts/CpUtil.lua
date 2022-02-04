@@ -129,7 +129,7 @@ function CpUtil.getName(object)
 	if object == CpUtil then
 		return 'ERROR, calling CpUtil.getName with : !'
 	end
-	local helperName = '?'
+	local helperName = '-'
 	if object == object.rootVehicle then
 		helperName = object.id
 	end

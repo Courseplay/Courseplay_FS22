@@ -78,7 +78,7 @@ function AIDriveStrategyCourse:setInfoText(text)
     self:debug(text)
 end
 
-function AIDriveStrategyCourse:setAIVehicle(vehicle,jobParameters)
+function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self:initializeImplementControllers(vehicle)
     ---@type FillLevelManager
