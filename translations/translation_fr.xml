@@ -281,9 +281,9 @@
 		<text name="CP_customFieldManager_confirm_delete"												text="Souhaitez-vous supprimer le champ personnalisé %s?"/>
 		<text name="CP_customFieldManager_delete"														text="Supprimer le champ personnalisé"/>
 		<text name="CP_customFieldManager_rename"														text="Renommer le champ personnalisé"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Tracer un champ personnalisé"/>
+		<text name="CP_customFieldManager_draw_header"													text="Clic droit sur chaque point de contour du champ personnalisé."/>
+		<text name="CP_customFieldManager_save"                                                         text="Sauvegarder le champ personnalisé"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Démarrer l'enregistrement du champ personnalisé"/>
@@ -316,21 +316,21 @@ K, L and M: Cliquez sur le texte pour rétablir les valeurs automatiques.
 N: Affichage du décalage de rang lorsque vous avez chargé une course multi-outils. Cliquez sur le texte pour intervertir les positions.
 O: Démarrer/Arrêter l'enregistrement d'un contour de champ personnalisé.
 P: Réinitialiser la course active."/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customField_title"														text="Champs personnalisés"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Il y a deux méthodes pour créer des champs personnalisés.
+La première méthode est d'utiliser l'enregistrement de course depuis le mini-ATH.
+Activez l'enregistrement puis créer votre contour de champ.
+Une fois terminé, appuyez à nouveau sur le bouton d'enregistrement pour avoir la possibilité de sauvegarder le champ personnalisé."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Les contours du champ personnalisé apparaissent dans l'onglet des ouvriers.
+Cliquez sur son nom pour le supprimer ou le renommer."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+La deuxième option est de placer les contours du champ depuis la carte dans l'onglet des ouvriers.
+Clic gauche n'importe où sur la carte (afin de ne pas sélectionner de véhicules) puis choisissez l'option tracer un champ personnalisé.
+Vous serez invité à tracer des lignes correspondantes au contour du champ à l'aide du clic droit.
+Le premier clic droit détermine le point de départ du contour.
+Les prochains clics droits formeront des lignes correspondantes au contour du champ personnalisé. Procédez ainsi jusqu'à clôturer intégralement le champ personnalisé."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Sélection du prochain canal de deboggage."/>
