@@ -45,7 +45,6 @@ function AIDriveStrategyFindBales.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     ---@type ImplementController[]
     self.controllers = {}
-    self.fieldId = 0
     self.bales = {}
     return self
 end
@@ -151,7 +150,7 @@ function AIDriveStrategyFindBales:isBaleOnField(bale)
         -- normal field mode
         return bale:getFieldId() == self.fieldId
     elseif self.customField then
-        local x, y, z = bale:getPosition()
+        local x, _, z = bale:getPosition()
         return self.customField:isPointOnField(x, z)
     end
 end
