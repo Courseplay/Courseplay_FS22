@@ -86,7 +86,7 @@
 		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="Sent"/>
 
 		<text name="CP_vehicle_setting_turnOnField_title" 												text="Vende i mark"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Forsøger at lave vendemanøvre i marken. Ikke muligt med alle redskaber."/>0
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Forsøger at lave vendemanøvre i marken. Ikke muligt med alle redskaber."/>
 
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Udenomskørsel af afgrøde"/>
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Forsøger så vidt muligt at køre udenom afgrøder."/>
