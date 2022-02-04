@@ -320,7 +320,7 @@ P: Réinitialiser la course active."/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Il y a deux méthodes pour créer des champs personnalisés.
 La première méthode est d'utiliser l'enregistrement de course depuis le mini-ATH.
-Activez l'enregistrement puis créer votre contour de champ.
+Activez l'enregistrement puis créez votre contour de champ.
 Une fois terminé, appuyez à nouveau sur le bouton d'enregistrement pour avoir la possibilité de sauvegarder le champ personnalisé."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Les contours du champ personnalisé apparaissent dans l'onglet des ouvriers.
