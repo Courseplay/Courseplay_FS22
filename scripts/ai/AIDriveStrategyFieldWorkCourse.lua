@@ -232,7 +232,7 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
-    local function addController(class,spec,states)
+    local function addController(class, spec, states)
         if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then
             local controller = class(vehicle)
             controller:setDisabledStates(states)
@@ -244,13 +244,14 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
         self.states.TEMPORARY,
         self.states.TURNING
     }
-    addController(BalerController,Baler,defaultDisabledStates)
-    addController(BaleWrapperController,BaleWrapper,defaultDisabledStates)
+    addController(BalerController, Baler, defaultDisabledStates)
+    addController(BaleWrapperController, BaleWrapper, defaultDisabledStates)
 
-    addController(FertilizingSowingMachineController,FertilizingSowingMachine,defaultDisabledStates)
-    addController(ForageWagonController,ForageWagon,defaultDisabledStates)
+    addController(FertilizingSowingMachineController, FertilizingSowingMachine, defaultDisabledStates)
+    addController(ForageWagonController, ForageWagon, defaultDisabledStates)
 
-    addController(FertilizingCultivatorController,FertilizingCultivator,defaultDisabledStates)
+    addController(FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
+    addController(MowerController, Mower, defaultDisabledStates)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
@@ -681,7 +682,7 @@ function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
         return
      end
 
-    local function setRidgeMarkerState(self,vehicle,state)
+    local function setRidgeMarkerState(self, vehicle, state)
         local spec = vehicle.spec_ridgeMarker
         if spec then
             -- yes, another Giants typo
@@ -695,11 +696,11 @@ function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
     end
 
     local state = isAllowed and  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
-    self:debug('Target ridge marker state is %d.',state)
-    setRidgeMarkerState(self,self.vehicle,state)
+    self:debug('Target ridge marker state is %d.', state)
+    setRidgeMarkerState(self, self.vehicle, state)
 
     for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
-        setRidgeMarkerState(self,implement.object,state)
+        setRidgeMarkerState(self, implement.object, state)
     end
 
 end
@@ -845,7 +846,7 @@ end
 --- TODO: might have to find a better solution for these kind of problems.
 -----------------------------------------------------------------------------------------------------------------------
 
-local function emptyFunction(object,superFunc,...)
+local function emptyFunction(object, superFunc,...)
     local rootVehicle = object.rootVehicle
     if rootVehicle.getJob then 
         if rootVehicle:getIsCpActive() then
@@ -855,5 +856,5 @@ local function emptyFunction(object,superFunc,...)
     return superFunc(object,...)
 end
 --- Makes sure the automatic work width isn't being reset.
-VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart,emptyFunction)
-VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart,emptyFunction)
+VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart, emptyFunction)
+VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart, emptyFunction)
