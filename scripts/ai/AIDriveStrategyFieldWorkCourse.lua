@@ -889,7 +889,7 @@ function AIDriveStrategyFieldWorkCourse:startCourseWithPathfinding(course, ix)
         self.pathfindingStartedAt = 0
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
-                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, nil, nil, nil,
+                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then
             return self:onPathfindingDoneToCourseStart(path)
