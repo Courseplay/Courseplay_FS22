@@ -884,7 +884,7 @@ function AIDriveStrategyFieldWorkCourse:startCourseWithPathfinding(course, ix)
                 0, 0, self:getAllowReversePathfinding(), fieldNum, nil, nil, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then
-            return self:onPathfindingDoneAfterSelfUnload(path)
+            return self:onPathfindingDoneToCourseStart(path)
         else
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCourseStart)
             return true
