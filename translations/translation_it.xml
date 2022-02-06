@@ -277,11 +277,11 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Vuoi eliminare il campo personalizzato %s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_delete"														text="Cancella campo personalizzato"/>
+		<text name="CP_customFieldManager_rename"														text="Rinomina campo personalizzato"/>
+		<text name="CP_customFieldManager_draw"															text="Disegna campo personalizzato"/>
+		<text name="CP_customFieldManager_draw_header"													text="Disegna linee campo personalizzato con il tasto destro del mouse."/>
+		<text name="CP_customFieldManager_save"                                                         text="Salva campo personalizzato"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Avvia registrazione campo personalizzato."/>
