@@ -955,7 +955,7 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
 		local zOffset = 0
 		local length = self.pullBackDistanceEnd
 		local width = self.pullBackRightSideOffset
-		return PathfinderUtil.Area(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
+		return PathfinderUtil.NodeArea(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
 	end
 end
 

@@ -316,7 +316,11 @@ end
 
 PathfinderUtil.collisionDetector = PathfinderUtil.CollisionDetector()
 
-function PathfinderUtil.hasFruit(x, z, length, width)
+---@param areaToIgnoreFruit PathfinderUtil.Area
+function PathfinderUtil.hasFruit(x, z, length, width, areaToIgnoreFruit)
+    if areaToIgnoreFruit and areaToIgnoreFruit:contains(x, z) then
+        return false
+    end
     local fruitsToIgnore = {9, 13, 14} -- POTATO, GRASS, DRYGRASS, we can drive through these...
     for _, fruitType in ipairs(g_fruitTypeManager.fruitTypes) do
         local ignoreThis = false
@@ -340,19 +344,47 @@ function PathfinderUtil.hasFruit(x, z, length, width)
     return false
 end
 ---------------------------------------------------------------------------------------------------------------------------
--- A generic rectangular area oriented by a node
+-- A generic rectangular area
 ---------------------------------------------------------------------------------------------------------------------------
 --- @class PathfinderUtil.Area
 PathfinderUtil.Area = CpObject()
 
-function PathfinderUtil.Area:init(node, xOffset, zOffset, width, length)
+--- A rectangular area around a point.
+---@param x number area center x
+---@param z number area center z
+---@param size number size of the rectangle
+function PathfinderUtil.Area:init(x, z, size)
+    self.x, self.z = x, z
+    self.size = size
+    self.minX = x - size / 2
+    self.maxX = x + size / 2
+    self.minZ = z - size / 2
+    self.maxZ = z + size / 2
+end
+
+-- is x, z within the area?
+function PathfinderUtil.Area:contains(x, z)
+    return x > self.minX and x < self.maxX and z > self.minZ and z < self.maxZ
+end
+
+function PathfinderUtil.Area:__tostring()
+    return string.format('area at %.1f %.1f, size %.1f m', self.x, self.z, self.size)
+end
+
+---------------------------------------------------------------------------------------------------------------------------
+-- A generic rectangular area oriented by a node
+---------------------------------------------------------------------------------------------------------------------------
+--- @class PathfinderUtil.NodeArea
+PathfinderUtil.NodeArea = CpObject()
+
+function PathfinderUtil.NodeArea:init(node, xOffset, zOffset, width, length)
 	self.node = node
 	self.xOffset, self.zOffset = xOffset, zOffset
 	self.width, self.length = width, length
 end
 
 --- Is (x, z) world coordinate in the area?
-function PathfinderUtil.Area:contains(x, z)
+function PathfinderUtil.NodeArea:contains(x, z)
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
 	local dx, _, dz = worldToLocal(self.node, x, y, z)
 	if self.xOffset < dx and dx < self.xOffset + self.width and
@@ -400,22 +432,26 @@ field or driving to/from the field edge on an unload/refill course.
 ---@class PathfinderConstraints : PathfinderConstraintInterface
 PathfinderConstraints = CpObject(PathfinderConstraintInterface)
 
-function PathfinderConstraints:init(context, maxFruitPercent, offFieldPenalty, fieldNum, areaToAvoid)
+---@param areaToAvoid PathfinderUtil.NodeArea are the path must avoid
+---@param areaToIgnoreFruit PathfinderUtil.Area area to ignore fruit (no penalty in this area)
+function PathfinderConstraints:init(context, maxFruitPercent, offFieldPenalty, fieldNum, areaToAvoid, areaToIgnoreFruit)
     self.context = context
     self.maxFruitPercent = maxFruitPercent or 50
     self.offFieldPenalty = offFieldPenalty or PathfinderUtil.defaultOffFieldPenalty
     self.fieldNum = fieldNum or 0
 	self.areaToAvoid = areaToAvoid
+    self.areaToIgnoreFruit = areaToIgnoreFruit
 	self.areaToAvoidPenaltyCount = 0
     self.initialMaxFruitPercent = self.maxFruitPercent
     self.initialOffFieldPenalty = self.offFieldPenalty
 	self.strictMode = false
     self:resetCounts()
-	local areaText = self.areaToAvoid and
-		string.format('%.1f x %.1f m', self.areaToAvoid.length, self.areaToAvoid.width) or 'none'
+	local areaToAvoidText = self.areaToAvoid and
+		string.format('are to avoid %.1f x %.1f m', self.areaToAvoid.length, self.areaToAvoid.width) or 'none'
     CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
-		'Pathfinder constraints: off field penalty %.1f, max fruit percent: %d, field number %d, area to avoid %s',
-        self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaText)
+		'Pathfinder constraints: off field penalty %.1f, max fruit percent: %d, field number %d, %s, ignore fruit %s',
+        self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText,
+            self.areaToIgnoreFruit or 'none')
 end
 
 function PathfinderConstraints:resetCounts()
@@ -448,7 +484,7 @@ function PathfinderConstraints:getNodePenalty(node)
     end
     --local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(node.x, -node.y)
     if not offField then
-        local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4)
+        local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 4, 4, self.areaToIgnoreFruit)
         if hasFruit and fruitValue > self.maxFruitPercent then
             penalty = penalty + fruitValue / 2
             self.fruitPenaltyNodeCount = self.fruitPenaltyNodeCount + 1
@@ -470,7 +506,7 @@ end
 --- that analytic paths are almost always invalid when they go near the fruit. Since analytic paths are only at the
 --- beginning at the end of the course and mostly curves, it is no problem getting closer to the fruit than otherwise
 function PathfinderConstraints:isValidAnalyticSolutionNode(node, log)
-    local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 3, 3)
+    local hasFruit, fruitValue = PathfinderUtil.hasFruit(node.x, -node.y, 3, 3, self.areaToIgnoreFruit)
     local analyticLimit = self.maxFruitPercent * 2
     if hasFruit and fruitValue > analyticLimit then
         if log then
@@ -576,7 +612,8 @@ end
 function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
                                                           allowReverse, fieldNum,
                                                           vehiclesToIgnore, objectsToIgnore,
-														  maxFruitPercent, offFieldPenalty, areaToAvoid, mustBeAccurate)
+														  maxFruitPercent, offFieldPenalty, areaToAvoid,
+                                                          mustBeAccurate, areaToIgnoreFruit)
 
 	local start = PathfinderUtil.getVehiclePositionAsState3D(vehicle)
 
@@ -590,7 +627,7 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
 	local constraints = PathfinderConstraints(context,
             maxFruitPercent or (settings.avoidFruit:getValue() and 50 or math.huge),
             offFieldPenalty or PathfinderUtil.defaultOffFieldPenalty,
-            fieldNum, areaToAvoid)
+            fieldNum, areaToAvoid, areaToIgnoreFruit)
 
     return PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
 end
@@ -744,17 +781,19 @@ end
 ---@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection (optional)
 ---@param maxFruitPercent number maximum percentage of fruit present before a node is marked as invalid (optional)
 ---@param offFieldPenalty number penalty to apply to nodes off the field
----@param areaToAvoid PathfinderUtil.Area nodes in this area will be penalized so the path will most likely avoid it
+---@param areaToAvoid PathfinderUtil.NodeArea nodes in this area will be penalized so the path will most likely avoid it
+---@param areaToIgnoreFruit PathfinderUtil.Area area to ignore fruit
 function PathfinderUtil.startPathfindingFromVehicleToWaypoint(vehicle, goalWaypoint,
                                                               xOffset, zOffset, allowReverse,
                                                               fieldNum, vehiclesToIgnore, maxFruitPercent,
-															  offFieldPenalty, areaToAvoid)
+															  offFieldPenalty, areaToAvoid, areaToIgnoreFruit)
 
     local goal = State3D(goalWaypoint.x, -goalWaypoint.z, CourseGenerator.fromCpAngleDeg(goalWaypoint.angle))
     local offset = Vector(zOffset, -xOffset)
     goal:add(offset:rotate(goal.t))
     return PathfinderUtil.startPathfindingFromVehicleToGoal(
-            vehicle, goal, allowReverse, fieldNum, vehiclesToIgnore, {}, maxFruitPercent, offFieldPenalty, areaToAvoid)
+            vehicle, goal, allowReverse, fieldNum, vehiclesToIgnore, {}, maxFruitPercent,
+            offFieldPenalty, areaToAvoid, true, areaToIgnoreFruit)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface function to start the pathfinder in the game. The goal is a point at sideOffset meters from the goal node
@@ -769,7 +808,7 @@ end
 ---@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection (optional)
 ---@param maxFruitPercent number maximum percentage of fruit present before a node is marked as invalid (optional)
 ---@param offFieldPenalty number penalty to apply to nodes off the field
----@param areaToAvoid PathfinderUtil.Area nodes in this area will be penalized so the path will most likely avoid it
+---@param areaToAvoid PathfinderUtil.NodeArea nodes in this area will be penalized so the path will most likely avoid it
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
 function PathfinderUtil.startPathfindingFromVehicleToNode(vehicle, goalNode,
                                                           xOffset, zOffset, allowReverse,
