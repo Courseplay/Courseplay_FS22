@@ -94,6 +94,7 @@ function AIJobFieldWorkCp:validate(farmId)
 		self.lastPositionX, self.lastPositionZ = tx, tz
 		self.hasValidPosition = true
 	end
+	self.customField = nil
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
 	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
 	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
@@ -138,6 +139,11 @@ end
 
 function AIJobFieldWorkCp:getFieldPositionTarget()
 	return self.fieldPositionParameter:getPosition()
+end
+
+---@return CustomField or nil Custom field when the user selected a field position on a custom field
+function AIJobFieldWorkCp:getCustomField()
+	return self.customField
 end
 
 --- Registers additional jobs.
