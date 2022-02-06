@@ -26,8 +26,8 @@ function CpHudElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
     if wasUsed == nil then 
         wasUsed = false
     end
-    
-    if self:isMouseOverArea(posX,posY) then 
+        
+    if self.visible and not self.disabled and self:isMouseOverArea(posX,posY) then 
         self:setHovered(true)
     else 
         self:setHovered(false)
@@ -106,7 +106,8 @@ end
 
 --- WIP: not working
 function CpHudButtonElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
-    if self:isMouseOverArea(posX,posY) then 
+    if self.visible and not self.disabled and self:isMouseOverArea(posX,posY) then 
+
         if button == Input.MOUSE_BUTTON_LEFT then
             if isDown then 
                 self:onClickPrimary(posX,posY)
@@ -307,6 +308,9 @@ function CpHudMoveableElement:mouseEvent(posX, posY, isDown, isUp, button,wasUse
         if not self:isMouseOverArea(posX, posY) then 
             return 
         end
+    end
+    if not self.visible or self.disabled then 
+        return
     end
     if button == Input.MOUSE_BUTTON_LEFT then
         if isDown and self:isMouseOverArea(posX, posY) then
