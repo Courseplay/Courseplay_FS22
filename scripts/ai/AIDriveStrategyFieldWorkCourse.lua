@@ -65,14 +65,22 @@ end
 function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
     local course = self.vehicle:getFieldWorkCourse()
     local numMultiTools = course:getMultiTools()
-    --- Lane number needs to be zero for only one vehicle.
     local laneNumber = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
-    --- Work width of a single vehicle.
-    local width = course:getWorkWidth() / numMultiTools
-    local offsetCourse = course:calculateOffsetCourse(numMultiTools, laneNumber, width,
-                                                    self.settings.symmetricLaneChange:getValue())
-    
-    return offsetCourse
+    if numMultiTools < 2 then
+        self:debug('Single vehicle fieldwork course')
+        return course
+    elseif laneNumber == 0 then
+        self:debug('Multitool course, center vehicle, using original course')
+        return course
+    else
+        self:debug('Multitool course, non-center vehicle, generating offset course')
+        --- Lane number needs to be zero for only one vehicle.
+        --- Work width of a single vehicle.
+        local width = course:getWorkWidth() / numMultiTools
+        local offsetCourse = course:calculateOffsetCourse(numMultiTools, laneNumber, width,
+                                                        self.settings.symmetricLaneChange:getValue())
+        return offsetCourse
+    end
 end
 
 --- If the startAt setting is START_AT_LAST_POINT and a waypoint ix was saved the start at this wp.
@@ -881,7 +889,7 @@ function AIDriveStrategyFieldWorkCourse:startCourseWithPathfinding(course, ix)
         self.pathfindingStartedAt = 0
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
-                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, nil, nil, nil,
+                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then
             return self:onPathfindingDoneToCourseStart(path)
