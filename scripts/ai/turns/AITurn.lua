@@ -856,11 +856,9 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	local corner = turnContext:createCorner(self.vehicle, self.turningRadius)
 	local d = -self.workWidth / 2 + turnContext.frontMarkerDistance
 	local wp = corner:getPointAtDistanceFromCornerStart(d + 2)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive forward up to the field edge
 	wp = corner:getPointAtDistanceFromCornerStart(d)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive back to prepare for making a pocket
 	-- reverse back to set up for the headland after the corner
@@ -883,16 +881,13 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	table.insert(cornerWaypoints, wp)
 	-- drive forward to the field edge on the inner headland
 	wp = corner:getPointAtDistanceFromCornerStart(d, -offset * 0.7)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 1.5)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius / 3, self.turningRadius / 2)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.5
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius, self.turningRadius / 4)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.5
 	table.insert(cornerWaypoints, wp)
 	corner:delete()
 	return Course(self.vehicle, cornerWaypoints, true), turnContext.turnEndWpIx
@@ -960,7 +955,7 @@ end
 StartRowOnly = CpObject(CourseTurn)
 ---@param startRowCourse Course course leading to the first waypoint of the row to start
 ---@param fieldWorkCourse Course field work course
----@param fieldWorkWpIx number waypoint of fieldWorkCourse to align to and start working
+---@param workWidth number
 function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
 	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'AlignmentTurn')
 	self.turnCourse = startRowCourse
