@@ -8,10 +8,10 @@
 		<text name="CP_unit_foot" 																		text="英尺" />
 
 		<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s):如需帮助、错误报告或更新说明，请访问: https://github.com/Courseplay/Courseplay_FS22." />
+		<text name="CP_infoText"																		text="Courseplay(%s):如需帮助、错误报告或查看更新说明，请访问: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="在开始任务之前创建或加载一个任务" />
 		<text name="CP_error_could_not_generate_course"													text="无法创建任务" />
-		<text name="CP_error_not_on_field"																text="起点不在田地中" />
+		<text name="CP_error_not_on_field"																text="不在田地中" />
 
 
 		<!-- AI job menu -->
@@ -57,7 +57,7 @@
 		<text name="CP_vehicle_setting_subTitle_debug" 													text="调试设置"/>
 		<!--Settings-->
 		<text name="CP_vehicle_setting_showCourse_title" 												text="显示路线"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="显示车辆的当前路线"/>
+		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="显示当前车辆的工作路线。"/>
 
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="仅限起始点/终点"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="所有点"/>
@@ -108,7 +108,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_title" 											text="卸载时停车"/>
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="始终停车执行卸载。"/>
 
-		<text name="CP_vehicle_setting_selfUnload_title" 												text="收割机自动卸载"/>
+		<text name="CP_vehicle_setting_selfUnload_title" 												text="收割机自助卸载"/>
 		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="收割机自动在田间或会合附近的拖车进行卸载，不支持多工具模式。"/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="在第一个地头卸载"/>
@@ -116,7 +116,7 @@
 
 		<text name="CP_vehicle_setting_strawSwath_title" 												text="秸秆堆"/>
 		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="启用/禁用条形秸秆堆功能或仅在田间地头禁用。"/>
-		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="田间地头禁用。"/>
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="田间地头禁用"/>
 
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="田埂标记"/>
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="开/关田埂标记。"/>
@@ -162,7 +162,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="以工作宽度的百分比重叠地头路径。 数值范围: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="田地边界" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="正值会减少田地范围的大小。负值使工作区域超出了田地范围的限制。 数值范围: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="设置田地边界。正值会减少田地范围的大小，负值使工作区域超出了田地范围的限制。 数值范围: -5 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="要跳过的路径" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="决定到达当前路径的终点时要跳过多少行路径。 数值范围: 0 - 6" />
@@ -201,7 +201,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="田地有障碍物时如何生成路线" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="不回避" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="简单回避 " />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="圆形" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="圆形路线" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="开始工作" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="确定从哪里开始工作。" />
@@ -256,10 +256,10 @@
 	
 		<text name="CP_courseManager_create_directory"													text="创建新文件夹"/>
 		
-		<text name="CP_courseManager_move_entry"														text="移动项"/>
-		<text name="CP_courseManager_delete_entry"														text="删除项"/>
-		<text name="CP_courseManager_rename_entry"														text="重命名项"/>
-		<text name="CP_courseManager_copy_entry"														text="复制项"/>
+		<text name="CP_courseManager_move_entry"														text="移动"/>
+		<text name="CP_courseManager_delete_entry"														text="删除"/>
+		<text name="CP_courseManager_rename_entry"														text="重命名"/>
+		<text name="CP_courseManager_copy_entry"														text="复制"/>
 
 		<text name="CP_courseManager_folder_dialog"														text="文件夹名称:"/>
 		<text name="CP_courseManager_course_dialog"														text="任务名称:"/>
