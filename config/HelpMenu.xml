@@ -3,10 +3,27 @@
 <helpLines>
 	<!--Courseplay category-->
 	<category title="$l10n_CP_help_title">
+
+		<page title="$l10n_CP_help_page_courseGenerator_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<image filename="CP_img/helpmenu/generatorbasehelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBaseFunctions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorHeadland_text"/>
+				<image filename="CP_img/helpmenu/generatorheadlandhelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
+			</paragraph>
+		</page>
 		<!--Courseplay courseManager-->
         <page title="$l10n_CP_help_page_courseManager_title">
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerBase_text" />
+                <text text="$l10n_CP_help_page_courseManagerBase_text"/>
 				<image filename="CP_img/helpmenu/managerbasehelp.dds" size="768px 512px"/>
 				<!-- 
 					heightScale
@@ -16,35 +33,35 @@
 				-->
             </paragraph>
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text" />
+                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
             </paragraph>
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerEdit_text" />
+                <text text="$l10n_CP_help_page_courseManagerEdit_text"/>
 				<image filename="CP_img/helpmenu/manageredithelp.dds" size="768px 512px"/>
             </paragraph>
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text" />
+                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
             </paragraph>
 		</page>
 		<!--Courseplay minihud-->
 		<page title="$l10n_CP_help_page_minihud_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_minihud_text" />
+				<text text="$l10n_CP_help_page_minihud_text"/>
 				<image filename="CP_img/helpmenu/minihudhelp.dds" size="768px 512px"/>
             </paragraph>
 		</page>
 		<!--Courseplay customField-->
 		<page title="$l10n_CP_help_page_customField_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_customFieldRecord_text" />
+				<text text="$l10n_CP_help_page_customFieldRecord_text"/>
 				<image filename="CP_img/helpmenu/recordcustomhelp.dds" size="768px 512px"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_customFieldDone_text" />
+				<text text="$l10n_CP_help_page_customFieldDone_text"/>
 				<image filename="CP_img/helpmenu/donecustomhelp.dds" size="768px 512px"/>
 			</paragraph>	
 			<paragraph>	
-				<text text="$l10n_CP_help_page_customFieldDraw_text" />
+				<text text="$l10n_CP_help_page_customFieldDraw_text"/>
 				<image filename="CP_img/helpmenu/drawcustomhelp.dds" size="768px 512px"/>
             </paragraph>
 		</page>
