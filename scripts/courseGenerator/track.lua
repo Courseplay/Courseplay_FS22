@@ -145,8 +145,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 
 		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
 
-		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks( field.headlandTracks, field.bigIslands,
-			implementWidth, headlandSettings.nPasses, centerSettings )
+		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
+			field.headlandTracks, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	elseif headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NONE then
 		-- no headland pass wanted, still generate a dummy one on the field boundary so
 		-- we have something to work with when generating the up/down tracks
@@ -154,8 +154,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 				field.boundary.isClockwise, 0, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
 				0, doSmooth, not fromInside, nil, nil)
 		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
-		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks( field.headlandTracks, field.bigIslands,
-			implementWidth, 0, centerSettings )
+		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
+			field.headlandTracks, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	elseif headlandSettings.mode == CourseGenerator.HEADLAND_MODE_TWO_SIDE then
 		-- force headland corners
 		headlandSettings.minHeadlandTurnAngleDeg = 60
@@ -163,8 +163,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		local boundary
 		field.headlandPath, boundary = generateTwoSideHeadlands( field.boundary, field.bigIslands,
 			implementWidth, headlandSettings, centerSettings, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
-		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks({ boundary }, field.bigIslands,
-			implementWidth, 0, centerSettings )
+		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
+			{ boundary }, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	end
 	CourseGenerator.debug("####### COURSE GENERATOR END ###########################################################")
 
