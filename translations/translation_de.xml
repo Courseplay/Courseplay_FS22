@@ -335,7 +335,6 @@
 		<text name="CP_controllerGui_stopRecording"														text="Stoppe Feldrandaufnahme."/>
 
 	<!-- In game help menu-->
-		<!--CourseManager-->
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>

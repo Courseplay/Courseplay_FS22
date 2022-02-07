@@ -53,14 +53,14 @@
                 <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
             </paragraph>
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text" />
+                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
             </paragraph>
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerEdit_text" />
+                <text text="$l10n_CP_help_page_courseManagerEdit_text"/>
 				<image filename="CP_img/helpmenu/manageredithelp.dds" size="768px 512px"/>
             </paragraph>
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text" />
+                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
             </paragraph>
 		</page>
 		<!--Courseplay minihud-->
