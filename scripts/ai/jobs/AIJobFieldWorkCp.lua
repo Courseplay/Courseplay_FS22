@@ -92,16 +92,14 @@ function AIJobFieldWorkCp:validate(farmId)
 		return isValid, errorMessage
 	else
 		self.lastPositionX, self.lastPositionZ = tx, tz
-		self.hasValidPosition = true
 	end
 	self.customField = nil
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
 	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
-	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
-	if not self.fieldPolygon then
+	self.hasValidPosition, self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
+	if not self.hasValidPosition then
 		local customField = g_customFieldManager:getCustomField(tx, tz)
 		if not customField then
-			self.hasValidPosition = false
 			self.selectedFieldPlot:setVisible(false)
 			return false, g_i18n:getText("CP_error_not_on_field")
 		else
@@ -109,6 +107,7 @@ function AIJobFieldWorkCp:validate(farmId)
 			self.fieldPolygon = customField:getVertices()
 			self.customField = customField
 			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+			self.hasValidPosition = true
 		end
 	end
 	if self.fieldPolygon then
