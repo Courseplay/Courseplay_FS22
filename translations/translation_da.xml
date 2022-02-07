@@ -4,7 +4,7 @@
 
 		<text name="CP_activated" 																		text="Aktiverert"/>
 		<text name="CP_deactivated" 																	text="Deaktiverert"/>
-		<text name="CP_unit_meter" 																		text="Meter"/>
+		<text name="CP_unit_meter" 																		text="M"/>
 		<text name="CP_unit_foot" 																		text="Fod"/>
 
 	<!-- User info text -->
@@ -14,10 +14,11 @@
 		<text name="CP_error_not_on_field"																text="Målet er ikke på en mark."/>
 
 	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Mark position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start ved:"/>
 		<text name="CP_jobParameters_startAt_title"														text="Start ved:"/>
 		<text name="CP_jobParameters_startAt_tooltip"													text="Hvor bliver arbejdet startet."/>
-		<text name="CP_jobParameters_startAt_nearest"													text="Næste vejpunkt"/>
+		<text name="CP_jobParameters_startAt_nearest"													text="Nærmeste vejpunkt"/>
 		<text name="CP_jobParameters_startAt_first"														text="Første vejpunkt"/>
 		<text name="CP_jobParameters_startAt_last"														text="Sidste vejpunkt"/>
 		<text name="CP_jobParameters_startAt_unload"													text="Aflad mejetærsker/snitter"/>
@@ -35,6 +36,7 @@
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Markarbejde"/>
 		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe"/>
+		
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute."/>
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Åbne/Lukke rutegenerator."/>
@@ -108,7 +110,6 @@
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Mejetærsker aflæser selv"/>
 		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Ikke understøttet med multiredskaber eller i konvojtilstand."/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Mejetærsker søger selv hen til en vogn i nærheden af den aktuele mark. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Aflæsning i første forager"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Hvis aktiv, bliver vogn tilkaldt i forager."/>
@@ -145,6 +146,7 @@
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Rutegenerator indstilling for (%s)"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Rutegenerator indstilling for (%s)"/>
+
 		<!-- Subtitles-->	
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basal"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Forager"/>
@@ -202,9 +204,9 @@
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="Nem" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Cirkel" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start på" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Startpunkt På forager eller inde i marken" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Forager" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start " />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Startpunkt i forager eller inde i marken" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="I forager" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Inde i marken" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Antal af køretøjer på ruten" />
@@ -302,15 +304,16 @@
 		<text name="CP_help_page_minihud_text"															text="
 A: Klik på køretøjets navn for at hente køretøjsindstillingerne.
 B: Ændrer startpositionen, når du klikker på den.
-C: Ved at klikke på rutenavnet kaldes hjælpermenuen frem med kursusgeneratoren åben.D: Starte Courseplay Helfer.
-E: Viser: aktuelle vejpunkt / alle vejpunkter. Klik for at åbne kursuslederenKursmanageren.
+C: Ved at klikke på rutenavnet kaldes hjælpermenuen frem med rutegeneratoren åben.
+D: Start Courseplay hjælper.
+E: Viser: aktuelle vejpunkt / alle vejpunkter. Klik for at åbne rutemanageren.
 F: Ved at klikke på ikonet åbnes de grundindstillinger.
 G: Lukke HUD.
 H: Reducerer eller øger arbejdsbredden. En rød streg på køretøjet viser indstillingen.
 I: Vandret offset værdi, + venstre, - højre.
 J: Lodret offset værdi, + tilbage, - frem.
 K, L og M: Klik på teksten for at nulstille værdierne.
-N: Det er her vognbaneforskydningen vises, hvis en multiværktøjsbane er blevet indlæst. Ved at klikke på teksten ændres vognbanen.
+N: Det er her baneforskydningen vises, hvis et konvøjforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
 O: Start/stop Optegning af brugerdefineret mark.
 P: fjern rute fra køretøj"/>
 		<text name="CP_help_page_customField_title"														text="Brugerdefineret marker"/>
@@ -320,7 +323,7 @@ Den første er ved at benytte markoptegnelse i HUD.
 Start markoptegnelse ved at trykke på record knappen.
 når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Den optegnede mark AI hjælper menu.
+Den optegnede mark i AI hjælper menu.
 Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Den næste mulighed er at optegne den inde i AI hjælper menu på kortet.
