@@ -335,47 +335,62 @@
 		<text name="CP_controllerGui_stopRecording"														text="Stoppe Feldrandaufnahme."/>
 
 	<!-- In game help menu-->
+		<!--CourseManager-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
-		<text name="CP_help_page_courseManager_text"													text="Es gibt 7 unterschiedliche Aktionen für den Kursmanager:
-- Neuen Ordner erstellen.
-- Kurs aus Fahrzeug löschen.
-- Aktuellen Kurs speichern.
-- Kurse laden.
-- Kurse in einen anderen Ordner verschieben.
-- Ordner oder Kurse löschen.
-- Ordner oder Kurse umbenennen."/>
+		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
+		<text name="CP_help_page_courseManagerBase_text"												text="
+The path to the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (Or for Vanilla e.g. MapUS).
+The coursemanager works different from what you are used in FS19.
+When you create a folder, it will also be created at that location. You will need at least one folder to save your course."/>
+		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
+When you have a course loaded, you can save it by clicking on the folder where you want to save it, a pop up window will appear where you can enter the name of your course.
+The name and location can be changed later.
+To remove the course from your vehicle, click on 'Clear current course'.
+To load a course, you have to select the folder first, then click on load course and then on the course you want to load.
+Clicking on change mode, acticvates the edit mode of the course manager."/>
+		<text name="CP_help_page_courseManagerEdit_text"												text="There are 7 different action available:
+Is the edit mode active, you can:
+- Moving a course in to another directory.
+- Deleting a course or directory.
+- Renaming a course or directory."/>
+		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
+To move a course, you just click on 'move entry', then click on the course, then click on the new folder where you want to move it.
+Rename is even more simple, click on 'rename', click on the course and the same pop up window (like when you save the course) will appear.
+For deleting a course or a folder, you will be asked if you rly want to do it. Pls note that, to delete a folder, it has to be empty!
+A pop up window will inform you, if that folder sill contains a course."/>
+		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Auf den Fahrzeugname klicken um die Fahrzeugeinstellungen auf zu rufen.
-B: Stellt die Startposition beim draufklicken um.
-C: Mit dem klick auf den Kursnamen wird das Helfer Menü mit geöffnetem Kursgenerator aufgerufen.
-D: Starte Courseplay Helfer.
-E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte. Klick zum öffnen des Kursmanagers.
-F: Klick auf das Icon öffnet die Grundeinstellungen.
-G: Schließt das HUD.
-H: Verkleinert oder vergrößert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug, zeigt die Einstellung.
-I: Wert für den horizontalen Versatz, + links, - rechts.
-J: Wert für den vertikalen Versatz, + hinten, - vorne.
-K, L and M: Klick auf den Text zum zurücksetzen der Werte.
-N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel.
-O: Startet und stoppt die Aufzeichnung eines Feldrandkurses.
-P: Löscht den Kurs aus dem Fahrzeug"/>
-		<text name="CP_help_page_customField_title"														text="Eigene Felder"/>
+A: Clicking on the vehicle name opens the vehicle configurations page.
+B: Toggle where to start the course with one click.
+C: Clicking on the coursename you will open the AI Menu with the course generator open.
+D: Start the Courseplay helper.
+E: Shows current waypoint / total waypoints. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
+		<!--CustomField-->
+		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-Es gibt 2 Wege, ein eigenes Feld anzulegen:
-Der erste ist, die Aufnahmefunktion im HUD zu benutzen.
-Starte die Aufnahme und fahre um dein Feld.
-Wenn du fertig bist, drücke nochmal auf den Knopf, und du wirst gefragt ob du speichern willst"/>
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Wenn du ins AI Menu schaust, siehst du die Feldgrenze von deinem eigenen Feld.
-Wenn du auf den Namen klickst, hast du die Möglichkeit es umzubenennen oder zu löschen."/>
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-Die 2. Möglichkeit ist, es direkt auf der AI Menü Karte zu zeichnen:
-Stelle sicher dass kein Fahrzeug ausgewählt ist (Linksklick irgendwo auf der Karte), und du bekommst die Option dein eigenes Feld zu zeichnen.
-Wenn gestartet, wird der Text, Zeichne Linien mit Rechtsklick, angezeigt.
-Klicke mit der rechten Maustaste auf den Punkt wo du beginnen willst.
-Der nächste Rechtsklick zeichnet eine Linie vom ersten Punkt bis zu dem jetzigen, der jetzt als Startpunkt für die nächste Linie gilt."/>
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>

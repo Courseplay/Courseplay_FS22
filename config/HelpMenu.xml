@@ -6,14 +6,24 @@
 		<!--Courseplay courseManager-->
         <page title="$l10n_CP_help_page_courseManager_title">
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManager_text" />
-				<image filename="CP_img/icon_courseplay.dds" size="512px 512px"/>
+                <text text="$l10n_CP_help_page_courseManagerBase_text" />
+				<image filename="CP_img/helpmenu/managerbasehelp.dds" size="768px 512px"/>
 				<!-- 
 					heightScale
 					aspectRatio
 					size
 					uvs
 				-->
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text" />
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerEdit_text" />
+				<image filename="CP_img/helpmenu/manageredithelp.dds" size="768px 512px"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text" />
             </paragraph>
 		</page>
 		<!--Courseplay minihud-->
