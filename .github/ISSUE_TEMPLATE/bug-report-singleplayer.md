@@ -2,7 +2,7 @@
 name: Bug report singleplayer
 about: Create a report to help us improve.
 title: "[BUG_SP]"
-labels: ["bug", "multiplayer"]
+labels: bug
 assignees: ''
 
 ---

@@ -2,7 +2,7 @@
 name: Bug report multiplayer
 about: Create a report to help us improve.
 title: "[BUG_MP]"
-labels: bug
+labels: ["bug", "multiplayer"]
 assignees: ''
 
 ---
