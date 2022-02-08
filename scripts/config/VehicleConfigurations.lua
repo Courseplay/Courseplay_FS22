@@ -120,6 +120,7 @@ function VehicleConfigurations:get(object, attribute)
         CpUtil.info("Error: VehicleConfigurations:get() %s",attribute)
         return
     end
+    -- TODO: use configFileNameClean, that is just the file name without the extension, or just use getName()
     if object and object.configFileName then
         local vehicleXmlFileName = Utils.getFilenameFromPath(object.configFileName)
         if self.vehicleConfigurations[vehicleXmlFileName] then

@@ -118,11 +118,11 @@ function Courseplay:setupGui()
 	end
 	
 	CpGuiUtil.fixInGameMenu(vehicleSettingsFrame,"pageCpVehicleSettings",
-			{896, 0, 128, 128},3,predicateFunc)
+			{896, 0, 128, 128},3, predicateFunc)
 	CpGuiUtil.fixInGameMenu(globalSettingsFrame,"pageCpGlobalSettings",
 			{768, 0, 128, 128},4,function () return true end)
 	CpGuiUtil.fixInGameMenu(courseManagerFrame,"pageCpCourseManager",
-			{256,0,128,128},5,predicateFunc)
+			{256,0,128,128},5, predicateFunc)
 	
 end
 
@@ -214,6 +214,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
+	addConsoleCommand( 'printImplementVariable', 'printImplementVariable <implement index> <variable>', 'printImplementVariable', self )
 	addConsoleCommand( 'printStrategyVariable', 'Print a CP drive strategy variable', 'printStrategyVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
@@ -239,41 +240,65 @@ end
 ---@param maxDepth number maximum depth, 1 by default
 ---@param printToXML number should the variable be printed to an xml file ? (optional)
 ---@param printToSeparateXmlFiles number should the variable be printed to an xml file named after the variable ? (optional)
-function Courseplay:printVariable(variableName, maxDepth,printToXML, printToSeparateXmlFiles)
+function Courseplay:printVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 	if printToXML and tonumber(printToXML) and tonumber(printToXML)>0 then
-		CpUtil.printVariableToXML(variableName, maxDepth,printToSeparateXmlFiles)
+		CpUtil.printVariableToXML(variableName, maxDepth, printToSeparateXmlFiles)
 		return
 	end
 	CpUtil.printVariable(variableName, maxDepth)
 end
 
-function Courseplay:printVariableInternal(prefix, variableName, maxDepth,printToXML,printToSeparateXmlFiles)
+function Courseplay:printVariableInternal(prefix, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 	if not string.startsWith(variableName, ':') and not string.startsWith(variableName, '.') then
 		-- allow to omit the . at the beginning of the variable name.
 		prefix = prefix .. '.'
 	end
-	self:printVariable(prefix .. variableName, maxDepth,printToXML,printToSeparateXmlFiles)
+	self:printVariable(prefix .. variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 end
 
+-- make sure variableName is syntactically correct (can be appended to another variable)
+function Courseplay:ensureVariableNameSyntax(variableName)
+	if not variableName then
+		return ''
+	elseif not string.startsWith(variableName, ':') and not string.startsWith(variableName, '.') then
+		return '.' .. variableName
+	else
+		return variableName
+	end
+end
 
 --- Print the variable in the selected vehicle's namespace
 -- You can omit the dot for data members but if you want to call a function, you must start the variable name with a colon
-function Courseplay:printVehicleVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+function Courseplay:printVehicleVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 	local prefix = variableName and 'g_currentMission.controlledVehicle' or 'g_currentMission'
 	variableName = variableName or 'controlledVehicle'
-	self:printVariableInternal( prefix, variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+	self:printVariableInternal( prefix, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 end
 
-function Courseplay:printStrategyVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+--- Print an implement variable. If implement.object.variable exists, print that, otherwise implement.variable
+---@param implementIndex number index in getAttachedImplements()
+function Courseplay:printImplementVariable(implementIndex, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
+	local prefix = string.format('g_currentMission.controlledVehicle:getAttachedImplements()[%d]', implementIndex)
+	local objectVariableName = string.format('%s.object%s', prefix, self:ensureVariableNameSyntax(variableName))
+	local var = CpUtil.getVariable(objectVariableName)
+	if var then
+		self:printVariable(objectVariableName, maxDepth, printToXML, printToSeparateXmlFiles)
+	else
+		local implementVariableName = string.format('%s%s', prefix, self:ensureVariableNameSyntax(variableName))
+		self:printVariable(implementVariableName, maxDepth, printToXML, printToSeparateXmlFiles)
+	end
+end
+
+function Courseplay:printStrategyVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 	local prefix = 'g_currentMission.controlledVehicle:getCpDriveStrategy()'
-	self:printVariableInternal( prefix, variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+	self:printVariableInternal( prefix, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 end
 
-function Courseplay:printGlobalCpVariable(variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+function Courseplay:printGlobalCpVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 	if variableName then 
-		self:printVariableInternal( 'g_Courseplay', variableName, maxDepth, printToXML,printToSeparateXmlFiles)
+		self:printVariableInternal( 'g_Courseplay', variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 	else 
-		self:printVariable('g_Courseplay', maxDepth, printToXML,printToSeparateXmlFiles)
+		self:printVariable('g_Courseplay', maxDepth, printToXML, printToSeparateXmlFiles)
 	end
 end
 

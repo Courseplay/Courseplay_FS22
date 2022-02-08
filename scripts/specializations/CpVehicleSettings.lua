@@ -58,35 +58,17 @@ end
 
 function CpVehicleSettings:onPostAttachImplement(object)
     local spec = self.spec_cpVehicleSettings
-    local raiseLate = g_vehicleConfigurations:get(object, 'raiseLate')
-    if raiseLate then
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: setting configured raise implement late to %s',
-                CpUtil.getName(object), raiseLate)
-        spec.raiseImplementLate:setValue(raiseLate)
-    end
-    local lowerEarly = g_vehicleConfigurations:get(object, 'lowerEarly')
-    if lowerEarly then
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: setting configured lower implement early to %s',
-                CpUtil.getName(object), lowerEarly)
-        spec.lowerImplementEarly:setValue(lowerEarly)
-    end
+    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
+    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
+    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.toolOffsetX, 'toolOffsetX')
     CpVehicleSettings.validateSettings(self)
 end
 
 function CpVehicleSettings:onPreDetachImplement(implement)
     local spec = self.spec_cpVehicleSettings
-    local raiseLate = g_vehicleConfigurations:get(implement.object, 'raiseLate')
-    if raiseLate then
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: resetting raise implement to default early',
-                CpUtil.getName(implement.object))
-        spec.raiseImplementLate:setValue(false)
-    end
-    local lowerEarly = g_vehicleConfigurations:get(implement.object, 'lowerEarly')
-    if lowerEarly then
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: resetting lower implement to default late',
-                CpUtil.getName(implement.object))
-        spec.lowerImplementEarly:setValue(false)
-    end
+    CpVehicleSettings.resetToDefault(self, implement.object, spec.raiseImplementLate, 'raiseLate', false)
+    CpVehicleSettings.resetToDefault(self, implement.object, spec.lowerImplementEarly, 'lowerEarly', false)
+    CpVehicleSettings.resetToDefault(self, implement.object, spec.toolOffsetX, 'toolOffsetX', 0)
     CpVehicleSettings.validateSettings(self)
 end
 
@@ -132,18 +114,55 @@ end
 
 function CpVehicleSettings:validateSettings()
     local spec = self.spec_cpVehicleSettings
-    for i,setting in ipairs(spec.settings) do 
+    for _, setting in ipairs(spec.settings) do
         setting:refresh()
     end
 end
 
 function CpVehicleSettings:onCpUnitChanged()
     local spec = self.spec_cpVehicleSettings
-    for i,setting in ipairs(spec.settings) do 
+    for _, setting in ipairs(spec.settings) do
         setting:validateTexts()
     end
 end
 
+-- TODO: these may also be implemented as part of the AIParameterSettingList class, but as long as this is the
+-- only place we need them it is better here
+--- Check if there is a vehicle specific value configured for this setting. If yes, apply it.
+---@param object table vehicle or implement object
+---@param setting AIParameterSettingList setting
+---@param vehicleConfigurationName string name of the setting in the vehicle configuration XML
+function CpVehicleSettings:setFromVehicleConfiguration(object, setting, vehicleConfigurationName)
+    local value = g_vehicleConfigurations:get(object, vehicleConfigurationName)
+    if value then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: setting configured %s to %s',
+                CpUtil.getName(object), vehicleConfigurationName, tostring(value))
+        if type(value) == 'number' then
+            setting:setFloatValue(value)
+        else
+            setting:setValue(value)
+        end
+    end
+end
+
+--- Reset a setting to a default value, if there is a vehicle specific configuration exists for it.
+--- This is to undo (sort of) what setFromVehicleConfiguration() does
+---@param object table vehicle or implement object
+---@param setting AIParameterSettingList setting
+---@param vehicleConfigurationName string name of the setting in the vehicle configuration XML
+---@param defaultValue any default value to reset the setting to
+function CpVehicleSettings:resetToDefault(object, setting, vehicleConfigurationName, defaultValue)
+    local value = g_vehicleConfigurations:get(object, vehicleConfigurationName)
+    if value then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, '%s: resetting to default %s to %s',
+                CpUtil.getName(object), vehicleConfigurationName, tostring(defaultValue))
+        if type(defaultValue) == 'number' then
+            setting:setFloatValue(defaultValue)
+        else
+            setting:setValue(defaultValue)
+        end
+    end
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Callbacks for the settings to manipulate the gui elements.

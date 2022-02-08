@@ -116,7 +116,7 @@ You can define the following custom settings:
              noReverse="true"
     />
     <!--\vehicles\kuhn-->
-    <Vehicle name="kuhnSW4014.xml"
+    <Vehicle name="sw4014.xml"
              toolOffsetX="-2.5"
              noReverse="true"
     />
