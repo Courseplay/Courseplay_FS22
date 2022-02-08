@@ -1,8 +1,8 @@
 ---
-name: Bug report singleplayer
+name: Bug report multiplayer
 about: Create a report to help us improve.
-title: "[BUG_SP]"
-labels: ["bug", "multiplayer"]
+title: "[BUG_MP]"
+labels: bug
 assignees: ''
 
 ---
@@ -24,10 +24,20 @@ If applicable, add screenshots to help explain your problem.
 **Courseplay version**
 Version used: 
 
-**Log**
-Please attach a log with all debug channels active.
+**Client Log**
+Please attach your personal log file with all debug channels active.
 For help with the debug channels,
 please check out the readme at the github front page.
+
+**Server Log**
+Please attach a log from the server with all debug channels active, 
+if it's possible.
+
+**Player on the server**
+Number of players on the server, as the bug appeared.
+
+**Dedicated server or local hosted server**
+Dedicated server yes/no ?
 
 **Map**
 Map played on.
