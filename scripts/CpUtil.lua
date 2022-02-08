@@ -142,7 +142,7 @@ end
 function CpUtil.debugVehicle(channel, vehicle, ...)
 	local rootVehicle = vehicle and vehicle.rootVehicle
 	local active = rootVehicle == nil or rootVehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(rootVehicle)
-	if CpDebug and active and CpDebug:isChannelActive(channel) or true then
+	if CpDebug and active and CpDebug:isChannelActive(channel) then
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
