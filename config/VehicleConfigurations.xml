@@ -98,7 +98,7 @@ You can define the following custom settings:
              implementWheelAlwaysOnGround = "true"
     />
     <!--\vehicles\arcusin-->
-    <Vehicle name="arcusinFSX6372.xml"
+    <Vehicle name="fsx6372.xml"
              toolOffsetX="-2.4"
              balerUnloadDistance="-3.8"
     />
