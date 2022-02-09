@@ -5,20 +5,24 @@
 
 **[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22/releases/latest)** (the file FS22_Courseplay.zip).
 
-## Note that the current version has no multiplayer support!
+## Multiplayer support with Version 7.0.1.0 or higher!
 
 ## What Works
 
 * Course generation
-* Field work but no refill or unload, except combine self unload
-* Save/load courses
-* Vehicle Convoy 
+* Field work with refill or unload with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive), combine self unload
+* Wrap and collect bales with or without a course
+* Save/load/rename/move courses
+* Create custom fields with recording or drawing on the AI Map
+* Vehicle Convoy
+* 
 
 ## Usage
 
 There is now a CP Fieldwork job available on the helper screen. After you select it,
-choose a target position the field you want work on and the Open/Close Course Generator
-button. Generate the course and start the job.
+use field position to choose the field you want work on and the Open/Close Course Generator
+button to generate the course. If you have also placed the target near the field,
+use start the job so the Giants Helper will bring us to the target to start CP.
 
 ## Turning on Debug Channels
 
