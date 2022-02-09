@@ -15,7 +15,7 @@ function CoursesEvent.new(vehicle, courses)
 	return self
 end
 
-function CoursesEvent:readStream(streamId, connection) -- wird aufgerufen wenn mich ein Event erreicht
+function CoursesEvent:readStream(streamId, connection)
 	self.vehicle = NetworkUtil.getObject(streamReadInt32(streamId))
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"course event: read stream")
 	local nCourses = streamReadUInt8(streamId)
@@ -60,5 +60,59 @@ function CoursesEvent.sendEvent(vehicle, courses)
 		g_server:broadcastEvent(CoursesEvent.new(vehicle, courses), nil, nil, vehicle)
 	else
 		g_client:getServerConnection():sendEvent(CoursesEvent.new(vehicle, courses))
+	end
+end
+
+--- Updates the course name on save for the server and other players.
+---@class CourseSaveNameEvent
+CourseSaveNameEvent = {}
+local CourseSaveNameEvent_mt = Class(CourseSaveNameEvent, Event)
+
+InitEventClass(CourseSaveNameEvent, "CourseSaveNameEvent")
+
+function CourseSaveNameEvent.emptyNew()
+	return Event.new(CourseSaveNameEvent_mt)
+end
+
+function CourseSaveNameEvent.new(vehicle, courseName)
+	local self = CourseSaveNameEvent.emptyNew()
+	self.vehicle = vehicle;
+	self.courseName = courseName
+	return self
+end
+
+function CourseSaveNameEvent:readStream(streamId, connection) 
+	self.vehicle = NetworkUtil.readNodeObject(streamId)
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"course save name event: read stream")
+	self.courseName = streamReadString(streamId)
+	
+	self:run(connection)
+end
+
+function CourseSaveNameEvent:writeStream(streamId, connection)
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"course save name event: write stream")
+	NetworkUtil.writeNodeObject(streamId, self.vehicle)
+	streamWriteString(streamId, self.courseName)
+end
+
+-- Process the received event
+function CourseSaveNameEvent:run(connection)
+	if self.vehicle then
+		self.vehicle:setCpCourseName(self.courseName)
+		CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"set course name %s.", self.courseName)
+	end
+	if not connection:getIsServer() then
+		-- event was received from a client, so we, the server broadcast it to all other clients now
+		CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"sending course save name event to all clients.")
+		g_server:broadcastEvent(CoursesEvent.new(self.vehicle, self.courseName), nil, connection, self.vehicle)
+	end
+end
+
+function CourseSaveNameEvent.sendEvent(vehicle, courseName)
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, "sending course save name event.")
+	if g_server ~= nil then
+		g_server:broadcastEvent(CoursesEvent.new(vehicle, courseName), nil, nil, vehicle)
+	else
+		g_client:getServerConnection():sendEvent(CoursesEvent.new(vehicle, courseName))
 	end
 end

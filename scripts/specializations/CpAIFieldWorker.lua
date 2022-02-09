@@ -62,6 +62,7 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIFieldWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBaleFinder", CpAIFieldWorker.getCanStartCpBaleFinder)
+    SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIFieldWorker.getCanStartCp)
 
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
     SpecializationUtil.registerFunction(vehicleType, "startCpAtLastWp", CpAIFieldWorker.startCpAtLastWp)
@@ -325,7 +326,7 @@ function CpAIFieldWorker:startStopDriver()
         CpUtil.infoVehicle(self,"Stopped current helper.")
 	else
         self:updateAIFieldWorkerImplementData()
-        if (self:hasCpCourse() and self:getCanStartCpFieldWork()) or self:getCanStartCpBaleFinder(spec.cpJob:getCpJobParameters()) then
+        if self:getCanStartCp() then
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
          --   local success = spec.cpJob:validate(false)
@@ -364,6 +365,11 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
         return true
     end
     return self:getCanStartFieldWork()
+end
+
+function CpAIFieldWorker:getCanStartCp()
+    local jobParameters = self.spec_cpAIFieldWorker.cpJob:getCpJobParameters()
+    return (self:hasCpCourse() and self:getCanStartCpFieldWork()) or self:getCanStartCpBaleFinder(jobParameters)
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()

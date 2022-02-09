@@ -4,6 +4,7 @@
 
 		<text name="CP_activated" 																		text="开启" />
 		<text name="CP_deactivated" 																	text="关闭" />
+		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="米" />
 		<text name="CP_unit_foot" 																		text="英尺" />
 

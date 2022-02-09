@@ -145,6 +145,7 @@ CpTextHudElement = {}
 local CpTextHudElement_mt = Class(CpTextHudElement, CpHudButtonElement)
 CpTextHudElement.SHADOW_OFFSET_FACTOR = 0.05
 CpTextHudElement.highlightedColor = {42 / 255, 193 / 255, 237 / 255, 1}
+CpTextHudElement.disabledColor = {64 / 255, 64 / 255, 64 / 255, 0.5}
 function CpTextHudElement.new(parentHudElement,posX, posY, textSize, textAlignment, textColor, textBold,customMt)
     if customMt == nil then
         customMt = CpTextHudElement_mt
@@ -260,6 +261,8 @@ function CpTextHudElement:draw()
     local r, g, b, a
     if self.hovered then 
         r, g, b, a = unpack(CpTextHudElement.highlightedColor)
+    elseif self.isDisabled then
+        r, g, b, a = unpack(self.disabledColor)
     else 
         r, g, b, a = unpack(self.textColor)
     end
@@ -422,4 +425,19 @@ function CpHudSettingElement:setCallback(callbackLabel,callbackText,callbackIncr
                                     --    unpack(callbackDecremental.args)
                                     )
     end
+end
+
+function CpHudSettingElement:setDisabled(disabled)
+    if disabled then 
+        self.incrementalElement:setVisible(false)
+        self.decrementalElement:setVisible(false)
+        self.textElement:setDisabled(true)
+        self.labelElement:setDisabled(true)
+    else 
+        self.incrementalElement:setVisible(true)
+        self.decrementalElement:setVisible(true)
+        self.textElement:setDisabled(false)
+        self.labelElement:setDisabled(false)
+    end
+    CpHudSettingElement:superClass().setDisabled(self, disabled)
 end

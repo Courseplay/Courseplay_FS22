@@ -78,7 +78,8 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCoursesFromGui', CpCourseManager.resetCpCoursesFromGui)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
-    
+    SpecializationUtil.registerFunction(vehicleType, 'setCpCourseName', CpCourseManager.setCpCourseName)
+
     SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
     
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
@@ -336,6 +337,16 @@ end
 function CpCourseManager:saveCourses(file,text)
     file:save(CpCourseManager.rootKeyFileManager,CpCourseManager.xmlSchema,
     CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
+    --- Updates the course name, so multi tool courses are working correctly.
+    CourseSaveNameEvent.sendEvent(self, text)
+end
+
+function CpCourseManager:setCpCourseName(name)
+    local spec = self.spec_cpCourseManager
+    local course = spec.courses[1]
+    if course then 
+        course:setName(name)
+    end
 end
 
 function CpCourseManager:appendCourse(course)

@@ -21,12 +21,14 @@ end
 function CpVehicleSettings.registerEventListeners(vehicleType)	
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpVehicleSettings)
 end
+
 function CpVehicleSettings.registerFunctions(vehicleType)
 
     SpecializationUtil.registerFunction(vehicleType, 'getCpSettingsTable', CpVehicleSettings.getSettingsTable)
@@ -58,8 +60,19 @@ function CpVehicleSettings:onLoad(savegame)
     
 end
 
-function CpVehicleSettings:onPostAttachImplement(object)
+function CpVehicleSettings:onLoadFinished()
     local spec = self.spec_cpVehicleSettings
+    spec.wasLoaded = nil
+end
+
+--- TODO: These are only applied on a implement an not on a single vehicle.
+--- This means self driving vehicle are not getting these vehicle configuration values.
+function CpVehicleSettings:onPostAttachImplement(object)
+    --- Only apply these values, if were are not loading from a savegame.
+    local spec = self.spec_cpVehicleSettings
+    if spec.wasLoaded then 
+        return
+    end
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.toolOffsetX, 'toolOffsetX')
@@ -67,7 +80,11 @@ function CpVehicleSettings:onPostAttachImplement(object)
 end
 
 function CpVehicleSettings:onPreDetachImplement(implement)
+    --- Only apply these values, if were are not loading from a savegame.
     local spec = self.spec_cpVehicleSettings
+    if spec.wasLoaded then 
+        return
+    end
     CpVehicleSettings.resetToDefault(self, implement.object, spec.raiseImplementLate, 'raiseLate', false)
     CpVehicleSettings.resetToDefault(self, implement.object, spec.lowerImplementEarly, 'lowerEarly', false)
     CpVehicleSettings.resetToDefault(self, implement.object, spec.toolOffsetX, 'toolOffsetX', 0)
@@ -108,6 +125,7 @@ function CpVehicleSettings:loadSettings(savegame)
             setting:loadFromXMLFile(savegame.xmlFile, key)
             CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
         end
+        spec.wasLoaded = true
 	end)
 end
 
@@ -198,4 +216,9 @@ end
 function CpVehicleSettings:areSowingMachineSettingsVisible()
     return AIUtil.getImplementOrVehicleWithSpecialization(self,SowingMachine)
             or AIUtil.getImplementOrVehicleWithSpecialization(self,FertilizingCultivator)
+end
+
+--- Disables tool offset, as the plow drive strategy automatically handles the tool offset.
+function CpVehicleSettings:isToolOffsetDisabled()
+    return AIUtil.getImplementOrVehicleWithSpecialization(self,Plow)
 end

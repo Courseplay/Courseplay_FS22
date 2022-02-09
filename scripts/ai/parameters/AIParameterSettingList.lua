@@ -331,26 +331,45 @@ function AIParameterSettingList:setValue(value)
 	return setValueInternal(self, value, function(a, b)  return a == b end)
 end
 
-function AIParameterSettingList:setDefault()
+function AIParameterSettingList:setDefault(noEventSend)
 	local current = self.current
+	--- If the setting has a function to set the default value, then call it.
 	if self:hasCallback(self.data.setDefaultFunc) then 
 		self:getCallback(self.data.setDefaultFunc)
 		self:debug("set to default by extern function.")
 		return
 	end
-
+	--- If the setting is linked to a vehicle configuration and a implement value was found, then reset it to this value.
+	local configName =  self.data.vehicleConfiguration
+	if configName then 
+		if self.vehicle then 
+			for i, object in ipairs(self.vehicle:getChildVehicles()) do 
+				local value = g_vehicleConfigurations:get(object, configName)
+				if value then 
+					if tonumber(value) then 
+						self:setFloatValue(value)
+					else
+						self:setValue(value)
+					end
+					self:debug("set to default: %s from vehicle configuration: (%s|%s)", value, CpUtil.getName(object), configName)
+					return
+				end
+			end
+		end
+	end
+	--- If default values were setup use these.
 	if self.data.default ~=nil then
-		AIParameterSettingList.setFloatValue(self,self.data.default)
-		self:debug("set to default %s",self.data.default)
+		AIParameterSettingList.setFloatValue(self, self.data.default)
+		self:debug("set to default %s", self.data.default)
 		return
 	end
 	if self.data.defaultBool ~= nil then
 		AIParameterSettingList.setValue(self,self.data.defaultBool)
-		self:debug("set to default %s",tostring(self.data.defaultBool))
+		self:debug("set to default %s", tostring(self.data.defaultBool))
 		return
 	end
 	self:setToIx(1)
-	if current ~= self.current then
+	if (noEventSend == nil or noEventSend==false) and current ~= self.current then
 		self:raiseDirtyFlag()
 	end
 end
