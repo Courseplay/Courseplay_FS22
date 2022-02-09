@@ -92,7 +92,10 @@ You can define the following custom settings:
              raiseLate="true"
              lowerEarly="true"
     />
-
+    <!--\vehicles\andersonGroup-->
+    <Vehicle name="rbm2000.xml"
+             toolOffsetX="-2.7"
+    />
     <!--\Vehicles\amazone-->
     <Vehicle name="citan15001C.xml"
              implementWheelAlwaysOnGround = "true"
@@ -301,5 +304,14 @@ You can define the following custom settings:
     <!--Mod: Horsch Pack-->
     <Vehicle name="leebPT350.xml"
              ignoreCollisionBoxesWhenFolded="true"
+    />
+    <!--Mod: Claas Krone Baler Pack With Lizard R90-->
+    <Vehicle name="quadrant5300.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
+    />
+    <Vehicle name="bigPack1290HDPVC.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
     />
 </VehicleConfigurations>
