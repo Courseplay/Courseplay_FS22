@@ -81,8 +81,9 @@ You can define the following custom settings:
     work areas such as a plow.
 
 - modName: Name of the .zip file (without '.zip')
-    In case a Mod have the same .xml file name as a Vanilla vehicle or implement, add the name of the .zip file to
-    prevent a false entry. Note: Only 2 of the same .xml files can be added.
+    In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
+    add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
+    Note: Only 2 of the same .xml files can be added.
 
 -->
 <VehicleConfigurations>
