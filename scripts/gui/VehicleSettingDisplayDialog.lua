@@ -120,6 +120,7 @@ function VehicleSettingDisplayDialog:update(...)
 	else 
 		self.recordButton:setVisible(false)
 	end
+	self.startButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 	self.clearButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
 end
 

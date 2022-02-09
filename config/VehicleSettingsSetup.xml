@@ -38,14 +38,14 @@
 		<!--Fold at End-->
 		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true"/>
 		<!--Raise Implement-->
-		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate">
+		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate">
 			<Texts>
 				<Text>early</Text>
 				<Text>late</Text>
 			</Texts>
 		</Setting>
 		<!--Lower Implement-->
-		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly">
+		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly" vehicleConfiguration="lowerEarly">
 			<Texts>
 				<Text>late</Text>
 				<Text>early</Text>
@@ -54,9 +54,9 @@
 		<!--Turn Diameter-->
 		<Setting classType="AIParameterSettingList" name="turnDiameter" min="2" max="50" unit="2"/>
 		<!--Tool Offset X-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
 		<!--Tool Offset Y-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">

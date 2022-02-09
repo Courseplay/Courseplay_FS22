@@ -44,6 +44,7 @@ CpSettingsUtil.classTypes = {
 				- text(string): string to format the setting value with in the gui element.
 				- unit (int) : 1 == km/h, 2 == meters, 3 == ha (optional), 4 = percent (%), 5 = degrees (°)
 
+				- vehicleConfiguration(string): vehicle configuration, that will be used for reset to default for example.
 				- onChangeCallback(string): callback function raised on setting value changed. 
 
 				- isDisabled (string): function called by the setting from the parent container, to disable the setting.
@@ -92,6 +93,7 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.STRING, key.."#text", "Setting text") -- optional
 	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h,m ...)") --optional
 
+	schema:register(XMLValueType.STRING, key.."#vehicleConfiguration", "vehicleConfiguration that will be used to reset the setting.") --optional
 	--- callbacks:
 	schema:register(XMLValueType.STRING, key.."#onChangeCallback", "Setting callback on change") -- optional
 
@@ -174,6 +176,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.incremental = MathUtil.round(xmlFile:getValue(baseKey.."#incremental"),3)
 			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
 			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
+
+			settingParameters.vehicleConfiguration = xmlFile:getValue(baseKey.."#vehicleConfiguration")
 
 			settingParameters.callbacks = {}
 			settingParameters.callbacks.onChangeCallbackStr = xmlFile:getValue(baseKey.."#onChangeCallback")
