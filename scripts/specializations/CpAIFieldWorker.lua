@@ -379,6 +379,10 @@ function CpAIFieldWorker:startFieldWorker(jobParameters)
     if self.isServer then 
         --- Replaces drive strategies.
         CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters)
+
+        --- Remembers the last lane offset setting value that was used.
+        local spec = self.spec_cpAIFieldWorker
+        spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(jobParameters.laneOffset:getValue())
     end
 end
 
