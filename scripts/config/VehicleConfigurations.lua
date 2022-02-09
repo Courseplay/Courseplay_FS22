@@ -98,10 +98,10 @@ function VehicleConfigurations:readVehicle(xmlFile, vehicleElement)
     end
     
     if modName then
-        self.modVehicleConfigurations[modName] = {
-            name = name,
-            config = vehicleConfiguration
-        }
+        if self.modVehicleConfigurations[modName] == nil then 
+            self.modVehicleConfigurations[modName] = {}
+        end
+        self.modVehicleConfigurations[modName][name] = vehicleConfiguration
     else 
         self.vehicleConfigurations[name] = vehicleConfiguration
     end
@@ -130,13 +130,13 @@ function VehicleConfigurations:get(object, attribute)
     if object and object.configFileName then   
         local vehicleXmlFileName = Utils.getFilenameFromPath(object.configFileName)
         local modName = object.customEnvironment
-        if self.vehicleConfigurations[vehicleXmlFileName] then
-            return self.vehicleConfigurations[vehicleXmlFileName][attribute]
-        elseif self.modVehicleConfigurations[modName] then 
+        if self.modVehicleConfigurations[modName] then 
             --- If a mod name was given, then also check the xml filename.
-            if self.modVehicleConfigurations[modName].name == vehicleXmlFileName then 
-                return self.modVehicleConfigurations[modName].config[attribute]
+            if self.modVehicleConfigurations[modName][vehicleXmlFileName] then 
+                return self.modVehicleConfigurations[modName][vehicleXmlFileName][attribute]
             end
+        elseif self.vehicleConfigurations[vehicleXmlFileName] then
+            return self.vehicleConfigurations[vehicleXmlFileName][attribute]
         else
             return nil
         end
