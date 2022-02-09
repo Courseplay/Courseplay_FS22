@@ -56,7 +56,7 @@ function BalerController:handleBaler()
         end
     end
     
-    if not self.balerSpec.nonStopBaling then
+    if not self.balerSpec.nonStopBaling and self.balerSpec.hasUnloadingAnimation then
         local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
         local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
         local freeFillLevel = capacity - fillLevel
