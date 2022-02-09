@@ -28,10 +28,10 @@
 		<text name="CP_jobParameters_laneOffset_title"													text="Odsazení jízdního pruhu:" />
 		<text name="CP_jobParameters_laneOffset_tooltip"												text="Odsazení jízdního pruhu" />
 		<text name="CP_jobParameters_laneOffset_center"													text="Střed" />
-		<text name="CP_jobParameters_laneOffset_left"													text="V levo(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="V pravo(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="V levo(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="V pravo(2)" />
+		<text name="CP_jobParameters_laneOffset_left"													text="Vlevo(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="Vpravo(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="Vlevo(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="Vpravo(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Polní práce" />
@@ -108,7 +108,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Vždy zastaví jízdu při vykládání"/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Kombajn se vyloží samostatně"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Samostatné vyložení kombajnu do vleku, který je poblíž. Not supported in multitools or convoy mode.
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Samostatné vyložení kombajnu do vleku, který je poblíž. Není podporováno v režimu multitools nebo konvoje.
 "/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Vyložit kombajn na první souvrati"/>
@@ -277,14 +277,14 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Chcete odstranit vlastní pole %s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_delete"														text="Vymazat vlastní pole"/>
+		<text name="CP_customFieldManager_rename"														text="Přejmenovat vlastní pole"/>
+		<text name="CP_customFieldManager_draw"															text="Kreslit vlastní pole"/>
+		<text name="CP_customFieldManager_draw_header"													text="Nakreslí vlastní trasy na poli kliknutím pravým tlačítkem"/>
 		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 		
 	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Spustit nahrávání vlastního pole."/>
+		<text name="CP_controllerGui_startRecording"													text="Spustit nahrávání vlastního pole"/>
 		<text name="CP_controllerGui_stopRecording"														text="Ukončit nahrávání vlastního pole"/>
 
 	<!-- In game help menu-->
@@ -312,23 +312,23 @@ I: Hodnota pro horizontální posun, + vlevo, - vpravo.
 J: Hodnota pro vertikální posun, + dozadu, - dopředu.
 K, L a M: Kliknutím na text resetujete změny na automatické hodnoty.
 N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+O: Spuštění/zastavení záznamu vlastní trasy na poli.
+P: Odstraňuje trasu z vozidla"/>
+		<text name="CP_help_page_customField_title"														text="Vlastní pole"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Vlastní pole lze vytvořit dvěma způsoby.
+Prvním z nich je použití funkce záznamu HUD.
+Spusťte záznam a zaznamenejte hranici pole.
+Po dokončení znovu stiskněte tlačítko a budete dotázáni, zda jej chcete uložit."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Když se podíváte na nabídku AI, uvidíte hranici zaznamenaného pole.
+Kliknutím na Název získáte možnost jej buď smazat, nebo přejmenovat."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+Druhou možností je nakreslit jej na AI Menu Map.
+Nemáte-li vybraný žádný traktor nebo jiné vozidlo (klikněte levým tlačítkem někam na mapu), získáte možnost nakreslit vlastní pole.
+Po spuštění se zobrazí text kreslení vlastních čar pole kliknutím pravým tlačítkem.
+Pomocí pravého tlačítka myši klikněte na pozici, kde chcete začít.
+Další kliknutí pravým tlačítkem nakreslí čáru z vašeho počátečního bodu do vaší druhé pozice, která bude počátečním bodem pro další čáru."/>
 
 <!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>
