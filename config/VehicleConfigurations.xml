@@ -80,6 +80,10 @@ You can define the following custom settings:
     soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
     work areas such as a plow.
 
+- modName: Name of the .zip file (without '.zip')
+    In case a Mod have the same .xml file name as a Vanilla vehicle or implement, add the name of the .zip file to
+    prevent a false entry.
+
 -->
 <VehicleConfigurations>
     <!--[GIANTS]-->
