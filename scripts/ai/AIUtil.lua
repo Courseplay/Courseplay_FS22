@@ -192,13 +192,6 @@ function AIUtil.getTurningRadius(vehicle)
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
 	end
 
-	-- TODO_22
-	--local turnDiameterSetting = vehicle.cp.settings.turnDiameter
-	--if not turnDiameterSetting:isAutomaticActive() then
-	--	radius = turnDiameterSetting:get() / 2
-	--	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius manually set to %.1f', radius)
-	--end
-
 	if vehicle:getAIMinTurningRadius() ~= nil then
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
 		radius = math.max(radius, vehicle:getAIMinTurningRadius())
@@ -222,8 +215,7 @@ function AIUtil.getTurningRadius(vehicle)
 			end
 		end
 		if turnRadius == 0 then
-			local towed, _ = AIUtil.getSteeringParameters(vehicle)
-			if towed then
+			if AIUtil.isImplementTowed(vehicle, implement.object) then
 				turnRadius = 6
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
 						implement.object:getName(), turnRadius)
@@ -240,13 +232,24 @@ function AIUtil.getTurningRadius(vehicle)
 	return radius
 end
 
+---@param vehicle table
+---@param implementObject table
+function AIUtil.isImplementTowed(vehicle, implementObject)
+	if AIUtil.isObjectAttachedOnTheBack(vehicle, implementObject) then
+		if ImplementUtil.isWheeledImplement(implementObject) then
+			return true
+		end
+	end
+	return false
+end
+
 ---@return table implement object
 function AIUtil.getFirstReversingImplementWithWheels(vehicle)
 	-- since some weird things like Seed Bigbag are also vehicles, check this first
 	if not vehicle.getAttachedImplements then return nil end
 	-- Check all attached implements if we are a wheeled workTool behind the tractor
 	for _, imp in ipairs(vehicle:getAttachedImplements()) do
-		-- Check if the implement is behind
+		-- Check if the implement is behind the tractor
 		if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
 			if ImplementUtil.isWheeledImplement(imp.object) then
 				-- If the implement is a wheeled workTool, then return the object

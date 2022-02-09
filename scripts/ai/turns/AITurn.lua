@@ -637,7 +637,7 @@ end
 
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
--- keep driving on the turn course until we need to lower our implements
+	-- keep driving on the turn course until we need to lower our implements
 	local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
 	if shouldLower then
 		if not self.implementsLowered then
@@ -650,8 +650,10 @@ function CourseTurn:endTurn(dt)
 				self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 			end
 		else
-			-- implements already lowering
-			if dz and dz > -1 and not self.vehicle:getCanAIFieldWorkerContinueWork() then
+			-- implements already lowering, making sure we check if they are lowered, the faster we go, the earlier,
+			-- for those people who set insanely high turn speeds...
+			local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
+			if dz and dz > - implementCheckDistance and not self.vehicle:getCanAIFieldWorkerContinueWork() then
 				self:debug('waiting for lower at dz=%.1f', dz)
 				-- we are almost at the start of the row but still not lowered everything,
 				-- hold.
