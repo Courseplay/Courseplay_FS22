@@ -191,7 +191,7 @@ function CpBaseHud:init(vehicle)
     x = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth - self.wMargin/4
     self.clearCourseBtn:setPosition(x, y)
     self.clearCourseBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        if vehicle:hasCpCourse() then
+        if vehicle:hasCpCourse() and not vehicle:getIsCpActive() then
             vehicle:resetCpCoursesFromGui()
         end
     end)
@@ -343,13 +343,19 @@ function CpBaseHud:draw(status)
     --- Set variable data.
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
-    self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
-    
+    if self.vehicle:getCanStartCpBaleFinder() then 
+        self.startingPointBtn:setDisabled(true)
+        self.startingPointBtn:setTextDetails(self.vehicle:getCpStartText())
+    else
+        self.startingPointBtn:setDisabled(false)
+        self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
+    end
+   
     if status:getIsActive() then
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
-        self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse())
+        self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
     end
     self.onOffButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 
@@ -419,7 +425,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
     inGameMenu.pageAI:onCreateJob()
     for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
         local job = inGameMenu.pageAI.jobTypeInstances[index]
-        if job:isa(AIJobFieldWorkCp) then 
+        if job:isa(CpAIJobFieldWork) then 
             if not vehicle:hasCpCourse() then 
                 -- Sets the start position relative to the vehicle position, but only if no course is set.
                 job:resetStartPositionAngle(vehicle)

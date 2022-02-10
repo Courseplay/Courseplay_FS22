@@ -372,7 +372,9 @@ function Courseplay.register(typeManager)
 		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
+		CpAIWorker.register(typeManager,typeName,typeEntry.specializations)
 		CpAIFieldWorker.register(typeManager,typeName,typeEntry.specializations)
+		CpAIBaleFinder.register(typeManager,typeName,typeEntry.specializations)
 		CpVehicleSettingDisplay.register(typeManager,typeName,typeEntry.specializations)
 		CpHud.register(typeManager,typeName,typeEntry.specializations)
     end

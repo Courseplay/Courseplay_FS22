@@ -12,7 +12,6 @@
 				<Value name="START_AT_NEAREST_POINT" isDisabled = "hasNoCourse">1</Value>
 				<Value name="START_AT_FIRST_POINT" isDisabled = "hasNoCourse">2</Value>
 				<Value name="START_AT_LAST_POINT" isDisabled = "hasNoCourse">3</Value>
-				<Value name="START_FINDING_BALES" isDisabled = "isBaleFinderDisabled">4</Value>
 				<!-- Value name="START_WITH_UNLOAD">4</Value-->
 			</Values>
 			<Texts>

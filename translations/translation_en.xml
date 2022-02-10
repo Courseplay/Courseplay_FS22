@@ -23,6 +23,7 @@
 		<text name="CP_jobParameters_startAt_first"														text="first waypoint" />
 		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="unloading combine/chopper" />
+		
 		<text name="CP_jobParameters_startAt_bales"														text="collecting/wrapping bales" />
 		
 		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
