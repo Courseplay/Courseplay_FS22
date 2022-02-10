@@ -4,6 +4,7 @@
 
 		<text name="CP_activated" 																		text="Aktiverert"/>
 		<text name="CP_deactivated" 																	text="Deaktiverert"/>
+		<text name="CP_automatic" 																		text="Automatisk" />
 		<text name="CP_unit_meter" 																		text="M"/>
 		<text name="CP_unit_foot" 																		text="Fod"/>
 
