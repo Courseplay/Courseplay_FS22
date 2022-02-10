@@ -89,6 +89,11 @@ function CpFieldUtil.saveAllFields()
                 for i,point in ipairs(points) do
                     setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
                 end
+                local islandNodes = Island.findIslands( Polygon:new(CourseGenerator.pointsToXy(points)))
+                CourseGenerator.pointsToXzInPlace(islandNodes)
+                for i, islandNode in ipairs(islandNodes) do
+                    setXMLString(xmlFile, key .. ( ".islandNode%d#pos"):format( i ), ("%.2f %2.f"):format( islandNode.x, islandNode.z ))
+                end
                 CpUtil.info('Field %d saved', field.fieldId)
             else
                 CpUtil.info('Field %d could not be saved', field.fieldId)

@@ -392,7 +392,9 @@ function TurnContext:appendEndingTurnCourse(course, extraLength, useTightTurnOff
 	-- extra length at the end to allow for alignment
 	extraLength = extraLength and (extraLength + 3) or 3
     -- +1 so the first waypoint of the appended line won't overlap with the last wp of course
-    for d = math.min(dzFrontMarker, dzWorkStart) + 1, math.max(dzFrontMarker, dzWorkStart) + extraLength, 1 do
+    CpUtil.debugFormat(CpDebug.DBG_TURN, 'appendEndingTurnCourse: dzVehicleAtTurnEnd: %.1f, dzWorkStart: %.1f, extra %.1f)',
+            dzFrontMarker, dzWorkStart, extraLength)
+    for d = math.min(dzFrontMarker, dzWorkStart) + 1, extraLength, 1 do
         local x, y, z = localToWorld(startNode, 0, 0, d)
         table.insert(waypoints, {x = x, y = y, z = z, useTightTurnOffset = useTightTurnOffset or nil})
     end
