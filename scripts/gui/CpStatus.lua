@@ -4,6 +4,7 @@ CpStatus = CpObject()
 
 function CpStatus:init(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
     self:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
+    self.dirtyFlag = self.vehicle:getNextDirtyFlag()
 end
 
 function CpStatus:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints,timeRemaining)
@@ -22,12 +23,18 @@ function CpStatus:reset()
 end
 
 function CpStatus:setActive(active)
-    self.isActive = active
+    if self.isActive ~= active then 
+        self.isActive = active
+        self:raiseDirtyFlag()
+    end
 end
 
 function CpStatus:setWaypointData(currentWaypointIx,numberOfWaypoints,timeRemaining)
-    self.currentWaypointIx = currentWaypointIx
-    self.numberOfWaypoints = numberOfWaypoints
+    if self.currentWaypointIx ~= currentWaypointIx then 
+        self.currentWaypointIx = currentWaypointIx
+        self.numberOfWaypoints = numberOfWaypoints
+        self:raiseDirtyFlag()
+    end
     self.timeRemaining = timeRemaining
 end
 
@@ -47,4 +54,24 @@ end
 
 function CpStatus:getIsActive()
     return self.isActive
+end
+
+function CpStatus:raiseDirtyFlag()
+    self.vehicle:raiseDirtyFlags(self.dirtyFlag)
+end
+
+function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
+	if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, self.dirtyFlag) ~= 0) then
+		streamWriteInt32(streamId,self.numberOfWaypoints or 0)
+        streamWriteInt32(streamId,self.currentWaypointIx or 0)
+        streamWriteBool(streamId,self.isActive or false)
+	end
+end
+
+function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
+	if connection:getIsServer() and streamReadBool(streamId) then
+        self.numberOfWaypoints = streamReadInt32(streamId,self.numberOfWaypoints)
+        self.currentWaypointIx = streamReadInt32(streamId,self.currentWaypointIx)
+        self.isActive = streamReadBool(streamId,self.currentWaypointIx)
+	end
 end

@@ -1706,12 +1706,15 @@ function Course:saveToXml(courseXml, courseKey)
 	end
 end
 
-function Course:writeStream(streamId, connection)
-	streamWriteString(streamId, self.name)
+function Course:writeStream(vehicle,streamId, connection)
+	streamWriteString(streamId, self.name or "")
 	streamWriteFloat32(streamId, self.workWidth or 0)
 	streamWriteInt32(streamId, self.numHeadlands or 0 )
-	streamWriteInt32(streamId, self.multiTools or 0)
-	streamWriteString(streamId, self:serializeWaypoints(false))
+	streamWriteInt32(streamId, self.multiTools or 1)
+	streamWriteInt32(streamId, #self.waypoints or 0)
+	for i,p in ipairs(self.waypoints) do 
+		streamWriteString(streamId,p:getXmlString())
+	end
 end
 
 ---@param vehicle  table
@@ -1753,13 +1756,18 @@ function Course.createFromStream(vehicle,streamId, connection)
 	local workWidth = streamReadFloat32(streamId)
 	local numHeadlands = streamReadInt32(streamId)
 	local multiTools = streamReadInt32(streamId)
-	local serializedWaypoints = streamReadString(streamId)
-	local course = Course(vehicle, Course.deserializeWaypoints(serializedWaypoints))
+	local numWaypoints = streamReadInt32(streamId)
+	local waypoints = {}
+	for ix=1,numWaypoints do 
+		local d = CpUtil.getXmlVectorValues(streamReadString(streamId))
+		table.insert(waypoints,Waypoint.initFromXmlFile(d,ix))
+	end
+	local course = Course(vehicle, waypoints)
 	course.name = name
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
+	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end
 

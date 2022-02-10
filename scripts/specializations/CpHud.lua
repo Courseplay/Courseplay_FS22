@@ -40,6 +40,8 @@ function CpHud.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpHud)
 	SpecializationUtil.registerEventListener(vehicleType, "cpShowWorkWidth", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateMouseAction", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onWriteUpdateStream", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onReadUpdateStream", CpHud)
 end
 
 function CpHud.registerFunctions(vehicleType)
@@ -160,9 +162,20 @@ function CpHud:onLoad(savegame)
 	--- Register the spec: spec_cpHud
 	self.spec_cpHud = self["spec_" .. CpHud.SPEC_NAME]
     local spec = self.spec_cpHud
-    spec.status = CpStatus(false)
+    spec.status = CpStatus(false, self)
 	spec.lastShownWorkWidthTimeStamp = g_time
     spec.openCloseText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
+    
+end
+
+function CpHud:onWriteUpdateStream(streamId, connection, dirtyMask)
+    local spec = self.spec_cpHud
+	spec.status:onWriteUpdateStream(streamId, connection, dirtyMask)
+end
+
+function CpHud:onReadUpdateStream(streamId, timestamp, connection)
+    local spec = self.spec_cpHud
+	spec.status:onReadUpdateStream(streamId, timestamp, connection)
 end
 
 function CpHud:getCpStatus()

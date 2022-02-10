@@ -43,12 +43,18 @@ end
 BaleLoader.onAIImplementStart = Utils.overwrittenFunction(BaleLoader.onAIImplementStart,
         function(self, superFunc)
             if superFunc ~= nil then superFunc(self) end
+            if not g_server then 
+                return
+            end
             self:doStateChange(BaleLoader.CHANGE_MOVE_TO_WORK);
         end)
 
 BaleLoader.onAIImplementEnd = Utils.overwrittenFunction(BaleLoader.onAIImplementEnd,
         function(self, superFunc)
             if superFunc ~= nil then superFunc(self) end
+            if not g_server then 
+                return
+            end
             local spec = self.spec_baleLoader
             if not spec.grabberIsMoving and spec.grabberMoveState == nil and spec.isInWorkPosition then
                 self:doStateChange(BaleLoader.CHANGE_MOVE_TO_TRANSPORT);

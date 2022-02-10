@@ -58,8 +58,7 @@ PurePursuitController = CpObject()
 -- constructor
 function PurePursuitController:init(vehicle)
 	self.normalLookAheadDistance = math.min(vehicle.maxTurningRadius, 6)
-	self.shortLookaheadDistance = self.normalLookAheadDistance / 2
-	self.veryShortLookaheadDistance = 2
+	self.shortLookaheadDistance = math.max(2, self.normalLookAheadDistance / 2)
 	-- normal lookahead distance
 	self.baseLookAheadDistance = self.normalLookAheadDistance
 	-- adapted look ahead distance 

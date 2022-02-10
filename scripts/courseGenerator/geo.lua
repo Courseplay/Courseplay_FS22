@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --                  length of edges pointing in that range
 
 -- TODO: make point a real class
-function pointToString(p)
+local function pointToString(p)
 	local fromAngle, toAngle = 'N/A', 'N/A'
 	if p.nextEdge then
 		toAngle = string.format('%.1f', math.deg(p.nextEdge.angle))

@@ -48,6 +48,7 @@ VehicleConfigurations.attributes = {
 
 function VehicleConfigurations:init()
     self.vehicleConfigurations = {}
+    self.modVehicleConfigurations = {}
     if g_currentMission then
         self:loadFromXml()
     end
@@ -56,7 +57,7 @@ end
 function VehicleConfigurations:registerXmlSchema()
     self.xmlSchema = XMLSchema.new("vehicleConfigurations")
     self.xmlSchema:register(XMLValueType.STRING,self.XML_KEY.."(?)#name","Configuration name")
-    
+    self.xmlSchema:register(XMLValueType.STRING,self.XML_KEY.."(?)#modName","Mod name") --- Optional to avoid conflict for xml files with the same name.
     for name,xmlType in pairs(VehicleConfigurations.attributes) do 
         self.xmlSchema:register(xmlType,self.XML_KEY.."(?)#"..name,"Configuration value")
     end
@@ -90,11 +91,20 @@ end
 function VehicleConfigurations:readVehicle(xmlFile, vehicleElement)
     local vehicleConfiguration = {}
     local name = xmlFile:getValue(vehicleElement .. "#name")
+    local modName = xmlFile:getValue(vehicleElement .. "#modName")
     CpUtil.info('Reading configuration for %s', name)
     for attributeName, _ in pairs(self.attributes) do
         self:addAttribute(vehicleConfiguration, xmlFile, vehicleElement, attributeName)
     end
-    self.vehicleConfigurations[name] = vehicleConfiguration
+    
+    if modName then
+        if self.modVehicleConfigurations[modName] == nil then 
+            self.modVehicleConfigurations[modName] = {}
+        end
+        self.modVehicleConfigurations[modName][name] = vehicleConfiguration
+    else 
+        self.vehicleConfigurations[name] = vehicleConfiguration
+    end
 end
 
 function VehicleConfigurations:loadXmlFile(fileName)
@@ -116,13 +126,16 @@ end
 --- @param attribute string configuration attribute to get
 --- @return any the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:get(object, attribute)
-    if not g_server then
-        CpUtil.info("Error: VehicleConfigurations:get() %s",attribute)
-        return
-    end
-    if object and object.configFileName then
+    -- TODO: use configFileNameClean, that is just the file name without the extension, or just use getName()
+    if object and object.configFileName then   
         local vehicleXmlFileName = Utils.getFilenameFromPath(object.configFileName)
-        if self.vehicleConfigurations[vehicleXmlFileName] then
+        local modName = object.customEnvironment
+        if self.modVehicleConfigurations[modName] then 
+            --- If a mod name was given, then also check the xml filename.
+            if self.modVehicleConfigurations[modName][vehicleXmlFileName] then 
+                return self.modVehicleConfigurations[modName][vehicleXmlFileName][attribute]
+            end
+        elseif self.vehicleConfigurations[vehicleXmlFileName] then
             return self.vehicleConfigurations[vehicleXmlFileName][attribute]
         else
             return nil

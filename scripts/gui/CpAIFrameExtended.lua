@@ -114,7 +114,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	
 	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
 	--- Draws the current progress, while creating a custom field.
-	self.customFieldPlot = FieldPlot()
+	self.customFieldPlot = FieldPlot(true)
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,
 		CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
@@ -160,7 +160,7 @@ end
 --- Button callback of the ai menu button.
 function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
 	if CpInGameMenuAIFrameExtended.getCanGenerateCourse(self) then 
-		self.currentJob:onClickGenerateFieldWorkCourse()
+		CpUtil.callErrorCorrectedFunction(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
 		--CpSettingsUtil.updateAiParameters(self.currentJobElements)
 	end
 end
@@ -336,7 +336,7 @@ function CpInGameMenuAIFrameExtended:draw()
 	--- Draws the current progress, while creating a custom field.
 	if pageAI.mode == CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER and next(CpInGameMenuAIFrameExtended.curDrawPositions) then
 		pageAI.customFieldPlot:setWaypoints(CpInGameMenuAIFrameExtended.curDrawPositions)
-		pageAI.customFieldPlot:draw(self)
+		pageAI.customFieldPlot:draw(self,true)
 		pageAI.customFieldPlot:setVisible(true)
 	end
 end

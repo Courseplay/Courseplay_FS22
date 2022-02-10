@@ -51,5 +51,5 @@ function ImplementController:getDriveData()
 end
 
 function ImplementController:update(dt)
-    
+    -- implement in the derived classes as needed
 end

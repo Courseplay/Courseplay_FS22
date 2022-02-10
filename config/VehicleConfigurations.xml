@@ -80,6 +80,11 @@ You can define the following custom settings:
     soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
     work areas such as a plow.
 
+- modName: Name of the .zip file (without '.zip')
+    In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
+    add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
+    Note: Only 2 of the same .xml files can be added.
+
 -->
 <VehicleConfigurations>
     <!--[GIANTS]-->
@@ -92,13 +97,16 @@ You can define the following custom settings:
              raiseLate="true"
              lowerEarly="true"
     />
-
+    <!--\vehicles\andersonGroup-->
+    <Vehicle name="rbm2000.xml"
+             toolOffsetX="-2.7"
+    />
     <!--\Vehicles\amazone-->
     <Vehicle name="citan15001C.xml"
              implementWheelAlwaysOnGround = "true"
     />
     <!--\vehicles\arcusin-->
-    <Vehicle name="arcusinFSX6372.xml"
+    <Vehicle name="fsx6372.xml"
              toolOffsetX="-2.4"
              balerUnloadDistance="-3.8"
     />
@@ -116,7 +124,7 @@ You can define the following custom settings:
              noReverse="true"
     />
     <!--\vehicles\kuhn-->
-    <Vehicle name="kuhnSW4014.xml"
+    <Vehicle name="sw4014.xml"
              toolOffsetX="-2.5"
              noReverse="true"
     />
@@ -301,5 +309,14 @@ You can define the following custom settings:
     <!--Mod: Horsch Pack-->
     <Vehicle name="leebPT350.xml"
              ignoreCollisionBoxesWhenFolded="true"
+    />
+    <!--Mod: Claas Krone Baler Pack With Lizard R90-->
+    <Vehicle name="quadrant5300.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
+    />
+    <Vehicle name="bigPack1290HDPVC.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
     />
 </VehicleConfigurations>

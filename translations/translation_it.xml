@@ -3,6 +3,7 @@
 	<texts>
 		<text name="CP_activated" 																		text="Attivato" />
 		<text name="CP_deactivated" 																	text="Disattivato" />
+		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
@@ -277,11 +278,11 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Vuoi eliminare il campo personalizzato %s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_delete"														text="Cancella campo personalizzato"/>
+		<text name="CP_customFieldManager_rename"														text="Rinomina campo personalizzato"/>
+		<text name="CP_customFieldManager_draw"															text="Disegna campo personalizzato"/>
+		<text name="CP_customFieldManager_draw_header"													text="Disegna linee campo personalizzato con il tasto destro del mouse."/>
+		<text name="CP_customFieldManager_save"                                                         text="Salva campo personalizzato"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Avvia registrazione campo personalizzato."/>
@@ -312,23 +313,23 @@ I: Valore per la correzione orizzontale, + a sinistra, - a destra.
 J: Valore per la correzione verticale, + indietro, - avanti.
 K, L e M: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
 N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+O: Avvia/interrompi la registrazione di un corso sul campo personalizzato.
+P: Rimuove il porcorso dal veicolo"/>
+		<text name="CP_help_page_customField_title"														text="Campi personalizzati"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Esistono due modi per creare un campo personalizzato.
+Il primo consiste nell'usare la funzione di registrazione dell'HUD.
+Avvia il record e registra il confine del tuo campo.
+Una volta terminato, premi nuovamente il pulsante e ti verrà chiesto se desideri salvarlo."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Dando un'occhiata al menu AI, vedrai il bordo del tuo campo registrato.
+Facendo clic sul Nome, avrai la possibilità di eliminarlo o rinominarlo."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+La seconda opzione è disegnarlo sulla mappa del menu dell'AI.
+Non hai selezionato trattore o altro veicolo (fai clic con il pulsante sinistro del mouse da qualche parte sulla mappa), hai la possibilità di disegnare un campo personalizzato.
+All'avvio, verranno visualizzate le linee di campo personalizzate disegnate con il tasto destro del mouse.
+Utilizzare il tasto destro del mouse per fare clic su una posizione da cui si desidera iniziare.
+Il successivo clic destro disegnerà una linea dal tuo punto di partenza alla tua seconda posizione, che sarà il punto di partenza per la linea successiva."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>

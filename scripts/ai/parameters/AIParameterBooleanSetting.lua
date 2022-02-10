@@ -20,3 +20,16 @@ end
 function AIParameterBooleanSetting:clone(...)
 	return AIParameterBooleanSetting.new(self.data,...)
 end
+
+--- Gets the closest ix relative to the setup ix.
+---@param ix number
+---@return number
+function AIParameterBooleanSetting:getClosestIxFromSetup(ix)
+	return ix
+end
+
+--- Gets the closest setup ix relative to the current ix.
+---@return number
+function AIParameterBooleanSetting:getClosestSetupIx()
+	return self.current
+end

@@ -42,13 +42,34 @@ function CpJobParameters:validateSettings()
     end
 end
 
-function CpJobParameters:isBaleFinderNotAllowed()
+function CpJobParameters:writeStream(streamId, connection)
+    for i,setting in ipairs(self.settings) do 
+        setting:writeStream(streamId, connection)
+    end
+end
+
+function CpJobParameters:readStream(streamId, connection)
+    for i,setting in ipairs(self.settings) do 
+        setting:readStream(streamId, connection)
+    end
+end
+
+function CpJobParameters:isBaleFinderDisabled()
     local vehicle = self.job:getVehicle()
     if vehicle then
         local hasValidImplement = AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) or
                                 AIUtil.hasImplementWithSpecialization(vehicle, BaleLoader)
-        return not hasValidImplement
+        return not hasValidImplement or vehicle:hasCpCourse()
     end
+    return false
+end
+
+function CpJobParameters:hasNoCourse()
+    local vehicle = self.job:getVehicle()
+    if vehicle then
+        return not vehicle:hasCpCourse() and not self:isBaleFinderDisabled()
+    end
+    return false
 end
 
 function CpJobParameters:getMultiTools()
@@ -57,9 +78,12 @@ function CpJobParameters:getMultiTools()
         local course = vehicle:getFieldWorkCourse()
         if course then 
             return course:getMultiTools() or 1
+        else 
+            return 1
         end
     end
-    return 1
+    --- This needs to be 5, as the server otherwise has problems.
+    return 5
 end
 
 function CpJobParameters:noMultiToolsCourseSelected()

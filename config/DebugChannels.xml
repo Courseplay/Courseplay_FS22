@@ -24,8 +24,8 @@
 	<DebugChannel active="false" name="DBG_LOAD_UNLOAD" text="load and unload tippers"/>
 	<DebugChannel active="false" name="DBG_TRAFFIC" text="traffic collision/proximity"/>
 	<DebugChannel active="true" name="DBG_COURSES" text="course save/load/generation"/>
-	<DebugChannel active="true" name="DBG_HUD" text="hud action"/>
-	<DebugChannel active="false" name="DBG_MULTIPLAYER" text="multiplayer"/>
+	<DebugChannel active="false" name="DBG_HUD" text="hud action"/>
+	<DebugChannel active="true" name="DBG_MULTIPLAYER" text="multiplayer"/>
 	<DebugChannel active="true" name="DBG_IMPLEMENTS" text="implements"/>
 	<DebugChannel active="false" name="DBG_UNCATEGORIZED" text="other"/>
 	<DebugChannel active="false" name="DBG_AI_DRIVER" text="AIDriver common"/>

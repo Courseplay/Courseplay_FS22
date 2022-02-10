@@ -212,7 +212,8 @@ function AIUtil.getTurningRadius(vehicle)
 			turnRadius = g_vehicleConfigurations:get(implement.object, 'turnRadius')
 			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
 				implement.object:getName(), turnRadius)
-		elseif SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
+		elseif vehicle.isServer and SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
+			--- Make sure this function only gets called on the server, as otherwise error might appear.
 			-- only call this for AIImplements, others may throw an error as the Giants code assumes AIImplement
 			turnRadius = AIVehicleUtil.getMaxToolRadius(implement)
 			if turnRadius > 0 then

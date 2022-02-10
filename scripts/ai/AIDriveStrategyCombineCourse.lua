@@ -955,7 +955,7 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
 		local zOffset = 0
 		local length = self.pullBackDistanceEnd
 		local width = self.pullBackRightSideOffset
-		return PathfinderUtil.Area(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
+		return PathfinderUtil.NodeArea(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
 	end
 end
 
@@ -1424,13 +1424,13 @@ function AIDriveStrategyCombineCourse:findBestTrailer()
 end
 
 function AIDriveStrategyCombineCourse:getClosestDistanceToFieldEdge(x, z)
-	local closestDistance = math.huge
+	local closestDistance= math.huge
 	local fieldPolygon = self.course:getFieldPolygon()
 	-- TODO: this should either be saved with the field or regenerated when the course is loaded...
 	if fieldPolygon == nil then
 		self:debug('Field polygon not found, regenerating it.')
 		local vx, _, vz = getWorldTranslation(self.vehicle.rootNode)
-		fieldPolygon = g_fieldScanner:findContour(vx, vz)
+		_, fieldPolygon = g_fieldScanner:findContour(vx, vz)
 		self.course:setFieldPolygon(fieldPolygon)
 	end
 	for _, p in ipairs(fieldPolygon) do

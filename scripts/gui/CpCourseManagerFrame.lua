@@ -497,7 +497,7 @@ function CpCourseManagerFrame:onClickClearCurrentCourse()
 	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickClearCurrentCourse")
 	local hasCourse = self.currentVehicle:hasCpCourse()
 	if hasCourse then 
-		self.currentVehicle:resetCpCourses()
+		self.currentVehicle:resetCpCoursesFromGui()
 	end
 	self:updateLists()
 end

@@ -160,11 +160,11 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         DevHelper.restoreVehiclePosition(g_currentMission.controlledVehicle)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
         self:debug('Finding contour of current field')
-        local points = g_fieldScanner:findContour(self.data.x, self.data.z)
         local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
+        local valid, points = g_fieldScanner:findContour(self.data.x, self.data.z)
         self:debug('Generate course')
-        local status, ok, course = CourseGeneratorInterface.generate(g_fieldScanner:findContour(self.data.x, self.data.z),
+        local status, ok, course = CourseGeneratorInterface.generate(points,
                 {x = self.data.x, z = self.data.z},
                 0, 6, 6, 1, true)
         if ok then

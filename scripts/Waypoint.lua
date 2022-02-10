@@ -146,13 +146,13 @@ function Waypoint:getXmlString()
 	local v = {
 		MathUtil.round(self.x,2),
 		MathUtil.round(self.z,2),
-		self.turnStart,
-		self.turnEnd,
-		self.isConnectingTrack,
-		self.lane,
-		self.rowNumber,
-		self.ridgeMarker,
-		self.rev,
+		self.turnStart or "-",
+		self.turnEnd or "-",
+		self.isConnectingTrack or "-",
+		self.lane or "-",
+		self.rowNumber or "-",
+		self.ridgeMarker or "-",
+		self.rev or "-",
 	}
 	return CpUtil.getXmlVectorString(v)
 end

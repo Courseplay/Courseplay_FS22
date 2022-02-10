@@ -193,7 +193,10 @@ end
 
 function AIParameterSettingList:validateCurrentValue()
 	local new = self:checkAndSetValidValue(self.current)
-	self:setToIx(new)
+	if new ~= self.current then
+		self:debug("validate setting to %s from %s", self.values[new], tostring(self:getString()))
+		self:setToIx(new)
+	end
 end
 
 --- Refresh the texts, if it depends on a changeable measurement unit.
@@ -225,11 +228,55 @@ function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 end
 
 function AIParameterSettingList:readStream(streamId, connection)
-	self:setToIx(streamReadInt32(streamId))
+	if not self:getIsUserSetting() then
+		local setupIx = streamReadInt32(streamId)
+		self:setToIx(self:getClosestIxFromSetup(setupIx))
+		self:debug("set to %s from stream.", tostring(self:getString()))
+	end
 end
 
 function AIParameterSettingList:writeStream(streamId, connection)
-	streamWriteInt32(streamId, self.current)
+	if not self:getIsUserSetting() then
+		streamWriteInt32(streamId, self:getClosestSetupIx())
+		self:debug("send %s to stream.", tostring(self:getString()))
+	end
+end
+
+--- Gets the closest ix relative to the setup ix.
+---@param ix number
+---@return number
+function AIParameterSettingList:getClosestIxFromSetup(ix)
+	local value = self.data.values[ix]
+	-- find the value requested
+	local closestIx = 1
+	local closestDifference = math.huge
+	for i = 1, #self.values do
+		local v = self.values[i]
+		local d = math.abs(v-value)
+		if d < closestDifference then
+			closestIx = i
+			closestDifference = d
+		end
+	end
+	return closestIx
+end
+
+--- Gets the closest setup ix relative to the current ix.
+---@return number
+function AIParameterSettingList:getClosestSetupIx()
+	local value = self.values[self.current]
+	-- find the value requested
+	local closestIx = 1
+	local closestDifference = math.huge
+	for i = 1, #self.data.values do
+		local v = self.data.values[i]
+		local d = math.abs(v-value)
+		if d < closestDifference then
+			closestIx = i
+			closestDifference = d
+		end
+	end
+	return closestIx
 end
 
 --- Sets the value.
@@ -284,24 +331,47 @@ function AIParameterSettingList:setValue(value)
 	return setValueInternal(self, value, function(a, b)  return a == b end)
 end
 
-function AIParameterSettingList:setDefault()
+function AIParameterSettingList:setDefault(noEventSend)
+	local current = self.current
+	--- If the setting has a function to set the default value, then call it.
 	if self:hasCallback(self.data.setDefaultFunc) then 
 		self:getCallback(self.data.setDefaultFunc)
 		self:debug("set to default by extern function.")
 		return
 	end
-
+	--- If the setting is linked to a vehicle configuration and a implement value was found, then reset it to this value.
+	local configName =  self.data.vehicleConfiguration
+	if configName then 
+		if self.vehicle then 
+			for i, object in ipairs(self.vehicle:getChildVehicles()) do 
+				local value = g_vehicleConfigurations:get(object, configName)
+				if value then 
+					if tonumber(value) then 
+						self:setFloatValue(value)
+					else
+						self:setValue(value)
+					end
+					self:debug("set to default: %s from vehicle configuration: (%s|%s)", value, CpUtil.getName(object), configName)
+					return
+				end
+			end
+		end
+	end
+	--- If default values were setup use these.
 	if self.data.default ~=nil then
-		AIParameterSettingList.setFloatValue(self,self.data.default)
-		self:debug("set to default %s",self.data.default)
+		AIParameterSettingList.setFloatValue(self, self.data.default)
+		self:debug("set to default %s", self.data.default)
 		return
 	end
 	if self.data.defaultBool ~= nil then
 		AIParameterSettingList.setValue(self,self.data.defaultBool)
-		self:debug("set to default %s",tostring(self.data.defaultBool))
+		self:debug("set to default %s", tostring(self.data.defaultBool))
 		return
 	end
 	self:setToIx(1)
+	if (noEventSend == nil or noEventSend==false) and current ~= self.current then
+		self:raiseDirtyFlag()
+	end
 end
 
 --- Gets a specific value.
@@ -317,12 +387,18 @@ end
 function AIParameterSettingList:setNextItem()
 	local new = self:checkAndSetValidValue(self.current + 1)
 	self:setToIx(new)
+	if new ~= self.previous then
+		self:raiseDirtyFlag()
+	end
 end
 
 --- Set the previous value
 function AIParameterSettingList:setPreviousItem()
 	local new = self:checkAndSetValidValue(self.current - 1)
 	self:setToIx(new)
+	if new ~= self.previous then
+		self:raiseDirtyFlag()
+	end
 end
 
 function AIParameterSettingList:clone(...)
@@ -466,6 +542,7 @@ function AIParameterSettingList:showInputTextDialog()
 					local ix,diff = self:getClosestIx(v)
 					if diff < self.INPUT_VALUE_THRESHOLD then
 						self:setToIx(ix)
+						self:raiseDirtyFlag()
 					else 
 						self:setDefault()
 					end
@@ -527,6 +604,9 @@ end
 function AIParameterSettingList:onClick(state)
 	local new = self:checkAndSetValidValue(state)
 	self:setToIx(new)
+	if new ~= self.previous then
+		self:raiseDirtyFlag()
+	end
 end
 
 --- Raises an event and sends the callback string to the Settings controller class.
@@ -556,6 +636,18 @@ function AIParameterSettingList:getCallback(callbackStr)
 			return self.klass[callbackStr](self.vehicle)
 		else
 			return self.klass[callbackStr](self.klass)
+		end
+	end
+end
+
+function AIParameterSettingList:raiseDirtyFlag()
+	if not self:getIsUserSetting() then
+		if self.klass and self.klass.raiseDirtyFlag then
+			if self.vehicle ~= nil then 
+				self.klass.raiseDirtyFlag(self.vehicle,self)
+			else
+				self.klass:raiseDirtyFlag(self)
+			end
 		end
 	end
 end

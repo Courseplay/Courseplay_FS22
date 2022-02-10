@@ -20,9 +20,13 @@ function FieldScanner:init(resolution)
 end
 
 function FieldScanner:debug(...)
-    -- temporarily just print
-    print('FieldScanner: ' .. string.format(...))
+    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'FieldScanner: ' .. string.format(...))
 end
+
+function FieldScanner:info(...)
+    CpUtil.info('FieldScanner: ' .. string.format(...))
+end
+
 
 function FieldScanner:moveProbeForward(probe, d)
     local x, _, z = localToWorld(probe, 0, 0, d)
@@ -85,6 +89,7 @@ function FieldScanner:traceFieldEdge(probe, fieldId)
     local distanceFromStart = math.huge
     local tracerLookahead = self.normalTracerLookahead
     local totalYRot = 0
+    local lost = false
     local ignoreCornerAtIx = -1
     local sharpCornerDeltaAngle = math.rad(15)
     local i = 0
@@ -129,18 +134,26 @@ function FieldScanner:traceFieldEdge(probe, fieldId)
         -- more or less in the same direction, continue with the longer tracer beam
         prevYRot = yRot
         i = i + 1
+        -- totalYRot must be around 360°, so stop after 440° as then we can be sure something is wrong, for instance
+        -- fields too close and we are tracing some other fields edge now...
+        if math.abs(totalYRot) > 3 * math.pi then
+            lost = true
+            self:debug('Looks like we are lost')
+            break
+        end
     end
     CpUtil.destroyNode(helperNode)
     self:debug('Field contour with %d points generated, total rotation %.1f°', #self.points, math.deg(totalYRot))
     -- a negative totalYRot means we went around the field clockwise, which we always should if we start in the
     -- middle of the field
     -- if it is positive, it means we bumped into an island and traced the island instead of the field
-    return totalYRot < 0 and math.abs(totalYRot) > math.pi
+    return totalYRot < 0 and math.abs(totalYRot) > math.pi, lost
 end
 
 --- Find the polygon representing a field. The point (x,z) must be on the field.
 ---@param x number
 ---@param z number
+---@return boolean, table true if successful, table contains points
 function FieldScanner:findContour(x, z)
     -- don't start exactly at yRot 0 as folks tend to put the starting point (and so the probe)
     -- near the edge of the field. On rectangular fields, this may lead to finding the edge very
@@ -149,21 +162,28 @@ function FieldScanner:findContour(x, z)
     local probe = CpUtil.createNode('FieldScannerProbe', x, z, math.pi / 7)
     if not CpFieldUtil.isNodeOnField(probe) then
         self:debug('%.1f/%.1f is not on a field, can\'t start scanning here', x, z)
-        return
+        return false
     end
     local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
     self:debug('Start scanning field %d at %.1f/%.1f', fieldId or '', x, z)
-    -- for now, ignore field ID as with it we can't handle merged fields.
-    fieldId = nil
+    -- first ignore field ID as with it we can't handle merged fields.
+    local limitToFieldId = nil
     local i = 2
     while i < 11 do
-        self:findFieldEdge(probe, fieldId)
-        if self:traceFieldEdge(probe, fieldId) then
+        self:findFieldEdge(probe, limitToFieldId)
+        local done, lost = self:traceFieldEdge(probe, limitToFieldId)
+        if done and not lost then
             break
         else
-            self:debug('%d. try, edge not found, we may have hit an island or corner, reset/rotate the probe a bit and retry', i)
+            if not done and not lost then
+                self:debug('%d. try, edge not found, we may have hit an island or corner, reset/rotate the probe a bit and retry', i)
+                setRotation(probe, 0, i * math.pi / 7, 0)
+            elseif lost then
+                self:info('Could not trace field edge, limit search to field %d and retry', fieldId)
+                limitToFieldId = fieldId
+            end
+            -- move probe back to the start location
             self:setProbePosition(probe, x, z)
-            setRotation(probe, 0, i * math.pi / 7, 0)
         end
         i = i + 1
     end
@@ -174,7 +194,7 @@ function FieldScanner:findContour(x, z)
     --self.points = self:addIntermediatePoints(self.points, 5)
     self:debug('Intermediate points added, has now %d points', #self.points)
     CpUtil.destroyNode(probe)
-    return self.points
+    return true, self.points
 end
 
 function FieldScanner:draw()

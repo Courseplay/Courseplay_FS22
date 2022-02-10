@@ -76,8 +76,10 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
+    SpecializationUtil.registerFunction(vehicleType, 'resetCpCoursesFromGui', CpCourseManager.resetCpCoursesFromGui)
     SpecializationUtil.registerFunction(vehicleType, 'getCurrentCpCourseName', CpCourseManager.getCurrentCourseName)
-    
+    SpecializationUtil.registerFunction(vehicleType, 'setCpCourseName', CpCourseManager.setCpCourseName)
+
     SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
     
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
@@ -96,6 +98,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCpAssignedCoursesID', CpCourseManager.getCpAssignedCoursesID)
     SpecializationUtil.registerFunction(vehicleType, 'setCpAssignedCoursesID', CpCourseManager.setCpAssignedCourseID)
 
+    SpecializationUtil.registerFunction(vehicleType, 'setCpCoursesFromNetworkEvent', CpCourseManager.setCoursesFromNetworkEvent)
 end
 
 function CpCourseManager:onLoad(savegame)
@@ -122,10 +125,10 @@ function CpCourseManager:onPostLoad(savegame)
     local baseKey = savegame.key..CpCourseManager.KEY
     self:rememberCpLastWaypointIx(savegame.xmlFile:getValue(baseKey.."#rememberedWpIx"))
     local id = savegame.xmlFile:getValue(baseKey.."#assignedCoursesID")
-    g_assignedCoursesManager:loadAssignedCoursesByVehicle(self,id)
+    g_assignedCoursesManager:loadAssignedCoursesByVehicle(self, id)
 end
 
-function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
+function CpCourseManager:loadAssignedCourses(xmlFile, baseKey, noEventSend)
     local spec = self.spec_cpCourseManager 
     local courses = {}
     xmlFile:iterate(baseKey,function (i,key)
@@ -136,7 +139,7 @@ function CpCourseManager:loadAssignedCourses(xmlFile,baseKey)
     end)    
     if courses ~= nil and next(courses) then
         spec.courses = courses
-        SpecializationUtil.raiseEvent(self,"onCpCourseChange",courses[1])
+        SpecializationUtil.raiseEvent(self, "onCpCourseChange", courses[1], noEventSend)
     end
 end
 
@@ -182,17 +185,27 @@ function CpCourseManager:setFieldWorkCourse(course)
     CpCourseManager.addCourse(self,course)   
 end
 
-function CpCourseManager:addCourse(course)
+function CpCourseManager:setCoursesFromNetworkEvent(courses)
+    CpCourseManager.resetCourses(self)
+    CpCourseManager.addCourse(self,courses[1],true)   
+end
+
+function CpCourseManager:addCourse(course,noEventSend)
     local spec = self.spec_cpCourseManager 
     course:setVehicle(self)
     table.insert(spec.courses,course)
-    SpecializationUtil.raiseEvent(self,"onCpCourseChange",course)
+    SpecializationUtil.raiseEvent(self,"onCpCourseChange",course,noEventSend)
 end
 
 function CpCourseManager:resetCourses()
     local spec = self.spec_cpCourseManager 
     spec.courses = {}
     SpecializationUtil.raiseEvent(self,"onCpCourseChange")
+end
+
+function CpCourseManager:resetCpCoursesFromGui()
+    CpCourseManager.resetCourses(self)
+    CoursesEvent.sendEvent(self)   
 end
 
 ---@return Course
@@ -228,12 +241,15 @@ function CpCourseManager:onLeaveVehicle(wasEntered)
     end
 end
 
-function CpCourseManager:onCpCourseChange(newCourse)
+function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
     local spec = self.spec_cpCourseManager
     if newCourse then 
         -- we have course, show the course plot on the AI helper screen
         spec.coursePlot:setWaypoints(newCourse.waypoints)
         spec.coursePlot:setVisible(true)
+        if noEventSend == nil or noEventSend == false then 
+            CoursesEvent.sendEvent(self,spec.courses)   
+        end
     else 
         spec.coursePlot:setVisible(false)
         self:rememberCpLastWaypointIx()
@@ -266,12 +282,19 @@ function CpCourseManager:onDraw()
     end
 end
 
-function CpCourseManager:onReadStream(streamId)
-
+function CpCourseManager:onReadStream(streamId,connection)
+    local numCourses = streamReadUInt8(streamId)
+    for i=1,numCourses do 
+        CpCourseManager.addCourse(self,Course.createFromStream(self, streamId, connection),true)
+    end
 end
 
-function CpCourseManager:onWriteStream(streamId)
-	
+function CpCourseManager:onWriteStream(streamId,connection)
+	local spec = self.spec_cpCourseManager
+    streamWriteUInt8(streamId,#spec.courses)
+    for i,course in ipairs(spec.courses) do 
+        course:writeStream(self, streamId, connection)
+    end
 end
 
 function CpCourseManager:onPreDelete()
@@ -314,6 +337,16 @@ end
 function CpCourseManager:saveCourses(file,text)
     file:save(CpCourseManager.rootKeyFileManager,CpCourseManager.xmlSchema,
     CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
+    --- Updates the course name, so multi tool courses are working correctly.
+    CourseSaveNameEvent.sendEvent(self, text)
+end
+
+function CpCourseManager:setCpCourseName(name)
+    local spec = self.spec_cpCourseManager
+    local course = spec.courses[1]
+    if course then 
+        course:setName(name)
+    end
 end
 
 function CpCourseManager:appendCourse(course)

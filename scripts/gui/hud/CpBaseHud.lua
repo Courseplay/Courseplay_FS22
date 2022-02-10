@@ -41,6 +41,8 @@ CpBaseHud.uvs = {
 
 CpBaseHud.xmlKey = "Hud"
 
+CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
+
 function CpBaseHud.registerXmlSchema(xmlSchema,baseKey)
     xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posX","Hud position x.")
     xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posY","Hud position y.")
@@ -190,7 +192,7 @@ function CpBaseHud:init(vehicle)
     self.clearCourseBtn:setPosition(x, y)
     self.clearCourseBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         if vehicle:hasCpCourse() then
-            vehicle:resetCpCourses()
+            vehicle:resetCpCoursesFromGui()
         end
     end)
     
@@ -342,19 +344,21 @@ function CpBaseHud:draw(status)
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
     self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
+    
     if status:getIsActive() then
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
         self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse())
     end
+    self.onOffButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 
     if self.vehicle:getIsCpCourseRecorderActive() then
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.RECORDER_ON_COLOR))
     else 
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
     end
-
+    self.startStopRecordingBtn:setVisible(self.vehicle:getCanStartCpCourseRecorder())
 
     self.waypointProgressBtn:setTextDetails(status:getWaypointText())
     
@@ -366,10 +370,14 @@ function CpBaseHud:draw(status)
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
 
     local toolOffsetX = self.vehicle:getCpSettings().toolOffsetX
-    self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), toolOffsetX:getString())
+    local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
+    self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
+    self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
     local toolOffsetZ = self.vehicle:getCpSettings().toolOffsetZ
-    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), toolOffsetZ:getString())
+    text = toolOffsetZ:getIsDisabled() and CpBaseHud.automaticText or toolOffsetZ:getString()
+    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), text)
+    self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
 
     self.baseHud:draw()
 end

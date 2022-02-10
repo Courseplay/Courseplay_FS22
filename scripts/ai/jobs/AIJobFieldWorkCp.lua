@@ -11,7 +11,7 @@ AIJobFieldWorkCp.translations = {
 
 function AIJobFieldWorkCp.new(isServer, customMt)
 	local self = AIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
-	
+	self.jobName = "FIELDWORK_CP"
 	self.fieldWorkTask = AITaskFieldWorkCp.new(isServer, self)
 	-- Switches the AITaskFieldWork with AITaskFieldWorkCp.
 	-- TODO: Consider deriving AIJobFieldWorkCp of AIJob and implement our own logic instead.
@@ -48,7 +48,7 @@ function AIJobFieldWorkCp.new(isServer, customMt)
 
 	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
 	self.selectedFieldPlot:setVisible(false)
-
+	self.cpJobParameters:validateSettings()
 	return self
 end
 
@@ -92,15 +92,14 @@ function AIJobFieldWorkCp:validate(farmId)
 		return isValid, errorMessage
 	else
 		self.lastPositionX, self.lastPositionZ = tx, tz
-		self.hasValidPosition = true
 	end
+	self.customField = nil
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
 	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
-	self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
-	if not self.fieldPolygon then
+	self.hasValidPosition, self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
+	if not self.hasValidPosition then
 		local customField = g_customFieldManager:getCustomField(tx, tz)
 		if not customField then
-			self.hasValidPosition = false
 			self.selectedFieldPlot:setVisible(false)
 			return false, g_i18n:getText("CP_error_not_on_field")
 		else
@@ -108,6 +107,7 @@ function AIJobFieldWorkCp:validate(farmId)
 			self.fieldPolygon = customField:getVertices()
 			self.customField = customField
 			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+			self.hasValidPosition = true
 		end
 	end
 	if self.fieldPolygon then
@@ -132,12 +132,27 @@ function AIJobFieldWorkCp:drawSelectedField(map)
 	end
 end
 
+function AIJobFieldWorkCp:writeStream(streamId, connection)
+	AIJobFieldWorkCp:superClass().writeStream(self, streamId, connection)
+	self.cpJobParameters:writeStream(streamId, connection)
+end
+
+function AIJobFieldWorkCp:readStream(streamId, connection)
+	AIJobFieldWorkCp:superClass().readStream(self, streamId, connection)
+	self.cpJobParameters:readStream(streamId, connection)
+end
+
 function AIJobFieldWorkCp:getCpJobParameters()
 	return self.cpJobParameters
 end
 
 function AIJobFieldWorkCp:getFieldPositionTarget()
 	return self.fieldPositionParameter:getPosition()
+end
+
+---@return CustomField or nil Custom field when the user selected a field position on a custom field
+function AIJobFieldWorkCp:getCustomField()
+	return self.customField
 end
 
 --- Registers additional jobs.
@@ -253,4 +268,26 @@ end
 
 function AIJobFieldWorkCp:setVehicle(v)
 	self.vehicle = v
+end
+
+--- Ugly hack to fix a mp problem from giants, where the job class can not be found.
+function AIJobFieldWorkCp:getJobTypeIndex(superFunc,job)
+	local ret = superFunc(self,job)
+	if ret == nil then 
+		if job.jobName then 
+			return self.nameToIndex[job.jobName]
+		end
+	end
+	return ret
+end
+AIJobTypeManager.getJobTypeIndex = Utils.overwrittenFunction(AIJobTypeManager.getJobTypeIndex ,AIJobFieldWorkCp.getJobTypeIndex)
+
+--- Ugly hack to fix a mp problem from giants, where the helper is not always reset correctly on the client side.
+function AIJobFieldWorkCp:stop(aiMessage)	
+	AIJobFieldWorkCp:superClass().stop(self, aiMessage)
+
+	local vehicle = self.vehicleParameter:getVehicle()
+	if vehicle and vehicle.spec_aiFieldWorker.isActive then 
+		vehicle.spec_aiFieldWorker.isActive = false
+	end
 end

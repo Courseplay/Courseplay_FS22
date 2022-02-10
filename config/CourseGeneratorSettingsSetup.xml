@@ -92,6 +92,6 @@
 				<Text>none</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-2" max="6" default="0" incremental="0.2"/>
+		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2"/>
 	</SettingSubTitle>
 </Settings>

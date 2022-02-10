@@ -7,7 +7,6 @@
 
 <Settings prefixText="CP_global_setting_">
 	<SettingSubTitle prefix="true" title="general">
-		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses"/>
 		<Setting classType="AIParameterSettingList" name="wageModifier" default="100" unit="4">
 			<Values>
 				<Value>0</Value>
@@ -36,6 +35,7 @@
 	<!-- TODO: save the user settings in the game settings and not the save game dir.-->
 	<SettingSubTitle prefix="true" title="userSettings">
 		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" defaultBool="false" onChangeCallback="onHudSelectionChanged" isUserSetting="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="pathfinder">
 		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoal" min="5" max="90" incremental="5" default="45"/>

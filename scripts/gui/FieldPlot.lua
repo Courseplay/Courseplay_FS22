@@ -20,11 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 FieldPlot = CpObject(CoursePlot)
 
 --- Shows custom fields on the in-game map
-function FieldPlot:init()
+---@param drawLastWp boolean should the last waypoint be highlight in form on an extra point, with slightly larger size.
+function FieldPlot:init(drawLastWp)
 	CoursePlot.init(self)
 	self:setNormalColor()
 	-- use a thicker line
 	self.lineThickness = 4 / g_screenHeight
+	self.drawLastWp = drawLastWp
 end
 
 function FieldPlot:setNormalColor()
@@ -38,8 +40,25 @@ function FieldPlot:setBrightColor()
 	self.darkColor = {CpGuiUtil.getNormalizedRgb(255, 255, 255)}
 end
 
+--- Draws custom fields.
+---@param map table
 function FieldPlot:draw(map)
 	if not self.isVisible then return end
 	self:drawPoints(map)
+
+	local lastWp = self.waypoints and  #self.waypoints>0 and self.waypoints[#self.waypoints]
+	if self.drawLastWp and lastWp then 
+		local x, y = self:worldToScreen(map, lastWp.x, lastWp.z )
+		local signSizeMeters = 1.5* self.lineThickness
+		local zoom = map.fullScreenLayout:getIconZoom()
+		local width, height = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom * g_screenAspectRatio
+		local r, g, b = unpack(self.darkColor)
+		
+		drawPoint(x, y, width, height, r, g, b, 0.8)
+		
+--		setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
+--		renderOverlay( self.courseOverlayId, x, y, width, self.lineThickness )
+
+	end
 end
 

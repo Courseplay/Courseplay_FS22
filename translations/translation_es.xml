@@ -4,6 +4,7 @@
 
 		<text name="CP_activated" 																		text="Activado" />
 		<text name="CP_deactivated" 																	text="Desactivado" />
+		<text name="CP_automatic" 																		text="Automático" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
@@ -96,8 +97,8 @@
 		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Desp. Herramienta Izq/Der"/>
 		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Desp. Herramienta Izq/Der"/>
 
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. Herramienta Del/Atr"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desp. Herramienta Del/Atr"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. Herramienta Del/Tra"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desp. Herramienta Del/Tra"/>
 
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Ancho radio de giro"/>
 		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Ancho radio de giro. Valor: 2 - 50"/>
@@ -277,14 +278,14 @@
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="¿Quieres guardar la ruta como campo personalizado %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="¿Quieres eliminar el campo personalizado %s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_delete"														text="Borrar Campo Personalizado"/>
+		<text name="CP_customFieldManager_rename"														text="Renombrar Campo Personalizado"/>
+		<text name="CP_customFieldManager_draw"															text="Dibujar Campo Personalizado"/>
+		<text name="CP_customFieldManager_draw_header"													text="Dibujar las líneas del Campo con el Botón Derecho del Mouse."/>
 		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 
 	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Inicir grabación de ruta personalizada."/>
+		<text name="CP_controllerGui_startRecording"													text="Iniciar grabación de ruta personalizada."/>
 		<text name="CP_controllerGui_stopRecording"														text="Parar grabación de ruta personalizada."/>
 
 	<!-- In game help menu-->
@@ -321,7 +322,7 @@ Primera: Usar la función de grabación del HUD.
 Inicie la grabación y grabe el borde de su campo.
 Una vez hecho esto, presione el botón nuevamente y se le preguntará si desea guardarlo."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Echando un vistazo al menú AI, verá el borde de su campo grabado.
+Echando un vistazo al Menú IA, verá el borde de su campo grabado.
 Al hacer clic en el Nombre, tendrá la opción de eliminarlo o cambiarle el nombre. "/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Segunda: Dibujarlo en el Mapa del Menú de IA.

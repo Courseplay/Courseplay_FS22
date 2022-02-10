@@ -4,6 +4,7 @@
 
 		<text name="CP_activated" 																		text="aktiviert" />
 		<text name="CP_deactivated" 																	text="deaktiviert" />
+		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
@@ -273,7 +274,7 @@
 		<text name="CP_courseManager_basicSettings"														text="Kurse speichern/laden."/>
 		<text name="CP_courseManager_advancedSettings"													text="Kurse/Ordner editieren."/>
 
-		<text name="CP_courseManager_activate"															text="Activate"/>
+		<text name="CP_courseManager_activate"															text="aktivieren"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>
@@ -315,21 +316,21 @@ K, L and M: Klick auf den Text zum zurücksetzen der Werte.
 N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel.
 O: Startet und stoppt die Aufzeichnung eines Feldrandkurses.
 P: Löscht den Kurs aus dem Fahrzeug"/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customField_title"														text="Eigene Felder"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Es gibt 2 Wege, ein eigenes Feld anzulegen:
+Der erste ist, die Aufnahmefunktion im HUD zu benutzen.
+Starte die Aufnahme und fahre um dein Feld.
+Wenn du fertig bist, drücke nochmal auf den Knopf, und du wirst gefragt ob du speichern willst"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Wenn du ins AI Menu schaust, siehst du die Feldgrenze von deinem eigenen Feld.
+Wenn du auf den Namen klickst, hast du die Möglichkeit es umzubenennen oder zu löschen."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+Die 2. Möglichkeit ist, es direkt auf der AI Menü Karte zu zeichnen:
+Stelle sicher dass kein Fahrzeug ausgewählt ist (Linksklick irgendwo auf der Karte), und du bekommst die Option dein eigenes Feld zu zeichnen.
+Wenn gestartet, wird der Text, Zeichne Linien mit Rechtsklick, angezeigt.
+Klicke mit der rechten Maustaste auf den Punkt wo du beginnen willst.
+Der nächste Rechtsklick zeichnet eine Linie vom ersten Punkt bis zu dem jetzigen, der jetzt als Startpunkt für die nächste Linie gilt."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
