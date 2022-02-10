@@ -3,7 +3,7 @@
 	<texts>
 		<text name="CP_activated" 																		text="Attivato" />
 		<text name="CP_deactivated" 																	text="Disattivato" />
-		<text name="CP_automatic" 																		text="auto" />
+		<text name="CP_automatic" 																		text="automatico" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
