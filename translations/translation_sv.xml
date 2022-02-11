@@ -100,9 +100,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Redskapsskjutning vertikalt"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskapsskjutning vertikalt"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Vändcirkelns bredd"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Fäll alltid ut röret"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Fäll alltid ut röret när skördetröskan är full och väntar på tömmning."/>

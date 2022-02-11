@@ -99,9 +99,6 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Correzione vert."/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Correzione vert."/>
 		
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raggio di sterzata"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Intervallo: 2 - 50"/>
-		
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Aprire sempre il tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Aprire sempre il tubo quando la mietitrebbia è piena e attende lo scaricatore"/>
 		

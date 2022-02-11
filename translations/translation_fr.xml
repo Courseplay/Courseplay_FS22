@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Décalage vertical de l'outil"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil."/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Rayon de braquage"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage. Valeurs: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Toujours déployer la buse"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>

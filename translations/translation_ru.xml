@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Продольное смещение"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Продольное смещение инструмента."/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Диаметр круга поворота"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Диаметр круга поворота. Значение: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Всегда разворачивать трубу"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>

@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Werktuig verticale offset"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Werktuig verticale offset"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Breedte draaicirkel"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Breedte draaicirkel. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Vouw de pijp altijd open"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Vouw de pijp altijd open als de maaidorser vol is en wacht op de losser."/>

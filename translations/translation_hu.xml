@@ -96,9 +96,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Szerszámeltolás függőleges"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Szerszámeltolás függőleges"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Fordulókör szélessége"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Fordulókör szélessége. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Mindig hajtsa ki a csövet"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Mindig hajtsa ki a csövet, amikor a kombájn megtelt és a kirakodóra vár."/>

@@ -98,9 +98,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Vertikální odsazení nástroje"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Nastaví vertikální odsazení nástroje"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Poloměr otáčení"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Nastaví poloměr otáčení. Hodnota: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Stále otevřený komín"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Otevřít komín, když je kombajn plný a čeká na vykládku"/>

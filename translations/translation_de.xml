@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Geräte Versatz vertikal"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Geräte Versatz vertikal"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Wenderadius"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Wenderadius. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Rohr immer ausfahren"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>

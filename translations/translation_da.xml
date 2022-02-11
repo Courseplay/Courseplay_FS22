@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Redskab forskudt lodret"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskab Versatz vertikal"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Venderadius"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Venderadius. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Kør altid snegl ud"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Kør altid snegl ud, når mejetærsker er fuld og venter på vogn."/>

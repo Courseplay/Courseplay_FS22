@@ -100,9 +100,6 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="工具纵向调整"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="工具纵向调整"/>
 
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="转向半径"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="转弯半径宽度。 数值范围: 2 - 50"/>
-	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="总是伸出管道"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="当收割机装满并等待卸载时，始终伸出管道。"/>
 

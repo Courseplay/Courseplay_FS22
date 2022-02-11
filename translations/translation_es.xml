@@ -100,9 +100,6 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. Herramienta Del/Tra"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desp. Herramienta Del/Tra"/>
 
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Ancho radio de giro"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Ancho radio de giro. Valor: 2 - 50"/>
-
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Desplegar siempre el tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Despliegue siempre el tubo cuando la cosechadora esté llena y esperando el descargador."/>
 

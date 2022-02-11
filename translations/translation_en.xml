@@ -97,9 +97,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Tool offset vertical"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Tool offset vertical"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Turning circle width"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Turning circle width. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Always unfold the pipe"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Always unfold the pipe when combine is full and waiting for unloader."/>

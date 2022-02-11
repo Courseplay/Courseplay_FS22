@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Przes. pionowe dla narzędzi"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne dla narzędzi."/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Szerokość zawracania"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Szerokość zawracania. Zakres: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Zawsze rozłóż rurę"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
