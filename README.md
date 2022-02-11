@@ -10,19 +10,20 @@
 ## What Works
 
 * Course generation
-* Field work with refill or unload with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive), combine self unload
+* Field work with generated courses
+* Refill or unload with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive)
+* Combine self unload
 * Wrap and collect bales with or without a course
 * Save/load/rename/move courses
 * Create custom fields with recording or drawing on the AI Map
 * Vehicle Convoy
-* 
 
 ## Usage
 
-There is now a CP Fieldwork job available on the helper screen. After you select it,
-use field position to choose the field you want work on and the Open/Close Course Generator
-button to generate the course. If you have also placed the target near the field,
-use start the job so the Giants Helper will bring us to the target to start CP.
+There is now a CP Fieldwork job available on the AI helper screen. Just with the built in helper, you can select a target position. When you start the job,
+the helper will drive to this position before starting the fieldwork. Use the Field position to tell the helper which field you want them to work on.
+Once you selected a valid Field position, you can click on the CP Open/Close Course Generator button on the bottom of the screen to open the course generator and generate a course.
+If your vehicle is already near or on the field, you can use the HUD or a keyboard shortcut to start the CP helper at the first, nearest or last waypoint of the fieldwork course.
 
 ## Turning on Debug Channels
 
