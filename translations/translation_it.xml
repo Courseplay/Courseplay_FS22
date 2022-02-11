@@ -128,7 +128,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio di corsia simmetrico"/>
 		
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distanza convoglio"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distanza tra i veicoli. Intervallo: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distanza tra i veicoli. Intervallo: 40 - 400"/>
 		
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Lavoro"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo. Intervallo: 5 - 50"/>

@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrische rijstrookwisseling"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Konvooi afstand"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand tussen voertuigen. Waarde: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand tussen voertuigen. Waarde: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Veldwerk"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale snelheid tijdens het werken op het veld. Value: 5 - 50"/>

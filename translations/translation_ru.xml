@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Симметричная смена полосы движения"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Дистанция следования"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Расстояние между техникой при работе нескольких орудий. Значение: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Расстояние между техникой при работе нескольких орудий. Значение: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Полевые работы"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле. Значение: 5 - 50"/>

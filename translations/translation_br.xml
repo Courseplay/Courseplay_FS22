@@ -126,8 +126,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Mudança de faixa simétrica"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Mudança de faixa simétrica"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Comboio de veículos"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Ativar / desativar comboio de veículos"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabalho no campo"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidade máxima ao trabalhar no campo"/>

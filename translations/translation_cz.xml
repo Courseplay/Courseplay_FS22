@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrická změna jízdního pruhu"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Rozestup konvoje"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Vzdálenost mezi vozidly. Hodnota: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Vzdálenost mezi vozidly. Hodnota: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Polní práce"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli. Hodnota: 5 - 50"/>

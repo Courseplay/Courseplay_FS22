@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distance entre les véhicules"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Valeurs: 5 - 50"/>
