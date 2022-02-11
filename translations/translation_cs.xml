@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="对称变道"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="车辆距离"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="车辆之间的距离。 数值范围: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="车辆之间的距离。 数值范围: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="工作速度"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="在田间工作时的最高速度。 数值范围: 5 - 50"/>

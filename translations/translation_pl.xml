@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetryczna zmiana ścieżki."/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Dystans konwoju"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w konwoju. Zakres: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w konwoju. Zakres: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Prace polowe"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Zakres: 5 - 50"/>

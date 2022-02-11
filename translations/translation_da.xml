@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrisk baneskift"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Konvoj afstand"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand mellem kørtøjer. Værdi: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand mellem kørtøjer. Værdi: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Markarbewjde"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale hastighed ved markarbejde. Værdi: 5 - 50"/>
