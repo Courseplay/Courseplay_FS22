@@ -194,15 +194,19 @@ end
 
 function CpHud:onEnterVehicle(isControlling)
     -- if the mouse cursor is shown when we enter the vehicle, disable camera rotations
-    CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor(),
-            self.spec_cpHud.savedCameraRotatableInfo)
-	local spec = self.spec_cpHud
-	spec.hud:openClose(CpHud.isHudActive)
+    if isControlling then
+        CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor(),
+                self.spec_cpHud.savedCameraRotatableInfo)
+        local spec = self.spec_cpHud
+        spec.hud:openClose(CpHud.isHudActive)
+    end
 end
 
 function CpHud:onLeaveVehicle(wasEntered)
     -- turn off mouse when leaving the vehicle
-   	self:resetCpHud()
+    if wasEntered then
+   	    self:resetCpHud()
+    end
 end
 
 --- Enriches the status data for the hud here.

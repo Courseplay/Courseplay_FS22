@@ -67,16 +67,14 @@ end
 --- Checks the field position setting.
 function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 	
+	if not isValid then 
+		return isValid, errorMessage
+	end
+
 	local vehicle = self.vehicleParameter:getVehicle()
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	if tx == self.lastPositionX and tz == self.lastPositionZ then
-		CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, 'Position did not change, do not generate course again')
-		return isValid, errorMessage
-	else
-		self.lastPositionX, self.lastPositionZ = tx, tz
-	end
 	
 	self.customField = nil
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
@@ -100,6 +98,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 		self.selectedFieldPlot:setVisible(true)
 		self.selectedFieldPlot:setBrightColor(true)
 	end
+	return true, ''
 end
 
 function CpAIJobFieldWork:setValues()
@@ -110,11 +109,11 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobFieldWork:validate(farmId)
-	local isValid, errorMessage = AIJobFieldWork:superClass().validate(self, farmId)
+	local isValid, errorMessage = CpAIJobFieldWork:superClass().validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
-
+	self.cpJobParameters:validateSettings()
 	local vehicle = self.vehicleParameter:getVehicle()
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
@@ -122,7 +121,6 @@ function CpAIJobFieldWork:validate(farmId)
 		return isValid, errorMessage
 	end
 
-	self.cpJobParameters:validateSettings()
 	if not vehicle:hasCpCourse() then 
 		return false, g_i18n:getText("CP_error_no_course")
 	end
@@ -150,7 +148,7 @@ end
 
 --- Is course generation allowed ?
 function CpAIJobFieldWork:isCourseGenerationAllowed()
-	return true
+	return self:getCanGenerateFieldWorkCourse()
 end
 
 function CpAIJobFieldWork:getCanStartJob()
@@ -162,8 +160,9 @@ end
 function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
+	local tx, tz = self.fieldPositionParameter:getPosition()
 	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
-			{x = self.lastPositionX, z = self.lastPositionZ},
+			{x = tx, z = tz},
 			settings.isClockwise:getValue(),
 			settings.workWidth:getValue(),
 			AIUtil.getTurningRadius(vehicle),

@@ -100,6 +100,7 @@ You can define the following custom settings:
     <!--\vehicles\andersonGroup-->
     <Vehicle name="rbm2000.xml"
              toolOffsetX="-2.7"
+             turnRadius="15"
     />
     <!--\Vehicles\amazone-->
     <Vehicle name="citan15001C.xml"

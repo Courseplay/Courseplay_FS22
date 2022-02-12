@@ -251,7 +251,11 @@ end
 --- Custom version of AIFieldWorker:startFieldWorker()
 function CpAIFieldWorker:startFieldWorker(jobParameters)
     --- Calls the giants startFieldWorker function.
+    --- TODO: Disable the self:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart") call here and implement it in the drive strategy.
+    local oldRaiseAiEvent = self.raiseAIEvent
+    self.raiseAIEvent = function ()end
     self:startFieldWorker()
+    self.raiseAIEvent = oldRaiseAiEvent
     if self.isServer then 
         --- Replaces drive strategies.
         CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters)
