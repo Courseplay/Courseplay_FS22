@@ -798,7 +798,7 @@ function AIDriveStrategyFieldWorkCourse:controlFirstVehicleInConvoy(vehiclesInCo
     if closestDistanceBack > maxDistance then
         self:debugSparse('convoy: too far (%.1f m > %.1f) forward, slowing down.',
                 closestDistanceBack, maxDistance)
-        local factor = math.max(0, (1 - (closestDistanceBack - maxDistance) / maxDistance))
+        local factor = math.max(0, (1 - 2 *(closestDistanceBack - maxDistance) / maxDistance))
         local maxSpeed = closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed
         self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
     end
