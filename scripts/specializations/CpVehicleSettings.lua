@@ -214,11 +214,17 @@ end
 
 --- Are the sowing machine settings needed.
 function CpVehicleSettings:areSowingMachineSettingsVisible()
-    return AIUtil.getImplementOrVehicleWithSpecialization(self,SowingMachine)
-            or AIUtil.getImplementOrVehicleWithSpecialization(self,FertilizingCultivator)
+    return AIUtil.hasChildVehicleWithSpecialization(self, SowingMachine) or 
+           AIUtil.hasChildVehicleWithSpecialization(self,FertilizingCultivator)
 end
 
 --- Disables tool offset, as the plow drive strategy automatically handles the tool offset.
 function CpVehicleSettings:isToolOffsetDisabled()
     return AIUtil.getImplementOrVehicleWithSpecialization(self,Plow)
+end
+
+--- Only shows the setting if a valid tool with ridge markers is attached.
+function CpVehicleSettings:isRidgeMarkerSettingVisible()
+    local vehicles, found = AIUtil.getAllChildVehiclesWithSpecialization(self, RidgeMarker)
+    return found and vehicles[1].spec_ridgeMarker.numRigdeMarkers > 0
 end

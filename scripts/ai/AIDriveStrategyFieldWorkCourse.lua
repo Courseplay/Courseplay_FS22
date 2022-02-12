@@ -245,8 +245,9 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     local function addController(class, spec, states)
-        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then
-            local controller = class(vehicle)
+        --- If multiple implements have this spec, then add a controller for each implement.
+        for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do 
+            local controller = class(vehicle, childVehicle)
             controller:setDisabledStates(states)
             table.insert(self.controllers, controller)
         end

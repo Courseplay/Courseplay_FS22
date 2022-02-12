@@ -1,18 +1,18 @@
 ---@class ForageWagonController : ImplementController
 ForageWagonController = CpObject(ImplementController)
 
-function ForageWagonController:init(vehicle)
-	self.loadigMachine = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, ForageWagon)
-    ImplementController.init(self, vehicle, self.loadigMachine)
+function ForageWagonController:init(vehicle, forageWagon)
+	self.forageWagon = forageWagon
+    ImplementController.init(self, vehicle, self.forageWagon)
 end
 
 function ForageWagonController:update()
     local fillLevel = 0
     local capacity = 0
-    local dischargeNode = self.loadigMachine:getCurrentDischargeNode()
+    local dischargeNode = self.forageWagon:getCurrentDischargeNode()
     if dischargeNode ~= nil then
-        fillLevel = self.loadigMachine:getFillUnitFillLevel(dischargeNode.fillUnitIndex)
-        capacity = self.loadigMachine:getFillUnitCapacity(dischargeNode.fillUnitIndex)
+        fillLevel = self.forageWagon:getFillUnitFillLevel(dischargeNode.fillUnitIndex)
+        capacity = self.forageWagon:getFillUnitCapacity(dischargeNode.fillUnitIndex)
     end
 
     if fillLevel > capacity * 0.95 then
@@ -29,23 +29,23 @@ end
 function ForageWagonController:handleLoadigMachine()
     local maxSpeed
 
-    if not self.loadigMachine:getIsTurnedOn() then
-        if self.loadigMachine.setFoldState then
+    if not self.forageWagon:getIsTurnedOn() then
+        if self.forageWagon.setFoldState then
             -- unfold if there is something to unfold
-            self.loadigMachine:setFoldState(-1, false)
+            self.forageWagon:setFoldState(-1, false)
         end
-        if self.loadigMachine:getCanBeTurnedOn() then
+        if self.forageWagon:getCanBeTurnedOn() then
             self:debug('Turning on machine')
-            self.loadigMachine:setIsTurnedOn(true, false);
+            self.forageWagon:setIsTurnedOn(true, false);
         -- else
             -- maxSpeed = 0
             -- self:debug('NEED_SOMETHING')
         end
     end
 
-    if self.loadigMachine.setPickupState ~= nil then
-        if self.loadigMachine.spec_pickup ~= nil and not self.loadigMachine.spec_pickup.isLowered then
-            self.loadigMachine:setPickupState(true, false)
+    if self.forageWagon.setPickupState ~= nil then
+        if self.forageWagon.spec_pickup ~= nil and not self.forageWagon.spec_pickup.isLowered then
+            self.forageWagon:setPickupState(true, false)
             self:debug('lowering pickup')
         end
     end

@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class BaleLoaderController : ImplementController
 BaleLoaderController = CpObject(ImplementController)
 
-function BaleLoaderController:init(vehicle)
-    self.baleLoader = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
+function BaleLoaderController:init(vehicle, baleLoader)
+    self.baleLoader = baleLoader
     ImplementController.init(self, vehicle, self.baleLoader)
 
     if self.baleLoader then

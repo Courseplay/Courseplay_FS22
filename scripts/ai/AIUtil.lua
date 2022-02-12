@@ -409,6 +409,34 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 	end
 end
 
+--- Gets all child vehicles with a given specialization. 
+--- This can include the rootVehicle and implements
+--- that are not directly attached to the rootVehicle.
+---@param vehicle Vehicle
+---@param specialization table
+---@return table all found vehicles/implements
+---@return boolean at least one vehicle/implement was found
+function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization)
+	local validVehicles = {}
+	for _, childVehicle in pairs(vehicle:getChildVehicles()) do 
+		if SpecializationUtil.hasSpecialization(specialization, childVehicle.specializations) then
+			table.insert(validVehicles, childVehicle)
+		end
+	end
+	return validVehicles, #validVehicles>0
+end
+
+--- Was at least one child vehicle with the given specialization found ?
+--- This can include the rootVehicle and implements,
+--- that are not directly attached to the rootVehicle.
+---@param vehicle Vehicle
+---@param specialization table
+---@return boolean
+function AIUtil.hasChildVehicleWithSpecialization(vehicle, specialization)
+	local _, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization)
+	return found
+end
+
 function AIUtil.getAllAIImplements(object, implements)
 	if not implements then implements = {} end
 	for _, implement in ipairs(object:getAttachedImplements()) do

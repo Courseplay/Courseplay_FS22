@@ -83,7 +83,7 @@
 
 	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">
 		<!--Ridgemarker-->	
-		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic"/>
+		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" isVisible="isRidgeMarkerSettingVisible"/>
 		<!--Fertilizer-->
 		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true"/>
 	</SettingSubTitle>
