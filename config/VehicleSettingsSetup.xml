@@ -8,7 +8,7 @@
 <Settings prefixText="CP_vehicle_setting_">
 	<SettingSubTitle title="basic">
 		<!-- Show waypoints -->
-		<Setting classType="AIParameterSettingList" name="showCourse" onChangeCallback="cpUpdateWaypointVisibility" default="1">
+		<Setting classType="AIParameterSettingList" name="showCourse" onChangeCallback="cpUpdateWaypointVisibility" default="1" isUserSetting="true">
 			<Values>
 				<Value name="SHOW_COURSE_DEACTIVATED">0</Value>
 				<Value name="SHOW_COURSE_START_STOP">1</Value>
@@ -88,7 +88,7 @@
 		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true"/>
 	</SettingSubTitle>
 	
-	<SettingSubTitle title="multitool">
+	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">
 		<!--Symetric Langechange-->
 		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
 		<!--Convoy Distance-->

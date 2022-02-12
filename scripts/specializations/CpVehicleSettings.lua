@@ -228,3 +228,9 @@ function CpVehicleSettings:isRidgeMarkerSettingVisible()
     local vehicles, found = AIUtil.getAllChildVehiclesWithSpecialization(self, RidgeMarker)
     return found and vehicles[1].spec_ridgeMarker.numRigdeMarkers > 0
 end
+
+--- Only show the multi tool settings, with a multi tool course loaded.
+function CpVehicleSettings:hasMultiToolCourse()
+    local course = self:getFieldWorkCourse()
+    return course and course:getMultiTools() > 1
+end
