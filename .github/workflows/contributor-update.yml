@@ -1,0 +1,32 @@
+# The workflow name
+name: Update contributors
+
+# Controls when the workflow will run
+on: 
+  push:
+    paths:
+      - "**/translations/**"
+  pull_request:
+    paths:
+      - "**/translations/**"
+
+# The list of jobs this workflow executes
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Create local changes
+        run: ".github/workflows/scripts/update-contributors/index.js"
+      - name: Commit files
+        run: git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

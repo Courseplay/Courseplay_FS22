@@ -56,15 +56,9 @@ We work long, hard, in our own free time at developing and improving Courseplay.
 
 ___
 
-## Credits
-* Peter Vaiko
-* Tensuko
-* schwiti6190
-* Logo Design by Finals Farming
-___
+## Contributors
+See ["Contributors"](/Contributors.md)
 
-## Attributions
-Please see [`__Attributions.md`](https://github.com/Courseplay/Courseplay_FS22/blob/master/__Attributions.md) for more information.
 ___
 
 ## Supporter
