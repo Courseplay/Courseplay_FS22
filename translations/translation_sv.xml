@@ -4,19 +4,19 @@
     <!-- SV translation By piplarsson -->
 		<text name="CP_activated" 																		text="Aktiverad" />
 		<text name="CP_deactivated" 																	text="Avaktiverad" />
-		<text name="CP_automatic" 																		text="auto" />
+		<text name="CP_automatic" 																		text="Automatisk" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 		
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): För hjälp, bug rapport och uppdaterings info, vänligen besök: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Generera en kurs innan du startat ett arbete." />
-		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
+		<text name="CP_error_could_not_generate_course"													text="Kunde inte generera kursen. Loggen kan ha mer information." />
 		<text name="CP_error_not_on_field"																text="Målet är inte på ett fält." />
 
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Fältposition:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Starta på:" />
 		<text name="CP_jobParameters_startAt_title"														text="Starta på:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Vart ska fältarbetet börja" />
@@ -26,24 +26,24 @@
 		<text name="CP_jobParameters_startAt_unload"													text="Lasta av tröska/Sträng" />
 		<text name="CP_jobParameters_startAt_bales"														text="Samla in/plastade balar" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
-		<text name="CP_jobParameters_laneOffset_center"													text="center" />
-		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Körfältförskjutning:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Körfältförskjutning:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Körfältförskjutning" />
+		<text name="CP_jobParameters_laneOffset_center"													text="Centrum" />
+		<text name="CP_jobParameters_laneOffset_left"													text="Vänster(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="Höger(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="Vänster(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="Höger(2)" />
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Fältarbete" />
-		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
+		<text name="CP_job_baleCollect"																	text="CP: Bal Samla/Plasta" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Skapa en kurs för fältarbete." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Öppna/Stäng kurs skaparen." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Ai Arbetare %s har slutat arbeta oväntat - tanken är full!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Fordons inställningar för (%s)"/>
@@ -64,8 +64,8 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Start/Stop endast"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Alla vägpunkter"/>
 
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Öppna HUD med musen"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Vid deaktiverad kan HUD endast öppnas med keybind."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stanna vid slutet"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Stanna vid slutet av kursen"/>
@@ -73,8 +73,8 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Tillåt Backning för pathfinding"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Om tillämpligt, låt pathfinder generera kurser som innehåller backkörning"/>
 
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Tillåt att använda pathfinder i vändning"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Aktiverar att använda pathfinder i vändning, till exempel för att undvika hinder och grödor"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Fäll ihop redskap i slutet av kursen"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Aktiverar/inaktiverar automatisk hopfällning av redskap i slutet av kursen."/>
@@ -100,6 +100,9 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Redskapsskjutning vertikalt"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskapsskjutning vertikalt"/>
+
+		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Vändcirkelns bredd"/>
+		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Fäll alltid ut röret"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Fäll alltid ut röret när skördetröskan är full och väntar på tömmning."/>
@@ -108,7 +111,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Stanna alltid vid tömming"/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Skördetröskan tömmer själv"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Skördetröskan kör till vagnar på eller nära fältet för att lasta av. Not supported in multitools or convoy mode."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Skördetröskan kör till vagnar på eller nära fältet för att lasta av. Stöds inte i Flera verktyg eller convoy-läge."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Lasta av på första vändtegen"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Skördetröskan kommer att lasta av på den fösta vändtegen."/>
@@ -126,8 +129,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrisk linjebyte"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrisk linjebyte"/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 40 - 400"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Avstånd"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Avståndet mellan fordon. Värde: 20 - 200"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Fältjobb"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximal hastighet när CP arbetar på fältet. Value: 5 - 50"/>
@@ -145,10 +148,10 @@
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Kursskapandeinställningar för (%s)"/>
 		
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Grundläggande"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Vändteg"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Centrum"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Avancerad"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbetsbredd" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbetsbredd. Value: 0 - 50" />
@@ -159,8 +162,8 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vändtegens överlapp" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Överlappa vändtegens spår med så många procent av arbetsbredden. Value: 0 - 25" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Fältmarginal" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positiva värden minskar fältstorleken för att lägga till en buffert runt det arbetade området, negativa förstora arbetats område bortom fältgränsen. Värde: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rader att hoppa över" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rader att hoppa över när du byter till nästa Upp/Ner rad. Value: 0 - 6" />
@@ -192,22 +195,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="längsta dragen" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Upp/Ner radvinkel" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Vinkel på upp/ner rader (0 är norr) när manuell. Värde: 0 - 175 steg: 5" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="no bypass" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="simple" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island Bypass-läge" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Hur kursen ska kringgå öar i fältet" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="ingen bypass" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="enkel" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="cirkel" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Börja arbeta på" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Börja arbeta på" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Vändtegen" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Upp/Ner dragen" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Flera verktyg" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Antal fordon på samma kurs." />
 
 
 	<!-- GlobalSettings -->
@@ -224,10 +227,10 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Håll den på 100%"/>
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="Användarinställningar"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Handkontroll vänlig Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Använd HUD, som kan styras med en handkontroll."/>
 		
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder inställningar"/>
 
@@ -275,17 +278,17 @@
 		<text name="CP_courseManager_activate"															text="Aktivera"/>
 
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
-		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
-		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
-		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
-		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Vill du spara den inspelade kursen som anpassat fält %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Vill du radera det anpassade fältet %s?"/>
+		<text name="CP_customFieldManager_delete"														text="Ta bort anpassat fält"/>
+		<text name="CP_customFieldManager_rename"														text="Byt namn på anpassat fält"/>
+		<text name="CP_customFieldManager_draw"															text="Rita anpassat fält"/>
+		<text name="CP_customFieldManager_draw_header"													text="Rita anpassade fältlinjer med högerklicka."/>
+		<text name="CP_customFieldManager_save"                                                         text="Spara anpassat fält"/>
 		
 	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
-		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+		<text name="CP_controllerGui_startRecording"													text="Starta anpassad fältinspelning."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stoppa anpassad fältinspelning."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
@@ -300,35 +303,35 @@
 - Byta namn på en kurs eller mapp."/>
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+A: Om du klickar på fordonets namn öppnar fordonskonfigurationssidan.
+B: Växla var kursen ska starta med ett klick.
+C: Om du klickar på Coursename öppnar du AI-menyn med kursgeneratorn öppen.
+D: Starta kurspelhjälpen.
+E: Visar aktuella waypoint / totala waypoints. Klicka för att öppna kurshanteraren.
+F: Klicka på ikonen Öppnar sidan Allmänna inställningar.
+G: Stänger HUD.
+H: Minska och öka arbetsbredden. En röd linje på ditt fordon visar den aktuella inställningen.
+I: Värde för horisontell förskjutning, + vänster, - höger.
+J: Värde för vertikal förskjutning, + bakåt, - framåt.
+K, L och M: Om du klickar på texten återställs dina ändringar i bilvärdena.
+N: Detta område visar körfältets offset om du har en multitool-kurs. Genom att klicka på texten växlar positionerna.
+O: Start / Sluta spela in en anpassad fältkurs.
+P: tar bort kurs från fordon"/>
+		<text name="CP_help_page_customField_title"														text="Anpassade fält"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it."/>
+Det finns två sätt att skapa ett anpassat fält.
+Den första är att använda HUD: s rekordfunktion.
+Starta posten och spela in din fältgräns.
+När du är klar trycker du på knappen igen och du kommer att bli ombedd om du vill spara den."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete it or rename it."/>
+Med en titt på AI-menyn kommer du att se din inspelade fältgräns.
+Genom att klicka på namnet får du möjlighet att antingen radera det eller byt namn på det."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
+Det andra alternativet är att rita det på AI-menyn.
+Har ingen traktor eller annat fordon valts (vänsterklicka någonstans på kartan), du får möjlighet att rita ett anpassat fält.
+När du startat, tecknar texten anpassade fältlinjer med högerklick visas.
+Använd höger musknapp för att klicka på en position där du vill börja.
+Nästa högerklick kommer att rita en linje från din startpunkt till din andra position, vilket kommer att vara startpunkten för nästa rad."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Välj nästa felsökningskanal."/>
