@@ -67,10 +67,18 @@ ___
 * Tensuko
 * schwiti6190
 * Logo Design by Finals Farming
-___
 
-## Attributions
-Please see [`__Attributions.md`](https://github.com/Courseplay/Courseplay_FS22/blob/master/__Attributions.md) for more information.
+### Translations
+* Czech: SniperKittenCZ, LadikSmith
+* Dutch: Thodor12
+* French: Lactic68
+* Hungarian: 
+* Italian: Markus33-ITA, Roby1164, Cristiano Magro
+* Polish: Ziuta
+* Portuguese (BR): Admilson Alfonso
+* Portuguese (PT): 
+* Russian: Dzmitry Danilau, Gonimy-Vetrom
+* Spanish: Alfredo Prieto
 ___
 
 ## Supporter
