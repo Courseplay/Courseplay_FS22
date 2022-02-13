@@ -4,6 +4,7 @@
     <!-- SV translation By piplarsson -->
 		<text name="CP_activated" 																		text="Aktiverad" />
 		<text name="CP_deactivated" 																	text="Avaktiverad" />
+		<text name="CP_automatic" 																		text="Automatisk" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 		
