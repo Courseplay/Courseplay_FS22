@@ -26,6 +26,8 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v14.6
+        with:
+          since_last_remote_commit: true
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
