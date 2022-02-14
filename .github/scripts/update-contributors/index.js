@@ -68,13 +68,8 @@ function updateInternalContributors(user, langs) {
     writeContributors(contributors);
 }
 
-function getLanguagesFromCommitFiles(sha) {
-    const output = execSync(`git diff-tree --no-commit-id --name-only -r ${sha}`).toString("utf-8");
-    console.log("Changed files:");
-    console.log(output);
-    const translationFiles = output
-        .split("\n")
-        .filter(item => item.startsWith("translations/"));
+function getLanguagesFromCommitFiles(files) {
+    const translationFiles = files.filter(item => item.startsWith("translations/"));
     console.log("Changed translation files:");
     console.log(translationFiles);
     return translationFiles
@@ -91,8 +86,8 @@ function getLanguagesFromCommitFiles(sha) {
 // Script start
 const args = process.argv.slice(2);
 const user = args[0];
-const sha = args[1];
+const files = args.slice(1);
 
-const langs = getLanguagesFromCommitFiles(sha);
+const langs = getLanguagesFromCommitFiles(files);
 updateInternalContributors(user, langs);
 createContributorsFile();

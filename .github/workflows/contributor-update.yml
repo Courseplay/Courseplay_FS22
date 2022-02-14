@@ -26,12 +26,10 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v14.6
-      - name: List all changed files
-        run: echo ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
-          node index.js ${{ github.actor }} ${{ github.sha }}
+          node index.js ${{ github.actor }} ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Commit files
         continue-on-error: true
         run: |
