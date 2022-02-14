@@ -6,17 +6,20 @@
 
 ### Translators
 * Czech: [SniperKittenCZ](/SniperKittenCZ), [Thodor12](/Thodor12), [chroja](/chroja)
-* Danish: [o0bonde](/o0bonde)
+* Danish: [Thodor12](/Thodor12), [o0bonde](/o0bonde)
 * Dutch: [Thodor12](/Thodor12)
-* French: [Lactic68](/Lactic68)
-* German: [RealNeo80](/RealNeo80)
-* Italian: [Roby1164](/Roby1164)
+* English: [Thodor12](/Thodor12)
+* French: [Lactic68](/Lactic68), [Thodor12](/Thodor12)
+* German: [RealNeo80](/RealNeo80), [Thodor12](/Thodor12)
+* Hungarian: [Thodor12](/Thodor12)
+* Italian: [Roby1164](/Roby1164), [Thodor12](/Thodor12)
 * Japanese: [Thodor12](/Thodor12), [kgdtuu](/kgdtuu)
-* Polish: [KITT3000](/KITT3000)
-* Portuguese: [Admilson](/Admilson)
-* Russian: [Gonimy-Vetrom](/Gonimy-Vetrom)
-* Spanish: [KCHARRO](/KCHARRO), [aorek](/aorek)
-* Swedish: [piplarsson](/piplarsson)
+* Polish: [KITT3000](/KITT3000), [Thodor12](/Thodor12)
+* Portuguese: [Admilson](/Admilson), [Thodor12](/Thodor12)
+* Russian: [Gonimy-Vetrom](/Gonimy-Vetrom), [Thodor12](/Thodor12)
+* Slovenian: [Thodor12](/Thodor12)
+* Spanish: [KCHARRO](/KCHARRO), [Thodor12](/Thodor12), [aorek](/aorek)
+* Swedish: [Thodor12](/Thodor12), [piplarsson](/piplarsson)
 
 Logo Design by Finals Farming
 
