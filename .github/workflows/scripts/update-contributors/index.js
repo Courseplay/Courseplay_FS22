@@ -1,17 +1,19 @@
+const { execSync } = require("child_process");
 const { readFileSync, writeFileSync } = require("fs");
 const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "language" });
+const translationFileNameRegexp = /translation_(.{2})\.xml/;
 
 function getUserTag(name) {
     return `@${name}`;
 }
 
 function readContributors() {
-    const data = readFileSync("contributors.json", "utf-8");
+    const data = readFileSync("./contributors.json", "utf-8");
     return JSON.parse(data);
 }
 
 function writeContributors(contributors) {
-    writeFileSync("contributors.json", JSON.stringify(contributors), "utf-8");
+    writeFileSync("./contributors.json", JSON.stringify(contributors), "utf-8");
 }
 
 function getContributorList() {
@@ -65,10 +67,29 @@ function updateInternalContributors(user, langs) {
     writeContributors(contributors);
 }
 
+function getLanguagesFromCommitFiles(sha) {
+    const output = execSync(`git diff-tree --no-commit-id --name-only -r ${sha}`);
+    const translationFiles = output
+        .toString("utf-8")
+        .split("\n")
+        .filter(item => item.startsWith("translations/"));
+    translationFiles.push("translations/translati.xml");
+    return translationFiles
+        .map(m => {
+            const match = m.match(translationFileNameRegexp);
+            if (match && match[1]) {
+                return match[1];
+            }
+            return null;
+        })
+        .filter(f => f !== null);
+}
+
 // Script start
 const args = process.argv.slice(2);
 const user = args[0];
-const langs = args.slice(1);
+const sha = args[1];
 
+const langs = getLanguagesFromCommitFiles(sha);
 updateInternalContributors(user, langs);
 createContributorsFile();
