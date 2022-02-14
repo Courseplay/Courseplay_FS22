@@ -1,4 +1,3 @@
-const { execSync } = require("child_process");
 const { readFileSync, writeFileSync } = require("fs");
 const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "language" });
 const translationFileNameRegexp = /translation_(.{2})\.xml/;
