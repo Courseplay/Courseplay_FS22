@@ -9,7 +9,6 @@ on:
   pull_request:
     paths:
       - "**/translations/**"
-  workflow_dispatch:
 
 # The list of jobs this workflow executes
 jobs:
