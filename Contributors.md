@@ -10,7 +10,7 @@
 * Dutch: [Thodor12](/Thodor12)
 * English: [Thodor12](/Thodor12)
 * French: [Lactic68](/Lactic68)
-* German: [RealNeo80](/RealNeo80)
+* German: [RealNeo80](/RealNeo80), [Thodor12](/Thodor12)
 * Italian: [Roby1164](/Roby1164)
 * Japanese: [kgdtuu](/kgdtuu)
 * Polish: [KITT3000](/KITT3000)
