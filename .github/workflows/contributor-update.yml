@@ -3,10 +3,7 @@ name: Update contributors
 
 # Controls when the workflow will run
 on: 
-  push:
-    paths:
-      - "**/translations/**"
-  pull_request:
+  pull_request_target:
     paths:
       - "**/translations/**"
 
