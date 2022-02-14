@@ -8,6 +8,7 @@
 * Czech: [SniperKittenCZ](/SniperKittenCZ), [chroja](/chroja)
 * Danish: [o0bonde](/o0bonde)
 * Dutch: [Thodor12](/Thodor12)
+* English: [Thodor12](/Thodor12)
 * French: [Lactic68](/Lactic68)
 * German: [RealNeo80](/RealNeo80)
 * Italian: [Roby1164](/Roby1164)
