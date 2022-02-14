@@ -73,7 +73,6 @@ function getLanguagesFromCommitFiles(sha) {
         .toString("utf-8")
         .split("\n")
         .filter(item => item.startsWith("translations/"));
-    translationFiles.push("translations/translati.xml");
     return translationFiles
         .map(m => {
             const match = m.match(translationFileNameRegexp);
