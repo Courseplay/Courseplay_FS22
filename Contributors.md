@@ -1,11 +1,11 @@
 ## Credits
 ### Developers
-* @Tensuko
-* @pvaiko
-* @schwiti6190
+* [Tensuko](/Tensuko)
+* [pvaiko](/pvaiko)
+* [schwiti6190](/schwiti6190)
 
 ### Translators
-* Dutch: @Thodor12
+* Dutch: [Thodor12](/Thodor12)
 
 ### Other
 * Logo Design by Finals Farming
