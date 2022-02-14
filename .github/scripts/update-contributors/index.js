@@ -22,11 +22,13 @@ function getContributorList() {
 function getTranslatorContributorList() {
     const translators = readContributors().translators;
     return Object.keys(translators).reduce((prev, curr) => {
-        prev.push({
-            language: curr,
-            languageTranslated: regionNamesInEnglish.of(curr),
-            translators: translators[curr]
-        });
+        if (translators[curr].length > 0) {
+            prev.push({
+                language: curr,
+                languageTranslated: regionNamesInEnglish.of(curr),
+                translators: translators[curr]
+            });
+        }
         return prev;
     }, []);
 }
@@ -59,7 +61,8 @@ function updateInternalContributors(user, langs) {
         if (!contributors.translators[lang]) {
             contributors.translators[lang] = [];
         }
-        if (!contributors.translators[lang].find(item => item === user)) {
+        if (!contributors.translators[lang].find(item => item === user) &&
+            !contributors.main.find(item => item === user)) {
             contributors.translators[lang].push(user);
             console.log(`Adding contributor ${user} to language ${lang}`)
         }
