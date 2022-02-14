@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: "14"
       - name: Create local changes
+        continue-on-error: true
         run: |
           cd .github/scripts/update-contributors
           node index.js ${{ github.actor }} ${{ github.sha }}
