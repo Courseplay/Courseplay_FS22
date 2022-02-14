@@ -13,7 +13,7 @@ on:
 # The list of jobs this workflow executes
 jobs:
   update-contributors:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -33,13 +33,6 @@ jobs:
           cd .github/scripts/update-contributors
           node index.js ${{ github.actor }} ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Commit files
-        continue-on-error: true
-        run: |
-          git config --local user.email "github-actions@github.com"
-          git config --local user.name "github-actions"
-          git commit -m "Update contributors" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          commit_message: Apply php-cs-fixer changes
