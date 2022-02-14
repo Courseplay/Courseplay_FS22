@@ -6,7 +6,6 @@
 
 ### Translators
 * Dutch: [Thodor12](/Thodor12)
-* English: [Thodor12](/Thodor12)
 
 Logo Design by Finals Farming
 
