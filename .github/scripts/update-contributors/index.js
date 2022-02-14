@@ -51,7 +51,7 @@ function createContributorsFile() {
         .sort(compareTranslatedLanguages)
         .map(m => `* ${regionNamesInEnglish.of(m.language)}: ${m.translators.map(getUserTag).sort().join(", ")}`)
         .join("\n"));
-    writeFileSync("../../../../Contributors.md", data, "utf-8");
+    writeFileSync("../../../Contributors.md", data, "utf-8");
 }
 
 function updateInternalContributors(user, langs) {

@@ -24,7 +24,7 @@ jobs:
           node-version: "14"
       - name: Create local changes
         run: |
-          cd .github/workflows/scripts/update-contributors
+          cd .github/scripts/update-contributors
           node index.js ${{ github.actor }} ${{ github.sha }}
       - name: Commit files
         run: |
