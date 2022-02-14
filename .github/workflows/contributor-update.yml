@@ -22,10 +22,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
+      - run: git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
           node index.js ${{ github.actor }} ${{ github.sha }}
       - name: Commit files
         continue-on-error: true
