@@ -15,7 +15,7 @@ function CourseRecorder:update()
     local previousWaypoint = self.waypoints[#self.waypoints]
     local dist = previousWaypoint:getDistanceFromVehicle(self.vehicle)
     local angleDiff = math.abs(waypoint.yRot - previousWaypoint.yRot)
-    if dist > 5 or angleDiff > math.rad(3) then
+    if dist > 5 or angleDiff > math.rad(10) then
         self:addWaypoint(waypoint)
         self:debug('Recorded waypoint %d.', #self.waypoints)
     end
@@ -27,20 +27,31 @@ function CourseRecorder:start(vehicle)
     self:debug('Course recording started')
     self.waypoints = {}
     self:addWaypoint(self:getVehiclePositionAsWaypoint())
+    g_courseDisplay:updateWaypointSigns(self, self.waypoints)
+    g_courseDisplay:setSignsVisibility(self, true, CpVehicleSettings.SHOW_COURSE_ALL)
 end
 
 function CourseRecorder:stop()
     self.recording = false
     self:debug('Course recording stopped, recorded %d waypoints', #self.waypoints)
+    g_courseDisplay:setSignsVisibility(self, false, CpVehicleSettings.SHOW_COURSE_ALL)
+end
+
+function CourseRecorder:isRecording()
+    return self.recording
 end
 
 function CourseRecorder:getRecordedCourse()
     return Course(self.vehicle, self.waypoints)
 end
 
+function CourseRecorder:getRecordedWaypoints()
+    return self.waypoints
+end
+
 function CourseRecorder:addWaypoint(waypoint)
     table.insert(self.waypoints, waypoint)
-    g_courseDisplay:addSign(self.vehicle, nil, waypoint.x, waypoint.z, nil,
+    g_courseDisplay:addSign(self, nil, waypoint.x, waypoint.z, nil,
             math.deg(waypoint.yRot), nil, nil, 'regular');
 end
 

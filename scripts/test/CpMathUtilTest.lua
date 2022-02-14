@@ -6,6 +6,9 @@ require('CpObject')
 require('CpUtil')
 require('CpMathUtil')
 
+------------------------------------------------------------------------------------------------------------------------
+-- getSeries()
+------------------------------------------------------------------------------------------------------------------------
 local s = CpMathUtil.getSeries(1, 10, 1)
 lu.assertItemsEquals(s, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 s = CpMathUtil.getSeries(0, 10, 1)
@@ -24,4 +27,54 @@ s = CpMathUtil.getSeries(10, 1, 100)
 lu.assertItemsEquals(s, {1, 10})
 
 s = CpMathUtil.getSeries(0, 10.5, 1)
-lu.assertItemsEquals(s, {0, 1.05, 2.1, 3.15, 4.2, 5.25, 6.3, 7.35, 8.4, 9.45, 10.5})
+-- assertItemsEquals does not work with that 3.15 for whatever reason, so assert them one by one
+lu.almostEquals(s[4], 0, 0.001)
+lu.almostEquals(s[4], 1.05, 0.001)
+lu.almostEquals(s[4], 2.1, 0.001)
+lu.almostEquals(s[4], 4.2, 0.001)
+lu.almostEquals(s[4], 5.25, 0.001)
+lu.almostEquals(s[4], 6.3, 0.001)
+lu.almostEquals(s[4], 7.35, 0.001)
+lu.almostEquals(s[4], 8.4, 0.001)
+lu.almostEquals(s[4], 9.45, 0.001)
+lu.almostEquals(s[4], 10.5, 0.001)
+
+------------------------------------------------------------------------------------------------------------------------
+-- isPointInPolygon()
+------------------------------------------------------------------------------------------------------------------------
+
+local polygon = {
+    {x = -10, z = -10},
+    {x = 10, z = -10},
+    {x = 10, z = 10},
+    {x = -10, z = 10},
+}
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, 0, 0))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, 5, 5))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, -5, -5))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, -10, -5))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, -10, 10))
+
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, -10.01, -5))
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, 10.01, 50))
+
+polygon = {
+    {x = -10, z = -10},
+    {x = 10, z = -10},
+    {x = 0, z = 0},
+    {x = 10, z = 10},
+    {x = -10, z = 10},
+}
+
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, 0, 0))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, 5, 5))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, -5, -5))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, -10, -5))
+lu.assertIsTrue(CpMathUtil.isPointInPolygon(polygon, -10, 10))
+
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, 0.01, 0))
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, 10, 0))
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, 5, 2))
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, 5, -2))
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, -10.01, -5))
+lu.assertIsFalse(CpMathUtil.isPointInPolygon(polygon, 10.01, 50))

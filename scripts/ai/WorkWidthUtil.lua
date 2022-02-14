@@ -29,7 +29,7 @@ end
 ---@param logPrefix string
 function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
     logPrefix = logPrefix and logPrefix .. '  ' or ''
-    WorkWidthUtil.debug(object,logPrefix,'getting working width...')
+    WorkWidthUtil.debug(object, logPrefix, 'getting working width...')
     -- check if we have a manually configured working width
     local width = g_vehicleConfigurations:get(object, 'workingWidth')
 
@@ -37,10 +37,10 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
         if object.getVariableWorkWidth then 
             --- Gets the variable work width to the left + to the right.
             local w1,_,isValid1 = object:getVariableWorkWidth(true) 
-            local w2,_,isValid2 =    object:getVariableWorkWidth()
+            local w2,_,isValid2 = object:getVariableWorkWidth()
             if isValid1 and isValid2 then 
                 width = math.abs(w1) + math.abs(w2)
-                WorkWidthUtil.debug(object,logPrefix,'setting variable work width of %.1f.',width)
+                WorkWidthUtil.debug(object, logPrefix, 'setting variable work width of %.1f.', width)
             end
         end
     end
@@ -72,7 +72,7 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
             width = math.max( width, WorkWidthUtil.getAutomaticWorkWidth(implement.object, logPrefix))
         end
     end
-    WorkWidthUtil.debug(object,logPrefix,'working width is %.1f.',width)
+    WorkWidthUtil.debug(object, logPrefix, 'working width is %.1f.',width)
     return width
 end
 
@@ -90,12 +90,12 @@ function WorkWidthUtil.getWorkAreaWidth(object, logPrefix)
         local x, _, _ = localToLocal(wa.width, wa.start, 0, 0, 0)
         width = math.max(width, math.abs(x))
         local _, _, z = localToLocal(wa.height, wa.start, 0, 0, 0)
-        WorkWidthUtil.debug(object,logPrefix,'work area %d is %s, %.1f by %.1f m',
+        WorkWidthUtil.debug(object, logPrefix, 'work area %d is %s, %.1f by %.1f m',
                 i, g_workAreaTypeManager.workAreaTypes[wa.type].name, math.abs(x), math.abs(z)
         )
     end
     if width == 0 then
-        WorkWidthUtil.debug(object,logPrefix,'has NO work area.')
+        WorkWidthUtil.debug(object, logPrefix, 'has NO work area.')
     end
     return width
 end
@@ -105,60 +105,40 @@ end
 function WorkWidthUtil.getAIMarkerWidth(object, logPrefix)
     logPrefix = logPrefix or ''
     if object.getAIMarkers then
-        local aiLeftMarker, aiRightMarker = WorkWidthUtil.getRealAIMarkers(object)
+        local aiLeftMarker, aiRightMarker = object:getAIMarkers()
         if aiLeftMarker and aiRightMarker then
-            local left, _, _ = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0);
-            local right, _, _ = localToLocal(aiRightMarker, object.rootNode, 0, 0, 0);
-            local width, _, _ = localToLocal(aiLeftMarker, aiRightMarker, 0, 0, 0)
-            WorkWidthUtil.debug(object,logPrefix,'aiMarkers: left=%.2f, right=%.2f (width %.2f)',left, right,width)
-            if left < right then
-                left, right = right, left -- yes, lua can do this!
-                WorkWidthUtil.debug(object,logPrefix,'left < right -> switch -> left=%.2f, right=%.2f',left, right)
-            end
-            return left - right;
+            -- left/right is just for the log
+            local left, _, _ = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)
+            local right, _, _ = localToLocal(aiRightMarker, object.rootNode, 0, 0, 0)
+            local width = calcDistanceFrom(aiLeftMarker, aiRightMarker)
+            WorkWidthUtil.debug(object, logPrefix, 'aiMarkers: left=%.2f, right=%.2f (width %.2f)', left, right, width)
+            return width
         end
     end
-end
-
---- Get the AI Size markers or if those do not exist, just the normal AIMarkers. I'm sure someone somwhere
---- knows the difference, for plows, the size ones seem to be more accurate.
-function WorkWidthUtil.getRealAIMarkers(object)
-    local aiLeftMarker, aiRightMarker, aiBackMarker
-    if object.getAIMarkers then
-        aiLeftMarker, aiRightMarker, aiBackMarker = object:getAIMarkers()
-        -- TODO: for now, ignore the AI size markers
-        if false and object.getAISizeMarkers then
-            local aiSizeLeftMarker, aiSizeRightMarker, aiSizeBackMarker = object:getAISizeMarkers()
-            aiLeftMarker = aiSizeLeftMarker or aiLeftMarker
-            aiRightMarker = aiSizeRightMarker or aiRightMarker
-            aiBackMarker = aiSizeBackMarker or aiBackMarker
-        end
-    end
-    return aiLeftMarker, aiRightMarker, aiBackMarker
 end
 
 --- Gets ai markers for an object.
 ---@param object table
 ---@param logPrefix string
-function WorkWidthUtil.getAIMarkers(object,logPrefix,suppressLog)
-    local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getRealAIMarkers(object)
+function WorkWidthUtil.getAIMarkers(object, logPrefix, suppressLog)
+    local aiLeftMarker, aiRightMarker, aiBackMarker = object:getAIMarkers()
     if not aiLeftMarker or not aiRightMarker or not aiBackMarker then
         -- use the root node if there are no AI markers
         if not suppressLog then
-            WorkWidthUtil.debug(object,logPrefix,'has no AI markers, try work areas')
+            WorkWidthUtil.debug(object, logPrefix, 'has no AI markers, try work areas')
         end
         aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object)
         if not aiLeftMarker or not aiRightMarker or not aiLeftMarker then
             if not suppressLog then
-                WorkWidthUtil.debug(object,logPrefix,'has no work areas, giving up')
+                WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up')
             end
             return nil, nil, nil
         else
-            if not suppressLog then WorkWidthUtil.debug(object,logPrefix,'AI markers from work area set') end
+            if not suppressLog then WorkWidthUtil.debug(object, logPrefix, 'AI markers from work area set') end
             return aiLeftMarker, aiRightMarker, aiBackMarker
         end
     else
-        if not suppressLog then WorkWidthUtil.debug(object,logPrefix,'AI markers set') end
+        if not suppressLog then WorkWidthUtil.debug(object, logPrefix, 'AI markers set') end
         return aiLeftMarker, aiRightMarker, aiBackMarker
     end
 end
@@ -192,7 +172,7 @@ end
 function WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
     if object.spec_leveler then
         local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-        WorkWidthUtil.debug(object,logPrefix,'is a shield with work width: %.1f',width)
+        WorkWidthUtil.debug(object, logPrefix, 'is a shield with work width: %.1f',width)
         return width
     end
 end
@@ -202,7 +182,7 @@ end
 function WorkWidthUtil.getShovelWorkWidth(object,logPrefix)
     if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
-        WorkWidthUtil.debug(object,logPrefix,'is a shovel with work width: %.1f',width)
+        WorkWidthUtil.debug(object, logPrefix, 'is a shovel with work width: %.1f',width)
         return width
     end
 end
@@ -222,7 +202,7 @@ function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
             return
         end
         local f, b = 0,0
-        local aiLeftMarker, _, aiBackMarker = WorkWidthUtil.getRealAIMarkers(object)
+        local aiLeftMarker, _, aiBackMarker = object:getAIMarkers()
         if aiLeftMarker and aiBackMarker then
             _,_,b = localToLocal(aiBackMarker, object.rootNode, 0, 0, 0)
             _,_,f = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)
@@ -256,6 +236,6 @@ end
 
 ---@param object table
 ---@param logPrefix string
-function WorkWidthUtil.debug(object,logPrefix,str,...)
+function WorkWidthUtil.debug(object, logPrefix, str,...)
     CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: ' .. str, logPrefix or "", CpUtil.getName(object), ...)
 end

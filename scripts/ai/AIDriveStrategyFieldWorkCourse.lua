@@ -30,6 +30,8 @@ AIDriveStrategyFieldWorkCourse.myStates = {
     WAITING_FOR_LOWER_DELAYED = {},
     WAITING_FOR_STOP = {},
     WAITING_FOR_WEATHER = {},
+    WAITING_FOR_PATHFINDER = {},
+    DRIVING_TO_START_WAYPOINT = {},
     TURNING = {},
     TEMPORARY = {},
 }
@@ -57,17 +59,54 @@ function AIDriveStrategyFieldWorkCourse:delete()
     AIDriveStrategyFieldWorkCourse:superClass().delete(self)
     self:raiseImplements()
     TurnContext.deleteNodes(self.turnNodes)
+    self:rememberWaypointToContinueFieldWork()
+end
+
+function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
+    local course = self.vehicle:getFieldWorkCourse()
+    local numMultiTools = course:getMultiTools()
+    local laneNumber = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
+    if numMultiTools < 2 then
+        self:debug('Single vehicle fieldwork course')
+        return course
+    elseif laneNumber == 0 then
+        self:debug('Multitool course, center vehicle, using original course')
+        return course
+    else
+        self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d',laneNumber)
+        --- Lane number needs to be zero for only one vehicle.
+        --- Work width of a single vehicle.
+        local width = course:getWorkWidth() / numMultiTools
+        local offsetCourse = course:calculateOffsetCourse(numMultiTools, laneNumber, width,
+                                                        self.settings.symmetricLaneChange:getValue())
+        return offsetCourse
+    end
+end
+
+--- If the startAt setting is START_AT_LAST_POINT and a waypoint ix was saved the start at this wp.
+function AIDriveStrategyFieldWorkCourse:getStartingPointWaypointIx(course, startAt)
+    if startAt == CpJobParameters.START_AT_LAST_POINT then 
+        local lastWpIx = self:getRememberedWaypointToContinueFieldWork()
+        if lastWpIx then 
+            self:debug('Starting course at the last waypoint %d', lastWpIx)
+            return lastWpIx
+        end
+    end
+    return AIDriveStrategyFieldWorkCourse:superClass().getStartingPointWaypointIx(self, course, startAt)
 end
 
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
-
+    self.fieldWorkCourse = course
+    -- remember at which waypoint we started, especially for the convoy
+    self.startWaypointIx = startIx
+    self.vehiclesInConvoy = {}
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
     if distance > 2 * self.turningRadius then
-        self:debug('Start waypoint is far (%.1f m), use an alignment course to get there.', distance)
+        self:debug('Start waypoint is far (%.1f m), use pathfinding to get there.', distance)
         self.course = course
-        self:startAlignmentTurn(course, startIx, 1)
+        self:startCourseWithPathfinding(course, startIx)
     else
         self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
         self:startCourse(course, startIx)
@@ -78,7 +117,7 @@ end
 function AIDriveStrategyFieldWorkCourse:update()
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_TURN) then
-        if self.state == self.states.TURNING then
+        if self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_START_WAYPOINT then
             if self.turnContext then
                 self.turnContext:drawDebug()
             end
@@ -93,17 +132,18 @@ function AIDriveStrategyFieldWorkCourse:update()
             self.ppc:getCourse():draw()
         end
     end
+    self:updateImplementControllers()
 end
 
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
     self:updateFieldworkOffset()
-    self:updateImplementControllers()
+    self:updateLowFrequencyImplementControllers()
 
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, maxSpeed
-    
+
     ----------------------------------------------------------------
     if not moveForwards then
         gx, gz, _, maxSpeed = self.reverser:getDriveData()
@@ -114,7 +154,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         end
         self:setMaxSpeed(maxSpeed)
     else
-        self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
         gx, _, gz = self.ppc:getGoalPointPosition()
     end
     ----------------------------------------------------------------
@@ -137,9 +176,12 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         -- here delays the check for another cycle.
         self.state = self.states.WAITING_FOR_LOWER
         self:setMaxSpeed(0)
+    elseif self.state == self.states.WAITING_FOR_PATHFINDER then
+        self:setMaxSpeed(0)
     elseif self.state == self.states.WORKING then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
-    elseif self.state == self.states.TURNING then
+    elseif self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_START_WAYPOINT then
+        -- we use a turn for driving to the waypoint to start working
         local turnGx, turnGz, turnMoveForwards, turnMaxSpeed = self.aiTurn:getDriveData(dt)
         self:setMaxSpeed(turnMaxSpeed)
         -- if turn tells us which way to go, use that, otherwise just do whatever PPC tells us
@@ -149,6 +191,12 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
     self:setAITarget()
+    if self.state ~= self.states.DRIVING_TO_START_WAYPOINT then
+        -- we put this to the end after everyone already set a a max speed as it reduces the current max speed setting
+        -- to slow vehicles down
+        self:keepConvoyTogether()
+    end
+    self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
@@ -164,6 +212,22 @@ function AIDriveStrategyFieldWorkCourse:setAITarget()
     self.vehicle.aiDriveDirection = { dx, dz }
     local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
     self.vehicle.aiDriveTarget = { x, z }
+end
+
+--- Slow down a bit towards the end of course or near direction changes, and later maybe where the turn radius is
+--- small, unless we are reversing, as then (hopefully) we already have a slow speed set
+function AIDriveStrategyFieldWorkCourse:limitSpeed()
+    if self.maxSpeed > self.settings.turnSpeed:getValue() and
+            not self.ppc:isReversing() and
+            (self.ppc:getCourse():isCloseToLastWaypoint(15) or
+                    self.ppc:getCourse():isCloseToNextDirectionChange(15)) then
+
+        local maxSpeed = self.maxSpeed
+        self:setMaxSpeed(self.settings.turnSpeed:getValue())
+        self:debugSparse('speed %.1f limited to turn speed %.1f', maxSpeed, self.maxSpeed)
+    else
+        self:debugSparse('speed %.1f', self.maxSpeed)
+    end
 end
 
 -- remember a course to start
@@ -184,24 +248,29 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
-    if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler) then
-        local balerController = BalerController(vehicle)
-        balerController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        table.insert(self.controllers, balerController)
+    local function addController(class, spec, states)
+        --- If multiple implements have this spec, then add a controller for each implement.
+        for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do 
+            local controller = class(vehicle, childVehicle)
+            controller:setDisabledStates(states)
+            table.insert(self.controllers, controller)
+        end
     end
-    if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
-        local baleWrapperController = BaleWrapperController(vehicle)
-        baleWrapperController:setDisabledStates({
-            self.states.ON_CONNECTING_TRACK,
-            self.states.TEMPORARY,
-            self.states.TURNING
-        })
-        table.insert(self.controllers, baleWrapperController)
-    end
+    local defaultDisabledStates = {
+        self.states.ON_CONNECTING_TRACK,
+        self.states.TEMPORARY,
+        self.states.TURNING,
+        self.states.DRIVING_TO_START_WAYPOINT
+    }
+    addController(BalerController, Baler, defaultDisabledStates)
+    addController(BaleWrapperController, BaleWrapper, defaultDisabledStates)
+    addController(BaleLoaderController, BaleLoader, defaultDisabledStates)
+
+    addController(FertilizingSowingMachineController, FertilizingSowingMachine, defaultDisabledStates)
+    addController(ForageWagonController, ForageWagon, defaultDisabledStates)
+
+    addController(FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
+    addController(MowerController, Mower, defaultDisabledStates)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
@@ -338,7 +407,8 @@ end
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
-    if self.state ~= self.states.TURNING and self.state ~= self.states.ON_CONNECTING_TRACK
+    if self.state ~= self.states.TURNING and self.state ~= self.states.DRIVING_TO_START_WAYPOINT
+            and self.state ~= self.states.ON_CONNECTING_TRACK
             and self.course:isTurnStartAtIx(ix) then
         if self.state == self.states.INITIAL then
             self:debug('Waypoint change (%d) to turn start right after starting work, lowering implements.', ix)
@@ -388,6 +458,8 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyFieldWorkCourse:onLastWaypointPassed()
+    -- reset offset we used for the course ending to not miss anything
+    self.aiOffsetZ = 0
     self:debug('Last waypoint of the course reached.')
     -- by default, stop the job
     self:finishFieldWork()
@@ -411,19 +483,30 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
 end
 
 --- Start an alignment turn between the current vehicle position and waypoint endIx of the course
+---@param course Course the course to start
 ---@param startIx number waypoint of the course used as a turn start waypoint, not really used for anything other
---- than creating a turn context
----@param endIx number and where it should end
-function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(course, startIx, endIx)
+--- than creating a turn context. You can use the same waypoint index for startIx and endIx
+---@param endIx number and where it should end. This is actually the waypoint where you want to start the fieldwork course
+---@param alignmentCourse Course an (optional) course to the target (for instance, created by the pathfinder), if nil,
+--- we create an alignment course ourselves (non-pathfinder)
+function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(course, startIx, endIx, alignmentCourse)
+    -- This is what resume fieldwork will use
+    self.course = course
     local fm, bm = self:getFrontAndBackMarkers()
     self.ppc:setShortLookaheadDistance()
     self.turnContext = TurnContext(course, startIx, endIx, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-    local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-            course, endIx, math.min(-self.frontMarkerDistance, 0)):getCourse()
+    if alignmentCourse then
+        -- the caller supplied a course
+        self:debug('Use pathfinder course to first work waypoint')
+    else
+        self:debug('Generate alignment course to first work waypoint')
+        alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+                course, endIx, math.min(-self.frontMarkerDistance, 0)):getCourse()
+    end
     if alignmentCourse then
         self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, alignmentCourse, course, self.workWidth)
-        self.state = self.states.TURNING
+        self.state = self.states.DRIVING_TO_START_WAYPOINT
     else
         self:debug('Could not create alignment course to first up/down row waypoint, continue without it')
         self.state = self.states.WAITING_FOR_LOWER
@@ -448,14 +531,14 @@ end
 function AIDriveStrategyFieldWorkCourse:stopAndChangeToUnload()
     -- TODO_22 run unload/refill with the vanilla helper?
     if false and self.unloadRefillCourse and not self.heldForUnloadRefill then
-        self:rememberWaypointToContinueFieldwork()
+        self:rememberWaypointToContinueFieldWork()
         self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.storage.continueFieldworkAtWaypoint or -1)
         self:changeToUnloadOrRefill()
         self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
     else
         if self.vehicle.spec_autodrive and self.vehicle.cp.settings.autoDriveMode:useForUnloadOrRefill() then
             -- Switch to AutoDrive when enabled
-            self:rememberWaypointToContinueFieldwork()
+            self:rememberWaypointToContinueFieldWork()
             self:stopWork()
             self:foldImplements()
             self.state = self.states.ON_UNLOAD_OR_REFILL_WITH_AUTODRIVE
@@ -580,18 +663,23 @@ function AIDriveStrategyFieldWorkCourse:getTurnEndForwardOffset()
     return 0
 end
 
-function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldwork()
-    self.storage.continueFieldworkAtWaypoint = self:getBestWaypointToContinueFieldwork()
+function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldWork()
+    local ix = self:getBestWaypointToContinueFieldWork()
+    self.vehicle:rememberCpLastWaypointIx(ix)
 end
 
-function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldwork()
-    local bestKnownCurrentWpIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getCurrentWaypointIx()
+function AIDriveStrategyFieldWorkCourse:getRememberedWaypointToContinueFieldWork()
+    return self.vehicle:getCpLastRememberedWaypointIx()
+end
+
+function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldWork()
+    local bestKnownCurrentWpIx = self.fieldWorkCourse:getLastPassedWaypointIx() or self.fieldWorkCourse:getCurrentWaypointIx()
     -- after we return from a refill/unload, continue a bit before the point where we left to
     -- make sure not leaving any unworked patches
-    local bestWpIx = self.course:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
+    local bestWpIx = self.fieldWorkCourse:getPreviousWaypointIxWithinDistance(bestKnownCurrentWpIx, 10)
     if bestWpIx then
         -- anything other than a turn start wp will work fine
-        if self.course:isTurnStartAtIx(bestWpIx) then
+        if self.fieldWorkCourse:isTurnStartAtIx(bestWpIx) then
             bestWpIx = bestWpIx - 1
         end
     else
@@ -617,20 +705,21 @@ end
 ---@param isAllowed boolean is switch ridge markers allowed ?
 function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
 	-- no ridge markers with multitools to avoid collisions.
-	if self.settings.ridgeMarkersAutomatic:is(false) 
+	if self.settings.ridgeMarkersAutomatic:is(false)
 
-     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1 
-    then 
+     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1
+    then
         self:debug('Ridge marker handling disabled.')
         return
      end
 
-    local function setRidgeMarkerState(self,vehicle,state)
+    local function setRidgeMarkerState(self, vehicle, state)
         local spec = vehicle.spec_ridgeMarker
         if spec then
+            -- yes, another Giants typo
             if spec.numRigdeMarkers > 0 then
                 if spec.ridgeMarkerState ~= state then
-                    self:debug('Setting ridge markers to %d for %s', state,vehicle:getName())
+                    self:debug('Setting ridge markers to %d for %s', state, vehicle:getName())
                     vehicle:setRidgeMarkerState(state)
                 end
             end
@@ -638,11 +727,11 @@ function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
     end
 
     local state = isAllowed and  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
-    self:debug('Target ridge marker state is %d.',state)
-    setRidgeMarkerState(self,self.vehicle,state)
+    self:debug('Target ridge marker state is %d.', state)
+    setRidgeMarkerState(self, self.vehicle, state)
 
     for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
-        setRidgeMarkerState(self,implement.object,state)
+        setRidgeMarkerState(self, implement.object, state)
     end
 
 end
@@ -657,20 +746,214 @@ function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)
     end
 end
 
+
+--- Updates the status variables.
+---@param status CpStatus
+function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
+    ---@type Course
+    if self.fieldWorkCourse then
+        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
+    end
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Convoy management
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyFieldWorkCourse:hasSameCourse(otherVehicle)
+    local otherCourse = otherVehicle.getFieldWorkCourse and otherVehicle:getFieldWorkCourse()
+     return otherCourse and
+            otherCourse:getName() == self.fieldWorkCourse:getName() and
+            otherCourse:getMultiTools() == self.fieldWorkCourse:getMultiTools()
+end
+
+function AIDriveStrategyFieldWorkCourse:getProgress()
+    return self.fieldWorkCourse:getProgress()
+end
+
+function AIDriveStrategyFieldWorkCourse:countVehiclesInConvoy()
+    local vehiclesInConvoyDone, vehiclesInConvoyActive = 0, 0
+    for v, _ in pairs(self.vehiclesInConvoy) do
+        local _, _, done = v:getCpFieldWorkProgress()
+        if done then
+            vehiclesInConvoyDone = vehiclesInConvoyDone + 1
+        elseif v:getIsCpFieldWorkActive() then
+            vehiclesInConvoyActive = vehiclesInConvoyActive + 1
+        end
+    end
+    self:debugSparse('convoy: need %d vehicles, %d active, %d done',
+            self.fieldWorkCourse:getMultiTools(), vehiclesInConvoyActive, vehiclesInConvoyDone)
+    return vehiclesInConvoyActive + vehiclesInConvoyDone, vehiclesInConvoyDone, vehiclesInConvoyActive
+end
+
+function AIDriveStrategyFieldWorkCourse:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, closestVehicleBack, closestDistanceBack)
+    if vehiclesInConvoyTotal == 1 then
+        -- it's just me, so rather than checking the vehicle behind me, check the distance from the waypoint
+        -- I started the course from, this way I can drive forward a bit, making room for the others
+        closestDistanceBack = self.fieldWorkCourse:getDistanceBetweenWaypoints(self.startWaypointIx,
+                self.fieldWorkCourse:getCurrentWaypointIx())
+        self:debugSparse('convoy: I am the only vehicle in the convoy, checking distance to start waypoint %d.',
+                self.startWaypointIx)
+    end
+    local maxDistance = self.settings.convoyDistance:getValue()
+    if closestDistanceBack > maxDistance then
+        self:debugSparse('convoy: too far (%.1f m > %.1f) forward, slowing down.',
+                closestDistanceBack, maxDistance)
+        local factor = math.max(0, (1 - 2 *(closestDistanceBack - maxDistance) / maxDistance))
+        local maxSpeed = closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed
+        self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
+    end
+end
+
+function AIDriveStrategyFieldWorkCourse:controlFollowingVehicleInConvoy(vehiclesInConvoyTotal, closestDistanceFront)
+    -- we do not have to wait for those members who are now done. As soon as there's at least two of us, we start
+    -- so others have room at the starting point
+    if vehiclesInConvoyTotal < 2 then
+        self:debugSparse('convoy: ... waiting ...')
+        self:setMaxSpeed(0)
+        return
+    end
+    local minDistance = self.settings.convoyDistance:getValue()
+    if closestDistanceFront < minDistance then
+        self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
+                closestDistanceFront, minDistance)
+        -- the closer we are, the slower we drive, but stop at half the minDistance
+        local maxSpeed = self.maxSpeed *
+                math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
+        -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
+        -- only when the maxSpeed we return in getDriveData is exactly 0
+        self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
+    end
+end
+
+--- When working in a group (convoy), do I have to hold so I don't get too close to the
+-- other vehicles in front of me?
+--- We can't just use the waypoint index as each vehicle in the convoy has its own course
+--- generated and for instance on the headland the vehicles on the inside will have less
+--- waypoints, so we operate with progress percentage
+function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
+
+    if self.fieldWorkCourse:getName() == '' or self.fieldWorkCourse:getMultiTools() < 2 then
+        -- course has no name or non-multitool course, nothing to do here
+        return
+    end
+
+    --get my position in convoy and look for the closest combine
+    local position = 1
+    local closestDistanceFront, closestDistanceBack = math.huge, math.huge
+    local closestVehicleFront, closestVehicleBack
+    -- remember every vehicle who was ever part of this convoy since we started
+    self.vehiclesInConvoy[self.vehicle] = true
+    for _, otherVehicle in pairs(g_currentMission.vehicles) do
+        if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) then
+            self:debugSparse('has same course as %s', CpUtil.getName(otherVehicle))
+            if otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
+                local otherProgress, otherWpIx, otherIsDone = otherVehicle:getCpFieldWorkProgress()
+                if otherProgress and otherWpIx then
+                    self.vehiclesInConvoy[otherVehicle] = true
+                    local myProgress, myWpIx = self:getProgress()
+                    local length = self.fieldWorkCourse:getLength()
+                    self:debugSparse(
+                            'convoy: my progress at waypoint %d is %.3f, %s progress at waypoint %d is %.3f (done %s), 100 %d m',
+                            myWpIx, myProgress * 100, CpUtil.getName(otherVehicle),
+                            otherWpIx, otherProgress * 100, otherIsDone, length)
+                    if myProgress < otherProgress then
+                        position = position + 1
+                    end
+                    local distance = math.abs((otherProgress - myProgress)) * length
+                    -- try to remember the ones in front of us, so store only when its progress is bigger
+                    -- ignore whoever is done in front of us so we can finish our course too and don't just stop
+                    if distance < closestDistanceFront and otherProgress > myProgress and not otherIsDone then
+                        closestDistanceFront = distance
+                        closestVehicleFront = otherVehicle
+                    end
+                    if distance < closestDistanceBack and otherProgress <= myProgress then
+                        closestDistanceBack = distance
+                        closestVehicleBack = otherVehicle
+                    end
+                    self:debugSparse('convoy: my position %d, calculated distance from %s is %.2f m (closest %.3f m)',
+                            position, CpUtil.getName(otherVehicle), distance, closestDistanceFront)
+                else
+                    self:debugSparse('convoy: other vehicle (%s) progress not known', CpUtil.getName(otherVehicle))
+                end
+            end
+        end
+    end
+    -- check if everyone is still there
+    local vehiclesInConvoyTotal, _, _ = self:countVehiclesInConvoy()
+
+    if position > 1 then
+        -- slow down when I'm too close to the combine in front of me
+        self:controlFollowingVehicleInConvoy(vehiclesInConvoyTotal, closestDistanceFront)
+    elseif position == 1 then
+        -- if I am the first one and there are other vehicles, slow down if I'm too far ahead
+        self:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, closestVehicleBack, closestDistanceBack)
+    end
+    -- TODO: multiplayer?
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Pathfinding
+-----------------------------------------------------------------------------------------------------------------------
+---@param course Course
+---@param ix number
+function AIDriveStrategyFieldWorkCourse:startCourseWithPathfinding(course, ix)
+    if not self.pathfinder or not self.pathfinder:isActive() then
+        -- set a course so the PPC is able to do its updates.
+        self.course = course
+        self.ppc:setCourse(self.course)
+        self.ppc:initialize(ix)
+        self:rememberCourse(course, ix)
+        local x, _, z = course:getWaypointPosition(ix)
+        self.state = self.states.WAITING_FOR_PATHFINDER
+        local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+        -- if there is fruit at the target, create an area around it where the pathfinder ignores the fruit
+        -- so there's no penalty driving there. This is to speed up pathfinding when start harvesting for instance
+        local fruitAtTarget = PathfinderUtil.hasFruit(x, z, self.workWidth, self.workWidth)
+        self.pathfindingStartedAt = 0
+        local done, path
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
+                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
+                fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
+        if done then
+            return self:onPathfindingDoneToCourseStart(path)
+        else
+            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCourseStart)
+            return true
+        end
+    else
+        self:info('Pathfinder already active')
+        return false
+    end
+end
+
+function AIDriveStrategyFieldWorkCourse:onPathfindingDoneToCourseStart(path)
+    local course, ix = self:getRememberedCourseAndIx()
+    if path and #path > 2 then
+        self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
+                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
+        local courseToStart = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self:startAlignmentTurn(course, ix, ix, courseToStart)
+        return true
+    else
+        self:debug('Pathfinding to start fieldwork failed, using alignment course instead')
+        self:startAlignmentTurn(course, ix, ix)
+        return false
+    end
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Overwrite implement functions, to enable a different cp functionality compared to giants fieldworker.
 --- TODO: might have to find a better solution for these kind of problems.
 -----------------------------------------------------------------------------------------------------------------------
-
-local function emptyFunction(object,superFunc,...)
+local function emptyFunction(object, superFunc,...)
     local rootVehicle = object.rootVehicle
     if rootVehicle.getJob then 
-        if rootVehicle:getJob():isa(AIJobFieldWorkCp) then 
+        if rootVehicle:getIsCpActive() then
             return
         end
     end
     return superFunc(object,...)
 end
 --- Makes sure the automatic work width isn't being reset.
-VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart,emptyFunction)
-VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart,emptyFunction)
+VariableWorkWidth.onAIFieldWorkerStart = Utils.overwrittenFunction(VariableWorkWidth.onAIFieldWorkerStart, emptyFunction)
+VariableWorkWidth.onAIImplementStart = Utils.overwrittenFunction(VariableWorkWidth.onAIImplementStart, emptyFunction)

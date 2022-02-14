@@ -81,20 +81,29 @@ function CpFieldUtil.saveAllFields()
     local xmlFile = createXMLFile("cpFields", fileName, "CPFields");
     if xmlFile and xmlFile ~= 0 then
         for _, field in pairs(g_fieldManager:getFields()) do
-            local key = ("CPFields.field(%d)"):format(field.fieldId);
-            setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
-            local points = g_fieldScanner:findContour(field.posX, field.posZ)
-            setXMLInt(xmlFile, key .. '#numPoints', #points);
-            for i,point in ipairs(points) do
-                setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
-            end;
-
+            local valid, points = g_fieldScanner:findContour(field.posX, field.posZ)
+            if valid then
+                local key = ("CPFields.field(%d)"):format(field.fieldId);
+                setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
+                setXMLInt(xmlFile, key .. '#numPoints', #points);
+                for i,point in ipairs(points) do
+                    setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
+                end
+                local islandNodes = Island.findIslands( Polygon:new(CourseGenerator.pointsToXy(points)))
+                CourseGenerator.pointsToXzInPlace(islandNodes)
+                for i, islandNode in ipairs(islandNodes) do
+                    setXMLString(xmlFile, key .. ( ".islandNode%d#pos"):format( i ), ("%.2f %2.f"):format( islandNode.x, islandNode.z ))
+                end
+                CpUtil.info('Field %d saved', field.fieldId)
+            else
+                CpUtil.info('Field %d could not be saved', field.fieldId)
+            end
         end
         saveXMLFile(xmlFile);
         delete(xmlFile);
         print(string.format('Saved all fields to %s', fileName))
     else
-        print("Error: Courseplay's custom fields could not be saved to " .. CpManager.cpCoursesFolderPath);
+        print("Error: field could not be saved to " .. CpManager.cpCoursesFolderPath);
     end;
 end
 

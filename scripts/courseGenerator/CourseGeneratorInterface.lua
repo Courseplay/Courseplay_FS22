@@ -22,15 +22,19 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   rowsToSkip,
 										   rowsPerLand,
 										   islandBypassMode,
-										   fieldMargin
+										   fieldMargin,
+										   multiTools,
+										   pipeOnLeftSide
 )
-
 	CourseGenerator.debug('Generating course, clockwise %s, width %.1f m, turn radius %.1f m, headlands %d, startOnHeadland %s',
 			tostring(isClockwise), workWidth, turnRadius, numberOfHeadlands, tostring(startOnHeadland))
 	CourseGenerator.debug('                   headland corner %d, headland overlap %d, center mode %d',
 			headlandCornerType, headlandOverlapPercent, centerMode)
 	CourseGenerator.debug('                   row direction %d, rows to skip %d, rows per land %d',
 			rowDirection, rowsToSkip, rowsPerLand)
+	CourseGenerator.debug('					  multiTools %d, pipe on left %s',
+			multiTools, pipeOnLeftSide)
+
 
 	--------------------------------------------------------------------------------------------------------------------
 	-- Headland settings
@@ -66,7 +70,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		nRowsToSkip = rowsToSkip,
 		mode = centerMode,
 		nRowsPerLand = rowsPerLand or 6,
-		pipeOnLeftSide = true
+		pipeOnLeftSide = pipeOnLeftSide
 	}
 
 	--------------------------------------------------------------------------------------------------------------------
@@ -83,6 +87,9 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local field = {}
 	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
 	field.boundary:calculateData()
+
+	--- Multiplies the workWidth with the number of targeted vehicles.
+	workWidth = workWidth * multiTools
 
 	local status, ok = xpcall(generateCourseForField, function(err)
 		printCallstack();
@@ -103,7 +110,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 
 	--removeRidgeMarkersFromLastTrack(field.course,
 	--	vehicle.cp.courseGeneratorSettings.startOnHeadland:is(CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS))
-	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, 1)
+	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, multiTools)
 	course:setFieldPolygon(fieldPolygon)
 	return status, ok, course
 end

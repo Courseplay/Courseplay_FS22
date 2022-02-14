@@ -1,11 +1,13 @@
 ---
 name: Bug report singleplayer
-about: Create a report to help us improve
+about: Create a report to help us improve.
 title: "[BUG_SP]"
 labels: bug
 assignees: ''
 
 ---
+**READ FIRST**
+https://github.com/Courseplay/Courseplay_FS22/wiki
 
 **Steps to reproduce**
 Steps to reproduce the behavior.
@@ -31,7 +33,7 @@ please check out the readme at the github front page.
 Map played on.
 
 **Vehicles/ implements involved**
-Wich vehicle or implement?
+Which vehicle or implement?
 Mod yes/no ?
 
 **Relevant script mods**

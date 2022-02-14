@@ -58,8 +58,7 @@ PurePursuitController = CpObject()
 -- constructor
 function PurePursuitController:init(vehicle)
 	self.normalLookAheadDistance = math.min(vehicle.maxTurningRadius, 6)
-	self.shortLookaheadDistance = self.normalLookAheadDistance / 2
-	self.veryShortLookaheadDistance = 2
+	self.shortLookaheadDistance = math.max(2, self.normalLookAheadDistance / 2)
 	-- normal lookahead distance
 	self.baseLookAheadDistance = self.normalLookAheadDistance
 	-- adapted look ahead distance 
@@ -113,7 +112,7 @@ function PurePursuitController:setCourse(course)
 	self.course = course
 end
 
-function PurePursuitController:getCourse(course)
+function PurePursuitController:getCourse()
 	return self.course
 end
 
@@ -317,7 +316,7 @@ function PurePursuitController:havePassedWaypoint(wpNode)
 		if not self.lastPassedWaypointIx or (self.lastPassedWaypointIx ~= wpNode.ix) then
 			self.lastPassedWaypointIx = wpNode.ix
 			self:debug('waypoint %d passed, dz: %.1f %s %s', wpNode.ix, dz,
-				self.course.waypoints[wpNode.ix].rev and 'reversed' or '',
+				self.course.waypoints[wpNode.ix].rev and 'reverse' or '',
 				self.course:switchingDirectionAt(wpNode.ix) and 'switching direction' or '')
 			-- notify listeners about the passed waypoint
 			self.sendWaypointPassed = self.lastPassedWaypointIx

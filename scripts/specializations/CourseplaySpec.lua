@@ -16,24 +16,34 @@ function CourseplaySpec.prerequisitesPresent(specializations)
 end
 
 function CourseplaySpec.registerEventListeners(vehicleType)	
---	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
+	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CourseplaySpec)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CourseplaySpec)
---    SpecializationUtil.registerEventListener(vehicleType, "getStartAIJobText", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CourseplaySpec)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CourseplaySpec)
+    SpecializationUtil.registerEventListener(vehicleType, "onDraw", CourseplaySpec)
+end
 
+function CourseplaySpec.registerEvents(vehicleType)	
+    SpecializationUtil.registerEvent(vehicleType, "onCpUnitChanged")
 end
 
 function CourseplaySpec.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
-    SpecializationUtil.registerFunction(vehicleType, 'getCpAdditionalHotspotDetails', CourseplaySpec.getCpAdditionalHotspotDetails)
 end
 
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
-   -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getStartAIJobText", CourseplaySpec.getStartAIJobText)
   
 end
+
+
+function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
+
+end
+
+
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 ---------------------------------------------------------------------------------------------------------------------------
@@ -41,11 +51,17 @@ function CourseplaySpec:onLoad(savegame)
 	--- Register the spec: spec_courseplaySpec
     local specName = CourseplaySpec.MOD_NAME .. ".courseplaySpec"
     self.spec_courseplaySpec = self["spec_" .. specName]
-    local spec = self.spec_courseplaySpec
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], CourseplaySpec.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], CourseplaySpec.onUnitChanged, self)
+end
+
+
+function CourseplaySpec:onUnitChanged()
+    SpecializationUtil.raiseEvent(self,"onCpUnitChanged")
 end
 
 function CourseplaySpec:onPostLoad(savegame)
-
+  
 end
 
 function CourseplaySpec:saveToXMLFile(xmlFile, baseKey, usedModNames)
@@ -56,17 +72,9 @@ function CourseplaySpec:onEnterVehicle(isControlling)
     
 end
 
-function CourseplaySpec:onLeaveVehicle(isControlling)
+function CourseplaySpec:onLeaveVehicle(wasEntered)
    
 end
-
---- TODO: return all relevant values that should be displayed under the map hotspot.
-function CourseplaySpec:getCpAdditionalHotspotDetails()
-    --- time remaining in s
-    return 60
-end
-
-
 function CourseplaySpec:getReverseDrivingDirectionNode()
     local spec = self.spec_courseplaySpec
     if not spec.reverseDrivingDirectionNode and SpecializationUtil.hasSpecialization(ReverseDriving, self.specializations) then
@@ -97,6 +105,16 @@ function CourseplaySpec:getCollisionCheckActive(superFunc,...)
         return false
     end
 end
+
+--- Enriches the status data for the hud here.
+function CourseplaySpec:onUpdateTick()
+  
+end
+
+function CourseplaySpec:onDraw()
+    
+end
+
 
 AIDriveStrategyCollision.getCollisionCheckActive = Utils.overwrittenFunction(
         AIDriveStrategyCollision.getCollisionCheckActive, CourseplaySpec.getCollisionCheckActive

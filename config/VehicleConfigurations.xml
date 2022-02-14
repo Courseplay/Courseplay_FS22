@@ -68,6 +68,23 @@ You can define the following custom settings:
 	and the edge of the bale when the bale grabber is right where it should be to pick up the bale.
 	Courseplay will adjust this offset according to the bale's dimensions but you may want to add a little buffer.
 
+- raiseLate: boolean
+    The default behavior is to raise the implement when the front of the work area reaches the end of the row or
+    the field edge. This works great for rectangular shaped work areas but with other shapes (like a plow) it may
+    lead to unworked patches. With this setting true, Courseplay will wait until the end of the work area reaches
+    the field edge or row end before raising the implements.
+
+- lowerEarly: boolean
+    Similar to the above, the default behavior when starting to work is lower the implement when the back of the
+    work area reaches to row start/field edge. Setting this to true will make Courseplay lowere the implement as
+    soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
+    work areas such as a plow.
+
+- modName: Name of the .zip file (without '.zip')
+    In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
+    add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
+    Note: Only 2 of the same .xml files can be added.
+
 -->
 <VehicleConfigurations>
     <!--[GIANTS]-->
@@ -75,12 +92,21 @@ You can define the following custom settings:
     <!-- Harvesters -->
     <!-- Implements -->
 
+    <!-- Agromasz POV 5XL -->
+    <Vehicle name="pov5xl.xml"
+             raiseLate="true"
+             lowerEarly="true"
+    />
+    <!--\vehicles\andersonGroup-->
+    <Vehicle name="rbm2000.xml"
+             toolOffsetX="-2.7"
+    />
     <!--\Vehicles\amazone-->
     <Vehicle name="citan15001C.xml"
              implementWheelAlwaysOnGround = "true"
     />
     <!--\vehicles\arcusin-->
-    <Vehicle name="arcusinFSX6372.xml"
+    <Vehicle name="fsx6372.xml"
              toolOffsetX="-2.4"
              balerUnloadDistance="-3.8"
     />
@@ -98,7 +124,7 @@ You can define the following custom settings:
              noReverse="true"
     />
     <!--\vehicles\kuhn-->
-    <Vehicle name="kuhnSW4014.xml"
+    <Vehicle name="sw4014.xml"
              toolOffsetX="-2.5"
              noReverse="true"
     />
@@ -133,9 +159,12 @@ You can define the following custom settings:
     <Vehicle name="titan18.xml"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
+             raiseLate = "true"
+             lowerEarly = "true"
 	/>
     <Vehicle name="karat12.xml"
              implementWheelAlwaysOnGround = "true"
+             lowerEarly = "true"
     />
     <Vehicle name="koralin9840.xml"
              implementWheelAlwaysOnGround = "true"
@@ -214,6 +243,10 @@ You can define the following custom settings:
              implementWheelAlwaysOnGround = "true"
              noReverse="true"
     />
+    <Vehicle name="ecomat.xml"
+             raiseLate = "true"
+             lowerEarly = "true"
+    />
     <!--Bourgault-->
     <Vehicle name="series3320.xml"
              noReverse="true"
@@ -276,5 +309,14 @@ You can define the following custom settings:
     <!--Mod: Horsch Pack-->
     <Vehicle name="leebPT350.xml"
              ignoreCollisionBoxesWhenFolded="true"
+    />
+    <!--Mod: Claas Krone Baler Pack With Lizard R90-->
+    <Vehicle name="quadrant5300.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
+    />
+    <Vehicle name="bigPack1290HDPVC.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
     />
 </VehicleConfigurations>

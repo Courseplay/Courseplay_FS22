@@ -405,6 +405,7 @@ end
 --- rear axle of the trailer), can be nil
 function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints, hitchLength)
 	self:debug('Start pathfinding between %s and %s', tostring(start), tostring(goal))
+	self:debug('  turnRadius = %.1f, allowReverse: %s', turnRadius, tostring(allowReverse))
 	self.constraints = constraints
 	-- a motion primitive is straight or a few degree turn to the right or left
 	local hybridMotionPrimitives = self:getMotionPrimitives(turnRadius, allowReverse)
@@ -450,6 +451,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 	self.iterations = 0
 	self.expansions = 0
 	self.yields = 0
+	local timer = openIntervalTimer()
 	while openList:size() > 0 and self.iterations < self.maxIterations do
 		-- pop lowest cost node from queue
 		---@type State3D
@@ -461,14 +463,16 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 			self:debug('Popped the goal (%d).', self.iterations)
 			self:rollUpPath(pred, goal)
 			constraints:showStatistics()
+			closeIntervalTimer(timer)
 			return true, self.path
 		end
-
 		self.count = self.count + 1
 		-- yield only when we were started in a coroutine.
-		if coroutine.running() and self.count % self.yieldAfter == 0 then
+		if coroutine.running() and (self.count % self.yieldAfter == 0 or readIntervalTimerMs(timer) > 20) then
 			self.yields = self.yields + 1
+			closeIntervalTimer(timer)
 			coroutine.yield(false)
+			timer = openIntervalTimer()
 		end
 		if not pred:isClosed() then
 			-- analytical expansion: try a Dubins/Reeds-Shepp path from here randomly, more often as we getting closer to the goal
@@ -484,6 +488,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 						table.remove(analyticPath, 1)
 						self:rollUpPath(pred, goal, analyticPath)
 						constraints:showStatistics()
+						closeIntervalTimer(timer)
 						return true, self.path
 					end
 				end
@@ -497,6 +502,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 					self:debug('Successor at the goal (%d).', self.iterations)
 					self:rollUpPath(succ, goal)
 					constraints:showStatistics()
+					closeIntervalTimer(timer)
 					return true, self.path
 				end
 
@@ -570,7 +576,8 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 	self:debug('No path found: iterations %d, yields %d, cost %.1f - %.1f, deltaTheta %.1f', self.iterations, self.yields,
             self.nodes.lowestCost, self.nodes.highestCost, math.deg(self.deltaThetaGoal))
 	constraints:showStatistics()
-    return true, nil
+	closeIntervalTimer(timer)
+	return true, nil
 end
 
 function HybridAStar:isPathValid(path)
@@ -580,6 +587,8 @@ function HybridAStar:isPathValid(path)
 			return false
 		end
 	end
+
+
 	return true
 end
 
@@ -853,10 +862,11 @@ HybridAStarWithPathInTheMiddle = CpObject(HybridAStarWithAStarInTheMiddle)
 ---@param hybridRange number range in meters around start/goal to use hybrid A *
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param path State3D[] path to use in the middle part
-function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path)
+---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
+function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate)
 	self.path = path
 	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', hybridRange, #path)
-	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000)
+	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()

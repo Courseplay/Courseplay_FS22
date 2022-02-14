@@ -242,15 +242,6 @@ function CourseGenerator.pointsToXyInPlace(points)
 	return points
 end
 
-
-function CourseGenerator.pointsToCxCz( points )
-	local result = {}
-	for _, point in ipairs( points) do
-		table.insert( result, { cx = point.x, cz = -point.y })
-	end
-	return result
-end
-
 function CourseGenerator.pointToXy( point )
 	return({ x = point.x or point.cx, y = - ( point.z or point.cz )})
 end

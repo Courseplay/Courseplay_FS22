@@ -51,8 +51,8 @@ function CourseDisplay:init()
 end
 
 function CourseDisplay:delete()
-	for _, vehicle in pairs(self.courses) do
-		for _, course in pairs(vehicle) do
+	for _, courseId in pairs(self.courses) do
+		for _, course in pairs(courseId) do
 			for _, section in pairs(course) do
 				self:deleteSign(section.sign)
 			end
@@ -64,7 +64,13 @@ function CourseDisplay:delete()
 	end
 end
 
-function CourseDisplay:addSign(vehicle, signType, x, z, rotX, rotY, insertIndex, distanceToNext, diamondColor)
+function CourseDisplay:addSign(courseId, signType, x, z, rotX, rotY, insertIndex, distanceToNext, diamondColor)
+
+	if self.courses[courseId] == nil then
+		-- this is the first sign for this course ID, set it up...
+		self:updateWaypointSigns(courseId, {{x = x, z = z, angle = rotY}})
+	end
+
 	signType = signType or 'normal'
 
 	local sign
@@ -100,20 +106,20 @@ function CourseDisplay:addSign(vehicle, signType, x, z, rotX, rotY, insertIndex,
 	end
 
 	local section = self.sections[signType]
-	insertIndex = insertIndex or (#self.courses[vehicle][section] + 1)
-	table.insert(self.courses[vehicle][section], insertIndex, signData)
+	insertIndex = insertIndex or (#self.courses[courseId][section] + 1)
+	table.insert(self.courses[courseId][section], insertIndex, signData)
 end
 
-function CourseDisplay:moveToBuffer(vehicle, vehicleIndex, signData)
+function CourseDisplay:moveToBuffer(courseId, vehicleIndex, signData)
 	local signType = signData.type
 	local section = self.sections[signType]
 
 	if #self.buffer[signType] < self.bufferMax[signType] then
 		setVisibility(signData.sign, false)
-		CourseDisplay:tableMove(self.courses[vehicle][section], self.buffer[signType], vehicleIndex)
+		CourseDisplay:tableMove(self.courses[courseId][section], self.buffer[signType], vehicleIndex)
 	else
 		self:deleteSign(signData.sign)
-		self.courses[vehicle][section][vehicleIndex] = nil
+		self.courses[courseId][section][vehicleIndex] = nil
 	end
 
 end
@@ -123,11 +129,11 @@ function CourseDisplay:setTranslation(sign, signType, x, z)
 	setTranslation(sign,	 x, terrainHeight + self.heightPos[signType], z)
 end
 
-function CourseDisplay:changeSignType(vehicle, vehicleIndex, oldType, newType)
+function CourseDisplay:changeSignType(courseId, vehicleIndex, oldType, newType)
 	local section = self.sections[oldType]
-	local signData = self.courses[vehicle][section][vehicleIndex]
-	self:moveToBuffer(vehicle, vehicleIndex, signData)
-	self:addSign(vehicle, newType, signData.posX, signData.posZ, signData.rotX, signData.rotY, vehicleIndex, nil, 'regular')
+	local signData = self.courses[courseId][section][vehicleIndex]
+	self:moveToBuffer(courseId, vehicleIndex, signData)
+	self:addSign(courseId, newType, signData.posX, signData.posZ, signData.rotX, signData.rotY, vehicleIndex, nil, 'regular')
 end
 
 function CourseDisplay:setWaypointSignLine(sign, distance, vis)
@@ -142,25 +148,24 @@ function CourseDisplay:setWaypointSignLine(sign, distance, vis)
 	end
 end
 
-function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
-	local waypoints = vehicle:getCpLegacyWaypoints()
+---@param courseId table any unique identifier for the owner of this course, usually courseId
+function CourseDisplay:updateWaypointSigns(courseId, waypoints, section, idx)
 	if not waypoints then return end
 
-	if self.courses[vehicle] == nil then
-		self.courses[vehicle] = {current = {}, crossing = {}}
+	if self.courses[courseId] == nil then
+		self.courses[courseId] = {current = {}, crossing = {}}
 	end
 
 	section = section or 'all' --section: 'all', 'crossing', 'current'
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, vehicle, 'Updating waypoint display for %s', section)
 
 	if section == 'all' or section == 'current' then
 		local neededPoints = #waypoints
 
 		--move not needed ones to buffer
-		if #self.courses[vehicle].current > neededPoints then
-			for j=#self.courses[vehicle].current, neededPoints+1, -1 do --go backwards so we can safely move/delete
-				local signData = self.courses[vehicle].current[j]
-				self:moveToBuffer(vehicle, j, signData)
+		if #self.courses[courseId].current > neededPoints then
+			for j=#self.courses[courseId].current, neededPoints+1, -1 do --go backwards so we can safely move/delete
+				local signData = self.courses[courseId].current[j]
+				self:moveToBuffer(courseId, j, signData)
 			end
 		end
 
@@ -215,7 +220,7 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
     				diamondColor = 'turnEnd'
     			end
 
-    			local existingSignData = self.courses[vehicle].current[i]
+    			local existingSignData = self.courses[courseId].current[i]
     			if existingSignData ~= nil then
     				if existingSignData.type == neededSignType then
     					self:setTranslation(existingSignData.sign, existingSignData.type, wp.x, wp.z)
@@ -233,17 +238,17 @@ function CourseDisplay:updateWaypointSigns(vehicle, section, idx)
     						end
     					end
     				else
-    					self:moveToBuffer(vehicle, i, existingSignData)
-    					self:addSign(vehicle, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
+    					self:moveToBuffer(courseId, i, existingSignData)
+    					self:addSign(courseId, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
     				end
     			else
-    				self:addSign(vehicle, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
+    				self:addSign(courseId, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
     			end
     		end
 		end
 	end
 
-	self:setSignsVisibility(vehicle)
+	self:setSignsVisibility(courseId, true, CpVehicleSettings.SHOW_COURSE_ALL)
 end
 
 function CourseDisplay:setSignColor(signData, colorName)
@@ -260,58 +265,39 @@ function CourseDisplay:deleteSign(sign)
 	delete(sign)
 end
 
---- Changes the visibility of the courses attached to the vehicle. 
----@param vehicle Vehicle
----@param forceHide boolean if true, then hide all waypoints.
-function CourseDisplay:setSignsVisibility(vehicle, forceHide)
-	if not forceHide and vehicle:getCpLegacyWaypoints() == nil then return end
-	if self.courses[vehicle] == nil or (#self.courses[vehicle].current == 0 and #self.courses[vehicle].crossing == 0) then
+--- Changes the visibility of the courses attached to the courseId. 
+---@param courseId courseId
+---@param isVisible boolean
+---@param displayMode number show none, all or start/stop only
+function CourseDisplay:setSignsVisibility(courseId, isVisible, displayMode)
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'setting waypoint visibility %s, mode %d', isVisible, displayMode)
+	if self.courses[courseId] == nil or (#self.courses[courseId].current == 0 and #self.courses[courseId].crossing == 0) then
 		return
 	end
-	local numSigns = #self.courses[vehicle].current
-	local settings = vehicle:getCpSettings()
-	local showVisualWaypointsState = settings.showCourse:getValue()
+
+	local numSigns = #self.courses[courseId].current
 
 	local vis, isStartEndPoint
-	for k,signData in pairs(self.courses[vehicle].current) do
+	for k,signData in pairs(self.courses[courseId].current) do
 		vis = false
 		isStartEndPoint = k <= 2 or k >= (numSigns - 2)
 
-		if (signData.type == 'wait' or signData.type == 'unload') and showVisualWaypointsState>=CpVehicleSettings.SHOW_COURSE_START_STOP then
+		if (signData.type == 'wait' or signData.type == 'unload') and displayMode >= CpVehicleSettings.SHOW_COURSE_START_STOP then
 			vis = true
 			local line = getChildAt(signData.sign, 0)
-			if showVisualWaypointsState==CpVehicleSettings.SHOW_COURSE_START_STOP then
-				setVisibility(line, isStartEndPoint and not forceHide)
+			if displayMode ==CpVehicleSettings.SHOW_COURSE_START_STOP then
+				setVisibility(line, isStartEndPoint and isVisible)
 			else
-				setVisibility(line, not forceHide)
+				setVisibility(line, isVisible)
 			end
 		else
-			if showVisualWaypointsState==CpVehicleSettings.SHOW_COURSE_ALL then
+			if displayMode ==CpVehicleSettings.SHOW_COURSE_ALL then
 				vis = true
-			elseif showVisualWaypointsState>=CpVehicleSettings.SHOW_COURSE_START_STOP and isStartEndPoint then
+			elseif displayMode >=CpVehicleSettings.SHOW_COURSE_START_STOP and isStartEndPoint then
 				vis = true
 			end
 		end
-
-		-- TODO_22
-		--if vehicle.cp.isRecording then
-		--	vis = true
-		--elseif forceHide or not vehicle:getIsEntered() then
-		--	vis = false
-		--end
-
-		setVisibility(signData.sign, vis and not forceHide)
-	end
-
-	for _,signData in pairs(self.courses[vehicle].crossing) do
-		-- TODO_22
-		local vis = true
-		--local vis = vehicle.cp.settings.showVisualWaypointsCrossPoint:get()
-		if forceHide or not vehicle:getIsEntered() then
-			vis = false
-		end
-
-		setVisibility(signData.sign, vis and not forceHide)
+		setVisibility(signData.sign, vis and isVisible)
 	end
 end
 

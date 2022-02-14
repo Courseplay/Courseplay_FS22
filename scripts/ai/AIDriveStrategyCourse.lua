@@ -58,7 +58,9 @@ function AIDriveStrategyCourse:debug(...)
 end
 
 function AIDriveStrategyCourse:debugSparse(...)
-    if g_updateLoopIndex % 100 == 0 then
+    -- since we are not called on every loop (maybe every 4th) use a prime number which should
+    -- make sure that we are called once in a while
+    if g_updateLoopIndex % 17 == 0 then
         self:debug(...)
     end
 end
@@ -76,7 +78,7 @@ function AIDriveStrategyCourse:setInfoText(text)
     self:debug(text)
 end
 
-function AIDriveStrategyCourse:setAIVehicle(vehicle)
+function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self:initializeImplementControllers(vehicle)
     ---@type FillLevelManager
@@ -97,32 +99,31 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle)
     self:setAllStaticParameters()
 
     -- TODO: this may or may not be the course we need for the strategy
-    local course = vehicle:getFieldWorkCourse()
+    local course = self:getGeneratedCourse(jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
-        local job = vehicle:getJob()
-        local startAt, startIx
-        if job and job.getCpJobParameters then
-            self:debug('Got job parameters, starting at %s', job:getCpJobParameters().startAt)
-            startAt = job:getCpJobParameters().startAt:getValue()
-        else
-            self:debug('No job parameters found, starting at nearest waypoint')
-            startAt = CpJobParameters.START_AT_NEAREST_POINT
-        end
-        if startAt == CpJobParameters.START_AT_NEAREST_POINT then
-            local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(vehicle:getAIDirectionNode())
-            self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
-            startIx = ixClosestRightDirection
-        else
-            self:debug('Starting course at the first waypoint')
-            startIx = 1
-        end
+        local startIx = self:getStartingPointWaypointIx(course, jobParameters.startAt:getValue())
         self:start(course, startIx)
     else
         -- some strategies do not need a recorded or generated course to work, they
         -- will create the courses on the fly.
         self:debug('Vehicle has no course, start work without it.')
         self:startWithoutCourse()
+    end
+end
+
+function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
+    return self.vehicle:getFieldWorkCourse()
+end
+
+function AIDriveStrategyCourse:getStartingPointWaypointIx(course,startAt)
+    if startAt == CpJobParameters.START_AT_NEAREST_POINT then 
+        local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
+        self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
+        return ixClosestRightDirection
+    else 
+        self:debug('Starting course at the first waypoint')
+        return 1
     end
 end
 
@@ -134,18 +135,34 @@ end
 function AIDriveStrategyCourse:startWithoutCourse()
 end
 
+function AIDriveStrategyCourse:updateCpStatus(status)
+    --- override
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
 end
 
+--- Normal update function called every frame.
+--- For releasing the helper in the controller, use this one.
 function AIDriveStrategyCourse:updateImplementControllers()
     for _, controller in pairs(self.controllers) do
         ---@type ImplementController
         if controller:isEnabled() then
+            controller:update()
+        end
+    end
+end
+
+--- Called in the low frequency function for the helper.
+function AIDriveStrategyCourse:updateLowFrequencyImplementControllers()
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
             -- we don't know yet if we even need anything from the controller other than the speed.
-            local _, _, _, maxSpeed = controller:update()
+            local _, _, _, maxSpeed = controller:getDriveData()
             if maxSpeed then
                 self:setMaxSpeed(maxSpeed)
             end
@@ -181,6 +198,10 @@ function AIDriveStrategyCourse:setMaxSpeed(speed)
         self.maxSpeedUpdatedLoopIndex = g_updateLoopIndex
     end
     self.maxSpeed = math.min(self.maxSpeed, speed)
+end
+
+function AIDriveStrategyCourse:getMaxSpeed()
+    return self.maxSpeed
 end
 
 --- Start a course and continue with nextCourse at ix when done

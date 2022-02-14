@@ -83,8 +83,9 @@ function DevHelper:update()
     self.data.isOnFieldArea, self.data.onFieldArea, self.data.totalOnFieldArea = CpFieldUtil.isOnFieldArea(self.data.x, self.data.z)
     self.data.nx, self.data.ny, self.data.nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, y, self.data.z)
 
+    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
     self.data.collidingShapes = ''
-    overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, bitOR(CollisionMask.VEHICLE, 2), true, true, true)
+    overlapBox(self.data.x, self.data.y + 0.2, self.data.z, 0, self.yRot, 0, 1.6, 1, 8, "overlapBoxCallback", self, collisionMask, true, true, true)
 
 end
 
@@ -96,7 +97,7 @@ function DevHelper:overlapBoxCallback(transformId)
             text = 'vehicle' .. collidingObject:getName()
         else
 			if collidingObject:isa(Bale) then
-				text = 'Bale ' .. tostring(collidingObject) .. ' ' .. tostring(NetworkUtil.getObjectId(collidingObject))
+				text = 'Bale ' .. tostring(collidingObject.id) .. ' ' .. tostring(collidingObject.nodeId)
 			else
             	text = collidingObject.getName and collidingObject:getName() or 'N/A'
 			end
@@ -159,11 +160,11 @@ function DevHelper:keyEvent(unicode, sym, modifier, isDown)
         DevHelper.restoreVehiclePosition(g_currentMission.controlledVehicle)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_c then
         self:debug('Finding contour of current field')
-        local points = g_fieldScanner:findContour(self.data.x, self.data.z)
         local fieldId = CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
     elseif bitAND(modifier, Input.MOD_LALT) ~= 0 and isDown and sym == Input.KEY_g then
+        local valid, points = g_fieldScanner:findContour(self.data.x, self.data.z)
         self:debug('Generate course')
-        local status, ok, course = CourseGeneratorInterface.generate(g_fieldScanner:findContour(self.data.x, self.data.z),
+        local status, ok, course = CourseGeneratorInterface.generate(points,
                 {x = self.data.x, z = self.data.z},
                 0, 6, 6, 1, true)
         if ok then
@@ -193,13 +194,14 @@ function DevHelper:draw()
 	end
 
 	DebugUtil.drawDebugNode(self.tNode, 'Terrain normal')
-	local nx, ny, nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
+	--local nx, ny, nz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, self.data.x, self.data.y, self.data.z)
 
-	local x, y, z = localToWorld(self.node, 0, -1, -3)
+	--local x, y, z = localToWorld(self.node, 0, -1, -3)
 
-	drawDebugLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz, 1, 1, 1)
-	local xRot, yRot, zRot = getWorldRotation(self.tNode)
-	DebugUtil.drawOverlapBox(self.data.x, self.data.y, self.data.z, xRot, yRot, zRot, 4, 1, 4, 0, 100, 0)
+	--drawDebugLine(x, y, z, 1, 1, 1, x + nx, y + ny, z + nz, 1, 1, 1)
+	--local xRot, yRot, zRot = getWorldRotation(self.tNode)
+	--DebugUtil.drawOverlapBox(self.data.x, self.data.y, self.data.z, xRot, yRot, zRot, 4, 1, 4, 0, 100, 0)
+    PathfinderUtil.showOverlapBoxes()
     g_fieldScanner:draw()
 end
 

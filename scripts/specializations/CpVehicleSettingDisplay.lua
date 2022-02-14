@@ -14,7 +14,8 @@ CpVehicleSettingDisplay.GUI_NAME = "CpVehicleSettingDisplayDialog"
 CpVehicleSettingDisplay.SETTING_TYPES = {
 	vehicleSettings = CpVehicleSettings,
 	courseGeneratorSettings = CpCourseGeneratorSettings,
-	jobParameters = CpJobParameters
+	jobParameters = CpJobParameters,
+	globalSettings = CpGlobalSettings
 }
 
 function CpVehicleSettingDisplay.initSpecialization()
@@ -89,6 +90,7 @@ function CpVehicleSettingDisplay:onLoad(savegame)
     self.spec_cpVehicleSettingDisplay = self["spec_" .. CpVehicleSettingDisplay.SPEC_NAME]
     local spec = self.spec_cpVehicleSettingDisplay
 	spec.text = g_i18n:getText("input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY")
+	spec.hudText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
 end
 
 function CpVehicleSettingDisplay:onLoadFinished()
@@ -97,7 +99,7 @@ function CpVehicleSettingDisplay:onLoadFinished()
 		CpVehicleSettingDisplay.loadFromXMLFile(filePath)
 		--- Setup of the mini gui.
 		CpVehicleSettingDisplay.dialog = VehicleSettingDisplayDialog.new(CpVehicleSettingDisplay.prefabSettingsData)
-		g_gui:loadGui(Utils.getFilename("config/gui/BlankScreenElement.xml",Courseplay.BASE_DIRECTORY), CpVehicleSettingDisplay.GUI_NAME, CpVehicleSettingDisplay.dialog)
+		g_gui:loadGui(Utils.getFilename("config/gui/ControllerGuiScreen.xml",Courseplay.BASE_DIRECTORY), CpVehicleSettingDisplay.GUI_NAME, CpVehicleSettingDisplay.dialog)
 		CpVehicleSettingDisplay.initialized = true
 	end
 	CpVehicleSettingDisplay.linkSettings(self)
@@ -106,13 +108,20 @@ end
 function CpVehicleSettingDisplay:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
 	if self.isClient then
 		local spec = self.spec_cpVehicleSettingDisplay
-
 		self:clearActionEventsTable(spec.actionEvents)
-
-		if self:getIsActiveForInput(true, true) then
-			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpVehicleSettingDisplay.actionEventOpenCloseDisplay, false, true, false, true, nil)
-            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
-            g_inputBinding:setActionEventText(actionEventId, spec.text)
+		--- Key bind gets switch between opening hud or controller friendly gui.
+		if not g_Courseplay.globalSettings.controllerHudSelected:getValue() then 
+			if self.isActiveForInputIgnoreSelectionIgnoreAI then
+				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpHud.openClose, false, true, false, true, nil)
+				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+				g_inputBinding:setActionEventText(actionEventId, spec.hudText)
+			end
+		else
+			if self.isActiveForInputIgnoreSelectionIgnoreAI then
+				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpVehicleSettingDisplay.actionEventOpenCloseDisplay, false, true, false, true, nil)
+				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+				g_inputBinding:setActionEventText(actionEventId, spec.text)
+			end
 		end
 	end
 end

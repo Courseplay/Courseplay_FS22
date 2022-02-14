@@ -50,7 +50,7 @@ end
 --- making sure that the towed implement's trajectory remains closer to the
 --- course.
 ---@param course Course
-function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCalculatedRadius)
+function AIUtil.calculateTightTurnOffset(vehicle, vehicleTurningRadius, course, previousOffset, useCalculatedRadius)
 	local tightTurnOffset
 
 	local function smoothOffset(offset)
@@ -71,8 +71,7 @@ function AIUtil.calculateTightTurnOffset(vehicle, course, previousOffset, useCal
 	-- limit the radius we are trying to follow to the vehicle's turn radius.
 	-- TODO: there's some potential here as the towed implement can move on a radius less than the vehicle's
 	-- turn radius so this limit may be too pessimistic
-	local turnDiameter = r or vehicle.cp.settings.turnDiameter:get() -- TODO_22
-	r = math.max(r, turnDiameter / 2)
+	r = math.max(r, vehicleTurningRadius)
 
 	local towBarLength = AIUtil.getTowBarLength(vehicle)
 
@@ -193,13 +192,6 @@ function AIUtil.getTurningRadius(vehicle)
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius set from config file to %.1f', radius)
 	end
 
-	-- TODO_22
-	--local turnDiameterSetting = vehicle.cp.settings.turnDiameter
-	--if not turnDiameterSetting:isAutomaticActive() then
-	--	radius = turnDiameterSetting:get() / 2
-	--	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  turnRadius manually set to %.1f', radius)
-	--end
-
 	if vehicle:getAIMinTurningRadius() ~= nil then
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  AIMinTurningRadius by Giants is %.1f', vehicle:getAIMinTurningRadius())
 		radius = math.max(radius, vehicle:getAIMinTurningRadius())
@@ -213,7 +205,8 @@ function AIUtil.getTurningRadius(vehicle)
 			turnRadius = g_vehicleConfigurations:get(implement.object, 'turnRadius')
 			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
 				implement.object:getName(), turnRadius)
-		elseif SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
+		elseif vehicle.isServer and SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
+			--- Make sure this function only gets called on the server, as otherwise error might appear.
 			-- only call this for AIImplements, others may throw an error as the Giants code assumes AIImplement
 			turnRadius = AIVehicleUtil.getMaxToolRadius(implement)
 			if turnRadius > 0 then
@@ -222,10 +215,14 @@ function AIUtil.getTurningRadius(vehicle)
 			end
 		end
 		if turnRadius == 0 then
-			-- TODO
-			--turnRadius = courseplay:getToolTurnRadius(implement.object)
-			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, we assume %.1f',
-				implement.object:getName(), turnRadius)
+			if AIUtil.isImplementTowed(vehicle, implement.object) then
+				turnRadius = 6
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
+						implement.object:getName(), turnRadius)
+			else
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
+					implement.object:getName())
+			end
 		end
 		maxToolRadius = math.max(maxToolRadius, turnRadius)
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)
@@ -235,13 +232,24 @@ function AIUtil.getTurningRadius(vehicle)
 	return radius
 end
 
+---@param vehicle table
+---@param implementObject table
+function AIUtil.isImplementTowed(vehicle, implementObject)
+	if AIUtil.isObjectAttachedOnTheBack(vehicle, implementObject) then
+		if ImplementUtil.isWheeledImplement(implementObject) then
+			return true
+		end
+	end
+	return false
+end
+
 ---@return table implement object
 function AIUtil.getFirstReversingImplementWithWheels(vehicle)
 	-- since some weird things like Seed Bigbag are also vehicles, check this first
 	if not vehicle.getAttachedImplements then return nil end
 	-- Check all attached implements if we are a wheeled workTool behind the tractor
 	for _, imp in ipairs(vehicle:getAttachedImplements()) do
-		-- Check if the implement is behind
+		-- Check if the implement is behind the tractor
 		if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
 			if ImplementUtil.isWheeledImplement(imp.object) then
 				-- If the implement is a wheeled workTool, then return the object
@@ -399,6 +407,34 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 			return implement.object
 		end
 	end
+end
+
+--- Gets all child vehicles with a given specialization. 
+--- This can include the rootVehicle and implements
+--- that are not directly attached to the rootVehicle.
+---@param vehicle Vehicle
+---@param specialization table
+---@return table all found vehicles/implements
+---@return boolean at least one vehicle/implement was found
+function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization)
+	local validVehicles = {}
+	for _, childVehicle in pairs(vehicle:getChildVehicles()) do 
+		if SpecializationUtil.hasSpecialization(specialization, childVehicle.specializations) then
+			table.insert(validVehicles, childVehicle)
+		end
+	end
+	return validVehicles, #validVehicles>0
+end
+
+--- Was at least one child vehicle with the given specialization found ?
+--- This can include the rootVehicle and implements,
+--- that are not directly attached to the rootVehicle.
+---@param vehicle Vehicle
+---@param specialization table
+---@return boolean
+function AIUtil.hasChildVehicleWithSpecialization(vehicle, specialization)
+	local _, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization)
+	return found
 end
 
 function AIUtil.getAllAIImplements(object, implements)
@@ -559,4 +595,13 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	end
 	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
 	return loweringDurationMs
+end
+
+function AIUtil.getWidth(vehicle)
+	if vehicle.getAIAgentSize then
+		local width, length, lengthOffset, frontOffset, height = vehicle:getAIAgentSize()
+		return width
+	else
+		return vehicle.size.width
+	end
 end

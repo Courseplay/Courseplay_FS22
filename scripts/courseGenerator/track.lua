@@ -145,8 +145,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 
 		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
 
-		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks( field.headlandTracks, field.bigIslands,
-			implementWidth, headlandSettings.nPasses, centerSettings )
+		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
+			field.headlandTracks, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	elseif headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NONE then
 		-- no headland pass wanted, still generate a dummy one on the field boundary so
 		-- we have something to work with when generating the up/down tracks
@@ -154,8 +154,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 				field.boundary.isClockwise, 0, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
 				0, doSmooth, not fromInside, nil, nil)
 		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
-		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks( field.headlandTracks, field.bigIslands,
-			implementWidth, 0, centerSettings )
+		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
+			field.headlandTracks, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	elseif headlandSettings.mode == CourseGenerator.HEADLAND_MODE_TWO_SIDE then
 		-- force headland corners
 		headlandSettings.minHeadlandTurnAngleDeg = 60
@@ -163,8 +163,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		local boundary
 		field.headlandPath, boundary = generateTwoSideHeadlands( field.boundary, field.bigIslands,
 			implementWidth, headlandSettings, centerSettings, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
-		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = generateTracks({ boundary }, field.bigIslands,
-			implementWidth, 0, centerSettings )
+		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
+			{ boundary }, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	end
 	CourseGenerator.debug("####### COURSE GENERATOR END ###########################################################")
 
@@ -233,12 +233,6 @@ function reverseCourse( course )
 		elseif newPoint.turnEnd then
 			newPoint.turnEnd = nil
 			newPoint.turnStart = true
-		elseif newPoint.mustReach then
-			newPoint.mustReach = nil
-			newPoint.align = true
-		elseif newPoint.align then
-			newPoint.align = nil
-			newPoint.mustReach = true
 		end
 		table.insert( result, newPoint )
 	end
@@ -269,8 +263,8 @@ function addTurnsToCorners( vertices, minHeadlandTurnAngle, headlandOnly)
 		local cp = vertices[ i ]
 		local np = vertices[ i + 1 ]
 		local nnp = vertices[ i + 2 ]
-		if not headlandOnly or (headlandOnly and not cp.trackNumber and not np.trackNumber) then
-			-- cp.trackNumber is set for the up/down rows where we don't want to add turn start/ends when headlandOnly is true
+		if not headlandOnly or (headlandOnly and not cp.rowNumber and not np.rowNumber) then
+			-- cp.rowNumber is set for the up/down rows where we don't want to add turn start/ends when headlandOnly is true
 			if cp.prevEdge and np.nextEdge then
 				-- start a turn at the current point only if the next one is not a start of the turn already
 				-- or not an island bypass point or a reversing waypoint

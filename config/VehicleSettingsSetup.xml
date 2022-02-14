@@ -8,7 +8,7 @@
 <Settings prefixText="CP_vehicle_setting_">
 	<SettingSubTitle title="basic">
 		<!-- Show waypoints -->
-		<Setting classType="AIParameterSettingList" name="showCourse" onChangeCallback="cpUpdateWaypointVisibility" default="1">
+		<Setting classType="AIParameterSettingList" name="showCourse" onChangeCallback="cpUpdateWaypointVisibility" default="1" isUserSetting="true">
 			<Values>
 				<Value name="SHOW_COURSE_DEACTIVATED">0</Value>
 				<Value name="SHOW_COURSE_START_STOP">1</Value>
@@ -21,6 +21,9 @@
 			</Texts>
 		</Setting>
 		<!--Stop At End-->
+		<Setting classType="AIParameterBooleanSetting" name="openHudWithMouse" defaultBool="true" onChangeCallback="cpUpdateMouseAction"/>
+
+		<!--Stop At End-->
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
 		<!--Turn on Field-->
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true"/>
@@ -28,36 +31,35 @@
 		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true"/>
 		<!--Pathfinder Reverse-->
 		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="false"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">
 		<!--Fold at End-->
 		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true"/>
 		<!--Raise Implement-->
-		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate">
+		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate">
 			<Texts>
 				<Text>early</Text>
 				<Text>late</Text>
 			</Texts>
 		</Setting>
 		<!--Lower Implement-->
-		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly">
+		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly" vehicleConfiguration="lowerEarly">
 			<Texts>
 				<Text>late</Text>
 				<Text>early</Text>
 			</Texts>
 		</Setting>
-		<!--Turn Diameter-->
-		<Setting classType="AIParameterSettingList" name="turnDiameter" min="2" max="50" unit="2"/>
 		<!--Tool Offset X-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
 		<!--Tool Offset Y-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled"/>
 	</SettingSubTitle>
 
-	<SettingSubTitle title="combine">
+	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
 		<!--Pipe always unfold-->
-		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold"/>
+		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold" />
 		<!--Stop for unload-->
 		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
 		<!--Selfunload-->
@@ -79,27 +81,23 @@
 		</Setting>
 	</SettingSubTitle>
 
-	<SettingSubTitle title="seeder">
+	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">
 		<!--Ridgemarker-->	
-		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic"/>
+		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" isVisible="isRidgeMarkerSettingVisible"/>
 		<!--Fertilizer-->
 		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true"/>
 	</SettingSubTitle>
 	
-	<SettingSubTitle title="multitool">
+	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">
 		<!--Symetric Langechange-->
 		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
-		<!--Convoy (still needed? even if on on single course, will have no effect)-->
-		<Setting classType="AIParameterBooleanSetting" name="convoyActive"/>
-		<!--Min Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyMinDistance" min="10" max="200" unit="2"/>
-		<!--Max Distance-->
-		<Setting classType="AIParameterSettingList" name="convoyMaxDistance" min="40" max="300" unit="2"/>
+		<!--Convoy Distance-->
+		<Setting classType="AIParameterSettingList" name="convoyDistance" min="40" max="400" default ="50" unit="2"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="speed">
 		<!--Fieldwork Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="15" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="25" unit="1"/>
 		<!--Field Speed-->
 		<Setting classType="AIParameterSpeedSetting" name="fieldSpeed" min="5" max="50" default="20" unit="1"/>
 		<!--Turn Speed-->

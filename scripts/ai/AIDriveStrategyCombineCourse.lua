@@ -43,8 +43,10 @@ AIDriveStrategyCombineCourse.myStates = {
 	RETURNING_FROM_POCKET = {},
 	DRIVING_TO_SELF_UNLOAD = {},
 	SELF_UNLOADING = {},
+	SELF_UNLOADING_WAITING_FOR_DISCHARGE = {},
 	DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED = {},
 	SELF_UNLOADING_AFTER_FIELDWORK_ENDED = {},
+	SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE = {},
 	RETURNING_FROM_SELF_UNLOAD = {}
 }
 
@@ -91,31 +93,17 @@ end
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
 	self:debug('AIDriveStrategyCombineCourse set')
-	if self.vehicle.spec_combine then
-		self.combine = self.vehicle.spec_combine
-	else
-		local combineImplement = AIUtil.getImplementWithSpecialization(self.vehicle, Combine)
-        local peletizerImplement = FS19_addon_strawHarvest and
-				AIUtil.getAIImplementWithSpecialization(self.vehicle, FS19_addon_strawHarvest.StrawHarvestPelletizer) or nil
-		if combineImplement then
-			self.combine = combineImplement.spec_combine
-        elseif peletizerImplement then
-            self.combine = peletizerImplement
-            self.combine.fillUnitIndex = 1
-            self.combine.spec_aiImplement.rightMarker = self.combine.rootNode
-            self.combine.spec_aiImplement.leftMarker  = self.combine.rootNode
-            self.combine.spec_aiImplement.backMarker  = self.combine.rootNode
-			self.combine.isPremos = true --- This is needed as there is some logic in the CombineUnloadManager for it.
-		else
-			self:error('Vehicle is not a combine and could not find implement with spec_combine')
-		end
-	end
+
+	self.combine = ImplementUtil.findCombineObject(self.vehicle)
+	ImplementUtil.setPipeAttributes(self, self.vehicle, self.combine)
 
 	if self:isChopper() then
 		self:debug('This is a chopper.')
 	end
 
-	self:setUpPipe()
+	local dischargeNode = self:getCurrentDischargeNode()
+	self:fixDischargeDistance(dischargeNode)
+
 	self:checkMarkers()
 
 	-- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
@@ -319,19 +307,35 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		else
 			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
+	elseif self.unloadState == self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE then
+		self:setMaxSpeed(0)
+		self:debugSparse('Waiting for the self unloading to start')
+		if self:isDischarging() then
+			self.unloadState = self.states.SELF_UNLOADING
+		end
 	elseif self.unloadState == self.states.SELF_UNLOADING then
 		self:setMaxSpeed(0)
 		if self:isUnloadFinished() then
-			self:debug('Self unloading finished, returning to fieldwork')
-			self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
-			self.ppc:setNormalLookaheadDistance()
-			self:returnToFieldworkAfterSelfUnload()
+			if not self:continueSelfUnloadToNextTrailer() then
+				self:debug('Self unloading finished, returning to fieldwork')
+				self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
+				self.ppc:setNormalLookaheadDistance()
+				self:returnToFieldworkAfterSelfUnload()
+			end
+		end
+	elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE then
+		self:setMaxSpeed(0)
+		self:debugSparse('Fieldwork ended, waiting for the self unloading to start')
+		if self:isDischarging() then
+			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
 		end
 	elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED then
 		self:setMaxSpeed(0)
 		if self:isUnloadFinished() then
-			self:debug('Self unloading finished after fieldwork ended, returning to fieldwork')
-			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+			if not self:continueSelfUnloadToNextTrailer() then
+				self:debug('Self unloading finished after fieldwork ended, finishing fieldwork')
+				AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
+			end
 		end
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
@@ -426,13 +430,15 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self:debug('Pulled back, now wait for unload')
 			self:setInfoText(self:getFillLevelInfoText())
 		elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
-			self:debug('Self unloading point reached, fill level %.1f.', fillLevel)
-			self.unloadState = self.states.SELF_UNLOADING
+			self:debug('Self unloading point reached, fill level %.1f, waiting for unload to start to start.', fillLevel)
+			self.unloadState = self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE
 		elseif 	self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
-			self:debug('Self unloading point reached after fieldwork ended, fill level %.1f.', fillLevel)
-			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED
+			self:debug('Self unloading point reached after fieldwork ended, fill level %.1f, waiting for unload to start.', fillLevel)
+			self.unloadState = self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE
 		end
 	elseif self.state == self.states.WORKING and fillLevel > 0 then
+		-- reset offset we used for the course ending to not miss anything
+		self.aiOffsetZ = 0
 		if self.settings.selfUnload:getValue() and self:startSelfUnload() then
 			self:debug('Start self unload after fieldwork ended')
 			self:raiseImplements()
@@ -949,7 +955,7 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
 		local zOffset = 0
 		local length = self.pullBackDistanceEnd
 		local width = self.pullBackRightSideOffset
-		return PathfinderUtil.Area(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
+		return PathfinderUtil.NodeArea(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
 	end
 end
 
@@ -1132,78 +1138,6 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Pipe handling
 -----------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyCombineCourse:setUpPipe()
-	if self.vehicle.spec_pipe then
-		self.pipe = self.vehicle.spec_pipe
-		self.objectWithPipe = self.vehicle
-	else
-		local implementWithPipe = AIUtil.getImplementWithSpecialization(self.vehicle, Pipe)
-		if implementWithPipe then
-			self.pipe = implementWithPipe.spec_pipe
-			self.objectWithPipe = implementWithPipe
-		else
-			self:info('Could not find implement with pipe')
-		end
-	end
-
-	if self.pipe then
-		-- check the pipe length:
-		-- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
-		local wasFolded, wasClosed
-		if self.vehicle.spec_foldable then
-			wasFolded = not self.vehicle.spec_foldable:getIsUnfolded()
-			if wasFolded then
-				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 0 or 1, true)
-			end
-		end
-		if self.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
-			wasClosed = true
-			if self.pipe.animation.name then
-				self.pipe:setAnimationTime(self.pipe.animation.name, 1, true)
-			else
-				-- as seen in the Giants pipe code
-				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-			end
-		end
-		local dischargeNode = self:getCurrentDischargeNode()
-		self:fixDischargeDistance(dischargeNode)
-		local dx, _, _ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
-		self.pipeOnLeftSide = dx >= 0
-		self:debug('Pipe on left side %s', tostring(self.pipeOnLeftSide))
-		-- use self.combine so attached harvesters have the offset relative to the harvester's root node
-		-- (and thus, does not depend on the angle between the tractor and the harvester)
-		self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, self.combine.rootNode, 0, 0, 0)
-		self:debug('Pipe offset: x = %.1f, z = %.1f', self.pipeOffsetX, self.pipeOffsetZ)
-		if wasClosed then
-			if self.pipe.animation.name then
-				self.pipe:setAnimationTime(self.pipe.animation.name, 0, true)
-			else
-				self.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-				-- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
-				self.objectWithPipe:updatePipeNodes(999999, nil)
-			end
-		end
-		if self.vehicle.spec_foldable then
-			if wasFolded then
-				Foldable.setAnimTime(self.vehicle.spec_foldable, self.vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
-				-- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
-				-- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
-				Foldable.actionControllerFoldEvent(self.vehicle, -1)
-				Foldable.actionControllerFoldEvent(self.vehicle, 1)
-			end
-		end
-	else
-		-- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
-		-- periodically even when CP isn't driving, and even for cotton harvesters...
-		self.pipeOffsetX, self.pipeOffsetZ = 0, 0
-		self.pipeOnLeftSide = true
-	end
-end
-
 function AIDriveStrategyCombineCourse:handlePipe(dt)
 	if self.pipe then
 		if self:isChopper() then
@@ -1490,13 +1424,13 @@ function AIDriveStrategyCombineCourse:findBestTrailer()
 end
 
 function AIDriveStrategyCombineCourse:getClosestDistanceToFieldEdge(x, z)
-	local closestDistance = math.huge
+	local closestDistance= math.huge
 	local fieldPolygon = self.course:getFieldPolygon()
 	-- TODO: this should either be saved with the field or regenerated when the course is loaded...
 	if fieldPolygon == nil then
 		self:debug('Field polygon not found, regenerating it.')
 		local vx, _, vz = getWorldTranslation(self.vehicle.rootNode)
-		fieldPolygon = g_fieldScanner:findContour(vx, vz)
+		_, fieldPolygon = g_fieldScanner:findContour(vx, vz)
 		self.course:setFieldPolygon(fieldPolygon)
 	end
 	for _, p in ipairs(fieldPolygon) do
@@ -1536,22 +1470,26 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 	if not bestTrailer then return false end
 
 	if not self.pathfinder or not self.pathfinder:isActive() then
-		self:rememberCourse(self.course, self:getBestWaypointToContinueFieldwork())
+		self:rememberCourse(self.fieldWorkCourse, self:getBestWaypointToContinueFieldWork())
 		self.pathfindingStartedAt = g_currentMission.time
 		self.courseAfterPathfinding = nil
 		self.waypointIxAfterPathfinding = nil
 		local targetNode = fillRootNode or bestTrailer.rootNode
 		local trailerRootNode = bestTrailer.rootNode
 		local trailerLength = bestTrailer.size.length
+		local trailerWidth = bestTrailer.size.width
 
 		local _, _, dZ = localToLocal(trailerRootNode, targetNode, 0, 0, 0)
 
-		local offsetX = -self.pipeOffsetX - 0.2
+		-- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
+		-- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
+		-- than what is absolutely necessary.
+		local offsetX = -(self.pipeOffsetX + trailerWidth / 2 - 1.1)
 		local alignLength = (trailerLength / 2) + dZ + 3
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
 		local offsetZ = -self.pipeOffsetZ - alignLength
-		self:debug('Trailer Length : %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
-				trailerLength, alignLength, offsetZ, offsetX)
+		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
+				trailerLength, trailerWidth, alignLength, offsetZ, offsetX)
 		-- little straight section parallel to the trailer to align better
 		self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
 				offsetX, offsetZ + 1, offsetZ + 1 + alignLength, 1, false)
@@ -1643,6 +1581,20 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
 	end
 end
 
+function AIDriveStrategyCombineCourse:continueSelfUnloadToNextTrailer()
+	local fillLevel = self.fillLevelManager:getTotalFillLevelPercentage(self.vehicle)
+	if fillLevel > 20 then
+		self:debug('Self unloading finished, but fill level is %.1f, is there another trailer around we can unload to?', fillLevel)
+		if self:startSelfUnload() then
+			self:raiseImplements()
+			self.state = self.states.UNLOADING_ON_FIELD
+			self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
+			self.ppc:setShortLookaheadDistance()
+			return true
+		end
+	end
+	return false
+end
 
 --- Let unloaders register for events. This is different from the CombineUnloadManager registration, these
 --- events are for the low level coordination between the combine and its unloader(s). CombineUnloadManager

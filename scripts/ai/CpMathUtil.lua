@@ -49,3 +49,55 @@ function CpMathUtil.getSeries(from, to, step)
 	end
 	return series
 end
+
+-- POINT IN POLYGON (Jordan method) -- @src: http://de.wikipedia.org/wiki/Punkt-in-Polygon-Test_nach_Jordan
+-- returns:
+--	 1	point is inside of polygon
+--	-1	point is outside of polygon
+--	 0	point is directly on polygon
+
+function CpMathUtil.isPointInPolygon(polygon, x, z)
+	local function crossProductQuery(a, b, c)
+		-- returns:
+		--	-1	vector from A to right intersects BC (except at the bottom end point)
+		--	 0	A is directly on BC
+		--	 1	all else
+
+		if a.z == b.z and b.z == c.z then
+			if (b.x <= a.x and a.x <= c.x) or (c.x <= a.x and a.x <= b.x) then
+				return 0
+			else
+				return 1
+			end
+		end
+
+		if b.z > c.z then b, c = c, b end
+		if a.z == b.z and a.x == b.x then return 0 end
+		if a.z <= b.z or a.z > c.z then return 1 end
+
+		local delta = (b.x - a.x) * (c.z - a.z) - (b.z - a.z) * (c.x - a.x)
+
+		if delta > 0 then return -1 end
+		if delta < 0 then return 1 end
+		return 0
+	end
+
+	local cp, np, pp
+	local pointInPolygon = -1
+
+	-- ############################################################
+
+	for i = 1, #polygon do
+		cp = polygon[i]
+		np = i < #polygon and polygon[i + 1] or polygon[1]
+		pp = i > 1 and polygon[i - 1] or polygon[#polygon]
+
+		pointInPolygon = pointInPolygon * crossProductQuery({ x = x, z = z }, cp, np)
+		if pointInPolygon == 0 then
+			-- point directly on the edge is considered being in the polygon
+			return true
+		end
+	end
+
+	return pointInPolygon ~= -1
+end

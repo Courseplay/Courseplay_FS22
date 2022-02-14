@@ -5,9 +5,11 @@ CpGlobalSettings.KEY = "GlobalSettings.GlobalSetting"
 
 function CpGlobalSettings:init()
 	self:loadSettingsSetup()
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], self.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], self.onUnitChanged, self)
 end
 
-function CpGlobalSettings:registerSchema(schema,baseKey)
+function CpGlobalSettings:registerXmlSchema(schema,baseKey)
 	schema:register(XMLValueType.INT,baseKey..CpGlobalSettings.KEY.."(?)#value","Setting value")
     schema:register(XMLValueType.STRING,baseKey..CpGlobalSettings.KEY.."(?)#name","Setting name")
 end
@@ -30,14 +32,30 @@ function CpGlobalSettings:loadFromXMLFile(xmlFile,baseKey)
 end
 
 function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)
+    local ix = 0
     for i,setting in ipairs(self.settings) do 
-        local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,i-1)
-        setting:saveToXMLFile(xmlFile, key)
-        xmlFile:setValue(key.."#name",setting:getName())
-        CpUtil.debugFormat(CpUtil.DBG_HUD,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+        if not setting:getIsUserSetting() then
+            local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,ix)
+            setting:saveToXMLFile(xmlFile, key)
+            xmlFile:setValue(key.."#name",setting:getName())
+            CpUtil.debugFormat(CpUtil.DBG_HUD,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+            ix = ix + 1
+        end
     end
 end
 
+function CpGlobalSettings:saveUserSettingsToXmlFile(xmlFile,baseKey)
+    local ix = 0
+    for i,setting in ipairs(self.settings) do 
+        if setting:getIsUserSetting() then
+            local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,ix)         
+            setting:saveToXMLFile(xmlFile, key)
+            xmlFile:setValue(key.."#name",setting:getName())
+            CpUtil.debugFormat(CpUtil.DBG_HUD,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
+            ix = ix + 1
+        end
+    end
+end
 
 function CpGlobalSettings:getSettings()
     return self
@@ -51,8 +69,35 @@ function CpGlobalSettings:getSettingSetup()
 	return self.settingsBySubTitle,self.pageTitle
 end
 
-function CpGlobalSettings:raiseCallback(callbackStr,...)
+--- Callback raised by a setting.
+---@param callbackStr string function to be executed.
+---@param setting AIParameterSettingList setting that raised the callback.
+function CpGlobalSettings:raiseCallback(callbackStr, setting, ...)
     if self[callbackStr] then 
-        self[callbackStr](self,...)
+        self[callbackStr](self, setting, ...)
     end
+end
+
+function CpGlobalSettings:raiseDirtyFlag(setting)
+    GlobalSettingsEvent.sendEvent(setting)
+end 
+
+function CpGlobalSettings:onHudSelectionChanged()
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle then 
+        self:debug("reset action events for %s",vehicle:getName())
+    --    g_inputBinding:setShowMouseCursor(false)
+        CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_cpHud.savedCameraRotatableInfo)
+        vehicle:requestActionEventUpdate()
+    end
+end
+
+function CpGlobalSettings:onUnitChanged()
+    for i,setting in ipairs(self.settings) do 
+        setting:validateTexts()
+    end
+end
+
+function CpGlobalSettings:debug(str,...)
+    CpUtil.debugFormat(CpDebug.DBG_HUD,"Global settings: "..str,...)    
 end

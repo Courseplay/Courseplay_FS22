@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --                  length of edges pointing in that range
 
 -- TODO: make point a real class
-function pointToString(p)
+local function pointToString(p)
 	local fromAngle, toAngle = 'N/A', 'N/A'
 	if p.nextEdge then
 		toAngle = string.format('%.1f', math.deg(p.nextEdge.angle))
@@ -339,7 +339,7 @@ function findArcBetweenEdges( e1, e2, r )
 	-- arc for just a few degree turn. This then results in weird artifacts like spikes. This
 	-- is mainly becuase we don't handle cleanly the case where the intersection of e1 and e2
 	-- is _behind_ e1.
-	if alpha < math.pi / 12 then return nil end
+	if math.abs(alpha) < math.pi / 12 then return nil end
 	-- delta angle for one step
 	local deltaAlpha = alpha / ( nSteps + 1 )
 	-- length of a step, with a magic constant to cover up the calculation errors
@@ -553,38 +553,6 @@ end
 -- for 5.1 and 5.2 compatibility
 local unpack = unpack or table.unpack
 -------------------------------------------------------------------------------
-
----@class PointXY
-PointXY = {}
-PointXY.__index = PointXY
-
---- Point constructor.
--- Integer indices are the vertices of the polygon
-function PointXY:new(x, y)
-	local newPoint
-	newPoint = {x = x, y = y}
-	return setmetatable( newPoint, self )
-end
-
-function PointXY:copy( other )
-	local newPoint = {}
-	if other then
-		newPoint = shallowCopy( other )
-	end
-	return setmetatable( newPoint, self )
-end
-
-function PointXY:translate(dx, dy)
-	self.x = self.x + dx
-	self.y = self.y + dy
-end
-
-function PointXY:rotate(angle)
-	self.x, self.y =
-		self.x * math.cos(angle) - self.y  * math.sin(angle),
-		self.x * math.sin(angle) + self.y  * math.cos(angle)
-end
-
 
 -------------------------------------------------------------------------------
 
@@ -978,7 +946,7 @@ end
 function Polyline:replaceElementsBetween(fromIx, toIx, replacement)
 	self:removeElementsBetween(fromIx, toIx)
 	for i, p in replacement:iterator() do
-		table.insert(self, fromIx + i - 1, PointXY:copy(p))
+		table.insert(self, fromIx + i - 1, shallowCopy(p))
 	end
 	self:calculateData()
 end

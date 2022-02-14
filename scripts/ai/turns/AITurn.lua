@@ -83,6 +83,7 @@ end
 --- Start the actual turn maneuver after the row is finished
 function AITurn:startTurn()
 	-- implement in derived classes
+	-- self.vehicle:raiseAIEvent("onAIFieldWorkerStartTurn", "onAIImplementStartTurn", self.turnContext:isLeftTurn(), turnStrategy)
 end
 
 --- Stuff we need to do during the turn no matter what turn type we are using
@@ -288,6 +289,7 @@ function KTurn:onWaypointPassed(ix, course)
 end
 
 function KTurn:startTurn()
+	AITurn.startTurn(self)
 	self.state = self.states.FORWARD
 	self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", 0, self.turnContext:isLeftTurn())
 	self:debug('Turn progress 0')
@@ -521,9 +523,10 @@ function CourseTurn:getForwardSpeed()
 	if self.turnCourse then
 		local currentWpIx = self.turnCourse:getCurrentWaypointIx()
 		if self.turnCourse:getDistanceFromFirstWaypoint(currentWpIx) > 10 and
-				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 10 then
+			-- TODO: Instead of a fixed value for DistanceToLastWaypoint, consider the radius of the waypoints to calculate the maximum speed.
+				self.turnCourse:getDistanceToLastWaypoint(currentWpIx) > 20 then
 			-- in the middle of a long turn maneuver we can drive faster...
-			return 1.5 * AITurn.getForwardSpeed(self)
+			return self.settings.fieldSpeed:getValue()
 		else
 			return AITurn.getForwardSpeed(self)
 		end
@@ -532,20 +535,77 @@ function CourseTurn:getForwardSpeed()
 end
 
 -- this turn starts when the vehicle reached the point where the implements are raised.
--- now use turn.lua to generate the turn maneuver waypoints
+-- Types of Turns
+--
+-- 1. 3 point (K) turn (forward)
+--    This turn does not use a course, instead it drives by steering only, first forward (left or right),
+--    then straight backwards, and then forward again (left or right)
+--
+-- 2. Calculated turn
+--    This is using a precalculated curve to get from the turn start to the turn end. Calculation is based on
+--    the geometry only, it does not take obstacles or fruit in account. We use two different algorithms to
+--    calculate the path: Dubins (forward only) and Reeds-Shepp (forward or reverse).
+--
+-- 3. Pathfinder turn
+--    We use the hybrid A* pathfinding algorithm to generate the path between the turn start and turn end. This
+--    algorithm can avoid collisions and fruit. There are two variations:
+--    a) free pathfinding from turn start to end, where the path is determined only by obstacles and fruit on the field
+--    b) drive as much as possible on the outermost headland between turn start and end
+--
+-- Which 180° turn we use when (headland turns are different):
+--
+-- * First, we check if we can make a 3 point turn (canMakeKTurn()):
+--   - the lateral distance to the next row is less than the turn diameter
+--   - can reverse with the attached implements (nothing towed allowed here)
+--   - not an articulated axis vehicle (we can't yet reverse correctly with those)
+--   - there's enough room on the field to make the turn, that is, turning radius + half work width
+--
+-- * If there is no 3 point turn possible, then:
+--   - if the turn end is very far and there are headlands, we always use the pathfinder to find a way
+--     to the turn end through the outermost headland
+--   - if there's enough room to turn on the field:
+--      = if pathfinder turns are enabled in the settings, use the pathfinder to generate the turn path
+--      = otherwise, use a calculated turn
+--   - if there's not enough room to turn on the field (no or not enough headlands):
+--      = if turn on field setting is on, always use calculated turns
+--      = if turn on field setting is off, use pathfinder turns if enabled in settings, calculated turns otherwise
+--
 function CourseTurn:startTurn()
+	AITurn.startTurn(self)
 	local canTurnOnField = AITurn.canTurnOnField(self.turnContext, self.vehicle, self.workWidth, self.turningRadius)
-	if (canTurnOnField or not self.settings.turnOnField:getValue()) and
-			not self.turnContext:isHeadlandCorner() and
-			not self.turnContext:isSimpleWideTurn(self.turningRadius * 2, self.workWidth) then
-		-- if we can turn on the field or it does not matter if we can, pathfinder turn is ok. If turn on field is on
-		-- but we don't have enough space and have to reverse, fall back to the generated turns
-		self:generatePathfinderTurn()
-	else
+	if self.turnContext:isHeadlandCorner() then
+		self:debug('Starting a headland corner turn')
 		self:generateCalculatedTurn()
+		self.state = self.states.TURNING
+	elseif self.turnContext:isPathfinderTurn(2 * self.turningRadius, self.workWidth) then
+		self:debug('Starting a pathfinder turn on headland')
+		self:generatePathfinderTurn(true)
+	elseif canTurnOnField then
+		if self.settings.allowPathfinderTurns:getValue() then
+			self:debug('Starting a pathfinder turn: plenty of room on field to turn and pathfinder turns are enabled')
+			self:generatePathfinderTurn(false)
+		else
+			self:debug('Starting a calculated turn: plenty of room on field to turn and pathfinder turns are disabled')
+			self:generateCalculatedTurn()
+			self.state = self.states.TURNING
+		end
+	else
+		if self.settings.turnOnField:getValue() then
+			self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is on')
+			self:generateCalculatedTurn()
+			self.state = self.states.TURNING
+		elseif not self.settings.allowPathfinderTurns:getValue() then
+			self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is off and pathfinder turns are disabled')
+			self:generateCalculatedTurn()
+			self.state = self.states.TURNING
+		else
+			self:debug('Starting a pathfinder turn: not enough room on field to turn, turn on field is or pathfinder turns are enabled')
+			self:generatePathfinderTurn(false)
+		end
+	end
+	if self.state == self.states.TURNING then
 		self.ppc:setCourse(self.turnCourse)
 		self.ppc:initialize(1)
-		self.state = self.states.TURNING
 	end
 end
 
@@ -577,7 +637,7 @@ end
 
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
--- keep driving on the turn course until we need to lower our implements
+	-- keep driving on the turn course until we need to lower our implements
 	local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
 	if shouldLower then
 		if not self.implementsLowered then
@@ -590,8 +650,10 @@ function CourseTurn:endTurn(dt)
 				self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 			end
 		else
-			-- implements already lowering
-			if dz and dz > -1 and not self.vehicle:getCanAIFieldWorkerContinueWork() then
+			-- implements already lowering, making sure we check if they are lowered, the faster we go, the earlier,
+			-- for those people who set insanely high turn speeds...
+			local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
+			if dz and dz > - implementCheckDistance and not self.vehicle:getCanAIFieldWorkerContinueWork() then
 				self:debug('waiting for lower at dz=%.1f', dz)
 				-- we are almost at the start of the row but still not lowered everything,
 				-- hold.
@@ -606,7 +668,14 @@ function CourseTurn:updateTurnProgress()
 	if self.turnCourse and not self.turnContext:isHeadlandCorner() then
 		-- turn progress is for example rotating plows, no need to worry about that during headland turns
 		local progress = self.turnCourse:getCurrentWaypointIx() / self.turnCourse:getNumberOfWaypoints()
-		self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progress, self.turnContext:isLeftTurn())
+		if (progress - (self.lastProgress or 0)) > 0.1 then
+			-- just send 0 and 1 as it looks like some plows won't turn fully if they receive something in between
+			-- also, start turning a bit before we reach the middle of the turn to make sure it is ready
+			local progressToSend = progress <= 0.3 and 0 or 1
+			self.vehicle:raiseAIEvent("onAIFieldWorkerTurnProgress", "onAIImplementTurnProgress", progressToSend, self.turnContext:isLeftTurn())
+			self:debug('progress %.1f (left: %s)', progressToSend, self.turnContext:isLeftTurn())
+			self.lastProgress = progress
+		end
 	end
 end
 
@@ -616,7 +685,7 @@ function CourseTurn:onWaypointChange(ix)
 		if self.forceTightTurnOffset or (self.enableTightTurnOffset and self.turnCourse:useTightTurnOffset(ix)) then
 			-- adjust the course a bit to the outside in a curve to keep a towed implement on the course
 			-- TODO_22
-			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turnCourse,
+			self.tightTurnOffset = AIUtil.calculateTightTurnOffset(self.vehicle, self.turningRadius, self.turnCourse,
 					self.tightTurnOffset, true)
 			self.turnCourse:setOffset(self.tightTurnOffset, 0)
 		end
@@ -674,11 +743,11 @@ function CourseTurn:generateCalculatedTurn()
 		-- adjust turn course for tight turns only for headland corners by default
 		self.forceTightTurnOffset = self.steeringLength > 0
 	else
-		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.turnContext.vehicleAtTurnStartNode)
+		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.vehicle:getAIDirectionNode())
 		local turnOnField = self.settings.turnOnField:getValue()
-		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
 		-- if don't have to turn on field then pretend we have a lot of space
 		distanceToFieldEdge = turnOnField and distanceToFieldEdge or math.huge
+		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
 		if distanceToFieldEdge > self.workWidth or self.steeringLength > 0 then
 			-- if there's plenty of space or it is a towed implement, stick with Dubins, that's easier
 			turnManeuver = DubinsTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
@@ -687,20 +756,27 @@ function CourseTurn:generateCalculatedTurn()
 			turnManeuver = ReedsSheppTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
 				self.turningRadius, self.workWidth, self.steeringLength, distanceToFieldEdge)
 		end
-		-- only use tight turn offset if we are towing something
-		self.enableTightTurnOffset = self.steeringLength > 0
+		-- only use tight turn offset if we are towing something and not an articulated axis or track vehicle
+		-- as those usually have a very small turn radius anyway, causing jackknifing
+		if self.steeringLength > 0 and not (SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) or
+				SpecializationUtil.hasSpecialization(Crawler, self.vehicle.specializations)) then
+			self:debug('Enabling tight turn offset')
+			self.enableTightTurnOffset = 1
+		end
 	end
 	self.turnCourse = turnManeuver:getCourse()
 end
 
-function CourseTurn:generatePathfinderTurn()
+function CourseTurn:generatePathfinderTurn(useHeadland)
 	self.pathfindingStartedAt = g_currentMission.time
 	local done, path
 	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
-	self:debug('Wide turn: generate turn with hybrid A*, start offset %.1f, goal offset %.1f', startOffset, goalOffset)
+	self:debug('Pathfinder turn (useHeadland: %s): generate turn with hybrid A*, start offset %.1f, goal offset %.1f',
+			useHeadland, startOffset, goalOffset)
 	self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
-			self.turningRadius, false, self.fieldworkCourse)
+			self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
+			useHeadland and self.fieldworkCourse or nil)
 	if done then
 		return self:onPathfindingDone(path)
 	else
@@ -718,13 +794,11 @@ function CourseTurn:onPathfindingDone(path)
 		else
 			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
-		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
-		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
-		self.turnContext:appendEndingTurnCourse(self.turnCourse)
+		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
 		-- and once again, if there is an ending course, keep adjusting the tight turn offset
-		-- TODO: should probably better done on onWaypointChange, to reset to 0
-		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(10)
+		self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
+		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
 	else
 		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))
 		self:generateCalculatedTurn()
@@ -784,11 +858,9 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	local corner = turnContext:createCorner(self.vehicle, self.turningRadius)
 	local d = -self.workWidth / 2 + turnContext.frontMarkerDistance
 	local wp = corner:getPointAtDistanceFromCornerStart(d + 2)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive forward up to the field edge
 	wp = corner:getPointAtDistanceFromCornerStart(d)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	-- drive back to prepare for making a pocket
 	-- reverse back to set up for the headland after the corner
@@ -811,16 +883,13 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	table.insert(cornerWaypoints, wp)
 	-- drive forward to the field edge on the inner headland
 	wp = corner:getPointAtDistanceFromCornerStart(d, -offset * 0.7)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.75
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 1.5)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius / 3, self.turningRadius / 2)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.5
 	table.insert(cornerWaypoints, wp)
 	wp = corner:getPointAtDistanceFromCornerEnd(self.turningRadius, self.turningRadius / 4)
-	wp.speed = self.settings.turnSpeed:getValue() * 0.5
 	table.insert(cornerWaypoints, wp)
 	corner:delete()
 	return Course(self.vehicle, cornerWaypoints, true), turnContext.turnEndWpIx
@@ -888,7 +957,7 @@ end
 StartRowOnly = CpObject(CourseTurn)
 ---@param startRowCourse Course course leading to the first waypoint of the row to start
 ---@param fieldWorkCourse Course field work course
----@param fieldWorkWpIx number waypoint of fieldWorkCourse to align to and start working
+---@param workWidth number
 function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
 	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'AlignmentTurn')
 	self.turnCourse = startRowCourse

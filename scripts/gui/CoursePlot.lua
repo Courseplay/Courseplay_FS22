@@ -29,15 +29,12 @@ function CoursePlot:init()
 	self.stopPosition = {}
 	self.isVisible = false
 	-- the normal FS22 blue
-	self.color = {self:normalizeRgb(42, 193, 237)}
+	self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
 	-- a lighter shade of the same color
-	self.lightColor = {self:normalizeRgb(45, 207, 255)}
+	self.lightColor = {CpGuiUtil.getNormalizedRgb(45, 207, 255)}
 	-- a darker shade of the same color
-	self.darkColor = {self:normalizeRgb(19, 87, 107)}
-end
-
-function CoursePlot:normalizeRgb(r, g, b)
-	return r / 255, g / 255, b / 255
+	self.darkColor = {CpGuiUtil.getNormalizedRgb(19, 87, 107)}
+	self.lineThickness = 2 / g_screenHeight -- 2 pixels
 end
 
 function CoursePlot:delete()
@@ -60,7 +57,7 @@ function CoursePlot:setWaypoints( waypoints )
 	table.insert(self.waypoints, waypoints[1])
 	self.waypoints[1].progress = 1 / #waypoints
 	for i = 2, #waypoints - 1 do
-		if math.abs(waypoints[i].angle - waypoints[i - 1].angle) > math.pi / 1800 then
+		if not waypoints[i].angle or math.abs(waypoints[i].angle - waypoints[i - 1].angle) > 2 then
 			table.insert(self.waypoints, waypoints[i])
 			self.waypoints[#self.waypoints].progress = i / #waypoints
 		end
@@ -95,13 +92,9 @@ function CoursePlot:screenToWorld( x, y )
 	return worldX, worldZ
 end
 
--- Draw the course in the screen area defined in new(), the bottom left corner
+-- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
-function CoursePlot:draw(map)
-
-	if not self.isVisible then return end
-	local lineThickness = 2 / g_screenHeight -- 2 pixels
-
+function CoursePlot:drawPoints(map)
 	if self.waypoints and #self.waypoints > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.
@@ -127,11 +120,21 @@ function CoursePlot:draw(map)
 
 				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
-				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
+				renderOverlay( self.courseOverlayId, startX, startY, width, self.lineThickness )
 			end
 		end;
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
+end
+
+
+function CoursePlot:draw(map)
+
+	if not self.isVisible then return end
+
+	self:drawPoints(map)
+
+	-- render the start and stop signs
 
 	local signSizeMeters = 0.02
 	local zoom = map.fullScreenLayout:getIconZoom()

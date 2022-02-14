@@ -45,7 +45,6 @@ function AIDriveStrategyFindBales.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     ---@type ImplementController[]
     self.controllers = {}
-    self.fieldId = 0
     self.bales = {}
     return self
 end
@@ -59,23 +58,36 @@ function AIDriveStrategyFindBales:startWithoutCourse()
     -- to always have a valid course (for the traffic conflict detector mainly)
     self.course = self:getStraightForwardCourse(25)
     self:startCourse(self.course, 1)
-    local myField = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-
-    if myField == 0 then
-        self:error('Vehicle not on field, cannot start bale collect/wrap job.')
-        self.vehicle:stopCurrentAIJob(AIMessageErrorNoFieldFound.new())
-        return
-    end
 
     self:info('Starting bale collect/wrap')
-    self:info(' - map: %s, field %s', g_currentMission.missionInfo.mapTitle,
-            CpFieldUtil.getFieldNumUnderVehicle(self.vehicle))
+
+    -- We either collect bales on a normal field or a custom field.
+    -- If the vehicle is on a custom field, find all bales which are in the field polygon of the custom field.
+    local x, _, z = getWorldTranslation(self.vehicle.rootNode)
+    ---@type CustomField
+    self.customField = g_customFieldManager:getCustomField(x, z)
+    -- Custom field takes precedence over normal field.
+    if self.customField then
+        self.fieldName = self.customField:getName()
+        self:info(' - map: %s, custom field %s', g_currentMission.missionInfo.mapTitle, self.customField:getName())
+    else
+        -- On a normal field, we use the field ID under the position of the bale to find bales.
+        local myField = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+        if myField == 0 then
+            self:error('Vehicle not on field, cannot start bale collect/wrap job.')
+            self.vehicle:stopCurrentAIJob(AIMessageErrorNoFieldFound.new())
+            return
+        end
+        self.fieldId = myField
+        self.fieldName = tostring(myField)
+        self:info(' - map: %s, field %s', g_currentMission.missionInfo.mapTitle, self.fieldName)
+    end
+
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:info(' - %s', CpUtil.getName(implement.object))
     end
 
-    self.field = myField
-    self.bales = self:findBales(myField)
+    self.bales = self:findBales()
 
     self:collectNextBale()
 end
@@ -86,7 +98,7 @@ function AIDriveStrategyFindBales:collectNextBale()
         self:findPathToNextBale()
     else
         self:info('No bales found, scan the field once more before leaving for the unload course.')
-        self.bales = self:findBales(self.field)
+        self.bales = self:findBales(self.fieldId)
         if #self.bales > 0 then
             self:info('Found more bales, collecting them')
             self:findPathToNextBale()
@@ -132,19 +144,28 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
 -----------------------------------------------------------------------------------------------------------------------
+---@param bale BaleToCollect
+function AIDriveStrategyFindBales:isBaleOnField(bale)
+    if self.fieldId then
+        -- normal field mode
+        return bale:getFieldId() == self.fieldId
+    elseif self.customField then
+        local x, _, z = bale:getPosition()
+        return self.customField:isPointOnField(x, z)
+    end
+end
+
 --- Find bales on field
 ---@return BaleToCollect[] list of bales found
-function AIDriveStrategyFindBales:findBales(fieldId)
-    self:debug('Finding bales on field %d...', fieldId or 0)
+function AIDriveStrategyFindBales:findBales()
+    self:debug('Finding bales on field %s...', self.fieldName)
     local balesFound = {}
     for _, object in pairs(g_currentMission.nodeToObject) do
         if BaleToCollect.isValidBale(object, self.baleWrapper, self.baleLoader) then
             local bale = BaleToCollect(object)
             -- if the bale has a mountObject it is already on the loader so ignore it
-            if (not fieldId or fieldId == 0 or bale:getFieldId() == fieldId) and
-                    not object.mountObject and
-                    object:getOwnerFarmId() == self.vehicle:getOwnerFarmId()
-            then
+            if not object.mountObject and object:getOwnerFarmId() == self.vehicle:getOwnerFarmId() and
+                    self:isBaleOnField(bale) then
                 -- bales may have multiple nodes, using the object.id deduplicates the list
                 balesFound[object.id] = bale
             end
@@ -155,7 +176,7 @@ function AIDriveStrategyFindBales:findBales(fieldId)
     for _, bale in pairs(balesFound) do
         table.insert(bales, bale)
     end
-    self:debug('Found %d bales on field %d', #bales, fieldId)
+    self:debug('Found %d bales on field %s', #bales, self.fieldName)
     return bales
 end
 
@@ -185,7 +206,7 @@ function AIDriveStrategyFindBales:findClosestBale(bales)
             self:debug('%d. bale (%d, %s) INVALID', i, bale:getId(), bale:getBaleObject())
             invalidBales = invalidBales + 1
             self:debug('Found an invalid bales, rescanning field', invalidBales)
-            self.bales = self:findBales(self.field)
+            self.bales = self:findBales(self.fieldId)
             -- return empty, next time this is called everything should be ok
             return
         end
@@ -234,18 +255,20 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
     if not self.pathfinder or not self.pathfinder:isActive() then
         self.pathfindingStartedAt = g_currentMission.time
         local safeDistanceFromBale = bale:getSafeDistance()
-        local halfVehicleWidth = self.vehicle.size.width and self.vehicle.size.width / 2 or 1.5
-        self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f',
-                bale:getId(), safeDistanceFromBale, halfVehicleWidth)
+        local halfVehicleWidth = AIUtil.getWidth(self.vehicle) / 2
         local goal = self:getBaleTarget(bale)
         local configuredOffset = self:getConfiguredOffset()
         local offset = Vector(0, safeDistanceFromBale +
                 (configuredOffset and configuredOffset or (halfVehicleWidth + 0.2)))
         goal:add(offset:rotate(goal.t))
+        self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f, configured offset %s',
+                bale:getId(), safeDistanceFromBale, halfVehicleWidth,
+                configuredOffset and string.format('%.1f', configuredOffset) or 'n/a')
         local done, path, goalNodeInvalid
+        -- use no off-field penalty if we are on a custom field
         self.pathfinder, done, path, goalNodeInvalid =
         PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, self.fieldId,
-                {}, self.lastBale and {self.lastBale} or {})
+                {}, self.lastBale and {self.lastBale} or {}, nil, self.fieldId and nil or 0)
         if done then
             return self:onPathfindingDoneToNextBale(path, goalNodeInvalid)
         else
@@ -262,8 +285,8 @@ function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInva
     if path and #path > 2 then
         self.pathfinderFailureCount = 0
         self:debug('Found path (%d waypoints, %d ms)', #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        self.fieldworkCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(self.fieldworkCourse, 1)
+        self.fieldIdworkCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self:startCourse(self.fieldIdworkCourse, 1)
         self:debug('Driving to next bale')
         self.state = self.states.DRIVING_TO_NEXT_BALE
         return true
@@ -284,7 +307,7 @@ function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInva
         else
             self:info('Pathfinding failed three times, giving up')
             self.pathfinderFailureCount = 0
-            self:stop('WORK_END')
+            self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
         end
         return false
     end
@@ -315,7 +338,7 @@ end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
     local x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 0)
-    local vehicleIsOnField = courseplay:isField(x, z, 1, 1)
+    local vehicleIsOnField = CpFieldUtil.isOnField(x, z)
     x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1.2 * self.turningRadius)
     local isFieldInFrontOfVehicle = CpFieldUtil.isOnFieldArea(x, z)
     self:debug('vehicle is on field: %s, field in front of vehicle: %s',
@@ -336,7 +359,7 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
             self:collectNextBale()
         elseif self.state == self.states.APPROACHING_BALE then
             self:debug('looks like somehow we missed a bale, rescanning field')
-            self.bales = self:findBales(self.field)
+            self.bales = self:findBales(self.fieldId)
             self:collectNextBale()
         elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
             self:debug('backed up after pathfinder failed, trying again')
@@ -379,7 +402,7 @@ function AIDriveStrategyFindBales:checkFillLevel()
     if self.baleLoader then
         if self.fillLevelManager:getTotalFillLevelPercentage(self.baleLoader) > 99 then
             self:info('Bale loader is full, stopping job.')
-            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         end
     end
 end

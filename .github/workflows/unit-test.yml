@@ -8,10 +8,10 @@ name: Run unit tests
 on: 
   push:
     paths:
-      - "**.lua"
+      - '**.lua'
   pull_request:
     paths:
-      - "**.lua"
+      - '**.lua'
   workflow_dispatch:
 
 # The list of jobs this workflow executes
@@ -24,4 +24,7 @@ jobs:
       - name: Setup Lua
         uses: xpol/setup-lua@v0.3
       - name: Run unit tests
-        run: cd scripts/test && lua CourseManagerTest.lua
+        run: |
+          cd scripts/test
+          lua CourseManagerTest.lua
+          lua CpMathUtilTest.lua
