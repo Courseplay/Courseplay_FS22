@@ -3,6 +3,12 @@ name: Update contributors
 
 # Controls when the workflow will run
 on: 
+  push:
+    paths:
+      - "**/translations/**"
+  pull_request:
+    paths:
+      - "**/translations/**"
   pull_request_target:
     paths:
       - "**/translations/**"
@@ -32,4 +38,4 @@ jobs:
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Apply php-cs-fixer changes
+          commit_message: Update contributors
