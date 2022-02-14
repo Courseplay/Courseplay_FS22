@@ -23,7 +23,9 @@ jobs:
         with:
           node-version: "14"
       - name: Create local changes
-        run: ".github/workflows/scripts/update-contributors/index.js"
+        run: |
+          cd .github/workflows/scripts/update-contributors
+          node index.js ${{ github.actor }} ${{ github.sha }}
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
