@@ -5,13 +5,13 @@
 * [schwiti6190](/schwiti6190)
 
 ### Translators
-* Czech: [SniperKittenCZ](/SniperKittenCZ), [Thodor12](/Thodor12), [chroja](/chroja)
+* Czech: [SniperKittenCZ](/SniperKittenCZ), [chroja](/chroja)
 * Danish: [o0bonde](/o0bonde)
 * Dutch: [Thodor12](/Thodor12)
 * French: [Lactic68](/Lactic68)
 * German: [RealNeo80](/RealNeo80)
 * Italian: [Roby1164](/Roby1164)
-* Japanese: [Thodor12](/Thodor12), [kgdtuu](/kgdtuu)
+* Japanese: [kgdtuu](/kgdtuu)
 * Polish: [KITT3000](/KITT3000)
 * Portuguese: [Admilson](/Admilson)
 * Russian: [Gonimy-Vetrom](/Gonimy-Vetrom)
