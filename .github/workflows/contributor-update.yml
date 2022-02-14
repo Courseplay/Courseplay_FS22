@@ -4,12 +4,8 @@ name: Update contributors
 # Controls when the workflow will run
 on: 
   push:
-    paths:
-      - "**/translations/**"
-  pull_request:
-    paths:
-      - "**/translations/**"
-  pull_request_target:
+    branches:
+      - main
     paths:
       - "**/translations/**"
 
