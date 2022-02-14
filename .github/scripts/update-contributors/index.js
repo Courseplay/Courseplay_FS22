@@ -69,11 +69,14 @@ function updateInternalContributors(user, langs) {
 }
 
 function getLanguagesFromCommitFiles(sha) {
-    const output = execSync(`git diff-tree --no-commit-id --name-only -r ${sha}`);
+    const output = execSync(`git diff-tree --no-commit-id --name-only -r ${sha}`).toString("utf-8");
+    console.log("Changed files:");
+    console.log(output);
     const translationFiles = output
-        .toString("utf-8")
         .split("\n")
         .filter(item => item.startsWith("translations/"));
+    console.log("Changed translation files:");
+    console.log(translationFiles);
     return translationFiles
         .map(m => {
             const match = m.match(translationFileNameRegexp);
