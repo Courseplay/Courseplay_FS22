@@ -62,6 +62,7 @@ function updateInternalContributors(user, langs) {
         }
         if (!contributors.translators[lang].find(item => item === user)) {
             contributors.translators[lang].push(user);
+            console.log(`Adding contributor ${user} to language ${lang}`)
         }
     }
     writeContributors(contributors);

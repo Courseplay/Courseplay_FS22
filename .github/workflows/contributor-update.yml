@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: "14"
       - name: Create local changes
-        continue-on-error: true
         run: |
           cd .github/scripts/update-contributors
           node index.js ${{ github.actor }} ${{ github.sha }}
       - name: Commit files
+        continue-on-error: true
         run: |
           git config --local user.email "github-actions@github.com"
           git config --local user.name "github-actions"
