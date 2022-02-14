@@ -4,7 +4,7 @@ const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "language" })
 const translationFileNameRegexp = /translation_(.{2})\.xml/;
 
 function getUserTag(name) {
-    return `@${name}`;
+    return `[${name}](/${name})`;
 }
 
 function readContributors() {
