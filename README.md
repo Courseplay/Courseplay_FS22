@@ -75,7 +75,7 @@ ___
 * Hungarian: 
 * Italian: Markus33-ITA, Roby1164, Cristiano Magro
 * Polish: Ziuta
-* Portuguese (BR): Admilson Alfonso
+* Portuguese (BR): Admilson Afonso
 * Portuguese (PT): 
 * Russian: Dzmitry Danilau, Gonimy-Vetrom
 * Spanish: Alfredo Prieto
