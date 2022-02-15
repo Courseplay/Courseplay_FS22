@@ -167,7 +167,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width. Value: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size, negative increase the field size. Value: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Rows to skip" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Rows to skip when changing to the next up/down row. Value: 0 - 6" />
@@ -338,16 +338,31 @@
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
-Base
+When selecting a vehicle, you will see it's loaded course and the coursemanager (if there is one loaded), and the vehicle options.
+The global settings are always present.
+With create a job, you will not only gain access the default Jobs from FS22, but also to CP: Fieldwork and CP: wrap/collect bales.
 		"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
-Functions
+To start off with your first CP Job, you have to select a vehicle with a valid tool attached.
+Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect ables
+with a bale wrapper or bale collector attached.
 		"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
-Base
+With CP: Fieldwork selected, you have a Target position, wich you might know from the Giants Helper and a new Field position.
+That field position is used to select the field where you want to work on, as well as the start point of the course (or Endpoint).
+If you let Giants drive your vehicle to the field to start the job, with start at: you can choose where the CP Driver will start.
+Lane offset is only used in multitool courses, more about that in a later topic.
 		"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
-Functions
+The target position is only used if you will start the job from that menu, it will tell the Giants Helper to drive to that location and give controll over to courseplay.
+As said before, field position is to select the field and must be placed in order to open the generator.
+Depending on where to start the fieldwork, the field position will also tell the generator where the start or end point should be.
+If you have a valid field, the border will be highlighted in a white line.
+Now you are able to open the course generator. More about this in the next topic.
+		"/>
+		<text name="CP_help_page_JobMenuExtras_text"													text="
+When you have a generated course, you can else start the Job (remember to set a Target position) or drive by yourself to the field and use the HUD to start the course.
+Alternatively you can use AutoDrive to drive to a AutoDrive Target and start CP.
 		"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
@@ -362,6 +377,12 @@ Base
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
 Functions
+		"/>
+		<text name="CP_help_page_courseGeneratorExtras_text"											text="
+Extras
+Field Margin explanation:
+Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
+Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 		"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Course manager"/>

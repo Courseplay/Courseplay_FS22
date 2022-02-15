@@ -18,6 +18,9 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_readyJobMenuFunctions_text"/>
 			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_JobMenuExtras_text"/>
+			</paragraph>
 		</page>
 		<!--Courseplay Generator-->
 		<page title="$l10n_CP_help_page_courseGenerator_title">
@@ -35,6 +38,9 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
 			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorExtras_text"/>
+			</paragraph>	
 		</page>
 		<!--Courseplay courseManager-->
         <page title="$l10n_CP_help_page_courseManager_title">
