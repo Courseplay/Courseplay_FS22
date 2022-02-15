@@ -15,6 +15,7 @@
 * French: [Lactic68](/Lactic68)
 * German: [RealNeo80](/RealNeo80), [Thodor12](/Thodor12)
 * Italian: [Roby1164](/Roby1164)
+* Japanese: [Thodor12](/Thodor12)
 * Polish: [KITT3000](/KITT3000)
 * Portuguese: [Admilson](/Admilson), [Thodor12](/Thodor12)
 * Russian: [Gonimy-Vetrom](/Gonimy-Vetrom)
