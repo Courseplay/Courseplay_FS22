@@ -3,7 +3,23 @@
 <helpLines>
 	<!--Courseplay category-->
 	<category title="$l10n_CP_help_title">
-
+		<page title="$l10n_CP_help_page_extendedJobMenu_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_startJobMenuBase_text"/>
+				<image filename="CP_img/helpmenu/startjobmenuhelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_startJobMenuFunctions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_readyJobMenuBase_text"/>
+				<image filename="CP_img/helpmenu/readyjobmenuhelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_readyJobMenuFunctions_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Generator-->
 		<page title="$l10n_CP_help_page_courseGenerator_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
@@ -25,12 +41,6 @@
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerBase_text"/>
 				<image filename="CP_img/helpmenu/managerbasehelp.dds" size="768px 512px"/>
-				<!-- 
-					heightScale
-					aspectRatio
-					size
-					uvs
-				-->
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
