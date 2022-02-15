@@ -368,19 +368,41 @@ Alternatively you can use AutoDrive to drive to a AutoDrive Target and start CP.
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
-Base
+The course generator is the core of the Fieldwork.
+With this tool you will generate a course, based on the field condition and the settings you choose, how your helper should work on the field.
+You can always change values and hit generate course and have a look, what impact does a certain value have on your course.
+Experimenting with it and lear on how each setting work, is the best way to get used to it.
 		"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
-Functions
+Basics:
+The first few values you see here, are realy basic stuff.
+- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact of your overall course.
+- Multiple Tools: That setting is used, when you want more then just 1 Tool to work on your course. As this gets a bit more complicated, there is an own help topic for it.
+- Number of Headlands: The best way to keep your tools on the fied while doing their job, is to add Headlands.
+The Number of the Headlands multiplied by the work width should but at least the total length of your vehicle plus the attached tool
+Center options:
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have Combines pipe point out of the fruit most of the time to easier unload them.
+- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
+- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next close row.
+- Rows per Land: This have only impact when field center is set to lands and will tell the generator how many rows each land should have. The more rows, the lesser lands will be generated.
+- Up/down row angle: As said before, when the Up/Down row direction is set to manual, this setting will tell the generate the direction.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
-Base
+Headland settings will only show up, when you have set at least one at Number of headlands.
+You gain options for where to start on, corner settings, direction and overlap.
+Headlands are highly suggested to prevent tools leaving the field for their turns.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
-Functions
+- Star work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
+When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
+- Headland corners: Smooth will have a simple smoothing over the corners, This works all tools, but will lead into tiny unworked patches.
+They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the fieldborder angle.
+Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
+Headland direction: clockwise or counter-clockwise. This can be important for Combine and Harvester, depending on wich side the pipe or convayer belt is.
+Headland overlap: How much % overlap all Headlands should have. The 1st one will have no overlap with the field border, but the inner ones will overlap with theri neighbour.
 		"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
-Extras
 Field Margin explanation:
 Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
