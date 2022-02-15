@@ -1,5 +1,4 @@
 const { readFileSync, writeFileSync } = require("fs");
-const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "language" });
 const translationFileNameRegexp = /translation_(.{2})\.xml/;
 
 function getUserTag(name) {
@@ -20,13 +19,13 @@ function getContributorList() {
 }
 
 function getTranslatorContributorList() {
-    const translators = readContributors().translators;
-    return Object.keys(translators).reduce((prev, curr) => {
-        if (translators[curr].length > 0) {
+    const contribs = readContributors();
+    return Object.keys(contribs.translators).reduce((prev, curr) => {
+        if (contribs.translators[curr].length > 0) {
             prev.push({
                 language: curr,
-                languageTranslated: regionNamesInEnglish.of(curr),
-                translators: translators[curr]
+                languageTranslated: contribs.languages[curr],
+                translators: contribs.translators[curr]
             });
         }
         return prev;
@@ -50,7 +49,7 @@ function createContributorsFile() {
         .join("\n"));
     data = data.replace("[[translators]]", getTranslatorContributorList()
         .sort(compareTranslatedLanguages)
-        .map(m => `* ${regionNamesInEnglish.of(m.language)}: ${m.translators.map(getUserTag).sort().join(", ")}`)
+        .map(m => `* ${m.languageTranslated}: ${m.translators.map(getUserTag).sort().join(", ")}`)
         .join("\n"));
     writeFileSync("../../../Contributors.md", data, "utf-8");
 }
