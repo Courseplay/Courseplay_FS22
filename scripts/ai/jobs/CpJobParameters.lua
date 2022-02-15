@@ -54,14 +54,6 @@ function CpJobParameters:readStream(streamId, connection)
     end
 end
 
-function CpJobParameters:hasNoCourse()
-    local vehicle = self.job:getVehicle()
-    if vehicle then
-        return not vehicle:hasCpCourse()
-    end
-    return false
-end
-
 function CpJobParameters:getMultiTools()
     local vehicle = self.job:getVehicle()
     if vehicle then 

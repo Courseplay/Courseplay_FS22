@@ -343,10 +343,13 @@ function CpBaseHud:draw(status)
     --- Set variable data.
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
-    if self.vehicle:getCanStartCpBaleFinder() then 
+    if self.vehicle:hasCpCourse() then 
+        self.startingPointBtn:setDisabled(false)
+        self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
+    elseif self.vehicle:getCanStartCpBaleFinder() then 
         self.startingPointBtn:setDisabled(true)
         self.startingPointBtn:setTextDetails(self.vehicle:getCpStartText())
-    else
+    else 
         self.startingPointBtn:setDisabled(false)
         self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
     end
@@ -419,29 +422,37 @@ end
 
 function CpBaseHud:openCourseGeneratorGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
-     --- Opens the course generator if possible.
-    local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageAI)
+    local pageAI = inGameMenu.pageAI
+    --- Opens the course generator if possible.
+    local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(pageAI)
     inGameMenu.pageSelector:setState(pageIx, true)
-    inGameMenu.pageAI:onCreateJob()
-    for i,index in ipairs(inGameMenu.pageAI.currentJobTypes) do 
-        local job = inGameMenu.pageAI.jobTypeInstances[index]
-        if job:isa(CpAIJobFieldWork) then 
+    self:debug("opened ai inGame menu.")
+    if vehicle:getIsCpActive() then 
+        return
+    end
+    self:debug("opened ai inGame job creation.")
+    self.vehicle:updateAIFieldWorkerImplementData()
+    pageAI:onCreateJob()
+    for _,job in pairs(pageAI.jobTypeInstances) do 
+        if job:isa(CpAIJobFieldWork) and job:getIsAvailableForVehicle(vehicle) then 
+            local jobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndex(job)
+            self:debug("opened ai inGame menu job %s.", job:getDescription())
+            pageAI.currentJob = nil
+            pageAI:setActiveJobTypeSelection(jobTypeIndex)
+            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, true)
+            pageAI:updateParameterValueTexts()
+            pageAI:validateParameters()
+            local currentIndex = table.findListElementFirstIndex(pageAI.currentJobTypes, jobTypeIndex, 1)
+            pageAI.jobTypeElement:setState(currentIndex)
             if not vehicle:hasCpCourse() then 
-                -- Sets the start position relative to the vehicle position, but only if no course is set.
-                job:resetStartPositionAngle(vehicle)
-                job:setValues()
-                local x, z, rot = job:getTarget()
-                inGameMenu.pageAI.aiTargetMapHotspot:setWorldPosition(x, z)
-                if rot ~= nil then
-                    inGameMenu.pageAI.aiTargetMapHotspot:setWorldRotation(rot + math.pi)
+                if pageAI.currentJob:getCanGenerateFieldWorkCourse() then 
+                    self:debug("opened ai inGame menu course generator.")
+                    pageAI:onClickOpenCloseCourseGenerator()
                 end
-
             end
-            inGameMenu.pageAI:setActiveJobTypeSelection(index)
             break
         end
     end
-    inGameMenu.pageAI:onClickOpenCloseCourseGenerator()
 end
 
 function CpBaseHud:openVehicleSettingsGui(vehicle)
@@ -458,8 +469,10 @@ end
 
 --- Saves hud position.
 function CpBaseHud.saveToXmlFile(xmlFile,baseKey)
-    xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posX",CpBaseHud.x)
-    xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posY",CpBaseHud.y)
+    if CpBaseHud.x ~= nil and CpBaseHud.y ~= nil then
+        xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posX",CpBaseHud.x)
+        xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posY",CpBaseHud.y)
+    end
 end
 
 --- Loads hud position.
@@ -471,4 +484,8 @@ function CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
            posX, posY
         }
     end
+end
+
+function CpBaseHud:debug(str, ...)
+    CpUtil.debugVehicle(CpDebug.DBG_HUD, self.vehicle, "Hud: "..str, ...)    
 end

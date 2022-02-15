@@ -52,6 +52,8 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     ---@type ImplementController[]
     self.controllers = {}
+
+    self.isUnfoldedAndReady = false
     return self
 end
 
@@ -101,6 +103,9 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     -- remember at which waypoint we started, especially for the convoy
     self.startWaypointIx = startIx
     self.vehiclesInConvoy = {}
+
+    self.isUnfoldedAndReady = false
+
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
     if distance > 2 * self.turningRadius then
@@ -166,7 +171,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         if self.vehicle:getCanAIFieldWorkerContinueWork() then
             self:debug('all tools ready, start working')
             self.state = self.states.WORKING
-            self:handleRidgeMarkers(true)
         else
             self:debugSparse('waiting for all tools to lower')
         end
@@ -253,6 +257,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
         for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do 
             local controller = class(vehicle, childVehicle)
             controller:setDisabledStates(states)
+            controller:setDriveStrategy(self)
             table.insert(self.controllers, controller)
         end
     end
@@ -271,11 +276,22 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
     addController(FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
     addController(MowerController, Mower, defaultDisabledStates)
+
+    addController(RidgeMarkerController, RidgeMarker, defaultDisabledStates)
+
+    addController(PickupController, Pickup, defaultDisabledStates)
+    addController(CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
-    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
-        implement.object:aiImplementStartLine()
+    --- TODO: find a better solution for triggering this event.
+    if not self.isUnfoldedAndReady then 
+        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+        self.isUnfoldedAndReady = true
+    end
+    
+    for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
+        childVehicle:aiImplementStartLine()
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
 
@@ -284,14 +300,15 @@ function AIDriveStrategyFieldWorkCourse:lowerImplements()
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
         self.state = self.states.WAITING_FOR_LOWER_DELAYED
     end
+    self:raiseControllerEvent(self.onLoweringEvent)
 end
 
 function AIDriveStrategyFieldWorkCourse:raiseImplements()
-    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
-        implement.object:aiImplementEndLine()
+    for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
+        childVehicle:aiImplementEndLine()
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
-    self:handleRidgeMarkers(false)
+    self:raiseControllerEvent(self.onRaisingEvent)
 end
 
 
@@ -528,31 +545,6 @@ function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
     self:lowerImplements(self.vehicle)
 end
 
-function AIDriveStrategyFieldWorkCourse:stopAndChangeToUnload()
-    -- TODO_22 run unload/refill with the vanilla helper?
-    if false and self.unloadRefillCourse and not self.heldForUnloadRefill then
-        self:rememberWaypointToContinueFieldWork()
-        self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.storage.continueFieldworkAtWaypoint or -1)
-        self:changeToUnloadOrRefill()
-        self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
-    else
-        if self.vehicle.spec_autodrive and self.vehicle.cp.settings.autoDriveMode:useForUnloadOrRefill() then
-            -- Switch to AutoDrive when enabled
-            self:rememberWaypointToContinueFieldWork()
-            self:stopWork()
-            self:foldImplements()
-            self.state = self.states.ON_UNLOAD_OR_REFILL_WITH_AUTODRIVE
-            self:debug('passing the control to AutoDrive to run the unload/refill course.')
-            --- Make sure trigger handler is disabled, while autodrive is driving.
-            self.triggerHandler:disableFillTypeLoading()
-            self.triggerHandler:disableFuelLoading()
-            self.vehicle.spec_autodrive:StartDrivingWithPathFinder(self.vehicle, self.vehicle.ad.mapMarkerSelected, self.vehicle.ad.mapMarkerSelected_Unload, self, FieldworkAIDriver.onEndCourse, nil);
-        else
-            -- otherwise we'll
-            self:changeToFieldworkUnloadOrRefill()
-        end;
-    end
-end
 
 -- switch back to fieldwork after the turn ended.
 ---@param ix number waypoint to resume fieldwork after
@@ -701,39 +693,9 @@ function AIDriveStrategyFieldWorkCourse:setOffsetX()
     -- do nothing by default
 end
 
---- Sets the ridgeMarker position on lowering of an implement.
----@param isAllowed boolean is switch ridge markers allowed ?
-function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
-	-- no ridge markers with multitools to avoid collisions.
-	if self.settings.ridgeMarkersAutomatic:is(false)
-
-     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1
-    then
-        self:debug('Ridge marker handling disabled.')
-        return
-     end
-
-    local function setRidgeMarkerState(self, vehicle, state)
-        local spec = vehicle.spec_ridgeMarker
-        if spec then
-            -- yes, another Giants typo
-            if spec.numRigdeMarkers > 0 then
-                if spec.ridgeMarkerState ~= state then
-                    self:debug('Setting ridge markers to %d for %s', state, vehicle:getName())
-                    vehicle:setRidgeMarkerState(state)
-                end
-            end
-        end
-    end
-
-    local state = isAllowed and  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
-    self:debug('Target ridge marker state is %d.', state)
-    setRidgeMarkerState(self, self.vehicle, state)
-
-    for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
-        setRidgeMarkerState(self, implement.object, state)
-    end
-
+--- Gets the current ridge marker state.
+function AIDriveStrategyFieldWorkCourse:getRidgeMarkerState()
+    return self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
 end
 
 function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)

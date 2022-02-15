@@ -166,7 +166,6 @@ end
 
 function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	self:handlePipe(dt)
-	self:disableCutterTimer()
 	if self.temporaryHold:get() then
 		self:setMaxSpeed(0)
 	end
@@ -258,7 +257,9 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		end
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
 		local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-		if fillLevel < 0.01 then
+		--- Makes sure the cotton harvester gets release at the end of the course.
+		--- TODO: Unload the unfinished bale from the cotton harvester.
+		if fillLevel < 0.01 or self:isCottonHarvester() then
 			self:clearInfoText(self:getFillLevelInfoText())
 			self:debug('Unloading finished after fieldwork ended, end course')
 			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
@@ -343,19 +344,6 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		else
 			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
-		end
-	end
-end
-
---- The Giants Cutter class has a timer to stop the AI job if there is no fruit being processed for 5 seconds.
---- This prevents us from driving for instance on a connecting track or longer turns (and also testing), so
---- we just reset that timer here in every update cycle.
-function AIDriveStrategyCombineCourse:disableCutterTimer()
-	if self.combine.attachedCutters then
-		for cutter, _ in pairs(self.combine.attachedCutters) do
-			if cutter.spec_cutter and cutter.spec_cutter.aiNoValidGroundTimer then
-				cutter.spec_cutter.aiNoValidGroundTimer = 0
-			end
 		end
 	end
 end

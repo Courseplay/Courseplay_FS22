@@ -103,18 +103,29 @@ end
 --- Is used for the communication to external mods with events.
 function CpAIWorker:stopCurrentAIJob(superFunc,message,...)
     local wasCpActive = self:getIsCpActive()
+    local driveStrategy
     if wasCpActive then
-        -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
-        local maxSpeed = self.spec_cpAIWorker.driveStrategy and self.spec_cpAIWorker.driveStrategy:getMaxSpeed()
-        if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
-         message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 1 then
-            -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
-            -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
-            -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
-            -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
-            return
+        driveStrategy = self:getCpDriveStrategy()
+        if driveStrategy then 
+            -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
+            local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
+            if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
+            message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 1 then
+                -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
+                -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
+                -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
+                -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
+                return
+            end
+            --- This needs to be back propagated to the drive strategy, as the stop call might come for giants code or the user.
+            driveStrategy:onFinished()
         end
+    end
+    if message then 
+        CpUtil.info(message:getMessage(), CpUtil.getName(self))
+    else
+        CpUtil.info("%s: no message was given.", CpUtil.getName(self))
     end
     superFunc(self,message,...)
     if wasCpActive then 
