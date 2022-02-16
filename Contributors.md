@@ -1,26 +1,22 @@
 ## Credits
 ### Developers
-* [Tensuko](/Tensuko)
-* [pvaiko](/pvaiko)
-* [schwiti6190](/schwiti6190)
+* [Tensuko](https://github.com/Tensuko)
+* [pvaiko](https://github.com/pvaiko)
+* [schwiti6190](https://github.com/schwiti6190)
 
 ### Translators
-* Brazilian Portuguese: 
-* Chinese Simplified: [kgdtuu](/kgdtuu)
-* Chinese Traditional:
-* Czech: [SniperKittenCZ](/SniperKittenCZ), [chroja](/chroja)
-* Danish: [o0bonde](/o0bonde)
-* Dutch: [Thodor12](/Thodor12)
-* English: 
-* French: [Lactic68](/Lactic68)
-* German: [RealNeo80](/RealNeo80)
-* Italian: [Roby1164](/Roby1164)
-* Japanese: 
-* Polish: [KITT3000](/KITT3000)
-* Portuguese: [Admilson](/Admilson)
-* Russian: [Gonimy-Vetrom](/Gonimy-Vetrom)
-* Spanish: [KCHARRO](/KCHARRO), [aorek](/aorek)
-* Swedish: [piplarsson](/piplarsson)
+* Chinese Simplified: [kgdtuu](https://github.com/kgdtuu)
+* Czech: [SniperKittenCZ](https://github.com/SniperKittenCZ), [chroja](https://github.com/chroja)
+* Danish: [o0bonde](https://github.com/o0bonde)
+* Dutch: [Thodor12](https://github.com/Thodor12)
+* French: [Lactic68](https://github.com/Lactic68)
+* German: [RealNeo80](https://github.com/RealNeo80)
+* Italian: [Roby1164](https://github.com/Roby1164)
+* Polish: [KITT3000](https://github.com/KITT3000)
+* Portuguese: [Admilson](https://github.com/Admilson)
+* Russian: [Gonimy-Vetrom](https://github.com/Gonimy-Vetrom)
+* Spanish: [KCHARRO](https://github.com/KCHARRO), [aorek](https://github.com/aorek)
+* Swedish: [piplarsson](https://github.com/piplarsson)
 
 Logo Design by Finals Farming
 
