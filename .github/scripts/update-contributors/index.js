@@ -2,7 +2,7 @@ const { readFileSync, writeFileSync } = require("fs");
 const translationFileNameRegexp = /translation_(.{2})\.xml/;
 
 function getUserTag(name) {
-    return `[${name}](/${name})`;
+    return `[${name}](https://github.com/${name})`;
 }
 
 function readContributors() {
