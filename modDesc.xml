@@ -104,6 +104,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/controllers/RidgeMarkerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/PickupController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/CutterController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SprayerController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
