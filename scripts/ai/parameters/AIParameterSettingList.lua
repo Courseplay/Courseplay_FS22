@@ -232,6 +232,8 @@ function AIParameterSettingList:readStream(streamId, connection)
 		local setupIx = streamReadInt32(streamId)
 		self:setToIx(self:getClosestIxFromSetup(setupIx))
 		self:debug("set to %s from stream.", tostring(self:getString()))
+	else 
+		self:debug("is user setting, skip stream.")
 	end
 end
 
@@ -239,6 +241,8 @@ function AIParameterSettingList:writeStream(streamId, connection)
 	if not self:getIsUserSetting() then
 		streamWriteInt32(streamId, self:getClosestSetupIx())
 		self:debug("send %s to stream.", tostring(self:getString()))
+	else
+		self:debug("is user setting, skip stream.")
 	end
 end
 
