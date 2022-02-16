@@ -226,6 +226,13 @@ function TurnManeuver.setTurnControlForLastWaypoints(course, d, control, value)
 	end)
 end
 
+--- Set implement lowering control for the end of the turn
+function TurnManeuver.setLowerImplements(course, frontMarkerDistance, steeringLength)
+	TurnManeuver.setTurnControlForLastWaypoints(course,
+			math.max(steeringLength, math.abs(frontMarkerDistance), 3) + 2,
+			TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+end
+
 ---@param course Course
 ---@param dBack number distance in meters to move the course back (positive moves it backwards!)
 function TurnManeuver:moveCourseBack(course, dBack)
@@ -277,8 +284,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge)
 	end
-	TurnManeuver.setTurnControlForLastWaypoints(self.course, math.max(turnContext.frontMarkerDistance + 2, 5),
-			TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+	TurnManeuver.setLowerImplements(self.course, turnContext.frontMarkerDistance, steeringLength)
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
@@ -373,7 +379,7 @@ function TurnEndingManeuver:init(vehicle, turnContext, vehicleDirectionNode, tur
 	myCorner:delete()
 	self.course = Course(vehicle, self.waypoints, true)
 	self.course:setUseTightTurnOffsetForLastWaypoints(20)
-	TurnManeuver.setTurnControlForLastWaypoints(self.course, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+	TurnManeuver.setLowerImplements(self.course, turnContext.frontMarkerDistance, steeringLength)
 end
 
 ---@class HeadlandCornerTurnManeuver : TurnManeuver
