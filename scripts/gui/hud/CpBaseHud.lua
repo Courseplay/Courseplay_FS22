@@ -327,6 +327,9 @@ function CpBaseHud:getIsOpen()
 end
 
 function CpBaseHud:mouseEvent(posX, posY, isDown, isUp, button)
+    if not self.baseHud:getVisible() or self.baseHud:getIsDisabled() then 
+        return
+    end
     local wasUsed = self.baseHud:mouseEvent(posX, posY, isDown, isUp, button)
     if wasUsed then 
         return
@@ -423,7 +426,7 @@ end
 function CpBaseHud:openCourseGeneratorGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
     local pageAI = inGameMenu.pageAI
-    --- Opens the course generator if possible.
+    --- Opens the ai inGame menu
     local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(pageAI)
     inGameMenu.pageSelector:setState(pageIx, true)
     self:debug("opened ai inGame menu.")
@@ -442,6 +445,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
             pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, true)
             pageAI:updateParameterValueTexts()
             pageAI:validateParameters()
+            --- Fixes the job selection gui element.
             local currentIndex = table.findListElementFirstIndex(pageAI.currentJobTypes, jobTypeIndex, 1)
             pageAI.jobTypeElement:setState(currentIndex)
             if not vehicle:hasCpCourse() then 
