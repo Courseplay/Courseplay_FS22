@@ -1,8 +1,7 @@
-<!-- German -->
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
-
+	
 		<text name="CP_activated" 																		text="aktiviert" />
 		<text name="CP_deactivated" 																	text="deaktiviert" />
 		<text name="CP_automatic" 																		text="auto" />
