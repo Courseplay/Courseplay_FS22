@@ -54,6 +54,7 @@ Be as specific as possible:
 * For more details on how to post a proper bug report, visit our [Wiki](https://github.com/Courseplay/Courseplay_FS22/wiki)
 
 ___
+
 ## Help Us Out
 
 We work long, hard, in our own free time at developing and improving Courseplay. If you like the project, show us your undying love:
@@ -62,26 +63,12 @@ We work long, hard, in our own free time at developing and improving Courseplay.
 
 ___
 
-## Credits
-* Peter Vaiko
-* Tensuko
-* schwiti6190
-* Logo Design by Finals Farming
+## Contributors
+See [Contributors](/Contributors.md)
 
-### Translations
-* Czech: SniperKittenCZ, LadikSmith
-* Dutch: Thodor12
-* French: Lactic68
-* Hungarian: 
-* Italian: Markus33-ITA, Roby1164, Cristiano Magro
-* Polish: Ziuta
-* Portuguese (BR): Admilson Alfonso
-* Portuguese (PT): 
-* Russian: Dzmitry Danilau, Gonimy-Vetrom
-* Spanish: Alfredo Prieto
 ___
 
-## Supporter
+## Supporters
 
 People and teams who support us
 
@@ -90,20 +77,3 @@ People and teams who support us
 * Burning Gamers [YouTube Channel](https://www.youtube.com/c/BurningGamersde/featured)
 
 * Mario Hirschfeld [YouTube Channel](https://www.youtube.com/c/MarioHirschfeld/featured)
-___
-
-
-## Former Developers
-* Thomas Gärtner
-* Satis
-* Jakob Tischler
-* Bastian82
-* Lautschreier
-* Horoman
-* Hummel
-* Skydancer
-* Wolverin0815
-* Pops64
-
-## Former Version Support
-Pops64 will continue support for version 5 of CP. This was the version used for FS17. This may be found in this **[repository](https://github.com/pops64/courseplay)**. Only bugfixes and refinement of current features will be supported at this time.

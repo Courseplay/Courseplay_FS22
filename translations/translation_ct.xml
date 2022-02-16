@@ -1,3 +1,4 @@
+<!-- Chinese Traditional -->
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
@@ -7,13 +8,12 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
-		
-		<!-- User info text -->
+
+	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Generate a course before starting the job." />
 		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="Target is not on a field." />
-
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
@@ -24,8 +24,9 @@
 		<text name="CP_jobParameters_startAt_first"														text="first waypoint" />
 		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
 		<text name="CP_jobParameters_startAt_unload"													text="unloading combine/chopper" />
+		
 		<text name="CP_jobParameters_startAt_bales"														text="collecting/wrapping bales" />
-
+		
 		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
 		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
 		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
@@ -44,7 +45,6 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
-
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Vehicle settings for (%s)"/>
 		
@@ -143,19 +143,18 @@
 
 	<!-- Vehicle course generator settings -->
 		<text name="CP_vehicle_courseGeneratorSetting_title"											text="Course generator settings of (%s)"/>
-		
 		<!-- Subtitles-->	
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
-
+		
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Work width" />
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Work width. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Number of headlands" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Number of headlands. Value: 0 - 40" />
-		
+
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Headland overlap" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Overlap headland tracks as percent of working width. Value: 0 - 25" />
 
@@ -175,25 +174,25 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="Field center" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Field center" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Up/down" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spiral" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Racetrack" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Lands" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="up/down" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="spiral" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="racetrack" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="lands" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Headland corners" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Headland corners" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="Smooth" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Sharp" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Round" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="smooth" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="sharp" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="round" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Row start direction" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Row start direction" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatic" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Longest edge" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Up/down row direction" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Direction of the rows in the center of the field" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="automatic" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="longest edge" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Up/down row angle" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0 is North) when manual. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Island bypass mode" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="How the course should bypass islands in the field" />
@@ -202,13 +201,12 @@
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="circle" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Start work on" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start work on" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Headland" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Start working on the headland (harvest) or center of the field (other works)" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="headland" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="center" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
-
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Global settings"/>
@@ -282,10 +280,11 @@
 		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
 		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
 		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
-		
+	
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
+
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
