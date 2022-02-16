@@ -74,3 +74,11 @@ end
 function ImplementController:onRaising()
     
 end
+
+function ImplementController:setInfoText(infoText)
+    self.driveStrategy:setInfoText(infoText)
+end
+
+function ImplementController:clearInfoText(infoText)
+    self.driveStrategy:clearInfoText(infoText)
+end

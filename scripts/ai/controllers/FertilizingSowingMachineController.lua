@@ -1,3 +1,5 @@
+--- Enables the user to activate/deactivate the fertilizer use for sowing machines with a setting.
+--- Also stops the driver, when the setting is active and the fertilizer tank is empty.
 ---@class FertilizingSowingMachineController : ImplementController
 FertilizingSowingMachineController = CpObject(ImplementController)
 
@@ -5,10 +7,6 @@ function FertilizingSowingMachineController:init(vehicle, sowingMachine)
 	self.sowingMachine = sowingMachine
     ImplementController.init(self, vehicle, self.sowingMachine)
 	self.settings = vehicle:getCpSettings()
-end
-
-function FertilizingSowingMachineController:update()
-
 end
 
 local function processSowingMachineArea(sowingMachine,superFunc,...)

@@ -103,8 +103,9 @@ function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSel
 end
 
 
---- Post cp helper release handling.
---- Is used for the communication to external mods with events.
+--- Used to enable/disable release of the helper 
+--- and handles post release functionality with for example auto drive.
+--- TODO: This function is a mess and desperately needs a better solution!
 function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     if message then 
         CpUtil.infoVehicle(self, "stop message: %s", message:getMessage())
@@ -112,11 +113,26 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
-    
+    local hasFinished, releaseMessage, event
+    if message:isa(AIMessageErrorOutOfFill) then 
+        hasFinished = true
+        releaseMessage = g_infoTextManager.NEEDS_FILLING
+        event = "onCpEmpty"
+    elseif message:isa(AIMessageErrorIsFull) then 
+        hasFinished = true
+        releaseMessage = g_infoTextManager.NEEDS_UNLOADING
+        event = "onCpFull"
+    elseif message:isa(AIMessageSuccessFinishedJob) then 
+        hasFinished = true
+        releaseMessage = g_infoTextManager.WORK_FINISHED
+        event = "onCpFinished"
+    end
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s", 
+                                                    tostring(hasFinished), tostring(event))
+
     local wasCpActive = self:getIsCpActive()
-    local driveStrategy
     if wasCpActive then
-        driveStrategy = self:getCpDriveStrategy()
+        local driveStrategy = self:getCpDriveStrategy()
         if driveStrategy then 
             -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
             local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
@@ -129,29 +145,22 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
                 CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
                 return
             end
-            --- This needs to be back propagated to the drive strategy, as the stop call might come for giants code or the user.
-            driveStrategy:onFinished()
         end
     end
-    superFunc(self, message, ...)
+    self:resetCpAllActiveInfoTexts()
+    if not self:getIsControlled() and releaseMessage then 
+        self:setCpInfoTextActive(releaseMessage)
+    end
+    superFunc(self, message,...)
     if wasCpActive then 
-        if message then
-            local foldAtEndAllowed
-            if message:isa(AIMessageErrorOutOfFill) then 
-                SpecializationUtil.raiseEvent(self, "onCpEmpty")
-                foldAtEndAllowed = true
-            elseif message:isa(AIMessageErrorIsFull) then 
-                SpecializationUtil.raiseEvent(self, "onCpFull")
-                foldAtEndAllowed = true
-            elseif message:isa(AIMessageSuccessFinishedJob) then 
-                SpecializationUtil.raiseEvent(self, "onCpFinished")
-                foldAtEndAllowed = true
-            end
-            if foldAtEndAllowed and self:getCpSettings().foldImplementAtEnd:getValue() then
-                --- Folds implements at the end if the setting is active.
-                self:prepareForAIDriving()
-            end
+        if event then 
+            SpecializationUtil.raiseEvent(self, event)
         end
+        if hasFinished and self:getCpSettings().foldImplementAtEnd:getValue() then
+            --- Folds implements at the end if the setting is active.
+            self:prepareForAIDriving()
+        end
+    
     end
 end
 
@@ -221,7 +230,7 @@ function CpAIWorker:stopCpDriveTo()
 end
 
 function CpAIWorker:onUpdate(dt)
-    if self.isServer and self.driveToFieldWorkStartStrategy then
+    if self.driveToFieldWorkStartStrategy and self.isServer then
         if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
             self.driveToTask:onTargetReached()
