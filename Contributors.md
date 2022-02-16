@@ -5,19 +5,19 @@
 * [schwiti6190](/schwiti6190)
 
 ### Translators
-* Brazilian Portuguese: [Thodor12](/Thodor12)
-* Chinese Simplified: [Thodor12](/Thodor12), [kgdtuu](/kgdtuu)
-* Chinese Traditional: [Thodor12](/Thodor12)
-* Czech: [SniperKittenCZ](/SniperKittenCZ), [Thodor12](/Thodor12), [chroja](/chroja)
-* Danish: [Thodor12](/Thodor12), [o0bonde](/o0bonde)
+* Brazilian Portuguese: 
+* Chinese Simplified: [kgdtuu](/kgdtuu)
+* Chinese Traditional:
+* Czech: [SniperKittenCZ](/SniperKittenCZ), [chroja](/chroja)
+* Danish: [o0bonde](/o0bonde)
 * Dutch: [Thodor12](/Thodor12)
-* English: [Thodor12](/Thodor12)
+* English: 
 * French: [Lactic68](/Lactic68)
-* German: [RealNeo80](/RealNeo80), [Thodor12](/Thodor12)
+* German: [RealNeo80](/RealNeo80)
 * Italian: [Roby1164](/Roby1164)
-* Japanese: [Thodor12](/Thodor12)
+* Japanese: 
 * Polish: [KITT3000](/KITT3000)
-* Portuguese: [Admilson](/Admilson), [Thodor12](/Thodor12)
+* Portuguese: [Admilson](/Admilson)
 * Russian: [Gonimy-Vetrom](/Gonimy-Vetrom)
 * Spanish: [KCHARRO](/KCHARRO), [aorek](/aorek)
 * Swedish: [piplarsson](/piplarsson)
