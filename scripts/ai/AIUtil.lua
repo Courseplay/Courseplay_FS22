@@ -377,6 +377,7 @@ function AIUtil.isAllUnfolded(vehicle)
 	local function isUnfolded(object)
 		local spec = object.spec_foldable
 		if not spec or not spec.allowUnfoldingByAI then 
+			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, "%s doesn't need unfolding.", CpUtil.getName(object))
 			return true
 		end
 		local unfolded = object:getIsUnfolded()

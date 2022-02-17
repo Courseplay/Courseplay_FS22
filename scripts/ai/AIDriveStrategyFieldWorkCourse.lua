@@ -284,6 +284,8 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()
+    self:debug("lowering implements")
+    
     --- TODO: find a better solution for triggering this event.
     if not self.isUnfoldedAndReady then 
         self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
