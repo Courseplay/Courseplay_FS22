@@ -41,6 +41,7 @@ function CustomField:setup(name, vertices)
     self.name = name
     self.vertices = vertices
     self:findFieldCenter()
+    self.area = CpMathUtil.getAreaOfPolygon(self.vertices)
 
     self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setWaypoints(vertices)
@@ -85,6 +86,10 @@ function CustomField:setName(name)
     if self.fieldHotspot then 
         self.fieldHotspot.name = name
     end
+end
+
+function CustomField:getAreaInSqMeters()
+    return self.area
 end
 
 --- If the course was not renamed, then get the field number.
