@@ -374,13 +374,18 @@ function AIUtil.isAllFolded(object)
 end
 
 function AIUtil.isAllUnfolded(vehicle)
-	local function isNotUnfolded(object)
+	local function isUnfolded(object)
 		local spec = object.spec_foldable
-		return spec and spec.allowUnfoldingByAI and not object:getIsUnfolded()
+		if not spec or not spec.allowUnfoldingByAI then 
+			return true
+		end
+		local unfolded = object:getIsUnfolded()
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, "%s unfolded: %s", CpUtil.getName(object), tostring(unfolded or false))
+		return unfolded
 	end
 	
 	for _, childVehicle in pairs(vehicle:getChildVehicles()) do
-		if isNotUnfolded(childVehicle) then
+		if not isUnfolded(childVehicle) then
 			-- at least on implement is not completely unfolded, so all can't be unfolded
 			return false
 		end
