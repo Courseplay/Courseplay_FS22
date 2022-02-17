@@ -87,6 +87,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 			CpInGameMenuAIFrameExtended.onClickHotspot)
 	
 	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
+	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[MapHotspot.CATEGORY_FIELD] = true
 	--- Draws the current progress, while creating a custom field.
 	self.customFieldPlot = FieldPlot(true)
 end
@@ -279,6 +280,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	end
 	self.controlledVehicle = nil
 	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+	self.ingameMapBase:setHotspotFilter(MapHotspot.CATEGORY_FIELD, true)
 	g_customFieldManager:refresh()
 	self.drawingCustomFieldHeader:setVisible(false)
 end
@@ -290,6 +292,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
 	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, false)
+	self.ingameMapBase:setHotspotFilter(MapHotspot.CATEGORY_FIELD, false)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
@@ -426,10 +429,14 @@ InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFr
 
 --- Enables clickable custom field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
-	if hotspot and hotspot:isa(CustomFieldHotspot) then 
-		local pageAI = g_currentMission.inGameMenu.pageAI
-		InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot.name)
-		self.currentHotspot = hotspot
+	if hotspot then 
+		if hotspot:isa(FieldHotspot) then 
+			local pageAI = g_currentMission.inGameMenu.pageAI
+			InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot:getAreaText())
+			self.currentHotspot = hotspot
+	--	elseif hotspot:isa(FieldHotspot) then
+	--		DebugUtil.printTableRecursively(hotspot, "  ", 0, 1 )
+		end
 	end
 end
 
