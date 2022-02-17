@@ -52,8 +52,7 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     ---@type ImplementController[]
     self.controllers = {}
-
-    self.isUnfoldedAndReady = false
+    
     return self
 end
 
@@ -284,13 +283,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     addController(CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
 end
 
-function AIDriveStrategyFieldWorkCourse:lowerImplements()
-    --- TODO: find a better solution for triggering this event.
-    if not self.isUnfoldedAndReady then 
-        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
-        self.isUnfoldedAndReady = true
-    end
-    
+function AIDriveStrategyFieldWorkCourse:lowerImplements()    
     for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
         childVehicle:aiImplementStartLine()
     end
