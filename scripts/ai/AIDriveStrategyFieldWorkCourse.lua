@@ -279,8 +279,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     addController(RidgeMarkerController, RidgeMarker, defaultDisabledStates)
 
     addController(PickupController, Pickup, defaultDisabledStates)
-    --deactivated for now
-    --addController(SprayerController, Sprayer, {})
+    addController(SprayerController, Sprayer, {})
     addController(CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
 end
 
