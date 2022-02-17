@@ -373,6 +373,23 @@ function AIUtil.isAllFolded(object)
 	return true
 end
 
+function AIUtil.isAllUnFolded(object)
+	if SpecializationUtil.hasSpecialization(Foldable, object.specializations) then
+		if not object:getIsUnfolded() then
+			-- object is unfolded, so all can't be folded
+			return false
+		end
+	end
+	for _, implement in pairs(object:getAttachedImplements()) do
+		if not AIUtil.isAllUnFolded(implement.object) then
+			-- at least on implement is not completely unfolded, so all can't be unfolded
+			return false
+		end
+	end
+	-- nothing is folded
+	return true
+end
+
 --- These functions only find directly attached implements/trailer to the vehicle.
 --- Implements of others for example a shovel attached to a front loader are not detected.
 function AIUtil.hasAIImplementWithSpecialization(vehicle, specialization)
