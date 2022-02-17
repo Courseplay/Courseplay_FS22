@@ -290,7 +290,7 @@ function AIDriveStrategyFieldWorkCourse:lowerImplements()
         self.isUnfoldedAndReady = true
     end
     --- Prevents the working and lowering, if there is something to unfold.
-    if not AIUtil.isAllUnFolded(self.vehicle) then 
+    if not AIUtil.isAllUnfolded(self.vehicle) then 
         self.state = self.states.INITIAL
         return
     end

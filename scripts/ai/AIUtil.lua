@@ -373,20 +373,19 @@ function AIUtil.isAllFolded(object)
 	return true
 end
 
-function AIUtil.isAllUnFolded(object)
-	if SpecializationUtil.hasSpecialization(Foldable, object.specializations) then
-		if not object:getIsUnfolded() then
-			-- object is unfolded, so all can't be folded
-			return false
-		end
+function AIUtil.isAllUnfolded(vehicle)
+	local function isNotUnfolded(object)
+		local spec = object.spec_foldable
+		return spec and spec.allowUnfoldingByAI and not object:getIsUnfolded()
 	end
-	for _, implement in pairs(object:getAttachedImplements()) do
-		if not AIUtil.isAllUnFolded(implement.object) then
+	
+	for _, childVehicle in pairs(vehicle:getChildVehicles()) do
+		if isNotUnfolded(childVehicle) then
 			-- at least on implement is not completely unfolded, so all can't be unfolded
 			return false
 		end
 	end
-	-- nothing is folded
+	-- everything is unfolded
 	return true
 end
 
