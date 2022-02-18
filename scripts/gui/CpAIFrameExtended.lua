@@ -427,15 +427,13 @@ end
 InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFrame.executePickingCallback,
 															CpInGameMenuAIFrameExtended.executePickingCallback)
 
---- Enables clickable custom field hotspots.
+--- Enables clickable field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
 	if hotspot then 
 		if hotspot:isa(FieldHotspot) then 
 			local pageAI = g_currentMission.inGameMenu.pageAI
 			InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot:getAreaText())
 			self.currentHotspot = hotspot
-	--	elseif hotspot:isa(FieldHotspot) then
-	--		DebugUtil.printTableRecursively(hotspot, "  ", 0, 1 )
 		end
 	end
 end
