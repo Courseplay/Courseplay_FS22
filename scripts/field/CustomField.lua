@@ -39,10 +39,11 @@ end
 function CustomField:setup(name, vertices)
 
     self.name = name
+    self.fieldId = name --- used for external mods
     self.vertices = vertices
     self:findFieldCenter()
     self.area = CpMathUtil.getAreaOfPolygon(self.vertices)
-
+    self.fieldArea = self.area/10000 -- area in ha
     self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setWaypoints(vertices)
     self.fieldPlot:setVisible(true)
@@ -83,6 +84,7 @@ end
 
 function CustomField:setName(name)
     self.name = name
+    self.fieldId = name --- used for external mods
     if self.fieldHotspot then 
         self.fieldHotspot.name = name
     end
