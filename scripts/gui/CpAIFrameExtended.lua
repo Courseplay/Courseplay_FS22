@@ -86,8 +86,6 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
 			CpInGameMenuAIFrameExtended.onClickHotspot)
 	
-	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
-	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[MapHotspot.CATEGORY_FIELD] = true
 	--- Draws the current progress, while creating a custom field.
 	self.customFieldPlot = FieldPlot(true)
 end
@@ -271,7 +269,7 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 	end
 
 end
-InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem,CpInGameMenuAIFrameExtended.setMapSelectionItem)
+InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem, CpInGameMenuAIFrameExtended.setMapSelectionItem)
 
 
 function CpInGameMenuAIFrameExtended:onAIFrameOpen()
@@ -279,20 +277,22 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 		self.contextBox:setVisible(false)
 	end
 	self.controlledVehicle = nil
-	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
-	self.ingameMapBase:setHotspotFilter(MapHotspot.CATEGORY_FIELD, true)
+	CpInGameMenuAIFrameExtended.addMapHotSpots(self)
 	g_customFieldManager:refresh()
 	self.drawingCustomFieldHeader:setVisible(false)
 end
-InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
+InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, CpInGameMenuAIFrameExtended.onAIFrameOpen)
+
+function CpInGameMenuAIFrameExtended:addMapHotSpots()
+	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+end
+InGameMenuMapFrame.onFrameOpen = Utils.appendedFunction(InGameMenuMapFrame.onFrameOpen, CpInGameMenuAIFrameExtended.addMapHotSpots)
 
 function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.courseGeneratorLayout:setVisible(false)
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
-	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, false)
-	self.ingameMapBase:setHotspotFilter(MapHotspot.CATEGORY_FIELD, false)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
