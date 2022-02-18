@@ -741,7 +741,9 @@ function AIDriveStrategyFieldWorkCourse:countVehiclesInConvoy()
     return vehiclesInConvoyActive + vehiclesInConvoyDone, vehiclesInConvoyDone, vehiclesInConvoyActive
 end
 
-function AIDriveStrategyFieldWorkCourse:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, closestVehicleBack, closestDistanceBack)
+function AIDriveStrategyFieldWorkCourse:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, vehiclesInConvoyActive,
+                                                                    closestVehicleBack, closestDistanceBack)
+    local maxDistance = self.settings.convoyDistance:getValue()
     if vehiclesInConvoyTotal == 1 then
         -- it's just me, so rather than checking the vehicle behind me, check the distance from the waypoint
         -- I started the course from, this way I can drive forward a bit, making room for the others
@@ -749,9 +751,10 @@ function AIDriveStrategyFieldWorkCourse:controlFirstVehicleInConvoy(vehiclesInCo
                 self.fieldWorkCourse:getCurrentWaypointIx())
         self:debugSparse('convoy: I am the only vehicle in the convoy, checking distance to start waypoint %d.',
                 self.startWaypointIx)
-    end
-    local maxDistance = self.settings.convoyDistance:getValue()
-    if closestDistanceBack > maxDistance then
+        local factor = math.max(0, (1 - 2 *(closestDistanceBack - maxDistance) / maxDistance))
+        self:setMaxSpeed(factor * self.maxSpeed)
+    elseif closestDistanceBack > maxDistance and vehiclesInConvoyActive > 1 then
+        -- I am the first vehicle and there are others active, so enable slowing down
         self:debugSparse('convoy: too far (%.1f m > %.1f) forward, slowing down.',
                 closestDistanceBack, maxDistance)
         local factor = math.max(0, (1 - 2 *(closestDistanceBack - maxDistance) / maxDistance))
@@ -835,14 +838,14 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
         end
     end
     -- check if everyone is still there
-    local vehiclesInConvoyTotal, _, _ = self:countVehiclesInConvoy()
+    local vehiclesInConvoyTotal, _, vehiclesInConvoyActive = self:countVehiclesInConvoy()
 
     if position > 1 then
         -- slow down when I'm too close to the combine in front of me
         self:controlFollowingVehicleInConvoy(vehiclesInConvoyTotal, closestDistanceFront)
     elseif position == 1 then
         -- if I am the first one and there are other vehicles, slow down if I'm too far ahead
-        self:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, closestVehicleBack, closestDistanceBack)
+        self:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, vehiclesInConvoyActive, closestVehicleBack, closestDistanceBack)
     end
     -- TODO: multiplayer?
 end
