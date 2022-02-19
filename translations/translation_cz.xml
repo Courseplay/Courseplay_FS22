@@ -279,7 +279,7 @@
 		<text name="CP_customFieldManager_rename"														text="Přejmenovat vlastní pole"/>
 		<text name="CP_customFieldManager_draw"															text="Kreslit vlastní pole"/>
 		<text name="CP_customFieldManager_draw_header"													text="Nakreslí vlastní trasy na poli kliknutím pravým tlačítkem"/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_save"                                                         text="Uložit vlastní pole"/>
 		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Spustit nahrávání vlastního pole"/>
