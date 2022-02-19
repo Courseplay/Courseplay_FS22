@@ -417,9 +417,9 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 	---@type HybridAStar.NodeList closedList
 	self.nodes = HybridAStar.NodeList(self.deltaPos, self.deltaThetaDeg)
 	if allowReverse then
-		self.analyticSolver = ReedsSheppSolver()
+		self.analyticSolver = self.analyticSolver or ReedsSheppSolver()
 	else
-		self.analyticSolver = DubinsSolver()
+		self.analyticSolver = self.analyticSolver or DubinsSolver()
 	end
 
 	-- ignore trailer for the first check, we don't know its heading anyway
@@ -652,7 +652,8 @@ HybridAStarWithAStarInTheMiddle = CpObject(PathfinderInterface)
 ---@param hybridRange number range in meters around start/goal to use hybrid A *
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
-function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterations, mustBeAccurate)
+---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
+function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterations, mustBeAccurate, analyticSolver)
 	-- path generation phases
 	self.START_TO_MIDDLE = 1
 	self.MIDDLE = 2
@@ -662,6 +663,7 @@ function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterat
 	self.yieldAfter = yieldAfter or 100
 	self.hybridAStarPathfinder = HybridAStar(self.yieldAfter, maxIterations, mustBeAccurate)
 	self.aStarPathfinder = self:getAStar()
+	self.analyticSolver = analyticSolver
 end
 
 function HybridAStarWithAStarInTheMiddle:getAStar()
@@ -863,10 +865,11 @@ HybridAStarWithPathInTheMiddle = CpObject(HybridAStarWithAStarInTheMiddle)
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param path State3D[] path to use in the middle part
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
-function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate)
+---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
+function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate, analyticSolver)
 	self.path = path
 	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', hybridRange, #path)
-	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate)
+	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate, analyticSolver)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()

@@ -90,6 +90,14 @@ ReedsShepp.PathWords =
     RbLfpi2SfRfpi2Lb = {}
 }
 
+--- The paths ending in forward gear
+ReedsShepp.ForwardEndingPathWords = {}
+for key, word in pairs(ReedsShepp.PathWords) do
+    if string.sub(key, -1) == 'f' then
+        ReedsShepp.ForwardEndingPathWords[key] = word
+    end
+end
+
 -- The ReedsSheppAction class represents a single steering and motion action over some length.
 ---@class ReedsShepp.Action
 ReedsShepp.Action = CpObject()
