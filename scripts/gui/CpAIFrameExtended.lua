@@ -293,6 +293,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
