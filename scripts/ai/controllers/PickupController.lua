@@ -7,3 +7,10 @@ function PickupController:init(vehicle, implement)
     self.pickupSpec = self.implement.spec_pickup
 end
 
+function PickupController:onLowering()
+    self.implement:aiImplementStartLine()
+end
+
+function PickupController:onRaising()
+    self.implement:aiImplementEndLine()
+end

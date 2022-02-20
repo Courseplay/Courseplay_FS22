@@ -21,3 +21,11 @@ function CutterController:disableCutterTimer()
 		self.cutterSpec.aiNoValidGroundTimer = 0
 	end
 end
+
+function CutterController:onLowering()
+    self.implement:aiImplementStartLine()
+end
+
+function CutterController:onRaising()
+    self.implement:aiImplementEndLine()
+end
