@@ -237,11 +237,7 @@ function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	if self.settings then
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "unbinding course generator settings." )
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
-	end
+	CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
 	self.courseGeneratorLayoutElements:invalidateLayout()
 end
 
