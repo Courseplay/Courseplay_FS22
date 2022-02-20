@@ -296,7 +296,7 @@ WideForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 
 --- Pack looking forward, but sensors distributed evenly through the width of the vehicle
 function WideForwardLookingProximitySensorPack:init(vehicle, ppc, node, range, height, width)
-    local directionsDeg = {40, 30, 20, 15, 0, -15, -20, -30, -40}
+    local directionsDeg = {70, 50, 30, 15, 0, -15, -30, -50, -70}
     local xOffsets = {}
     -- spread them out evenly across the width
     local dx = width / #directionsDeg

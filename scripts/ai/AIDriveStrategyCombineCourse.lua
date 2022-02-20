@@ -61,7 +61,7 @@ AIDriveStrategyCombineCourse.proximityLimitLow = 1.5
 AIDriveStrategyCombineCourse.proximityLimitReverse = 1
 -- an obstacle is considered ahead of us if the reported angle is less then this
 -- (and we won't stop or reverse if the angle is higher than this, thus obstacles to the left or right)
-AIDriveStrategyCombineCourse.proximityAngleAheadDeg = 45
+AIDriveStrategyCombineCourse.proximityAngleAheadDeg = 75
 
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
@@ -192,7 +192,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	if self.state == self.states.WORKING then
 		-- Harvesting
 		self:checkRendezvous()
-		self:checkBlockingUnloader()
+		--self:checkBlockingUnloader()
 		if self:isFull() then
 			self:changeToUnloadOnField()
 		end
