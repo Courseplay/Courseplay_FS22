@@ -1881,7 +1881,7 @@ function AIDriveStrategyCombineCourse:checkProximitySensors()
 		-- too close, stop
 		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg)
 		self:setMaxSpeed(0)
-	elseif normalizedD < 1 then
+	elseif normalizedD < 1 and self:isProximitySlowDownEnabled(vehicle) then
 		-- something in range, reduce speed proportionally when enabled
 		local deltaV = self:getMaxSpeed() - self.proximityMinLimitedSpeed
 		local speed = self.proximityMinLimitedSpeed + normalizedD * deltaV
@@ -1934,22 +1934,15 @@ function AIDriveStrategyCombineCourse:createTrafficConflictDetector()
 	self.trafficConflictDetector:disableSpeedControl()
 end
 
---- Check the vehicle in the proximity sensor's range. If it is player driven, don't slow them down when hitting this
---- vehicle.
---- Note that we don't really know if the player is to unload the combine, this will disable all proximity check for
---- player driven vehicles.
+--- Don't slow down when discharging. This is a workaround for unloaders getting into the proximity
+--- sensor's range.
 function AIDriveStrategyCombineCourse:isProximitySlowDownEnabled(vehicle)
 	-- if not on fieldwork, always enable slowing down
 	if self.state ~= self.states.WORKING then return true end
-
-	-- CP drives other vehicle, it'll take care of everything, including enable/disable
-	-- the proximity sensor when unloading
-	if vehicle.cp.driver and vehicle.cp.driver.isActive and vehicle.cp.driver:isActive() then return true end
-
-	-- vehicle:getIsControlled() is needed as this one gets synchronized 
-	if vehicle and vehicle.getIsEntered and (vehicle:getIsEntered() or vehicle:getIsControlled()) then
-		self:debugSparse('human player in nearby %s not driven by CP so do not slow down for it', nameNum(vehicle))
-		-- trust the player to avoid collisions
+	-- TODO: check if vehicle is player or AD driven, or even better, check if this is the vehicle
+	-- we are discharging into
+	if vehicle and self:isDischarging() then
+		self:debugSparse('discharging, not slowing down for nearby %s', CpUtil.getName(vehicle))
 		return false
 	else
 		return true
