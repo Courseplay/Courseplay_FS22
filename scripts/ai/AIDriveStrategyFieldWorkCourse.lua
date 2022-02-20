@@ -285,7 +285,9 @@ end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    
     for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
-        childVehicle:aiImplementStartLine()
+        if childVehicle:getCanImplementBeUsedForAI() or SpecializationUtil.hasSpecialization(WorkArea, childVehicle.specializations) then
+            childVehicle:aiImplementStartLine()
+        end
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
 
@@ -299,7 +301,9 @@ end
 
 function AIDriveStrategyFieldWorkCourse:raiseImplements()
     for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
-        childVehicle:aiImplementEndLine()
+        if childVehicle:getCanImplementBeUsedForAI() or SpecializationUtil.hasSpecialization(WorkArea, childVehicle.specializations) then
+            childVehicle:aiImplementEndLine()
+        end
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
     self:raiseControllerEvent(self.onRaisingEvent)
