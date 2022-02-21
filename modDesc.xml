@@ -4,6 +4,7 @@
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
+		<es>CoursePlay</es>
 		<cs>自动作业</cs>
 		<ct>自動作業</ct>
 		<hu>CoursePlay - A Vezetősegéd</hu>
@@ -22,6 +23,15 @@ The next version of Courseplay.
 - Full controller support for the GUI is planned for the future.
 ]]>
 		</en>
+	<es>
+		<![CDATA[Courseplay
+
+La siguiente versión de Courseplay.
+
+- Soporte Multijugador se añadirá en una versión futura.
+- Compatibilidad total con controlador para la GUI está planeado para el futuro.
+]]>
+		</es>
         <de>
 		<![CDATA[Courseplay
 
