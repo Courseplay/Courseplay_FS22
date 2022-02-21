@@ -310,8 +310,8 @@ I: Valor del desplazamiento horizontal, (+)Izquierda, (-)Derecha.
 J: Valor del desplazamiento vertical, (+)Atrás, (-)Adelante.
 K: L y M: Al hacer clic en el texto, se restablecerán los cambios a los valores automáticos.
 N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
+O: Inicia/Detiene la grabación de un curso de campo personalizado.
+P: Remueve el curso de un vehículo."/>
 		<text name="CP_help_page_customField_title"														text="Campos Personalizados"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Existen dos maneras de crear un campo personalizado.
