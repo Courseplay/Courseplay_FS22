@@ -33,3 +33,12 @@ end
 function AIParameterBooleanSetting:getClosestSetupIx()
 	return self.current
 end
+
+function AIParameterBooleanSetting:loadFromXMLFile(xmlFile, key)
+	local rawValue = xmlFile:getString(key .. "#currentValue")
+	if rawValue ~= nil then 
+		self:setValue(rawValue == "true" or false)
+	else 
+		self:loadFromXMLFileLegacy(xmlFile, key)
+	end
+end
