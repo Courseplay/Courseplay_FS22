@@ -220,17 +220,20 @@ function TurnManeuver.addTurnControl(waypoints, fromIx, toIx, control, value)
 end
 
 --- Set the given control to value for all waypoints of course within d meters of the course end
-function TurnManeuver.setTurnControlForLastWaypoints(course, d, control, value)
+---@param stopAtDirectionChange boolean if we reach a direction change, stop there, the last waypoint the function
+--- is called for is the one before the direction change
+function TurnManeuver.setTurnControlForLastWaypoints(course, d, control, value, stopAtDirectionChange)
 	course:executeFunctionForLastWaypoints( d, function(wp)
 		TurnManeuver.addTurnControlToWaypoint(wp, control, value)
-	end)
+	end, stopAtDirectionChange)
 end
 
 --- Set implement lowering control for the end of the turn
-function TurnManeuver.setLowerImplements(course, frontMarkerDistance, steeringLength)
-	TurnManeuver.setTurnControlForLastWaypoints(course,
-			math.max(steeringLength, math.abs(frontMarkerDistance), 3) + 2,
-			TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+---@param stopAtDirectionChange boolean if we reach a direction change, stop there, the last waypoint the function
+--- is called for is the one before the direction change
+function TurnManeuver.setLowerImplements(course, distance, stopAtDirectionChange)
+	TurnManeuver.setTurnControlForLastWaypoints(course, math.max(distance, 3) + 2,
+			TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true, stopAtDirectionChange)
 end
 
 ---@param course Course
@@ -274,7 +277,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 	self.course:setUseTightTurnOffsetForLastWaypoints(10)
 	-- and once again, if there is an ending course, keep adjusting the tight turn offset
-	self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
+	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 
 	local dzMax = self:getDzMax(self.course)
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
@@ -284,7 +287,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge)
 	end
-	TurnManeuver.setLowerImplements(self.course, turnContext.frontMarkerDistance, steeringLength)
+	TurnManeuver.setLowerImplements(self.course, endingTurnLength)
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
@@ -379,7 +382,7 @@ function TurnEndingManeuver:init(vehicle, turnContext, vehicleDirectionNode, tur
 	myCorner:delete()
 	self.course = Course(vehicle, self.waypoints, true)
 	self.course:setUseTightTurnOffsetForLastWaypoints(20)
-	TurnManeuver.setLowerImplements(self.course, turnContext.frontMarkerDistance, steeringLength)
+	TurnManeuver.setLowerImplements(self.course, math.max(math.abs(turnContext.frontMarkerDistance), steeringLength))
 end
 
 ---@class HeadlandCornerTurnManeuver : TurnManeuver

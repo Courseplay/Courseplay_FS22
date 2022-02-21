@@ -383,13 +383,13 @@ function HybridAStar:getMotionPrimitives(turnRadius, allowReverse)
 end
 
 function HybridAStar:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
-	local analyticSolution, _ = self.analyticSolver:solve(start, goal, turnRadius)
+	local analyticSolution, pathType = self.analyticSolver:solve(start, goal, turnRadius)
 	local analyticSolutionLength = analyticSolution:getLength(turnRadius)
 	local analyticPath = analyticSolution:getWaypoints(start, turnRadius)
 	-- making sure we continue with the correct trailer heading
 	analyticPath[1]:setTrailerHeading(start:getTrailerHeading())
 	State3D.calculateTrailerHeadings(analyticPath, hitchLength)
-	return analyticPath, analyticSolutionLength
+	return analyticPath, analyticSolutionLength, pathType
 end
 
 ---@param start State3D start node
@@ -434,11 +434,11 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 		self:debug('Goal node is invalid for analytical path.')
 	end
 
-	local analyticPath, analyticSolutionLength = 0
+	local analyticPath, analyticSolutionLength, pathType
 	if self.analyticSolverEnabled then
-		 analyticPath, analyticSolutionLength = self:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
+		 analyticPath, analyticSolutionLength, pathType = self:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
 		if self:isPathValid(analyticPath) then
-			self:debug('Found collision free analytic path from start to goal')
+			self:debug('Found collision free analytic path (%s) from start to goal', pathType)
 			return true, analyticPath
 		end
 		self:debug('Length of analytic solution is %.1f', analyticSolutionLength)
@@ -481,9 +481,9 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 				if self.analyticSolverEnabled and not self.goalNodeIsInvalid and
 						math.random() > 2 * pred.h / self.distanceToGoal then
 					self:debug('Check analytic solution at iteration %d, %.1f, %.1f', self.iterations, pred.h, pred.h / self.distanceToGoal)
-					analyticPath = self:getAnalyticPath(pred, goal, turnRadius, allowReverse, hitchLength)
+					analyticPath, pathType = self:getAnalyticPath(pred, goal, turnRadius, allowReverse, hitchLength)
 					if self:isPathValid(analyticPath) then
-						self:debug('Found collision free analytic path at iteration %d', self.iterations)
+						self:debug('Found collision free analytic path (%s) at iteration %d', self.iterations, pathType)
 						-- remove first node of returned analytic path as it is the same as pred
 						table.remove(analyticPath, 1)
 						self:rollUpPath(pred, goal, analyticPath)
