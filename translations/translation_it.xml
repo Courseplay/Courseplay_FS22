@@ -227,6 +227,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatibile con il gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllata con un Gamepad."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Differenza angolare obiettivo"/>

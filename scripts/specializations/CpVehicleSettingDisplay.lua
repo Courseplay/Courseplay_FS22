@@ -115,12 +115,14 @@ function CpVehicleSettingDisplay:onRegisterActionEvents(isActiveForInput, isActi
 				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpHud.openClose, false, true, false, true, nil)
 				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
 				g_inputBinding:setActionEventText(actionEventId, spec.hudText)
+				g_inputBinding:setActionEventTextVisibility(actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
 			end
 		else
 			if self.isActiveForInputIgnoreSelectionIgnoreAI then
 				local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, CpVehicleSettingDisplay.actionEventOpenCloseDisplay, false, true, false, true, nil)
 				g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
 				g_inputBinding:setActionEventText(actionEventId, spec.text)
+				g_inputBinding:setActionEventTextVisibility(actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
 			end
 		end
 	end

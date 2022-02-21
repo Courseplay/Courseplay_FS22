@@ -96,6 +96,7 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
                         CpHud.actionEventMouse, false, true, false, true,nil,nil,true)
                 g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_NORMAL)
                 g_inputBinding:setActionEventText(actionEventId, spec.openCloseText)
+                g_inputBinding:setActionEventTextVisibility(actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
             end
         end
     end

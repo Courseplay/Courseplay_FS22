@@ -229,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller venling Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benyt Hud, som kan betjenes via controlleren."/>
 
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Indstillinger"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ankomstvinkel ved mål"/>

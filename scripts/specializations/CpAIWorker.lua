@@ -67,6 +67,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
         if self.spec_aiJobVehicle.supportsAIJobs and self:getIsActiveForInput(true, true) then
 			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_START_STOP, self, CpAIWorker.startStopDriver, false, true, false, true, nil)
             g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+            g_inputBinding:setActionEventTextVisibility(actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
             CpAIWorker.updateActionEvents(self)
 		end
 	end
