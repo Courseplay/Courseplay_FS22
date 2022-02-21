@@ -117,13 +117,13 @@ function Courseplay:setupGui()
 		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
 	end
 	
-	CpGuiUtil.fixInGameMenu(vehicleSettingsFrame,"pageCpVehicleSettings",
+	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame,"pageCpVehicleSettings",
 			{896, 0, 128, 128},3, predicateFunc)
-	CpGuiUtil.fixInGameMenu(globalSettingsFrame,"pageCpGlobalSettings",
+	CpGuiUtil.fixInGameMenuPage(globalSettingsFrame,"pageCpGlobalSettings",
 			{768, 0, 128, 128},4,function () return true end)
-	CpGuiUtil.fixInGameMenu(courseManagerFrame,"pageCpCourseManager",
+	CpGuiUtil.fixInGameMenuPage(courseManagerFrame,"pageCpCourseManager",
 			{256,0,128,128},5, predicateFunc)
-	
+	CpGuiUtil.fixInGameMenu()
 end
 
 --- Adds cp help info to the in game help menu.
