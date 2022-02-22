@@ -237,8 +237,10 @@ function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
-	CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
-	self.courseGeneratorLayoutElements:invalidateLayout()
+	if self.settings then
+		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
+		self.courseGeneratorLayoutElements:invalidateLayout()
+	end
 end
 
 
