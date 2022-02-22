@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Redskab forskudt lodret"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskab Versatz vertikal"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Venderadius"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Venderadius. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Kør altid snegl ud"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Kør altid snegl ud, når mejetærsker er fuld og venter på vogn."/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrisk baneskift"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Konvoj afstand"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand mellem kørtøjer. Værdi: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand mellem kørtøjer. Værdi: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Markarbewjde"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale hastighed ved markarbejde. Værdi: 5 - 50"/>
@@ -231,6 +228,9 @@
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller venling Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benyt Hud, som kan betjenes via controlleren."/>
+
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Hjælp til handlingsarrangementer"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Viser hjælpetekster til handlingsbegivenheder."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Indstillinger"/>
 
