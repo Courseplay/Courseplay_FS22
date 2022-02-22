@@ -27,7 +27,8 @@ https://github.com/mattbradley/AutonomousCar
 --- @class ReedsSheppSolver
 ReedsSheppSolver = CpObject(AnalyticSolver)
 
-function ReedsSheppSolver:init()
+function ReedsSheppSolver:init(enabledPathWords)
+    self.enabledPathWords = enabledPathWords or ReedsShepp.PathWords
 end
 
 local sin, cos, asin, acos, atan2, abs, sqrt, floor, huge, pi =
@@ -48,7 +49,7 @@ function ReedsSheppSolver:solve(start, goal, turnRadius, enabledPathWords)
     local bestPathLength = huge
     local bestWord, bestKey
     local bestT, bestU, bestV = 0, 0, 0
-    for key, word in pairs(enabledPathWords or ReedsShepp.PathWords) do
+    for key, word in pairs(enabledPathWords or self.enabledPathWords) do
         local potentialLength, t, u, v = self:calculatePathLength(newGoal, word)
         if potentialLength < huge then
            --   print(key, potentialLength)

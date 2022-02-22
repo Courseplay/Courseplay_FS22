@@ -1250,9 +1250,12 @@ end
 --- Run a function for all waypoints of the course within the last d meters
 ---@param d number
 ---@param lambda function (waypoint)
-function Course:executeFunctionForLastWaypoints(d, lambda)
+---@param stopAtDirectionChange boolean if we reach a direction change, stop there, the last waypoint the function
+--- is called for is the one before the direction change
+function Course:executeFunctionForLastWaypoints(d, lambda, stopAtDirectionChange)
 	local i = self:getNumberOfWaypoints()
-	while i > 1 and self:getDistanceToLastWaypoint(i) < d do
+	while i > 1 and self:getDistanceToLastWaypoint(i) < d and
+			((stopAtDirectionChange and not self:switchingDirectionAt(i)) or not stopAtDirectionChange) do
 		lambda(self.waypoints[i])
 		i = i - 1
 	end
