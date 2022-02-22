@@ -52,6 +52,7 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     ---@type ImplementController[]
     self.controllers = {}
+    
     return self
 end
 
@@ -98,7 +99,12 @@ end
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
     self.fieldWorkCourse = course
+    -- remember at which waypoint we started, especially for the convoy
+    self.startWaypointIx = startIx
     self.vehiclesInConvoy = {}
+
+    self.isUnfoldedAndReady = false
+
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
     if distance > 2 * self.turningRadius then
@@ -164,7 +170,6 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         if self.vehicle:getCanAIFieldWorkerContinueWork() then
             self:debug('all tools ready, start working')
             self.state = self.states.WORKING
-            self:handleRidgeMarkers(true)
         else
             self:debugSparse('waiting for all tools to lower')
         end
@@ -189,9 +194,11 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
     self:setAITarget()
-    -- we put this to the end after everyone already set a a max speed as it reduces the current max speed setting
-    -- to slow vehicles down
-    self:keepConvoyTogether()
+    if self.state ~= self.states.DRIVING_TO_START_WAYPOINT then
+        -- we put this to the end after everyone already set a a max speed as it reduces the current max speed setting
+        -- to slow vehicles down
+        self:keepConvoyTogether()
+    end
     self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
@@ -245,9 +252,11 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     local function addController(class, spec, states)
-        if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, spec) then
-            local controller = class(vehicle)
+        --- If multiple implements have this spec, then add a controller for each implement.
+        for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do 
+            local controller = class(vehicle, childVehicle)
             controller:setDisabledStates(states)
+            controller:setDriveStrategy(self)
             table.insert(self.controllers, controller)
         end
     end
@@ -266,9 +275,16 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
     addController(FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
     addController(MowerController, Mower, defaultDisabledStates)
+
+    addController(RidgeMarkerController, RidgeMarker, defaultDisabledStates)
+
+    addController(PickupController, Pickup, defaultDisabledStates)
+    addController(SprayerController, Sprayer, {})
+    addController(CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
 end
 
-function AIDriveStrategyFieldWorkCourse:lowerImplements()
+function AIDriveStrategyFieldWorkCourse:lowerImplements()    
+    --- Lowers all implements, that are available for the giants field worker.
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementStartLine()
     end
@@ -279,14 +295,18 @@ function AIDriveStrategyFieldWorkCourse:lowerImplements()
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
         self.state = self.states.WAITING_FOR_LOWER_DELAYED
     end
+    --- Lowers implements, that are not covered by giants.
+    self:raiseControllerEvent(self.onLoweringEvent)
 end
 
 function AIDriveStrategyFieldWorkCourse:raiseImplements()
+    --- Raises all implements, that are available for the giants field worker.
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementEndLine()
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
-    self:handleRidgeMarkers(false)
+    --- Raises implements, that are not covered by giants.
+    self:raiseControllerEvent(self.onRaisingEvent)
 end
 
 
@@ -523,31 +543,6 @@ function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
     self:lowerImplements(self.vehicle)
 end
 
-function AIDriveStrategyFieldWorkCourse:stopAndChangeToUnload()
-    -- TODO_22 run unload/refill with the vanilla helper?
-    if false and self.unloadRefillCourse and not self.heldForUnloadRefill then
-        self:rememberWaypointToContinueFieldWork()
-        self:debug('at least one tool is empty/full, aborting work at waypoint %d.', self.storage.continueFieldworkAtWaypoint or -1)
-        self:changeToUnloadOrRefill()
-        self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
-    else
-        if self.vehicle.spec_autodrive and self.vehicle.cp.settings.autoDriveMode:useForUnloadOrRefill() then
-            -- Switch to AutoDrive when enabled
-            self:rememberWaypointToContinueFieldWork()
-            self:stopWork()
-            self:foldImplements()
-            self.state = self.states.ON_UNLOAD_OR_REFILL_WITH_AUTODRIVE
-            self:debug('passing the control to AutoDrive to run the unload/refill course.')
-            --- Make sure trigger handler is disabled, while autodrive is driving.
-            self.triggerHandler:disableFillTypeLoading()
-            self.triggerHandler:disableFuelLoading()
-            self.vehicle.spec_autodrive:StartDrivingWithPathFinder(self.vehicle, self.vehicle.ad.mapMarkerSelected, self.vehicle.ad.mapMarkerSelected_Unload, self, FieldworkAIDriver.onEndCourse, nil);
-        else
-            -- otherwise we'll
-            self:changeToFieldworkUnloadOrRefill()
-        end;
-    end
-end
 
 -- switch back to fieldwork after the turn ended.
 ---@param ix number waypoint to resume fieldwork after
@@ -696,39 +691,9 @@ function AIDriveStrategyFieldWorkCourse:setOffsetX()
     -- do nothing by default
 end
 
---- Sets the ridgeMarker position on lowering of an implement.
----@param isAllowed boolean is switch ridge markers allowed ?
-function AIDriveStrategyFieldWorkCourse:handleRidgeMarkers(isAllowed)
-	-- no ridge markers with multitools to avoid collisions.
-	if self.settings.ridgeMarkersAutomatic:is(false)
-
-     -- or self.vehicle.cp.courseGeneratorSettings.multiTools:get() > 1
-    then
-        self:debug('Ridge marker handling disabled.')
-        return
-     end
-
-    local function setRidgeMarkerState(self, vehicle, state)
-        local spec = vehicle.spec_ridgeMarker
-        if spec then
-            -- yes, another Giants typo
-            if spec.numRigdeMarkers > 0 then
-                if spec.ridgeMarkerState ~= state then
-                    self:debug('Setting ridge markers to %d for %s', state, vehicle:getName())
-                    vehicle:setRidgeMarkerState(state)
-                end
-            end
-        end
-    end
-
-    local state = isAllowed and  self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
-    self:debug('Target ridge marker state is %d.', state)
-    setRidgeMarkerState(self, self.vehicle, state)
-
-    for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
-        setRidgeMarkerState(self, implement.object, state)
-    end
-
+--- Gets the current ridge marker state.
+function AIDriveStrategyFieldWorkCourse:getRidgeMarkerState()
+    return self.course:getRidgeMarkerState(self.ppc:getCurrentWaypointIx()) or 0
 end
 
 function AIDriveStrategyFieldWorkCourse:showAllInfo(note, ...)
@@ -763,6 +728,64 @@ end
 
 function AIDriveStrategyFieldWorkCourse:getProgress()
     return self.fieldWorkCourse:getProgress()
+end
+
+function AIDriveStrategyFieldWorkCourse:countVehiclesInConvoy()
+    local vehiclesInConvoyDone, vehiclesInConvoyActive = 0, 0
+    for v, _ in pairs(self.vehiclesInConvoy) do
+        local _, _, done = v:getCpFieldWorkProgress()
+        if done then
+            vehiclesInConvoyDone = vehiclesInConvoyDone + 1
+        elseif v:getIsCpFieldWorkActive() then
+            vehiclesInConvoyActive = vehiclesInConvoyActive + 1
+        end
+    end
+    self:debugSparse('convoy: need %d vehicles, %d active, %d done',
+            self.fieldWorkCourse:getMultiTools(), vehiclesInConvoyActive, vehiclesInConvoyDone)
+    return vehiclesInConvoyActive + vehiclesInConvoyDone, vehiclesInConvoyDone, vehiclesInConvoyActive
+end
+
+function AIDriveStrategyFieldWorkCourse:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, vehiclesInConvoyActive,
+                                                                    closestVehicleBack, closestDistanceBack)
+    local maxDistance = self.settings.convoyDistance:getValue()
+    if vehiclesInConvoyTotal == 1 then
+        -- it's just me, so rather than checking the vehicle behind me, check the distance from the waypoint
+        -- I started the course from, this way I can drive forward a bit, making room for the others
+        closestDistanceBack = self.fieldWorkCourse:getDistanceBetweenWaypoints(self.startWaypointIx,
+                self.fieldWorkCourse:getCurrentWaypointIx())
+        self:debugSparse('convoy: I am the only vehicle in the convoy, checking distance to start waypoint %d.',
+                self.startWaypointIx)
+        local factor = math.max(0, (1 - 2 *(closestDistanceBack - maxDistance) / maxDistance))
+        self:setMaxSpeed(factor * self.maxSpeed)
+    elseif closestDistanceBack > maxDistance and vehiclesInConvoyActive > 1 then
+        -- I am the first vehicle and there are others active, so enable slowing down
+        self:debugSparse('convoy: too far (%.1f m > %.1f) forward, slowing down.',
+                closestDistanceBack, maxDistance)
+        local factor = math.max(0, (1 - 2 *(closestDistanceBack - maxDistance) / maxDistance))
+        local maxSpeed = closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed
+        self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
+    end
+end
+
+function AIDriveStrategyFieldWorkCourse:controlFollowingVehicleInConvoy(vehiclesInConvoyTotal, closestDistanceFront)
+    -- we do not have to wait for those members who are now done. As soon as there's at least two of us, we start
+    -- so others have room at the starting point
+    if vehiclesInConvoyTotal < 2 then
+        self:debugSparse('convoy: ... waiting ...')
+        self:setMaxSpeed(0)
+        return
+    end
+    local minDistance = self.settings.convoyDistance:getValue()
+    if closestDistanceFront < minDistance then
+        self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
+                closestDistanceFront, minDistance)
+        -- the closer we are, the slower we drive, but stop at half the minDistance
+        local maxSpeed = self.maxSpeed *
+                math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
+        -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
+        -- only when the maxSpeed we return in getDriveData is exactly 0
+        self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
+    end
 end
 
 --- When working in a group (convoy), do I have to hold so I don't get too close to the
@@ -819,54 +842,16 @@ function AIDriveStrategyFieldWorkCourse:keepConvoyTogether()
         end
     end
     -- check if everyone is still there
-    local vehiclesInConvoyDone, vehiclesInConvoyActive = 0, 0
-    for v, _ in pairs(self.vehiclesInConvoy) do
-        local _, _, done = v:getCpFieldWorkProgress()
-        if done then
-            vehiclesInConvoyDone = vehiclesInConvoyDone + 1
-        elseif v:getIsCpFieldWorkActive() then
-            vehiclesInConvoyActive = vehiclesInConvoyActive + 1
-        end
-    end
-    self:debugSparse('convoy: need %d vehicles, %d active, %d done',
-            self.fieldWorkCourse:getMultiTools(), vehiclesInConvoyActive, vehiclesInConvoyDone)
-    -- we do not have to wait for those members who are now done
-    if vehiclesInConvoyActive + vehiclesInConvoyDone < self.fieldWorkCourse:getMultiTools() then
-        self:debugSparse('convoy: ... waiting ...')
-        self:setMaxSpeed(0)
-        return
-    end
-    -- stop when I'm too close to the combine in front of me
+    local vehiclesInConvoyTotal, _, vehiclesInConvoyActive = self:countVehiclesInConvoy()
+
     if position > 1 then
-        local minDistance = self.settings.convoyDistance:getValue()
-        if closestDistanceFront < minDistance then
-            self:debugSparse('convoy: too close (%.1f m < %.1f) to vehicle in front of me, slowing down.',
-                    closestDistanceFront, minDistance)
-            -- the closer we are, the slower we drive, but stop at half the minDistance
-            local maxSpeed = self.maxSpeed *
-                    math.max(0, 2 * (1 - (minDistance - closestDistanceFront + minDistance / 2) / minDistance))
-            -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
-            -- only when the maxSpeed we return in getDriveData is exactly 0
-            self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
-        end
-    -- if I am the first one and there are other vehicles, slow down if I'm too far ahead
-    elseif position == 1 and vehiclesInConvoyActive > 1 then
-        local maxDistance = self.settings.convoyDistance:getValue()
-        if closestDistanceBack > maxDistance then
-            self:debugSparse('convoy: too far (%.1f m > %.1f) from the vehicles behind me, slowing down.',
-                    closestDistanceBack, maxDistance)
-            local factor = math.max(0, (1 - (closestDistanceBack - maxDistance) / maxDistance))
-            local maxSpeed = closestVehicleBack and factor * closestVehicleBack:getLastSpeed() or factor * self.maxSpeed
-            self:setMaxSpeed(maxSpeed > 1 and maxSpeed or 0)
-        end
-
-        closestDistanceFront = 0
+        -- slow down when I'm too close to the combine in front of me
+        self:controlFollowingVehicleInConvoy(vehiclesInConvoyTotal, closestDistanceFront)
+    elseif position == 1 then
+        -- if I am the first one and there are other vehicles, slow down if I'm too far ahead
+        self:controlFirstVehicleInConvoy(vehiclesInConvoyTotal, vehiclesInConvoyActive, closestVehicleBack, closestDistanceBack)
     end
-
     -- TODO: multiplayer?
-    self.convoyCurrentDistance= closestDistanceFront
-    self.convoyCurrentPosition=position
-    self.convoyTotalMembers= vehiclesInConvoy
 end
 
 -----------------------------------------------------------------------------------------------------------------------

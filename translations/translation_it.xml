@@ -3,7 +3,7 @@
 	<texts>
 		<text name="CP_activated" 																		text="Attivato" />
 		<text name="CP_deactivated" 																	text="Disattivato" />
-		<text name="CP_automatic" 																		text="auto" />
+		<text name="CP_automatic" 																		text="automatico" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 
@@ -99,9 +99,6 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Correzione vert."/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Correzione vert."/>
 		
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raggio di sterzata"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Larghezza raggio di sterzata. Intervallo: 2 - 50"/>
-		
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Aprire sempre il tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Aprire sempre il tubo quando la mietitrebbia è piena e attende lo scaricatore"/>
 		
@@ -128,7 +125,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio di corsia simmetrico"/>
 		
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distanza convoglio"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distanza tra i veicoli. Intervallo: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distanza tra i veicoli. Intervallo: 40 - 400"/>
 		
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Lavoro"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocità massima durante il lavoro sul campo. Intervallo: 5 - 50"/>
@@ -230,6 +227,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatibile con il gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllata con un Gamepad."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Differenza angolare obiettivo"/>

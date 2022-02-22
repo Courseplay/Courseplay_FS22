@@ -97,9 +97,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Distancia vertical do implemento"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Distancia vertical do implemento"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Raio do giro"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Raio do giro"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Manter o tubo desdobrado"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Desdobrar o tubo quando a colheitadeira estiver cheia ou aguardando descarregar."/>
@@ -126,8 +123,8 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Mudança de faixa simétrica"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Mudança de faixa simétrica"/>
 
-		<text name="CP_vehicle_setting_convoyActive_title" 												text="Comboio de veículos"/>
-		<text name="CP_vehicle_setting_convoyActive_tooltip" 											text="Ativar / desativar comboio de veículos"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distância do comboio"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distância entre veículos. Valor: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabalho no campo"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidade máxima ao trabalhar no campo"/>
@@ -228,6 +225,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatível com gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use o Hud, que pode ser controlado com um Gamepad."/>
 
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Configurações Pathfinder"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Meta diferença angular"/>
@@ -281,7 +281,6 @@
 		<text name="CP_customFieldManager_draw"															text="Desenhar campo personalizado"/>
 		<text name="CP_customFieldManager_draw_header"													text="Clique no botão direito do mouse para desenhar linhas no campo personalizado."/>
 		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Iniciar gravação de campo personalizado."/>
@@ -312,7 +311,9 @@ H: Diminuir e aumentar a largura de trabalho. Uma linha vermelha no seu veículo
 I: Valor para deslocamento horizontal, + esquerda, - direita.
 J: Valor para deslocamento vertical, + para trás, - para frente.
 K, L e M: Clicar no texto irá redefinir suas alterações para os valores automáticos.
-N: Esta área mostra a distãncia da faixa se você tiver uam rota com multiferramentas carregado. Clicar no texto alterna as posições."/>
+N: Esta área mostra a distãncia da faixa se você tiver uam rota com multiferramentas carregado. Clicar no texto alterna as posições.
+O: Iniciar/parar rota no campo customizado.
+P: Excluir rota do veículo"/>
 		<text name="CP_help_page_customField_title"														text="Campo Customizado"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Há duas formas de criar um campo personalizado.

@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Werktuig verticale offset"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Werktuig verticale offset"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Breedte draaicirkel"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Breedte draaicirkel. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Vouw de pijp altijd open"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Vouw de pijp altijd open als de maaidorser vol is en wacht op de losser."/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrische rijstrookwisseling"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Konvooi afstand"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand tussen voertuigen. Waarde: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Afstand tussen voertuigen. Waarde: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Veldwerk"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale snelheid tijdens het werken op het veld. Value: 5 - 50"/>
@@ -232,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad vriendelijke Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Gebruik de Hud, die kan worden bestuurd met een Gamepad."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Padvinder instellingen"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Hoekverschil op doel"/>
@@ -339,6 +339,7 @@ The next right click will draw a line from your startpoint to your second positi
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Huidige debug-kanaal wijzigen."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Toont debug kanaalmenu ja/nee."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: mini GUI openen"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
 	</texts>

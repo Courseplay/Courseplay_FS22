@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class BalerController : ImplementController
 BalerController = CpObject(ImplementController)
 
-function BalerController:init(vehicle)
-    self.baler = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Baler)
+function BalerController:init(vehicle, baler)
+    self.baler = baler
     ImplementController.init(self, vehicle, self.baler)
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 20
@@ -35,7 +35,7 @@ end
 
 function BalerController:handleBaler()
     local maxSpeed
-
+    --- TODO: This code can probably be removed.
     if not self.baler:getIsTurnedOn() then
         if self.baler.setFoldState then
             -- unfold if there is something to unfold
@@ -46,13 +46,6 @@ function BalerController:handleBaler()
             self.baler:setIsTurnedOn(true, false);
         else --maybe this line is enough to handle bale dropping and waiting ?
             maxSpeed = 0
-        end
-    end
-
-    if self.baler.setPickupState ~= nil then -- lower pickup after unloading
-        if self.baler.spec_pickup ~= nil and not self.baler.spec_pickup.isLowered then
-            self.baler:setPickupState(true, false)
-            self:debug('lowering baler pickup')
         end
     end
     
@@ -74,32 +67,3 @@ function BalerController:handleBaler()
 
     return maxSpeed
 end
-
-Pickup.onAIImplementStartLine = Utils.overwrittenFunction(Pickup.onAIImplementStartLine,
-        function(self, superFunc)
-            if superFunc ~= nil then superFunc(self) end
-            self:setPickupState(true)
-        end)
-
-Pickup.onAIImplementEndLine = Utils.overwrittenFunction(Pickup.onAIImplementEndLine,
-        function(self, superFunc)
-            if superFunc ~= nil then superFunc(self) end
-            self:setPickupState(false)
-        end)
-
-Pickup.onAIImplementEnd = Utils.overwrittenFunction(Pickup.onAIImplementEnd,
-        function(self, superFunc)
-            if superFunc ~= nil then superFunc(self) end
-            self:setPickupState(false)
-        end)
-
--- TODO: move these to another dedicated class for implements?
-local PickupRegisterEventListeners = function(vehicleType)
-    print('## Courseplay: Registering pickup event listeners for loader wagons/balers.')
-    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementStartLine", Pickup)
-    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementEndLine", Pickup)
-    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementEnd", Pickup)
-end
-
-print('## Courseplay: Appending pickup event listener for loader wagons/balers.')
-Pickup.registerEventListeners = Utils.appendedFunction(Pickup.registerEventListeners, PickupRegisterEventListeners)

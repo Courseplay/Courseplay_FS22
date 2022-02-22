@@ -2,7 +2,8 @@
 ---@class CpGuiUtil
 CpGuiUtil = {}
 
-function CpGuiUtil.fixInGameMenu(frame,pageName,uvs,position,predicateFunc)
+--- Adds a new page to the in game menu.
+function CpGuiUtil.fixInGameMenuPage(frame, pageName, uvs, position, predicateFunc)
 	local inGameMenu = g_gui.screenControllers[InGameMenu]
 
 	-- remove all to avoid warnings
@@ -11,8 +12,6 @@ function CpGuiUtil.fixInGameMenu(frame,pageName,uvs,position,predicateFunc)
 	end
 
 	inGameMenu:registerControls({pageName})
-
-	
 	inGameMenu[pageName] = frame
 	inGameMenu.pagingElement:addElement(inGameMenu[pageName])
 
@@ -56,6 +55,42 @@ function CpGuiUtil.fixInGameMenu(frame,pageName,uvs,position,predicateFunc)
 
 	inGameMenu:rebuildTabList()
 end
+
+--- Fixes the top/bottom icons in the in game menu.
+function CpGuiUtil.fixInGameMenu()
+	local inGameMenu = g_gui.screenControllers[InGameMenu]
+	local function fixImageFile(self)
+		if self.pagingTabPrevious ~= nil then
+			local isFirstItemVisible = self.pagingTabList.firstVisibleItem == 1
+			if not isFirstItemVisible then
+				local itemToShow = self.pagingTabList.firstVisibleItem - 1
+				local prevElement = self.pagingTabList.listItems[itemToShow].elements[1]
+	
+
+				if prevElement then
+					self.pagingTabPrevious.elements[1]:setImageFilename(prevElement.icon.filename)
+				end
+			end
+		end
+	
+		if self.pagingTabNext ~= nil then
+			local isLastItemVisible = self.pagingTabList.firstVisibleItem + self.pagingTabList.visibleItems - 1 >= #self.pagingTabList.listItems
+			if not isLastItemVisible then
+				local itemToShow = self.pagingTabList.firstVisibleItem + self.pagingTabList.visibleItems
+				local nextElement = self.pagingTabList.listItems[itemToShow].elements[1]
+	
+				if nextElement then
+					self.pagingTabNext.elements[1]:setImageFilename(nextElement.icon.filename)
+				end
+			end
+		end
+	end
+
+	inGameMenu.updateTabDisplay = Utils.appendedFunction(
+		inGameMenu.updateTabDisplay, fixImageFile
+	)
+end
+
 
 --- Clones a child element with a given profile name.
 ---@param rootElement GuiElement Searches in this element children elements.

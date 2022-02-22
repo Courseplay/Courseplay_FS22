@@ -92,6 +92,14 @@ function CpGlobalSettings:onHudSelectionChanged()
     end
 end
 
+function CpGlobalSettings:onActionEventTextVisibilityChanged()
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle then 
+        vehicle:requestActionEventUpdate()
+    end
+    CpDebug:updateActionEventTextVisibility()
+end
+
 function CpGlobalSettings:onUnitChanged()
     for i,setting in ipairs(self.settings) do 
         setting:validateTexts()

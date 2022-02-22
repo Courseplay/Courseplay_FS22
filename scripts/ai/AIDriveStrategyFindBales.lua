@@ -104,11 +104,14 @@ function AIDriveStrategyFindBales:collectNextBale()
             self:findPathToNextBale()
             return
         end
-        self:info('There really are no more bales on the field')
-        if false and self.baleLoader and self:getFillLevel() > 0.1 then
-            -- TODO: start AD?
-            self:startCourseWithPathfinding(self.unloadRefillCourse, 1)
+        if self.baleLoader and self.baleLoaderController:hasBales() then 
+            if self.baleLoaderController:canBeFolded() then
+                --- Wait until the animations have finished and then make sure the bale loader can be send back with auto drive.
+                self:info('There really are no more bales on the field')
+                self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+            end
         else
+            self:info('There really are no more bales on the field')
             self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
         end
     end
@@ -118,14 +121,16 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
-    if AIUtil.hasImplementWithSpecialization(vehicle, BaleLoader) then
-        self.baleLoaderController = BaleLoaderController(vehicle)
-        self.baleLoader = self.baleLoaderController:getImplement()
+    self.baleLoader = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
+    if self.baleLoader then
+        self.baleLoaderController = BaleLoaderController(vehicle, self.baleLoader)
+        self.baleLoaderController:setDriveStrategy(self)
         table.insert(self.controllers, self.baleLoaderController)
     end
-    if AIUtil.hasImplementWithSpecialization(vehicle, BaleWrapper) then
-        self.baleWrapperController = BaleWrapperController(vehicle)
-        self.baleWrapper = self.baleWrapperController:getImplement()
+    self.baleWrapper = AIUtil.getImplementWithSpecialization(vehicle, BaleWrapper)
+    if self.baleWrapper then
+        self.baleWrapperController = BaleWrapperController(vehicle, self.baleWrapper)
+        self.baleWrapperController:setDriveStrategy(self)
         table.insert(self.controllers, self.baleWrapperController)
     end
 end
@@ -377,6 +382,7 @@ end
 --- this the part doing the actual work on the field after/before all
 --- implements are started/lowered etc.
 function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
+    self:updateLowFrequencyImplementControllers()
     if self.state == self.states.SEARCHING_FOR_NEXT_BALE then
         self:setMaxSpeed(0)
         self:debug('work: searching for next bale')
@@ -394,17 +400,7 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     end
-    self:checkFillLevel()
     return AIDriveStrategyFindBales.superClass().getDriveData(self, dt, vX, vY, vZ)
-end
-
-function AIDriveStrategyFindBales:checkFillLevel()
-    if self.baleLoader then
-        if self.fillLevelManager:getTotalFillLevelPercentage(self.baleLoader) > 99 then
-            self:info('Bale loader is full, stopping job.')
-            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
-        end
-    end
 end
 
 function AIDriveStrategyFindBales:approachBale()
@@ -452,23 +448,6 @@ function AIDriveStrategyFindBales:getConfiguredOffset()
     end
 end
 
-function AIDriveStrategyFindBales:getFillLevel()
-    local fillLevelInfo = {}
-    self:getAllFillLevels(self.vehicle, fillLevelInfo)
-    for fillType, info in pairs(fillLevelInfo) do
-        if 	fillType == FillType.SQUAREBALE or
-                fillType == FillType.SQUAREBALE_WHEAT or
-                fillType == FillType.SQUAREBALE_BARLEY or
-                fillType == FillType.ROUNDBALE or
-                fillType == FillType.ROUNDBALE_WHEAT or
-                fillType == FillType.ROUNDBALE_BARLEY or
-                fillType == FillType.ROUNDBALE_GRASS or
-                fillType == FillType.ROUNDBALE_DRYGRASS then
-            return info.fillLevel
-        end
-    end
-end
-
 function AIDriveStrategyFindBales:isAutoContinueAtWaitPointEnabled()
     return true
 end
@@ -487,4 +466,9 @@ function AIDriveStrategyFindBales:getStraightReverseCourse(length)
     local lastTrailer = AIUtil.getLastAttachedImplement(self.vehicle)
     local l = length or 100
     return Course.createFromNode(self.vehicle, lastTrailer.rootNode or self.vehicle.rootNode, 0, 0, -l, -5, true)
+end
+
+function AIDriveStrategyFindBales:update()
+    AIDriveStrategyFindBales:superClass().update(self)
+    self:updateImplementControllers()
 end

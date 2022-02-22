@@ -5,20 +5,25 @@
 
 **[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22/releases/latest)** (the file FS22_Courseplay.zip).
 
-## Note that the current version has no multiplayer support!
+## Multiplayer support with Version 7.0.1.0 or higher!
 
 ## What Works
 
 * Course generation
-* Field work but no refill or unload, except combine self unload
-* Save/load courses
-* Vehicle Convoy 
+* Field work with generated courses
+* Refill or unload with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive)
+* Combine self unload
+* Wrap and collect bales with or without a course
+* Save/load/rename/move courses
+* Create custom fields with recording or drawing on the AI Map
+* Vehicle Convoy
 
 ## Usage
 
-There is now a CP Fieldwork job available on the helper screen. After you select it,
-choose a target position the field you want work on and the Open/Close Course Generator
-button. Generate the course and start the job.
+There is now a CP Fieldwork job available on the AI helper screen. Just with the built in helper, you can select a target position. When you start the job,
+the helper will drive to this position before starting the fieldwork. Use the Field position to tell the helper which field you want them to work on.
+Once you selected a valid Field position, you can click on the CP Open/Close Course Generator button on the bottom of the screen to open the course generator and generate a course.
+If your vehicle is already near or on the field, you can use the HUD or a keyboard shortcut to start the CP helper at the first, nearest or last waypoint of the fieldwork course.
 
 ## Turning on Debug Channels
 
@@ -49,6 +54,7 @@ Be as specific as possible:
 * For more details on how to post a proper bug report, visit our [Wiki](https://github.com/Courseplay/Courseplay_FS22/wiki)
 
 ___
+
 ## Help Us Out
 
 We work long, hard, in our own free time at developing and improving Courseplay. If you like the project, show us your undying love:
@@ -57,18 +63,12 @@ We work long, hard, in our own free time at developing and improving Courseplay.
 
 ___
 
-## Credits
-* Peter Vaiko
-* Tensuko
-* schwiti6190
-* Logo Design by Finals Farming
+## Contributors
+See [Contributors](/Contributors.md)
+
 ___
 
-## Attributions
-Please see [`__Attributions.md`](https://github.com/Courseplay/Courseplay_FS22/blob/master/__Attributions.md) for more information.
-___
-
-## Supporter
+## Supporters
 
 People and teams who support us
 
@@ -77,20 +77,3 @@ People and teams who support us
 * Burning Gamers [YouTube Channel](https://www.youtube.com/c/BurningGamersde/featured)
 
 * Mario Hirschfeld [YouTube Channel](https://www.youtube.com/c/MarioHirschfeld/featured)
-___
-
-
-## Former Developers
-* Thomas Gärtner
-* Satis
-* Jakob Tischler
-* Bastian82
-* Lautschreier
-* Horoman
-* Hummel
-* Skydancer
-* Wolverin0815
-* Pops64
-
-## Former Version Support
-Pops64 will continue support for version 5 of CP. This was the version used for FS17. This may be found in this **[repository](https://github.com/pops64/courseplay)**. Only bugfixes and refinement of current features will be supported at this time.

@@ -100,9 +100,6 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. Herramienta Del/Tra"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desp. Herramienta Del/Tra"/>
 
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Ancho radio de giro"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Ancho radio de giro. Valor: 2 - 50"/>
-
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Desplegar siempre el tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Despliegue siempre el tubo cuando la cosechadora esté llena y esperando el descargador."/>
 
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio a carril simétrico"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distancia del convoy"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Establece la distancia entre vehículos. Valor: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Establece la distancia entre vehículos. Valor: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Trabajo en campos"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Velocidad máxima de trabajo en campos. Valor: 5 - 50"/>
@@ -230,6 +227,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatible con gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud"/>
 
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ajustes del generador de rutas"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ángulo máximo a usar"/>
@@ -313,8 +313,8 @@ I: Valor del desplazamiento horizontal, (+)Izquierda, (-)Derecha.
 J: Valor del desplazamiento vertical, (+)Atrás, (-)Adelante.
 K: L y M: Al hacer clic en el texto, se restablecerán los cambios a los valores automáticos.
 N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"/>
+O: Inicia/Detiene la grabación de un curso de campo personalizado.
+P: Remueve el curso de un vehículo."/>
 		<text name="CP_help_page_customField_title"														text="Campos Personalizados"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Existen dos maneras de crear un campo personalizado.

@@ -383,13 +383,13 @@ function HybridAStar:getMotionPrimitives(turnRadius, allowReverse)
 end
 
 function HybridAStar:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
-	local analyticSolution, _ = self.analyticSolver:solve(start, goal, turnRadius)
+	local analyticSolution, pathType = self.analyticSolver:solve(start, goal, turnRadius)
 	local analyticSolutionLength = analyticSolution:getLength(turnRadius)
 	local analyticPath = analyticSolution:getWaypoints(start, turnRadius)
 	-- making sure we continue with the correct trailer heading
 	analyticPath[1]:setTrailerHeading(start:getTrailerHeading())
 	State3D.calculateTrailerHeadings(analyticPath, hitchLength)
-	return analyticPath, analyticSolutionLength
+	return analyticPath, analyticSolutionLength, pathType
 end
 
 ---@param start State3D start node
@@ -417,9 +417,9 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 	---@type HybridAStar.NodeList closedList
 	self.nodes = HybridAStar.NodeList(self.deltaPos, self.deltaThetaDeg)
 	if allowReverse then
-		self.analyticSolver = ReedsSheppSolver()
+		self.analyticSolver = self.analyticSolver or ReedsSheppSolver()
 	else
-		self.analyticSolver = DubinsSolver()
+		self.analyticSolver = self.analyticSolver or DubinsSolver()
 	end
 
 	-- ignore trailer for the first check, we don't know its heading anyway
@@ -434,11 +434,11 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 		self:debug('Goal node is invalid for analytical path.')
 	end
 
-	local analyticPath, analyticSolutionLength = 0
+	local analyticPath, analyticSolutionLength, pathType
 	if self.analyticSolverEnabled then
-		 analyticPath, analyticSolutionLength = self:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
+		 analyticPath, analyticSolutionLength, pathType = self:getAnalyticPath(start, goal, turnRadius, allowReverse, hitchLength)
 		if self:isPathValid(analyticPath) then
-			self:debug('Found collision free analytic path from start to goal')
+			self:debug('Found collision free analytic path (%s) from start to goal', pathType)
 			return true, analyticPath
 		end
 		self:debug('Length of analytic solution is %.1f', analyticSolutionLength)
@@ -481,9 +481,9 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 				if self.analyticSolverEnabled and not self.goalNodeIsInvalid and
 						math.random() > 2 * pred.h / self.distanceToGoal then
 					self:debug('Check analytic solution at iteration %d, %.1f, %.1f', self.iterations, pred.h, pred.h / self.distanceToGoal)
-					analyticPath = self:getAnalyticPath(pred, goal, turnRadius, allowReverse, hitchLength)
+					analyticPath, pathType = self:getAnalyticPath(pred, goal, turnRadius, allowReverse, hitchLength)
 					if self:isPathValid(analyticPath) then
-						self:debug('Found collision free analytic path at iteration %d', self.iterations)
+						self:debug('Found collision free analytic path (%s) at iteration %d', self.iterations, pathType)
 						-- remove first node of returned analytic path as it is the same as pred
 						table.remove(analyticPath, 1)
 						self:rollUpPath(pred, goal, analyticPath)
@@ -652,7 +652,8 @@ HybridAStarWithAStarInTheMiddle = CpObject(PathfinderInterface)
 ---@param hybridRange number range in meters around start/goal to use hybrid A *
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
-function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterations, mustBeAccurate)
+---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
+function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterations, mustBeAccurate, analyticSolver)
 	-- path generation phases
 	self.START_TO_MIDDLE = 1
 	self.MIDDLE = 2
@@ -662,6 +663,7 @@ function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterat
 	self.yieldAfter = yieldAfter or 100
 	self.hybridAStarPathfinder = HybridAStar(self.yieldAfter, maxIterations, mustBeAccurate)
 	self.aStarPathfinder = self:getAStar()
+	self.analyticSolver = analyticSolver
 end
 
 function HybridAStarWithAStarInTheMiddle:getAStar()
@@ -863,10 +865,11 @@ HybridAStarWithPathInTheMiddle = CpObject(HybridAStarWithAStarInTheMiddle)
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param path State3D[] path to use in the middle part
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
-function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate)
+---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
+function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate, analyticSolver)
 	self.path = path
 	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', hybridRange, #path)
-	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate)
+	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate, analyticSolver)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()

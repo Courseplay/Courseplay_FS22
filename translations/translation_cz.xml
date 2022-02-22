@@ -98,9 +98,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Vertikální odsazení nástroje"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Nastaví vertikální odsazení nástroje"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Poloměr otáčení"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Nastaví poloměr otáčení. Hodnota: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Stále otevřený komín"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Otevřít komín, když je kombajn plný a čeká na vykládku"/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrická změna jízdního pruhu"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Rozestup konvoje"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Vzdálenost mezi vozidly. Hodnota: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Vzdálenost mezi vozidly. Hodnota: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Polní práce"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximální rychlost při práci na poli. Hodnota: 5 - 50"/>
@@ -230,6 +227,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud nastavený pro Gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Použijte Hud, který lze ovládat pomocí Gamepadu."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Nastavení generování trasy"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlů v cíli"/>
@@ -282,7 +282,7 @@
 		<text name="CP_customFieldManager_rename"														text="Přejmenovat vlastní pole"/>
 		<text name="CP_customFieldManager_draw"															text="Kreslit vlastní pole"/>
 		<text name="CP_customFieldManager_draw_header"													text="Nakreslí vlastní trasy na poli kliknutím pravým tlačítkem"/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_save"                                                         text="Uložit vlastní pole"/>
 		
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Spustit nahrávání vlastního pole"/>

@@ -637,7 +637,7 @@ end
 
 ---@return boolean true if it is ok the continue driving, false when the vehicle should stop
 function CourseTurn:endTurn(dt)
--- keep driving on the turn course until we need to lower our implements
+	-- keep driving on the turn course until we need to lower our implements
 	local shouldLower, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
 	if shouldLower then
 		if not self.implementsLowered then
@@ -650,8 +650,10 @@ function CourseTurn:endTurn(dt)
 				self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 			end
 		else
-			-- implements already lowering
-			if dz and dz > -1 and not self.vehicle:getCanAIFieldWorkerContinueWork() then
+			-- implements already lowering, making sure we check if they are lowered, the faster we go, the earlier,
+			-- for those people who set insanely high turn speeds...
+			local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
+			if dz and dz > - implementCheckDistance and not self.vehicle:getCanAIFieldWorkerContinueWork() then
 				self:debug('waiting for lower at dz=%.1f', dz)
 				-- we are almost at the start of the row but still not lowered everything,
 				-- hold.
@@ -794,9 +796,8 @@ function CourseTurn:onPathfindingDone(path)
 		end
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
-		-- and once again, if there is an ending course, keep adjusting the tight turn offset
-		self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
-		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+		local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
+		TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
 	else
 		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))
 		self:generateCalculatedTurn()
@@ -959,7 +960,7 @@ StartRowOnly = CpObject(CourseTurn)
 function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
 	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'AlignmentTurn')
 	self.turnCourse = startRowCourse
-	TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+	TurnManeuver.setLowerImplements(self.turnCourse, math.max(math.abs(turnContext.frontMarkerDistance), self.steeringLength))
 	self.ppc:setCourse(self.turnCourse)
 	self.ppc:initialize(1)
 	self.state = self.states.TURNING

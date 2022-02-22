@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
-
+	
 		<text name="CP_activated" 																		text="aktiviert" />
 		<text name="CP_deactivated" 																	text="deaktiviert" />
 		<text name="CP_automatic" 																		text="auto" />
@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Geräte Versatz vertikal"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Geräte Versatz vertikal"/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Wenderadius"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Wenderadius. Value: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Rohr immer ausfahren"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrischer Bahnenwechsel"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Fahrzeugverband Entfernung"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Entfernung zwischen den Fahrzeugen. Wert: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Entfernung zwischen den Fahrzeugen. Wert: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50"/>
@@ -230,6 +227,9 @@
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller freundliches Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über den Controller bedienen lässt."/>
+
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Zeige Tastenbelegung"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Einstellungen"/>
 

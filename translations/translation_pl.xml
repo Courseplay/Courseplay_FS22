@@ -4,7 +4,7 @@
 		
 		<text name="CP_activated" 																		text="Aktywne" />
 		<text name="CP_deactivated" 																	text="Nieaktywne" />
-		<text name="CP_automatic" 																		text="automatic" />
+		<text name="CP_automatic" 																		text="Automatyczne" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
 		
@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Przes. pionowe dla narzędzi"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne dla narzędzi."/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Szerokość zawracania"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Szerokość zawracania. Zakres: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Zawsze rozłóż rurę"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetryczna zmiana ścieżki."/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Dystans konwoju"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w konwoju. Zakres: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Dystans pomiędzy pojazdami w konwoju. Zakres: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Prace polowe"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maksymalna prędkość podczas prac polowych. Zakres: 5 - 50"/>
@@ -232,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="HUD przyjazny kontrolerom"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Używa HUDa, który może być ustawiany przez kontrolery gier."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ustawienia szukania ścieżki"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Różnica kątów na bramce"/>

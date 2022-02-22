@@ -20,11 +20,9 @@ end
 --- Reads the serialized data on the receiving end of the event.
 function CpJoinEvent:readStream(streamId, connection) -- wird aufgerufen wenn mich ein Event erreicht
 	CpJoinEvent.debug("readStream")
-	local settings = g_Courseplay.globalSettings:getSettings()
+	local settings = g_Courseplay.globalSettings:getSettingsTable()
 	for i = 1, #settings do 
-		if not settings[i]:getIsUserSetting() then
-			settings[i]:readStream(streamId, connection)
-		end
+		settings[i]:readStream(streamId, connection)
 	end
 	
 	self:run(connection);
@@ -33,11 +31,9 @@ end
 --- Writes the serialized data from the sender.
 function CpJoinEvent:writeStream(streamId, connection)  -- Wird aufgrufen wenn ich ein event verschicke (merke: reihenfolge der Daten muss mit der bei readStream uebereinstimmen 
 	CpJoinEvent.debug("writeStream")
-	local settings = g_Courseplay.globalSettings:getSettings()
+	local settings = g_Courseplay.globalSettings:getSettingsTable()
 	for i = 1, #settings do 
-		if not settings[i]:getIsUserSetting() then
-			settings[i]:writeStream(streamId, connection)
-		end
+		settings[i]:writeStream(streamId, connection)
 	end
 end
 
@@ -56,6 +52,7 @@ end
 local function sendEvent(baseMission,connection, x, y, z, viewDistanceCoeff)
 	-- body
 	if connection ~= nil then 
+		CpJoinEvent.debug("send Event")
 		connection:sendEvent(CpJoinEvent.new())
 	end
 end

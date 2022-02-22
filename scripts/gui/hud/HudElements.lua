@@ -1,6 +1,4 @@
-
---- Generic Hud element with overlay.
-
+--- Base hud element.
 ---@class CpHudElement : HUDElement
 CpHudElement = {}
 local CpHudElement_mt = Class(CpHudElement, HUDElement)
@@ -52,7 +50,7 @@ function CpHudElement:getIsHovered()
     return self.hovered    
 end
 
---- WIP: Not working for the on/off overlay
+--- Is the mouse over the element ?
 function CpHudElement:isMouseOverArea(posX,posY)
     local x = self.overlay.x
 	local y = self.overlay.y
@@ -90,6 +88,10 @@ function CpHudElement:setDisabled(disabled)
     self.disabled = disabled
 end
 
+function CpHudElement:getIsDisabled()
+    return self.disabled
+end
+
 --- Generic Hud button element with overlay.
 ---@class CpHudButtonElement : CpHudElement
 CpHudButtonElement = {}
@@ -104,7 +106,6 @@ function CpHudButtonElement.new(overlay,parentHudElement,customMt)
     return self
 end
 
---- WIP: not working
 function CpHudButtonElement:mouseEvent(posX, posY, isDown, isUp, button,wasUsed)
     if self.visible and not self.disabled and self:isMouseOverArea(posX,posY) then 
 
@@ -316,6 +317,7 @@ function CpHudMoveableElement:mouseEvent(posX, posY, isDown, isUp, button,wasUse
         return
     end
     if button == Input.MOUSE_BUTTON_LEFT then
+        --- Handles the start dragging and the end of the dragging.
         if isDown and self:isMouseOverArea(posX, posY) then
             if not self.dragging then
                 self.dragStartX = posX

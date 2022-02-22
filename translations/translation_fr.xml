@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Décalage vertical de l'outil"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil."/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Rayon de braquage"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Rayon de braquage. Valeurs: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Toujours déployer la buse"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Distance entre les véhicules"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Travail"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Vitesse max pendant le travail dans le champ. Valeurs: 5 - 50"/>
@@ -232,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="ATH compatible manette"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="L'ATH (interface du CP en jeu) est utilisable avec une manette."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Réglages du Pathfinder"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Différence d'angle à l'objectif"/>

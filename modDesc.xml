@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.0.28</version>
+    <version>7.0.1.2</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
+		<es>CoursePlay</es>
 		<cs>自动作业</cs>
 		<ct>自動作業</ct>
 		<hu>CoursePlay - A Vezetősegéd</hu>
@@ -22,6 +23,15 @@ The next version of Courseplay.
 - Full controller support for the GUI is planned for the future.
 ]]>
 		</en>
+	<es>
+		<![CDATA[Courseplay
+
+La siguiente versión de Courseplay.
+
+- Soporte Multijugador se añadirá en una versión futura.
+- Compatibilidad total con controlador para la GUI está planeado para el futuro.
+]]>
+		</es>
         <de>
 		<![CDATA[Courseplay
 
@@ -101,6 +111,10 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ForageWagonController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/MowerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/RidgeMarkerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/PickupController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CutterController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SprayerController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
@@ -110,8 +124,11 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
-		<sourceFile filename="scripts/ai/jobs/AIJobFieldWorkCp.lua"/>
-		<sourceFile filename="scripts/ai/tasks/AITaskFieldWorkCp.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJob.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobFieldWork.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
@@ -139,7 +156,9 @@ La prossima versione di Courseplay.
 		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
 		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
+		<specialization name="cpAIWorker" className="CpAIWorker" filename="scripts/specializations/CpAIWorker.lua"/>
 		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
+		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
 		<specialization name="cpVehicleSettingDisplay" className="CpVehicleSettingDisplay" filename="scripts/specializations/CpVehicleSettingDisplay.lua"/>
 		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
 	</specializations>

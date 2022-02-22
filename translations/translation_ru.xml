@@ -99,9 +99,6 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Продольное смещение"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Продольное смещение инструмента."/>
-
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Диаметр круга поворота"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Диаметр круга поворота. Значение: 2 - 50"/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Всегда разворачивать трубу"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Симметричная смена полосы движения"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Дистанция следования"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Расстояние между техникой при работе нескольких орудий. Значение: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Расстояние между техникой при работе нескольких орудий. Значение: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Полевые работы"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Максимальная скорость при работе на поле. Значение: 5 - 50"/>
@@ -232,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Дружелюбный к геймпаду HUD"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Использовать HUD, которым можно управлять с помощью геймпада."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Настройки поиска пути"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Разница углов у цели"/>

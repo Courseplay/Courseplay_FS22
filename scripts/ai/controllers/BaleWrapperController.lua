@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class BaleWrapperController : ImplementController
 BaleWrapperController = CpObject(ImplementController)
 
-function BaleWrapperController:init(vehicle)
-    self.baleWrapper = AIUtil.getImplementWithSpecialization(vehicle, BaleWrapper)
+function BaleWrapperController:init(vehicle, baleWrapper)
+    self.baleWrapper = baleWrapper
     ImplementController.init(self, vehicle, self.baleWrapper)
     
     local baler = AIUtil.getImplementWithSpecialization(self.vehicle, Baler)

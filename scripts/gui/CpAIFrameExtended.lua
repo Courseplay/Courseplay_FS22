@@ -14,33 +14,7 @@ CpInGameMenuAIFrameExtended.curDrawPositions={}
 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
-	local function createBtn(prefab, text, callback)
-		local btn = prefab:clone(prefab.parent)
-		btn:setText(g_i18n:getText(text))
-		btn:setVisible(false)
-		btn:setCallback("onClickCallback", callback)
-		btn.parent:invalidateLayout()
-		return btn
-	end
-
-	self.buttonGenerateCourse = createBtn(self.buttonCreateJob,
-											"CP_ai_page_generate_course",
-											"onClickGenerateFieldWorkCourse")
-	
-	self.buttonOpenCourseGenerator = createBtn(self.buttonGotoJob,
-											"CP_ai_page_open_course_generator",
-											"onClickOpenCloseCourseGenerator")
-
-	self.buttonDeleteCustomField = createBtn(self.buttonCreateJob,
-											"CP_customFieldManager_delete",
-											"onClickDeleteCustomField")	
-	
-	self.buttonRenameCustomField = createBtn(self.buttonGotoJob,
-											"CP_customFieldManager_rename",
-											"onClickRenameCustomField")		
-	self.buttonDrawFieldBorder = createBtn(self.buttonGotoJob,
-											"CP_customFieldManager_draw",
-											"onClickCreateFieldBorder")											
+	CpInGameMenuAIFrameExtended.setupButtons(self)		
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
 							"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader"})
@@ -112,13 +86,41 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
 			CpInGameMenuAIFrameExtended.onClickHotspot)
 	
-	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
 	--- Draws the current progress, while creating a custom field.
 	self.customFieldPlot = FieldPlot(true)
 end
 InGameMenuAIFrame.onLoadMapFinished = Utils.appendedFunction(InGameMenuAIFrame.onLoadMapFinished,
 		CpInGameMenuAIFrameExtended.onAIFrameLoadMapFinished)
 
+function CpInGameMenuAIFrameExtended:setupButtons()
+	local function createBtn(prefab, text, callback)
+		local btn = prefab:clone(prefab.parent)
+		btn:setText(g_i18n:getText(text))
+		btn:setVisible(false)
+		btn:setCallback("onClickCallback", callback)
+		btn.parent:invalidateLayout()
+		return btn
+	end
+
+	self.buttonGenerateCourse = createBtn(self.buttonCreateJob,
+											"CP_ai_page_generate_course",
+											"onClickGenerateFieldWorkCourse")
+
+	self.buttonOpenCourseGenerator = createBtn(self.buttonGotoJob,
+											"CP_ai_page_open_course_generator",
+											"onClickOpenCloseCourseGenerator")
+
+	self.buttonDeleteCustomField = createBtn(self.buttonCreateJob,
+											"CP_customFieldManager_delete",
+											"onClickDeleteCustomField")	
+
+	self.buttonRenameCustomField = createBtn(self.buttonGotoJob,
+											"CP_customFieldManager_rename",
+											"onClickRenameCustomField")		
+	self.buttonDrawFieldBorder = createBtn(self.buttonGotoJob,
+											"CP_customFieldManager_draw",
+											"onClickCreateFieldBorder")			
+end
 
 --- Updates the generate button visibility in the ai menu page.
 function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
@@ -126,11 +128,9 @@ function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
 	
 	if self.buttonGenerateCourse then
 		self.buttonGenerateCourse:setVisible(CpInGameMenuAIFrameExtended.getCanGenerateCourse(self))
---		self.buttonGenerateCourse:setDisabled(isPaused)
 	end
 	if self.buttonOpenCourseGenerator then
 		self.buttonOpenCourseGenerator:setVisible(CpInGameMenuAIFrameExtended.getCanOpenCloseCourseGenerator(self))
---		self.buttonOpenCourseGenerator:setDisabled(isPaused)
 	end
 	self.buttonBack:setVisible(self:getCanGoBack() or 
 								self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR or 
@@ -161,10 +161,10 @@ end
 function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
 	if CpInGameMenuAIFrameExtended.getCanGenerateCourse(self) then 
 		CpUtil.callErrorCorrectedFunction(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
-		--CpSettingsUtil.updateAiParameters(self.currentJobElements)
 	end
 end
 
+--- Disables the start job button, if cp is active.
 function CpInGameMenuAIFrameExtended:getCanStartJob(superFunc,...)
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if vehicle and vehicle.getIsCpActive and vehicle:getIsCpActive() then
@@ -175,12 +175,12 @@ end
 InGameMenuAIFrame.getCanStartJob = Utils.overwrittenFunction(InGameMenuAIFrame.getCanStartJob,CpInGameMenuAIFrameExtended.getCanStartJob)
 
 function CpInGameMenuAIFrameExtended:getCanGenerateCourse()
-	return self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse() and not self:getIsPicking()
+	return self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse and self.currentJob:getCanGenerateFieldWorkCourse()
 end
 
 function CpInGameMenuAIFrameExtended:getCanOpenCloseCourseGenerator()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	local visible = vehicle ~= nil and self.currentJob and self.currentJob.getCanGenerateFieldWorkCourse
+	local visible = vehicle ~= nil and self.currentJob and self.currentJob.isCourseGenerationAllowed and self.currentJob:isCourseGenerationAllowed()
 	return visible and self.mode ~= InGameMenuAIFrame.MODE_OVERVIEW and not self:getIsPicking()
 end
 
@@ -237,12 +237,10 @@ function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if self.settings then
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "unbinding course generator settings." )
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
+		self.courseGeneratorLayoutElements:invalidateLayout()
 	end
-	self.courseGeneratorLayoutElements:invalidateLayout()
 end
 
 
@@ -254,7 +252,7 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 	if hotspot ~= nil then
 		local vehicle = InGameMenuMapUtil.getHotspotVehicle(hotspot)
 		if vehicle then 
-			if vehicle.getJob ~= nil and vehicle.getCanGenerateFieldWorkCourse then
+			if vehicle.getJob ~= nil then
 				local job = vehicle:getJob()
 
 				if job ~= nil and job.getFieldPositionTarget ~= nil then
@@ -269,7 +267,7 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 	end
 
 end
-InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem,CpInGameMenuAIFrameExtended.setMapSelectionItem)
+InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem, CpInGameMenuAIFrameExtended.setMapSelectionItem)
 
 
 function CpInGameMenuAIFrameExtended:onAIFrameOpen()
@@ -277,18 +275,23 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 		self.contextBox:setVisible(false)
 	end
 	self.controlledVehicle = nil
-	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+	CpInGameMenuAIFrameExtended.addMapHotSpots(self)
 	g_customFieldManager:refresh()
 	self.drawingCustomFieldHeader:setVisible(false)
 end
-InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
+InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, CpInGameMenuAIFrameExtended.onAIFrameOpen)
+
+function CpInGameMenuAIFrameExtended:addMapHotSpots()
+	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+end
+InGameMenuMapFrame.onFrameOpen = Utils.appendedFunction(InGameMenuMapFrame.onFrameOpen, CpInGameMenuAIFrameExtended.addMapHotSpots)
 
 function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.courseGeneratorLayout:setVisible(false)
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
-	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, false)
+	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
@@ -423,12 +426,14 @@ end
 InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFrame.executePickingCallback,
 															CpInGameMenuAIFrameExtended.executePickingCallback)
 
+--- Enables clickable field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
-	if hotspot and hotspot:isa(CustomFieldHotspot) then 
-	--	hotspot:onClick()
-		local pageAI = g_currentMission.inGameMenu.pageAI
-		InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot.name)
-		self.currentHotspot = hotspot
+	if hotspot then 
+		if hotspot:isa(FieldHotspot) then 
+			local pageAI = g_currentMission.inGameMenu.pageAI
+			InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot:getAreaText())
+			self.currentHotspot = hotspot
+		end
 	end
 end
 
@@ -446,7 +451,7 @@ function InGameMenuAIFrame:onClickRenameCustomField()
 	end
 end
 
---- Is activate/deactivate drawing custom fields.
+--- Activate/deactivate the custom field drawing mode.
 function InGameMenuAIFrame:onClickCreateFieldBorder()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER then 
 		self.mode = InGameMenuAIFrame.MODE_OVERVIEW

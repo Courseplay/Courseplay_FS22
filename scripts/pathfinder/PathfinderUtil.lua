@@ -699,6 +699,11 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 
+    -- use an analyticSolver which only yields courses ending in forward gear. This is to
+    -- avoid reaching the end of turn in reverse. Implement lowering at turn end in reverse works only properly
+    -- when we are driving straight, but an analytic path ending in reverse will always also end in a curve
+    local analyticSolver = ReedsSheppSolver(ReedsShepp.ForwardEndingPathWords)
+
     PathfinderUtil.overlapBoxes = {}
     local pathfinder
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
@@ -711,10 +716,10 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         if dirDeg > 45 or true then
             CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
         end
-        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true)
+        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true, analyticSolver)
     else
         -- only use a middle section when the target is really far away
-        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true)
+        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true, analyticSolver)
     end
 
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)

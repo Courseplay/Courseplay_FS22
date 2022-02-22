@@ -100,9 +100,6 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="工具纵向调整"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="工具纵向调整"/>
 
-		<text name="CP_vehicle_setting_turnDiameter_title" 												text="转向半径"/>
-		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="转弯半径宽度。 数值范围: 2 - 50"/>
-	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="总是伸出管道"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="当收割机装满并等待卸载时，始终伸出管道。"/>
 
@@ -129,7 +126,7 @@
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="对称变道"/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="车辆距离"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="车辆之间的距离。 数值范围: 20 - 200"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="车辆之间的距离。 数值范围: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="工作速度"/>
 		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="在田间工作时的最高速度。 数值范围: 5 - 50"/>
@@ -232,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="手柄控制HUB"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="HUD（游戏内CP界面）可搭配游戏手柄使用。"/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="路径生成设置"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="目标的角度差"/>
@@ -354,6 +354,7 @@ P：从车辆上移除路线"/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: 更改当前调试通道。 "/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: 显示调试通道菜单 是/否。"/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: 打开迷你HUB"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: 鼠标光标开/关"/>
 		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: 打开/关闭HUB"/>
 	</texts>

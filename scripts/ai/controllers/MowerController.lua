@@ -4,8 +4,8 @@
 ---@class MowerController : ImplementController
 MowerController = CpObject(ImplementController)
 
-function MowerController:init(vehicle)
-    self.mower = AIUtil.getImplementOrVehicleWithSpecialization(vehicle,Mower)
+function MowerController:init(vehicle, mower)
+    self.mower = mower
     ImplementController.init(self, vehicle, self.mower)
     self:debug('Mower controller initialized')
 end

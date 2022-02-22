@@ -104,15 +104,15 @@ function CourseSaveNameEvent:run(connection)
 	if not connection:getIsServer() then
 		-- event was received from a client, so we, the server broadcast it to all other clients now
 		CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER,self.vehicle,"sending course save name event to all clients.")
-		g_server:broadcastEvent(CoursesEvent.new(self.vehicle, self.courseName), nil, connection, self.vehicle)
+		g_server:broadcastEvent(CourseSaveNameEvent.new(self.vehicle, self.courseName), nil, connection, self.vehicle)
 	end
 end
 
 function CourseSaveNameEvent.sendEvent(vehicle, courseName)
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, "sending course save name event.")
 	if g_server ~= nil then
-		g_server:broadcastEvent(CoursesEvent.new(vehicle, courseName), nil, nil, vehicle)
+		g_server:broadcastEvent(CourseSaveNameEvent.new(vehicle, courseName), nil, nil, vehicle)
 	else
-		g_client:getServerConnection():sendEvent(CoursesEvent.new(vehicle, courseName))
+		g_client:getServerConnection():sendEvent(CourseSaveNameEvent.new(vehicle, courseName))
 	end
 end

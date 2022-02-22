@@ -7,7 +7,7 @@ function CpStatus:init(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
     self.dirtyFlag = self.vehicle:getNextDirtyFlag()
 end
 
-function CpStatus:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints,timeRemaining)
+function CpStatus:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints, timeRemaining)
     self.isActive = isActive
     self.vehicle = vehicle
     self.currentWaypointIx = currentWaypointIx
