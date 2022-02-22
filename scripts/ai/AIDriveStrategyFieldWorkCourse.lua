@@ -284,8 +284,9 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    
-    for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
-        childVehicle:aiImplementStartLine()
+    --- Lowers all implements, that are available for the giants field worker.
+    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
+        implement.object:aiImplementStartLine()
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
 
@@ -294,14 +295,17 @@ function AIDriveStrategyFieldWorkCourse:lowerImplements()
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
         self.state = self.states.WAITING_FOR_LOWER_DELAYED
     end
+    --- Lowers implements, that are not covered by giants.
     self:raiseControllerEvent(self.onLoweringEvent)
 end
 
 function AIDriveStrategyFieldWorkCourse:raiseImplements()
-    for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
-        childVehicle:aiImplementEndLine()
+    --- Raises all implements, that are available for the giants field worker.
+    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
+        implement.object:aiImplementEndLine()
     end
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
+    --- Raises implements, that are not covered by giants.
     self:raiseControllerEvent(self.onRaisingEvent)
 end
 
