@@ -228,8 +228,8 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller freundliches Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über den Controller bedienen lässt."/>
 
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Zeige Tastenbelegung"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Einstellungen"/>
 
