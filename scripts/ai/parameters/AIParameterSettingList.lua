@@ -572,6 +572,7 @@ function AIParameterSettingList:resetGuiElement()
 	if self.guiElement then
 		if self.oldMouseEvent then
 			self.guiElement.mouseEvent = self.oldMouseEvent
+			self.oldMouseEvent = nil
 		end
 	end
 

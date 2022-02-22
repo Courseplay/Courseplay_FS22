@@ -229,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="手柄控制HUB"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="HUD（游戏内CP界面）可搭配游戏手柄使用。"/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="路径生成设置"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="目标的角度差"/>

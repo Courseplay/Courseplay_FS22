@@ -229,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad vriendelijke Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Gebruik de Hud, die kan worden bestuurd met een Gamepad."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Padvinder instellingen"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Hoekverschil op doel"/>

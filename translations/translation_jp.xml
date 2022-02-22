@@ -229,6 +229,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="ゲームパッド用HUD"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="ゲームパッドが接続されている場合、パッドに対応したHUDを表示できます（有効にするとマウスでHUD表示が無効になります）"/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="経路探索設定"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="ゴール時の角度差"/>

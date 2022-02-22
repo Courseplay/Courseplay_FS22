@@ -237,12 +237,10 @@ function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if self.settings then
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "unbinding course generator settings." )
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
+		self.courseGeneratorLayoutElements:invalidateLayout()
 	end
-	self.courseGeneratorLayoutElements:invalidateLayout()
 end
 
 
@@ -293,6 +291,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 

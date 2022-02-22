@@ -227,6 +227,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud nastavený pro Gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Použijte Hud, který lze ovládat pomocí Gamepadu."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Nastavení generování trasy"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlů v cíli"/>
