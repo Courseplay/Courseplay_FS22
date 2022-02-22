@@ -351,6 +351,7 @@ P：从车辆上移除路线"/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: 更改当前调试通道。 "/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: 显示调试通道菜单 是/否。"/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: 打开迷你HUB"/>
+		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: 鼠标光标开/关"/>
 		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: 打开/关闭HUB"/>
 	</texts>
