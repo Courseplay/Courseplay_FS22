@@ -227,8 +227,8 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatible con gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud"/>
 
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Ayuda de eventos de acción"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Muestra textos de ayuda de eventos de acción."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ajustes del generador de rutas"/>
 
