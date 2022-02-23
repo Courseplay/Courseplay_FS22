@@ -14,7 +14,7 @@ function CpAIJobFieldWork.new(isServer, customMt)
 		
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
-
+	self.foundVines = nil
 	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
 	self.selectedFieldPlot:setVisible(false)
 	return self
@@ -86,6 +86,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 
 	if self.fieldPolygon then
 		self.hasValidPosition = true
+		self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz)
 		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
 		self.selectedFieldPlot:setVisible(true)
 		self.selectedFieldPlot:setBrightColor(true)
@@ -169,6 +170,21 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local tx, tz = self.fieldPositionParameter:getPosition()
+
+	if self.foundVines then 
+		local vineSettings = vehicle:getCpVineSettings()
+
+
+		local course = g_vineScanner:generateCourse(
+			vineSettings.vineCenterOffset:getValue(),
+			vineSettings.vineMultiTools:getValue(),
+			vineSettings.vineRowsToSkip:getValue()
+		)
+		CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Generated a course for vines.')
+		vehicle:setFieldWorkCourse(course)
+		return
+	end
+
 	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = tx, z = tz},
 			settings.isClockwise:getValue(),
@@ -229,4 +245,12 @@ function CpAIJobFieldWork:stop(aiMessage)
 	if vehicle and vehicle.spec_aiFieldWorker.isActive then 
 		vehicle.spec_aiFieldWorker.isActive = false
 	end
+end
+
+function CpAIJobFieldWork:getCourseGeneratorSettings()
+	local vehicle = self:getVehicle()
+	if self.foundVines then 
+		return vehicle, vehicle:getCpVineSettingsTable(), CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
+	end
+	return vehicle, vehicle:getCourseGeneratorSettingsTable(), CpCourseGeneratorSettings.getSettingSetup(vehicle)
 end

@@ -34,6 +34,7 @@ end
 function CpAIFieldWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpAIFieldWorker)
+
     SpecializationUtil.registerEventListener(vehicleType, "onCpEmpty", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFinished", CpAIFieldWorker)
@@ -102,7 +103,6 @@ function CpAIFieldWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
     spec.cpJob:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJob")
     spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
-
 
 function CpAIFieldWorker:onCpCourseChange()
     local spec = self.spec_cpAIFieldWorker
@@ -243,7 +243,9 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
             AIUtil.hasImplementWithSpecialization(self, ForageWagon) or
             -- built in helper can't handle forage harvesters.
-            AIUtil.hasImplementWithSpecialization(self, Cutter) then
+            AIUtil.hasImplementWithSpecialization(self, Cutter) or 
+            AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
+            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) then
         return true
     end
     return self:getCanStartFieldWork()

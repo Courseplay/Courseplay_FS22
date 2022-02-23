@@ -187,6 +187,7 @@ end
 function CpCourseManager:setFieldWorkCourse(course)
     CpCourseManager.resetCourses(self)
     CpCourseManager.addCourse(self,course)   
+    course:setVehicle(self)
 end
 
 function CpCourseManager:setCoursesFromNetworkEvent(courses)

@@ -74,6 +74,7 @@ Funktionen:
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
+		<sourceFile filename="scripts/field/VineScanner.lua"/>
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
 		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
