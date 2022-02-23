@@ -120,7 +120,7 @@ end
 
 function AIDriveStrategyFieldWorkCourse:update()
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
-    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_TURN) then
+    if CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
         if self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_START_WAYPOINT then
             if self.turnContext then
                 self.turnContext:drawDebug()
