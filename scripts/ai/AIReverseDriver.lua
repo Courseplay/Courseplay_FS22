@@ -137,7 +137,7 @@ function AIReverseDriver:getLocalYRotationToPoint(node, x, y, z, direction)
 end
 
 function AIReverseDriver:showDirection(node, lx, lz, r, g, b)
-	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
+	if CpDebug:isChannelActive(CpDebug.DBG_REVERSE, self.vehicle) then
 		local x,y,z = getWorldTranslation(node)
 		local tx,_, tz = localToWorld(node,lx*5,y,lz*5)
 		DebugUtil.drawDebugLine(x, y+5, z, tx, y+5, tz, r or 1, g or 0, b or 0)
@@ -243,7 +243,7 @@ function AIReverseDriver:calculateHitchCorrectionAngle(crossTrackError, orientat
 
 	local correctionAngle = -(hitchAngle - currentHitchAngle)
 
-	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_REVERSE) then
+	if CpDebug:isChannelActive(CpDebug.DBG_REVERSE, self.vehicle) then
 		local text = string.format('xte=%.1f oe=%.1f ce=%.1f current=%.1f reference=%.1f correction=%.1f',
 				crossTrackError, math.deg(orientationError), curvatureError, math.deg(currentHitchAngle), math.deg(hitchAngle), math.deg(correctionAngle))
 		setTextColor(1, 1, 0, 1)

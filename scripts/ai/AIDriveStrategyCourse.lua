@@ -214,7 +214,7 @@ function AIDriveStrategyCourse:setMaxSpeed(speed)
 end
 
 function AIDriveStrategyCourse:getMaxSpeed()
-    return self.maxSpeed
+    return self.maxSpeed or self.vehicle:getSpeedLimit(true)
 end
 
 --- Start a course and continue with nextCourse at ix when done
