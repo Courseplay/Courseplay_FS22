@@ -21,7 +21,7 @@ ProximitySensor = CpObject()
 --- No matter what angle, don't make it extend to left/right more than this
 ProximitySensor.maxSideExtension = 4
 
-function ProximitySensor:init(node, yRotationDeg, range, height, xOffset)
+function ProximitySensor:init(node, yRotationDeg, range, height, xOffset, vehicle)
     self.node = node
     self.xOffset = xOffset
     self.yRotation = math.rad(yRotationDeg)
@@ -31,6 +31,7 @@ function ProximitySensor:init(node, yRotationDeg, range, height, xOffset)
     self.height = height or 0
     self.lastUpdateLoopIndex = 0
     self.enabled = true
+    self.vehicle = vehicle
     -- vehicles can only be ignored temporarily
     self.ignoredVehicle = CpTemporaryObject()
 end
@@ -67,7 +68,7 @@ function ProximitySensor:update()
         raycastClosest(x, y + self.height, z, nx, ny, nz, 'raycastCallback', self.range, self, raycastMask)
         DebugUtil.drawDebugLine(x, y + self.height, z, x + 5 * nx, y + self.height + 5 * ny, z + 5 * nz, 0, 1, 0)
     end
-    if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC) and self.distanceOfClosestObject <= self.range then
+    if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) and self.distanceOfClosestObject <= self.range then
         local green = self.distanceOfClosestObject / self.range
         local red = 1 - green
         DebugUtil.drawDebugLine(x, y + self.height, z, self.closestObjectX, self.closestObjectY, self.closestObjectZ, red, green, 0)
@@ -104,7 +105,7 @@ function ProximitySensor:getClosestRootVehicle()
 end
 
 function ProximitySensor:showDebugInfo()
-    if not CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC) then return end
+    if not CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) then return end
     local text = string.format('%.1f ', self.distanceOfClosestObject)
     if self.objectId then
         local object = g_currentMission:getNodeObject(self.objectId)
@@ -161,7 +162,7 @@ function ProximitySensorPack:init(name, vehicle, ppc, node, range, height, direc
     self.rotateToGoalPoint = false
     self.rotation = 0
     for i, deg in ipairs(self.directionsDeg) do
-        self.sensors[deg] = ProximitySensor(self.node, deg, self.range, height, xOffsets[i] or 0)
+        self.sensors[deg] = ProximitySensor(self.node, deg, self.range, height, xOffsets[i] or 0, vehicle)
     end
 end
 
@@ -209,7 +210,7 @@ function ProximitySensorPack:update()
     self:callForAllSensors(ProximitySensor.update)
 
     -- show the position of the pack
-    if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC) then
+    if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) then
         local x, y, z = getWorldTranslation(self.node)
         local x1, y1, z1 = localToWorld(self.node, 0, 0, 0.5)
         DebugUtil.drawDebugLine(x, y, z, x, y + 3, z, 0, 0, 1)
