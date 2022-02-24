@@ -128,7 +128,7 @@ function CpCourseManager:onPostLoad(savegame)
     g_assignedCoursesManager:loadAssignedCoursesByVehicle(self, id)
 end
 
-function CpCourseManager:loadAssignedCourses(xmlFile, baseKey, noEventSend)
+function CpCourseManager:loadAssignedCourses(xmlFile, baseKey, noEventSend, name)
     local spec = self.spec_cpCourseManager 
     local courses = {}
     xmlFile:iterate(baseKey,function (i,key)
@@ -139,6 +139,10 @@ function CpCourseManager:loadAssignedCourses(xmlFile, baseKey, noEventSend)
     end)    
     if courses ~= nil and next(courses) then
         spec.courses = courses
+        if name then 
+            spec.courses[1]:setName(name)
+        end
+
         SpecializationUtil.raiseEvent(self, "onCpCourseChange", courses[1], noEventSend)
     end
 end
@@ -330,8 +334,8 @@ end
 function CpCourseManager:appendLoadedCourse(file)
     --- For now clear the previous courses.
     CpCourseManager.resetCourses(self)
-    file:load(CpCourseManager.xmlSchema,CpCourseManager.xmlKeyFileManager,
-    CpCourseManager.loadAssignedCourses,self)
+    file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
+    CpCourseManager.loadAssignedCourses, self, false)
 end
 
 function CpCourseManager:saveCourses(file,text)
