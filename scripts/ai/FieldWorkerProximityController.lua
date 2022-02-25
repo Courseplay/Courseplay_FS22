@@ -70,7 +70,7 @@ function FieldWorkerProximityController:updateTrail(maxLength)
     table.insert(self.trail, Waypoint({x = x, y = y, z = z, yRot = yRot}))
     self:debug('Recorded new trail point (%d)', #self.trail)
     local numberOfPoints = math.floor(maxLength / self.trailSpacing)
-    if #self.trail > numberOfPoints then
+    while #self.trail > numberOfPoints do
         table.remove(self.trail, 1)
     end
 end
