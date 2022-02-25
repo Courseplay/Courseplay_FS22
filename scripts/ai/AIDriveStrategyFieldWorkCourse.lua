@@ -136,6 +136,9 @@ function AIDriveStrategyFieldWorkCourse:update()
             self.ppc:getCourse():draw()
         end
     end
+    if self.fieldWorkerProximityController then
+        self.fieldWorkerProximityController:draw()
+    end
     self:updateImplementControllers()
 end
 
@@ -197,9 +200,10 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     if self.state ~= self.states.DRIVING_TO_START_WAYPOINT then
         -- we put this to the end after everyone already set a a max speed as it reduces the current max speed setting
         -- to slow vehicles down
-        self:keepConvoyTogether()
+        --self:keepConvoyTogether()
     end
     self:limitSpeed()
+    self:setMaxSpeed(self.fieldWorkerProximityController:getMaxSpeed(self.settings.convoyDistance:getValue(), self.maxSpeed))
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
@@ -416,7 +420,7 @@ end
 function AIDriveStrategyFieldWorkCourse:isThisImplementAligned(object, node)
     local aiFrontMarker, _, _ = WorkWidthUtil.getAIMarkers(object, nil, true)
     if not aiFrontMarker then return true end
-    return TurnContext.isSameDirection(aiFrontMarker, node, 2)
+    return CpMathUtil.isSameDirection(aiFrontMarker, node, 2)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -583,6 +587,7 @@ function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
+    self.fieldWorkerProximityController = FieldWorkerProximityController(self.vehicle, self.workWidth)
 end
 
 --- Find the foremost and rearmost AI marker
@@ -729,6 +734,14 @@ end
 
 function AIDriveStrategyFieldWorkCourse:getProgress()
     return self.fieldWorkCourse:getProgress()
+end
+
+function AIDriveStrategyFieldWorkCourse:isDone()
+    return self.fieldWorkCourse:getCurrentWaypointIx() == self.fieldWorkCourse:getNumberOfWaypoints()
+end
+
+function AIDriveStrategyFieldWorkCourse:getFieldWorkProximity(node)
+    return self.fieldWorkerProximityController:getFieldWorkProximity(node)
 end
 
 function AIDriveStrategyFieldWorkCourse:countVehiclesInConvoy()
