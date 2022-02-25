@@ -59,6 +59,10 @@ function FieldWorkerProximityController:hasSameCourse(otherVehicle)
             otherCourse:getMultiTools() == self.fieldWorkCourse:getMultiTools()
 end
 
+function FieldWorkerProximityController:getTrailLength()
+    return self:getDistanceAt(1)
+end
+
 --- Each vehicle leaves a trail consisting of its past positions in regular intervals
 ---@param maxLength number maximum length of the trail
 function FieldWorkerProximityController:updateTrail(maxLength)
@@ -99,30 +103,46 @@ function FieldWorkerProximityController:getFieldWorkProximity(node)
     return distance
 end
 
+--- Limit our speed if there are vehicles in front of us in the same or adjacent row
 function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpeed)
-    -- update my own trail
-    self:updateTrail(distanceLimit)
-
+    local minDistanceFromOthers = math.huge
+    -- our trail should be long enough for everyone on the field, that is, at least as long as their
+    -- convoy distance setting.
+    local maxConvoyDistance = distanceLimit
     for _, otherVehicle in pairs(g_currentMission.vehicles) do
         if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) and
                 otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
             local otherStrategy = otherVehicle:getCpDriveStrategy()
             local otherIsDone = otherStrategy:isDone()
             if not otherIsDone then
+                local otherConvoyDistance = otherVehicle:getCpSettings().convoyDistance:getValue()
+                maxConvoyDistance = math.max(maxConvoyDistance, otherConvoyDistance)
                 local distanceFromOther = otherStrategy:getFieldWorkProximity(self.vehicle.rootNode)
-                self:debugSparse('have same course as %s (done = %s), distance %.1f', CpUtil.getName(otherVehicle), otherIsDone, distanceFromOther)
+                self:debugSparse('have same course as %s (done %s, convoy distance %.1f), distance %.1f',
+                        CpUtil.getName(otherVehicle), otherIsDone, otherConvoyDistance, distanceFromOther)
                 if distanceFromOther > 0 and distanceFromOther < distanceLimit then
                     self:debugSparse('too close (%.1f m < %.1f) to %s in front of me, slowing down.',
-                            distanceFromOther, distanceLimit, CpUtil.getName(otherVehicle))
-                    -- the closer we are, the slower we drive, but stop at half the minDistance
-                    local maxSpeed = currentMaxSpeed *
-                            math.max(0, 2 * (1 - (distanceLimit - distanceFromOther + distanceLimit / 2) / distanceLimit))
-                    -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
-                    -- only when the maxSpeed we return in getDriveData is exactly 0
-                    return maxSpeed > 1 and maxSpeed or 0
+                    distanceFromOther, distanceLimit, CpUtil.getName(otherVehicle))
+                    minDistanceFromOthers = math.min(minDistanceFromOthers, distanceFromOther)
                 end
             end
         end
     end
-    return math.huge
+
+    self:debugSparse('minimum distance to others %.1f, maximum convoy distance from others %.1f',
+            minDistanceFromOthers, maxConvoyDistance)
+
+    -- update my own trail so it is long enough for everyone
+    self:updateTrail(maxConvoyDistance)
+
+    if minDistanceFromOthers < math.huge then
+        -- the closer we are, the slower we drive, but stop at half the minDistance
+        local maxSpeed = currentMaxSpeed *
+                math.max(0, 2 * (1 - (distanceLimit - minDistanceFromOthers + distanceLimit / 2) / distanceLimit))
+        -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
+        -- only when the maxSpeed we return in getDriveData is exactly 0
+        return maxSpeed > 1 and maxSpeed or 0
+    else
+        return currentMaxSpeed
+    end
 end
