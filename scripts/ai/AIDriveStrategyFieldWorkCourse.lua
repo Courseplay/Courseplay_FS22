@@ -736,7 +736,7 @@ function AIDriveStrategyFieldWorkCourse:isDone()
     return self.fieldWorkCourse:getCurrentWaypointIx() == self.fieldWorkCourse:getNumberOfWaypoints()
 end
 
-function AIDriveStrategyFieldWorkCourse:getFieldWorkerProximity(node)
+function AIDriveStrategyFieldWorkCourse:getFieldWorkProximity(node)
     return self.fieldWorkerProximityController:getFieldWorkProximity(node)
 end
 
