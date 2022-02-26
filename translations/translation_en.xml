@@ -335,6 +335,8 @@
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
+		<!--This stays blank and is just to create blank spots for better overview in the menu-->
+		<text name="CP_help_page_blank"																	text=""/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="

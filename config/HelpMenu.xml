@@ -72,9 +72,12 @@
 		<!--Courseplay minihud-->
 		<page title="$l10n_CP_help_page_minihud_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_minihud_text"/>
+				<text text="$l10n_CP_help_page_blank"/>
 				<image filename="CP_img/helpmenu/minihudhelp.dds" size="768px 512px"/>
             </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_text"/>
+			</paragraph>
 		</page>
 		<!--Courseplay customField-->
 		<page title="$l10n_CP_help_page_customField_title">
