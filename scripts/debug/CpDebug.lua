@@ -55,10 +55,12 @@ end
 
 ---Is a given channel active ?
 ---@param ix number
+---@param vehicle table an optional vehicle, if supplied, checks if the debug on the vehicle is enabled
 ---@return boolean
-function CpDebug:isChannelActive(ix)
+function CpDebug:isChannelActive(ix, vehicle)
+	local vehicleDebugEnabled = vehicle == nil or vehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(vehicle)
 	if self.channels[ix] then
-		return self.channels[ix].active
+		return self.channels[ix].active and vehicleDebugEnabled
 	else
 		CpUtil.info('Error: debug channel %s not found!', tostring(ix))
 		printCallstack()
@@ -130,6 +132,14 @@ function CpDebug:deactivateEvents()
 	end
 end
 
+function CpDebug:updateActionEventTextVisibility()
+	local textVisible = g_Courseplay.globalSettings.showActionEventHelp:getValue()
+	for _,id in pairs(CpDebug.eventIds) do 
+		g_inputBinding:setActionEventTextVisibility(id, textVisible)
+	end
+	g_inputBinding:setActionEventTextVisibility(CpDebug.menuEventId, textVisible)
+end
+
 function CpDebug:toggleMenuVisibility()
 	if self.menuVisible then 
 		self:deactivateEvents()
@@ -170,6 +180,6 @@ function CpDebug.addEvents(mission)
 	local _, eventId = mission.inputManager:registerActionEvent(InputAction.CP_DBG_CHANNEL_TOGGLE_CURRENT, CpDebug, CpDebug.toggleCurrentChannel, false, true, false, CpDebug:isMenuVisible())
 	table.insert(CpDebug.eventIds,eventId)
 	local _, eventId = mission.inputManager:registerActionEvent(InputAction.CP_DBG_CHANNEL_MENU_VISIBILITY, CpDebug, CpDebug.toggleMenuVisibility, false, true, false, CpDebug.isEnabled)
-
+	CpDebug.menuEventId = eventId
 end
 FSBaseMission.registerActionEvents = Utils.appendedFunction(FSBaseMission.registerActionEvents,CpDebug.addEvents)

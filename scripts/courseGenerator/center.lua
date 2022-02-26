@@ -524,13 +524,22 @@ function findIntersections( headland, tracks, islandId )
 	end
 end
 
+--- Make sure angle is at least limit, to avoid division by near zero numbers
+---@param angle number angle in radians
+---@param limit number optional limit in radians, default 15 degrees
+local function ensureNonZeroAngle(angle, limit)
+	limit = limit or math.pi / 12
+	if math.abs(angle) < limit then
+		return limit
+	else
+		return angle
+	end
+end
+
 -- how far to drive beyond the field edge/headland if we hit it at an angle, to cover the row completely
 local function getDistanceToFullCover( width, angle )
 	-- with very low angles this becomes too much, in that case you need a headland, so limit it here
-	if math.abs(math.deg(angle)) < 15 then
-		angle = math.rad(15)
-	end
-	return math.abs( width / 2 / math.tan( angle ))
+	return math.abs( width / 2 / math.tan(ensureNonZeroAngle(angle)))
 end
 
 -- if the up/down tracks were perpendicular to the boundary, we'd have to cut them off
@@ -540,9 +549,11 @@ end
 -- angle difference between the up/down and headland tracks instead of just the angle
 -- of the headland track
 local function getDistanceBetweenRowEndAndHeadland(width, angle )
+	angle = ensureNonZeroAngle(angle)
 	-- distance between headland centerline and side at an angle
 	-- (is width / 2 when angle is 90 degrees)
 	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
+	print(dHeadlandCenterAndSide, math.deg(angle))
 	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
 end
 
@@ -568,6 +579,7 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isFromIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isFromIx ].angle )
+				print('from', i, offset)
 			end
 			local newFrom = tracks[ i ].intersections[ isFromIx ].x + offset - width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			local isToIx = tracks[ i ].intersections[ 1 ].x >= tracks[ i ].intersections[ 2 ].x and 1 or 2
@@ -575,6 +587,7 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isToIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isToIx ].angle )
+				print('to  ', i, offset)
 			end
 			local newTo = tracks[ i ].intersections[ isToIx ].x - offset + width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			-- if a track is very short (shorter than width) we may end up with newTo being

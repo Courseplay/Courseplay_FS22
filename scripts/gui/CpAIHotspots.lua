@@ -39,3 +39,27 @@ function CustomFieldHotspot:onClickRename()
 	CpUtil.debugFormat(CpDebug.DBG_HUD,"Rename custom field %s.", self.name)
 	g_customFieldManager:renameField(self.field,self)
 end
+
+function CustomFieldHotspot:getAreaText()
+    --- Needs to be converted to ha.
+    return g_i18n:formatArea(self.field:getAreaInSqMeters()/10000 , 2)
+end
+
+--- Enables field hotspot area content box.
+FieldHotspot.clickArea = MapHotspot.getClickArea(
+	{
+		0,
+		0,
+		1,
+		1
+	},
+	{
+		1,1,
+	},
+	0
+)	
+
+FieldHotspot.getAreaText = function (self)
+	--- Is already in ha.
+	return g_i18n:formatArea(self.field.fieldArea , 2)
+end

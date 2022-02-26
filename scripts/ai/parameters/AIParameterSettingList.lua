@@ -219,12 +219,24 @@ function AIParameterSettingList:getDebugString()
 	-- replace % as this string goes through multiple formats (%% does not seem to work and I have no time to figure it out
 	return string.format('%s: %s', self.name, string.gsub(self.texts[self.current], '%%', 'percent'))
 end
+
 function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
-	xmlFile:setInt(key .. "#value", self.current)
+	xmlFile:setString(key .. "#currentValue", tostring(self:getValue()))
+end
+
+--- Old load function.
+function AIParameterSettingList:loadFromXMLFileLegacy(xmlFile, key)
+	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
 end
 
 function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
-	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
+	local rawValue = xmlFile:getString(key .. "#currentValue")
+	local value = rawValue and tonumber(rawValue) 
+	if value then 
+		self:setFloatValue(value)
+	else 
+		self:loadFromXMLFileLegacy(xmlFile, key)
+	end
 end
 
 function AIParameterSettingList:readStream(streamId, connection)
@@ -232,6 +244,8 @@ function AIParameterSettingList:readStream(streamId, connection)
 		local setupIx = streamReadInt32(streamId)
 		self:setToIx(self:getClosestIxFromSetup(setupIx))
 		self:debug("set to %s from stream.", tostring(self:getString()))
+	else 
+		self:debug("is user setting, skip stream.")
 	end
 end
 
@@ -239,6 +253,8 @@ function AIParameterSettingList:writeStream(streamId, connection)
 	if not self:getIsUserSetting() then
 		streamWriteInt32(streamId, self:getClosestSetupIx())
 		self:debug("send %s to stream.", tostring(self:getString()))
+	else
+		self:debug("is user setting, skip stream.")
 	end
 end
 
@@ -568,6 +584,7 @@ function AIParameterSettingList:resetGuiElement()
 	if self.guiElement then
 		if self.oldMouseEvent then
 			self.guiElement.mouseEvent = self.oldMouseEvent
+			self.oldMouseEvent = nil
 		end
 	end
 

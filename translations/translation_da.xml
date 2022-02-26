@@ -37,7 +37,7 @@
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Markarbejde"/>
-		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe"/>
+		<text name="CP_job_baleCollect"																	text="CP: Indsamle/wrappe baller"/>
 		
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute."/>
@@ -229,6 +229,9 @@
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller venling Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benyt Hud, som kan betjenes via controlleren."/>
+
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Hjælp til handlingsarrangementer"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Viser hjælpetekster til handlingsbegivenheder."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Indstillinger"/>
 

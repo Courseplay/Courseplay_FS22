@@ -10,8 +10,10 @@ function CpGlobalSettings:init()
 end
 
 function CpGlobalSettings:registerXmlSchema(schema,baseKey)
-	schema:register(XMLValueType.INT,baseKey..CpGlobalSettings.KEY.."(?)#value","Setting value")
-    schema:register(XMLValueType.STRING,baseKey..CpGlobalSettings.KEY.."(?)#name","Setting name")
+    local key = baseKey..CpGlobalSettings.KEY.."(?)"
+	schema:register(XMLValueType.INT, key.."#value", "Old setting save format.")
+    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
+    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
 end
 
 --- Loads settings setup form an xmlFile.
@@ -90,6 +92,14 @@ function CpGlobalSettings:onHudSelectionChanged()
         CpGuiUtil.setCameraRotation(vehicle, true, vehicle.spec_cpHud.savedCameraRotatableInfo)
         vehicle:requestActionEventUpdate()
     end
+end
+
+function CpGlobalSettings:onActionEventTextVisibilityChanged()
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle then 
+        vehicle:requestActionEventUpdate()
+    end
+    CpDebug:updateActionEventTextVisibility()
 end
 
 function CpGlobalSettings:onUnitChanged()

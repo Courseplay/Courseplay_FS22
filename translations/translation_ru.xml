@@ -17,7 +17,7 @@
 
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Полжение на поле:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Положение на поле:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Начать с:" />
 		<text name="CP_jobParameters_startAt_title"														text="Начать с:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="С какого момента начать работу." />
@@ -230,6 +230,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Дружелюбный к геймпаду HUD"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Использовать HUD, которым можно управлять с помощью геймпада."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Справка для действий"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Отображать вспомогательный текст для действий."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Настройки поиска пути"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Разница углов у цели"/>

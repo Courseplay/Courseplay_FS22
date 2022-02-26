@@ -796,9 +796,8 @@ function CourseTurn:onPathfindingDone(path)
 		end
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
-		-- and once again, if there is an ending course, keep adjusting the tight turn offset
-		self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
-		TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+		local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
+		TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
 	else
 		self:debug('No path found in %d ms, falling back to normal turn course generator', g_currentMission.time - (self.pathfindingStartedAt or 0))
 		self:generateCalculatedTurn()
@@ -809,8 +808,7 @@ function CourseTurn:onPathfindingDone(path)
 end
 
 function CourseTurn:drawDebug()
-	if self.turnCourse and self.turnCourse:isTemporary() and
-			CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_TURN) then
+	if self.turnCourse and self.turnCourse:isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
 		self.turnCourse:draw()
 	end
 end
@@ -961,7 +959,7 @@ StartRowOnly = CpObject(CourseTurn)
 function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
 	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'AlignmentTurn')
 	self.turnCourse = startRowCourse
-	TurnManeuver.setTurnControlForLastWaypoints(self.turnCourse, 5, TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END, true)
+	TurnManeuver.setLowerImplements(self.turnCourse, math.max(math.abs(turnContext.frontMarkerDistance), self.steeringLength))
 	self.ppc:setCourse(self.turnCourse)
 	self.ppc:initialize(1)
 	self.state = self.states.TURNING

@@ -121,18 +121,18 @@ end
 ---@param class table
 ---@param ... any
 ---@return boolean
-function File:load(xmlSchema,xmlBaseKey,lambda,class,...)
-	local xmlFile = XMLFile.load("tempXmlFile",self.fullPath,xmlSchema)
+function File:load(xmlSchema, xmlBaseKey, lambda, class,...)
+	local xmlFile = XMLFile.load("tempXmlFile", self.fullPath, xmlSchema)
 	if xmlFile ~= nil then
 		if class then
-			lambda(class,xmlFile,xmlBaseKey,...)
+			lambda(class, xmlFile, xmlBaseKey, ..., self.name)
 		else 
-			lambda(xmlFile,xmlBaseKey,...)
+			lambda(xmlFile, xmlBaseKey, ..., self.name)
 		end
 		xmlFile:delete()
 		return true
 	end
-	CpUtil.debugFormat(CpDebug.DBG_COURSES,"couldn't load xml file: %s",self.fullPath)
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, "couldn't load xml file: %s", self.fullPath)
 	return false
 end
 

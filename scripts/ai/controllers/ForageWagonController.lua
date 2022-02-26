@@ -22,13 +22,6 @@ function ForageWagonController:update()
 end
 
 function ForageWagonController:getDriveData()
-    local maxSpeed = self:handleLoadigMachine()
-    return nil, nil, nil, maxSpeed
-end
-
-function ForageWagonController:handleLoadigMachine()
-    local maxSpeed
-
     if not self.forageWagon:getIsTurnedOn() then
         if self.forageWagon.setFoldState then
             -- unfold if there is something to unfold
@@ -36,21 +29,10 @@ function ForageWagonController:handleLoadigMachine()
         end
         if self.forageWagon:getCanBeTurnedOn() then
             self:debug('Turning on machine')
-            self.forageWagon:setIsTurnedOn(true, false);
-        -- else
-            -- maxSpeed = 0
-            -- self:debug('NEED_SOMETHING')
+            self.forageWagon:setIsTurnedOn(true, false)
         end
     end
-
-    if self.forageWagon.setPickupState ~= nil then
-        if self.forageWagon.spec_pickup ~= nil and not self.forageWagon.spec_pickup.isLowered then
-            self.forageWagon:setPickupState(true, false)
-            self:debug('lowering pickup')
-        end
-    end
-
-    return maxSpeed
+    return nil, nil, nil, nil
 end
 
 

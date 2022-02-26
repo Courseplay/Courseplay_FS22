@@ -28,6 +28,12 @@ AIDriveStrategyCourse.myStates = {
     DRIVING_TO_COURSE_START = {}
 }
 
+--- Implement controller events.
+AIDriveStrategyCourse.onRaisingEvent = "onRaising"
+AIDriveStrategyCourse.onLoweringEvent = "onLowering"
+AIDriveStrategyCourse.onFinishedEvent = "onFinished"
+AIDriveStrategyCourse.updateEvent = "update"
+
 function AIDriveStrategyCourse.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategyCourse_mt
@@ -148,12 +154,7 @@ end
 --- Normal update function called every frame.
 --- For releasing the helper in the controller, use this one.
 function AIDriveStrategyCourse:updateImplementControllers()
-    for _, controller in pairs(self.controllers) do
-        ---@type ImplementController
-        if controller:isEnabled() then
-            controller:update()
-        end
-    end
+    self:raiseControllerEvent(self.updateEvent)
 end
 
 --- Called in the low frequency function for the helper.
@@ -165,6 +166,18 @@ function AIDriveStrategyCourse:updateLowFrequencyImplementControllers()
             local _, _, _, maxSpeed = controller:getDriveData()
             if maxSpeed then
                 self:setMaxSpeed(maxSpeed)
+            end
+        end
+    end
+end
+
+--- Raises a event for the controllers.
+function AIDriveStrategyCourse:raiseControllerEvent(eventName, ...)
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if controller:isEnabled() then
+            if controller[eventName] then 
+                controller[eventName](controller, ...)
             end
         end
     end
@@ -201,7 +214,7 @@ function AIDriveStrategyCourse:setMaxSpeed(speed)
 end
 
 function AIDriveStrategyCourse:getMaxSpeed()
-    return self.maxSpeed
+    return self.maxSpeed or self.vehicle:getSpeedLimit(true)
 end
 
 --- Start a course and continue with nextCourse at ix when done
@@ -287,4 +300,10 @@ end
 --- Are we within distance meters of the first waypoint (measured on the course, not direct path)?
 function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
+end
+
+--- Event raised when the drive is finished.
+--- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
+function AIDriveStrategyCourse:onFinished()
+    self:raiseControllerEvent(self.onFinishedEvent)
 end

@@ -202,9 +202,6 @@ function CpAIJob:getDescription()
 end
 
 function CpAIJob:getIsStartable(connection)
-	if g_currentMission.aiSystem:getAILimitedReached() then
-		return false, AIJobFieldWork.START_ERROR_LIMIT_REACHED
-	end
 
 	local vehicle = self.vehicleParameter:getVehicle()
 

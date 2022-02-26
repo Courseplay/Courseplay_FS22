@@ -45,6 +45,7 @@ function Course:init(vehicle, waypoints, temporary, first, last)
 	self.temporary = temporary or false
 	self.currentWaypoint = 1
 	self.length = 0
+	self.workingLength = 0
 	self.headlandLength = 0
 	self.totalTurns = 0
 	self:enrichWaypointData()
@@ -167,6 +168,7 @@ function Course:enrichWaypointData(startIx)
 	if not startIx then
 		-- initialize only if recalculating the whole course, otherwise keep (and update) the old values)
 		self.length = 0
+		self.workingLength = 0
 		self.headlandLength = 0
 		self.firstHeadlandWpIx = nil
 		self.firstCenterWpIx = nil
@@ -179,6 +181,10 @@ function Course:enrichWaypointData(startIx)
 		local dToNext = MathUtil.getPointPointDistance(cx, cz, nx, nz)
 		self.waypoints[i].dToNext = dToNext
 		self.length = self.length + dToNext
+		if not self:isOnConnectingTrack(i) then
+			-- working length is where we do actual fieldwork
+			self.workingLength = self.workingLength + dToNext
+		end
 		if self:isOnHeadland(i) then
 			self.headlandLength = self.headlandLength + dToNext
 			self.firstHeadlandWpIx = self.firstHeadlandWpIx or i
@@ -1244,9 +1250,12 @@ end
 --- Run a function for all waypoints of the course within the last d meters
 ---@param d number
 ---@param lambda function (waypoint)
-function Course:executeFunctionForLastWaypoints(d, lambda)
+---@param stopAtDirectionChange boolean if we reach a direction change, stop there, the last waypoint the function
+--- is called for is the one before the direction change
+function Course:executeFunctionForLastWaypoints(d, lambda, stopAtDirectionChange)
 	local i = self:getNumberOfWaypoints()
-	while i > 1 and self:getDistanceToLastWaypoint(i) < d do
+	while i > 1 and self:getDistanceToLastWaypoint(i) < d and
+			((stopAtDirectionChange and not self:switchingDirectionAt(i)) or not stopAtDirectionChange) do
 		lambda(self.waypoints[i])
 		i = i - 1
 	end

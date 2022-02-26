@@ -86,7 +86,6 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
 			CpInGameMenuAIFrameExtended.onClickHotspot)
 	
-	InGameMenuAIFrame.HOTSPOT_VALID_CATEGORIES[CustomFieldHotspot.CATEGORY] = true
 	--- Draws the current progress, while creating a custom field.
 	self.customFieldPlot = FieldPlot(true)
 end
@@ -238,12 +237,10 @@ function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
 end
 
 function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
 	if self.settings then
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "unbinding course generator settings." )
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
+		self.courseGeneratorLayoutElements:invalidateLayout()
 	end
-	self.courseGeneratorLayoutElements:invalidateLayout()
 end
 
 
@@ -270,7 +267,7 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 	end
 
 end
-InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem,CpInGameMenuAIFrameExtended.setMapSelectionItem)
+InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem, CpInGameMenuAIFrameExtended.setMapSelectionItem)
 
 
 function CpInGameMenuAIFrameExtended:onAIFrameOpen()
@@ -278,18 +275,23 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 		self.contextBox:setVisible(false)
 	end
 	self.controlledVehicle = nil
-	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+	CpInGameMenuAIFrameExtended.addMapHotSpots(self)
 	g_customFieldManager:refresh()
 	self.drawingCustomFieldHeader:setVisible(false)
 end
-InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen,CpInGameMenuAIFrameExtended.onAIFrameOpen)
+InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, CpInGameMenuAIFrameExtended.onAIFrameOpen)
+
+function CpInGameMenuAIFrameExtended:addMapHotSpots()
+	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, true)
+end
+InGameMenuMapFrame.onFrameOpen = Utils.appendedFunction(InGameMenuMapFrame.onFrameOpen, CpInGameMenuAIFrameExtended.addMapHotSpots)
 
 function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.courseGeneratorLayout:setVisible(false)
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
-	self.ingameMapBase:setHotspotFilter(CustomFieldHotspot.CATEGORY, false)
+	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
@@ -424,12 +426,14 @@ end
 InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFrame.executePickingCallback,
 															CpInGameMenuAIFrameExtended.executePickingCallback)
 
---- Enables clickable custom field hotspots.
+--- Enables clickable field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
-	if hotspot and hotspot:isa(CustomFieldHotspot) then 
-		local pageAI = g_currentMission.inGameMenu.pageAI
-		InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot.name)
-		self.currentHotspot = hotspot
+	if hotspot then 
+		if hotspot:isa(FieldHotspot) then 
+			local pageAI = g_currentMission.inGameMenu.pageAI
+			InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot:getAreaText())
+			self.currentHotspot = hotspot
+		end
 	end
 end
 

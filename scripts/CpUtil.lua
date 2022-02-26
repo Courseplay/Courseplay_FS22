@@ -78,7 +78,7 @@ end
 ---@param variableName string name of the variable, can be multiple levels
 ---@param maxDepth number maximum depth, 1 by default
 function CpUtil.printVariable(variableName, maxDepth)
-	print(string.format('%s - %s', tostring(variableName), tostring(maxDepth)))
+	print(string.format('%s - depth: %s', tostring(variableName), tostring(maxDepth)))
 	local depth = maxDepth and math.max(1, tonumber(maxDepth)) or 1
 	local value = CpUtil.getVariable(variableName)
 	local valueType = type(value)
@@ -104,6 +104,7 @@ end
 --- get a reference pointing to the global variable 'variableName'
 -- can handle multiple levels (but not arrays, yet) like foo.bar
 function CpUtil.getVariable(variableName)
+	print(variableName)
 	local f = getfenv(0).loadstring('return ' .. variableName)
 	return f and f() or nil
 end

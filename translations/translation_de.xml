@@ -2,7 +2,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
 	<texts>
-
+	
 		<text name="CP_activated" 																		text="aktiviert" />
 		<text name="CP_deactivated" 																	text="deaktiviert" />
 		<text name="CP_automatic" 																		text="auto" />
@@ -228,6 +228,9 @@
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller freundliches Hud"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über den Controller bedienen lässt."/>
+
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Zeige Tastenbelegung"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Pathfinder Einstellungen"/>
 

@@ -55,7 +55,6 @@ end
 --	 1	point is inside of polygon
 --	-1	point is outside of polygon
 --	 0	point is directly on polygon
-
 function CpMathUtil.isPointInPolygon(polygon, x, z)
 	local function crossProductQuery(a, b, c)
 		-- returns:
@@ -85,8 +84,6 @@ function CpMathUtil.isPointInPolygon(polygon, x, z)
 	local cp, np, pp
 	local pointInPolygon = -1
 
-	-- ############################################################
-
 	for i = 1, #polygon do
 		cp = polygon[i]
 		np = i < #polygon and polygon[i + 1] or polygon[1]
@@ -100,4 +97,16 @@ function CpMathUtil.isPointInPolygon(polygon, x, z)
 	end
 
 	return pointInPolygon ~= -1
+end
+
+--- Get the area of polygon in square meters
+---@param polygon [] array elements can be {x, z}, {x, y, z} or {x, y}
+function CpMathUtil.getAreaOfPolygon(polygon)
+	local area = 0
+	for i = 1, #polygon - 1 do
+		local x1, y1 = polygon[i].x, polygon[i].z and -polygon[i].z or polygon[i].y
+		local x2, y2 = polygon[i + 1].x, polygon[i + 1].z and -polygon[i + 1].z or polygon[i + 1].y
+		area = area + (x2 - x1) * (y1 + y2) / 2
+	end
+	return math.abs(area)
 end

@@ -230,6 +230,9 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="HUD przyjazny kontrolerom"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Używa HUDa, który może być ustawiany przez kontrolery gier."/>
 		
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ustawienia szukania ścieżki"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Różnica kątów na bramce"/>
