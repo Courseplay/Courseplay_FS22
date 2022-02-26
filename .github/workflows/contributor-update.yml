@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: "14"
       - name: Get changed files
-        uses: ./.github/workflows/contributor-update-changed-files.yml
+        uses: ./.github/workflows/contributor-update-changed-files.yml@{${{ github.sha }}}
         with:
           sha_begin: ${{ github.event.before }}
           sha_end: ${{ github.event.after }}
