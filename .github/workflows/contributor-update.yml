@@ -23,6 +23,7 @@ jobs:
       - name: Get changed files
         id: getfiles
         run: |
+          git diff-tree --name-only ${{ github.event.before }} ${{ github.sha }}
           echo "::set-output name=files::$(git diff-tree --name-only ${{ github.event.before }} ${{ github.sha }} | xargs)"
       - name: Output changed files
         run: |
