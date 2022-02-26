@@ -36,7 +36,7 @@
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Markarbejde"/>
-		<text name="CP_job_baleCollect"																	text="CP: Baller indsamle/wrappe"/>
+		<text name="CP_job_baleCollect"																	text="CP: Indsamle/wrappe baller"/>
 		
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Genere markrute."/>
