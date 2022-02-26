@@ -470,6 +470,20 @@ When started, the text draw custom field lines with right click will be displaye
 Use the right mouse button to click on a position on where you want to start.
 The next right click will draw a line from your start point to your second position, wich will be the start point for the next line.
 		"/>
+		<!--Multitool and Convoy-->
+		<text name="CP_help_page_MultiConvoy_title"														text="Multitool and Convoy"/>
+		<text name="CP_help_page_MultitoolBasic_text"													text="
+		
+		"/>
+		<text name="CP_help_page_MultitoolFunction_text"												text="
+		
+		"/>
+		<text name="CP_help_page_ConvoyBasic_text"														text="
+		
+		"/>
+		<text name="CP_help_page_ConvoyFunction_text"													text="
+		
+		"/>
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>

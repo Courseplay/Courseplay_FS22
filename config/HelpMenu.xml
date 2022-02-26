@@ -91,5 +91,20 @@
 				<image filename="CP_img/helpmenu/drawcustomhelp.dds" size="768px 512px"/>
             </paragraph>
 		</page>
+		<!--Courseplay Multitool and Convoy-->
+		<page title="$l10n_CP_help_page_MultiConvoy_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_MultitoolBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_MultitoolFunction_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_ConvoyBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_ConvoyFunction_text"/>
+			</paragraph>
+		</page>
 	</category>
 </helpLines>
