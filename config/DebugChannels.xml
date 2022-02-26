@@ -22,7 +22,7 @@
 	<DebugChannel active="true" name="DBG_TURN" text="turns"/>
 	<DebugChannel active="true" name="DBG_PPC" text="pure pursuit controller"/>
 	<DebugChannel active="false" name="DBG_LOAD_UNLOAD" text="load and unload tippers"/>
-	<DebugChannel active="false" name="DBG_TRAFFIC" text="traffic collision/proximity"/>
+	<DebugChannel active="true" name="DBG_TRAFFIC" text="traffic collision/proximity"/>
 	<DebugChannel active="true" name="DBG_COURSES" text="course save/load/generation"/>
 	<DebugChannel active="false" name="DBG_HUD" text="hud action"/>
 	<DebugChannel active="true" name="DBG_MULTIPLAYER" text="multiplayer"/>

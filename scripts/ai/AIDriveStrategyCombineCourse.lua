@@ -50,6 +50,19 @@ AIDriveStrategyCombineCourse.myStates = {
 	RETURNING_FROM_SELF_UNLOAD = {}
 }
 
+-- Proximity sensor
+-- how far the sensor can see
+AIDriveStrategyCombineCourse.proximitySensorRange = 10
+-- the sensor will proportionally reduce speed when objects are in range down to this limit (won't set a speed lower than this)
+AIDriveStrategyCombineCourse.proximityMinLimitedSpeed = 2
+-- if anything closer than this, we stop
+AIDriveStrategyCombineCourse.proximityLimitLow = 1.5
+-- if anything closer than this, we reverse
+AIDriveStrategyCombineCourse.proximityLimitReverse = 1
+-- an obstacle is considered ahead of us if the reported angle is less then this
+-- (and we won't stop or reverse if the angle is higher than this, thus obstacles to the left or right)
+AIDriveStrategyCombineCourse.proximityAngleAheadDeg = 75
+
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -105,6 +118,13 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	self:fixDischargeDistance(dischargeNode)
 
 	self:checkMarkers()
+	self:measureBackDistance()
+	Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
+
+	self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
+			self.vehicle, self.ppc, Markers.getFrontMarkerNode(self.vehicle), self.proximitySensorRange, 1, self:getWorkWidth())
+	self.backwardLookingProximitySensorPack = BackwardLookingProximitySensorPack(
+			self.vehicle, self.ppc, Markers.getBackMarkerNode(self.vehicle), self.proximitySensorRange, 1)
 
 	-- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
 	self.pullBackRightSideOffset = math.abs(self.pipeOffsetX) - self:getWorkWidth() / 2 + 5
@@ -172,7 +192,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	if self.state == self.states.WORKING then
 		-- Harvesting
 		self:checkRendezvous()
-		self:checkBlockingUnloader()
+		--self:checkBlockingUnloader()
 		if self:isFull() then
 			self:changeToUnloadOnField()
 		end
@@ -188,6 +208,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 			self:setMaxSpeed(0)
 		end
 	end
+	self:checkProximitySensors()
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
@@ -1779,6 +1800,7 @@ function AIDriveStrategyCombineCourse:isAboutToReturnFromPocket()
  self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET)
 end
 
+
 function AIDriveStrategyCombineCourse:shouldStrawSwathBeOn(ix)
 	local strawMode = self.settings.strawSwath:getValue()
 	local headland = self.course:isOnHeadland(ix)
@@ -1797,6 +1819,22 @@ function AIDriveStrategyCombineCourse:shouldStrawSwathBeOn(ix)
 		end
 	end	
 end
+
+function AIDriveStrategyCombineCourse:setStrawSwath(enable)
+	local strawSwathCanBeEnabled = false
+	local fruitType = g_fruitTypeManager:getFruitTypeIndexByFillTypeIndex(self.vehicle:getFillUnitFillType(self.combine.fillUnitIndex))
+	if fruitType ~= nil and fruitType ~= FruitType.UNKNOWN then
+		local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitType)
+		if fruitDesc.hasWindrow then
+			strawSwathCanBeEnabled = true
+		end
+		self.vehicle:setIsSwathActive(enable and strawSwathCanBeEnabled)
+	end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Proximity
+------------------------------------------------------------------------------------------------------------------------
 
 AIDriveStrategyCombineCourse.maxBackDistance = 10
 
@@ -1830,15 +1868,25 @@ function AIDriveStrategyCombineCourse:raycastBackCallback(hitObjectId, x, y, z, 
 	end
 end
 
-function AIDriveStrategyCombineCourse:setStrawSwath(enable)
-	local strawSwathCanBeEnabled = false
-	local fruitType = g_fruitTypeManager:getFruitTypeIndexByFillTypeIndex(self.vehicle:getFillUnitFillType(self.combine.fillUnitIndex))
-	if fruitType ~= nil and fruitType ~= FruitType.UNKNOWN then
-		local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitType)
-		if fruitDesc.hasWindrow then
-			strawSwathCanBeEnabled = true
-		end
-		self.vehicle:setIsSwathActive(enable and strawSwathCanBeEnabled)
+function AIDriveStrategyCombineCourse:checkProximitySensors()
+	local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
+	local pack = self.ppc:isReversing() and self.backwardLookingProximitySensorPack or self.forwardLookingProximitySensorPack
+	if pack then
+		d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
+		range = pack:getRange()
+	end
+	local normalizedD = d / (range - self.proximityLimitLow)
+	local obstacleAhead = math.abs(deg) < self.proximityAngleAheadDeg
+	if d < self.proximityLimitLow and obstacleAhead then
+		-- too close, stop
+		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg)
+		self:setMaxSpeed(0)
+	elseif normalizedD < 1 and self:isProximitySlowDownEnabled(vehicle) then
+		-- something in range, reduce speed proportionally when enabled
+		local deltaV = self:getMaxSpeed() - self.proximityMinLimitedSpeed
+		local speed = self.proximityMinLimitedSpeed + normalizedD * deltaV
+		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, slowing down to %.1f', d, deg, speed)
+		self:setMaxSpeed(speed)
 	end
 end
 
@@ -1886,29 +1934,15 @@ function AIDriveStrategyCombineCourse:createTrafficConflictDetector()
 	self.trafficConflictDetector:disableSpeedControl()
 end
 
--- and our forward proximity sensor covers the entire working width
-function AIDriveStrategyCombineCourse:addForwardProximitySensor()
-	self:setFrontMarkerNode(self.vehicle)
-	self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
-			self.vehicle, self.ppc, self:getFrontMarkerNode(self.vehicle), self.proximitySensorRange, 1, self:getWorkWidth())
-end
-
---- Check the vehicle in the proximity sensor's range. If it is player driven, don't slow them down when hitting this
---- vehicle.
---- Note that we don't really know if the player is to unload the combine, this will disable all proximity check for
---- player driven vehicles.
+--- Don't slow down when discharging. This is a workaround for unloaders getting into the proximity
+--- sensor's range.
 function AIDriveStrategyCombineCourse:isProximitySlowDownEnabled(vehicle)
 	-- if not on fieldwork, always enable slowing down
 	if self.state ~= self.states.WORKING then return true end
-
-	-- CP drives other vehicle, it'll take care of everything, including enable/disable
-	-- the proximity sensor when unloading
-	if vehicle.cp.driver and vehicle.cp.driver.isActive and vehicle.cp.driver:isActive() then return true end
-
-	-- vehicle:getIsControlled() is needed as this one gets synchronized 
-	if vehicle and vehicle.getIsEntered and (vehicle:getIsEntered() or vehicle:getIsControlled()) then
-		self:debugSparse('human player in nearby %s not driven by CP so do not slow down for it', nameNum(vehicle))
-		-- trust the player to avoid collisions
+	-- TODO: check if vehicle is player or AD driven, or even better, check if this is the vehicle
+	-- we are discharging into
+	if vehicle and self:isDischarging() then
+		self:debugSparse('discharging, not slowing down for nearby %s', CpUtil.getName(vehicle))
 		return false
 	else
 		return true

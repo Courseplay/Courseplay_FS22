@@ -187,7 +187,7 @@ function Corner:debug(...)
 end
 
 function Corner:drawDebug()
-	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+	if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
 		local cx, cy, cz
 		local nx, ny, nz
 		if self.cornerNode then

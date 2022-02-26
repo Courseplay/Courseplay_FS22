@@ -219,12 +219,24 @@ function AIParameterSettingList:getDebugString()
 	-- replace % as this string goes through multiple formats (%% does not seem to work and I have no time to figure it out
 	return string.format('%s: %s', self.name, string.gsub(self.texts[self.current], '%%', 'percent'))
 end
+
 function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
-	xmlFile:setInt(key .. "#value", self.current)
+	xmlFile:setString(key .. "#currentValue", tostring(self:getValue()))
+end
+
+--- Old load function.
+function AIParameterSettingList:loadFromXMLFileLegacy(xmlFile, key)
+	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
 end
 
 function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
-	self:setToIx(xmlFile:getInt(key .. "#value", self.current))
+	local rawValue = xmlFile:getString(key .. "#currentValue")
+	local value = rawValue and tonumber(rawValue) 
+	if value then 
+		self:setFloatValue(value)
+	else 
+		self:loadFromXMLFileLegacy(xmlFile, key)
+	end
 end
 
 function AIParameterSettingList:readStream(streamId, connection)

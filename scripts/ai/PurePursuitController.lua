@@ -380,7 +380,7 @@ function PurePursuitController:findRelevantSegment()
 					self.relevantWpNode.ix, self.nextWpNode.ix, self.crossTrackError)
 		end
 	end
-	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_PPC) then
+	if CpDebug:isChannelActive(CpDebug.DBG_PPC, self.vehicle) then
 		DebugUtil.drawDebugLine(px, py + 3, pz, px, py + 1, pz, 1, 1, 0);
 		DebugUtil.drawDebugNode(self.relevantWpNode.node, string.format('ix = %d\nrelevant\nnode', self.relevantWpNode.ix))
 		DebugUtil.drawDebugNode(self.projectedPosNode, 'projected\nvehicle\nposition')
@@ -492,7 +492,7 @@ function PurePursuitController:findGoalPoint()
 	node1:destroy()
 	node2:destroy()
 	
-	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_PPC) then
+	if CpDebug:isChannelActive(CpDebug.DBG_PPC, self.vehicle) then
 		local gx, gy, gz = localToWorld(self.goalWpNode.node, 0, 0, 0)
 		DebugUtil.drawDebugLine(gx, gy + 3, gz, gx, gy + 1, gz, 0, 1, 0);
 		DebugUtil.drawDebugNode(self.currentWpNode.node, string.format('ix = %d\ncurrent\nwaypoint', self.currentWpNode.ix))
@@ -533,7 +533,7 @@ end
 
 function PurePursuitController:showGoalpointDiag(case, ...)
 	local diagText = string.format(...)
-	if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(CpDebug.DBG_PPC) then
+	if CpDebug:isChannelActive(CpDebug.DBG_PPC, self.vehicle) then
 		DebugUtil.drawDebugNode(self.goalWpNode.node, diagText)
 		DebugUtil.drawDebugNode(self.controlledNode, 'controlled')
 	end

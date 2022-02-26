@@ -9,8 +9,10 @@ CpVehicleSettings.MOD_NAME = g_currentModName
 CpVehicleSettings.KEY = "."..CpVehicleSettings.MOD_NAME..".cpVehicleSettings"
 function CpVehicleSettings.initSpecialization()
 	local schema = Vehicle.xmlSchemaSavegame
-    schema:register(XMLValueType.INT,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#value","Setting value")
-    schema:register(XMLValueType.STRING,"vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)#name","Setting name")
+    local key = "vehicles.vehicle(?)"..CpVehicleSettings.KEY.."(?)"
+    schema:register(XMLValueType.INT, key.."#value", "Old setting save format.")
+    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
+    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
 end
 
 

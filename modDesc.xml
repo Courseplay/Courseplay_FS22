@@ -103,6 +103,8 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
 		<sourceFile filename="scripts/ai/AIMessages.lua"/>
+		<sourceFile filename="scripts/ai/Markers.lua"/>
+		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ImplementController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
@@ -115,6 +117,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/controllers/PickupController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/CutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SprayerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>

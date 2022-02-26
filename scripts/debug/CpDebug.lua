@@ -55,10 +55,12 @@ end
 
 ---Is a given channel active ?
 ---@param ix number
+---@param vehicle table an optional vehicle, if supplied, checks if the debug on the vehicle is enabled
 ---@return boolean
-function CpDebug:isChannelActive(ix)
+function CpDebug:isChannelActive(ix, vehicle)
+	local vehicleDebugEnabled = vehicle == nil or vehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(vehicle)
 	if self.channels[ix] then
-		return self.channels[ix].active
+		return self.channels[ix].active and vehicleDebugEnabled
 	else
 		CpUtil.info('Error: debug channel %s not found!', tostring(ix))
 		printCallstack()
