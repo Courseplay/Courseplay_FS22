@@ -57,8 +57,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		isClockwise = isClockwise,
 		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
 	}
-	local roundCorners = headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND
-	local minSmoothAngle, maxSmoothAngle = CourseGeneratorInterface.setSmoothAngles(headlandSettings, headlandCornerType)
 
 	--------------------------------------------------------------------------------------------------------------------
 	-- Center settings
@@ -82,7 +80,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	-- General settings
 	-----------------------------------------------------------------------------------------------------------------------
 	local minDistanceBetweenPoints = 0.5
-	local doSmooth = true
 
 	local field = {}
 	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
@@ -97,8 +94,9 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	end,
 		field, workWidth, headlandSettings,
 		minDistanceBetweenPoints,
-		minSmoothAngle, maxSmoothAngle, doSmooth,
-		roundCorners, turnRadius,
+		headlandCornerType,
+		headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND,
+		turnRadius,
 		islandNodes,
 		islandBypassMode, centerSettings, fieldMargin
 	)
@@ -113,25 +111,4 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, multiTools)
 	course:setFieldPolygon(fieldPolygon)
 	return status, ok, course
-end
-
-function CourseGeneratorInterface.setSmoothAngles(headlandSettings, headlandCornerType)
-	local minSmoothAngle, maxSmoothAngle, roundCorners
-	if headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH then
-		-- do not generate turns on headland
-		headlandSettings.minHeadlandTurnAngleDeg = 150
-		-- use smoothing instead
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(150)
-	elseif headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND then
-		-- generate turns for whatever is left after rounding the corners, for example
-		-- the transitions between headland and up/down rows.
-		headlandSettings.minHeadlandTurnAngleDeg = 75
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(75)
-	else
-		-- generate turns over 75 degrees
-		headlandSettings.minHeadlandTurnAngleDeg = 60
-		-- smooth only below 75 degrees
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(60)
-	end
-	return minSmoothAngle, maxSmoothAngle
 end

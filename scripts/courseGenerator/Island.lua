@@ -301,7 +301,8 @@ function Island:intersects( pointA, pointB )
 	return getAllIntersectionsOfLineAndPolygon( self.headlandTracks[ self.innermostHeadlandIx ], pointA, pointB )
 end
 
-function Island:generateHeadlands( nHeadlandPasses, implementWidth, overlapPercent, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth )
+function Island:generateHeadlands(nHeadlandPasses, implementWidth, overlapPercent, minDistanceBetweenPoints,
+								  minSmoothAngle, maxSmoothAngle)
 	self.headlandTracks = {}
 	-- we need at least one headland track around the island but don't think more than 3 makes sense
 	nHeadlandPasses = math.min( math.max( nHeadlandPasses, 1 ), 3 )
@@ -312,7 +313,7 @@ function Island:generateHeadlands( nHeadlandPasses, implementWidth, overlapPerce
 		-- prevent hitting objects very close to the edge of the island.
 		local width = i == 1 and implementWidth / 2  + Island.gridSpacing / 2 or implementWidth * ( 100 - overlapPercent ) / 100
 		self.headlandTracks[ i ] = calculateHeadlandTrack( previousHeadland, CourseGenerator.HEADLAND_MODE_NORMAL, previousHeadland.isClockwise, width,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, false, nil, nil )
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, false, nil, nil )
 		CourseGenerator.debug( "Generated headland track #%d, %d waypoints, area %.1f, clockwise = %s for island %s", i, #self.headlandTracks[ i ],
 			self.headlandTracks[ i ].area, tostring( self.headlandTracks[ i ].isClockwise ), self.id )
 		previousHeadland = self.headlandTracks[ i ]
@@ -372,7 +373,7 @@ end
 -- @param startIx index of course waypoint where it intersects the headland
 -- @param fromIx 
 -- @param toIx course intersected the headland polygon between the indexes fromIx-toIx 
-function Island:bypassOnHeadland( course, startIx, fromIx, toIx, doCircle, doSmooth )
+function Island:bypassOnHeadland(course, startIx, fromIx, toIx, doCircle)
 	-- walk around the island on the  headland until we meet the course again.
 	-- we can start walking either at fromIx or at toIx, that is to go left or right
 	-- (don't know which one is left or right but that is not relevant)
@@ -435,9 +436,7 @@ function Island:bypassOnHeadland( course, startIx, fromIx, toIx, doCircle, doSmo
 				self:insertWaypoint( course, insertAt + i, p, course[ removeFrom - 1 ])
 			end
 			local origLength = #course
-			if doSmooth then
-				course:smooth( math.rad( 20 ), math.rad( 120 ), 2, startIx - 1, startIx + #path + 1 )
-			end
+			course:smooth( math.rad( 20 ), math.rad( 120 ), 2, startIx - 1, startIx + #path + 1 )
 			-- continue after the inserted headland piece (just need to adjust
 			-- the length as smooth may have added waypoints
 			return startIx + #path + #course - origLength
@@ -450,7 +449,7 @@ end
 --- Adjust course to bypass this island. Used for Island.BYPASS_MODE_CIRCLE. 
 -- this will bypass the island on a headland generated around it.
 -- @param doCircle drive a full circle around the island when first hit.
-function Island:bypass( course, doCircle, doSmooth)
+function Island:bypass(course, doCircle)
 	local enterIntersection, exitIntersection, enterIx
 	local ix = 1
 	while ix < #course - 1 do
@@ -467,7 +466,7 @@ function Island:bypass( course, doCircle, doSmooth)
 				self:insertWaypoint( course, ix + 2, intersections[ 2 ].point, course[ ix ])
 			end
 			local startIx = ix + 1
-			ix = self:bypassOnHeadland( course, startIx, intersections[ 1 ].fromIx, intersections[ 1 ].toIx, doCircle, doSmooth )
+			ix = self:bypassOnHeadland(course, startIx, intersections[ 1 ].fromIx, intersections[ 1 ].toIx, doCircle)
 		end
 		ix = ix + 1
 	end
@@ -602,7 +601,7 @@ function Island:getHeadlandPath( point, distance, width, minSmoothAngle, maxSmoo
 end
 
 function Island:linkHeadlandTracks( point, width, isClockwise, minSmoothAngle, maxSmoothAngle )
-	linkHeadlandTracks( self, width, isClockwise, point, true, minSmoothAngle, maxSmoothAngle, true )
+	linkHeadlandTracks( self, width, isClockwise, point, minSmoothAngle, maxSmoothAngle, true )
 end
 
 function Island:adjacentTo( point )

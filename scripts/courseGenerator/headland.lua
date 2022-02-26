@@ -79,7 +79,7 @@ end
 
 --- Calculate a headland track inside polygon in offset distance
 function calculateHeadlandTrack( polygon, mode, isClockwise, targetOffset, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
-                                 currentOffset, doSmooth, inward, centerSettings, currentPassNumber)
+                                 currentOffset, inward, centerSettings, currentPassNumber)
 	
 	if currentOffset == 0 then
 		n = 1
@@ -139,13 +139,11 @@ function calculateHeadlandTrack( polygon, mode, isClockwise, targetOffset, minDi
 	local vertices = polygon:cloneEmpty()
 	cleanupOffsetEdges(offsetEdges, vertices, minDistanceBetweenPoints)
 
-	if doSmooth then
-		vertices:smooth( minSmoothAngle, maxSmoothAngle, 1 )
-	end
+	vertices:smooth( minSmoothAngle, maxSmoothAngle, 1 )
 	-- only filter points too close, don't care about angle
 	applyLowPassFilter( vertices, math.pi, minDistanceBetweenPoints )
 	return calculateHeadlandTrack( vertices, mode, isClockwise, targetOffset, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
-		currentOffset, doSmooth, inward, centerSettings, currentPassNumber )
+		currentOffset, inward, centerSettings, currentPassNumber )
 end
 
 function cleanupOffsetEdges(offsetEdges, result, minDistanceBetweenPoints)
@@ -310,7 +308,7 @@ end
 --    to the first point of the first pass and then continue from there
 --    inwards
 --
-function linkHeadlandTracks( field, implementWidth, isClockwise, startLocation, doSmooth, minSmoothAngle, maxSmoothAngle, isIsland)
+function linkHeadlandTracks( field, implementWidth, isClockwise, startLocation, minSmoothAngle, maxSmoothAngle, isIsland)
 	-- first, find the intersection of the outermost headland track and the
 	-- vehicles heading vector.
 	local headlandPath = Polyline:new()
@@ -379,15 +377,11 @@ function linkHeadlandTracks( field, implementWidth, isClockwise, startLocation, 
 		end
 	end
 
-	if doSmooth then
-		-- skip the first and last point when smoothing, this makes sure smooth() won't try
-		-- to wrap around the ends like in case of a closed polygon, this is just a line here.
-		headlandPath:smooth( minSmoothAngle, maxSmoothAngle, 2 )
-		field.headlandPath = headlandPath
-		addMissingPassNumber( field.headlandPath )
-	else
-		field.headlandPath = headlandPath
-	end
+	-- skip the first and last point when smoothing, this makes sure smooth() won't try
+	-- to wrap around the ends like in case of a closed polygon, this is just a line here.
+	headlandPath:smooth( minSmoothAngle, maxSmoothAngle, 2 )
+	field.headlandPath = headlandPath
+	addMissingPassNumber( field.headlandPath )
 end
 
 -- in CourseGenerator.HEADLAND_MODE_NARROW_FIELD mode we want to lift the
@@ -409,14 +403,14 @@ local function markShortEdgesAsConnectingTrack( headlands, mode, centerSettings 
 end
 
 function generateAllHeadlandTracks(field, implementWidth, headlandSettings, centerSettings,
-	minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside, turnRadius)
+	minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, fromInside, turnRadius)
 
 	local previousTrack, startHeadlandPass, endHeadlandPass, step
 	if fromInside then
 		CourseGenerator.debug( "Generating innermost headland track" )
 		local distanceOfInnermostHeadlandFromBoundary = ( implementWidth - implementWidth * headlandSettings.overlapPercent / 100 ) * ( headlandSettings.nPasses - 1 ) + implementWidth / 2
 		field.headlandTracks[ headlandSettings.nPasses ] = calculateHeadlandTrack( field.boundary, headlandSettings.mode, field.boundary.isClockwise, distanceOfInnermostHeadlandFromBoundary,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, true, centerSettings, nil)
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, true, centerSettings, nil)
 		roundCorners( field.headlandTracks[ headlandSettings.nPasses ], turnRadius )
 		previousTrack = field.headlandTracks[ headlandSettings.nPasses ]
 		startHeadlandPass = headlandSettings.nPasses - 1
@@ -445,7 +439,7 @@ function generateAllHeadlandTracks(field, implementWidth, headlandSettings, cent
 		end
 
 		field.headlandTracks[ j ] = calculateHeadlandTrack( previousTrack, headlandSettings.mode, previousTrack.isClockwise, width,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, doSmooth, not fromInside,
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, not fromInside,
 			centerSettings, j)
 		CourseGenerator.debug( "Generated headland track #%d, area %1.f, clockwise = %s", j, field.headlandTracks[ j ].area, tostring( field.headlandTracks[ j ].isClockwise ))
 		-- check if the area within the last headland has a reasonable size
@@ -464,7 +458,7 @@ end
 
 --- calculate n headland tracks for any section (between startIx and endIx) of a field boundary
 -- if rightSide is true, the headland is on the right side of the previous headland.
-function calculateOneSide(boundary, innerBoundary, startIx, endIx, step, rightSide, headlandSettings, implementWidth,
+function calculateOneSide(boundary, startIx, endIx, step, rightSide, headlandSettings, centerSettings, implementWidth,
 													minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
 	---@type Polyline[]
 	local headlands = {}
@@ -553,18 +547,18 @@ function generateTwoSideHeadlands( polygon, islands, implementWidth, headlandSet
 		centerSettings, 1)
 
 	local step = boundary.isClockwise and 1 or -1
-	local leftHeadlands = calculateOneSide(boundary, headlandAround, bottomLeftIx, topLeftIx, step, true, headlandSettings, implementWidth,
-		minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
+	local leftHeadlands = calculateOneSide(boundary, bottomLeftIx, topLeftIx, step, true, headlandSettings, centerSettings,
+		implementWidth, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
 
 	step = boundary.isClockwise and -1 or 1
-	local rightHeadlands = calculateOneSide(boundary, headlandAround, bottomRightIx, topRightIx, step, false, headlandSettings, implementWidth,
-		minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
+	local rightHeadlands = calculateOneSide(boundary, bottomRightIx, topRightIx, step, false, headlandSettings, centerSettings,
+		implementWidth, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
 
 	-- figure out where to start the course. It will be the headland end closest to the
 	-- start location
 	local startLocation = shallowCopy(headlandSettings.startLocation)
-	startLocation:translate(-dx, -dy)
-	startLocation:rotate(math.rad(bestAngle))
+	translatePoint(startLocation, -dx, -dy)
+	rotatePoint(startLocation, math.rad(bestAngle))
 
 	local ixLeft, dLeft = leftHeadlands[1]:getClosestPointIndex(startLocation)
 	local ixRight, dRight = rightHeadlands[1]:getClosestPointIndex(startLocation)
