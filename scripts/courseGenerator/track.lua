@@ -96,6 +96,13 @@
 function generateCourseForField( field, implementWidth, headlandSettings,
 								 minDistanceBetweenPoints, headlandCornerType, fromInside,
 								 turnRadius, islandNodes, islandBypassMode, centerSettings, fieldMargin )
+	-- minSmoothAngle
+	--   angle between two subsequent edges above which the smoothing kicks in.
+	--   This is to smooth corners in the headland
+	-- maxSmoothAngle
+	--   angle between two subsequent edges above which the smoothing won't kick in
+	local minSmoothAngle, maxSmoothAngle = CourseGenerator.setCornerParameters(headlandSettings, headlandCornerType)
+
 	CourseGenerator.debug("####### COURSE GENERATOR START ##########################################################")
 	CourseGenerator.debug("Headland mode %s, corner %s, number of passes %d, center mode %s, min headland turn angle %.1f",
 		CourseGenerator.headlandModeTexts[headlandSettings.mode], CourseGenerator.headlandCornerTypeTexts[headlandCornerType],
@@ -105,12 +112,6 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 
 	local resultIsOk = true
 
-	-- minSmoothAngle
-	--   angle between two subsequent edges above which the smoothing kicks in.
-	--   This is to smooth corners in the headland
-	-- maxSmoothAngle
-	--   angle between two subsequent edges above which the smoothing won't kick in
-	local minSmoothAngle, maxSmoothAngle = CourseGenerator.setSmoothAngles(headlandSettings, headlandCornerType)
 
 	field.boundary = Polygon:new( field.boundary )
 	field.boundary:calculateData()

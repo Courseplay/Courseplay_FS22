@@ -322,7 +322,7 @@ function CourseGenerator.getCompassAngleDeg( gameAngleDeg )
 	return ( 360 + gameAngleDeg - 90 ) % 360
 end
 
-function CourseGenerator.setSmoothAngles(headlandSettings, headlandCornerType)
+function CourseGenerator.setCornerParameters(headlandSettings, headlandCornerType)
 	local minSmoothAngle, maxSmoothAngle
 	if headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH then
 		-- do not generate turns on headland
