@@ -15,6 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
+          ref: ${{ github.ref }}
           fetch-depth: 0
       - name: Setup node
         uses: actions/setup-node@v2
