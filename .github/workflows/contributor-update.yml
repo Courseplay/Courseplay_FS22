@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "**/translations/**"
 
 # The list of jobs this workflow executes
 jobs:
