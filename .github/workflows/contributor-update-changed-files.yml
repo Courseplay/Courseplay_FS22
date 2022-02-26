@@ -1,0 +1,26 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      sha_begin:
+        required: true
+        type: string
+      sha_end:
+        required: true
+        type: string
+      author:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  get-changed-files:
+    name: Get changed files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output gif-diff
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.event.after }}

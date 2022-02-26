@@ -16,19 +16,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: "14"
       - name: Get changed files
-        uses: tj-actions/changed-files@v14.6
-      - name: Create local changes
-        run: |
-          cd .github/scripts/update-contributors
-          node index.js ${{ github.actor }} ${{ steps.changed-files.outputs.all_changed_files }}
-      - name: Commit files
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: ./.github/workflows/contributor-update-changed-files.yml
         with:
-          commit_message: Update contributors
+          sha_begin: ${{ github.event.before }}
+          sha_end: ${{ github.event.after }}
+          author: ${{ github.actor }}
+      # - name: Get changed files
+      #   uses: tj-actions/changed-files@v14.6
+      # - name: Create local changes
+      #   run: |
+      #     cd .github/scripts/update-contributors
+      #     node index.js ${{ github.actor }} ${{ steps.changed-files.outputs.all_changed_files }}
+      # - name: Commit files
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     commit_message: Update contributors
