@@ -1,4 +1,4 @@
-name: Reusable workflow example
+name: Get changed files by author
 
 on:
   workflow_call:
