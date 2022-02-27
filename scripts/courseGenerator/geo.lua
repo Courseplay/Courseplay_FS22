@@ -115,6 +115,16 @@ function getDeltaAngle( a1, a2 )
 	return a2 - a1
 end
 
+
+function translatePoint(p, dx, dy)
+	p.x = p.x + dx
+	p.y = p.y + dy
+end
+
+function rotatePoint(p, angle)
+	p.x, p.y = p.x * math.cos(angle) - p.y  * math.sin(angle), p.x * math.sin(angle) + p.y  * math.cos(angle)
+end
+
 -- TODO: put this into Polyline
 --- This is kind of a low pass filter. If the 
 -- direction change to the  next point is too big, 

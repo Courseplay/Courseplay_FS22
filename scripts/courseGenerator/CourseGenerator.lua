@@ -80,6 +80,7 @@ CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS = 2
 CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH = 1
 CourseGenerator.HEADLAND_CORNER_TYPE_SHARP = 2
 CourseGenerator.HEADLAND_CORNER_TYPE_ROUND = 3
+CourseGenerator.headlandCornerTypeTexts = {'smooth', 'sharp', 'round'}
 
 -- Up/down mode is a regular up/down pattern, may skip rows between for wider turns
 
@@ -321,3 +322,23 @@ function CourseGenerator.getCompassAngleDeg( gameAngleDeg )
 	return ( 360 + gameAngleDeg - 90 ) % 360
 end
 
+function CourseGenerator.setCornerParameters(headlandSettings, headlandCornerType)
+	local minSmoothAngle, maxSmoothAngle
+	if headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH then
+		-- do not generate turns on headland
+		headlandSettings.minHeadlandTurnAngleDeg = 150
+		-- use smoothing instead
+		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(150)
+	elseif headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND then
+		-- generate turns for whatever is left after rounding the corners, for example
+		-- the transitions between headland and up/down rows.
+		headlandSettings.minHeadlandTurnAngleDeg = 75
+		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(75)
+	else
+		-- generate turns over 75 degrees
+		headlandSettings.minHeadlandTurnAngleDeg = 60
+		-- smooth only below 75 degrees
+		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(60)
+	end
+	return minSmoothAngle, maxSmoothAngle
+end

@@ -553,7 +553,6 @@ local function getDistanceBetweenRowEndAndHeadland(width, angle )
 	-- distance between headland centerline and side at an angle
 	-- (is width / 2 when angle is 90 degrees)
 	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
-	print(dHeadlandCenterAndSide, math.deg(angle))
 	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
 end
 
@@ -579,7 +578,6 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isFromIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isFromIx ].angle )
-				print('from', i, offset)
 			end
 			local newFrom = tracks[ i ].intersections[ isFromIx ].x + offset - width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			local isToIx = tracks[ i ].intersections[ 1 ].x >= tracks[ i ].intersections[ 2 ].x and 1 or 2
@@ -587,7 +585,6 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isToIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isToIx ].angle )
-				print('to  ', i, offset)
 			end
 			local newTo = tracks[ i ].intersections[ isToIx ].x - offset + width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			-- if a track is very short (shorter than width) we may end up with newTo being
