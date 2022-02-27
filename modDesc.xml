@@ -91,6 +91,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
 		<sourceFile filename="scripts/ai/CpMathUtil.lua"/>
+		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>

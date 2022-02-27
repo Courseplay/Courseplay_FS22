@@ -36,6 +36,13 @@ function CpMathUtil.getNodeDirection(node)
 	return math.atan2( lx, lz )
 end
 
+--- Returns true if node1 is pointing approximately in node2's direction
+---@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 10 degrees
+function CpMathUtil.isSameDirection(node1, node2, thresholdDeg)
+	local lx, _, lz = localDirectionToLocal(node1, node2, 0, 0, 1)
+	return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
+end
+
 --- Get a series of values, the first value is 'from', the last is 'to', and as many values as needed between the
 --- two with a maximum of 'step' difference.
 --- Always returns at least from and to

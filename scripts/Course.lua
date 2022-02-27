@@ -1432,12 +1432,6 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 		originalNonHeadlandLength, offsetNonHeadlandLength,
 		100 * offsetNonHeadlandLength / originalNonHeadlandLength,
 		offsetNonHeadlandLength - originalNonHeadlandLength)
-	-- remember this for the convoy progress calculation
-	offsetCourse.headlandLengthRatio = offsetCourse.headlandLength > 0 and
-		self.headlandLength / offsetCourse.headlandLength or 1
-	offsetCourse.nonHeadlandLengthRatio = originalNonHeadlandLength / offsetNonHeadlandLength
-	offsetCourse.originalCourseLength = offsetCourse.nonHeadlandLengthRatio * offsetNonHeadlandLength
-		+ offsetCourse.headlandLengthRatio * offsetCourse.headlandLength
 	-- apply tool offset to new course
 	offsetCourse:setOffset(self.offsetX, self.offsetZ)
 	return offsetCourse
@@ -1573,21 +1567,7 @@ end
 ---@return number, number, boolean 0-1 progress, waypoint where the progress is calculated, true if last waypoint
 function Course:getProgress(ix)
 	ix = ix or self:getCurrentWaypointIx()
-	if self.originalCourseLength then
-		-- this is an offset course, measure progress in the original course
-		-- we assume that the non-headland part of the course is the same as the original ...
-		local dToHereOnNonHeadland = self.waypoints[ix].dToHere - self.waypoints[ix].dToHereOnHeadland
-		-- however, the headland part is shorter or longer for the inner and outer offsets (when using multiple tools
-		-- on the same field in a group, for example 3 combines, one on the original course, on on the left, one on
-		-- the right. When working clockwise, the headland for one on the right is shorter.
-		-- So, we project the distance elapsed on the actual offset headland back to the distance elapsed on the
-		-- original headland.
-		local dToHere = self.nonHeadlandLengthRatio * dToHereOnNonHeadland +
-			self.headlandLengthRatio * self.waypoints[ix].dToHereOnHeadland
-		return dToHere / self.originalCourseLength, ix, ix == #self.waypoints
-	else
-		return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
-	end
+	return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 end
 
 -- This may be useful in the future, the idea is not to store the waypoints of a fieldwork row (as it is just a straight
