@@ -8,7 +8,7 @@ Courseplay.xmlKey = Courseplay.baseXmlKey.."."
 
 function Courseplay:init()
 	self:registerConsoleCommands()
-	g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml",Courseplay.BASE_DIRECTORY) )
+	g_gui:loadProfiles( Utils.getFilename("config/gui/GUIProfiles.xml", Courseplay.BASE_DIRECTORY) )
 
 	--- Base cp folder
 	self.baseDir = getUserProfileAppPath() .. "modSettings/" .. Courseplay.MOD_NAME ..  "/"
@@ -19,18 +19,18 @@ end
 
 function Courseplay:registerXmlSchema()
 	self.xmlSchema = XMLSchema.new("Courseplay")
-	self.xmlSchema:register(XMLValueType.STRING,self.baseXmlKey.."#lastVersion")
-	self.globalSettings:registerXmlSchema(self.xmlSchema,self.xmlKey)
-	CpBaseHud.registerXmlSchema(self.xmlSchema,self.xmlKey)
+	self.xmlSchema:register(XMLValueType.STRING, self.baseXmlKey.."#lastVersion")
+	self.globalSettings:registerXmlSchema(self.xmlSchema, self.xmlKey)
+	CpBaseHud.registerXmlSchema(self.xmlSchema, self.xmlKey)
 end
 
 --- Loads data not tied to a savegame.
 function Courseplay:loadUserSettings()
-	local xmlFile = XMLFile.loadIfExists("cpXmlFile",self.cpFilePath,self.xmlSchema)
+	local xmlFile = XMLFile.loadIfExists("cpXmlFile", self.cpFilePath, self.xmlSchema)
 	if xmlFile then
-		self:showUserInformation(xmlFile,self.baseXmlKey)
-		self.globalSettings:loadFromXMLFile(xmlFile,self.xmlKey)
-		CpBaseHud.loadFromXmlFile(xmlFile,self.xmlKey)
+		self:showUserInformation(xmlFile, self.baseXmlKey)
+		self.globalSettings:loadFromXMLFile(xmlFile, self.xmlKey)
+		CpBaseHud.loadFromXmlFile(xmlFile, self.xmlKey)
 		xmlFile:save()
 		xmlFile:delete()
 	end
@@ -38,12 +38,12 @@ end
 
 --- Saves data not tied to a savegame.
 function Courseplay:saveUserSettings()
-	local xmlFile = XMLFile.create("cpXmlFile",self.cpFilePath,self.baseXmlKey,self.xmlSchema)
+	local xmlFile = XMLFile.create("cpXmlFile", self.cpFilePath, self.baseXmlKey, self.xmlSchema)
 	if xmlFile then 
-		self.globalSettings:saveUserSettingsToXmlFile(xmlFile,self.xmlKey)
-		CpBaseHud.saveToXmlFile(xmlFile,self.xmlKey)
+		self.globalSettings:saveUserSettingsToXmlFile(xmlFile, self.xmlKey)
+		CpBaseHud.saveToXmlFile(xmlFile, self.xmlKey)
 		if self.currentVersion then
-			xmlFile:setValue(self.baseXmlKey.."#lastVersion",self.currentVersion)
+			xmlFile:setValue(self.baseXmlKey.."#lastVersion", self.currentVersion)
 		end
 		xmlFile:save()
 		xmlFile:delete()
@@ -54,22 +54,25 @@ end
 -- User info with github reference and update notification.
 ------------------------------------------------------------------------------------------------------------------------
 
-function Courseplay:showUserInformation(xmlFile,key)
+function Courseplay:showUserInformation(xmlFile, key)
 	local showInfoDialog = true
-	local currentVersion = g_modManager:getModByName(self.MOD_NAME).version
+	self.currentVersion = g_modManager:getModByName(self.MOD_NAME).version
 	local lastLoadedVersion = xmlFile:getValue(key.."#lastVersion")
 	if lastLoadedVersion then 
-		if currentVersion == lastLoadedVersion then 
+		if self.currentVersion == lastLoadedVersion then 
 			showInfoDialog = false
 		end
+		CpUtil.info("Current version: %s, last version: %s", self.currentVersion, lastLoadedVersion)
+	else 
+		CpUtil.info("Current version: %s", self.currentVersion)
 	end
 	if showInfoDialog then
 		g_gui:showInfoDialog({
-			text = string.format(g_i18n:getText("CP_infoText"), currentVersion)
+			text = string.format(g_i18n:getText("CP_infoText"), self.currentVersion)
 
 		})
-		self.currentVersion = currentVersion
-		xmlFile:setValue(key.."#lastVersion",currentVersion)
+		self.currentVersion = self.currentVersion
+		xmlFile:setValue(key.."#lastVersion", self.currentVersion)
 	end
 end
 
@@ -90,7 +93,7 @@ function Courseplay:loadMap(filename)
 		local filePath = saveGamePath .. "Courseplay.xml"
 		self.xmlFile = XMLFile.load("cpXml", filePath , self.xmlSchema)
 		if self.xmlFile == nil then return end
-		self.globalSettings:loadFromXMLFile(self.xmlFile,g_Courseplay.xmlKey)
+		self.globalSettings:loadFromXMLFile(self.xmlFile, g_Courseplay.xmlKey)
 		self.xmlFile:delete()
 
 		g_assignedCoursesManager:loadAssignedCourses(saveGamePath)
@@ -98,48 +101,48 @@ function Courseplay:loadMap(filename)
 
 	--- Ugly hack to get access to the global AutoDrive table, as this global is dependent on the auto drive folder name.
 	self.autoDrive = FS22_AutoDrive and FS22_AutoDrive.AutoDrive
-	CpUtil.info("Auto drive found: %s",tostring(self.autoDrive~=nil))
+	CpUtil.info("Auto drive found: %s", tostring(self.autoDrive~=nil))
 end
 
 function Courseplay:setupGui()
 	local vehicleSettingsFrame = CpVehicleSettingsFrame.new()
 	local globalSettingsFrame = CpGlobalSettingsFrame.new()
 	local courseManagerFrame = CpCourseManagerFrame.new(self.courseStorage)
-	g_gui:loadGui(Utils.getFilename("config/gui/VehicleSettingsFrame.xml",Courseplay.BASE_DIRECTORY),
-				 "CpVehicleSettingsFrame", vehicleSettingsFrame,true)
-	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml",Courseplay.BASE_DIRECTORY),
-				 "CpGlobalSettingsFrame", globalSettingsFrame,true)
-	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml",Courseplay.BASE_DIRECTORY),
-				 "CpCourseManagerFrame", courseManagerFrame,true)
+	g_gui:loadGui(Utils.getFilename("config/gui/VehicleSettingsFrame.xml", Courseplay.BASE_DIRECTORY),
+				 "CpVehicleSettingsFrame", vehicleSettingsFrame, true)
+	g_gui:loadGui(Utils.getFilename("config/gui/GlobalSettingsFrame.xml", Courseplay.BASE_DIRECTORY),
+				 "CpGlobalSettingsFrame", globalSettingsFrame, true)
+	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
+				 "CpCourseManagerFrame", courseManagerFrame, true)
 	local function predicateFunc()
 		local inGameMenu = g_gui.screenControllers[InGameMenu]
 		local aiPage = inGameMenu.pageAI
 		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
 	end
 	
-	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame,"pageCpVehicleSettings",
-			{896, 0, 128, 128},3, predicateFunc)
-	CpGuiUtil.fixInGameMenuPage(globalSettingsFrame,"pageCpGlobalSettings",
-			{768, 0, 128, 128},4,function () return true end)
-	CpGuiUtil.fixInGameMenuPage(courseManagerFrame,"pageCpCourseManager",
-			{256,0,128,128},5, predicateFunc)
+	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame, "pageCpVehicleSettings",
+			{896, 0, 128, 128}, 3, predicateFunc)
+	CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
+			{768, 0, 128, 128}, 4, function () return true end)
+	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
+			{256, 0, 128, 128}, 5, predicateFunc)
 	CpGuiUtil.fixInGameMenu()
 end
 
 --- Adds cp help info to the in game help menu.
 function Courseplay:loadMapDataHelpLineManager(xmlFile, missionInfo)
-	self:loadFromXML(Utils.getFilename("config/HelpMenu.xml",Courseplay.BASE_DIRECTORY))
+	self:loadFromXML(Utils.getFilename("config/HelpMenu.xml", Courseplay.BASE_DIRECTORY))
 end
-HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapData,Courseplay.loadMapDataHelpLineManager)
+HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapData, Courseplay.loadMapDataHelpLineManager)
 
 --- Saves all global data, for example global settings.
 function Courseplay.saveToXMLFile(missionInfo)
 	if missionInfo.isValid then 
 		local saveGamePath = missionInfo.savegameDirectory .."/"
-		local xmlFile = XMLFile.create("cpXml",saveGamePath.. "Courseplay.xml", 
+		local xmlFile = XMLFile.create("cpXml", saveGamePath.. "Courseplay.xml", 
 				"Courseplay", g_Courseplay.xmlSchema)
 		if xmlFile then	
-			g_Courseplay.globalSettings:saveToXMLFile(xmlFile,g_Courseplay.xmlKey)
+			g_Courseplay.globalSettings:saveToXMLFile(xmlFile, g_Courseplay.xmlKey)
 			xmlFile:save()
 			xmlFile:delete()
 		end
@@ -147,7 +150,7 @@ function Courseplay.saveToXMLFile(missionInfo)
 		g_assignedCoursesManager:saveAssignedCourses(saveGamePath)
 	end
 end
-FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile,Courseplay.saveToXMLFile)
+FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile, Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
 	g_devHelper:update()
@@ -210,8 +213,8 @@ function Courseplay:load()
 end
 
 function Courseplay:registerConsoleCommands()
-	addConsoleCommand( 'cpAddMoney', 'adds money', 'addMoney',self)
-	addConsoleCommand( 'cpRestartSaveGame', 'Load and start a savegame', 'restartSaveGame',self)
+	addConsoleCommand( 'cpAddMoney', 'adds money', 'addMoney', self)
+	addConsoleCommand( 'cpRestartSaveGame', 'Load and start a savegame', 'restartSaveGame', self)
 	addConsoleCommand( 'print', 'Print a variable', 'printVariable', self )
 	addConsoleCommand( 'printGlobalCpVariable', 'Print a global cp variable', 'printGlobalCpVariable', self )
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
@@ -346,15 +349,15 @@ function Courseplay.infoVehicle(vehicle, ...)
 	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, vehicleName, string.format( ... )))
 end
 
-function Courseplay.error(str,...)
-	Courseplay.info("error: "..str,...)
+function Courseplay.error(str, ...)
+	Courseplay.info("error: "..str, ...)
 end
 
 --- Fixes global translations.
-function Courseplay.getText(i18n,superFunc,name,customEnv)
-	return superFunc(i18n,name,customEnv or Courseplay.MOD_NAME)
+function Courseplay.getText(i18n, superFunc, name, customEnv)
+	return superFunc(i18n, name, customEnv or Courseplay.MOD_NAME)
 end
-I18N.getText = Utils.overwrittenFunction(I18N.getText,Courseplay.getText)
+I18N.getText = Utils.overwrittenFunction(I18N.getText, Courseplay.getText)
 
 --- Registers all cp specializations.
 ---@param typeManager TypeManager
@@ -373,11 +376,11 @@ function Courseplay.register(typeManager)
 		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
 		end
-		CpAIWorker.register(typeManager,typeName,typeEntry.specializations)
-		CpAIFieldWorker.register(typeManager,typeName,typeEntry.specializations)
-		CpAIBaleFinder.register(typeManager,typeName,typeEntry.specializations)
-		CpVehicleSettingDisplay.register(typeManager,typeName,typeEntry.specializations)
-		CpHud.register(typeManager,typeName,typeEntry.specializations)
+		CpAIWorker.register(typeManager, typeName, typeEntry.specializations)
+		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
+		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
+		CpVehicleSettingDisplay.register(typeManager, typeName, typeEntry.specializations)
+		CpHud.register(typeManager, typeName, typeEntry.specializations)
     end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
@@ -387,12 +390,12 @@ addModEventListener(g_Courseplay)
 
 --- Adds possibility to use giants gui functionality with custom image filenames.
 --- Every special filename needs to start with CP_ as prefix, with will be ignored for the path.
-local function getFilename(filename,superFunc, baseDir)
-	if Courseplay and string.startsWith(filename,"CP_") then 
+local function getFilename(filename, superFunc, baseDir)
+	if Courseplay and string.startsWith(filename, "CP_") then 
 		filename = string.gsub(filename, "CP_", "")
-		return superFunc(filename,g_Courseplay.BASE_DIRECTORY)
+		return superFunc(filename, g_Courseplay.BASE_DIRECTORY)
 	else
-		return superFunc(filename,baseDir)
+		return superFunc(filename, baseDir)
 	end
 end
-Utils.getFilename = Utils.overwrittenFunction(Utils.getFilename,getFilename)
+Utils.getFilename = Utils.overwrittenFunction(Utils.getFilename, getFilename)
