@@ -1,346 +1,235 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <l10n>
 	<texts>
-
-		<text name="CP_activated" 																		text="有効" />
-		<text name="CP_deactivated" 																	text="無効" />
-		<text name="CP_automatic" 																		text="自動" />														
-		<text name="CP_unit_meter" 																		text="m" />
-		<text name="CP_unit_foot" 																		text="ft" />
-		
-		<!-- User info text -->
-		<text name="CP_infoText"																		text="コースプレイ(%s) : ヘルプ、バグ報告、パッチノートについては　URL:https://github.com/Courseplay/Courseplay_FS22　を参照してください。" />
-		<text name="CP_error_no_course"																	text="仕事を開始する前に、コースを生成してください" />
-		<text name="CP_error_could_not_generate_course"													text="コースを生成できませんでした。詳細はログを参照してください" />
-		<text name="CP_error_not_on_field"																text="フィールドポジションが選択されていません" />
-
-
-	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="フィールドポジション（開始地点）" />
-		<text name="CP_jobParameters_subTitle_startAt"													text="開始地点:" />
-		<text name="CP_jobParameters_startAt_title"														text="開始地点:" />
-		<text name="CP_jobParameters_startAt_tooltip"													text="野外作業の開始地点" />
-		<text name="CP_jobParameters_startAt_nearest"													text="近くのウェイポイント" />
-		<text name="CP_jobParameters_startAt_first"														text="最初のウェイポイント" />
-		<text name="CP_jobParameters_startAt_last"														text="最後のウェイポイント" />
-		<text name="CP_jobParameters_startAt_unload"													text="コンバインの荷下ろし/チョッパー" />
-		<text name="CP_jobParameters_startAt_bales"														text="ベール回収、ベールラッピング" />
-
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="レーンオフセット:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="レーンオフセット:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="レーンオフセット" />
-		<text name="CP_jobParameters_laneOffset_center"													text="中央（ライン上）" />
-		<text name="CP_jobParameters_laneOffset_left"													text="左(第1レーン)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="右(第1レーン)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="左(第2レーン)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="右(第2レーン)" />
-
-	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																	text="コースプレイ:野外作業" />
-		<text name="CP_job_baleCollect"																	text="コースプレイ:ベール収集/ラップ" />
-	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="野外作業コースを生成する" />
-		<text name="CP_ai_page_open_course_generator" 													text="コースプレイ：コース生成を開く/閉じる" />
-
-	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AIヘルパー %s が予期せず作業を停止しました - タンクが満杯です!" />
-
-	<!-- VehicleSettings -->
-		<text name="CP_vehicle_setting_title"															text="[%s]の車両設定"/>
-		
-		<!--Titel-->
-		<text name="CP_vehicle_setting_subTitle_basic"													text="一般設定"/>
-		<text name="CP_vehicle_setting_subTitle_implement"												text="ツール（作業機）設定"/>
-		<text name="CP_vehicle_setting_subTitle_combine"												text="コンバイン（収穫機）設定"/>
-		<text name="CP_vehicle_setting_subTitle_seeder"													text="シーダー（播種）設定"/>
-		<text name="CP_vehicle_setting_subTitle_multitool"												text="共通設定"/>
-		<text name="CP_vehicle_setting_subTitle_speed" 													text="走行速度設定"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="デバッグ設定"/>
-		<!--Settings-->
-		<text name="CP_vehicle_setting_showCourse_title" 												text="コース表示"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="現在車両に設定されているコースを表示します"/>
-
-		<text name="CP_vehicle_setting_showCourse_startStop" 											text="開始/停止地点のみ"/>
-		<text name="CP_vehicle_setting_showCourse_all" 													text="全てのウェイポイント"/>
-
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="マウスでHUDを開く"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="無効にした場合、キーボード（キーバインド）でHUDを開きます"/>
-
-		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="終点で停止"/>
-		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="コース終点（ゴール地点）で車両を停止します"/>
-
-		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="リバースドライブの経路探索を許可"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="リバースドライブを含むコースを生成することができます"/>
-
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="旋回時の経路探索を許可"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="障害物や作物の回避など、旋回時の経路探索を使用することができます"/>
-
-		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="作業機の格納"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="有効にするとコースの終点で作業機を格納（折りたたみ）します"/>
-
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="作業機を上げる"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="ターンの最初に作業機を上げるタイミングを設定します"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="速い"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="遅い"/>
-
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="作業機を下げる"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="ターンの最後に作業機を下げるタイミングを設定します"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="速い"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="遅い"/>
-
-		<text name="CP_vehicle_setting_turnOnField_title" 												text="フィールド内で旋回（ターン）"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="フィールド内でのみ旋回を行います（ただし旋回が行えない作業機もあります）"/>
-
-		<text name="CP_vehicle_setting_avoidFruit_title" 												text="作物の回避"/>
-		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="AIヘルパーが作物を踏みつぶさないよう走行します"/>
-
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="ツールオフセット（水平）"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="作業機の位置を水平方向にオフセットします"/>
-
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="ツールオフセット（垂直）"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="作業機の位置を垂直方向にオフセットします"/>
-
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="パイプの展開"/>
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="コンバイン（収穫機）のタンクが満杯になったらパイプを展開します"/>
-
-		<text name="CP_vehicle_setting_stopForUnload_title" 											text="荷下ろし時の停車"/>
-		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="コンバイン（収穫機）から荷下ろしするとき車両を停止させます"/>
-
-		<text name="CP_vehicle_setting_selfUnload_title" 												text="自動荷下ろし"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="フィールド付近に荷下ろしできるトレーラーがある場合、AIヘルパー自ら荷下ろしを行います（複数同時作業、隊列走行モードではサポートされていません）"/>
-
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="最初のまくら地で荷下ろし"/>
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="コンバインは最初のまくら地に荷下ろしする車両を呼び出します"/>
-
-		<text name="CP_vehicle_setting_strawSwath_title" 												text="わらを排出する"/>
-		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="わらの排出を設定します（有効：排出する/無効：排出しない/まくら地は無効：まくら地での排出のみ無効にします)"/>
-		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="有効（まくら地は無効)"/>
-
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="リッジマーカー"/>
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="有効にするとリッジマーカーを使用します"/>
-
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="播種機の肥料"/>
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="有効にすると播種機の肥料を使用します"/>
-
-		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="対称レーン切り替え"/>
-		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="複数同時作業時、ラインに対して対称的にレーンの切り替えをします"/>
-
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="隊列走行間隔"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="隊列走行及び複数同時作業時の車間距離（40～400m）"/>
-
-		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="野外作業"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="野外作業の走行速度を設定します（5～50km/h）"/>
-		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="フィールド"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="フィールド上の走行速度を設定します（5～50km/h）"/>
-		<text name="CP_vehicle_setting_turnSpeed_title" 												text="ターン"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="旋回の走行速度を設定します（2～25km/h）"/>
-		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="リバース"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="後退の走行速度を設定します（2～25km/h)"/>
-
-		<text name="CP_vehicle_setting_debugActive_title" 												text="車両デバッグ"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="車両のデバッグを有効/無効にします"/>
-
-
-	<!-- Vehicle course generator settings -->
-		<text name="CP_vehicle_courseGeneratorSetting_title"											text="[%s]のコース生成設定"/>
-
-		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="一般設定"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="まくら地設定"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="フィールド内設定"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="高度な設定"/>
-
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="作業幅" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="作業幅を設定します（0~50m)" />
-		
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="まくら地の作成数" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="まくら地を作るための周回数を設定します （0～40回）" />
-		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="まくら地の重なり" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="作業幅に対してまくら地の重なる割合を設定します（0～25%）" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="フィールドの余白" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="プラス値ではフィールド領域を縮小し、フィールド外周に余白を作ります。マイナス値ではフィールド領域を拡大します（-5～5.8m）" />
-		
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="レーンのスキップ" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="往復レーンのスキップする数を設定します （0～6レーン）" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="ブロックのレーン数" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="作業領域で[往復（ブロック）]を選択した場合、各ブロックのレーン数を設定します(2～24レーン)" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="周回方向" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="まくら地を周回する方向を設定します" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="時計回り" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="反時計回り" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="作業領域（フィールド中央部）" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="まくら地を除く作業領域（レーン）の設定をします" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="往復（通常）" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="往復（周回）" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="往復（レーストラック）" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="往復（ブロック）" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="まくら地の角" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="まくら地の曲がり角を設定します" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="スムーズ" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="シャープ（直角）" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="ラウンド" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="往復レーン方向" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="レーンを生成する方向を設定します(長いエッジ：フィールドの最も長いエッジに合わせる マニュアル：任意の角度で設定)" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="自動設定" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="長いエッジ" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="マニュアル" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="往復レーンの角度" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="[往復レーン方向]の[マニュアル]を選択した場合、往復するレーンの方向（角度）を設定します (北=0° 設定角度:0～175°)" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="障害物の回避" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="フィールド内にある障害物を回避する方法を設定します" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="回避しない" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="回避する（通常）" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="回避する（円形）" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="作業開始地点" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="作業を始める場所を設定します" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="まくら地" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="フィールド中央" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="複数同時作業" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="同じコースを複数の車両で作業する時に設定します（作業は全ての車両が仕事を開始しなければなりません）" />
-
-
-	<!-- GlobalSettings -->
-		<text name="CP_global_setting_title"															text="グローバル設定"/>
-		<text name="CP_global_setting_subTitle_general"													text="一般設定"/>
-
-		<text name="CP_global_setting_wageModifier_title" 												text="コースプレイAIヘルパーの賃金"/>
-		<text name="CP_global_setting_wageModifier_tooltip" 											text="コースプレイAIヘルパーに支払う金額を設定します（0～500%）"/>
-
-		<text name="CP_global_setting_autoRepair_title" 												text="自動リペア"/>
-		<text name="CP_global_setting_autoRepair_tooltip" 												text="コースプレイ:AIヘルパーが自動でリペアを行います"/>
-		<text name="CP_global_setting_autoRepair_off" 													text="リペアしない"/>
-		<text name="CP_global_setting_autoRepair_less_than_25" 											text="25%以下でリペア"/>
-		<text name="CP_global_setting_autoRepair_less_than_70" 											text="70%以下でリペア"/>
-		<text name="CP_global_setting_autoRepair_always" 												text="100%を維持する"/>
-
-		<text name="CP_global_setting_subTitle_userSettings"											text="ユーザー設定"/>
-
-		<text name="CP_global_setting_controllerHudSelected_title"										text="ゲームパッド用HUD"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="ゲームパッドが接続されている場合、パッドに対応したHUDを表示できます（有効にするとマウスでHUD表示が無効になります）"/>
-		
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
-
-		<text name="CP_global_setting_subTitle_pathfinder"												text="経路探索設定"/>
-
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="ゴール時の角度差"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="ゴール時の最大角度差、値が大きいと高速だが精度が落ちる"/>
-
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="デルタ角緩和値"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="反復に失敗した場合に経路探索の精度を低下させる係数で、値が大きいほど速くなる"/>
-
-		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="すべてのコースを表示"/>
-		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="アクティブなコースを全てマップに表示します"/>
-
-	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="[%s]のコース管理  [%s]"/>
-		<text name="CP_courseManager_no_current_course"													text="コース設定無し"/>
-		<text name="CP_courseManager_temporary_course"													text="未保存のコース"/>
-
-		<text name="CP_courseManager_change_mode"														text="モード切替（保存・読込/移動・削除）"/>
-
-		<text name="CP_courseManager_load_courses"														text="コースの読み込み"/>
-		<text name="CP_courseManager_save_courses"														text="コースの保存"/>
-		<text name="CP_courseManager_clear_current_courses"												text="現在のコースをクリア（消去）"/>
-	
-		<text name="CP_courseManager_create_directory"													text="フォルダ新規作成"/>
-		
-		<text name="CP_courseManager_move_entry"														text="移動"/>
-		<text name="CP_courseManager_delete_entry"														text="消去"/>
-		<text name="CP_courseManager_rename_entry"														text="リネーム"/>
-		<text name="CP_courseManager_copy_entry"														text="コピー"/>
-
-		<text name="CP_courseManager_folder_dialog"														text="フォルダ名:"/>
-		<text name="CP_courseManager_course_dialog"														text="コース名:"/>
-		
-		<text name="CP_courseManager_deleteWarning"														text="%sを消去しますか?"/>
-
-		<text name="CP_courseManager_deleteError"														text="%sが空でないので消去できません"/>
-		<text name="CP_courseManager_entryExistAlreadyError"											text="%sに既に同じ名前のコースがあります"/>
-		<text name="CP_courseManager_noAccessError"														text="%sにアクセスできません"/>
-		<text name="CP_courseManager_targetIsNoFolderError"												text="%sを移動するフォルダが選択されていません"/>
-		<text name="CP_courseManager_targetIsNoCourseError"												text="%sを保存するコースが選択されていません"/>
-	
-		<text name="CP_courseManager_basicSettings"														text="保存したコース設定"/>
-		<text name="CP_courseManager_advancedSettings"													text="コース設定"/>
-
-		<text name="CP_courseManager_activate"															text="実行"/>
-
-	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="カスタムコース「%s」を保存しますか?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="カスタムフィールド「%s」を消去しますか?"/>
-		<text name="CP_customFieldManager_delete"														text="カスタムフィールドを消去する"/>
-		<text name="CP_customFieldManager_rename"														text="カスタムフィールドをリネームする"/>
-		<text name="CP_customFieldManager_draw"															text="カスタムフィールドを手描きする"/>
-		<text name="CP_customFieldManager_draw_header"													text="右クリックでカスタムフィールドの線を描く"/>
-		<text name="CP_customFieldManager_save"                                                         text="カスタムフィールドを保存する"/>
-		
-	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="カスタムフィールドのレコード開始"/>
-		<text name="CP_controllerGui_stopRecording"														text="カスタムフィールドのレコード停止"/>
-
-	<!-- In game help menu-->
-		<text name="CP_help_title"																		text="コースプレイ"/>
-		<text name="CP_help_page_courseManager_title"													text="コース管理"/>
-		<text name="CP_help_page_courseManager_text"													text="7種類のアクションが用意されています:
-- 新しいディレクトリを作成する
-- 現在の車両コースをクリアする
-- 現在のコースを保存する
-- コースのロード
-- コースを別のフォルダに移動する
-- コースまたはフォルダを削除する
-- コースまたはフォルダの名前を変更する"/>
-		<text name="CP_help_page_minihud_title"															text="ミニHUD"/>
-		<text name="CP_help_page_minihud_text"															text="
-A： 車両名をクリックすると、車両設定ページが表示されます。
-B: 1クリックでコースの開始位置を切り替えます。
-C: コース名をクリックすると、コースジェネレータを開いた状態でAIメニューが表示されます。
-D: コースプレイヘルパーを起動します。
-E: 現在のウェイポイント/全てのウェイポイントを表示します。クリックするとコースマネージャーが開きます。
-F: アイコンをクリックすると一般設定ページが開きます。
-G: HUDを閉じます。
-H: 作業幅を小さくしたり大きくしたりします。自車両の赤い線が現在の設定を示しています。
-I： 水平方向のオフセットの値で、+左、-右です。
-J： 垂直方向のオフセットの値で、＋後方、-前方です。
-K、 L、M：テキストをクリックすると、変更内容がオート値にリセットされます。
-N: このエリアは、マルチツールコースをロードしている場合、レーンオフセットを表示します。テキストをクリックすると、位置が切り替わります。
-O: カスタムフィールドコースのレコードを開始/停止します。
-P: 車両からコースを削除します。"/>
-		<text name="CP_help_page_customField_title"														text="カスタムフィールド"/>
-		<text name="CP_help_page_customFieldRecord_text"												text="
-カスタムフィールドを作成するには、2つの方法があります。
-1つ目はHUDのレコード機能を使う方法です。
-レコードを開始し、フィールドの境界線を記録します。
-完了したら、もう一度ボタンを押すと、保存するかどうか尋ねられます。"/>
-		<text name="CP_help_page_customFieldDone_text"													text="
-AIメニューを見ると、レコードしたフィールドの境界線が表示されます。
-名前をクリックすると、削除するか、名前を変更するかのオプションが表示されます。"/>
-		<text name="CP_help_page_customFieldDraw_text"													text="
-2つ目の選択肢は、AIメニューマップに描くことです。
-トラクターや他の車両が選択されていない状態（マップ上のどこかを左クリック）で、カスタムフィールドを描くオプションが表示されます。
-起動すると、「右クリックでカスタムフィールドの線を描く」というテキストが表示されます。
-マウスの右ボタンを使って、開始したい位置をクリックします。
-次の右クリックで、開始点から2番目の位置まで線が引かれます。"/>
-
-		<!-- Input bindings -->
-		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="コースプレイ：次のデバッグチャンネルを選択"/>
-		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="コースプレイ：前のデバッグチャンネルを選択"/>
-		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="コースプレイ：デバッグチャンネルを変更"/>
-		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="コースプレイ：デバッグメニューを表示/非表示"/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="コースプレイ：ミニGUIを開く"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="コースプレイ：マウスカーソル ON/OFF"/>
-		<text name="input_CP_OPEN_CLOSE_HUD" 															text="コースプレイ：HUDを開く"/>
-		<text name="input_CP_START_STOP" 														     	text="コースプレイ：開始/停止"/>
+		<!--Global texts-->
+		<text name="CP_activated" text="有効" />
+		<text name="CP_deactivated" text="無効" />
+		<text name="CP_automatic" text="自動" />
+		<text name="CP_unit_meter" text="m" />
+		<text name="CP_unit_foot" text="ft" />
+		<!--User infos-->
+		<text name="CP_infoText" text="コースプレイ(%s) : ヘルプ、バグ報告、パッチノートについては　URL:https://github.com/Courseplay/Courseplay_FS22　を参照してください。" />
+		<text name="CP_error_no_course" text="仕事を開始する前に、コースを生成してください" />
+		<text name="CP_error_could_not_generate_course" text="コースを生成できませんでした。詳細はログを参照してください" />
+		<text name="CP_error_not_on_field" text="フィールドポジションが選択されていません" />
+		<!--Job parameters-->
+		<text name="CP_jobParameters_fieldPosition_title" text="フィールドポジション（開始地点）" />
+		<text name="CP_jobParameters_subTitle_startAt" text="開始地点:" />
+		<text name="CP_jobParameters_startAt_title" text="開始地点:" />
+		<text name="CP_jobParameters_startAt_tooltip" text="野外作業の開始地点" />
+		<text name="CP_jobParameters_startAt_nearest" text="近くのウェイポイント" />
+		<text name="CP_jobParameters_startAt_first" text="最初のウェイポイント" />
+		<text name="CP_jobParameters_startAt_last" text="最後のウェイポイント" />
+		<text name="CP_jobParameters_startAt_unload" text="コンバインの荷下ろし/チョッパー" />
+		<text name="CP_jobParameters_startAt_bales" text="ベール回収、ベールラッピング" />
+		<text name="CP_jobParameters_subTitle_laneOffset" text="レーンオフセット:" />
+		<text name="CP_jobParameters_laneOffset_title" text="レーンオフセット:" />
+		<text name="CP_jobParameters_laneOffset_tooltip" text="レーンオフセット" />
+		<text name="CP_jobParameters_laneOffset_center" text="中央（ライン上）" />
+		<text name="CP_jobParameters_laneOffset_left" text="左(第1レーン)" />
+		<text name="CP_jobParameters_laneOffset_right" text="右(第1レーン)" />
+		<text name="CP_jobParameters_laneOffset_left_2" text="左(第2レーン)" />
+		<text name="CP_jobParameters_laneOffset_right_2" text="右(第2レーン)" />
+		<!--AI menu-->
+		<text name="CP_job_fieldWork" text="コースプレイ:野外作業" />
+		<text name="CP_job_baleCollect" text="コースプレイ:ベール収集/ラップ" />
+		<text name="CP_ai_page_generate_course" text="野外作業コースを生成する" />
+		<text name="CP_ai_page_open_course_generator" text="コースプレイ：コース生成を開く/閉じる" />
+		<text name="CP_ai_messageErrorIsFull" text="AIヘルパー %s が予期せず作業を停止しました - タンクが満杯です!" />
+		<!--Vehicle settings-->
+		<text name="CP_vehicle_setting_title" text="[%s]の車両設定" />
+		<text name="CP_vehicle_setting_subTitle_basic" text="一般設定" />
+		<text name="CP_vehicle_setting_subTitle_implement" text="ツール（作業機）設定" />
+		<text name="CP_vehicle_setting_subTitle_combine" text="コンバイン（収穫機）設定" />
+		<text name="CP_vehicle_setting_subTitle_seeder" text="シーダー（播種）設定" />
+		<text name="CP_vehicle_setting_subTitle_multitool" text="共通設定" />
+		<text name="CP_vehicle_setting_subTitle_speed" text="走行速度設定" />
+		<text name="CP_vehicle_setting_subTitle_debug" text="デバッグ設定" />
+		<text name="CP_vehicle_setting_showCourse_title" text="コース表示" />
+		<text name="CP_vehicle_setting_showCourse_tooltip" text="現在車両に設定されているコースを表示します" />
+		<text name="CP_vehicle_setting_showCourse_startStop" text="開始/停止地点のみ" />
+		<text name="CP_vehicle_setting_showCourse_all" text="全てのウェイポイント" />
+		<text name="CP_vehicle_setting_openHudWithMouse_title" text="マウスでHUDを開く" />
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="無効にした場合、キーボード（キーバインド）でHUDを開きます" />
+		<text name="CP_vehicle_setting_stopAtEnd_title" text="終点で停止" />
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" text="コース終点（ゴール地点）で車両を停止します" />
+		<text name="CP_vehicle_setting_allowReversePathfinding_title" text="リバースドライブの経路探索を許可" />
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="リバースドライブを含むコースを生成することができます" />
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" text="旋回時の経路探索を許可" />
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="障害物や作物の回避など、旋回時の経路探索を使用することができます" />
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" text="作業機の格納" />
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="有効にするとコースの終点で作業機を格納（折りたたみ）します" />
+		<text name="CP_vehicle_setting_raiseImplementLate_title" text="作業機を上げる" />
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="ターンの最初に作業機を上げるタイミングを設定します" />
+		<text name="CP_vehicle_setting_raiseImplementLate_early" text="速い" />
+		<text name="CP_vehicle_setting_raiseImplementLate_late" text="遅い" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" text="作業機を下げる" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" text="ターンの最後に作業機を下げるタイミングを設定します" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" text="速い" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" text="遅い" />
+		<text name="CP_vehicle_setting_turnOnField_title" text="フィールド内で旋回（ターン）" />
+		<text name="CP_vehicle_setting_turnOnField_tooltip" text="フィールド内でのみ旋回を行います（ただし旋回が行えない作業機もあります）" />
+		<text name="CP_vehicle_setting_avoidFruit_title" text="作物の回避" />
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" text="AIヘルパーが作物を踏みつぶさないよう走行します" />
+		<text name="CP_vehicle_setting_toolOffsetX_title" text="ツールオフセット（水平）" />
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" text="作業機の位置を水平方向にオフセットします" />
+		<text name="CP_vehicle_setting_toolOffsetZ_title" text="ツールオフセット（垂直）" />
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="作業機の位置を垂直方向にオフセットします" />
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="パイプの展開" />
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="コンバイン（収穫機）のタンクが満杯になったらパイプを展開します" />
+		<text name="CP_vehicle_setting_stopForUnload_title" text="荷下ろし時の停車" />
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" text="コンバイン（収穫機）から荷下ろしするとき車両を停止させます" />
+		<text name="CP_vehicle_setting_selfUnload_title" text="自動荷下ろし" />
+		<text name="CP_vehicle_setting_selfUnload_tooltip" text="フィールド付近に荷下ろしできるトレーラーがある場合、AIヘルパー自ら荷下ろしを行います（複数同時作業、隊列走行モードではサポートされていません）" />
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="最初のまくら地で荷下ろし" />
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="コンバインは最初のまくら地に荷下ろしする車両を呼び出します" />
+		<text name="CP_vehicle_setting_strawSwath_title" text="わらを排出する" />
+		<text name="CP_vehicle_setting_strawSwath_tooltip" text="わらの排出を設定します（有効：排出する/無効：排出しない/まくら地は無効：まくら地での排出のみ無効にします)" />
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" text="有効（まくら地は無効)" />
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" text="リッジマーカー" />
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" text="有効にするとリッジマーカーを使用します" />
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="播種機の肥料" />
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="有効にすると播種機の肥料を使用します" />
+		<text name="CP_vehicle_setting_symmetricLaneChange_title" text="対称レーン切り替え" />
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="複数同時作業時、ラインに対して対称的にレーンの切り替えをします" />
+		<text name="CP_vehicle_setting_convoyDistance_title" text="隊列走行間隔" />
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" text="隊列走行及び複数同時作業時の車間距離（40～400m）" />
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" text="野外作業" />
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="野外作業の走行速度を設定します（5～50km/h）" />
+		<text name="CP_vehicle_setting_fieldSpeed_title" text="フィールド" />
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" text="フィールド上の走行速度を設定します（5～50km/h）" />
+		<text name="CP_vehicle_setting_turnSpeed_title" text="ターン" />
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" text="旋回の走行速度を設定します（2～25km/h）" />
+		<text name="CP_vehicle_setting_reverseSpeed_title" text="リバース" />
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" text="後退の走行速度を設定します（2～25km/h)" />
+		<text name="CP_vehicle_setting_debugActive_title" text="車両デバッグ" />
+		<text name="CP_vehicle_setting_debugActive_tooltip" text="車両のデバッグを有効/無効にします" />
+		<!--Course generator settings-->
+		<text name="CP_vehicle_courseGeneratorSetting_title" text="[%s]のコース生成設定" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="一般設定" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="まくら地設定" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="フィールド内設定" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="高度な設定" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="作業幅" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="作業幅を設定します（0~50m)" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="まくら地の作成数" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="まくら地を作るための周回数を設定します （0～40回）" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="まくら地の重なり" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="作業幅に対してまくら地の重なる割合を設定します（0～25%）" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="フィールドの余白" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="プラス値ではフィールド領域を縮小し、フィールド外周に余白を作ります。マイナス値ではフィールド領域を拡大します（-5～5.8m）" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="レーンのスキップ" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="往復レーンのスキップする数を設定します （0～6レーン）" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="ブロックのレーン数" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="作業領域で[往復（ブロック）]を選択した場合、各ブロックのレーン数を設定します(2～24レーン)" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="周回方向" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="まくら地を周回する方向を設定します" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="時計回り" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="反時計回り" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="作業領域（フィールド中央部）" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="まくら地を除く作業領域（レーン）の設定をします" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往復（通常）" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="往復（周回）" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="往復（レーストラック）" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="往復（ブロック）" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="まくら地の角" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="まくら地の曲がり角を設定します" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="スムーズ" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="シャープ（直角）" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="ラウンド" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="往復レーン方向" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="レーンを生成する方向を設定します(長いエッジ：フィールドの最も長いエッジに合わせる マニュアル：任意の角度で設定)" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="自動設定" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="長いエッジ" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="マニュアル" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="往復レーンの角度" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="[往復レーン方向]の[マニュアル]を選択した場合、往復するレーンの方向（角度）を設定します (北=0° 設定角度:0～175°)" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="障害物の回避" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="フィールド内にある障害物を回避する方法を設定します" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="回避しない" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="回避する（通常）" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="回避する（円形）" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="作業開始地点" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="作業を始める場所を設定します" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="まくら地" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="フィールド中央" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="複数同時作業" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="同じコースを複数の車両で作業する時に設定します（作業は全ての車両が仕事を開始しなければなりません）" />
+		<!--Global settings-->
+		<text name="CP_global_setting_title" text="グローバル設定" />
+		<text name="CP_global_setting_subTitle_general" text="一般設定" />
+		<text name="CP_global_setting_wageModifier_title" text="コースプレイAIヘルパーの賃金" />
+		<text name="CP_global_setting_wageModifier_tooltip" text="コースプレイAIヘルパーに支払う金額を設定します（0～500%）" />
+		<text name="CP_global_setting_autoRepair_title" text="自動リペア" />
+		<text name="CP_global_setting_autoRepair_tooltip" text="コースプレイ:AIヘルパーが自動でリペアを行います" />
+		<text name="CP_global_setting_autoRepair_off" text="リペアしない" />
+		<text name="CP_global_setting_autoRepair_less_than_25" text="25%以下でリペア" />
+		<text name="CP_global_setting_autoRepair_less_than_70" text="70%以下でリペア" />
+		<text name="CP_global_setting_autoRepair_always" text="100%を維持する" />
+		<text name="CP_global_setting_subTitle_userSettings" text="ユーザー設定" />
+		<text name="CP_global_setting_controllerHudSelected_title" text="ゲームパッド用HUD" />
+		<text name="CP_global_setting_controllerHudSelected_tooltip" text="ゲームパッドが接続されている場合、パッドに対応したHUDを表示できます（有効にするとマウスでHUD表示が無効になります）" />
+		<text name="CP_global_setting_showActionEventHelp_title" text="Action event help" />
+		<text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts." />
+		<text name="CP_global_setting_subTitle_pathfinder" text="経路探索設定" />
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="ゴール時の角度差" />
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="ゴール時の最大角度差、値が大きいと高速だが精度が落ちる" />
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" text="デルタ角緩和値" />
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="反復に失敗した場合に経路探索の精度を低下させる係数で、値が大きいほど速くなる" />
+		<text name="CP_global_setting_showsAllActiveCourses_title" text="すべてのコースを表示" />
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" text="アクティブなコースを全てマップに表示します" />
+		<!--Course manager-->
+		<text name="CP_courseManager_title" text="[%s]のコース管理  [%s]" />
+		<text name="CP_courseManager_no_current_course" text="コース設定無し" />
+		<text name="CP_courseManager_temporary_course" text="未保存のコース" />
+		<text name="CP_courseManager_change_mode" text="モード切替（保存・読込/移動・削除）" />
+		<text name="CP_courseManager_load_courses" text="コースの読み込み" />
+		<text name="CP_courseManager_save_courses" text="コースの保存" />
+		<text name="CP_courseManager_clear_current_courses" text="現在のコースをクリア（消去）" />
+		<text name="CP_courseManager_create_directory" text="フォルダ新規作成" />
+		<text name="CP_courseManager_move_entry" text="移動" />
+		<text name="CP_courseManager_delete_entry" text="消去" />
+		<text name="CP_courseManager_rename_entry" text="リネーム" />
+		<text name="CP_courseManager_copy_entry" text="コピー" />
+		<text name="CP_courseManager_folder_dialog" text="フォルダ名:" />
+		<text name="CP_courseManager_course_dialog" text="コース名:" />
+		<text name="CP_courseManager_deleteWarning" text="%sを消去しますか?" />
+		<text name="CP_courseManager_deleteError" text="%sが空でないので消去できません" />
+		<text name="CP_courseManager_entryExistAlreadyError" text="%sに既に同じ名前のコースがあります" />
+		<text name="CP_courseManager_noAccessError" text="%sにアクセスできません" />
+		<text name="CP_courseManager_targetIsNoFolderError" text="%sを移動するフォルダが選択されていません" />
+		<text name="CP_courseManager_targetIsNoCourseError" text="%sを保存するコースが選択されていません" />
+		<text name="CP_courseManager_basicSettings" text="保存したコース設定" />
+		<text name="CP_courseManager_advancedSettings" text="コース設定" />
+		<text name="CP_courseManager_activate" text="実行" />
+		<!--Custom fields-->
+		<text name="CP_customFieldManager_confirm_save" text="カスタムコース「%s」を保存しますか?" />
+		<text name="CP_customFieldManager_confirm_delete" text="カスタムフィールド「%s」を消去しますか?" />
+		<text name="CP_customFieldManager_delete" text="カスタムフィールドを消去する" />
+		<text name="CP_customFieldManager_rename" text="カスタムフィールドをリネームする" />
+		<text name="CP_customFieldManager_draw" text="カスタムフィールドを手描きする" />
+		<text name="CP_customFieldManager_draw_header" text="右クリックでカスタムフィールドの線を描く" />
+		<text name="CP_customFieldManager_save" text="カスタムフィールドを保存する" />
+		<text name="CP_controllerGui_startRecording" text="カスタムフィールドのレコード開始" />
+		<text name="CP_controllerGui_stopRecording" text="カスタムフィールドのレコード停止" />
+		<!--Help menu-->
+		<text name="CP_help_title" text="コースプレイ" />
+		<text name="CP_help_page_courseManager_title" text="コース管理" />
+		<text name="CP_help_page_courseManager_text" text="7種類のアクションが用意されています: - 新しいディレクトリを作成する - 現在の車両コースをクリアする - 現在のコースを保存する - コースのロード - コースを別のフォルダに移動する - コースまたはフォルダを削除する - コースまたはフォルダの名前を変更する" />
+		<text name="CP_help_page_minihud_title" text="ミニHUD" />
+		<text name="CP_help_page_minihud_text" text=" A： 車両名をクリックすると、車両設定ページが表示されます。 B: 1クリックでコースの開始位置を切り替えます。 C: コース名をクリックすると、コースジェネレータを開いた状態でAIメニューが表示されます。 D: コースプレイヘルパーを起動します。 E: 現在のウェイポイント/全てのウェイポイントを表示します。クリックするとコースマネージャーが開きます。 F: アイコンをクリックすると一般設定ページが開きます。 G: HUDを閉じます。 H: 作業幅を小さくしたり大きくしたりします。自車両の赤い線が現在の設定を示しています。 I： 水平方向のオフセットの値で、+左、-右です。 J： 垂直方向のオフセットの値で、＋後方、-前方です。 K、 L、M：テキストをクリックすると、変更内容がオート値にリセットされます。 N: このエリアは、マルチツールコースをロードしている場合、レーンオフセットを表示します。テキストをクリックすると、位置が切り替わります。 O: カスタムフィールドコースのレコードを開始/停止します。 P: 車両からコースを削除します。" />
+		<text name="CP_help_page_customField_title" text="カスタムフィールド" />
+		<text name="CP_help_page_customFieldRecord_text" text=" カスタムフィールドを作成するには、2つの方法があります。 1つ目はHUDのレコード機能を使う方法です。 レコードを開始し、フィールドの境界線を記録します。 完了したら、もう一度ボタンを押すと、保存するかどうか尋ねられます。" />
+		<text name="CP_help_page_customFieldDone_text" text=" AIメニューを見ると、レコードしたフィールドの境界線が表示されます。 名前をクリックすると、削除するか、名前を変更するかのオプションが表示されます。" />
+		<text name="CP_help_page_customFieldDraw_text" text=" 2つ目の選択肢は、AIメニューマップに描くことです。 トラクターや他の車両が選択されていない状態（マップ上のどこかを左クリック）で、カスタムフィールドを描くオプションが表示されます。 起動すると、「右クリックでカスタムフィールドの線を描く」というテキストが表示されます。 マウスの右ボタンを使って、開始したい位置をクリックします。 次の右クリックで、開始点から2番目の位置まで線が引かれます。" />
+		<!--Player input-->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="コースプレイ：次のデバッグチャンネルを選択" />
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="コースプレイ：前のデバッグチャンネルを選択" />
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="コースプレイ：デバッグチャンネルを変更" />
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="コースプレイ：デバッグメニューを表示/非表示" />
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="コースプレイ：ミニGUIを開く" />
+		<text name="input_CP_START_STOP" text="コースプレイ：開始/停止" />
+		<text name="input_CP_TOGGLE_MOUSE" text="コースプレイ：マウスカーソル ON/OFF" />
+		<text name="input_CP_OPEN_CLOSE_HUD" text="コースプレイ：HUDを開く" />
 	</texts>
 </l10n>

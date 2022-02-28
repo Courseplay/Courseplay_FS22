@@ -1,361 +1,235 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <l10n>
 	<texts>
-
-		<text name="CP_activated" 																		text="开启" />
-		<text name="CP_deactivated" 																	text="关闭" />
-		<text name="CP_automatic" 																		text="auto" />
-		<text name="CP_unit_meter" 																		text="米" />
-		<text name="CP_unit_foot" 																		text="英尺" />
-
-		<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s):如需帮助、错误报告或查看更新说明，请访问: https://github.com/Courseplay/Courseplay_FS22." />
-		<text name="CP_error_no_course"																	text="在开始任务之前创建或加载一个任务" />
-		<text name="CP_error_could_not_generate_course"													text="无法创建任务" />
-		<text name="CP_error_not_on_field"																text="不在田地中" />
-
-
-		<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="田地位置：" />
-		<text name="CP_jobParameters_subTitle_startAt"													text="选择起始点:" />
-		<text name="CP_jobParameters_startAt_title"														text="选择起始点:" />
-		<text name="CP_jobParameters_startAt_tooltip"													text="该任务的起始点" />
-		<text name="CP_jobParameters_startAt_nearest"													text="最近的点" />
-		<text name="CP_jobParameters_startAt_first"														text="第一个点" />
-		<text name="CP_jobParameters_startAt_last"														text="最后的点" />
-		<text name="CP_jobParameters_startAt_unload"													text="开始卸货 联合收割机/青贮饲料收割机" />
-		<text name="CP_jobParameters_startAt_bales"														text="扎捆/包装草垛" />
-
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="车道位置设置" />
-		<text name="CP_jobParameters_laneOffset_title"													text="车道位置设置" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="使用多个工具时的车道选择（最多 5 个）。 " />
-		<text name="CP_jobParameters_laneOffset_center"													text="中间" />
-		<text name="CP_jobParameters_laneOffset_left"													text="左边(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="右边(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="左边(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="右边(2)" />
-
-	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																	text="CP: 田地工作" />
-		<text name="CP_job_baleCollect"																	text="CP: 扎捆/包装草垛" />
-	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: 生成田地工作路线" />
-		<text name="CP_ai_page_open_course_generator" 													text="CP: 打开/关闭 创建工作路线界面" />
-
-	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="工人%s 停止工作-储存箱已满!" />
-
-	<!-- VehicleSettings -->
-		<text name="CP_vehicle_setting_title"															text="车辆设置(%s)"/>
-		
-		<!--Titel-->
-		<text name="CP_vehicle_setting_subTitle_basic"													text="基本设置"/>
-		<text name="CP_vehicle_setting_subTitle_implement"												text="工具设置"/>
-		<text name="CP_vehicle_setting_subTitle_combine"												text="收割机设置"/>
-		<text name="CP_vehicle_setting_subTitle_seeder"													text="播种机设置"/>
-		<text name="CP_vehicle_setting_subTitle_multitool"												text="多工具设置"/>
-		<text name="CP_vehicle_setting_subTitle_speed" 													text="速度"/>
-		<text name="CP_vehicle_setting_subTitle_debug" 													text="调试设置"/>
-		<!--Settings-->
-		<text name="CP_vehicle_setting_showCourse_title" 												text="显示路线"/>
-		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="显示当前车辆的工作路线。"/>
-
-		<text name="CP_vehicle_setting_showCourse_startStop" 											text="仅限起始点/终点"/>
-		<text name="CP_vehicle_setting_showCourse_all" 													text="所有点"/>
-
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="用鼠标打开Hud"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="右键打开HUD。 如果关闭，则仅使用键盘快捷键打开 HUD。"/>
-
-		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="停在终点"/>
-		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="车辆到达终点时停车。"/>
-
-		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="允许反向路线"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="如有必要，允许路线生成包含倒车步骤的路径。 "/>
-
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="允许路径查找避行"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="如果有必要，允许路径查找生成带有弯道的路径，例如规避障碍或作物。"/>
-
-		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="工作结束时收起工具"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="开启/关闭 工作结束时工具的自动收起。"/>
-
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="升起工具"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="在转向开始时提前或晚些升起工具。"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="提前"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="晚些"/>
-
-		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="降低的工具"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="在转向结束时提前或晚些降低工具。"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="提前"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="晚些"/>
-
-		<text name="CP_vehicle_setting_turnOnField_title" 												text="仅在田地范围内作业"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="不超出田地范围，对某些工具无效。"/>
-
-		<text name="CP_vehicle_setting_avoidFruit_title" 												text="避开作物"/>
-		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="工人将尽量避免开车碾压种植作物。"/>
-
-		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="工具横向调整"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="工具横向调整"/>
-
-		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="工具纵向调整"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="工具纵向调整"/>
-
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="总是伸出管道"/>
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="当收割机装满并等待卸载时，始终伸出管道。"/>
-
-		<text name="CP_vehicle_setting_stopForUnload_title" 											text="卸载时停车"/>
-		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="始终停车执行卸载。"/>
-
-		<text name="CP_vehicle_setting_selfUnload_title" 												text="收割机自助卸载"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="收割机自动在田间或会合附近的拖车进行卸载，不支持多工具模式。"/>
-
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="在第一个地头卸载"/>
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="收割机将在第一个地头呼叫拖车。"/>
-
-		<text name="CP_vehicle_setting_strawSwath_title" 												text="秸秆堆"/>
-		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="启用/禁用条形秸秆堆功能或仅在田间地头禁用。"/>
-		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="田间地头禁用"/>
-
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="田埂标记"/>
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="开/关田埂标记。"/>
-
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="播种机使用肥料"/>
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="启用/禁用播种机的肥料使用。"/>
-
-		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="对称变道"/>
-		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="对称变道"/>
-
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="车辆距离"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="车辆之间的距离。 数值范围: 40 - 400"/>
-
-		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="工作速度"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="在田间工作时的最高速度。 数值范围: 5 - 50"/>
-		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="车辆速度"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="在田间行驶时的最高速度。 数值范围: 5 - 50"/>
-		<text name="CP_vehicle_setting_turnSpeed_title" 												text="转向"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="转向时的最大速度。 数值范围: 2 - 25"/>
-		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="倒车"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="倒车时最大速度。 数值范围: 2 - 25"/>
-
-		<text name="CP_vehicle_setting_debugActive_title" 												text="车辆调试"/>
-		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="启用/禁用此车辆的调试。"/>
-
-
-	<!-- Vehicle course generator settings -->
-		<text name="CP_vehicle_courseGeneratorSetting_title"											text="工作路线设置 (%s)"/>
-		
-		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="基本设置"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="田间地头设置"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="中心路线设置"/>
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="高级设置"/>
-
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="工作宽度" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="调整工作宽度。 数值范围: 0 - 50" />
-		
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="地头数量" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="车辆在田间地头（田地边缘）往返的次数。 数值范围: 0 - 40" />
-		
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="地头重叠" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="以工作宽度的百分比重叠地头路径。 数值范围: 0 - 25" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="田地边界" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="设置田地边界。正值会减少田地范围的大小，负值使工作区域超出了田地范围的限制。 数值范围: -5 - 5.8" />
-		
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="要跳过的路径" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="决定到达当前路径的终点时要跳过多少行路径。 数值范围: 0 - 6" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="中心路径行数" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="如果选择“中心路线”模式，则每块田地中有多少行路径。 数值范围: 0 - 24" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="地头方向" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="车辆在田间地头上是从左往右还是从右往左行驶。" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="从左往右" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="从右往左" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="田地中心路径" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="选择中心路径类型。" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="往返" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="螺旋（回转）" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="圆形（由外到内）" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="区域（由内到外）" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="地头" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="在田地两头的转向方式。 " />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="平滑转向" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="倒车" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="循环" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="路径起始方向" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="选择路径起始方向。" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="自动" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="长边" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="手动" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="方向角度" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="当选择为手动的路径起始方向时的角度（0表示北） 数值范围: 0 - 175 调整幅度: 5" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="避障模式" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="田地有障碍物时如何生成路线" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="不回避" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="简单回避 " />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="圆形路线" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="开始工作" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="确定从哪里开始工作。" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="地头" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="路径点" />
-
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="多个工具" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="使用相同工具进行相同任务的车辆数量。 " />
-
-
-	<!-- GlobalSettings -->
-		<text name="CP_global_setting_title"															text="全局设置"/>
-		<text name="CP_global_setting_subTitle_general"													text="基本设置"/>
-
-		<text name="CP_global_setting_wageModifier_title" 												text="Cp帮手工资"/>
-		<text name="CP_global_setting_wageModifier_tooltip" 											text="Cp帮手工资占普通帮手工资的百分比。"/>
-
-		<text name="CP_global_setting_autoRepair_title" 												text="自动修理"/>
-		<text name="CP_global_setting_autoRepair_tooltip" 												text="Cp帮手在工作时车辆和工具自动修理。"/>
-		<text name="CP_global_setting_autoRepair_off" 													text="不修理"/>
-		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
-		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
-		<text name="CP_global_setting_autoRepair_always" 												text="保持100%"/>
-
-		<text name="CP_global_setting_subTitle_userSettings"											text="用户设置"/>
-
-		<text name="CP_global_setting_controllerHudSelected_title"										text="手柄控制HUB"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="HUD（游戏内CP界面）可搭配游戏手柄使用。"/>
-		
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
-
-		<text name="CP_global_setting_subTitle_pathfinder"												text="路径生成设置"/>
-
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="目标的角度差"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="接近目标的最大允许角度差。数值越大，速度越快，精度越低。"/>
-
-		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="路径精度"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="允许在每次创建路径时放宽路径搜索的限制。值越高，计算速度越快。"/>
-
-		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="显示所有活动任务 "/>
-		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="在地图上显示所有活动任务。 "/>
-
-	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="任务管理(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="没有任务"/>
-		<text name="CP_courseManager_temporary_course"													text="临时任务"/>
-
-
-		<text name="CP_courseManager_change_mode"														text="更改模式"/>
-
-		<text name="CP_courseManager_load_courses"														text="加载任务"/>
-		<text name="CP_courseManager_save_courses"														text="保存任务"/>
-		<text name="CP_courseManager_clear_current_courses"												text="清除当前任务"/>
-	
-		<text name="CP_courseManager_create_directory"													text="创建新文件夹"/>
-		
-		<text name="CP_courseManager_move_entry"														text="移动"/>
-		<text name="CP_courseManager_delete_entry"														text="删除"/>
-		<text name="CP_courseManager_rename_entry"														text="重命名"/>
-		<text name="CP_courseManager_copy_entry"														text="复制"/>
-
-		<text name="CP_courseManager_folder_dialog"														text="文件夹名称:"/>
-		<text name="CP_courseManager_course_dialog"														text="任务名称:"/>
-		
-		<text name="CP_courseManager_deleteWarning"														text="你确定要删除 (%s)?"/>
-
-		<text name="CP_courseManager_deleteError"														text="文件夹不是空的 (%s)!"/>
-		<text name="CP_courseManager_entryExistAlreadyError"											text="文件已经存在于目标文件夹中 (%s)!"/>
-		<text name="CP_courseManager_noAccessError"														text="无法访问该文件夹 (%s)!"/>
-		<text name="CP_courseManager_targetIsNoFolderError"												text="目标位置不是一个文件夹 (%s)!"/>
-		<text name="CP_courseManager_targetIsNoCourseError"												text="目标位置不是任务 (%s)!"/>
-	
-		<text name="CP_courseManager_basicSettings"														text="任务交互。 "/>
-		<text name="CP_courseManager_advancedSettings"													text="编辑文件。"/>
-
-		<text name="CP_courseManager_activate"															text="激活"/>
-
-	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="是否要将录制的任务保存为自定义田地 %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="要删除自定义田地吗 %s?"/>
-		<text name="CP_customFieldManager_delete"														text="删除自定义田地"/>
-		<text name="CP_customFieldManager_rename"														text="重命名自定义田地"/>
-		<text name="CP_customFieldManager_draw"															text="绘制自定义田地"/>
-		<text name="CP_customFieldManager_draw_header"													text="右键绘制自定义田地范围"/>
-		<text name="CP_customFieldManager_save"                                                         text="保存自定义田地"/>
-		
-	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="开始自定义田地记录。"/>
-		<text name="CP_controllerGui_stopRecording"														text="停止自定义田地记录。"/>
-
-	<!-- In game help menu-->
-		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="任务管理"/>
-		<text name="CP_help_page_courseManager_text"													text="有 7 种不同的操作可用：
-- 创建一个新目录。
-- 清除当前车辆路线。
-- 保存当前任务。
-- 加载任务。
-- 将任务移动到另一个目录。
-- 删除任务或目录。
-- 重命名任务或目录。 "/>
-		<text name="CP_help_page_minihud_title"															text="迷你HUD"/>
-		<text name="CP_help_page_minihud_text"															text="
-答：单击车辆名称将打开车辆配置页面。
-
-B：只需单击一下，即可切换任务的起始位置。
-
-C：点击任务名称，你会打开AI菜单，路线生成器。
-
-D:启动Courseplay助手。
-
-E：显示当前航路点/所有航路点。单击打开任务管理器。
-
-F：点击图标打开常规设置页面。
-
-G:关闭HUD。
-
-H：减少和增加工作宽度。车辆上的红线显示当前设置。
-
-I：横向调整值，+左，-右。
-
-J：纵向调整值，+向后，-向前。
-
-K、 L和M：点击文本将重置对自动值的更改。
-
-N：如果你加载了多工具任务，该区域显示车道位置。单击文本可切换位置。
-
-O：开始/停止录制自定义田间任务。
-
-P：从车辆上移除路线"/>
-		<text name="CP_help_page_customField_title"														text="自定义田地"/>
-		<text name="CP_help_page_customFieldRecord_text"												text="
-有两种方法可以创建自定义田地。
-
-第一个是使用HUD的记录功能。
-
-开始记录并记录田地边界。
-
-完成后，再次按下按钮，系统会询问您是否要保存它。"/>
-		<text name="CP_help_page_customFieldDone_text"													text="查看 AI 菜单，您将看到记录的田地边界。
-通过单击名称，您将获得删除或重命名的选项。 "/>
-		<text name="CP_help_page_customFieldDraw_text"													text="第二个选项是在 AI 菜单地图上绘制它。
-没有选择拖拉机或其他车辆（左键单击地图上的某处），您可以选择绘制自定义田地。
-开始时，将显示文本绘制自定义田地线右键单击。
-使用鼠标右键单击要开始的位置。
-下一次右键单击将从您的起点画一条线到您的第二个位置，这将是下一条线的起点。"/>
-
-		<!-- Input bindings -->
-		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: 选择下一个调试通道。"/>
-		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: 选择上一个调试通道。"/>
-		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: 更改当前调试通道。 "/>
-		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: 显示调试通道菜单 是/否。"/>
-		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: 打开迷你HUB"/>
-		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: 鼠标光标开/关"/>
-		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: 打开/关闭HUB"/>
+		<!--Global texts-->
+		<text name="CP_activated" text="开启" />
+		<text name="CP_deactivated" text="关闭" />
+		<text name="CP_automatic" text="auto" />
+		<text name="CP_unit_meter" text="米" />
+		<text name="CP_unit_foot" text="英尺" />
+		<!--User infos-->
+		<text name="CP_infoText" text="Courseplay(%s):如需帮助、错误报告或查看更新说明，请访问: https://github.com/Courseplay/Courseplay_FS22." />
+		<text name="CP_error_no_course" text="在开始任务之前创建或加载一个任务" />
+		<text name="CP_error_could_not_generate_course" text="无法创建任务" />
+		<text name="CP_error_not_on_field" text="不在田地中" />
+		<!--Job parameters-->
+		<text name="CP_jobParameters_fieldPosition_title" text="田地位置：" />
+		<text name="CP_jobParameters_subTitle_startAt" text="选择起始点:" />
+		<text name="CP_jobParameters_startAt_title" text="选择起始点:" />
+		<text name="CP_jobParameters_startAt_tooltip" text="该任务的起始点" />
+		<text name="CP_jobParameters_startAt_nearest" text="最近的点" />
+		<text name="CP_jobParameters_startAt_first" text="第一个点" />
+		<text name="CP_jobParameters_startAt_last" text="最后的点" />
+		<text name="CP_jobParameters_startAt_unload" text="开始卸货 联合收割机/青贮饲料收割机" />
+		<text name="CP_jobParameters_startAt_bales" text="扎捆/包装草垛" />
+		<text name="CP_jobParameters_subTitle_laneOffset" text="车道位置设置" />
+		<text name="CP_jobParameters_laneOffset_title" text="车道位置设置" />
+		<text name="CP_jobParameters_laneOffset_tooltip" text="使用多个工具时的车道选择（最多 5 个）。 " />
+		<text name="CP_jobParameters_laneOffset_center" text="中间" />
+		<text name="CP_jobParameters_laneOffset_left" text="左边(1)" />
+		<text name="CP_jobParameters_laneOffset_right" text="右边(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2" text="左边(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2" text="右边(2)" />
+		<!--AI menu-->
+		<text name="CP_job_fieldWork" text="CP: 田地工作" />
+		<text name="CP_job_baleCollect" text="CP: 扎捆/包装草垛" />
+		<text name="CP_ai_page_generate_course" text="CP: 生成田地工作路线" />
+		<text name="CP_ai_page_open_course_generator" text="CP: 打开/关闭 创建工作路线界面" />
+		<text name="CP_ai_messageErrorIsFull" text="工人%s 停止工作-储存箱已满!" />
+		<!--Vehicle settings-->
+		<text name="CP_vehicle_setting_title" text="车辆设置(%s)" />
+		<text name="CP_vehicle_setting_subTitle_basic" text="基本设置" />
+		<text name="CP_vehicle_setting_subTitle_implement" text="工具设置" />
+		<text name="CP_vehicle_setting_subTitle_combine" text="收割机设置" />
+		<text name="CP_vehicle_setting_subTitle_seeder" text="播种机设置" />
+		<text name="CP_vehicle_setting_subTitle_multitool" text="多工具设置" />
+		<text name="CP_vehicle_setting_subTitle_speed" text="速度" />
+		<text name="CP_vehicle_setting_subTitle_debug" text="调试设置" />
+		<text name="CP_vehicle_setting_showCourse_title" text="显示路线" />
+		<text name="CP_vehicle_setting_showCourse_tooltip" text="显示当前车辆的工作路线。" />
+		<text name="CP_vehicle_setting_showCourse_startStop" text="仅限起始点/终点" />
+		<text name="CP_vehicle_setting_showCourse_all" text="所有点" />
+		<text name="CP_vehicle_setting_openHudWithMouse_title" text="用鼠标打开Hud" />
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="右键打开HUD。 如果关闭，则仅使用键盘快捷键打开 HUD。" />
+		<text name="CP_vehicle_setting_stopAtEnd_title" text="停在终点" />
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" text="车辆到达终点时停车。" />
+		<text name="CP_vehicle_setting_allowReversePathfinding_title" text="允许反向路线" />
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="如有必要，允许路线生成包含倒车步骤的路径。 " />
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" text="允许路径查找避行" />
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="如果有必要，允许路径查找生成带有弯道的路径，例如规避障碍或作物。" />
+		<text name="CP_vehicle_setting_foldImplementAtEnd_title" text="工作结束时收起工具" />
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="开启/关闭 工作结束时工具的自动收起。" />
+		<text name="CP_vehicle_setting_raiseImplementLate_title" text="升起工具" />
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="在转向开始时提前或晚些升起工具。" />
+		<text name="CP_vehicle_setting_raiseImplementLate_early" text="提前" />
+		<text name="CP_vehicle_setting_raiseImplementLate_late" text="晚些" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_title" text="降低的工具" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" text="在转向结束时提前或晚些降低工具。" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" text="提前" />
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" text="晚些" />
+		<text name="CP_vehicle_setting_turnOnField_title" text="仅在田地范围内作业" />
+		<text name="CP_vehicle_setting_turnOnField_tooltip" text="不超出田地范围，对某些工具无效。" />
+		<text name="CP_vehicle_setting_avoidFruit_title" text="避开作物" />
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" text="工人将尽量避免开车碾压种植作物。" />
+		<text name="CP_vehicle_setting_toolOffsetX_title" text="工具横向调整" />
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" text="工具横向调整" />
+		<text name="CP_vehicle_setting_toolOffsetZ_title" text="工具纵向调整" />
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="工具纵向调整" />
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="总是伸出管道" />
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="当收割机装满并等待卸载时，始终伸出管道。" />
+		<text name="CP_vehicle_setting_stopForUnload_title" text="卸载时停车" />
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" text="始终停车执行卸载。" />
+		<text name="CP_vehicle_setting_selfUnload_title" text="收割机自助卸载" />
+		<text name="CP_vehicle_setting_selfUnload_tooltip" text="收割机自动在田间或会合附近的拖车进行卸载，不支持多工具模式。" />
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="在第一个地头卸载" />
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="收割机将在第一个地头呼叫拖车。" />
+		<text name="CP_vehicle_setting_strawSwath_title" text="秸秆堆" />
+		<text name="CP_vehicle_setting_strawSwath_tooltip" text="启用/禁用条形秸秆堆功能或仅在田间地头禁用。" />
+		<text name="CP_vehicle_setting_strawSwath_onlyCenter" text="田间地头禁用" />
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" text="田埂标记" />
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" text="开/关田埂标记。" />
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="播种机使用肥料" />
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="启用/禁用播种机的肥料使用。" />
+		<text name="CP_vehicle_setting_symmetricLaneChange_title" text="对称变道" />
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="对称变道" />
+		<text name="CP_vehicle_setting_convoyDistance_title" text="车辆距离" />
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" text="车辆之间的距离。 数值范围: 40 - 400" />
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" text="工作速度" />
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="在田间工作时的最高速度。 数值范围: 5 - 50" />
+		<text name="CP_vehicle_setting_fieldSpeed_title" text="车辆速度" />
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" text="在田间行驶时的最高速度。 数值范围: 5 - 50" />
+		<text name="CP_vehicle_setting_turnSpeed_title" text="转向" />
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" text="转向时的最大速度。 数值范围: 2 - 25" />
+		<text name="CP_vehicle_setting_reverseSpeed_title" text="倒车" />
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" text="倒车时最大速度。 数值范围: 2 - 25" />
+		<text name="CP_vehicle_setting_debugActive_title" text="车辆调试" />
+		<text name="CP_vehicle_setting_debugActive_tooltip" text="启用/禁用此车辆的调试。" />
+		<!--Course generator settings-->
+		<text name="CP_vehicle_courseGeneratorSetting_title" text="工作路线设置 (%s)" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="基本设置" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="田间地头设置" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="中心路线设置" />
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="高级设置" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="工作宽度" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="调整工作宽度。 数值范围: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="地头数量" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="车辆在田间地头（田地边缘）往返的次数。 数值范围: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="地头重叠" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="以工作宽度的百分比重叠地头路径。 数值范围: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="田地边界" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="设置田地边界。正值会减少田地范围的大小，负值使工作区域超出了田地范围的限制。 数值范围: -5 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="要跳过的路径" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="决定到达当前路径的终点时要跳过多少行路径。 数值范围: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="中心路径行数" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="如果选择“中心路线”模式，则每块田地中有多少行路径。 数值范围: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="地头方向" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="车辆在田间地头上是从左往右还是从右往左行驶。" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="从左往右" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="从右往左" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="田地中心路径" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="选择中心路径类型。" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="往返" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="螺旋（回转）" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="圆形（由外到内）" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="区域（由内到外）" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="地头" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="在田地两头的转向方式。 " />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="平滑转向" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="倒车" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="循环" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="路径起始方向" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="选择路径起始方向。" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="自动" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="长边" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="手动" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="方向角度" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="当选择为手动的路径起始方向时的角度（0表示北） 数值范围: 0 - 175 调整幅度: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="避障模式" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="田地有障碍物时如何生成路线" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="不回避" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="简单回避 " />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="圆形路线" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="开始工作" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="确定从哪里开始工作。" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="地头" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="路径点" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="多个工具" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="使用相同工具进行相同任务的车辆数量。 " />
+		<!--Global settings-->
+		<text name="CP_global_setting_title" text="全局设置" />
+		<text name="CP_global_setting_subTitle_general" text="基本设置" />
+		<text name="CP_global_setting_wageModifier_title" text="Cp帮手工资" />
+		<text name="CP_global_setting_wageModifier_tooltip" text="Cp帮手工资占普通帮手工资的百分比。" />
+		<text name="CP_global_setting_autoRepair_title" text="自动修理" />
+		<text name="CP_global_setting_autoRepair_tooltip" text="Cp帮手在工作时车辆和工具自动修理。" />
+		<text name="CP_global_setting_autoRepair_off" text="不修理" />
+		<text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%" />
+		<text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%" />
+		<text name="CP_global_setting_autoRepair_always" text="保持100%" />
+		<text name="CP_global_setting_subTitle_userSettings" text="用户设置" />
+		<text name="CP_global_setting_controllerHudSelected_title" text="手柄控制HUB" />
+		<text name="CP_global_setting_controllerHudSelected_tooltip" text="HUD（游戏内CP界面）可搭配游戏手柄使用。" />
+		<text name="CP_global_setting_showActionEventHelp_title" text="Action event help" />
+		<text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts." />
+		<text name="CP_global_setting_subTitle_pathfinder" text="路径生成设置" />
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="目标的角度差" />
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="接近目标的最大允许角度差。数值越大，速度越快，精度越低。" />
+		<text name="CP_global_setting_deltaAngleRelaxFactor_title" text="路径精度" />
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="允许在每次创建路径时放宽路径搜索的限制。值越高，计算速度越快。" />
+		<text name="CP_global_setting_showsAllActiveCourses_title" text="显示所有活动任务 " />
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" text="在地图上显示所有活动任务。 " />
+		<!--Course manager-->
+		<text name="CP_courseManager_title" text="任务管理(%s) %s" />
+		<text name="CP_courseManager_no_current_course" text="没有任务" />
+		<text name="CP_courseManager_temporary_course" text="临时任务" />
+		<text name="CP_courseManager_change_mode" text="更改模式" />
+		<text name="CP_courseManager_load_courses" text="加载任务" />
+		<text name="CP_courseManager_save_courses" text="保存任务" />
+		<text name="CP_courseManager_clear_current_courses" text="清除当前任务" />
+		<text name="CP_courseManager_create_directory" text="创建新文件夹" />
+		<text name="CP_courseManager_move_entry" text="移动" />
+		<text name="CP_courseManager_delete_entry" text="删除" />
+		<text name="CP_courseManager_rename_entry" text="重命名" />
+		<text name="CP_courseManager_copy_entry" text="复制" />
+		<text name="CP_courseManager_folder_dialog" text="文件夹名称:" />
+		<text name="CP_courseManager_course_dialog" text="任务名称:" />
+		<text name="CP_courseManager_deleteWarning" text="你确定要删除 (%s)?" />
+		<text name="CP_courseManager_deleteError" text="文件夹不是空的 (%s)!" />
+		<text name="CP_courseManager_entryExistAlreadyError" text="文件已经存在于目标文件夹中 (%s)!" />
+		<text name="CP_courseManager_noAccessError" text="无法访问该文件夹 (%s)!" />
+		<text name="CP_courseManager_targetIsNoFolderError" text="目标位置不是一个文件夹 (%s)!" />
+		<text name="CP_courseManager_targetIsNoCourseError" text="目标位置不是任务 (%s)!" />
+		<text name="CP_courseManager_basicSettings" text="任务交互。 " />
+		<text name="CP_courseManager_advancedSettings" text="编辑文件。" />
+		<text name="CP_courseManager_activate" text="激活" />
+		<!--Custom fields-->
+		<text name="CP_customFieldManager_confirm_save" text="是否要将录制的任务保存为自定义田地 %s?" />
+		<text name="CP_customFieldManager_confirm_delete" text="要删除自定义田地吗 %s?" />
+		<text name="CP_customFieldManager_delete" text="删除自定义田地" />
+		<text name="CP_customFieldManager_rename" text="重命名自定义田地" />
+		<text name="CP_customFieldManager_draw" text="绘制自定义田地" />
+		<text name="CP_customFieldManager_draw_header" text="右键绘制自定义田地范围" />
+		<text name="CP_customFieldManager_save" text="保存自定义田地" />
+		<text name="CP_controllerGui_startRecording" text="开始自定义田地记录。" />
+		<text name="CP_controllerGui_stopRecording" text="停止自定义田地记录。" />
+		<!--Help menu-->
+		<text name="CP_help_title" text="Courseplay" />
+		<text name="CP_help_page_courseManager_title" text="任务管理" />
+		<text name="CP_help_page_courseManager_text" text="有 7 种不同的操作可用： - 创建一个新目录。 - 清除当前车辆路线。 - 保存当前任务。 - 加载任务。 - 将任务移动到另一个目录。 - 删除任务或目录。 - 重命名任务或目录。 " />
+		<text name="CP_help_page_minihud_title" text="迷你HUD" />
+		<text name="CP_help_page_minihud_text" text=" 答：单击车辆名称将打开车辆配置页面。  B：只需单击一下，即可切换任务的起始位置。  C：点击任务名称，你会打开AI菜单，路线生成器。  D:启动Courseplay助手。  E：显示当前航路点/所有航路点。单击打开任务管理器。  F：点击图标打开常规设置页面。  G:关闭HUD。  H：减少和增加工作宽度。车辆上的红线显示当前设置。  I：横向调整值，+左，-右。  J：纵向调整值，+向后，-向前。  K、 L和M：点击文本将重置对自动值的更改。  N：如果你加载了多工具任务，该区域显示车道位置。单击文本可切换位置。  O：开始/停止录制自定义田间任务。  P：从车辆上移除路线" />
+		<text name="CP_help_page_customField_title" text="自定义田地" />
+		<text name="CP_help_page_customFieldRecord_text" text=" 有两种方法可以创建自定义田地。  第一个是使用HUD的记录功能。  开始记录并记录田地边界。  完成后，再次按下按钮，系统会询问您是否要保存它。" />
+		<text name="CP_help_page_customFieldDone_text" text="查看 AI 菜单，您将看到记录的田地边界。 通过单击名称，您将获得删除或重命名的选项。 " />
+		<text name="CP_help_page_customFieldDraw_text" text="第二个选项是在 AI 菜单地图上绘制它。 没有选择拖拉机或其他车辆（左键单击地图上的某处），您可以选择绘制自定义田地。 开始时，将显示文本绘制自定义田地线右键单击。 使用鼠标右键单击要开始的位置。 下一次右键单击将从您的起点画一条线到您的第二个位置，这将是下一条线的起点。" />
+		<!--Player input-->
+		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: 选择下一个调试通道。" />
+		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: 选择上一个调试通道。" />
+		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: 更改当前调试通道。 " />
+		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: 显示调试通道菜单 是/否。" />
+		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: 打开迷你HUB" />
+		<text name="input_CP_START_STOP" text="CP: Start/stop driver" />
+		<text name="input_CP_TOGGLE_MOUSE" text="CP: 鼠标光标开/关" />
+		<text name="input_CP_OPEN_CLOSE_HUD" text="CP: 打开/关闭HUB" />
 	</texts>
 </l10n>

@@ -1,0 +1,918 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!--
+	Setup for translations:
+		- Categories are comments in between blocks.
+		- The translation name is the same as in the translations files.
+		- language is the language, english[en] is the default that needs to be set!
+
+	Example: 
+		<Translations>
+			<Category name="Global texts"> Adds this comment a the top
+				<Translation name="CP_activated"> The name or the translation in the lua code.
+					<Text language="de">aktiviert</Text> The text of the translation. Optional can also be set in the translation files like the others. 
+					<Text language="en">activated</Text> The text of the translation. Must be set as missing translations will be set to this.
+				</Translation>
+			</Category>
+		</Translations>
+-->
+<Translations>
+	<Category name="Global texts">
+		<Translation name="CP_activated">
+			<Text language="de">aktiviert</Text>
+			<Text language="en">activated</Text>
+		</Translation>
+		<Translation name="CP_deactivated">
+			<Text language="de">deaktiviert</Text>
+			<Text language="en">deactivated</Text>
+		</Translation>
+		<Translation name="CP_automatic">
+			<Text language="de">auto</Text>
+			<Text language="en">auto</Text>
+		</Translation>
+		<Translation name="CP_unit_meter">
+			<Text language="de">m</Text>
+			<Text language="en">m</Text>
+		</Translation>
+		<Translation name="CP_unit_foot">
+			<Text language="de">ft</Text>
+			<Text language="en">ft</Text>
+		</Translation>
+	</Category>
+	<Category name="User infos">
+		<Translation name="CP_infoText">
+			<Text language="de">Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22.</Text>
+			<Text language="en">Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22.</Text>
+		</Translation>
+		<Translation name="CP_error_no_course">
+			<Text language="de">Erstelle zuerst einen Kurs vor dem starten.</Text>
+			<Text language="en">Generate a course before starting the job.</Text>
+		</Translation>
+		<Translation name="CP_error_could_not_generate_course">
+			<Text language="de">Konnte keinen Kurs generieren. Das Logfile könnte weitere Informationen enthalten.</Text>
+			<Text language="en">Could not generate course. The log may have more information.</Text>
+		</Translation>
+		<Translation name="CP_error_not_on_field">
+			<Text language="de">Ziel ist nicht auf einem Feld.</Text>
+			<Text language="en">Target is not on a field.</Text>
+		</Translation>
+	</Category>
+	<Category name="Job parameters">
+		<Translation name="CP_jobParameters_fieldPosition_title">
+			<Text language="de">Field position:</Text>
+			<Text language="en">Field position:</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_subTitle_startAt">
+			<Text language="de">Start am:</Text>
+			<Text language="en">Start at:</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_title">
+			<Text language="de">Start am:</Text>
+			<Text language="en">Start at:</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_tooltip">
+			<Text language="de">Wo wird die Arbeit gestartet.</Text>
+			<Text language="en">Where to start field work</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_nearest">
+			<Text language="de">Nahester Wegpunkt</Text>
+			<Text language="en">nearest waypoint</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_first">
+			<Text language="de">Erster Wegpunkt</Text>
+			<Text language="en">first waypoint</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_last">
+			<Text language="de">Letzter Wegpunkt</Text>
+			<Text language="en">last waypoint</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_unload">
+			<Text language="de">Entlade Drescher/Häcksler</Text>
+			<Text language="en">unloading combine/chopper</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_bales">
+			<Text language="de">Sammel/Wickel Ballen</Text>
+			<Text language="en">collecting/wrapping bales</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_subTitle_laneOffset">
+			<Text language="de">Bahn:</Text>
+			<Text language="en">Lane offset:</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_title">
+			<Text language="de">Bahn:</Text>
+			<Text language="en">Lane offset:</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_tooltip">
+			<Text language="de">Bahnauswahl wenn ein Multitoolkurs erstellt wurde.</Text>
+			<Text language="en">Lane offset</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_center">
+			<Text language="de">Mitte</Text>
+			<Text language="en">center</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_left">
+			<Text language="de">Links(1)</Text>
+			<Text language="en">left(1)</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_right">
+			<Text language="de">Rechts(1)</Text>
+			<Text language="en">right(1)</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_left_2">
+			<Text language="de">Links(2)</Text>
+			<Text language="en">left(2)</Text>
+		</Translation>
+		<Translation name="CP_jobParameters_laneOffset_right_2">
+			<Text language="de">Rechts(2)</Text>
+			<Text language="en">right(2)</Text>
+		</Translation>
+	</Category>
+	<Category name="AI menu">
+		<Translation name="CP_job_fieldWork">
+			<Text language="de">CP: Feldarbeit</Text>
+			<Text language="en">CP: Fieldwork</Text>
+		</Translation>
+		<Translation name="CP_job_baleCollect">
+			<Text language="de">CP: Ballen sammeln/wickeln</Text>
+			<Text language="en">CP: Bale collect/wrap</Text>
+		</Translation>
+		<Translation name="CP_ai_page_generate_course">
+			<Text language="de">CP: Generiere Feldkurs.</Text>
+			<Text language="en">CP: Generate fieldwork course.</Text>
+		</Translation>
+		<Translation name="CP_ai_page_open_course_generator">
+			<Text language="de">CP: Öffne/Schließe Kursgenerator.</Text>
+			<Text language="en">CP: Open/close course generator.</Text>
+		</Translation>
+		<Translation name="CP_ai_messageErrorIsFull">
+			<Text language="de">Helfer %s hat die Arbeit gestoppt - Gerät ist voll!</Text>
+			<Text language="en">AI worker %s has stopped work unexpectedly - tank is full!</Text>
+		</Translation>
+	</Category>
+	<Category name="Vehicle settings">
+		<Translation name="CP_vehicle_setting_title">
+			<Text language="de">Fahrzeugeinstellungen für (%s)</Text>
+			<Text language="en">Vehicle settings for (%s)</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_basic">
+			<Text language="de">Grundeinstellungen</Text>
+			<Text language="en">Basic settings</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_implement">
+			<Text language="de">Geräteeinstellungen</Text>
+			<Text language="en">Tools settings</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_combine">
+			<Text language="de">Einstellungen für Drescher</Text>
+			<Text language="en">Combine settings</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_seeder">
+			<Text language="de">Einstellungen für Saatmaschine</Text>
+			<Text language="en">Seeder settings</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_multitool">
+			<Text language="de">Multitooleinstellungen</Text>
+			<Text language="en">Multitool settings</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_speed">
+			<Text language="de">Geschwindigkeiten</Text>
+			<Text language="en">Speeds</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_subTitle_debug">
+			<Text language="de">Debug settings</Text>
+			<Text language="en">Debug settings</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_showCourse_title">
+			<Text language="de">Zeige Kurs</Text>
+			<Text language="en">Show course</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_showCourse_tooltip">
+			<Text language="de">Zeigt den Kurs des aktuell gewählten Fahrzeugs.</Text>
+			<Text language="en">Show the current course of the vehicle</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_showCourse_startStop">
+			<Text language="de">Nur Start/Ende</Text>
+			<Text language="en">Start/stop only</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_showCourse_all">
+			<Text language="de">Alle Wegpunkte</Text>
+			<Text language="en">All waypoints</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_openHudWithMouse_title">
+			<Text language="de">Hud mit Maus öffnen</Text>
+			<Text language="en">Open Hud with mouse</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_openHudWithMouse_tooltip">
+			<Text language="de">Wenn deaktiviert, kann das Hud nur über die Tastenbelegung geöffnet werden.</Text>
+			<Text language="en">When deactivated, Hud can only be opened with the Keybind.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_stopAtEnd_title">
+			<Text language="de">Stop am Endpunkt</Text>
+			<Text language="en">Stop at end</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_stopAtEnd_tooltip">
+			<Text language="de">Fahrzeug bleibt nach der Arbeit am Endpunkt stehen.</Text>
+			<Text language="en">Stop at end</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_allowReversePathfinding_title">
+			<Text language="de">Pathfinder darf rückwärts fahren</Text>
+			<Text language="en">Allow reverse for pathfinding</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_allowReversePathfinding_tooltip">
+			<Text language="de">Erlaubt dem Pathfinder einen rückwärts Kurs zu generieren.</Text>
+			<Text language="en">When applicable, allow the pathfinder to generate courses containing reverse driving</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_allowPathfinderTurns_title">
+			<Text language="de">Benutze Pathfinder im Wendemanöver</Text>
+			<Text language="en">Allow using the pathfinder in turns</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_allowPathfinderTurns_tooltip">
+			<Text language="de">Aktiviert den Pathfinder für Wendemanöver, zum Beispiel um Objekten oder der Frucht auszuweichen.</Text>
+			<Text language="en">Enables using the pathfinder in turns, for example to avoid obstacles and fruit</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_foldImplementAtEnd_title">
+			<Text language="de">Geräte am Ende einklappen</Text>
+			<Text language="en">Fold tools at course end</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_foldImplementAtEnd_tooltip">
+			<Text language="de">Geräte am Ende des Kurses einklappen oder nicht.</Text>
+			<Text language="en">Enables/disables automatic folding of implements at the end of the course.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_raiseImplementLate_title">
+			<Text language="de">Gerät anheben</Text>
+			<Text language="en">Raise tools</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_raiseImplementLate_tooltip">
+			<Text language="de">Geräte früh oder spät anheben.</Text>
+			<Text language="en">Raise tools early or late at the start of a turn.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_raiseImplementLate_early">
+			<Text language="de">früh</Text>
+			<Text language="en">early</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_raiseImplementLate_late">
+			<Text language="de">spät</Text>
+			<Text language="en">late</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_lowerImplementEarly_title">
+			<Text language="de">Gerät absenken</Text>
+			<Text language="en">Lower tools</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_lowerImplementEarly_tooltip">
+			<Text language="de">Geräte früh oder spät absenken.</Text>
+			<Text language="en">Lower tools early or late at the end of a turn.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_lowerImplementEarly_early">
+			<Text language="de">früh</Text>
+			<Text language="en">early</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_lowerImplementEarly_late">
+			<Text language="de">spät</Text>
+			<Text language="en">late</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_turnOnField_title">
+			<Text language="de">Wenden auf dem Feld</Text>
+			<Text language="en">Only turning on the field</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_turnOnField_tooltip">
+			<Text language="de">Versucht beim Wendemanöver auf dem Feld zu bleiben. Nicht mit allen Geräten möglich.</Text>
+			<Text language="en">Only turning on the field. Not possible with all tools.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_avoidFruit_title">
+			<Text language="de">Fruchtumfahrung</Text>
+			<Text language="en">Avoid driving in fruit</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_avoidFruit_tooltip">
+			<Text language="de">Versucht nach Möglichst nicht in der Frucht zu fahren.</Text>
+			<Text language="en">The AI will try to avoid driving in the fruit</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_toolOffsetX_title">
+			<Text language="de">Geräte Versatz horizontal</Text>
+			<Text language="en">Tool offset horizontal</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_toolOffsetX_tooltip">
+			<Text language="de">Geräte Versatz horizontal</Text>
+			<Text language="en">Tool offset horizontal</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_toolOffsetZ_title">
+			<Text language="de">Geräte Versatz vertikal</Text>
+			<Text language="en">Tool offset vertical</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_toolOffsetZ_tooltip">
+			<Text language="de">Geräte Versatz vertikal</Text>
+			<Text language="en">Tool offset vertical</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_pipeAlwaysUnfold_title">
+			<Text language="de">Rohr immer ausfahren</Text>
+			<Text language="en">Always unfold the pipe</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip">
+			<Text language="de">Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet.</Text>
+			<Text language="en">Always unfold the pipe when combine is full and waiting for unloader.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_stopForUnload_title">
+			<Text language="de">Beim entladen stehen bleiben</Text>
+			<Text language="en">Stop while unloading</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_stopForUnload_tooltip">
+			<Text language="de">Drescher bleibt stehen, solange er entladen wird.</Text>
+			<Text language="en">Always stops driving, while unloading.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_selfUnload_title">
+			<Text language="de">Drescher selbst abtanken</Text>
+			<Text language="en">Combine self unload</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_selfUnload_tooltip">
+			<Text language="de">Drescher sucht sich einen Trailer in der nähe des Feldes um dort selber ab zu tanken. Not supported in multitools or convoy mode.</Text>
+			<Text language="en">Combine drives to trailer on or near the field to unload. Not supported in multitools or convoy mode.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_unloadOnFirstHeadland_title">
+			<Text language="de">Entladen im ersten Vorgewende</Text>
+			<Text language="en">Unload on first headland</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip">
+			<Text language="de">Wenn aktiv, wird der Abfaher auf im ersten Vorgewende gerufen.</Text>
+			<Text language="en">Combine will call the unloader on the first headland.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_strawSwath_title">
+			<Text language="de">Strohablage</Text>
+			<Text language="en">Straw swath</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_strawSwath_tooltip">
+			<Text language="de">Strohablage an, aus oder aus nur im Vorgewende.</Text>
+			<Text language="en">Enables/disables straw swath or only disables it on headlands.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_strawSwath_onlyCenter">
+			<Text language="de">Vorgewende deaktiviert</Text>
+			<Text language="en">Headlands disabled</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_ridgeMarkersAutomatic_title">
+			<Text language="de">Spurreißer</Text>
+			<Text language="en">Ridge markers</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip">
+			<Text language="de">Spurreißer benutzen ja oder nein.</Text>
+			<Text language="en">Ridge markers on/off.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title">
+			<Text language="de">Düngefunktion der Saatmaschine</Text>
+			<Text language="en">Sowing machines use fertilizer</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip">
+			<Text language="de">Düngefunktion der Saatmaschine ein oder ausschalten.</Text>
+			<Text language="en">Enables/disables fertilizer usage of sowing machines.</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_symmetricLaneChange_title">
+			<Text language="de">Symetrischer Bahnenwechsel</Text>
+			<Text language="en">Symmetric lane change</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_symmetricLaneChange_tooltip">
+			<Text language="de">Symetrischer Bahnenwechsel</Text>
+			<Text language="en">Symmetric lane change</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_convoyDistance_title">
+			<Text language="de">Fahrzeugverband Entfernung</Text>
+			<Text language="en">Convoy Distance</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_convoyDistance_tooltip">
+			<Text language="de">Entfernung zwischen den Fahrzeugen. Wert: 40 - 400</Text>
+			<Text language="en">Distance between vehicles. Value: 40 - 400</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fieldWorkSpeed_title">
+			<Text language="de">Feldarbeit</Text>
+			<Text language="en">Fieldwork</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fieldWorkSpeed_tooltip">
+			<Text language="de">Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50</Text>
+			<Text language="en">Maximum speed while working on the field. Value: 5 - 50</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fieldSpeed_title">
+			<Text language="de">Feld</Text>
+			<Text language="en">Field</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fieldSpeed_tooltip">
+			<Text language="de">Maximale Geschwindigkeit auf dem Feld. Value: 5 - 50</Text>
+			<Text language="en">Maximum speed while driving on field. Value: 5 - 50</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_turnSpeed_title">
+			<Text language="de">Wendemanöver</Text>
+			<Text language="en">Turn</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_turnSpeed_tooltip">
+			<Text language="de">Maximale Geschwindigkeit beim Wendemanöver. Value: 2 - 25</Text>
+			<Text language="en">Maximum speed during turn maneuvers. Value: 2 - 25</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_reverseSpeed_title">
+			<Text language="de">Rückwärts</Text>
+			<Text language="en">Reverse</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_reverseSpeed_tooltip">
+			<Text language="de">Maximale Geschwindigkeit beim rückwärts fahren. Value: 2 - 25</Text>
+			<Text language="en">Maximum speed while reversing. Value: 2 - 25</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_debugActive_title">
+			<Text language="de">Vehicle debug</Text>
+			<Text language="en">Vehicle debug</Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_debugActive_tooltip">
+			<Text language="de">Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge</Text>
+			<Text language="en">Enables/disables debug for this vehicle.</Text>
+		</Translation>
+	</Category>
+	<Category name="Course generator settings">
+		<Translation name="CP_vehicle_courseGeneratorSetting_title">
+			<Text language="de">Kursgenerator Einstellungen von (%s)</Text>
+			<Text language="en">Course generator settings of (%s)</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_basic">
+			<Text language="de">Basis</Text>
+			<Text language="en">basic</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_headland">
+			<Text language="de">Vorgewende</Text>
+			<Text language="en">headland</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_center">
+			<Text language="de">Mitte</Text>
+			<Text language="en">center</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_subTitle_advanced">
+			<Text language="de">Fortgeschritten</Text>
+			<Text language="en">advanced</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_workWidth_title">
+			<Text language="de">Arbeitsbreite</Text>
+			<Text language="en">Work width</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip">
+			<Text language="de">Arbeitsbreite. Value: 0 - 50</Text>
+			<Text language="en">Work width. Value: 0 - 50</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title">
+			<Text language="de">Anzahl Vorgewende</Text>
+			<Text language="en">Number of headlands</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip">
+			<Text language="de">Anzahl Vorgewende. Value: 0 - 40</Text>
+			<Text language="en">Number of headlands. Value: 0 - 40</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title">
+			<Text language="de">Vorgewende Überlappung</Text>
+			<Text language="en">Headland overlap</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip">
+			<Text language="de">Überlappung Vorgewende in % der Arbeitsbreite. Value: 0 - 25</Text>
+			<Text language="en">Overlap headland tracks as percent of working width. Value: 0 - 25</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_fieldMargin_title">
+			<Text language="de">Feldgrenze</Text>
+			<Text language="en">Field margin</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip">
+			<Text language="de">Positive Werte reduzieren die Feldgröße um einen Puffer zum Feldrand erhalten, negative Werte vergrößern den Arbeitsbereich um über den Feldrand hinaus zu arbeiten. Value: -2 - 5.8</Text>
+			<Text language="en">Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title">
+			<Text language="de">Reihen zum überspringen</Text>
+			<Text language="en">Rows to skip</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip">
+			<Text language="de">Reihen zum überspringen wenn auf Bahnen gewechselt wird. Wert: 0 - 6</Text>
+			<Text language="en">Rows to skip when changing to the next up/down row. Value: 0 - 6</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title">
+			<Text language="de">Reihen pro Beet</Text>
+			<Text language="en">Rows per land</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip">
+			<Text language="de">Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Value: 0 - 24</Text>
+			<Text language="en">When the center mode is 'lands', this many rows are in each block. Value: 0 - 24</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_title">
+			<Text language="de">Vorgewende Richtung</Text>
+			<Text language="en">Headland direction</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip">
+			<Text language="de">Soll das Fahrzeug auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren</Text>
+			<Text language="en">Should the vehicle drive clockwise or counterclockwise on the headland</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise">
+			<Text language="de">Im Uhrzeigersinn</Text>
+			<Text language="en">clockwise</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise">
+			<Text language="de">Gegen den Uhrzeigersinn</Text>
+			<Text language="en">counterclockwise</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_title">
+			<Text language="de">Feldmitte</Text>
+			<Text language="en">Field center</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip">
+			<Text language="de">Feldmitte</Text>
+			<Text language="en">Field center</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_up_down">
+			<Text language="de">hoch/runter</Text>
+			<Text language="en">up/down</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_spiral">
+			<Text language="de">spiralförmig</Text>
+			<Text language="en">spiral</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_circular">
+			<Text language="de">kreisförmig</Text>
+			<Text language="en">racetrack</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_centerMode_lands">
+			<Text language="de">Beete (innen nach außen)</Text>
+			<Text language="en">lands</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title">
+			<Text language="de">Vorgewende Ecken</Text>
+			<Text language="en">Headland corners</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip">
+			<Text language="de">Vorgewende Ecken</Text>
+			<Text language="en">Headland corners</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth">
+			<Text language="de">Weich</Text>
+			<Text language="en">smooth</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp">
+			<Text language="de">Scharf</Text>
+			<Text language="en">sharp</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round">
+			<Text language="de">Rund</Text>
+			<Text language="en">round</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_title">
+			<Text language="de">Startrichtung</Text>
+			<Text language="en">Up/down row direction</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip">
+			<Text language="de">Richtung in der die Bahnen gefahren werden sollen.</Text>
+			<Text language="en">Direction of the rows in the center of the field</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic">
+			<Text language="de">Automatisch</Text>
+			<Text language="en">automatic</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge">
+			<Text language="de">Längeste Kante</Text>
+			<Text language="en">longest edge</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_rowDirection_manual">
+			<Text language="de">Manuell</Text>
+			<Text language="en">manual</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title">
+			<Text language="de">Richtungswinkel der Bahnen</Text>
+			<Text language="en">Up/down row angle</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip">
+			<Text language="de">Winkel der Bahnen (0 ist Norden) wenn Einstellung auf Manuell gesetzt ist. Value: 0 - 175 Steps: 5</Text>
+			<Text language="en">Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title">
+			<Text language="de">Inselumfahrung</Text>
+			<Text language="en">Island bypass mode</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip">
+			<Text language="de">Wie soll die Insel auf dem Feld umfahren werden.</Text>
+			<Text language="en">How the course should bypass islands in the field</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none">
+			<Text language="de">keine Umfahrung</Text>
+			<Text language="en">no bypass</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple">
+			<Text language="de">einfach</Text>
+			<Text language="en">simple</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle">
+			<Text language="de">Kreis</Text>
+			<Text language="en">circle</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title">
+			<Text language="de">Starte auf</Text>
+			<Text language="en">Start work on</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip">
+			<Text language="de">Startpunkt auf dem Vorgewende oder auf den Bahnen</Text>
+			<Text language="en">Start working on the headland (harvest) or center of the field (other works)</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland">
+			<Text language="de">Vorgewende</Text>
+			<Text language="en">headland</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows">
+			<Text language="de">Bahnen</Text>
+			<Text language="en">center</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_multiTools_title">
+			<Text language="de">Fahrzeuge auf dem Kurs</Text>
+			<Text language="en">Multiple tools</Text>
+		</Translation>
+		<Translation name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip">
+			<Text language="de">Wieviele Fahrzeuge sollten zusammen auf dem Kurs fahren.</Text>
+			<Text language="en">Number of vehicles on the same course.</Text>
+		</Translation>
+	</Category>
+	<Category name="Global settings">
+		<Translation name="CP_global_setting_title">
+			<Text language="de">Globale Einstellungen</Text>
+			<Text language="en">Global settings</Text>
+		</Translation>
+		<Translation name="CP_global_setting_subTitle_general">
+			<Text language="de">Grundeinstellungen</Text>
+			<Text language="en">Basic settings</Text>
+		</Translation>
+		<Translation name="CP_global_setting_wageModifier_title">
+			<Text language="de">CP Fahrerlohn</Text>
+			<Text language="en">Cp driver wages</Text>
+		</Translation>
+		<Translation name="CP_global_setting_wageModifier_tooltip">
+			<Text language="de">Fahrerlohn für CP Arbeiter, prozentual von dem standart Lohn.</Text>
+			<Text language="en">Cp driver wages as percentage of normal worker's wages</Text>
+		</Translation>
+		<Translation name="CP_global_setting_autoRepair_title">
+			<Text language="de">Automatische Reparatur</Text>
+			<Text language="en">Automatic repair</Text>
+		</Translation>
+		<Translation name="CP_global_setting_autoRepair_tooltip">
+			<Text language="de">CP Fahrer reparieren automatisch ihre Fahrzeuge und Geräte.</Text>
+			<Text language="en">Cp driver automatically repair, while driving.</Text>
+		</Translation>
+		<Translation name="CP_global_setting_autoRepair_off">
+			<Text language="de">Nicht reparieren</Text>
+			<Text language="en">Don't repair</Text>
+		</Translation>
+		<Translation name="CP_global_setting_autoRepair_less_than_25">
+			<Text language="de">&lt; 25%</Text>
+			<Text language="en">&lt; 25%</Text>
+		</Translation>
+		<Translation name="CP_global_setting_autoRepair_less_than_70">
+			<Text language="de">&lt; 70%</Text>
+			<Text language="en">&lt; 70%</Text>
+		</Translation>
+		<Translation name="CP_global_setting_autoRepair_always">
+			<Text language="de">Instandhalten</Text>
+			<Text language="en">Keep it healthy</Text>
+		</Translation>
+		<Translation name="CP_global_setting_subTitle_userSettings">
+			<Text language="de">Benutzereinstellungen</Text>
+			<Text language="en">User settings</Text>
+		</Translation>
+		<Translation name="CP_global_setting_controllerHudSelected_title">
+			<Text language="de">Controller freundliches Hud</Text>
+			<Text language="en">Gamepad friendly Hud</Text>
+		</Translation>
+		<Translation name="CP_global_setting_controllerHudSelected_tooltip">
+			<Text language="de">Benutze das Hud, welches sich über den Controller bedienen lässt.</Text>
+			<Text language="en">Use the Hud, wich can be controlled with a Gamepad.</Text>
+		</Translation>
+		<Translation name="CP_global_setting_showActionEventHelp_title">
+			<Text language="de">Zeige Tastenbelegung</Text>
+			<Text language="en">Action event help</Text>
+		</Translation>
+		<Translation name="CP_global_setting_showActionEventHelp_tooltip">
+			<Text language="de">Schaltet die Anzeige der Tastenbelegung an und aus.</Text>
+			<Text language="en">Shows action event help texts.</Text>
+		</Translation>
+		<Translation name="CP_global_setting_subTitle_pathfinder">
+			<Text language="de">Pathfinder Einstellungen</Text>
+			<Text language="en">Pathfinder settings</Text>
+		</Translation>
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoal_title">
+			<Text language="de">Ankunftswinkel am Ziel</Text>
+			<Text language="en">Angle difference at goal</Text>
+		</Translation>
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoal_tooltip">
+			<Text language="de">Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller</Text>
+			<Text language="en">Maximum angle difference allowed at goal, bigger values are faster but less accurate</Text>
+		</Translation>
+		<Translation name="CP_global_setting_deltaAngleRelaxFactor_title">
+			<Text language="de">Änderungsfaktor Pathfinder</Text>
+			<Text language="en">Delta angle relax factor</Text>
+		</Translation>
+		<Translation name="CP_global_setting_deltaAngleRelaxFactor_tooltip">
+			<Text language="de">Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller</Text>
+			<Text language="en">Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster</Text>
+		</Translation>
+		<Translation name="CP_global_setting_showsAllActiveCourses_title">
+			<Text language="de">Zeige alle Kurse</Text>
+			<Text language="en">Shows all active courses</Text>
+		</Translation>
+		<Translation name="CP_global_setting_showsAllActiveCourses_tooltip">
+			<Text language="de">Zeigt alle geladenen Kurse auf der Map.</Text>
+			<Text language="en">Shows all active courses on the in game map.</Text>
+		</Translation>
+	</Category>
+	<Category name="Course manager">
+		<Translation name="CP_courseManager_title">
+			<Text language="de">CourseManager(%s) %s</Text>
+			<Text language="en">CourseManager(%s) %s</Text>
+		</Translation>
+		<Translation name="CP_courseManager_no_current_course">
+			<Text language="de">kein Kurs</Text>
+			<Text language="en">no course</Text>
+		</Translation>
+		<Translation name="CP_courseManager_temporary_course">
+			<Text language="de">temporärer Kurs</Text>
+			<Text language="en">temporary course</Text>
+		</Translation>
+		<Translation name="CP_courseManager_change_mode">
+			<Text language="de">Ändere Modus</Text>
+			<Text language="en">Change mode</Text>
+		</Translation>
+		<Translation name="CP_courseManager_load_courses">
+			<Text language="de">Kurs laden</Text>
+			<Text language="en">Load course</Text>
+		</Translation>
+		<Translation name="CP_courseManager_save_courses">
+			<Text language="de">Kurs speichern</Text>
+			<Text language="en">Save course</Text>
+		</Translation>
+		<Translation name="CP_courseManager_clear_current_courses">
+			<Text language="de">Kurs aus Fahrzeug löschen</Text>
+			<Text language="en">Clear current course</Text>
+		</Translation>
+		<Translation name="CP_courseManager_create_directory">
+			<Text language="de">Neuer Ordner</Text>
+			<Text language="en">Create new folder</Text>
+		</Translation>
+		<Translation name="CP_courseManager_move_entry">
+			<Text language="de">Eintrag bewegen</Text>
+			<Text language="en">Move entry</Text>
+		</Translation>
+		<Translation name="CP_courseManager_delete_entry">
+			<Text language="de">Eintrag löschen</Text>
+			<Text language="en">Delete entry</Text>
+		</Translation>
+		<Translation name="CP_courseManager_rename_entry">
+			<Text language="de">Eintrag umbenennen</Text>
+			<Text language="en">Rename entry</Text>
+		</Translation>
+		<Translation name="CP_courseManager_copy_entry">
+			<Text language="de">Eintrag kopieren</Text>
+			<Text language="en">Copy entry</Text>
+		</Translation>
+		<Translation name="CP_courseManager_folder_dialog">
+			<Text language="de">Ordnername:</Text>
+			<Text language="en">Folder name:</Text>
+		</Translation>
+		<Translation name="CP_courseManager_course_dialog">
+			<Text language="de">Kursname:</Text>
+			<Text language="en">Course name:</Text>
+		</Translation>
+		<Translation name="CP_courseManager_deleteWarning">
+			<Text language="de">Sicher, dass du (%s) löschen möchtest ?</Text>
+			<Text language="en">Are you sure, you want to delete (%s)?</Text>
+		</Translation>
+		<Translation name="CP_courseManager_deleteError">
+			<Text language="de">Ordner ist nicht leer (%s)!</Text>
+			<Text language="en">Folder is not empty (%s)!</Text>
+		</Translation>
+		<Translation name="CP_courseManager_entryExistAlreadyError">
+			<Text language="de">Kurs im Ordner (%s) bereits vorhanden!</Text>
+			<Text language="en">File already exist in target folder (%s)!</Text>
+		</Translation>
+		<Translation name="CP_courseManager_noAccessError">
+			<Text language="de">Kein Zugriff auf Ordner (%s)!</Text>
+			<Text language="en">No access to the folder (%s)!</Text>
+		</Translation>
+		<Translation name="CP_courseManager_targetIsNoFolderError">
+			<Text language="de">Ziel ist kein Ordner (%s)!</Text>
+			<Text language="en">Target location is not a folder (%s)!</Text>
+		</Translation>
+		<Translation name="CP_courseManager_targetIsNoCourseError">
+			<Text language="de">Ziel ist kein Kurs (%s)!</Text>
+			<Text language="en">Target location is not a course (%s)!</Text>
+		</Translation>
+		<Translation name="CP_courseManager_basicSettings">
+			<Text language="de">Kurse speichern/laden.</Text>
+			<Text language="en">Course interaction.</Text>
+		</Translation>
+		<Translation name="CP_courseManager_advancedSettings">
+			<Text language="de">Kurse/Ordner editieren.</Text>
+			<Text language="en">Edit files.</Text>
+		</Translation>
+		<Translation name="CP_courseManager_activate">
+			<Text language="de">aktivieren</Text>
+			<Text language="en">Activate</Text>
+		</Translation>
+	</Category>
+	<Category name="Custom fields">
+		<Translation name="CP_customFieldManager_confirm_save">
+			<Text language="de">Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?</Text>
+			<Text language="en">Do you want to save the recorded course as custom field %s?</Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_confirm_delete">
+			<Text language="de">Möchtest du den Randkurs %s löschen?</Text>
+			<Text language="en">Do you want to delete the custom field %s?</Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_delete">
+			<Text language="de">Randkurs löschen</Text>
+			<Text language="en">Delete custom field</Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_rename">
+			<Text language="de">Randkurs umbenennen</Text>
+			<Text language="en">Rename custom field</Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_draw">
+			<Text language="de">Randkurs zeichen</Text>
+			<Text language="en">Draw custom field</Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_draw_header">
+			<Text language="de">Zeichne Linien mit Rechtsklick.</Text>
+			<Text language="en">Draw custom field lines with right click.</Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_save">
+			<Text language="de">Speicher Randkurs</Text>
+			<Text language="en">Save custom field</Text>
+		</Translation>
+		<Translation name="CP_controllerGui_startRecording">
+			<Text language="de">Starte Feldrandaufnahme.</Text>
+			<Text language="en">Start custom field recording.</Text>
+		</Translation>
+		<Translation name="CP_controllerGui_stopRecording">
+			<Text language="de">Stoppe Feldrandaufnahme.</Text>
+			<Text language="en">Stop custom field recording.</Text>
+		</Translation>
+	</Category>
+	<Category name="Help menu">
+		<Translation name="CP_help_title">
+			<Text language="de">Courseplay</Text>
+			<Text language="en">Courseplay</Text>
+		</Translation>
+		<Translation name="CP_help_page_courseManager_title">
+			<Text language="de">Kursmanager</Text>
+			<Text language="en">Course manager</Text>
+		</Translation>
+		<Translation name="CP_help_page_courseManager_text">
+			<Text language="de">Es gibt 7 unterschiedliche Aktionen für den Kursmanager: - Neuen Ordner erstellen. - Kurs aus Fahrzeug löschen. - Aktuellen Kurs speichern. - Kurse laden. - Kurse in einen anderen Ordner verschieben. - Ordner oder Kurse löschen. - Ordner oder Kurse umbenennen.</Text>
+			<Text language="en">There are 7 different action available: - Creating a new directory. - Clearing the current vehicle course. - Saving the current course. - Loading a course. - Moving a course in to another directory. - Deleting a course or directory. - Renaming a course or directory.</Text>
+		</Translation>
+		<Translation name="CP_help_page_minihud_title">
+			<Text language="de">Mini HUD</Text>
+			<Text language="en">Mini HUD</Text>
+		</Translation>
+		<Translation name="CP_help_page_minihud_text">
+			<Text language="de"> A: Auf den Fahrzeugname klicken um die Fahrzeugeinstellungen auf zu rufen. B: Stellt die Startposition beim draufklicken um. C: Mit dem klick auf den Kursnamen wird das Helfer Menü mit geöffnetem Kursgenerator aufgerufen. D: Starte Courseplay Helfer. E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte. Klick zum öffnen des Kursmanagers. F: Klick auf das Icon öffnet die Grundeinstellungen. G: Schließt das HUD. H: Verkleinert oder vergrößert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug, zeigt die Einstellung. I: Wert für den horizontalen Versatz, + links, - rechts. J: Wert für den vertikalen Versatz, + hinten, - vorne. K, L and M: Klick auf den Text zum zurücksetzen der Werte. N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel. O: Startet und stoppt die Aufzeichnung eines Feldrandkurses. P: Löscht den Kurs aus dem Fahrzeug</Text>
+			<Text language="en"> A: Clicking on the vehicle name opens the vehicle configurations page. B: Toggle where to start the course with one click. C: Clicking on the coursename you will open the AI Menu with the course generator open. D: Start the Courseplay helper. E: Shows current waypoint / total waypoints. Click to open the course manager. F: Clicking on the icon opens the general settings page. G: Closes the HUD. H: Decrease and increase the working width. A red line on your vehicle shows the current setting. I: Value for horizontal offset, + left, - right. J: Value for vertical offset, + backward, - forward. K, L and M: Clicking on the text will reset your changes to the auto values. N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions. O: Start/stop recording a custom field course. P: Removes course from vehicle</Text>
+		</Translation>
+		<Translation name="CP_help_page_customField_title">
+			<Text language="de">Eigene Felder</Text>
+			<Text language="en">Custom Fields</Text>
+		</Translation>
+		<Translation name="CP_help_page_customFieldRecord_text">
+			<Text language="de"> Es gibt 2 Wege, ein eigenes Feld anzulegen: Der erste ist, die Aufnahmefunktion im HUD zu benutzen. Starte die Aufnahme und fahre um dein Feld. Wenn du fertig bist, drücke nochmal auf den Knopf, und du wirst gefragt ob du speichern willst</Text>
+			<Text language="en"> There are two ways to create a custom field. The first one is to use the record function of the HUD. Start the record and record your field border. Once done, press the button again and you will be asked if you want to save it.</Text>
+		</Translation>
+		<Translation name="CP_help_page_customFieldDone_text">
+			<Text language="de"> Wenn du ins AI Menu schaust, siehst du die Feldgrenze von deinem eigenen Feld. Wenn du auf den Namen klickst, hast du die Möglichkeit es umzubenennen oder zu löschen.</Text>
+			<Text language="en"> Having a look on the AI Menu, you will see your recorded field border. By clicking on the Name, you will get the option to either delete it or rename it.</Text>
+		</Translation>
+		<Translation name="CP_help_page_customFieldDraw_text">
+			<Text language="de"> Die 2. Möglichkeit ist, es direkt auf der AI Menü Karte zu zeichnen: Stelle sicher dass kein Fahrzeug ausgewählt ist (Linksklick irgendwo auf der Karte), und du bekommst die Option dein eigenes Feld zu zeichnen. Wenn gestartet, wird der Text, Zeichne Linien mit Rechtsklick, angezeigt. Klicke mit der rechten Maustaste auf den Punkt wo du beginnen willst. Der nächste Rechtsklick zeichnet eine Linie vom ersten Punkt bis zu dem jetzigen, der jetzt als Startpunkt für die nächste Linie gilt.</Text>
+			<Text language="en"> The second option is to draw it on the AI Menu Map. Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field. When started, the text draw custom field lines with right click will be displayed. Use the right mouse button to click on a position on where you want to start. The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line.</Text>
+		</Translation>
+	</Category>
+	<Category name="Player input">
+		<Translation name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS">
+			<Text language="de">CP: Nächster Debug channel auswählen.</Text>
+			<Text language="en">CP: Select next debug channel.</Text>
+		</Translation>
+		<Translation name="input_CP_DBG_CHANNEL_SELECT_NEXT">
+			<Text language="de">CP: Vorheriger Debug channel auswählen.</Text>
+			<Text language="en">CP: Select previous debug channel.</Text>
+		</Translation>
+		<Translation name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT">
+			<Text language="de">CP: Aktuellen Debug channel ändern.</Text>
+			<Text language="en">CP: Change current debug channel.</Text>
+		</Translation>
+		<Translation name="input_CP_DBG_CHANNEL_MENU_VISIBILITY">
+			<Text language="de">CP: Zeigt debug channels menu ja/nein.</Text>
+			<Text language="en">CP: Shows debug channel menu yes/no.</Text>
+		</Translation>
+		<Translation name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY">
+			<Text language="de">CP: Öffne mini GUI</Text>
+			<Text language="en">CP: Open mini GUI</Text>
+		</Translation>
+		<Translation name="input_CP_START_STOP">
+			<Text language="de">CP: Start/stop CP Helfer</Text>
+			<Text language="en">CP: Start/stop driver</Text>
+		</Translation>
+		<Translation name="input_CP_TOGGLE_MOUSE">
+			<Text language="de">CP: Mauszeiger an/aus</Text>
+			<Text language="en">CP: Mouse cursor on/off</Text>
+		</Translation>
+		<Translation name="input_CP_OPEN_CLOSE_HUD">
+			<Text language="de">CP: Öffne/schließe Hud</Text>
+			<Text language="en">CP: Open/close hud</Text>
+		</Translation>
+	</Category>
+</Translations>
