@@ -17,7 +17,7 @@ function CpAIWorker.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
 
-function CpAIWorker.register(typeManager,typeName,specializations)
+function CpAIWorker.register(typeManager, typeName, specializations)
 	if CpAIWorker.prerequisitesPresent(specializations) then
 		typeManager:addSpecialization(typeName, CpAIWorker.SPEC_NAME)
 	end
@@ -84,8 +84,8 @@ function CpAIWorker:updateActionEvents()
             if self:getIsAIActive() then 
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
-                local text = string.format("CP: %s\n(%s)",giantsSpec.texts.hireEmployee,self:getCpStartText())
-			    g_inputBinding:setActionEventText(actionEvent.actionEventId,text)
+                local text = string.format("CP: %s\n(%s)", giantsSpec.texts.hireEmployee, self:getCpStartText())
+			    g_inputBinding:setActionEventText(actionEvent.actionEventId, text)
             end
 
 			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
@@ -102,7 +102,14 @@ end
 
 --- Post cp helper release handling.
 --- Is used for the communication to external mods with events.
-function CpAIWorker:stopCurrentAIJob(superFunc,message,...)
+function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
+    if message then 
+        CpUtil.infoVehicle(self, "stop message: %s", message:getMessage())
+    else
+        CpUtil.infoVehicle(self, "no stop message was given.")
+        return superFunc(self, message, ...)
+    end
+    
     local wasCpActive = self:getIsCpActive()
     local driveStrategy
     if wasCpActive then
@@ -123,23 +130,18 @@ function CpAIWorker:stopCurrentAIJob(superFunc,message,...)
             driveStrategy:onFinished()
         end
     end
-    if message then 
-        CpUtil.info(message:getMessage(), CpUtil.getName(self))
-    else
-        CpUtil.info("%s: no message was given.", CpUtil.getName(self))
-    end
-    superFunc(self,message,...)
+    superFunc(self, message, ...)
     if wasCpActive then 
         if message then
             local foldAtEndAllowed
             if message:isa(AIMessageErrorOutOfFill) then 
-                SpecializationUtil.raiseEvent(self,"onCpEmpty")
+                SpecializationUtil.raiseEvent(self, "onCpEmpty")
                 foldAtEndAllowed = true
             elseif message:isa(AIMessageErrorIsFull) then 
-                SpecializationUtil.raiseEvent(self,"onCpFull")
+                SpecializationUtil.raiseEvent(self, "onCpFull")
                 foldAtEndAllowed = true
             elseif message:isa(AIMessageSuccessFinishedJob) then 
-                SpecializationUtil.raiseEvent(self,"onCpFinished")
+                SpecializationUtil.raiseEvent(self, "onCpFinished")
                 foldAtEndAllowed = true
             end
             if foldAtEndAllowed and self:getCpSettings().foldImplementAtEnd:getValue() then
@@ -152,11 +154,11 @@ end
 
 --- Directly starts a cp job or stops a currently active job.
 function CpAIWorker:startStopDriver()
-    CpUtil.infoVehicle(self,"Start/stop cp helper")
+    CpUtil.infoVehicle(self, "Start/stop cp helper")
     local spec = self.spec_cpAIWorker
     if self:getIsAIActive() then
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
-        CpUtil.infoVehicle(self,"Stopped current helper.")
+        CpUtil.infoVehicle(self, "Stopped current helper.")
 	else
         self:updateAIFieldWorkerImplementData()
 		local job = self:getCpStartableJob()
@@ -170,12 +172,12 @@ function CpAIWorker:startStopDriver()
          --   if success then
             if true then
                 g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(job, self:getOwnerFarmId()))
-                CpUtil.infoVehicle(self,"Cp helper started.")
+                CpUtil.infoVehicle(self, "Cp helper started.")
             else
-                CpUtil.infoVehicle(self,"Job parameters not valid.")
+                CpUtil.infoVehicle(self, "Job parameters not valid.")
             end
         else
-            CpUtil.infoVehicle(self,"Could not start CP helper, it needs a course when not collecting bales.")
+            CpUtil.infoVehicle(self, "Could not start CP helper, it needs a course when not collecting bales.")
         end
 	end
 end

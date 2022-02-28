@@ -21,8 +21,8 @@ function CpDebug:init()
 	--- Is the debug channel menu active ?
 	self.menuVisible = false
 
-	self.activatedColor = {1,0.5,0, 1.0}
-	self.disabledColor = {1,1, 1, 1}
+	self.activatedColor = {1, 0.5, 0, 1.0}
+	self.disabledColor = {1, 1, 1, 1}
 end
 
 --- Loads the debug channel configurations.
@@ -32,7 +32,7 @@ function CpDebug:loadFromXMLFile()
 	--- 			valueTypeId, 			path, 				description, defaultValue, isRequired
 	schema:register(XMLValueType.STRING, "DebugChannels.DebugChannel(?)#name", "Debug channel name")
 	schema:register(XMLValueType.STRING, "DebugChannels.DebugChannel(?)#text", "Debug channel tooltip")
-	schema:register(XMLValueType.BOOL, "DebugChannels.DebugChannel(?)#active", "Debug channel active at start",false)
+	schema:register(XMLValueType.BOOL, "DebugChannels.DebugChannel(?)#active", "Debug channel active at start", false)
 
 	local xmlFilePath = Utils.getFilename('config/DebugChannels.xml', g_Courseplay.BASE_DIRECTORY)
 	local xmlFile = XMLFile.load("debugChannelsXml", xmlFilePath, self.xmlSchema)
@@ -41,7 +41,7 @@ function CpDebug:loadFromXMLFile()
 	xmlFile:iterate("DebugChannels.DebugChannel", function (i, key)
 		local name = xmlFile:getValue( key.."#name")
 		local text = xmlFile:getValue( key.."#text")
-		local active = xmlFile:getValue( key.."#active",false)
+		local active = xmlFile:getValue( key.."#active", false)
 		self.channels[i] = {}
 		self.channels[i].text = text
 		self.channels[i].active = active
@@ -103,17 +103,17 @@ function CpDebug:draw()
 		local x = partSize * (channelIx-maxLineSize*math.floor(i/maxLineSize))
 		local y = math.ceil(channelIx/maxLineSize)*0.02
 		if self.channels[channelIx].active then
-			local r,g,b,a = unpack(self.activatedColor)
-			setTextColor(r,g,b,a)
+			local r, g, b, a = unpack(self.activatedColor)
+			setTextColor(r, g, b, a)
 		else
-			local r,g,b,a = unpack(self.disabledColor)
-			setTextColor(r,g,b,a)
+			local r, g, b, a = unpack(self.disabledColor)
+			setTextColor(r, g, b, a)
 		end
 		local text = string.format("%s", self.channels[channelIx].text)
 		if channelIx == self.currentIx then 
 			text = "[["..text.."]]"
 		end
-		renderText(x,y, 0.015, text)
+		renderText(x, y, 0.015, text)
 
 	end
 
@@ -121,23 +121,25 @@ function CpDebug:draw()
 end
 
 function CpDebug:activateEvents()
-	for _,id in pairs(CpDebug.eventIds) do 
+	for _, id in pairs(CpDebug.eventIds) do 
 		g_currentMission.inputManager:setActionEventActive(id, true)
 	end
 end
 
 function CpDebug:deactivateEvents()
-	for _,id in pairs(CpDebug.eventIds) do 
+	for _, id in pairs(CpDebug.eventIds) do 
 		g_currentMission.inputManager:setActionEventActive(id, false)
 	end
 end
 
 function CpDebug:updateActionEventTextVisibility()
-	local textVisible = g_Courseplay.globalSettings.showActionEventHelp:getValue()
-	for _,id in pairs(CpDebug.eventIds) do 
-		g_inputBinding:setActionEventTextVisibility(id, textVisible)
+	if CpDebug.eventIds then
+		local textVisible = g_Courseplay.globalSettings.showActionEventHelp:getValue()
+		for _, id in pairs(CpDebug.eventIds) do 
+			g_inputBinding:setActionEventTextVisibility(id, textVisible)
+		end
+		g_inputBinding:setActionEventTextVisibility(CpDebug.menuEventId, textVisible)
 	end
-	g_inputBinding:setActionEventTextVisibility(CpDebug.menuEventId, textVisible)
 end
 
 function CpDebug:toggleMenuVisibility()
@@ -154,7 +156,7 @@ function CpDebug:isMenuVisible()
 	return self.menuVisible and self.isEnabled
 end
 
-function CpDebug:drawVehicleDebugTable(vehicle,table)
+function CpDebug:drawVehicleDebugTable(vehicle, table)
 	
 	local d = DebugInfoTable.new()
 
@@ -174,12 +176,12 @@ function CpDebug.addEvents(mission)
 	--- actionName, targetObject, eventCallback, triggerUp, triggerDown, triggerAlways, startActive, callbackState, disableConflictingBindings, reportAnyDeviceCollision
 	CpDebug.eventIds = {}
 	local _, eventId = mission.inputManager:registerActionEvent(InputAction.CP_DBG_CHANNEL_SELECT_PREVIOUS, CpDebug, CpDebug.setPrevious, false, true, false, CpDebug:isMenuVisible())
-	table.insert(CpDebug.eventIds,eventId)
+	table.insert(CpDebug.eventIds, eventId)
 	local _, eventId = mission.inputManager:registerActionEvent(InputAction.CP_DBG_CHANNEL_SELECT_NEXT, CpDebug, CpDebug.setNext, false, true, false, CpDebug:isMenuVisible())
-	table.insert(CpDebug.eventIds,eventId)
+	table.insert(CpDebug.eventIds, eventId)
 	local _, eventId = mission.inputManager:registerActionEvent(InputAction.CP_DBG_CHANNEL_TOGGLE_CURRENT, CpDebug, CpDebug.toggleCurrentChannel, false, true, false, CpDebug:isMenuVisible())
-	table.insert(CpDebug.eventIds,eventId)
+	table.insert(CpDebug.eventIds, eventId)
 	local _, eventId = mission.inputManager:registerActionEvent(InputAction.CP_DBG_CHANNEL_MENU_VISIBILITY, CpDebug, CpDebug.toggleMenuVisibility, false, true, false, CpDebug.isEnabled)
 	CpDebug.menuEventId = eventId
 end
-FSBaseMission.registerActionEvents = Utils.appendedFunction(FSBaseMission.registerActionEvents,CpDebug.addEvents)
+FSBaseMission.registerActionEvents = Utils.appendedFunction(FSBaseMission.registerActionEvents, CpDebug.addEvents)
