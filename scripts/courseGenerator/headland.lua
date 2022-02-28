@@ -472,8 +472,7 @@ function calculateOneSide(boundary, startIx, endIx, step, rightSide, headlandSet
 	for i = 1, headlandSettings.nPasses do
 		local width = i == 1 and implementWidth / 2 or implementWidth
 		headlands[i] = calculateHeadlandTrack(headlands[i - 1], headlandSettings.mode, rightSide, width,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, false, true,
-			centerSettings, i)
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, true, centerSettings, i)
 		extendLineToOtherLine(headlands[i], boundary, implementWidth * 2)
 		headlands[i]:space(math.pi, minDistanceBetweenPoints)
 		local side = rightSide and 'right' or 'left'
@@ -543,8 +542,7 @@ function generateTwoSideHeadlands( polygon, islands, implementWidth, headlandSet
 
 	-- we need this for the part which connects the left and right side headlands.
 	local headlandAround = calculateHeadlandTrack(boundary, headlandSettings.mode, boundary.isClockwise, implementWidth / 2,
-		minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, true, true,
-		centerSettings, 1)
+		minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, true, centerSettings, 1)
 
 	local step = boundary.isClockwise and 1 or -1
 	local leftHeadlands = calculateOneSide(boundary, bottomLeftIx, topLeftIx, step, true, headlandSettings, centerSettings,

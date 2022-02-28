@@ -122,7 +122,7 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		-- boundary.
 		field.boundary = calculateHeadlandTrack(field.boundary, CourseGenerator.HEADLAND_MODE_NORMAL, field.boundary.isClockwise,
 			math.abs(fieldMargin), minDistanceBetweenPoints, math.rad( 25 ), math.rad( 60 ), 0,
-				true, fieldMargin > 0, {}, 1)
+				fieldMargin > 0, {}, 1)
 	end
 
 	field.boundingBox =  field.boundary:getBoundingBox()

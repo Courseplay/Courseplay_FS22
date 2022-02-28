@@ -1390,7 +1390,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 				-- generating inward when on the right side and clockwise or when on the left side ccw
 				local inward = (position > 0 and origHeadlands.isClockwise) or (position < 0 and not origHeadlands.isClockwise)
 				local offsetHeadlands = calculateHeadlandTrack( origHeadlands, CourseGenerator.HEADLAND_MODE_NORMAL	, origHeadlands.isClockwise,
-					math.abs(offset), 0.5, math.rad( 25 ), math.rad( 60 ), 0, true, inward,
+					math.abs(offset), 0.5, math.rad( 25 ), math.rad( 60 ), 0, inward,
 					{}, 1 )
 
 				if not offsetHeadlands or #offsetHeadlands == 0 then
