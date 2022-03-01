@@ -95,18 +95,34 @@
             </paragraph>
 		</page>
 		<!--Courseplay Multitool and Convoy-->
-		<page title="$l10n_CP_help_page_MultiConvoy_title">
+		<page title="$l10n_CP_help_page_multiConvoy_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_MultitoolBasic_text"/>
+				<text text="$l10n_CP_help_page_multitoolBasic_text"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_MultitoolFunction_text"/>
+				<text text="$l10n_CP_help_page_multitoolFunction_text"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_ConvoyBasic_text"/>
+				<text text="$l10n_CP_help_page_convoyBasic_text"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_ConvoyFunction_text"/>
+				<text text="$l10n_CP_help_page_convoyFunction_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Vine work-->
+		<page title="$l10n_CP_help_page_vineWork_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkConditions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkGenerator_text"/>
+				<image filename="CP_img/helpmenu/vineworkgen.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkTools_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkTips_text"/>
 			</paragraph>
 		</page>
 	</category>

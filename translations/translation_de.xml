@@ -473,17 +473,31 @@ Use the right mouse button to click on a position on where you want to start.
 The next right click will draw a line from your start point to your second position, wich will be the start point for the next line.
 		"/>
 		<!--Multitool and Convoy-->
-		<text name="CP_help_page_MultiConvoy_title"														text="Multitool and Convoy"/>
-		<text name="CP_help_page_MultitoolBasic_text"													text="
+		<text name="CP_help_page_multiConvoy_title"														text="Multitool and Convoy"/>
+		<text name="CP_help_page_multitoolBasic_text"													text="
 		
 		"/>
-		<text name="CP_help_page_MultitoolFunction_text"												text="
+		<text name="CP_help_page_multitoolFunction_text"												text="
 		
 		"/>
-		<text name="CP_help_page_ConvoyBasic_text"														text="
+		<text name="CP_help_page_convoyBasic_text"														text="
 		
 		"/>
-		<text name="CP_help_page_ConvoyFunction_text"													text="
+		<text name="CP_help_page_convoyFunction_text"													text="
+		
+		"/>
+		<!--Vine work-->
+		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
+		<text name="CP_help_page_vineWorkConditions_text"												text="
+		
+		"/>
+		<text name="CP_help_page_vineWorkGenerator_text"												text="
+		
+		"/>
+		<text name="CP_help_page_vineWorkTools_text"													text="
+		
+		"/>
+		<text name="CP_help_page_vineWorkTips_text"														text="
 		
 		"/>
 		<!-- Input bindings -->
