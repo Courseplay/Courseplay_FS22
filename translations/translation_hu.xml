@@ -1,6 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <l10n>
 	<texts>
+		<!--If you would like to share your translations, than please visit https://github.com/Courseplay/Courseplay_FS22 and create a pull request there.-->
+		<!--All translation are automatically formatted after a push.-->
+		<!--If the translation needs a new line, then please add '&#xA;' at the end of the line.-->
+		<!--Special characters can be found here: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references -->
+		<!---->
 		<!--Global texts-->
 		<text name="CP_activated" text="aktív" />
 		<text name="CP_deactivated" text="inaktív" />
