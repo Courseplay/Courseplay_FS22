@@ -341,135 +341,135 @@
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
-When selecting a vehicle, you will see it's loaded course and the course manager (if there is one loaded), and the vehicle options.
-The global settings are always present.
+When selecting a vehicle, you will see it's loaded course and the course manager (if there is one loaded), and the vehicle options.&#x10;
+The global settings are always present.&#x10;
 With create a job, you will not only gain access the default Jobs from FS22, but also to CP: Fieldwork and CP: wrap/collect bales.
 		"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
-To start off with your first CP Job, you have to select a vehicle with a valid tool attached.
-Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect
+To start off with your first CP Job, you have to select a vehicle with a valid tool attached.&#x10;
+Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect&#x10;
 with a bale wrapper or bale collector attached.
 		"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
-With CP: Fieldwork selected, you have a Target position, wich you might know from the Giants Helper and a new Field position.
-That field position is used to select the field where you want to work on, as well as the start point of the course (or Endpoint).
-If you let Giants drive your vehicle to the field to start the job, with start at: you can choose where the CP Driver will start.
+With CP: Fieldwork selected, you have a Target position, wich you might know from the Giants Helper and a new Field position.&#x10;
+That field position is used to select the field where you want to work on, as well as the start point of the course (or Endpoint).&#x10;
+If you let Giants drive your vehicle to the field to start the job, with start at: you can choose where the CP Driver will start.&#x10;
 Lane offset is only used in multitool courses, more about that in a later topic.
 		"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
-The target position is only used if you will start the job from that menu, it will tell the Giants Helper to drive to that location and give control over to courseplay.
-As said before, field position is to select the field and must be placed in order to open the generator.
-Depending on where to start the fieldwork, the field position will also tell the generator where the start or end point should be.
-If you have a valid field, the border will be highlighted in a white line.
+The target position is only used if you will start the job from that menu, it will tell the Giants Helper to drive to that location and give control over to courseplay.&#x10;
+As said before, field position is to select the field and must be placed in order to open the generator.&#x10;
+Depending on where to start the fieldwork, the field position will also tell the generator where the start or end point should be.&#x10;
+If you have a valid field, the border will be highlighted in a white line.&#x10;
 Now you are able to open the course generator. More about this in the next topic.
 		"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
-When you have a generated course, you can else start the Job (remember to set a Target position) or drive by yourself to the field and use the HUD to start the course.
+When you have a generated course, you can else start the Job (remember to set a Target position) or drive by yourself to the field and use the HUD to start the course.&#x10;
 Alternatively you can use AutoDrive to drive to a AutoDrive Target and start CP.
 		"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
-The course generator is the core of the Fieldwork.
-With this tool you will generate a course, based on the field condition and the settings you choose, how your helper should work on the field.
-You can always change values and hit generate course and have a look, what impact does a certain value have on your course.
+The course generator is the core of the Fieldwork.&#x10;
+With this tool you will generate a course, based on the field condition and the settings you choose, how your helper should work on the field.&#x10;
+You can always change values and hit generate course and have a look, what impact does a certain value have on your course.&#x10;
 Experimenting with it and learn on how each setting work, is the best way to get used to it.
 		"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
-Basics:
-The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact of your overall course.
-- Multiple Tools: That setting is used, when you want more then just 1 Tool to work on your course. As this gets a bit more complicated, there is an own help topic for it.
-- Number of Headlands: The best way to keep your tools on the field while doing their job, is to add Headlands.
-The Number of the Headlands multiplied by the work width should but at least the total length of your vehicle plus the attached tool
-Center options:
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have Combines pipe point out of the fruit most of the time to easier unload them.
-- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next close row.
-- Rows per Land: This have only impact when field center is set to lands and will tell the generator how many rows each land should have. The more rows, the lesser lands will be generated.
+Basics:&#x10;
+The first few values you see here, are real basic stuff.&#x10;
+- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact of your overall course.&#x10;
+- Multiple Tools: That setting is used, when you want more then just 1 Tool to work on your course. As this gets a bit more complicated, there is an own help topic for it.&#x10;
+- Number of Headlands: The best way to keep your tools on the field while doing their job, is to add Headlands.&#x10;
+The Number of the Headlands multiplied by the work width should but at least the total length of your vehicle plus the attached tool&#x10;
+Center options:&#x10;
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.&#x10;
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have Combines pipe point out of the fruit most of the time to easier unload them.&#x10;
+- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.&#x10;
+- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next close row.&#x10;
+- Rows per Land: This have only impact when field center is set to lands and will tell the generator how many rows each land should have. The more rows, the lesser lands will be generated.&#x10;
 - Up/down row angle: As said before, when the Up/Down row direction is set to manual, this setting will tell the generate the direction.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
-Headland settings will only show up, when you have set at least one at Number of headlands.
-You gain options for where to start on, corner settings, direction and overlap.
+Headland settings will only show up, when you have set at least one at Number of headlands.&#x10;
+You gain options for where to start on, corner settings, direction and overlap.&#x10;
 Headlands are highly suggested to prevent tools leaving the field for their turns.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
-- Star work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
-When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
-- Headland corners: Smooth will have a simple smoothing over the corners, This works all tools, but will lead into tiny unworked patches.
-They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
-Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
-Headland direction: clockwise or counter-clockwise. This can be important for Combine and Harvester, depending on wich side the pipe or conveyer belt is.
+- Star work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.&#x10;
+When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.&#x10;
+- Headland corners: Smooth will have a simple smoothing over the corners, This works all tools, but will lead into tiny unworked patches.&#x10;
+They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.&#x10;
+Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.&#x10;
+Headland direction: clockwise or counter-clockwise. This can be important for Combine and Harvester, depending on wich side the pipe or conveyer belt is.&#x10;
 Headland overlap: How much % overlap all Headlands should have. The 1st one will have no overlap with the field border, but the inner ones will overlap with their neighbor.
 		"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
-Field Margin explanation:
-Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
+Field Margin explanation:&#x10;
+Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.&#x10;
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 		"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
-The path to the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (Or for Vanilla e.g. MapUS).
-The course manager works different from what you are used in FS19.
+The path to the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (Or for Vanilla e.g. MapUS).&#x10;
+The course manager works different from what you are used in FS19.&#x10;
 When you create a folder, it will also be created at that location. You will need at least one folder to save your course.
 		"/>
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
-When you have a course loaded, you can save it by clicking on the folder where you want to save it, a pop up window will appear where you can enter the name of your course.
-The name and location can be changed later.
-To remove the course from your vehicle, click on 'Clear current course'.
-To load a course, you have to select the folder first, then click on load course and then on the course you want to load.
+When you have a course loaded, you can save it by clicking on the folder where you want to save it, a pop up window will appear where you can enter the name of your course.&#x10;
+The name and location can be changed later.&#x10;
+To remove the course from your vehicle, click on 'Clear current course'.&#x10;
+To load a course, you have to select the folder first, then click on load course and then on the course you want to load.&#x10;
 Clicking on change mode, activates the edit mode of the course manager.
 		"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="There are 7 different action available:
-Is the edit mode active, you can:
-- Moving a course in to another directory.
-- Deleting a course or directory.
+Is the edit mode active, you can:&#x10;
+- Moving a course in to another directory.&#x10;
+- Deleting a course or directory.&#x10;
 - Renaming a course or directory.
 		"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
-To move a course, you just click on 'move entry', then click on the course, then click on the new folder where you want to move it.
-Rename is even more simple, click on 'rename', click on the course and the same pop up window (like when you save the course) will appear.
-For deleting a course or a folder, you will be asked if you rly want to do it. Pls note that, to delete a folder, it has to be empty!
+To move a course, you just click on 'move entry', then click on the course, then click on the new folder where you want to move it.&#x10;
+Rename is even more simple, click on 'rename', click on the course and the same pop up window (like when you save the course) will appear.&#x10;
+For deleting a course or a folder, you will be asked if you rly want to do it. Pls note that, to delete a folder, it has to be empty!&#x10;
 A pop up window will inform you, if that folder sill contains a course.
 		"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Clicking on the vehicle name opens the vehicle configurations page.
-B: Toggle where to start the course with one click.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.
-D: Start the Courseplay helper.
-E: Shows current waypoint / total waypoints. Click to open the course manager.
-F: Clicking on the icon opens the general settings page.
-G: Closes the HUD.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
-I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
-N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle"
-		/>
+A: Clicking on the vehicle name opens the vehicle configurations page.&#x10;
+B: Toggle where to start the course with one click.&#x10;
+C: Clicking on the coursename you will open the AI Menu with the course generator open.&#x10;
+D: Start the Courseplay helper.&#x10;
+E: Shows current waypoint / total waypoints. Click to open the course manager.&#x10;
+F: Clicking on the icon opens the general settings page.&#x10;
+G: Closes the HUD.&#x10;
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.&#x10;
+I: Value for horizontal offset, + left, - right.&#x10;
+J: Value for vertical offset, + backward, - forward.&#x10;
+K, L and M: Clicking on the text will reset your changes to the auto values.&#x10;
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.&#x10;
+O: Start/stop recording a custom field course.&#x10;
+P: Removes course from vehicle.
+		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and record your field border.
-Once done, press the button again and you will be asked if you want to save it.
+There are two ways to create a custom field.&#x10;
+The first one is to use the record function of the HUD.&#x10;
+Start the record and record your field border.&#x10;
+Once done, press the button again and you will be asked if you want to save it.&#x10;
 		"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
+Having a look on the AI Menu, you will see your recorded field border.&#x10;
 By clicking on the Name, you will get the option to either delete it or rename it.
 		"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
+The second option is to draw it on the AI Menu Map.&#x10;
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.&#x10;
+When started, the text draw custom field lines with right click will be displayed.&#x10;
+Use the right mouse button to click on a position on where you want to start.&#x10;
 The next right click will draw a line from your start point to your second position, wich will be the start point for the next line.
 		"/>
 		<!--Multitool and Convoy-->
