@@ -109,7 +109,7 @@
 				<text text="$l10n_CP_help_page_convoyFunction_text"/>
 			</paragraph>
 		</page>
-		<!--Courseplay Vine work-->
+		<!--WIP: Courseplay Vine work
 		<page title="$l10n_CP_help_page_vineWork_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkConditions_text"/>
@@ -124,6 +124,6 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkTips_text"/>
 			</paragraph>
-		</page>
+		</page>-->
 	</category>
 </helpLines>

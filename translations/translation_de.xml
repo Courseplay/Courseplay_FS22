@@ -495,7 +495,7 @@ Convoy is mostly used on multitool course, but can also be used on single course
 The distance set in a vehicle, will tell how much distance he will keep towards the one infront of him.
 The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles.
 		"/>
-		<!--VIP: Vine work
+		<!--WIP: Vine work
 		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
 Working on vines is a bit more complex then working on a field.
