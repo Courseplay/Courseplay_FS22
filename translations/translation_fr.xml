@@ -229,8 +229,8 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="ATH compatible manette"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="L'ATH (interface du CP en jeu) est utilisable avec une manette."/>
 		
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Notification des actions CP"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Affiche les notifications lors des événements courseplay (CP)."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Réglages du Pathfinder"/>
 
