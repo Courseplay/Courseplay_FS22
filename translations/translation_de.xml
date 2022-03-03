@@ -495,27 +495,7 @@ Convoy is mostly used on multitool course, but can also be used on single course
 The distance set in a vehicle, will tell how much distance he will keep towards the one infront of him.
 The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles.
 		"/>
-		<!--WIP: Vine work
-		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
-		<text name="CP_help_page_vineWorkConditions_text"												text="
-Working on vines is a bit more complex then working on a field.
-To have the best result, the vines should all be next to each other within the default grid.
-The end and start of each vine, should also be the approximately same length.
-		"/>
-		<text name="CP_help_page_vineWorkGenerator_text"												text="
-The generator for vines have less options.
-Depending on the Tool, you have to choose to work on or beside the vine.
-E.g. Harvester drives and works on the vine, the drives left from the vine but works on the vine, so you have to choose to work on the vine, but drive with an offset.
-Sprayers need to drive next to the vines and skip a row, since it sprays two veins at once and have to drive only every 2nd row.
-		"/>
-		<text name="CP_help_page_vineWorkTools_text"													text="
-Harvester should drive on the vines.
-x should drive on the vines with an offset (should be added to the vehicle config)
-y should drive next to the vines and usw ... on the generator.
-		"/>
-		<text name="CP_help_page_vineWorkTips_text"														text="
-
-		"/>-->
+		
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>

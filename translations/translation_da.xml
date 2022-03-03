@@ -318,17 +318,108 @@
 		<text name="CP_controllerGui_startRecording"													text="Start brugerdefineret markoptegnelse."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stop brugerdefineret markoptegnelse."/>
 
-	<!-- In game help menu-->
+<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
-		<text name="CP_help_page_courseManager_text"													text="Der er 7 forskellige handlinger for Rutemanager:
-- Oprette ny mappe.
-- Slet rute fra køretøj.
-- Gemme den aktuelle rute.
-- indlæse rute.
-- Flytte rute over i en anden mappe.
-- Slette mappe eller rute.
-- omdøbe mappe eller rute."/>
+		<!--This stays blank and is just to create blank spots for better overview in the menu-->
+		<text name="CP_help_page_blank"																	text=""/>
+		<!--Job Menu-->
+		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
+		<text name="CP_help_page_startJobMenuBase_text"													text="
+When selecting a vehicle, gain access to the vehicle settings, the course manager and when you have a course loaded, you will also see it on the map.
+The global settings are always present.
+With create a job, you will not only gain access the default Jobs from FS22, but also to CP: Fieldwork and CP: wrap/collect bales.
+		"/>
+		<text name="CP_help_page_startJobMenuFunctions_text"											text="
+To start off with your first CP Job, you have to select a vehicle with a valid tool attached.
+Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect
+with a bale wrapper or bale collector attached.
+		"/>
+		<text name="CP_help_page_readyJobMenuBase_text"													text="
+With CP: Fieldwork selected, you have a Target position, wich you might know from the Giants Helper and a new Field position.
+That field position is used to select the field where you want to work on, as well as the start point of the course (or Endpoint).
+If you let Giants drive your vehicle to the field to start the job, with start at: you can choose where the CP Driver will start.
+Lane offset is only used in multitool courses, more about that in a later topic.
+		"/>
+		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
+The target position is only used if you will start the job from that menu, it will tell the Giants Helper to drive to that location and give control over to Courseplay.
+As said before, field position is to select the field and must be placed in order to open the generator.
+Depending on where to start the fieldwork, the field position will also tell the generator where the start or end point should be.
+If you have a valid field, the border will be highlighted in a white line.
+Now you are able to open the course generator. More about this in the next topic.
+		"/>
+		<text name="CP_help_page_JobMenuExtras_text"													text="
+When you have a generated course, you can else start the Job (remember to set a Target position) or drive by yourself to the field and use the HUD to start the course.
+Alternatively you can use AutoDrive to drive to a AutoDrive Target and let AutoDrive start CP.
+		"/>
+		<!--CourseGenerator-->
+		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
+		<text name="CP_help_page_courseGeneratorBase_text"												text="
+The course generator is the core of the Fieldwork.
+With this tool you can generate a course, based on the field condition and the settings you choose, how your helper should work on the field.
+You can always change values and hit generate course and have a look, what impact does a certain value have on your course.
+Experimenting with it and learn on how each setting work, is the best way to get used to it.
+		"/>
+		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
+Basics:
+The first few values you see here, are real basic stuff.
+- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact of your overall course.
+- Multiple Tools: That setting is used, when you want more then just 1 Tool to work on your course. As this gets a bit more complicated, there is an own help topic for it.
+- Number of Headlands: The best way to keep your tools on the field while doing their job, is to add Headlands.
+The Number of the Headlands multiplied by the work width should but at least the total length of your vehicle plus the attached tool
+Center options:
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have Combines pipe point out of the fruit most of the time to easier unload them.
+- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
+- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next close row.
+- Rows per Land: This have only impact when field center is set to lands and will tell the generator how many rows each land should have. The more rows, the lesser lands will be generated.
+- Up/down row angle: As said before, when the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+		"/>
+		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
+Headland settings will only show up, when you have set at least 1 at Number of headlands.
+You gain options for where to start on, corner settings, direction and overlap.
+Headlands are highly suggested to prevent tools leaving the field for their turns.
+		"/>
+		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
+- Star work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
+When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
+- Headland corners: Smooth will have a simple smoothing over the corners, This works all tools, but will lead into tiny unworked patches.
+They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
+Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
+- Headland direction: clockwise or counter-clockwise. This can be important for Combine and Harvester, depending on wich side the pipe or conveyer belt is.
+- Headland overlap: How much % overlap all Headlands should have. The 1st one will have no overlap with the field border, but the inner ones will overlap with their neighbor.
+		"/>
+		<text name="CP_help_page_courseGeneratorExtras_text"											text="
+Field Margin explanation:
+Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
+Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
+		"/>
+		<!--CourseManager-->
+		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
+		<text name="CP_help_page_courseManagerBase_text"												text="
+The path to the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (Or for Vanilla e.g. MapUS).
+The course manager works different from what you are used in FS19.
+When you create a folder, it will also be created at that folder location. You will need at least one folder to save your course.
+		"/>
+		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
+When you have a course loaded, you can save it by clicking on the folder where you want to save it, a pop up window will appear where you can enter the name of your course.
+The name and location can be changed later.
+To remove the course from your vehicle, click on 'Clear current course'.
+To load a course, you have to select the folder first, then click on load course and then on the course you want to load.
+Clicking on change mode, activates the edit mode of the course manager.
+		"/>
+		<text name="CP_help_page_courseManagerEdit_text"												text="
+Is the edit mode active, you can:
+- Moving a course in to another directory.
+- Deleting a course or directory.
+- Renaming a course or directory.
+		"/>
+		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
+To move a course, you just click on 'move entry', then click on the course, then click on the new folder where you want to move it.
+Rename is even more simple, click on 'rename', click on the course and the same pop up window (like when you save the course) will appear.
+For deleting a course or a folder, you will be asked if you rly want to do it. Please note that, to delete a folder, it has to be empty!
+A pop up window will inform you, if that folder sill contains a course.
+		"/>
+		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
 A: Klik på køretøjets navn for at hente køretøjsindstillingerne.
@@ -344,23 +435,50 @@ J: Lodret offset værdi, + tilbage, - frem.
 K, L og M: Klik på teksten for at nulstille værdierne.
 N: Det er her baneforskydningen vises, hvis et konvøjforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
 O: Start/stop Optegning af brugerdefineret mark.
-P: fjern rute fra køretøj"/>
+P: fjern rute fra køretøj
+		"/>
+		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Brugerdefineret marker"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Du kan oprette brugerdefineret mark på to måder.
 Den første er ved at benytte markoptegnelse i HUD.
 Start markoptegnelse ved at trykke på record knappen.
-når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne."/>
+når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne.
+		"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Den optegnede mark i AI hjælper menu.
-Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den."/>
+Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den.
+		"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Den næste mulighed er at optegne den inde i AI hjælper menu på kortet.
 Du må ikke sidde i et køretøj (venstreklik på kortet), du for nu mulighed for at optagne marken.
 Når den startes, vil teksten Optegn brugerdefineret mark med højre museknap blive vist.
 Brug den højre museknap til at klikke på en position, hvor du vil starte.
-Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje."/>
-
+Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje.
+		"/>
+		<!--Multitool and Convoy-->
+		<text name="CP_help_page_multiConvoy_title"														text="Multitool and Convoy"/>
+		<text name="CP_help_page_multitoolBasic_text"													text="
+A course with more then one vehicle per course is called a multitool course.
+This is used let more then one vehicle work on the same field and each of them get their own lane.
+You can have up to 5 vehicles per course.
+		"/>
+		<text name="CP_help_page_multitoolFunction_text"												text="
+Once a multitool course is loaded, you get the option to set the vehicle on an offset lane.
+Those lanes are always named the same:
+left(2), left(1), center, right(1), right(2).
+2 vehicles will have left(1) and right(1), 4 will have also left(2) and right(2) additionally.
+With 3 or 5 vehicles you can also choose the center.
+That way, the vehicles will always be splitted evenly.
+		"/>
+		<text name="CP_help_page_convoyBasic_text"														text="
+Convoy will be used if two vehicles have the same course loaded, they will automactially keep the distance towards the vehicle on front of them.
+Convoy is mostly used on multitool course, but can also be used on single course, when you have a baler drive behind a combine for example.
+		"/>
+		<text name="CP_help_page_convoyFunction_text"													text="
+The distance set in a vehicle, will tell how much distance he will keep towards the one infront of him.
+The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles.
+		"/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>
