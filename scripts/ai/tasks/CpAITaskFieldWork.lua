@@ -10,7 +10,7 @@ end
 --- Makes sure the cp fieldworker gets started.
 function CpAITaskFieldWork:start()
 	if self.isServer then
-		self.vehicle:cpStartFieldWorker(self.job:getCpJobParameters())
+		self.vehicle:startCpFieldWorker(self.job:getCpJobParameters())
 	end
 	AITask.start(self)
 	

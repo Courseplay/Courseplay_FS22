@@ -41,6 +41,8 @@ function CpAIWorker.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartText", CpAIWorker.getCpStartText)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
+    SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -204,3 +206,10 @@ function CpAIWorker:getCpStartText()
 	return ""
 end
 
+function CpAIWorker:startCpDriveTo()
+
+end
+
+function CpAIWorker:stopCpDriveTo()
+
+end

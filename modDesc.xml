@@ -125,6 +125,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/jobs/CpAIJobBaleFinder.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskDriveTo.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>

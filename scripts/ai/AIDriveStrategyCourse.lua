@@ -25,7 +25,8 @@ local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 
 AIDriveStrategyCourse.myStates = {
     INITIAL = {},
-    DRIVING_TO_COURSE_START = {}
+    DRIVING_TO_WORK_START_WAYPOINT = {},
+    WAITING_FOR_PATHFINDER = {},
 }
 
 --- Implement controller events.
@@ -183,11 +184,79 @@ function AIDriveStrategyCourse:raiseControllerEvent(eventName, ...)
     end
 end
 
+function AIDriveStrategyCourse:raiseImplements()
+    --- Raises all implements, that are available for the giants field worker.
+    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
+        implement.object:aiImplementEndLine()
+    end
+    self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
+    --- Raises implements, that are not covered by giants.
+    self:raiseControllerEvent(self.onRaisingEvent)
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:setAllStaticParameters()
-    -- set strategy specific parameters before starting
+    self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
+end
+
+--- Find the foremost and rearmost AI marker
+function AIDriveStrategyCourse:setFrontAndBackMarkers()
+    local markers= {}
+    local addMarkers = function(object, referenceNode)
+        self:debug('Finding AI markers of %s', CpUtil.getName(object))
+        local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object)
+        if aiLeftMarker and aiBackMarker and aiRightMarker then
+            local leftMarkerDistance = ImplementUtil.getDistanceToImplementNode(referenceNode, object, aiLeftMarker)
+            local rightMarkerDistance = ImplementUtil.getDistanceToImplementNode(referenceNode, object, aiRightMarker)
+            local backMarkerDistance = ImplementUtil.getDistanceToImplementNode(referenceNode, object, aiBackMarker)
+            table.insert(markers, leftMarkerDistance)
+            table.insert(markers, rightMarkerDistance)
+            table.insert(markers, backMarkerDistance)
+            self:debug('%s: left = %.1f, right = %.1f, back = %.1f', CpUtil.getName(object), leftMarkerDistance, rightMarkerDistance, backMarkerDistance)
+        end
+    end
+
+    local referenceNode = self.vehicle:getAIDirectionNode()
+    -- now go ahead and try to find the real markers
+    -- work areas of the vehicle itself
+    addMarkers(self.vehicle, referenceNode)
+    -- and then the work areas of all the implements
+    for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
+        addMarkers(implement.object, referenceNode)
+    end
+
+    if #markers == 0 then
+        -- make sure we always have a default front/back marker, placed on the direction node if nothing else found
+        table.insert(markers, 0)
+        table.insert(markers, 3)
+    end
+    -- now that we have all, find the foremost and the last
+    self.frontMarkerDistance, self.backMarkerDistance = 0, 0
+    local frontMarkerDistance, backMarkerDistance = -math.huge, math.huge
+    for _, d in pairs(markers) do
+        if d > frontMarkerDistance then
+            frontMarkerDistance = d
+        end
+        if d < backMarkerDistance then
+            backMarkerDistance = d
+        end
+    end
+    self.frontMarkerDistance = frontMarkerDistance
+    self.backMarkerDistance = backMarkerDistance
+    self:debug('front marker: %.1f, back marker: %.1f', frontMarkerDistance, backMarkerDistance)
+end
+
+function AIDriveStrategyCourse:getFrontAndBackMarkers()
+    if not self.frontMarkerDistance then
+        self:setFrontAndBackMarkers()
+    end
+    return self.frontMarkerDistance, self.backMarkerDistance
+end
+
+function AIDriveStrategyCourse:getWorkWidth()
+    return self.workWidth
 end
 
 function AIDriveStrategyCourse:update()
@@ -271,6 +340,93 @@ function AIDriveStrategyCourse:updatePathfinding()
             self.pathfindingDoneCallbackFunc(self.pathfindingDoneObject, path)
         end
     end
+end
+
+---@param course Course
+---@param ix number
+function AIDriveStrategyCourse:startCourseWithPathfinding(course, ix)
+    if not self.pathfinder or not self.pathfinder:isActive() then
+        -- set a course so the PPC is able to do its updates.
+        self.course = course
+        self.ppc:setCourse(self.course)
+        self.ppc:initialize(ix)
+        self:rememberCourse(course, ix)
+        local x, _, z = course:getWaypointPosition(ix)
+        self.state = self.states.WAITING_FOR_PATHFINDER
+        local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+        -- if there is fruit at the target, create an area around it where the pathfinder ignores the fruit
+        -- so there's no penalty driving there. This is to speed up pathfinding when start harvesting for instance
+        local fruitAtTarget = PathfinderUtil.hasFruit(x, z, self.workWidth, self.workWidth)
+        self.pathfindingStartedAt = 0
+        local done, path
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
+                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
+                fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
+        if done then
+            return self:onPathfindingDoneToCourseStart(path)
+        else
+            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCourseStart)
+            return true
+        end
+    else
+        self:info('Pathfinder already active')
+        return false
+    end
+end
+
+function AIDriveStrategyCourse:onPathfindingDoneToCourseStart(path)
+    local course, ix = self:getRememberedCourseAndIx()
+    if path and #path > 2 then
+        self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
+                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
+        local courseToStart = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self:startAlignmentTurn(course, ix, ix, courseToStart)
+        return true
+    else
+        self:debug('Pathfinding to start fieldwork failed, using alignment course instead')
+        self:startAlignmentTurn(course, ix, ix)
+        return false
+    end
+end
+
+--- Create an alignment course between the current vehicle position and waypoint endIx of the course
+---@param course Course the course to start
+---@param startIx number waypoint of the course used as a turn start waypoint, not really used for anything other
+--- than creating a turn context. You can use the same waypoint index for startIx and endIx
+---@param endIx number and where it should end. This is actually the waypoint where you want to start the fieldwork course
+---@param alignmentCourse Course an (optional) course to the target (for instance, created by the pathfinder), if nil,
+--- we create an alignment course ourselves (non-pathfinder)
+function AIDriveStrategyCourse:createAlignmentCourse(course, startIx, endIx, alignmentCourse)
+    -- This is what resume fieldwork will use
+    self.course = course
+    local fm, bm = self:getFrontAndBackMarkers()
+    self.ppc:setShortLookaheadDistance()
+    self.turnContext = TurnContext(course, startIx, endIx, self.turnNodes, self:getWorkWidth(), fm, bm,
+            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
+    if alignmentCourse then
+        -- the caller supplied a course
+        self:debug('Use pathfinder course to first work waypoint')
+    else
+        self:debug('Generate alignment course to first work waypoint')
+        alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+                course, endIx, math.min(-self.frontMarkerDistance, 0)):getCourse()
+    end
+    return alignmentCourse
+end
+
+-- remember a course to start
+function AIDriveStrategyCourse:rememberCourse(course, ix)
+    self.rememberedCourse = course
+    self.rememberedCourseStartIx = ix
+end
+
+-- start a remembered course
+function AIDriveStrategyCourse:startRememberedCourse()
+    self:startCourse(self.rememberedCourse, self.rememberedCourseStartIx)
+end
+
+function AIDriveStrategyCourse:getRememberedCourseAndIx()
+    return self.rememberedCourse, self.rememberedCourseStartIx
 end
 
 ------------------------------------------------------------------------------------------------------------------------

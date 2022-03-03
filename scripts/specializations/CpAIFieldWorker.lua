@@ -51,7 +51,7 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
             CpAIFieldWorker.getIsCpHarvesterWaitingForUnloadAfterPulledBack)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpHarvesterManeuvering", CpAIFieldWorker.getIsCpHarvesterManeuvering)
     SpecializationUtil.registerFunction(vehicleType, "holdCpHarvesterTemporarily", CpAIFieldWorker.holdCpHarvesterTemporarily)
-    SpecializationUtil.registerFunction(vehicleType, "cpStartFieldWorker", CpAIFieldWorker.startFieldWorker)
+    SpecializationUtil.registerFunction(vehicleType, "startCpFieldWorker", CpAIFieldWorker.startCpFieldWorker)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpFieldWork", CpAIFieldWorker.getCanStartCpFieldWork)
 
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
@@ -182,7 +182,7 @@ function CpAIFieldWorker:startCpAtFirstWp()
     self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtFirstWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-        
+
         --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
         spec.cpJobStartAtFirstWp:getCpJobParameters().laneOffset:setValue(spec.cpJob:getCpJobParameters().laneOffset:getValue())
         spec.cpJobStartAtFirstWp:setValues()
@@ -249,7 +249,7 @@ end
 
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIFieldWorker:startFieldWorker(jobParameters)
+function CpAIFieldWorker:startCpFieldWorker(jobParameters)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
