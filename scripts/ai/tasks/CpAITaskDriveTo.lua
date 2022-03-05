@@ -12,12 +12,10 @@ end
 
 function CpAITaskDriveTo:start()
     CpUtil.infoVehicle(self.vehicle, 'CP drive to task started')
-    self.vehicle:startCpDriveTo(self.job:getCpJobParameters())
+    self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
 end
 
 function CpAITaskDriveTo:update()
-    --- Test only
-    self.isFinished = true
 end
 
 function CpAITaskDriveTo:stop()

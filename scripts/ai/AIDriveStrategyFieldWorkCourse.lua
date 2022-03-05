@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -48,9 +48,6 @@ function AIDriveStrategyFieldWorkCourse.new(customMt)
     -- course offsets dynamically set by the AI and added to all tool and other offsets
     self.aiOffsetX, self.aiOffsetZ = 0, 0
     self.debugChannel = CpDebug.DBG_FIELDWORK
-    ---@type ImplementController[]
-    self.controllers = {}
-    
     return self
 end
 
@@ -82,18 +79,6 @@ function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
     end
 end
 
---- If the startAt setting is START_AT_LAST_POINT and a waypoint ix was saved the start at this wp.
-function AIDriveStrategyFieldWorkCourse:getStartingPointWaypointIx(course, startAt)
-    if startAt == CpJobParameters.START_AT_LAST_POINT then 
-        local lastWpIx = self:getRememberedWaypointToContinueFieldWork()
-        if lastWpIx then 
-            self:debug('Starting course at the last waypoint %d', lastWpIx)
-            return lastWpIx
-        end
-    end
-    return AIDriveStrategyFieldWorkCourse:superClass().getStartingPointWaypointIx(self, course, startAt)
-end
-
 --- Start a fieldwork course. We expect that something else dropped us off close enough to startIx so
 --- the most we need is an alignment course to lower the implements
 function AIDriveStrategyFieldWorkCourse:start(course, startIx)
@@ -108,7 +93,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx)
     if distance > 2 * self.turningRadius then
         self:debug('Start waypoint is far (%.1f m), use alignment course to get there.', distance)
         self.course = course
-        self:startAlignmentTurn(course, self:createAlignmentCourse(course, startIx, startIx))
+        self:startAlignmentTurn(course, startIx)
     else
         self:debug('Close enough to start waypoint %d, no alignment course needed', startIx)
         self:startCourse(course, startIx)
@@ -147,16 +132,12 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
 
     local moveForwards = not self.ppc:isReversing()
-    local gx, gz, maxSpeed
+    local gx, gz
 
     ----------------------------------------------------------------
     if not moveForwards then
-        gx, gz, _, maxSpeed = self.reverser:getDriveData()
-        if not gx then
-            -- simple reverse (not towing anything), just use PPC
-            gx, _, gz = self.ppc:getGoalPointPosition()
-            maxSpeed = self.settings.reverseSpeed:getValue()
-        end
+        local maxSpeed
+        gx, gz, maxSpeed = self:getReverseDriveData()
         self:setMaxSpeed(maxSpeed)
     else
         gx, _, gz = self.ppc:getGoalPointPosition()
@@ -215,57 +196,33 @@ function AIDriveStrategyFieldWorkCourse:setAITarget()
     self.vehicle.aiDriveTarget = { x, z }
 end
 
---- Slow down a bit towards the end of course or near direction changes, and later maybe where the turn radius is
---- small, unless we are reversing, as then (hopefully) we already have a slow speed set
-function AIDriveStrategyFieldWorkCourse:limitSpeed()
-    if self.maxSpeed > self.settings.turnSpeed:getValue() and
-            not self.ppc:isReversing() and
-            (self.ppc:getCourse():isCloseToLastWaypoint(15) or
-                    self.ppc:getCourse():isCloseToNextDirectionChange(15)) then
-
-        local maxSpeed = self.maxSpeed
-        self:setMaxSpeed(self.settings.turnSpeed:getValue())
-        self:debugSparse('speed %.1f limited to turn speed %.1f', maxSpeed, self.maxSpeed)
-    else
-        self:debugSparse('speed %.1f', self.maxSpeed)
-    end
-end
-
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
-    local function addController(class, spec, states)
-        --- If multiple implements have this spec, then add a controller for each implement.
-        for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do 
-            local controller = class(vehicle, childVehicle)
-            controller:setDisabledStates(states)
-            controller:setDriveStrategy(self)
-            table.insert(self.controllers, controller)
-        end
-    end
+
     local defaultDisabledStates = {
         self.states.ON_CONNECTING_TRACK,
         self.states.TEMPORARY,
         self.states.TURNING,
         self.states.DRIVING_TO_WORK_START_WAYPOINT
     }
-    addController(BalerController, Baler, defaultDisabledStates)
-    addController(BaleWrapperController, BaleWrapper, defaultDisabledStates)
-    addController(BaleLoaderController, BaleLoader, defaultDisabledStates)
+    self:addImplementController(vehicle, BalerController, Baler, defaultDisabledStates)
+    self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, defaultDisabledStates)
+    self:addImplementController(vehicle, BaleLoaderController, BaleLoader, defaultDisabledStates)
 
-    addController(FertilizingSowingMachineController, FertilizingSowingMachine, defaultDisabledStates)
-    addController(ForageWagonController, ForageWagon, defaultDisabledStates)
+    self:addImplementController(vehicle, FertilizingSowingMachineController, FertilizingSowingMachine, defaultDisabledStates)
+    self:addImplementController(vehicle, ForageWagonController, ForageWagon, defaultDisabledStates)
 
-    addController(FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
-    addController(MowerController, Mower, defaultDisabledStates)
+    self:addImplementController(vehicle, FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
+    self:addImplementController(vehicle, MowerController, Mower, defaultDisabledStates)
 
-    addController(RidgeMarkerController, RidgeMarker, defaultDisabledStates)
+    self:addImplementController(vehicle, RidgeMarkerController, RidgeMarker, defaultDisabledStates)
 
-    addController(PickupController, Pickup, defaultDisabledStates)
-    addController(SprayerController, Sprayer, {})
-    addController(CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
-    addController(StonePickerController, StonePicker, defaultDisabledStates)
+    self:addImplementController(vehicle, PickupController, Pickup, defaultDisabledStates)
+    self:addImplementController(vehicle, SprayerController, Sprayer, {})
+    self:addImplementController(vehicle, CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
+    self:addImplementController(vehicle, StonePickerController, StonePicker, defaultDisabledStates)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    
@@ -485,7 +442,12 @@ function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
     self:lowerImplements(self.vehicle)
 end
 
-function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, alignmentCourse)
+function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, startIx)
+    local alignmentCourse = self:createAlignmentCourse(fieldWorkCourse, startIx)
+    self.ppc:setShortLookaheadDistance()
+    local fm, bm = self:getFrontAndBackMarkers()
+    self.turnContext = TurnContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
+            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
     if alignmentCourse then
         self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, alignmentCourse, fieldWorkCourse, self.workWidth)
         self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
@@ -521,7 +483,7 @@ function AIDriveStrategyFieldWorkCourse:checkTransitionFromConnectingTrack(ix, c
         -- (no alignment if there is a turn generated here)
         if d < 5 * self.turningRadius and firstUpDownWpIx and not course:isTurnEndAtIx(firstUpDownWpIx) then
             self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
-            self:startAlignmentTurn(course, self:createAlignmentCourse(course, ix, firstUpDownWpIx))
+            self:startAlignmentTurn(course, self:createAlignmentCourse(course, firstUpDownWpIx))
         end
     end
 end
@@ -530,10 +492,9 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
+    AIDriveStrategyCourse.setAllStaticParameters(self)
     self:setFrontAndBackMarkers()
-    self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
     self.loweringDurationMs = AIUtil.findLoweringDurationMs(self.vehicle)
-    self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.fieldWorkerProximityController = FieldWorkerProximityController(self.vehicle, self.workWidth)
 end
 
@@ -551,10 +512,6 @@ end
 function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldWork()
     local ix = self:getBestWaypointToContinueFieldWork()
     self.vehicle:rememberCpLastWaypointIx(ix)
-end
-
-function AIDriveStrategyFieldWorkCourse:getRememberedWaypointToContinueFieldWork()
-    return self.vehicle:getCpLastRememberedWaypointIx()
 end
 
 function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldWork()

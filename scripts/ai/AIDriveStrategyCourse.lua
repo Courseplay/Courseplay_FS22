@@ -1,5 +1,5 @@
 --[[
-This file is part of Courseplay (https://github.com/Courseplay/courseplay)
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
 Copyright (C) 2021 Peter Vaiko
 
 This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,8 @@ local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 
 AIDriveStrategyCourse.myStates = {
     INITIAL = {},
-    DRIVING_TO_WORK_START_WAYPOINT = {},
     WAITING_FOR_PATHFINDER = {},
+    DRIVING_TO_WORK_START_WAYPOINT = {},
 }
 
 --- Implement controller events.
@@ -42,6 +42,7 @@ function AIDriveStrategyCourse.new(customMt)
     local self = AIDriveStrategy.new(customMt)
     self.debugChannel = CpDebug.DBG_AI_DRIVER
     self:initStates(AIDriveStrategyCourse.myStates)
+    ---@type ImplementController[]
     self.controllers = {}
     return self
 end
@@ -123,15 +124,20 @@ function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
     return self.vehicle:getFieldWorkCourse()
 end
 
-function AIDriveStrategyCourse:getStartingPointWaypointIx(course,startAt)
+function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)
     if startAt == CpJobParameters.START_AT_NEAREST_POINT then 
         local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
         self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
         return ixClosestRightDirection
-    else 
-        self:debug('Starting course at the first waypoint')
-        return 1
+    elseif startAt == CpJobParameters.START_AT_LAST_POINT then
+        local lastWpIx = self.vehicle:getCpLastRememberedWaypointIx()()
+        if lastWpIx then
+            self:debug('Starting course at the last waypoint %d', lastWpIx)
+            return lastWpIx
+        end
     end
+    self:debug('Starting course at the first waypoint')
+    return 1
 end
 
 function AIDriveStrategyCourse:start(course, startIx)
@@ -149,6 +155,16 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, states)
+    --- If multiple implements have this spec, then add a controller for each implement.
+    for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do
+        local controller = class(vehicle, childVehicle)
+        controller:setDisabledStates(states)
+        controller:setDriveStrategy(self)
+        table.insert(self.controllers, controller)
+    end
+end
+
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
 end
 
@@ -199,6 +215,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:setAllStaticParameters()
     self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
+    self.reverser = AIReverseDriver(self.vehicle, self.ppc)
 end
 
 --- Find the foremost and rearmost AI marker
@@ -270,6 +287,19 @@ function AIDriveStrategyCourse:getDriveData(dt, vX, vY, vZ)
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
+function AIDriveStrategyCourse:getReverseDriveData()
+    local gx, gz, _, maxSpeed = self.reverser:getDriveData()
+    if not gx then
+        -- simple reverse (not towing anything), just use PPC
+        gx, _, gz = self.ppc:getGoalPointPosition()
+        maxSpeed = self.settings.reverseSpeed:getValue()
+    end
+    return gx, gz, maxSpeed
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Speed control
+-----------------------------------------------------------------------------------------------------------------------
 --- Set the maximum speed. The idea is that self.maxSpeed is reset at the beginning of every loop and
 -- every function calls setMaxSpeed() and the speed will be set to the minimum
 -- speed set in this loop.
@@ -284,6 +314,23 @@ end
 
 function AIDriveStrategyCourse:getMaxSpeed()
     return self.maxSpeed or self.vehicle:getSpeedLimit(true)
+end
+
+
+--- Slow down a bit towards the end of course or near direction changes, and later maybe where the turn radius is
+--- small, unless we are reversing, as then (hopefully) we already have a slow speed set
+function AIDriveStrategyCourse:limitSpeed()
+    if self.maxSpeed > self.settings.turnSpeed:getValue() and
+            not self.ppc:isReversing() and
+            (self.ppc:getCourse():isCloseToLastWaypoint(15) or
+                    self.ppc:getCourse():isCloseToNextDirectionChange(15)) then
+
+        local maxSpeed = self.maxSpeed
+        self:setMaxSpeed(self.settings.turnSpeed:getValue())
+        self:debugSparse('speed %.1f limited to turn speed %.1f', maxSpeed, self.maxSpeed)
+    else
+        self:debugSparse('speed %.1f', self.maxSpeed)
+    end
 end
 
 --- Start a course and continue with nextCourse at ix when done
@@ -342,75 +389,13 @@ function AIDriveStrategyCourse:updatePathfinding()
     end
 end
 
----@param course Course
----@param ix number
-function AIDriveStrategyCourse:startCourseWithPathfinding(course, ix)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        -- set a course so the PPC is able to do its updates.
-        self.course = course
-        self.ppc:setCourse(self.course)
-        self.ppc:initialize(ix)
-        self:rememberCourse(course, ix)
-        local x, _, z = course:getWaypointPosition(ix)
-        self.state = self.states.WAITING_FOR_PATHFINDER
-        local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
-        -- if there is fruit at the target, create an area around it where the pathfinder ignores the fruit
-        -- so there's no penalty driving there. This is to speed up pathfinding when start harvesting for instance
-        local fruitAtTarget = PathfinderUtil.hasFruit(x, z, self.workWidth, self.workWidth)
-        self.pathfindingStartedAt = 0
-        local done, path
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
-                0, 0, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
-                fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
-        if done then
-            return self:onPathfindingDoneToCourseStart(path)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToCourseStart)
-            return true
-        end
-    else
-        self:info('Pathfinder already active')
-        return false
-    end
-end
-
-function AIDriveStrategyCourse:onPathfindingDoneToCourseStart(path)
-    local course, ix = self:getRememberedCourseAndIx()
-    if path and #path > 2 then
-        self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
-                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local courseToStart = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startAlignmentTurn(course, ix, ix, courseToStart)
-        return true
-    else
-        self:debug('Pathfinding to start fieldwork failed, using alignment course instead')
-        self:startAlignmentTurn(course, ix, ix)
-        return false
-    end
-end
-
 --- Create an alignment course between the current vehicle position and waypoint endIx of the course
 ---@param course Course the course to start
----@param startIx number waypoint of the course used as a turn start waypoint, not really used for anything other
---- than creating a turn context. You can use the same waypoint index for startIx and endIx
----@param endIx number and where it should end. This is actually the waypoint where you want to start the fieldwork course
----@param alignmentCourse Course an (optional) course to the target (for instance, created by the pathfinder), if nil,
---- we create an alignment course ourselves (non-pathfinder)
-function AIDriveStrategyCourse:createAlignmentCourse(course, startIx, endIx, alignmentCourse)
-    -- This is what resume fieldwork will use
-    self.course = course
-    local fm, bm = self:getFrontAndBackMarkers()
-    self.ppc:setShortLookaheadDistance()
-    self.turnContext = TurnContext(course, startIx, endIx, self.turnNodes, self:getWorkWidth(), fm, bm,
-            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-    if alignmentCourse then
-        -- the caller supplied a course
-        self:debug('Use pathfinder course to first work waypoint')
-    else
-        self:debug('Generate alignment course to first work waypoint')
-        alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-                course, endIx, math.min(-self.frontMarkerDistance, 0)):getCourse()
-    end
+---@param ix number the waypoint where start the course
+function AIDriveStrategyCourse:createAlignmentCourse(course, ix)
+    self:debug('Generate alignment course to waypoint %d', ix)
+    local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
+            course, ix, math.min(-self.frontMarkerDistance, 0)):getCourse()
     return alignmentCourse
 end
 
