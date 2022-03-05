@@ -173,31 +173,16 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local status, ok, course
 	if self.foundVines then 
 		local vineSettings = vehicle:getCpVineSettings()
-		local vertices, width, rowAngle = g_vineScanner:getCourseGeneratorVertices(
-			vineSettings.vineCenterOffset:getValue(),
-			vineSettings.vineMultiTools:getValue(),
-			vineSettings.vineRowsToSkip:getValue()
+		local vertices, width, rowAngleDeg = g_vineScanner:getCourseGeneratorVertices(
+			vineSettings.vineCenterOffset:getValue()
 		)
-		status, ok, course = CourseGeneratorInterface.generate(vertices,
-						{x = vertices[1].x, z = vertices[1].z},
-						true,
-						width,
-						AIUtil.getTurningRadius(vehicle),
-						0,
-						false,
-						settings.headlandCornerType:getValue(),
-						0,
-						CpCourseGeneratorSettings.CENTER_MODE_UP_DOWN,
-						CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
-						-math.deg(rowAngle),
-						vineSettings.vineRowsToSkip:getValue(),
-						6,
-						false,
-						-width/2,
-						vineSettings.vineMultiTools:getValue(),
-						false
-		)
-	
+		status, ok, course = CourseGeneratorInterface.generateVineCourse(vertices,
+							width,
+							AIUtil.getTurningRadius(vehicle),
+							rowAngleDeg,
+							vineSettings.vineRowsToSkip:getValue(),
+							vineSettings.vineMultiTools:getValue()
+		 )	
 	else 
 
 		status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,

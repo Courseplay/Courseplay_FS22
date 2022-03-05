@@ -218,15 +218,12 @@ function VineScanner:drawSegments(segments)
 	end
 end
 
-function VineScanner:getCourseGeneratorVertices(vineOffset, multiTools, rowsToSkip)
+function VineScanner:getCourseGeneratorVertices(vineOffset)
 	if not self.lines then 
 		return
 	end
-	local node = createTransformGroup("vineScannerNode")
-	link(g_currentMission.terrainRootNode, node)
 	vineOffset = vineOffset * self.width/2
-	self:debug("vineOffset: %f, rowsToSkip: %d, multiTools: %d", vineOffset, rowsToSkip, multiTools)
-	local diff, _
+	self:debug("vineOffset: %f", vineOffset)
 	local dirX, dirZ, lengthStart = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
 	local ncx = dirX  * math.cos(math.pi/2) - dirZ  * math.sin(math.pi/2)
 	local ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
@@ -262,7 +259,7 @@ function VineScanner:getCourseGeneratorVertices(vineOffset, multiTools, rowsToSk
 			z = self.lines[i].z1 + ncz * vineOffset,
 		})
 	end
-	return lines, self.width, yRot
+	return lines, self.width, -math.deg(yRot)
 end
 
 --- Generates a simple course for the lines.
