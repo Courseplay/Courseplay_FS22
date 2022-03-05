@@ -218,6 +218,53 @@ function VineScanner:drawSegments(segments)
 	end
 end
 
+function VineScanner:getCourseGeneratorVertices(vineOffset, multiTools, rowsToSkip)
+	if not self.lines then 
+		return
+	end
+	local node = createTransformGroup("vineScannerNode")
+	link(g_currentMission.terrainRootNode, node)
+	vineOffset = vineOffset * self.width/2
+	self:debug("vineOffset: %f, rowsToSkip: %d, multiTools: %d", vineOffset, rowsToSkip, multiTools)
+	local diff, _
+	local dirX, dirZ, lengthStart = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
+	local ncx = dirX  * math.cos(math.pi/2) - dirZ  * math.sin(math.pi/2)
+	local ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
+	local yRot = 0	
+	if dirX == dirX or dirZ == dirZ then
+		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+	end
+	local lines = {}
+
+	for i=0, lengthStart-4, 2 do 
+		table.insert(lines,{
+			x = self.lines[1].x1 + ncx * vineOffset + dirX * i,
+			z = self.lines[1].z1 + ncz * vineOffset + dirZ * i
+		})
+	end
+	for i=1, #self.lines do 
+		table.insert(lines, {
+			x = self.lines[i].x2 + ncx * vineOffset,
+			z = self.lines[i].z2 + ncz * vineOffset,
+		})
+	end
+	
+	local dirXEnd, dirZEnd, lengthEnd = CpMathUtil.getPointDirection({x = self.lines[#self.lines].x2, z = self.lines[#self.lines].z2}, {x = self.lines[#self.lines].x1, z = self.lines[#self.lines].z1})
+	for i=0, lengthEnd-4, 2 do 
+		table.insert(lines,{
+			x = self.lines[#self.lines].x2 + ncx * vineOffset + dirXEnd * i,
+			z = self.lines[#self.lines].z2 + ncz * vineOffset + dirZEnd * i
+		})
+	end
+	for i=#self.lines, 1, -1 do 
+		table.insert(lines, {
+			x = self.lines[i].x1 + ncx * vineOffset,
+			z = self.lines[i].z1 + ncz * vineOffset,
+		})
+	end
+	return lines, self.width, yRot
+end
+
 --- Generates a simple course for the lines.
 function VineScanner:generateCourse(vineOffset, multiTools, rowsToSkip)
 	if not self.lines then 

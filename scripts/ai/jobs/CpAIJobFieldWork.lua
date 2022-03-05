@@ -170,40 +170,56 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local tx, tz = self.fieldPositionParameter:getPosition()
-
+	local status, ok, course
 	if self.foundVines then 
 		local vineSettings = vehicle:getCpVineSettings()
-
-
-		local course = g_vineScanner:generateCourse(
+		local vertices, width, rowAngle = g_vineScanner:getCourseGeneratorVertices(
 			vineSettings.vineCenterOffset:getValue(),
 			vineSettings.vineMultiTools:getValue(),
 			vineSettings.vineRowsToSkip:getValue()
 		)
-		CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Generated a course for vines.')
-		vehicle:setFieldWorkCourse(course)
-		return
-	end
+		status, ok, course = CourseGeneratorInterface.generate(vertices,
+						{x = vertices[1].x, z = vertices[1].z},
+						true,
+						width,
+						AIUtil.getTurningRadius(vehicle),
+						0,
+						false,
+						settings.headlandCornerType:getValue(),
+						0,
+						CpCourseGeneratorSettings.CENTER_MODE_UP_DOWN,
+						CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
+						-math.deg(rowAngle),
+						vineSettings.vineRowsToSkip:getValue(),
+						6,
+						false,
+						-width/2,
+						vineSettings.vineMultiTools:getValue(),
+						false
+		)
+	
+	else 
 
-	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
-			{x = tx, z = tz},
-			settings.isClockwise:getValue(),
-			settings.workWidth:getValue(),
-			AIUtil.getTurningRadius(vehicle),
-			settings.numberOfHeadlands:getValue(),
-			settings.startOnHeadland:getValue(),
-			settings.headlandCornerType:getValue(),
-			settings.headlandOverlapPercent:getValue(),
-			settings.centerMode:getValue(),
-			settings.rowDirection:getValue(),
-			settings.manualRowAngleDeg:getValue(),
-			settings.rowsToSkip:getValue(),
-			settings.rowsPerLand:getValue(),
-			settings.islandBypassMode:getValue(),
-			settings.fieldMargin:getValue(),
-			settings.multiTools:getValue(),
-			self:isPipeOnLeftSide(vehicle)
-	)
+		status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
+				{x = tx, z = tz},
+				settings.isClockwise:getValue(),
+				settings.workWidth:getValue(),
+				AIUtil.getTurningRadius(vehicle),
+				settings.numberOfHeadlands:getValue(),
+				settings.startOnHeadland:getValue(),
+				settings.headlandCornerType:getValue(),
+				settings.headlandOverlapPercent:getValue(),
+				settings.centerMode:getValue(),
+				settings.rowDirection:getValue(),
+				settings.manualRowAngleDeg:getValue(),
+				settings.rowsToSkip:getValue(),
+				settings.rowsPerLand:getValue(),
+				settings.islandBypassMode:getValue(),
+				settings.fieldMargin:getValue(),
+				settings.multiTools:getValue(),
+				self:isPipeOnLeftSide(vehicle)
+		)
+	end
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then
 		g_gui:showInfoDialog({
