@@ -1,10 +1,7 @@
-
 --- This scanner is used to detect continues orchard fields.
 --- Every line has to have the same direction.
----
---- TODO: Add an explicit check if the lines are part of a continues field.
-
-
+--- This means all vine placements need to be placed with the a snapping angle.
+--- The output is a field boundary of the vine nodes for the course generator.
 ---@class VineScanner 
 VineScanner = CpObject()
 function VineScanner:init(maxStartDistance)
@@ -26,7 +23,6 @@ function VineScanner:findVineNodesInField(vertices, tx, tz)
 		self.width = nil
 		return false
 	end
-	local vineNodes = {}
 	local vineSegments = {}
 	local x, _, z
 	local closestSegment, closestDist, dist = nil, math.huge, 0
@@ -64,7 +60,7 @@ function VineScanner:findVineNodesInField(vertices, tx, tz)
 		end
 	end
 	--- Separate the segments into lines.
-	local left, right = self:separateIntoColumns(segments, closestNode, dirX, dirZ)
+	local left, right = self:separateIntoColumns(segments, closestNode)
 
 	local lines = {}
 	--- Combine the found lines to the left and right into one table.
@@ -81,7 +77,7 @@ function VineScanner:findVineNodesInField(vertices, tx, tz)
 		table.insert(newLines, self:getStartEndPointForLine(l))
 	end
 
-	--- Makes sure newLines[1].x1/z1 is the closest point relative to the field generation starting point.
+	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
 	local dist1 = MathUtil.vector2Length(newLines[1].x1-tx, newLines[1].z1-tz)
 	local dist2 = MathUtil.vector2Length(newLines[1].x2-tx, newLines[1].z2-tz)
 	local dist3 = MathUtil.vector2Length(newLines[#newLines].x1-tx, newLines[#newLines].z1-tz)
@@ -98,11 +94,13 @@ function VineScanner:findVineNodesInField(vertices, tx, tz)
 	self.lines = newLines
 	self.width = closestPlaceable.spec_vine.width
 
---	self:drawSegments(newLines)
 
 	return true
 end
 
+--- Invert's the lines from end(lines.x2/z2) -> start(lines.x1/z1)
+---@param lines table
+---@return table
 function VineScanner:invertLinesStartAndEnd(lines)
 	local newLines = {}
 	for i, l in pairs(lines) do 
@@ -116,6 +114,9 @@ function VineScanner:invertLinesStartAndEnd(lines)
 	return newLines
 end
 
+--- Invert's the lines from right(#lines) -> left(lines[1])
+---@param lines table
+---@return table
 function VineScanner:invertLinesTable(lines)
 	local newLines = {}
 	for i = #lines, 1, -1 do 
@@ -125,7 +126,11 @@ function VineScanner:invertLinesTable(lines)
 end
 
 --- Separate segments relative to the closest segment into left columns(0->x) and right columns(1->-x).
-function VineScanner:separateIntoColumns(lines, closestNode, dirX, dirZ)
+---@param lines table
+---@param closestNode node
+---@return table left lines 
+---@return table right lines
+function VineScanner:separateIntoColumns(lines, closestNode)
 	local placeable = self.vineSystem.nodes[closestNode]
 	local width = placeable.spec_vine.width
 	local columnsLeft = {}
@@ -186,6 +191,16 @@ function VineScanner:equalDirection(dx, nx, dz, nz)
 end
 
 --- Combines the segments on the same line and return a combined segment.
+--- TODO: Is not working for field like these: 
+--[[
+	| | | |     | | | |
+	| |		=>  | | | |
+	| |			| | | |
+	| |	|		| | | |
+	| | | |		| | | |
+]]			
+---@param segments table all the line segments sorted into columns form left -> right.
+---@return table lines from left -> right, but only complete lines.
 function VineScanner:getStartEndPointForLine(segments)
 	local points = {}
 	local xa, za, xb, zb
@@ -207,7 +222,7 @@ function VineScanner:getStartEndPointForLine(segments)
 	end
 end
 
-
+--- Debug function to draw the vine segments.
 function VineScanner:drawSegments(segments)
 	if segments then 
 		for i,segment in pairs(segments) do 
@@ -218,6 +233,12 @@ function VineScanner:drawSegments(segments)
 	end
 end
 
+--- Creates a field boundary relative to the size of the vine field,
+--- so the course generator can generate courses for these.
+---@param vineOffset number should the driver driver beside or over the vines. (-1/0/1)
+---@return table field boundary
+---@return number gap between the vine nodes.
+---@return number angle of the vine rows(degree)
 function VineScanner:getCourseGeneratorVertices(vineOffset)
 	if not self.lines then 
 		return
@@ -260,184 +281,6 @@ function VineScanner:getCourseGeneratorVertices(vineOffset)
 		})
 	end
 	return lines, self.width, -math.deg(yRot)
-end
-
---- Generates a simple course for the lines.
-function VineScanner:generateCourse(vineOffset, multiTools, rowsToSkip)
-	if not self.lines then 
-		return
-	end
-	local node = createTransformGroup("vineScannerNode")
-	link(g_currentMission.terrainRootNode, node)
-	vineOffset = vineOffset * self.width/2
-	self:debug("vineOffset: %f, rowsToSkip: %d, multiTools: %d", vineOffset, rowsToSkip, multiTools)
-	local dirX, dirZ, length, ncx, ncz, x, z, dx, dz, diff, vOffset, _, yRot
-	if #self.lines > 1 and multiTools % 2 == 0 then
-		yRot = 0
-		dirX, dirZ = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[2].x2, z = self.lines[2].z2})
-		if dirX == dirX or dirZ == dirZ then
-			yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-		end
-		setWorldTranslation(node, self.lines[1].x1, 0, self.lines[2].z1)
-		setWorldRotation(node, 0, yRot, 0)
-		diff, _, _ = worldToLocal(node, self.lines[2].x1, 0, self.lines[2].z1)
-		if diff > 0 then 
-			vineOffset = vineOffset + (rowsToSkip+1) * self.width/2
-		else 
-			vineOffset = vineOffset - (rowsToSkip+1) * self.width/2
-		end
-	end
-	local forward = true
-	self.offset = 8
-	self.spacing = 3
-	self.waypoints = {}
-	local relevantLines = {}
-	local lastAddedIx
-	local preLines = {}
-	if rowsToSkip > 0 then 
-		--- Removes every second line.
-		for ix,l in ipairs(self.lines) do 
-			if (ix-1) % 2 == 0 then 
-				table.insert(preLines, l)
-			end
-		end
-		if #self.lines % 2 > 0 then 
-			table.insert(preLines, self.lines[#self.lines])
-		end
-	else 
-		preLines = self.lines
-	end
-	for ix,l in ipairs(preLines) do 
-		if multiTools > 1 then 
-			--- Finds the center multi tool lane.
-			if (ix + math.ceil(multiTools/2) - 1) % multiTools == 0 then
-				table.insert(relevantLines,l)
-				lastAddedIx = ix
-			end
-		else
-			table.insert(relevantLines,l)
-		end
-	end
-	--- Handles possible rest parts left over.
-	if lastAddedIx then 
-		local d = #preLines - lastAddedIx
-		local diff = d % multiTools
-		if diff ~= 0 then 
-			table.insert(relevantLines, preLines[lastAddedIx+diff])
-		end
-	end
-	--- Generates lines alternating
-	for ix,l in ipairs(relevantLines) do 
-		if forward then 
-			dirX, dirZ, _ = CpMathUtil.getPointDirection({x = l.x1, z = l.z1}, {x = l.x2, z = l.z2})
-			yRot = 0
-			if dirX == dirX or dirZ == dirZ then
-				yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-			end
-			dirX = dirX or 0
-			dirZ = dirZ or 1
-			ncx = dirX  * math.cos(math.pi/2) - dirZ  * math.sin(math.pi/2)
-			ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
-			x = l.x1 - dirX * self.offset + ncx * vineOffset
-			z = l.z1 - dirZ * self.offset + ncz * vineOffset
-			if #self.waypoints > 0 then 
-				setWorldTranslation(node, x, 0, z)
-				setWorldRotation(node, 0, yRot, 0)
-				_, _, diff = worldToLocal(node, self.waypoints[#self.waypoints].x, 0, self.waypoints[#self.waypoints].z)
-				if diff < 0 then 
-					x = x + dirX * diff
-					z = z + dirZ * diff
-				end
-			end
-			dx = l.x2 + dirX * self.offset + ncx * vineOffset
-			dz = l.z2 + dirZ * self.offset + ncz * vineOffset
-			if relevantLines[ix+1] then 
-				setWorldTranslation(node, dx, 0, dz)
-				setWorldRotation(node, 0, yRot, 0)
-				_, _, diff = worldToLocal(node, relevantLines[ix+1].x2 + dirX * self.offset - ncx * vineOffset, 0, relevantLines[ix+1].z2 + dirZ * self.offset - ncz * vineOffset)
-				if diff > 0 then 
-					dx = dx + dirX * diff 
-					dz = dz + dirZ * diff 
-				end
-			end
-
-			length = MathUtil.vector2Length(dx - x, dz- z)
-			self:addWaypointsInBetween(function (waypoints, i, nPoints, x, z)
-				table.insert(waypoints, {
-					x = x,
-					z = z,
-					turnEnd = i == 1,
-					turnStart = i == nPoints,
-					rowNumber = ix
-				})
-			end, length, x, z, dirX, dirZ, ncx, ncz, 0)
-		else 
-			dirX, dirZ, _ = CpMathUtil.getPointDirection({x = l.x2, z = l.z2}, {x = l.x1, z = l.z1})
-			yRot = 0
-			if dirX == dirX or dirZ == dirZ then
-				yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-			end
-			dirX = dirX or 0
-			dirZ = dirZ or 1
-			ncx = dirX  * math.cos(math.pi/2) - dirZ  * math.sin(math.pi/2)
-			ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
-			x = l.x2 - dirX * self.offset - ncx * vineOffset
-			z = l.z2 - dirZ * self.offset - ncz * vineOffset
-			if #self.waypoints > 0 then 
-				setWorldTranslation(node, x, 0, z)
-				setWorldRotation(node, 0, yRot, 0)
-				_, _, diff = worldToLocal(node, self.waypoints[#self.waypoints].x, 0, self.waypoints[#self.waypoints].z)
-				if diff < 0 then 
-					x = x + dirX * diff 
-					z = z + dirZ * diff
-				end
-			end
-			dx = l.x1 + dirX * self.offset - ncx * vineOffset
-			dz = l.z1 + dirZ * self.offset - ncz * vineOffset
-			if relevantLines[ix+1] then 
-				setWorldTranslation(node, dx, 0, dz)
-				setWorldRotation(node, 0, yRot, 0)
-				_, _, diff = worldToLocal(node, relevantLines[ix+1].x1 + dirX * self.offset + ncx * vineOffset, 0, relevantLines[ix+1].z1 + dirZ * self.offset + ncz * vineOffset)
-				if diff > 0 then 
-					dx = dx + dirX * diff
-					dz = dz + dirZ * diff
-				end
-			end
-
-			length = MathUtil.vector2Length(dx - x, dz- z)
-			self:addWaypointsInBetween(function (waypoints, i, nPoints, x, z)
-				table.insert(waypoints, {
-					x = x,
-					z = z,
-					turnEnd = i == 1,
-					turnStart = i == nPoints,
-					rowNumber = ix
-				})
-			end, length, x, z, dirX, dirZ, ncx, ncz, 0)
-		end
-
-		forward = not forward
-	end
-	CpUtil.destroyNode(node)
-	local c = Course(nil, self.waypoints)
-	c.multiTools = multiTools 
-	if multiTools > 1 and rowsToSkip > 0 then 
-		c.workWidth = self.width * multiTools * 2
-	else 
-		c.workWidth = self.width * multiTools
-	end
-	return c
-end
-
-function VineScanner:addWaypointsInBetween(lambda, length, x, z, dirX, dirZ, ncx, ncz, vOffset)
-	local nPoints = math.floor(length/ self.spacing) + 1
-	local dBetweenPoints = (length) / nPoints
-	local dx, dz = 0, 0
-	for i = 1, nPoints do
-		dx = x + dirX * dBetweenPoints * i + ncx * vOffset
-		dz = z + dirZ * dBetweenPoints * i + ncz * vOffset
-		lambda(self.waypoints, i, nPoints, dx, dz)
-	end
 end
 
 --- Gets a segment for a vine node.
