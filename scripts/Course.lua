@@ -892,8 +892,8 @@ function Course:append(other)
 end
 
 --- Return a copy of the course
-function Course:copy(vehicle)
-	return Course(vehicle or self.vehicle, self.waypoints)
+function Course:copy(vehicle, first, last)
+	return Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
 end
 
 --- Append a single waypoint to the course

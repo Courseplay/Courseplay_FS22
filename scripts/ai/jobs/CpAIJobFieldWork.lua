@@ -153,6 +153,17 @@ function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
 end
 
+-- To pass an alignment course from the drive to fieldwork start to the fieldwork, so the
+-- fieldwork strategy can continue the alignment course set up by the drive to fieldwork start strategy.
+function CpAIJobFieldWork:setStartFieldWorkCourse(course, ix)
+	self.startFieldWorkCourse = course
+	self.startFieldWorkCourseIx = ix
+end
+
+function CpAIJobFieldWork:getStartFieldWorkCourse()
+	return self.startFieldWorkCourse, self.startFieldWorkCourseIx
+end
+
 --- Is course generation allowed ?
 function CpAIJobFieldWork:isCourseGenerationAllowed()
 	return self:getCanGenerateFieldWorkCourse()

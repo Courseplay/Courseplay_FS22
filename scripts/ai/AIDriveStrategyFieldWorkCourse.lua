@@ -90,7 +90,19 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx)
 
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
 
-    if distance > 2 * self.turningRadius then
+    ---@type CpAIJobFieldWork
+    local job = self.vehicle:getJob()
+    local alignmentCourse, alignmentCourseStartIx = job:getStartFieldWorkCourse()
+
+    if alignmentCourse then
+        -- there is an alignment course already created by the AIDriveStrategyDriveToFieldWorkStart,
+        -- and we are supposed to continue on that one
+        self:debug('Continuing the alignment course at %d to start work.', alignmentCourseStartIx)
+        -- make sure the alignment course is used only once
+        job:setStartFieldWorkCourse(nil, nil)
+        self.course = course
+        self:startAlignmentTurn(course, startIx, alignmentCourse, alignmentCourseStartIx)
+    elseif distance > 2 * self.turningRadius then
         self:debug('Start waypoint is far (%.1f m), use alignment course to get there.', distance)
         self.course = course
         self:startAlignmentTurn(course, startIx)
@@ -442,8 +454,31 @@ function AIDriveStrategyFieldWorkCourse:changeToFieldWork()
     self:lowerImplements(self.vehicle)
 end
 
-function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, startIx)
-    local alignmentCourse = self:createAlignmentCourse(fieldWorkCourse, startIx)
+--- Start alignment turn, that is, a course to the waypoint of fieldWorkCourse where the
+--- fieldwork should begin. This is performed as a turn maneuver, more specifically the end of the
+--- turn maneuver where the work is started and has the logic to lower the implements exactly
+--- where it needs to be.
+---
+--- (It is called alignment because it makes sure the vehicle is aligned with the start waypoint so
+--- that it points to the right direction and the implements can start work exactly at the waypoint)
+---
+--- The caller can pass in an already created alignment course with an index. In that case, we'll use
+--- that course, starting at alignmentStartIx for the turn, otherwise a new course is created from
+--- the vehicle's current position to startIx in fieldWorkCourse.
+---
+---@param fieldWorkCourse Course fieldwork course
+---@param startIx number index of waypoint of fieldWorkCourse where the work should start
+---@param alignmentCourse Course an optional course if the caller already has one
+---@param alignmentStartIx number index to start the alignment course (if supplied)
+function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, startIx, alignmentCourse, alignmentStartIx)
+    if alignmentCourse then
+        -- there is an alignment course, use that one, if there is a start ix, then only
+        -- the part starting at startIx
+        alignmentCourse = alignmentCourse:copy(self.vehicle, alignmentStartIx)
+    else
+        -- no alignment course given, generate one
+        alignmentCourse = self:createAlignmentCourse(fieldWorkCourse, startIx)
+    end
     self.ppc:setShortLookaheadDistance()
     local fm, bm = self:getFrontAndBackMarkers()
     self.turnContext = TurnContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
@@ -483,7 +518,7 @@ function AIDriveStrategyFieldWorkCourse:checkTransitionFromConnectingTrack(ix, c
         -- (no alignment if there is a turn generated here)
         if d < 5 * self.turningRadius and firstUpDownWpIx and not course:isTurnEndAtIx(firstUpDownWpIx) then
             self:debug('End connecting track, start working on up/down rows (waypoint %d) with alignment course if needed.', firstUpDownWpIx)
-            self:startAlignmentTurn(course, self:createAlignmentCourse(course, firstUpDownWpIx))
+            self:startAlignmentTurn(course, firstUpDownWpIx)
         end
     end
 end

@@ -130,7 +130,7 @@ function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)
         self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
         return ixClosestRightDirection
     elseif startAt == CpJobParameters.START_AT_LAST_POINT then
-        local lastWpIx = self.vehicle:getCpLastRememberedWaypointIx()()
+        local lastWpIx = self.vehicle:getCpLastRememberedWaypointIx()
         if lastWpIx then
             self:debug('Starting course at the last waypoint %d', lastWpIx)
             return lastWpIx

@@ -187,10 +187,12 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 ---@param course Course
 function AIDriveStrategyDriveToFieldWorkStart:onWaypointChange(ix, course)
-    if course:isCloseToLastWaypoint(10) then
+    if course:isCloseToLastWaypoint(15) then
         self.state = self.states.WORK_START_REACHED
         -- just in case no one takes the wheel in a few seconds
         self.emergencyBrake:set(false, 2000)
         self:debug('Almost at the work start waypoint, preparing for work')
+        -- let the field work strategy know where to continue
+        self.vehicle:getJob():setStartFieldWorkCourse(course, ix)
     end
 end
