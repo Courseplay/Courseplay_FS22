@@ -31,7 +31,7 @@ jobs:
     needs: [get-commits]
     strategy:
       matrix:
-        author: ${{ fromJSON(steps.getcommits.outputs.commits) }}
+        author: ${{ fromJSON(needs.getcommits.outputs.commits) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
