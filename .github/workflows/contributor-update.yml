@@ -17,7 +17,7 @@ jobs:
       with:
         script: |
           return context.payload.commits
-            .filter(commit => commit.author.username === github.actor)
+            .filter(commit => commit.author.username === context.actor)
             .map(commit => {
               return {
                 id: commit.id,
@@ -41,6 +41,7 @@ jobs:
           node-version: "14"
       - name: Get changed files
         run: |
+          echo ${{ needs.get_commits.outputs.commits }}
           echo "${{ matrix.id }}: ${{ matrix.message }}"
       # Test
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
