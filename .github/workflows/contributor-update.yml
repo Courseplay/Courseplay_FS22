@@ -12,16 +12,11 @@ jobs:
   get_commits:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Setup node
-      uses: actions/setup-node@v2
-      with:
-        node-version: "14"
     - name: Filter commits of author
       uses: actions/github-script@v6
       with:
         script: |
+          console.log(context);
           return context.github.event.commits
             .filter(commit => commit.author.username === github.actor)
             .map(commit => {
