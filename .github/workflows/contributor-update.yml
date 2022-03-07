@@ -9,14 +9,30 @@ on:
 
 # The list of jobs this workflow executes
 jobs:
+  get-commits:
+    runs-on: ubuntu-latest
+    id: getcommits
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v2
+      with:
+        node-version: "14"
+    - name: Filter commits of author
+      env:
+        AUTHOR: ${{ github.actor }}
+        COMMITS: ${{ toJSON(github.event.commits) }}
+      run: |
+        cd .github/scripts/update-contributors
+        node filter-commits.js
   update-contributors:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        commit: ${{ github.event.commits }}
+        author: ${{ fromJSON(steps.getcommits.outputs.commits) }}
     steps:
       - name: Checkout repository
-        if: ${{ matrix.commit.author.username == github.event.pusher.name }}
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
