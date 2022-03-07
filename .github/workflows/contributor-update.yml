@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         commit: ${{ github.event.commits }}
-    if: ${{ matrix.commit.author.username == github.event.pusher.name }}
     steps:
       - name: Checkout repository
+        if: ${{ matrix.commit.author.username == github.event.pusher.name }}
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
