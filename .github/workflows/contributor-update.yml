@@ -28,6 +28,7 @@ jobs:
         node filter-commits.js
   update-contributors:
     runs-on: ubuntu-latest
+    needs: [get-commits]
     strategy:
       matrix:
         author: ${{ fromJSON(steps.getcommits.outputs.commits) }}
