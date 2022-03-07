@@ -32,6 +32,7 @@ end
 function CpAIWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
 end
 
@@ -41,6 +42,8 @@ function CpAIWorker.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartText", CpAIWorker.getCpStartText)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
+    SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -204,3 +207,47 @@ function CpAIWorker:getCpStartText()
 	return ""
 end
 
+function CpAIWorker:startCpDriveTo(task, jobParameters)
+    self.driveToTask = task
+    ---@type AIDriveStrategyDriveToFieldWorkStart
+    self.driveToFieldWorkStartStrategy = AIDriveStrategyDriveToFieldWorkStart.new()
+    -- this also starts the strategy
+    self.driveToFieldWorkStartStrategy:setAIVehicle(self, jobParameters)
+end
+
+function CpAIWorker:stopCpDriveTo()
+    self.driveToFieldWorkStartStrategy:delete()
+    self.driveToFieldWorkStartStrategy = nil
+end
+
+function CpAIWorker:onUpdate(dt)
+    if self.driveToFieldWorkStartStrategy then
+        if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
+            self.driveToTask:onTargetReached()
+        else
+            self.driveToFieldWorkStartStrategy:update(dt)
+            if g_updateLoopIndex % 4 == 0 then
+                local tX, tZ, moveForwards, maxSpeed = self.driveToFieldWorkStartStrategy:getDriveData(dt)
+
+                -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
+                local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
+                local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
+
+                if not moveForwards and self.spec_articulatedAxis ~= nil and
+                        self.spec_articulatedAxis.aiRevereserNode ~= nil then
+                    pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
+                end
+
+                if not moveForwards and self:getAIReverserNode() ~= nil then
+                    pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
+                end
+
+                local acceleration = 1
+                local isAllowedToDrive = maxSpeed ~= 0
+
+                AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
+            end
+        end
+    end
+end

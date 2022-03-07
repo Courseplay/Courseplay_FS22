@@ -46,7 +46,7 @@ function CpUtil.printVariableToXML(variableName, maxDepth, printToSeparateXmlFil
 	local xmlFile = createXMLFile("xmlFile", filePath, baseKey);
 	local xmlFileValid = xmlFile and xmlFile ~= 0 or false
 	if not xmlFileValid then
-		CpUtil.error("xmlFile(%s) not valid!", filePath)
+		CpUtil.info("xmlFile(%s) not valid!", filePath)
 		return 
 	end
 	setXMLString(xmlFile, baseKey .. '#maxDepth', tostring(maxDepth))
@@ -220,7 +220,7 @@ function CpUtil.try(func, ...)
 	local data = {xpcall(func, function(err) printCallstack(); return err end, ...)}
 	local status = data[1]
 	if not status then 
-		CpUtil.error(data[2])
+		CpUtil.info(data[2])
 		return status, tostring(data[2])
 	end
 	return unpack(data)

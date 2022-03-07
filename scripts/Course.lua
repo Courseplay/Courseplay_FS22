@@ -892,8 +892,8 @@ function Course:append(other)
 end
 
 --- Return a copy of the course
-function Course:copy(vehicle)
-	return Course(vehicle or self.vehicle, self.waypoints)
+function Course:copy(vehicle, first, last)
+	return Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
 end
 
 --- Append a single waypoint to the course
@@ -1337,6 +1337,24 @@ function Course:markAsHeadland(waypoints, passNumber)
 	end
 end
 
+--- @param nVehicles number of vehicles working together
+--- @param position number an integer defining the position of this vehicle within the group, negative numbers are to
+--- the left, positives to the right. For example, a -2 means that this is the second vehicle to the left (and thus,
+--- there are at least 4 vehicles in the group), a 0 means the vehicle in the middle, for which obviously no offset
+--- headland is required as it it driving on the original headland.
+--- @param width number working width of one vehicle
+function Course.calculateOffsetForMultitools(nVehicles, position, width)
+	local offset
+	if nVehicles % 2 == 0 then
+		-- even number of vehicles
+		offset = math.abs(position) * width - width / 2
+	else
+		offset = math.abs(position) * width
+	end
+	-- correct for side
+	return position >= 0 and offset or -offset
+end
+
 --- Calculate an offset course from an existing course. This is used when multiple vehicles working on
 --- the same field. In this case we only generate one course with the total implement width of all vehicles and use
 --- the same course for all vehicles, only with different offsets (multitool).
@@ -1361,16 +1379,7 @@ end
 --- @return Course the course with the appropriate offset applied.
 function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWidth)
 	-- find out the absolute offset in meters first
-	local offset
-	if nVehicles % 2 == 0 then
-		-- even number of vehicles
-		offset = math.abs(position) * width - width / 2
-	else
-		offset = math.abs(position) * width
-	end
-	-- correct for side
-	offset = position >= 0 and offset or -offset
-
+	local offset = Course.calculateOffsetForMultitools(nVehicles, position, width)
 	local offsetCourse = Course(self.vehicle, {})
 	offsetCourse.multiTools = nVehicles
 	offsetCourse.name = self.name

@@ -86,7 +86,7 @@ function CpFieldUtil.saveAllFields()
                 local key = ("CPFields.field(%d)"):format(field.fieldId);
                 setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
                 setXMLInt(xmlFile, key .. '#numPoints', #points);
-                for i,point in ipairs(points) do
+                for i, point in ipairs(points) do
                     setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
                 end
                 local islandNodes = Island.findIslands( Polygon:new(CourseGenerator.pointsToXy(points)))

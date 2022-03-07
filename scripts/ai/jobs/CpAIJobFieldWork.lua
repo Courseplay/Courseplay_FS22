@@ -21,7 +21,12 @@ function CpAIJobFieldWork.new(isServer, customMt)
 end
 
 function CpAIJobFieldWork:setupTasks(isServer)
+	-- this will add a standard driveTo task to drive to the target position selected by the user
 	CpAIJobFieldWork:superClass().setupTasks(self, isServer)
+	-- then we add our own driveTo task to drive from the target position to the waypoint where the
+	-- fieldwork starts (first waypoint or the one we worked on last)
+	self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
+	self:addTask(self.driveToFieldWorkStartTask)
 	self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
 	self:addTask(self.fieldWorkTask)
 end
@@ -104,6 +109,8 @@ end
 function CpAIJobFieldWork:setValues()
 	CpAIJobFieldWork:superClass().setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
+	self.driveToFieldWorkStartTask:reset()
+	self.driveToFieldWorkStartTask:setVehicle(vehicle)
 	self.fieldWorkTask:setVehicle(vehicle)
 end
 
@@ -144,6 +151,17 @@ end
 
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
+end
+
+-- To pass an alignment course from the drive to fieldwork start to the fieldwork, so the
+-- fieldwork strategy can continue the alignment course set up by the drive to fieldwork start strategy.
+function CpAIJobFieldWork:setStartFieldWorkCourse(course, ix)
+	self.startFieldWorkCourse = course
+	self.startFieldWorkCourseIx = ix
+end
+
+function CpAIJobFieldWork:getStartFieldWorkCourse()
+	return self.startFieldWorkCourse, self.startFieldWorkCourseIx
 end
 
 --- Is course generation allowed ?

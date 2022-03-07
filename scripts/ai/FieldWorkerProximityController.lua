@@ -113,8 +113,8 @@ function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpe
         if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) and
                 otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
             local otherStrategy = otherVehicle:getCpDriveStrategy()
-            local otherIsDone = otherStrategy:isDone()
-            if not otherIsDone then
+            local otherIsDone = otherStrategy and otherStrategy:isDone()
+            if otherStrategy and not otherIsDone then
                 local otherConvoyDistance = otherVehicle:getCpSettings().convoyDistance:getValue()
                 maxConvoyDistance = math.max(maxConvoyDistance, otherConvoyDistance)
                 local distanceFromOther = otherStrategy:getFieldWorkProximity(self.vehicle.rootNode)

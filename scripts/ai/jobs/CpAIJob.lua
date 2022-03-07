@@ -60,10 +60,12 @@ end
 
 --- Gets the first task to start with.
 function CpAIJob:getStartTaskIndex()
-	if self.isDirectStart then
+	if self.isDirectStart or self:isTargetReached() then
+		-- skip Giants driveTo
+		-- TODO: this isn't very nice as we rely here on the derived classes to add more tasks
 		return 2
 	end
-	return self:isTargetReached() and 2 or 1 
+	return 1
 end
 
 --- Should the giants path finder job be skipped?
