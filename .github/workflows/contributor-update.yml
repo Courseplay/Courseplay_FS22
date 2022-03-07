@@ -19,12 +19,17 @@ jobs:
       with:
         node-version: "14"
     - name: Filter commits of author
-      env:
-        AUTHOR: ${{ github.actor }}
-        COMMITS: ${{ toJSON(github.event.commits) }}
-      run: |
-        cd .github/scripts/update-contributors
-        node filter-commits.js
+      uses: actions/github-script@v6
+      with:
+        script: |
+          return github.event.commits
+            .filter(commit => commit.author.username === github.actor)
+            .map(commit => {
+              return {
+                id: commit.id,
+                message: commit.message
+              }
+            })
   update_contributors:
     runs-on: ubuntu-latest
     needs: [get_commits]
