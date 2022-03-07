@@ -23,11 +23,12 @@ jobs:
       - name: Get changed files
         id: getfiles
         run: |
-          git diff-tree --name-only ${{ github.event.before }} ${{ github.sha }}
-          echo "::set-output name=files::$(git diff-tree --name-only ${{ github.event.before }} ${{ github.sha }} | xargs)"
-      - name: Output changed files
-        run: |
-          echo ${{ steps.getfiles.outputs.files }}
+          echo ${{ github.event }}
+      #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+      #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
+      # - name: Output changed files
+      #   run: |
+      #     echo ${{ steps.getfiles.outputs.files }}
       # - name: Get changed files
       #   uses: tj-actions/changed-files@v14.6
       # - name: Create local changes
