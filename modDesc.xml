@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.1.2</version>
+    <version>7.0.1.3</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -15,41 +15,33 @@
 
     <description>
         <en>
-		<![CDATA[Courseplay
-
-The next version of Courseplay.
-
-- Multiplayer support will be added in a future release.
-- Full controller support for the GUI is planned for the future.
-]]>
+			<![CDATA[Courseplay FS22
+Full Multiplayer and controller support.
+Functionality: 		
+- Course generation
+- Field work with generated courses
+- Refill or unload with the mod "AutoDrive"
+- Combine self unload into a parked trailer near the field
+- Wrap and collect bales with or without a course
+- Save/load/rename courses
+- Create custom fields with recording or drawing on the AI Map
+- Vehicle Convoy for field work
+			]]>
 		</en>
-	<es>
-		<![CDATA[Courseplay
-
-La siguiente versión de Courseplay.
-
-- Soporte Multijugador se añadirá en una versión futura.
-- Compatibilidad total con controlador para la GUI está planeado para el futuro.
-]]>
-		</es>
         <de>
-		<![CDATA[Courseplay
-
-Die nächste Version von Courseplay.
-
-- Mehrspieler Modus wir mit den nächsten Versionen implementiert.
-- Kompletter Controller Support für das GUI ist geplant für später.
-]]>
+			<![CDATA[Courseplay FS22
+Vollständige Mehrspieler und Controller Unterstützung. 
+Funktionen: 		
+- Kurs Generatation
+- Feldarbeit mit generierten Kursen
+- Auffüllen und entladen mit dem Mod: "Autodrive"
+- Drescher können selber abtanken in Anhänger am Feldrand
+- Ballen wickeln und sammeln mit oder ohne Kurs
+- Speichern/laden/umbenennen von Kursen
+- Erstellung eigener Kurse durch Kursaufzeichnung oder Zeichnen im AI Menü auf der Karte
+- Fahrzeugverband für Feldarbeit
+			]]>
 		</de>
-	 <it>
-		<![CDATA[Courseplay
-
-La prossima versione di Courseplay.
-
-- Il supporto multiplayer verrà aggiunto in una versione futura.
-- Il supporto completo del controller per la GUI è previsto per il futuro.
-]]>
-		</it>
     </description>
 
 	<iconFilename>img/icon_courseplay.dds</iconFilename>
@@ -91,6 +83,7 @@ La prossima versione di Courseplay.
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
 		<sourceFile filename="scripts/ai/CpMathUtil.lua"/>
+		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>

@@ -43,9 +43,9 @@ CpBaseHud.xmlKey = "Hud"
 
 CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
 
-function CpBaseHud.registerXmlSchema(xmlSchema,baseKey)
-    xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posX","Hud position x.")
-    xmlSchema:register(XMLValueType.FLOAT,baseKey..CpBaseHud.xmlKey.."#posY","Hud position y.")
+function CpBaseHud.registerXmlSchema(xmlSchema, baseKey)
+    xmlSchema:register(XMLValueType.FLOAT, baseKey..CpBaseHud.xmlKey.."#posX", "Hud position x.")
+    xmlSchema:register(XMLValueType.FLOAT, baseKey..CpBaseHud.xmlKey.."#posY", "Hud position y.")
 end
 
 function CpBaseHud:init(vehicle)
@@ -73,7 +73,7 @@ function CpBaseHud:init(vehicle)
     self.wMargin = self.lineHeight/2
 
     self.lines = {}
-    for i=1,self.numLines do 
+    for i=1, self.numLines do 
         local y = CpBaseHud.y + self.hMargin + self.lineHeight * (i-1)
         local line = {
             left = {
@@ -91,28 +91,28 @@ function CpBaseHud:init(vehicle)
     self.baseHud = CpHudMoveableElement.new(background)
     self.baseHud:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.baseHud:setDimension(self.width, self.height)
-    self.baseHud:setCallback("onMove",self,self.moveToPosition)
+    self.baseHud:setCallback("onMove", self, self.moveToPosition)
     --------------------------------------
     --- Left side
     --------------------------------------
 
     --- Cp icon 
     local cpIconWidth, height = getNormalizedScreenValues(30, 30)
-    local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds",Courseplay.BASE_DIRECTORY), 0, 0,cpIconWidth, height)
+    local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds", Courseplay.BASE_DIRECTORY), 0, 0, cpIconWidth, height)
     cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-    cpIconOverlay:setUVs(GuiUtils.getUVs({80, 26, 144, 144}, {256,256}))
+    cpIconOverlay:setUVs(GuiUtils.getUVs({80, 26, 144, 144}, {256, 256}))
     self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
     local x, y = unpack(self.lines[7].left)
     self.cpIcon:setPosition(x, y)
-    self.cpIcon:setCallback("onClickPrimary",self.vehicle,function (vehicle)
+    self.cpIcon:setCallback("onClickPrimary", self.vehicle, function (vehicle)
                                 self:openGlobalSettingsGui(vehicle)
                             end)
 
 
     --- Title 
-    local x,y = unpack(self.lines[7].left)
+    local x, y = unpack(self.lines[7].left)
     x = x + cpIconWidth + self.wMargin
-    self.vehicleNameBtn = CpTextHudElement.new(self.baseHud ,x , y, self.defaultFontSize)
+    self.vehicleNameBtn = CpTextHudElement.new(self.baseHud , x , y, self.defaultFontSize)
     self.vehicleNameBtn:setCallback("onClickPrimary", self.vehicle, 
                                 function()
                                     self:openVehicleSettingsGui(self.vehicle)
@@ -139,7 +139,7 @@ function CpBaseHud:init(vehicle)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local exitBtnOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
     exitBtnOverlay:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    exitBtnOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.exitSymbol),{256,512}))
+    exitBtnOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.exitSymbol), {256, 512}))
     exitBtnOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
     self.exitBtn = CpHudButtonElement.new(exitBtnOverlay, self.baseHud)
     local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height -height/3
@@ -165,7 +165,7 @@ function CpBaseHud:init(vehicle)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local circleOverlay =  Overlay.new(imageFilename, 0, 0, recordingBtnWidth, height)
     circleOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    circleOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.circleSymbol),{256,512}))
+    circleOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.circleSymbol), {256, 512}))
     circleOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
     self.startStopRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
     local x, y = unpack(self.lines[6].right)
@@ -184,7 +184,7 @@ function CpBaseHud:init(vehicle)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local clearCourseOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
     clearCourseOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol),{256,512}))
+    clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol), {256, 512}))
     clearCourseOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
     self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
     local x, y = unpack(self.lines[6].right)
@@ -227,32 +227,32 @@ function CpBaseHud:init(vehicle)
                                                 self.vehicle:getCpSettings().toolOffsetZ)
 
     ---- Disables zoom, while mouse is over the cp hud. 
-    local function disableCameraZoomOverHud(vehicle,superFunc,...)
-        if vehicle:getIsMouseOverCpHud() then 
+    local function disableCameraZoomOverHud(vehicle, superFunc, ...)
+        if vehicle.getIsMouseOverCpHud and vehicle:getIsMouseOverCpHud() then 
             return
         end
-        return superFunc(vehicle,...)
+        return superFunc(vehicle, ...)
     end                                                   
 
-    Enterable.actionEventCameraZoomIn = Utils.overwrittenFunction(Enterable.actionEventCameraZoomIn,disableCameraZoomOverHud)
-    Enterable.actionEventCameraZoomOut = Utils.overwrittenFunction(Enterable.actionEventCameraZoomOut,disableCameraZoomOverHud)
+    Enterable.actionEventCameraZoomIn = Utils.overwrittenFunction(Enterable.actionEventCameraZoomIn, disableCameraZoomOverHud)
+    Enterable.actionEventCameraZoomOut = Utils.overwrittenFunction(Enterable.actionEventCameraZoomOut, disableCameraZoomOverHud)
 
     self.baseHud:setVisible(false)
 
-    self.baseHud:setScale(self.uiScale,self.uiScale)
+    self.baseHud:setScale(self.uiScale, self.uiScale)
 end
 
-function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc,callbackClass)
-    local x,y = unpack(self.lines[line].left)
-    local element = CpTextHudElement.new(parent ,x , y, textSize)
+function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
+    local x, y = unpack(self.lines[line].left)
+    local element = CpTextHudElement.new(parent , x , y, textSize)
     element:setCallback("onClickPrimary", callbackClass, callbackFunc)
     return element
 end
 
-function CpBaseHud:addRightLineTextButton(parent, line, textSize, callbackFunc,callbackClass)
-    local x,y = unpack(self.lines[line].right)
-    local element = CpTextHudElement.new(parent ,x , y, 
-                                        textSize,RenderText.ALIGN_RIGHT)
+function CpBaseHud:addRightLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
+    local x, y = unpack(self.lines[line].right)
+    local element = CpTextHudElement.new(parent , x , y, 
+                                        textSize, RenderText.ALIGN_RIGHT)
     element:setCallback("onClickPrimary", callbackClass, callbackFunc)
     return element
 end
@@ -296,7 +296,7 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     local callbackText = {
         callbackStr = "onClickMouseWheel",
         class =  setting,
-        func = function (class,dir)
+        func = function (class, dir)
             if dir >0 then 
                 class:setNextItem()
             else
@@ -318,7 +318,7 @@ end
 function CpBaseHud:openClose(open)
     self.baseHud:setVisible(open)
     if open then 
-        self.baseHud:setPosition(CpBaseHud.x,CpBaseHud.y)
+        self.baseHud:setPosition(CpBaseHud.x, CpBaseHud.y)
     end
 end
 
@@ -436,7 +436,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
     self:debug("opened ai inGame job creation.")
     self.vehicle:updateAIFieldWorkerImplementData()
     pageAI:onCreateJob()
-    for _,job in pairs(pageAI.jobTypeInstances) do 
+    for _, job in pairs(pageAI.jobTypeInstances) do 
         if job:isa(CpAIJobFieldWork) and job:getIsAvailableForVehicle(vehicle) then 
             local jobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndex(job)
             self:debug("opened ai inGame menu job %s.", job:getDescription())
@@ -472,15 +472,15 @@ function CpBaseHud:openGlobalSettingsGui(vehicle)
 end
 
 --- Saves hud position.
-function CpBaseHud.saveToXmlFile(xmlFile,baseKey)
+function CpBaseHud.saveToXmlFile(xmlFile, baseKey)
     if CpBaseHud.x ~= nil and CpBaseHud.y ~= nil then
-        xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posX",CpBaseHud.x)
-        xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posY",CpBaseHud.y)
+        xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posX", CpBaseHud.x)
+        xmlFile:setValue(baseKey..CpBaseHud.xmlKey.."#posY", CpBaseHud.y)
     end
 end
 
 --- Loads hud position.
-function CpBaseHud.loadFromXmlFile(xmlFile,baseKey)
+function CpBaseHud.loadFromXmlFile(xmlFile, baseKey)
     local posX = xmlFile:getValue(baseKey..CpBaseHud.xmlKey.."#posX")
     local posY = xmlFile:getValue(baseKey..CpBaseHud.xmlKey.."#posY")
     if posX ~= nil and posY ~= nil then 

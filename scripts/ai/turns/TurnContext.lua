@@ -270,23 +270,16 @@ function TurnContext:setTargetNode(node)
     self.targetNode = node
 end
 
---- Returns true if node1 is pointing approximately in node2's direction
----@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 10 degrees
-function TurnContext.isSameDirection(node1, node2, thresholdDeg)
-    local lx, _, lz = localDirectionToLocal(node1, node2, 0, 0, 1)
-    return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
-end
-
 --- Returns true if node is pointing approximately in the turn start direction, that is, the direction from
 --- turn start waypoint to the turn end waypoint.
 function TurnContext:isDirectionCloseToStartDirection(node, thresholdDeg)
-    return TurnContext.isSameDirection(node, self.turnStartWpNode.node, thresholdDeg)
+    return CpMathUtil.isSameDirection(node, self.turnStartWpNode.node, thresholdDeg)
 end
 
 --- Returns true if node is pointing approximately in the turn's ending direction, that is, the direction of the turn
 --- end waypoint, the direction the vehicle will continue after the turn
 function TurnContext:isDirectionCloseToEndDirection(node, thresholdDeg)
-    return TurnContext.isSameDirection(node, self.turnEndWpNode.node, thresholdDeg)
+    return CpMathUtil.isSameDirection(node, self.turnEndWpNode.node, thresholdDeg)
 end
 
 --- Use to find out if we can make a turn: are we farther away from the next row than our turn radius
