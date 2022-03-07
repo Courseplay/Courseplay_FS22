@@ -11,7 +11,12 @@ on:
 jobs:
   update-contributors:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        commit: ${{ github.event.commits }}
+    if: ${{ matrix.commit.author.username == github.event.pusher.name }}
     steps:
+      - name: Check commit author
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -21,9 +26,6 @@ jobs:
         with:
           node-version: "14"
       - name: Get changed files
-        strategy:
-          matrix:
-            os: ${{ github.event.commits }}
         run: |
           echo "${{ matrix.id }}: ${{ matrix.message }}"
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
