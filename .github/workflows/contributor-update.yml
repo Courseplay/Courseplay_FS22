@@ -20,9 +20,11 @@ jobs:
         node-version: "14"
     - name: Filter commits of author
       uses: actions/github-script@v6
+      env:
+        COMMITS: ${{ toJSON(github.event.commits) }}
       with:
         script: |
-          return github.event.commits
+          return JSON.parse(process.env.COMMITS)
             .filter(commit => commit.author.username === github.actor)
             .map(commit => {
               return {
