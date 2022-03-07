@@ -9,9 +9,8 @@ on:
 
 # The list of jobs this workflow executes
 jobs:
-  get-commits:
+  get_commits:
     runs-on: ubuntu-latest
-    id: getcommits
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -26,12 +25,12 @@ jobs:
       run: |
         cd .github/scripts/update-contributors
         node filter-commits.js
-  update-contributors:
+  update_contributors:
     runs-on: ubuntu-latest
-    needs: [get-commits]
+    needs: [get_commits]
     strategy:
       matrix:
-        author: ${{ fromJSON(needs.getcommits.outputs.commits) }}
+        author: ${{ fromJSON(needs.get_commits.outputs.commits) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
