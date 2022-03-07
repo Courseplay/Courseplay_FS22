@@ -64,7 +64,7 @@ function ProximitySensor:update()
     self.distanceOfClosestObject = math.huge
     self.objectId = nil
     if self.enabled then
-        local raycastMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+        local raycastMask = CollisionFlag.STATIC_OBJECTS + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
         raycastClosest(x, y + self.height, z, nx, ny, nz, 'raycastCallback', self.range, self, raycastMask)
         --DebugUtil.drawDebugLine(x, y + self.height, z, x + 5 * nx, y + self.height + 5 * ny, z + 5 * nz, 0, 1, 0)
     end
