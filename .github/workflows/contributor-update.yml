@@ -16,7 +16,6 @@ jobs:
         commit: ${{ github.event.commits }}
     if: ${{ matrix.commit.author.username == github.event.pusher.name }}
     steps:
-      - name: Check commit author
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
