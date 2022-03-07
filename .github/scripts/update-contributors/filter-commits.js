@@ -1,3 +1,5 @@
+const core = require("@actions/core");
+
 const author = process.env.AUTHOR;
 const commits = JSON.parse(process.env.COMMITS);
 
@@ -9,4 +11,5 @@ const filtered = commits
             message: commit.message
         }
     });
-console.log(`::set-output name=commits::${JSON.stringify(filtered)}`);
+
+core.setOutput("commits", JSON.stringify(filtered));
