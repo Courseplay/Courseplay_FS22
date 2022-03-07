@@ -21,9 +21,11 @@ jobs:
         with:
           node-version: "14"
       - name: Get changed files
-        id: getfiles
+        strategy:
+          matrix:
+            os: ${{ github.event.commits }}
         run: |
-          echo "${{ toJSON(github.event) }}"
+          echo "${{ matrix.id }}: ${{ matrix.message }}"
       # Test for commit check
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
