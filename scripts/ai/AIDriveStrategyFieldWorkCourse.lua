@@ -81,7 +81,7 @@ end
 
 --- Start a fieldwork course. We expect that something else dropped us off close enough to startIx so
 --- the most we need is an alignment course to lower the implements
-function AIDriveStrategyFieldWorkCourse:start(course, startIx)
+function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
     self.fieldWorkCourse = course
     -- remember at which waypoint we started, especially for the convoy

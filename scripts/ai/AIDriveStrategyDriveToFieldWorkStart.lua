@@ -49,6 +49,7 @@ function AIDriveStrategyDriveToFieldWorkStart.new(customMt)
     self.debugChannel = CpDebug.DBG_FIELDWORK
     self.prepareTimeout = 0
     self.emergencyBrake = CpTemporaryObject(true)
+    self.multitoolOffset = 0
     return self
 end
 
@@ -62,7 +63,7 @@ function AIDriveStrategyDriveToFieldWorkStart:initializeImplementControllers(veh
     self:addImplementController(vehicle, CutterController, Cutter, {})
 end
 
-function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx)
+function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParameters)
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
     if distance < AIDriveStrategyDriveToFieldWorkStart.minDistanceToDrive then
         self:debug('Closer than %.0f m to start waypoint (%d), start fieldwork directly',
@@ -70,6 +71,11 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx)
         self.state = self.states.WORK_START_REACHED
     else
         self:debug('Start driving to work start waypoint')
+        local nVehicles = course:getMultiTools()
+        self.multitoolOffset = Course.calculateOffsetForMultitools(
+                nVehicles,
+                nVehicles > 1 and jobParameters.laneOffset:getValue() or 0,
+                course:getWorkWidth() / nVehicles)
         self.vehicle:prepareForAIDriving()
         self:startCourseWithPathfinding(course, startIx)
     end
@@ -152,7 +158,7 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         self.pathfindingStartedAt = g_currentMission.time
         local done, path
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
-                0, math.min(-self.frontMarkerDistance, 0), self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
+                self.multitoolOffset, math.min(-self.frontMarkerDistance, 0), self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then
             return self:onPathfindingDoneToCourseStart(path)

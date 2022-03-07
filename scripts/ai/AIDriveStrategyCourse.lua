@@ -111,7 +111,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
         local startIx = self:getStartingPointWaypointIx(course, jobParameters.startAt:getValue())
-        self:start(course, startIx)
+        self:start(course, startIx, jobParameters)
     else
         -- some strategies do not need a recorded or generated course to work, they
         -- will create the courses on the fly.
@@ -140,7 +140,7 @@ function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)
     return 1
 end
 
-function AIDriveStrategyCourse:start(course, startIx)
+function AIDriveStrategyCourse:start(course, startIx, jobParameters)
     self:startCourse(course, startIx)
     self.state = self.states.INITIAL
 end
