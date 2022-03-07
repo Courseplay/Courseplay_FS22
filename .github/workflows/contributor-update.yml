@@ -12,8 +12,11 @@ jobs:
   get_commits:
     name: Get commits
     runs-on: ubuntu-latest
+    outputs:
+      commits: ${{ steps.getcommits.outputs.result }}
     steps:
     - name: Filter commits of author
+      id: getcommits
       uses: actions/github-script@v6
       with:
         script: |
@@ -31,7 +34,7 @@ jobs:
     needs: [get_commits]
     strategy:
       matrix:
-        author: ${{ fromJSON(needs.get_commits.outputs.result) }}
+        author: ${{ fromJSON(needs.get_commits.outputs.commits) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
