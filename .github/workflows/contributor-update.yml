@@ -16,8 +16,7 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          console.log(context);
-          return context.github.event.commits
+          return context.payload.commits
             .filter(commit => commit.author.username === github.actor)
             .map(commit => {
               return {
