@@ -26,7 +26,6 @@ jobs:
             os: ${{ github.event.commits }}
         run: |
           echo "${{ matrix.id }}: ${{ matrix.message }}"
-      # Test for commit check
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
       # - name: Output changed files
