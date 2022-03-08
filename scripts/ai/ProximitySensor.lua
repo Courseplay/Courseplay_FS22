@@ -56,7 +56,7 @@ function ProximitySensor:update()
     self.lastUpdateLoopIndex = g_updateLoopIndex
     local x, y, z = localToWorld(self.node, self.xOffset, 0, 0)
     -- get the terrain height at the end of the raycast line
-    local tx, _, tz = localToWorld(self.node, self.dx, 0, self.dz)
+    local tx, _, tz = localToWorld(self.node, self.dx + self.xOffset, 0, self.dz)
     local y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tx, 0, tz)
     -- make sure the raycast line is parallel with the ground
     local ny = (y2 - y) / self.range
