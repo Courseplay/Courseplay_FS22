@@ -225,7 +225,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
     self:addImplementController(vehicle, FertilizingSowingMachineController, FertilizingSowingMachine, defaultDisabledStates)
     self:addImplementController(vehicle, ForageWagonController, ForageWagon, defaultDisabledStates)
-
+    self:addImplementController(vehicle, SowingMachineController, SowingMachine, defaultDisabledStates)
     self:addImplementController(vehicle, FertilizingCultivatorController, FertilizingCultivator, defaultDisabledStates)
     self:addImplementController(vehicle, MowerController, Mower, defaultDisabledStates)
 

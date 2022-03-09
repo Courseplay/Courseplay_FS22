@@ -61,6 +61,7 @@ function AIDriveStrategyDriveToFieldWorkStart:initializeImplementControllers(veh
     -- these can't handle the standard Giants AI events to raise, so we need to have the controllers for them
     self:addImplementController(vehicle, PickupController, Pickup, {})
     self:addImplementController(vehicle, CutterController, Cutter, {})
+    self:addImplementController(vehicle, SowingMachineController, SowingMachine, {})
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParameters)
