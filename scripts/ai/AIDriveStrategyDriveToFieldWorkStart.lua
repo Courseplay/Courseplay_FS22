@@ -84,7 +84,7 @@ end
 function AIDriveStrategyDriveToFieldWorkStart:update()
     AIDriveStrategyDriveToFieldWorkStart:superClass().update(self)
     self:updateImplementControllers()
-    if self.ppc:getCourse():isTemporary() then
+    if self.ppc:getCourse():isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
         self.ppc:getCourse():draw()
     end
 end
