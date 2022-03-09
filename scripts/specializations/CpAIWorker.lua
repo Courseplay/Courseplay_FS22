@@ -221,7 +221,7 @@ function CpAIWorker:stopCpDriveTo()
 end
 
 function CpAIWorker:onUpdate(dt)
-    if self.driveToFieldWorkStartStrategy then
+    if self.isServer and self.driveToFieldWorkStartStrategy then
         if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
             self.driveToTask:onTargetReached()

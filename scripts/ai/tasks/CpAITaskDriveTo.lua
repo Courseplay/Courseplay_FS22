@@ -11,8 +11,10 @@ function CpAITaskDriveTo:setVehicle(vehicle)
 end
 
 function CpAITaskDriveTo:start()
-    CpUtil.infoVehicle(self.vehicle, 'CP drive to task started')
-    self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
+    if self.isServer then
+        CpUtil.infoVehicle(self.vehicle, 'CP drive to task started')
+        self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
+    end
 end
 
 function CpAITaskDriveTo:update()
