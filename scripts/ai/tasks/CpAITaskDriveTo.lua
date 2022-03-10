@@ -31,12 +31,3 @@ end
 function CpAITaskDriveTo:onTargetReached()
     self.isFinished = true
 end
-
-function CpAITaskDriveTo:reset()
-    if self.isServer then
-        if self.vehicle then
-            self.vehicle:stopCpDriveTo()
-        end
-        CpAITaskDriveTo:superClass().reset(self)
-    end
-end

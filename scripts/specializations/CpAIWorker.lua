@@ -145,6 +145,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
                 CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
                 return
             end
+            driveStrategy:onFinished()
         end
     end
     self:resetCpAllActiveInfoTexts()

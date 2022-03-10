@@ -32,6 +32,7 @@ AIDriveStrategyCourse.myStates = {
 --- Implement controller events.
 AIDriveStrategyCourse.onRaisingEvent = "onRaising"
 AIDriveStrategyCourse.onLoweringEvent = "onLowering"
+AIDriveStrategyCourse.onFinishedEvent = "onFinished"
 AIDriveStrategyCourse.updateEvent = "update"
 
 function AIDriveStrategyCourse.new(customMt)
@@ -439,6 +440,13 @@ end
 --- Are we within distance meters of the first waypoint (measured on the course, not direct path)?
 function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
+end
+
+
+--- Event raised when the drive is finished.
+--- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
+function AIDriveStrategyCourse:onFinished()
+    self:raiseControllerEvent(self.onFinishedEvent)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
