@@ -121,6 +121,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Sowing machines use fertilizer"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Enables/disables fertilizer usage of sowing machines."/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing machine"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Should the additional sowing machine turn on ?"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetric lane change"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetric lane change"/>
 
