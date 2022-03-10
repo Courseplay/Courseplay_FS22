@@ -121,8 +121,8 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Utilizzano fertilizzanti"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Abilita/disabilita l'uso del fertilizzante delle seminatrici"/>
 
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Opzioni semina"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Attiva o disattiva la funzione di semina aggiuntiva della macchina"/>
 		
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio di corsia simmetrico"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio di corsia simmetrico"/>
@@ -230,8 +230,8 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatibile con il gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="La Hud, può essere controllata con un Gamepad."/>
 		
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Aiuto per eventi d'azione"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Visualizza testo aiuto eventi d'azione."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ricerca percorso"/>
 		
@@ -244,8 +244,8 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Visualizza percorsicorsi attivi"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Mostra tutti i percorsi attivi sulla mappa di gioco"/>
 		
-		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
-		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Mostra la finestra dei testi informativi"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Visualizza una finestra di testo informativo."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestore percorsi (%s) %s"/>
@@ -282,12 +282,12 @@
 		<text name="CP_courseManager_activate"															text="Attiva"/>
 
 	<!-- Info texts -->
-		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+		<text name="CP_infoTexts_isStuck"																text="L'aiutante è bloccato"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="È nel traffico"/>
 
-		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
-		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
-		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Ha bisogno di essere riempito"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Ha bisogno di essere scaricato"/>
+		<text name="CP_infoTexts_workFinished"															text="Ha finito il lavoro"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
