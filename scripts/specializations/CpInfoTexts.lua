@@ -31,6 +31,8 @@ function CpInfoTexts.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onWriteUpdateStream", CpInfoTexts)
 	SpecializationUtil.registerEventListener(vehicleType, "onReadUpdateStream", CpInfoTexts)
 	SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpInfoTexts)
+	--- Auto drive start event, so we can reset the info texts on ad take over.
+	SpecializationUtil.registerEventListener(vehicleType, "onStartAutoDrive", CpInfoTexts)
 end
 function CpInfoTexts.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, 'setCpInfoTextActive', CpInfoTexts.setCpInfoTextActive)
@@ -76,6 +78,16 @@ end
 
 function CpInfoTexts:onEnterVehicle()
 	if self.isServer and not self:getIsCpActive() then 
+		local spec = self.spec_cpInfoTexts
+		if next(spec.activeInfoTexts) ~= nil then
+			self:resetCpAllActiveInfoTexts()
+		end
+	end
+end
+
+--- Makes sure the info texts are reset, when auto drive takes over.
+function CpInfoTexts:onStartAutoDrive()
+	if self.isServer then
 		local spec = self.spec_cpInfoTexts
 		if next(spec.activeInfoTexts) ~= nil then
 			self:resetCpAllActiveInfoTexts()
