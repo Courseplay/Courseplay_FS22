@@ -19,6 +19,10 @@ CpHudInfoTexts.colorDefault = {
     1, 1, 1, 1
 }
 
+CpHudInfoTexts.colorHeader = {
+    {0, 0, 0.5, 0.7}
+}
+
 CpHudInfoTexts.uvs = {
     vehicleIcon = {
         {0,37,35,35}
@@ -57,12 +61,20 @@ function CpHudInfoTexts:init()
     background:setUVs(g_colorBgUVs)
     background:setColor(0, 0, 0, 0.7)
     background:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_LEFT)
-
     --- Base hud element.
     self.baseHud = CpHudMoveableElement.new(background)
     self.baseHud:setPosition(CpHudInfoTexts.x, CpHudInfoTexts.y)
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, self.moveToPosition)
+
+    local headerBackground = Overlay.new(g_baseUIFilename, 0, 0, self.width, self.hMargin/2)
+    headerBackground:setUVs(g_colorBgUVs)
+    headerBackground:setColor(unpack(self.colorHeader))
+    headerBackground:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_LEFT)
+
+    local topElement = CpHudElement.new(headerBackground, self.baseHud)
+    topElement:setPosition(CpHudInfoTexts.x, CpHudInfoTexts.y)
+    topElement:setDimension(self.width, self.hMargin/2)
 
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
 
@@ -70,7 +82,7 @@ function CpHudInfoTexts:init()
 
     local x = CpHudInfoTexts.x + self.wMargin
     local dx = x + self.wMargin + width
-    local y =  CpHudInfoTexts.y- self.hMargin + self.lineHeight
+    local y =  CpHudInfoTexts.y- 5*self.hMargin/3 + self.lineHeight
     self.infoTextsElements = {}
     for i=1, self.maxLines do 
         y = y - self.lineHeight
@@ -167,6 +179,9 @@ function CpHudInfoTexts:update()
         local _, dy = self.infoTextsElements[self.activeTexts].text:getPosition()
         local width = self.baseHud:getWidth()
         self.baseHud:setDimension(width, y - dy + self.hMargin/2)
+    else 
+        local width = self.baseHud:getWidth()
+        self.baseHud:setDimension(width, self.hMargin/2)
     end
 end
 
@@ -175,7 +190,7 @@ function CpHudInfoTexts:enterVehicle(vehicle)
 end
 
 function CpHudInfoTexts:isVisible()
-	return g_Courseplay.globalSettings.infoTextHudActive:getValue() and self.activeTexts > 0
+	return g_Courseplay.globalSettings.infoTextHudActive:getValue()
 end
 
 function CpHudInfoTexts:isDisabled()
