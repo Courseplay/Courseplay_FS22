@@ -246,6 +246,9 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Vis alle ruter"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Vis kun indlæste ruter."/>
 
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Rute Manager(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="Ingen rute"/>
@@ -279,6 +282,15 @@
 		<text name="CP_courseManager_advancedSettings"													text="Rediger Rute/Mappe."/>
 
 		<text name="CP_courseManager_activate"															text="Activatere"/>
+	
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+	
+		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
+		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
+
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>

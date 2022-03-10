@@ -44,6 +44,7 @@ function AIDriveStrategyCourse.new(customMt)
     self:initStates(AIDriveStrategyCourse.myStates)
     ---@type ImplementController[]
     self.controllers = {}
+    self.registeredInfoTexts = {}
     return self
 end
 
@@ -81,9 +82,9 @@ function AIDriveStrategyCourse:error(...)
     CpUtil.infoVehicle(self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
--- TODO_22
 function AIDriveStrategyCourse:setInfoText(text)
-    self:debug(text)
+    self:debug("set info text: %s",tostring(text))
+    self.vehicle:setCpInfoTextActive(text)
 end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
@@ -279,6 +280,7 @@ end
 function AIDriveStrategyCourse:update()
     self.ppc:update()
     self:updatePathfinding()
+    self:updateInfoTexts()
 end
 
 function AIDriveStrategyCourse:getDriveData(dt, vX, vY, vZ)
@@ -346,16 +348,13 @@ end
 
 --- @param msgReference string as defined in globalInfoText.msgReference
 function AIDriveStrategyCourse:clearInfoText(msgReference)
-    -- TODO_22
     if msgReference then
-        self:debug('clearInfoText: %s', msgReference)
+        self.vehicle:resetCpActiveInfoText(msgReference)
     end
 end
 
 function AIDriveStrategyCourse:getFillLevelInfoText()
-    -- TODO_22
-    self:debug('getFillLevelInfoText')
-    return 'getFillLevelInfoText'
+    return InfoTextManager.NEEDS_UNLOADING
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -443,8 +442,36 @@ function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
 end
 
+
 --- Event raised when the drive is finished.
 --- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
 function AIDriveStrategyCourse:onFinished()
     self:raiseControllerEvent(self.onFinishedEvent)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+--- Info texts
+---------------------------------------------------------------------------------------------------------------------------
+
+--- Registers info texts for specific states.
+---@param infoText CpInfoTextElement
+---@param states table
+function AIDriveStrategyCourse:registerInfoTextForStates(infoText, states)
+    if self.registeredInfoTexts[infoText] == nil then 
+        self.registeredInfoTexts[infoText] = {}
+    end
+    for i, state in pairs(states) do 
+        self.registeredInfoTexts[infoText][state] = true        
+    end
+end
+
+--- Enables/disables based on the state.
+function AIDriveStrategyCourse:updateInfoTexts()
+    for infoText, states in pairs(self.registeredInfoTexts) do 
+        if states[self.state] then 
+            self:setInfoText(infoText)
+        else 
+            self:clearInfoText(infoText)
+        end
+    end
 end

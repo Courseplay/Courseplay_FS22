@@ -244,7 +244,10 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Visualizza percorsicorsi attivi"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Mostra tutti i percorsi attivi sulla mappa di gioco"/>
 		
-		<!-- CourseManager -->
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+
+	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestore percorsi (%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="Nessun percorso"/>
 		<text name="CP_courseManager_temporary_course"													text="Percorso temporaneo"/>
@@ -277,6 +280,14 @@
 		<text name="CP_courseManager_advancedSettings"													text="Modifica file"/>
 		
 		<text name="CP_courseManager_activate"															text="Attiva"/>
+
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+
+		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
+		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>

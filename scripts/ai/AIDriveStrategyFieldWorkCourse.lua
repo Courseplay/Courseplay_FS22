@@ -191,6 +191,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     self:limitSpeed()
     -- keep away from others working on the same course
     self:setMaxSpeed(self.fieldWorkerProximityController:getMaxSpeed(self.settings.convoyDistance:getValue(), self.maxSpeed))
+
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 

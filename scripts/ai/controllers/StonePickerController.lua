@@ -1,3 +1,5 @@
+--- Makes sure the driver is waiting, while the stone picker is full.
+--- Also enables the automatic unloading into nearby trailers.
 ---@class StonePickerController : ImplementController
 StonePickerController = CpObject(ImplementController)
 
@@ -22,7 +24,10 @@ end
 function StonePickerController:getDriveData()
 	local maxSpeed
 	if self:getIsFull() or self:isUnloading() or self:isClosingAnimationPlaying() then 
+		self:setInfoText(InfoTextManager.NEEDS_UNLOADING)
 		maxSpeed = 0
+	else 
+		self:clearInfoText(InfoTextManager.NEEDS_UNLOADING)
 	end
 
 	return nil, nil, nil, maxSpeed

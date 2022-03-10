@@ -1,3 +1,5 @@
+--- Enables the user to activate/deactivate the fertilizer use for cultivators with a setting.
+--- Also stops the driver, when the setting is active and the fertilizer tank is empty.
 ---@class FertilizingCultivatorController : ImplementController
 FertilizingCultivatorController = CpObject(ImplementController)
 
@@ -5,10 +7,6 @@ function FertilizingCultivatorController:init(vehicle, cultivator)
 	self.cultivator = cultivator
     ImplementController.init(self, vehicle, self.cultivator)
 	self.settings = vehicle:getCpSettings()
-end
-
-function FertilizingCultivatorController:update()
-
 end
 
 local function processCultivatorArea(sprayer,superFunc,...)

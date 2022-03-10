@@ -296,7 +296,7 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     local callbackText = {
         callbackStr = "onClickMouseWheel",
         class =  setting,
-        func = function (class, dir)
+        func = function (class, element, dir)
             if dir >0 then 
                 class:setNextItem()
             else
@@ -310,7 +310,7 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     return element
 end
 
-function CpBaseHud:moveToPosition(x, y)
+function CpBaseHud:moveToPosition(element, x, y)
     CpBaseHud.x = x 
     CpBaseHud.y = y
 end

@@ -116,6 +116,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
+		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
@@ -149,6 +150,7 @@ Funktionen:
 		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
@@ -161,6 +163,7 @@ Funktionen:
 		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
 		<specialization name="cpVehicleSettingDisplay" className="CpVehicleSettingDisplay" filename="scripts/specializations/CpVehicleSettingDisplay.lua"/>
 		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
+		<specialization name="cpInfoTexts" className="CpInfoTexts" filename="scripts/specializations/CpInfoTexts.lua"/>
 	</specializations>
 
 	<inputBinding>
