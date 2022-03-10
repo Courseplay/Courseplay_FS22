@@ -126,6 +126,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Såmaskiner använder gödning"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Aktiverar/inaktiverar gödning för såmaskiner."/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrisk linjebyte"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrisk linjebyte"/>
 

@@ -122,6 +122,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Secí stroje používají hnojivo"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Povolí/zakáže použití hnojiva u secích strojů"/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Pravidelné otáčení"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrická změna jízdního pruhu"/>
 

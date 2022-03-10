@@ -122,6 +122,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="播种机使用肥料"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="启用/禁用播种机的肥料使用。"/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="对称变道"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="对称变道"/>
 

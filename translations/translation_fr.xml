@@ -122,6 +122,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Utilisation engrais des semoirs"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Active/Désactive l'utilisation d'engrais pour les semoirs équipés."/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Changement de ligne symétrique"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
 
