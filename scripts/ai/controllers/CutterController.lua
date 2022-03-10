@@ -15,15 +15,13 @@ function CutterController:getDriveData()
 		if self.implement:getIsTurnedOn() then 
 			self.vehicle:aiBlock()
 		end
+	else 
+		--- Turns it back on, when the unloading finished and the cutter is lowered.
+		if not self.implement:getIsTurnedOn() and self.implement:getIsLowered() then 
+			self.vehicle:aiContinue()
+		end
 	end
 	return nil, nil, nil, nil
-end
-
-function CutterController:onLowering()
-	if self.driveStrategy.isWaitingForUnload and not self.implement:getIsTurnedOn() then 
-		--- Turns it back on after unloading.
-		self.vehicle:aiContinue()
-	end
 end
 
 --- The Giants Cutter class has a timer to stop the AI job if there is no fruit being processed for 5 seconds.
