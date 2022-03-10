@@ -122,7 +122,7 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Aplicación de fertilizantes"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Habilita/Deshabilita la aplicación de fertilizantes en sembradoras."/>
 
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Opciónes de Siembra"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Opciones de Siembra"/>
 		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Enciende o apaga la función de siembra adicional de la máquina."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio a carril simétrico"/>
@@ -244,8 +244,8 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Muestra todos las rutas activas"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Muestra todos las rutas activas en el mapa del juego."/>
 
-		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
-		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Ventana de Textos Informativos"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Muestra la Ventana de Textos Informativos"/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestión de rutas(%s) %s"/>
@@ -282,12 +282,12 @@
 		<text name="CP_courseManager_activate"															text="Activar"/>
 
 	<!-- Info texts -->
-		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+		<text name="CP_infoTexts_isStuck"																text="Está Atascado"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Está en el tráfico"/>
 
-		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
-		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
-		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Necesita ser rellenado"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Necesita ser descargado"/>
+		<text name="CP_infoTexts_workFinished"															text="Trabajo finalizado"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="¿Quieres guardar la ruta como campo personalizado %s?"/>
