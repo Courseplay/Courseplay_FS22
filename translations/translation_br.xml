@@ -242,8 +242,8 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Mostrar todas as rotas ativas"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Mostrar todas as rotas ativas no mapa."/>
 
-		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
-		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Mostrar janela de textos informativos"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Exibe uma janela de texto informativo."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gerenciar rota(rota atual:(%s) %s"/>
@@ -280,12 +280,12 @@
 		<text name="CP_courseManager_activate"															text="Ativado"/>
 		
 	<!-- Info texts -->
-		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+		<text name="CP_infoTexts_isStuck"																text="O ajudante está preso"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Está no trânsito"/>
 
-		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
-		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
-		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Precisa ser recarregado"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Precisa ser descarregado"/>
+		<text name="CP_infoTexts_workFinished"															text="Trabalho feito"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo personalizado %s?"/>
@@ -350,7 +350,7 @@ O próximo clique direito irá desenhar uma linha do seu ponto inicial até a su
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Mudar canal de debug atual."/>
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Mostrar canal de debug sim/não."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Abrir mini GUI"/>
-		<text name="input_CP_START_STOP" 																text="CP: Start/stop driver"/>
+		<text name="input_CP_START_STOP" 																text="CP: Dirigir/stop driver"/>
 		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
 		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Abrir/fechar hud"/>
 	</texts>
