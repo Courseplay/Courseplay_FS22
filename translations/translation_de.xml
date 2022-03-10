@@ -282,7 +282,6 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Wird blockiert"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Steckt im Verkehr fest"/>
-		<text name="CP_infoTexts_slowingDownForTraffic"  												text="Bremse ab"/>
 
 		<text name="CP_infoTexts_needsFilling"  														text="Muss aufgefüllt werden"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Muss entladen werden"/>

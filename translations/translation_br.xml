@@ -279,7 +279,6 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
-		<text name="CP_infoTexts_slowingDownForTraffic"  												text="Slowing down for traffic"/>
 
 		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>

@@ -11,7 +11,6 @@
 <InfoTexts prefix="CP_infoTexts_">
 	<InfoText name="IS_STUCK"								text="isStuck"/>
 	<InfoText name="TRAFFIC"  								text="isInTraffic"/>
-	<InfoText name="SLOWING_DOWN_FOR_TRAFFIC"  				text="slowingDownForTraffic"/>
 
 	<InfoText name="NEEDS_FILLING"  						text="needsFilling"/>
 	<InfoText name="NEEDS_UNLOADING"  						text="needsUnloading"/>
