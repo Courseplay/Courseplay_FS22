@@ -20,7 +20,7 @@ CpHudInfoTexts.colorDefault = {
 }
 
 CpHudInfoTexts.colorHeader = {
-    {0, 0, 0.5, 0.7}
+    0, 0, 0.5, 0.7
 }
 
 CpHudInfoTexts.uvs = {
@@ -67,14 +67,15 @@ function CpHudInfoTexts:init()
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, self.moveToPosition)
 
-    local headerBackground = Overlay.new(g_baseUIFilename, 0, 0, self.width, self.hMargin/2)
+    local headerHeight = self.hMargin/2
+    local headerBackground = Overlay.new(g_baseUIFilename, 0, 0, self.width, headerHeight)
     headerBackground:setUVs(g_colorBgUVs)
     headerBackground:setColor(unpack(self.colorHeader))
     headerBackground:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_LEFT)
 
     local topElement = CpHudElement.new(headerBackground, self.baseHud)
     topElement:setPosition(CpHudInfoTexts.x, CpHudInfoTexts.y)
-    topElement:setDimension(self.width, self.hMargin/2)
+    topElement:setDimension(self.width, headerHeight)
 
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
 
@@ -82,7 +83,7 @@ function CpHudInfoTexts:init()
 
     local x = CpHudInfoTexts.x + self.wMargin
     local dx = x + self.wMargin + width
-    local y =  CpHudInfoTexts.y- 5*self.hMargin/3 + self.lineHeight
+    local y =  CpHudInfoTexts.y - self.hMargin - headerHeight + self.lineHeight
     self.infoTextsElements = {}
     for i=1, self.maxLines do 
         y = y - self.lineHeight
