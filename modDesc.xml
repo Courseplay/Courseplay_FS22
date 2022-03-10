@@ -68,6 +68,8 @@ Funktionen:
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/Course.lua"/>
+		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
+		<sourceFile filename="scripts/util/MovingAverage.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
@@ -82,7 +84,6 @@ Funktionen:
 		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
-		<sourceFile filename="scripts/ai/CpMathUtil.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
