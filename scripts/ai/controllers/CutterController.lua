@@ -1,4 +1,5 @@
---- Raises/lowers the pickup.
+--- Raises/lowers the additional cutters, like the straw/grass pickup for harvesters.
+--- Also disables the cutter, while it's waiting for unloading.
 ---@class CutterController : ImplementController
 CutterController = CpObject(ImplementController)
 
@@ -9,6 +10,17 @@ end
 
 function CutterController:getDriveData()
 	self:disableCutterTimer()
+	--- Turns off the cutter, while the driver is waiting for unloading.
+	if self.driveStrategy.isWaitingForUnload and self.driveStrategy:isWaitingForUnload() then 
+		if self.implement:getIsTurnedOn() then 
+			self.vehicle:aiBlock()
+		end
+	else 
+		--- Turns it back on, when the unloading finished and the cutter is lowered.
+		if not self.implement:getIsTurnedOn() and self.implement:getIsLowered() then 
+			self.vehicle:aiContinue()
+		end
+	end
 	return nil, nil, nil, nil
 end
 
