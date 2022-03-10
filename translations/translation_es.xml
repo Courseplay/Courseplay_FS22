@@ -122,8 +122,8 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Aplicación de fertilizantes"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Habilita/Deshabilita la aplicación de fertilizantes en sembradoras."/>
 
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Opciónes de Siembra"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Enciende o apaga la función de siembra adicional de la máquina."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio a carril simétrico"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio a carril simétrico"/>
