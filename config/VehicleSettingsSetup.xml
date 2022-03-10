@@ -85,7 +85,9 @@
 		<!--Ridgemarker-->	
 		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" isVisible="isRidgeMarkerSettingVisible"/>
 		<!--Fertilizer-->
-		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true" isVisible="isSowingMachineFertilizerSettingVisible"/>
+		<!--Optional sowing machine-->
+		<Setting classType="AIParameterBooleanSetting" name="optionalSowingMachineEnabled" defaultBool="false" isVisible="isOptionalSowingMachineSettingVisible"/>
 	</SettingSubTitle>
 	
 	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">

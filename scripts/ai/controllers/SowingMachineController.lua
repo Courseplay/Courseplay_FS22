@@ -9,7 +9,7 @@ function SowingMachineController:init(vehicle, implement)
 end
 
 function SowingMachineController:onLowering()
-	if not self.implement:getIsTurnedOn() and self.settings.sowingMachineFertilizerEnabled:getValue() then 
+	if not self.implement:getIsTurnedOn() and self.settings.optionalSowingMachineEnabled:getValue() then 
     	self.implement:setIsTurnedOn(true)
 	end
 end
