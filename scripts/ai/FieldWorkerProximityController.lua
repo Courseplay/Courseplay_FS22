@@ -7,7 +7,7 @@ FieldWorkerProximityController = CpObject()
 FieldWorkerProximityController.trailSpacing = 5
 -- Other vehicles are considered as long as their direction is within sameDirectionLimit (radians)
 -- of the own vehicle
-FieldWorkerProximityController.sameDirectionLimit = math.rad(30)
+FieldWorkerProximityController.sameDirectionLimit = math.rad(45)
 -- Other vehicles are considered only as long as the lateral distance to them is less than
 -- lateralDistanceLimit * working width
 FieldWorkerProximityController.lateralDistanceLimit = 1.1
@@ -47,6 +47,10 @@ function FieldWorkerProximityController:draw()
             local x, y, z = p:getPosition()
             Utils.renderTextAtWorldPosition(x, y + 2.2, z,
                     string.format('%d', self:getDistanceAtIx(i)), getCorrectTextSize(0.012), 0)
+            if p.distance then
+                Utils.renderTextAtWorldPosition(x, y + 2.5, z,
+                        string.format('(%.1f)', p.distance), getCorrectTextSize(0.012), 0, { 1, 0.3, 0, 1 })
+            end
             DebugUtil.drawDebugLine(x, y + 1.5, z, x, y + 2, z, 0, 0, 1)
         end
     end
@@ -88,8 +92,7 @@ end
 --- is anywhere within lateralDistanceLimit * workWidth our trail, provided the trail point direction is more or less the node's
 --- direction.
 function FieldWorkerProximityController:getFieldWorkProximity(node)
-    local distance = math.huge
-    local trailLength = #self.trail * self.trailSpacing
+    local minDistance = math.huge
     for i = #self.trail, 1, -1 do
         local p = self.trail[i]
         local dx, _, dz = worldToLocal(node, p.x, p.y, p.z)
@@ -99,13 +102,20 @@ function FieldWorkerProximityController:getFieldWorkProximity(node)
         -- and finally, it needs to point into the same direction (approximately) to filter out a trail in
         -- the opposite direction
         --self:debug('%d: %.1f %.1f/%.1f %.1f (%.1f)', i, distance, dx, dz, math.deg(yRot - p.yRot), trailLength)
-        if dz < trailLength and dz > 0 and math.abs(dx) < self.lateralDistanceLimit * self.workingWidth and
+        if dz < self.trailSpacing and dz > 0 and math.abs(dx) < self.lateralDistanceLimit * self.workingWidth and
                 math.abs(yRot - p.yRot) < self.sameDirectionLimit then
-            distance = math.min(distance,  self:getDistanceAtIx(i) + dz)
+            local thisDistance = self:getDistanceAtIx(i) + dz
+            if thisDistance < minDistance then
+                -- just for debug paint purposes, we show where node is closest to the trail
+                minDistance = thisDistance
+                p.distance = thisDistance
+            end
             --self:debug('   %.1f', self:getDistanceAtIx(i) + dz)
+        else
+            p.distance = nil
         end
     end
-    return distance
+    return minDistance
 end
 
 --- Limit our speed if there are vehicles in front of us in the same or adjacent row
@@ -135,7 +145,7 @@ function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpe
     end
 
     -- update my own trail so it is long enough for everyone
-    self:updateTrail(maxConvoyDistance)
+    self:updateTrail(1.5 * maxConvoyDistance)
 
     if minDistanceFromOthers < math.huge then
         -- the closer we are, the slower we drive, but stop at half the minDistance
