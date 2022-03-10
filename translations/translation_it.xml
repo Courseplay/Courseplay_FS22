@@ -120,6 +120,9 @@
 		
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Utilizzano fertilizzanti"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Abilita/disabilita l'uso del fertilizzante delle seminatrici"/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
 		
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio di corsia simmetrico"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio di corsia simmetrico"/>

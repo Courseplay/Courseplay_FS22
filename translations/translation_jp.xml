@@ -122,6 +122,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="播種機の肥料"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="有効にすると播種機の肥料を使用します"/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="対称レーン切り替え"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="複数同時作業時、ラインに対して対称的にレーンの切り替えをします"/>
 

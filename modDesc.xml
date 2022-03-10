@@ -106,6 +106,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SowingMachineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ForageWagonController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/MowerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/RidgeMarkerController.lua"/>

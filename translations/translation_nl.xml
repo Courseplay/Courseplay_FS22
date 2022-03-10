@@ -122,6 +122,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Zaaimachines gebruiken kunstmest"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Schakelt het gebruik van kunstmest van zaaimachines in/uit."/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrische rijstrookwisseling"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrische rijstrookwisseling"/>
 

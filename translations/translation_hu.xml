@@ -119,6 +119,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="A vetőgépek műtrágyát használnak"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Engedélyezi/letiltja a vetőgépek műtrágya használatát."/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Szimmetrikus sávváltás"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Szimmetrikus sávváltás"/>
 
