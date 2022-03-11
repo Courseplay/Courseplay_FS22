@@ -5,7 +5,6 @@ SowingMachineController = CpObject(ImplementController)
 function SowingMachineController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.sowingMachineSpec = self.implement.spec_sowingMachine
-	self.settings = vehicle:getCpSettings()
 end
 
 function SowingMachineController:onLowering()

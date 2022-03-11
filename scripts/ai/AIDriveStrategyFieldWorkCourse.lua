@@ -237,6 +237,8 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
     self:addImplementController(vehicle, StonePickerController, StonePicker, defaultDisabledStates)
     self:addImplementController(vehicle, CombineController, Combine, defaultDisabledStates)
+
+    self:addImplementController(vehicle, MotorController, Motorized, {})
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    

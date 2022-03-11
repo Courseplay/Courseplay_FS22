@@ -1013,18 +1013,12 @@ function AIDriveStrategyCombineCourse:createPocketCourse()
 	end
 end
 
---- Disable auto stop for choppers as when we stop the engine they'll also raise implements and the way we restart them
---- won't lower the header. So for now, just don't let them to stop the engine.
---- Also make sure when a trailer under the pipe, then the engine needs to start so unloading can begin for combines.
-function AIDriveStrategyCombineCourse:isEngineAutoStopEnabled()
-	if not self:isChopper() then 
-		if not self:isFillableTrailerUnderPipe() then 
-			return AIDriver.isEngineAutoStopEnabled(self)
-		else 
-			--- Make sure once a trailer is under the pipe, the combine gets turned on if needed.
-			self:startEngineIfNeeded()
-		end
+--- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
+function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
+	if self:isCottonHarvester() then 
+		return false
 	end
+    return not self:isFillableTrailerUnderPipe() and self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
 --- Check if the vehicle should stop during a turn (for example while it
@@ -1243,6 +1237,10 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 			self.waitingForTrailer = false
 		end
 	end
+end
+
+function AIDriveStrategyCombineCourse:isChopperWaitingForUnloader()
+	return self.waitingForTrailer
 end
 
 function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()

@@ -289,7 +289,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Pomocnik utknął"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Jest w ruchu"/>
-
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
 		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>		

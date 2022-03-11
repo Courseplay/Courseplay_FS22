@@ -6,7 +6,6 @@ FertilizingCultivatorController = CpObject(ImplementController)
 function FertilizingCultivatorController:init(vehicle, cultivator)
 	self.cultivator = cultivator
     ImplementController.init(self, vehicle, self.cultivator)
-	self.settings = vehicle:getCpSettings()
 end
 
 local function processCultivatorArea(sprayer,superFunc,...)

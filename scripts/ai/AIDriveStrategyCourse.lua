@@ -166,6 +166,21 @@ function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, stat
     end
 end
 
+--- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.
+function AIDriveStrategyCourse:isFuelSaveAllowed()  
+    --[[ TODO: implement this, when fuel save is implemented for every vehicle combo and not only harvesters.
+         for _, controller in pairs(self.controllers) do
+            ---@type ImplementController
+            if controller:isEnabled() then
+                if not controller:isFuelSaveAllowed() then 
+                    return false
+                end
+            end
+        end
+    ]]  
+    return false
+end
+
 function AIDriveStrategyCourse:initializeImplementControllers(vehicle)
 end
 

@@ -287,7 +287,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Está Atascado"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Está en el tráfico"/>
-
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Necesita ser rellenado"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Necesita ser descargado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabajo finalizado"/>

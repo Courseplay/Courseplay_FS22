@@ -285,6 +285,12 @@ function CpAIJob:setVehicle(v)
 	self.vehicle = v
 end
 
+function CpAIJob:showNotification(aiMessage)
+	if not g_Courseplay.globalSettings.infoTextHudActive:getValue() then 
+		CpAIJob:superClass().showNotification(self, aiMessage)
+	end
+end
+
 --- Automatically repairs the vehicle, depending on the auto repair setting.
 function CpAIJob.onUpdateTickWearable(object, ...)
 	if object:getIsAIActive() and object:getUsageCausesDamage() then 

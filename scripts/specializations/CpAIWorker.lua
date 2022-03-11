@@ -27,6 +27,8 @@ function CpAIWorker.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpFinished")
 	SpecializationUtil.registerEvent(vehicleType, "onCpEmpty")
     SpecializationUtil.registerEvent(vehicleType, "onCpFull")
+    SpecializationUtil.registerEvent(vehicleType, "onCpFuelEmpty")
+    SpecializationUtil.registerEvent(vehicleType, "onCpBroken")
 end
 
 function CpAIWorker.registerEventListeners(vehicleType)
@@ -48,7 +50,7 @@ end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopCurrentAIJob', CpAIWorker.stopCurrentAIJob)
-
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanMotorRun', CpAIWorker.getCanMotorRun)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -57,7 +59,8 @@ function CpAIWorker:onLoad(savegame)
 	--- Register the spec: spec_CpAIWorker
     self.spec_cpAIWorker = self["spec_" .. CpAIWorker.SPEC_NAME]
     local spec = self.spec_cpAIWorker
-   
+    --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
+    spec.motorDisabled = false
 end
 
 --- Registers the start stop action event.
@@ -126,6 +129,14 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         hasFinished = true
         releaseMessage = g_infoTextManager.WORK_FINISHED
         event = "onCpFinished"
+    elseif message:isa(AIMessageErrorOutOfFuel) then 
+        hasFinished = true
+        releaseMessage = g_infoTextManager.FUEL_IS_EMPTY
+        event = "onCpFuelEmpty"
+    elseif message:isa(AIMessageErrorVehicleBroken) then 
+        hasFinished = true
+        releaseMessage = g_infoTextManager.IS_COMPLETELY_BROKEN
+        event = "onCpBroken"
     end
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s", 
                                                     tostring(hasFinished), tostring(event))
@@ -152,6 +163,8 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     if not self:getIsControlled() and releaseMessage then 
         self:setCpInfoTextActive(releaseMessage)
     end
+    --- Reset the flag.
+    self.spec_cpAIWorker.motorDisabled = false
     superFunc(self, message,...)
     if wasCpActive then 
         if event then 
@@ -215,6 +228,14 @@ end
 --- for example the starting point.
 function CpAIWorker:getCpStartText()
 	return ""
+end
+
+--- Makes sure giants isn't turning the motor back on, when we have turned it off.
+function CpAIWorker:getCanMotorRun(superFunc, ...)
+    if self:getIsCpActive() and self.spec_cpAIWorker.motorDisabled then 
+        return false
+    end
+    return superFunc(self, ...)
 end
 
 function CpAIWorker:startCpDriveTo(task, jobParameters)

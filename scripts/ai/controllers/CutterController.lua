@@ -13,12 +13,12 @@ function CutterController:getDriveData()
 	--- Turns off the cutter, while the driver is waiting for unloading.
 	if self.driveStrategy.isWaitingForUnload and self.driveStrategy:isWaitingForUnload() then 
 		if self.implement:getIsTurnedOn() then 
-			self.vehicle:aiBlock()
+			self.implement:setIsTurnedOn(false)
 		end
 	else 
 		--- Turns it back on, when the unloading finished and the cutter is lowered.
 		if not self.implement:getIsTurnedOn() and self.implement:getIsLowered() then 
-			self.vehicle:aiContinue()
+			self.implement:setIsTurnedOn(true)
 		end
 	end
 	return nil, nil, nil, nil

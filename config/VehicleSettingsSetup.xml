@@ -20,9 +20,11 @@
 				<Text>all</Text>
 			</Texts>
 		</Setting>
-		<!--Stop At End-->
+		<!--Open hud with mouse-->
 		<Setting classType="AIParameterBooleanSetting" name="openHudWithMouse" defaultBool="true" onChangeCallback="cpUpdateMouseAction"/>
 
+		<!--Open hud with mouse-->
+		<Setting classType="AIParameterBooleanSetting" name="fuelSave" defaultBool="true"/>
 		<!--Stop At End-->
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
 		<!--Turn on Field-->
