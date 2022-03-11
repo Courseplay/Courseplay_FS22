@@ -271,7 +271,9 @@ end
 
 --- Resets the mouse cursor on entering a vehicle for example.
 function Courseplay.removePlayerActionEvents(player)
-	g_inputBinding:setShowMouseCursor(false)
+	if player.wasCpMouseActive then
+		g_inputBinding:setShowMouseCursor(false)
+	end
 	player.wasCpMouseActive = nil
 end
 

@@ -92,10 +92,15 @@ function AIDriveStrategyCombineCourse.new(customMt)
 
 	--- Register info texts 
 	self:registerInfoTextForStates(self:getFillLevelInfoText(), {
-		self.states.WAITING_FOR_UNLOAD_ON_FIELD,
-		self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED,
-		self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK,
-		self.states.WAITING_FOR_UNLOAD_IN_POCKET
+		states = {
+			[self.states.UNLOADING_ON_FIELD] = true
+		},
+		unloadStates = {
+			[self.states.WAITING_FOR_UNLOAD_ON_FIELD] = true,
+			[self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED] = true,
+			[self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK] = true,
+			[self.states.WAITING_FOR_UNLOAD_IN_POCKET] = true
+		}
 	})
 
 	return self
@@ -1960,12 +1965,13 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Info texts, makes sure the unloadState also gets checked.
 ---------------------------------------------------------------------------------------------------------------------------
+
 function AIDriveStrategyCombineCourse:updateInfoTexts()
     for infoText, states in pairs(self.registeredInfoTexts) do 
-        if states[self.state] or states[self.unloadState] then 
-            self.vehicle:setCpInfoTextActive(infoText)
+		if states.states[self.state] and states.unloadStates[self.unloadState] then 
+            self:setInfoText(infoText)
         else 
-            self.vehicle:resetCpActiveInfoText(infoText)
+            self:clearInfoText(infoText)
         end
     end
 end

@@ -6,6 +6,12 @@ CpBaseHud.OFF_COLOR = {0.2, 0.2, 0.2, 0.9}
 CpBaseHud.RECORDER_ON_COLOR = {1, 0, 0, 0.9}
 CpBaseHud.ON_COLOR = {0, 0.6, 0, 0.9}
 
+CpBaseHud.WHITE_COLOR = {1, 1, 1, 0.9}
+
+CpBaseHud.colorHeader = {
+    0, 0.4, 0.6, 1
+}
+
 CpBaseHud.basePosition = {
     x = 810,
     y = 60
@@ -13,9 +19,10 @@ CpBaseHud.basePosition = {
 
 CpBaseHud.baseSize = {
     x = 360,
-    y = 200
+    y = 230
 }
 
+CpBaseHud.headerFontSize = 14
 CpBaseHud.titleFontSize = 20
 CpBaseHud.defaultFontSize = 16
 
@@ -68,12 +75,12 @@ function CpBaseHud:init(vehicle)
     background:setColor(0, 0, 0, 0.7)
 
     
-    self.lineHeight = self.height/(self.numLines+1)
+    self.lineHeight = self.height/(self.numLines+2)
     self.hMargin = self.lineHeight
     self.wMargin = self.lineHeight/2
 
     self.lines = {}
-    for i=1, self.numLines do 
+    for i=1, (self.numLines+1) do 
         local y = CpBaseHud.y + self.hMargin + self.lineHeight * (i-1)
         local line = {
             left = {
@@ -86,32 +93,51 @@ function CpBaseHud:init(vehicle)
         self.lines[i] = line
     end
 
-
     --- Root element
     self.baseHud = CpHudMoveableElement.new(background)
     self.baseHud:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, self.moveToPosition)
+
+    --------------------------------------
+    --- Header
+    --------------------------------------
+    
+    local headerHeight = self.hMargin
+    local headerBackground = Overlay.new(g_baseUIFilename, 0, 0, self.width, headerHeight)
+    headerBackground:setUVs(g_colorBgUVs)
+    headerBackground:setColor(unpack(self.colorHeader))
+    headerBackground:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT)
+
+    local topElement = CpHudElement.new(headerBackground, self.baseHud)
+    topElement:setPosition(CpBaseHud.x, CpBaseHud.y + self.height - headerHeight)
+    topElement:setDimension(self.width, headerHeight)
+
+    local leftTopText = CpTextHudElement.new(self.baseHud, CpBaseHud.x + self.wMargin, CpBaseHud.y + self.hMargin/4 + self.height - headerHeight, self.headerFontSize)
+    leftTopText:setTextDetails("Courseplay")
+    local rightTopText = CpTextHudElement.new(self.baseHud, CpBaseHud.x + self.width - 3*self.wMargin/2, CpBaseHud.y + self.hMargin/4 + self.height - headerHeight, self.headerFontSize, RenderText.ALIGN_RIGHT)
+    rightTopText:setTextDetails(g_Courseplay.currentVersion)
+
     --------------------------------------
     --- Left side
     --------------------------------------
 
     --- Cp icon 
-    local cpIconWidth, height = getNormalizedScreenValues(30, 30)
+    local cpIconWidth, height = getNormalizedScreenValues(22, 22)
     local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds", Courseplay.BASE_DIRECTORY), 0, 0, cpIconWidth, height)
-    cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+    cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT)
     cpIconOverlay:setUVs(GuiUtils.getUVs({80, 26, 144, 144}, {256, 256}))
     self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
     local x, y = unpack(self.lines[7].left)
+    y = y - self.hMargin/4
     self.cpIcon:setPosition(x, y)
     self.cpIcon:setCallback("onClickPrimary", self.vehicle, function (vehicle)
                                 self:openGlobalSettingsGui(vehicle)
                             end)
 
-
     --- Title 
     local x, y = unpack(self.lines[7].left)
-    x = x + cpIconWidth + self.wMargin
+    x = x + cpIconWidth + self.wMargin/2
     self.vehicleNameBtn = CpTextHudElement.new(self.baseHud , x , y, self.defaultFontSize)
     self.vehicleNameBtn:setCallback("onClickPrimary", self.vehicle, 
                                 function()
@@ -138,12 +164,12 @@ function CpBaseHud:init(vehicle)
     local width, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local exitBtnOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    exitBtnOverlay:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    exitBtnOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
     exitBtnOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.exitSymbol), {256, 512}))
-    exitBtnOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    exitBtnOverlay:setColor(unpack(self.WHITE_COLOR))
     self.exitBtn = CpHudButtonElement.new(exitBtnOverlay, self.baseHud)
-    local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height -height/3
-    self.exitBtn:setPosition(x, y)
+    local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height - headerHeight + self.hMargin/8
+    self.exitBtn:setPosition(x, y) 
     self.exitBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         vehicle:closeCpHud()
     end)

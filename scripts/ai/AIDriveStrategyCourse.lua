@@ -458,10 +458,7 @@ end
 ---@param states table
 function AIDriveStrategyCourse:registerInfoTextForStates(infoText, states)
     if self.registeredInfoTexts[infoText] == nil then 
-        self.registeredInfoTexts[infoText] = {}
-    end
-    for i, state in pairs(states) do 
-        self.registeredInfoTexts[infoText][state] = true        
+        self.registeredInfoTexts[infoText] = states
     end
 end
 
