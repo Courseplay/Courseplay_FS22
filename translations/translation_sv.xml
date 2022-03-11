@@ -101,6 +101,9 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Redskapsskjutning vertikalt"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskapsskjutning vertikalt"/>
 
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Check for silage additive."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="If active and silage additive is emtpy, the driver will stop."/>
+
 		<text name="CP_vehicle_setting_turnDiameter_title" 												text="Vändcirkelns bredd"/>
 		<text name="CP_vehicle_setting_turnDiameter_tooltip" 											text="Vändcirkelns bredd. Value: 2 - 50"/>
 	
