@@ -9,7 +9,7 @@ CpHudInfoTexts.basePosition = {
 	x = 1920 - 250,
     y = 1080 - 100
 }
-CpHudInfoTexts.titleFontSize = 20
+CpHudInfoTexts.titleFontSize = 14
 CpHudInfoTexts.defaultFontSize = 18
 CpHudInfoTexts.maxLines = 10
 CpHudInfoTexts.colorCurrentVehicle = {
@@ -77,6 +77,10 @@ function CpHudInfoTexts:init()
     topElement:setPosition(CpHudInfoTexts.x, CpHudInfoTexts.y)
     topElement:setDimension(self.width, headerHeight)
 
+    local leftTopText = CpTextHudElement.new(self.baseHud, CpHudInfoTexts.x + self.wMargin, CpHudInfoTexts.y - headerHeight + self.hMargin/16, self.titleFontSize)
+    leftTopText:setTextDetails("Courseplay")
+    local rightTopText = CpTextHudElement.new(self.baseHud, CpHudInfoTexts.x + self.width - self.wMargin, CpHudInfoTexts.y - headerHeight + self.hMargin/16, self.titleFontSize, RenderText.ALIGN_RIGHT)
+    rightTopText:setTextDetails(g_Courseplay.currentVersion)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
 
     local width, height = getNormalizedScreenValues(20, 20)
