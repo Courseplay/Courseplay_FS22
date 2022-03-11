@@ -130,9 +130,9 @@ function WorkWidthUtil.getAIMarkers(object, logPrefix, suppressLog)
         aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object)
         if not aiLeftMarker or not aiRightMarker or not aiLeftMarker then
             if not suppressLog then
-                WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up')
+                WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up, will use front/back markers')
             end
-            return nil, nil, nil
+            return Markers.getFrontMarkerNode(object), Markers.getFrontMarkerNode(object), Markers.getBackMarkerNode(object)
         else
             if not suppressLog then WorkWidthUtil.debug(object, logPrefix, 'AI markers from work area set') end
             return aiLeftMarker, aiRightMarker, aiBackMarker
