@@ -114,6 +114,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/CutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SprayerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CombineController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>

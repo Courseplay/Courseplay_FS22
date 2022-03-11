@@ -248,3 +248,17 @@ function CpVehicleSettings:hasMultiToolCourse()
     local course = self:getFieldWorkCourse()
     return course and course:getMultiTools() > 1
 end
+
+--- Only show this setting, when an implement with additive tank was found.
+function CpVehicleSettings:isAdditiveFillUnitSettingVisible()
+    local combines, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, Combine)
+    local forageWagons, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, ForageWagon)
+    local hasAdditiveTank
+    if #combines > 0 then 
+        hasAdditiveTank = combines[1].spec_combine.additives.available
+    end
+    if #forageWagons > 0 then 
+        hasAdditiveTank = hasAdditiveTank or forageWagons[1].spec_forageWagon.additives.available
+    end
+    return hasAdditiveTank
+end

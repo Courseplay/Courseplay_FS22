@@ -100,6 +100,9 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="工具纵向调整"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="工具纵向调整"/>
 
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Check for silage additive."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="If active and silage additive is emtpy, the driver will stop."/>
+
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="总是伸出管道"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="当收割机装满并等待卸载时，始终伸出管道。"/>
 
