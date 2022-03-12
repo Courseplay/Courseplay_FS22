@@ -17,11 +17,16 @@ function VineScanner:foundVines()
 	return self.lines and next(self.lines) ~= nil
 end
 
-function VineScanner:findVineNodesInField(vertices, tx, tz)
+function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 	if vertices == nil or next(vertices) == nil then 
 		self.lines = nil
 		self.width = nil
 		return false
+	end
+	--- Makes sure the custom field border is a closed polygon.
+	--- Not sure if that is needed.
+	if isCustomField then 
+		table.insert(vertices, vertices[1])
 	end
 	local vineSegments = {}
 	local x, _, z
@@ -212,7 +217,7 @@ function VineScanner:getStartEndPointForLine(segments)
 	end
 	if #points > 0 then 
 		table.sort(points, function (a, b)
-			return a.x < b.x
+			return a.x ~= b.x and a.x < b.x or a.z < b.z
 		end)
 		return {x1 = points[1].x, 
 				x2 = points[#points].x, 
