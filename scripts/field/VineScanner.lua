@@ -217,7 +217,11 @@ function VineScanner:getStartEndPointForLine(segments)
 	end
 	if #points > 0 then 
 		table.sort(points, function (a, b)
-			return a.x ~= b.x and a.x < b.x or a.z < b.z
+			if a.x ~= b.x then 
+				return a.x < b.x
+			else 
+				return a.z < b.z
+			end
 		end)
 		return {x1 = points[1].x, 
 				x2 = points[#points].x, 
