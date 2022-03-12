@@ -162,6 +162,9 @@ function Courseplay:update(dt)
 end
 
 function Courseplay:draw()
+	if not g_gui:getIsGuiVisible() then
+		g_vineScanner:draw()
+	end
 	g_devHelper:draw()
 	CpDebug:draw()
 	if not g_gui:getIsGuiVisible() then

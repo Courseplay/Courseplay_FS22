@@ -64,8 +64,19 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 			table.insert(segments, segment)
 		end
 	end
+	local yRot = 0	
+	if dirX == dirX or dirZ == dirZ then
+		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+	end
+	local probe = createTransformGroup("probe")
+	x, _, z = getWorldTranslation(closestNode)
+	setTranslation( probe, x, 0, z )
+	setRotation( probe, 0, -yRot, 0)
+
 	--- Separate the segments into lines.
-	local left, right = self:separateIntoColumns(segments, closestNode)
+	local left, right = self:separateIntoColumns(segments, closestNode, probe)
+
+	CpUtil.destroyNode(probe)
 
 	local lines = {}
 	--- Combine the found lines to the left and right into one table.
@@ -73,12 +84,17 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 		table.insert(lines, left[i])
 	end
 
-	for _, s in pairs(right) do 
+	for _, s in ipairs(right) do 
 		table.insert(lines, s)
 	end
 
+	if #lines <= 0 then 
+		self:debug("No lines could ne found")
+		return false
+	end
+ 
 	local newLines = {}
-	for i, l in pairs(lines) do
+	for i, l in ipairs(lines) do
 		table.insert(newLines, self:getStartEndPointForLine(l))
 	end
 
@@ -99,6 +115,7 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 	self.lines = newLines
 	self.width = closestPlaceable.spec_vine.width
 
+	self:debug("Found %d number of lines for a width of %.2f", #self.lines, self.width)
 
 	return true
 end
@@ -108,7 +125,7 @@ end
 ---@return table
 function VineScanner:invertLinesStartAndEnd(lines)
 	local newLines = {}
-	for i, l in pairs(lines) do 
+	for i, l in ipairs(lines) do 
 		table.insert(newLines, {
 			x1 = l.x2,
 			z1 = l.z2,
@@ -135,26 +152,24 @@ end
 ---@param closestNode node
 ---@return table left lines 
 ---@return table right lines
-function VineScanner:separateIntoColumns(lines, closestNode)
+function VineScanner:separateIntoColumns(lines, closestNode, probe)
 	local placeable = self.vineSystem.nodes[closestNode]
 	local width = placeable.spec_vine.width
 	local columnsLeft = {}
 	local columnsRight = {}
-
 	--- Left columns 
 	local ix = 1
 	while true do
 		local nx = (ix-1)*width
-		local x,_,z = localToWorld(closestNode,nx,0,0) 
+		local x, _, z = localToWorld(probe, nx, 0, 0) 
 		local foundVine = false
 		for i, line in pairs(lines) do 
 			if MathUtil.getCircleLineIntersection(x, z, 0.1,  line.x1, line.z1, line.x2, line.z2) then
 				if columnsLeft[ix] == nil then 
 					columnsLeft[ix] = {}
 				end
-				table.insert(columnsLeft[ix],line)
+				table.insert(columnsLeft[ix], line)
 				foundVine = true
-				self:debug("Found line at column %d.",ix)
 			end
 		end
 		if not foundVine then 
@@ -162,21 +177,20 @@ function VineScanner:separateIntoColumns(lines, closestNode)
 		end
 		ix = ix + 1
 	end
-	self:debug("Found %d columns to the left.",#columnsLeft)
+	self:debug("Found %d columns to the left.", #columnsLeft)
 	--- Right columns 
 	ix = 1
 	while true do 	
 		local nx = ix*(-width)
-		local x,_,z = localToWorld(closestNode,nx,0,0) 	
+		local x, _, z = localToWorld(probe, nx, 0, 0) 	
 		local foundVine = false
 		for i, line in pairs(lines) do 
 			if MathUtil.getCircleLineIntersection(x, z, 0.1,  line.x1, line.z1, line.x2, line.z2) then
 				if columnsRight[ix] == nil then 
 					columnsRight[ix] = {}
 				end
-				table.insert(columnsRight[ix],line)
+				table.insert(columnsRight[ix], line)
 				foundVine = true
-				self:debug("Found line at column %d.",ix)
 			end
 		end
 		if not foundVine then 
@@ -184,15 +198,16 @@ function VineScanner:separateIntoColumns(lines, closestNode)
 		end
 		ix = ix + 1
 	end
-	self:debug("Found %d columns to the right.",#columnsRight)
-	return columnsLeft,columnsRight
+	self:debug("Found %d columns to the right.", #columnsRight)
+	return columnsLeft, columnsRight
 end
 
 
 
 --- Are the directions equal ?
 function VineScanner:equalDirection(dx, nx, dz, nz)
-	return MathUtil.equalEpsilon(nx, dx, 0.01) and MathUtil.equalEpsilon(nz, dz, 0.01) or MathUtil.equalEpsilon(nx, -dx, 0.01) and MathUtil.equalEpsilon(nz, -dz, 0.01)
+	return MathUtil.equalEpsilon(nx, dx, 0.01) and MathUtil.equalEpsilon(nz, dz, 0.01) or
+		   MathUtil.equalEpsilon(nx, -dx, 0.01) and MathUtil.equalEpsilon(nz, -dz, 0.01)
 end
 
 --- Combines the segments on the same line and return a combined segment.
@@ -234,7 +249,7 @@ end
 --- Debug function to draw the vine segments.
 function VineScanner:drawSegments(segments)
 	if segments then 
-		for i,segment in pairs(segments) do 
+		for i, segment in pairs(segments) do 
 			local x1, x2, z1, z2 = segment.x1, segment.x2, segment.z1, segment.z2
 			local y1, y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x1, 0, z1), getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x2, 0, z2)
 			drawDebugLine(x1, y1 + 2, z1, 1, 0, 0, x2, y2 + 2, z2, 0, 1, 0)
@@ -263,10 +278,10 @@ function VineScanner:getCourseGeneratorVertices(vineOffset)
 	end
 	local lines = {}
 
-	for i=0, lengthStart-4, 2 do 
-		table.insert(lines,{
-			x = self.lines[1].x1 + ncx * vineOffset + dirX * i,
-			z = self.lines[1].z1 + ncz * vineOffset + dirZ * i
+	for i=#self.lines, 1, -1 do 
+		table.insert(lines, {
+			x = self.lines[i].x1 + ncx * vineOffset,
+			z = self.lines[i].z1 + ncz * vineOffset,
 		})
 	end
 	for i=1, #self.lines do 
@@ -275,20 +290,7 @@ function VineScanner:getCourseGeneratorVertices(vineOffset)
 			z = self.lines[i].z2 + ncz * vineOffset,
 		})
 	end
-	
-	local dirXEnd, dirZEnd, lengthEnd = CpMathUtil.getPointDirection({x = self.lines[#self.lines].x2, z = self.lines[#self.lines].z2}, {x = self.lines[#self.lines].x1, z = self.lines[#self.lines].z1})
-	for i=0, lengthEnd-4, 2 do 
-		table.insert(lines,{
-			x = self.lines[#self.lines].x2 + ncx * vineOffset + dirXEnd * i,
-			z = self.lines[#self.lines].z2 + ncz * vineOffset + dirZEnd * i
-		})
-	end
-	for i=#self.lines, 1, -1 do 
-		table.insert(lines, {
-			x = self.lines[i].x1 + ncx * vineOffset,
-			z = self.lines[i].z1 + ncz * vineOffset,
-		})
-	end
+	table.insert(lines, lines[1])
 	return lines, self.width, -math.deg(yRot)
 end
 
@@ -303,14 +305,20 @@ function VineScanner:getVineSegmentIxForNode(node, vineSegments)
 	end
 end
 
-function VineScanner:debug(str,...)
-	CpUtil.debugFormat(self.debugChannel,"VineScanner: "..str, ...)
+function VineScanner:debug(str, ...)
+	CpUtil.debugFormat(self.debugChannel, "VineScanner: "..str, ...)
 end
 
 function VineScanner:debugSparse(...)
 	if g_updateLoopIndex % 100 == 0 then
         self:debug(...)
     end
+end
+
+function VineScanner:draw()
+	if CpDebug:isChannelActive(CpDebug.DBG_COURSES) and self.lines then 
+		self:drawSegments(self.lines)
+	end
 end
 
 g_vineScanner = VineScanner()

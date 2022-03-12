@@ -87,6 +87,10 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 	if self.fieldPolygon then
 		self.hasValidPosition = true
 		self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz, self.customField~=nil)
+		if self.foundVines then 
+			self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0)
+		end
+		
 		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
 		self.selectedFieldPlot:setVisible(true)
 		self.selectedFieldPlot:setBrightColor(true)
