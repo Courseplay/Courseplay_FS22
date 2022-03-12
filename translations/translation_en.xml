@@ -500,6 +500,8 @@ The distance of all vehicles with the same course name will be automatically set
 Working on vines is a bit more complex then working on a field.
 To have the best result, the vines should all be next to each other within the default grid.
 The end and start of each vine, should also be approximately the same length.
+If the vines are on an existing field, you can open the generator the direct way like normal.
+If they are on a none field, you have to go over the AI Menu and place the field marker on the vanes.
 		"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 The generator for vines have less options.
@@ -508,7 +510,7 @@ E.g. Harvester drives and works on the vine, the pre-pruner drives left from the
 Sprayers need to drive next to the vines and skip a row, since it sprays two veins at once and have to drive only every 2nd row.
 		"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
-A Vine course should be generated on the vines, as it got to dive and work on the vines.
+A Vine course should be generated on the vines, as it got to drive and work on the vines.
 		"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 That pre-pruner works on the vines, so the course have to be generated on the vines.
