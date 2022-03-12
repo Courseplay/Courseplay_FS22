@@ -494,27 +494,30 @@ Convoy is mostly used on multitool course, but can also be used on single course
 The distance set in a vehicle, will tell how much distance he will keep towards the one infront of him.
 The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles.
 		"/>
-		<!--WIP: Vine work
+		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
 Working on vines is a bit more complex then working on a field.
 To have the best result, the vines should all be next to each other within the default grid.
-The end and start of each vine, should also be the approximately same length.
+The end and start of each vine, should also be approximately the same length.
 		"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 The generator for vines have less options.
 Depending on the Tool, you have to choose to work on or beside the vine.
-E.g. Harvester drives and works on the vine, the drives left from the vine but works on the vine, so you have to choose to work on the vine, but drive with an offset.
+E.g. Harvester drives and works on the vine, the pre-pruner drives left from the vine but works on the vine, so you have to choose to work on the vine, but drive with an offset.
 Sprayers need to drive next to the vines and skip a row, since it sprays two veins at once and have to drive only every 2nd row.
 		"/>
-		<text name="CP_help_page_vineWorkTools_text"													text="
-Harvester should drive on the vines.
-x should drive on the vines with an offset (should be added to the vehicle config)
-y should drive next to the vines and usw ... on the generator.
+		<text name="CP_help_page_vineWorkHarvester_text"												text="
+A Vine course should be generated on the vines, as it got to dive and work on the vines.
 		"/>
-		<text name="CP_help_page_vineWorkTips_text"														text="
-
-		"/>-->
+		<text name="CP_help_page_vineWorkPruner_text"													text="
+That pre-pruner works on the vines, so the course have to be generated on the vines.
+The Tools comes with an offset for the tractor, so the tractor drives between the vines.
+		"/>
+		<text name="CP_help_page_vineWorkSprayer_text"													text="
+The sprayer does work next to the vines so we have to either drive left or right from the vines.
+Since the sprayer can work on two vines at once, we can skip a row.
+		"/>
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Select next debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>

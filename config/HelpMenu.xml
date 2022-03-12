@@ -109,7 +109,7 @@
 				<text text="$l10n_CP_help_page_convoyFunction_text"/>
 			</paragraph>
 		</page>
-		<!--WIP: Courseplay Vine work
+		<!--Courseplay Vine work-->
 		<page title="$l10n_CP_help_page_vineWork_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkConditions_text"/>
@@ -119,11 +119,17 @@
 				<image filename="CP_img/helpmenu/vineworkgen.dds" size="768px 512px"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_vineWorkTools_text"/>
+				<text text="$l10n_CP_help_page_vineWorkHarvester_text"/>
+				<image filename="CP_img/helpmenu/vineworkharvest.dds" size="768px 512px"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_vineWorkTips_text"/>
+				<text text="$l10n_CP_help_page_vineWorkPruner_text"/>
+				<image filename="CP_img/helpmenu/vineworkpruner.dds" size="768px 512px"/>
 			</paragraph>
-		</page>-->
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkSprayer_text"/>
+				<image filename="CP_img/helpmenu/vineworkspray.dds" size="768px 512px"/>
+			</paragraph>
+		</page>
 	</category>
 </helpLines>
