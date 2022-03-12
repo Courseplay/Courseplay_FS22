@@ -7,6 +7,11 @@ CourseGeneratorInterface = {}
 ---@param isClockwise boolean
 ---@param workWidth number
 ---@param numberOfHeadlands number
+---@param rowsToSkip number when turning to the next row, skip nRowsToSkip and continue working there. This allows
+--- for a bigger turning radius
+---@param leaveSkippedRowsUnworked boolean normally, if rowsToSkip > 0, the vehicle will cover all rows, including the
+--- skipped ones, for example, on the first run work on the odd rows, then on the even ones. When leaveSkippedRowsUnworked
+--- is true, it will not return to work on the skipped rows, will only work on every rowsToSkip + 1 row.
 function CourseGeneratorInterface.generate(fieldPolygon,
 										   startPosition,
 										   isClockwise,
@@ -20,6 +25,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   rowDirection,
 										   manualRowAngleDeg,
 										   rowsToSkip,
+										   leaveSkippedRowsUnworked,
 										   rowsPerLand,
 										   islandBypassMode,
 										   fieldMargin,
@@ -66,6 +72,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
 		rowAngle = CourseGenerator.fromCpAngleDeg(manualRowAngleDeg),
 		nRowsToSkip = rowsToSkip,
+		leaveSkippedRowsUnworked = leaveSkippedRowsUnworked,
 		mode = centerMode,
 		nRowsPerLand = rowsPerLand or 6,
 		pipeOnLeftSide = pipeOnLeftSide
@@ -120,33 +127,36 @@ end
 ---@param manualRowAngleDeg number
 ---@param rowsToSkip number
 ---@param multiTools number
-function CourseGeneratorInterface.generateVineCourse(fieldPolygon,
-										   workWidth,
-										   turnRadius,
-										   manualRowAngleDeg,
-										   rowsToSkip,
-										   multiTools
-										)
+function CourseGeneratorInterface.generateVineCourse(
+	fieldPolygon,
+	workWidth,
+	turnRadius,
+	manualRowAngleDeg,
+	rowsToSkip,
+	multiTools
+)
 	
-	return CourseGeneratorInterface.generate(fieldPolygon,
-										{x = fieldPolygon[1].x, z = fieldPolygon[1].z},
-										true,
-										workWidth,
-										turnRadius,
-										0,
-										false,
-										CpCourseGeneratorSettings.HEADLAND_CORNER_TYPE_SHARP,
-										0,
-										CpCourseGeneratorSettings.CENTER_MODE_UP_DOWN,
-										CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
-										manualRowAngleDeg,
-										rowsToSkip,
-										0,
-										false,
-										-workWidth/2,
-										multiTools,
-										false
-						)
+	return CourseGeneratorInterface.generate(
+		fieldPolygon,
+		{x = fieldPolygon[1].x, z = fieldPolygon[1].z},
+		true,
+		workWidth,
+		turnRadius,
+		0,
+		false,
+		CpCourseGeneratorSettings.HEADLAND_CORNER_TYPE_SHARP,
+		0,
+		CpCourseGeneratorSettings.CENTER_MODE_UP_DOWN,
+		CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
+		manualRowAngleDeg,
+		rowsToSkip,
+		true,
+		0,
+		false,
+		-workWidth/2,
+		multiTools,
+		false
+	)
 					
 end
 

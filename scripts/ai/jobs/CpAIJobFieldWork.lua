@@ -181,32 +181,33 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 			vineSettings.vineCenterOffset:getValue()
 		)
 		status, ok, course = CourseGeneratorInterface.generateVineCourse(vertices,
-							width,
-							AIUtil.getTurningRadius(vehicle),
-							rowAngleDeg,
-							vineSettings.vineRowsToSkip:getValue(),
-							vineSettings.vineMultiTools:getValue()
-		 )	
+			width,
+			AIUtil.getTurningRadius(vehicle),
+			rowAngleDeg,
+			vineSettings.vineRowsToSkip:getValue(),
+			vineSettings.vineMultiTools:getValue()
+		)
 	else 
 
 		status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
-				{x = tx, z = tz},
-				settings.isClockwise:getValue(),
-				settings.workWidth:getValue(),
-				AIUtil.getTurningRadius(vehicle),
-				settings.numberOfHeadlands:getValue(),
-				settings.startOnHeadland:getValue(),
-				settings.headlandCornerType:getValue(),
-				settings.headlandOverlapPercent:getValue(),
-				settings.centerMode:getValue(),
-				settings.rowDirection:getValue(),
-				settings.manualRowAngleDeg:getValue(),
-				settings.rowsToSkip:getValue(),
-				settings.rowsPerLand:getValue(),
-				settings.islandBypassMode:getValue(),
-				settings.fieldMargin:getValue(),
-				settings.multiTools:getValue(),
-				self:isPipeOnLeftSide(vehicle)
+			{x = tx, z = tz},
+			settings.isClockwise:getValue(),
+			settings.workWidth:getValue(),
+			AIUtil.getTurningRadius(vehicle),
+			settings.numberOfHeadlands:getValue(),
+			settings.startOnHeadland:getValue(),
+			settings.headlandCornerType:getValue(),
+			settings.headlandOverlapPercent:getValue(),
+			settings.centerMode:getValue(),
+			settings.rowDirection:getValue(),
+			settings.manualRowAngleDeg:getValue(),
+			settings.rowsToSkip:getValue(),
+			false,
+			settings.rowsPerLand:getValue(),
+			settings.islandBypassMode:getValue(),
+			settings.fieldMargin:getValue(),
+			settings.multiTools:getValue(),
+			self:isPipeOnLeftSide(vehicle)
 		)
 	end
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
