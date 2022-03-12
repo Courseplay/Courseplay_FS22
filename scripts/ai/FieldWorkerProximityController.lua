@@ -75,6 +75,15 @@ end
 --- Each vehicle leaves a trail consisting of its past positions in regular intervals
 ---@param maxLength number maximum length of the trail
 function FieldWorkerProximityController:updateTrail(maxLength)
+
+    if AIUtil.isReversing(self.vehicle) then
+        -- when reversing we don't want to shorten our trail (by adding a new point and removing the last one)
+        -- as in fact, we are moving closer to the last trail point, and this will let followers too close to us
+        -- for instance in case of a turn maneuver with reversing
+        self:debugSparse('Reversing, not recording trail point')
+        return
+    end
+
     local x, y, z = getWorldTranslation(self.vehicle.rootNode)
     local dTraveled = #self.trail > 0 and self.trail[#self.trail]:getDistanceFromPoint(x, z) or self.trailSpacing
     if dTraveled < self.trailSpacing then return end
