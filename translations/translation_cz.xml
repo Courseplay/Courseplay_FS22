@@ -9,7 +9,7 @@
 		<text name="CP_unit_foot" 																		text="ft" />
 
 		<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22." Překlad: SniperKittenCZ/>
+		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Překlad: SniperKittenCZ" />
 		<text name="CP_error_no_course"																	text="Před zahájením práce vygenerujte kurz." />
 		<text name="CP_error_could_not_generate_course"													text="Trasu se nepodařilo vygenerovat. Log může obsahovat více informací." />
 		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
