@@ -66,6 +66,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="用鼠标打开Hud"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="右键打开HUD。 如果关闭，则仅使用键盘快捷键打开 HUD。"/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="停在终点"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="车辆到达终点时停车。"/>
 

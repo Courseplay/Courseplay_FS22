@@ -65,6 +65,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop at end"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Stop at end"/>
 

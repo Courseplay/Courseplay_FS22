@@ -65,6 +65,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otevřete nabídku (Hud) pomocí myši"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Když je nabídka (Hud) deaktivována, lze jej otevřít pouze pomocí klávesové zkratky."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zastavit na konci"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Zastavit na konci"/>
 

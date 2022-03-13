@@ -66,6 +66,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="マウスでHUDを開く"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="無効にした場合、キーボード（キーバインド）でHUDを開きます"/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="終点で停止"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="コース終点（ゴール地点）で車両を停止します"/>
 

@@ -66,6 +66,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otwieranie HUDa myszką"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Gdy wyłączone, HUD może być otwarty tylko za pomocą skrótu klawiszowego."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zatrzymaj na końcu"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ustala czy kierowca powinien zatrzymać się w ostatnim punkcie trasy."/>
 

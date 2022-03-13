@@ -66,6 +66,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Открывать HUD мышью"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Если отключить, HUD можно будет открыть только с помощью клавиш."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Остановить в конце"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Остановить по окончании работы на маршруте."/>
 
