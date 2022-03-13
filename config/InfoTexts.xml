@@ -12,6 +12,9 @@
 	<InfoText name="IS_STUCK"								text="isStuck"/>
 	<InfoText name="TRAFFIC"  								text="isInTraffic"/>
 
+	<InfoText name="FUEL_IS_LOW"							text="shouldRefuel"/>
+	<InfoText name="FUEL_IS_EMPTY"  						text="needsFuel"/>
+	<InfoText name="IS_COMPLETELY_BROKEN"  					text="needsRepair"/>
 	<InfoText name="NEEDS_FILLING"  						text="needsFilling"/>
 	<InfoText name="NEEDS_UNLOADING"  						text="needsUnloading"/>
 	<InfoText name="WORK_FINISHED"							text="workFinished"/>

@@ -66,6 +66,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Abrir Hud con el mouse"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Cuando es desactivado, sólo puede ser abierto con la combinación de teclas."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Parar al final"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="El conductor se detendrá al llegar al final de la ruta"/>
 
@@ -287,7 +290,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Está Atascado"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Está en el tráfico"/>
-
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Necesita ser rellenado"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Necesita ser descargado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabajo finalizado"/>

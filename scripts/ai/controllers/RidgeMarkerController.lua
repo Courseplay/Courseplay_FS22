@@ -5,7 +5,6 @@ RidgeMarkerController = CpObject(ImplementController)
 function RidgeMarkerController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.ridgeMarkerSpec = self.implement.spec_ridgeMarker
-	self.settings = vehicle:getCpSettings()
 end
 
 function RidgeMarkerController:update()

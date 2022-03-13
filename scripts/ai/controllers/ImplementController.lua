@@ -4,6 +4,7 @@ ImplementController = CpObject()
 function ImplementController:init(vehicle, implement)
     self.vehicle = vehicle
     self.implement = implement
+    self.settings = vehicle:getCpSettings()
     self.disabledStates = {}
 end
 
@@ -81,4 +82,8 @@ end
 
 function ImplementController:clearInfoText(infoText)
     self.driveStrategy:clearInfoText(infoText)
+end
+
+function ImplementController:isFuelSaveAllowed()
+    return true
 end

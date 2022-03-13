@@ -66,6 +66,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otwieranie HUDa myszką"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Gdy wyłączone, HUD może być otwarty tylko za pomocą skrótu klawiszowego."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zatrzymaj na końcu"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ustala czy kierowca powinien zatrzymać się w ostatnim punkcie trasy."/>
 
@@ -289,7 +292,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Pomocnik utknął"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Jest w ruchu"/>
-
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
 		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>		

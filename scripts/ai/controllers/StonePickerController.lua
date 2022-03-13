@@ -16,6 +16,10 @@ function StonePickerController:isUnloading()
 	return self.implement:getDischargeState() == Dischargeable.DISCHARGE_STATE_OBJECT 
 end
 
+function StonePickerController:getCanUnload()
+	return self.implement:getCurrentDischargeObject(self.implement:getCurrentDischargeNode()) ~= nil
+end
+
 function StonePickerController:isClosingAnimationPlaying()
 	return self.implement:getTipState() ~= Trailer.TIPSTATE_CLOSED
 end
@@ -59,3 +63,8 @@ function StonePickerController:handleDischargeRaycast(superFunc, dischargeNode, 
 	end
 end
 Dischargeable.handleDischargeRaycast = Utils.overwrittenFunction(Dischargeable.handleDischargeRaycast, StonePickerController.handleDischargeRaycast)
+
+--- Makes sure fuel save is disabled for unloading.
+function StonePickerController:isFuelSaveAllowed()
+	return not self:isUnloading() and not self:getCanUnload()
+end

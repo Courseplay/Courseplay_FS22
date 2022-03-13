@@ -64,6 +64,9 @@
 
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Apri la Mini HUD con il mouse"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Quando è disattivato, la Hud può essere aperto solo con la combinazione di tasti.."/>
+
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
 		
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Ferma alla fine"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ferma il veicolo alla fine"/>
@@ -287,7 +290,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="L'aiutante è bloccato"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="È nel traffico"/>
-
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Ha bisogno di essere riempito"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Ha bisogno di essere scaricato"/>
 		<text name="CP_infoTexts_workFinished"															text="Ha finito il lavoro"/>

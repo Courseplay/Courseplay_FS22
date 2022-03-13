@@ -63,6 +63,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Álljon meg a végén"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Álljon meg a végén"/>
 
@@ -285,7 +288,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
-
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
 		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
