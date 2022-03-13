@@ -255,6 +255,9 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
 
+		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="KoersManager(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="geen koers"/>
