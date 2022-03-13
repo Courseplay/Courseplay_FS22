@@ -528,7 +528,8 @@ The Tools comes with an offset for the tractor, so the tractor drives between th
 The sprayer works next to the vines so it has to drive either left or right from the vines.
 Since the sprayer can work on the left and right vines at the same time, we can skip a row.
 		"/>
-		<!-- Input bindings -->
+		
+	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Select next debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Select previous debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Change current debug channel."/>
