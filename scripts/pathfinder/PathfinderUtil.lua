@@ -655,8 +655,8 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius)
     local headland = getOutermostHeadland(course)
     headland:calculateData()
     local path = {}
-    for _, p in ipairs(headland:getSectionBetweenPoints(start, goal)) do
-        --CourseGenerator.debug('%.1f %.1f', p.x, p.y)
+    for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
+        CourseGenerator.debug('%.1f %.1f', p.x, p.y)
         table.insert(path, State3D(p.x, p.y, 0))
     end
     return path
