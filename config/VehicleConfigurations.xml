@@ -90,15 +90,6 @@ You can define the following custom settings:
     <!--[GIANTS]-->
 
     <!-- Harvesters -->
-
-    <!--vehicles\newHolland-->
-    <Vehicle name="braud9070L.xml"
-             noReverse="true"
-    />
-    <Vehicle name="braud9090X.xml"
-             noReverse="true"
-    />
-
     <!-- Implements -->
 
     <!--\vehicles\agromasz-->
@@ -151,9 +142,6 @@ You can define the following custom settings:
     <!--\vehicles\hardi-->
     <Vehicle name="navigator6000.xml"
              ignoreCollisionBoxesWhenFolded="true"
-    />
-    <Vehicle name="mercury4000L.xml"
-             noReverse="true"
     />
     <!--\vehicles\salford-->
     <Vehicle name="salford4204.xml" 
@@ -235,7 +223,6 @@ You can define the following custom settings:
     <!--\vehicles\proviti-->
     <Vehicle name="mp122Ocea.xml"
              toolOffsetX="-1.2"
-             noReverse="true"
     />
 
     <!--[DLC]-->
