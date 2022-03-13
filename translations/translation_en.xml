@@ -357,12 +357,12 @@ If you want to use the Giants helper to drive to the field, than you also need t
 The lane offset setting is only used, if you want to have multiple helpers working on the same field. For this please checkout the separate help menu page below.
 		"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
-When the field position is placed correctly on a field, then you will see the field border drawn on the map.
-If you are creating a CP: Fieldwork job, then you will gain access to the course generator settings. 
+When the field position is placed correctly on a field, you will see the field border drawn on the map.
+If you are creating a CP: Fieldwork job, you will gain access to the course generator settings. 
 		"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
 Now it's possible to start the driver directly form the menu and the giants helper will drive to the target position and from there the CP job automatically takes over.
-Alternatively you can also start the driver with the hud, if you are close to the field with the vehicle or using the Auto drive mod to deliver the CP job close to the field.
+Alternatively you can also start the driver with the hud, if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
 		"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
@@ -375,10 +375,10 @@ Experimenting with it and check what impact the different setting on different f
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
 Basics:
 The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact of your overall course.
+- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
 - Multiple Tools: That setting is used, when you want more then just 1 Tool to work on your course. As this gets a bit more complicated, there is an own help topic for it.
 - Number of Headlands: The best way to keep your tools on the field while doing their job, is to add Headlands.
-The Number of the Headlands multiplied by the work width should but at least the total length of your vehicle plus the attached tool
+The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
 Center options:
 - Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
 Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have Combines pipe point out of the fruit most of the time to easier unload them.
@@ -393,13 +393,13 @@ You gain options for where to start on, corner settings, direction and overlap.
 Headlands are highly suggested to prevent tools leaving the field for their turns.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
-- Star work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
+- Start work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
 When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
-- Headland corners: Smooth will have a simple smoothing over the corners, This works all tools, but will lead into tiny unworked patches.
+- Headland corners: Smooth will have a simple smoothing over the corners, This works for all tools, but will lead into tiny unworked patches.
 They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
 Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
 - Headland direction: clockwise or counter-clockwise. This can be important for Combine and Harvester, depending on wich side the pipe or conveyer belt is.
-- Headland overlap: How much % overlap all Headlands should have. The 1st one will have no overlap with the field border, but the inner ones will overlap with their neighbor.
+- Headland overlap: How much % overlap all Headlands should have. The 1st one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
 		"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
 Field Margin explanation:
@@ -419,10 +419,10 @@ Courses are saved into folders, which will be displayed on the left. This means 
 Folders can simply created by the button down below and giving it a name.
 		"/>
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
-When you have a course loaded, you can save it by clicking on the folder. Then a pop up window will appear where you can enter the name of your course.
+When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
 The name and location can be changed later.
 To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first and then simply clicking on the course you want to load.
+For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
 Clicking on change mode, activates the edit mode of the course manager.
 		"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
@@ -508,24 +508,24 @@ Working on vines is a bit more complex then working on a normal field.
 To have the best result, the vines should all be next to each other within the default grid.
 The end and start of each vine, should also be approximately the same length.
 If the vines are on an existing field, you can open the generator the direct way like normal.
-If they are on a custom field, you have to go over the AI Menu and place the field marker on the vines.
+If they are not on a field, you have to go over the AI Menu and place the field marker on the vines.
 		"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 The generator for vines has less options.
 Depending on the tool, you have to choose to work on the vines or beside the vines.
-E.g. The default harvester needs to drive and work on the vine.
+E.g. the default harvester needs to drive and work on the vine.
      The pre-pruner needs to drive left from the vines but works on the vine, so you have to choose to work on the vine, but drive with an offset.
      Sprayers need to drive next to the vines and need to skip one row, since it sprays to the left and the right.
 		"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
-A Vine course should be generated on the vines, as it got to drive and work on the vines.
+A vine course should be generated on the vines, as it got to drive and work on the vines.
 		"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 The pre-pruner works on the vines, so the course have to be generated on the vines.
 The Tools comes with an offset for the tractor, so the tractor drives between the vines.
 		"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
-The sprayer does work next to the vines so we have to either drive left or right from the vines.
+The sprayer does work next to the vines so it have to either drive left or right from the vines.
 Since the sprayer can work on the left and right vines at the same time, we can skip a row.
 		"/>
 		<!-- Input bindings -->
