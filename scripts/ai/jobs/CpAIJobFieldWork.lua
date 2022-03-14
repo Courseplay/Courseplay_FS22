@@ -82,22 +82,29 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 	local tx, tz = self.fieldPositionParameter:getPosition()
 	
 	self.customField = nil
+	local customField = g_customFieldManager:getCustomField(tx, tz)
+
 	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
-	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
-	self.hasValidPosition, self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
-	if not self.hasValidPosition then
-		local customField = g_customFieldManager:getCustomField(tx, tz)
-		if not customField then
-			self.selectedFieldPlot:setVisible(false)
-			return false, g_i18n:getText("CP_error_not_on_field")
-		else
-			CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
-			self.fieldPolygon = customField:getVertices()
-			self.customField = customField
-			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
-			self.hasValidPosition = true
-		end
+	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s, prefer custom fields %s',
+			fieldNum, g_currentMission.missionInfo.mapTitle, g_Courseplay.globalSettings.preferCustomFields:getValue())
+	local mapField, mapFieldPolygon = g_fieldScanner:findContour(tx, tz)
+
+	if customField and (not mapField or g_Courseplay.globalSettings.preferCustomFields:getValue()) then
+		-- use a custom field if there is one under us and either there's no regular map field or, there is,
+		-- but the user prefers custom fields
+		CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
+		self.fieldPolygon = customField:getVertices()
+		self.customField = customField
+		vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+		self.hasValidPosition = true
+	elseif mapField then
+		self.fieldPolygon = mapFieldPolygon
+		self.hasValidPosition = true
+	else
+		self.selectedFieldPlot:setVisible(false)
+		return false, g_i18n:getText("CP_error_not_on_field")
 	end
+
 	if self.fieldPolygon then
 		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
 		self.selectedFieldPlot:setVisible(true)
