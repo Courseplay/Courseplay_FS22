@@ -109,6 +109,21 @@
 				<text text="$l10n_CP_help_page_convoyFunction_text"/>
 			</paragraph>
 		</page>
+		<!--Courseplay Bale Wrapper/Collector-->
+		<page title="$l10n_CP_help_page_wrapCollect_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_wrapCollectBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_wrapBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_wrapFunction_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_collectBasic_text"/>
+			</paragraph>
+		</page>
 		<!--Courseplay Vine work-->
 		<page title="$l10n_CP_help_page_vineWork_title">
 			<paragraph>
