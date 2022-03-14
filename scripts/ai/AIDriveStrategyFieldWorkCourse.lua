@@ -445,7 +445,7 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
     self.ppc:setShortLookaheadDistance()
     self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-    if AITurn.canMakeKTurn(self.vehicle, self.turnContext, self.workWidth) then
+    if AITurn.canMakeKTurn(self.vehicle, self.turnContext, self.workWidth, self:isTurnOnFieldActive()) then
         self.aiTurn = KTurn(self.vehicle, self, self.ppc, self.turnContext, self.workWidth)
     else
         self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
@@ -614,6 +614,10 @@ function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
     if self.fieldWorkCourse then
         status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
     end
+end
+
+function AIDriveStrategyFieldWorkCourse:isTurnOnFieldActive()
+    return self.settings.turnOnField:getValue()
 end
 
 -----------------------------------------------------------------------------------------------------------------------

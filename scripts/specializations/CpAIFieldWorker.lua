@@ -296,7 +296,12 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-    if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) and not AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) then
+    local course = self:getFieldWorkCourse()
+    if course and course:hasVineNodesOnTheField() then 
+        CpUtil.infoVehicle(self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
+        cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
+    elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
+           and not AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
         self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy

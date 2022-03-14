@@ -17,8 +17,18 @@ function VineScanner:foundVines()
 	return self.lines and next(self.lines) ~= nil
 end
 
-function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
-	if vertices == nil or next(vertices) == nil then 
+--- Checks if any vine nodes are close to the first waypoint.
+---@param vertices table
+---@param tx number
+---@param tz number
+---@param isCustomField boolean
+---@return boolean found vine nodes
+---@return table all vine segments
+---@return node closest segment
+---@return node closest vine node
+---@return Placeable closest placeable
+function VineScanner:getVineNodesOnField(vertices, tx, tz, isCustomField)
+	if vertices == nil or next(vertices) == nil or tx == nil or tz == nil then 
 		self.lines = nil
 		self.width = nil
 		return false
@@ -52,6 +62,22 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 		self.width = nil
 		return false
 	end
+	return true, vineSegments, closestSegment, closestNode, closestPlaceable
+end
+
+--- Finds vine nodes on a field and creates lines of them.
+---@param vertices table
+---@param tx number start point
+---@param tz number start point
+---@param isCustomField boolean
+---@return boolean vine nodes found
+function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
+
+	local isValid, vineSegments, closestSegment, closestNode, closestPlaceable = self:getVineNodesOnField(vertices, tx, tz, isCustomField)
+
+	if not isValid then 
+		return
+	end
 	--- Only use vine segments with the same directions, as the closest segment found.
 	local dirX, dirZ = MathUtil.vector2Normalize(closestSegment.x2 - closestSegment.x1, closestSegment.z2 - closestSegment.z1)
 	local xa, za, xb, zb, dx, dz
@@ -69,7 +95,7 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	end
 	local probe = createTransformGroup("probe")
-	x, _, z = getWorldTranslation(closestNode)
+	local x, _, z = getWorldTranslation(closestNode)
 	setTranslation( probe, x, 0, z )
 	setRotation( probe, 0, -yRot, 0)
 
