@@ -293,10 +293,10 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="L'aiutante è bloccato"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="È nel traffico"/>
-		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
-		<text name="CP_infoTexts_needsFilling"  														text="Ha bisogno di essere riempito"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Dovrebbe essere rifornito"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Ha bisogno di essere rifornito"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Ha bisogno di essere riparato"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Ha bisogno di essere caricato"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Ha bisogno di essere scaricato"/>
 		<text name="CP_infoTexts_workFinished"															text="Ha finito il lavoro"/>
 
