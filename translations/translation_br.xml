@@ -251,8 +251,8 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Mostrar janela de textos informativos"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Exibe uma janela de texto informativo."/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+		<text name="CP_global_setting_preferCustomFields_title"											text="Optar por campo customizado"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Optar por campo customizado mesmo sendo um campo regular na mesma posição."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gerenciar rota(rota atual:(%s) %s"/>
@@ -291,9 +291,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="O ajudante está preso"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Está no trânsito"/>
-		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Precisa reabastecer"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Precisa reabastecer urgente"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Precisa ser reparado"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Precisa ser recarregado"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Precisa ser descarregado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabalho feito"/>
