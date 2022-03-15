@@ -267,6 +267,7 @@ function VineScanner:getCourseGeneratorVertices(vineOffset, tx, tz)
 	local ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
 	local lines = {}
 
+	--- Applies offset for vehicles, that need to be driving next to the vine rows.
 	for i=#self.lines, 1, -1 do 
 		table.insert(lines, {
 			x = self.lines[i].x1 + ncx * vineOffset,
@@ -280,7 +281,8 @@ function VineScanner:getCourseGeneratorVertices(vineOffset, tx, tz)
 		})
 	end
 	table.insert(lines, lines[1])
-	local startingPoint, rowAngle = self:getStartingPointAndDirection(self.lines, tx, tz)
+	local startingPoint, rowAngle = self:getStartingPointAndRowAngle(self.lines, tx, tz)
+	self.fieldBorder = lines
 	return lines, self.width, startingPoint, rowAngle
 end
 
@@ -290,7 +292,7 @@ end
 ---@param tz number
 ---@return table starting point
 ---@return number angle in degree
-function VineScanner:getStartingPointAndDirection(lines, tx, tz)
+function VineScanner:getStartingPointAndRowAngle(lines, tx, tz)
 	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
 	local dist1 = MathUtil.vector2Length(lines[1].x1-tx, lines[1].z1-tz)
 	local dist2 = MathUtil.vector2Length(lines[1].x2-tx, lines[1].z2-tz)
@@ -343,8 +345,20 @@ function VineScanner:debugSparse(...)
 end
 
 function VineScanner:draw()
-	if CpDebug:isChannelActive(CpDebug.DBG_COURSES) and self.lines then 
+	if CpDebug:isChannelActive(CpDebug.DBG_COURSES) and self:foundVines() then 
 		self:drawSegments(self.lines)
+		self:drawFieldBorder()
+	end
+end
+
+function VineScanner:drawFieldBorder()
+	if self.fieldBorder then 
+		for i = 1, #self.fieldBorder-1 do 
+			local x1, z1 = self.fieldBorder[i].x,  self.fieldBorder[i].z
+			local x2, z2 = self.fieldBorder[i+1].x, self.fieldBorder[i+1].z
+			local y1, y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x1, 0, z1), getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x2, 0, z2)
+			drawDebugLine(x1, y1 + 2, z1, 1, 1, 1, x2, y2 + 2, z2, 1, 1, 1)
+		end
 	end
 end
 
