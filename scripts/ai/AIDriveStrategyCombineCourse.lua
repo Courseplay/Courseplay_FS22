@@ -55,8 +55,10 @@ AIDriveStrategyCombineCourse.myStates = {
 AIDriveStrategyCombineCourse.proximitySensorRange = 10
 -- the sensor will proportionally reduce speed when objects are in range down to this limit (won't set a speed lower than this)
 AIDriveStrategyCombineCourse.proximityMinLimitedSpeed = 2
--- if anything closer than this, we stop
-AIDriveStrategyCombineCourse.proximityLimitLow = 1.5
+-- stop limit we use for self unload to approach the trailer
+AIDriveStrategyCombineCourse.proximityLimitStopNormal = 1.5
+-- stop limit we use for self unload to approach the trailer
+AIDriveStrategyCombineCourse.proximityLimitStopSelfUnload = 0.1
 -- if anything closer than this, we reverse
 AIDriveStrategyCombineCourse.proximityLimitReverse = 1
 -- an obstacle is considered ahead of us if the reported angle is less then this
@@ -89,6 +91,9 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.chopperCanDischarge = CpTemporaryObject(false)
 	-- hold the harvester temporarily
 	self.temporaryHold = CpTemporaryObject(false)
+
+	-- if anything closer than this, we stop
+	self.proximityLimitStop = CpTemporaryObject(AIDriveStrategyCombineCourse.proximityLimitStopNormal)
 
 	--- Register info texts 
 	self:registerInfoTextForStates(self:getFillLevelInfoText(), {
@@ -337,6 +342,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
 			-- disable stock collision detection as we have to drive very close to the tractor/trailer
 			self:disableCollisionDetection()
+			-- we'll be very close to the tractor/trailer, don't stop too soon
+			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
 		else
 			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
@@ -373,6 +380,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
+			-- we'll be very close to the tractor/trailer, don't stop too soon
+			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
 		else
 			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
@@ -1882,9 +1891,9 @@ function AIDriveStrategyCombineCourse:checkProximitySensors()
 		d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
 		range = pack:getRange()
 	end
-	local normalizedD = d / (range - self.proximityLimitLow)
+	local normalizedD = d / (range - self.proximityLimitStop:get())
 	local obstacleAhead = math.abs(deg) < self.proximityAngleAheadDeg
-	if d < self.proximityLimitLow and obstacleAhead then
+	if d < self.proximityLimitStop:get() and obstacleAhead then
 		-- too close, stop
 		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg)
 		self:setMaxSpeed(0)
