@@ -269,12 +269,12 @@ end
 
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIFieldWorker:startCpFieldWorker(jobParameters)
+function CpAIFieldWorker:startCpFieldWorker(jobParameters, startPosition)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters)
+        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters, startPosition)
 
         --- Remembers the last lane offset setting value that was used.
         local spec = self.spec_cpAIFieldWorker
@@ -284,7 +284,7 @@ end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
+function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, startPosition)
     CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -296,8 +296,8 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-    local course = self:getFieldWorkCourse()
-    if course and course:hasVineNodesOnTheField() then 
+    --- Checks if there are any vine nodes close to the starting point.
+    if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
         CpUtil.infoVehicle(self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
         cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
     elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 

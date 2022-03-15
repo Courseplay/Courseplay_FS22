@@ -255,7 +255,7 @@ function CpAIWorker:onUpdate(dt)
     if self.driveToFieldWorkStartStrategy and self.isServer then
         if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
-            self.driveToTask:onTargetReached()
+            self.driveToTask:onTargetReached(self.driveToFieldWorkStartStrategy:getStartPosition())
         else
             self.driveToFieldWorkStartStrategy:update(dt)
             if g_updateLoopIndex % 4 == 0 then

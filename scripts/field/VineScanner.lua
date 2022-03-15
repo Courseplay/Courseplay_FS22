@@ -17,6 +17,21 @@ function VineScanner:foundVines()
 	return self.lines and next(self.lines) ~= nil
 end
 
+--- Is there a vine node close to point?
+function VineScanner:hasVineNodesCloseBy(tx, tz)
+	local x, _, z
+	local closestDist, dist = math.huge, 0
+	--- Finds the closest vine node on a field to the start point.
+	for node, _ in pairs(self.vineSystem.nodes) do 
+		x, _, z = getWorldTranslation(node)
+		dist = MathUtil.vector2Length(x-tx, z-tz)
+		if dist < closestDist then 
+			closestDist = dist
+		end
+	end
+	return closestDist <= self.maxStartDistance
+end
+
 --- Checks if any vine nodes are close to the first waypoint.
 ---@param vertices table
 ---@param tx number
@@ -90,19 +105,8 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 			table.insert(segments, segment)
 		end
 	end
-	local yRot = 0	
-	if dirX == dirX or dirZ == dirZ then
-		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-	end
-	local probe = createTransformGroup("probe")
-	local x, _, z = getWorldTranslation(closestNode)
-	setTranslation( probe, x, 0, z )
-	setRotation( probe, 0, -yRot, 0)
-
 	--- Separate the segments into lines.
-	local left, right = self:separateIntoColumns(segments, closestNode, probe)
-
-	CpUtil.destroyNode(probe)
+	local left, right = self:separateIntoColumns(segments, closestNode)
 
 	local lines = {}
 	--- Combine the found lines to the left and right into one table.
@@ -178,7 +182,7 @@ end
 ---@param closestNode node
 ---@return table left lines 
 ---@return table right lines
-function VineScanner:separateIntoColumns(lines, closestNode, probe)
+function VineScanner:separateIntoColumns(lines, closestNode)
 	local placeable = self.vineSystem.nodes[closestNode]
 	local width = placeable.spec_vine.width
 	local columnsLeft = {}
@@ -187,7 +191,7 @@ function VineScanner:separateIntoColumns(lines, closestNode, probe)
 	local ix = 1
 	while true do
 		local nx = (ix-1)*width
-		local x, _, z = localToWorld(probe, nx, 0, 0) 
+		local x, _, z = localToWorld(closestNode, nx, 0, 0) 
 		local foundVine = false
 		for i, line in pairs(lines) do 
 			if MathUtil.getCircleLineIntersection(x, z, 0.1,  line.x1, line.z1, line.x2, line.z2) then
@@ -208,7 +212,7 @@ function VineScanner:separateIntoColumns(lines, closestNode, probe)
 	ix = 1
 	while true do 	
 		local nx = ix*(-width)
-		local x, _, z = localToWorld(probe, nx, 0, 0) 	
+		local x, _, z = localToWorld(closestNode, nx, 0, 0) 	
 		local foundVine = false
 		for i, line in pairs(lines) do 
 			if MathUtil.getCircleLineIntersection(x, z, 0.1,  line.x1, line.z1, line.x2, line.z2) then

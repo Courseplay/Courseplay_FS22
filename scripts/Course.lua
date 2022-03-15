@@ -88,12 +88,6 @@ function Course:getFieldPolygon()
 	return self.fieldPolygon
 end
 
---- Any vine nodes found on the field?
-function Course:hasVineNodesOnTheField()
-	local x, _, z = self:getWaypointPosition(2)
-	return g_vineScanner:getVineNodesOnField(self.fieldPolygon, x, z)
-end
-
 function Course:getName()
 	return self.name
 end
@@ -274,25 +268,7 @@ function Course:enrichWaypointData(startIx)
 			directionChangeFound = true
 		end
 	end
-	--- Trying to recreate the field polygon.
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
-	if not self.fieldPolygon then 
-		CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, "Trying to recreate the field polygon")
-		local vx, _, vz = self:getWaypointPosition(3)
-		if vx ~= nil and vz ~= nil then 
-			local fieldFound, fieldPolygon = g_fieldScanner:findContour(vx, vz)
-			if fieldFound then 
-				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, "Field polygon could be recreated.")
-				self:setFieldPolygon(fieldPolygon)
-			else
-				local customField = g_customFieldManager:getCustomField(vx, vz)
-				if customField then
-					CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, "Custom field polygon could be recreated.")
-					self:setFieldPolygon(customField:getVertices())
-				end
-			end
-		end
-	end
 end
 
 function Course:calculateSignedRadius(ix)
