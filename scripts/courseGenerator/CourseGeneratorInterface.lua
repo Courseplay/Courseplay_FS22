@@ -129,6 +129,7 @@ end
 ---@param multiTools number
 function CourseGeneratorInterface.generateVineCourse(
 	fieldPolygon,
+	startingPoint,
 	workWidth,
 	turnRadius,
 	manualRowAngleDeg,
@@ -138,7 +139,7 @@ function CourseGeneratorInterface.generateVineCourse(
 	
 	return CourseGeneratorInterface.generate(
 		fieldPolygon,
-		{x = fieldPolygon[1].x, z = fieldPolygon[1].z},
+		startingPoint,
 		true,
 		workWidth,
 		turnRadius,

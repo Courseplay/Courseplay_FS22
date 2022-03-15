@@ -128,53 +128,12 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 		table.insert(newLines, self:getStartEndPointForLine(l))
 	end
 
-	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
-	local dist1 = MathUtil.vector2Length(newLines[1].x1-tx, newLines[1].z1-tz)
-	local dist2 = MathUtil.vector2Length(newLines[1].x2-tx, newLines[1].z2-tz)
-	local dist3 = MathUtil.vector2Length(newLines[#newLines].x1-tx, newLines[#newLines].z1-tz)
-	local dist4 = MathUtil.vector2Length(newLines[#newLines].x2-tx, newLines[#newLines].z2-tz)
-
-	if dist2 < dist1 and dist2 < dist3 and dist2 < dist4 then 
-		newLines = self:invertLinesStartAndEnd(newLines)
-	elseif dist3 < dist1 and dist3 < dist2 and dist3 < dist4 then
-		newLines = self:invertLinesTable(newLines)
-	elseif dist4 < dist1 and dist4 < dist2 and dist4 < dist3 then
-		newLines = self:invertLinesTable(newLines)
-		newLines = self:invertLinesStartAndEnd(newLines)
-	end
 	self.lines = newLines
 	self.width = closestPlaceable.spec_vine.width
 
 	self:debug("Found %d number of lines for a width of %.2f", #self.lines, self.width)
 
 	return true
-end
-
---- Invert's the lines from end(lines.x2/z2) -> start(lines.x1/z1)
----@param lines table
----@return table
-function VineScanner:invertLinesStartAndEnd(lines)
-	local newLines = {}
-	for i, l in ipairs(lines) do 
-		table.insert(newLines, {
-			x1 = l.x2,
-			z1 = l.z2,
-			x2 = l.x1,
-			z2 = l.z1,
-		})
-	end
-	return newLines
-end
-
---- Invert's the lines from right(#lines) -> left(lines[1])
----@param lines table
----@return table
-function VineScanner:invertLinesTable(lines)
-	local newLines = {}
-	for i = #lines, 1, -1 do 
-		table.insert(newLines, lines[i])
-	end
-	return newLines
 end
 
 --- Separate segments relative to the closest segment into left columns(0->x) and right columns(1->-x).
@@ -279,10 +238,11 @@ end
 --- Debug function to draw the vine segments.
 function VineScanner:drawSegments(segments)
 	if segments then 
-		for i, segment in pairs(segments) do 
+		local blueScale = 1/#segments
+		for i, segment in ipairs(segments) do 
 			local x1, x2, z1, z2 = segment.x1, segment.x2, segment.z1, segment.z2
 			local y1, y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x1, 0, z1), getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x2, 0, z2)
-			drawDebugLine(x1, y1 + 2, z1, 1, 0, 0, x2, y2 + 2, z2, 0, 1, 0)
+			drawDebugLine(x1, y1 + 2, z1, 1, 0, i*blueScale, x2, y2 + 2, z2, 0, 1, i*blueScale)
 		end
 	end
 end
@@ -290,22 +250,21 @@ end
 --- Creates a field boundary relative to the size of the vine field,
 --- so the course generator can generate courses for these.
 ---@param vineOffset number should the driver driver beside or over the vines. (-1/0/1)
+---@param tx number field position x
+---@param tz number field position z
 ---@return table field boundary
----@return number gap between the vine nodes.
+---@return number width between the vine nodes.
+---@return table starting point for the generator
 ---@return number angle of the vine rows(degree)
-function VineScanner:getCourseGeneratorVertices(vineOffset)
+function VineScanner:getCourseGeneratorVertices(vineOffset, tx, tz)
 	if not self.lines then 
 		return
 	end
 	vineOffset = vineOffset * self.width/2
 	self:debug("vineOffset: %f", vineOffset)
-	local dirX, dirZ, lengthStart = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
+	local dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
 	local ncx = dirX  * math.cos(math.pi/2) - dirZ  * math.sin(math.pi/2)
 	local ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
-	local yRot = 0	
-	if dirX == dirX or dirZ == dirZ then
-		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-	end
 	local lines = {}
 
 	for i=#self.lines, 1, -1 do 
@@ -321,7 +280,45 @@ function VineScanner:getCourseGeneratorVertices(vineOffset)
 		})
 	end
 	table.insert(lines, lines[1])
-	return lines, self.width, -math.deg(yRot)
+	local startingPoint, rowAngle = self:getStartingPointAndDirection(self.lines, tx, tz)
+	return lines, self.width, startingPoint, rowAngle
+end
+
+--- Gets the course generator starting point and the row angle in degree.
+---@param lines table
+---@param tx number
+---@param tz number
+---@return table starting point
+---@return number angle in degree
+function VineScanner:getStartingPointAndDirection(lines, tx, tz)
+	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
+	local dist1 = MathUtil.vector2Length(lines[1].x1-tx, lines[1].z1-tz)
+	local dist2 = MathUtil.vector2Length(lines[1].x2-tx, lines[1].z2-tz)
+	local dist3 = MathUtil.vector2Length(lines[#lines].x1-tx, lines[#lines].z1-tz)
+	local dist4 = MathUtil.vector2Length(lines[#lines].x2-tx, lines[#lines].z2-tz)
+
+	local dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
+	local startingPoint = {
+		x = lines[1].x1,
+		z = lines[1].z1,
+	}
+	if dist2 < dist1 and dist2 < dist3 and dist2 < dist4 then 
+		startingPoint.x  = lines[1].x2
+		startingPoint.z  = lines[1].z2
+		dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x2, z = self.lines[1].z2}, {x = self.lines[1].x1, z = self.lines[1].z1})
+	elseif dist3 < dist1 and dist3 < dist2 and dist3 < dist4 then
+		startingPoint.x  = lines[#lines].x1
+		startingPoint.z  = lines[#lines].z1
+	elseif dist4 < dist1 and dist4 < dist2 and dist4 < dist3 then
+		startingPoint.x  = lines[#lines].x2
+		startingPoint.z  = lines[#lines].z2
+		dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x2, z = self.lines[1].z2}, {x = self.lines[1].x1, z = self.lines[1].z1})
+	end	
+	local yRot = 0	
+	if dirX == dirX or dirZ == dirZ then
+		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+	end
+	return startingPoint, -math.deg(yRot)
 end
 
 --- Gets a segment for a vine node.
