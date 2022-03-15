@@ -1499,7 +1499,8 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 		-- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
 		-- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
 		-- than what is absolutely necessary.
-		local offsetX = -(self.pipeOffsetX + trailerWidth / 2 - 1.1)
+		local offsetX = self.pipeOffsetX + trailerWidth / 2 - 1.1
+		offsetX = self.pipeOnLeftSide and -offsetX or offsetX
 		local alignLength = (trailerLength / 2) + dZ + 3
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
 		local offsetZ = -self.pipeOffsetZ - alignLength
