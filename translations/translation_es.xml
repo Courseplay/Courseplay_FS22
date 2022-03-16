@@ -234,7 +234,7 @@
 		<text name="CP_global_setting_subTitle_userSettings"											text="Ajustes de usuario"/>
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatible con gamepad"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud."/>
 
 		<text name="CP_global_setting_showActionEventHelp_title" 										text="Ayuda de eventos de acción"/>
 		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Muestra textos de ayuda de eventos de acción."/>
@@ -242,19 +242,19 @@
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ajustes del generador de rutas"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ángulo máximo a usar"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
 
 		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Factor de ángulo Delta"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Muestra todos las rutas activas"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Muestra todos las rutas activas en el mapa del juego."/>
 
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Ventana de Textos Informativos"/>
-		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Muestra la Ventana de Textos Informativos"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Muestra la Ventana de Textos Informativos."/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Preferencia de Campos Personalizados "/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferir el campo personalizado si también hay un campo normal en la posición seleccionada."/>
+		<text name="CP_global_setting_preferCustomFields_title"											text="Preferencia de Campos Personalizados"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferir el campo personalizado si existe un campo normal en la posición seleccionada."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestión de rutas(%s) %s"/>
