@@ -84,7 +84,6 @@ function AIDriveStrategyCourse:error(...)
 end
 
 function AIDriveStrategyCourse:setInfoText(text)
-    self:debug("set info text: %s",tostring(text))
     self.vehicle:setCpInfoTextActive(text)
 end
 
