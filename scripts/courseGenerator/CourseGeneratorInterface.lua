@@ -154,7 +154,7 @@ function CourseGeneratorInterface.generateVineCourse(
 		true,
 		0,
 		false,
-		-workWidth/2,
+		0,
 		multiTools,
 		false
 	)

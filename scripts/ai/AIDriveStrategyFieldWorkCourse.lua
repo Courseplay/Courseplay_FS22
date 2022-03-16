@@ -241,13 +241,10 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, SprayerController, Sprayer, {})
     self:addImplementController(vehicle, CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
     self:addImplementController(vehicle, StonePickerController, StonePicker, defaultDisabledStates)
-<<<<<<< HEAD
     self:addImplementController(vehicle, CombineController, Combine, defaultDisabledStates)
 
     self:addImplementController(vehicle, MotorController, Motorized, {})
-=======
     self:addImplementController(vehicle, VineCutterController, VineCutter, defaultDisabledStates)
->>>>>>> 79dd3a8 (Vine harvester is now working and just released once full.)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    

@@ -128,6 +128,24 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 		table.insert(newLines, self:getStartEndPointForLine(l))
 	end
 
+
+
+	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
+	local dist1 = MathUtil.vector2Length(newLines[1].x1-tx, newLines[1].z1-tz)
+	local dist2 = MathUtil.vector2Length(newLines[1].x2-tx, newLines[1].z2-tz)
+	local dist3 = MathUtil.vector2Length(newLines[#newLines].x1-tx, newLines[#newLines].z1-tz)
+	local dist4 = MathUtil.vector2Length(newLines[#newLines].x2-tx, newLines[#newLines].z2-tz)
+
+	if dist2 < dist1 and dist2 < dist3 and dist2 < dist4 then 
+		newLines = self:invertLinesStartAndEnd(newLines)
+	elseif dist3 < dist1 and dist3 < dist2 and dist3 < dist4 then
+		newLines = self:invertLinesTable(newLines)
+	elseif dist4 < dist1 and dist4 < dist2 and dist4 < dist3 then
+		newLines = self:invertLinesTable(newLines)
+		newLines = self:invertLinesStartAndEnd(newLines)
+	end
+
+
 	self.lines = newLines
 	self.width = closestPlaceable.spec_vine.width
 
@@ -135,6 +153,34 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 
 	return true
 end
+
+--- Invert's the lines from end(lines.x2/z2) -> start(lines.x1/z1)
+---@param lines table
+---@return table
+function VineScanner:invertLinesStartAndEnd(lines)
+	local newLines = {}
+	for i, l in ipairs(lines) do 
+		table.insert(newLines, {
+			x1 = l.x2,
+			z1 = l.z2,
+			x2 = l.x1,
+			z2 = l.z1,
+		})
+	end
+	return newLines
+end
+
+--- Invert's the lines from right(#lines) -> left(lines[1])
+---@param lines table
+---@return table
+function VineScanner:invertLinesTable(lines)
+	local newLines = {}
+	for i = #lines, 1, -1 do 
+		table.insert(newLines, lines[i])
+	end
+	return newLines
+end
+
 
 --- Separate segments relative to the closest segment into left columns(0->x) and right columns(1->-x).
 ---@param lines table
@@ -260,67 +306,99 @@ function VineScanner:getCourseGeneratorVertices(vineOffset, tx, tz)
 	if not self.lines then 
 		return
 	end
-	vineOffset = vineOffset * self.width/2
+	vineOffset = -vineOffset * self.width/2
 	self:debug("vineOffset: %f", vineOffset)
 	local dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
-	local ncx = dirX  * math.cos(math.pi/2) - dirZ  * math.sin(math.pi/2)
-	local ncz = dirX  * math.sin(math.pi/2) + dirZ  * math.cos(math.pi/2)
-	local lines = {}
-
-	--- Applies offset for vehicles, that need to be driving next to the vine rows.
-	for i=#self.lines, 1, -1 do 
-		table.insert(lines, {
-			x = self.lines[i].x1 + ncx * vineOffset,
-			z = self.lines[i].z1 + ncz * vineOffset,
-		})
-	end
-	for i=1, #self.lines do 
-		table.insert(lines, {
-			x = self.lines[i].x2 + ncx * vineOffset,
-			z = self.lines[i].z2 + ncz * vineOffset,
-		})
-	end
-	table.insert(lines, lines[1])
-	local startingPoint, rowAngle = self:getStartingPointAndRowAngle(self.lines, tx, tz)
-	self.fieldBorder = lines
-	return lines, self.width, startingPoint, rowAngle
-end
-
---- Gets the course generator starting point and the row angle in degree.
----@param lines table
----@param tx number
----@param tz number
----@return table starting point
----@return number angle in degree
-function VineScanner:getStartingPointAndRowAngle(lines, tx, tz)
-	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
-	local dist1 = MathUtil.vector2Length(lines[1].x1-tx, lines[1].z1-tz)
-	local dist2 = MathUtil.vector2Length(lines[1].x2-tx, lines[1].z2-tz)
-	local dist3 = MathUtil.vector2Length(lines[#lines].x1-tx, lines[#lines].z1-tz)
-	local dist4 = MathUtil.vector2Length(lines[#lines].x2-tx, lines[#lines].z2-tz)
-
-	local dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x1, z = self.lines[1].z1}, {x = self.lines[1].x2, z = self.lines[1].z2})
-	local startingPoint = {
-		x = lines[1].x1,
-		z = lines[1].z1,
-	}
-	if dist2 < dist1 and dist2 < dist3 and dist2 < dist4 then 
-		startingPoint.x  = lines[1].x2
-		startingPoint.z  = lines[1].z2
-		dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x2, z = self.lines[1].z2}, {x = self.lines[1].x1, z = self.lines[1].z1})
-	elseif dist3 < dist1 and dist3 < dist2 and dist3 < dist4 then
-		startingPoint.x  = lines[#lines].x1
-		startingPoint.z  = lines[#lines].z1
-	elseif dist4 < dist1 and dist4 < dist2 and dist4 < dist3 then
-		startingPoint.x  = lines[#lines].x2
-		startingPoint.z  = lines[#lines].z2
-		dirX, dirZ, _ = CpMathUtil.getPointDirection({x = self.lines[1].x2, z = self.lines[1].z2}, {x = self.lines[1].x1, z = self.lines[1].z1})
-	end	
 	local yRot = 0	
 	if dirX == dirX or dirZ == dirZ then
 		yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	end
-	return startingPoint, -math.deg(yRot)
+	local node = createTransformGroup("temp")
+
+	setRotation(node, 0, yRot, 0)
+
+	local x1, z1 = self.lines[1].x1, self.lines[1].z1
+	local dirX1, dirZ1 = self.lines[1].x1-self.lines[1].x2, self.lines[1].z1-self.lines[1].z2
+	local dirX2, dirZ2 = self.lines[1].x1-self.lines[#self.lines].x1, self.lines[1].z1-self.lines[#self.lines].z1
+	setTranslation(node, self.lines[1].x1, 0,  self.lines[1].z1)
+	local x, _, z = localToWorld(node, - self.width/2, 0, 0)
+	setTranslation(node, self.lines[1].x2, 0,  self.lines[1].z2)
+	local dx, _, dz = localToWorld(node, - self.width/2, 0, 0)
+	local inverted = 1
+	--- Makes sure the the outer offset is correct and not inverse. 
+	if MathUtil.hasRectangleLineIntersection2D(x1, z1, dirX1, dirZ1, dirX2, dirZ2, x, z, x-dx, z-dz) then 
+		inverted = -1
+	end
+
+	local lines = {}
+	local x, _, z = localToWorld(node, - self.width/2, 0, 0)
+	--- Applies offset for vehicles, that need to be driving next to the vine rows.
+	for i=#self.lines, 1, -1 do 
+		setTranslation(node, self.lines[i].x1, 0,  self.lines[i].z1)
+		if i == 1 then 
+			x, _, z = localToWorld(node, vineOffset + inverted * self.width/2, 0, 0)
+			table.insert(lines, {
+				x = x,
+				z = z,
+			})
+			--- Inserts a few point in between the long edge for the course generator.
+			local dx, dz, length = CpMathUtil.getPointDirection({x = self.lines[i].x1, z = self.lines[i].z1}, {x = self.lines[i].x2, z = self.lines[i].z2})
+			for j=2, length-2 do 
+				table.insert(lines, {
+					x = x + dx * j,
+					z = z + dz * j,
+				})
+			end
+
+		elseif i == #self.lines then 
+			x, _, z = localToWorld(node, vineOffset - inverted * self.width/2, 0, 0)
+			table.insert(lines, {
+				x = x,
+				z = z,
+			})
+		else	
+			x, _, z = localToWorld(node, vineOffset, 0, 0)
+			table.insert(lines, {
+				x = x,
+				z = z,
+			})
+		end
+	end
+	for i=1, #self.lines do 
+		setTranslation(node, self.lines[i].x2, 0,  self.lines[i].z2)
+		if i == 1 then 
+			x, _, z = localToWorld(node, vineOffset + inverted * self.width/2, 0, 0)
+			table.insert(lines, {
+				x = x,
+				z = z,
+			})
+		elseif i == #self.lines then 
+			x, _, z = localToWorld(node, vineOffset - inverted * self.width/2, 0, 0)
+			table.insert(lines, {
+				x = x,
+				z = z,
+			})
+			--- Inserts a few point in between the long edge for the course generator.
+			local dx, dz, length = CpMathUtil.getPointDirection({x = self.lines[i].x2, z = self.lines[i].z2}, {x = self.lines[i].x1, z = self.lines[i].z1})
+			for j=2, length-2 do 
+				table.insert(lines, {
+					x = x + dx * j,
+					z = z + dz * j,
+				})
+			end
+		else	
+			x, _, z = localToWorld(node, vineOffset, 0, 0)
+			table.insert(lines, {
+				x = x,
+				z = z,
+			})
+		end
+	end
+	table.insert(lines, lines[1])
+	CpUtil.destroyNode(node)
+	--- For debugging
+	self.fieldBorder = lines
+	return lines, self.width, lines[1], -math.deg(yRot)
 end
 
 --- Gets a segment for a vine node.
@@ -353,11 +431,12 @@ end
 
 function VineScanner:drawFieldBorder()
 	if self.fieldBorder then 
+		local step = 1/(#self.fieldBorder -1)
 		for i = 1, #self.fieldBorder-1 do 
 			local x1, z1 = self.fieldBorder[i].x,  self.fieldBorder[i].z
 			local x2, z2 = self.fieldBorder[i+1].x, self.fieldBorder[i+1].z
 			local y1, y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x1, 0, z1), getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x2, 0, z2)
-			drawDebugLine(x1, y1 + 2, z1, 1, 1, 1, x2, y2 + 2, z2, 1, 1, 1)
+			drawDebugLine(x1, y1 + 2, z1, 1, 1, (i-1)*step, x2, y2 + 2, z2, 1, 1, i*step)
 		end
 	end
 end
