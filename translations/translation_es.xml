@@ -253,8 +253,8 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Ventana de Textos Informativos"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Muestra la Ventana de Textos Informativos"/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+		<text name="CP_global_setting_preferCustomFields_title"											text="Preferencia de Campos Personalizados "/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferir el campo personalizado si también hay un campo normal en la posición seleccionada."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestión de rutas(%s) %s"/>
