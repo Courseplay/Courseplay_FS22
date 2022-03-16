@@ -9,9 +9,13 @@ function MotorController:init(vehicle, implement)
 	self.timer = CpTemporaryObject(true)
 	self.timerSet = false
 	self.vehicle.spec_cpAIWorker.motorDisabled = false
+	self.isValid = true
 end
 
 function MotorController:update()
+	if not self.isValid then 
+		return
+	end
 	if not self.settings.fuelSave:getValue() then 
 		if not self.motorSpec.isMotorStarted then 
 			self:startMotor()
@@ -47,6 +51,12 @@ function MotorController:update()
 	if self:isFuelEmpty() then 
 		self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
 	end
+end
+
+--- There is a time problem with the release of the driver, when no player is entered,
+--- so we use this flag to make sure the :update() isn't used after :delete() was called.
+function MotorController:delete()
+	self.isValid = false
 end
 
 function MotorController:isFuelLow(threshold)

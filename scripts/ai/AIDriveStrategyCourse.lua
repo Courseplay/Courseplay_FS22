@@ -34,6 +34,7 @@ AIDriveStrategyCourse.onRaisingEvent = "onRaising"
 AIDriveStrategyCourse.onLoweringEvent = "onLowering"
 AIDriveStrategyCourse.onFinishedEvent = "onFinished"
 AIDriveStrategyCourse.updateEvent = "update"
+AIDriveStrategyCourse.deleteEvent = "delete"
 
 function AIDriveStrategyCourse.new(customMt)
     if customMt == nil then
@@ -120,6 +121,12 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
         self:startWithoutCourse()
     end
 end
+
+function AIDriveStrategyCourse:delete()
+    self:raiseControllerEvent(self.deleteEvent)
+    AIDriveStrategyCourse:superClass().delete(self)
+end
+
 
 function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
     return self.vehicle:getFieldWorkCourse()
