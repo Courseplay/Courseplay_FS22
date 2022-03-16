@@ -66,8 +66,8 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otwieranie HUDa myszką"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Gdy wyłączone, HUD może być otwarty tylko za pomocą skrótu klawiszowego."/>
 
-		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
-		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Oszczędzanie paliwa"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Wyłącza silnik pojazdu podczas oczekiwania."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zatrzymaj na końcu"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ustala czy kierowca powinien zatrzymać się w ostatnim punkcie trasy."/>
@@ -255,8 +255,8 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Pokaż okno informacyjne"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Wyświetla okno z dodatkowymi informacjami."/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+		<text name="CP_global_setting_preferCustomFields_title"											text="Preferuj własne pola"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferuj własne pole, jeśli na wybranej pozycji znajduje się również zwykłe pole."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Menadżer kursu(%s) %s"/>
@@ -295,9 +295,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Pomocnik utknął"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Jest w ruchu"/>
-		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Powiniwn zostać zatankowany"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Musi zostać zatankowany"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Musi zostać naprawiony"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
 		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>		
