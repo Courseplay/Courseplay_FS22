@@ -90,6 +90,18 @@ You can define the following custom settings:
     <!--[GIANTS]-->
 
     <!-- Harvesters -->
+
+    <!--vehicles\newHolland-->
+    <Vehicle name="braud9070L.xml"
+             raiseLate="true"
+             lowerEarly="true"
+             turnRadius="5"
+    />
+    <Vehicle name="braud9090X.xml"
+             raiseLate="true"
+             lowerEarly="true"
+             turnRadius="5"
+    />
     <!-- Implements -->
 
     <!--\vehicles\agromasz-->
@@ -210,8 +222,16 @@ You can define the following custom settings:
     <Vehicle name="agrisemCultiplowPlatinum8m.xml"
              turnRadius = "7"
     />
+    <!--\vehicles\proviti-->
+    <Vehicle name="mp122Ocea.xml"
+             toolOffsetX="-1.2"
+             raiseLate="true"
+             lowerEarly="true"
+             turnRadius="5"
+    />
 
     <!--Tractors-->
+    
     <!--\vehicles\stara-->
     <Vehicle name="imperador3.xml"
              ignoreCollisionBoxesWhenFolded="true"
@@ -220,10 +240,6 @@ You can define the following custom settings:
     <Vehicle name="rubicon9000.xml"
 			 ignoreCollisionBoxesWhenFolded="true"
 	/>
-    <!--\vehicles\proviti-->
-    <Vehicle name="mp122Ocea.xml"
-             toolOffsetX="-1.2"
-    />
 
     <!--[DLC]-->
 
