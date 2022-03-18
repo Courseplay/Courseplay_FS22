@@ -473,6 +473,18 @@ function Course:getWaypointWorldDirections(ix)
 	return wp.dx, wp.dz
 end
 
+--- Get the driving direction at the waypoint. y rotation points in the direction
+--- of the next waypoint, but at the last wp before a direction change this is the opposite of the driving
+--- direction, since we want to reach that last waypoint
+function Course:getYRotationCorrectedForDirectionChanges(ix)
+	if ix == #self.waypoints or self:switchingDirectionAt(ix) and ix > 1 then
+		-- last waypoint before changing direction, use the yRot from the previous waypoint
+		return self.waypoints[ix - 1].yRot
+	else
+		return self.waypoints[ix].yRot
+	end
+end
+
 -- This is the radius from the course generator. For now ony island bypass waypoints nodes have a
 -- radius.
 function Course:getRadiusAtIx(ix)
@@ -932,11 +944,9 @@ end
 ---@param step number step (waypoint distance), must be negative if to < from
 ---@param reverse boolean is this a reverse course?
 function Course.createFromNode(vehicle, referenceNode, xOffset, from, to, step, reverse)
-	CpUtil.info('%.1f %.1f %.1f', from, to, step)
 	local waypoints = {}
 	local nPoints = math.floor(math.abs((from - to) / step)) + 1
 	local dBetweenPoints = (to - from) / nPoints
-	CpUtil.info('%.1f %.1f %.1f', nPoints, dBetweenPoints, step)
 	local dz = from
 	for i = 1, nPoints do
 		local x, _, z = localToWorld(referenceNode, xOffset, 0, dz + i * dBetweenPoints)
