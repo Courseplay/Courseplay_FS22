@@ -296,7 +296,7 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge,
 			ixBeforeEndingTurnSection, endingTurnLength)
 	end
-	TurnManeuver.setLowerImplements(self.course, endingTurnLength)
+	TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver
