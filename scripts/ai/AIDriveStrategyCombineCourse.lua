@@ -219,6 +219,11 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 			-- player does not want us to move while discharging
 			self:setMaxSpeed(0)
 		end
+	elseif self.state == self.states.WAITING_FOR_LOWER then
+		if self:isFull() then
+			self:debug('Waiting for lower but full...')
+			self:changeToUnloadOnField()
+		end
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		-- Unloading
 		self:driveUnloadOnField()
@@ -1925,12 +1930,11 @@ function AIDriveStrategyCombineCourse:onDraw()
 		local areaToAvoid = self:getAreaToAvoid()
 		if areaToAvoid then
 			local x, y, z = localToWorld(areaToAvoid.node, areaToAvoid.xOffset, 0, areaToAvoid.zOffset)
-			cpDebug:drawLine(x, y + 1.2, z, 10, 10, 10, x, y + 1.2, z + areaToAvoid.length)
-			cpDebug:drawLine(x + areaToAvoid.width, y + 1.2, z, 10, 10, 10, x + areaToAvoid.width, y + 1.2, z + areaToAvoid.length)
+			DebugUtil.drawDebugLine(x, y + 1.2, z, 10, 10, 10, x, y + 1.2, z + areaToAvoid.length)
+			DebugUtil.drawDebugLine(x + areaToAvoid.width, y + 1.2, z, 10, 10, 10, x + areaToAvoid.width, y + 1.2, z + areaToAvoid.length)
 		end
 	end
 
-	UnloadableFieldworkAIDriver.onDraw(self)
 end
 
 -- For combines, we use the collision trigger of the header to cover the whole vehicle width

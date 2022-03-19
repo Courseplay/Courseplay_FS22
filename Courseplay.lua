@@ -291,8 +291,12 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'printStrategyVariable', 'Print a CP drive strategy variable', 'printStrategyVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
-	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'saveAllFields', self )
-	addConsoleCommand( 'cpReadVehicleConfigurations', 'Read custom vehicle configurations', 'loadFromXml', g_vehicleConfigurations)
+	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'cpSaveAllFields', self )
+	addConsoleCommand( 'cpReadVehicleConfigurations', 'Read custom vehicle configurations', 'cpReadVehicleConfigurations', self)
+	addConsoleCommand( 'cpSaveAllVehiclePositions', 'Save the position of all vehicles', 'cpSaveAllVehiclePositions', self)
+	addConsoleCommand( 'cpRestoreAllVehiclePositions', 'Restore the position of all vehicles', 'cpRestoreAllVehiclePositions', self)
+	addConsoleCommand( 'cpSetPathfinderDebug', 'Set pathfinder visual debug level (0-2)', 'cpSetPathfinderDebug', self )
+
 end
 
 ---@param saveGameNumber number
@@ -401,8 +405,24 @@ function Courseplay:toggleDevHelper()
 	g_devHelper:toggle()
 end
 
-function Courseplay:saveAllFields()
+function Courseplay:cpSaveAllFields()
 	CpFieldUtil.saveAllFields()
+end
+
+function Courseplay:cpReadVehicleConfigurations()
+	g_vehicleConfigurations:loadFromXml()
+end
+
+function Courseplay:cpSaveAllVehiclePositions()
+	g_devHelper:saveAllVehiclePositions()
+end
+
+function Courseplay:cpRestoreAllVehiclePositions()
+	g_devHelper:restoreAllVehiclePositions()
+end
+
+function Courseplay:cpSetPathfinderDebug(d)
+	PathfinderUtil.setVisualDebug(tonumber(d))
 end
 
 function Courseplay.info(...)

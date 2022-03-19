@@ -131,6 +131,11 @@ function AIDriveStrategyFieldWorkCourse:update()
             self.ppc:getCourse():draw()
         end
     end
+    if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER, self.vehicle) then
+        if self.pathfinder then
+            PathfinderUtil.showNodes(self.pathfinder)
+        end
+    end
     if self.fieldWorkerProximityController then
         self.fieldWorkerProximityController:draw()
     end
