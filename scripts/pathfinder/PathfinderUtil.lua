@@ -673,7 +673,7 @@ end
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
 function PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
     PathfinderUtil.overlapBoxes = {}
-    local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 40000, mustBeAccurate)
+    local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 140000, mustBeAccurate)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -951,12 +951,13 @@ function PathfinderUtil.showNodes(pathfinder)
                                 r, g, b = color, 1 - color, 0
                             end
                             local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, cell.x, 0, -cell.y)
-                            cpDebug:drawPoint(cell.x, y + 1, -cell.y, r, g, b)
+                            --cpDebug:drawPoint(cell.x, y + 1, -cell.y, r, g, b)
                             if cell.pred and cell.pred.y then
---                                cpDebug:drawLineRGB(cell.x, y + 1 + height, -cell.y, r, g, b, cell.pred.x, y + 1 + height, -cell.pred.y)
+                                DebugUtil.drawDebugLine(cell.x, y + 1, -cell.y,
+                                        cell.pred.x, y + 1, -cell.pred.y, r, g, b)
                             end
                             if cell.isColliding then
-                                cpDebug:drawPoint(cell.x, y + 1.2, -cell.y, 100, 0, 0)
+                                --cpDebug:drawPoint(cell.x, y + 1.2, -cell.y, 100, 0, 0)
                             end
                         end
                     end
@@ -973,7 +974,7 @@ function PathfinderUtil.showNodes(pathfinder)
             local pp = pathfinder.middlePath[i - 1]
             pp.z = pp.y and -pp.y or pp.z
             local py = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pp.x, 0, pp.z)
-            cpDebug:drawLine(cp.x, cy + 3, cp.z, 10, 0, 0, pp.x, py + 3, pp.z)
+            DebugUtil.drawDebugLine(cp.x, cy + 3, cp.z, pp.x, py + 3, pp.z, 10, 0, 0)
         end
     end
     if PathfinderUtil.helperNode then
@@ -983,7 +984,7 @@ function PathfinderUtil.showNodes(pathfinder)
         for i = 1, 4 do
             local cp = myCollisionData.corners[i]
             local pp = myCollisionData.corners[i > 1 and i - 1 or 4]
-            cpDebug:drawLine(cp.x, cp.y + 0.4, cp.z, 1, 1, 0, pp.x, pp.y + 0.4, pp.z)
+            DebugUtil.drawDebugLine(cp.x, cp.y + 0.4, cp.z, pp.x, pp.y + 0.4, pp.z, 1, 1, 0)
         end
     end
     if PathfinderUtil.vehicleCollisionData then
@@ -991,7 +992,7 @@ function PathfinderUtil.showNodes(pathfinder)
             for i = 1, 4 do
                 local cp = collisionData.corners[i]
                 local pp = collisionData.corners[i > 1 and i - 1 or 4]
-                cpDebug:drawLine(cp.x, cp.y + 0.4, cp.z, 1, 1, 0, pp.x, pp.y + 0.4, pp.z)
+                DebugUtil.drawDebugLine(cp.x, cp.y + 0.4, cp.z, pp.x, pp.y + 0.4, pp.z, 1, 1, 0)
             end
         end
     end

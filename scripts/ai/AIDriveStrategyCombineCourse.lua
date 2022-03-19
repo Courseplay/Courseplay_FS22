@@ -55,8 +55,10 @@ AIDriveStrategyCombineCourse.myStates = {
 AIDriveStrategyCombineCourse.proximitySensorRange = 10
 -- the sensor will proportionally reduce speed when objects are in range down to this limit (won't set a speed lower than this)
 AIDriveStrategyCombineCourse.proximityMinLimitedSpeed = 2
--- if anything closer than this, we stop
-AIDriveStrategyCombineCourse.proximityLimitLow = 1.5
+-- stop limit we use for self unload to approach the trailer
+AIDriveStrategyCombineCourse.proximityLimitStopNormal = 1.5
+-- stop limit we use for self unload to approach the trailer
+AIDriveStrategyCombineCourse.proximityLimitStopSelfUnload = 0.1
 -- if anything closer than this, we reverse
 AIDriveStrategyCombineCourse.proximityLimitReverse = 1
 -- an obstacle is considered ahead of us if the reported angle is less then this
@@ -89,6 +91,9 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.chopperCanDischarge = CpTemporaryObject(false)
 	-- hold the harvester temporarily
 	self.temporaryHold = CpTemporaryObject(false)
+
+	-- if anything closer than this, we stop
+	self.proximityLimitStop = CpTemporaryObject(AIDriveStrategyCombineCourse.proximityLimitStopNormal)
 
 	--- Register info texts 
 	self:registerInfoTextForStates(self:getFillLevelInfoText(), {
@@ -214,6 +219,11 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 			-- player does not want us to move while discharging
 			self:setMaxSpeed(0)
 		end
+	elseif self.state == self.states.WAITING_FOR_LOWER then
+		if self:isFull() then
+			self:debug('Waiting for lower but full...')
+			self:changeToUnloadOnField()
+		end
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		-- Unloading
 		self:driveUnloadOnField()
@@ -337,6 +347,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
 			-- disable stock collision detection as we have to drive very close to the tractor/trailer
 			self:disableCollisionDetection()
+			-- we'll be very close to the tractor/trailer, don't stop too soon
+			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
 		else
 			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
@@ -373,6 +385,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
+			-- we'll be very close to the tractor/trailer, don't stop too soon
+			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
 		else
 			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
@@ -1499,7 +1513,8 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 		-- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
 		-- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
 		-- than what is absolutely necessary.
-		local offsetX = -(self.pipeOffsetX + trailerWidth / 2 - 1.1)
+		local offsetX = math.abs(self.pipeOffsetX) + trailerWidth / 2 - 1.1
+		offsetX = self.pipeOnLeftSide and -offsetX or offsetX
 		local alignLength = (trailerLength / 2) + dZ + 3
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
 		local offsetZ = -self.pipeOffsetZ - alignLength
@@ -1881,9 +1896,9 @@ function AIDriveStrategyCombineCourse:checkProximitySensors()
 		d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
 		range = pack:getRange()
 	end
-	local normalizedD = d / (range - self.proximityLimitLow)
+	local normalizedD = d / (range - self.proximityLimitStop:get())
 	local obstacleAhead = math.abs(deg) < self.proximityAngleAheadDeg
-	if d < self.proximityLimitLow and obstacleAhead then
+	if d < self.proximityLimitStop:get() and obstacleAhead then
 		-- too close, stop
 		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg)
 		self:setMaxSpeed(0)
@@ -1915,12 +1930,11 @@ function AIDriveStrategyCombineCourse:onDraw()
 		local areaToAvoid = self:getAreaToAvoid()
 		if areaToAvoid then
 			local x, y, z = localToWorld(areaToAvoid.node, areaToAvoid.xOffset, 0, areaToAvoid.zOffset)
-			cpDebug:drawLine(x, y + 1.2, z, 10, 10, 10, x, y + 1.2, z + areaToAvoid.length)
-			cpDebug:drawLine(x + areaToAvoid.width, y + 1.2, z, 10, 10, 10, x + areaToAvoid.width, y + 1.2, z + areaToAvoid.length)
+			DebugUtil.drawDebugLine(x, y + 1.2, z, 10, 10, 10, x, y + 1.2, z + areaToAvoid.length)
+			DebugUtil.drawDebugLine(x + areaToAvoid.width, y + 1.2, z, 10, 10, 10, x + areaToAvoid.width, y + 1.2, z + areaToAvoid.length)
 		end
 	end
 
-	UnloadableFieldworkAIDriver.onDraw(self)
 end
 
 -- For combines, we use the collision trigger of the header to cover the whole vehicle width
