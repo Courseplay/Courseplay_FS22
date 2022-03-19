@@ -653,11 +653,16 @@ function CourseTurn:endTurn(dt)
 			-- implements already lowering, making sure we check if they are lowered, the faster we go, the earlier,
 			-- for those people who set insanely high turn speeds...
 			local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
-			if dz and dz > - implementCheckDistance and not self.vehicle:getCanAIFieldWorkerContinueWork() then
-				self:debug('waiting for lower at dz=%.1f', dz)
-				-- we are almost at the start of the row but still not lowered everything,
-				-- hold.
-				return false
+			if dz and dz > - implementCheckDistance then
+				if self.vehicle:getCanAIFieldWorkerContinueWork() then
+					self:debug("implements lowered, resume fieldwork")
+					self.driveStrategy:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+				else
+					self:debug('waiting for lower at dz=%.1f', dz)
+					-- we are almost at the start of the row but still not lowered everything,
+					-- hold.
+					return false
+				end
 			end
 		end
 	end

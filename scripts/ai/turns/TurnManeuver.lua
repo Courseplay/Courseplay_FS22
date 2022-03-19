@@ -223,9 +223,12 @@ end
 ---@param stopAtDirectionChange boolean if we reach a direction change, stop there, the last waypoint the function
 --- is called for is the one before the direction change
 function TurnManeuver.setTurnControlForLastWaypoints(course, d, control, value, stopAtDirectionChange)
-	course:executeFunctionForLastWaypoints( d, function(wp)
-		TurnManeuver.addTurnControlToWaypoint(wp, control, value)
-	end, stopAtDirectionChange)
+	course:executeFunctionForLastWaypoints(
+			d,
+			function(wp)
+				TurnManeuver.addTurnControlToWaypoint(wp, control, value)
+			end,
+			stopAtDirectionChange)
 end
 
 --- Set implement lowering control for the end of the turn
@@ -238,23 +241,27 @@ end
 
 ---@param course Course
 ---@param dBack number distance in meters to move the course back (positive moves it backwards!)
-function TurnManeuver:moveCourseBack(course, dBack)
+---@param ixBeforeEndingTurnSection number index of the last waypoint of the actual turn, if we can finish the turn
+--- before we reach the vehicle position at turn end, there's no reversing needed at the turn end.
+---@param endingTurnLength number length of the straight ending turn section into the next row
+function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, endingTurnLength)
 	-- move at least one meter
 	dBack = dBack < 1 and 1 or dBack
-	self:debug('moving course: dz=%.1f', dBack)
+	self:debug('moving course: d=%.1f', dBack)
 	-- generate a straight reverse section first
 	local reverseBeforeTurn = Course.createFromNode(self.vehicle, self.vehicleDirectionNode,
 		0, -self.steeringLength, -self.steeringLength - dBack, -1, true)
 	local dx, dz = reverseBeforeTurn:getWaypointWorldDirections(1)
-	self:debug('translating turn course: dx=%.1f, dz=%.1f', dx * dBack, dz * dBack)
 	course:translate(dx * dBack, dz * dBack)
 	reverseBeforeTurn:append(course)
 	-- the last waypoint of the course after it was translated
-	local _, _, dFromTurnEnd = course:getWaypointLocalPosition(self.turnContext.vehicleAtTurnEndNode, course:getNumberOfWaypoints())
-	if dFromTurnEnd > 0 then
+	local _, _, dFromTurnEnd = course:getWaypointLocalPosition(self.turnContext.vehicleAtTurnEndNode, ixBeforeEndingTurnSection)
+	local _, _, dFromWorkStart = course:getWaypointLocalPosition(self.turnContext.workStartNode, ixBeforeEndingTurnSection)
+	if math.max(dFromTurnEnd, dFromWorkStart) > 0 then
+		self:debug('need to reverse to reach work start (at %.1f, turn end at %.1f)', dFromWorkStart, dFromTurnEnd)
 		-- allow early direction change when aligned
-		local toIx = reverseBeforeTurn:getNumberOfWaypoints()
-		TurnManeuver.addTurnControl(reverseBeforeTurn.waypoints, toIx - 5, toIx, TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true)
+		TurnManeuver.setTurnControlForLastWaypoints(reverseBeforeTurn, endingTurnLength,
+				TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
 			0, dFromTurnEnd - self.steeringLength, -self.steeringLength, -1, true)
 		reverseBeforeTurn:append(reverseAfterTurn)
@@ -262,7 +269,7 @@ function TurnManeuver:moveCourseBack(course, dBack)
 	return reverseBeforeTurn
 end
 
----@class AnalyticTurnManeuver : TurnManuever
+---@class AnalyticTurnManeuver : TurnManeuver
 AnalyticTurnManeuver = CpObject(TurnManeuver)
 function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength, distanceToFieldEdge)
 	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, steeringLength)
@@ -276,18 +283,20 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 	self.course:setUseTightTurnOffsetForLastWaypoints(10)
+	local ixBeforeEndingTurnSection = self.course:getNumberOfWaypoints()
 	-- and once again, if there is an ending course, keep adjusting the tight turn offset
 	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, steeringLength, true)
 
 	local dzMax = self:getDzMax(self.course)
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
 	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
-	self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f',
-		dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge)
+	self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f, ixBeforeEndingTurnSection=%d',
+		dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection)
 	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
-		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge)
+		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge,
+			ixBeforeEndingTurnSection, endingTurnLength)
 	end
-	TurnManeuver.setLowerImplements(self.course, endingTurnLength)
+	TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
 end
 
 ---@class DubinsTurnManeuver : AnalyticTurnManeuver

@@ -194,8 +194,7 @@ function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
 
 	-- Calculate the orientation error, the angle between the trailers current direction and
 	-- the path direction
-	local currentWp = self.ppc:getCurrentWaypoint()
-	local referencePathAngle = currentWp.yRot
+	local referencePathAngle = self.ppc:getCurrentWaypointYRotation()
 
 	local dx, _, dz = localDirectionToWorld(trailerNode, 0, 0, -1)
 	local trailerAngle = MathUtil.getYRotationFromDirection(dx, dz)
@@ -211,6 +210,7 @@ function AIReverseDriver:calculateErrors(tractorNode, trailerNode)
 	local currentHitchAngle = getDeltaAngle(tractorAngle, trailerAngle)
 
 	local curvature = ( 2 * math.sin(currentHitchAngle / 2 )) / calcDistanceFrom(tractorNode, trailerNode)
+	local currentWp = self.ppc:getCurrentWaypoint()
 	local curvatureError = currentWp.curvature - curvature
 
 	return crossTrackError, orientationError, curvatureError, currentHitchAngle
