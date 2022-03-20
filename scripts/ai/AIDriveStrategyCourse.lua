@@ -33,6 +33,7 @@ AIDriveStrategyCourse.myStates = {
 AIDriveStrategyCourse.onRaisingEvent = "onRaising"
 AIDriveStrategyCourse.onLoweringEvent = "onLowering"
 AIDriveStrategyCourse.onFinishedEvent = "onFinished"
+AIDriveStrategyCourse.onStartEvent = "onStart"
 AIDriveStrategyCourse.updateEvent = "update"
 AIDriveStrategyCourse.deleteEvent = "delete"
 
@@ -119,6 +120,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
         self:debug('Vehicle has no course, start work without it.')
         self:startWithoutCourse()
     end
+    self:raiseControllerEvent(self.onStartEvent)
 end
 
 function AIDriveStrategyCourse:delete()
