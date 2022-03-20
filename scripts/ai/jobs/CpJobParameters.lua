@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --- Parameters of a Courseplay job
 ---@class CpJobParameters
 CpJobParameters = CpObject()
+CpJobParameters.xmlKey = ".cpJobParameters"
 
 local filePath = Utils.getFilename("config/JobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
 
@@ -30,6 +31,12 @@ function CpJobParameters:init(job)
     end
     CpSettingsUtil.cloneSettingsTable(self,CpJobParameters.settings,nil,self)
     self.job = job
+end
+
+function CpJobParameters.registerXmlSchema(schema, baseKey)
+    local key = baseKey..CpJobParameters.xmlKey.."(?)"
+    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
+    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
 end
 
 function CpJobParameters.getSettings(vehicle)
@@ -53,6 +60,25 @@ function CpJobParameters:readStream(streamId, connection)
         setting:readStream(streamId, connection)
     end
 end
+
+function CpJobParameters:saveToXMLFile(xmlFile, baseKey, usedModNames)
+	for i, parameter in ipairs(self.settings) do 
+        local key = string.format("%s(%d)", baseKey..self.xmlKey ,i-1)
+        parameter:saveToXMLFile(xmlFile, key)
+        xmlFile:setValue(key.."#name", parameter:getName())
+    end
+end
+
+function CpJobParameters:loadFromXMLFile(xmlFile, baseKey)
+	xmlFile:iterate(baseKey .. self.xmlKey, function (ix, key)
+        local name = xmlFile:getValue(key.."#name")
+        if name then
+            self[name]:loadFromXMLFile(xmlFile, key)
+        end
+	end)
+end
+
+
 
 function CpJobParameters:getMultiTools()
     local vehicle = self.job:getVehicle()

@@ -7,10 +7,13 @@ CpAIFieldWorker = {}
 CpAIFieldWorker.MOD_NAME = g_currentModName or modName
 CpAIFieldWorker.NAME = ".cpAIFieldWorker"
 CpAIFieldWorker.SPEC_NAME = CpAIFieldWorker.MOD_NAME .. CpAIFieldWorker.NAME
-CpAIFieldWorker.KEY = "."..CpAIFieldWorker.MOD_NAME..CpAIFieldWorker.NAME .. "."
+CpAIFieldWorker.KEY = "."..CpAIFieldWorker.MOD_NAME..CpAIFieldWorker.NAME
 
 function CpAIFieldWorker.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
+    local key = "vehicles.vehicle(?)" .. CpAIFieldWorker.KEY
+    CpJobParameters.registerXmlSchema(schema, key..".cpJob")
+    CpJobParameters.registerXmlSchema(schema, key..".cpJobStartAtLastWp")
 end
 
 function CpAIFieldWorker.prerequisitesPresent(specializations)
@@ -30,7 +33,7 @@ end
 
 function CpAIFieldWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIFieldWorker)
-
+    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpEmpty", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFinished", CpAIFieldWorker)
@@ -83,6 +86,21 @@ function CpAIFieldWorker:onLoad(savegame)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
+    
+end
+
+function CpAIFieldWorker:onLoadFinished(savegame)
+    local spec = self.spec_cpAIFieldWorker
+    if savegame ~= nil then 
+        spec.cpJob:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIFieldWorker.KEY..".cpJob")
+        spec.cpJobStartAtLastWp:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIFieldWorker.KEY..".cpJobStartAtLastWp")
+    end
+end
+
+function CpAIFieldWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
+    local spec = self.spec_cpAIFieldWorker
+    spec.cpJob:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+    spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
 
 
