@@ -71,3 +71,8 @@ end
 function BalerController:isFuelSaveAllowed()
     return not self:isWaitingForBaleOutput()
 end
+
+--- Giants isn't unfolding balers, so we do it here.
+function BalerController:onStart()
+    self.baler:setFoldDirection(-1)
+end
