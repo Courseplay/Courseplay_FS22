@@ -5,47 +5,45 @@
 		<text name="CP_activated" 																		text="aktív" />
 		<text name="CP_deactivated" 																	text="inaktív" />
 		<text name="CP_automatic" 																		text="auto" />
-		<text name="CP_unit_meter"		                                                                text="m" />
-		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_unit_meter" 																		text="m" />
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Ha segítségre van szüksége, hibajelentéseket vagy javításokat szeretne benyújtani, látogasson el a következő oldalra: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Hozzon létre egy tanfolyamot, mielőtt elkezdi." />
-		<text name="CP_error_could_not_generate_course"													text="Nem sikerült kurzust létrehozni. A napló további információkat tartalmazhat." />
 		<text name="CP_error_not_on_field"																text="A cél nem a mezőn van." />
 
-    <!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Föld pozíció:" />
+
+	<!-- AI job menu -->
+		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Kezdd:" />
 		<text name="CP_jobParameters_startAt_title"														text="Kezdd:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Mikor kezdje el a munkát" />
-		<text name="CP_jobParameters_startAt_nearest"													text="Legközelebbi pont" />
-		<text name="CP_jobParameters_startAt_first"														text="Első útpont" />
-		<text name="CP_jobParameters_startAt_last"														text="Utolsó útpont" />
-		<text name="CP_jobParameters_startAt_unload"													text="Kirakodó kombájn/aprító" />
-		
-		<text name="CP_jobParameters_startAt_bales"														text="Bálák összegyűjtése/Csomagolása" />
+		<text name="CP_jobParameters_startAt_nearest"													text="legközelebbi pont" />
+		<text name="CP_jobParameters_startAt_first"														text="első útpont" />
+		<text name="CP_jobParameters_startAt_last"														text="last waypoint" />
+		<text name="CP_jobParameters_startAt_unload"													text="kirakodó kombájn/aprító" />
+		<text name="CP_jobParameters_startAt_bales"														text="bálák összegyűjtése/csomagolása" />
 
-		<text name="CP_jobParameters_subTitle_laneOffset"												text="Sáv eltolás:" />
-		<text name="CP_jobParameters_laneOffset_title"													text="Sáv eltolás:" />
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Sáv eltolás" />
-		<text name="CP_jobParameters_laneOffset_center"													text="Középen" />
-		<text name="CP_jobParameters_laneOffset_left"													text="Balra(1)" />
-		<text name="CP_jobParameters_laneOffset_right"													text="Jobbra(1)" />
-		<text name="CP_jobParameters_laneOffset_left_2"													text="Balra(2)" />
-		<text name="CP_jobParameters_laneOffset_right_2"												text="Jobbra(2)" />
+		<text name="CP_jobParameters_subTitle_laneOffset"												text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_title"													text="Lane offset:" />
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Lane offset" />
+		<text name="CP_jobParameters_laneOffset_center"													text="center" />
+		<text name="CP_jobParameters_laneOffset_left"													text="left(1)" />
+		<text name="CP_jobParameters_laneOffset_right"													text="right(1)" />
+		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
+		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
-	<!-- CP Jobs -->
-		<text name="CP_job_fieldWork"																	text="CP: Földmunkák" />
-		<text name="CP_job_baleCollect"																	text="CP: Bálák összegyűjtése/Csomagolása" />
+	<!--Drivemodes-->
+		<text name="FIELDWORK_CP"																		text="CP: Terepmunka" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: Földmunka tanfolyam létrehozása." />
+		<text name="CP_ai_page_generate_course" 														text="CP: Terepmunka tanfolyam létrehozása." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Kurzusgenerátor megnyitása/zárása." />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="AI dolgozó %s váratlanul leállította a munkát - a tartály megtelt!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+
 	<!-- VehicleSettings -->
-		<text name="CP_vehicle_setting_title"															text="CoursePlay Járműbeállítások"/>
+		<text name="CP_vehicle_setting_title"															text="CoursePlay technika beállításai"/>
 		
 		<!--Titel-->
 		<text name="CP_vehicle_setting_subTitle_basic"													text="Alapbeállítások"/>
@@ -62,11 +60,11 @@
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Csak start/stop"/>
 		<text name="CP_vehicle_setting_showCourse_all" 													text="Minden útpont"/>
 
-		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="HUD megnyitása egérrel"/>
-		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Ha ez nem aktív, a HUD csak billentyűvel nyitható meg."/>
-		
-		<text name="CP_vehicle_setting_fuelSave_title"													text="Üzemanyag megtakarítás"/>
-		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Várakozás közben leállítja a járművet."/>
+		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud with mouse"/>
+		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="When deactivated, Hud can only be opened with the Keybind."/>
+
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Álljon meg a végén"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Álljon meg a végén"/>
@@ -74,21 +72,21 @@
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Fordított útkeresés"/>
 		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Adott esetben engedje meg az útkeresőnek, hogy hátramenetet tartalmazó irányokat generáljon"/>
 
-		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Engedélyezze az útkereső használatát forduláskor"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Engedélyezze az útkereső használatát forduláskor, például elkerülni az akadályokat és a gyümölcsöt"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Allow using the pathfinder in turns"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Hajtsa össze a szerszámokat a munka végén"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Engedélyezi/letiltja a munkaeszközök automatikus összecsukását a pálya végén."/>
 
 		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Szerszámemelés"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Emelje fel a szerszámot a fordulóban előre vagy későn."/>
-		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="Korán"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="Későn"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="előre"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="késéssel"/>
 
 		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Szerszám süllyesztés"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Korán vagy Későn engedje le a szerszámot a fordulóban."/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="Korán"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="Későn"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Előre vagy későn engedje le a szerszámot a fordulóban."/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="előre"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="késéssel"/>
 
 		<text name="CP_vehicle_setting_turnOnField_title" 												text="Forduljon a mezőn belül"/>
 		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Forduljon a mezőn belül. Nem minden eszközzel elérhető."/>
@@ -101,9 +99,9 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Szerszámeltolás függőleges"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Szerszámeltolás függőleges"/>
-		
-		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Ellenőrizze a szilázs adalékanyagot."/>
-		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Ha ez aktív és a szilázsadalék kiürült, a vezető megáll."/>
+
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Check for silage additive."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="If active and silage additive is emtpy, the driver will stop."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Mindig hajtsa ki a csövet"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Mindig hajtsa ki a csövet, amikor a kombájn megtelt és a kirakodóra vár."/>
@@ -112,7 +110,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Kirakodáskor mindig hagyja abba a vezetést."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Önkirakodó betakarítógép"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="A kombájn a szántóföldön vagy annak közelében önállóan mozog a pótkocsihoz kirakodás céljából.Nem támogatott többszerszámos vagy konvoj módban ."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="A kombájn a szántóföldön vagy annak közelében önállóan mozog a pótkocsihoz kirakodás céljából. Not supported in multitools or convoy mode."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Kirakodás az első fordulóban"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="A kombájn az első fordulóban hívja a kirakodót."/>
@@ -126,54 +124,54 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="A vetőgépek műtrágyát használnak"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Engedélyezi/letiltja a vetőgépek műtrágya használatát."/>
-		
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Vetési Opciók"/>
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Be- vagy kikapcsolja a gép kiegészítő vetési funkcióját"/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Szimmetrikus sávváltás"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Szimmetrikus sávváltás"/>
 
-		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Konvoj távolság"/>
-		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="A járművek közötti távolság. Érték: 40 - 400"/>
+		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Convoy Distance"/>
+		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Distance between vehicles. Value: 40 - 400"/>
 
-		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Terepmunka sebesség"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximális sebesség terepen végzett munka közben. Érték: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Terepmunka"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximális sebesség terepen végzett munka közben. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Terület"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximális sebesség terepen történő vezetés közben. Érték: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximális sebesség terepen történő vezetés közben. Value: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Forduláskor"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximális sebesség kanyarodás közben. Érték: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximális sebesség kanyarodás közben. Value: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Tolatás"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximális sebesség tolatás közben. Érték: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximális sebesség tolatás közben. Value: 2 - 25"/>
 
 		<text name="CP_vehicle_setting_debugActive_title" 												text="Jármű hibakeresés"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Engedélyezi/letiltja a hibakeresést ennél a járműnél."/>
 
-
 	<!-- Vehicle course generator settings -->
-		<text name="CP_vehicle_courseGeneratorSetting_title"											text="A tanfolyam generátor beállításai (%s)"/>		
+		<text name="CP_vehicle_courseGeneratorSetting_title"											text="A tanfolyam generátor beállításai (%s)"/>
+		
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="alap"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basic"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="headland"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="center"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="advanced"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Munkaszélesség" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Munkaszélesség. Érték: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Munkaszélesség. Value: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Körbejárások száma" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Körbejárások száma. Érték: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Körbejárások száma. Value: 0 - 40" />
 
-        <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Fordulóátfedés" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="A táblavégi nyomvonalak átfedése a munkaszélesség százalékában. Érték: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Field margin" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive values reduce field size to add a buffer around the worked area, negative ones enlarge worked area beyond the field boundary. Value: -2 - 5.8" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Föld határok" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="A pozitív értékek csökkentik a tábla méretét, hogy puffert adnak a megmunkált terület körül, a negatívak pedig növelik a megmunkált területet a táblahatáron túl. Érték: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Fordulófedés" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="A táblavégi nyomvonalak átfedése a munkaszélesség százalékában. Value: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Kihagyandó sorok" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="A következő fel/le sorra váltáskor átugorandó sorok. Érték: 0 - 6" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="A következő fel/le sorra váltáskor átugorandó sorok. Value: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Sorok földenként" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Amikor a középső mód a „leszállás”, ennyi sor van minden blokkban. Érték: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Amikor a középső mód a „leszállás”, ennyi sor van minden blokkban. Value: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Forduló iránya" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="A járműnek az óramutató járásával megegyező vagy ellentétes irányba kell haladnia a fordulóban" />
@@ -184,37 +182,38 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="Mezőközpont" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="fel/le" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirál" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Körkörös" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Különítmények" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Versenypálya" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="különítmények" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Forduló sarkai" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Forduló sarkai" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="Sima" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="Éles" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="Lekerekített" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="éles" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="kerek" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="Sorkezdési irány" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="Sorkezdési irány" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" 							text="Automatikus" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" 						text="Leghosszabb él" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Kézi" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="manual" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Fel/le sorszög" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="A fel/le sorok szöge (0 az észak), ha kézi. Érték: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="A fel/le sorok szöge (0 az észak), ha kézi. Value: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Sziget kikerülő mód" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Hogyan kell a pályának megkerülni a szigeteket a terepen" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="Nincs kikerűlés" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="Egyszerű" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Körbe" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="nincs kikerűlés" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="egyszerű" />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="körbe" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Kezdje el a munkát" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kezdje el a munkát" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Főútvonalon" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Főútvonalon" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="főútvonal" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="főútvonal" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Több eszköz" />
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Azonos pályán lévő járművek száma." />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Multiple tools" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Number of vehicles on the same course." />
+
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Általános beállítások"/>
@@ -224,21 +223,21 @@
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Cp sofőrbérek a normál munkavállalói bér százalékában"/>
 
 		<text name="CP_global_setting_autoRepair_title" 												text="Automatikus javítás"/>
-		<text name="CP_global_setting_autoRepair_tooltip" 												text="Cp sofőr automatikus javítás, vezetés közben."/>
+		<text name="CP_global_setting_autoRepair_tooltip" 												text="Cp driver automatikus javítás, vezetés közben."/>
 		<text name="CP_global_setting_autoRepair_off" 													text="Ne javítsa"/>
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Javítsa"/>
 
-		<text name="CP_global_setting_subTitle_userSettings"											text="Felhasználói beállítások"/>
+		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
+
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Use the Hud, wich can be controlled with a Gamepad."/>
 		
-        <text name="CP_global_setting_showActionEventHelp_title" 										text="Akcióesemények súgója"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="A cselekvési események súgószövegeinek megjelenítése."/>
-		
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad barátságos Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Használja a Hud-ot, amelyet Gamepaddal vezérelhet."/>
-		
-		<text name="CP_global_setting_subTitle_pathfinder"												text="Útkereső beállításai"/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+
+		<text name="CP_global_setting_subTitle_pathfinder"												text="Úttörő beállításai"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Célszög különbség"/>
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
@@ -248,17 +247,17 @@
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Az összes aktív kurzus megjelenítése"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Az összes aktív pálya megjelenítése a játéktérképen."/>
-		
-		<text name="CP_global_setting_infoTextHudActive_title"											text="Információs szöveg ablak megjelenítése"/>
-		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Megjelenít egy információs szöveges ablakot."/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Részesítse előnyben az egyéni mezőket"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Részesítse előnyben az egyéni mezőt, ha a kiválasztott helyen normál mező is található."/>
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Tanfolyamvezető(%s) %s"/>
-		<text name="CP_courseManager_no_current_course"													text="Nincs tanfolyam"/>
-		<text name="CP_courseManager_temporary_course"													text="Ideiglenes tanfolyam"/>
+		<text name="CP_courseManager_no_current_course"													text="nincs tanfolyam"/>
+		<text name="CP_courseManager_temporary_course"													text="ideiglenes tanfolyam"/>
 
 		<text name="CP_courseManager_change_mode"														text="Módváltás"/>
 
@@ -288,29 +287,29 @@
 		<text name="CP_courseManager_advancedSettings"													text="Fájlok szerkesztése."/>
 
 		<text name="CP_courseManager_activate"															text="Aktiválja"/>
-		
-	<!-- Info texts -->
-		<text name="CP_infoTexts_isStuck"																text="A segítő elakadt"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="A segítő forgalomban van"/>
-		<text name="CP_infoTexts_shouldRefuel"															text="Újra kellene tankolni"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Üzemanyagra van szüksége"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Javításra van szüksége"/>
-		<text name="CP_infoTexts_needsFilling"  														text="Újra kell tölteni az ezközt"/>
-		<text name="CP_infoTexts_needsUnloading"  														text="Ki kell rakodni az ezközt"/>
-		<text name="CP_infoTexts_workFinished"															text="A munka befejezve"/>
 
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
+		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
+	
 	<!--Custom Field-->
-		<text name="CP_customFieldManager_confirm_save"													text="Egyéni mezőként szeretné menteni a rögzített tanfolyamot? %s?"/>
-		<text name="CP_customFieldManager_confirm_delete"												text="Törli az egyéni mezőt? %s?"/>
-		<text name="CP_customFieldManager_delete"														text="Egyéni mező törlése"/>
-		<text name="CP_customFieldManager_rename"														text="Egyéni mező átnevezése"/>
-		<text name="CP_customFieldManager_draw"															text="Rajzoljon egyéni mezőt"/>
-		<text name="CP_customFieldManager_draw_header"													text="Rajzoljon egyéni mezővonalakat jobb gombbal."/>
-		<text name="CP_customFieldManager_save"                                                         text="Egyéni mező mentése"/>
+		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
+		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
+		<text name="CP_customFieldManager_delete"														text="Delete custom field"/>
+		<text name="CP_customFieldManager_rename"														text="Rename custom field"/>
+		<text name="CP_customFieldManager_draw"															text="Draw custom field"/>
+		<text name="CP_customFieldManager_draw_header"													text="Draw custom field lines with right click."/>
+		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
 		
 	<!--Hud texts-->
-		<text name="CP_controllerGui_startRecording"													text="Indítsa el az egyéni Föld rögzítését."/>
-		<text name="CP_controllerGui_stopRecording"														text="Állítsa le az egyéni Föld rögzítését."/>
+		<text name="CP_controllerGui_startRecording"													text="Start custom field recording."/>
+		<text name="CP_controllerGui_stopRecording"														text="Stop custom field recording."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
@@ -325,39 +324,35 @@
 - Renaming a course or directory."/>
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Clicking on the vehicle name opens the vehicle configurations page.											A: A jármű nevére kattintva megnyílik a jármű konfigurációs oldala.
-B: Toggle where to start the course with one click.																B: Egy kattintással váltsd át a kurzus kezdőpontját.
-C: Clicking on the coursename you will open the AI Menu with the course generator open.							C: A kurzus nevére kattintva megnyílik az AI menü a kurzusgenerátorral.
-D: Start the Courseplay helper.																					D: Indítsa el a Courseplay segédprogramot.
-E: Shows current waypoint / total waypoints. Click to open the course manager.									E: Megjeleníti az aktuális fordulópontot / az összes útpontot. Kattintson a kurzuskezelő megnyitásához.
-F: Clicking on the icon opens the general settings page.														F: Az ikonra kattintva megnyílik az általános beállítások oldala.
-G: Closes the HUD.																								G: Bezárja a HUD-ot.
-H: Decrease and increase the working width. A red line on your vehicle shows the current setting.				H: Csökkentse és növelje a munkaszélességet. A járművön lévő piros vonal mutatja az aktuális beállítást.
-I: Value for horizontal offset, + left, - right.																I: Vízszintes eltolás értéke, + balra, - jobbra.
-J: Value for vertical offset, + backward, - forward.															J: Függőleges eltolás értéke, + hátra, - előre.
-K, L and M: Clicking on the text will reset your changes to the auto values.									K, L és M: A szövegre kattintva visszaállítja az automatikus értékek módosításait.
-N: This area shows the lane offset if you have a multitool course loaded.										N: Ez a terület a sáveltolódást mutatja, ha többszerszámos pálya van betöltve.
-   Clicking on the text toggles the positions.																	   A szövegre kattintva válthat a pozíciók között.
-O: Start/stop recording a custom field course.																	O: Egyéni tereppálya rögzítésének indítása/leállítása.
-P: Removes course from vehicle 																					P: Eltávolítja az irányt a járműből"/>
+A: Clicking on the vehicle name opens the vehicle configurations page.
+B: Toggle where to start the course with one click.
+C: Clicking on the coursename you will open the AI Menu with the course generator open.
+D: Start the Courseplay helper.
+E: Shows current waypoint / total waypoints. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Value for vertical offset, + backward, - forward.
+K, L and M: Clicking on the text will reset your changes to the auto values.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle"/>
 		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.																Kétféleképpen hozhat létre egyéni mezőt.
-The first one is to use the record function of the HUD.														Az első a HUD rögzítési funkciójának használata.
-Start the record and record your field border.																Indítsa el a rekordot, és rögzítse a mezőszegélyt.
-Once done, press the button again and you will be asked if you want to save it.                             Ha elkészült, nyomja meg újra a gombot, és a rendszer megkérdezi, hogy szeretné-e menteni."/>
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.										Ha megnézi az AI menüt, látni fogja a rögzített mezőszegélyt.
-By clicking on the Name, you will get the option to either delete it or rename it.							A Névre kattintva lehetősége van törölni vagy átnevezni."/>
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.															A második lehetőség az AI menütérképre való felrajzolása.
-Have no tractor or other vehicle selected (left click somewhere on the map),								Ha nem választott ki traktort vagy más járművet (bal kattintás valahol a térképen),
-you get the option to draw a custom field.																	lehetőség van egyéni mező rajzolására.
-When started, the text draw custom field lines with right click will be displayed.							Indításkor az egyéni mezővonalak jobb gombbal történő rajzolása jelenik meg.
-Use the right mouse button to click on a position on where you want to start.								A jobb egérgombbal kattintson arra a pozícióra, ahol el szeretné kezdeni.
-The next right click will draw a line from your startpoint to your second position,							A következő jobb kattintás egy vonalat húz a kezdőponttól a második pozícióig,
-wich will be the start point for the next line.																amely a következő sor kezdőpontja lesz."/>
-
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line."/>
 
 		<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Válassza ki a következő hibakeresési csatornát."/>
@@ -366,7 +361,7 @@ wich will be the start point for the next line.																amely a következ
 		<text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" 												text="CP: Megjeleníti a csatorna hibakeresési menüjét igen/nem."/>
 		<text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" 										text="CP: Nyissa meg a mini GUI-t"/>
 		<text name="input_CP_START_STOP" 																text="CP: Sofőr indítás/leállítás"/>
-		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Egér Kurzor on/off"/>
-		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Megnyitás/Bezárás hud"/>
+		<text name="input_CP_TOGGLE_MOUSE"																text="CP: Mouse cursor on/off"/>
+		<text name="input_CP_OPEN_CLOSE_HUD" 															text="CP: Open/close hud"/>
 	</texts>
 </l10n>
