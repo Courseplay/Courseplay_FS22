@@ -80,36 +80,24 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	
-	self.customField = nil
-	local customField = g_customFieldManager:getCustomField(tx, tz)
 
-	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
-	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s, prefer custom fields %s',
-			fieldNum, g_currentMission.missionInfo.mapTitle, g_Courseplay.globalSettings.preferCustomFields:getValue())
-	local mapField, mapFieldPolygon = g_fieldScanner:findContour(tx, tz)
+	local isCustomField
+	self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
 
-	if customField and (not mapField or g_Courseplay.globalSettings.preferCustomFields:getValue()) then
-		-- use a custom field if there is one under us and either there's no regular map field or, there is,
-		-- but the user prefers custom fields
-		CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
-		self.fieldPolygon = customField:getVertices()
-		self.customField = customField
-		vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+	if self.fieldPolygon then
 		self.hasValidPosition = true
-	elseif mapField then
-		self.fieldPolygon = mapFieldPolygon
-		self.hasValidPosition = true
+		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+		self.selectedFieldPlot:setVisible(true)
+		self.selectedFieldPlot:setBrightColor(true)
+		if isCustomField then
+			CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
+			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+		end
 	else
 		self.selectedFieldPlot:setVisible(false)
 		return false, g_i18n:getText("CP_error_not_on_field")
 	end
 
-	if self.fieldPolygon then
-		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
-		self.selectedFieldPlot:setVisible(true)
-		self.selectedFieldPlot:setBrightColor(true)
-	end
 	return true, ''
 end
 
@@ -149,11 +137,6 @@ end
 
 function CpAIJobFieldWork:getFieldPositionTarget()
 	return self.fieldPositionParameter:getPosition()
-end
-
----@return CustomField or nil Custom field when the user selected a field position on a custom field
-function CpAIJobFieldWork:getCustomField()
-	return self.customField
 end
 
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()

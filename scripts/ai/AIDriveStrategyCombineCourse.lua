@@ -1453,15 +1453,17 @@ function AIDriveStrategyCombineCourse:findBestTrailer()
 end
 
 function AIDriveStrategyCombineCourse:getClosestDistanceToFieldEdge(x, z)
-	local closestDistance= math.huge
-	local fieldPolygon = self.course:getFieldPolygon()
+	local closestDistance = math.huge
+	local fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
+	local i = 1
 	-- TODO: this should either be saved with the field or regenerated when the course is loaded...
-	if fieldPolygon == nil then
-		self:debug('Field polygon not found, regenerating it.')
-		local vx, _, vz = getWorldTranslation(self.vehicle.rootNode)
-		_, fieldPolygon = g_fieldScanner:findContour(vx, vz)
-		self.course:setFieldPolygon(fieldPolygon)
+	while fieldPolygon == nil and i < self.fieldWorkCourse:getNumberOfWaypoints() do
+		self:debug('Field polygon not found, regenerating it (%d).', i)
+		local px, _, pz = self.fieldWorkCourse:getWaypointPosition(i)
+		fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(px, pz)
+		i = i + 1
 	end
+	self.fieldWorkCourse:setFieldPolygon(fieldPolygon)
 	for _, p in ipairs(fieldPolygon) do
 		local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
 		closestDistance = d < closestDistance and d or closestDistance
@@ -1515,22 +1517,23 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 		-- than what is absolutely necessary.
 		local offsetX = math.abs(self.pipeOffsetX) + trailerWidth / 2 - 1.1
 		offsetX = self.pipeOnLeftSide and -offsetX or offsetX
-		local alignLength = (trailerLength / 2) + dZ + 3
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
-		local offsetZ = -self.pipeOffsetZ - alignLength
-		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
-				trailerLength, trailerWidth, alignLength, offsetZ, offsetX)
+		local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+		local alignLength = (trailerLength / 2) + dZ + math.max(self.vehicle.size.length / 2, steeringLength)
+		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, steering length %.1f, offsetX %.1f',
+				trailerLength, trailerWidth, alignLength, steeringLength, offsetX)
 		-- little straight section parallel to the trailer to align better
 		self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
-				offsetX, offsetZ + 1, offsetZ + 1 + alignLength, 1, false)
+				offsetX, -alignLength + 1, -self.pipeOffsetZ, 1, false)
 		self.selfUnloadAlignCourse:print()
 	local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
 		local done, path
 		-- require full accuracy from pathfinder as we must exactly line up with the trailer
 		self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-				self.vehicle, targetNode, offsetX, offsetZ,
+				self.vehicle, targetNode, offsetX, -alignLength,
 				self:getAllowReversePathfinding(),
-				fieldNum, {}, nil, nil, nil, true)
+				-- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
+				fieldNum, {}, nil, 0.1, nil, true)
 		if done then
 			return self:onPathfindingDoneBeforeSelfUnload(path)
 		else

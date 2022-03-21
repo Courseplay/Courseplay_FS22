@@ -673,7 +673,7 @@ end
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
 function PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
     PathfinderUtil.overlapBoxes = {}
-    local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 140000, mustBeAccurate)
+    local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 40000, mustBeAccurate)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
