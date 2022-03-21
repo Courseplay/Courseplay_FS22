@@ -148,11 +148,12 @@ Funktionen:
 		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
 		<sourceFile filename="scripts/events/CoursesEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
-		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
+		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

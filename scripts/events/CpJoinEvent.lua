@@ -24,6 +24,10 @@ function CpJoinEvent:readStream(streamId, connection) -- wird aufgerufen wenn mi
 	for i = 1, #settings do 
 		settings[i]:readStream(streamId, connection)
 	end
+
+	for i = 1, #CpDebug.channels do 
+		CpDebug:setChannelActive(i, streamReadBool(streamId))
+	end
 	
 	self:run(connection);
 end
@@ -35,6 +39,11 @@ function CpJoinEvent:writeStream(streamId, connection)  -- Wird aufgrufen wenn i
 	for i = 1, #settings do 
 		settings[i]:writeStream(streamId, connection)
 	end
+
+	for i = 1, #CpDebug.channels do 
+		streamWriteBool(streamId, CpDebug:isChannelActive(i))
+	end
+
 end
 
 --- Runs the event on the receiving end of the event.
