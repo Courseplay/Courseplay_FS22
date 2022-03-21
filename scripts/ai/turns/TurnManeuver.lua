@@ -263,7 +263,8 @@ function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, e
 		TurnManeuver.setTurnControlForLastWaypoints(reverseBeforeTurn, endingTurnLength,
 				TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
-			0, dFromTurnEnd - self.steeringLength, -self.steeringLength, -1, true)
+				0, math.max(dFromTurnEnd, dFromWorkStart) - self.steeringLength,
+				-self.steeringLength, -1, true)
 		reverseBeforeTurn:append(reverseAfterTurn)
 	end
 	return reverseBeforeTurn
