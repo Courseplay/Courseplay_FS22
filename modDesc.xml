@@ -157,6 +157,7 @@ Funktionen:
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
+		<sourceFile filename="scripts/events/SendCustomFieldsToServerEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

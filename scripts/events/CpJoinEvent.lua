@@ -18,7 +18,7 @@ function CpJoinEvent.new()
 end
 
 --- Reads the serialized data on the receiving end of the event.
-function CpJoinEvent:readStream(streamId, connection) -- wird aufgerufen wenn mich ein Event erreicht
+function CpJoinEvent:readStream(streamId, connection) 
 	CpJoinEvent.debug("readStream")
 	local settings = g_Courseplay.globalSettings:getSettingsTable()
 	for i = 1, #settings do 
@@ -33,7 +33,7 @@ function CpJoinEvent:readStream(streamId, connection) -- wird aufgerufen wenn mi
 end
 
 --- Writes the serialized data from the sender.
-function CpJoinEvent:writeStream(streamId, connection)  -- Wird aufgrufen wenn ich ein event verschicke (merke: reihenfolge der Daten muss mit der bei readStream uebereinstimmen 
+function CpJoinEvent:writeStream(streamId, connection) 
 	CpJoinEvent.debug("writeStream")
 	local settings = g_Courseplay.globalSettings:getSettingsTable()
 	for i = 1, #settings do 
@@ -47,11 +47,9 @@ function CpJoinEvent:writeStream(streamId, connection)  -- Wird aufgrufen wenn i
 end
 
 --- Runs the event on the receiving end of the event.
-function CpJoinEvent:run(connection) -- wir fuehren das empfangene event aus
-	--- If the receiver was the client make sure every clients gets also updated.
-	if not connection:getIsServer() then
-
-	end
+function CpJoinEvent:run(connection) 
+	--- Makes sure the custom fields are send to the server.
+	g_customFieldManager:sendToServer()
 end
 
 function CpJoinEvent.debug(str, ...)

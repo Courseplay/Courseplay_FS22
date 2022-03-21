@@ -33,6 +33,9 @@ function CustomFieldManager:init(fileSystem)
     self.currentView = fileSystem.currentDirectoryView
     self.rootDir = fileSystem.rootDirectory
     self:load()
+    --- Only for the server.
+    self.clientFields = {}
+    g_messageCenter:subscribe(MessageType.USER_REMOVED, self.onUserRemoved, self)
 end
 
 function CustomFieldManager:load()
@@ -120,7 +123,7 @@ function CustomFieldManager:onClickSaveDialog(clickOk, field)
             field:getName())
             fieldValid = true
             table.insert(self.fields, field)
-            self.fileSystem:refresh()
+            self:refresh()
         end
     end
     if not fieldValid then 
@@ -138,7 +141,7 @@ function CustomFieldManager:onClickDeleteDialog(clickOk, fieldToDelete)
                     file:delete()
                     field:delete()
                     table.remove(self.fields, i)
-                    self.fileSystem:refresh()
+                    self:refresh()
                 else 
                     CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Custom field %s was found, but the file not.', fieldToDelete:getName())
                 end
@@ -159,7 +162,7 @@ function CustomFieldManager:onClickRenameDialog(newName,clickOk,fieldToRename)
                     CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(),newName)
                     if file:rename(newName) then 
                         fieldToRename:setName(newName)
-                        self.fileSystem:refresh()
+                        self:refresh()
                         return
                     end
                 end
@@ -172,6 +175,15 @@ function CustomFieldManager:getCustomField(x, z)
     for _, field in pairs(self.fields) do
         if field:isPointOnField(x, z) then
             return field
+        end
+    end
+    if g_server then
+        for _, clientFieldData in pairs(self.clientFields) do
+            for _, field in pairs(clientFieldData) do
+                if field:isPointOnField(x, z) then
+                    return field
+                end
+            end
         end
     end
     return nil
@@ -214,6 +226,26 @@ function CustomFieldManager:refresh()
         CpUtil.debugFormat(CpDebug.DBG_COURSES,"Added new hotspot %s from filesystem.", entry:getName())
         table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
+    if g_server == nil then 
+        self:sendToServer()
+    end
+end
+
+--- Sends the custom field data to the server.
+function CustomFieldManager:sendToServer()
+    SendCustomFieldsToServerEvent.sendEvent(self.fields)
+end
+
+--- Removes the custom field data, when the user disconnects.
+function CustomFieldManager:onUserRemoved(user)
+    if user then
+        self.clientFields[user:getUniqueUserId()] = nil
+    end
+end
+
+--- Custom fields received by a user.
+function CustomFieldManager:setFromClient(uniqueUserId, fields)
+    self.clientFields[uniqueUserId] = fields
 end
 
 -- for reload only:
