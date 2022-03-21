@@ -1,4 +1,4 @@
---- For now empty.
+--- Makes sure the pickup is lowered and raised.
 ---@class PickupController : ImplementController
 PickupController = CpObject(ImplementController)
 

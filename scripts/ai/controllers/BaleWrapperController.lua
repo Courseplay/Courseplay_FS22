@@ -53,7 +53,7 @@ function BaleWrapperController:handleBaleWrapper()
     local maxSpeed
     -- stop while wrapping only if we don't have a baler. If we do we should continue driving and working
     -- on the next bale, the baler code will take care about stopping if we need to
-    if self.baleWrapper.spec_baleWrapper.baleWrapperState ~= BaleWrapper.STATE_NONE and not self.haveBaler then
+    if self:isWorking() and not self.haveBaler then
         maxSpeed = 0
     end
     -- Yes, Giants has a typo in the state (and yes, in FS22 as well...)
@@ -79,4 +79,8 @@ function BaleWrapperController:handleBaleWrapper()
         end
     end
     return maxSpeed
+end
+
+function BaleWrapperController:isFuelSaveAllowed()
+    return not (self:isWorking() and not self.haveBaler)
 end

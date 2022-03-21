@@ -34,21 +34,7 @@ function BalerController:getDriveData()
 end
 
 function BalerController:handleBaler()
-    local maxSpeed
-    --- TODO: This code can probably be removed.
-    if not self.baler:getIsTurnedOn() then
-        if self.baler.setFoldState then
-            -- unfold if there is something to unfold
-            self.baler:setFoldState(-1, false)
-        end
-        if self.baler:getCanBeTurnedOn() then
-            self:debug('Turning on baler')
-            self.baler:setIsTurnedOn(true, false);
-        else --maybe this line is enough to handle bale dropping and waiting ?
-            maxSpeed = 0
-        end
-    end
-    
+    local maxSpeed    
     if not self.balerSpec.nonStopBaling and self.balerSpec.hasUnloadingAnimation then
         local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
         local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
@@ -66,4 +52,27 @@ function BalerController:handleBaler()
     end
 
     return maxSpeed
+end
+
+function BalerController:isWaitingForBaleOutput()
+    if not self.balerSpec.nonStopBaling and self.balerSpec.hasUnloadingAnimation then
+        local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
+        local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
+
+        if fillLevel == capacity or self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
+            return true
+        end
+    elseif self.balerSpec.platformDropInProgress then 
+        return true
+    end
+end
+
+--- Makes sure that fuel save is disabled, while a bale is dropping.
+function BalerController:isFuelSaveAllowed()
+    return not self:isWaitingForBaleOutput()
+end
+
+--- Giants isn't unfolding balers, so we do it here.
+function BalerController:onStart()
+    self.baler:setFoldDirection(-1)
 end

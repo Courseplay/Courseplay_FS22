@@ -30,12 +30,14 @@
 				<Text>always</Text>
 			</Texts>
 		</Setting>
-
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="userSettings">
 		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" defaultBool="false" onChangeCallback="onHudSelectionChanged" isUserSetting="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="showActionEventHelp" isUserSetting="true" defaultBool="true" onChangeCallback="onActionEventTextVisibilityChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="infoTextHudActive" isUserSetting="true" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="infoTextHudPlayerMouseActive" isUserSetting="true" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="preferCustomFields" isUserSetting="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="pathfinder">
 		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoal" min="5" max="90" incremental="5" default="45"/>

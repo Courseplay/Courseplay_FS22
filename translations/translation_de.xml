@@ -67,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Hud mit Maus öffnen"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Wenn deaktiviert, kann das Hud nur über die Tastenbelegung geöffnet werden."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Kraftstoff-Sparmodus"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Schaltet des Fahrzeug aus, wenn es warten muss."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop am Endpunkt"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Fahrzeug bleibt nach der Arbeit am Endpunkt stehen."/>
 
@@ -101,6 +104,9 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Geräte Versatz vertikal"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Geräte Versatz vertikal"/>
 	
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Siliermittel Überwachung."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt."/>
+
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Rohr immer ausfahren"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>
 
@@ -122,6 +128,9 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Düngefunktion der Saatmaschine"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Düngefunktion der Saatmaschine ein oder ausschalten."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Saatoption"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Schaltet die zusätzliche Saatfunktion des Gerätes ein oder aus."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetrischer Bahnenwechsel"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrischer Bahnenwechsel"/>
@@ -243,6 +252,15 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zeige alle Kurse"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zeigt alle geladenen Kurse auf der Map."/>
 
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Helfer Infofenster"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Schaltet das Infofenster für die CP Helfer an oder aus."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Spieler Maus"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Aktiviert/deaktiviert die Maus Interaktion außerhalb eines Fahrzeugs."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="kein Kurs"/>
@@ -276,6 +294,17 @@
 		<text name="CP_courseManager_advancedSettings"													text="Kurse/Ordner editieren."/>
 
 		<text name="CP_courseManager_activate"															text="aktivieren"/>
+
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Wird blockiert"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Steckt im Verkehr fest"/>
+
+		<text name="CP_infoTexts_shouldRefuel"															text="Sollte aufgetankt werden"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Muss aufgetankt werden"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Sollte repariert werden"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Muss aufgefüllt werden"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Muss entladen werden"/>
+		<text name="CP_infoTexts_workFinished"															text="Arbeit beendet"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>

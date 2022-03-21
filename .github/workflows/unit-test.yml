@@ -28,3 +28,5 @@ jobs:
           cd scripts/test
           lua CourseManagerTest.lua
           lua CpMathUtilTest.lua
+          lua MovingAverageTest.lua
+          lua PolygonTest.lua

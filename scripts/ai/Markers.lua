@@ -61,13 +61,6 @@ local function setFrontMarkerNode(vehicle)
     unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
     link(vehicle.rootNode, g_vehicleMarkers[vehicle].frontMarkerNode)
     setTranslation(g_vehicleMarkers[vehicle].frontMarkerNode, 0, 0, frontMarkerOffset)
-    
-    -- Make sure the front marker node does not point up or down, for example in case of
-    -- a pallet fork can be moved up/down, we don't want the node pointing up/down, we want it
-    -- pointing forward, having the same x rotation as the vehicle itself
-    local wrx, _, _ = getWorldRotation(vehicle.rootNode)
-    local _, ry, rz = getWorldRotation(g_vehicleMarkers[vehicle].frontMarkerNode)
-    setWorldRotation(g_vehicleMarkers[vehicle].frontMarkerNode, wrx, ry, rz)
 end
 
 --- Create two nodes, one on the front and one on the back of the vehicle (including implements). The front node

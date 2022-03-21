@@ -21,7 +21,12 @@ function CpAIJobFieldWork.new(isServer, customMt)
 end
 
 function CpAIJobFieldWork:setupTasks(isServer)
+	-- this will add a standard driveTo task to drive to the target position selected by the user
 	CpAIJobFieldWork:superClass().setupTasks(self, isServer)
+	-- then we add our own driveTo task to drive from the target position to the waypoint where the
+	-- fieldwork starts (first waypoint or the one we worked on last)
+	self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
+	self:addTask(self.driveToFieldWorkStartTask)
 	self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
 	self:addTask(self.fieldWorkTask)
 end
@@ -75,35 +80,32 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	
-	self.customField = nil
-	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
-	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
-	self.hasValidPosition, self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
-	if not self.hasValidPosition then
-		local customField = g_customFieldManager:getCustomField(tx, tz)
-		if not customField then
-			self.selectedFieldPlot:setVisible(false)
-			return false, g_i18n:getText("CP_error_not_on_field")
-		else
-			CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
-			self.fieldPolygon = customField:getVertices()
-			self.customField = customField
-			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
-			self.hasValidPosition = true
-		end
-	end
+
+	local isCustomField
+	self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+
 	if self.fieldPolygon then
+		self.hasValidPosition = true
 		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
 		self.selectedFieldPlot:setVisible(true)
 		self.selectedFieldPlot:setBrightColor(true)
+		if isCustomField then
+			CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
+			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+		end
+	else
+		self.selectedFieldPlot:setVisible(false)
+		return false, g_i18n:getText("CP_error_not_on_field")
 	end
+
 	return true, ''
 end
 
 function CpAIJobFieldWork:setValues()
 	CpAIJobFieldWork:superClass().setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
+	self.driveToFieldWorkStartTask:reset()
+	self.driveToFieldWorkStartTask:setVehicle(vehicle)
 	self.fieldWorkTask:setVehicle(vehicle)
 end
 
@@ -137,13 +139,19 @@ function CpAIJobFieldWork:getFieldPositionTarget()
 	return self.fieldPositionParameter:getPosition()
 end
 
----@return CustomField or nil Custom field when the user selected a field position on a custom field
-function CpAIJobFieldWork:getCustomField()
-	return self.customField
-end
-
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
+end
+
+-- To pass an alignment course from the drive to fieldwork start to the fieldwork, so the
+-- fieldwork strategy can continue the alignment course set up by the drive to fieldwork start strategy.
+function CpAIJobFieldWork:setStartFieldWorkCourse(course, ix)
+	self.startFieldWorkCourse = course
+	self.startFieldWorkCourseIx = ix
+end
+
+function CpAIJobFieldWork:getStartFieldWorkCourse()
+	return self.startFieldWorkCourse, self.startFieldWorkCourseIx
 end
 
 --- Is course generation allowed ?

@@ -218,8 +218,8 @@ function CpHud:onUpdateTick()
         strategy = self:getCpDriveStrategy()
         if strategy then
             strategy:updateCpStatus(spec.status)
-            spec.status:setActive(true)
         end
+        spec.status:setActive(true)
     else 
         spec.status:reset()
     end

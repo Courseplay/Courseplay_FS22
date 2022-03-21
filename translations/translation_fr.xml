@@ -67,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Ouvrir l'ATH à la souris"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Un clic droit ouvre l'ATH. Si désactivé, ouverture de l'ATH uniquement avec un raccourci clavier."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Economie de carburant"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Eteint le moteur lors de phases d'attente."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Arrêt à l'arrivée"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Arrêt du véhicule lorsqu'il est arrivé."/>
 
@@ -100,6 +103,9 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Décalage vertical de l'outil"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Décalage vertical de l'outil."/>
+
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Arrêt si additif d'ensilage vide"/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Le conducteur s'arrêtera si la réserve d'additif d'ensilage est vide."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Toujours déployer la buse"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>
@@ -122,6 +128,9 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Utilisation engrais des semoirs"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Active/Désactive l'utilisation d'engrais pour les semoirs équipés."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Semis optionnels"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Active ou non la capacité de semoir complémentaire de certains outils."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Changement de ligne symétrique"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Changement de ligne symétrique."/>
@@ -244,6 +253,15 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Afficher les courses actives"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Affiche les courses actives sur la carte."/>
 
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Afficher la fenêtre d'informations"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Affiche une fenêtre supplémentaire d'informations supplémentaires."/>
+		
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Détection prioritaire des champs perso."/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Sélectionne en priorité un champ personnalisé si celui-ci est à cheval sur un champ déjà existant."/>
+
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestionnaire des courses(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="Aucune course"/>
@@ -277,6 +295,16 @@
 		<text name="CP_courseManager_advancedSettings"													text="Basculer en mode affichage"/>
 
 		<text name="CP_courseManager_activate"															text="Activer"/>
+
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="L'ouvrier est bloqué"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="est en transit"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="a besoin de faire le plein d'essence"/>
+		<text name="CP_infoTexts_needsFuel"  															text="doit faire le plein d'essence"/>
+		<text name="CP_infoTexts_needsRepair"  															text="doit être réparé"/>
+		<text name="CP_infoTexts_needsFilling"  														text="doit être réapprovisionné"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="doit être déchargé"/>
+		<text name="CP_infoTexts_workFinished"															text="a terminé son travail"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Souhaitez-vous sauvegarder la course enregistrée comme contour de champ personnalisé %s?"/>

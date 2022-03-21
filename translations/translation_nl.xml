@@ -67,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Open Hud met huis"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Wanneer gedeactiveerd, kan Hud alleen worden geopend met de Keybind."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop aan het einde"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Stop aan het einde"/>
 
@@ -100,6 +103,9 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Werktuig verticale offset"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Werktuig verticale offset"/>
+
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Check for silage additive."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="If active and silage additive is emtpy, the driver will stop."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Vouw de pijp altijd open"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Vouw de pijp altijd open als de maaidorser vol is en wacht op de losser."/>
@@ -122,6 +128,9 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Zaaimachines gebruiken kunstmest"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Schakelt het gebruik van kunstmest van zaaimachines in/uit."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrische rijstrookwisseling"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrische rijstrookwisseling"/>
@@ -244,6 +253,15 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Toont alle actieve koersen"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Toont alle actieve koersen op de in-game kaart."/>
 
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="KoersManager(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="geen koers"/>
@@ -277,6 +295,16 @@
 		<text name="CP_courseManager_advancedSettings"													text="Wijzig bestanden."/>
 
 		<text name="CP_courseManager_activate"															text="Activeren"/>
+	
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
+		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Wil je de geregistreerde koers opslaan als aangepast veld %s?"/>

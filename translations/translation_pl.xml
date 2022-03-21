@@ -67,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otwieranie HUDa myszką"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Gdy wyłączone, HUD może być otwarty tylko za pomocą skrótu klawiszowego."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Oszczędzanie paliwa"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Wyłącza silnik pojazdu podczas oczekiwania."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zatrzymaj na końcu"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Ustala czy kierowca powinien zatrzymać się w ostatnim punkcie trasy."/>
 
@@ -100,6 +103,9 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Przes. pionowe dla narzędzi"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne dla narzędzi."/>
+
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Sprawdź dodatek do kiszenia"/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Jeśli aktywne i dodatek do zakiszania jest pusty, kierowca się zatrzyma."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Zawsze rozłóż rurę"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
@@ -122,6 +128,9 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Nawożenie podczas siewu"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Ustala czy pracownik ma nawozić pole podczas siewu."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Możliwość siewu"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Włącza lub wyłącza dodatkową funkcję siewu maszyny."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetryczna zmiana ścieżki"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetryczna zmiana ścieżki."/>
@@ -230,8 +239,8 @@
 		<text name="CP_global_setting_controllerHudSelected_title"										text="HUD przyjazny kontrolerom"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Używa HUDa, który może być ustawiany przez kontrolery gier."/>
 		
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Okno pomocy"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Wyświetla klawisze od funkcji w oknie pomocy."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ustawienia szukania ścieżki"/>
 
@@ -243,6 +252,15 @@
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Pokaż wszystkie aktywne kursy"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Pokazuje wszystkie aktywne kursy na podglądzie mapy."/>
+
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Pokaż okno informacyjne"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Wyświetla okno z dodatkowymi informacjami."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Preferuj własne pola"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferuj własne pole, jeśli na wybranej pozycji znajduje się również zwykłe pole."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Menadżer kursu(%s) %s"/>
@@ -277,6 +295,16 @@
 		<text name="CP_courseManager_advancedSettings"													text="Edycja plików."/>
 
 		<text name="CP_courseManager_activate"															text="Aktywuj"/>
+
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Pomocnik utknął"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Jest w ruchu"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Powiniwn zostać zatankowany"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Musi zostać zatankowany"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Musi zostać naprawiony"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
+		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>		
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Czy chcesz zapisać nagrany kurs jako nowe pole %s?"/>
@@ -329,9 +357,9 @@ Zaglądając do menu pomocników SI, zobaczysz nagrany obrys pola.
 Klikając na NAZWĘ, dostaniesz opcję usunięcia go lub zmiany nazwy."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Druga opcja to narysowanie go na mapie w menu pomocników SI.
-Nie miej wygranego żadnego ciągnika czy innego pojazdu (kliknij lewym przyciskiem gdzieś na mapie), pojawi się wtedy opcja narysowania nowgo pola.
+Nie miej wygranego żadnego ciągnika czy innego pojazdu (kliknij lewym przyciskiem gdzieś na mapie), pojawi się wtedy opcja narysowania nowego pola.
 Po rozpoczęciu zostanie wyświetlony tekst rysujący linie nowego pola za pomocą prawego przycisku myszy.
-Użyj prawego przycisku myszy, aby kilnąć na pozycję, gdzie chcesz zacząć.
+Użyj prawego przycisku myszy, aby kliknąć na pozycję, gdzie chcesz zacząć.
 Następne prawe kliknięcie narysuje linię od punktu początkowego do obecnej pozycji kursora, będzie to punk początku nowej linii."/>
 
 	<!-- Input bindings -->

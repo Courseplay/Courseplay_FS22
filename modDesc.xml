@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="62">
-    <version>7.0.1.3</version>
+    <version>7.0.1.6</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -68,6 +68,8 @@ Funktionen:
 		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
 		<sourceFile filename="scripts/Waypoint.lua"/>
 		<sourceFile filename="scripts/Course.lua"/>
+		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
+		<sourceFile filename="scripts/util/MovingAverage.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
@@ -82,7 +84,6 @@ Funktionen:
 		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
-		<sourceFile filename="scripts/ai/CpMathUtil.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
@@ -91,6 +92,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
 		<sourceFile filename="scripts/ai/AIReverseDriver.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
@@ -104,6 +106,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SowingMachineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/ForageWagonController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/MowerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/RidgeMarkerController.lua"/>
@@ -111,8 +114,11 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/CutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SprayerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CombineController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/MotorController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
+		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
 		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
@@ -125,6 +131,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/jobs/CpAIJobBaleFinder.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskDriveTo.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
@@ -145,6 +152,7 @@ Funktionen:
 		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
@@ -157,6 +165,7 @@ Funktionen:
 		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
 		<specialization name="cpVehicleSettingDisplay" className="CpVehicleSettingDisplay" filename="scripts/specializations/CpVehicleSettingDisplay.lua"/>
 		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
+		<specialization name="cpInfoTexts" className="CpInfoTexts" filename="scripts/specializations/CpInfoTexts.lua"/>
 	</specializations>
 
 	<inputBinding>

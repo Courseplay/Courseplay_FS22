@@ -216,8 +216,10 @@ end
 
 --- Are the sowing machine settings needed.
 function CpVehicleSettings:areSowingMachineSettingsVisible()
-    return AIUtil.hasChildVehicleWithSpecialization(self, SowingMachine) or 
-           AIUtil.hasChildVehicleWithSpecialization(self,FertilizingCultivator)
+    
+    return CpVehicleSettings.isRidgeMarkerSettingVisible(self) or 
+            CpVehicleSettings.isSowingMachineFertilizerSettingVisible(self) or 
+            CpVehicleSettings.isOptionalSowingMachineSettingVisible(self)
 end
 
 --- Disables tool offset, as the plow drive strategy automatically handles the tool offset.
@@ -231,8 +233,32 @@ function CpVehicleSettings:isRidgeMarkerSettingVisible()
     return found and vehicles[1].spec_ridgeMarker.numRigdeMarkers > 0
 end
 
+function CpVehicleSettings:isOptionalSowingMachineSettingVisible()
+    local vehicles, found = AIUtil.getAllChildVehiclesWithSpecialization(self, SowingMachine)
+    return found and not vehicles[1]:getAIRequiresTurnOn()
+end
+
+function CpVehicleSettings:isSowingMachineFertilizerSettingVisible()
+    return AIUtil.hasChildVehicleWithSpecialization(self,FertilizingSowingMachine) or 
+             AIUtil.hasChildVehicleWithSpecialization(self,FertilizingCultivator)
+end
+
 --- Only show the multi tool settings, with a multi tool course loaded.
 function CpVehicleSettings:hasMultiToolCourse()
     local course = self:getFieldWorkCourse()
     return course and course:getMultiTools() > 1
+end
+
+--- Only show this setting, when an implement with additive tank was found.
+function CpVehicleSettings:isAdditiveFillUnitSettingVisible()
+    local combines, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, Combine)
+    local forageWagons, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, ForageWagon)
+    local hasAdditiveTank
+    if #combines > 0 then 
+        hasAdditiveTank = combines[1].spec_combine.additives.available
+    end
+    if #forageWagons > 0 then 
+        hasAdditiveTank = hasAdditiveTank or forageWagons[1].spec_forageWagon.additives.available
+    end
+    return hasAdditiveTank
 end

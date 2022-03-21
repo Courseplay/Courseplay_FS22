@@ -86,7 +86,7 @@ function CpFieldUtil.saveAllFields()
                 local key = ("CPFields.field(%d)"):format(field.fieldId);
                 setXMLInt(xmlFile, key .. '#fieldNum',	field.fieldId);
                 setXMLInt(xmlFile, key .. '#numPoints', #points);
-                for i,point in ipairs(points) do
+                for i, point in ipairs(points) do
                     setXMLString(xmlFile, key .. (".point%d#pos"):format(i), ("%.2f %.2f %.2f"):format(point.x, point.y, point.z))
                 end
                 local islandNodes = Island.findIslands( Polygon:new(CourseGenerator.pointsToXy(points)))
@@ -131,3 +131,25 @@ function CpFieldUtil.isField(x, z, widthX, widthZ)
     return isField, area, totalArea
 end
 
+--- Get the field polygon (field edge vertices) at the world position.
+--- If there is also a custom field at the position it may return that, depending on the user's preference set.
+---@return Polygon, boolean the field polygon, nil if not on field. True if a custom field was selected
+function CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
+    local fieldPolygon, isCustomField
+    local customField = g_customFieldManager:getCustomField(x, z)
+    local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
+    CpUtil.info('Scanning field %d on %s, prefer custom fields %s',
+            fieldNum, g_currentMission.missionInfo.mapTitle, g_Courseplay.globalSettings.preferCustomFields:getValue())
+    local mapField, mapFieldPolygon = g_fieldScanner:findContour(x, z)
+
+    if customField and (not mapField or g_Courseplay.globalSettings.preferCustomFields:getValue()) then
+        -- use a custom field if there is one under us and either there's no regular map field or, there is,
+        -- but the user prefers custom fields
+        CpUtil.info('Custom field found: %s', customField:getName())
+        fieldPolygon = customField:getVertices()
+        isCustomField = true
+    elseif mapField then
+        fieldPolygon = mapFieldPolygon
+    end
+    return fieldPolygon, isCustomField
+end

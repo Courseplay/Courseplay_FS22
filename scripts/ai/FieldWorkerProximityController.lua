@@ -18,6 +18,11 @@ function FieldWorkerProximityController:init(vehicle, workingWidth)
     self.fieldWorkCourse = self.vehicle:getFieldWorkCourse()
     ---@type Waypoint[]
     self.trail = {}
+    -- we use a moving average for slowing down to avoid that sudden, temporary lows in distance immediately
+    -- stop a the vehicle. Such a temporary low can happen for instance when a vehicle is turning and during
+    -- the turn it has momentarily the same direction as a waypoint in the following vehicle's trail, and
+    -- that waypoint is also now within the lateralDistanceLimit (as the first vehicle is not parallel to the row)
+    self.slowDownFactor = MovingAverage(10)
 end
 
 function FieldWorkerProximityController:debug(...)
@@ -42,6 +47,10 @@ function FieldWorkerProximityController:draw()
             local x, y, z = p:getPosition()
             Utils.renderTextAtWorldPosition(x, y + 2.2, z,
                     string.format('%d', self:getDistanceAtIx(i)), getCorrectTextSize(0.012), 0)
+            if p.distance then
+                Utils.renderTextAtWorldPosition(x, y + 2.5, z,
+                        string.format('(%.1f)', p.distance), getCorrectTextSize(0.012), 0, { 1, 0.3, 0, 1 })
+            end
             DebugUtil.drawDebugLine(x, y + 1.5, z, x, y + 2, z, 0, 0, 1)
         end
     end
@@ -66,6 +75,15 @@ end
 --- Each vehicle leaves a trail consisting of its past positions in regular intervals
 ---@param maxLength number maximum length of the trail
 function FieldWorkerProximityController:updateTrail(maxLength)
+
+    if AIUtil.isReversing(self.vehicle) then
+        -- when reversing we don't want to shorten our trail (by adding a new point and removing the last one)
+        -- as in fact, we are moving closer to the last trail point, and this will let followers too close to us
+        -- for instance in case of a turn maneuver with reversing
+        self:debugSparse('Reversing, not recording trail point')
+        return
+    end
+
     local x, y, z = getWorldTranslation(self.vehicle.rootNode)
     local dTraveled = #self.trail > 0 and self.trail[#self.trail]:getDistanceFromPoint(x, z) or self.trailSpacing
     if dTraveled < self.trailSpacing then return end
@@ -83,8 +101,7 @@ end
 --- is anywhere within lateralDistanceLimit * workWidth our trail, provided the trail point direction is more or less the node's
 --- direction.
 function FieldWorkerProximityController:getFieldWorkProximity(node)
-    local distance = math.huge
-    local trailLength = #self.trail * self.trailSpacing
+    local minDistance = math.huge
     for i = #self.trail, 1, -1 do
         local p = self.trail[i]
         local dx, _, dz = worldToLocal(node, p.x, p.y, p.z)
@@ -94,13 +111,20 @@ function FieldWorkerProximityController:getFieldWorkProximity(node)
         -- and finally, it needs to point into the same direction (approximately) to filter out a trail in
         -- the opposite direction
         --self:debug('%d: %.1f %.1f/%.1f %.1f (%.1f)', i, distance, dx, dz, math.deg(yRot - p.yRot), trailLength)
-        if dz < trailLength and dz > 0 and math.abs(dx) < self.lateralDistanceLimit * self.workingWidth and
+        if dz < self.trailSpacing and dz > 0 and math.abs(dx) < self.lateralDistanceLimit * self.workingWidth and
                 math.abs(yRot - p.yRot) < self.sameDirectionLimit then
-            distance = math.min(distance,  self:getDistanceAtIx(i) + dz)
+            local thisDistance = self:getDistanceAtIx(i) + dz
+            if thisDistance < minDistance then
+                -- just for debug paint purposes, we show where node is closest to the trail
+                minDistance = thisDistance
+                p.distance = thisDistance
+            end
             --self:debug('   %.1f', self:getDistanceAtIx(i) + dz)
+        else
+            p.distance = nil
         end
     end
-    return distance
+    return minDistance
 end
 
 --- Limit our speed if there are vehicles in front of us in the same or adjacent row
@@ -113,8 +137,8 @@ function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpe
         if otherVehicle ~= self.vehicle and self:hasSameCourse(otherVehicle) and
                 otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
             local otherStrategy = otherVehicle:getCpDriveStrategy()
-            local otherIsDone = otherStrategy:isDone()
-            if not otherIsDone then
+            local otherIsDone = otherStrategy and otherStrategy:isDone()
+            if otherStrategy and not otherIsDone then
                 local otherConvoyDistance = otherVehicle:getCpSettings().convoyDistance:getValue()
                 maxConvoyDistance = math.max(maxConvoyDistance, otherConvoyDistance)
                 local distanceFromOther = otherStrategy:getFieldWorkProximity(self.vehicle.rootNode)
@@ -129,20 +153,23 @@ function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpe
         end
     end
 
-    self:debugSparse('minimum distance to others %.1f, maximum convoy distance from others %.1f',
-            minDistanceFromOthers, maxConvoyDistance)
-
     -- update my own trail so it is long enough for everyone
-    self:updateTrail(maxConvoyDistance)
+    self:updateTrail(1.5 * maxConvoyDistance)
 
     if minDistanceFromOthers < math.huge then
         -- the closer we are, the slower we drive, but stop at half the minDistance
-        local maxSpeed = currentMaxSpeed *
-                math.max(0, 2 * (1 - (distanceLimit - minDistanceFromOthers + distanceLimit / 2) / distanceLimit))
-        -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
-        -- only when the maxSpeed we return in getDriveData is exactly 0
-        return maxSpeed > 1 and maxSpeed or 0
+        self.slowDownFactor:update(math.max(0, 2 * (1 - (distanceLimit - minDistanceFromOthers + distanceLimit / 2) / distanceLimit)))
     else
-        return currentMaxSpeed
+        self.slowDownFactor:update(1)
     end
+
+    local maxSpeed = currentMaxSpeed * self.slowDownFactor:get()
+    -- everything low enough should be 0 so it does not trigger the Giants didNotMoveTimer (which is disabled
+    -- only when the maxSpeed we return in getDriveData is exactly 0
+    maxSpeed = maxSpeed > 1 and maxSpeed or 0
+
+    self:debugSparse('minimum distance to others %.1f, maximum convoy distance from others %.1f, speed = %.1f, slow down factor = %.2f',
+            minDistanceFromOthers, maxConvoyDistance, maxSpeed, self.slowDownFactor:get())
+
+    return maxSpeed
 end

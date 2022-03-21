@@ -584,6 +584,10 @@ function PurePursuitController:getCurrentWaypointPosition()
 	return self:getGoalPointPosition()
 end
 
+function PurePursuitController:getCurrentWaypointYRotation()
+	return self.course:getYRotationCorrectedForDirectionChanges(self.currentWpNode.ix)
+end
+
 function PurePursuitController:getCrossTrackError()
 	return self.crossTrackError
 end

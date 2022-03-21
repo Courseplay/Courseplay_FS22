@@ -72,6 +72,10 @@ function BaleLoaderController:getDriveData()
     return nil, nil, nil, maxSpeed
 end
 
+function BaleLoaderController:isFuelSaveAllowed()
+    return false
+end
+
 BaleLoader.onAIImplementStart = Utils.overwrittenFunction(BaleLoader.onAIImplementStart,
         function(self, superFunc)
             if superFunc ~= nil then superFunc(self) end

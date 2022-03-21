@@ -22,6 +22,7 @@ function Courseplay:registerXmlSchema()
 	self.xmlSchema:register(XMLValueType.STRING, self.baseXmlKey.."#lastVersion")
 	self.globalSettings:registerXmlSchema(self.xmlSchema, self.xmlKey)
 	CpBaseHud.registerXmlSchema(self.xmlSchema, self.xmlKey)
+	CpHudInfoTexts.registerXmlSchema(self.xmlSchema, self.xmlKey)
 end
 
 --- Loads data not tied to a savegame.
@@ -31,6 +32,7 @@ function Courseplay:loadUserSettings()
 		self:showUserInformation(xmlFile, self.baseXmlKey)
 		self.globalSettings:loadFromXMLFile(xmlFile, self.xmlKey)
 		CpBaseHud.loadFromXmlFile(xmlFile, self.xmlKey)
+		CpHudInfoTexts.loadFromXmlFile(xmlFile, self.xmlKey)
 		xmlFile:save()
 		xmlFile:delete()
 	end
@@ -42,6 +44,7 @@ function Courseplay:saveUserSettings()
 	if xmlFile then 
 		self.globalSettings:saveUserSettingsToXmlFile(xmlFile, self.xmlKey)
 		CpBaseHud.saveToXmlFile(xmlFile, self.xmlKey)
+		CpHudInfoTexts.saveToXmlFile(xmlFile, self.xmlKey)
 		if self.currentVersion then
 			xmlFile:setValue(self.baseXmlKey.."#lastVersion", self.currentVersion)
 		end
@@ -127,6 +130,8 @@ function Courseplay:setupGui()
 	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
 			{256, 0, 128, 128}, 5, predicateFunc)
 	CpGuiUtil.fixInGameMenu()
+	self.infoTextsHud = CpHudInfoTexts()
+
 end
 
 --- Adds cp help info to the in game help menu.
@@ -159,6 +164,9 @@ end
 function Courseplay:draw()
 	g_devHelper:draw()
 	CpDebug:draw()
+	if not g_gui:getIsGuiVisible() then
+		self.infoTextsHud:draw()
+	end
 end
 
 ---@param posX number
@@ -173,6 +181,7 @@ function Courseplay:mouseEvent(posX, posY, isDown, isUp, button)
 		if hud then
 			hud:mouseEvent(posX, posY, isDown, isUp, button)
 		end
+		self.infoTextsHud:mouseEvent(posX, posY, isDown, isUp, button)
 	end
 end
 
@@ -212,6 +221,70 @@ function Courseplay:load()
 	g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
 end
 
+------------------------------------------------------------------------------------------------------------------------
+-- Player action events
+------------------------------------------------------------------------------------------------------------------------
+
+--- Adds player mouse action event, for global info texts.
+function Courseplay.addPlayerActionEvents(mission)
+	if mission.player then
+		print("Added player input events")
+		mission.player.inputInformation.registrationList[InputAction.CP_TOGGLE_MOUSE] = {
+			text = "",
+			triggerAlways = false,
+			triggerDown = false,
+			eventId = "",
+			textVisibility = false,
+			triggerUp = true,
+			callback = Courseplay.onOpenCloseMouseEvent,
+			activeType = Player.INPUT_ACTIVE_TYPE.STARTS_ENABLED
+		}
+		mission.player.updateActionEvents = Utils.appendedFunction(mission.player.updateActionEvents, Courseplay.updatePlayerActionEvents)
+		mission.player.removeActionEvents = Utils.prependedFunction(mission.player.removeActionEvents, Courseplay.removePlayerActionEvents)
+	end
+end
+FSBaseMission.onStartMission = Utils.appendedFunction(FSBaseMission.onStartMission , Courseplay.addPlayerActionEvents)
+
+--- Open/close mouse in player state.
+function Courseplay.onOpenCloseMouseEvent(player, forceReset)
+	if g_Courseplay.infoTextsHud:isVisible() and not player:hasHandtoolEquipped() then
+		if forceReset or g_Courseplay.globalSettings.infoTextHudPlayerMouseActive:getValue() then
+			local showMouseCursor = not g_inputBinding:getShowMouseCursor()
+			g_inputBinding:setShowMouseCursor(showMouseCursor)
+			local leftRightRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_LEFTRIGHT_PLAYER].eventId
+			local upDownRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_UPDOWN_PLAYER].eventId
+			g_inputBinding:setActionEventActive(leftRightRotationEventId, not showMouseCursor)
+			g_inputBinding:setActionEventActive(upDownRotationEventId, not showMouseCursor)
+			player.wasCpMouseActive = showMouseCursor
+		end
+	end
+end
+
+--- Enables/disables the player mouse action event, if there are any info texts.
+function Courseplay.updatePlayerActionEvents(player)
+	local eventId = player.inputInformation.registrationList[InputAction.CP_TOGGLE_MOUSE].eventId
+	g_inputBinding:setActionEventTextVisibility(eventId, false)
+	if not player:hasHandtoolEquipped() then
+		if g_Courseplay.infoTextsHud:isVisible() and g_Courseplay.globalSettings.infoTextHudPlayerMouseActive:getValue() then 
+			g_inputBinding:setActionEventTextVisibility(eventId, true)
+		elseif player.wasCpMouseActive then 
+			Courseplay.onOpenCloseMouseEvent(player, true)
+		end
+	end
+end
+
+--- Resets the mouse cursor on entering a vehicle for example.
+function Courseplay.removePlayerActionEvents(player)
+	if player.wasCpMouseActive then
+		g_inputBinding:setShowMouseCursor(false)
+	end
+	player.wasCpMouseActive = nil
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Commands
+------------------------------------------------------------------------------------------------------------------------
+
 function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'cpAddMoney', 'adds money', 'addMoney', self)
 	addConsoleCommand( 'cpRestartSaveGame', 'Load and start a savegame', 'restartSaveGame', self)
@@ -222,8 +295,12 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'printStrategyVariable', 'Print a CP drive strategy variable', 'printStrategyVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
-	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'saveAllFields', self )
-	addConsoleCommand( 'cpReadVehicleConfigurations', 'Read custom vehicle configurations', 'loadFromXml', g_vehicleConfigurations)
+	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'cpSaveAllFields', self )
+	addConsoleCommand( 'cpReadVehicleConfigurations', 'Read custom vehicle configurations', 'cpReadVehicleConfigurations', self)
+	addConsoleCommand( 'cpSaveAllVehiclePositions', 'Save the position of all vehicles', 'cpSaveAllVehiclePositions', self)
+	addConsoleCommand( 'cpRestoreAllVehiclePositions', 'Restore the position of all vehicles', 'cpRestoreAllVehiclePositions', self)
+	addConsoleCommand( 'cpSetPathfinderDebug', 'Set pathfinder visual debug level (0-2)', 'cpSetPathfinderDebug', self )
+
 end
 
 ---@param saveGameNumber number
@@ -332,8 +409,24 @@ function Courseplay:toggleDevHelper()
 	g_devHelper:toggle()
 end
 
-function Courseplay:saveAllFields()
+function Courseplay:cpSaveAllFields()
 	CpFieldUtil.saveAllFields()
+end
+
+function Courseplay:cpReadVehicleConfigurations()
+	g_vehicleConfigurations:loadFromXml()
+end
+
+function Courseplay:cpSaveAllVehiclePositions()
+	g_devHelper:saveAllVehiclePositions()
+end
+
+function Courseplay:cpRestoreAllVehiclePositions()
+	g_devHelper:restoreAllVehiclePositions()
+end
+
+function Courseplay:cpSetPathfinderDebug(d)
+	PathfinderUtil.setVisualDebug(tonumber(d))
 end
 
 function Courseplay.info(...)
@@ -379,9 +472,10 @@ function Courseplay.register(typeManager)
 		CpAIWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
-		CpVehicleSettingDisplay.register(typeManager, typeName, typeEntry.specializations)
+		CpVehicleSettingDisplay.register(typeManager, typeName,typeEntry.specializations)
 		CpHud.register(typeManager, typeName, typeEntry.specializations)
-    end
+		CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)
+	end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)
 

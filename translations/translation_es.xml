@@ -67,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Abrir Hud con el mouse"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Cuando es desactivado, sólo puede ser abierto con la combinación de teclas."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Parar al final"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="El conductor se detendrá al llegar al final de la ruta"/>
 
@@ -101,6 +104,9 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Desp. Herramienta Del/Tra"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Desp. Herramienta Del/Tra"/>
 
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Check for silage additive."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="If active and silage additive is emtpy, the driver will stop."/>
+
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Desplegar siempre el tubo"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Despliegue siempre el tubo cuando la cosechadora esté llena y esperando el descargador."/>
 
@@ -122,6 +128,9 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Aplicación de fertilizantes"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Habilita/Deshabilita la aplicación de fertilizantes en sembradoras."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Opciones de Siembra"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Enciende o apaga la función de siembra adicional de la máquina."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Cambio a carril simétrico"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Cambio a carril simétrico"/>
@@ -226,7 +235,7 @@
 		<text name="CP_global_setting_subTitle_userSettings"											text="Ajustes de usuario"/>
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud compatible con gamepad"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud."/>
 
 		<text name="CP_global_setting_showActionEventHelp_title" 										text="Ayuda de eventos de acción"/>
 		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Muestra textos de ayuda de eventos de acción."/>
@@ -234,13 +243,22 @@
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Ajustes del generador de rutas"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Ángulo máximo a usar"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
 
 		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Factor de ángulo Delta"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Muestra todos las rutas activas"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Muestra todos las rutas activas en el mapa del juego."/>
+
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Ventana de Textos Informativos"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Muestra la Ventana de Textos Informativos."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Preferencia de Campos Personalizados"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferir el campo personalizado si existe un campo normal en la posición seleccionada."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Gestión de rutas(%s) %s"/>
@@ -275,6 +293,16 @@
 		<text name="CP_courseManager_advancedSettings"													text="Editar archivos."/>
 
 		<text name="CP_courseManager_activate"															text="Activar"/>
+
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Está Atascado"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Está en el tráfico"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Necesita ser rellenado"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Necesita ser descargado"/>
+		<text name="CP_infoTexts_workFinished"															text="Trabajo finalizado"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="¿Quieres guardar la ruta como campo personalizado %s?"/>
