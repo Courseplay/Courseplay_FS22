@@ -254,6 +254,9 @@
 
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Afficher la fenêtre d'informations"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Affiche une fenêtre supplémentaire d'informations supplémentaires."/>
+		
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
 
 		<text name="CP_global_setting_preferCustomFields_title"											text="Détection prioritaire des champs perso."/>
 		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Sélectionne en priorité un champ personnalisé si celui-ci est à cheval sur un champ déjà existant."/>

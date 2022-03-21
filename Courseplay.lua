@@ -234,10 +234,10 @@ function Courseplay.addPlayerActionEvents(mission)
 			triggerAlways = false,
 			triggerDown = false,
 			eventId = "",
-			textVisibility = true,
+			textVisibility = false,
 			triggerUp = true,
 			callback = Courseplay.onOpenCloseMouseEvent,
-			activeType = Player.INPUT_ACTIVE_TYPE.STARTS_DISABLED
+			activeType = Player.INPUT_ACTIVE_TYPE.STARTS_ENABLED
 		}
 		mission.player.updateActionEvents = Utils.appendedFunction(mission.player.updateActionEvents, Courseplay.updatePlayerActionEvents)
 		mission.player.removeActionEvents = Utils.prependedFunction(mission.player.removeActionEvents, Courseplay.removePlayerActionEvents)
@@ -246,25 +246,29 @@ end
 FSBaseMission.onStartMission = Utils.appendedFunction(FSBaseMission.onStartMission , Courseplay.addPlayerActionEvents)
 
 --- Open/close mouse in player state.
-function Courseplay.onOpenCloseMouseEvent(player)
-	local showMouseCursor = not g_inputBinding:getShowMouseCursor()
-	g_inputBinding:setShowMouseCursor(showMouseCursor)
-	local leftRightRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_LEFTRIGHT_PLAYER].eventId
-	local upDownRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_UPDOWN_PLAYER].eventId
-	g_inputBinding:setActionEventActive(leftRightRotationEventId, not showMouseCursor)
-	g_inputBinding:setActionEventActive(upDownRotationEventId, not showMouseCursor)
-	player.wasCpMouseActive = not showMouseCursor
+function Courseplay.onOpenCloseMouseEvent(player, forceReset)
+	if g_Courseplay.infoTextsHud:isVisible() and not player:hasHandtoolEquipped() then
+		if forceReset or g_Courseplay.globalSettings.infoTextHudPlayerMouseActive:getValue() then
+			local showMouseCursor = not g_inputBinding:getShowMouseCursor()
+			g_inputBinding:setShowMouseCursor(showMouseCursor)
+			local leftRightRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_LEFTRIGHT_PLAYER].eventId
+			local upDownRotationEventId = player.inputInformation.registrationList[InputAction.AXIS_LOOK_UPDOWN_PLAYER].eventId
+			g_inputBinding:setActionEventActive(leftRightRotationEventId, not showMouseCursor)
+			g_inputBinding:setActionEventActive(upDownRotationEventId, not showMouseCursor)
+			player.wasCpMouseActive = showMouseCursor
+		end
+	end
 end
 
 --- Enables/disables the player mouse action event, if there are any info texts.
 function Courseplay.updatePlayerActionEvents(player)
 	local eventId = player.inputInformation.registrationList[InputAction.CP_TOGGLE_MOUSE].eventId
-	g_inputBinding:setActionEventActive(eventId, false)
+	g_inputBinding:setActionEventTextVisibility(eventId, false)
 	if not player:hasHandtoolEquipped() then
-		if g_Courseplay.infoTextsHud:isVisible() then 
-			g_inputBinding:setActionEventActive(eventId, true)
+		if g_Courseplay.infoTextsHud:isVisible() and g_Courseplay.globalSettings.infoTextHudPlayerMouseActive:getValue() then 
+			g_inputBinding:setActionEventTextVisibility(eventId, true)
 		elseif player.wasCpMouseActive then 
-			Courseplay.onOpenCloseMouseEvent(player)
+			Courseplay.onOpenCloseMouseEvent(player, true)
 		end
 	end
 end

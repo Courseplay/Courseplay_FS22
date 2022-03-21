@@ -255,6 +255,9 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Pokaż okno informacyjne"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Wyświetla okno z dodatkowymi informacjami."/>
 
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+
 		<text name="CP_global_setting_preferCustomFields_title"											text="Preferuj własne pola"/>
 		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferuj własne pole, jeśli na wybranej pozycji znajduje się również zwykłe pole."/>
 
