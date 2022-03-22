@@ -4,8 +4,6 @@ name: Update contributors
 # Controls when the workflow will run
 on: 
   push:
-    branches:
-      - main
 
 # The list of jobs this workflow executes
 jobs:
