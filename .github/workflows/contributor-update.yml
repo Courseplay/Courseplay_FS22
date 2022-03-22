@@ -38,8 +38,17 @@ jobs:
         with:
           node-version: "14"
       - name: Get changed files
+        id: changed_files
         run: |
-          git log -p -1 --name-only --pretty="format:" ${{ matrix.commit_id }}
+          echo "::set-output name=files::$(git log -p -1 --name-only --pretty="format:" ${{ matrix.commit_id }})"
+      - name: Create local changes
+        run: |
+          cd .github/scripts/update-contributors
+          node index.js ${{ github.actor }} ${{ steps.changed_files.outputs.files }}
+      - name: Commit files
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update contributors
       # Test
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
