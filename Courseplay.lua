@@ -218,7 +218,7 @@ function Courseplay:load()
 	g_assignedCoursesManager:registerXmlSchema()
 
 	--- Register additional AI messages.
-	g_currentMission.aiMessageManager:registerMessage("ERROR_FULL", AIMessageErrorIsFull)
+	AIMessageErrorIsFull.register()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
