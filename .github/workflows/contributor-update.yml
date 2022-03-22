@@ -44,11 +44,9 @@ jobs:
           node-version: "14"
       - name: Get changed files
         run: |
+          git diff --name-only ${{ matrix.id }}
           echo ${{ needs.get_commits.outputs.commits }}
           echo "${{ matrix.id }}: ${{ matrix.message }}"
-      - name: Check git diff
-        run: |
-          git diff --name-only ${{ matrix.id }}
       # Test
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
