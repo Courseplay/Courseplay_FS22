@@ -11,7 +11,7 @@ jobs:
     name: Get commits
     runs-on: ubuntu-latest
     outputs:
-      commits: ${{ steps.getcommits.outputs.result }}
+      commit_ids: ${{ steps.getcommits.outputs.result }}
     steps:
     - name: Filter commits of author
       id: getcommits
@@ -20,19 +20,14 @@ jobs:
         script: |
           return context.payload.commits
             .filter(commit => commit.author.username === context.actor)
-            .map(commit => {
-              return {
-                id: commit.id,
-                message: commit.message
-              }
-            })
+            .map(commit => commit.id)
   update_contributors:
     name: Update contributors
     runs-on: ubuntu-latest
     needs: [get_commits]
     strategy:
       matrix:
-        author: ${{ fromJSON(needs.get_commits.outputs.commits) }}
+        commit_id: ${{ fromJSON(needs.get_commits.outputs.commit_ids) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -44,9 +39,7 @@ jobs:
           node-version: "14"
       - name: Get changed files
         run: |
-          git diff ${{ matrix.id }} --name-only 
-          echo ${{ needs.get_commits.outputs.commits }}
-          echo "${{ matrix.id }}: ${{ matrix.message }}"
+          git diff --name-only ${{ matrix.commit_id }}
       # Test
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
