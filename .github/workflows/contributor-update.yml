@@ -46,7 +46,7 @@ jobs:
         run: |
           echo ${{ needs.get_commits.outputs.commits }}
           echo "${{ matrix.id }}: ${{ matrix.message }}"
-      - name:
+      - name: Check git diff
         run: |
           git diff --name-only ${{ matrix.id }}
       # Test
