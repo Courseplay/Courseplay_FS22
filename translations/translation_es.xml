@@ -66,8 +66,8 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Abrir Hud con el mouse"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Cuando es desactivado, sólo puede ser abierto con la combinación de teclas."/>
 
-		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
-		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Ahorro de Combustible"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Apaga el vehículo, mientras espera."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Parar al final"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="El conductor se detendrá al llegar al final de la ruta"/>
@@ -253,8 +253,8 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Ventana de Textos Informativos"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Muestra la Ventana de Textos Informativos."/>
 
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Evento del mouse del jugador"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Habilita/Deshabilita el evento del mouse del jugador para la visualización de texto de información fuera de un vehículo."/>
 
 		<text name="CP_global_setting_preferCustomFields_title"											text="Preferencia de Campos Personalizados"/>
 		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Preferir el campo personalizado si existe un campo normal en la posición seleccionada."/>
@@ -296,9 +296,9 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Está Atascado"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Está en el tráfico"/>
-		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Debería ser repostado"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Necesita ser repostado"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Necesita reparaciones"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Necesita ser rellenado"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Necesita ser descargado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabajo finalizado"/>
@@ -310,7 +310,7 @@
 		<text name="CP_customFieldManager_rename"														text="Renombrar Campo Personalizado"/>
 		<text name="CP_customFieldManager_draw"															text="Dibujar Campo Personalizado"/>
 		<text name="CP_customFieldManager_draw_header"													text="Dibujar las líneas del Campo con el Botón Derecho del Mouse."/>
-		<text name="CP_customFieldManager_save"                                                         text="Save custom field"/>
+		<text name="CP_customFieldManager_save"                                                         text="Guardar Campo Personalizado"/>
 
 	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Iniciar grabación de ruta personalizada."/>
