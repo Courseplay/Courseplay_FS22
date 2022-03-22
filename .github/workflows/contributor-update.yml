@@ -21,15 +21,14 @@ jobs:
           return context.payload.commits
             .filter(commit => commit.author.username === context.actor)
             .map(commit => commit.id)
-  get_changed_files:
-    name: Get all changed files
+  update_contributors:
+    name: Update contributors
     runs-on: ubuntu-latest
     needs: [get_commits]
     strategy:
+      max-parallel: 1
       matrix:
         commit_id: ${{ fromJSON(needs.get_commits.outputs.commit_ids) }}
-    outputs:
-      matrix: ${{ matrix.commit_id }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -42,7 +41,7 @@ jobs:
       - name: Get changed files
         id: changed_files
         run: |
-          echo "::set-output name=${{ matrix.commit_id }}::$(git log -p -1 --name-only --pretty="format:" ${{ matrix.commit_id }})"
+          echo "::set-output name=files::$(git log -p -1 --name-only --pretty="format:" ${{ matrix.commit_id }})"
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
@@ -51,14 +50,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update contributors
-  update_contributors:
-    name: Update contributors
-    runs-on: ubuntu-latest
-    needs: [get_changed_files]
-    steps:
-      - name: Print outputs
-        run: |
-          echo ${{ toJSON(needs) }}
       # Test
       #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
