@@ -3,7 +3,7 @@
 <l10n>
 	<texts>
 
-		<text name="CP_activated" 																		text="geactiveerde" />
+		<text name="CP_activated" 																		text="geactiveerd" />
 		<text name="CP_deactivated" 																	text="gedeactiveerd" />
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
