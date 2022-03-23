@@ -3,40 +3,148 @@
 <helpLines>
 	<!--Courseplay category-->
 	<category title="$l10n_CP_help_title">
+		<page title="$l10n_CP_help_page_extendedJobMenu_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_startJobMenuBase_text"/>
+				<image filename="CP_img/helpmenu/startjobmenuhelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_startJobMenuFunctions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_readyJobMenuBase_text"/>
+				<image filename="CP_img/helpmenu/readyjobmenuhelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_readyJobMenuFunctions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_JobMenuExtras_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Generator-->
+		<page title="$l10n_CP_help_page_courseGenerator_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
+				<image filename="CP_img/helpmenu/generatorbasehelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorBaseFunctions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorHeadland_text"/>
+				<image filename="CP_img/helpmenu/generatorheadlandhelp.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_courseGeneratorExtras_text"/>
+			</paragraph>	
+		</page>
 		<!--Courseplay courseManager-->
         <page title="$l10n_CP_help_page_courseManager_title">
 			<paragraph>
-                <text text="$l10n_CP_help_page_courseManager_text" />
-				<image filename="CP_img/icon_courseplay.dds" size="512px 512px"/>
-				<!-- 
-					heightScale
-					aspectRatio
-					size
-					uvs
-				-->
+                <text text="$l10n_CP_help_page_courseManagerBase_text"/>
+				<image filename="CP_img/helpmenu/managerbasehelp.dds" size="768px 512px"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerEdit_text"/>
+				<image filename="CP_img/helpmenu/manageredithelp.dds" size="768px 512px"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerEdit_text"/>
+				<image filename="CP_img/helpmenu/manageredithelp.dds" size="768px 512px"/>
+            </paragraph>
+			<paragraph>
+                <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
             </paragraph>
 		</page>
 		<!--Courseplay minihud-->
 		<page title="$l10n_CP_help_page_minihud_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_minihud_text" />
+				<text text="$l10n_CP_help_page_blank"/>
 				<image filename="CP_img/helpmenu/minihudhelp.dds" size="768px 512px"/>
             </paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_minihud_text"/>
+			</paragraph>
 		</page>
 		<!--Courseplay customField-->
 		<page title="$l10n_CP_help_page_customField_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_customFieldRecord_text" />
+				<text text="$l10n_CP_help_page_customFieldRecord_text"/>
 				<image filename="CP_img/helpmenu/recordcustomhelp.dds" size="768px 512px"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_customFieldDone_text" />
+				<text text="$l10n_CP_help_page_customFieldDone_text"/>
 				<image filename="CP_img/helpmenu/donecustomhelp.dds" size="768px 512px"/>
 			</paragraph>	
 			<paragraph>	
-				<text text="$l10n_CP_help_page_customFieldDraw_text" />
+				<text text="$l10n_CP_help_page_customFieldDraw_text"/>
 				<image filename="CP_img/helpmenu/drawcustomhelp.dds" size="768px 512px"/>
             </paragraph>
+		</page>
+		<!--Courseplay Multitool and Convoy-->
+		<page title="$l10n_CP_help_page_multiConvoy_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_multitoolBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_multitoolFunction_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_convoyBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_convoyFunction_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Bale Wrapper/Collector-->
+		<page title="$l10n_CP_help_page_wrapCollect_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_wrapCollectBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_wrapBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_wrapFunction_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_collectBasic_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Vine work-->
+		<page title="$l10n_CP_help_page_vineWork_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkConditions_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkGenerator_text"/>
+				<image filename="CP_img/helpmenu/vineworkgen.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkHarvester_text"/>
+				<image filename="CP_img/helpmenu/vineworkharvest.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkPruner_text"/>
+				<image filename="CP_img/helpmenu/vineworkpruner.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_vineWorkSprayer_text"/>
+				<image filename="CP_img/helpmenu/vineworkspray.dds" size="768px 512px"/>
+			</paragraph>
 		</page>
 	</category>
 </helpLines>
