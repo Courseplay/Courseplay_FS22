@@ -218,6 +218,23 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Совместно работающих орудий" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Количество транспортных средств с одинаковым оборудованием на том же курсе." />
 
+		<!-- Vine Course Generator-->
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Vine course generator"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Basic Settings"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position of the course"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Left side of the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="On the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Right side of the vine"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Tools per course."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="How many Tools can work together. More Information in the help Menu."/>
+		
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="How many vines should be skipped. This helps with tools that have a higher turn radius."/>
+
+
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Глобальные настройки CoursePlay"/>

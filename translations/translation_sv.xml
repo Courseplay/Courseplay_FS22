@@ -221,6 +221,21 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Flera verktyg" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Antal fordon på samma kurs." />
 
+		<!-- Vine Course Generator-->
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Vine course generator"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Basic Settings"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position of the course"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Left side of the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="On the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Right side of the vine"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Tools per course."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="How many Tools can work together. More Information in the help Menu."/>
+		
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="How many vines should be skipped. This helps with tools that have a higher turn radius."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globalainställningar"/>
@@ -452,12 +467,10 @@ P: tar bort kurs från fordon
 Det finns två sätt att skapa ett anpassat fält.
 Den första är att använda HUD: s rekordfunktion.
 Starta posten och spela in din fältgräns.
-När du är klar trycker du på knappen igen och du kommer att bli ombedd om du vill spara den.
-		<!--CustomField-->"/>
+När du är klar trycker du på knappen igen och du kommer att bli ombedd om du vill spara den."/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Med en titt på AI-menyn kommer du att se din inspelade fältgräns.
-Genom att klicka på namnet får du möjlighet att antingen radera det eller byt namn på det.
-		<!--CustomField-->"/>
+Genom att klicka på namnet får du möjlighet att antingen radera det eller byt namn på det."/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Det andra alternativet är att rita det på AI-menyn.
 Har ingen traktor eller annat fordon valts (vänsterklicka någonstans på kartan), du får möjlighet att rita ett anpassat fält.
