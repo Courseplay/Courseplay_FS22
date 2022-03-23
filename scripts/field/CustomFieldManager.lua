@@ -33,9 +33,6 @@ function CustomFieldManager:init(fileSystem)
     self.currentView = fileSystem.currentDirectoryView
     self.rootDir = fileSystem.rootDirectory
     self:load()
-    --- Only for the server.
-    self.clientFields = {}
-    g_messageCenter:subscribe(MessageType.USER_REMOVED, self.onUserRemoved, self)
 end
 
 function CustomFieldManager:load()
@@ -175,15 +172,6 @@ function CustomFieldManager:getCustomField(x, z)
     for _, field in pairs(self.fields) do
         if field:isPointOnField(x, z) then
             return field
-        end
-    end
-    if g_server then
-        for _, clientFieldData in pairs(self.clientFields) do
-            for _, field in pairs(clientFieldData) do
-                if field:isPointOnField(x, z) then
-                    return field
-                end
-            end
         end
     end
     return nil
