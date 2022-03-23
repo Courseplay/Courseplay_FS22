@@ -74,6 +74,7 @@ Funktionen:
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
+		<sourceFile filename="scripts/field/VineScanner.lua"/>
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
 		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
@@ -97,6 +98,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIMessages.lua"/>
 		<sourceFile filename="scripts/ai/Markers.lua"/>
 		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
@@ -116,6 +118,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/CombineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/MotorController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/VineCutterController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>

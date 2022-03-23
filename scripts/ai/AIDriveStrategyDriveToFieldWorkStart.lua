@@ -80,6 +80,9 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
         self.vehicle:prepareForAIDriving()
         self:startCourseWithPathfinding(course, startIx)
     end
+    --- Saves the course start position, so it can be given to the job instance.
+    local x, _, z = course:getWaypointPosition(startIx)
+    self.startPosition = {x = x, z = z}
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:update()
@@ -92,6 +95,10 @@ end
 
 function AIDriveStrategyDriveToFieldWorkStart:isWorkStartReached()
     return self.state == self.states.WORK_START_REACHED
+end
+
+function AIDriveStrategyDriveToFieldWorkStart:getStartPosition()
+    return self.startPosition
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)

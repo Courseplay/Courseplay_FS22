@@ -692,8 +692,9 @@ end
 ---@param allowReverse boolean allow reverse driving
 ---@param courseWithHeadland Course fieldwork course, needed to find the headland
 ---@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection
+---@param turnOnField boolean is turn on field allowed?
 function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
-                                        courseWithHeadland, vehiclesToIgnore)
+                                        courseWithHeadland, vehiclesToIgnore, turnOnField)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
@@ -726,8 +727,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local context = PathfinderUtil.Context(
             vehicle,
             vehiclesToIgnore)
-    local settings = vehicle:getCpSettings()
-    local constraints = PathfinderConstraints(context, nil, settings.turnOnField:getValue() and 10 or nil, fieldNum)
+    local constraints = PathfinderConstraints(context, nil, turnOnField and 10 or nil, fieldNum)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid

@@ -114,7 +114,13 @@ function AITurn:onWaypointPassed(ix, course)
 	end
 end
 
-function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
+--- Is a K turn allowed.
+---@param vehicle Vehicle
+---@param turnContext TurnContext
+---@param workWidth number
+---@param turnOnField boolean is turn on field allowed
+---@return boolean
+function AITurn.canMakeKTurn(vehicle, turnContext, workWidth, turnOnField)
 	if turnContext:isHeadlandCorner() then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Headland turn, not doing a 3 point turn.')
 		return false
@@ -138,8 +144,8 @@ function AITurn.canMakeKTurn(vehicle, turnContext, workWidth)
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Have a towed implement, use generated course turn')
 		return false
 	end
-	local settings = vehicle:getCpSettings()
-	if settings.turnOnField:getValue() and
+
+	if turnOnField and
 			not AITurn.canTurnOnField(turnContext, vehicle, workWidth, turningRadius) then
 		CpUtil.debugVehicle(AITurn.debugChannel, vehicle, 'Turn on field is on but there is not enough room to stay on field with a 3 point turn')
 		return false
@@ -590,7 +596,7 @@ function CourseTurn:startTurn()
 			self.state = self.states.TURNING
 		end
 	else
-		if self.settings.turnOnField:getValue() then
+		if self.driveStrategy:isTurnOnFieldActive() then
 			self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is on')
 			self:generateCalculatedTurn()
 			self.state = self.states.TURNING
@@ -749,7 +755,7 @@ function CourseTurn:generateCalculatedTurn()
 		self.forceTightTurnOffset = self.steeringLength > 0
 	else
 		local distanceToFieldEdge = self.turnContext:getDistanceToFieldEdge(self.vehicle:getAIDirectionNode())
-		local turnOnField = self.settings.turnOnField:getValue()
+		local turnOnField = self.driveStrategy:isTurnOnFieldActive()
 		-- if don't have to turn on field then pretend we have a lot of space
 		distanceToFieldEdge = turnOnField and distanceToFieldEdge or math.huge
 		self:debug('This is NOT a headland turn, turnOnField=%s distanceToFieldEdge=%.1f', turnOnField, distanceToFieldEdge)
@@ -781,7 +787,9 @@ function CourseTurn:generatePathfinderTurn(useHeadland)
 			useHeadland, startOffset, goalOffset)
 	self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
 			self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
-			useHeadland and self.fieldworkCourse or nil)
+			useHeadland and self.fieldworkCourse or nil,
+			nil,
+			self.driveStrategy:isTurnOnFieldActive())
 	if done then
 		return self:onPathfindingDone(path)
 	else

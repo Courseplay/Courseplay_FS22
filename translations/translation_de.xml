@@ -217,6 +217,22 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Fahrzeuge auf dem Kurs" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Wieviele Fahrzeuge sollten zusammen auf dem Kurs fahren." />
+	
+	<!-- Vine Course Generator-->
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Kursgenerator für Reben"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Grundeinstellungen"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position des Kurses"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Soll der Kurs auf oder neben der Rebe gesetzt werden. Das ist abhängig vom verwendeten Gerät. Mehr Informationen im Hilfe Menü."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Links von der Rebe"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="Auf der Rebe"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Rechts von der Rebe"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Geräte auf Kurs"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Wieviele Geräte können auf diesem Kurs arbeiten. Mehr Information im Hilfemenü."/>
+		
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Reben überspringen"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Wieviele Reben sollen übersprungen werden. Das hilft bei Geräten mit höherem Wenderadius."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>
@@ -314,7 +330,7 @@
 		<text name="CP_customFieldManager_draw_header"													text="Zeichne Linien mit Rechtsklick."/>
 		<text name="CP_customFieldManager_save"                                                         text="Speicher Randkurs"/>
 
-		<!--Hud texts-->
+	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Starte Feldrandaufnahme."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stoppe Feldrandaufnahme."/>
 

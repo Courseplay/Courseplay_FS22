@@ -162,6 +162,9 @@ function Courseplay:update(dt)
 end
 
 function Courseplay:draw()
+	if not g_gui:getIsGuiVisible() then
+		g_vineScanner:draw()
+	end
 	g_devHelper:draw()
 	CpDebug:draw()
 	if not g_gui:getIsGuiVisible() then
@@ -218,7 +221,8 @@ function Courseplay:load()
 	g_assignedCoursesManager:registerXmlSchema()
 
 	--- Register additional AI messages.
-	AIMessageErrorIsFull.register()
+	AIMessageErrorIsFull.register()	
+	g_vineScanner:setup()
 end
 
 ------------------------------------------------------------------------------------------------------------------------

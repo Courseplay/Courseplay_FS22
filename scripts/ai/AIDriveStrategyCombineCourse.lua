@@ -1110,7 +1110,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 		elseif self.course:isOnConnectingTrack(ix) then
 			self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
 			AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
-		elseif self.course:isOnOutermostHeadland(ix) and self.settings.turnOnField:getValue() then
+		elseif self.course:isOnOutermostHeadland(ix) and self:isTurnOnFieldActive() then
 			self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
 			self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext,
 					self.course, self:getWorkWidth())

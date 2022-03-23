@@ -240,7 +240,8 @@ local function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, cent
 	end
 	local start
 	if centerSettings.mode == CourseGenerator.CENTER_MODE_UP_DOWN then
-		parallelTracks = reorderTracksForAlternateFieldwork(parallelTracks, centerSettings.nRowsToSkip)
+		parallelTracks = reorderTracksForAlternateFieldwork(parallelTracks, centerSettings.nRowsToSkip,
+			centerSettings.leaveSkippedRowsUnworked)
 		start = leftToRight and 2 or 1
 	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_SPIRAL then
 		parallelTracks = reorderTracksForSpiralFieldwork(parallelTracks)
@@ -660,14 +661,15 @@ end
 -- want to skip every second track, we'd work in the following 
 -- order: 1, 3, 5, 4, 2
 --
-function reorderTracksForAlternateFieldwork( parallelTracks, nRowsToSkip )
+function reorderTracksForAlternateFieldwork(parallelTracks, nRowsToSkip, leaveSkippedRowsUnworked)
 	-- start with the first track and work up to the last,
 	-- skipping every nTrackToSkip tracks.
 	local reorderedTracks = {}
 	local workedTracks = {}
 	local lastWorkedTrack
+	local done = false
 	-- need to work on this until all tracks are covered
-	while ( #reorderedTracks < #parallelTracks ) do
+	while (#reorderedTracks < #parallelTracks) and not done do
 		-- find first non-worked track
 		local start = 1
 		while workedTracks[ start ] do start = start + 1 end
@@ -676,12 +678,18 @@ function reorderTracksForAlternateFieldwork( parallelTracks, nRowsToSkip )
 			workedTracks[ i ] = true
 			lastWorkedTrack = i
 		end
-		-- we reached the last track, now turn back and work on the
-		-- rest, find the last unworked track first
-		for i = lastWorkedTrack + 1, 1, - ( nRowsToSkip + 1 ) do
-			if ( i <= #parallelTracks ) and not workedTracks[ i ] then
-				table.insert( reorderedTracks, parallelTracks[ i ])
-				workedTracks[ i ] = true
+		-- if we don't want to work on the skipped rows, we are done here
+		if leaveSkippedRowsUnworked then
+			done = true
+		else
+			-- now work on the skipped rows if that is desired
+			-- we reached the last track, now turn back and work on the
+			-- rest, find the last unworked track first
+			for i = lastWorkedTrack + 1, 1, - ( nRowsToSkip + 1 ) do
+				if ( i <= #parallelTracks ) and not workedTracks[ i ] then
+					table.insert( reorderedTracks, parallelTracks[ i ])
+					workedTracks[ i ] = true
+				end
 			end
 		end
 	end
