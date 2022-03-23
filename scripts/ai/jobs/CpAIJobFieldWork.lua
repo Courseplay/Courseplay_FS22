@@ -81,6 +81,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
 	self.hasValidPosition = false
+	self.foundVines = nil
 	local isCustomField
 	self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
 
