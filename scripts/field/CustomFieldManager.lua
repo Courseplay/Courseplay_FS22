@@ -123,7 +123,7 @@ function CustomFieldManager:onClickSaveDialog(clickOk, field)
             field:getName())
             fieldValid = true
             table.insert(self.fields, field)
-            self:refresh()
+            self.fileSystem:refresh()
         end
     end
     if not fieldValid then 
@@ -141,7 +141,7 @@ function CustomFieldManager:onClickDeleteDialog(clickOk, fieldToDelete)
                     file:delete()
                     field:delete()
                     table.remove(self.fields, i)
-                    self:refresh()
+                    self.fileSystem:refresh()
                 else 
                     CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Custom field %s was found, but the file not.', fieldToDelete:getName())
                 end
@@ -162,7 +162,7 @@ function CustomFieldManager:onClickRenameDialog(newName,clickOk,fieldToRename)
                     CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(),newName)
                     if file:rename(newName) then 
                         fieldToRename:setName(newName)
-                        self:refresh()
+                        self.fileSystem:refresh()
                         return
                     end
                 end
@@ -226,26 +226,6 @@ function CustomFieldManager:refresh()
         CpUtil.debugFormat(CpDebug.DBG_COURSES,"Added new hotspot %s from filesystem.", entry:getName())
         table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
-    if g_server == nil then 
-        self:sendToServer()
-    end
-end
-
---- Sends the custom field data to the server.
-function CustomFieldManager:sendToServer()
-    SendCustomFieldsToServerEvent.sendEvent(self.fields)
-end
-
---- Removes the custom field data, when the user disconnects.
-function CustomFieldManager:onUserRemoved(user)
-    if user then
-        self.clientFields[user:getUniqueUserId()] = nil
-    end
-end
-
---- Custom fields received by a user.
-function CustomFieldManager:setFromClient(uniqueUserId, fields)
-    self.clientFields[uniqueUserId] = fields
 end
 
 -- for reload only:

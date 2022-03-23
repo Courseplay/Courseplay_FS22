@@ -89,8 +89,11 @@ function CpAIBaleFinder:startCpAtFirstWp(superFunc)
             local spec = self.spec_cpAIBaleFinder
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
-            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
-            return true
+            local success = spec.cpJob:validate(false)
+            if success then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                return true
+            end
         end
     else 
         return true
@@ -104,8 +107,11 @@ function CpAIBaleFinder:startCpAtLastWp(superFunc)
             local spec = self.spec_cpAIBaleFinder
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
-            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
-            return true
+            local success = spec.cpJob:validate(false)
+            if success then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                return true
+            end
         end
     else 
         return true
@@ -113,18 +119,18 @@ function CpAIBaleFinder:startCpAtLastWp(superFunc)
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIBaleFinder:startCpBaleFinder(jobParameters)
+function CpAIBaleFinder:startCpBaleFinder(fieldPolygon)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIBaleFinder.replaceDriveStrategies(self, jobParameters)
+        CpAIBaleFinder.replaceDriveStrategies(self, fieldPolygon)
     end
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIBaleFinder:replaceDriveStrategies(jobParameters)
+function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon)
     CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -137,7 +143,8 @@ function CpAIBaleFinder:replaceDriveStrategies(jobParameters)
     end
 	CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
     local cpDriveStrategy = AIDriveStrategyFindBales.new()
-    cpDriveStrategy:setAIVehicle(self, jobParameters)
+    cpDriveStrategy:setFieldPolygon(fieldPolygon)
+    cpDriveStrategy:setAIVehicle(self)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)

@@ -60,6 +60,18 @@ function CpAIJobBaleFinder:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
-	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
+	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
+	self.baleFinderTask:setFieldPolygon(self.fieldPolygon)
 	return isValid, errorMessage
+end
+
+function CpAIJobBaleFinder:readStream(streamId, connection)
+	self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+	self.baleFinderTask:setFieldPolygon(self.fieldPolygon)
+	CpAIJobBaleFinder:superClass().readStream(self, streamId, connection)
+end
+
+function CpAIJobBaleFinder:writeStream(streamId, connection)
+	CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	CpAIJobBaleFinder:superClass().writeStream(self, streamId, connection)
 end

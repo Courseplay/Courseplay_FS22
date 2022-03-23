@@ -146,18 +146,17 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.pathfinderFailureCount = 0
 end
 
+function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
+    self.fieldPolygon = fieldPolygon
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
 -----------------------------------------------------------------------------------------------------------------------
 ---@param bale BaleToCollect
 function AIDriveStrategyFindBales:isBaleOnField(bale)
-    if self.fieldId then
-        -- normal field mode
-        return bale:getFieldId() == self.fieldId
-    elseif self.customField then
-        local x, _, z = bale:getPosition()
-        return self.customField:isPointOnField(x, z)
-    end
+    local x, _, z = bale:getPosition()
+    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) 
 end
 
 --- Find bales on field

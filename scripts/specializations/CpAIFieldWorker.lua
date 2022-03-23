@@ -204,8 +204,11 @@ function CpAIFieldWorker:startCpAtFirstWp()
         --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
         spec.cpJobStartAtFirstWp:getCpJobParameters().laneOffset:setValue(spec.cpJob:getCpJobParameters().laneOffset:getValue())
         spec.cpJobStartAtFirstWp:setValues()
-        g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtFirstWp, self:getOwnerFarmId()))
-        return true
+        local success = spec.cpJob:validate(false)
+        if success then
+            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtFirstWp, self:getOwnerFarmId()))
+            return true
+        end
     end
 end
 
@@ -216,8 +219,11 @@ function CpAIFieldWorker:startCpAtLastWp()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
         spec.cpJobStartAtLastWp:setValues()
-        g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
-        return true
+        local success = spec.cpJob:validate(false)
+        if success then
+            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
+            return true
+        end
     end
 end
 

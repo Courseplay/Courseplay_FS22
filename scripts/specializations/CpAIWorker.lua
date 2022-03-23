@@ -194,13 +194,15 @@ function CpAIWorker:startStopDriver()
 
             job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             job:setValues()
-         --   local success = spec.cpJob:validate(false)
-         --   if success then
-            if true then
+            local success, message = job:validate(false)
+            if success then
                 g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(job, self:getOwnerFarmId()))
                 CpUtil.infoVehicle(self, "Cp helper started.")
             else
-                CpUtil.infoVehicle(self, "Job parameters not valid.")
+                CpUtil.infoVehicle(self, "Could not start CP helper: %s", tostring(message))
+                if message then
+                    g_currentMission:showBlinkingWarning("CP: "..message, 5000)
+                end
             end
         else
             CpUtil.infoVehicle(self, "Could not start CP helper, it needs a course when not collecting bales.")

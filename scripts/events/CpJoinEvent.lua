@@ -48,8 +48,7 @@ end
 
 --- Runs the event on the receiving end of the event.
 function CpJoinEvent:run(connection) 
-	--- Makes sure the custom fields are send to the server.
-	g_customFieldManager:sendToServer()
+
 end
 
 function CpJoinEvent.debug(str, ...)
