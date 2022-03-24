@@ -205,7 +205,8 @@ end
 function AIDriveStrategyFieldWorkCourse:setAITarget()
     --local dx, _, dz = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
     local wp = self.ppc:getCurrentWaypoint()
-    local dx, dz = wp.dx, wp.dz
+    --- TODO: For some reason wp.dx and wp.dz are nil sometimes.
+    local dx, dz = wp.dx or 0, wp.dz or 0
     local length = MathUtil.vector2Length(dx, dz)
     dx = dx / length
     dz = dz / length
@@ -281,7 +282,7 @@ function AIDriveStrategyFieldWorkCourse:shouldRaiseThisImplement(object, turnSta
     -- if something (like a combine) does not have an AI marker it should not prevent from raising other implements
     -- like the header, which does have markers), therefore, return true here
     if not aiBackMarker or not aiFrontMarker then return true end
-    local marker = self.settings.raiseImplementLate:getValue() and aiBackMarker or aiFrontMarker
+    local marker = self:getImplementRaiseLate() and aiBackMarker or aiFrontMarker
     -- turn start node in the back marker node's coordinate system
     local _, _, dz = localToLocal(marker, turnStartNode, 0, 0, 0)
     self:debugSparse('%s: shouldRaiseImplements: dz = %.1f', CpUtil.getName(object), dz)
@@ -342,7 +343,7 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
     local dxFront = (dxLeft + dxRight) / 2
     self:debug('%s: dzLeft = %.1f, dzRight = %.1f, dzFront = %.1f, dxFront = %.1f, dzBack = %.1f, loweringDistance = %.1f, reversing %s',
             CpUtil.getName(object), dzLeft, dzRight, dzFront, dxFront, dzBack, loweringDistance, tostring(reversing))
-    local dz = self.settings.lowerImplementEarly:getValue() and dzFront or dzBack
+    local dz = self:getImplementLowerEarly() and dzFront or dzBack
     if reversing then
         return dz < 0 , true, nil
     else
@@ -552,6 +553,14 @@ end
 
 function AIDriveStrategyFieldWorkCourse:getTurnEndForwardOffset()
     return 0
+end
+
+function AIDriveStrategyFieldWorkCourse:getImplementRaiseLate()
+    return self.settings.raiseImplementLate:getValue()
+end
+
+function AIDriveStrategyFieldWorkCourse:getImplementLowerEarly()
+    return self.settings.lowerImplementEarly:getValue()
 end
 
 function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldWork()

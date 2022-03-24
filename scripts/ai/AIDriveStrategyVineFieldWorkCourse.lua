@@ -40,3 +40,11 @@ end
 function AIDriveStrategyVineFieldWorkCourse:isTurnOnFieldActive()
     return false
 end
+
+function AIDriveStrategyVineFieldWorkCourse:getImplementRaiseLate()
+    return true
+end
+
+function AIDriveStrategyVineFieldWorkCourse:getImplementLowerEarly()
+    return true
+end
