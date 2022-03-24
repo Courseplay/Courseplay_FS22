@@ -321,3 +321,11 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
     --- Only the last driving strategy can stop the helper, while it is running.
     table.insert(spec.driveStrategies, cpDriveStrategy)
 end
+
+--- Makes sure a callstack is printed, when an error appeared.
+--- TODO: Might be a good idea to stop the cp helper.
+local function onUpdate(vehicle, superFunc, ...)
+    CpUtil.try(superFunc, vehicle, ...)
+end
+
+AIFieldWorker.onUpdate = Utils.overwrittenFunction(AIFieldWorker.onUpdate, onUpdate)
