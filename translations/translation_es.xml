@@ -218,20 +218,20 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Número de vehículos en la misma ruta." />
 
 	<!-- Vine Course Generator-->
-		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Vine course generator"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Basic Settings"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Generador de Curso en Viñedos"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Ajustes Básicos"/>
 
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position of the course"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu."/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Left side of the vine"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="On the vine"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Right side of the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Posición del Curso"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Si el Curso se conduce en o al lado. Esto depende de la herramienta. Más informción en el menú de ayuda."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Lado izquierdo del vide"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="En el vide"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Lado derecho del vide"/>
 
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Tools per course."/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="How many Tools can work together. More Information in the help Menu."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Herramientas por curo."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Cuantas herramientas poçueden trabajar juntas. Más informción en el menú de ayuda."/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="How many vines should be skipped. This helps with tools that have a higher turn radius."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vides a saltar"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Cuantas vides deberán ser saltadas. Esto ayuda con herramientas que tengan un mayor radio de giro."/>
 
 
 	<!-- GlobalSettings -->
