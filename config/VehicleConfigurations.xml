@@ -76,9 +76,15 @@ You can define the following custom settings:
 
 - lowerEarly: boolean
     Similar to the above, the default behavior when starting to work is lower the implement when the back of the
-    work area reaches to row start/field edge. Setting this to true will make Courseplay lowere the implement as
+    work area reaches to row start/field edge. Setting this to true will make Courseplay lower the implement as
     soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
     work areas such as a plow.
+
+- useVehicleSizeForMarkers: boolean
+    Some vehicles and implements, mostly used for grape harvest have no AI markers and not even a work area.
+    In order for these to perform turn maneuvers correctly we still need a front and back marker, which usually
+    are derived from the AI markers or from the work areas. If useVehicleSizeForMarkers is true, we simply place
+    the front marker on the front of the vehicle, the back marker on the back if there is no AI marker or work area.
 
 - modName: Name of the .zip file (without '.zip')
     In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,

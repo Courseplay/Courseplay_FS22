@@ -129,10 +129,17 @@ function WorkWidthUtil.getAIMarkers(object, logPrefix, suppressLog)
         end
         aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object)
         if not aiLeftMarker or not aiRightMarker or not aiLeftMarker then
-            if not suppressLog then
-                WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up, will use front/back markers')
+            if g_vehicleConfigurations.get(object, 'useVehicleSizeForMarkers') then
+                if not suppressLog then
+                    WorkWidthUtil.debug(object, logPrefix, 'has no work areas, configured to use front/back markers')
+                end
+                return Markers.getFrontMarkerNode(object), Markers.getFrontMarkerNode(object), Markers.getBackMarkerNode(object)
+            else
+                if not suppressLog then
+                    WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up')
+                end
+                return nil, nil, nil
             end
-            return Markers.getFrontMarkerNode(object), Markers.getFrontMarkerNode(object), Markers.getBackMarkerNode(object)
         else
             if not suppressLog then WorkWidthUtil.debug(object, logPrefix, 'AI markers from work area set') end
             return aiLeftMarker, aiRightMarker, aiBackMarker
