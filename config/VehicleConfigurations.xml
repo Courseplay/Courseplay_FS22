@@ -102,11 +102,13 @@ You can define the following custom settings:
              raiseLate="true"
              lowerEarly="true"
              turnRadius="5"
+             useVehicleSizeForMarkers="true"
     />
     <Vehicle name="braud9090X.xml"
              raiseLate="true"
              lowerEarly="true"
              turnRadius="5"
+             useVehicleSizeForMarkers="true"
     />
     <!-- Implements -->
 
@@ -234,6 +236,7 @@ You can define the following custom settings:
              raiseLate="true"
              lowerEarly="true"
              turnRadius="5"
+             useVehicleSizeForMarkers="true"
     />
 
     <!--Tractors-->
