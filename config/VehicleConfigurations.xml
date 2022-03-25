@@ -214,10 +214,6 @@ You can define the following custom settings:
     <Vehicle name="th1400.xml"
              noReverse="true"
     />
-    <!--\vehicles\greatPlains-->
-    <Vehicle name="yp2425A.xml"
-             noReverse="true"
-    />
     <!--\vehicles\flexicoil-->
     <Vehicle name="st820.xml"
              turnRadius = "7"
@@ -291,8 +287,6 @@ You can define the following custom settings:
 	
     <!--[MODS]-->
 
-	
-
     <!--Harvester-->
 
     <!--Implements-->
@@ -343,4 +337,9 @@ You can define the following custom settings:
              modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
              workingWidth="10.3"
     />
+    <!--Mod: Great Plains YP-2425A-->
+    <Vehicle name="yp2425A.xml"
+             implementWheelAlwaysOnGround="true"
+    />
+
 </VehicleConfigurations>
