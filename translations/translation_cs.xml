@@ -231,8 +231,8 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="每项任务的工具"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="多少个工具可以一起工作。更多信息在帮助菜单。"/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="要跳过的藤蔓"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="要跳过的树藤"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="仅当该工具适用于两个树藤（左和右）时，才应使用跳过树藤。 "/>
 
 
 	<!-- GlobalSettings -->
