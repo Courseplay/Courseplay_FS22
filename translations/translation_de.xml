@@ -232,7 +232,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Wieviele Geräte können auf diesem Kurs arbeiten. Mehr Information im Hilfemenü."/>
 		
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Reben überspringen"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Wieviele Reben sollen übersprungen werden. Das hilft bei Geräten mit höherem Wenderadius."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Reben überspringen sollte nur benutzt werden, wenn mit einem Gerät beide Reben (links und rechts) bearbeitet werden."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>

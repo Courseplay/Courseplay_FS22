@@ -230,7 +230,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Quanti strumenti possono lavorare insieme. Maggiori informazioni nel menu di aiuto."/>
 		
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Filari da saltare"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Quanti filari devono essere saltati. Questo aiuta con utensili che hanno un raggio di sterzata maggiore."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
 
 
 		<!-- GlobalSettings -->

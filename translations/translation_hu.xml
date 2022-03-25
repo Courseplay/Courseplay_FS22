@@ -228,7 +228,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="How many Tools can work together. More Information in the help Menu."/>
 		
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="How many vines should be skipped. This helps with tools that have a higher turn radius."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
 
 
 	<!-- GlobalSettings -->

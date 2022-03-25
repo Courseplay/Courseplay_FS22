@@ -231,7 +231,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Quantos implementos podem trabalhar juntas. Mais informações no menu de ajuda."/>
 		
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Quantas videiras devem ser ignoradas. Isso ajuda com implementos que têm um raio de giro maior."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Configurações global"/>

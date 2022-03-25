@@ -232,7 +232,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="多少个工具可以一起工作。更多信息在帮助菜单。"/>
 		
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="要跳过的藤蔓"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="应该跳过多少藤蔓。这有助于工具有一个更高的转弯半径。"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
 
 
 	<!-- GlobalSettings -->

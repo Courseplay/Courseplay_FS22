@@ -231,7 +231,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Cuantas herramientas poçueden trabajar juntas. Más informción en el menú de ayuda."/>
 		
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vides a saltar"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Cuantas vides deberán ser saltadas. Esto ayuda con herramientas que tengan un mayor radio de giro."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
 
 
 	<!-- GlobalSettings -->
