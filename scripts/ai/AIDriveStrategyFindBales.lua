@@ -61,28 +61,6 @@ function AIDriveStrategyFindBales:startWithoutCourse()
 
     self:info('Starting bale collect/wrap')
 
-    -- We either collect bales on a normal field or a custom field.
-    -- If the vehicle is on a custom field, find all bales which are in the field polygon of the custom field.
-    local x, _, z = getWorldTranslation(self.vehicle.rootNode)
-    ---@type CustomField
-    self.customField = g_customFieldManager:getCustomField(x, z)
-    -- Custom field takes precedence over normal field.
-    if self.customField then
-        self.fieldName = self.customField:getName()
-        self:info(' - map: %s, custom field %s', g_currentMission.missionInfo.mapTitle, self.customField:getName())
-    else
-        -- On a normal field, we use the field ID under the position of the bale to find bales.
-        local myField = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-        if myField == 0 then
-            self:error('Vehicle not on field, cannot start bale collect/wrap job.')
-            self.vehicle:stopCurrentAIJob(AIMessageErrorNoFieldFound.new())
-            return
-        end
-        self.fieldId = myField
-        self.fieldName = tostring(myField)
-        self:info(' - map: %s, field %s', g_currentMission.missionInfo.mapTitle, self.fieldName)
-    end
-
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:info(' - %s', CpUtil.getName(implement.object))
     end
@@ -98,7 +76,7 @@ function AIDriveStrategyFindBales:collectNextBale()
         self:findPathToNextBale()
     else
         self:info('No bales found, scan the field once more before leaving for the unload course.')
-        self.bales = self:findBales(self.fieldId)
+        self.bales = self:findBales()
         if #self.bales > 0 then
             self:info('Found more bales, collecting them')
             self:findPathToNextBale()
@@ -146,24 +124,22 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.pathfinderFailureCount = 0
 end
 
+function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
+    self.fieldPolygon = fieldPolygon
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
 -----------------------------------------------------------------------------------------------------------------------
 ---@param bale BaleToCollect
 function AIDriveStrategyFindBales:isBaleOnField(bale)
-    if self.fieldId then
-        -- normal field mode
-        return bale:getFieldId() == self.fieldId
-    elseif self.customField then
-        local x, _, z = bale:getPosition()
-        return self.customField:isPointOnField(x, z)
-    end
+    local x, _, z = bale:getPosition()
+    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) 
 end
 
 --- Find bales on field
 ---@return BaleToCollect[] list of bales found
 function AIDriveStrategyFindBales:findBales()
-    self:debug('Finding bales on field %s...', self.fieldName)
     local balesFound = {}
     for _, object in pairs(g_currentMission.nodeToObject) do
         if BaleToCollect.isValidBale(object, self.baleWrapper, self.baleLoader) then
@@ -181,7 +157,7 @@ function AIDriveStrategyFindBales:findBales()
     for _, bale in pairs(balesFound) do
         table.insert(bales, bale)
     end
-    self:debug('Found %d bales on field %s', #bales, self.fieldName)
+    self:debug('Found %d bales', #bales)
     return bales
 end
 
@@ -211,7 +187,7 @@ function AIDriveStrategyFindBales:findClosestBale(bales)
             self:debug('%d. bale (%d, %s) INVALID', i, bale:getId(), bale:getBaleObject())
             invalidBales = invalidBales + 1
             self:debug('Found an invalid bales, rescanning field', invalidBales)
-            self.bales = self:findBales(self.fieldId)
+            self.bales = self:findBales()
             -- return empty, next time this is called everything should be ok
             return
         end
@@ -272,8 +248,8 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
         local done, path, goalNodeInvalid
         -- use no off-field penalty if we are on a custom field
         self.pathfinder, done, path, goalNodeInvalid =
-        PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, self.fieldId,
-                {}, self.lastBale and {self.lastBale} or {}, nil, self.fieldId and nil or 0)
+        PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, nil,
+                {}, self.lastBale and {self.lastBale} or {}, nil, nil)
         if done then
             return self:onPathfindingDoneToNextBale(path, goalNodeInvalid)
         else
@@ -364,7 +340,7 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
             self:collectNextBale()
         elseif self.state == self.states.APPROACHING_BALE then
             self:debug('looks like somehow we missed a bale, rescanning field')
-            self.bales = self:findBales(self.fieldId)
+            self.bales = self:findBales()
             self:collectNextBale()
         elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
             self:debug('backed up after pathfinder failed, trying again')
