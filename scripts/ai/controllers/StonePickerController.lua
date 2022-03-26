@@ -25,7 +25,7 @@ function StonePickerController:isClosingAnimationPlaying()
 end
 
 function StonePickerController:update(dt)
-	if self.vehicle.getCanAdTakeControl	and self.vehicle:getCanAdTakeControl() then 
+	if self:getIsFull() and self.vehicle.getCanAdTakeControl	and self.vehicle:getCanAdTakeControl() then 
 		self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
 	end
 end
