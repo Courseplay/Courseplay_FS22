@@ -160,7 +160,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Paramètres avancés"/>
 
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Largeur de travail" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail. Valeurs: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Largeur de travail. Cliquez sur le chiffre pour saisir la valeur (0 - 50)." />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Nombre de fourrières" />
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Nombre de fourrières. Valeurs: 0 - 40" />
@@ -219,20 +219,20 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Nombre de véhicules sur la même course avec le même outil. La distance entre les véhicules est fixée avec le paramètre convoi." />
 
 		<!-- Vine Course Generator-->
-		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Vine course generator"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Basic Settings"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Générateur de courses pour les vignes"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Paramètres"/>
 
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position of the course"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu."/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Left side of the vine"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="On the vine"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Right side of the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Positionnement"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Sélection du positionnement de l'outil dans la vigne. Plus d'informations dans le menu d'aide."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Côté gauche"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="Enjamber"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Côté droit"/>
 
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Tools per course."/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="How many Tools can work together. More Information in the help Menu."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Outils combinés"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Combien d'outils travaillent ensemble. Plus d'informations dans le menu d'aide."/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Rangées ignorées"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Détermine la quantité de rangs à ignorer. Utile si les outils travaillent à la fois la vigne de gauche et de droite."/>
 
 
 	<!-- GlobalSettings -->
@@ -271,8 +271,8 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="Afficher la fenêtre d'informations"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Affiche une fenêtre supplémentaire d'informations supplémentaires."/>
 		
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Utilisation du curseur étendue"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Active ou désactive la gestion du curseur pour les autres mods utilisant également le curseur pour les textes d'information en dehors des véhicules. Améliore la compatibilité avec les mods de type VehicleInfo."/>
 
 		<text name="CP_global_setting_preferCustomFields_title"											text="Détection prioritaire des champs perso."/>
 		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Sélectionne en priorité un champ personnalisé si celui-ci est à cheval sur un champ déjà existant."/>
@@ -339,107 +339,105 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--Job Menu-->
-		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
+		<text name="CP_help_page_extendedJobMenu_title"													text="Nouveau menu des ouvriers"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
-First you need to select a vehicle in the AI menu for generating a fieldwork course or gaining access to the vehicle settings and the course manager.
-The currently loaded course will be displayed on the map.
-The global settings are always visible.
-For generating a course and starting the courseplay jobs, you will need to create the job CP: Fieldwork or CP: wrap/collect bales, similar to the Giants helper.
+Vous devez d'abord sélectionner un véhicule depuis le menu des ouvriers afin de pouvoir générer une course CP ou configurer les paramètres de la course actuelle. 
+La course active s'affichera sur la carte.
+Les paramètres globaux sont toujours accessibles.
+Pour générer une course et la démarrer, choisissez dans le type de tâche CP:Travail ou CP:Ramassage/enrub. bottes.
 		"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
-To start off with your first CP job, you would have to select a vehicle and a possible valid implement which is supported for the job.
-Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect
-with a bale wrapper or bale collector attached.
+Pour créer une course CP, assurez vous de sélectionner un véhicule équipé avec des outils compatibles avec un travail du Courseplay (CP).
+Ensuite, dans la création d'une tâche, sélectionnez CP:Travail pour un travail dans les champs ou CP:Ramassage/enrub. bottes si vous êtes équipés avec une enrubanneuse, un plateau autoload ou une chargeuse de balles automatique.
 		"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
-With a CP job selected, you would need to place the field position on a field for generating the course or using the bale finder on it.
-The position also roughly controls the starting point of your course.
-If you want to use the Giants helper to drive to the field, then you also need to set the target position close to the starting point of the course.
-The lane offset setting is only used if you want to have multiple helpers working on the same field. For this please checkout the separate help menu page below.
+Après avoir sélectionné CP:Travail, vous devez choisir le champ concerné en cliquant dessus afin de le mettre en surbrillance et pouvoir générer une course ou lancer la tâche CP:Ramassage/enrub. bottes.
+La sélection du champ s'effectue en déterminant le point de départ de la course : Point de départ dans le champ.
+Si vous souhaitez vous rendre au champ en utilisant l'ouvrier de base du jeu, vous devez également spécifier la position cible au même endroit que le point de départ de la course.
+La position dans la rangée n'est utilisée que lorsque vous avez plusieurs ouvriers qui travaillent dans le même champ (voir plus bas la rubrique outils multiples).
 		"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
-When the field position is placed correctly on a field, you will see the field border drawn on the map.
-If you are creating a CP: Fieldwork job, you will gain access to the course generator settings. 
+Lorsque le point de départ dans le champ est correctement défini, les contours du champ seront mis en surbrillance.
+Si vous avez créé une tâche CP:Travail alors vous pourrez accéder aux paramètres du générateur de courses.
 		"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
-Now it's possible to start the driver directly from the menu. The Giants helper will drive to the target position and from there the CP job automatically takes over.
-Alternatively you can also start the driver from the HUD if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
+Il est possible de démarrer la tâche directement depuis le menu. L'ouvrier de base du jeu se rendra alors à la position cible avant de passer le relai à l'ouvrier CP qui commencera son travail au point de départ de la course.
+Vous pouvez également démarrer la course depuis l'ATH si vous êtes déjà dans ou proche du champ concerné. Si vous utilisez AutoDrive (AD) vous pouvez démarrer le trajet avec AD et une fois arrivé il passera le relai à l'ouvrir CP si vous avez activé l'option dans AD.
 		"/>
 		<!--CourseGenerator-->
-		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
+		<text name="CP_help_page_courseGenerator_title"													text="Générateur de courses"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
-Every fieldwork course is generated by the course generator. This is a mighty tool, which allows you to customize the generated course to your needs.
-If you are new to this, you should probably start by only changing the headland amount setting.
-After that you can always change the other values and hit generate course and have a look, what impact certain values have on the course.
-Experimenting with it and check what impact the different setting on different fields have is the best way to get used to it.
+Toutes les courses de travail dans un champ sont créées à partir du générateur de courses. Cet outil puissant vous permet de configurer précisément la course de l'ouvrier dans le champ.
+Si vous découvrez le générateur, nous vous conseillons de laisser les paramètres par défaut et de ne changer que la quantité de fourrières.
+Si vous souhaitez aller plus loin dans les réglages, vous pouvez toujours les modifier et générer à chaque fois la course pour visualiser son tracé sur la carte.
+Le plus simple est d'expérimenter un paramètre à la fois et d'observer son impact sur la course elle-même ou sur son tracé.
 		"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
-Basics:
-The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
-The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
-Center options:
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+Paramètres de base :
+Les premières valeurs de la liste sont les réglages les plus courants.
+- Largeur de travail : La détection est automatique selon les outils attelés mais ajustable si nécessaire.
+- Outils multiples : Permet de faire travailler plusieurs ouvriers dans le même champ avec la même course. Il y a une rubrique d'aide spécifique à ce sujet.
+- Nombre de fourrières : Le meilleur moyen pour maintenir votre véhicule dans le champ lorsqu'il devra manoeuvrer en bout de rang est de créer des fourrières autour du champ.
+Le nombre de fourrières multiplié par la largeur de travail doit au minimum être équivalent à la longueur totale de votre véhicule avec tous ses outils déployés.
+Gestion des rangs :
+- Il existe plusieurs approches pour créer les rangs de travail, la plus classique et courante est celle des allers-retours. 
+Les approches en spirales, blocs ou circulaires ont leur utilité selon le contexte. En mode blocs, les moissonneuses conserveront leur goulotte de sortie vers l'extérieur des cultures pour faciliter leur vidange par les autres ouvriers.
+- Orientation des rangs : la course proposera automatiquement la meilleure orientation des rangs (en général alignée sur le bord le plus long) mais vous pouvez la modifier manuellement.
+- Rangs à ignorer : Permet d'accélérer grandement le temps de travail car cela évite à l'ouvrier de devoir manoeuvrer en bout de rang pour se positionner pour le prochain rang.
+- Rangs par blocs : Utilisé uniquement lorsque la gestion des rangs est en mode blocs pour déterminer combien de rangs vont composer chaque bloc. Plus il y aura de rangs et moins il y aura de blocs.
+- Angle de l'orientation : Lorsque l'orientation des rangs (allers-retours) est en mode manuelle, permet de spécifier l'angle de celle-ci lors de la génération de la course.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
-Headland settings will only show up, when you have set at least 1 at Number of headlands.
-You gain options for where to start on, corner settings, direction and overlap.
-Headlands are highly suggested to prevent tools leaving the field when turning.
+Le paramétrage des fourrières n'apparait que lorsque vous en souhaitez au moins une.
+Vous pouvez spécifier si la course doit démarrer par elles, comment sont appréhendés leurs coins, leur sens (horaire ou anti-horaire) et leur chevauchement.
+Les fourrières sont fortement recommandées pour aider les véhicules à rester dans le champ lorsqu'ils manoeuvrent en bout de rang.
 		"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
-- Start work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
-When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
-- Headland corners: Smooth will have a simple smoothing over the corners, This works for all tools, but will lead to tiny unworked patches in the corners.
-They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
-Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
-- Headland direction: clockwise or counter-clockwise. This can be important for combines and harvesters, depending on wich side the pipe or conveyor belt is.
-- Headland overlap: How much % overlap all headlands should have. The first one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
+- Démarrer par : Permet de choisir si la course doit d'abord démarrer ou terminer par les fourrières.
+- Angle des fourrières : Virages lissés évite les marches arrière et fonctionnera avec tous les outils mais peut laisser un petit coin de champ non travaillé.
+Cela peut être attenué avec le chevauchement mais sans pour autant complètement disparaitre. Manoeuvre demandera à l'ouvrier de potentiellement (en fonction de l'angle) faire une marche arrière pour mieux se placer et éviter de laisser des coins non travaillés. Circulaire prendra en compte le rayon de braquage du véhicule pour traiter les angles avec l'outil actif (similaire à virages lissés).
+- Sens des fourrières : Horaire ou anti-horaire. Important pour les véhicules qui doivent être vidés (moissonneuses) en fonction du côté de leur goulotte de déchargement.
+- Chevauchement : Le pourcentage de recouvrement entre les fourrières. La première fourrière (contour du champ) n'aura pas de recouvrement mais les suivantes utiliseront ce paramètre.
 		"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
-Field Margin explanation:
-Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
-Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
+Délimitation du champ :
+Les valeurs positives réduisent la taille du champ afin de laisser une marge de sécurité autour du champ si celui-ci est bordé d'arbres ou de clôtures qui pourraient entrer en collision avec les outils.
+Les valeurs négatives agrandissent la taille du champ pour travailler les bordures qui ne seraient pas correctement détectées.
 		"/>
 		<!--CourseManager-->
-		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
+		<text name="CP_help_page_courseManager_title"													text="Gestionnaire des courses"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
-The course manager allows you to save courses and enables you to load the saved course later again.
-This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
-This feature also allows you to pickup the swath left behind by a combine or a windrower with a forage wagon or a baler.
+Le gestionnaire de courses vous permet de sauvegarder et de charger vos courses pour une utilisation ultérieure.
+La sauvegarde de la course est également obligatoire lorsque vous utilisez les outils multiples afin de pouvoir affecter la même course à plusieurs ouvriers.
+Cela vous permet également de pouvoir affecter la course d'une moissonneuse ou d'une faucheuse à une presse ou un véhicule avec une autochargeuse pour venir récupérer les andains.
 
-The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
-The course manager works differently from what you are used to in FS19.
-Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
-Folders can simply created by the button at the bottom of the screen and entering a name.		"/>
+L'emplacement des sauvegarde se trouve ici : ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (ou pour les cartes de base de type MapUS).
+Le gestionnaire fonctionne différement de celui présent dans FS19.
+Les courses sont sauvegardées dans des dossiers affichés sur le côté gauche. Il faudra donc au moins créer un dossier pour commencer à sauvegarder vos courses. 
+Les dossiers peuvent être créés en utilisant le bouton correspondant en bas de l'écran et en spécifiant un nom.
+		"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
-When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
-The name and location can be changed later.
-To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
-Clicking on change mode activates the edit mode of the course manager.
+Lorsque vous avez une course active, vous pouvez la sauvegarder en cliquant sur le bouton de sauvegarde puis le dossier de destination.  Une fenêtre s'ouvrira alors pour donner un nom à la course.
+Son nom et son emplacement peuvent être modifiés ultérieurement.
+Pour enlever la course active de votre véhicule, cliquez sur le bouton réinitialiser la course.
+Pour charger une course, vous devez d'abord sélectionner un dossier puis cliquer sur charger une course et cliquer sur la course à charger.
+Un clic sur le bouton de changement de mode permet de basculer entre le mode édition ou affichage du gestionnaire.
 		"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
-With the edit mode is active you have these options:
-- Moving a course into another directory.
-- Deleting courses or directories.
-- Renaming courses or directories.
+Lorsque vous êtes en mode édition vous pouvez :
+- Déplacer une course dans un autre dossier.
+- Supprimer des courses ou des dossiers.
+- Renommer des courses ou des dossiers.
 		"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
-For moving a course: 
-  1) Click on the move button at the bottom of the screen.
-  2) Click on the course you want to move.
-  3) Click on the directory where you want the course moved to.
-For renaming you simply have to click the rename button and after that the directory or course. Then just type in the new name.
-For deleting a course or directory click on the delete button and after that the folder or course you want to delete.
-Directories must be empty if you want to delete them.
+Pour déplacer une course : 
+  1) Cliquez sur le bouton déplacer en bas de l'écran.
+  2) Cliquez sur la course à déplacer.
+  3) Cliquez sur le dossier de destination.
+Pour le renommage d'une course ou d'un dossier, cliquez simplement sur le bouton de renommage puis la course ou le dossier désiré. Tapez ensuite le nouveau nom choisi.
+Pour la suppression d'une course ou d'un dossier, cliquez simplement sur le bouton de suppression puis la course ou le dossier désiré.
+Les dossiers doivent être vides avant de pouvoir être supprimés.
 		"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini ATH"/>
@@ -479,76 +477,70 @@ Le premier clic droit détermine le point de départ du contour.
 Les prochains clics droits formeront des lignes correspondantes au contour du champ personnalisé. Procédez ainsi jusqu'à clôturer intégralement le champ personnalisé.
 		"/>
 		<!--Multitool and Convoy-->
-		<text name="CP_help_page_multiConvoy_title"														text="Multitool and Convoy"/>
+		<text name="CP_help_page_multiConvoy_title"														text="Outils multiples et convoi"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
-It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+Avec une course à outils multiples, vous pouvez avoir jusqu'à 5 véhicules en convoi travaillant dans le même champ avec la même course.
 		"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
-Once a multi tool course is loaded you will need to select the lane for the driver.
-Those lanes are always named the same:
-left(2), left(1), center, right(1), right(2).
-2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
-With 3 or 5 vehicles you will also gain the center option.
+Lorsque vous chargez une course à outils multiples, vous devez spécifier la position du véhicule dans la rangée.
+Ces positions sont nommées :
+gauche(2), gauche(1), centre, droite(1), droite(2).
+2 véhicules pourront occuper les positions gauche(1) and droite(1), 4 pourront en plus occuper gauche(2) et droite(2).
+Avec 3 ou 5 véhicules, vous pourrez également affecter un véhicule au centre.
 		"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
-The convoy only works if the vehicles have the same multi tool course with the same name loaded.
-They will automatically keep a small distance towards the vehicle in front of.
-Additionally the convoy feature also gets applied when for example a baler is driving behind a combine on the same course.
+Le mode convoi ne fonctionne que lorsque plusieurs véhicules disposent de la même course à outils multiples chargée.
+Ils maintiendront tous une distance de sécurité entre eux.
+Le mode convoi est également actif lorsque une presse suit une moissoneuse en utilisant la même course.
 		"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
-The convoy distance vehicle setting changes the distance between the vehicles.
-The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles in the convoy.
+La distance entre les véhicules d'un convoi peut être modifiée si besoin.
+Par défaut, elle est automatiquement ajustée à la plus haute valeur disponible au sein des véhicules d'un même convoi.
 		"/>
 		<!--Wrap and Collect-->
-		<text name="CP_help_page_wrapCollect_title"														text="Bale wrapping and collecting"/>
+		<text name="CP_help_page_wrapCollect_title"														text="Ramassage et enrubannage des bottes"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
-Wrapping and collecting bales can be done in two different ways.
-The first one is to load the same course you used for your baler and let the wrapper or collector run that course.
-However this can be tricky, as some bales love to roll or fly off the path.
-At this point, our wrap and collect job type can help as it doesn't need a course.
-Stay on the field and just start the driver from the HUD with wrap/collect bales or use the AI Map to send him to a field to start the job.
+Le ramassage et l'enrubannage des bottes peuvent se faire de deux manières différentes.
+La première est de charger la même course utilisée par la presse et laisser le ramassage ou l'enrubannage utiliser cette même course.
+Cette méthode est cependant risquée car certaines balles peuvent rouler ou venir bloquer votre tracteur.
+La deuxième méthode est d'utiliser le type de travail CP:Ramassage/enrub. bottes qui ne nécessite aucune création de course.
+En démarrant depuis le champ (ou en positionnement la position cible pour que l'ouvrier se rende sur place) et en démarrant le CP avec ce mode, celui-ci va détecter les balles présentes sur le champ afin de pouvoir faire fonctionner l'outil adéquat (enrubanneuse, plateau autoload ou chargeur automatique).
 		"/>
 		<text name="CP_help_page_wrapBasic_text"														text="
-Wrapping bales is very simple. Load a course of your baler and start like any other Fieldwork Job, or without a course,
-start it with bale wrapping/collecting from the HUD or the AI Menu.
+Pour enrubanner des bottes, vous pouvez soit charger la même course que la presse et démarrer le travail comme n'importe quelle course, soit choisir le type de travail CP:Ramassage/enrub. bottes depuis le menu des ouvriers puis lancer le CP (via l'ATH ou le menu des ouvriers) une fois dans le champ (pas besoin de créer ou charger une course).
 		"/>
 		<text name="CP_help_page_wrapFunction_text"														text="
-When using a course, the helper drives with a preset offset so the wrappers pickup is in the middle of the course.
-Without a course, the Courseplay scans the field for unwrapped bales and uses the pathfinder to find a way to
-the best closest bale to wrap.
-Automatic backing up if a bale is in front of the vehicle or if we are too close to the field border should prevent accidents.
+Lorsque vous utilisez une course, l'ouvrier applique automatiquement un léger décalage afin que l'enrubanneur soit centré sur la botte.
+Sans l'utilisation d'une course, le CP va détecter automatiquement la présence de bottes non enrubannées dans le champ afin de s'y rendre pour réaliser le travail d'enrubannage et ainsi de suite tant qu'il restera des bottes.
+L'ouvrier manoeuvrera pour approcher correctement la botte afin d'éviter de la heurter.
 		"/>
 		<text name="CP_help_page_collectBasic_text"														text="
-Collecting bales works kinda the same, with or without a course.
-When the collector is full, it will stop the work and tells the user it needs to be unloaded. If you have AutoDrive
-installed you can use it to run an unload the bale collector automatically.
+Le ramassage des bottes fonctionne de la même manière que l'enrubannage, soit avec une course ou alors en mode de détection automatique.
+Lorsqu'il n'y aura plus de place pour charger d'autres bottes, l'ouvrier s'arrêtera et attendra votre intervention pour la suite des opérations. Si vous utilisez Autodrive, vous pouvez le paramétrer pour définir une voie à suivre pour aller décharger les bottes automatiquement à un point donné avant de revenir continuer les opérations dans le champ.
 		"/>
 		<!--Vine work-->
-		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
+		<text name="CP_help_page_vineWork_title"														text="Travail dans les vignes"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
-Working on vines is a bit more complex then working on a normal field.
-To have the best result, the vines should all be next to each other within the default grid.
-The end and start of each vine, should also be approximately the same length.
-If the vines are on an existing field, you can open the generator the direct way like normal.
-If they are not on a field, you have to go over the AI Menu and place the field marker on the vines.
+Le travail dans les vignes est un peu plus délicat que dans les champs.
+Afin d'obtenir les meilleurs résultats, les vignes doivent être positionnées parallèlement les unes à côté des autres avec l'espacement par défaut de l'outil de plantation. Chaque rangée doit avoir approximativement la même longueur.
+Si les vignes sont situées dans un champ existant, vous pouvez ouvrir le générateur de courses depuis le menu des ouvriers comme habituellement.
+Si les vignes ne sont pas dans un champ existant ou déclaré dans la carte, vous devrez placer manuellement la position de départ sur les vignes.
 		"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
-The generator for vines has less options.
-Depending on the tool, you have to choose to work on the vines or beside the vines.
-E.g. the default harvester needs to drive and work on the vine.
-     The pre-pruner needs to drive left from the vines but works on the vine, so you have to choose to work on the vine, but drive with an offset.
-     Sprayers need to drive next to the vines and need to skip one row, since it sprays to the left and the right.
+Le générateur de course pour les vignes dispose de moins d'options. Selon les configurations de vos outils, vous devrez soit travailler le long des vignes ou au-dessus d'elles. 
+Exemples :  
+	- Les vendangeuses doivent enjamber les vignes pour travailler.
+    - Les pré-tailleuses doivent travailler sur la vigne mais le tracteur doit rouler à côté. Il faut donc choisir d'enjamber la vigne mais avec un décalage latéral. 	Ainsi la course sera sur les vignes mais le véhicule roulera à côté.
+    - Les sulfateuses travaillent le long des vignes mais doivent ignorer une rangée sur deux car elles traitent les deux côtés d'une rangée.
 		"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
-A vine course should be generated on the vines, as it got to drive and work on the vines.
+Une course de vendangeuse doit être générée depuis la sélection d'une vigne avec le mode enjambeur.
 		"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
-The pre-pruner works on the vines, so the course have to be generated on the vines.
-The Tools comes with an offset for the tractor, so the tractor drives between the vines.
+Une course de pré-tailleuse  doit être générée depuis la sélection d'une vigne avec le mode enjambeur mais avec un décalage latéral pour le tracteur afin qu'il puisse circuler dans les rangées.
 		"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
-The sprayer works next to the vines so it has to drive either left or right from the vines.
-Since the sprayer can work on the left and right vines at the same time, we can skip a row.
+Une course de sulfateuse doit être générée en mode côté gauche ou côté droit afin que le véhicule puisse longer les vignes. Vous pouvez également paramétrer la course pour ignorer un rang sur deux car les deux côtés de la rangée sont traités de toute façon.
 		"/>
 
 	<!-- Input bindings -->
