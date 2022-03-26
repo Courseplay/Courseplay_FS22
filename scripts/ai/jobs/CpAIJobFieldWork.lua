@@ -124,9 +124,12 @@ function CpAIJobFieldWork:validate(farmId)
 	self.cpJobParameters:validateSettings()
 	local vehicle = self.vehicleParameter:getVehicle()
 
-	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
-	if not isValid then
-		return isValid, errorMessage
+	--- Only check the valid field position in the in game menu.
+	if not self.isDirectStart then
+		isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
+		if not isValid then
+			return isValid, errorMessage
+		end
 	end
 
 	if not vehicle:hasCpCourse() then 
