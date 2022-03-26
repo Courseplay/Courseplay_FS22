@@ -24,6 +24,12 @@ function StonePickerController:isClosingAnimationPlaying()
 	return self.implement:getTipState() ~= Trailer.TIPSTATE_CLOSED
 end
 
+function StonePickerController:update(dt)
+	if self.vehicle.getCanAdTakeControl	and self.vehicle:getCanAdTakeControl() then 
+		self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+	end
+end
+
 --- Waits while it's full or unloading finished.
 function StonePickerController:getDriveData()
 	local maxSpeed
