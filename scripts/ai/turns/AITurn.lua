@@ -211,7 +211,6 @@ function AITurn:getDriveData(dt)
 	local gx, gz, moveForwards
 	if self.state == self.states.INITIALIZING then
 		local rowFinishingCourse = self.turnContext:createFinishingRowCourse(self.vehicle)
-		rowFinishingCourse:print()
 		self.ppc:setCourse(rowFinishingCourse)
 		self.ppc:initialize(1)
 		self.state = self.states.FINISHING_ROW

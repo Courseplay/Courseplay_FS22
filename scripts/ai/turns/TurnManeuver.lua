@@ -497,10 +497,20 @@ function VineTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turni
 	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, 0)
 
 	self:debug('Start generating')
-	self:debug('r=%.1f, w=%.1f', turningRadius, workWidth)
 
 	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(0)
+	local _, _, dz = turnContext:getLocalPositionOfTurnEnd(vehicle:getAIDirectionNode())
+	if dz > 0 then
+		startOffset = startOffset + dz
+	else
+		goalOffset = goalOffset + dz
+	end
+	self:debug('r=%.1f, w=%.1f, dz=%.1f, startOffset=%.1f, goalOffset=%.1f',
+			turningRadius, workWidth, dz, startOffset, goalOffset)
 	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
-			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+			-- always move the goal a bit backwards to let the vehicle align
+			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset - turnContext.frontMarkerDistance, self.turningRadius)
 	self.course = Course.createFromAnalyticPath(self.vehicle, path, true)
+	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, 0, false)
+	TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
 end
