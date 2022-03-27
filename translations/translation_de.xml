@@ -139,15 +139,15 @@
 		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Entfernung zwischen den Fahrzeugen. Wert: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Wert: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Feld"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld. Wert: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Wendemanöver"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver. Wert: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Rückwärts"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren. Wert: 2 - 25"/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Fahrzeug debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge"/>
 
 
@@ -161,22 +161,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Fortgeschritten"/>
 	
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbeitsbreite" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite. Value: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite. Wert: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Anzahl Vorgewende" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende. Value: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende. Wert: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vorgewende Überlappung" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite. Value: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite. Wert: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Feldgrenze" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Wert: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Reihen zum überspringen" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Wert: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Reihen pro Beet" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Value: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Wert: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Vorgewende Richtung" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Soll das Fahrzeug auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren" />
@@ -203,7 +203,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuell" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Richtungswinkel der Bahnen" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Winkel der Bahnen (0 ist Norden) wenn Einstellung auf Manuell gesetzt ist. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Winkel der Bahnen (0 ist Norden) wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Inselumfahrung" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Wie soll die Insel auf dem Feld umfahren werden." />
@@ -251,8 +251,8 @@
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Benutzereinstellungen"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller freundliches Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über den Controller bedienen lässt."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad freundliches Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über ein Gamepad bedienen lässt."/>
 
 		<text name="CP_global_setting_showActionEventHelp_title" 										text="Zeige Tastenbelegung"/>
 		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
@@ -274,11 +274,11 @@
 		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Spieler Maus"/>
 		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Aktiviert/deaktiviert die Maus Interaktion außerhalb eines Fahrzeugs."/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+		<text name="CP_global_setting_preferCustomFields_title"											text="Bevorzuge erstellten Feldrand"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normale Feld liegt."/>
 
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_title"																text="Kursmanager(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="kein Kurs"/>
 		<text name="CP_courseManager_temporary_course"													text="temporärer Kurs"/>
 
@@ -340,7 +340,7 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--Job Menu-->
-		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
+		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menu"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
 First you need to select a vehicle in the AI menu for generating a fieldwork course or gaining access to the vehicle settings and the course manager.
 The currently loaded course will be displayed on the map.
@@ -367,11 +367,11 @@ Now it's possible to start the driver directly from the menu. The Giants helper 
 Alternatively you can also start the driver from the HUD if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
 		"/>
 		<!--CourseGenerator-->
-		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
+		<text name="CP_help_page_courseGenerator_title"													text="Kursgenerator"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
 Every fieldwork course is generated by the course generator. This is a mighty tool, which allows you to customize the generated course to your needs.
 If you are new to this, you should probably start by only changing the headland amount setting.
-After that you can always change the other values and hit generate course and have a look, what impact certain values have on the course.
+After that you can always change the other Werts and hit generate course and have a look, what impact certain Werts have on the course.
 Experimenting with it and check what impact the different setting on different fields have is the best way to get used to it.
 		"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
@@ -409,7 +409,7 @@ Positive values reduce field size to add a buffer around the worked area in case
 Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
 		"/>
 		<!--CourseManager-->
-		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
+		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
 The course manager allows you to save courses and enables you to load the saved course later again.
 This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
@@ -467,7 +467,7 @@ Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
-		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
+		<text name="CP_help_page_customField_title"														text="Selbst erstellte Felder"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 There are two ways to create a custom field.
 The first one is to use the record function of the HUD.
@@ -486,7 +486,7 @@ Use the right mouse button to click on a position on where you want to start.
 The next right click will draw a line from your start point to your second position, wich will be the start point for the next line.
 		"/>
 		<!--Multitool and Convoy-->
-		<text name="CP_help_page_multiConvoy_title"														text="Multitool and Convoy"/>
+		<text name="CP_help_page_multiConvoy_title"														text="Multitool und Fahrzeugverband"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
 It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
 		"/>
@@ -504,10 +504,10 @@ Additionally the convoy feature also gets applied when for example a baler is dr
 		"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 The convoy distance vehicle setting changes the distance between the vehicles.
-The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles in the convoy.
+The distance of all vehicles with the same course name will be automatically set to the highest Wert of all vehicles in the convoy.
 		"/>
 		<!--Wrap and Collect-->
-		<text name="CP_help_page_wrapCollect_title"														text="Bale wrapping and collecting"/>
+		<text name="CP_help_page_wrapCollect_title"														text="Ballen wickeln und sammeln"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
 Wrapping and collecting bales can be done in two different ways.
 The first one is to load the same course you used for your baler and let the wrapper or collector run that course.
@@ -531,7 +531,7 @@ When the collector is full, it will stop the work and tells the user it needs to
 installed you can use it to run an unload the bale collector automatically.
 		"/>
 		<!--Vine work-->
-		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
+		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
 Working on vines is a bit more complex then working on a normal field.
 To have the best result, the vines should all be next to each other within the default grid.
