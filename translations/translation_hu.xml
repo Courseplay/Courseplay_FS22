@@ -6,12 +6,13 @@
 		<text name="CP_deactivated" 																	text="inaktív" />
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
+		<text name="CP_unit_foot" 																		text="ft" />
 
-		<!-- User info text -->
+	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Ha segítségre van szüksége, hibajelentéseket vagy javításokat szeretne benyújtani, látogasson el a következő oldalra: https://github.com/Courseplay/Courseplay_FS22." />
 		<text name="CP_error_no_course"																	text="Hozzon létre egy tanfolyamot, mielőtt elkezdi." />
+		<text name="CP_error_could_not_generate_course"													text="Could not generate course. The log may have more information." />
 		<text name="CP_error_not_on_field"																text="A cél nem a mezőn van." />
-
 
 	<!-- AI job menu -->
 		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
@@ -33,8 +34,9 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
-	<!--Drivemodes-->
-		<text name="FIELDWORK_CP"																		text="CP: Terepmunka" />
+	<!-- CP Jobs -->
+		<text name="CP_job_fieldWork"																	text="CP: Fieldwork" />
+		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Terepmunka tanfolyam létrehozása." />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Kurzusgenerátor megnyitása/zárása." />
