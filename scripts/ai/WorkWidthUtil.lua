@@ -133,7 +133,7 @@ function WorkWidthUtil.getAIMarkers(object, logPrefix, suppressLog)
                 if not suppressLog then
                     WorkWidthUtil.debug(object, logPrefix, 'has no work areas, configured to use front/back markers')
                 end
-                return Markers.getFrontMarkerNode(object), Markers.getFrontMarkerNode(object), Markers.getBackMarkerNode(object)
+                return Markers.getFrontMarkerNode(object.rootVehicle), Markers.getFrontMarkerNode(object.rootVehicle), Markers.getBackMarkerNode(object.rootVehicle)
             else
                 if not suppressLog then
                     WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up')
