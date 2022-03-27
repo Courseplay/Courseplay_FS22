@@ -7,5 +7,6 @@ type ai\AIDriveStrategyFieldWorkCourse.lua >> %outfile%
 type ai\AIDriveStrategyCombineCourse.lua >> %outfile%
 type ai\AIDriveStrategyPlowCourse.lua >> %outfile%
 type ai\AIDriveStrategyDriveToFieldWorkStart.lua >> %outfile%
+type ai\AIDriveStrategyVineFieldWorkCourse.lua >> %outfile%
 echo ]]^> >> %outfile%
 echo ^</code^> >> %outfile%
