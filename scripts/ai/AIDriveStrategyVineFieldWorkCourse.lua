@@ -48,3 +48,8 @@ end
 function AIDriveStrategyVineFieldWorkCourse:getImplementLowerEarly()
     return true
 end
+
+--- Creates a little space between the vine rows and the turn.
+function AIDriveStrategyVineFieldWorkCourse:getTurnEndForwardOffset()
+    return -4
+end
