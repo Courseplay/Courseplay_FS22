@@ -211,6 +211,7 @@ function AITurn:getDriveData(dt)
 	local gx, gz, moveForwards
 	if self.state == self.states.INITIALIZING then
 		local rowFinishingCourse = self.turnContext:createFinishingRowCourse(self.vehicle)
+		rowFinishingCourse:print()
 		self.ppc:setCourse(rowFinishingCourse)
 		self.ppc:initialize(1)
 		self.state = self.states.FINISHING_ROW
@@ -980,4 +981,20 @@ end
 
 function StartRowOnly:updateTurnProgress()
 	-- do nothing since this isn't really a turn
+end
+
+--- A turn for working between vine rows.
+---@class VineTurn : CourseTurn
+VineTurn = CpObject(CourseTurn)
+function VineTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth)
+	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'VineTurn')
+end
+
+function VineTurn:startTurn()
+	local turnManeuver = VineTurnManeuver(self.vehicle, self.turnContext, self.vehicle:getAIDirectionNode(),
+			self.turningRadius, self.workWidth)
+	self.turnCourse = turnManeuver:getCourse()
+	self.ppc:setCourse(self.turnCourse)
+	self.ppc:initialize(1)
+	self.state = self.states.TURNING
 end

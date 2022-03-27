@@ -490,3 +490,17 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	self:debug('Alignment course with %d waypoints created.', #alignmentWaypoints)
 	self.course = Course.createFromAnalyticPath(self.vehicle, alignmentWaypoints, true)
 end
+
+---@class VineTurnManeuver : TurnManeuver
+VineTurnManeuver = CpObject(TurnManeuver)
+function VineTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, 0)
+
+	self:debug('Start generating')
+	self:debug('r=%.1f, w=%.1f', turningRadius, workWidth)
+
+	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(0)
+	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
+			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+	self.course = Course.createFromAnalyticPath(self.vehicle, path, true)
+end

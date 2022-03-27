@@ -28,7 +28,7 @@ function AIDriveStrategyVineFieldWorkCourse.new(customMt)
         customMt = AIDriveStrategyVineFieldWorkCourse_mt
     end
     local self = AIDriveStrategyFieldWorkCourse.new(customMt)
-    
+    print('xxxxxxxxxxxxxxxxxx')
     return self
 end
 
@@ -47,4 +47,17 @@ end
 
 function AIDriveStrategyVineFieldWorkCourse:getImplementLowerEarly()
     return true
+end
+
+function AIDriveStrategyVineFieldWorkCourse:startTurn(ix)
+    print('yyyyyyyyy')
+
+    local _, frontMarkerDistance = AIUtil.getFirstAttachedImplement(self.vehicle)
+    local _, backMarkerDistance = AIUtil.getLastAttachedImplement(self.vehicle)
+    self:debug('Starting a turn at waypoint %d, front marker %.1f, back marker %.1f', ix, frontMarkerDistance, backMarkerDistance)
+    self.ppc:setShortLookaheadDistance()
+    self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
+            frontMarkerDistance, -backMarkerDistance, 0, 0)
+    self.aiTurn = VineTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+    self.state = self.states.TURNING
 end
