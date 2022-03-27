@@ -391,6 +391,11 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
             self:debug('connecting track ended, back to work, first lowering implements.')
             self.state = self.states.WORKING
             self:lowerImplements()
+        elseif self.course:isTurnStartAtIx(ix) and
+                not self.course:isOnConnectingTrack(ix + 1) and
+                not self.course:isOnHeadland(ix + 1)then
+            self:debug('ending connecting track with a turn into the up/down rows')
+            self:startTurn(ix)
         end
     elseif self.state == self.states.WORKING then
         -- towards the end of the field course make sure the implement reaches the last waypoint

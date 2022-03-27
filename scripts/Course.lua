@@ -624,7 +624,8 @@ end
 
 --- How far are we from the waypoint marked as the beginning of the up/down rows?
 ---@param ix number start searching from this index. Will stop searching after 100 m
----@return number of meters or math.huge if no start up/down row waypoint found within 100 meters and the index of the first up/down waypoint
+---@return number, number of meters or math.huge if no start up/down row waypoint found within 100 meters and the
+--- index of the first up/down waypoint
 function Course:getDistanceToFirstUpDownRowWaypoint(ix)
 	local d = 0
 	local isConnectingTrack = false
