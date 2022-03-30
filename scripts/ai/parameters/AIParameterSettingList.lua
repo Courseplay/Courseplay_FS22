@@ -233,7 +233,9 @@ function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 	local rawValue = xmlFile:getString(key .. "#currentValue")
 	local value = rawValue and tonumber(rawValue) 
 	if value then 
-		self:setFloatValue(value)
+		self:debug("loaded value: %.2f", value)
+		--- Applies a small epsilon, as otherwise floating point problems might happen.
+		self:setFloatValue(value, 0.001)
 	else 
 		self:loadFromXMLFileLegacy(xmlFile, key)
 	end
@@ -315,10 +317,12 @@ end
 
 --- Sets a float value relative to the incremental.
 ---@param value number
+---@param epsilon number optional
 ---@return boolean value is not valid and could not be set.
-function AIParameterSettingList:setFloatValue(value)
+function AIParameterSettingList:setFloatValue(value, epsilon)
 	return setValueInternal(self, value, function(a, b)
-		return MathUtil.equalEpsilon(a, b, self.data.incremental or 0.1) end)
+								local epsilon = epsilon or self.data.incremental or 0.1
+		return MathUtil.equalEpsilon(a, b, epsilon) end)
 end
 
 --- Gets the closest value ix and absolute difference, relative to the value searched for.
