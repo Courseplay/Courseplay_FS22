@@ -44,8 +44,8 @@ function CpAIJobBaleFinder:getCanStartJob()
 end
 
 
-function CpAIJobBaleFinder:applyCurrentState(vehicle, mission, farmId, isDirectStart)
-	CpAIJobBaleFinder:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+function CpAIJobBaleFinder:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
+	CpAIJobBaleFinder:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 end
 
 function CpAIJobBaleFinder:setValues()

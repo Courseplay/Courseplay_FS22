@@ -197,6 +197,7 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 			self.currentJob:getCpJobParameters():validateSettings()
 			CpSettingsUtil.updateAiParameters(self.currentJobElements)
 			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
+			self:updateParameterValueTexts()
 		else
 			self.mode = CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR
 			self.courseGeneratorLayout:setVisible(true)

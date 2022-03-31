@@ -468,7 +468,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
             self:debug("opened ai inGame menu job %s.", job:getDescription())
             pageAI.currentJob = nil
             pageAI:setActiveJobTypeSelection(jobTypeIndex)
-            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false)
+            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, true)
             pageAI:updateParameterValueTexts()
             pageAI:validateParameters()
             --- Fixes the job selection gui element.

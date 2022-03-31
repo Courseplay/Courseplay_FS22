@@ -49,7 +49,12 @@ function CpAIJobFieldWork:setupJobParameters()
 	self:setupCpJobParameters(nil)
 end
 
-function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+---@param vehicle Vehicle
+---@param mission Mission
+---@param farmId number
+---@param isDirectStart boolean disables the drive to by giants
+---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
+function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 	CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 	
 	local x, z = nil
@@ -61,12 +66,15 @@ function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectSt
 			x, z = lastJob.fieldPositionParameter:getPosition()
 		end
 	end
-
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 	end
 
 	self.fieldPositionParameter:setPosition(x, z)
+
+	if isStartPositionInvalid then
+		self:resetStartPositionAngle(vehicle)
+	end
 end
 
 --- Checks the field position setting.
