@@ -229,6 +229,11 @@ You can define the following custom settings:
              useVehicleSizeForMarkers="true"
     />
 
+    <!--\vehicles\samsonAgro-->
+    <Vehicle name="us235.xml"
+             workingWidth="24"
+    />
+
     <!--Tractors-->
     
     <!--\vehicles\stara-->
