@@ -174,7 +174,7 @@ You can define the following custom settings:
              implementWheelAlwaysOnGround = "true"
 	/>
     <Vehicle name="titan18.xml"
-             turnRadius = "7.5"
+             turnRadius = "9"
              implementWheelAlwaysOnGround = "true"
              raiseLate = "true"
              lowerEarly = "true"
@@ -261,7 +261,9 @@ You can define the following custom settings:
     />
     <Vehicle name="pw10012.xml"
              implementWheelAlwaysOnGround = "true"
-             noReverse="true"
+             turnRadius="14"
+             raiseLate="true"
+             lowerEarly="true"
     />
     <Vehicle name="ecomat.xml"
              raiseLate = "true"
