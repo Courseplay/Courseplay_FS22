@@ -66,12 +66,19 @@ function CpAIJobBaleFinder:validate(farmId)
 end
 
 function CpAIJobBaleFinder:readStream(streamId, connection)
-	self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
-	self.baleFinderTask:setFieldPolygon(self.fieldPolygon)
+	if streamReadBool(streamId) then
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+		self.baleFinderTask:setFieldPolygon(self.fieldPolygon)
+	end
 	CpAIJobBaleFinder:superClass().readStream(self, streamId, connection)
 end
 
 function CpAIJobBaleFinder:writeStream(streamId, connection)
-	CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	if self.fieldPolygon then
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
 	CpAIJobBaleFinder:superClass().writeStream(self, streamId, connection)
 end
