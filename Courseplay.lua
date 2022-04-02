@@ -167,7 +167,7 @@ function Courseplay:draw()
 	end
 	g_devHelper:draw()
 	CpDebug:draw()
-	if not g_gui:getIsGuiVisible() then
+	if not g_gui:getIsGuiVisible() and not g_noHudModeEnabled then
 		self.infoTextsHud:draw()
 	end
 end
