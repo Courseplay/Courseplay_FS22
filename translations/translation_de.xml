@@ -342,29 +342,31 @@
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menu"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
-First you need to select a vehicle in the AI menu for generating a fieldwork course or gaining access to the vehicle settings and the course manager.
-The currently loaded course will be displayed on the map.
-The global settings are always visible.
-For generating a course and starting the courseplay jobs, you will need to create the job CP: Fieldwork or CP: wrap/collect bales, similar to the Giants helper.
+Durch auswählen eines Fahrzeugs im Helfer Menü, werden die Fahrzeugeinstellungen und der Kursmanager im Menü eingeblendet.
+Der aktuell geladene Kurs wird auf der Map angezeigt.
+Die globalen Einstellungen sind dauerhaft sichtbar.
+Um einen Feldkurs generieren zu können, müsst ihr ein für Feldarbeit gültiges Fahrzeug auf der AI Map ausgewählt.
+Um einen Kurs zu generieren, müsst ihr einen Job erstellen und entweder CP: Feldarbeit oder CP: wickeln/sammeln auswählen, ähnlich wie beim Giants Helfer.
 		"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
-To start off with your first CP job, you would have to select a vehicle and a possible valid implement which is supported for the job.
-Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect
-with a bale wrapper or bale collector attached.
+Um euren ersten Job zu starten, müsst ihr ein Fahrzeug mit einem für die Arbeit gültiges Tool auswählen.		
+Klickt dann auf Job erstellen und wählt CP: Feldarbeit für Feldarbeitsgeräte,
+oder CP: wickeln/sammeln für Ballen Wickler oder Sammler aus.
 		"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
-With a CP job selected, you would need to place the field position on a field for generating the course or using the bale finder on it.
-The position also roughly controls the starting point of your course.
-If you want to use the Giants helper to drive to the field, then you also need to set the target position close to the starting point of the course.
-The lane offset setting is only used if you want to have multiple helpers working on the same field. For this please checkout the separate help menu page below.
+Habt ihr einen CP Job ausgewählt, müsst ihr mit der Feldposition euer Feld auswählen auf dem ihr einen Kurs generieren, oder Ballen wickeln oder sammeln wollt.
+Die Position bestimmt ungefähr die Startposition eures Kurses.
+Wenn ihr möchtet, dass der Giants Helfer euch zum Feld bringt, dann müsst ihr zusätzlich noch die Zielposition nahe des Startpunktes setzen.
+Das setting für die Bahn wird nur benutzt, wenn ihr mehrere Fahrzeuge auf einem Kurs fahren lassen wollt. Mehr dazu im Menü weiter unten.
 		"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
-When the field position is placed correctly on a field, you will see the field border drawn on the map.
-If you are creating a CP: Fieldwork job, you will gain access to the course generator settings. 
+Wenn die Feldposition richtig auf einem Feld platziert wurde, wird der Feldrand weis auf markiert.
+Wenn es sich bei eurem Job um Feldarbeit handelt, bekommt ihr jetzt zugriff zum Kursgenerator.
 		"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
-Now it's possible to start the driver directly from the menu. The Giants helper will drive to the target position and from there the CP job automatically takes over.
-Alternatively you can also start the driver from the HUD if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
+Habt ihr einen Kurs erstellt, ist es jetzt möglich den Fahrer über Job starten sofort los zu schicken.
+Der Giants Helfer wird zu dem Zielpunkt fahren und dann automatisch an CP übergeben.
+Alternativ könnt ihr den Fahrer auch über das HUD starten, oder mit Hilfe von AutoDrive euer Gespann zum Feld zu fahren.
 		"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Kursgenerator"/>
@@ -469,21 +471,21 @@ R: Removes the copied course from the clipboard.
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Selbst erstellte Felder"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-There are two ways to create a custom field.
-The first one is to use the record function of the HUD.
-Start the record and drive the field border that you want to record.
-Once done, press the button again and you will be asked if you want to save it.
+Es gibt zwei Möglichkeiten ein eigenes Feld zu erstellen.
+Die erste Option ist mit dem Aufzeichnen Button im HUD.
+Startet die Aufnahme und fahrt euren Feldrand ab den ihr aufzeichnen wollt.
+Seid ihr wieder am Startpunkt angekommen, drückt den Aufzecihnen Button noch mal und ihr werdet gefragt, ob ihr den Feldrand speichern wollt.
 		"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Having a look on the AI Menu, you will see your recorded field border.
-By clicking on the Name, you will get the option to either delete or rename it.
+Im Helfer Menü könnt ihr euren Randkurs mit Namen sehen.		
+Wenn ihr auf den Namen klickt, könnt ihr den Kurs löschen oder umbenennen.
 		"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-The second option is to draw it on the AI Menu Map.
-Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
-When started, the text draw custom field lines with right click will be displayed.
-Use the right mouse button to click on a position on where you want to start.
-The next right click will draw a line from your start point to your second position, wich will be the start point for the next line.
+Die zweite Option ist das Zeichnen im Helfer Menü.
+Dazu dürft ihr kein Fahrzeug ausgewählt haben (linksklick irgendwo auf der Map) und ihr bekommt die Option einen Randkurs zu zeichnen.
+Wenn ihr das Zeichnen gestartet habt, wird der Text Zeichne einen Randkurs angezeigt.
+Mit der rechte Maustaste könnt ihr jetzt den ersten Punkt setzen.
+Mit einem weiteren rechtsklick wird eine Linie von eurem ersten zum zweiten Punkt gezogen, der 2te Punkt ist nun wieder der Startpunkt für die nächste Linie.
 		"/>
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Multitool und Fahrzeugverband"/>
