@@ -490,23 +490,23 @@ Mit einem weiteren rechtsklick wird eine Linie von eurem ersten zum zweiten Punk
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Multitool und Fahrzeugverband"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
-It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+Es ist möglich, bis zu 5 Fahrzeuge zusammen auf einem Feld in einem Fahrzeugverband Arbeiten zu lassen. (Auch Multitool Kurs genannt).
 		"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
-Once a multi tool course is loaded you will need to select the lane for the driver.
-Those lanes are always named the same:
-left(2), left(1), center, right(1), right(2).
-2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
-With 3 or 5 vehicles you will also gain the center option.
+Sobald ein Multitool Kurs geladen ist, muss die Bahn gewählt werden, auf der gefahren werden soll.
+Die Bahnen haben immer den gleichen Namen:
+links(2), links(1), mitte, rechts(1), rechts(2).
+2 Fahrzeuge haben links(1) und rechts (1), 4 haben (links2) und rechts(2).
+Mit 3 oder 5 Fahrzeugen, ist dann auch die mittlere Bahn verfügbar.
 		"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
-The convoy only works if the vehicles have the same multi tool course with the same name loaded.
-They will automatically keep a small distance towards the vehicle in front of.
-Additionally the convoy feature also gets applied when for example a baler is driving behind a combine on the same course.
+Der Fahrzeugverband funktioniert nur wenn die Fahrzeuge einen Multitool Kurs mit dem gleichen Namen geladen haben.
+Die Fahrzeuge halten automatisch den Abstand zum Vorderen Fahrzeug ein.
+Außerdem sorgt der Fahrzeugverband dafür, dass z.B. eine Ballenpresse die hinter einem Drescher fährt, auf Abstand bleibt.
 		"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
-The convoy distance vehicle setting changes the distance between the vehicles.
-The distance of all vehicles with the same course name will be automatically set to the highest Wert of all vehicles in the convoy.
+Die Fahrzeugverband Einstellung bei den Fahrzeugeinstellungen bestimmt die Entfernung zum vorderen Fahrzeug.
+Die Einstellung von allen Fahrzeugen mit dem gleichen Kursnamen wird auf den höchsten Wert eines einzelnen Fahrzeuges gesetzt.
 		"/>
 		<!--Wrap and Collect-->
 		<text name="CP_help_page_wrapCollect_title"														text="Ballen wickeln und sammeln"/>
@@ -535,29 +535,30 @@ installed you can use it to run an unload the bale collector automatically.
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
-Working on vines is a bit more complex then working on a normal field.
-To have the best result, the vines should all be next to each other within the default grid.
-The end and start of each vine, should also be approximately the same length.
-If the vines are on an existing field, you can open the generator the direct way like normal.
-If they are not on a field, you have to go over the AI Menu and place the field marker on the vines.
+Das Arbeiten auf Reben ist etwas komplexer als auf einem normalen Feld.
+Damit es möglichst Problemlos klappt, sollten die Reihen alle im normalen Raster gestellt werden.
+Die Enden jeder Rebe, sollten ungefähr die gleiche Länge haben.
+Wenn die Reben auf einem existierenden Feld sind, kann man den Generator ganz normal öffnen.
+Befinden sich die Reben nicht auf einem Feld, muss über das Helfer Menü der Feldpunkt auf die Reben gesetzt werden.
 		"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
-The generator for vines has less options.
-Depending on the tool, you have to choose to work on the vines or beside the vines.
-E.g. the default harvester needs to drive and work on the vine.
-     The pre-pruner needs to drive left from the vines but works on the vine, so you have to choose to work on the vine, but drive with an offset.
-     Sprayers need to drive next to the vines and need to skip one row, since it sprays to the left and the right.
+Der Generator für Reben hat weniger Einstellungen.
+Abhängig vom Gerät, muss ausgewählt werden ob man auf oder neben den Reben arbeiten will.
+Z.B. der normale Ernter muss auf den Reben Fahren und Arbeiten.
+Der Blattschneider muss links von den Reben fahren, aber auf den Reben arbeiten. Somit muss Arbeiten auf den Reben gewählt werden,
+aber mit einem Offset geffahren werden.
+Die Spritze muss neben den Reben Arbeiten und eine Reihe überspringen, da diese die linke und rechte Rebenreihe bearbeitet.
 		"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
-A vine course should be generated on the vines, as it got to drive and work on the vines.
+Der Rebenkurs sollte auf den Reben generiert werden, da er auf den Reben arbeitet.
 		"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
-The pre-pruner works on the vines, so the course have to be generated on the vines.
-The Tools comes with an offset for the tractor, so the tractor drives between the vines.
+Der Blattschneider arbeitet auf den Reben, also muss der Kurs auf den Reben generiert werden.
+Das Tool hat ein automatischen Offset, damit der Traktor zwischen den Reben fährt.
 		"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
-The sprayer works next to the vines so it has to drive either left or right from the vines.
-Since the sprayer can work on the left and right vines at the same time, we can skip a row.
+Die Spritze arbeitet neben den Reben und muss entweder links oder rechts von den Reben fahren.
+Da die Spritze die Reben links und rechts bearbeitet, kann man eine Reihe überspringen.
 		"/>
 
 	<!-- Input bindings -->
