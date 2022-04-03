@@ -354,6 +354,7 @@ function CpBaseHud:addCopyCourseBtn(line)
     --- Copy course btn.                                          
     self.copyCourseElements = {}
     self.copyCourseIx = 1
+    self.courseVehicles = {}
     local leftX, leftY = unpack(self.lines[line].left)
     local rightX, rightY = unpack(self.lines[line].right)
     local btnYOffset = self.hMargin*0.2
@@ -382,7 +383,10 @@ function CpBaseHud:addCopyCourseBtn(line)
     self.copyCourseElements.copyBtn = CpHudButtonElement.new(copyOverlay, self.baseHud)
     self.copyCourseElements.copyBtn:setPosition(rightX, rightY-btnYOffset)
     self.copyCourseElements.copyBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        --- TODO: add course copy logic here!
+        local v = self.courseVehicles[self.copyCourseIx]
+        if v then 
+            self.vehicle:cpCopyCourse(v)
+        end
     end)
     self.copyCourseElements.copyBtn:setCallback("onHoveredChanged", self.vehicle, function (vehicle)
         --- TODO: Maybe change the vehicle name to the course name, while hovered.

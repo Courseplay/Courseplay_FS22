@@ -72,6 +72,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'cpCopyCourse', CpCourseManager.cpCopyCourse)
     
     SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
@@ -188,6 +189,14 @@ function CpCourseManager:setFieldWorkCourse(course)
     CpCourseManager.resetCourses(self)
     CpCourseManager.addCourse(self,course)   
     course:setVehicle(self)
+end
+
+--- Copy the fieldwork course from another vehicle.
+function CpCourseManager:cpCopyCourse(vehicle)
+    if vehicle:hasCpCourse() then
+        local course = vehicle:getFieldWorkCourse()
+        self:setFieldWorkCourse(course)
+    end    
 end
 
 function CpCourseManager:setCoursesFromNetworkEvent(courses)
