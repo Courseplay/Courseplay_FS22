@@ -47,7 +47,7 @@ CpBaseHud.uvs = {
         {184, 148, 32, 32}
     },
     exitSymbol = {
-        {150, 180, 32, 32}
+        {148, 184, 32, 32}
     },
     circleSymbol = {
         {0, 366, 28, 28}
@@ -377,16 +377,15 @@ function CpBaseHud:addCopyCourseBtn(line)
     self.copyCourseElements.leftBtn:setPosition(leftX, leftY-btnYOffset)
     self.copyCourseElements.leftBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         self.copyCourseIx = MathUtil.clamp(self.copyCourseIx - 1, 1, #self.courseVehicles)
-        print("leftClick")
     end)
 
     self.copyCourseElements.copyBtn = CpHudButtonElement.new(copyOverlay, self.baseHud)
     self.copyCourseElements.copyBtn:setPosition(rightX, rightY-btnYOffset)
     self.copyCourseElements.copyBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        print("copyClick")
+        --- TODO: add course copy logic here!
     end)
     self.copyCourseElements.copyBtn:setCallback("onHoveredChanged", self.vehicle, function (vehicle)
-        print("copyClick on hover")
+        --- TODO: Maybe change the vehicle name to the course name, while hovered.
     end)
 
 
@@ -394,7 +393,6 @@ function CpBaseHud:addCopyCourseBtn(line)
     self.copyCourseElements.rightBtn:setPosition(rightX - width - self.wMargin/2 , rightY-btnYOffset)
     self.copyCourseElements.rightBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         self.copyCourseIx = MathUtil.clamp(self.copyCourseIx + 1, 1, #self.courseVehicles)
-        print("rightClick")
     end)
 
     self.copyCourseElements.vehicleBtn = CpTextHudElement.new(self.baseHud, 
@@ -489,7 +487,8 @@ function CpBaseHud:updateCopyBtn(status)
         e:setVisible(not status:getIsActive() and #self.courseVehicles>0)
     end
     local v = self.courseVehicles[self.copyCourseIx]
-    local text = v and string.format("%s (%dm)", CpUtil.getName(v), calcDistanceFrom(v.rootNode, self.vehicle.rootNode)) or ""
+    local distText = v and AIParameterSettingList.getDistanceText(calcDistanceFrom(v.rootNode, self.vehicle.rootNode))
+    local text = v and string.format("%s (%s)", CpUtil.getName(v), distText) or ""
     self.copyCourseElements.vehicleBtn:setTextDetails(text)
 end
 
