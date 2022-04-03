@@ -314,7 +314,8 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
 
     local x, y = unpack(self.lines[line].left)
     local dx, dy = unpack(self.lines[line].right)
-    local element = CpHudSettingElement.new(parent, x, y, dx, dy, 
+    local btnYOffset = self.hMargin*0.1
+    local element = CpHudSettingElement.new(parent, x, y, dx, y - btnYOffset, 
                                             incrementalOverlay, decrementalOverlay, textSize)
 
     local callbackIncremental = {
