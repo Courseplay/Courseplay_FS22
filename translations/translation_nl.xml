@@ -458,7 +458,9 @@ J: Waarde voor verticale offset, + achteruit, - vooruit.
 K, L en M: Als u op de tekst klikt, worden uw wijzigingen teruggezet naar de automatische waarden.
 N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld.
 O: Start/stop recording a custom field course.
-P: Removes course from vehicle
+P: Removes course from vehicle.
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Custom Fields"/>

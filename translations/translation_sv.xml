@@ -460,7 +460,9 @@ J: Värde för vertikal förskjutning, + bakåt, - framåt.
 K, L och M: Om du klickar på texten återställs dina ändringar i bilvärdena.
 N: Detta område visar körfältets offset om du har en multitool-kurs. Genom att klicka på texten växlar positionerna.
 O: Start / Sluta spela in en anpassad fältkurs.
-P: tar bort kurs från fordon
+P: tar bort kurs från fordon.
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Anpassade fält"/>

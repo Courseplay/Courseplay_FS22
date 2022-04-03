@@ -457,7 +457,9 @@ J: Value for vertical offset, + backward, - forward.
 K, L and M: Clicking on the text will reset your changes to the auto values.
 N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
 O: Start/stop recording a custom field course.
-P: Removes course from vehicle
+P: Removes course from vehicle.
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Custom Fields"/>

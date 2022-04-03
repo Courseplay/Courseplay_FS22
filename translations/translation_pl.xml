@@ -458,7 +458,9 @@ J: Wartość przesunięcia wertykalnego, + do tyłu, - do przodu.
 K, L i M: Kliknięcie na tekst zresetuje ustawienia do wartości automatycznych.
 N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję.
 O: Rozpocznij/Zakończ nagrywanie nowego pola.
-P: Usuń kurs z pojazdu
+P: Usuń kurs z pojazdu.
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Nowe pola"/>

@@ -447,21 +447,22 @@ Directories must be empty if you want to delete them.
 A: Clicking on the vehicle name will open the vehicle setting menu.
 B: Selects the starting point where you want the helper to start.
 C: Clicking on the course name will open the AI menu.
-   If the vehicle is on a field then the course generator settings will also be opened.
+     If the vehicle is on a field then the course generator settings will also be opened.
 D: Starts or stops the helper. If the color is green then the CP helper is active.
 E: Shows the current waypoint / total waypoints. Clicking on it will open the course manager menu.
 F: Clicking on this icon opens the global settings menu.
 G: Closes the HUD.
 H: Decrease or increase the working width. A red line on your vehicle shows the current value.
 I: Value for horizontal offset, + left, - right.
-J: Copy and Paste course. The picture shows paste and lights up green if you can paste the course. To paste a course, you need to have no course loaded.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
 K and L: Clicking on the text will reset your changes to the default values.
 N: This area shows the lane offset if you have a multi tool course loaded for convoy. 
-   Clicking on the text toggles the positions.
+     Clicking on the text toggles the positions.
 O: Start/stop the recording of custom fields.
 P: Removes the course from the vehicle.
-Q: Toggles the course visability on, off and start/stop only.
-R: Remove the copied course from the clipboard.
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Custom Fields"/>

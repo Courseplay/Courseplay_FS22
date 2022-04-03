@@ -457,6 +457,8 @@ K, L a M: Kliknutím na text resetujete změny na automatické hodnoty.
 N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
 O: Spuštění/zastavení záznamu vlastní trasy na poli.
 P: Odstraňuje trasu z vozidla
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Vlastní pole"/>

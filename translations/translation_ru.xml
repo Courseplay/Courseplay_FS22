@@ -460,7 +460,9 @@ J: Значение для продольного смещения: + назад
 K, L и M: Нажатие на текст сбросит ваши изменения до автоматически определённых значений.
 N: Эта область показывает смещение полосы движения, если у вас будет загруженный курс для работы нескольких орудий. Нажатие на текст переключает позиции.
 O: Start/stop recording a custom field course.
-P: Removes course from vehicle
+P: Removes course from vehicle.
+Q: Changes the course visability between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Пользовательское поля"/>
