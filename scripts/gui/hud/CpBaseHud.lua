@@ -44,10 +44,10 @@ CpBaseHud.uvs = {
         {512, 512, 128, 128}
     },
     pasteSymbol = {
-        {256, 640, 128, 128}
+        {255, 639, 128, 128}
     },
     copySymbol = {
-        {128, 640, 128, 128}
+        {127, 637, 128, 128}
     },
     exitSymbol = {
         {148, 184, 32, 32}
@@ -364,7 +364,7 @@ function CpBaseHud:addCopyCourseBtn(line)
     local rightX, rightY = unpack(self.lines[line].right)
     local btnYOffset = self.hMargin*0.2
 
-    local width, height = getNormalizedScreenValues(20, 20)
+    local width, height = getNormalizedScreenValues(22, 22)
     
     local copyOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
     copyOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.copySymbol)))
