@@ -192,10 +192,9 @@ function CpCourseManager:setFieldWorkCourse(course)
 end
 
 --- Copy the fieldwork course from another vehicle.
-function CpCourseManager:cpCopyCourse(vehicle)
-    if vehicle:hasCpCourse() then
-        local course = vehicle:getFieldWorkCourse()
-        self:setFieldWorkCourse(course)
+function CpCourseManager:cpCopyCourse(course)
+    if course then
+        self:setFieldWorkCourse(course:copy())
     end    
 end
 

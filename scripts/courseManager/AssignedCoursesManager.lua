@@ -32,21 +32,6 @@ function AssignedCoursesManager:getRegisteredVehicles()
 	return self.vehicles
 end
 
---- Gets all vehicles with a course, sorted by the distance to a reference vehicle.
---- Also excludes the reference vehicle.
-function AssignedCoursesManager:getVehiclesWithCoursesByDistance(refVehicle)
-	local vehiclesWithCourse = {}
-	for i, v in pairs(self.vehicles) do 
-		if v:hasCpCourse() and v ~= refVehicle then 
-			table.insert(vehiclesWithCourse, v)
-		end
-	end
-	table.sort(vehiclesWithCourse, function (a, b)
-		return calcDistanceFrom(refVehicle.rootNode, a.rootNode) <  calcDistanceFrom(refVehicle.rootNode, b.rootNode)
-	end)
-	return vehiclesWithCourse
-end
-
 --- Saves all assigned vehicle courses in a single xml file under the savegame folder.
 function AssignedCoursesManager:saveAssignedCourses(savegameDir)
 
