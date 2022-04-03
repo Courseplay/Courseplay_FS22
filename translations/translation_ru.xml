@@ -456,8 +456,10 @@ F: Клик на иконке открывает страницу глобаль
 G: Можно закрыть HUD.
 H: Увеличение и уменьшение рабочей ширины. Красная линия возле техники отображаете текущие настройки.
 I: Значение для поперечного смещения: + влево, - вправо.
-J: Значение для продольного смещения: + назад, - вперёд.
-K, L и M: Нажатие на текст сбросит ваши изменения до автоматически определённых значений.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K и L: Нажатие на текст сбросит ваши изменения до автоматически определённых значений.
+M: Shows the copied course.
 N: Эта область показывает смещение полосы движения, если у вас будет загруженный курс для работы нескольких орудий. Нажатие на текст переключает позиции.
 O: Start/stop recording a custom field course.
 P: Removes course from vehicle.

@@ -452,8 +452,10 @@ F: Kliknutím na ikonu se otevře stránka obecných nastavení.
 G: Zavře Hud.
 H: Snižte a zvětšete pracovní šířku. Červená čára na vašem vozidle ukazuje aktuální nastavení.
 I: Hodnota pro horizontální posun, + vlevo, - vpravo.
-J: Hodnota pro vertikální posun, + dozadu, - dopředu.
-K, L a M: Kliknutím na text resetujete změny na automatické hodnoty.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K a L: Kliknutím na text resetujete změny na automatické hodnoty.
+M: Shows the copied course.
 N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
 O: Spuštění/zastavení záznamu vlastní trasy na poli.
 P: Odstraňuje trasu z vozidla

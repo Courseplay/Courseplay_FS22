@@ -452,8 +452,10 @@ F: Cliquez sur l'icone pour ouvrir les paramètres généraux.
 G: Ferme l'ATH.
 H: Augmente ou diminue la largeur de travail. Visible via une ligne rouge sur le véhicule.
 I: Valeur du décalage horizontal, + gauche, - droite.
-J: Valeur du décalage vertical, + arrière, - avant.
-K, L and M: Cliquez sur le texte pour rétablir les valeurs automatiques.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K and L: Cliquez sur le texte pour rétablir les valeurs automatiques.
+M: Shows the copied course.
 N: Affichage du décalage de rang lorsque vous avez chargé une course multi-outils. Cliquez sur le texte pour intervertir les positions.
 O: Démarrer/Arrêter l'enregistrement d'un contour de champ personnalisé.
 P: Réinitialiser la course active.

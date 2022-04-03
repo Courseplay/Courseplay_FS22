@@ -456,8 +456,10 @@ F: Klicka på ikonen Öppnar sidan Allmänna inställningar.
 G: Stänger HUD.
 H: Minska och öka arbetsbredden. En röd linje på ditt fordon visar den aktuella inställningen.
 I: Värde för horisontell förskjutning, + vänster, - höger.
-J: Värde för vertikal förskjutning, + bakåt, - framåt.
-K, L och M: Om du klickar på texten återställs dina ändringar i bilvärdena.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K och L: Om du klickar på texten återställs dina ändringar i bilvärdena.
+M: Shows the copied course.
 N: Detta område visar körfältets offset om du har en multitool-kurs. Genom att klicka på texten växlar positionerna.
 O: Start / Sluta spela in en anpassad fältkurs.
 P: tar bort kurs från fordon.

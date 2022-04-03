@@ -454,8 +454,10 @@ F: Clicar neste ícone abre o menu de configurações globais.
 G: Fecha o HUD.
 H: Diminuir ou aumentar a largura de trabalho. Uma linha vermelha no seu veículo mostra o valor atual.
 I: Valor para deslocamento horizontal, + esquerda, - direita.
-J: Valor para deslocamento vertical, + para trás, - para frente.
-K, L e M: Clicar no texto irá redefinir suas alterações para os valores padrão.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K e L: Clicar no texto irá redefinir suas alterações para os valores padrão.
+M: Shows the copied course.
 N: Esta área mostra o deslocamento da pista se você tiver uma rota multi implementos carregado para comboio.
    Clicar no texto alterna as posições.
 O: Iniciar/parar a gravação de campos customizados.

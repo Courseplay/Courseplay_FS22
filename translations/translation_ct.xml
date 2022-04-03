@@ -452,8 +452,10 @@ F: Clicking on the icon opens the general settings page.
 G: Closes the HUD.
 H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
 I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the auto values.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K and L: Clicking on the text will reset your changes to the auto values.
+M: Shows the copied course.
 N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
 O: Start/stop recording a custom field course.
 P: Removes course from vehicle

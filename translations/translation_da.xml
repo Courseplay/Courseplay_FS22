@@ -455,8 +455,10 @@ F: Ved at klikke på ikonet åbnes de grundindstillinger.
 G: Lukke HUD.
 H: Reducerer eller øger arbejdsbredden. En rød streg på køretøjet viser indstillingen.
 I: Vandret offset værdi, + venstre, - højre.
-J: Lodret offset værdi, + tilbage, - frem.
-K, L og M: Klik på teksten for at nulstille værdierne.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K og L: Klik på teksten for at nulstille værdierne.
+M: Shows the copied course.
 N: Det er her baneforskydningen vises, hvis et konvøjforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
 O: Start/stop Optegning af brugerdefineret mark.
 P: fjern rute fra køretøj
