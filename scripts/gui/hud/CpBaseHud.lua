@@ -7,7 +7,7 @@ CpBaseHud.OFF_COLOR = {0.2, 0.2, 0.2, 0.9}
 
 CpBaseHud.RECORDER_ON_COLOR = {1, 0, 0, 0.9}
 CpBaseHud.ON_COLOR = {0, 0.6, 0, 0.9}
-
+CpBaseHud.SEMI_ON_COLOR = {0.6, 0.6, 0, 0.9}
 CpBaseHud.WHITE_COLOR = {1, 1, 1, 0.9}
 
 CpBaseHud.colorHeader = {
@@ -58,6 +58,9 @@ CpBaseHud.uvs = {
     clearCourseSymbol = {
         {40, 256, 32, 32}
     },
+    eye = { 
+        {148, 148, 32, 32} 
+    }
 }
 
 CpBaseHud.xmlKey = "Hud"
@@ -239,7 +242,21 @@ function CpBaseHud:init(vehicle)
         end
     end)
     
-    
+    --- Toggle waypoint visibility.
+    local width, height = getNormalizedScreenValues(20, 20)
+    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local courseVisibilityOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    courseVisibilityOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    courseVisibilityOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.eye), {256, 512}))
+    courseVisibilityOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self.baseHud)
+    local _, y = unpack(self.lines[6].right)
+    y = y - self.hMargin/16
+    x = x - width - self.wMargin/4
+    self.courseVisibilityBtn:setPosition(x, y)
+    self.courseVisibilityBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        vehicle:getCpSettings().showCourse:setNextItem()
+    end)
     
     --- Lane offset
     self.laneOffsetBtn = self:addRightLineTextButton(self.baseHud, 5, self.defaultFontSize, 
@@ -395,12 +412,11 @@ function CpBaseHud:addCopyCourseBtn(line)
     self.pasteButton:setPosition(rightX, rightY-btnYOffset)
     self.pasteButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         if CpBaseHud.courseCache.course then 
-            if self.vehicle ~= CpBaseHud.courseCache.vehicle or not self.vehicle:hasCpCourse() then 
+            if self.vehicle ~= CpBaseHud.courseCache.vehicle and not self.vehicle:hasCpCourse() then 
                 self.vehicle:cpCopyCourse(CpBaseHud.courseCache.course)
             end
         end
     end)
-    self.pasteButton:setColor(unpack(self.ON_COLOR))
 
     self.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
     self.clearCacheBtn:setPosition(rightX - width - self.wMargin/2, rightY - btnYOffset)
@@ -487,7 +503,23 @@ function CpBaseHud:draw(status)
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
+
+    if self.vehicle:hasCpCourse() then 
+        self.courseVisibilityBtn:setVisible(true)
+        local value = self.vehicle:getCpSettings().showCourse:getValue()
+        if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
+        elseif value == CpVehicleSettings.SHOW_COURSE_START_STOP then 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))
+        else 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.ON_COLOR))
+        end
+    else 
+        self.courseVisibilityBtn:setVisible(false)
+    end
+
     self:updateCopyBtn(status)
+
 
     self.baseHud:draw()
 end
@@ -499,10 +531,12 @@ function CpBaseHud:updateCopyBtn(status)
         self.clearCacheBtn:setVisible(true)
         self.pasteButton:setVisible(true)
         self.copyButton:setVisible(false)
-        if self.courseCache.vehicle == self.vehicle then 
+        if self.courseCache.vehicle == self.vehicle or self.vehicle:hasCpCourse() then 
             self.copyCacheText:setTextColorChannels(unpack(self.OFF_COLOR))
+            self.pasteButton:setColor(unpack(self.OFF_COLOR))
         else 
             self.copyCacheText:setTextColorChannels(unpack(self.WHITE_COLOR))
+            self.pasteButton:setColor(unpack(self.ON_COLOR))
         end
     else
         self.copyCacheText:setTextDetails("")
