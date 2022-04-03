@@ -1,3 +1,5 @@
+--- TODO: Make the hud static and only one instance.
+---       Apply the update only when data has changed.
 ---@class CpBaseHud
 CpBaseHud = CpObject()
 
@@ -35,8 +37,17 @@ CpBaseHud.uvs = {
     minusSymbol = {
         {128, 512, 128, 128}
     },
+    leftArrowSymbol = {
+        {384, 512, 128, 128}
+    },
+    rightArrowSymbol = {
+        {512, 512, 128, 128}
+    },
+    copySymbol = {
+        {184, 148, 32, 32}
+    },
     exitSymbol = {
-        {148, 184, 32, 32}
+        {150, 180, 32, 32}
     },
     circleSymbol = {
         {0, 366, 28, 28}
@@ -248,9 +259,8 @@ function CpBaseHud:init(vehicle)
     self.toolOffsetXBtn = self:addLineTextButton(self.baseHud, 2, self.defaultFontSize, 
                                                 self.vehicle:getCpSettings().toolOffsetX)
 
-    --- Tool offset z
-    self.toolOffsetZBtn = self:addLineTextButton(self.baseHud, 1, self.defaultFontSize, 
-                                                self.vehicle:getCpSettings().toolOffsetZ)
+    --- Copy course btn.                                          
+    self:addCopyCourseBtn(1)
 
     ---- Disables zoom, while mouse is over the cp hud. 
     local function disableCameraZoomOverHud(vehicle, superFunc, ...)
@@ -336,6 +346,62 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     return element
 end
 
+--- Setup for the copy course btn.
+function CpBaseHud:addCopyCourseBtn(line)
+    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+    
+    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    --- Copy course btn.                                          
+    self.copyCourseElements = {}
+    self.copyCourseIx = 1
+    local leftX, leftY = unpack(self.lines[line].left)
+    local rightX, rightY = unpack(self.lines[line].right)
+    local btnYOffset = self.hMargin*0.2
+
+    local width, height = getNormalizedScreenValues(22, 22)
+    local rightOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    rightOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    rightOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.rightArrowSymbol)))
+    rightOverlay:setColor(unpack(self.OFF_COLOR))
+    local leftOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    leftOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.leftArrowSymbol)))
+    leftOverlay:setColor(unpack(self.OFF_COLOR))
+    leftOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT)
+    
+    local copyOverlay =  Overlay.new(imageFilename2, 0, 0, width, height)
+    copyOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.copySymbol), {256, 512}))
+    copyOverlay:setColor(unpack(self.OFF_COLOR))
+    copyOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+
+    self.copyCourseElements.leftBtn = CpHudButtonElement.new(leftOverlay, self.baseHud)
+    self.copyCourseElements.leftBtn:setPosition(leftX, leftY-btnYOffset)
+    self.copyCourseElements.leftBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        self.copyCourseIx = MathUtil.clamp(self.copyCourseIx - 1, 1, #self.courseVehicles)
+        print("leftClick")
+    end)
+
+    self.copyCourseElements.copyBtn = CpHudButtonElement.new(copyOverlay, self.baseHud)
+    self.copyCourseElements.copyBtn:setPosition(rightX, rightY-btnYOffset)
+    self.copyCourseElements.copyBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        print("copyClick")
+    end)
+    self.copyCourseElements.copyBtn:setCallback("onHoveredChanged", self.vehicle, function (vehicle)
+        print("copyClick on hover")
+    end)
+
+
+    self.copyCourseElements.rightBtn = CpHudButtonElement.new(rightOverlay, self.baseHud)
+    self.copyCourseElements.rightBtn:setPosition(rightX - width - self.wMargin/2 , rightY-btnYOffset)
+    self.copyCourseElements.rightBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        self.copyCourseIx = MathUtil.clamp(self.copyCourseIx + 1, 1, #self.courseVehicles)
+        print("rightClick")
+    end)
+
+    self.copyCourseElements.vehicleBtn = CpTextHudElement.new(self.baseHud, 
+                            leftX + width + self.wMargin/2, leftY,self.defaultFontSize)
+
+end
+
 function CpBaseHud:moveToPosition(element, x, y)
     CpBaseHud.x = x 
     CpBaseHud.y = y
@@ -368,8 +434,7 @@ end
 
 ---@param status CpStatus
 function CpBaseHud:draw(status)
-    
-    --- Set variable data.
+     --- Set variable data.
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
     if self.vehicle:hasCpCourse() then 
@@ -412,12 +477,20 @@ function CpBaseHud:draw(status)
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
-    local toolOffsetZ = self.vehicle:getCpSettings().toolOffsetZ
-    text = toolOffsetZ:getIsDisabled() and CpBaseHud.automaticText or toolOffsetZ:getString()
-    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), text)
-    self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
+    self:updateCopyBtn(status)
 
     self.baseHud:draw()
+end
+
+function CpBaseHud:updateCopyBtn(status)
+    self.courseVehicles = g_assignedCoursesManager:getVehiclesWithCoursesByDistance(self.vehicle)
+    MathUtil.clamp(self.copyCourseIx, 1, #self.courseVehicles)
+    for i, e in pairs(self.copyCourseElements) do 
+        e:setVisible(not status:getIsActive() and #self.courseVehicles>0)
+    end
+    local v = self.courseVehicles[self.copyCourseIx]
+    local text = v and string.format("%s (%dm)", CpUtil.getName(v), calcDistanceFrom(v.rootNode, self.vehicle.rootNode)) or ""
+    self.copyCourseElements.vehicleBtn:setTextDetails(text)
 end
 
 function CpBaseHud:delete()
