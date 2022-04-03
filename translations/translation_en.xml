@@ -454,12 +454,14 @@ F: Clicking on this icon opens the global settings menu.
 G: Closes the HUD.
 H: Decrease or increase the working width. A red line on your vehicle shows the current value.
 I: Value for horizontal offset, + left, - right.
-J: Value for vertical offset, + backward, - forward.
-K, L and M: Clicking on the text will reset your changes to the default values.
+J: Copy and Paste course. The picture shows paste and lights up green if you can paste the course. To paste a course, you need to have no course loaded.
+K and L: Clicking on the text will reset your changes to the default values.
 N: This area shows the lane offset if you have a multi tool course loaded for convoy. 
    Clicking on the text toggles the positions.
 O: Start/stop the recording of custom fields.
 P: Removes the course from the vehicle.
+Q: Toggles the course visability on, off and start/stop only.
+R: Remove the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Custom Fields"/>
