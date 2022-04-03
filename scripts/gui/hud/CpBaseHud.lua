@@ -68,7 +68,7 @@ CpBaseHud.xmlKey = "Hud"
 CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
 CpBaseHud.copyText = g_i18n:getText("CP_copy")
 
-CpBaseHud.courseCache = {}
+CpBaseHud.courseCache = nil
 
 function CpBaseHud.registerXmlSchema(xmlSchema, baseKey)
     xmlSchema:register(XMLValueType.FLOAT, baseKey..CpBaseHud.xmlKey.."#posX", "Hud position x.")
@@ -402,26 +402,23 @@ function CpBaseHud:addCopyCourseBtn(line)
     self.copyButton = CpHudButtonElement.new(copyOverlay, self.baseHud)
     self.copyButton:setPosition(rightX, rightY-btnYOffset)
     self.copyButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        if not CpBaseHud.courseCache.course and self.vehicle:hasCpCourse() then 
-            CpBaseHud.courseCache.course = self.vehicle:getFieldWorkCourse()
-            CpBaseHud.courseCache.vehicle = self.vehicle
+        if not CpBaseHud.courseCache and self.vehicle:hasCpCourse() then 
+            CpBaseHud.courseCache = self.vehicle:getFieldWorkCourse()
         end
     end)
 
     self.pasteButton = CpHudButtonElement.new(pasteOverlay, self.baseHud)
     self.pasteButton:setPosition(rightX, rightY-btnYOffset)
     self.pasteButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        if CpBaseHud.courseCache.course then 
-            if self.vehicle ~= CpBaseHud.courseCache.vehicle and not self.vehicle:hasCpCourse() then 
-                self.vehicle:cpCopyCourse(CpBaseHud.courseCache.course)
-            end
+        if CpBaseHud.courseCache and not self.vehicle:hasCpCourse() then 
+            self.vehicle:cpCopyCourse(CpBaseHud.courseCache)
         end
     end)
 
     self.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
     self.clearCacheBtn:setPosition(rightX - width - self.wMargin/2, rightY - btnYOffset)
     self.clearCacheBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        CpBaseHud.courseCache = {}
+        CpBaseHud.courseCache = nil
     end)
 
     self.copyCacheText = CpTextHudElement.new(self.baseHud, leftX, leftY,self.defaultFontSize)
@@ -525,13 +522,13 @@ function CpBaseHud:draw(status)
 end
 
 function CpBaseHud:updateCopyBtn(status)
-    if self.courseCache.course then 
-        local courseName =  CpCourseManager.getCourseName(self.courseCache.course)
+    if self.courseCache then 
+        local courseName =  CpCourseManager.getCourseName(self.courseCache)
         self.copyCacheText:setTextDetails(self.copyText .. courseName)
         self.clearCacheBtn:setVisible(true)
         self.pasteButton:setVisible(true)
         self.copyButton:setVisible(false)
-        if self.courseCache.vehicle == self.vehicle or self.vehicle:hasCpCourse() then 
+        if self.vehicle:hasCpCourse() then 
             self.copyCacheText:setTextColorChannels(unpack(self.OFF_COLOR))
             self.pasteButton:setColor(unpack(self.OFF_COLOR))
         else 
