@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="м" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Copy course: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />

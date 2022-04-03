@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="Automatyczne" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Copy course: "/>
 		
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Aby uzyskać pomoc, zgłosić błąd lub przeczytać informacje o aktualizacji, odwiedź: https://github.com/Courseplay/Courseplay_FS22." />
