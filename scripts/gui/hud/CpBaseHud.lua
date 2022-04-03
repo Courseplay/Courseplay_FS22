@@ -43,8 +43,11 @@ CpBaseHud.uvs = {
     rightArrowSymbol = {
         {512, 512, 128, 128}
     },
+    pasteSymbol = {
+        {256, 640, 128, 128}
+    },
     copySymbol = {
-        {184, 148, 32, 32}
+        {128, 640, 128, 128}
     },
     exitSymbol = {
         {148, 184, 32, 32}
@@ -351,7 +354,8 @@ end
 
 --- Setup for the copy course btn.
 function CpBaseHud:addCopyCourseBtn(line)    
-    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     --- Copy course btn.                                          
     self.copyCourseElements = {}
     self.copyCourseIx = 1
@@ -363,11 +367,16 @@ function CpBaseHud:addCopyCourseBtn(line)
     local width, height = getNormalizedScreenValues(20, 20)
     
     local copyOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    copyOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.copySymbol), {256, 512}))
+    copyOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.copySymbol)))
     copyOverlay:setColor(unpack(self.OFF_COLOR))
     copyOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
 
-    local clearCourseOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    local pasteOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    pasteOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.pasteSymbol)))
+    pasteOverlay:setColor(unpack(self.OFF_COLOR))
+    pasteOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+
+    local clearCourseOverlay =  Overlay.new(imageFilename2, 0, 0, width, height)
     clearCourseOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
     clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol), {256, 512}))
     clearCourseOverlay:setColor(unpack(self.OFF_COLOR))
@@ -375,11 +384,16 @@ function CpBaseHud:addCopyCourseBtn(line)
     self.copyButton = CpHudButtonElement.new(copyOverlay, self.baseHud)
     self.copyButton:setPosition(rightX, rightY-btnYOffset)
     self.copyButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        
         if not CpBaseHud.courseCache.course and self.vehicle:hasCpCourse() then 
             CpBaseHud.courseCache.course = self.vehicle:getFieldWorkCourse()
             CpBaseHud.courseCache.vehicle = self.vehicle
-        elseif CpBaseHud.courseCache.course then 
+        end
+    end)
+
+    self.pasteButton = CpHudButtonElement.new(pasteOverlay, self.baseHud)
+    self.pasteButton:setPosition(rightX, rightY-btnYOffset)
+    self.pasteButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        if CpBaseHud.courseCache.course then 
             if self.vehicle ~= CpBaseHud.courseCache.vehicle or not self.vehicle:hasCpCourse() then 
                 self.vehicle:cpCopyCourse(CpBaseHud.courseCache.course)
             end
@@ -481,13 +495,14 @@ function CpBaseHud:updateCopyBtn(status)
         local courseName =  CpCourseManager.getCourseName(self.courseCache.course)
         self.copyCacheText:setTextDetails("Copies: " .. courseName)
         self.clearCacheBtn:setVisible(true)
-        self.copyButton:setColor(unpack(CpBaseHud.ON_COLOR))
+        self.pasteButton:setVisible(true)
+        self.copyButton:setVisible(false)
     else
         self.copyCacheText:setTextDetails("")
         self.clearCacheBtn:setVisible(false)
-        self.copyButton:setColor(unpack(CpBaseHud.OFF_COLOR))
+        self.pasteButton:setVisible(false)
+        self.copyButton:setVisible(self.vehicle:hasCpCourse())
     end
-    self.copyButton:setVisible(self.courseCache.course or self.vehicle:hasCpCourse())
 end
 
 function CpBaseHud:delete()
