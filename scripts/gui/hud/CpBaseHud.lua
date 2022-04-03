@@ -63,7 +63,7 @@ CpBaseHud.uvs = {
 CpBaseHud.xmlKey = "Hud"
 
 CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
-CpBaseHud.copyText = g_i18n:getText("CP_copyCourse")
+CpBaseHud.copyText = g_i18n:getText("CP_copy")
 
 CpBaseHud.courseCache = {}
 
@@ -400,6 +400,7 @@ function CpBaseHud:addCopyCourseBtn(line)
             end
         end
     end)
+    self.pasteButton:setColor(unpack(self.ON_COLOR))
 
     self.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
     self.clearCacheBtn:setPosition(rightX - width - self.wMargin/2, rightY - btnYOffset)
@@ -494,10 +495,15 @@ end
 function CpBaseHud:updateCopyBtn(status)
     if self.courseCache.course then 
         local courseName =  CpCourseManager.getCourseName(self.courseCache.course)
-        self.copyCacheText:setTextDetails("Copies: " .. courseName)
+        self.copyCacheText:setTextDetails(self.copyText .. courseName)
         self.clearCacheBtn:setVisible(true)
         self.pasteButton:setVisible(true)
         self.copyButton:setVisible(false)
+        if self.courseCache.vehicle == self.vehicle then 
+            self.copyCacheText:setTextColorChannels(unpack(self.OFF_COLOR))
+        else 
+            self.copyCacheText:setTextColorChannels(unpack(self.WHITE_COLOR))
+        end
     else
         self.copyCacheText:setTextDetails("")
         self.clearCacheBtn:setVisible(false)
