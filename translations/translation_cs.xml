@@ -7,7 +7,7 @@
 		<text name="CP_automatic" 																		text="自动" />
 		<text name="CP_unit_meter" 																		text="米" />
 		<text name="CP_unit_foot" 																		text="英尺" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="复制任务： "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s):如需帮助、错误报告或查看更新说明，请访问: https://github.com/Courseplay/Courseplay_FS22." />
@@ -337,7 +337,7 @@
 		<text name="CP_controllerGui_stopRecording"														text="停止自定义田地记录。"/>
 
 	<!-- In game help menu-->
-		<text name="CP_help_title"																		text="Courseplay"/>
+		<text name="CP_help_title"																		text="CP自动作业"/>
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--Job Menu-->
@@ -453,15 +453,15 @@ F：点击图标打开常规设置页面。
 G:关闭HUD。
 H：减少和增加工作宽度。车辆上的红线显示当前设置。
 I：横向调整值，+左，-右。
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: 将路线复制并粘贴到其他车辆。
+     按下复制按钮后，当图标变为绿色时，可以将路线粘贴到没有路线的车辆中。
 K 和 L：点击文本将重置对自动值的更改。
-M: Shows the copied course.
+M: 显示复制的路线。
 N：如果你加载了多工具任务，该区域显示车道位置。单击文本可切换位置。
 O：开始/停止录制自定义田间任务。
 P：从车辆上移除路线
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+Q: 更改 开、关和 仅开始/停止 之间的课程可见性。
+R: 从剪贴板中删除复制的路线。
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="自定义田地"/>
