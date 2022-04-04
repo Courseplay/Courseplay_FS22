@@ -7,9 +7,6 @@
 
 <Settings prefixText="CP_global_setting_">
 	<SettingSubTitle prefix="true" title="general">
-		<!-- When enabled, then a few settings are invisible and return their default values. -->
-		<Setting classType="AIParameterBooleanSetting" name="expertModeActive" defaultBool="false" onChangeCallback="onExpertModeChanged"/>
-
 		<Setting classType="AIParameterSettingList" name="wageModifier" default="100" unit="4">
 			<Values>
 				<Value>0</Value>
@@ -37,7 +34,9 @@
 		<Setting classType="AIParameterSettingList" name="brokenThreshold" min="0" max="100" incremental="5" default="95" unit="4"/>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="userSettings">
-		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" defaultBool="false" onChangeCallback="onHudSelectionChanged" isUserSetting="true"/>
+		<!-- When enabled, then a few settings are invisible and return their default values. -->
+		<Setting classType="AIParameterBooleanSetting" name="expertModeActive" isUserSetting="true" defaultBool="false" onChangeCallback="onExpertModeChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" isUserSetting="true" defaultBool="false" onChangeCallback="onHudSelectionChanged"/>
 		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true" defaultBool="false" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="showActionEventHelp" isUserSetting="true" defaultBool="true" onChangeCallback="onActionEventTextVisibilityChanged"/>
 		<Setting classType="AIParameterBooleanSetting" name="infoTextHudActive" isUserSetting="true" defaultBool="true"/>
