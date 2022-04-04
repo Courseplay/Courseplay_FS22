@@ -4,6 +4,7 @@ AIParameterSettingList = {}
 local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
 
 function AIParameterSettingList.new(data,vehicle,class,customMt)
+	---@type AIParameterSettingList
 	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
 	self.type = AIParameterType.SELECTOR
 	self.vehicle = vehicle
@@ -222,7 +223,7 @@ function AIParameterSettingList:getDebugString()
 end
 
 function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
-	xmlFile:setString(key .. "#currentValue", tostring(self:getValue()))
+	xmlFile:setString(key .. "#currentValue", tostring(self.values[self.current]))
 end
 
 --- Old load function.
@@ -397,6 +398,16 @@ end
 
 --- Gets a specific value.
 function AIParameterSettingList:getValue()
+	--- In the simple user mode returns the default values.
+	if not self.data.isSimpleSetting and g_Courseplay.globalSettings.simpleUserModeEnabled:getValue() then 
+		if self.data.default then 
+			return self.data.default
+		end
+		if self.data.defaultBool then 
+			return self.data.defaultBool
+		end
+		return self.values[1]
+	end
 	return self.values[self.current]
 end
 
@@ -429,9 +440,9 @@ end
 --- Copy the value to another setting.
 function AIParameterSettingList:copy(setting)
 	if self.data.incremental and self.data.incremental ~= 1 then 
-		self:setFloatValue(setting:getValue())
+		self:setFloatValue(setting.values[self.current])
 	else 
-		self:setValue(setting:getValue())
+		self:setValue(setting.values[self.current])
 	end
 end
 
@@ -612,6 +623,9 @@ function AIParameterSettingList:getCanBeChanged()
 end
 
 function AIParameterSettingList:getIsVisible()
+	if not self.data.isSimpleSetting and g_Courseplay.globalSettings.simpleUserModeEnabled:getValue() then 
+		return false
+	end
 	if self:hasCallback(self.data.isVisibleFunc) then 
 		return self:getCallback(self.data.isVisibleFunc)
 	end

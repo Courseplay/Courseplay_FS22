@@ -24,21 +24,21 @@
 		<Setting classType="AIParameterBooleanSetting" name="openHudWithMouse" defaultBool="true" onChangeCallback="cpUpdateMouseAction"/>
 
 		<!--Open hud with mouse-->
-		<Setting classType="AIParameterBooleanSetting" name="fuelSave" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="fuelSave" defaultBool="true" isSimpleSetting="false"/>
 		<!--Stop At End-->
-		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true" isSimpleSetting="false"/>
 		<!--Turn on Field-->
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true"/>
 		<!--Avoid Fruit-->
-		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true" isSimpleSetting="false"/>
 		<!--Pathfinder Reverse-->
 		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true"/>
-		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="false"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="false" isSimpleSetting="false"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">
 		<!--Fold at End-->
-		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true" isSimpleSetting="false"/>
 		<!--Raise Implement-->
 		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate">
 			<Texts>
@@ -55,21 +55,17 @@
 		</Setting>
 		<!--Tool Offset X-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
-		<!--Tool Offset Y-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled"/>
 		<!--Silage additives needed?-->
-		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible"/>
+		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isSimpleSetting="false"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
-		<!--Pipe always unfold-->
-		<Setting classType="AIParameterBooleanSetting" name="pipeAlwaysUnfold" />
 		<!--Stop for unload-->
 		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
 		<!--Selfunload-->
 		<Setting classType="AIParameterBooleanSetting" name="selfUnload"/>
 		<!--Unload on first Headland-->
-		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland"/>
+		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland" defaultBool="true" isSimpleSetting="false"/>
 		<!--Strawswath-->
 		<Setting classType="AIParameterSettingList" name="strawSwath" default="2">
 			<Values>
@@ -87,7 +83,7 @@
 
 	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">
 		<!--Ridgemarker-->	
-		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" isVisible="isRidgeMarkerSettingVisible"/>
+		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" defaultBool="false" isVisible="isRidgeMarkerSettingVisible" isSimpleSetting="true"/>
 		<!--Fertilizer-->
 		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true" isVisible="isSowingMachineFertilizerSettingVisible"/>
 		<!--Optional sowing machine-->
@@ -101,15 +97,15 @@
 		<Setting classType="AIParameterSettingList" name="convoyDistance" min="40" max="400" default ="50" unit="2"/>
 	</SettingSubTitle>
 
-	<SettingSubTitle title="speed">
+	<SettingSubTitle title="speed" isSimpleSetting="false">
 		<!--Fieldwork Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="25" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="25" unit="1" isSimpleSetting="false"/>
 		<!--Field Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="fieldSpeed" min="5" max="50" default="20" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="fieldSpeed" min="5" max="50" default="20" unit="1" isSimpleSetting="false"/>
 		<!--Turn Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" default="8" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" default="8" unit="1" isSimpleSetting="false"/>
 		<!--Reverse Speed-->
-		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1"/>
+		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1" isSimpleSetting="false"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="debug">

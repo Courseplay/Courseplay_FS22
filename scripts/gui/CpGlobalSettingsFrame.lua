@@ -33,15 +33,18 @@ function CpGlobalSettingsFrame:onGuiSetupFinished()
 
 	self.settings = g_Courseplay.globalSettings:getSettingsTable()
 	local settingsBySubTitle,pageTitle = g_Courseplay.globalSettings:getSettingSetup()
+	self.settingsBySubTitle = settingsBySubTitle
 	self.header:setText(pageTitle)	
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
-	CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.boxLayout)
 	self.boxLayout:invalidateLayout()
 end
 
 function CpGlobalSettingsFrame:onFrameOpen()
 	CpGlobalSettingsFrame:superClass().onFrameOpen(self)
+
+	CpSettingsUtil.linkGuiElementsAndSettings(self.settings, self.boxLayout, self.settingsBySubTitle)
+
 	FocusManager:loadElementFromCustomValues(self.boxLayout)
 	self.boxLayout:invalidateLayout()
 	self:setSoundSuppressed(true)
@@ -51,5 +54,12 @@ end
 
 function CpGlobalSettingsFrame:onFrameClose()
 	CpGlobalSettingsFrame:superClass().onFrameClose(self)
+	CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.boxLayout)
+	self.boxLayout:invalidateLayout()
+end
 
+function CpGlobalSettingsFrame.updateGui()
+	local self = g_currentMission.inGameMenu.pageCpGlobalSettings
+	self:onFrameClose()
+	self:onFrameOpen()
 end
