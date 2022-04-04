@@ -219,7 +219,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Počet vozidel na stejné trase." />
 
 		<!-- Vine Course Generator-->
-		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Generátor pro vivice"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Generátor pro vinice"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Základní nastavení"/>
 
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Pozice trasy"/>
