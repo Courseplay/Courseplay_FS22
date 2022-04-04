@@ -413,60 +413,62 @@ Negative values enlarge worked area beyond the field boundary to cover up field 
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
-The course manager allows you to save courses and enables you to load the saved course later again.
-This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
-This feature also allows you to pickup the swath left behind by a combine or a windrower with a forage wagon or a baler.
+Der Kursmanager erlaubt es dir, Kurse zu speichern und später wieder zu laden.
+Das ist z.B. wichtig wenn mehrere Fahrzeuge auf einem Kurs arbeiten sollten (Multitool)
+Außerdem könnt ihr so die Kurse von z.B. einem Drescher auch später für eine Ballenpresse oder Sammelwagen zum Stroh aufsammeln verwenden.
 
-The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
-The course manager works differently from what you are used to in FS19.
-Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
-Folders can simply created by the button at the bottom of the screen and entering a name.		"/>
+Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla e.g. MapUS).
+Der Kursmanager funktioniert anders als ihr es im LS19 gewohnt seid.
+Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das heist ihr braucht mindestens einen Ordner um Kurse dort abspeicher zu können.
+Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.
+		"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
-When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
-The name and location can be changed later.
-To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
-Clicking on change mode activates the edit mode of the course manager.
+Wenn ihr einen Kurs geladen habt, könnt ihr diese speichern indem ihr auf Kurs speichern klickt und anschließen auf den Ordner in dem ihr diesen speichern wollt.
+Ein Fenster erscheint, wo ihr den Namen des Kurses eintragen könnt.
+Der Name und Ordner kann später auch geändert werden.
+Um einen Kurs aus dem Fahrzeug zu entfernen, reicht ein klick auf 'Kurs aus Fahrzeug entfernen'.
+Um einen Kurs zu laden, müsst ihr erst den Ordner auswählen, wo sich euer Kurs befindet. Klickt dann auf Kurs laden und wählt den Kurs aus, den ihr laden wollt.
+Durch betätigen des Modus wechsel Buttons, wird der Editiermodus des Kursmanagers aktiviert.
 		"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
-With the edit mode is active you have these options:
-- Moving a course into another directory.
-- Deleting courses or directories.
-- Renaming courses or directories.
+Mit dem Editiermodus erhaltet ihr folgende Optionen:
+- Einen Kurs in einen anderen Ordner verschieben.
+- Kurse oder Ordner löschen.
+- Kurs oder Ordner umbenennen.
 		"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
-For moving a course: 
-  1) Click on the move button at the bottom of the screen.
-  2) Click on the course you want to move.
-  3) Click on the directory where you want the course moved to.
-For renaming you simply have to click the rename button and after that the directory or course. Then just type in the new name.
-For deleting a course or directory click on the delete button and after that the folder or course you want to delete.
-Directories must be empty if you want to delete them.
+Einen Kurs verschieben:
+  1) Klickt auf den Verschieben Button am unteren Bildschirmrand.
+  2) Klickt auf den Kurs der verschoben werden soll.
+  3) Klickt auf den Ordner wo der Kurs hin verschoben werden soll.
+Einen Kurs oder Ornder umzubenennen braucht ihr bloß auf Umbenennen klicken und dann auf den Ordner oder Kurs klicken. Dann einfach den neuen Namen eintippen.
+Einen Kus zu löschen geht ähnlich einfach. Klickt auf den Löschen Button und dann auf den Ordner oder Kurs der gelöscht werden soll.
+Ordner müssen leer sein damit sie gelöscht werden können.
 		"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Clicking on the vehicle name will open the vehicle setting menu.
-B: Selects the starting point where you want the helper to start.
-C: Clicking on the course name will open the AI menu.
-     If the vehicle is on a field then the course generator settings will also be opened.
-D: Starts or stops the helper. If the color is green then the CP helper is active.
-E: Shows the current waypoint / total waypoints. Clicking on it will open the course manager menu.
-F: Clicking on this icon opens the global settings menu.
-G: Closes the HUD.
-H: Decrease or increase the working width. A red line on your vehicle shows the current value.
-I: Value for horizontal offset, + left, - right.
-J: Copy and paste a course to a different vehicle. 
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
-K and L: Clicking on the text will reset your changes to the default values.
-M: Shows the copied course.
-N: This area shows the lane offset if you have a multi tool course loaded for convoy. 
-     Clicking on the text toggles the positions.
-O: Start/stop the recording of custom fields.
-P: Removes the course from the vehicle.
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+A: Mit einem klick auf den Fahrzeugnamen, gelangt ihr direkt in das Menü mit den Fahrzeugeinstellungen.
+B: Schaltet die Startpunkte für den Helfer durch.
+C: Klickt man auf den Kursnamen oder auf 'kein Kurs' wird das Helfer Menü geöffnet.
+     Wenn das Fahrzeug auf dem Feld steht, wird auch direkt der Kursgenerator geöffnet.
+D: Startet oder stoppt den Helfer. Ist der Pfeil grün, ist der Helfer aktiv.
+E: Zeigt den aktuellen Wegpunkt / alle Wegpunkte des Kurses. Klickt ma drauf, Öffnet sich der Kursmanager.
+F: Klickt man auf das Icon, öffnen sich die globalen Einstellungen.
+G: Schließt das HUD.
+H: Erhöht oder verringert die Arbetisbreite. Eine rote Linie auf dem Fahrzeug zeigt den aktuellen Wert an.
+I: Wert für den horizontalen Versatz , + links, - rechts.
+J: Kurs kopieren und einfügen in ein anderes Fahrzeug.
+     Wenn der Kurs kopiert wurde, kann dieser in ein anderes Fahrzeug eingefügt werden (einfügen Button leuchtet grün).
+K und L: Durch ein klick auf den Text wird der standart Wert geladen.
+M: Zeigt den Namen des kopierten Kurses.
+N: An dieser Stelle wird die Bahn eines Multitool Kurses angezeigt, wenn einer geladen wurde.
+     Die Position lässt sich durch einen klick auf den Text ändern.
+O: Startet und stoppt die Aufnahme eines eigenen Feldrandkurses.
+P: Entfernt den Kurs aus dem Fahrzeug.
+Q: Ändert die Kursanzeige zwischen: an, aus und nur Start/Stop.
+R: Entfernt den kopierten Kurs aus der Zwischenablage.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Selbst erstellte Felder"/>
