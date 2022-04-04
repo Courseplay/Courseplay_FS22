@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="Automatisk" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Copy course: "/>
 		
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): För hjälp, bug rapport och uppdaterings info, vänligen besök: https://github.com/Courseplay/Courseplay_FS22." />
@@ -455,11 +456,15 @@ F: Klicka på ikonen Öppnar sidan Allmänna inställningar.
 G: Stänger HUD.
 H: Minska och öka arbetsbredden. En röd linje på ditt fordon visar den aktuella inställningen.
 I: Värde för horisontell förskjutning, + vänster, - höger.
-J: Värde för vertikal förskjutning, + bakåt, - framåt.
-K, L och M: Om du klickar på texten återställs dina ändringar i bilvärdena.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K och L: Om du klickar på texten återställs dina ändringar i bilvärdena.
+M: Shows the copied course.
 N: Detta område visar körfältets offset om du har en multitool-kurs. Genom att klicka på texten växlar positionerna.
 O: Start / Sluta spela in en anpassad fältkurs.
-P: tar bort kurs från fordon
+P: tar bort kurs från fordon.
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Anpassade fält"/>

@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="自动" />
 		<text name="CP_unit_meter" 																		text="米" />
 		<text name="CP_unit_foot" 																		text="英尺" />
+		<text name="CP_copy"																			text="Copy course: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s):如需帮助、错误报告或查看更新说明，请访问: https://github.com/Courseplay/Courseplay_FS22." />
@@ -452,11 +453,15 @@ F：点击图标打开常规设置页面。
 G:关闭HUD。
 H：减少和增加工作宽度。车辆上的红线显示当前设置。
 I：横向调整值，+左，-右。
-J：纵向调整值，+向后，-向前。
-K、 L和M：点击文本将重置对自动值的更改。
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K 和 L：点击文本将重置对自动值的更改。
+M: Shows the copied course.
 N：如果你加载了多工具任务，该区域显示车道位置。单击文本可切换位置。
 O：开始/停止录制自定义田间任务。
 P：从车辆上移除路线
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="自定义田地"/>

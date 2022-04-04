@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="Automatisk" />
 		<text name="CP_unit_meter" 																		text="M"/>
 		<text name="CP_unit_foot" 																		text="Fod"/>
+		<text name="CP_copy"																			text="Copy course: "/>
 
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Få hjælp, ved fejl eller spørgsmål om patch noter, besøg da: https://github.com/Courseplay/Courseplay_FS22."/>
@@ -454,11 +455,15 @@ F: Ved at klikke på ikonet åbnes de grundindstillinger.
 G: Lukke HUD.
 H: Reducerer eller øger arbejdsbredden. En rød streg på køretøjet viser indstillingen.
 I: Vandret offset værdi, + venstre, - højre.
-J: Lodret offset værdi, + tilbage, - frem.
-K, L og M: Klik på teksten for at nulstille værdierne.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K og L: Klik på teksten for at nulstille værdierne.
+M: Shows the copied course.
 N: Det er her baneforskydningen vises, hvis et konvøjforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
 O: Start/stop Optegning af brugerdefineret mark.
 P: fjern rute fra køretøj
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Brugerdefineret marker"/>

@@ -371,7 +371,7 @@ end
 ---@class CpHudSettingElement : CpTextHudElement
 CpHudSettingElement = {}
 local CpHudSettingElement_mt = Class(CpHudSettingElement, CpHudButtonElement)
-function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, maxPosY, incrementalOverlay, decrementalOverlay, 
+function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, posBtnY, incrementalOverlay, decrementalOverlay, 
                                     textSize, textAlignment, textColor, textBold, customMt)
     if customMt == nil then
         customMt = CpHudSettingElement_mt
@@ -386,14 +386,14 @@ function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, maxPosY,
     self.labelElement:setTextDetails("Label")
 
     self.incrementalElement = CpHudButtonElement.new(incrementalOverlay, parentHudElement)
-    self.incrementalElement:setPosition(maxPosX,maxPosY)
+    self.incrementalElement:setPosition(maxPosX, posBtnY)
     local w = self.incrementalElement:getWidth()
     local x = maxPosX - w*1.5
     self.textElement = CpTextHudElement.new(parentHudElement, x, posY, textSize-2,RenderText.ALIGN_RIGHT)
     self.textElement:setTextDetails("100.00")
     w = self.textElement:getWidth()
     self.decrementalElement = CpHudButtonElement.new(decrementalOverlay, parentHudElement)
-    self.decrementalElement:setPosition(x-w*1.5, posY)
+    self.decrementalElement:setPosition(x-w*1.5, posBtnY)
 
     return self
 end

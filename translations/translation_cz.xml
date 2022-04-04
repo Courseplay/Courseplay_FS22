@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Copy course: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Překlad: SniperKittenCZ" />
@@ -450,11 +451,15 @@ F: Kliknutím na ikonu se otevře stránka obecných nastavení.
 G: Zavře Hud.
 H: Snižte a zvětšete pracovní šířku. Červená čára na vašem vozidle ukazuje aktuální nastavení.
 I: Hodnota pro horizontální posun, + vlevo, - vpravo.
-J: Hodnota pro vertikální posun, + dozadu, - dopředu.
-K, L a M: Kliknutím na text resetujete změny na automatické hodnoty.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K a L: Kliknutím na text resetujete změny na automatické hodnoty.
+M: Shows the copied course.
 N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
 O: Spuštění/zastavení záznamu vlastní trasy na poli.
 P: Odstraňuje trasu z vozidla
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Vlastní pole"/>

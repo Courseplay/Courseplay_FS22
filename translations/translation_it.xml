@@ -6,6 +6,7 @@
 		<text name="CP_automatic" 																		text="automatico" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Copy course: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay (%s): Per aiuto, report bug o note sulla patch, visita: https://github.com/Courseplay/Courseplay_FS22 " />
@@ -452,11 +453,15 @@ F: Cliccando sull'icona si apre la pagina delle impostazioni generali.
 G: Chiude la HUD.
 H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo mostra l'impostazione corrente.
 I: Valore per la correzione orizzontale, + a sinistra, - a destra.
-J: Valore per la correzione verticale, + indietro, - avanti.
-K, L e M: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K e L: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
+M: Shows the copied course.
 N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni.
 O: Avvia/interrompi la registrazione di un corso sul campo personalizzato.
 P: Rimuove il porcorso dal veicolo
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Campi personalizzati"/>

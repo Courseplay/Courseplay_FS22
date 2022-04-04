@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="自動" />														
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Copy course: "/>
 		
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="コースプレイ(%s) : ヘルプ、バグ報告、パッチノートについては　URL:https://github.com/Courseplay/Courseplay_FS22　を参照してください。" />
@@ -453,11 +454,15 @@ F: アイコンをクリックすると一般設定ページが開きます。
 G: HUDを閉じます。
 H: 作業幅を小さくしたり大きくしたりします。自車両の赤い線が現在の設定を示しています。
 I： 水平方向のオフセットの値で、+左、-右です。
-J： 垂直方向のオフセットの値で、＋後方、-前方です。
-K、 L、M：テキストをクリックすると、変更内容がオート値にリセットされます。
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K、 L：テキストをクリックすると、変更内容がオート値にリセットされます。
+M: Shows the copied course.
 N: このエリアは、マルチツールコースをロードしている場合、レーンオフセットを表示します。テキストをクリックすると、位置が切り替わります。
 O: カスタムフィールドコースのレコードを開始/停止します。
 P: 車両からコースを削除します。
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="カスタムフィールド"/>
