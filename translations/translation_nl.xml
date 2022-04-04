@@ -461,7 +461,7 @@ M: Shows the copied course.
 N: Dit gebied toont de baanverschuiving als u een koers met meerdere voertuigen hebt geladen. Als u op de tekst klikt, worden de posities omgeschakeld.
 O: Start/stop recording a custom field course.
 P: Removes course from vehicle.
-Q: Changes the course visability between: on, off and start/stop only.
+Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->

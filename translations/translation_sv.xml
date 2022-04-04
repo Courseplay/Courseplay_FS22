@@ -463,7 +463,7 @@ M: Shows the copied course.
 N: Detta område visar körfältets offset om du har en multitool-kurs. Genom att klicka på texten växlar positionerna.
 O: Start / Sluta spela in en anpassad fältkurs.
 P: tar bort kurs från fordon.
-Q: Changes the course visability between: on, off and start/stop only.
+Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->

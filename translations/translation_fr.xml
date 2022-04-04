@@ -459,7 +459,7 @@ M: Shows the copied course.
 N: Affichage du décalage de rang lorsque vous avez chargé une course multi-outils. Cliquez sur le texte pour intervertir les positions.
 O: Démarrer/Arrêter l'enregistrement d'un contour de champ personnalisé.
 P: Réinitialiser la course active.
-Q: Changes the course visability between: on, off and start/stop only.
+Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->

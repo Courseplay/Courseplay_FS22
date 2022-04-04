@@ -462,7 +462,7 @@ N: This area shows the lane offset if you have a multi tool course loaded for co
      Clicking on the text toggles the positions.
 O: Start/stop the recording of custom fields.
 P: Removes the course from the vehicle.
-Q: Changes the course visability between: on, off and start/stop only.
+Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->

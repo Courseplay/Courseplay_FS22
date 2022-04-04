@@ -461,7 +461,7 @@ M: Shows the copied course.
 N: このエリアは、マルチツールコースをロードしている場合、レーンオフセットを表示します。テキストをクリックすると、位置が切り替わります。
 O: カスタムフィールドコースのレコードを開始/停止します。
 P: 車両からコースを削除します。
-Q: Changes the course visability between: on, off and start/stop only.
+Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->

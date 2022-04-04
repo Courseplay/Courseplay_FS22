@@ -462,7 +462,7 @@ M: Shows the copied course.
 N: Det er her baneforskydningen vises, hvis et konvøjforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
 O: Start/stop Optegning af brugerdefineret mark.
 P: fjern rute fra køretøj
-Q: Changes the course visability between: on, off and start/stop only.
+Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
 		"/>
 		<!--CustomField-->
