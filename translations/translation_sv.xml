@@ -242,6 +242,9 @@
 		<text name="CP_global_setting_title"															text="Globalainställningar"/>
 		<text name="CP_global_setting_subTitle_general"													text="Standardinställningar"/>
 
+		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+
 		<text name="CP_global_setting_wageModifier_title" 												text="CP förarens lön"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="CP-förarens lön i procent av normala arbetarlöner (AI lön)"/>
 

@@ -240,6 +240,9 @@
 		<text name="CP_global_setting_title"															text="Paramètres globaux"/>
 		<text name="CP_global_setting_subTitle_general"													text="Paramètres généraux"/>
 
+		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+
 		<text name="CP_global_setting_wageModifier_title" 												text="Salaire des ouvriers Courseplay"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Salaire des ouvriers Courseplay en pourcentage du salaire des ouvriers normaux."/>
 

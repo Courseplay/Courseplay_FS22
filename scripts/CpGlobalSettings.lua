@@ -108,7 +108,7 @@ function CpGlobalSettings:onUnitChanged()
     end
 end
 
-function CpGlobalSettings:onSimpleModeChanged()
+function CpGlobalSettings:onExpertModeChanged()
     CpGlobalSettingsFrame.updateGui()
 end
 

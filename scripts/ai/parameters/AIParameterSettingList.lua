@@ -399,7 +399,7 @@ end
 --- Gets a specific value.
 function AIParameterSettingList:getValue()
 	--- In the simple user mode returns the default values.
-	if not self.data.isSimpleSetting and g_Courseplay.globalSettings.simpleUserModeEnabled:getValue() then 
+	if self.data.isExpertModeOnly and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
 		if self.data.default then 
 			return self.data.default
 		end
@@ -623,7 +623,7 @@ function AIParameterSettingList:getCanBeChanged()
 end
 
 function AIParameterSettingList:getIsVisible()
-	if not self.data.isSimpleSetting and g_Courseplay.globalSettings.simpleUserModeEnabled:getValue() then 
+	if self.data.isExpertModeOnly and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
 		return false
 	end
 	if self:hasCallback(self.data.isVisibleFunc) then 
