@@ -906,7 +906,9 @@ end
 
 --- Return a copy of the course
 function Course:copy(vehicle, first, last)
-	return Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
+	local newCourse = Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
+	newCourse:setName(self:getName())
+	return newCourse
 end
 
 --- Append a single waypoint to the course
