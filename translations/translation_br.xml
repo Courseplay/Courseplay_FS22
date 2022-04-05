@@ -454,16 +454,16 @@ F: Clicar neste ícone abre o menu de configurações globais.
 G: Fecha o HUD.
 H: Diminuir ou aumentar a largura de trabalho. Uma linha vermelha no seu veículo mostra o valor atual.
 I: Valor para deslocamento horizontal, + esquerda, - direita.
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: Copie e cole uma rota em um veículo diferente.
+      Uma vez que o botão de cópia foi pressionado, a rota pode ser colado em um veículo sem rota quando o ícone fica verde.
 K e L: Clicar no texto irá redefinir suas alterações para os valores padrão.
-M: Shows the copied course.
+M: Mostra rota copiada.
 N: Esta área mostra o deslocamento da pista se você tiver uma rota multi implementos carregado para comboio.
    Clicar no texto alterna as posições.
 O: Iniciar/parar a gravação de campos customizados.
 P: Remove a rota do veículo.
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+Q: Altera a visibilidade da rota entre: apenas ligar, desligar e iniciar/parar.
+R: Remove a rota copiada da área de transferência.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Campo Customizado"/>
