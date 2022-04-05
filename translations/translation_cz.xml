@@ -4,10 +4,10 @@
 
 		<text name="CP_activated" 																		text="Aktivní" />
 		<text name="CP_deactivated" 																	text="Neaktivní" />
-		<text name="CP_automatic" 																		text="auto" />
+		<text name="CP_automatic" 																		text="Auto" />
 		<text name="CP_unit_meter" 																		text="m" />
-		<text name="CP_unit_foot" 																		text="ft" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_unit_foot" 																		text="st" />
+		<text name="CP_copy"																			text="Kopírovat kurz: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Překlad: SniperKittenCZ" />
@@ -343,11 +343,11 @@
 Nejprve musíte v nabídce AI vybrat vozidlo pro generování kurzu práce v terénu nebo získání přístupu k nastavení vozidla a správci kurzu.
 Aktuálně načtený kurz se zobrazí na mapě.
 Globální nastavení jsou vždy viditelná.
-Pro generování kurzu a zahájení úloh v kurzu budete muset vytvořit úlohu CP: Polní práce nebo CP: ovíjení/svoz balíků, podobně jako pomocníků Giants.
+Pro generování kurzu a zahájení úloh v kurzu budete muset vytvořit úlohu CP: Polní práce nebo CP: ovíjení/sběr balíků, podobně jako pomocníků Giants.
 		"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
 Abyste mohli začít s první zakázkou CP, musíte vybrat vozidlo a správný nástroj, který je pro tuto zakázku vhodný.
-Poté kliknutím na vytvořit úlohu můžete vybrat CP: Polní práce pro nástroje pro práci v terénu nebo CP: ovíjení/svoz
+Poté kliknutím na vytvořit úlohu můžete vybrat CP: Polní práce pro nástroje pro práci v terénu nebo CP: ovíjení/sběr
 s připojeným ovíječem nebo sběračem balíků.
 		"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
@@ -451,15 +451,15 @@ F: Kliknutím na ikonu se otevře stránka obecných nastavení.
 G: Zavře Hud.
 H: Snižte a zvětšete pracovní šířku. Červená čára na vašem vozidle ukazuje aktuální nastavení.
 I: Hodnota pro horizontální posun, + vlevo, - vpravo.
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: Zkopírujte a vložte kurz do jiného vozidla.
+      Jakmile bylo stisknuto tlačítko kopírování, lze kurz vložit do vozidla bez kurzu, když se ikona změní na zelenou.
 K a L: Kliknutím na text resetujete změny na automatické hodnoty.
-M: Shows the copied course.
+M: Zobrazuje zkopírovaný kurz.
 N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
 O: Spuštění/zastavení záznamu vlastní trasy na poli.
 P: Odstraňuje trasu z vozidla
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+Q: Mění viditelnost kurzu mezi: zapnuto, vypnuto a pouze start/stop.
+R: Odebere zkopírovaný kurz ze schránky.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Vlastní pole"/>
@@ -483,7 +483,7 @@ Další kliknutí pravým tlačítkem nakreslí čáru z vašeho počátečního
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Více strojů a konvoj"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
-Je možné mít až 5 vozidel spolupracujících na stejném poli v konvoji (také nazývaný multitool kurz).
+Je možné mít až 5 vozidel spolupracujících na stejném poli (také nazývané jako konvoj).
 		"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
 Po načtení kurzu s více stroji budete muset vybrat dráhu pro řidiče.
@@ -538,7 +538,7 @@ Pokud nejsou na poli, musíte přejít přes nabídku AI a umístit značku pole
 Generátor pro vinnou révu má méně možností.
 V závislosti na nástroji si musíte vybrat, zda budete pracovat na vinicích nebo vedle nich.
 Např. výchozí harvestor potřebuje řídit a pracovat na révě.
-      Prořezávač potřebuje jet vlevo od révy, ale pracuje na révě, takže si musíte vybrat, že budete pracovat na révě, ale řídit s ofsetem.
+      Prořezávač potřebuje jet vlevo od révy, ale pracuje na révě, takže si musíte vybrat, že budete pracovat na révě, ale řídit s odsazením.
       Postřikovače musí jet vedle révy a musí přeskočit jednu řadu, protože stříká doleva a doprava.
 		"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
