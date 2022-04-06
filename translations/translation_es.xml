@@ -460,8 +460,8 @@ M: Shows the copied course.
 N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
 O: Inicia/Detiene la grabación de un curso de campo personalizado.
 P: Remueve el curso de un vehículo.
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+P: Cambia la visibilidad del curso entre: Encendido, Apagado e Inicio/Parada únicamente.
+R: Elimina el curso copiado del portapapeles.
 		"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Campos Personalizados"/>
