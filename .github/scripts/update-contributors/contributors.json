@@ -1,1 +1,80 @@
-{"main":["pvaiko","Tensuko","schwiti6190"],"languages":{"en":"English","de":"German","jp":"Japanese","pl":"Polish","cz":"Czech","fr":"French","es":"Spanish","ru":"Russian","it":"Italian","pt":"Portuguese","hu":"Hungarian","nl":"Dutch","cs":"Chinese Simplified","ct":"Chinese Traditional","br":"Brazilian Portuguese","tr":"Turkish","ro":"Romanian","kr":"Korean","ea":"Spanish LA","da":"Danish","fi":"Finnish","no":"Norwegian","sv":"Swedish","fc":"Canadian French"},"translators":{"cz":["SniperKittenCZ","chroja"],"da":["o0bonde"],"de":["RealNeo80"],"en":[],"es":["KCHARRO","aorek"],"fr":["Lactic68"],"hu":[],"it":["Roby1164"],"ip":[],"nl":["Thodor12"],"pl":["KITT3000"],"pt":["Admilson"],"ru":["Gonimy-Vetrom"],"sl":[],"sv":["piplarsson"],"cs":["kgdtuu"],"br":["Thodor12"],"ct":[],"jp":[]}}
+{
+    "main": [
+        "pvaiko",
+        "Tensuko",
+        "schwiti6190"
+    ],
+    "languages": {
+        "en": "English",
+        "de": "German",
+        "jp": "Japanese",
+        "pl": "Polish",
+        "cz": "Czech",
+        "fr": "French",
+        "es": "Spanish",
+        "ru": "Russian",
+        "it": "Italian",
+        "pt": "Portuguese",
+        "hu": "Hungarian",
+        "nl": "Dutch",
+        "cs": "Chinese Simplified",
+        "ct": "Chinese Traditional",
+        "br": "Brazilian Portuguese",
+        "tr": "Turkish",
+        "ro": "Romanian",
+        "kr": "Korean",
+        "ea": "Spanish LA",
+        "da": "Danish",
+        "fi": "Finnish",
+        "no": "Norwegian",
+        "sv": "Swedish",
+        "fc": "Canadian French"
+    },
+    "translators": {
+        "cz": [
+            "SniperKittenCZ",
+            "chroja"
+        ],
+        "da": [
+            "o0bonde"
+        ],
+        "de": [
+            "RealNeo80"
+        ],
+        "en": [],
+        "es": [
+            "KCHARRO",
+            "aorek"
+        ],
+        "fr": [
+            "Lactic68"
+        ],
+        "hu": [],
+        "it": [
+            "Roby1164"
+        ],
+        "ip": [],
+        "nl": [
+            "Thodor12"
+        ],
+        "pl": [
+            "KITT3000"
+        ],
+        "pt": [
+            "Admilson"
+        ],
+        "ru": [
+            "Gonimy-Vetrom"
+        ],
+        "sl": [],
+        "sv": [
+            "piplarsson"
+        ],
+        "cs": [
+            "kgdtuu"
+        ],
+        "br": [],
+        "ct": [],
+        "jp": []
+    }
+}
