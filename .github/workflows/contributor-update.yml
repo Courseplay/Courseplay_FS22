@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Echo output
         run: |
-          echo ${{ fromJson(needs.get_all_files.outputs.files) }}
+          echo ${{ needs.get_all_files.outputs.files }}
       # - name: Create local changes
       #   run: |
       #     cd .github/scripts/update-contributors
