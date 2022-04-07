@@ -14,7 +14,7 @@ function CpAIJobFieldWork.new(isServer, customMt)
 		
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
-
+	self.foundVines = nil
 	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
 	self.selectedFieldPlot:setVisible(false)
 	return self
@@ -49,7 +49,12 @@ function CpAIJobFieldWork:setupJobParameters()
 	self:setupCpJobParameters(nil)
 end
 
-function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+---@param vehicle Vehicle
+---@param mission Mission
+---@param farmId number
+---@param isDirectStart boolean disables the drive to by giants
+---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
+function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 	CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 	
 	local x, z = nil
@@ -61,12 +66,15 @@ function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectSt
 			x, z = lastJob.fieldPositionParameter:getPosition()
 		end
 	end
-
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 	end
 
 	self.fieldPositionParameter:setPosition(x, z)
+
+	if isStartPositionInvalid then
+		self:resetStartPositionAngle(vehicle)
+	end
 end
 
 --- Checks the field position setting.
@@ -80,12 +88,18 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
-
+	self.hasValidPosition = false
+	self.foundVines = nil
 	local isCustomField
 	self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
 
 	if self.fieldPolygon then
 		self.hasValidPosition = true
+		self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz, self.customField~=nil)
+		if self.foundVines then 
+			self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
+		end
+		
 		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
 		self.selectedFieldPlot:setVisible(true)
 		self.selectedFieldPlot:setBrightColor(true)
@@ -118,9 +132,12 @@ function CpAIJobFieldWork:validate(farmId)
 	self.cpJobParameters:validateSettings()
 	local vehicle = self.vehicleParameter:getVehicle()
 
-	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
-	if not isValid then
-		return isValid, errorMessage
+	--- Only check the valid field position in the in game menu.
+	if not self.isDirectStart then
+		isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
+		if not isValid then
+			return isValid, errorMessage
+		end
 	end
 
 	if not vehicle:hasCpCourse() then 
@@ -169,7 +186,24 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
+	local status, ok, course
+	if self.foundVines then 
+		local vineSettings = vehicle:getCpVineSettings()
+		local vertices, width, startingPoint, rowAngleDeg = g_vineScanner:getCourseGeneratorVertices(
+			vineSettings.vineCenterOffset:getValue(),
+			tx, tz
+		)
+		status, ok, course = CourseGeneratorInterface.generateVineCourse(vertices,
+			startingPoint,
+			width,
+			AIUtil.getTurningRadius(vehicle),
+			rowAngleDeg,
+			vineSettings.vineRowsToSkip:getValue(),
+			vineSettings.vineMultiTools:getValue()
+		)
+	else 
+
+		status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = tx, z = tz},
 			settings.isClockwise:getValue(),
 			settings.workWidth:getValue(),
@@ -182,12 +216,14 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 			settings.rowDirection:getValue(),
 			settings.manualRowAngleDeg:getValue(),
 			settings.rowsToSkip:getValue(),
+			false,
 			settings.rowsPerLand:getValue(),
 			settings.islandBypassMode:getValue(),
 			settings.fieldMargin:getValue(),
 			settings.multiTools:getValue(),
 			self:isPipeOnLeftSide(vehicle)
-	)
+		)
+	end
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then
 		g_gui:showInfoDialog({
@@ -228,5 +264,19 @@ function CpAIJobFieldWork:stop(aiMessage)
 	local vehicle = self.vehicleParameter:getVehicle()
 	if vehicle and vehicle.spec_aiFieldWorker.isActive then 
 		vehicle.spec_aiFieldWorker.isActive = false
+	end
+end
+
+function CpAIJobFieldWork:getCourseGeneratorSettings()
+	local vehicle = self:getVehicle()
+	if self.foundVines then 
+		return vehicle, vehicle:getCpVineSettingsTable(), CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
+	end
+	return vehicle, vehicle:getCourseGeneratorSettingsTable(), CpCourseGeneratorSettings.getSettingSetup(vehicle)
+end
+
+function CpAIJobFieldWork:setStartPosition(startPosition)
+	if self.fieldWorkTask then
+		self.fieldWorkTask:setStartPosition(startPosition)
 	end
 end

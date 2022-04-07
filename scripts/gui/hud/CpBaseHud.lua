@@ -1,3 +1,5 @@
+--- TODO: Make the hud static and only one instance.
+---       Apply the update only when data has changed.
 ---@class CpBaseHud
 CpBaseHud = CpObject()
 
@@ -5,7 +7,7 @@ CpBaseHud.OFF_COLOR = {0.2, 0.2, 0.2, 0.9}
 
 CpBaseHud.RECORDER_ON_COLOR = {1, 0, 0, 0.9}
 CpBaseHud.ON_COLOR = {0, 0.6, 0, 0.9}
-
+CpBaseHud.SEMI_ON_COLOR = {0.6, 0.6, 0, 0.9}
 CpBaseHud.WHITE_COLOR = {1, 1, 1, 0.9}
 
 CpBaseHud.colorHeader = {
@@ -35,6 +37,18 @@ CpBaseHud.uvs = {
     minusSymbol = {
         {128, 512, 128, 128}
     },
+    leftArrowSymbol = {
+        {384, 512, 128, 128}
+    },
+    rightArrowSymbol = {
+        {512, 512, 128, 128}
+    },
+    pasteSymbol = {
+        {255, 639, 128, 128}
+    },
+    copySymbol = {
+        {127, 637, 128, 128}
+    },
     exitSymbol = {
         {148, 184, 32, 32}
     },
@@ -44,11 +58,17 @@ CpBaseHud.uvs = {
     clearCourseSymbol = {
         {40, 256, 32, 32}
     },
+    eye = { 
+        {148, 148, 32, 32} 
+    }
 }
 
 CpBaseHud.xmlKey = "Hud"
 
 CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
+CpBaseHud.copyText = g_i18n:getText("CP_copy")
+
+CpBaseHud.courseCache = nil
 
 function CpBaseHud.registerXmlSchema(xmlSchema, baseKey)
     xmlSchema:register(XMLValueType.FLOAT, baseKey..CpBaseHud.xmlKey.."#posX", "Hud position x.")
@@ -222,7 +242,21 @@ function CpBaseHud:init(vehicle)
         end
     end)
     
-    
+    --- Toggle waypoint visibility.
+    local width, height = getNormalizedScreenValues(20, 20)
+    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    local courseVisibilityOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    courseVisibilityOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    courseVisibilityOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.eye), {256, 512}))
+    courseVisibilityOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self.baseHud)
+    local _, y = unpack(self.lines[6].right)
+    y = y - self.hMargin/16
+    x = x - width - self.wMargin/4
+    self.courseVisibilityBtn:setPosition(x, y)
+    self.courseVisibilityBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        vehicle:getCpSettings().showCourse:setNextItem()
+    end)
     
     --- Lane offset
     self.laneOffsetBtn = self:addRightLineTextButton(self.baseHud, 5, self.defaultFontSize, 
@@ -248,9 +282,8 @@ function CpBaseHud:init(vehicle)
     self.toolOffsetXBtn = self:addLineTextButton(self.baseHud, 2, self.defaultFontSize, 
                                                 self.vehicle:getCpSettings().toolOffsetX)
 
-    --- Tool offset z
-    self.toolOffsetZBtn = self:addLineTextButton(self.baseHud, 1, self.defaultFontSize, 
-                                                self.vehicle:getCpSettings().toolOffsetZ)
+    --- Copy course btn.                                          
+    self:addCopyCourseBtn(1)
 
     ---- Disables zoom, while mouse is over the cp hud. 
     local function disableCameraZoomOverHud(vehicle, superFunc, ...)
@@ -298,7 +331,8 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
 
     local x, y = unpack(self.lines[line].left)
     local dx, dy = unpack(self.lines[line].right)
-    local element = CpHudSettingElement.new(parent, x, y, dx, dy, 
+    local btnYOffset = self.hMargin*0.1
+    local element = CpHudSettingElement.new(parent, x, y, dx, y - btnYOffset, 
                                             incrementalOverlay, decrementalOverlay, textSize)
 
     local callbackIncremental = {
@@ -336,6 +370,61 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     return element
 end
 
+--- Setup for the copy course btn.
+function CpBaseHud:addCopyCourseBtn(line)    
+    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    --- Copy course btn.                                          
+    self.copyCourseElements = {}
+    self.copyCourseIx = 1
+    self.courseVehicles = {}
+    local leftX, leftY = unpack(self.lines[line].left)
+    local rightX, rightY = unpack(self.lines[line].right)
+    local btnYOffset = self.hMargin*0.2
+
+    local width, height = getNormalizedScreenValues(22, 22)
+    
+    local copyOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    copyOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.copySymbol)))
+    copyOverlay:setColor(unpack(self.OFF_COLOR))
+    copyOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+
+    local pasteOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
+    pasteOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.pasteSymbol)))
+    pasteOverlay:setColor(unpack(self.OFF_COLOR))
+    pasteOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+
+    local clearCourseOverlay =  Overlay.new(imageFilename2, 0, 0, width, height)
+    clearCourseOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol), {256, 512}))
+    clearCourseOverlay:setColor(unpack(self.OFF_COLOR))
+
+    self.copyButton = CpHudButtonElement.new(copyOverlay, self.baseHud)
+    self.copyButton:setPosition(rightX, rightY-btnYOffset)
+    self.copyButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        if not CpBaseHud.courseCache and self.vehicle:hasCpCourse() then 
+            CpBaseHud.courseCache = self.vehicle:getFieldWorkCourse()
+        end
+    end)
+
+    self.pasteButton = CpHudButtonElement.new(pasteOverlay, self.baseHud)
+    self.pasteButton:setPosition(rightX, rightY-btnYOffset)
+    self.pasteButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        if CpBaseHud.courseCache and not self.vehicle:hasCpCourse() then 
+            self.vehicle:cpCopyCourse(CpBaseHud.courseCache)
+        end
+    end)
+
+    self.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
+    self.clearCacheBtn:setPosition(rightX - width - self.wMargin/2, rightY - btnYOffset)
+    self.clearCacheBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        CpBaseHud.courseCache = nil
+    end)
+
+    self.copyCacheText = CpTextHudElement.new(self.baseHud, leftX, leftY,self.defaultFontSize)
+
+end
+
 function CpBaseHud:moveToPosition(element, x, y)
     CpBaseHud.x = x 
     CpBaseHud.y = y
@@ -368,8 +457,7 @@ end
 
 ---@param status CpStatus
 function CpBaseHud:draw(status)
-    
-    --- Set variable data.
+     --- Set variable data.
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
     if self.vehicle:hasCpCourse() then 
@@ -412,12 +500,47 @@ function CpBaseHud:draw(status)
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
-    local toolOffsetZ = self.vehicle:getCpSettings().toolOffsetZ
-    text = toolOffsetZ:getIsDisabled() and CpBaseHud.automaticText or toolOffsetZ:getString()
-    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), text)
-    self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
+
+    if self.vehicle:hasCpCourse() then 
+        self.courseVisibilityBtn:setVisible(true)
+        local value = self.vehicle:getCpSettings().showCourse:getValue()
+        if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
+        elseif value == CpVehicleSettings.SHOW_COURSE_START_STOP then 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))
+        else 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.ON_COLOR))
+        end
+    else 
+        self.courseVisibilityBtn:setVisible(false)
+    end
+
+    self:updateCopyBtn(status)
+
 
     self.baseHud:draw()
+end
+
+function CpBaseHud:updateCopyBtn(status)
+    if self.courseCache then 
+        local courseName =  CpCourseManager.getCourseName(self.courseCache)
+        self.copyCacheText:setTextDetails(self.copyText .. courseName)
+        self.clearCacheBtn:setVisible(true)
+        self.pasteButton:setVisible(true)
+        self.copyButton:setVisible(false)
+        if self.vehicle:hasCpCourse() then 
+            self.copyCacheText:setTextColorChannels(unpack(self.OFF_COLOR))
+            self.pasteButton:setColor(unpack(self.OFF_COLOR))
+        else 
+            self.copyCacheText:setTextColorChannels(unpack(self.WHITE_COLOR))
+            self.pasteButton:setColor(unpack(self.ON_COLOR))
+        end
+    else
+        self.copyCacheText:setTextDetails("")
+        self.clearCacheBtn:setVisible(false)
+        self.pasteButton:setVisible(false)
+        self.copyButton:setVisible(self.vehicle:hasCpCourse())
+    end
 end
 
 function CpBaseHud:delete()
@@ -468,7 +591,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
             self:debug("opened ai inGame menu job %s.", job:getDescription())
             pageAI.currentJob = nil
             pageAI:setActiveJobTypeSelection(jobTypeIndex)
-            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, true)
+            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, true)
             pageAI:updateParameterValueTexts()
             pageAI:validateParameters()
             --- Fixes the job selection gui element.

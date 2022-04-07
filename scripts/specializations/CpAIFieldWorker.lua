@@ -34,6 +34,7 @@ end
 function CpAIFieldWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpAIFieldWorker)
+
     SpecializationUtil.registerEventListener(vehicleType, "onCpEmpty", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFinished", CpAIFieldWorker)
@@ -102,7 +103,6 @@ function CpAIFieldWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
     spec.cpJob:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJob")
     spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
-
 
 function CpAIFieldWorker:onCpCourseChange()
     local spec = self.spec_cpAIFieldWorker
@@ -200,12 +200,14 @@ function CpAIFieldWorker:startCpAtFirstWp()
     self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtFirstWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-
         --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
         spec.cpJobStartAtFirstWp:getCpJobParameters().laneOffset:setValue(spec.cpJob:getCpJobParameters().laneOffset:getValue())
         spec.cpJobStartAtFirstWp:setValues()
-        g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtFirstWp, self:getOwnerFarmId()))
-        return true
+        local success = spec.cpJobStartAtFirstWp:validate(false)
+        if success then
+            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtFirstWp, self:getOwnerFarmId()))
+            return true
+        end
     end
 end
 
@@ -216,8 +218,11 @@ function CpAIFieldWorker:startCpAtLastWp()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
         spec.cpJobStartAtLastWp:setValues()
-        g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
-        return true
+        local success = spec.cpJobStartAtLastWp:validate(false)
+        if success then
+            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
+            return true
+        end
     end
 end
 
@@ -243,7 +248,9 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
             AIUtil.hasImplementWithSpecialization(self, ForageWagon) or
             -- built in helper can't handle forage harvesters.
-            AIUtil.hasImplementWithSpecialization(self, Cutter) then
+            AIUtil.hasImplementWithSpecialization(self, Cutter) or 
+            AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
+            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) then
         return true
     end
     return self:getCanStartFieldWork()
@@ -267,12 +274,12 @@ end
 
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIFieldWorker:startCpFieldWorker(jobParameters)
+function CpAIFieldWorker:startCpFieldWorker(jobParameters, startPosition)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters)
+        CpAIFieldWorker.replaceAIFieldWorkerDriveStrategies(self, jobParameters, startPosition)
 
         --- Remembers the last lane offset setting value that was used.
         local spec = self.spec_cpAIFieldWorker
@@ -282,7 +289,7 @@ end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
+function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, startPosition)
     CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -294,7 +301,12 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
-    if AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) then
+    --- Checks if there are any vine nodes close to the starting point.
+    if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
+        CpUtil.infoVehicle(self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
+        cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
+    elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
+           and not AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) then
         CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
         self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
@@ -314,3 +326,11 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters)
     --- Only the last driving strategy can stop the helper, while it is running.
     table.insert(spec.driveStrategies, cpDriveStrategy)
 end
+
+--- Makes sure a callstack is printed, when an error appeared.
+--- TODO: Might be a good idea to stop the cp helper.
+local function onUpdate(vehicle, superFunc, ...)
+    CpUtil.try(superFunc, vehicle, ...)
+end
+
+AIFieldWorker.onUpdate = Utils.overwrittenFunction(AIFieldWorker.onUpdate, onUpdate)

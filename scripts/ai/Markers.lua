@@ -39,7 +39,7 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
     else
         referenceNode = vehicle.rootNode
-        backMarkerOffset = - vehicle.sizeLength / 2 + vehicle.lengthOffset
+        backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the vehicle\'s root node for the rear proximity sensor, %d m from root node', backMarkerOffset)
     end
 
@@ -74,10 +74,16 @@ function Markers.setMarkerNodes(vehicle, measuredBackDistance)
 end
 
 function Markers.getFrontMarkerNode(vehicle)
-    return g_vehicleMarkers[vehicle] and g_vehicleMarkers[vehicle].frontMarkerNode
+    if not g_vehicleMarkers[vehicle] or not g_vehicleMarkers[vehicle].frontMarkerNode then
+        setFrontMarkerNode(vehicle)
+    end
+    return g_vehicleMarkers[vehicle].frontMarkerNode
 end
 
 function Markers.getBackMarkerNode(vehicle)
-    return g_vehicleMarkers[vehicle] and g_vehicleMarkers[vehicle].backMarkerNode
+    if not g_vehicleMarkers[vehicle] or not g_vehicleMarkers[vehicle].backMarkerNode then
+        setBackMarkerNode(vehicle)
+    end
+    return g_vehicleMarkers[vehicle].backMarkerNode
 end
 

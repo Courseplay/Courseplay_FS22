@@ -28,6 +28,7 @@ function CpAITaskDriveTo:stop()
     AITask.stop(self)
 end
 
-function CpAITaskDriveTo:onTargetReached()
+function CpAITaskDriveTo:onTargetReached(startPosition)
     self.isFinished = true
+    self.job:setStartPosition(startPosition)
 end

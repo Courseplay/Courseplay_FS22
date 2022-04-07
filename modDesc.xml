@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="62">
-    <version>7.0.1.6</version>
+<modDesc descVersion="64">
+    <version>7.0.1.9</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
-		<es>CoursePlay</es>
 		<cs>自动作业</cs>
 		<ct>自動作業</ct>
 		<hu>CoursePlay - A Vezetősegéd</hu>
 		<jp>コースプレイ</jp>
 		<kr>코스 플레이</kr>
-		<it>CoursePlay</it>
 	</title>
 
     <description>
         <en>
 			<![CDATA[Courseplay FS22
 Full Multiplayer and controller support.
-Functionality: 		
+Functionality:
 - Course generation
 - Field work with generated courses
+- Vine fields with generated courses
 - Refill or unload with the mod "AutoDrive"
 - Combine self unload into a parked trailer near the field
 - Wrap and collect bales with or without a course
 - Save/load/rename courses
 - Create custom fields with recording or drawing on the AI Map
 - Vehicle Convoy for field work
-			]]>
+]]>
 		</en>
         <de>
 			<![CDATA[Courseplay FS22
-Vollständige Mehrspieler und Controller Unterstützung. 
-Funktionen: 		
+Vollständige Mehrspieler und Controller Unterstützung.
+Funktionen:
 - Kurs Generatation
 - Feldarbeit mit generierten Kursen
+- Weinfelder mit generierten Kursen ab arbeiten
 - Auffüllen und entladen mit dem Mod: "Autodrive"
 - Drescher können selber abtanken in Anhänger am Feldrand
 - Ballen wickeln und sammeln mit oder ohne Kurs
 - Speichern/laden/umbenennen von Kursen
 - Erstellung eigener Kurse durch Kursaufzeichnung oder Zeichnen im AI Menü auf der Karte
 - Fahrzeugverband für Feldarbeit
-			]]>
+]]>
 		</de>
     </description>
 
@@ -74,6 +74,7 @@ Funktionen:
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
+		<sourceFile filename="scripts/field/VineScanner.lua"/>
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
 		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
@@ -97,6 +98,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIMessages.lua"/>
 		<sourceFile filename="scripts/ai/Markers.lua"/>
 		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
@@ -116,6 +118,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/CombineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/MotorController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/VineCutterController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
@@ -148,11 +151,12 @@ Funktionen:
 		<sourceFile filename="scripts/gui/VehicleSettingDisplayDialog.lua"/>
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
 		<sourceFile filename="scripts/events/CoursesEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
-		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
+		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>

@@ -1,0 +1,64 @@
+--[[
+This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
+Copyright (C) 2021 Peter Vaiko
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Drive strategy for driving a vine field work course
+
+]]--
+
+---@class AIDriveStrategyVineFieldWorkCourse : AIDriveStrategyFieldWorkCourse
+AIDriveStrategyVineFieldWorkCourse = {}
+local AIDriveStrategyVineFieldWorkCourse_mt = Class(AIDriveStrategyVineFieldWorkCourse, AIDriveStrategyFieldWorkCourse)
+
+function AIDriveStrategyVineFieldWorkCourse.new(customMt)
+    if customMt == nil then
+        customMt = AIDriveStrategyVineFieldWorkCourse_mt
+    end
+    local self = AIDriveStrategyFieldWorkCourse.new(customMt)
+    return self
+end
+
+function AIDriveStrategyVineFieldWorkCourse:setAIVehicle(...)
+    AIDriveStrategyVineFieldWorkCourse:superClass().setAIVehicle(self, ...)
+end
+
+--- Always disables turn on field.
+function AIDriveStrategyVineFieldWorkCourse:isTurnOnFieldActive()
+    return false
+end
+
+function AIDriveStrategyVineFieldWorkCourse:getImplementRaiseLate()
+    return true
+end
+
+function AIDriveStrategyVineFieldWorkCourse:getImplementLowerEarly()
+    return true
+end
+
+function AIDriveStrategyVineFieldWorkCourse:startTurn(ix)
+
+    local _, frontMarkerDistance = AIUtil.getFirstAttachedImplement(self.vehicle)
+    local _, backMarkerDistance = AIUtil.getLastAttachedImplement(self.vehicle)
+
+    self:debug('Starting a turn at waypoint %d, front marker %.1f, back marker %.1f', ix, frontMarkerDistance, backMarkerDistance)
+    self.ppc:setShortLookaheadDistance()
+
+
+    self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
+            frontMarkerDistance, -backMarkerDistance, 0, 0)
+    self.aiTurn = VineTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+    self.state = self.states.TURNING
+end
