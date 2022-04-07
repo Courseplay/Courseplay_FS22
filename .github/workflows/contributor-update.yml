@@ -41,6 +41,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [get_all_files]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Create local changes
         run: |
           cd ~/.github/scripts/update-contributors
