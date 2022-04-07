@@ -26,11 +26,11 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            return context.payload.commits
+            const promises = context.payload.commits
               .filter(commit => commit.author.username === context.actor)
-              .forEach(commit => {
-                console.log(exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id]));
-              });
+              .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id])));
+            const output = await Promise.all(promises);
+            core.setOutput("files", JSON.stringify(output));
   update_contributors:
     name: Update contributors
     runs-on: ubuntu-latest
