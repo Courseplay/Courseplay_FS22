@@ -28,7 +28,7 @@ jobs:
           script: |
             const promises = context.payload.commits
               .filter(commit => commit.author.username === context.actor)
-              .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id])));
+              .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id]));
             const output = await Promise.all(promises);
             core.setOutput("files", JSON.stringify(output));
   update_contributors:
