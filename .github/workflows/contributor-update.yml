@@ -54,19 +54,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update contributors
-      # Test
-      #    git diff --name-only ${{ github.event.before }} ${{ github.sha }}
-      #    echo "::set-output name=files::$(git log ${{ github.event.before }} ${{ github.sha }} --oneline --author=${{ github.author }} | xargs)"
-      # - name: Output changed files
-      #   run: |
-      #     echo ${{ steps.getfiles.outputs.files }}
-      # - name: Get changed files
-      #   uses: tj-actions/changed-files@v14.6
-      # - name: Create local changes
-      #   run: |
-      #     cd .github/scripts/update-contributors
-      #     node index.js ${{ github.actor }} ${{ steps.changed-files.outputs.all_changed_files }}
-      # - name: Commit files
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     commit_message: Update contributors
