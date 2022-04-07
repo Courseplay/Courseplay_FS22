@@ -34,7 +34,7 @@ jobs:
             const output = (await Promise.all(promises))
               .map(m => m.stdout.trim())
               .filter(f => f !== "");
-              console.log(output,JSON.stringify(output));
+            console.log(output);
             core.setOutput("files", JSON.stringify(output));
   update_contributors:
     name: Update contributors
@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Echo output
         run: |
-          echo ${{ needs.get_all_files.outputs }}
+          echo ${{ fromJson(needs.get_all_files.outputs.files) }}
       # - name: Create local changes
       #   run: |
       #     cd .github/scripts/update-contributors
