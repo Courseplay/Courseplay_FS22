@@ -28,8 +28,8 @@ jobs:
           script: |
             return context.payload.commits
               .filter(commit => commit.author.username === context.actor)
-              .forEach(commitId => {
-                console.log(exec.getExecOutput("git", `log -p -1 --name-only --pretty="format": ${commitId}`));
+              .forEach(commit => {
+                console.log(exec.getExecOutput("git", `log -p -1 --name-only --pretty="format": ${commit.id}`));
               });
   update_contributors:
     name: Update contributors
