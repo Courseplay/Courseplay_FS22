@@ -291,9 +291,10 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	local dzMax = self:getDzMax(self.course)
 	local spaceNeededOnFieldForTurn = dzMax + workWidth / 2
 	distanceToFieldEdge = distanceToFieldEdge or 500  -- if not given, assume we have a lot of space
-	self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f, ixBeforeEndingTurnSection=%d',
-		dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection)
-	if distanceToFieldEdge < spaceNeededOnFieldForTurn then
+	local canReverse = AIUtil.canReverse(vehicle)
+	self:debug('dzMax=%.1f, workWidth=%.1f, spaceNeeded=%.1f, distanceToFieldEdge=%.1f, ixBeforeEndingTurnSection=%d, canReverse=%s',
+		dzMax, workWidth, spaceNeededOnFieldForTurn, distanceToFieldEdge, ixBeforeEndingTurnSection, canReverse)
+	if distanceToFieldEdge < spaceNeededOnFieldForTurn and canReverse then
 		self.course = self:moveCourseBack(self.course, spaceNeededOnFieldForTurn - distanceToFieldEdge,
 			ixBeforeEndingTurnSection, endingTurnLength)
 	end
@@ -489,4 +490,28 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	end
 	self:debug('Alignment course with %d waypoints created.', #alignmentWaypoints)
 	self.course = Course.createFromAnalyticPath(self.vehicle, alignmentWaypoints, true)
+end
+
+---@class VineTurnManeuver : TurnManeuver
+VineTurnManeuver = CpObject(TurnManeuver)
+function VineTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth)
+	TurnManeuver.init(self, vehicle, turnContext, vehicleDirectionNode, turningRadius, workWidth, 0)
+
+	self:debug('Start generating')
+
+	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(0)
+	local _, _, dz = turnContext:getLocalPositionOfTurnEnd(vehicle:getAIDirectionNode())
+	if dz > 0 then
+		startOffset = startOffset + dz
+	else
+		goalOffset = goalOffset + dz
+	end
+	self:debug('r=%.1f, w=%.1f, dz=%.1f, startOffset=%.1f, goalOffset=%.1f',
+			turningRadius, workWidth, dz, startOffset, goalOffset)
+	local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
+			-- always move the goal a bit backwards to let the vehicle align
+			vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset - turnContext.frontMarkerDistance, self.turningRadius)
+	self.course = Course.createFromAnalyticPath(self.vehicle, path, true)
+	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.course, 0, false)
+	TurnManeuver.setLowerImplements(self.course, endingTurnLength, true)
 end

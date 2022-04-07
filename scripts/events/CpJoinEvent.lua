@@ -18,31 +18,37 @@ function CpJoinEvent.new()
 end
 
 --- Reads the serialized data on the receiving end of the event.
-function CpJoinEvent:readStream(streamId, connection) -- wird aufgerufen wenn mich ein Event erreicht
+function CpJoinEvent:readStream(streamId, connection) 
 	CpJoinEvent.debug("readStream")
 	local settings = g_Courseplay.globalSettings:getSettingsTable()
 	for i = 1, #settings do 
 		settings[i]:readStream(streamId, connection)
+	end
+
+	for i = 1, #CpDebug.channels do 
+		CpDebug:setChannelActive(i, streamReadBool(streamId))
 	end
 	
 	self:run(connection);
 end
 
 --- Writes the serialized data from the sender.
-function CpJoinEvent:writeStream(streamId, connection)  -- Wird aufgrufen wenn ich ein event verschicke (merke: reihenfolge der Daten muss mit der bei readStream uebereinstimmen 
+function CpJoinEvent:writeStream(streamId, connection) 
 	CpJoinEvent.debug("writeStream")
 	local settings = g_Courseplay.globalSettings:getSettingsTable()
 	for i = 1, #settings do 
 		settings[i]:writeStream(streamId, connection)
 	end
+
+	for i = 1, #CpDebug.channels do 
+		streamWriteBool(streamId, CpDebug:isChannelActive(i))
+	end
+
 end
 
 --- Runs the event on the receiving end of the event.
-function CpJoinEvent:run(connection) -- wir fuehren das empfangene event aus
-	--- If the receiver was the client make sure every clients gets also updated.
-	if not connection:getIsServer() then
+function CpJoinEvent:run(connection) 
 
-	end
 end
 
 function CpJoinEvent.debug(str, ...)

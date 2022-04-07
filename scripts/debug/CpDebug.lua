@@ -67,6 +67,10 @@ function CpDebug:isChannelActive(ix, vehicle)
 	end
 end
 
+function CpDebug:setChannelActive(ix, active)
+	self.channels[ix].active = active
+end
+
 ---Sets the next select channel.
 function CpDebug:setNext()
 	if not self:isMenuVisible() then return end
@@ -89,6 +93,7 @@ end
 function CpDebug:toggleCurrentChannel()
 	if not self:isMenuVisible() then return end
 	self.channels[self.currentIx].active = not self.channels[self.currentIx].active
+	DebugChannelEvent.sendEvent(self.currentIx, self.channels[self.currentIx].active)
 end
 
 ---Draws the channels at the bottom if it's enabled.

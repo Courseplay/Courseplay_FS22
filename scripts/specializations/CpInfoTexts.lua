@@ -76,10 +76,10 @@ function CpInfoTexts:onWriteStream(streamId)
 	streamWriteInt32(streamId, CpInfoTexts.getBitMask(self))
 end
 
-function CpInfoTexts:onEnterVehicle()
-	if self.isServer and not self:getIsCpActive() then 
-		local spec = self.spec_cpInfoTexts
-		if next(spec.activeInfoTexts) ~= nil then
+function CpInfoTexts:onEnterVehicle(isControlling)
+	local spec = self.spec_cpInfoTexts
+	if not self:getIsCpActive() and next(spec.activeInfoTexts) ~= nil then
+		if self.isServer then
 			self:resetCpAllActiveInfoTexts()
 		end
 	end
@@ -129,6 +129,7 @@ function CpInfoTexts:resetCpAllActiveInfoTexts()
 	local spec = self.spec_cpInfoTexts
 	spec.activeInfoTexts = {}
 	CpInfoTexts.raiseDirtyFlag(self)
+	CpUtil.debugVehicle(CpDebug.DBG_HUD, self, "All info texts were cleared.")
 end
 
 function CpInfoTexts:getCpActiveInfoTexts()
@@ -160,12 +161,11 @@ function CpInfoTexts:setFromBitMask(bitMask)
 	local spec = self.spec_cpInfoTexts
 	local bits = MathUtil.getBinary(bitMask)
 	local id
+	spec.activeInfoTexts = {}
 	for ix, bit in ipairs(bits) do 
 		id = bitShiftLeft(1, ix-1)
 		if bit == 1 then
 			spec.activeInfoTexts[id] = g_infoTextManager:getInfoTextById(id)
-		else 
-			spec.activeInfoTexts[id] = nil
 		end
 	end
 end

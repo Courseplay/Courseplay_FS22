@@ -97,25 +97,26 @@ function InfoTextManager:getActiveInfoTexts()
 	local validInfoText
 	for _,infoText in ipairs(self.infoTexts) do 
 		for _,vehicle in pairs(self.vehicles) do 
-			
-			--- dev functionally for testing.
-			if self.numActiveTexts > 0 then 
-				validInfoText = true 
-				if i == 0 then 
-					break
+			if g_currentMission.accessHandler:canPlayerAccess(vehicle) then
+				--- dev functionally for testing.
+				if self.numActiveTexts > 0 then 
+					validInfoText = true 
+					if i == 0 then 
+						break
+					end
+					i = i - 1 
+				else 
+					validInfoText = vehicle:getIsCpInfoTextActive(infoText)
 				end
-				i = i - 1 
-			else 
-				validInfoText = vehicle:getIsCpInfoTextActive(infoText)
+			
+				if validInfoText then 
+					local info = {
+						text = infoText.text,
+						vehicle = vehicle
+					}
+					table.insert(infos,info)
+				end	
 			end
-		
-			if validInfoText then 
-				local info = {
-					text = infoText.text,
-					vehicle = vehicle
-				}
-				table.insert(infos,info)
-			end	
 		end
 	end
 	return infos

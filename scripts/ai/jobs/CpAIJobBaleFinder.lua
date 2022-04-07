@@ -44,8 +44,8 @@ function CpAIJobBaleFinder:getCanStartJob()
 end
 
 
-function CpAIJobBaleFinder:applyCurrentState(vehicle, mission, farmId, isDirectStart)
-	CpAIJobBaleFinder:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+function CpAIJobBaleFinder:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
+	CpAIJobBaleFinder:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 end
 
 function CpAIJobBaleFinder:setValues()
@@ -60,6 +60,25 @@ function CpAIJobBaleFinder:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
-	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
+	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
+	self.baleFinderTask:setFieldPolygon(self.fieldPolygon)
 	return isValid, errorMessage
+end
+
+function CpAIJobBaleFinder:readStream(streamId, connection)
+	if streamReadBool(streamId) then
+		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
+		self.baleFinderTask:setFieldPolygon(self.fieldPolygon)
+	end
+	CpAIJobBaleFinder:superClass().readStream(self, streamId, connection)
+end
+
+function CpAIJobBaleFinder:writeStream(streamId, connection)
+	if self.fieldPolygon then
+		streamWriteBool(streamId, true)
+		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
+	else 
+		streamWriteBool(streamId, false)
+	end
+	CpAIJobBaleFinder:superClass().writeStream(self, streamId, connection)
 end

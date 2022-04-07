@@ -624,7 +624,8 @@ end
 
 --- How far are we from the waypoint marked as the beginning of the up/down rows?
 ---@param ix number start searching from this index. Will stop searching after 100 m
----@return number of meters or math.huge if no start up/down row waypoint found within 100 meters and the index of the first up/down waypoint
+---@return number, number of meters or math.huge if no start up/down row waypoint found within 100 meters and the
+--- index of the first up/down waypoint
 function Course:getDistanceToFirstUpDownRowWaypoint(ix)
 	local d = 0
 	local isConnectingTrack = false
@@ -905,7 +906,9 @@ end
 
 --- Return a copy of the course
 function Course:copy(vehicle, first, last)
-	return Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
+	local newCourse = Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
+	newCourse:setName(self:getName())
+	return newCourse
 end
 
 --- Append a single waypoint to the course

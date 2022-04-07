@@ -11,6 +11,7 @@
 
 * Course generation
 * Field work with generated courses
+* Vine fields with generated courses
 * Refill or unload with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive)
 * Combine self unload
 * Wrap and collect bales with or without a course

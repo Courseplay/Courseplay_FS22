@@ -76,9 +76,15 @@ You can define the following custom settings:
 
 - lowerEarly: boolean
     Similar to the above, the default behavior when starting to work is lower the implement when the back of the
-    work area reaches to row start/field edge. Setting this to true will make Courseplay lowere the implement as
+    work area reaches to row start/field edge. Setting this to true will make Courseplay lower the implement as
     soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
     work areas such as a plow.
+
+- useVehicleSizeForMarkers: boolean
+    Some vehicles and implements, mostly used for grape harvest have no AI markers and not even a work area.
+    In order for these to perform turn maneuvers correctly we still need a front and back marker, which usually
+    are derived from the AI markers or from the work areas. If useVehicleSizeForMarkers is true, we simply place
+    the front marker on the front of the vehicle, the back marker on the back if there is no AI marker or work area.
 
 - modName: Name of the .zip file (without '.zip')
     In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
@@ -90,9 +96,19 @@ You can define the following custom settings:
     <!--[GIANTS]-->
 
     <!-- Harvesters -->
+
+    <!--vehicles\newHolland-->
+    <Vehicle name="braud9070L.xml"
+             turnRadius="5"
+             useVehicleSizeForMarkers="true"
+    />
+    <Vehicle name="braud9090X.xml"
+             turnRadius="5"
+             useVehicleSizeForMarkers="true"
+    />
     <!-- Implements -->
 
-    <!-- Agromasz POV 5XL -->
+    <!--\vehicles\agromasz-->
     <Vehicle name="pov5xl.xml"
              raiseLate="true"
              lowerEarly="true"
@@ -102,7 +118,7 @@ You can define the following custom settings:
              toolOffsetX="-2.7"
              turnRadius="15"
     />
-    <!--\Vehicles\amazone-->
+    <!--\vehicles\amazone-->
     <Vehicle name="citan15001C.xml"
              implementWheelAlwaysOnGround = "true"
     />
@@ -158,7 +174,8 @@ You can define the following custom settings:
              implementWheelAlwaysOnGround = "true"
 	/>
     <Vehicle name="titan18.xml"
-             turnRadius = "7.5"
+             noReverse="true"
+             turnRadius = "9"
              implementWheelAlwaysOnGround = "true"
              raiseLate = "true"
              lowerEarly = "true"
@@ -198,10 +215,6 @@ You can define the following custom settings:
     <Vehicle name="th1400.xml"
              noReverse="true"
     />
-    <!--\vehicles\greatPlains-->
-    <Vehicle name="yp2425A.xml"
-             noReverse="true"
-    />
     <!--\vehicles\flexicoil-->
     <Vehicle name="st820.xml"
              turnRadius = "7"
@@ -210,8 +223,20 @@ You can define the following custom settings:
     <Vehicle name="agrisemCultiplowPlatinum8m.xml"
              turnRadius = "7"
     />
+    <!--\vehicles\proviti-->
+    <Vehicle name="mp122Ocea.xml"
+             toolOffsetX="-1.2"
+             turnRadius="5"
+             useVehicleSizeForMarkers="true"
+    />
+
+    <!--\vehicles\samsonAgro-->
+    <Vehicle name="us235.xml"
+             workingWidth="24"
+    />
 
     <!--Tractors-->
+    
     <!--\vehicles\stara-->
     <Vehicle name="imperador3.xml"
              ignoreCollisionBoxesWhenFolded="true"
@@ -241,8 +266,11 @@ You can define the following custom settings:
              baleCollectorOffset="1.5"
     />
     <Vehicle name="pw10012.xml"
-             implementWheelAlwaysOnGround = "true"
              noReverse="true"
+             implementWheelAlwaysOnGround = "true"
+             turnRadius="14"
+             raiseLate="true"
+             lowerEarly="true"
     />
     <Vehicle name="ecomat.xml"
              raiseLate = "true"
@@ -267,8 +295,6 @@ You can define the following custom settings:
     />
 	
     <!--[MODS]-->
-
-	
 
     <!--Harvester-->
 
@@ -320,4 +346,9 @@ You can define the following custom settings:
              modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
              workingWidth="10.3"
     />
+    <!--Mod: Great Plains YP-2425A-->
+    <Vehicle name="yp2425A.xml"
+             implementWheelAlwaysOnGround="true"
+    />
+
 </VehicleConfigurations>
