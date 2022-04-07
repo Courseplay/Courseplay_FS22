@@ -32,7 +32,8 @@ jobs:
                 silent: true
               }));
             const output = (await Promise.all(promises))
-              .map(m => m.stdout.trim())
+              .flatMap(m => m.stdout.split(/\r?\n/))
+              .map(m => m.trim())
               .filter(f => f !== "");
             console.log(output);
             core.setOutput("files", JSON.stringify(output));
