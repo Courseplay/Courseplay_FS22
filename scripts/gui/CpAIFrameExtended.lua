@@ -224,7 +224,7 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 end
 
 function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
-	if self.courseGeneratorLayout:getIsVisible() then 
+	if self.courseGeneratorLayout and self.courseGeneratorLayout:getIsVisible() then 
 		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
 		FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
 		self.courseGeneratorLayoutElements:invalidateLayout()

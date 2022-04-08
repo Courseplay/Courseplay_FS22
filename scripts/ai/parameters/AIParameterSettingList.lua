@@ -60,7 +60,6 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 
 	self.isDisabled = false
 	self.isVisible = true
-	self.setupDone = true
 
 	return self
 end
