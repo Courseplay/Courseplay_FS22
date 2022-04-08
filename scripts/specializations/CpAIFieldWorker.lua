@@ -221,7 +221,9 @@ function CpAIFieldWorker:startCpAtLastWp()
         --- TODO: This should only be applied, if the driver was started for the first time by ad and not every time.
         spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(self:getCpLaneOffsetSetting():getValue())
         spec.cpJobStartAtLastWp:setValues()
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "lane offset: %s", spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:getString())
         local success = spec.cpJobStartAtLastWp:validate(false)
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "lane offset: %s", spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:getString())
         if success then
             g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
             return true
