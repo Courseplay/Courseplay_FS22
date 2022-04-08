@@ -7,7 +7,7 @@
 		<text name="CP_automatic" 																		text="Automatyczne" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="Skopiuj kurs: "/>
 		
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Aby uzyskać pomoc, zgłosić błąd lub przeczytać informacje o aktualizacji, odwiedź: https://github.com/Courseplay/Courseplay_FS22." />
@@ -40,8 +40,8 @@
 		<text name="CP_job_fieldWork"																	text="CP: Prace polowe" />
 		<text name="CP_job_baleCollect"																	text="CP: Zbieranie/Owijanie bel" />
 	<!--Generate course button-->
-		<text name="CP_ai_page_generate_course" 														text="CP: Wygeneruj kurs pracy polowej." />
-		<text name="CP_ai_page_open_course_generator" 													text="CP: Otwórz/Zamknij generator kursu." />
+		<text name="CP_ai_page_generate_course" 														text="CP: Wygeneruj kurs pracy polowej" />
+		<text name="CP_ai_page_open_course_generator" 													text="CP: Otwórz/Zamknij generator kursu" />
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Pracownik SI %s niespodziewanie przerwał pracę - zbiornik jest pełny!" />
@@ -307,10 +307,10 @@
 		<text name="CP_courseManager_targetIsNoFolderError"												text="Docelowa lokalizacja nie jest folderem (%s)!"/>
 		<text name="CP_courseManager_targetIsNoCourseError"												text="Docelowa lokalizacja nie jest kursem (%s)!"/>
 	
-		<text name="CP_courseManager_basicSettings"														text="Interakcja kursu."/>
-		<text name="CP_courseManager_advancedSettings"													text="Edycja plików."/>
+		<text name="CP_courseManager_basicSettings"														text="Interakcja kursu"/>
+		<text name="CP_courseManager_advancedSettings"													text="Edycja plików"/>
 
-		<text name="CP_courseManager_activate"															text="Aktywuj"/>
+		<text name="CP_courseManager_activate"															text="Potwierdź"/>
 
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Pomocnik utknął"/>
@@ -320,7 +320,7 @@
 		<text name="CP_infoTexts_needsRepair"  															text="Musi zostać naprawiony"/>
 		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
-		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>		
+		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Czy chcesz zapisać nagrany kurs jako nowe pole %s?"/>
@@ -346,26 +346,26 @@ Najpierw musisz wybrać pojazd w menu SI, aby wygenerować kurs terenowy lub uzy
 Aktualnie wczytany kurs zostanie wyświetlony na mapie.
 Ustawienia globalne są zawsze widoczne.
 Aby wygenerować kurs i rozpocząć zadania związane z kursem, musisz utworzyć zadanie CP: Prace polowe lub CP: Zbieranie/Owijanie bel, podobnie jak w przypadku pomocnika Giantsa.
-		"/>
+"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
 Aby rozpocząć swoją pierwszą pracę CP, musiałbyś wybrać pojazd i możliwe prawidłowe narzędzie, które jest obsługiwane w tym zadaniu.
 Następnie, klikając na utwórz pracę, możesz wybrać CP: Prace polowe dla narzędzi do prac polowych lub CP: Zbieranie/Owijanie bel
 z dołączoną owijarką lub zbieraczem bel.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
 Po wybraniu zadania CP należałoby umieścić pozycję na polu w celu wygenerowania kursu lub użycia na nim wyszukiwania bel.
 Pozycja kontroluje również z grubsza punkt początkowy kursu.
 Jeśli chcesz użyć pomocnika Giantsa do przejazdu na pole, musisz również ustawić pozycję docelową blisko punktu początkowego kursu.
 Ustawienie przesunięcia pasa jest używane tylko wtedy, gdy chcesz mieć wielu pomocników pracujących na tym samym polu. W tym celu sprawdź oddzielną stronę menu pomocy poniżej.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
 Gdy pozycja zostanie prawidłowo umieszczona na polu, na mapie pojawi się granica pola.
 Jeśli tworzysz CP: Prace polowe, uzyskasz dostęp do ustawień generatora kursów.
-		"/>
+"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
 Teraz można wysłać kierowcę bezpośrednio z menu. Pomocnik Giantsa przejedzie do pozycji docelowej, a stamtąd CP automatycznie przejmie zadanie.
 Alternatywnie możesz również wysłać kierowcę z HUDa, jeśli jesteś blisko pola z pojazdem lub używając modu AutoDrive, aby dojechał blisko pola i CP mógł zacząć swoją pracę.
-		"/>
+"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Generator kursu"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
@@ -373,7 +373,7 @@ Każdy kurs prac polowych jest generowany przez generator kursów. To potężne 
 Jeśli jesteś w tym nowy, prawdopodobnie powinieneś zacząć od zmiany tylko ustawienia ilości uwroci.
 Później zawsze możesz zmienić inne wartości, nacisnąć generowanie kursu i zobaczyć, jaki wpływ na kurs mają poszczególne wartości.
 Eksperymentowanie z nim i sprawdzanie, jaki wpływ mają różne ustawienia na różnych polach, jest najlepszym sposobem, aby się do tego przyzwyczaić.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
 Podstawowe:
 Pierwsze kilka wartości, które tu widzisz, to naprawdę podstawowe rzeczy.
@@ -388,12 +388,12 @@ Spirala, na około i spirala od środka mają swoje specyficzne zalety nad innym
 - Rzędy do pominięcia: Jest to bardzo pomocna opcja przyspieszająca pracę, ponieważ pojazd nie będzie musiał cofać, aby przejść do następnego rzędu.
 - Rzędy na spiralę: Ma to wpływ tylko wtedy, gdy środek pola jest ustawiony na spiralę od środka i informuje generator, ile rzędów powinna mieć każda spirala. Im więcej rzędów, tym mniej spiral zostanie wygenerowanych.
 - Kąt rzędów góra/dół: Gdy kierunek rzędu góra/dół jest ustawiony na ręczny, to ustawienie wskaże kierunek generowania.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
 Ustawienia uwroci pojawią się tylko wtedy, gdy ustawisz co najmniej 1 w liczbie uwroci.
 Zyskujesz opcje takie jak: od czego zacząć, ustawienia narożników, kierunek i nakładanie się.
 Zdecydowanie zalecane są uwrocia, aby zapobiec opuszczaniu pola przez pojazd podczas zawracania.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
 - Rozpocznij pracę od: Jak wspomniano w rozszerzonym menu SI, pozycja na polu służy do ustawiania pozycji początkowej lub końcowej kursu pracy na polu.
 Gdy ustawiony jest na: rozpocznij od uwroci, pracownik najpierw objedzie pole na około (w zależności od ilości uwroci), a następnie rozpocznie jazdę w rzędach. Po zmianie na: rozpocznij od rzędów, najpierw pojedzie rzędy a na koniec uwrocia.
@@ -402,12 +402,12 @@ Niedokładność tą można zmniejszać przez opcję nakładki, ale nie wyelimin
 Kółko - uwzględni aktualnie wybrany promień skrętu pojazdu, aby uzyskać najlepszy nawrót na narożniku dla obecnej maszyny.
 - Kierunek uwrocia: zgodnie z ruchem wskazówek zegara lub przeciwnie do ruchu wskazówek zegara. Może to być ważne w przypadku kombajnów, w zależności od tego, po której stronie znajduje się rura wyładowcza.
 - Zachodzenie na uwrociach: w jakim % powinny nakładać się na siebie uwrocia. Pierwszy z nich nie będzie nachodził na granicę pola, ale następne nałożą się na siebie.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
 Objaśnienie marginesu pola:
 Wartości dodatnie zmniejszają rozmiar pola, aby dodać bufor wokół obrabianego obszaru w przypadku napotkania przeszkód w pobliżu granicy pola.
 Wartości ujemne powiększają obrobioną powierzchnię poza granicę pola, aby zakryć granice pola, które nie są idealnie wykrywane.
-		"/>
+"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Menadżer kursu"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
@@ -418,7 +418,8 @@ Ta funkcja umożliwia również zbieranie pokosu pozostawionego przez kombajn lu
 Lokalizacja zapisu plików kursu to: Dokumenty\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Nazwa_mapy.SampleModMap (lub w przypadku map z gry, np. MapUS).
 Menedżer kursu działa inaczej niż ten, do którego przywykłeś w FS19.
 Kursy zapisywane są w folderach, które wyświetlą się po lewej stronie. Oznacza to, że aby rozpocząć zapisywanie kursów, potrzebujesz co najmniej jednego folderu.
-Foldery można po prostu utworzyć, naciskając przycisk u dołu ekranu i wprowadzając nazwę.		"/>
+Foldery można po prostu utworzyć, naciskając przycisk u dołu ekranu i wprowadzając nazwę.
+"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
 Po załadowaniu kursu możesz go zapisać, klikając przycisk Zapisz kurs, a następnie folder. Następnie pojawi się wyskakujące okienko, w którym możesz wpisać nazwę swojego kursu.
@@ -426,13 +427,13 @@ Nazwę i lokalizację można zmienić później.
 Aby usunąć kurs z pojazdu, kliknij przycisk 'Wyczyść aktualny kurs'.
 Aby wczytać kurs, musisz najpierw wybrać folder, kliknąć przycisk wczytaj kurs, a następnie po prostu kliknąć kurs, który chcesz wczytać.
 Kliknięcie w tryb zmiany aktywuje tryb edycji menedżera kursu.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
 Gdy tryb edycji jest aktywny, masz następujące opcje:
 - Przenoszenie kursu do innego folderu.
 - Usuwanie kursów lub folderu.
 - Zmiana nazw kursów lub folderów.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
 Aby przenieś kurs:
    1) Kliknij przycisk przenoszenia na dole ekranu.
@@ -441,7 +442,7 @@ Aby przenieś kurs:
 Aby zmienić nazwę, wystarczy kliknąć przycisk zmiany nazwy, a następnie folder lub kurs. Następnie po prostu wpisz nową nazwę.
 Aby usunąć kurs lub folder, kliknij przycisk Usuń, a następnie folder lub kurs, który chcesz usunąć.
 Foldery muszą być puste, jeśli chcesz je usunąć.
-		"/>
+"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
@@ -454,16 +455,16 @@ F: Kliknięcie na ikonę otwiera stronę z głównymi ustawieniami.
 G: Zamyka HUD.
 H: Zwiększa i zmniejsza szerokość roboczą. Czerwona linia na twoim pojeździe pokazuje obecne ustawienia.
 I: Wartość przesunięcia horyzontalnego, + w lewo, - w prawo.
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: Skopiuj i załaduj kurs do innego pojazdu.
+     Po naciśnięciu przycisku kopiowania kurs można załadować go do pojazdu bez kursu, gdy ikona zmieni kolor na zielony.
 K i L: Kliknięcie na tekst zresetuje ustawienia do wartości automatycznych.
-M: Shows the copied course.
+M: Pokazuje skopiowany kurs.
 N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję.
 O: Rozpocznij/Zakończ nagrywanie nowego pola.
 P: Usuń kurs z pojazdu.
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
-		"/>
+Q: Zmienia widoczność kursu między: Włączony, Wyłaczony i tylko Start/Stop.
+R: Usuwa skopiowany kurs ze schowka.
+"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Nowe pola"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
@@ -471,39 +472,39 @@ Są dwie możliwości stworzenia nowego pola.
 Pierwsza to użycie nagrywania w HUDzie.
 Rozpocznij nagrywanie i przejedź po krawędziach wokół nowego pola.
 Gdy gotowe, wciśnij przycisk ponownie a zostaniesz zapytany czy zapisać to pole.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Zaglądając do menu pomocników SI, zobaczysz nagrany obrys pola.
 Klikając na NAZWĘ, dostaniesz opcję usunięcia go lub zmiany nazwy.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Druga opcja to narysowanie go na mapie w menu pomocników SI.
 Nie miej wygranego żadnego ciągnika czy innego pojazdu (kliknij lewym przyciskiem gdzieś na mapie), pojawi się wtedy opcja narysowania nowego pola.
 Po rozpoczęciu zostanie wyświetlony tekst rysujący linie nowego pola za pomocą prawego przycisku myszy.
 Użyj prawego przycisku myszy, aby kliknąć na pozycję, gdzie chcesz zacząć.
 Następne prawe kliknięcie narysuje linię od punktu początkowego do obecnej pozycji kursora, będzie to punk początku nowej linii.
-		"/>
+"/>
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Wiele maszyn i konwój"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
 Możliwe jest posiadanie do 5 pojazdów pracujących razem na tym samym polu w konwoju (tzw. kurs wielu maszyn).
-		"/>
+"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
 Po załadowaniu kursu wielu maszyn należy wybrać pas dla kierowcy.
 Te pasy mają zawsze takie same nazwy:
 lewo(2), lewo(1), środek, prawo(1), prawo(2).
 2 pojazdy będą miały lewy(1) i prawy(1), 4 lewy(2) i prawy(2).
 Przy 3 lub 5 pojazdach zyskasz również opcję środkową.
-		"/>
+"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 Konwój działa tylko wtedy, gdy pojazdy mają ten sam kurs wielu maszyn z załadowaną tą samą nazwą.
 Automatycznie utrzymają niewielką odległość od poprzedzającego pojazdu.
 Dodatkowo funkcja konwoju jest również stosowana, gdy na przykład prasa jedzie za kombajnem po tej samej trasie.
-		"/>
+"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 Ustawienie odległości konwoju pojazdu zmienia odległość między pojazdami.
 Odległość wszystkich pojazdów o tej samej nazwie kursu zostanie automatycznie ustawiona na najwyższą wartość ze wszystkich pojazdów w konwoju.
-		"/>
+"/>
 		<!--Wrap and Collect-->
 		<text name="CP_help_page_wrapCollect_title"														text="Zbieranie i owijanie bel"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
@@ -512,22 +513,22 @@ Pierwszym z nich jest załadowanie tego samego kursu, który był używany w pra
 Jednak może to być trudne, ponieważ niektóre bele uwielbiają toczyć się lub znikać ze ścieżki.
 W tym momencie nasz tryb Zbieranie/Owijanie bel może pomóc, ponieważ nie wymaga kursu.
 Pozostań na polu i po prostu uruchom kierowcę z HUDa ze Zbieraniem/Owijaniem bel lub użyj mapy SI, aby wysłać go na pole, aby rozpocząć pracę.
-		"/>
+"/>
 		<text name="CP_help_page_wrapBasic_text"														text="
 Owijanie bel jest bardzo proste. Załaduj kurs do prasy i zacznij jak każdą inną pracę polową lub bez kursu,
 zacznij od zbieranie/owijanie bel z HUDa lub menu SI.
-		"/>
+"/>
 		<text name="CP_help_page_wrapFunction_text"														text="
 Podczas korzystania z kursu pomocnik jedzie z ustawionym przesunięciem, dzięki czemu podbieracz owijarek znajduje się w środku kursu.
 Bez kursu Courseplay skanuje pole w poszukiwaniu nieowiniętych bel i używa wyszukiwania ścieżki jazdy, aby znaleźć sposób na
 najlepsze dojechanie do najbliższej beli do owinięcia.
 Automatyczne cofanie, jeśli przed pojazdem znajduje się bela lub jeśli znajdujemy się zbyt blisko granicy pola, powinno zapobiec wypadkom.
-		"/>
+"/>
 		<text name="CP_help_page_collectBasic_text"														text="
 Zbieranie bel działa podobnie, z kursem lub bez.
 Gdy przyczepa jest pełna, zatrzyma pracę i poinformuje użytkownika, że należy go rozładować. Jeśli masz AutoDrive
 zainstalowany, możesz go użyć do automatycznego rozładunku.
-		"/>
+"/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Praca na winorośli"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
@@ -536,25 +537,25 @@ Aby uzyskać najlepszy wynik, wszystkie winorośle powinny znajdować się obok 
 Koniec i początek każdej winorośli również powinny mieć w przybliżeniu taką samą długość.
 Jeśli pnącza znajdują się na istniejącym polu, możesz otworzyć generator w bezpośredni sposób, jak zwykle.
 Jeśli nie znajdują się na polu, musisz przejść przez menu SI i umieścić znacznik pola na pnączach.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 Generator do winorośli ma mniej opcji.
 W zależności od narzędzia musisz wybrać pracę na pnączach lub obok pnączy.
 Np. domyślny kombajn musi prowadzić i pracować na winorośli.
       Sekator musi jechać w lewo od winorośli, ale pracuje na winorośli, więc musisz wybrać pracę na winorośli, ale jechać z przesunięciem.
       Opryskiwacze muszą jechać obok winorośli i pominąć jeden rząd, ponieważ opryskuje z lewej i prawej strony.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
 Kurs prac na winoroślach powinien powstać na winorośli, ponieważ musi on jechać i pracować na winoroślach.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 Sekator działa na winoroślach, więc kurs musi być generowany na winoroślach.
 Maszyna ma domyślne przesunięcie dla ciągnika, więc ciągnik jedzie między winoroślami.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
 Opryskiwacz pracuje obok winorośli, więc musi jechać w lewo lub w prawo od winorośli.
 Ponieważ opryskiwacz może pracować jednocześnie na lewej i prawej winorośli, możemy pominąć rząd.
-		"/>
+"/>
 		
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Poprzedni kanał debugowania"/>
