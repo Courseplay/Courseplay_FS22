@@ -45,7 +45,7 @@ function BaleToCollect.isValidBale(object, baleWrapper, baleLoader)
 		elseif baleLoader then
 			local spec = baleLoader.spec_baleLoader
 			local foundBaleType = baleLoader:getBaleTypeByBale(object)
-
+			--- Checks if the bale type is allowed.
 			if foundBaleType ~= spec.currentBaleType and baleLoader:getFillUnitFillLevel(spec.currentBaleType.fillUnitIndex) == 0 then
 				foundBaleType = nil
 			end
@@ -55,7 +55,7 @@ function BaleToCollect.isValidBale(object, baleWrapper, baleLoader)
 			end
 
 			local activeFarmId = object:getActiveFarm()
-
+			--- Makes sure the bale can be loaded for mp.
 			if activeFarmId ~= object.ownerFarmId and not g_currentMission.accessHandler:canFarmAccessOtherId(activeFarmId, object.ownerFarmId) then
 				foundBaleType = nil
 			end
