@@ -43,7 +43,24 @@ function BaleToCollect.isValidBale(object, baleWrapper, baleLoader)
 			-- if there is a bale wrapper, the bale must be wrappable
 			return baleWrapper:getIsBaleWrappable(object)
 		elseif baleLoader then
-			return baleLoader:getBaleTypeByBale(object) ~= nil
+			local spec = baleLoader.spec_baleLoader
+			local foundBaleType = baleLoader:getBaleTypeByBale(object)
+
+			if foundBaleType ~= spec.currentBaleType and baleLoader:getFillUnitFillLevel(spec.currentBaleType.fillUnitIndex) == 0 then
+				foundBaleType = nil
+			end
+
+			if not object:getBaleSupportsBaleLoader() then
+				foundBaleType = nil
+			end
+
+			local activeFarmId = object:getActiveFarm()
+
+			if activeFarmId ~= object.ownerFarmId and not g_currentMission.accessHandler:canFarmAccessOtherId(activeFarmId, object.ownerFarmId) then
+				foundBaleType = nil
+			end
+
+			return foundBaleType ~= nil
 		else
 			return true
 		end
