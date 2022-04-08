@@ -6,7 +6,7 @@
 		<text name="CP_automatic" 																		text="automatico" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="Copia percorso: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay (%s): Per aiuto, report bug o note sulla patch, visita: https://github.com/Courseplay/Courseplay_FS22 " />
@@ -167,14 +167,14 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Sovrapposizione fine campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Sovrapposizione delle traccie a fine campo come percentuale della larghezza di lavoro. Intervallo: 0 - 25" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Margine di campo" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Margine campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="I valori positivi diminuiscono le dimensioni del campo per aggiungere un buffer attorno all&#39;area lavorata. Quelli negativi ingrandiscono l&#39;area lavorata che va oltre il limite del campo. Intervallo: -2 - 5.8" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="File da saltare" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="File da saltare quando si passa alla linea Su/Giù successiva. Intervallo: 0 - 6" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Righe per terra" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Determina la quantità di righe per terra quando questa modalità è selezionata. Intervallo: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Righe per terreno" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Determina la quantità di righe per terreno quando questa modalità è selezionata. Intervallo: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Direzione lavoro" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Se il veicolo deve guidare in senso orario o antiorario sul campo" />
@@ -214,7 +214,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Inizio campo" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Centro" />
 		
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Strumenti multipli" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Veicoli multipli" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Numero di veicoli sullo stesso percorso." />
 
 		<!-- Vine Course Generator-->
@@ -544,10 +544,10 @@ Per esempio. la mietitrice predefinita deve guidare e lavorare sul filare.
       Gli spruzzatori devono guidare vicino a lato del filare e devono saltare una fila, poiché spruzza a sinistra e a destra.
 		"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
-Un percorso di raccolta uva dovrebbe essere generato sul filare, in quanto deve guidare e lavorare sul filare.
+Il percorso di raccolta uva dovrebbe essere generato sul filare, in quanto deve guidare e lavorare sul filare.
 		"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
-Il prepotatore lavora sui filari, quindi il percorso deve essere generato sul filari.
+Il potatore lavora sui filari, quindi il percorso deve essere generato sul filari.
 Gli strumenti sono dotati di un offset per il trattore, quindi il trattore guida tra i filari.
 		"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
