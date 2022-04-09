@@ -2,6 +2,7 @@ CpAITaskFieldWork = {}
 local AITaskFieldWorkCp_mt = Class(CpAITaskFieldWork, AITaskFieldWork)
 
 function CpAITaskFieldWork.new(isServer, job, customMt)
+	---@type CpAITaskFieldWork
 	local self = AITaskFieldWork.new(isServer, job, customMt or AITaskFieldWorkCp_mt)
 	self.startPosition = nil
 	return self

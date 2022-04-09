@@ -2,6 +2,7 @@ CpAITaskBaleFinder = {}
 local AITaskBaleFinderCp_mt = Class(CpAITaskBaleFinder, AITask)
 
 function CpAITaskBaleFinder.new(isServer, job, customMt)
+	---@type CpAITaskBaleFinder
 	local self = AITask.new(isServer, job, customMt or AITaskBaleFinderCp_mt)
 	self.vehicle = nil
 	self.fieldPolygon = nil

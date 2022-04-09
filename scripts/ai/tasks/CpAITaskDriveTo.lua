@@ -2,6 +2,7 @@ CpAITaskDriveTo = {}
 local AITaskDriveToCp_mt = Class(CpAITaskDriveTo, AITaskDriveTo)
 
 function CpAITaskDriveTo.new(isServer, job, customMt)
+    ---@type CpAITaskDriveTo
     local self = AITaskDriveTo.new(isServer, job, customMt or AITaskDriveToCp_mt)
     return self
 end
@@ -15,6 +16,7 @@ function CpAITaskDriveTo:start()
         CpUtil.infoVehicle(self.vehicle, 'CP drive to task started')
         self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
     end
+    AITask.start(self)
 end
 
 function CpAITaskDriveTo:update()
