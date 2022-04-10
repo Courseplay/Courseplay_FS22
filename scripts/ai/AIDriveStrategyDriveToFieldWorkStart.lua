@@ -62,6 +62,9 @@ function AIDriveStrategyDriveToFieldWorkStart:initializeImplementControllers(veh
     self:addImplementController(vehicle, PickupController, Pickup, {})
     self:addImplementController(vehicle, CutterController, Cutter, {})
     self:addImplementController(vehicle, SowingMachineController, SowingMachine, {})
+
+    self:addImplementController(vehicle, MotorController, Motorized, {})
+    self:addImplementController(vehicle, WearableController, Wearable, {})
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParameters)

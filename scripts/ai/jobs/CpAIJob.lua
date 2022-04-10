@@ -298,21 +298,6 @@ function CpAIJob:showNotification(aiMessage)
 	end
 end
 
---- Automatically repairs the vehicle, depending on the auto repair setting.
-function CpAIJob.onUpdateTickWearable(object, ...)
-	if object:getIsAIActive() and object:getUsageCausesDamage() then 
-		if object.rootVehicle and object.rootVehicle.getIsCpActive and object.rootVehicle:getIsCpActive() then 
-			local dx =  g_Courseplay.globalSettings:getSettings().autoRepair:getValue()
-			local repairStatus = (1 - object:getDamageAmount())*100
-			if repairStatus < dx then 
-				object:repairVehicle()
-			end		
-		end
-	end
-end
-Wearable.onUpdateTick = Utils.appendedFunction(Wearable.onUpdateTick, CpAIJob.onUpdateTickWearable)
-
-
 --- Ugly hack to fix a mp problem from giants, where the job class can not be found.
 function CpAIJob.getJobTypeIndex(aiJobTypeManager, superFunc, job)
 	local ret = superFunc(aiJobTypeManager, job)

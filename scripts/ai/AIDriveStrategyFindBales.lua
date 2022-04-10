@@ -111,6 +111,9 @@ function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
         self.baleWrapperController:setDriveStrategy(self)
         table.insert(self.controllers, self.baleWrapperController)
     end
+    self:addImplementController(vehicle, MotorController, Motorized, {})
+    self:addImplementController(vehicle, WearableController, Wearable, {})
+
 end
 
 -----------------------------------------------------------------------------------------------------------------------
