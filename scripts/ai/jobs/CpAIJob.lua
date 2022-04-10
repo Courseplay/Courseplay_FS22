@@ -288,7 +288,18 @@ end
 function CpAIJob:showNotification(aiMessage)
 	if not g_Courseplay.globalSettings.infoTextHudActive:getValue() then 
 		CpAIJob:superClass().showNotification(self, aiMessage)
+		return
 	end
+	local hasFinished, releaseMessage, event = CpAIWorker.getMessageData(aiMessage)
+	local vehicle = self:getVehicle()
+	if vehicle:getIsEntered() then       
+		--- Makes sure the message is shown, when a player is in the vehicle.
+		g_currentMission:showBlinkingWarning(string.format(aiMessage:getMessage(), self:getHelperName(), aiMessage:getMessageArguments()), 5000)
+	elseif releaseMessage == nil then
+		--- Makes sure message that are not handled by the info texts are shown.
+		CpAIJob:superClass().showNotification(self, aiMessage)
+	end 
+
 end
 
 --- Automatically repairs the vehicle, depending on the auto repair setting.
