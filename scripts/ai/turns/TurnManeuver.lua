@@ -245,29 +245,41 @@ end
 --- before we reach the vehicle position at turn end, there's no reversing needed at the turn end.
 ---@param endingTurnLength number length of the straight ending turn section into the next row
 function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, endingTurnLength)
-	-- move at least one meter
-	dBack = dBack < 1 and 1 or dBack
-	self:debug('moving course: d=%.1f', dBack)
-	-- generate a straight reverse section first
-	local reverseBeforeTurn = Course.createFromNode(self.vehicle, self.vehicleDirectionNode,
-		0, -self.steeringLength, -self.steeringLength - dBack, -1, true)
-	local dx, dz = reverseBeforeTurn:getWaypointWorldDirections(1)
+	-- move at least a bit meter
+	dBack = dBack < 2 and 2 or dBack
+	self:debug('moving course back: d=%.1f', dBack)
+	-- generate a straight reverse section first (less than 1 m step should make sure we always end up with
+	-- at least two waypoints
+	local movedCourse = Course.createFromNode(self.vehicle, self.vehicleDirectionNode,
+		0, -self.steeringLength, -self.steeringLength - dBack, -0.9, true)
+	local dx, dz = movedCourse:getWaypointWorldDirections(1)
 	course:translate(dx * dBack, dz * dBack)
-	reverseBeforeTurn:append(course)
+	movedCourse:append(course)
 	-- the last waypoint of the course after it was translated
 	local _, _, dFromTurnEnd = course:getWaypointLocalPosition(self.turnContext.vehicleAtTurnEndNode, ixBeforeEndingTurnSection)
 	local _, _, dFromWorkStart = course:getWaypointLocalPosition(self.turnContext.workStartNode, ixBeforeEndingTurnSection)
-	if math.max(dFromTurnEnd, dFromWorkStart) > 0 then
-		self:debug('need to reverse to reach work start (at %.1f, turn end at %.1f)', dFromWorkStart, dFromTurnEnd)
+	self:debug('Work start from curve end %.1f, vehicle at %.1f, %.1f between vehicle and work start)',
+		dFromWorkStart, dFromTurnEnd, self.turnContext.turnEndForwardOffset)
+	if self.turnContext.turnEndForwardOffset > 0 and math.max(dFromTurnEnd, dFromWorkStart) > -self.steeringLength then
+		self:debug('Reverse to work start (implement in back)')
+		-- vehicle in front of the work start node at turn end
 		-- allow early direction change when aligned
-		TurnManeuver.setTurnControlForLastWaypoints(reverseBeforeTurn, endingTurnLength,
-				TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
+		TurnManeuver.setTurnControlForLastWaypoints(movedCourse, endingTurnLength,
+			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.vehicleAtTurnEndNode,
-				0, math.max(dFromTurnEnd, dFromWorkStart) - self.steeringLength,
-				-self.steeringLength, -1, true)
-		reverseBeforeTurn:append(reverseAfterTurn)
+			0, dFromTurnEnd + self.steeringLength,
+			math.min(dFromTurnEnd, self.turnContext.frontMarkerDistance), -0.8, true)
+		movedCourse:append(reverseAfterTurn)
+	elseif self.turnContext.turnEndForwardOffset <= 0 and dFromTurnEnd >= 0 then
+		self:debug('Reverse to work start (implement in front)')
+		-- the work start is in front of the vehicle at the turn end
+		TurnManeuver.setTurnControlForLastWaypoints(movedCourse, endingTurnLength,
+			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
+		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.workStartNode,
+			0, 0, self.turnContext.turnEndForwardOffset, -1, true)
+		movedCourse:append(reverseAfterTurn)
 	end
-	return reverseBeforeTurn
+	return movedCourse
 end
 
 ---@class AnalyticTurnManeuver : TurnManeuver
