@@ -544,6 +544,23 @@ Collecting bales works kinda the same, with or without a course.
 When the collector is full, it will stop the work and tells the user it needs to be unloaded. If you have AutoDrive
 installed you can use it to run an unload the bale collector automatically.
 "/>
+		<!--Symetric lange change-->
+		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
+A
+"/>
+		<text name="CP_help_page_symetricLaneChangeExample_text"										text="
+A
+"/>
+
+		<!--Info Panel-->
+		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanelBasic_text"													text="
+B
+"/>
+<text name="CP_help_page_infoPanelMsg_text"																text="
+B
+"/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="

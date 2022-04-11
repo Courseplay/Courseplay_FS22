@@ -114,6 +114,24 @@
 				<text text="$l10n_CP_help_page_collectBasic_text"/>
 			</paragraph>
 		</page>
+		<!--Courseplay symetric lane change-->
+		<page title="$l10n_CP_help_page_symetricLaneChange_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeExample_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Info Panel-->
+		<page title="$l10n_CP_help_page_infoPanel_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_infoPanelBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_infoPanelMsg_text"/>
+			</paragraph>
+		</page>
 		<!--Courseplay Vine work-->
 		<page title="$l10n_CP_help_page_vineWork_title">
 			<paragraph>
