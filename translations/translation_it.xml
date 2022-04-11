@@ -418,7 +418,7 @@ La posizione di salvataggio per i file del corso è: ..\My Games\FarmingSimulato
 Il gestore del percorso funziona in modo diverso da quello a cui sei abituato in FS19.
 I percorsi vengono salvati in cartelle, che verranno visualizzate sulla sinistra. Ciò significa che avresti bisogno di almeno una cartella in cui iniziare a salvare i percorsi.
 Le cartelle possono essere create semplicemente premendo il pulsante nella parte inferiore dello schermo e inserendo un nome.
-Courses are only saved localy for now.
+Per adesso i percorsi vengono salvati solo localmente.
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
