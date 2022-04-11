@@ -360,7 +360,7 @@ Um einen Feldkurs generieren zu können, muss ein gültiges Fahrzeug für Feldar
 Um einen Kurs zu generieren, musst du einen Job erstellen und dort CP: Feldarbeit oder CP: wickeln/sammeln auswählen, ähnlich wie beim Giants Helfer.
 "/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
-Um deinen ersten Job zu starten, musst du ein Fahrzeug mit einem für die Arbeit gültiges Tool auswählen.
+Um deinen ersten Job zu starten, musst du ein Fahrzeug mit einem für die Arbeit gültiges Tool auswählen.		
 Klickt dann auf Job erstellen und wähle CP: Feldarbeit für Feldarbeitsgeräte,
 oder CP: wickeln/sammeln für Ballen Wickler oder Sammler aus.
 "/>
@@ -491,7 +491,7 @@ Startet die Aufnahme und fahrt euren Feldrand ab, den du aufzeichnen willst.
 Bist du wieder am Startpunkt angekommen, drücke den Aufzeichnen Button noch mal und du wirst gefragt, ob du den Feldrand speichern willst.
 "/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Im Helfer Menü kannst du deinen Randkurs mit Namen sehen.
+Im Helfer Menü kannst du deinen Randkurs mit Namen sehen.		
 Wenn du auf den Namen klickst, kannst du den Kurs löschen oder umbenennen.
 "/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
@@ -541,7 +541,7 @@ Ohne einen Kurs, scannt Courseplay das Feld nach ungewickelten Ballen und benutz
 Sollte mal ein Ballen vor dem Fahrzeug liegen, oder das Fahrzeug zu dicht am Feldrand stehen, fährt dieser automatisch ein paar Meter zurück um eine Kollision zu vermeiden.
 "/>
 		<text name="CP_help_page_collectBasic_text"														text="
-Das Sammeln von Ballen funktioniert im Grunde genauso wie das Wickeln, mit und ohne Kurs.
+Das Sammeln von Ballen funktioniert im Grunde genauso wie das Wickeln, mit und ohne Kurs.		
 Wenn der Sammler voll ist, wird er stehen bleiben und eine Meldung im Infofenster ausgeben, dass er entladen werden muss.
 Hast du AutoDrive installiert, lässt sich das entladen auch komplett Automatisieren. Siehe dir dazu AutoDrive Tutorials an.
 "/>
