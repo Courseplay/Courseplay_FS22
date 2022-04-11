@@ -345,7 +345,7 @@
 Durch auswählen eines Fahrzeugs im Helfer Menü, werden die Fahrzeugeinstellungen und der Kursmanager im Menü eingeblendet.
 Der aktuell geladene Kurs wird auf der Karte angezeigt.
 Die globalen Einstellungen sind dauerhaft sichtbar.
-Um einen Feldkurs generieren zu können, muss ein du ein gültiges Fahrzeug für Feldarbeit ausgewählt sein auf der AI Map.
+Um einen Feldkurs generieren zu können, muss ein gültiges Fahrzeug für Feldarbeit ausgewählt sein auf der AI Map.
 Um einen Kurs zu generieren, musst du einen Job erstellen und dort CP: Feldarbeit oder CP: wickeln/sammeln auswählen, ähnlich wie beim Giants Helfer.
 "/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
