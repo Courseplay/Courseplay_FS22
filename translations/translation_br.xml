@@ -73,7 +73,7 @@
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Parar no final"/>
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Permitir marcha a ré no caminho da rota"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Quando aplicável, permitir gere rotas contendo marcha a ré"/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Quando aplicável, permitir gerar rotas contendo marcha a ré"/>
 
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Permiti a rota nas manobras"/>
 		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Permite usar rotas em curvas, para evitar obstáculos e plantações"/>
@@ -231,7 +231,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Implemento po rota."/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Quantos implementos podem trabalhar juntas. Mais informações no menu de ajuda."/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Pular fileiras de vinhas"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Pular fileiras de videiras só devem ser usadas quando o implemento funcionar em ambos os lados (esquerda e direita)."/>
 
 	<!-- GlobalSettings -->
@@ -281,7 +281,7 @@
 		<text name="CP_courseManager_no_current_course"													text="nenhum"/>
 		<text name="CP_courseManager_temporary_course"													text="temporário"/>
 
-		<text name="CP_courseManager_change_mode"														text="Change mode"/>
+		<text name="CP_courseManager_change_mode"														text="Mudar modo"/>
 
 		<text name="CP_courseManager_load_courses"														text="Carregar rota"/>
 		<text name="CP_courseManager_save_courses"														text="Salvar rota"/>
@@ -319,7 +319,7 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Precisa ser recarregado"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Precisa ser descarregado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabalho feito"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Sem dinheiro"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo customizado %s?"/>
@@ -419,7 +419,7 @@ O local para salvar os arquivos de rotas é: ..\My Games\FarmingSimulator2022\mo
 O gestor de rotas funciona de forma diferente do que você está acostumado no FS19.
 As rotas são salvas em pastas, que serão exibidas à esquerda. Isso significa que você precisaria de pelo menos uma pasta para começar a salvar rotas.
 As pastas podem ser criadas simplesmente pelo botão na parte inferior da tela e digitando um nome.
-Courses are only saved localy for now.
+As rotas serão salvas apenas localmente por enquanto.
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
