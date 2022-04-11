@@ -275,7 +275,7 @@
 		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Aktiviert/deaktiviert die Maus Interaktion außerhalb eines Fahrzeugs."/>
 
 		<text name="CP_global_setting_preferCustomFields_title"											text="Bevorzuge erstellten Feldrand"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normale Feld liegt."/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Kursmanager(%s) %s"/>
@@ -340,10 +340,10 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--Job Menu-->
-		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menu"/>
+		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menü"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
 Durch auswählen eines Fahrzeugs im Helfer Menü, werden die Fahrzeugeinstellungen und der Kursmanager im Menü eingeblendet.
-Der aktuell geladene Kurs wird auf der Map angezeigt.
+Der aktuell geladene Kurs wird auf der Karte angezeigt.
 Die globalen Einstellungen sind dauerhaft sichtbar.
 Um einen Feldkurs generieren zu können, musst du ein für Feldarbeit gültiges Fahrzeug auf der AI Map ausgewählt haben.
 Um einen Kurs zu generieren, musst du einen Job erstellen und entweder CP: Feldarbeit oder CP: wickeln/sammeln auswählen, ähnlich wie beim Giants Helfer.
@@ -357,7 +357,7 @@ oder CP: wickeln/sammeln für Ballen Wickler oder Sammler aus.
 Hast du einen CP Job ausgewählt, musst du mit der Feldposition dein Feld auswählen auf dem du einen Kurs generieren, oder Ballen wickeln oder sammeln willst.
 Die Position bestimmt ungefähr die Startposition deines Kurses.
 Wenn du möchtet, dass der Giants Helfer dein Fahrzeug zum Feld bringt, dann muss zusätzlich noch die Zielposition nahe des Startpunktes gesetzt werden.
-Das setting für die Bahn wird nur benutzt, wenn du mehrere Fahrzeuge auf einem Kurs fahren lassen willst. Mehr dazu unter Multitool.
+Die Einstellung für die Bahn wird nur benutzt, wenn du mehrere Fahrzeuge auf einem Kurs fahren lassen willst. Mehr dazu unter Multitool.
 "/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
 Wenn die Feldposition richtig auf einem Feld platziert wurde, wird der Feldrand weis auf der Karte markiert.
@@ -382,7 +382,7 @@ Grundeinstellungen:
 - Arbeitsbreite: Die Arbeitsbreite der meisten Geräte wird exakt erkannt und es muss nichts weiter eingestellt werden. Wird der Wert angepasst, hat es Einfluss auf den gesammten Kurs.
 - Geräte auf Kurs: Mit dieser Einstellung kannst du einen Kurs mit bis zu 5 Geräten erstellen. Da dies etwas komplizierter wird, gibt es dazu eine extra Hilfesektion.
 - Anzahl Vorgewende: Damit deine Fahrzeuge und Geräte beim Wenden auf dem Feld bleiben, solltest du am besten ein paar Vorgewende einstellen.
-Die Anzahl Vorgewende, multipliziert mit der Arbeitsbreite sollte in etwar die länge des Fahrzeugs plus das angehängte Arbeitsgerät sein.
+Die Anzahl Vorgewende, multipliziert mit der Arbeitsbreite sollte in etwa die länge des Fahrzeugs plus das angehängte Arbeitsgerät sein.
 
 Einstellungen Feldmitte:
 - Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
@@ -394,7 +394,7 @@ Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegen�
 "/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
 Vorgewende Einstellungen werden erst sichtbar, wenn die Anzahl der Vorgewende mindestens auf 1 steht.
-Du erhählst Zugang zu Einsstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll, oder wie viel Überlappung die Bahnen haben sollen.
+Du erhählst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll, oder wie viel Überlappung die Bahnen haben sollen.
 Vorgewende wird sehr empfohlen, damit die Arbeitsgeräte beim Wenden von einer Feldbahnen zur nächsten auf dem Feld bleiben.
 "/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
@@ -403,7 +403,7 @@ Wenn auf dem Vorgewende gestartet wird, ist es der Startpunkt. Wird auf den Feld
 - Vorgewende Ecken: Weich rundet die Ecken einfach nur ab, das wird für alle Geräte funktionieren, sorgt aber für kleine unbearbeitete Flächen in den Ecken.
 Das kann mit Überlappung reduziert werden, wird aber nie ganz verschwinden. Scharf wird ein Wendemanöver in den Ecke generieren, abhängig vom Winkel der Feldecke.
 Rund nutzt den Wenderadius des gewählten Fahrzeugs und generiert so passende Runde Ecken für das Fahrzeug.
-- Vorgewende Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheident sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
+- Vorgewende Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheidend sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
 - Vorgewende Überlappung: Wieviel % Überlappung sollten das Vorgewende haben. Die erste Vorgewendebahn hat keine Überlappung mit dem Feldrand, alle weiteren Bahnen überlappen mit der jeweils vorherigen Bahn.
 "/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
@@ -420,7 +420,7 @@ Außerdem kannst du so die Kurse von z.B. einem Drescher auch später für eine 
 
 Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla z.B. MapUS).
 Der Kursmanager funktioniert anders als du es im LS19 gewohnt bist.
-Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das heist du brauchst mindestens einen Ordner um Kurse dort abspeichern zu können.
+Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet du brauchst mindestens einen Ordner um Kurse dort abspeichern zu können.
 Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.
 "/>
 
@@ -429,11 +429,11 @@ Wenn du einen Kurs geladen hast, kannst du diesen speichern indem du auf Kurs sp
 Ein Fenster erscheint, wo du den Namen des Kurses eintragen kannst.
 Der Name und Ordner kann später auch geändert werden.
 Um einen Kurs aus dem Fahrzeug zu entfernen, reicht ein klick auf 'Kurs aus Fahrzeug entfernen'.
-Um einen Kurs zu laden, mssst du erst den Ordner auswählen, wo sich dein Kurs befindet. Klicke dann auf Kurs laden und wähle den Kurs aus, den du laden willst.
-Durch betätigen des Modus wechsel Buttons, wird der Editiermodus des Kursmanagers aktiviert.
+Um einen Kurs zu laden, musst du erst den Ordner auswählen, wo sich dein Kurs befindet. Klicke dann auf Kurs laden und wähle den Kurs aus, den du laden willst.
+Durch betätigen des Modus wechseln Buttons, wird der Editiermodus des Kursmanagers aktiviert.
 "/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
-Mit dem Editiermodus erhälst du folgende Optionen:
+Mit dem Editiermodus erhältst du folgende Optionen:
 - Einen Kurs in einen anderen Ordner verschieben.
 - Kurse oder Ordner löschen.
 - Kurs oder Ordner umbenennen.
@@ -443,7 +443,7 @@ Einen Kurs verschieben:
   1) Klickt auf den Verschieben Button am unteren Bildschirmrand.
   2) Klickt auf den Kurs der verschoben werden soll.
   3) Klickt auf den Ordner wo der Kurs hin verschoben werden soll.
-Um einen Kurs oder Ornder umzubenennen brauchst du bloß auf Umbenennen klicken und dann auf den Ordner oder Kurs klicken. Dann einfach den neuen Namen eintragen.
+Um einen Kurs oder Ordner umzubenennen brauchst du bloß auf Umbenennen klicken und dann auf den Ordner oder Kurs klicken. Dann einfach den neuen Namen eintragen.
 Einen Kus zu löschen geht ähnlich einfach. Klicke auf den Löschen Button und dann auf den Ordner oder Kurs der gelöscht werden soll.
 Ordner müssen leer sein damit sie gelöscht werden können.
 "/>
@@ -458,17 +458,17 @@ D: Startet oder stoppt den Helfer. Ist der Pfeil grün, ist der Helfer aktiv.
 E: Zeigt den aktuellen Wegpunkt / alle Wegpunkte des Kurses. Klickt man drauf, Öffnet sich der Kursmanager.
 F: Klickst du auf das Icon, öffnen sich die globalen Einstellungen.
 G: Schließt das HUD.
-H: Erhöht oder verringert die Arbetisbreite. Eine rote Linie auf dem Fahrzeug zeigt den aktuellen Wert an.
+H: Erhöht oder verringert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug zeigt den aktuellen Wert an.
 I: Wert für den horizontalen Versatz , + links, - rechts.
 J: Kurs kopieren und einfügen in ein anderes Fahrzeug.
      Wenn der Kurs kopiert wurde, kann dieser in ein anderes Fahrzeug eingefügt werden (einfügen Button leuchtet grün).
-K und L: Durch ein klick auf den Text wird der standart Wert geladen.
+K und L: Durch ein klick auf den Text wird der Standard Wert geladen.
 M: Zeigt den Namen des kopierten Kurses.
 N: An dieser Stelle wird die Bahn eines Multitool Kurses angezeigt, wenn einer geladen wurde.
      Die Position lässt sich durch einen klick auf den Text ändern.
 O: Startet und stoppt die Aufnahme eines eigenen Feldrandkurses.
 P: Entfernt den Kurs aus dem Fahrzeug.
-Q: Ändert die Kursanzeige zwischen: an, aus und nur Start/Stop.
+Q: Ändert die Kursanzeige zwischen: an, aus und nur Start/Stopp.
 R: Entfernt den kopierten Kurs aus der Zwischenablage.
 "/>
 		<!--CustomField-->
@@ -517,15 +517,15 @@ Die Einstellung von allen Fahrzeugen mit dem gleichen Kursnamen wird auf den hö
 Das wickeln und sammeln von Ballen kann auf 2 verschiedene Arten gemacht werden.
 Die erste Möglichkeit ist, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer den Kurs ab zu fahren.
 Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davon rollen.
-Hier hilft der Job CP: Wickel/sammel Ballen abhilfe, dieser braucht keinen Kurs.
+Hier sorgt der Job CP: Wickel/sammel Ballen für Abhilfe, dieser braucht keinen Kurs.
 Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit wickel/sammeln Ballen, oder benutze das Helfer Menü um dein Fahrzeug zu einem Feld zu schicken wo Ballen gewickelt oder gesammelt werden sollen.
 "/>
 		<text name="CP_help_page_wrapBasic_text"														text="
-Ballen wickeln ist sehr einfach. Lade den Kurs von deiner Ballenpresse und starte wie jeden andere Feldarbeits Job.
+Ballen wickeln ist sehr einfach. Lade den Kurs von deiner Ballenpresse und starte wie jeden andere Feldarbeit Job.
 Oder nutze die Alternative und benutze den Job CP: Wickel/sammel Ballen vom HUD oder Helfermenü aus.
 "/>
 		<text name="CP_help_page_wrapFunction_text"														text="
-Wird ein Kurs benutzt, fährt der Helfer mit einem vor eingestellten Offset, damit der Wickler die mitte des Kurses abfährt.
+Wird ein Kurs benutzt, fährt der Helfer mit einem vor eingestellten Offset, damit der Wickler die Mitte des Kurses abfährt.
 Ohne einen Kurs, scannt Courseplay das Feld nach ungewickelten Ballen und benutzt die Wegfindung um zum nahesten Ballen zu fahren und diesen zu wickeln.
 Sollte mal ein Ballen vor dem Fahrzeug liegen, oder das Fahrzeug zu dicht am Feldrand stehen, fährt dieser automatisch ein paar Meter zurück um eine Kollision zu vermeiden.
 "/>
@@ -548,7 +548,7 @@ Der Generator für Reben hat weniger Einstellungen.
 Abhängig vom Gerät, muss ausgewählt werden ob man auf oder neben den Reben arbeiten will.
 Z.B. der normale Ernter muss auf den Reben Fahren und Arbeiten.
 Der Blattschneider muss links von den Reben fahren, aber auf den Reben arbeiten. Somit muss Arbeiten auf den Reben gewählt werden,
-aber mit einem Offset geffahren werden.
+aber mit einem Offset gefahren werden.
 Die Spritze muss neben den Reben Arbeiten und eine Reihe überspringen, da diese die linke und rechte Rebenreihe bearbeitet.
 "/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
