@@ -456,10 +456,10 @@ F: Al hacer clic en el icono se abre la página de configuración general.
 G: Cierra el HUD.
 H: Disminuir/Aumentar el ancho de trabajo. Una línea roja en su vehículo muestra la configuración actual.
 I: Valor del desplazamiento horizontal, (+)Izquierda, (-)Derecha.
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: Copia y pega el curso a un vehículo diferente.
+     Una vez presionado el botón de copiar, el curso se puede pegar en un vehículo sin un curso cuando el ícono se vuelve verde.
 K y L: Al hacer clic en el texto, se restablecerán los cambios a los valores automáticos.
-M: Shows the copied course.
+M: Muestra el curso copiado.
 N: Esta área muestra el desplazamiento del carril si tiene cargado una ruta multiherramienta. Al hacer clic en el texto, se alternan las posiciones.
 O: Inicia/Detiene la grabación de un curso de campo personalizado.
 P: Remueve el curso de un vehículo.
