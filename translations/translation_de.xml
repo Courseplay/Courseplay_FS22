@@ -372,7 +372,7 @@ Alternativ kannst du den Fahrer auch über das HUD direkt am Kurs starten, oder 
 		<text name="CP_help_page_courseGenerator_title"													text="Kursgenerator"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
 Das mit Abstand mächtigste und wichtigste Tool für die Feldarbeit ist der Kursgenerator. Dieser erlaubt es dir, die Kurse für deine Feldarbeit zu generieren.
-Wenn du das erste mal mit dem Kursgenerator arbeitest, solltest du erst einmal anfangen, nur mit der Vorgewende zu experimentieren.
+Wenn du das erste mal mit dem Kursgenerator arbeitest, solltest du erst einmal anfangen, nur mit dem Vorgewende zu experimentieren.
 Danach kann man nach und nach die Einstellungen ändern und immer wieder auf Kurs generieren klicken um anzuschauen welchen Einfluss diese Änderung hatte.
 Durch experimentieren mit den Werten oder auch der Startposition kann man sich langsam mit dem Generator vertraut machen.
 Ändere Wert für Wert und schau dir an, welchen Effekt eine Anpassung eines Wertes auf deinen Kurs hat.
