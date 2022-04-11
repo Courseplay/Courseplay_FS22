@@ -319,7 +319,8 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Je třeba doplnit"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Je třeba vyložit"/>
 		<text name="CP_infoTexts_workFinished"															text="Dokončil práci"/>
-
+		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Chcete odstranit vlastní pole %s?"/>

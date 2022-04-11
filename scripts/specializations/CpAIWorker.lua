@@ -9,40 +9,6 @@ CpAIWorker.NAME = ".cpAIWorker"
 CpAIWorker.SPEC_NAME = CpAIWorker.MOD_NAME .. CpAIWorker.NAME
 CpAIWorker.KEY = "."..CpAIWorker.MOD_NAME..CpAIWorker.NAME .. "."
 
---- TODO: this table can probably be moved into the InfoTexts.xml :)
-CpAIWorker.messages = {
-    {
-        class = AIMessageErrorOutOfFill,
-        hasFinished = true,
-        releaseMessage = g_infoTextManager.NEEDS_FILLING,
-        event = "onCpEmpty"
-    },
-    {
-        class = AIMessageErrorIsFull,
-        hasFinished = true,
-        releaseMessage = g_infoTextManager.NEEDS_UNLOADING,
-        event = "onCpFull"
-    },
-    {
-        class = AIMessageSuccessFinishedJob,
-        hasFinished = true,
-        releaseMessage = g_infoTextManager.WORK_FINISHED,
-        event = "onCpFinished"
-    },
-    {
-        class = AIMessageErrorOutOfFuel,
-        hasFinished = true,
-        releaseMessage = g_infoTextManager.FUEL_IS_EMPTY,
-        event = "onCpFuelEmpty"
-    },
-    {
-        class = AIMessageErrorVehicleBroken,
-        hasFinished = true,
-        releaseMessage = g_infoTextManager.IS_COMPLETELY_BROKEN,
-        event = "onCpBroken"
-    },
-}
-
 function CpAIWorker.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
 end
@@ -139,18 +105,6 @@ function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSel
 	CpAIWorker.updateActionEvents(self)
 end
 
-function CpAIWorker.getMessageData(message)
-    local hasFinished, releaseMessage, event
-    for _, data in pairs(CpAIWorker.messages) do 
-        if message:isa(data.class) then 
-            hasFinished = data.hasFinished
-            releaseMessage = data.releaseMessage
-            event = data.event
-        end
-    end
-    return hasFinished, releaseMessage, event
-end
-
 
 --- Used to enable/disable release of the helper 
 --- and handles post release functionality with for example auto drive.
@@ -162,7 +116,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
-    local hasFinished, releaseMessage, event = CpAIWorker.getMessageData(message)
+    local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(message)
 
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s", 
                                                     tostring(hasFinished), tostring(event))

@@ -321,7 +321,8 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
 		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>
-
+		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Czy chcesz zapisać nagrany kurs jako nowe pole %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Czy chcesz usunąć nowe pole %s?"/>

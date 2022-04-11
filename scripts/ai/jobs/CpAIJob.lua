@@ -290,16 +290,12 @@ function CpAIJob:showNotification(aiMessage)
 		CpAIJob:superClass().showNotification(self, aiMessage)
 		return
 	end
-	local hasFinished, releaseMessage, event = CpAIWorker.getMessageData(aiMessage)
+	local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
 	local vehicle = self:getVehicle()
-	if vehicle:getIsEntered() then       
-		--- Makes sure the message is shown, when a player is in the vehicle.
-		g_currentMission:showBlinkingWarning(string.format(aiMessage:getMessage(), self:getHelperName(), aiMessage:getMessageArguments()), 5000)
-	elseif releaseMessage == nil then
-		--- Makes sure message that are not handled by the info texts are shown.
-		CpAIJob:superClass().showNotification(self, aiMessage)
-	end 
-
+	--- Makes sure the message is shown, when a player is in the vehicle.
+	if releaseMessage and vehicle:getIsEntered() then 
+		g_currentMission:showBlinkingWarning(releaseMessage:getText(), 5000)
+	end
 end
 
 --- Automatically repairs the vehicle, depending on the auto repair setting.
