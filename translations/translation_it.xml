@@ -345,26 +345,26 @@ Innanzitutto è necessario selezionare un veicolo nel menu AI per generare un pe
 Il percorso attualmente caricato verrà visualizzato sulla mappa.
 Le impostazioni globali sono sempre visibili.
 Per generare un percorso e avviare i lavori del percorso, dovrai creare il lavoro CP: Lavoro sul campo o CP: avvolgere/raccogliere balle, simile all'assistente Giants.
-		"/>
+"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
 Per iniziare con il tuo primo lavoro CP, dovresti selezionare un veicolo e un possibile attrezzo valido supportato per il lavoro.
 Quindi, facendo clic su crea lavoro, è possibile selezionare CP: lavoro sul campo per strumenti di lavoro sul campo o CP: Avvolgere/raccolgiere
 con un fasciatore per balle o un raccoglitore di balle attaccato.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
 Con un lavoro CP selezionato, è necessario posizionare la posizione del campo su un campo per generare il percorso o utilizzare il cercatore di balle su di esso.
 La posizione controlla anche approssimativamente il punto di partenza del tuo percorso.
 Se vuoi usare l'aiutante Giants per guidare fino al campo, devi anche impostare la posizione target vicino al punto di partenza del percorso.
 L'impostazione della compensazione della corsia viene utilizzata solo se si desidera avere più assistenti che lavorano sullo stesso campo. Per questo, controlla la pagina del menu di aiuto separata di seguito.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
 Quando la posizione del campo è posizionata correttamente su un campo, vedrai il bordo del campo evidenziato sulla mappa.
 Se stai creando un lavoro CP: Lavoro sul campo, avrai accesso alle impostazioni del generatore di percorsi.
-		"/>
+"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
 Ora è possibile avviare il lavoro direttamente dal menu. L'aiutante dei Giants guiderà verso la posizione di destinazione e da lì il lavoro CP prende automaticamente il sopravvento.
 In alternativa, puoi anche avviare il lavoro dall'HUD se sei vicino al campo con il veicolo o utilizzando la modalità AutoDrive per consegnare il lavoro CP vicino al campo.
-		"/>
+"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Generatore percosi"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
@@ -372,7 +372,7 @@ Ogni percorso sul campo è generato dal generatore di percorso. Questo è uno st
 Se non conosci questo, probabilmente dovresti iniziare modificando solo l'impostazione della quantità di fine campo.
 Dopodiché puoi sempre modificare gli altri valori e premere genera percorso e dare un'occhiata all'impatto che determinati valori hanno sul percorso.
 Sperimentarlo e verificare quale impatto hanno le diverse impostazioni sui diversi campi è il modo migliore per abituarsi.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
 Nozioni di base:
 I primi valori che vedi qui sono cose di base.
@@ -387,12 +387,12 @@ Spirale, circolare e isole hanno i loro vantaggi specifici rispetto agli altri. 
 - Righe da saltare: questa è un'opzione molto utile per accelerare il tuo lavoro, poiché gli strumenti non dovranno eseguire il backup per passare alla riga successiva.
 - Righe per terreno: questo ha un impatto solo quando il centro del campo è impostato su terre e dirà al generatore quante righe dovrebbe avere ogni terreno. Più righe, meno terre verranno generate.
 - Angolo fila su/giù: quando la direzione fila su/giù è impostata su manuale, questa impostazione indicherà la generazione della direzione.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
 Le impostazioni di fine campo verranno visualizzate solo dopo aver impostato almeno 1 su Numero di fine campo.
 Ottieni opzioni su dove iniziare, impostazioni degli angoli, direzione e sovrapposizione.
 Le capezzagne sono altamente consigliate per evitare che gli utensili lascino il campo durante la svolta.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
 - Inizio lavoro: come menzionato nel menu AI esteso, la posizione sul campo viene utilizzata per impostare la posizione di inizio o fine per il percorso di lavoro sul campo.
 Quando è impostato per iniziare a fine campo, indica dove dovrebbe essere l'inizio. Quando viene modificato per iniziare su righe, dirà dove terminare il lavoro.
@@ -401,12 +401,12 @@ Possono essere ridotti con la sovrapposizione, ma non scompaiono mai. Netti gene
 Rotondi terrà conto del raggio di sterzata dei veicoli attualmente selezionati per avere l'angolo arrotondato migliore per quello strumento.
 - Senso di fine campo: orario o antiorario. Questo può essere importante per mietitrebbie e mietitrebbie, a seconda del lato in cui si trova il tubo o il nastro trasportatore.
 - Sovrapposizione a fine campo: quanta % di sovrapposizione dovrebbero avere tutte le capezzagne. Il primo non avrà sovrapposizione con il bordo del campo, ma quelli interni si sovrapporranno al loro vicino.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
 Spiegazione del margine di campo:
 I valori positivi riducono le dimensioni del campo per aggiungere un buffer intorno all'area lavorata in caso di ostacoli vicino al bordo del campo.
 I valori negativi ingrandiscono l'area lavorata oltre il limite del campo per coprire i bordi del campo che non vengono rilevati perfettamente.
-		"/>
+"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Gestione percorsi"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
@@ -418,7 +418,8 @@ La posizione di salvataggio per i file del corso è: ..\My Games\FarmingSimulato
 Il gestore del percorso funziona in modo diverso da quello a cui sei abituato in FS19.
 I percorsi vengono salvati in cartelle, che verranno visualizzate sulla sinistra. Ciò significa che avresti bisogno di almeno una cartella in cui iniziare a salvare i percorsi.
 Le cartelle possono essere create semplicemente premendo il pulsante nella parte inferiore dello schermo e inserendo un nome.
-		"/>
+Courses are only saved localy for now.
+"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
 Quando hai caricato un percorso, puoi salvarlo facendo clic sul pulsante salva percorso e quindi sulla cartella. Quindi apparirà una finestra pop-up in cui puoi inserire il nome del tuo percorso.
@@ -426,13 +427,13 @@ Il nome e la posizione possono essere modificati in seguito.
 Per rimuovere il percorso dal tuo veicolo, fai clic sul pulsante 'Cancella percorso corrente'.
 Per caricare un percorso dovresti prima selezionare la cartella, fare clic sul pulsante carica percorso e poi semplicemente fare clic sul percorso che desideri caricare.
 Cliccando su cambia modalità si attiva la modalità di modifica del gestore del percorso.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
 Con la modalità di modifica attiva hai queste opzioni:
 - Spostamento di un percorso in un'altra directory.
 - Eliminazione di percorsi o directory.
 - Rinominare percorsi o directory.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
 Per spostare un percorso:
    1) Fare clic sul pulsante di spostamento nella parte inferiore dello schermo.
@@ -441,7 +442,7 @@ Per spostare un percorso:
 Per rinominare devi semplicemente fare clic sul pulsante rinomina e successivamente sulla directory o sul percorso. Quindi digita semplicemente il nuovo nome.
 Per eliminare un percorso o una directory, fare clic sul pulsante Elimina e quindi sulla cartella o sul percorso che si desidera eliminare.
 Le directory devono essere vuote se si desidera eliminarle.
-		"/>
+"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
@@ -463,7 +464,7 @@ O: Avvia/interrompi la registrazione di un corso sul campo personalizzato.
 P: Rimuove il porcorso dal veicolo
 Q: Modifica la visibilità del percorso tra: acceso, spento e solo start/stop.
 R: Rimuove dagli appunti il percorso copiato.
-		"/>
+"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Campi personalizzati"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
@@ -471,39 +472,39 @@ Esistono due modi per creare un campo personalizzato.
 Il primo consiste nell'usare la funzione di registrazione dell'HUD.
 Avvia il record e registra il confine del tuo campo.
 Una volta terminato, premi nuovamente il pulsante e ti verrà chiesto se desideri salvarlo.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Dando un'occhiata al menu AI, vedrai il bordo del tuo campo registrato.
 Facendo clic sul Nome, avrai la possibilità di eliminarlo o rinominarlo.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 La seconda opzione è disegnarlo sulla mappa del menu dell'AI.
 Non hai selezionato trattore o altro veicolo (fai clic con il pulsante sinistro del mouse da qualche parte sulla mappa), hai la possibilità di disegnare un campo personalizzato.
 All'avvio, verranno visualizzate le linee di campo personalizzate disegnate con il tasto destro del mouse.
 Utilizzare il tasto destro del mouse per fare clic su una posizione da cui si desidera iniziare.
 Il successivo clic destro disegnerà una linea dal tuo punto di partenza alla tua seconda posizione, che sarà il punto di partenza per la linea successiva.
-		"/>
+"/>
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Multiveicoli e convoglio"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
 È possibile avere fino a 5 veicoli che lavorano insieme sullo stesso campo in un convoglio (chiamato anche corso multiveicolo).
-		"/>
+"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
 Una volta caricato un percorso multiveicolo, dovrai selezionare la corsia per il conducente.
 Quelle corsie hanno sempre lo stesso nome:
 sinistra(2), sinistra(1), centro, destra(1), destra(2).
 2 veicoli avranno sinistra(1) e destra(1), 4 avranno sinistra(2) e destra(2).
 Con 3 o 5 veicoli otterrai anche l'opzione centro.
-		"/>
+"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 Il convoglio funziona solo se i veicoli hanno lo stesso percorso multiveicolo con lo stesso nome caricato.
 Manterranno automaticamente una piccola distanza verso il veicolo che precede.
 Inoltre, la funzione di convoglio viene applicata anche quando, ad esempio, una pressa per balle sta guidando dietro una mietitrebbia sullo stesso percorso.
-		"/>
+"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 L'impostazione della distanza del veicolo convoglio cambia la distanza tra i veicoli.
 La distanza di tutti i veicoli con lo stesso nome del percorso verrà automaticamente impostata sul valore più alto di tutti i veicoli nel convoglio.
-		"/>
+"/>
 		<!--Wrap and Collect-->
 		<text name="CP_help_page_wrapCollect_title"														text="Avvolgimento e raccolta balle"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
@@ -512,22 +513,22 @@ Il primo consiste nel caricare lo stesso percorso utilizzato per la pressa per b
 Tuttavia questo può essere complicato, poiché alcune balle amano rotolare o volare fuori dal percorso.
 A questo punto, il nostro tipo di lavoro Avvolgiture e raccolta può aiutare in quanto non necessita di un percorso.
 Rimani sul campo e avvia l'autista dall'HUD con avvolgi/raccogli le balle o usa la mappa AI per mandarlo in un campo per iniziare il lavoro.
-		"/>
+"/>
 		<text name="CP_help_page_wrapBasic_text"														text="
 Avvolgere le balle è molto semplice. Carica un percorso della tua pressa e inizia come qualsiasi altro lavoro sul campo, o senza un percorso,
 inizia con l'avvolgimento/raccolta delle balle dall'HUD o dal menu AI.
-		"/>
+"/>
 		<text name="CP_help_page_wrapFunction_text"														text="
 Quando si utilizza un percorso, l'assistente guida con un offset preimpostato in modo che il ritiro delle balle da avvolgere si trovino nel mezzo del percorso.
 Senza una rotta, Courseplay scansiona il campo alla ricerca di balle da scartare e usa la ricerca percorso per trovare un modo per
 la balla più vicina da avvolgere.
 La retromarcia automatica se una balla è davanti al veicolo o se siamo troppo vicini al bordo del campo dovrebbe prevenire incidenti.
-		"/>
+"/>
 		<text name="CP_help_page_collectBasic_text"														text="
 La raccolta delle balle funziona più o meno allo stesso modo, con o senza un percorso.
 Quando il raccoglitore è pieno, interrompe il lavoro e dice all'utente che deve essere scaricato. Se hai AutoDrive
 installato è possibile utilizzarlo per eseguire automaticamente uno scarico del raccoglitore di balle.
-		"/>
+"/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Lavoro vitigno"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
@@ -536,25 +537,25 @@ Per ottenere il miglior risultato, le viti dovrebbero essere tutte una accanto a
 Anche la fine e l'inizio di ogni vite dovrebbero essere approssimativamente della stessa lunghezza.
 Se le viti si trovano su un campo esistente, puoi aprire il generatore in modo diretto come di consueto.
 Se non sono in un campo, devi andare sul menu dell'IA e posizionare il segnalino di campo sulle viti.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 Il generatore per le viti ha meno opzioni.
 A seconda dello strumento, devi scegliere di lavorare sul filare od a lato del filare.
 Per esempio. la mietitrice predefinita deve guidare e lavorare sul filare.
       Il pre-potatore deve guidare a sinistra dal filare ma lavora sul filaree, quindi devi scegliere di lavorare sul filare, ma guidare con un offset.
       Gli spruzzatori devono guidare vicino a lato del filare e devono saltare una fila, poiché spruzza a sinistra e a destra.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
 Il percorso di raccolta uva dovrebbe essere generato sul filare, in quanto deve guidare e lavorare sul filare.
 		"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 Il potatore lavora sui filari, quindi il percorso deve essere generato sul filari.
 Gli strumenti sono dotati di un offset per il trattore, quindi il trattore guida tra i filari.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
 L'irroratrice lavora tra i filari, quindi deve guidare a sinistra od a destra dai filari.
 Poiché l'irroratrice può lavorare contemporaneamente sulla vite sinistra e destra, possiamo saltare una fila.
-		"/>
+"/>
 
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Seleziona il prossimo canale di debug"/>

@@ -420,6 +420,7 @@ Lokalizacja zapisu plików kursu to: Dokumenty\My Games\FarmingSimulator2022\mod
 Menedżer kursu działa inaczej niż ten, do którego przywykłeś w FS19.
 Kursy zapisywane są w folderach, które wyświetlą się po lewej stronie. Oznacza to, że aby rozpocząć zapisywanie kursów, potrzebujesz co najmniej jednego folderu.
 Foldery można po prostu utworzyć, naciskając przycisk u dołu ekranu i wprowadzając nazwę.
+Courses are only saved localy for now.
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="

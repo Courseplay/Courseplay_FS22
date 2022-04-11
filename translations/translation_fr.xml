@@ -347,25 +347,25 @@ Vous devez d'abord sélectionner un véhicule depuis le menu des ouvriers afin d
 La course active s'affichera sur la carte.
 Les paramètres globaux sont toujours accessibles.
 Pour générer une course et la démarrer, choisissez dans le type de tâche CP:Travail ou CP:Ramassage/enrub. bottes.
-		"/>
+"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
 Pour créer une course CP, assurez vous de sélectionner un véhicule équipé avec des outils compatibles avec un travail du Courseplay (CP).
 Ensuite, dans la création d'une tâche, sélectionnez CP:Travail pour un travail dans les champs ou CP:Ramassage/enrub. bottes si vous êtes équipés avec une enrubanneuse, un plateau autoload ou une chargeuse de balles automatique.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
 Après avoir sélectionné CP:Travail, vous devez choisir le champ concerné en cliquant dessus afin de le mettre en surbrillance et pouvoir générer une course ou lancer la tâche CP:Ramassage/enrub. bottes.
 La sélection du champ s'effectue en déterminant le point de départ de la course : Point de départ dans le champ.
 Si vous souhaitez vous rendre au champ en utilisant l'ouvrier de base du jeu, vous devez également spécifier la position cible au même endroit que le point de départ de la course.
 La position dans la rangée n'est utilisée que lorsque vous avez plusieurs ouvriers qui travaillent dans le même champ (voir plus bas la rubrique outils multiples).
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
 Lorsque le point de départ dans le champ est correctement défini, les contours du champ seront mis en surbrillance.
 Si vous avez créé une tâche CP:Travail alors vous pourrez accéder aux paramètres du générateur de courses.
-		"/>
+"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
 Il est possible de démarrer la tâche directement depuis le menu. L'ouvrier de base du jeu se rendra alors à la position cible avant de passer le relai à l'ouvrier CP qui commencera son travail au point de départ de la course.
 Vous pouvez également démarrer la course depuis l'ATH si vous êtes déjà dans ou proche du champ concerné. Si vous utilisez AutoDrive (AD) vous pouvez démarrer le trajet avec AD et une fois arrivé il passera le relai à l'ouvrir CP si vous avez activé l'option dans AD.
-		"/>
+"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Générateur de courses"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
@@ -373,7 +373,7 @@ Toutes les courses de travail dans un champ sont créées à partir du générat
 Si vous découvrez le générateur, nous vous conseillons de laisser les paramètres par défaut et de ne changer que la quantité de fourrières.
 Si vous souhaitez aller plus loin dans les réglages, vous pouvez toujours les modifier et générer à chaque fois la course pour visualiser son tracé sur la carte.
 Le plus simple est d'expérimenter un paramètre à la fois et d'observer son impact sur la course elle-même ou sur son tracé.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
 Paramètres de base :
 Les premières valeurs de la liste sont les réglages les plus courants.
@@ -388,24 +388,24 @@ Les approches en spirales, blocs ou circulaires ont leur utilité selon le conte
 - Rangs à ignorer : Permet d'accélérer grandement le temps de travail car cela évite à l'ouvrier de devoir manoeuvrer en bout de rang pour se positionner pour le prochain rang.
 - Rangs par blocs : Utilisé uniquement lorsque la gestion des rangs est en mode blocs pour déterminer combien de rangs vont composer chaque bloc. Plus il y aura de rangs et moins il y aura de blocs.
 - Angle de l'orientation : Lorsque l'orientation des rangs (allers-retours) est en mode manuelle, permet de spécifier l'angle de celle-ci lors de la génération de la course.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
 Le paramétrage des fourrières n'apparait que lorsque vous en souhaitez au moins une.
 Vous pouvez spécifier si la course doit démarrer par elles, comment sont appréhendés leurs coins, leur sens (horaire ou anti-horaire) et leur chevauchement.
 Les fourrières sont fortement recommandées pour aider les véhicules à rester dans le champ lorsqu'ils manoeuvrent en bout de rang.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
 - Démarrer par : Permet de choisir si la course doit d'abord démarrer ou terminer par les fourrières.
 - Angle des fourrières : Virages lissés évite les marches arrière et fonctionnera avec tous les outils mais peut laisser un petit coin de champ non travaillé.
 Cela peut être attenué avec le chevauchement mais sans pour autant complètement disparaitre. Manoeuvre demandera à l'ouvrier de potentiellement (en fonction de l'angle) faire une marche arrière pour mieux se placer et éviter de laisser des coins non travaillés. Circulaire prendra en compte le rayon de braquage du véhicule pour traiter les angles avec l'outil actif (similaire à virages lissés).
 - Sens des fourrières : Horaire ou anti-horaire. Important pour les véhicules qui doivent être vidés (moissonneuses) en fonction du côté de leur goulotte de déchargement.
 - Chevauchement : Le pourcentage de recouvrement entre les fourrières. La première fourrière (contour du champ) n'aura pas de recouvrement mais les suivantes utiliseront ce paramètre.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
 Délimitation du champ :
 Les valeurs positives réduisent la taille du champ afin de laisser une marge de sécurité autour du champ si celui-ci est bordé d'arbres ou de clôtures qui pourraient entrer en collision avec les outils.
 Les valeurs négatives agrandissent la taille du champ pour travailler les bordures qui ne seraient pas correctement détectées.
-		"/>
+"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Gestionnaire des courses"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
@@ -417,7 +417,8 @@ L'emplacement des sauvegarde se trouve ici : ..\My Games\FarmingSimulator2022\mo
 Le gestionnaire fonctionne différement de celui présent dans FS19.
 Les courses sont sauvegardées dans des dossiers affichés sur le côté gauche. Il faudra donc au moins créer un dossier pour commencer à sauvegarder vos courses. 
 Les dossiers peuvent être créés en utilisant le bouton correspondant en bas de l'écran et en spécifiant un nom.
-		"/>
+Courses are only saved localy for now.
+"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
 Lorsque vous avez une course active, vous pouvez la sauvegarder en cliquant sur le bouton de sauvegarde puis le dossier de destination.  Une fenêtre s'ouvrira alors pour donner un nom à la course.
@@ -431,7 +432,7 @@ Lorsque vous êtes en mode édition vous pouvez :
 - Déplacer une course dans un autre dossier.
 - Supprimer des courses ou des dossiers.
 - Renommer des courses ou des dossiers.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
 Pour déplacer une course : 
   1) Cliquez sur le bouton déplacer en bas de l'écran.
@@ -440,7 +441,7 @@ Pour déplacer une course :
 Pour le renommage d'une course ou d'un dossier, cliquez simplement sur le bouton de renommage puis la course ou le dossier désiré. Tapez ensuite le nouveau nom choisi.
 Pour la suppression d'une course ou d'un dossier, cliquez simplement sur le bouton de suppression puis la course ou le dossier désiré.
 Les dossiers doivent être vides avant de pouvoir être supprimés.
-		"/>
+"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini ATH"/>
 		<text name="CP_help_page_minihud_text"															text="
@@ -462,7 +463,7 @@ O: Démarrer/Arrêter l'enregistrement d'un contour de champ personnalisé.
 P: Réinitialiser la course active.
 Q: Changes the course visibility between: on, off and start/stop only.
 R: Removes the copied course from the clipboard.
-		"/>
+"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Champs personnalisés"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
@@ -470,39 +471,39 @@ Il y a deux méthodes pour créer des champs personnalisés.
 La première méthode est d'utiliser l'enregistrement de course depuis le mini-ATH.
 Activez l'enregistrement puis créez votre contour de champ.
 Une fois terminé, appuyez à nouveau sur le bouton d'enregistrement pour avoir la possibilité de sauvegarder le champ personnalisé.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Les contours du champ personnalisé apparaissent dans l'onglet des ouvriers.
 Cliquez sur son nom pour le supprimer ou le renommer.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 La deuxième option est de placer les contours du champ depuis la carte dans l'onglet des ouvriers.
 Clic gauche n'importe où sur la carte (afin de ne pas sélectionner de véhicules) puis choisissez l'option tracer un champ personnalisé.
 Vous serez invité à tracer des lignes correspondantes au contour du champ à l'aide du clic droit.
 Le premier clic droit détermine le point de départ du contour.
 Les prochains clics droits formeront des lignes correspondantes au contour du champ personnalisé. Procédez ainsi jusqu'à clôturer intégralement le champ personnalisé.
-		"/>
+"/>
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Outils multiples et convoi"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
 Avec une course à outils multiples, vous pouvez avoir jusqu'à 5 véhicules en convoi travaillant dans le même champ avec la même course.
-		"/>
+"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
 Lorsque vous chargez une course à outils multiples, vous devez spécifier la position du véhicule dans la rangée.
 Ces positions sont nommées :
 gauche(2), gauche(1), centre, droite(1), droite(2).
 2 véhicules pourront occuper les positions gauche(1) and droite(1), 4 pourront en plus occuper gauche(2) et droite(2).
 Avec 3 ou 5 véhicules, vous pourrez également affecter un véhicule au centre.
-		"/>
+"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 Le mode convoi ne fonctionne que lorsque plusieurs véhicules disposent de la même course à outils multiples chargée.
 Ils maintiendront tous une distance de sécurité entre eux.
 Le mode convoi est également actif lorsque une presse suit une moissoneuse en utilisant la même course.
-		"/>
+"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 La distance entre les véhicules d'un convoi peut être modifiée si besoin.
 Par défaut, elle est automatiquement ajustée à la plus haute valeur disponible au sein des véhicules d'un même convoi.
-		"/>
+"/>
 		<!--Wrap and Collect-->
 		<text name="CP_help_page_wrapCollect_title"														text="Ramassage et enrubannage des bottes"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
@@ -511,19 +512,19 @@ La première est de charger la même course utilisée par la presse et laisser l
 Cette méthode est cependant risquée car certaines balles peuvent rouler ou venir bloquer votre tracteur.
 La deuxième méthode est d'utiliser le type de travail CP:Ramassage/enrub. bottes qui ne nécessite aucune création de course.
 En démarrant depuis le champ (ou en positionnement la position cible pour que l'ouvrier se rende sur place) et en démarrant le CP avec ce mode, celui-ci va détecter les balles présentes sur le champ afin de pouvoir faire fonctionner l'outil adéquat (enrubanneuse, plateau autoload ou chargeur automatique).
-		"/>
+"/>
 		<text name="CP_help_page_wrapBasic_text"														text="
 Pour enrubanner des bottes, vous pouvez soit charger la même course que la presse et démarrer le travail comme n'importe quelle course, soit choisir le type de travail CP:Ramassage/enrub. bottes depuis le menu des ouvriers puis lancer le CP (via l'ATH ou le menu des ouvriers) une fois dans le champ (pas besoin de créer ou charger une course).
-		"/>
+"/>
 		<text name="CP_help_page_wrapFunction_text"														text="
 Lorsque vous utilisez une course, l'ouvrier applique automatiquement un léger décalage afin que l'enrubanneur soit centré sur la botte.
 Sans l'utilisation d'une course, le CP va détecter automatiquement la présence de bottes non enrubannées dans le champ afin de s'y rendre pour réaliser le travail d'enrubannage et ainsi de suite tant qu'il restera des bottes.
 L'ouvrier manoeuvrera pour approcher correctement la botte afin d'éviter de la heurter.
-		"/>
+"/>
 		<text name="CP_help_page_collectBasic_text"														text="
 Le ramassage des bottes fonctionne de la même manière que l'enrubannage, soit avec une course ou alors en mode de détection automatique.
 Lorsqu'il n'y aura plus de place pour charger d'autres bottes, l'ouvrier s'arrêtera et attendra votre intervention pour la suite des opérations. Si vous utilisez Autodrive, vous pouvez le paramétrer pour définir une voie à suivre pour aller décharger les bottes automatiquement à un point donné avant de revenir continuer les opérations dans le champ.
-		"/>
+"/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Travail dans les vignes"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
@@ -531,23 +532,23 @@ Le travail dans les vignes est un peu plus délicat que dans les champs.
 Afin d'obtenir les meilleurs résultats, les vignes doivent être positionnées parallèlement les unes à côté des autres avec l'espacement par défaut de l'outil de plantation. Chaque rangée doit avoir approximativement la même longueur.
 Si les vignes sont situées dans un champ existant, vous pouvez ouvrir le générateur de courses depuis le menu des ouvriers comme habituellement.
 Si les vignes ne sont pas dans un champ existant ou déclaré dans la carte, vous devrez placer manuellement la position de départ sur les vignes.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 Le générateur de course pour les vignes dispose de moins d'options. Selon les configurations de vos outils, vous devrez soit travailler le long des vignes ou au-dessus d'elles. 
 Exemples :  
 	- Les vendangeuses doivent enjamber les vignes pour travailler.
     - Les pré-tailleuses doivent travailler sur la vigne mais le tracteur doit rouler à côté. Il faut donc choisir d'enjamber la vigne mais avec un décalage latéral. 	Ainsi la course sera sur les vignes mais le véhicule roulera à côté.
     - Les sulfateuses travaillent le long des vignes mais doivent ignorer une rangée sur deux car elles traitent les deux côtés d'une rangée.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
 Une course de vendangeuse doit être générée depuis la sélection d'une vigne avec le mode enjambeur.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 Une course de pré-tailleuse  doit être générée depuis la sélection d'une vigne avec le mode enjambeur mais avec un décalage latéral pour le tracteur afin qu'il puisse circuler dans les rangées.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
 Une course de sulfateuse doit être générée en mode côté gauche ou côté droit afin que le véhicule puisse longer les vignes. Vous pouvez également paramétrer la course pour ignorer un rang sur deux car les deux côtés de la rangée sont traités de toute façon.
-		"/>
+"/>
 
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Sélection du prochain canal de deboggage."/>
