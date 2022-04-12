@@ -547,23 +547,23 @@ installed you can use it to run an unload the bale collector automatically.
 		<!--Symetric lange change-->
 		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symetric lange change is used in multitool courses and tells the driver in wich lane he got to drive after the turn.
+Symetric lane change is used in multitool courses and tells the driver in wich lane he got to drive after the turn.
 This is a bit hard to understand so let's have a look at two examples.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-Ist der symetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset Bahn.
-Das heist er fährt immer links oder rechts vom Kurs.
-Das hat den Vorteil, dass die Offset Bahnen keinen direkte Begegnungsverkehr haben.
-Es wird zu keinen Kontakt zwischen 2 Geräten kommen, wenn sie aufeinander zu fahren.
+When the symetric lane change is turned off, the vehicle stays on its offset lane.
+That means he always drives left or right from the course.
+The Advantage of this is, the offset lane got no direct contact to the encounter lane.
+There won't be a risk on conflict with an encounter Tool.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-Bei eingeschaltetem Bahnenwechsel, wird im turn links und rechts getauscht (nicht aber im HUD.)
-So können sich Fahrzeuge an ihren Bahnen begegnen. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
-Was bringt der symetrische Bahnenwechsel dann ?
-Schaut man sich die Reihnfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
-Ohne symetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
-Mit symetrischen Wechsel: links, rechts, rechts, links - von links nach rechts also eine Bahn nach der anderen.
-In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn Frucht neben sich hat.
+If snymetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
+Vehicles can conflict with each other when they drive towards each other.
+What is the advantage of symetric lange change then ?
+If you have a look at the order of the lanes, from left to right, it will be clear:
+Without symetric change: left, right, left, right - it is almost like skipping a lane.
+With symetric change: left, right, right, left - from left to right, one lane after the other.
+In the example with the Combine it means, no Combine will have fruit left and right of its lane.
 "/>
 
 		<!--Info Panel-->
