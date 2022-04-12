@@ -126,6 +126,10 @@
 		<!--Courseplay Info Panel-->
 		<page title="$l10n_CP_help_page_infoPanel_title">
 			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="CP_img/helpmenu/infopanel.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
 				<text text="$l10n_CP_help_page_infoPanelBasic_text"/>
 			</paragraph>
 			<paragraph>

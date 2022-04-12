@@ -556,10 +556,16 @@ A
 		<!--Info Panel-->
 		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-B
+This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
+Beside the Name and the Version of our Mod, it will show an Information Text that will inform you about some status of your courseplay drivers.
+If you hover with the mouse over it, the Name of the vehicle will be displayed.
+By clicking on it, you can jump directly into the vehicle.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-B
+The Informations are the following:
+- Finished work
+- Needs to be unloaded
+- ...
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vine work"/>

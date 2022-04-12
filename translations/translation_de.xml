@@ -557,10 +557,16 @@ A
 		<!--Info Panel-->
 		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-B
+Dies ist unser Info Panel, es kann genauso mit der Maus bewegt werden, wie das mini HUD.
+Neben den Namen und der Version unserer Mod, zeigt es dir an, wenn ein Courseplay Helfer einen gewissen Status hat.
+Fährst du mit der Maus über den Text, wird der Name des Fahrzeugs angezeigt.
+Klickst du darauf, springst du direkt in das entsprechende Fahrzeug.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-B
+Die Informationen sind:
+- Arbeit beendet
+- Muss entladen werden
+- ...
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>
