@@ -69,6 +69,8 @@ end
 function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CpCourseManager.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CpCourseManager.getFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'setOffsetFieldWorkCourse', CpCourseManager.setOffsetFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'getOffsetFieldWorkCourse', CpCourseManager.getOffsetFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
@@ -226,6 +228,21 @@ function CpCourseManager:getFieldWorkCourse()
     local spec = self.spec_cpCourseManager 
     --- TODO: For now only returns the first course.
     return spec.courses[1]
+end
+
+--- Set the offset course which is generated for a multitool configuration (offset to the left or right when multiple
+--- vehicles working on the same field)
+---@param course Course
+function CpCourseManager:setOffsetFieldWorkCourse(course)
+    local spec = self.spec_cpCourseManager
+    spec.offsetFieldWorkCourse = course
+end
+
+--- If the offset course has been calculated for a multitool config, return here
+---@return Course
+function CpCourseManager:getOffsetFieldWorkCourse()
+    local spec = self.spec_cpCourseManager
+    return spec.offsetFieldWorkCourse
 end
 
 function CpCourseManager:getCourses()

@@ -58,27 +58,6 @@ function AIDriveStrategyFieldWorkCourse:delete()
     self:rememberWaypointToContinueFieldWork()
 end
 
-function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
-    local course = self.vehicle:getFieldWorkCourse()
-    local numMultiTools = course:getMultiTools()
-    local laneNumber = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
-    if numMultiTools < 2 then
-        self:debug('Single vehicle fieldwork course')
-        return course
-    elseif laneNumber == 0 then
-        self:debug('Multitool course, center vehicle, using original course')
-        return course
-    else
-        self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d',laneNumber)
-        --- Lane number needs to be zero for only one vehicle.
-        --- Work width of a single vehicle.
-        local width = course:getWorkWidth() / numMultiTools
-        local offsetCourse = course:calculateOffsetCourse(numMultiTools, laneNumber, width,
-                                                        self.settings.symmetricLaneChange:getValue())
-        return offsetCourse
-    end
-end
-
 --- Start a fieldwork course. We expect that something else dropped us off close enough to startIx so
 --- the most we need is an alignment course to lower the implements
 function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
