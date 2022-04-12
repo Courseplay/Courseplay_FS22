@@ -323,7 +323,6 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Wird blockiert"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Steckt im Verkehr fest"/>
-
 		<text name="CP_infoTexts_shouldRefuel"															text="Sollte aufgetankt werden"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Muss aufgetankt werden"/>
 		<text name="CP_infoTexts_needsRepair"  															text="Sollte repariert werden"/>
@@ -564,9 +563,15 @@ Klickst du darauf, springst du direkt in das entsprechende Fahrzeug.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
 Die Informationen sind:
-- Arbeit beendet
+- Wird blockiert
+- Steckt im Verkehr fest
+- Sollte aufgetankt werden
+- Muss aufgetankt werden
+- Sollte repariert werden
+- Muss aufgefüllt werden
 - Muss entladen werden
-- ...
+- Arbeit beendet
+- Kein Geld mehr
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>

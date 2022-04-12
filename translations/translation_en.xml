@@ -563,9 +563,15 @@ By clicking on it, you can jump directly into the vehicle.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
 The Informations are the following:
-- Finished work
+- Helper is stuck
+- Is in traffic
+- Should be refueled
+- Needs to be refueled
+- Needs to be repaired
+- Needs to be refilled
 - Needs to be unloaded
-- ...
+- Finished work
+- Ouf of money
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vine work"/>
