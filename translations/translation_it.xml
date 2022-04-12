@@ -186,7 +186,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" 								text="Su/Giù" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" 								text="Spirale" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" 								text="Circolare" />
-		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Terre (dentro e fuori)" />
+		<text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" 								text="Sezioni di campo (dentro e fuori)" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title"							text="Tipo angoli" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="Tipologia degli angoli del campo" />
@@ -319,7 +319,7 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Ha bisogno di essere caricato"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Ha bisogno di essere scaricato"/>
 		<text name="CP_infoTexts_workFinished"															text="Ha finito il lavoro"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Senza soldi"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Vuoi salvare il percorso registrato come campo personalizzato %s?"/>
