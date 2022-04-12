@@ -238,6 +238,7 @@ You can define the following custom settings:
     <!--\vehicles\samasz-->
     <Vehicle name="z2840.xml"
              workingWidth="8.4"
+    />
 
     <!--Tractors-->
     
