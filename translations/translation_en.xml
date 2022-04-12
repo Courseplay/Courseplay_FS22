@@ -547,10 +547,23 @@ installed you can use it to run an unload the bale collector automatically.
 		<!--Symetric lange change-->
 		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-A
+Symetric lange change is used in multitool courses and tells the driver in wich lane he got to drive after the turn.
+This is a bit hard to understand so let's have a look at two examples.
 "/>
-		<text name="CP_help_page_symetricLaneChangeExample_text"										text="
-A
+		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
+Ist der symetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset Bahn.
+Das heist er fährt immer links oder rechts vom Kurs.
+Das hat den Vorteil, dass die Offset Bahnen keinen direkte Begegnungsverkehr haben.
+Es wird zu keinen Kontakt zwischen 2 Geräten kommen, wenn sie aufeinander zu fahren.
+"/>
+		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
+Bei eingeschaltetem Bahnenwechsel, wird im turn links und rechts getauscht (nicht aber im HUD.)
+So können sich Fahrzeuge an ihren Bahnen begegnen. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
+Was bringt der symetrische Bahnenwechsel dann ?
+Schaut man sich die Reihnfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
+Ohne symetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
+Mit symetrischen Wechsel: links, rechts, rechts, links - von links nach rechts also eine Bahn nach der anderen.
+In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn Frucht neben sich hat.
 "/>
 
 		<!--Info Panel-->

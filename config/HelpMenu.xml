@@ -120,7 +120,18 @@
 				<text text="$l10n_CP_help_page_symetricLaneChangeBasic_text"/>
 			</paragraph>
 			<paragraph>
-				<text text="$l10n_CP_help_page_symetricLaneChangeExample_text"/>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="CP_img/helpmenu/regularchange.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOff_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="CP_img/helpmenu/symetricchange.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOn_text"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Info Panel-->

@@ -545,18 +545,31 @@ Wenn der Sammler voll ist, wird er stehen bleiben und eine Meldung im Infofenste
 Hast du AutoDrive installiert, lässt sich das entladen auch komplett Automatisieren. Siehe dir dazu AutoDrive Tutorials an.
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="Symetrischer Bahnenwechsel"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-A
+Der symetrische Bahnenwechsel wird in Multitool Kurse benutzt und sagt der Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Da dies etwas zu kompliziert zu erklären ist, werfen wir einen Blick auf 2 Beispiele.
 "/>
-		<text name="CP_help_page_symetricLaneChangeExample_text"										text="
-A
+		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
+Ist der symetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset Bahn.
+Das heist er fährt immer links oder rechts vom Kurs.
+Das hat den Vorteil, dass die Offset Bahnen keinen direkte Begegnungsverkehr haben.
+Es wird zu keinen Kontakt zwischen 2 Geräten kommen, wenn sie aufeinander zu fahren.
+"/>
+		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
+Bei eingeschaltetem Bahnenwechsel, wird im turn links und rechts getauscht (nicht aber im HUD.)
+So können sich Fahrzeuge an ihren Bahnen begegnen. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
+Was bringt der symetrische Bahnenwechsel dann ?
+Schaut man sich die Reihnfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
+Ohne symetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
+Mit symetrischen Wechsel: links, rechts, rechts, links - von links nach rechts also eine Bahn nach der anderen.
+In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn Frucht neben sich hat.
 "/>
 
 		<!--Info Panel-->
-		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanel_title"														text="Info Fenster"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-Dies ist unser Info Panel, es kann genauso mit der Maus bewegt werden, wie das mini HUD.
+Dies ist unser Info Fenster, es kann genauso mit der Maus bewegt werden, wie das mini HUD.
 Neben den Namen und der Version unserer Mod, zeigt es dir an, wenn ein Courseplay Helfer einen gewissen Status hat.
 Fährst du mit der Maus über den Text, wird der Name des Fahrzeugs angezeigt.
 Klickst du darauf, springst du direkt in das entsprechende Fahrzeug.
