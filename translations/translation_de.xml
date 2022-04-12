@@ -248,6 +248,12 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Instandhalten"/>
+
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Kraftstoff Minimum"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Fahrer wird entlassen, wenn Kraftstoff unter diesem Wert liegt."/>
+
+		<text name="CP_global_setting_brockenThreshold_title" 											text="Zustand Minimum"/>
+		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="Fahrer wird entlassen, wenn das Fahrzeug oder Arbeitsgerät unter diesem Wert liegt."/>
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Benutzereinstellungen"/>
 

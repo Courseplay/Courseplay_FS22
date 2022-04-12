@@ -1,4 +1,5 @@
 --- Adds fuel save mode.
+--- Also shuts the driver down, once the fuel level is lower than the threshold.
 ---@class MotorController : ImplementController
 MotorController = CpObject(ImplementController)
 MotorController.delayMs = 10 * 1000 -- 30sec
@@ -10,6 +11,7 @@ function MotorController:init(vehicle, implement)
 	self.timerSet = false
 	self.vehicle.spec_cpAIWorker.motorDisabled = false
 	self.isValid = true
+	self.fuelThresholdSetting = g_Courseplay.globalSettings.fuelThreshold
 end
 
 function MotorController:update()
@@ -43,12 +45,12 @@ function MotorController:update()
 			end
 		end
 	end
-	if self:isFuelLow(0.1) then -- 10% 
+	if self:isFuelLow(10) then -- 10% 
 		self:setInfoText(InfoTextManager.FUEL_IS_LOW)
 	else 
 		self:clearInfoText(InfoTextManager.FUEL_IS_LOW)
 	end
-	if self:isFuelEmpty() then 
+	if self:isFuelLow(self.fuelThresholdSetting:getValue()) then 
 		self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFuel.new())
 	end
 end
@@ -61,18 +63,10 @@ end
 
 function MotorController:isFuelLow(threshold)
     for _, fillUnit in pairs(self.motorSpec.propellantFillUnitIndices) do
-        if self.implement:getFillUnitFillLevelPercentage(fillUnit) < threshold then 
+        if self.implement:getFillUnitFillLevelPercentage(fillUnit)*100 < threshold then 
             return true
         end
      end
-end
-
-function MotorController:isFuelEmpty()
-	for _, fillUnit in pairs(self.motorSpec.propellantFillUnitIndices) do
-		if self.implement:getFillUnitFillLevel(fillUnit) == 0 then
-			return true
-		end
-	end
 end
 
 --- Fuel save disabled, then we need to make sure the motor gets turned back on.

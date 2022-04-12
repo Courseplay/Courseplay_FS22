@@ -247,6 +247,12 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Keep it healthy"/>
 
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+
+		<text name="CP_global_setting_brockenThreshold_title" 											text="Broken threshold"/>
+		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="Driver will be released, if the vehicle or an implement is more broken."/>
+
 		<text name="CP_global_setting_subTitle_userSettings"											text="User settings"/>
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad friendly Hud"/>
