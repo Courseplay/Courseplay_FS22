@@ -114,7 +114,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="始终停车执行卸载。"/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="收割机自助卸载"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="收割机自动在田间或会合附近的拖车进行卸载，不支持多工具模式。"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="收割机自动在田间或会合附近的拖车进行卸载。"/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="在第一个地头卸载"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="收割机将在第一个地头呼叫拖车。"/>
@@ -250,11 +250,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="保持100%"/>
 
-		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+		<text name="CP_global_setting_fuelThreshold_title" 												text="燃料临界值"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="如果燃料剩余量过低，司机将停止工作。"/>
 
-		<text name="CP_global_setting_brockenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="Driver will be released, if the vehicle or an implement is more broken."/>
+		<text name="CP_global_setting_brockenThreshold_title" 											text="损坏临界值"/>
+		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="如果车辆或工具损坏过多，司机将停止工作。"/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="用户设置"/>
 
