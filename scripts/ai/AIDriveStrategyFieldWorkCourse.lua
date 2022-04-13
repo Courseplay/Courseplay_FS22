@@ -476,10 +476,10 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
         alignmentCourse = self:createAlignmentCourse(fieldWorkCourse, startIx)
     end
     self.ppc:setShortLookaheadDistance()
-    local fm, bm = self:getFrontAndBackMarkers()
-    self.turnContext = TurnContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
-            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
     if alignmentCourse then
+        local fm, bm = self:getFrontAndBackMarkers()
+        self.turnContext = RowStartOrFinishContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
+                self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
         self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, alignmentCourse, fieldWorkCourse, self.workWidth)
         self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
     else
