@@ -248,11 +248,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Udržovat v dobrém stavu"/>
 
-		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Hladina paliva"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Řidič bude uvolněn, pokud je procento paliva nižší."/>
 
-		<text name="CP_global_setting_brokenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Hodnota opotřebení"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Uživatelské nastavení"/>
 
@@ -325,7 +325,7 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Je třeba doplnit"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Je třeba vyložit"/>
 		<text name="CP_infoTexts_workFinished"															text="Dokončil práci"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Došly peníze"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
