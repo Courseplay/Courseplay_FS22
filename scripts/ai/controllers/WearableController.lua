@@ -28,7 +28,7 @@ end
 
 function WearableController:isBrokenGreaterThan(dx)
 	local damageAmount = self.implement:getDamageAmount()
-	if damageAmount*100 >= dx then 
+	if damageAmount*100 > dx then 
 		return true
 	end
 end
