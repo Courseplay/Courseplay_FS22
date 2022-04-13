@@ -128,9 +128,31 @@ function AIDriveStrategyCourse:delete()
     AIDriveStrategyCourse:superClass().delete(self)
 end
 
-
 function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
-    return self.vehicle:getFieldWorkCourse()
+    local course = self.vehicle:getFieldWorkCourse()
+    local numMultiTools = course:getMultiTools()
+    local position = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
+    if numMultiTools < 2 then
+        self:debug('Single vehicle fieldwork course')
+        self.vehicle:setOffsetFieldWorkCourse(nil)
+        return course
+    elseif position == 0 then
+        self:debug('Multitool course, center vehicle, using original course')
+        self.vehicle:setOffsetFieldWorkCourse(nil)
+        return course
+    else
+        self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d', position)
+        --- only one vehicle can have position zero (center)
+        local offsetCourse, previousPosition = self.vehicle:getOffsetFieldWorkCourse()
+        if offsetCourse == nil or position ~= previousPosition then
+            --- Work width of a single vehicle.
+            local width = course:getWorkWidth() / numMultiTools
+            offsetCourse = course:calculateOffsetCourse(numMultiTools, position, width,
+                    self.settings.symmetricLaneChange:getValue())
+            self.vehicle:setOffsetFieldWorkCourse(offsetCourse, position)
+        end
+        return offsetCourse
+    end
 end
 
 function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)
