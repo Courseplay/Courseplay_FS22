@@ -252,8 +252,8 @@
 		<text name="CP_global_setting_fuelThreshold_title" 												text="Límite de Combustible"/>
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="El conductor será liberado, si el porcentaje de combustible es menor."/>
 
-		<text name="CP_global_setting_brockenThreshold_title" 											text="Límite de ruptura"/>
-		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="El conductor será liberado, si el vehículo o un implemento está más desgastado."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Límite de ruptura"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="El conductor será liberado, si el vehículo o un implemento está más desgastado. 100% is off."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Ajustes de usuario"/>
 

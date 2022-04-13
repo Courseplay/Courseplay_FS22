@@ -251,8 +251,8 @@
 		<text name="CP_global_setting_fuelThreshold_title" 												text="Livello carburante"/>
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Il conducente verrà fermato, se il livello del carburante è basso."/>
 
-		<text name="CP_global_setting_brockenThreshold_title" 											text="Livello riparazione"/>
-		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="Il conducente verrà feramto se il veicolo od un attrezzo ha un livello di riparazione basso."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Livello riparazione"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Il conducente verrà feramto se il veicolo od un attrezzo ha un livello di riparazione basso. 100% is off."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Impostazioni utente"/>
 

@@ -31,7 +31,7 @@
 			</Texts>
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="fuelThreshold" min="0" max="100" incremental="5" default="5" unit="4"/>
-		<Setting classType="AIParameterSettingList" name="brockenThreshold" min="0" max="100" incremental="5" default="95" unit="4"/>
+		<Setting classType="AIParameterSettingList" name="brokenThreshold" min="0" max="100" incremental="5" default="95" unit="4"/>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="userSettings">
 		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" defaultBool="false" onChangeCallback="onHudSelectionChanged" isUserSetting="true"/>

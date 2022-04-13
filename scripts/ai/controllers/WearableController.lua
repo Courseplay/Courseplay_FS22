@@ -5,7 +5,7 @@ WearableController = CpObject(ImplementController)
 function WearableController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
 	self.wearableSpec = implement.spec_wearable
-	self.brokenThresholdSetting = g_Courseplay.globalSettings.brockenThreshold
+	self.brokenThresholdSetting = g_Courseplay.globalSettings.brokenThreshold
 	self.autoRepairSetting = g_Courseplay.globalSettings.autoRepair
 end
 

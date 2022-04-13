@@ -252,8 +252,8 @@
 		<text name="CP_global_setting_fuelThreshold_title" 												text="Kraftstoff Minimum"/>
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Fahrer wird entlassen, wenn Kraftstoff unter diesem Wert liegt."/>
 
-		<text name="CP_global_setting_brockenThreshold_title" 											text="Zustand Minimum"/>
-		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="Fahrer wird entlassen, wenn das Fahrzeug oder Arbeitsgerät unter diesem Wert liegt."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Zustand Minimum"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus."/>
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Benutzereinstellungen"/>
 

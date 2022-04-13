@@ -253,8 +253,8 @@
 		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
 
-		<text name="CP_global_setting_brockenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="Driver will be released, if the vehicle or an implement is more broken."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Broken threshold"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Gebruikersinstellingen"/>
 

@@ -253,8 +253,8 @@
 		<text name="CP_global_setting_fuelThreshold_title" 												text="燃料临界值"/>
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="如果燃料剩余量过低，司机将停止工作。"/>
 
-		<text name="CP_global_setting_brockenThreshold_title" 											text="损坏临界值"/>
-		<text name="CP_global_setting_brockenThreshold_tooltip" 										text="如果车辆或工具损坏过多，司机将停止工作。"/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="损坏临界值"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="如果车辆或工具损坏过多，司机将停止工作。100% is off."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="用户设置"/>
 
