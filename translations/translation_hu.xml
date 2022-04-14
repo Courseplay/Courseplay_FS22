@@ -326,6 +326,7 @@
 		<text name="CP_infoTexts_needsUnloading"  														text="üríteni kell"/>
 		<text name="CP_infoTexts_workFinished"															text="készen van"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="El akarod menteni az útvonalat szántóföldként %s néven?"/>
