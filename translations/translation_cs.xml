@@ -329,6 +329,7 @@
 		<text name="CP_infoTexts_needsUnloading"  														text="需要卸载"/>
 		<text name="CP_infoTexts_workFinished"															text="完成工作"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="是否要将录制的任务保存为自定义田地 %s?"/>

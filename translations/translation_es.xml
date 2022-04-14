@@ -327,6 +327,7 @@
 		<text name="CP_infoTexts_needsUnloading"  														text="Necesita ser descargado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabajo finalizado"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="¿Quieres guardar la ruta como campo personalizado %s?"/>
