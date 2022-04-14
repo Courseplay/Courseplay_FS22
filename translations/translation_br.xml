@@ -326,7 +326,7 @@
 		<text name="CP_infoTexts_needsUnloading"  														text="Precisa ser descarregado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabalho feito"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Sem dinheiro"/>
-		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Esperando a chuva passar"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo customizado %s?"/>
