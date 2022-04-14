@@ -252,7 +252,7 @@
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Motorista será liberado, se a porcentagem de combustível for menor."/>
 
 		<text name="CP_global_setting_brokenThreshold_title" 											text="Limite de danos"/>
-		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Motorista será liberado, se o veículo ou implemento estiver danificado. 100% is off."/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Motorista será liberado, se o veículo ou implemento estiver 100% danificado."/>
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Configurações do usuário"/>
 
