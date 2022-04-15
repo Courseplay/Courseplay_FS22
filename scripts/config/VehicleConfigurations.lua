@@ -43,6 +43,7 @@ VehicleConfigurations.attributes = {
     baleCollectorOffset = XMLValueType.FLOAT,
     raiseLate = XMLValueType.BOOL,
     lowerEarly = XMLValueType.BOOL,
+    useVehicleSizeForMarkers = XMLValueType.BOOL,
 }
 
 

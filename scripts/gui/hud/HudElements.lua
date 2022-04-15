@@ -42,6 +42,7 @@ end
 function CpHudElement:setHovered(hovered)
     if hovered ~= self.hovered then 
         self:debug("hover state changed to %s",tostring(hovered))
+        self:raiseCallback("onHoveredChanged",{hovered})
     end
     self.hovered = hovered
 end
@@ -72,9 +73,9 @@ function CpHudElement:raiseCallback(callbackStr,args)
         local func = self.callbacks[callbackStr].func
         local class = self.callbacks[callbackStr].class
         if args~= nil then
-            func(class,unpack(args))
+            func(class, self, unpack(args))
         else 
-            func(class)
+            func(class, self)
         end
     end
 end
@@ -196,6 +197,10 @@ function CpTextHudElement:setTextDetails(text, textSize, textAlignment, textColo
 	self:setDimension(width, height)
 end
 
+function CpTextHudElement:setHoveredText(text)
+    self.hoveredText = text
+end
+
 function CpTextHudElement:setScale(uiScale,uiScale)
 	CpTextHudElement:superClass().setScale(self, uiScale,uiScale)
 
@@ -268,11 +273,16 @@ function CpTextHudElement:draw()
         r, g, b, a = unpack(self.textColor)
     end
 	setTextColor(r, g, b, a * self.overlay.a)
-	renderText(posX, posY, self.screenTextSize, self.text)
+    local text = self.hovered and self.hoveredText or self.text
+	renderText(posX, posY, self.screenTextSize, text)
 	setTextAlignment(RenderText.ALIGN_LEFT)
 	setTextWrapWidth(0)
 	setTextBold(false)
 	setTextColor(1, 1, 1, 1)
+end
+
+function CpTextHudElement:getScreenHeight()
+    return self.screenTextSize   
 end
 
 --- Moveable Hud element.
@@ -361,7 +371,7 @@ end
 ---@class CpHudSettingElement : CpTextHudElement
 CpHudSettingElement = {}
 local CpHudSettingElement_mt = Class(CpHudSettingElement, CpHudButtonElement)
-function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, maxPosY, incrementalOverlay, decrementalOverlay, 
+function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, posBtnY, incrementalOverlay, decrementalOverlay, 
                                     textSize, textAlignment, textColor, textBold, customMt)
     if customMt == nil then
         customMt = CpHudSettingElement_mt
@@ -376,14 +386,14 @@ function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, maxPosY,
     self.labelElement:setTextDetails("Label")
 
     self.incrementalElement = CpHudButtonElement.new(incrementalOverlay, parentHudElement)
-    self.incrementalElement:setPosition(maxPosX,maxPosY)
+    self.incrementalElement:setPosition(maxPosX, posBtnY)
     local w = self.incrementalElement:getWidth()
     local x = maxPosX - w*1.5
     self.textElement = CpTextHudElement.new(parentHudElement, x, posY, textSize-2,RenderText.ALIGN_RIGHT)
     self.textElement:setTextDetails("100.00")
     w = self.textElement:getWidth()
     self.decrementalElement = CpHudButtonElement.new(decrementalOverlay, parentHudElement)
-    self.decrementalElement:setPosition(x-w*1.5, posY)
+    self.decrementalElement:setPosition(x-w*1.5, posBtnY)
 
     return self
 end

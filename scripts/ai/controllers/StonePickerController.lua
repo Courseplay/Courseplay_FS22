@@ -1,3 +1,5 @@
+--- Makes sure the driver is waiting, while the stone picker is full.
+--- Also enables the automatic unloading into nearby trailers.
 ---@class StonePickerController : ImplementController
 StonePickerController = CpObject(ImplementController)
 
@@ -14,15 +16,29 @@ function StonePickerController:isUnloading()
 	return self.implement:getDischargeState() == Dischargeable.DISCHARGE_STATE_OBJECT 
 end
 
+function StonePickerController:getCanUnload()
+	return self.implement:getCurrentDischargeObject(self.implement:getCurrentDischargeNode()) ~= nil
+end
+
 function StonePickerController:isClosingAnimationPlaying()
 	return self.implement:getTipState() ~= Trailer.TIPSTATE_CLOSED
+end
+
+function StonePickerController:update(dt)
+	--- Releases the drive, as ad can take over.
+	if self:getIsFull() and self.vehicle.getCanAdTakeControl and self.vehicle:getCanAdTakeControl() then 
+		self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+	end
 end
 
 --- Waits while it's full or unloading finished.
 function StonePickerController:getDriveData()
 	local maxSpeed
 	if self:getIsFull() or self:isUnloading() or self:isClosingAnimationPlaying() then 
+		self:setInfoText(InfoTextManager.NEEDS_UNLOADING)
 		maxSpeed = 0
+	else 
+		self:clearInfoText(InfoTextManager.NEEDS_UNLOADING)
 	end
 
 	return nil, nil, nil, maxSpeed
@@ -54,3 +70,8 @@ function StonePickerController:handleDischargeRaycast(superFunc, dischargeNode, 
 	end
 end
 Dischargeable.handleDischargeRaycast = Utils.overwrittenFunction(Dischargeable.handleDischargeRaycast, StonePickerController.handleDischargeRaycast)
+
+--- Makes sure fuel save is disabled for unloading.
+function StonePickerController:isFuelSaveAllowed()
+	return not self:isUnloading() and not self:getCanUnload()
+end

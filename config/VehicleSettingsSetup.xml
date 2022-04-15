@@ -20,9 +20,11 @@
 				<Text>all</Text>
 			</Texts>
 		</Setting>
-		<!--Stop At End-->
+		<!--Open hud with mouse-->
 		<Setting classType="AIParameterBooleanSetting" name="openHudWithMouse" defaultBool="true" onChangeCallback="cpUpdateMouseAction"/>
 
+		<!--Open hud with mouse-->
+		<Setting classType="AIParameterBooleanSetting" name="fuelSave" defaultBool="true"/>
 		<!--Stop At End-->
 		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true"/>
 		<!--Turn on Field-->
@@ -55,6 +57,8 @@
 		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
 		<!--Tool Offset Y-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled"/>
+		<!--Silage additives needed?-->
+		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
@@ -85,7 +89,9 @@
 		<!--Ridgemarker-->	
 		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" isVisible="isRidgeMarkerSettingVisible"/>
 		<!--Fertilizer-->
-		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true" isVisible="isSowingMachineFertilizerSettingVisible"/>
+		<!--Optional sowing machine-->
+		<Setting classType="AIParameterBooleanSetting" name="optionalSowingMachineEnabled" defaultBool="false" isVisible="isOptionalSowingMachineSettingVisible"/>
 	</SettingSubTitle>
 	
 	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">

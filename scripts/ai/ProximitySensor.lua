@@ -56,7 +56,7 @@ function ProximitySensor:update()
     self.lastUpdateLoopIndex = g_updateLoopIndex
     local x, y, z = localToWorld(self.node, self.xOffset, 0, 0)
     -- get the terrain height at the end of the raycast line
-    local tx, _, tz = localToWorld(self.node, self.dx, 0, self.dz)
+    local tx, _, tz = localToWorld(self.node, self.dx + self.xOffset, 0, self.dz)
     local y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tx, 0, tz)
     -- make sure the raycast line is parallel with the ground
     local ny = (y2 - y) / self.range
@@ -64,7 +64,7 @@ function ProximitySensor:update()
     self.distanceOfClosestObject = math.huge
     self.objectId = nil
     if self.enabled then
-        local raycastMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+        local raycastMask = CollisionFlag.STATIC_OBJECTS + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
         raycastClosest(x, y + self.height, z, nx, ny, nz, 'raycastCallback', self.range, self, raycastMask)
         --DebugUtil.drawDebugLine(x, y + self.height, z, x + 5 * nx, y + self.height + 5 * ny, z + 5 * nz, 0, 1, 0)
     end

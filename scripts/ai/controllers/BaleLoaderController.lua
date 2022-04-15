@@ -72,20 +72,12 @@ function BaleLoaderController:getDriveData()
     return nil, nil, nil, maxSpeed
 end
 
-BaleLoader.onAIImplementStart = Utils.overwrittenFunction(BaleLoader.onAIImplementStart,
-        function(self, superFunc)
-            if superFunc ~= nil then superFunc(self) end
-            if not g_server then 
-                return
-            end
-            self:doStateChange(BaleLoader.CHANGE_MOVE_TO_WORK);
-        end)
-
-local baleLoaderRegisterEventListeners = function(vehicleType)
-    print('## Courseplay: Registering event listeners for bale loader')
-    SpecializationUtil.registerEventListener(vehicleType, "onAIImplementStart", BaleLoader)
+function BaleLoaderController:isFuelSaveAllowed()
+    return false
 end
 
-print('## Courseplay: Appending event listener for bale loaders')
-BaleLoader.registerEventListeners = Utils.appendedFunction(BaleLoader.registerEventListeners, baleLoaderRegisterEventListeners)
-
+function BaleLoaderController:onStart()
+    if not self.baleLoaderSpec.isInWorkPosition then
+        self.baleLoader:doStateChange(BaleLoader.CHANGE_BUTTON_WORK_TRANSPORT)
+    end
+end

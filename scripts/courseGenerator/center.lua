@@ -226,6 +226,14 @@ local function addWaypointsToBlocks(blocks, width, nHeadlandPasses)
 	return nTotalTracks
 end
 
+local function reverseTracks( tracks )
+	local reversedTracks = {}
+	for i = #tracks, 1, -1 do
+		table.insert( reversedTracks, tracks[ i ])
+	end
+	return reversedTracks
+end
+
 --- Link the parallel tracks in the center of the field to one
 -- continuous track.
 -- if bottomToTop == true then start at the bottom and work our way up
@@ -240,7 +248,8 @@ local function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, cent
 	end
 	local start
 	if centerSettings.mode == CourseGenerator.CENTER_MODE_UP_DOWN then
-		parallelTracks = reorderTracksForAlternateFieldwork(parallelTracks, centerSettings.nRowsToSkip)
+		parallelTracks = reorderTracksForAlternateFieldwork(parallelTracks, centerSettings.nRowsToSkip,
+			centerSettings.leaveSkippedRowsUnworked)
 		start = leftToRight and 2 or 1
 	elseif centerSettings.mode == CourseGenerator.CENTER_MODE_SPIRAL then
 		parallelTracks = reorderTracksForSpiralFieldwork(parallelTracks)
@@ -304,47 +313,39 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 		distanceFromBoundary = width
 	end
 
+	-- get the innermost headland
+	local innermostHeadland = headlands[#headlands]
 	-- translate headlands so we can rotate them around their center. This way all points
 	-- will be approximately the same distance from the origin and the rotation calculation
-	-- will be more accurate
-	-- get the innermost headland
-	local boundary = headlands[#headlands]
+	-- will be more accurate. This will the boundary of the field center where the parallel rows are running
+	local boundary = Polygon:copy(innermostHeadland)
 	local dx, dy = boundary:getCenter()
-
-	-- headlands transformed in the field centered coordinate system. First, just translate, will rotate once
+	-- boundary transformed in the field centered coordinate system. First, just translate, will rotate once
 	-- we figure out the angle
-	local transformedHeadlands = {}
-	for _, headland in ipairs(headlands) do
-		local h = Polygon:copy(headland)
-		h:translate(-dx, -dy)
-		table.insert(transformedHeadlands, h)
-	end
+	boundary:translate(-dx, -dy)
 
 	local translatedIslands = Island.translateAll( islands, -dx, -dy )
 
 	local bestAngle, nTracks, nBlocks, resultIsOk
 	-- Now, determine the angle where the number of tracks is the minimum
-	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle( transformedHeadlands[#transformedHeadlands], translatedIslands, width, distanceFromBoundary, centerSettings )
+	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle(boundary, translatedIslands, width, distanceFromBoundary, centerSettings)
 	if nBlocks < 1 then
 		CourseGenerator.debug( "No room for up/down rows." )
 		return nil, 0, 0, nil, true
 	end
 	if not bestAngle then
-		bestAngle = boundary.bestDirection.dir
+		bestAngle = headlands[#headlands].bestDirection.dir
 		CourseGenerator.debug( "No best angle found, use the longest edge direction " .. bestAngle )
 	end
 	rotatedMarks = Polygon:new()
 	-- now, generate the tracks according to the implement width within the rotated boundary's bounding box
 	-- using the best angle
 	-- rotate everything we'll need later
-	for _, headland in ipairs(transformedHeadlands) do
-		headland:rotate(math.rad(bestAngle))
-	end
-	local transformedBoundary = transformedHeadlands[#transformedHeadlands]
+	boundary:rotate(math.rad(bestAngle))
 	local rotatedIslands = Island.rotateAll( translatedIslands, math.rad( bestAngle ))
 
 	-- if we have headlands, let all rows have the same width, the last one overlapping with the headland
-	local parallelTracks = CourseGenerator.generateParallelTracks(transformedBoundary, rotatedIslands, width, distanceFromBoundary, nHeadlandPasses > 0)
+	local parallelTracks, offset = CourseGenerator.generateParallelTracks(boundary, rotatedIslands, width, distanceFromBoundary, nHeadlandPasses > 0)
 
 	local blocks = splitCenterIntoBlocks( parallelTracks, width )
 
@@ -362,8 +363,8 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 	-- Now we have to connect the first block with the end of the headland track
 	-- and then connect each block so we cover the entire polygon.
 	math.randomseed( CourseGenerator.getCurrentTime())
-	local blocksInSequence = findBlockSequence( blocks, transformedBoundary, boundary.circleStart, boundary.circleStep, nHeadlandPasses, centerSettings.nRowsToSkip)
-	local workedBlocks = linkBlocks( blocksInSequence, transformedBoundary, boundary.circleStart, boundary.circleStep, centerSettings.nRowsToSkip)
+	local blocksInSequence = findBlockSequence( blocks, boundary, innermostHeadland.circleStart, innermostHeadland.circleStep, nHeadlandPasses, centerSettings.nRowsToSkip)
+	local workedBlocks = linkBlocks( blocksInSequence, boundary, innermostHeadland.circleStart, innermostHeadland.circleStep, centerSettings.nRowsToSkip)
 
 	-- workedBlocks has now a the list of blocks we need to work on, including the track
 	-- leading to the block from the previous block or the headland.
@@ -433,8 +434,15 @@ end
 -- are not connected
 ---@param useSameWidth boolean if true, the distance between all rows is the same, otherwise, the last
 --- row is narrower so it does not overlap with the headland or the area around the field
+---@return table[], number rows and the offset. The last row we generate (which is on the top) will always
+--- overlap either the previous row or the headland (if useSameWidth true). At this point however, we don't know
+--- if the last generated row will also be the last worked on, depending on many factors, especially if there are
+--- multiple blocks, the rows may be worked on in the opposite order. However, we always want the last row to
+--- overlap, so if it turns out later that the rows are worked in the opposite order, we'll just need to shift
+--- all rows down by offset meters.
 function CourseGenerator.generateParallelTracks(polygon, islands, width, distanceFromBoundary, useSameWidth)
 	local tracks = {}
+	local offset
 	local function addTrack( fromX, toX, y, ix )
 		local from = { x = fromX, y = y, track=ix }
 		local to = { x = toX, y = y, track=ix }
@@ -451,7 +459,9 @@ function CourseGenerator.generateParallelTracks(polygon, islands, width, distanc
 	end
 	-- add the last track
 	addTrack(polygon.boundingBox.minX, polygon.boundingBox.maxX, y, trackIndex)
-	if not useSameWidth then
+	if useSameWidth then
+		offset = distanceFromBoundary - (polygon.boundingBox.maxY - tracks[#tracks].from.y)
+	else
 		-- pull the last row in so it does not extend over the field center
 		tracks[#tracks].from.y = polygon.boundingBox.maxY - distanceFromBoundary
 		tracks[#tracks].to.y = polygon.boundingBox.maxY - distanceFromBoundary
@@ -470,7 +480,7 @@ function CourseGenerator.generateParallelTracks(polygon, islands, width, distanc
 			findIntersections( island.headlandTracks[ island.outermostHeadlandIx ], tracks, island.id )
 		end
 	end
-	return tracks
+	return tracks, offset
 end
 
 --- Input is a field boundary (like the innermost headland track or a
@@ -553,7 +563,6 @@ local function getDistanceBetweenRowEndAndHeadland(width, angle )
 	-- distance between headland centerline and side at an angle
 	-- (is width / 2 when angle is 90 degrees)
 	local dHeadlandCenterAndSide = math.abs( width / 2 / math.sin( angle ))
-	print(dHeadlandCenterAndSide, math.deg(angle))
 	return dHeadlandCenterAndSide - getDistanceToFullCover(width, angle)
 end
 
@@ -579,7 +588,6 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isFromIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isFromIx ].angle )
-				print('from', i, offset)
 			end
 			local newFrom = tracks[ i ].intersections[ isFromIx ].x + offset - width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			local isToIx = tracks[ i ].intersections[ 1 ].x >= tracks[ i ].intersections[ 2 ].x and 1 or 2
@@ -587,7 +595,6 @@ function addWaypointsToTracks( tracks, width, nHeadlandPasses )
 				offset = -getDistanceToFullCover( width, tracks[ i ].intersections[ isToIx ].angle )
 			else
 				offset = getDistanceBetweenRowEndAndHeadland( width, tracks[ i ].intersections[ isToIx ].angle )
-				print('to  ', i, offset)
 			end
 			local newTo = tracks[ i ].intersections[ isToIx ].x - offset + width * 0.05  -- always overlap a bit with the headland to avoid missing fruit
 			-- if a track is very short (shorter than width) we may end up with newTo being
@@ -647,14 +654,6 @@ function addWaypointsForTurnsWhenNeeded( track )
 	return result
 end
 
-function reverseTracks( tracks )
-	local reversedTracks = {}
-	for i = #tracks, 1, -1 do
-		table.insert( reversedTracks, tracks[ i ])
-	end
-	return reversedTracks
-end
-
 --- Reorder parallel tracks for alternating track fieldwork.
 -- This allows for example for working on every odd track first 
 -- and then on the even ones so turns at track ends can be wider.
@@ -663,14 +662,15 @@ end
 -- want to skip every second track, we'd work in the following 
 -- order: 1, 3, 5, 4, 2
 --
-function reorderTracksForAlternateFieldwork( parallelTracks, nRowsToSkip )
+function reorderTracksForAlternateFieldwork(parallelTracks, nRowsToSkip, leaveSkippedRowsUnworked)
 	-- start with the first track and work up to the last,
 	-- skipping every nTrackToSkip tracks.
 	local reorderedTracks = {}
 	local workedTracks = {}
 	local lastWorkedTrack
+	local done = false
 	-- need to work on this until all tracks are covered
-	while ( #reorderedTracks < #parallelTracks ) do
+	while (#reorderedTracks < #parallelTracks) and not done do
 		-- find first non-worked track
 		local start = 1
 		while workedTracks[ start ] do start = start + 1 end
@@ -679,12 +679,18 @@ function reorderTracksForAlternateFieldwork( parallelTracks, nRowsToSkip )
 			workedTracks[ i ] = true
 			lastWorkedTrack = i
 		end
-		-- we reached the last track, now turn back and work on the
-		-- rest, find the last unworked track first
-		for i = lastWorkedTrack + 1, 1, - ( nRowsToSkip + 1 ) do
-			if ( i <= #parallelTracks ) and not workedTracks[ i ] then
-				table.insert( reorderedTracks, parallelTracks[ i ])
-				workedTracks[ i ] = true
+		-- if we don't want to work on the skipped rows, we are done here
+		if leaveSkippedRowsUnworked then
+			done = true
+		else
+			-- now work on the skipped rows if that is desired
+			-- we reached the last track, now turn back and work on the
+			-- rest, find the last unworked track first
+			for i = lastWorkedTrack + 1, 1, - ( nRowsToSkip + 1 ) do
+				if ( i <= #parallelTracks ) and not workedTracks[ i ] then
+					table.insert( reorderedTracks, parallelTracks[ i ])
+					workedTracks[ i ] = true
+				end
 			end
 		end
 	end

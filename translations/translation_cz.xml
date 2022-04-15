@@ -4,12 +4,13 @@
 
 		<text name="CP_activated" 																		text="Aktivní" />
 		<text name="CP_deactivated" 																	text="Neaktivní" />
-		<text name="CP_automatic" 																		text="auto" />
+		<text name="CP_automatic" 																		text="Auto" />
 		<text name="CP_unit_meter" 																		text="m" />
-		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_unit_foot" 																		text="st" />
+		<text name="CP_copy"																			text="Kopírovat kurz: "/>
 
 		<!-- User info text -->
-		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22." />
+		<text name="CP_infoText"																		text="Courseplay(%s): Pro pomoc, chyby nebo poznámky o opravách se prosím navštivte: https://github.com/Courseplay/Courseplay_FS22. Překlad: SniperKittenCZ" />
 		<text name="CP_error_no_course"																	text="Před zahájením práce vygenerujte kurz." />
 		<text name="CP_error_could_not_generate_course"													text="Trasu se nepodařilo vygenerovat. Log může obsahovat více informací." />
 		<text name="CP_error_not_on_field"																text="Cíl není na poli." />
@@ -23,7 +24,7 @@
 		<text name="CP_jobParameters_startAt_first"														text="Na prvním bodě" />
 		<text name="CP_jobParameters_startAt_last"														text="Na posledním bodě" />
 		<text name="CP_jobParameters_startAt_unload"													text="Vykládání" />
-		<text name="CP_jobParameters_startAt_bales"														text="Svoz balíků" />
+		<text name="CP_jobParameters_startAt_bales"														text="Ovíjení/sběr balíků" />
 
 		<text name="CP_jobParameters_subTitle_laneOffset"												text="Odsazení jízdního pruhu:" />
 		<text name="CP_jobParameters_laneOffset_title"													text="Odsazení jízdního pruhu:" />
@@ -36,13 +37,13 @@
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Polní práce" />
-		<text name="CP_job_baleCollect"																	text="CP: Sběr/balení balíků" />
+		<text name="CP_job_baleCollect"																	text="CP: Ovíjení/sběr balíků" />
 	<!--Generate course button-->
 		<text name="CP_ai_page_generate_course" 														text="CP: Vypočítat polní práce" />
 		<text name="CP_ai_page_open_course_generator" 													text="CP: Zapnout/vypnout generátor tras" />
 
 	<!-- AI messages -->
-		<text name="CP_ai_messageErrorIsFull" 															text="Pracovník %s neočekávaně přestal pracovat – nádrž je plná!" />
+		<text name="CP_ai_messageErrorIsFull" 															text="Pracovník %s přestal neočekávaně pracovat – zásobník je plný!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Nastavení pro vozidlo (%s)"/>
@@ -60,70 +61,79 @@
 		<text name="CP_vehicle_setting_showCourse_tooltip" 												text="Ukázat aktuální trasu vozidla"/>
 
 		<text name="CP_vehicle_setting_showCourse_startStop" 											text="Pouze start/stop"/>
-		<text name="CP_vehicle_setting_showCourse_all" 													text="Všechny průjezdní body"/>
+		<text name="CP_vehicle_setting_showCourse_all" 													text="Všechny průjezdní body."/>
 
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Otevřete nabídku (Hud) pomocí myši"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Když je nabídka (Hud) deaktivována, lze jej otevřít pouze pomocí klávesové zkratky."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Úspora paliva"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Během čekání vypne motor vozidla."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Zastavit na konci"/>
-		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Zastavit na konci"/>
+		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Zastavit na konci trasy."/>
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Povolit couvání pro hledání trasy"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Pokud je aktivní, použije se při generování trasy i couvání"/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Pokud je aktivní, použije se při generování trasy i couvání."/>
 
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Umožňuje používání generování trasy v zatáčkách"/>
-		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Umožňuje používat generování trasy v zatáčkách, například k vyhýbání se překážkám a plodinám"/>
+		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Umožňuje používat generování trasy v zatáčkách, například k vyhýbání se překážkám a plodinám."/>
 
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Složit nářadí na konci trasy"/>
-		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Zapnout/vypnout složení nářadí do transportní pozice po ukončení práce"/>
+		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Zapnout/vypnout složení nářadí do transportní pozice po ukončení práce."/>
 
 		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Zvednutí nástroje"/>
-		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Nastaví, kdy dojde ke zvednutí nástroje na souvrati"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Nastaví, kdy dojde ke zvednutí nástroje na souvrati."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="Brzy"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="Pozdě"/>
 
 		<text name="CP_vehicle_setting_lowerImplementEarly_title" 										text="Spouštění nástroje"/>
-		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Nastaví, kdy dojde ke spuštění/zahloubení nástroje na souvrati"/>
+		<text name="CP_vehicle_setting_lowerImplementEarly_tooltip" 									text="Nastaví, kdy dojde ke spuštění/zahloubení nástroje na souvrati."/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_early" 										text="Brzy"/>
 		<text name="CP_vehicle_setting_lowerImplementEarly_late" 										text="Pozdě"/>
 
 		<text name="CP_vehicle_setting_turnOnField_title" 												text="Otáčení pouze na poli"/>
-		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Nastaví otáčení pouze na poli. Není možné pro všechny nástroje"/>
+		<text name="CP_vehicle_setting_turnOnField_tooltip" 											text="Nastaví otáčení pouze na poli. Není možné pro všechny nástroje."/>
 
 		<text name="CP_vehicle_setting_avoidFruit_title" 												text="Vyhnout se vjíždění do plodin"/>
-		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Umělá inteligence se pokusí vyhnout vjíždění do plodin"/>
+		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Umělá inteligence se pokusí vyhnout vjíždění do plodin."/>
 
 		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Horizontální odsazení nástroje"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Nastaví horizontální odsazení nástroje"/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Nastaví horizontální odsazení nástroje."/>
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Vertikální odsazení nástroje"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Nastaví vertikální odsazení nástroje"/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Nastaví vertikální odsazení nástroje."/>
+
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Kontrola silážních aditiv"/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Pokud je aktivní a dojdou silážní aditiva, pracovník se zastaví."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Stále otevřený komín"/>
-		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Otevřít komín, když je kombajn plný a čeká na vykládku"/>
+		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Otevřít komín, když je kombajn plný a čeká na vykládku."/>
 
 		<text name="CP_vehicle_setting_stopForUnload_title" 											text="Zastavit při vykládání"/>
-		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Vždy zastaví jízdu při vykládání"/>
+		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Vždy zastaví jízdu při vykládání."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Kombajn se vyloží samostatně"/>
 		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Samostatné vyložení kombajnu do vleku, který je poblíž. Není podporováno v režimu multitools nebo konvoje.
 "/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Vyložit kombajn na první souvrati"/>
-		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Kombajn si přivolá odvozce na první souvrati"/>
+		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Kombajn si přivolá odvozce na první souvrati."/>
 
 		<text name="CP_vehicle_setting_strawSwath_title" 												text="Pokos slámy"/>
-		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="Aktivuje/deaktivuje pokos slámy nebo jej pouze zakáže na souvratích"/>
+		<text name="CP_vehicle_setting_strawSwath_tooltip" 												text="Aktivuje/deaktivuje pokos slámy nebo jej pouze zakáže na souvratích."/>
 		<text name="CP_vehicle_setting_strawSwath_onlyCenter" 											text="Zakázáno na souvratích"/>
 
 		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" 									text="Brázdová značka"/>
-		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="Zapíná/vypíná brázdovou značku"/>
+		<text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" 									text="Zapíná/vypíná brázdovou značku."/>
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Secí stroje používají hnojivo"/>
-		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Povolí/zakáže použití hnojiva u secích strojů"/>
+		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Povolí/zakáže použití hnojiva u secích strojů."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Možnost setí"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Zapíná nebo vypíná doplňkovou funkci setí stroje."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Pravidelné otáčení"/>
-		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrická změna jízdního pruhu"/>
+		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrická změna jízdního pruhu."/>
 
 		<text name="CP_vehicle_setting_convoyDistance_title" 											text="Rozestup konvoje"/>
 		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Vzdálenost mezi vozidly. Hodnota: 40 - 400"/>
@@ -168,7 +178,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Pokud je vybrán středový režim 'záhon', tolik řádků je v každém bloku. Hodnota: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Směr souvratě" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Jízda na souvrati ve směru nebo proti směru hodinových ručiček." />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="Ve směru hodinových ručiček" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="Proti směru hodinových ručiček" />
 
@@ -195,51 +205,82 @@
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Úhel trasy řádku pokud je manuální (0° je sever). Hodnota: 0 - 175 Krok: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Režim ostrova" />
-		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Jak má trasa obcházet remízky na poli." />
+		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Jak má trasa obcházet remízky na poli" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" 							text="Žádný" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" 							text="Ze stran" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" 							text="Kruh" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title"							text="Začít pracovat na" />
-		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kde začít pracovat" />
+		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip"							text="Kde začít pracovat." />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" 						text="Souvrati" />
 		<text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" 					text="Řádku" />
 
-		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Více nástrojů" />
+		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Více strojů" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Počet vozidel na stejné trase." />
+
+		<!-- Vine Course Generator-->
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Generátor pro vinice"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Základní nastavení"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Pozice trasy"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Má být kurz veden po ose nebo vedle révy? To závisí na nástroji. Více informací v nabídce nápovědy."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Levá strana révy"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="Po ose révy"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Pravá strana révy"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Počet strojů na trase"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Kolik nástrojů může současně pracovat. Více informací v nabídce nápovědy."/>
+		
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Řádky k přeskočení"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Přeskakování řádků by se mělo používat pouze tehdy, když nástroj funguje na obou stranách (levá i pravá)."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>
-		<text name="CP_global_setting_subTitle_general"													text="Základní nastavení"/>
+		<text name="CP_global_setting_subTitle_general"													text="Základní nastavení."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Mzdy pracovníků"/>
-		<text name="CP_global_setting_wageModifier_tooltip" 											text="Mzdy CP pracovníků jako procento mzdy normálního pracovníka"/>
+		<text name="CP_global_setting_wageModifier_tooltip" 											text="Mzdy CP pracovníků jako procento mzdy normálního pracovníka."/>
 
 		<text name="CP_global_setting_autoRepair_title" 												text="Automatické opravy"/>
-		<text name="CP_global_setting_autoRepair_tooltip" 												text="CP pracovník automaticky opravuje vozidlo"/>
+		<text name="CP_global_setting_autoRepair_tooltip" 												text="CP pracovník automaticky opravuje vozidlo."/>
 		<text name="CP_global_setting_autoRepair_off" 													text="Neoprvovat"/>
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Udržovat v dobrém stavu"/>
+
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Hladina paliva"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Řidič bude uvolněn, pokud je procento paliva nižší."/>
+
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Hodnota opotřebení"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Uživatelské nastavení"/>
 
 		<text name="CP_global_setting_controllerHudSelected_title"										text="Hud nastavený pro Gamepad"/>
 		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Použijte Hud, který lze ovládat pomocí Gamepadu."/>
 		
-		<text name="CP_global_setting_showActionEventHelp_title" 										text="Action event help"/>
-		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Shows action event help texts."/>
+		<text name="CP_global_setting_showActionEventHelp_title" 										text="Nápověda k akci"/>
+		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Zobrazuje texty nápovědy k akci."/>
 
 		<text name="CP_global_setting_subTitle_pathfinder"												text="Nastavení generování trasy"/>
 
 		<text name="CP_global_setting_maxDeltaAngleAtGoal_title" 										text="Rozdíl úhlů v cíli"/>
-		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné"/>
+		<text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" 										text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné."/>
 
 		<text name="CP_global_setting_deltaAngleRelaxFactor_title" 										text="Faktor Delta úhlů"/>
-		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší"/>
+		<text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" 									text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zobrazit všechny aktivní trasy"/>
-		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zobrazuje všechny aktivní trasy na herní mapě"/>
+		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zobrazuje všechny aktivní trasy na herní mapě."/>
+
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Zobrazit informační textové okno"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Zobrazí informační textové okno."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Chování myši hráče"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Povolí/zakáže chování myši hráče pro zobrazení informačního textu mimo vozidlo."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Preference vlastního pole"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Upřednostňuje vlastní pole, pokud je na vybrané pozici také běžné pole."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Správce Tras(%s) %s"/>
@@ -275,6 +316,18 @@
 
 		<text name="CP_courseManager_activate"															text="Aktivovat"/>
 
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Pomocník se zasekl"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Je v provozu"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Měl by se dotankovat"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Je třeba dotankovat"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Je třeba opravit"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Je třeba doplnit"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Je třeba vyložit"/>
+		<text name="CP_infoTexts_workFinished"															text="Dokončil práci"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Došly peníze"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
+		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Chcete odstranit vlastní pole %s?"/>
@@ -290,15 +343,113 @@
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
+		<!--This stays blank and is just to create blank spots for better overview in the menu-->
+		<text name="CP_help_page_blank"																	text=""/>
+		<!--Job Menu-->
+		<text name="CP_help_page_extendedJobMenu_title"													text="Rozšířené menu AI"/>
+		<text name="CP_help_page_startJobMenuBase_text"													text="
+Nejprve musíte v nabídce AI vybrat vozidlo pro generování kurzu práce v terénu nebo získání přístupu k nastavení vozidla a správci kurzu.
+Aktuálně načtený kurz se zobrazí na mapě.
+Globální nastavení jsou vždy viditelná.
+Pro generování kurzu a zahájení úloh v kurzu budete muset vytvořit úlohu CP: Polní práce nebo CP: ovíjení/sběr balíků, podobně jako pomocníků Giants.
+"/>
+		<text name="CP_help_page_startJobMenuFunctions_text"											text="
+Abyste mohli začít s první zakázkou CP, musíte vybrat vozidlo a správný nástroj, který je pro tuto zakázku vhodný.
+Poté kliknutím na vytvořit úlohu můžete vybrat CP: Polní práce pro nástroje pro práci v terénu nebo CP: ovíjení/sběr
+s připojeným ovíječem nebo sběračem balíků.
+"/>
+		<text name="CP_help_page_readyJobMenuBase_text"													text="
+S vybranou úlohou CP musíte umístit pozici pole na pole pro generování kurzu nebo pro použití vyhledávače balíků na poli.
+Pozice také zhruba řídí počáteční bod vašeho kurzu.
+Chcete-li využít pomocníka Giants pro jízdu na pole, pak je také potřeba nastavit cílovou pozici blízko výchozího bodu hřiště.
+Nastavení odsazení jízdního pruhu se používá pouze v případě, že chcete, aby na stejném poli pracovalo více pomocníků. Za tímto účelem se podívejte na samostatnou stránku nabídky nápovědy níže.
+"/>
+		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
+Když je poloha pole umístěna správně na pole, uvidíte na mapě nakreslenou hranici pole.
+Pokud vytváříte úlohu CP: Polní práce, získáte přístup k nastavení generátoru kurzů.
+"/>
+		<text name="CP_help_page_JobMenuExtras_text"													text="
+Nyní je možné pustit řidiče přímo z nabídky. Pomocník Giants dojede na cílovou pozici a odtud automaticky převezme úlohu CP.
+Alternativně můžete také pustit řidiče z HUD, pokud jste blízko pole s vozidlem nebo pomocí režimu AutoDrive ke spuštění úlohy CP blízko pole.
+"/>
+		<!--CourseGenerator-->
+		<text name="CP_help_page_courseGenerator_title"													text="Generátor tras"/>
+		<text name="CP_help_page_courseGeneratorBase_text"												text="
+Každý kurz pro práce v terénu je generován generátorem kurzu. Jedná se o mocný nástroj, který vám umožní přizpůsobit vygenerovaný kurz vašim potřebám.
+Pokud s tím začínáte, měli byste pravděpodobně začít pouze změnou nastavení velikosti souvratě.
+Poté můžete vždy změnit ostatní hodnoty a kliknout na vygenerovat kurz a podívat se, jaký dopad mají určité hodnoty na kurz.
+Nejlepším způsobem, jak si na to zvyknout, je experimentování a kontrola, jaký dopad má různá nastavení na různých polích.
+"/>
+		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
+Základy:
+Prvních pár hodnot, které zde vidíte, jsou skutečné základy.
+- Pracovní šířka: Většina nástrojů zjistí přesnou pracovní šířku a vy se o toto nastavení nemusíte vůbec starat. Jeho úprava bude mít dopad na váš celkový kurz.
+- Více nástrojů: Toto nastavení se používá, když chcete, aby na vaší trati pracovalo více než jen jedno vozidlo. Protože je to trochu složitější, existuje pro to samostatné téma nápovědy.
+- Počet souvratí: Nejlepší způsob, jak udržet svá vozidla na poli při otáčení na konci každého řádku, je přidat souvratě.
+Počet souvratí vynásobený pracovní šířkou by měl odpovídat alespoň celkové délce vašeho vozidla plus připojený nástroj.
+Středové možnosti:
+- Střed pole: Existují různé režimy, jak by měl vzor středu pole vypadat. Klasický a nejpoužívanější je nahoru/dolů.
+Spirála, Kruh a Záhon mají oproti ostatním své specifické výhody. Režim Záhon například dovolí kombajnu po většinu času mít vysunutou rouru, aby je bylo možné jej snáze vyložit.
+- Směr řádku nahoru/dolů: automaticky většinou najde nejlepší směr, ale někdy se nejdelší hrana hodí lépe. Pokud nejste spokojeni ani s jedním, zvolte ruční a nastavte směr ručně.
+- Řádky k přeskočení: Toto je velmi užitečná možnost pro urychlení vaší práce, protože nástroje nebudou muset couvat, aby přešly na další řádek.
+- Řádky v režim 'záhon': Toto má vliv pouze tehdy, když je střed pole nastaven na 'Záhon' a sdělí generátoru, kolik řádků by měl mít každý záhon. Čím více řádků, tím méně záhonů bude vygenerováno.
+- Úhel řádku nahoru/dolů: Když je směr řádku nahoru/dolů nastaven na ruční, toto nastavení určí směr generování.
+"/>
+		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
+Nastavení souvrati se zobrazí pouze tehdy, když nastavíte alespoň 1 v poli 'Počet souvratí'.
+Získáte možnosti, kde začít, nastavení rohů, směr a překrytí.
+Velmi se doporučují souvratě, aby se zabránilo tomu, že nástroje opustí pole při otáčení.
+"/>
+		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
+- Začátek práce: Jak je uvedeno v rozšířené nabídce AI, poloha pole se používá k nastavení počáteční nebo koncové polohy pro kurz práce na poli.
+Když je nastaven start na souvrati, říká, kde by měl být start. Když se změní na začátek na řádcích, řekne, kde má práci ukončit.
+- Souvraťové rohy: Zaoblený bude mít jednoduché vyhlazení přes rohy. To funguje pro všechny nástroje, ale povede to k drobným neopracovaným místům v rozích.
+S pocouvnutím se dají zmenšit, ale nikdy nezmizí. Pocouvnutí vygeneruje otočení na základě úhlu hranice pole.
+Zaoblený vezme v úvahu aktuálně vybraný poloměr zatáčky, aby byl pro daný nástroj nejlepší zaoblený roh.
+- Směr souvrati: ve směru nebo proti směru hodinových ručiček. To může být důležité pro kombajny a sklízeče, v závislosti na tom, na které straně je výsypová roura nebo dopravní pás.
+- Souvraťový přesah: Kolik % by měly mít všechny souvratě. První se nebude překrývat s hranicí pole, ale vnitřní se budou překrývat se svou sousední.
+"/>
+		<text name="CP_help_page_courseGeneratorExtras_text"											text="
+Vysvětlení okraje pole:
+Kladné hodnoty zmenšují velikost pole, aby se přidalo místo kolem obdělané plochy v případě, že máte poblíž hranice pole překážky.
+Záporné hodnoty zvětšují obdělanou plochu za hranici pole, aby zakryly hranice pole, které nejsou dokonale detekovány.
+"/>
+		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Správce tras"/>
-		<text name="CP_help_page_courseManager_text"													text="K dispozici je 7 různých akcí:
-- Vytvoření nového adresáře.
-- Vymazání aktuální trasy vozidla.
-- Uložení aktuální trasy.
-- Načítání trasy.
-- Přesunutí trasy do jiného adresáře.
-- Smazání trasy nebo adresáře.
-- Přejmenování trasy nebo adresáře."/>
+		<text name="CP_help_page_courseManagerBase_text"												text="
+Správce kurzů vám umožňuje ukládat kurzy a umožňuje vám uložený kurz později znovu načíst.
+To je opravdu důležité, když chcete, aby více pracovníků použilo stejný kurz (konvoj).
+Tato funkce vám také umožňuje sebrat řádek, který za sebou zanechal kombajn nebo řádkovač se sběracím vozem nebo lisem.
+Umístění pro uložení souborů kurzu je: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (nebo např. MapUS).
+Správce kurzu funguje jinak, než na co jste zvyklí ve FS19.
+Kurzy se ukládají do složek, které se zobrazí vlevo. To znamená, že k ukládání kurzů budete potřebovat alespoň jednu složku.
+Složky lze jednoduše vytvořit tlačítkem v dolní části obrazovky a zadáním názvu.
+Courses are only saved localy for now.
+"/>
+
+		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
+Když máte kurz načtený, můžete jej uložit kliknutím na tlačítko uložit kurz a poté na složku. Poté se objeví vyskakovací okno, kde můžete zadat název vašeho kurzu.
+Název a umístění lze později změnit.
+Chcete-li odstranit kurz ze svého vozidla, klikněte na tlačítko „Vymazat aktuální kurz“.
+Pro načtení kurzu byste museli nejprve vybrat složku, kliknout na tlačítko načíst kurz a poté jednoduše kliknout na kurz, který chcete načíst.
+Kliknutím na režim Upravit aktivujete režim úprav správce kurzu.
+"/>
+		<text name="CP_help_page_courseManagerEdit_text"												text="
+Když je režim úprav aktivní, máte tyto možnosti:
+- Přesunutí kurzu do jiného adresáře.
+- Mazání kurzů nebo adresářů.
+- Přejmenování kurzů nebo adresářů.
+"/>
+		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
+Pro přesun kurzu:
+   1) Klikněte na tlačítko pro přesun ve spodní části obrazovky.
+   2) Klikněte na kurz, který chcete přesunout.
+   3) Klikněte na adresář, kam chcete kurz přesunout.
+Pro přejmenování stačí kliknout na tlačítko přejmenovat a poté na adresář nebo kurz. Poté stačí zadat nový název.
+Pro smazání kurzu nebo adresáře klikněte na tlačítko smazat a poté na složku nebo kurz, který chcete smazat.
+Adresáře musí být prázdné, pokud je chcete smazat.
+"/>
+		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
 A: Kliknutím na název vozidla se otevře stránka konfigurace vozidla.
@@ -310,28 +461,109 @@ F: Kliknutím na ikonu se otevře stránka obecných nastavení.
 G: Zavře Hud.
 H: Snižte a zvětšete pracovní šířku. Červená čára na vašem vozidle ukazuje aktuální nastavení.
 I: Hodnota pro horizontální posun, + vlevo, - vpravo.
-J: Hodnota pro vertikální posun, + dozadu, - dopředu.
-K, L a M: Kliknutím na text resetujete změny na automatické hodnoty.
+J: Zkopírujte a vložte kurz do jiného vozidla.
+      Jakmile bylo stisknuto tlačítko kopírování, lze kurz vložit do vozidla bez kurzu, když se ikona změní na zelenou.
+K a L: Kliknutím na text resetujete změny na automatické hodnoty.
+M: Zobrazuje zkopírovaný kurz.
 N: Tato oblast zobrazuje odsazení jízdního pruhu, pokud máte načtený kurz s více nástroji. Kliknutím na text přepnete pozice.
 O: Spuštění/zastavení záznamu vlastní trasy na poli.
-P: Odstraňuje trasu z vozidla"/>
+P: Odstraňuje trasu z vozidla
+Q: Mění viditelnost kurzu mezi: zapnuto, vypnuto a pouze start/stop.
+R: Odebere zkopírovaný kurz ze schránky.
+"/>
+		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Vlastní pole"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Vlastní pole lze vytvořit dvěma způsoby.
 Prvním z nich je použití funkce záznamu HUD.
 Spusťte záznam a zaznamenejte hranici pole.
-Po dokončení znovu stiskněte tlačítko a budete dotázáni, zda jej chcete uložit."/>
+Po dokončení znovu stiskněte tlačítko a budete dotázáni, zda jej chcete uložit.
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Když se podíváte na nabídku AI, uvidíte hranici zaznamenaného pole.
-Kliknutím na Název získáte možnost jej buď smazat, nebo přejmenovat."/>
+Kliknutím na Název získáte možnost jej buď smazat, nebo přejmenovat.
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Druhou možností je nakreslit jej na AI Menu Map.
 Nemáte-li vybraný žádný traktor nebo jiné vozidlo (klikněte levým tlačítkem někam na mapu), získáte možnost nakreslit vlastní pole.
 Po spuštění se zobrazí text kreslení vlastních čar pole kliknutím pravým tlačítkem.
 Pomocí pravého tlačítka myši klikněte na pozici, kde chcete začít.
-Další kliknutí pravým tlačítkem nakreslí čáru z vašeho počátečního bodu do vaší druhé pozice, která bude počátečním bodem pro další čáru."/>
+Další kliknutí pravým tlačítkem nakreslí čáru z vašeho počátečního bodu do vaší druhé pozice, která bude počátečním bodem pro další čáru.
+"/>
+		<!--Multitool and Convoy-->
+		<text name="CP_help_page_multiConvoy_title"														text="Více strojů a konvoj"/>
+		<text name="CP_help_page_multitoolBasic_text"													text="
+Je možné mít až 5 vozidel spolupracujících na stejném poli (také nazývané jako konvoj).
+"/>
+		<text name="CP_help_page_multitoolFunction_text"												text="
+Po načtení kurzu s více stroji budete muset vybrat dráhu pro řidiče.
+Tyto pruhy se vždy jmenují stejně:
+vlevo (2), vlevo (1), uprostřed, vpravo (1), vpravo (2).
+2 vozidla budou mít levou (1) a pravou (1), 4 budou mít levou (2) a pravou (2).
+Se 3 nebo 5 vozidly získáte také středovou variantu.
+"/>
+		<text name="CP_help_page_convoyBasic_text"														text="
+Konvoj funguje pouze v případě, že vozidla mají naloženou stejnou dráhu s více stroji se stejným názvem.
+Automaticky budou udržovat malý odstup od vozidla před vámi.
+Kromě toho se funkce konvoje také uplatní, když například lis jede za kombajnem na stejném kurzu.
+"/>
+		<text name="CP_help_page_convoyFunction_text"													text="
+Nastavení vzdálenosti konvoje vozidel mění vzdálenost mezi vozidly.
+Vzdálenost všech vozidel se stejným názvem kurzu bude automaticky nastavena na nejvyšší hodnotu ze všech vozidel v konvoji.
+"/>
+		<!--Wrap and Collect-->
+		<text name="CP_help_page_wrapCollect_title"														text="Ovíjení a sběr balíků"/>
+		<text name="CP_help_page_wrapCollectBasic_text"													text="
+Ovíjení a sběr balíků lze provádět dvěma různými způsoby.
+Prvním z nich je načíst stejnou dráhu, kterou jste použili pro svůj lis a nechat ovíječku nebo sběrač jet v této dráze.
+To však může být složité, protože některé balíky se rády kutálejí nebo sjedou z trasy.
+V tomto okamžiku může pomoci náš typ úlohy zabalit a vyzvednou, protože nepotřebuje kurz.
+Zůstaňte na poli a jednoduše nastartujte řidiče z HUD s ovíjením/sbíráním balíků nebo použijte AI mapu a pošlete ho na pole, aby začal pracovat.
+"/>
+		<text name="CP_help_page_wrapBasic_text"														text="
+Ovíjení balíků je velmi jednoduché. Načtěte kurz svého lisu a začněte jako jakákoli jiná práce v terénu, nebo bez kurzu,
+spusťte jej ovíjením/sběrem balíků z HUD nebo nabídky AI.
+"/>
+		<text name="CP_help_page_wrapFunction_text"														text="
+Při použití kurzu jede pomocník s přednastaveným odsazením, takže sběrač je uprostřed kurzu.
+Bez kurzu Courseplay prohledá pole, zda neobsahuje nezabalené balíky, a pomocí pathfinderu najde způsob, jak
+vyhledat nejbližší balík k ovíjení.
+Automatické couvání, pokud je balík před vozidlem nebo pokud jsme příliš blízko hranice pole, by mělo zabránit nehodám.
+"/>
+		<text name="CP_help_page_collectBasic_text"														text="
+Sběr balíků funguje stejně, s kurzem nebo bez něj.
+Když je sběrač plný, zastaví práci a oznámí uživateli, že je třeba vyložit. Pokud máte AutoDrive
+nainstalován, můžete jej použít k automatickému spuštění vykládky sběrače balíků.
+"/>
+		<!--Vine work-->
+		<text name="CP_help_page_vineWork_title"														text="Vinice"/>
+		<text name="CP_help_page_vineWorkConditions_text"												text="
+Práce na vinici je o něco složitější než práce na normálním poli.
+Chcete-li dosáhnout nejlepšího výsledku, měly by být všechny řádky vinice vedle sebe ve výchozí mřížce.
+Konec a začátek každé révy by měly být také přibližně stejně dlouhé.
+Pokud jsou vinice na stávajícím poli, můžete generátor otevřít přímo jako obvykle.
+Pokud nejsou na poli, musíte přejít přes nabídku AI a umístit značku pole na vinici.
+"/>
+		<text name="CP_help_page_vineWorkGenerator_text"												text="
+Generátor pro vinnou révu má méně možností.
+V závislosti na nástroji si musíte vybrat, zda budete pracovat na vinicích nebo vedle nich.
+Např. výchozí harvestor potřebuje řídit a pracovat na révě.
+      Prořezávač potřebuje jet vlevo od révy, ale pracuje na révě, takže si musíte vybrat, že budete pracovat na révě, ale řídit s odsazením.
+      Postřikovače musí jet vedle révy a musí přeskočit jednu řadu, protože stříká doleva a doprava.
+"/>
+		<text name="CP_help_page_vineWorkHarvester_text"												text="
+Na vinicích musí být vytvořen kurz pro vinice, protože umožní práci na vinicích.
+"/>
+		<text name="CP_help_page_vineWorkPruner_text"													text="
+Prořezávač pracuje na vinicích, takže kurz musí být generován na vinicích.
+Nástroje jsou dodávány s odsazením pro traktor, takže traktor jezdí mezi révou.
+"/>
+		<text name="CP_help_page_vineWorkSprayer_text"													text="
+Postřikovač pracuje vedle vinné révy, takže musí od vinné révy jet buď vlevo, nebo vpravo.
+Vzhledem k tomu, že postřikovač může pracovat na levé i pravé révě současně, můžeme řadu přeskočit.
+"/>
 
-<!-- Input bindings -->
+	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vyberte další kanál ladění"/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vyberte předchozí kanál ladění."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Změnit aktuální kanál ladění."/>

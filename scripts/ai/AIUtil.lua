@@ -605,3 +605,16 @@ function AIUtil.getWidth(vehicle)
 		return vehicle.size.width
 	end
 end
+
+--- Can we reverse with whatever is attached to the vehicle?
+function AIUtil.canReverse(vehicle)
+	if AIVehicleUtil.getAttachedImplementsBlockTurnBackward(vehicle) then
+		-- Giants says no reverse
+		return false
+	elseif g_vehicleConfigurations:getRecursively(vehicle, 'noReverse') then
+		-- our configuration disabled reverse
+		return false
+	else
+		return true
+	end
+end

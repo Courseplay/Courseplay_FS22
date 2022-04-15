@@ -58,15 +58,9 @@
 --   minimum distance allowed between vertices. Keeps the number of generated
 --   vertices for headland passes low. For fine tuning only
 --
--- minSmoothAngle
---   angle between two subsequent edges above which the smoothing kicks in.
---   This is to smooth corners in the headland
---
--- maxSmoothAngle
---   angle between two subsequent edges above which the smoothing won't kick in
---
--- doSmooth
---   enable smoothing 
+-- headlandCornerType
+--   smooth, sharp (turn maneuver at corners) or round (rounded to the vehicle's
+--   turning radius
 --
 -- fromInside
 --   calculate the headland tracks starting with the innermost one. This will first
@@ -100,16 +94,24 @@
 -- 
 
 function generateCourseForField( field, implementWidth, headlandSettings,
-								 minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside,
+								 minDistanceBetweenPoints, headlandCornerType, fromInside,
 								 turnRadius, islandNodes, islandBypassMode, centerSettings, fieldMargin )
+	-- minSmoothAngle
+	--   angle between two subsequent edges above which the smoothing kicks in.
+	--   This is to smooth corners in the headland
+	-- maxSmoothAngle
+	--   angle between two subsequent edges above which the smoothing won't kick in
+	local minSmoothAngle, maxSmoothAngle = CourseGenerator.setCornerParameters(headlandSettings, headlandCornerType)
+
 	CourseGenerator.debug("####### COURSE GENERATOR START ##########################################################")
-	CourseGenerator.debug("Headland mode %s, number of passes %d, center mode %s, min headland turn angle %.1f",
-			CourseGenerator.headlandModeTexts[headlandSettings.mode], headlandSettings.nPasses,
-			CourseGenerator.centerModeTexts[centerSettings.mode], headlandSettings.minHeadlandTurnAngleDeg)
+	CourseGenerator.debug("Headland mode %s, corner %s, number of passes %d, center mode %s, min headland turn angle %.1f",
+		CourseGenerator.headlandModeTexts[headlandSettings.mode], CourseGenerator.headlandCornerTypeTexts[headlandCornerType],
+		headlandSettings.nPasses, CourseGenerator.centerModeTexts[centerSettings.mode], headlandSettings.minHeadlandTurnAngleDeg)
 	CourseGenerator.debug('Width %.1f, headland first %s, clockwise %s. Skip rows %d', implementWidth,
 			tostring(headlandSettings.headlandFirst), tostring(headlandSettings.isClockwise), centerSettings.nRowsToSkip)
 
 	local resultIsOk = true
+
 
 	field.boundary = Polygon:new( field.boundary )
 	field.boundary:calculateData()
@@ -120,7 +122,7 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		-- boundary.
 		field.boundary = calculateHeadlandTrack(field.boundary, CourseGenerator.HEADLAND_MODE_NORMAL, field.boundary.isClockwise,
 			math.abs(fieldMargin), minDistanceBetweenPoints, math.rad( 25 ), math.rad( 60 ), 0,
-				true, fieldMargin > 0, {}, 1)
+				fieldMargin > 0, {}, 1)
 	end
 
 	field.boundingBox =  field.boundary:getBoundingBox()
@@ -132,7 +134,7 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		setupIslands( field,
 			headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NONE and 1 or headlandSettings.nPasses,
 			implementWidth, headlandSettings.overlapPercent, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
-			doSmooth, islandNodes )
+			islandNodes )
 	end
 
 	field.headlandTracks = {}
@@ -141,9 +143,9 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 	if headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NORMAL or
 			headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NARROW_FIELD then
 		generateAllHeadlandTracks(field, implementWidth, headlandSettings, centerSettings,
-			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth, fromInside, turnRadius)
+			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, fromInside, turnRadius)
 
-		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
+		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, minSmoothAngle, maxSmoothAngle )
 
 		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
 			field.headlandTracks, field.bigIslands, implementWidth, headlandSettings, centerSettings )
@@ -152,8 +154,8 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 		-- we have something to work with when generating the up/down tracks
 		field.headlandTracks[ 1 ] = calculateHeadlandTrack( field.boundary, CourseGenerator.HEADLAND_MODE_NORMAL,
 				field.boundary.isClockwise, 0, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
-				0, doSmooth, not fromInside, nil, nil)
-		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, doSmooth, minSmoothAngle, maxSmoothAngle )
+				0, not fromInside, nil, nil)
+		linkHeadlandTracks( field, implementWidth, headlandSettings.isClockwise, headlandSettings.startLocation, minSmoothAngle, maxSmoothAngle )
 		field.track, field.bestAngle, field.nTracks, field.blocks, resultIsOk = CourseGenerator.generateFieldCenter(
 			field.headlandTracks, field.bigIslands, implementWidth, headlandSettings, centerSettings )
 	elseif headlandSettings.mode == CourseGenerator.HEADLAND_MODE_TWO_SIDE then
@@ -205,7 +207,7 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 			Island.bypassIslandNodes(field.course, implementWidth, islandNodes)
 		elseif islandBypassMode == Island.BYPASS_MODE_CIRCLE then
 			for _, island in ipairs( field.smallIslands ) do
-				island:bypass( field.course, true, doSmooth )
+				island:bypass(field.course, true)
 			end
 		end
 		field.course:calculateData()
@@ -368,8 +370,8 @@ function addHeadlandToCenterTransition(course, headlandSettings, centerSettings,
 end
 
 -- set up all island related data for the field  
-function setupIslands( field, nPasses, implementWidth, overlapPercent, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle,
-                       doSmooth, islandNodes )
+function setupIslands( field, nPasses, implementWidth, overlapPercent, minDistanceBetweenPoints,
+					   minSmoothAngle, maxSmoothAngle, islandNodes )
 	field.islandPerimeterNodes = Island.getIslandPerimeterNodes( islandNodes )
 	field.origIslandPerimeterNodes = deepCopy( field.islandPerimeterNodes )
 	local islandId = 1
@@ -379,7 +381,7 @@ function setupIslands( field, nPasses, implementWidth, overlapPercent, minDistan
 		-- ignore too really small islands (under 5 sqm), there are too many issues with the 
 		-- headland generation for them
 		if island.nodes.area > 5 then
-			island:generateHeadlands( nPasses, implementWidth, overlapPercent, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, doSmooth )
+			island:generateHeadlands(nPasses, implementWidth, overlapPercent, minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle)
 			if island:tooBigToBypass( implementWidth ) then
 				table.insert( field.bigIslands, island )
 			else

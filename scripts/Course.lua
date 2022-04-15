@@ -473,6 +473,18 @@ function Course:getWaypointWorldDirections(ix)
 	return wp.dx, wp.dz
 end
 
+--- Get the driving direction at the waypoint. y rotation points in the direction
+--- of the next waypoint, but at the last wp before a direction change this is the opposite of the driving
+--- direction, since we want to reach that last waypoint
+function Course:getYRotationCorrectedForDirectionChanges(ix)
+	if ix == #self.waypoints or self:switchingDirectionAt(ix) and ix > 1 then
+		-- last waypoint before changing direction, use the yRot from the previous waypoint
+		return self.waypoints[ix - 1].yRot
+	else
+		return self.waypoints[ix].yRot
+	end
+end
+
 -- This is the radius from the course generator. For now ony island bypass waypoints nodes have a
 -- radius.
 function Course:getRadiusAtIx(ix)
@@ -612,7 +624,8 @@ end
 
 --- How far are we from the waypoint marked as the beginning of the up/down rows?
 ---@param ix number start searching from this index. Will stop searching after 100 m
----@return number of meters or math.huge if no start up/down row waypoint found within 100 meters and the index of the first up/down waypoint
+---@return number, number of meters or math.huge if no start up/down row waypoint found within 100 meters and the
+--- index of the first up/down waypoint
 function Course:getDistanceToFirstUpDownRowWaypoint(ix)
 	local d = 0
 	local isConnectingTrack = false
@@ -892,8 +905,13 @@ function Course:append(other)
 end
 
 --- Return a copy of the course
-function Course:copy(vehicle)
-	return Course(vehicle or self.vehicle, self.waypoints)
+function Course:copy(vehicle, first, last)
+	local newCourse = Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
+	newCourse:setName(self:getName())
+	newCourse.multiTools = self.multiTools
+	newCourse.workWidth = self.workWidth
+	newCourse.numHeadlands = self.numHeadlands
+	return newCourse
 end
 
 --- Append a single waypoint to the course
@@ -932,11 +950,9 @@ end
 ---@param step number step (waypoint distance), must be negative if to < from
 ---@param reverse boolean is this a reverse course?
 function Course.createFromNode(vehicle, referenceNode, xOffset, from, to, step, reverse)
-	CpUtil.info('%.1f %.1f %.1f', from, to, step)
 	local waypoints = {}
 	local nPoints = math.floor(math.abs((from - to) / step)) + 1
 	local dBetweenPoints = (to - from) / nPoints
-	CpUtil.info('%.1f %.1f %.1f', nPoints, dBetweenPoints, step)
 	local dz = from
 	for i = 1, nPoints do
 		local x, _, z = localToWorld(referenceNode, xOffset, 0, dz + i * dBetweenPoints)
@@ -1337,6 +1353,24 @@ function Course:markAsHeadland(waypoints, passNumber)
 	end
 end
 
+--- @param nVehicles number of vehicles working together
+--- @param position number an integer defining the position of this vehicle within the group, negative numbers are to
+--- the left, positives to the right. For example, a -2 means that this is the second vehicle to the left (and thus,
+--- there are at least 4 vehicles in the group), a 0 means the vehicle in the middle, for which obviously no offset
+--- headland is required as it it driving on the original headland.
+--- @param width number working width of one vehicle
+function Course.calculateOffsetForMultitools(nVehicles, position, width)
+	local offset
+	if nVehicles % 2 == 0 then
+		-- even number of vehicles
+		offset = math.abs(position) * width - width / 2
+	else
+		offset = math.abs(position) * width
+	end
+	-- correct for side
+	return position >= 0 and offset or -offset
+end
+
 --- Calculate an offset course from an existing course. This is used when multiple vehicles working on
 --- the same field. In this case we only generate one course with the total implement width of all vehicles and use
 --- the same course for all vehicles, only with different offsets (multitool).
@@ -1361,16 +1395,7 @@ end
 --- @return Course the course with the appropriate offset applied.
 function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWidth)
 	-- find out the absolute offset in meters first
-	local offset
-	if nVehicles % 2 == 0 then
-		-- even number of vehicles
-		offset = math.abs(position) * width - width / 2
-	else
-		offset = math.abs(position) * width
-	end
-	-- correct for side
-	offset = position >= 0 and offset or -offset
-
+	local offset = Course.calculateOffsetForMultitools(nVehicles, position, width)
 	local offsetCourse = Course(self.vehicle, {})
 	offsetCourse.multiTools = nVehicles
 	offsetCourse.name = self.name
@@ -1390,7 +1415,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 				-- generating inward when on the right side and clockwise or when on the left side ccw
 				local inward = (position > 0 and origHeadlands.isClockwise) or (position < 0 and not origHeadlands.isClockwise)
 				local offsetHeadlands = calculateHeadlandTrack( origHeadlands, CourseGenerator.HEADLAND_MODE_NORMAL	, origHeadlands.isClockwise,
-					math.abs(offset), 0.5, math.rad( 25 ), math.rad( 60 ), 0, true, inward,
+					math.abs(offset), 0.5, math.rad( 25 ), math.rad( 60 ), 0, inward,
 					{}, 1 )
 
 				if not offsetHeadlands or #offsetHeadlands == 0 then
@@ -1432,12 +1457,6 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 		originalNonHeadlandLength, offsetNonHeadlandLength,
 		100 * offsetNonHeadlandLength / originalNonHeadlandLength,
 		offsetNonHeadlandLength - originalNonHeadlandLength)
-	-- remember this for the convoy progress calculation
-	offsetCourse.headlandLengthRatio = offsetCourse.headlandLength > 0 and
-		self.headlandLength / offsetCourse.headlandLength or 1
-	offsetCourse.nonHeadlandLengthRatio = originalNonHeadlandLength / offsetNonHeadlandLength
-	offsetCourse.originalCourseLength = offsetCourse.nonHeadlandLengthRatio * offsetNonHeadlandLength
-		+ offsetCourse.headlandLengthRatio * offsetCourse.headlandLength
 	-- apply tool offset to new course
 	offsetCourse:setOffset(self.offsetX, self.offsetZ)
 	return offsetCourse
@@ -1573,21 +1592,7 @@ end
 ---@return number, number, boolean 0-1 progress, waypoint where the progress is calculated, true if last waypoint
 function Course:getProgress(ix)
 	ix = ix or self:getCurrentWaypointIx()
-	if self.originalCourseLength then
-		-- this is an offset course, measure progress in the original course
-		-- we assume that the non-headland part of the course is the same as the original ...
-		local dToHereOnNonHeadland = self.waypoints[ix].dToHere - self.waypoints[ix].dToHereOnHeadland
-		-- however, the headland part is shorter or longer for the inner and outer offsets (when using multiple tools
-		-- on the same field in a group, for example 3 combines, one on the original course, on on the left, one on
-		-- the right. When working clockwise, the headland for one on the right is shorter.
-		-- So, we project the distance elapsed on the actual offset headland back to the distance elapsed on the
-		-- original headland.
-		local dToHere = self.nonHeadlandLengthRatio * dToHereOnNonHeadland +
-			self.headlandLengthRatio * self.waypoints[ix].dToHereOnHeadland
-		return dToHere / self.originalCourseLength, ix, ix == #self.waypoints
-	else
-		return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
-	end
+	return self.waypoints[ix].dToHere / self.length, ix, ix == #self.waypoints
 end
 
 -- This may be useful in the future, the idea is not to store the waypoints of a fieldwork row (as it is just a straight

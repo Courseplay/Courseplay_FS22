@@ -174,3 +174,25 @@ function CustomField.createFromStream(streamId, connection)
     CpUtil.debugFormat(CpDebug.DBG_COURSES,'Custom field with %d points loaded from stream.', #customField.vertices)
     return customField
 end
+
+function CustomField.writeStreamVertices(vertices, streamId, connection)
+    streamWriteInt32(streamId, #vertices)
+    for _, point in pairs(vertices) do 
+        streamWriteFloat32(streamId, point.x)
+        streamWriteFloat32(streamId, point.z)
+    end
+end
+
+function CustomField.readStreamVertices(streamId, connection)
+    local numVertices =  streamReadInt32(streamId)
+    local vertices = {}
+    local p = {}
+    for i=1, numVertices do 
+        p = {
+            x = streamReadFloat32(streamId),
+            z = streamReadFloat32(streamId)
+        }
+        table.insert(vertices, p)
+    end
+    return vertices
+end

@@ -39,7 +39,7 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
     else
         referenceNode = vehicle.rootNode
-        backMarkerOffset = - vehicle.sizeLength / 2 + vehicle.lengthOffset
+        backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the vehicle\'s root node for the rear proximity sensor, %d m from root node', backMarkerOffset)
     end
 
@@ -61,13 +61,6 @@ local function setFrontMarkerNode(vehicle)
     unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
     link(vehicle.rootNode, g_vehicleMarkers[vehicle].frontMarkerNode)
     setTranslation(g_vehicleMarkers[vehicle].frontMarkerNode, 0, 0, frontMarkerOffset)
-    
-    -- Make sure the front marker node does not point up or down, for example in case of
-    -- a pallet fork can be moved up/down, we don't want the node pointing up/down, we want it
-    -- pointing forward, having the same x rotation as the vehicle itself
-    local wrx, _, _ = getWorldRotation(vehicle.rootNode)
-    local _, ry, rz = getWorldRotation(g_vehicleMarkers[vehicle].frontMarkerNode)
-    setWorldRotation(g_vehicleMarkers[vehicle].frontMarkerNode, wrx, ry, rz)
 end
 
 --- Create two nodes, one on the front and one on the back of the vehicle (including implements). The front node
@@ -81,10 +74,16 @@ function Markers.setMarkerNodes(vehicle, measuredBackDistance)
 end
 
 function Markers.getFrontMarkerNode(vehicle)
-    return g_vehicleMarkers[vehicle] and g_vehicleMarkers[vehicle].frontMarkerNode
+    if not g_vehicleMarkers[vehicle] or not g_vehicleMarkers[vehicle].frontMarkerNode then
+        setFrontMarkerNode(vehicle)
+    end
+    return g_vehicleMarkers[vehicle].frontMarkerNode
 end
 
 function Markers.getBackMarkerNode(vehicle)
-    return g_vehicleMarkers[vehicle] and g_vehicleMarkers[vehicle].backMarkerNode
+    if not g_vehicleMarkers[vehicle] or not g_vehicleMarkers[vehicle].backMarkerNode then
+        setBackMarkerNode(vehicle)
+    end
+    return g_vehicleMarkers[vehicle].backMarkerNode
 end
 

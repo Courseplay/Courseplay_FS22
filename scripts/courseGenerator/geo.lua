@@ -115,6 +115,16 @@ function getDeltaAngle( a1, a2 )
 	return a2 - a1
 end
 
+
+function translatePoint(p, dx, dy)
+	p.x = p.x + dx
+	p.y = p.y + dy
+end
+
+function rotatePoint(p, angle)
+	p.x, p.y = p.x * math.cos(angle) - p.y  * math.sin(angle), p.x * math.sin(angle) + p.y  * math.cos(angle)
+end
+
 -- TODO: put this into Polyline
 --- This is kind of a low pass filter. If the 
 -- direction change to the  next point is too big, 
@@ -629,12 +639,14 @@ function Polyline:add(p)
 	table.insert(self, p)
 end
 
-function Polyline:getClosestPointIndex(p)
+---@param delta number threshold for comparison, any difference less than delta is ignored
+function Polyline:getClosestPointIndex(p, delta)
+	delta = delta or 0
 	local minDistance = math.huge
 	local ix
 	for i, vertex in self:iterator() do
 		local d = getDistanceBetweenPoints(vertex, p)
-		if d < minDistance then
+		if d < minDistance and minDistance - d >= delta then
 			minDistance = d
 			ix = i
 		end
@@ -773,9 +785,17 @@ function Polyline:replacePointsWithArc( fromIx, toIx, r )
 end
 
 --- Return the section of self starting at the vertex closest to point a and ending at the vertex closest to b
-function Polyline:getSectionBetweenPoints(a, b)
-	local startIx = self:getClosestPointIndex(a)
-	local endIx = self:getClosestPointIndex(b)
+---@param delta number when searching for the polyline points closest to a and b, use delta as a threshold
+--- this is to solve the issue when working on overlapping headlands (where the connection track overlaps with
+--- the first part of the headland) in a multitool situation, where the headland is calculated as an offset course
+--- and the overlapping part will not have the exact same coordinates (like the vanilla generated course would have).
+--- In this case it is possible that one of startIx or endIx are on the overlap, the other on the non-overlap part,
+--- resulting in a section going through the first point.
+--- Alternatively, we could write getClosestPointIndex() so that it detects overlaps and stops the loop after a full
+--- circle, but it is part of Polyline that should not know about overlaps...
+function Polyline:getSectionBetweenPoints(a, b, delta)
+	local startIx = self:getClosestPointIndex(a, delta)
+	local endIx = self:getClosestPointIndex(b, delta)
 	local section = Polyline:new()
 	local i = 1
 	for _, p in self:iteratorClosestDistance(startIx, endIx) do

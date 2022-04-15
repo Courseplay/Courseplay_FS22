@@ -8,23 +8,23 @@ CpUtil = {}
 ---@param maxDepth number represent the max iterations 
 ---@param xmlFile number xmlFile to save in
 ---@param baseKey string parent key 
-function CpUtil.printTableRecursivelyToXML(value,parentName, depth, maxDepth,xmlFile,baseKey)
+function CpUtil.printTableRecursivelyToXML(value, parentName, depth, maxDepth, xmlFile, baseKey)
 	depth = depth or 0
 	maxDepth = maxDepth or 3
 	if depth > maxDepth then
 		return
 	end
-	local key = string.format('%s.depth:%d',baseKey,depth)
+	local key = string.format('%s.depth:%d', baseKey, depth)
 	local k = 0
-	for i,j in pairs(value) do
-		local key = string.format('%s(%d)',key,k)
+	for i, j in pairs(value) do
+		local key = string.format('%s(%d)', key, k)
 		local valueType = type(j) 
 		setXMLString(xmlFile, key .. '#valueType', tostring(valueType))
 		setXMLString(xmlFile, key .. '#index', tostring(i))
 		setXMLString(xmlFile, key .. '#value', tostring(j))
 		setXMLString(xmlFile, key .. '#parent', tostring(parentName))
 		if valueType == "table" then
-			CpUtil.printTableRecursivelyToXML(j,parentName.."."..tostring(i),depth+1, maxDepth,xmlFile,key)
+			CpUtil.printTableRecursivelyToXML(j, parentName.."."..tostring(i), depth+1, maxDepth, xmlFile, key)
 		end
 		k = k + 1
 	end
@@ -33,35 +33,35 @@ end
 ---Prints a global variable to an xml File.
 ---@param variableName string global variable to print to xmlFile
 ---@param maxDepth number represent the max iterations 
-function CpUtil.printVariableToXML(variableName, maxDepth,printToSeparateXmlFiles)
+function CpUtil.printVariableToXML(variableName, maxDepth, printToSeparateXmlFiles)
 	local baseKey = 'CpDebugPrint'
 	local filePath
 	if printToSeparateXmlFiles and tonumber(printToSeparateXmlFiles)>0 then 
-		local fileName = string.gsub(variableName,":","_")..".xml"
-		filePath = string.format("%s/%s",g_Courseplay.debugPrintDir,fileName)
+		local fileName = string.gsub(variableName, ":", "_")..".xml"
+		filePath = string.format("%s/%s", g_Courseplay.debugPrintDir, fileName)
 	else 
 		filePath = g_Courseplay.defaultDebugPrintPath
 	end
-	CpUtil.info("Trying to print to xml file: %s",filePath)
+	CpUtil.info("Trying to print to xml file: %s", filePath)
 	local xmlFile = createXMLFile("xmlFile", filePath, baseKey);
 	local xmlFileValid = xmlFile and xmlFile ~= 0 or false
 	if not xmlFileValid then
-		CpUtil.error("xmlFile(%s) not valid!",filePath)
+		CpUtil.info("xmlFile(%s) not valid!", filePath)
 		return 
 	end
 	setXMLString(xmlFile, baseKey .. '#maxDepth', tostring(maxDepth))
 	local depth = maxDepth and math.max(1, tonumber(maxDepth)) or 1
 	local value = CpUtil.getVariable(variableName)
 	local valueType = type(value)
-	local key = string.format('%s.depth:%d',baseKey,0)
+	local key = string.format('%s.depth:%d', baseKey, 0)
 	if value then
 		setXMLString(xmlFile, key .. '#valueType', tostring(valueType))
 		setXMLString(xmlFile, key .. '#variableName', tostring(variableName))
 		if valueType == 'table' then		
-			CpUtil.printTableRecursivelyToXML(value,tostring(variableName),1,depth,xmlFile,key)
+			CpUtil.printTableRecursivelyToXML(value, tostring(variableName), 1, depth, xmlFile, key)
 			local mt = getmetatable(value)
 			if mt and type(mt) == 'table' then
-				CpUtil.printTableRecursivelyToXML(mt,tostring(variableName),1,depth,xmlFile,key..'-metaTable')
+				CpUtil.printTableRecursivelyToXML(mt, tostring(variableName), 1, depth, xmlFile, key..'-metaTable')
 			end
 		else 
 			setXMLString(xmlFile, key .. '#valueType', tostring(valueType))
@@ -117,7 +117,11 @@ function CpUtil.debugFormat(channel, ...)
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
-		print(string.format('%s [dbg%d lp%d] %s', timestamp, channel, updateLoopIndex, string.format( ... )))
+		CpUtil.try(
+			function (...)
+				print(string.format('%s [dbg%d lp%d] %s', timestamp, channel, updateLoopIndex, string.format(...)))
+			end,
+			...)
 	end
 end
 
@@ -147,7 +151,11 @@ function CpUtil.debugVehicle(channel, vehicle, ...)
 		local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 		local timestamp = getDate( ":%S")
 		channel = channel or 0
-		print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
+		CpUtil.try(
+			function (...)
+				print(string.format('%s [dbg%d lp%d] %s: %s', timestamp, channel, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
+			end,
+			...)
 	end
 end
 
@@ -158,17 +166,26 @@ end
 function CpUtil.info(...)
 	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 	local timestamp = getDate( ":%S")
-	print(string.format('%s [info lp%d] %s', timestamp, updateLoopIndex, string.format( ... )))
+	CpUtil.try(
+		function (...)
+			print(string.format('%s [info lp%d] %s', timestamp, updateLoopIndex, string.format(...)))
+		end,
+		...)
 end
 
 function CpUtil.infoVehicle(vehicle, ...)
 	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 	local timestamp = getDate( ":%S")
-	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
+	CpUtil.try(
+		function (...)
+			print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, CpUtil.getName(vehicle), string.format( ... )))
+		end,
+		...)
 end
 
 
---- Create a node at x,z, direction according to yRotation.
+
+--- Create a node at x, z, direction according to yRotation.
 --- If rootNode is given, make that the parent node, otherwise the parent is the terrain root node
 ---@param name string
 ---@param x number
@@ -193,12 +210,20 @@ function CpUtil.destroyNode(node)
 	end
 end
 
-function CpUtil.callErrorCorrectedFunction(func,...)
-	local status,error = xpcall(func, function(err) printCallstack(); return err end, ...)
+--- Executes a function and throws a callstack, when an error appeared.
+--- Additionally the first return value is a status, if the function was executed correctly.
+---@param func function function to be executed.
+---@param ... any parameters for the function, for class function the first parameter needs to be self.
+---@return boolean was the code execution successfully and no error appeared.
+---@return any if the code was successfully run, then all return values will be normally returned, else only a error message is returned.
+function CpUtil.try(func, ...)
+	local data = {xpcall(func, function(err) printCallstack(); return err end, ...)}
+	local status = data[1]
 	if not status then 
-		print(tostring(error))
+		CpUtil.info(data[2])
+		return status, tostring(data[2])
 	end
-	return status,error
+	return unpack(data)
 end
 
 --- Gets the saved values from an xml string.
@@ -238,8 +263,8 @@ end
 --- Converts boolean values to "true" or "false" and nil to "-".
 function CpUtil.getXmlVectorString(data)
 	local values = {}
-	for i,k in ipairs(data) do 
-		table.insert(values,k ~= nil and tostring(k) or "-")
+	for i, k in ipairs(data) do 
+		table.insert(values, k ~= nil and tostring(k) or "-")
 	end
 	return table.concat(values, " ")
 end

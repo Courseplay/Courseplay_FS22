@@ -7,6 +7,11 @@ CourseGeneratorInterface = {}
 ---@param isClockwise boolean
 ---@param workWidth number
 ---@param numberOfHeadlands number
+---@param rowsToSkip number when turning to the next row, skip nRowsToSkip and continue working there. This allows
+--- for a bigger turning radius
+---@param leaveSkippedRowsUnworked boolean normally, if rowsToSkip > 0, the vehicle will cover all rows, including the
+--- skipped ones, for example, on the first run work on the odd rows, then on the even ones. When leaveSkippedRowsUnworked
+--- is true, it will not return to work on the skipped rows, will only work on every rowsToSkip + 1 row.
 function CourseGeneratorInterface.generate(fieldPolygon,
 										   startPosition,
 										   isClockwise,
@@ -20,6 +25,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 										   rowDirection,
 										   manualRowAngleDeg,
 										   rowsToSkip,
+										   leaveSkippedRowsUnworked,
 										   rowsPerLand,
 										   islandBypassMode,
 										   fieldMargin,
@@ -57,8 +63,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		isClockwise = isClockwise,
 		mode = numberOfHeadlands == 0 and CourseGenerator.HEADLAND_MODE_NONE or CourseGenerator.HEADLAND_MODE_NORMAL
 	}
-	local roundCorners = headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND
-	local minSmoothAngle, maxSmoothAngle = CourseGeneratorInterface.setSmoothAngles(headlandSettings, headlandCornerType)
 
 	--------------------------------------------------------------------------------------------------------------------
 	-- Center settings
@@ -68,6 +72,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		useLongestEdgeAngle = rowDirection == CourseGenerator.ROW_DIRECTION_LONGEST_EDGE,
 		rowAngle = CourseGenerator.fromCpAngleDeg(manualRowAngleDeg),
 		nRowsToSkip = rowsToSkip,
+		leaveSkippedRowsUnworked = leaveSkippedRowsUnworked,
 		mode = centerMode,
 		nRowsPerLand = rowsPerLand or 6,
 		pipeOnLeftSide = pipeOnLeftSide
@@ -82,7 +87,6 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	-- General settings
 	-----------------------------------------------------------------------------------------------------------------------
 	local minDistanceBetweenPoints = 0.5
-	local doSmooth = true
 
 	local field = {}
 	field.boundary = Polygon:new(CourseGenerator.pointsToXy(fieldPolygon))
@@ -97,8 +101,9 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	end,
 		field, workWidth, headlandSettings,
 		minDistanceBetweenPoints,
-		minSmoothAngle, maxSmoothAngle, doSmooth,
-		roundCorners, turnRadius,
+		headlandCornerType,
+		headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND,
+		turnRadius,
 		islandNodes,
 		islandBypassMode, centerSettings, fieldMargin
 	)
@@ -115,23 +120,44 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 	return status, ok, course
 end
 
-function CourseGeneratorInterface.setSmoothAngles(headlandSettings, headlandCornerType)
-	local minSmoothAngle, maxSmoothAngle, roundCorners
-	if headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH then
-		-- do not generate turns on headland
-		headlandSettings.minHeadlandTurnAngleDeg = 150
-		-- use smoothing instead
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(150)
-	elseif headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND then
-		-- generate turns for whatever is left after rounding the corners, for example
-		-- the transitions between headland and up/down rows.
-		headlandSettings.minHeadlandTurnAngleDeg = 75
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(75)
-	else
-		-- generate turns over 75 degrees
-		headlandSettings.minHeadlandTurnAngleDeg = 60
-		-- smooth only below 75 degrees
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(60)
-	end
-	return minSmoothAngle, maxSmoothAngle
+--- Generates a vine course, where the fieldPolygon are the start/end of the vine node.
+---@param fieldPolygon table
+---@param workWidth number
+---@param turnRadius number
+---@param manualRowAngleDeg number
+---@param rowsToSkip number
+---@param multiTools number
+function CourseGeneratorInterface.generateVineCourse(
+	fieldPolygon,
+	startingPoint,
+	workWidth,
+	turnRadius,
+	manualRowAngleDeg,
+	rowsToSkip,
+	multiTools
+)
+	
+	return CourseGeneratorInterface.generate(
+		fieldPolygon,
+		startingPoint,
+		true,
+		workWidth,
+		turnRadius,
+		0,
+		false,
+		CpCourseGeneratorSettings.HEADLAND_CORNER_TYPE_SHARP,
+		0,
+		CpCourseGeneratorSettings.CENTER_MODE_UP_DOWN,
+		CpCourseGeneratorSettings.ROW_DIRECTION_MANUAL,
+		manualRowAngleDeg,
+		rowsToSkip,
+		true,
+		0,
+		false,
+		0,
+		multiTools,
+		false
+	)
+					
 end
+

@@ -55,8 +55,10 @@ AIDriveStrategyCombineCourse.myStates = {
 AIDriveStrategyCombineCourse.proximitySensorRange = 10
 -- the sensor will proportionally reduce speed when objects are in range down to this limit (won't set a speed lower than this)
 AIDriveStrategyCombineCourse.proximityMinLimitedSpeed = 2
--- if anything closer than this, we stop
-AIDriveStrategyCombineCourse.proximityLimitLow = 1.5
+-- stop limit we use for self unload to approach the trailer
+AIDriveStrategyCombineCourse.proximityLimitStopNormal = 1.5
+-- stop limit we use for self unload to approach the trailer
+AIDriveStrategyCombineCourse.proximityLimitStopSelfUnload = 0.1
 -- if anything closer than this, we reverse
 AIDriveStrategyCombineCourse.proximityLimitReverse = 1
 -- an obstacle is considered ahead of us if the reported angle is less then this
@@ -89,6 +91,23 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.chopperCanDischarge = CpTemporaryObject(false)
 	-- hold the harvester temporarily
 	self.temporaryHold = CpTemporaryObject(false)
+
+	-- if anything closer than this, we stop
+	self.proximityLimitStop = CpTemporaryObject(AIDriveStrategyCombineCourse.proximityLimitStopNormal)
+
+	--- Register info texts 
+	self:registerInfoTextForStates(self:getFillLevelInfoText(), {
+		states = {
+			[self.states.UNLOADING_ON_FIELD] = true
+		},
+		unloadStates = {
+			[self.states.WAITING_FOR_UNLOAD_ON_FIELD] = true,
+			[self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED] = true,
+			[self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK] = true,
+			[self.states.WAITING_FOR_UNLOAD_IN_POCKET] = true
+		}
+	})
+
 	return self
 end
 
@@ -200,6 +219,11 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 			-- player does not want us to move while discharging
 			self:setMaxSpeed(0)
 		end
+	elseif self.state == self.states.WAITING_FOR_LOWER then
+		if self:isFull() then
+			self:debug('Waiting for lower but full...')
+			self:changeToUnloadOnField()
+		end
 	elseif self.state == self.states.UNLOADING_ON_FIELD then
 		-- Unloading
 		self:driveUnloadOnField()
@@ -244,7 +268,6 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			-- reset offset to return to the original up/down row after we unloaded in the pocket
 			self.aiOffsetX = 0
 
-			self:clearInfoText(self:getFillLevelInfoText())
 			-- wait a bit after the unload finished to give a chance to the unloader to move away
 			self.stateBeforeWaitingForUnloaderToLeave = self.unloadState
 			self.unloadState = self.states.WAITING_FOR_UNLOADER_TO_LEAVE
@@ -257,7 +280,6 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		if g_updateLoopIndex % 5 == 0 then --small delay, to make sure no more fillLevel change is happening
 			if not self:isFull() and not self:shouldStopForUnloading() then
 				self:debug('not full anymore, can continue working')
-				-- TODO_22 self:clearInfoText(self:getFillLevelInfoText())
 				self:changeToFieldWork()
 			end
 		end
@@ -281,7 +303,6 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		--- Makes sure the cotton harvester gets release at the end of the course.
 		--- TODO: Unload the unfinished bale from the cotton harvester.
 		if fillLevel < 0.01 or self:isCottonHarvester() then
-			self:clearInfoText(self:getFillLevelInfoText())
 			self:debug('Unloading finished after fieldwork ended, end course')
 			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
 		else
@@ -326,6 +347,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
 			-- disable stock collision detection as we have to drive very close to the tractor/trailer
 			self:disableCollisionDetection()
+			-- we'll be very close to the tractor/trailer, don't stop too soon
+			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
 		else
 			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
@@ -362,6 +385,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 	elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
 		if self:isCloseToCourseStart(25) then
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
+			-- we'll be very close to the tractor/trailer, don't stop too soon
+			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
 		else
 			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
@@ -400,7 +425,6 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 		self.unloadInPocketIx and ix == self.unloadInPocketIx then
 		-- we are making a pocket and reached the waypoint where we are going to stop and wait for unload
 		self:debug('Waiting for unload in the pocket')
-		self:setInfoText(self:getFillLevelInfoText())
 		self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
 	end
 
@@ -437,7 +461,6 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			-- pulled back, now wait for unload
 			self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
 			self:debug('Pulled back, now wait for unload')
-			self:setInfoText(self:getFillLevelInfoText())
 		elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
 			self:debug('Self unloading point reached, fill level %.1f, waiting for unload to start to start.', fillLevel)
 			self.unloadState = self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE
@@ -456,7 +479,6 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self.ppc:setShortLookaheadDistance()
 			self:disableCollisionDetection()
 		else
-			self:setInfoText(self:getFillLevelInfoText())
 			-- let AutoDrive know we are done and can unload
 			self:debug('Fieldwork done, fill level is %.1f, now waiting to be unloaded.', fillLevel)
 			self.state = self.states.UNLOADING_ON_FIELD
@@ -1005,18 +1027,12 @@ function AIDriveStrategyCombineCourse:createPocketCourse()
 	end
 end
 
---- Disable auto stop for choppers as when we stop the engine they'll also raise implements and the way we restart them
---- won't lower the header. So for now, just don't let them to stop the engine.
---- Also make sure when a trailer under the pipe, then the engine needs to start so unloading can begin for combines.
-function AIDriveStrategyCombineCourse:isEngineAutoStopEnabled()
-	if not self:isChopper() then 
-		if not self:isFillableTrailerUnderPipe() then 
-			return AIDriver.isEngineAutoStopEnabled(self)
-		else 
-			--- Make sure once a trailer is under the pipe, the combine gets turned on if needed.
-			self:startEngineIfNeeded()
-		end
+--- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
+function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
+	if self:isCottonHarvester() then 
+		return false
 	end
+    return not self:isFillableTrailerUnderPipe() and self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
 --- Check if the vehicle should stop during a turn (for example while it
@@ -1094,7 +1110,7 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
 		elseif self.course:isOnConnectingTrack(ix) then
 			self:debug('Headland turn but this a connecting track, use normal turn maneuvers.')
 			AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
-		elseif self.course:isOnOutermostHeadland(ix) and self.settings.turnOnField:getValue() then
+		elseif self.course:isOnOutermostHeadland(ix) and self:isTurnOnFieldActive() then
 			self:debug('Creating a pocket in the corner so the combine stays on the field during the turn')
 			self.aiTurn = CombinePocketHeadlandTurn(self.vehicle, self, self.ppc, self.turnContext,
 					self.course, self:getWorkWidth())
@@ -1235,6 +1251,10 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
 			self.waitingForTrailer = false
 		end
 	end
+end
+
+function AIDriveStrategyCombineCourse:isChopperWaitingForUnloader()
+	return self.waitingForTrailer
 end
 
 function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()
@@ -1433,15 +1453,17 @@ function AIDriveStrategyCombineCourse:findBestTrailer()
 end
 
 function AIDriveStrategyCombineCourse:getClosestDistanceToFieldEdge(x, z)
-	local closestDistance= math.huge
-	local fieldPolygon = self.course:getFieldPolygon()
+	local closestDistance = math.huge
+	local fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
+	local i = 1
 	-- TODO: this should either be saved with the field or regenerated when the course is loaded...
-	if fieldPolygon == nil then
-		self:debug('Field polygon not found, regenerating it.')
-		local vx, _, vz = getWorldTranslation(self.vehicle.rootNode)
-		_, fieldPolygon = g_fieldScanner:findContour(vx, vz)
-		self.course:setFieldPolygon(fieldPolygon)
+	while fieldPolygon == nil and i < self.fieldWorkCourse:getNumberOfWaypoints() do
+		self:debug('Field polygon not found, regenerating it (%d).', i)
+		local px, _, pz = self.fieldWorkCourse:getWaypointPosition(i)
+		fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(px, pz)
+		i = i + 1
 	end
+	self.fieldWorkCourse:setFieldPolygon(fieldPolygon)
 	for _, p in ipairs(fieldPolygon) do
 		local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
 		closestDistance = d < closestDistance and d or closestDistance
@@ -1493,23 +1515,25 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 		-- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
 		-- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
 		-- than what is absolutely necessary.
-		local offsetX = -(self.pipeOffsetX + trailerWidth / 2 - 1.1)
-		local alignLength = (trailerLength / 2) + dZ + 3
+		local offsetX = math.abs(self.pipeOffsetX) + trailerWidth / 2 - 1.1
+		offsetX = self.pipeOnLeftSide and -offsetX or offsetX
 		-- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
-		local offsetZ = -self.pipeOffsetZ - alignLength
-		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, offsetZ %.1f, offsetX %.1f',
-				trailerLength, trailerWidth, alignLength, offsetZ, offsetX)
+		local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+		local alignLength = (trailerLength / 2) + dZ + math.max(self.vehicle.size.length / 2, steeringLength)
+		self:debug('Trailer length: %.1f, width: %.1f, align length %.1f, steering length %.1f, offsetX %.1f',
+				trailerLength, trailerWidth, alignLength, steeringLength, offsetX)
 		-- little straight section parallel to the trailer to align better
 		self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
-				offsetX, offsetZ + 1, offsetZ + 1 + alignLength, 1, false)
+				offsetX, -alignLength + 1, -self.pipeOffsetZ, 1, false)
 		self.selfUnloadAlignCourse:print()
 	local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
 		local done, path
 		-- require full accuracy from pathfinder as we must exactly line up with the trailer
 		self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
-				self.vehicle, targetNode, offsetX, offsetZ,
+				self.vehicle, targetNode, offsetX, -alignLength,
 				self:getAllowReversePathfinding(),
-				fieldNum, {}, nil, nil, nil, true)
+				-- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
+				fieldNum, {}, nil, 0.1, nil, true)
 		if done then
 			return self:onPathfindingDoneBeforeSelfUnload(path)
 		else
@@ -1875,9 +1899,9 @@ function AIDriveStrategyCombineCourse:checkProximitySensors()
 		d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
 		range = pack:getRange()
 	end
-	local normalizedD = d / (range - self.proximityLimitLow)
+	local normalizedD = d / (range - self.proximityLimitStop:get())
 	local obstacleAhead = math.abs(deg) < self.proximityAngleAheadDeg
-	if d < self.proximityLimitLow and obstacleAhead then
+	if d < self.proximityLimitStop:get() and obstacleAhead then
 		-- too close, stop
 		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg)
 		self:setMaxSpeed(0)
@@ -1909,12 +1933,11 @@ function AIDriveStrategyCombineCourse:onDraw()
 		local areaToAvoid = self:getAreaToAvoid()
 		if areaToAvoid then
 			local x, y, z = localToWorld(areaToAvoid.node, areaToAvoid.xOffset, 0, areaToAvoid.zOffset)
-			cpDebug:drawLine(x, y + 1.2, z, 10, 10, 10, x, y + 1.2, z + areaToAvoid.length)
-			cpDebug:drawLine(x + areaToAvoid.width, y + 1.2, z, 10, 10, 10, x + areaToAvoid.width, y + 1.2, z + areaToAvoid.length)
+			DebugUtil.drawDebugLine(x, y + 1.2, z, 10, 10, 10, x, y + 1.2, z + areaToAvoid.length)
+			DebugUtil.drawDebugLine(x + areaToAvoid.width, y + 1.2, z, 10, 10, 10, x + areaToAvoid.width, y + 1.2, z + areaToAvoid.length)
 		end
 	end
 
-	UnloadableFieldworkAIDriver.onDraw(self)
 end
 
 -- For combines, we use the collision trigger of the header to cover the whole vehicle width
@@ -1954,7 +1977,16 @@ function AIDriveStrategyCombineCourse:getWorkingToolPositionsSetting()
 	return setting:getHasMoveablePipe() and setting:hasValidToolPositions() and setting
 end
 
--- TODO_22
-function AIDriveStrategyCombineCourse:setInfoText(text)
-	self:debug(text)
+------------------------------------------------------------------------------------------------------------------------
+--- Info texts, makes sure the unloadState also gets checked.
+---------------------------------------------------------------------------------------------------------------------------
+
+function AIDriveStrategyCombineCourse:updateInfoTexts()
+    for infoText, states in pairs(self.registeredInfoTexts) do 
+		if states.states[self.state] and states.unloadStates[self.unloadState] then 
+            self:setInfoText(infoText)
+        else 
+            self:clearInfoText(infoText)
+        end
+    end
 end

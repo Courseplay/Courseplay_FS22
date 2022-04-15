@@ -194,11 +194,11 @@ function Corner:drawDebug()
 			cx, cy, cz = localToWorld(self.cornerNode, 0, 0, 0)
 			nx, ny, nz = localToWorld(self.cornerNode, 0, 0, 3)
 			cpDebug:drawPoint(cx, cy + 6, cz, 0, 0, 70)
-			cpDebug:drawLine(cx, cy + 6, cz, 0, 0, 30, nx, ny + 6, nz)
+			DebugUtil.drawDebugLine(cx, cy + 6, cz, 0, 0, 30, nx, ny + 6, nz)
 			nx, ny, nz = localToWorld(self.cornerStartNode, 0, 0, 3)
-			cpDebug:drawLine(cx, cy + 6, cz, 0, 30, 0, nx, ny + 6, nz)
+			DebugUtil.drawDebugLine(cx, cy + 6, cz, 0, 30, 0, nx, ny + 6, nz)
 			nx, ny, nz = localToWorld(self.cornerEndNode, 0, 0, 3)
-			cpDebug:drawLine(cx, cy + 6, cz, 30, 0, 0, nx, ny + 6, nz)
+			DebugUtil.drawDebugLine(cx, cy + 6, cz, 30, 0, 0, nx, ny + 6, nz)
 		end
 	end
 end

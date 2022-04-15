@@ -14,14 +14,19 @@ function CpAIJobFieldWork.new(isServer, customMt)
 		
 	self.lastPositionX, self.lastPositionZ = math.huge, math.huge
 	self.hasValidPosition = false
-
+	self.foundVines = nil
 	self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
 	self.selectedFieldPlot:setVisible(false)
 	return self
 end
 
 function CpAIJobFieldWork:setupTasks(isServer)
+	-- this will add a standard driveTo task to drive to the target position selected by the user
 	CpAIJobFieldWork:superClass().setupTasks(self, isServer)
+	-- then we add our own driveTo task to drive from the target position to the waypoint where the
+	-- fieldwork starts (first waypoint or the one we worked on last)
+	self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
+	self:addTask(self.driveToFieldWorkStartTask)
 	self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
 	self:addTask(self.fieldWorkTask)
 end
@@ -44,7 +49,12 @@ function CpAIJobFieldWork:setupJobParameters()
 	self:setupCpJobParameters(nil)
 end
 
-function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart)
+---@param vehicle Vehicle
+---@param mission Mission
+---@param farmId number
+---@param isDirectStart boolean disables the drive to by giants
+---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
+function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 	CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 	
 	local x, z = nil
@@ -56,12 +66,15 @@ function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectSt
 			x, z = lastJob.fieldPositionParameter:getPosition()
 		end
 	end
-
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 	end
 
 	self.fieldPositionParameter:setPosition(x, z)
+
+	if isStartPositionInvalid then
+		self:resetStartPositionAngle(vehicle)
+	end
 end
 
 --- Checks the field position setting.
@@ -75,35 +88,38 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 
 	-- everything else is valid, now find the field
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	
-	self.customField = nil
-	local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(tx, tz)
-	CpUtil.infoVehicle(vehicle,'Scanning field %d on %s', fieldNum, g_currentMission.missionInfo.mapTitle)
-	self.hasValidPosition, self.fieldPolygon = g_fieldScanner:findContour(tx, tz)
-	if not self.hasValidPosition then
-		local customField = g_customFieldManager:getCustomField(tx, tz)
-		if not customField then
-			self.selectedFieldPlot:setVisible(false)
-			return false, g_i18n:getText("CP_error_not_on_field")
-		else
-			CpUtil.infoVehicle(vehicle, 'Custom field found: %s, disabling island bypass', customField:getName())
-			self.fieldPolygon = customField:getVertices()
-			self.customField = customField
-			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
-			self.hasValidPosition = true
-		end
-	end
+	self.hasValidPosition = false
+	self.foundVines = nil
+	local isCustomField
+	self.fieldPolygon, isCustomField = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+
 	if self.fieldPolygon then
+		self.hasValidPosition = true
+		self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz, self.customField~=nil)
+		if self.foundVines then 
+			self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
+		end
+		
 		self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
 		self.selectedFieldPlot:setVisible(true)
 		self.selectedFieldPlot:setBrightColor(true)
+		if isCustomField then
+			CpUtil.infoVehicle(vehicle, 'disabling island bypass on custom field')
+			vehicle:getCourseGeneratorSettings().islandBypassMode:setValue(Island.BYPASS_MODE_NONE)
+		end
+	else
+		self.selectedFieldPlot:setVisible(false)
+		return false, g_i18n:getText("CP_error_not_on_field")
 	end
+
 	return true, ''
 end
 
 function CpAIJobFieldWork:setValues()
 	CpAIJobFieldWork:superClass().setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
+	self.driveToFieldWorkStartTask:reset()
+	self.driveToFieldWorkStartTask:setVehicle(vehicle)
 	self.fieldWorkTask:setVehicle(vehicle)
 end
 
@@ -113,12 +129,15 @@ function CpAIJobFieldWork:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
-	self.cpJobParameters:validateSettings()
 	local vehicle = self.vehicleParameter:getVehicle()
 
-	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
-	if not isValid then
-		return isValid, errorMessage
+	--- Only check the valid field position in the in game menu.
+	if not self.isDirectStart then
+		isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)
+		if not isValid then
+			return isValid, errorMessage
+		end
+		self.cpJobParameters:validateSettings()
 	end
 
 	if not vehicle:hasCpCourse() then 
@@ -137,13 +156,19 @@ function CpAIJobFieldWork:getFieldPositionTarget()
 	return self.fieldPositionParameter:getPosition()
 end
 
----@return CustomField or nil Custom field when the user selected a field position on a custom field
-function CpAIJobFieldWork:getCustomField()
-	return self.customField
-end
-
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
 	return self.hasValidPosition
+end
+
+-- To pass an alignment course from the drive to fieldwork start to the fieldwork, so the
+-- fieldwork strategy can continue the alignment course set up by the drive to fieldwork start strategy.
+function CpAIJobFieldWork:setStartFieldWorkCourse(course, ix)
+	self.startFieldWorkCourse = course
+	self.startFieldWorkCourseIx = ix
+end
+
+function CpAIJobFieldWork:getStartFieldWorkCourse()
+	return self.startFieldWorkCourse, self.startFieldWorkCourseIx
 end
 
 --- Is course generation allowed ?
@@ -161,7 +186,24 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	local status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
+	local status, ok, course
+	if self.foundVines then 
+		local vineSettings = vehicle:getCpVineSettings()
+		local vertices, width, startingPoint, rowAngleDeg = g_vineScanner:getCourseGeneratorVertices(
+			vineSettings.vineCenterOffset:getValue(),
+			tx, tz
+		)
+		status, ok, course = CourseGeneratorInterface.generateVineCourse(vertices,
+			startingPoint,
+			width,
+			AIUtil.getTurningRadius(vehicle),
+			rowAngleDeg,
+			vineSettings.vineRowsToSkip:getValue(),
+			vineSettings.vineMultiTools:getValue()
+		)
+	else 
+
+		status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = tx, z = tz},
 			settings.isClockwise:getValue(),
 			settings.workWidth:getValue(),
@@ -174,12 +216,14 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 			settings.rowDirection:getValue(),
 			settings.manualRowAngleDeg:getValue(),
 			settings.rowsToSkip:getValue(),
+			false,
 			settings.rowsPerLand:getValue(),
 			settings.islandBypassMode:getValue(),
 			settings.fieldMargin:getValue(),
 			settings.multiTools:getValue(),
 			self:isPipeOnLeftSide(vehicle)
-	)
+		)
+	end
 	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
 	if not status then
 		g_gui:showInfoDialog({
@@ -220,5 +264,19 @@ function CpAIJobFieldWork:stop(aiMessage)
 	local vehicle = self.vehicleParameter:getVehicle()
 	if vehicle and vehicle.spec_aiFieldWorker.isActive then 
 		vehicle.spec_aiFieldWorker.isActive = false
+	end
+end
+
+function CpAIJobFieldWork:getCourseGeneratorSettings()
+	local vehicle = self:getVehicle()
+	if self.foundVines then 
+		return vehicle, vehicle:getCpVineSettingsTable(), CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
+	end
+	return vehicle, vehicle:getCourseGeneratorSettingsTable(), CpCourseGeneratorSettings.getSettingSetup(vehicle)
+end
+
+function CpAIJobFieldWork:setStartPosition(startPosition)
+	if self.fieldWorkTask then
+		self.fieldWorkTask:setStartPosition(startPosition)
 	end
 end

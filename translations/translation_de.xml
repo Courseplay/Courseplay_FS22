@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
+		<text name="CP_copy"																			text="Kurs kopieren: "/>
 
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22." />
@@ -66,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Hud mit Maus öffnen"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Wenn deaktiviert, kann das Hud nur über die Tastenbelegung geöffnet werden."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Kraftstoff-Sparmodus"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Schaltet des Fahrzeug aus, wenn es warten muss."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop am Endpunkt"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Fahrzeug bleibt nach der Arbeit am Endpunkt stehen."/>
 
@@ -100,6 +104,9 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Geräte Versatz vertikal"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Geräte Versatz vertikal"/>
 	
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Siliermittel Überwachung."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt."/>
+
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Rohr immer ausfahren"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>
 
@@ -107,7 +114,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="Drescher bleibt stehen, solange er entladen wird."/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="Drescher selbst abtanken"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Drescher sucht sich einen Trailer in der nähe des Feldes um dort selber ab zu tanken. Not supported in multitools or convoy mode."/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="Drescher sucht sich einen Trailer in der nähe des Feldes um dort selber ab zu tanken. Keine Unterstützung bei Multitool Kursen."/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="Entladen im ersten Vorgewende"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="Wenn aktiv, wird der Abfaher auf im ersten Vorgewende gerufen."/>
@@ -122,6 +129,9 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Düngefunktion der Saatmaschine"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Düngefunktion der Saatmaschine ein oder ausschalten."/>
 
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Saatoption"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Schaltet die zusätzliche Saatfunktion des Gerätes ein oder aus."/>
+
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symetrischer Bahnenwechsel"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symetrischer Bahnenwechsel"/>
 
@@ -129,15 +139,15 @@
 		<text name="CP_vehicle_setting_convoyDistance_tooltip" 											text="Entfernung zwischen den Fahrzeugen. Wert: 40 - 400"/>
 
 		<text name="CP_vehicle_setting_fieldWorkSpeed_title" 											text="Feldarbeit"/>
-		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" 											text="Maximale Geschwindigkeit bei der Feldarbeit. Wert: 5 - 50"/>
 		<text name="CP_vehicle_setting_fieldSpeed_title" 												text="Feld"/>
-		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld. Value: 5 - 50"/>
+		<text name="CP_vehicle_setting_fieldSpeed_tooltip" 												text="Maximale Geschwindigkeit auf dem Feld. Wert: 5 - 50"/>
 		<text name="CP_vehicle_setting_turnSpeed_title" 												text="Wendemanöver"/>
-		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_turnSpeed_tooltip" 												text="Maximale Geschwindigkeit beim Wendemanöver. Wert: 2 - 25"/>
 		<text name="CP_vehicle_setting_reverseSpeed_title" 												text="Rückwärts"/>
-		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren. Value: 2 - 25"/>
+		<text name="CP_vehicle_setting_reverseSpeed_tooltip" 											text="Maximale Geschwindigkeit beim rückwärts fahren. Wert: 2 - 25"/>
 
-		<text name="CP_vehicle_setting_debugActive_title" 												text="Vehicle debug"/>
+		<text name="CP_vehicle_setting_debugActive_title" 												text="Fahrzeug debug"/>
 		<text name="CP_vehicle_setting_debugActive_tooltip" 											text="Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge"/>
 
 
@@ -151,22 +161,22 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Fortgeschritten"/>
 	
 		<text name="CP_vehicle_courseGeneratorSetting_workWidth_title"									text="Arbeitsbreite" />
-		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite. Value: 0 - 50" />
+		<text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip"								text="Arbeitsbreite. Wert: 0 - 50" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title"							text="Anzahl Vorgewende" />
-		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende. Value: 0 - 40" />
+		<text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip"						text="Anzahl Vorgewende. Wert: 0 - 40" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title"						text="Vorgewende Überlappung" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite. Value: 0 - 25" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip"					text="Überlappung Vorgewende in % der Arbeitsbreite. Wert: 0 - 25" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title"								text="Feldgrenze" />
-		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße um einen Puffer zum Feldrand erhalten, negative Werte vergrößern den Arbeitsbereich um über den Feldrand hinaus zu arbeiten. Value: -2 - 5.8" />
+		<text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip"								text="Positive Werte reduzieren die Feldgröße, negative Werte vergrößern den Arbeitsbereich. Wert: -2 - 5.8" />
 		
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title"									text="Reihen zum überspringen" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip"								text="Reihen zum überspringen wenn auf Bahnen gewechselt wird. Wert: 0 - 6" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title"								text="Reihen pro Beet" />
-		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Value: 0 - 24" />
+		<text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip"								text="Wenn Zentrierung Beet ausgewählt ist, dann befinden sich soviele Reihen im Block. Wert: 0 - 24" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="Vorgewende Richtung" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="Soll das Fahrzeug auf dem Vorgewende im oder gegen den Uhrzeigersinn fahren" />
@@ -193,7 +203,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" 								text="Manuell" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title"							text="Richtungswinkel der Bahnen" />
-		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Winkel der Bahnen (0 ist Norden) wenn Einstellung auf Manuell gesetzt ist. Value: 0 - 175 Steps: 5" />
+		<text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip"						text="Winkel der Bahnen (0 ist Norden) wenn Einstellung auf Manuell gesetzt ist. Wert: 0 - 175 Steps: 5" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" 							text="Inselumfahrung" />
 		<text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" 						text="Wie soll die Insel auf dem Feld umfahren werden." />
@@ -208,6 +218,22 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Fahrzeuge auf dem Kurs" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Wieviele Fahrzeuge sollten zusammen auf dem Kurs fahren." />
+	
+	<!-- Vine Course Generator-->
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Kursgenerator für Reben"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Grundeinstellungen"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position des Kurses"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Soll der Kurs auf oder neben der Rebe gesetzt werden. Das ist abhängig vom verwendeten Gerät. Mehr Informationen im Hilfe Menü."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Links von der Rebe"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="Auf der Rebe"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Rechts von der Rebe"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Geräte auf Kurs"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Wieviele Geräte können auf diesem Kurs arbeiten. Mehr Information im Hilfemenü."/>
+		
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Reben überspringen"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Reben überspringen sollte nur benutzt werden, wenn mit einem Gerät beide Reben (links und rechts) bearbeitet werden."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>
@@ -222,11 +248,17 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Instandhalten"/>
+
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Kraftstoff Minimum"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Fahrer wird entlassen, wenn Kraftstoff unter diesem Wert liegt."/>
+
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Zustand Minimum"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus."/>
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Benutzereinstellungen"/>
 
-		<text name="CP_global_setting_controllerHudSelected_title"										text="Controller freundliches Hud"/>
-		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über den Controller bedienen lässt."/>
+		<text name="CP_global_setting_controllerHudSelected_title"										text="Gamepad freundliches Hud"/>
+		<text name="CP_global_setting_controllerHudSelected_tooltip"									text="Benutze das Hud, welches sich über ein Gamepad bedienen lässt."/>
 
 		<text name="CP_global_setting_showActionEventHelp_title" 										text="Zeige Tastenbelegung"/>
 		<text name="CP_global_setting_showActionEventHelp_tooltip" 										text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
@@ -242,8 +274,17 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Zeige alle Kurse"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Zeigt alle geladenen Kurse auf der Map."/>
 
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Helfer Infofenster"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Schaltet das Infofenster für die CP Helfer an oder aus."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Spieler Maus"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Aktiviert/deaktiviert die Maus Interaktion außerhalb eines Fahrzeugs."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Bevorzuge erstellten Feldrand"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt."/>
+
 	<!-- CourseManager -->
-		<text name="CP_courseManager_title"																text="CourseManager(%s) %s"/>
+		<text name="CP_courseManager_title"																text="Kursmanager(%s) %s"/>
 		<text name="CP_courseManager_no_current_course"													text="kein Kurs"/>
 		<text name="CP_courseManager_temporary_course"													text="temporärer Kurs"/>
 
@@ -276,6 +317,19 @@
 
 		<text name="CP_courseManager_activate"															text="aktivieren"/>
 
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Wird blockiert"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Steckt im Verkehr fest"/>
+
+		<text name="CP_infoTexts_shouldRefuel"															text="Sollte aufgetankt werden"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Muss aufgetankt werden"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Sollte repariert werden"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Muss aufgefüllt werden"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Muss entladen werden"/>
+		<text name="CP_infoTexts_workFinished"															text="Arbeit beendet"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Kein Geld mehr"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Warte auf besseres Wetter"/>
+
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Möchtest du den Randkurs %s löschen?"/>
@@ -285,54 +339,239 @@
 		<text name="CP_customFieldManager_draw_header"													text="Zeichne Linien mit Rechtsklick."/>
 		<text name="CP_customFieldManager_save"                                                         text="Speicher Randkurs"/>
 
-		<!--Hud texts-->
+	<!--Hud texts-->
 		<text name="CP_controllerGui_startRecording"													text="Starte Feldrandaufnahme."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stoppe Feldrandaufnahme."/>
 
 	<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
+		<!--This stays blank and is just to create blank spots for better overview in the menu-->
+		<text name="CP_help_page_blank"																	text=""/>
+		<!--Job Menu-->
+		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menü"/>
+		<text name="CP_help_page_startJobMenuBase_text"													text="
+Durch auswählen eines Fahrzeugs im Helfer Menü, werden die Fahrzeugeinstellungen und der Kursmanager im Menü eingeblendet.
+Der aktuell geladene Kurs wird auf der Karte angezeigt.
+Die globalen Einstellungen sind dauerhaft sichtbar.
+Um einen Feldkurs generieren zu können, muss ein gültiges Fahrzeug für Feldarbeit ausgewählt sein auf der AI Map.
+Um einen Kurs zu generieren, musst du einen Job erstellen und dort CP: Feldarbeit oder CP: wickeln/sammeln auswählen, ähnlich wie beim Giants Helfer.
+"/>
+		<text name="CP_help_page_startJobMenuFunctions_text"											text="
+Um deinen ersten Job zu starten, musst du ein Fahrzeug mit einem für die Arbeit gültiges Tool auswählen.
+Klickt dann auf Job erstellen und wähle CP: Feldarbeit für Feldarbeitsgeräte,
+oder CP: wickeln/sammeln für Ballen Wickler oder Sammler aus.
+"/>
+		<text name="CP_help_page_readyJobMenuBase_text"													text="
+Hast du einen CP Job ausgewählt, musst du mit der Feldposition dein Feld auswählen auf dem du einen Kurs generieren, oder Ballen wickeln oder sammeln willst.
+Die Position bestimmt ungefähr die Startposition deines Kurses.
+Wenn du möchtet, dass der Giants Helfer dein Fahrzeug zum Feld bringt, dann muss zusätzlich noch die Zielposition nahe des Startpunktes gesetzt werden.
+Die Einstellung für die Bahn wird nur benutzt, wenn du mehrere Fahrzeuge auf einem Kurs fahren lassen willst. Mehr dazu unter Multitool.
+"/>
+		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
+Wenn die Feldposition richtig auf einem Feld platziert wurde, wird der Feldrand weis auf der Karte markiert.
+Wenn es sich bei deinem Job um Feldarbeit handelt, bekommst du jetzt Zugriff auf den Kursgenerator.
+"/>
+		<text name="CP_help_page_JobMenuExtras_text"													text="
+Mit erstelltem Kurs ist es jetzt möglich den Fahrer über Job starten sofort los zu schicken.
+Der Giants Helfer wird zu dem Zielpunkt fahren und dann automatisch an CP übergeben.
+Alternativ kannst du den Fahrer auch über das HUD direkt am Kurs starten, oder mit Hilfe von AutoDrive dein Gespann zum Feld fahren lassen und es wird dann an CP übergeben.
+"/>
+		<!--CourseGenerator-->
+		<text name="CP_help_page_courseGenerator_title"													text="Kursgenerator"/>
+		<text name="CP_help_page_courseGeneratorBase_text"												text="
+Das mit Abstand mächtigste und wichtigste Tool für die Feldarbeit ist der Kursgenerator. Dieser erlaubt es dir, die Kurse für deine Feldarbeit zu generieren.
+Wenn du das erste mal mit dem Kursgenerator arbeitest, solltest du erst einmal anfangen, nur mit dem Vorgewende zu experimentieren.
+Danach kann man nach und nach die Einstellungen ändern und immer wieder auf Kurs generieren klicken um anzuschauen welchen Einfluss diese Änderung hatte.
+Durch experimentieren mit den Werten oder auch der Startposition kann man sich langsam mit dem Generator vertraut machen.
+Ändere Wert für Wert und schau dir an, welchen Effekt eine Anpassung eines Wertes auf deinen Kurs hat.
+"/>
+		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
+Grundeinstellungen:
+- Arbeitsbreite: Die Arbeitsbreite der meisten Geräte wird exakt erkannt und es muss nichts weiter eingestellt werden. Wird der Wert angepasst, hat es Einfluss auf den gesammten Kurs.
+- Geräte auf Kurs: Mit dieser Einstellung kannst du einen Kurs mit bis zu 5 Geräten erstellen. Da dies etwas komplizierter wird, gibt es dazu eine extra Hilfesektion.
+- Anzahl Vorgewende: Damit deine Fahrzeuge und Geräte beim Wenden auf dem Feld bleiben, solltest du am besten ein paar Vorgewende einstellen.
+Die Anzahl Vorgewende, multipliziert mit der Arbeitsbreite sollte in etwa die länge des Fahrzeugs plus das angehängte Arbeitsgerät sein.
+
+Einstellungen Feldmitte:
+- Feldmitte: Es gibt verschiedene Arbeitsweisen, um die Feldmitte zu bearbeiten. Der klassische Weg ist hoch/runter.
+Spiralförmig, Kreisförmig und Beete haben jeweils ihre eigenen Vorteile gegenüber den anderen. Bei Beeten zum Beispiel wird der Drescher die meiste Zeit mit dem Rohr außerhalb der Frucht fahren um ein einfacheres entladen zu ermöglichen.
+- Startrichtung: Automatisch findet meistens die beste Startrichtung, manchmal hilft es aber auch, die längste Kante zu nehmen. Sollte das auch nicht passen, kannst du den Wert auf Manuell stellen.
+- Reihen überspringen: Mit Reihen überspringen lässt sich die Arbeit beschleunigen, da die Arbeitsgeräte nicht rückwärts fahren müssen, um in die nächste Reihe zu kommen.
+- Reihen pro Beet: Diese Einstellung wirkt sich nur auf Beete aus. Je mehr Reihen pro Beete eingestellt werden, desto weniger Beete werden generiert.
+- Richtungswinkel der Bahnen: Ist die Startrichtung auf Manuell gesetzt, bestimmt diese Einstellung die Richtung der Bahnen.
+"/>
+		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
+Vorgewende Einstellungen werden erst sichtbar, wenn die Anzahl der Vorgewende mindestens auf 1 gesetzt ist.
+Du erhählst Zugang zu Einstellungen, wie z.B. dem Wendemanöver für die Ecken, die Richtung, wo gestartet werden soll, oder wie viel Überlappung die Bahnen haben sollen.
+Vorgewende sind empfohlen, damit die Arbeitsgeräte beim Wenden von einer Feldbahnen zur nächsten auf dem Feld bleiben.
+"/>
+		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
+- Starten auf: Wie im erweiterten Helfer Menü beschrieben, die Feldposition wird benutzt um den Start oder Endpunkt auf dem Feld zu bestimmen.
+Wenn auf dem Vorgewende gestartet wird, ist es der Startpunkt. Wird auf den Feldreihen gestartet, bestimmt das den Endpunkt.
+- Vorgewende Ecken: Weich rundet die Ecken einfach nur ab, dieses wird für alle Geräte funktionieren, sorgt aber für kleine unbearbeitete Flächen in den Ecken.
+Das kann mit Überlappung reduziert werden, wird aber nie ganz verschwinden. Bei scharf wird ein Wendemanöver in den Ecke generieren, abhängig vom Winkel der Feldecke.
+Rund nutzt den Wenderadius des gewählten Fahrzeugs und generiert so passende runde Ecken für das Fahrzeug.
+- Vorgewende Richtung: Im Uhrzeigersinn oder gegen den Uhrzeigersinn. Das kann für Drescher oder Ernter entscheidend sein, abhängig davon auf welcher Seite sich das Abladerohr oder Förderband befindet.
+- Vorgewende Überlappung: Wieviel % Überlappung sollten die Vorgewenden haben. Die erste Vorgewendebahn hat keine Überlappung mit dem Feldrand, alle weiteren Bahnen überlappen mit der jeweils vorherigen Bahn.
+"/>
+		<text name="CP_help_page_courseGeneratorExtras_text"											text="
+Feldgrenze Erklärung:
+Positive Werte reduzieren den Arbeitsbereich um einen Puffer zum Feldrand generieren. Das ist nützlich, sollten sich einige Objekte zu dicht an der Feldkante befinden.
+Negative Werte vergrößern den Arbeitsbereich über das Feld hinaus, um eine größere Abdeckung zu bekommen, z.B. wenn der Feldrand nicht genau genug erkannt wurde.
+"/>
+		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
-		<text name="CP_help_page_courseManager_text"													text="Es gibt 7 unterschiedliche Aktionen für den Kursmanager:
-- Neuen Ordner erstellen.
-- Kurs aus Fahrzeug löschen.
-- Aktuellen Kurs speichern.
-- Kurse laden.
-- Kurse in einen anderen Ordner verschieben.
-- Ordner oder Kurse löschen.
-- Ordner oder Kurse umbenennen."/>
+		<text name="CP_help_page_courseManagerBase_text"												text="
+Der Kursmanager erlaubt es dir, Kurse zu speichern und später wieder zu laden.
+Das ist z.B. wichtig, wenn mehrere Fahrzeuge auf einem Kurs arbeiten sollten (Multitool).
+Außerdem kannst du so die Kurse von z.B. einem Drescher auch später für eine Ballenpresse oder Sammelwagen zum Stroh aufsammeln verwenden.
+
+Der Speicherort für die Kurse ist: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (oder für Vanilla z.B. MapUS).
+Der Kursmanager funktioniert anders als du es im LS19 gewohnt bist.
+Kurse werden immer in Ordner gespeichert, welche auf der linken Seite angezeigt werden. Das bedeutet du brauchst mindestens einen Ordner um Kurse dort abspeichern zu können.
+Ordner können ganz leicht durch den Button unten am Bildschirmrand erstellt werden.
+"/>
+
+		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
+Wenn du einen Kurs geladen hast, kannst du diesen speichern indem du auf Kurs speichern klickst und anschließend auf den Ordner in dem du diesen speichern willst.
+Ein Fenster erscheint, wo du den Namen des Kurses eintragen kannst.
+Der Name des Kurses kann später auch geändert werden.
+Um einen Kurs aus dem Fahrzeug zu entfernen, reicht ein klick auf 'Kurs aus Fahrzeug entfernen'.
+Um einen Kurs zu laden, musst du erst den Ordner auswählen, wo sich dein Kurs befindet. Klicke dann auf Kurs laden und wähle den Kurs aus, den du laden willst.
+Durch betätigen des Modus wechseln Buttons, wird der Editiermodus des Kursmanagers aktiviert.
+"/>
+		<text name="CP_help_page_courseManagerEdit_text"												text="
+Mit dem Editiermodus erhältst du folgende Optionen:
+- Einen Kurs in einen anderen Ordner verschieben.
+- Kurse oder Ordner löschen.
+- Kurse oder Ordner umbenennen.
+"/>
+		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
+Einen Kurs verschieben:
+  1) Klickt auf den Verschieben Button am unteren Bildschirmrand.
+  2) Klickt auf den Kurs der verschoben werden soll.
+  3) Klickt auf den Ordner wo der Kurs hin verschoben werden soll.
+Um einen Kurs oder Ordner umzubenennen brauchst du bloß auf Umbenennen klicken und dann auf den Ordner oder Kurs klicken. Dann einfach den neuen Namen eintragen.
+Einen Kurs oder Ordner zu löschen geht ähnlich einfach. Klicke auf den Löschen Button und dann auf den Ordner oder Kurs der gelöscht werden soll.
+Ordner müssen leer sein damit sie gelöscht werden können.
+"/>
+		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
-A: Auf den Fahrzeugname klicken um die Fahrzeugeinstellungen auf zu rufen.
-B: Stellt die Startposition beim draufklicken um.
-C: Mit dem klick auf den Kursnamen wird das Helfer Menü mit geöffnetem Kursgenerator aufgerufen.
-D: Starte Courseplay Helfer.
-E: Zeigt: aktuellen Wegpunkte / Alle Wegpunkte. Klick zum öffnen des Kursmanagers.
-F: Klick auf das Icon öffnet die Grundeinstellungen.
+A: Mit einem Klick auf den Fahrzeugnamen, gelangst du direkt in das Menü mit den Fahrzeugeinstellungen.
+B: Schaltet die Startpunkte für den Helfer durch.
+C: Klickst du auf den Kursnamen oder auf 'kein Kurs' wird das Helfer Menü geöffnet.
+     Wenn das Fahrzeug auf dem Feld steht, wird auch direkt der Kursgenerator geöffnet.
+D: Startet oder stoppt den Helfer. Ist der Pfeil grün, ist der Helfer aktiv.
+E: Zeigt den aktuellen Wegpunkt / alle Wegpunkte des Kurses. Klickt man drauf, Öffnet sich der Kursmanager.
+F: Klickst du auf das Icon, öffnen sich die globalen Einstellungen.
 G: Schließt das HUD.
-H: Verkleinert oder vergrößert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug, zeigt die Einstellung.
-I: Wert für den horizontalen Versatz, + links, - rechts.
-J: Wert für den vertikalen Versatz, + hinten, - vorne.
-K, L and M: Klick auf den Text zum zurücksetzen der Werte.
-N: An dieser Stelle wird der Bahnversatz angezeigt, wenn ein Multitoolkurs geladen wurde. Durch klicken auf den Text, wird die Bahn gewechsel.
-O: Startet und stoppt die Aufzeichnung eines Feldrandkurses.
-P: Löscht den Kurs aus dem Fahrzeug"/>
-		<text name="CP_help_page_customField_title"														text="Eigene Felder"/>
+H: Erhöht oder verringert die Arbeitsbreite. Eine rote Linie auf dem Fahrzeug zeigt den aktuellen Wert an.
+I: Wert für den horizontalen Versatz , + links, - rechts.
+J: Kurs kopieren und einfügen in ein anderes Fahrzeug.
+     Wenn der Kurs kopiert wurde, kann dieser in ein anderes Fahrzeug eingefügt werden (einfügen Button leuchtet grün).
+K und L: Durch ein klick auf den Text wird der Standard Wert geladen.
+M: Zeigt den Namen des kopierten Kurses.
+N: An dieser Stelle wird die Bahn eines Multitool Kurses angezeigt, wenn einer geladen wurde.
+     Die Position lässt sich durch einen Klick auf den Text ändern.
+O: Startet und stoppt die Aufnahme eines eigenen Feldrandkurses.
+P: Entfernt den Kurs aus dem Fahrzeug.
+Q: Ändert die Kursanzeige der Wegpunkte zwischen: an, aus und nur Start/Stopp.
+R: Entfernt den kopierten Kurs aus der Zwischenablage.
+"/>
+		<!--CustomField-->
+		<text name="CP_help_page_customField_title"														text="Selbst erstellte Felder"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
-Es gibt 2 Wege, ein eigenes Feld anzulegen:
-Der erste ist, die Aufnahmefunktion im HUD zu benutzen.
-Starte die Aufnahme und fahre um dein Feld.
-Wenn du fertig bist, drücke nochmal auf den Knopf, und du wirst gefragt ob du speichern willst"/>
+Es gibt zwei Möglichkeiten ein eigenes Feld zu erstellen.
+Die erste Option ist mit dem Aufzeichnen Button im HUD.
+Startet die Aufnahme und fahrt euren Feldrand ab, den du aufzeichnen willst.
+Bist du wieder am Startpunkt angekommen, drücke den Aufzeichnen Button noch mal und du wirst gefragt, ob du den Feldrand speichern willst.
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
-Wenn du ins AI Menu schaust, siehst du die Feldgrenze von deinem eigenen Feld.
-Wenn du auf den Namen klickst, hast du die Möglichkeit es umzubenennen oder zu löschen."/>
+Im Helfer Menü kannst du deinen Randkurs mit Namen sehen.
+Wenn du auf den Namen klickst, kannst du den Kurs löschen oder umbenennen.
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
-Die 2. Möglichkeit ist, es direkt auf der AI Menü Karte zu zeichnen:
-Stelle sicher dass kein Fahrzeug ausgewählt ist (Linksklick irgendwo auf der Karte), und du bekommst die Option dein eigenes Feld zu zeichnen.
-Wenn gestartet, wird der Text, Zeichne Linien mit Rechtsklick, angezeigt.
-Klicke mit der rechten Maustaste auf den Punkt wo du beginnen willst.
-Der nächste Rechtsklick zeichnet eine Linie vom ersten Punkt bis zu dem jetzigen, der jetzt als Startpunkt für die nächste Linie gilt."/>
+Die zweite Option ist das Zeichnen im Helfer Menü.
+Dazu darfst du kein Fahrzeug ausgewählt haben (linksklick irgendwo auf der Map) und du bekommt die Option einen Randkurs zu zeichnen.
+Wenn du das Zeichnen gestartet hast, wird der Text Zeichne einen Randkurs angezeigt.
+Mit der rechte Maustaste kannst du jetzt den ersten Punkt setzen.
+Mit einem weiteren rechtsklick wird eine Linie von deinem ersten zum zweiten Punkt gezogen, der 2te Punkt ist nun wieder der Startpunkt für die nächste Linie.
+"/>
+		<!--Multitool and Convoy-->
+		<text name="CP_help_page_multiConvoy_title"														text="Multitool und Fahrzeugverband"/>
+		<text name="CP_help_page_multitoolBasic_text"													text="
+Es ist möglich, bis zu 5 Fahrzeuge zusammen auf einem Feld in einem Fahrzeugverband Arbeiten zu lassen. (Auch Multitool Kurs genannt).
+"/>
+		<text name="CP_help_page_multitoolFunction_text"												text="
+Sobald ein Multitool Kurs geladen ist, muss die Bahn gewählt werden, auf der Gefahren werden soll.
+Die Bahnen haben immer den gleichen Namen:
+links(2), links(1), mitte, rechts(1), rechts(2).
+2 Fahrzeuge haben links(1) und rechts (1), 4 haben (links2) und rechts(2).
+Mit 3 oder 5 Fahrzeugen, ist dann auch die mittlere Bahn verfügbar.
+"/>
+		<text name="CP_help_page_convoyBasic_text"														text="
+Der Fahrzeugverband funktioniert nur wenn die Fahrzeuge einen Multitool Kurs mit dem gleichen Namen geladen haben.
+Die Fahrzeuge halten automatisch den Abstand zum vorderen Fahrzeug ein.
+Außerdem sorgt der Fahrzeugverband dafür, dass z.B. eine Ballenpresse die hinter einem Drescher fährt, auf Abstand bleibt.
+"/>
+		<text name="CP_help_page_convoyFunction_text"													text="
+Die Fahrzeugverband Einstellung bei den Fahrzeugeinstellungen bestimmt die Entfernung zum vorderen Fahrzeug.
+Die Einstellung von allen Fahrzeugen mit dem gleichen Kursnamen wird auf den höchsten Wert eines einzelnen Fahrzeuges gesetzt.
+"/>
+		<!--Wrap and Collect-->
+		<text name="CP_help_page_wrapCollect_title"														text="Ballen wickeln und sammeln"/>
+		<text name="CP_help_page_wrapCollectBasic_text"													text="
+Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten gemacht werden.
+Die erste Möglichkeit wäre, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer fährt den Kurs ab.
+Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davon rollen.
+Hier sorgt der Job CP: Wickel/sammel Ballen für Abhilfe, dieser braucht keinen Kurs.
+Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit wickel/sammeln Ballen, oder benutze das Helfer Menü um dein Fahrzeug zu einem Feld zu schicken wo Ballen gewickelt oder gesammelt werden sollen.
+"/>
+		<text name="CP_help_page_wrapBasic_text"														text="
+Ballen wickeln ist sehr einfach. Lade den Kurs von deiner Ballenpresse und starte wie jeden andere Feldarbeit Job.
+Oder nutze die Alternative und benutze den Job CP: Wickel/sammel Ballen vom HUD oder Helfermenü aus.
+"/>
+		<text name="CP_help_page_wrapFunction_text"														text="
+Wird ein Kurs benutzt, fährt der Helfer mit einem vor eingestellten Offset, damit der Wickler die Mitte des Kurses abfährt.
+Ohne einen Kurs, scannt Courseplay das Feld nach ungewickelten Ballen und benutzt die Wegfindung um zum nahesten Ballen zu fahren und diesen zu wickeln.
+Sollte mal ein Ballen vor dem Fahrzeug liegen, oder das Fahrzeug zu dicht am Feldrand stehen, fährt dieser automatisch ein paar Meter zurück um eine Kollision zu vermeiden.
+"/>
+		<text name="CP_help_page_collectBasic_text"														text="
+Das Sammeln von Ballen funktioniert im Grunde genauso wie das Wickeln, mit und ohne Kurs.
+Wenn der Sammler voll ist, wird er stehen bleiben und eine Meldung im Infofenster ausgeben, dass er entladen werden muss.
+Hast du AutoDrive installiert, lässt sich das entladen auch komplett Automatisieren. Siehe dir dazu AutoDrive Tutorials an.
+"/>
+		<!--Vine work-->
+		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>
+		<text name="CP_help_page_vineWorkConditions_text"												text="
+Das Arbeiten auf Reben ist etwas komplexer als auf einem normalen Feld.
+Damit es möglichst Problemlos klappt, sollten die Reihen alle im normalen Raster gestellt werden.
+Die Enden jeder Rebe, sollten ungefähr die gleiche Länge haben.
+Wenn die Reben auf einem existierenden Feld sind, kann man den Generator ganz normal öffnen.
+Befinden sich die Reben nicht auf einem Feld, muss über das Helfer Menü der Feldpunkt auf die Reben gesetzt werden.
+"/>
+		<text name="CP_help_page_vineWorkGenerator_text"												text="
+Der Generator für Reben hat weniger Einstellungen.
+Abhängig vom Gerät, muss ausgewählt werden ob man auf oder neben den Reben arbeiten will.
+Z.B. der normale Ernter muss auf den Reben Fahren und Arbeiten.
+Der Blattschneider muss links von den Reben fahren, aber auf den Reben arbeiten. Somit muss Arbeiten auf den Reben gewählt werden,
+aber mit einem Offset gefahren werden.
+Die Spritze muss neben den Reben Arbeiten und eine Reihe überspringen, da diese die linke und rechte Rebenreihe bearbeitet.
+"/>
+		<text name="CP_help_page_vineWorkHarvester_text"												text="
+Der Rebenkurs sollte auf den Reben generiert werden, da er auf den Reben arbeitet.
+"/>
+		<text name="CP_help_page_vineWorkPruner_text"													text="
+Der Blattschneider arbeitet auf den Reben, also muss der Kurs auf den Reben generiert werden.
+Das Tool hat ein automatischen Offset, damit der Traktor zwischen den Reben fährt.
+"/>
+		<text name="CP_help_page_vineWorkSprayer_text"													text="
+Die Spritze arbeitet neben den Reben und muss entweder links oder rechts von den Reben fahren.
+Da die Spritze die Reben links und rechts bearbeitet, kann man eine Reihe überspringen.
+"/>
 
-		<!-- Input bindings -->
+	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Nächster Debug channel auswählen."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vorheriger Debug channel auswählen."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Aktuellen Debug channel ändern."/>

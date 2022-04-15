@@ -69,9 +69,12 @@ end
 function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setFieldWorkCourse', CpCourseManager.setFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getFieldWorkCourse', CpCourseManager.getFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'setOffsetFieldWorkCourse', CpCourseManager.setOffsetFieldWorkCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'getOffsetFieldWorkCourse', CpCourseManager.getOffsetFieldWorkCourse)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
+    SpecializationUtil.registerFunction(vehicleType, 'cpCopyCourse', CpCourseManager.cpCopyCourse)
     
     SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
@@ -186,7 +189,15 @@ end
 ---@param course  Course
 function CpCourseManager:setFieldWorkCourse(course)
     CpCourseManager.resetCourses(self)
-    CpCourseManager.addCourse(self,course)   
+    CpCourseManager.addCourse(self, course)
+    course:setVehicle(self)
+end
+
+--- Copy the fieldwork course from another vehicle.
+function CpCourseManager:cpCopyCourse(course)
+    if course then
+        self:setFieldWorkCourse(course:copy())
+    end    
 end
 
 function CpCourseManager:setCoursesFromNetworkEvent(courses)
@@ -195,14 +206,17 @@ function CpCourseManager:setCoursesFromNetworkEvent(courses)
 end
 
 function CpCourseManager:addCourse(course,noEventSend)
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
+    -- reset temporary offset field course, this will be regenerated based on the current settings when the job starts
+    spec.offsetFieldWorkCourse = nil
     course:setVehicle(self)
     table.insert(spec.courses,course)
     SpecializationUtil.raiseEvent(self,"onCpCourseChange",course,noEventSend)
 end
 
 function CpCourseManager:resetCourses()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
+    spec.offsetFieldWorkCourse = nil
     spec.courses = {}
     SpecializationUtil.raiseEvent(self,"onCpCourseChange")
 end
@@ -217,6 +231,27 @@ function CpCourseManager:getFieldWorkCourse()
     local spec = self.spec_cpCourseManager 
     --- TODO: For now only returns the first course.
     return spec.courses[1]
+end
+
+--- Set the offset course which is generated for a multitool configuration (offset to the left or right when multiple
+--- vehicles working on the same field)
+--- We store this here as we have to generate the offset course at the start to see how far we need to drive to start working
+--- and if we need a drive to task to that point. Now, since we already generated the offset course, we don't want to
+--- do that again when the fieldwork task starts.
+--- We also store the position, so the caller can decide if it needs to be regenerated as the position changed
+---@param course Course
+---@param position number as in Course:calculateOffsetCourse()
+function CpCourseManager:setOffsetFieldWorkCourse(course, position)
+    local spec = self.spec_cpCourseManager
+    spec.offsetFieldWorkCourse = course
+    spec.offsetFieldWorkPosition = position
+end
+
+--- If the offset course has been calculated for a multitool config, return here
+---@return Course, number course, position, as in Course:calculateOffsetCourse()
+function CpCourseManager:getOffsetFieldWorkCourse()
+    local spec = self.spec_cpCourseManager
+    return spec.offsetFieldWorkCourse, spec.offsetFieldWorkPosition
 end
 
 function CpCourseManager:getCourses()

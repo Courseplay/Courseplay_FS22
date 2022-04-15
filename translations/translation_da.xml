@@ -276,7 +276,7 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Vis alle ruter"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Vis kun indlæste ruter."/>
 
-		<text name="CP_global_setting_infoTextHudActive_title"											text="Vis info tekst vindue"/>
+    <text name="CP_global_setting_infoTextHudActive_title"											text="Vis info tekst vindue"/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Viser info tekst vindue."/>
 
 		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Mus begivenhed"/>
@@ -349,6 +349,7 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--Job Menu-->
+    
 		<text name="CP_help_page_extendedJobMenu_title"													text="Udvidet AI-menu"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
 Først skal du vælge et køretøj i AI-menuen for at generere en rute eller få adgang til køretøjsindstillingerne og rute generatoren.
@@ -397,23 +398,9 @@ Spiral, cirkelformede og bede har deres egne specifikke fordele i forhold til de
 - Rækker, der skal springes over: Dette er en meget nyttig mulighed for at fremskynde dit arbejde, da køretøjet behøver ikke at bakke frem og tilbage komme til den næste række.
 - Rækker pr. Bede: Dette har kun indflydelse, når markcentret er indstillet til Bede og vil fortælle generatoren, hvor mange rækker hvert bede skal have. Jo flere rækker, jo færre bede vil blive genereret.
 - Op/ned rækkevinkel: Når op/ned rækkeretningen er indstillet til manuel, vil denne indstilling fortælle genereringsretningen.
-
-
-Basics:
-The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
-The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
-Center options:
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
 "/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
+
 Foragerindstillinger vises kun, når du har indstillet mindst 1 ved Antal forager.
 Du får muligheder for, hvor du skal starte, hjørneindstillinger, retning og overlapning.
 Forager anbefales for at forhindre køretøjet i at forlade marken, når de drejer.
@@ -520,12 +507,6 @@ Disse baner hedder altid det samme:
 venstre(2), venstre(1), center, højre(1), højre(2).
 2 køretøjer vil have venstre(1) og højre(1), 4 vil have venstre(2) og højre(2).
 Med 3 eller 5 køretøjer får du også centermuligheden.
-
-Once a multi tool course is loaded you will need to select the lane for the driver.
-Those lanes are always named the same:
-left(2), left(1), center, right(1), right(2).
-2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
-With 3 or 5 vehicles you will also gain the center option.
 "/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 Konvojen fungerer kun, hvis køretøjerne har indlæst ens rute.

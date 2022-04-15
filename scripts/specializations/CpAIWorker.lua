@@ -17,7 +17,7 @@ function CpAIWorker.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
 
-function CpAIWorker.register(typeManager,typeName,specializations)
+function CpAIWorker.register(typeManager, typeName, specializations)
 	if CpAIWorker.prerequisitesPresent(specializations) then
 		typeManager:addSpecialization(typeName, CpAIWorker.SPEC_NAME)
 	end
@@ -27,11 +27,14 @@ function CpAIWorker.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpFinished")
 	SpecializationUtil.registerEvent(vehicleType, "onCpEmpty")
     SpecializationUtil.registerEvent(vehicleType, "onCpFull")
+    SpecializationUtil.registerEvent(vehicleType, "onCpFuelEmpty")
+    SpecializationUtil.registerEvent(vehicleType, "onCpBroken")
 end
 
 function CpAIWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
 end
 
@@ -41,11 +44,13 @@ function CpAIWorker.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartText", CpAIWorker.getCpStartText)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.startStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
+    SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopCurrentAIJob', CpAIWorker.stopCurrentAIJob)
-
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanMotorRun', CpAIWorker.getCanMotorRun)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -54,7 +59,8 @@ function CpAIWorker:onLoad(savegame)
 	--- Register the spec: spec_CpAIWorker
     self.spec_cpAIWorker = self["spec_" .. CpAIWorker.SPEC_NAME]
     local spec = self.spec_cpAIWorker
-   
+    --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
+    spec.motorDisabled = false
 end
 
 --- Registers the start stop action event.
@@ -84,8 +90,8 @@ function CpAIWorker:updateActionEvents()
             if self:getIsAIActive() then 
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
-                local text = string.format("CP: %s\n(%s)",giantsSpec.texts.hireEmployee,self:getCpStartText())
-			    g_inputBinding:setActionEventText(actionEvent.actionEventId,text)
+                local text = string.format("CP: %s\n(%s)", giantsSpec.texts.hireEmployee, self:getCpStartText())
+			    g_inputBinding:setActionEventText(actionEvent.actionEventId, text)
             end
 
 			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
@@ -100,13 +106,24 @@ function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSel
 end
 
 
---- Post cp helper release handling.
---- Is used for the communication to external mods with events.
-function CpAIWorker:stopCurrentAIJob(superFunc,message,...)
+--- Used to enable/disable release of the helper 
+--- and handles post release functionality with for example auto drive.
+--- TODO: This function is a mess and desperately needs a better solution!
+function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
+    if message then 
+        CpUtil.infoVehicle(self, "stop message: %s", message:getMessage())
+    else
+        CpUtil.infoVehicle(self, "no stop message was given.")
+        return superFunc(self, message, ...)
+    end
+    local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(message)
+
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s", 
+                                                    tostring(hasFinished), tostring(event))
+
     local wasCpActive = self:getIsCpActive()
-    local driveStrategy
     if wasCpActive then
-        driveStrategy = self:getCpDriveStrategy()
+        local driveStrategy = self:getCpDriveStrategy()
         if driveStrategy then 
             -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
             local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
@@ -119,44 +136,36 @@ function CpAIWorker:stopCurrentAIJob(superFunc,message,...)
                 CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
                 return
             end
-            --- This needs to be back propagated to the drive strategy, as the stop call might come for giants code or the user.
             driveStrategy:onFinished()
         end
     end
-    if message then 
-        CpUtil.info(message:getMessage(), CpUtil.getName(self))
-    else
-        CpUtil.info("%s: no message was given.", CpUtil.getName(self))
+    self:resetCpAllActiveInfoTexts()
+    --- Only add the info text, if it's available and nobody is in the vehicle.
+    if not self:getIsControlled() and releaseMessage then 
+        self:setCpInfoTextActive(releaseMessage)
     end
-    superFunc(self,message,...)
+    --- Reset the flag.
+    self.spec_cpAIWorker.motorDisabled = false
+    superFunc(self, message,...)
     if wasCpActive then 
-        if message then
-            local foldAtEndAllowed
-            if message:isa(AIMessageErrorOutOfFill) then 
-                SpecializationUtil.raiseEvent(self,"onCpEmpty")
-                foldAtEndAllowed = true
-            elseif message:isa(AIMessageErrorIsFull) then 
-                SpecializationUtil.raiseEvent(self,"onCpFull")
-                foldAtEndAllowed = true
-            elseif message:isa(AIMessageSuccessFinishedJob) then 
-                SpecializationUtil.raiseEvent(self,"onCpFinished")
-                foldAtEndAllowed = true
-            end
-            if foldAtEndAllowed and self:getCpSettings().foldImplementAtEnd:getValue() then
-                --- Folds implements at the end if the setting is active.
-                self:prepareForAIDriving()
-            end
+        if event then 
+            SpecializationUtil.raiseEvent(self, event)
         end
+        if hasFinished and self:getCpSettings().foldImplementAtEnd:getValue() then
+            --- Folds implements at the end if the setting is active.
+            self:prepareForAIDriving()
+        end
+    
     end
 end
 
 --- Directly starts a cp job or stops a currently active job.
 function CpAIWorker:startStopDriver()
-    CpUtil.infoVehicle(self,"Start/stop cp helper")
+    CpUtil.infoVehicle(self, "Start/stop cp helper")
     local spec = self.spec_cpAIWorker
     if self:getIsAIActive() then
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
-        CpUtil.infoVehicle(self,"Stopped current helper.")
+        CpUtil.infoVehicle(self, "Stopped current helper.")
 	else
         self:updateAIFieldWorkerImplementData()
 		local job = self:getCpStartableJob()
@@ -166,16 +175,18 @@ function CpAIWorker:startStopDriver()
 
             job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             job:setValues()
-         --   local success = spec.cpJob:validate(false)
-         --   if success then
-            if true then
+            local success, message = job:validate(false)
+            if success then
                 g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(job, self:getOwnerFarmId()))
-                CpUtil.infoVehicle(self,"Cp helper started.")
+                CpUtil.infoVehicle(self, "Cp helper started.")
             else
-                CpUtil.infoVehicle(self,"Job parameters not valid.")
+                CpUtil.infoVehicle(self, "Could not start CP helper: %s", tostring(message))
+                if message then
+                    g_currentMission:showBlinkingWarning("CP: "..message, 5000)
+                end
             end
         else
-            CpUtil.infoVehicle(self,"Could not start CP helper, it needs a course when not collecting bales.")
+            CpUtil.infoVehicle(self, "Could not start CP helper, it needs a course when not collecting bales.")
         end
 	end
 end
@@ -202,3 +213,55 @@ function CpAIWorker:getCpStartText()
 	return ""
 end
 
+--- Makes sure giants isn't turning the motor back on, when we have turned it off.
+function CpAIWorker:getCanMotorRun(superFunc, ...)
+    if self:getIsCpActive() and self.spec_cpAIWorker.motorDisabled then 
+        return false
+    end
+    return superFunc(self, ...)
+end
+
+function CpAIWorker:startCpDriveTo(task, jobParameters)
+    self.driveToTask = task
+    ---@type AIDriveStrategyDriveToFieldWorkStart
+    self.driveToFieldWorkStartStrategy = AIDriveStrategyDriveToFieldWorkStart.new()
+    -- this also starts the strategy
+    self.driveToFieldWorkStartStrategy:setAIVehicle(self, jobParameters)
+end
+
+function CpAIWorker:stopCpDriveTo()
+    self.driveToFieldWorkStartStrategy:delete()
+    self.driveToFieldWorkStartStrategy = nil
+end
+
+function CpAIWorker:onUpdate(dt)
+    if self.driveToFieldWorkStartStrategy and self.isServer then
+        if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
+            self.driveToTask:onTargetReached(self.driveToFieldWorkStartStrategy:getStartPosition())
+        else
+            self.driveToFieldWorkStartStrategy:update(dt)
+            if g_updateLoopIndex % 4 == 0 then
+                local tX, tZ, moveForwards, maxSpeed = self.driveToFieldWorkStartStrategy:getDriveData(dt)
+
+                -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
+                local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
+                local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
+
+                if not moveForwards and self.spec_articulatedAxis ~= nil and
+                        self.spec_articulatedAxis.aiRevereserNode ~= nil then
+                    pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
+                end
+
+                if not moveForwards and self:getAIReverserNode() ~= nil then
+                    pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
+                end
+
+                local acceleration = 1
+                local isAllowedToDrive = maxSpeed ~= 0
+
+                AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
+            end
+        end
+    end
+end

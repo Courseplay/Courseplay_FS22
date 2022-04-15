@@ -127,12 +127,19 @@ function WorkWidthUtil.getAIMarkers(object, logPrefix, suppressLog)
         if not suppressLog then
             WorkWidthUtil.debug(object, logPrefix, 'has no AI markers, try work areas')
         end
-        aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object)
+        aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object, suppressLog)
         if not aiLeftMarker or not aiRightMarker or not aiLeftMarker then
-            if not suppressLog then
-                WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up')
+            if g_vehicleConfigurations:get(object, 'useVehicleSizeForMarkers') then
+                if not suppressLog then
+                    WorkWidthUtil.debug(object, logPrefix, 'has no work areas, configured to use front/back markers')
+                end
+                return Markers.getFrontMarkerNode(object), Markers.getFrontMarkerNode(object), Markers.getBackMarkerNode(object)
+            else
+                if not suppressLog then
+                    WorkWidthUtil.debug(object, logPrefix, 'has no work areas, giving up')
+                end
+                return nil, nil, nil
             end
-            return nil, nil, nil
         else
             if not suppressLog then WorkWidthUtil.debug(object, logPrefix, 'AI markers from work area set') end
             return aiLeftMarker, aiRightMarker, aiBackMarker
@@ -145,15 +152,17 @@ end
 
 --- Calculate the front and back marker nodes of a work area
 ---@param object table
-function WorkWidthUtil.getAIMarkersFromWorkAreas(object)
+function WorkWidthUtil.getAIMarkersFromWorkAreas(object, suppressLog)
     -- work areas are defined by three nodes: start, width and height. These nodes
     -- define a rectangular work area which you can make visible with the
     -- gsVehicleDebugAttributes console command and then pressing F5
     for _, area in WorkWidthUtil.workAreaIterator(object) do
         if WorkWidthUtil.isValidWorkArea(area) then
             -- for now, just use the first valid work area we find
-            WorkWidthUtil.debug(object,nil,'Using %s work area markers as AIMarkers',
-                    g_workAreaTypeManager.workAreaTypes[area.type].name)
+            if not suppressLog then
+                WorkWidthUtil.debug(object,nil,'Using %s work area markers as AIMarkers',
+                        g_workAreaTypeManager.workAreaTypes[area.type].name)
+            end
             return area.start, area.width, area.height
         end
     end

@@ -160,7 +160,7 @@ end
 --- Button callback of the ai menu button.
 function InGameMenuAIFrame:onClickGenerateFieldWorkCourse()
 	if CpInGameMenuAIFrameExtended.getCanGenerateCourse(self) then 
-		CpUtil.callErrorCorrectedFunction(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
+		CpUtil.try(self.currentJob.onClickGenerateFieldWorkCourse, self.currentJob)
 	end
 end
 
@@ -197,6 +197,7 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 			self.currentJob:getCpJobParameters():validateSettings()
 			CpSettingsUtil.updateAiParameters(self.currentJobElements)
 			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
+			self:updateParameterValueTexts()
 		else
 			self.mode = CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR
 			self.courseGeneratorLayout:setVisible(true)
@@ -209,22 +210,21 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 end
 
 function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
-	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
-	local title = string.format(self.courseGeneratorLayoutPageTitle,vehicle:getName())
-	self.courseGeneratorHeader:setText(title)
-	if vehicle ~=nil then 
-		if vehicle.getCourseGeneratorSettings then 
-			vehicle:validateCourseGeneratorSettings()
-			CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )
-			self.settings = vehicle:getCourseGeneratorSettingsTable()
-			local settingsBySubTitle = CpCourseGeneratorSettings.getSettingSetup()
-			CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements,settingsBySubTitle,vehicle)
-		end
+	if self.currentJob and self.currentJob.getCourseGeneratorSettings then 
+		local vehicle, settings, settingsBySubTitle, title = self.currentJob:getCourseGeneratorSettings()
+		self.settings = settings
+		self.courseGeneratorHeader:setText(title)
+		vehicle:validateCourseGeneratorSettings()
+		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )
+		self.courseGeneratorLayoutElements.elements = {}
+		CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
+	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
+		CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements,settingsBySubTitle,vehicle)
 	end
 end
 
 function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
-	if self.courseGeneratorLayout:getIsVisible() then 
+	if self.courseGeneratorLayout and self.courseGeneratorLayout:getIsVisible() then 
 		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
 		FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
 		self.courseGeneratorLayoutElements:invalidateLayout()
