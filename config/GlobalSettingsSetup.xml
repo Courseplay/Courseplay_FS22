@@ -34,15 +34,17 @@
 		<Setting classType="AIParameterSettingList" name="brokenThreshold" min="0" max="100" incremental="5" default="95" unit="4"/>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="userSettings">
-		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" defaultBool="false" onChangeCallback="onHudSelectionChanged" isUserSetting="true"/>
-		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true"/>
+		<!-- When enabled, then a few settings are invisible and return their default values. -->
+		<Setting classType="AIParameterBooleanSetting" name="expertModeActive" isUserSetting="true" defaultBool="false" onChangeCallback="onExpertModeChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" isUserSetting="true" defaultBool="false" onChangeCallback="onHudSelectionChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true" defaultBool="false" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="showActionEventHelp" isUserSetting="true" defaultBool="true" onChangeCallback="onActionEventTextVisibilityChanged"/>
 		<Setting classType="AIParameterBooleanSetting" name="infoTextHudActive" isUserSetting="true" defaultBool="true"/>
-		<Setting classType="AIParameterBooleanSetting" name="infoTextHudPlayerMouseActive" isUserSetting="true" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="infoTextHudPlayerMouseActive" isUserSetting="true" defaultBool="true" isExpertModeOnly="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="preferCustomFields" isUserSetting="true"/>
 	</SettingSubTitle>
-	<SettingSubTitle prefix="true" title="pathfinder">
-		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoal" min="5" max="90" incremental="5" default="45"/>
-		<Setting classType="AIParameterSettingList" name="deltaAngleRelaxFactor" min="10" max="100" incremental="10" default="10"/>
+	<SettingSubTitle prefix="true" title="pathfinder" isExpertModeOnly="true">
+		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoal" min="5" max="90" incremental="5" default="45" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterSettingList" name="deltaAngleRelaxFactor" min="10" max="100" incremental="10" default="10" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 </Settings>

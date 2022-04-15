@@ -239,6 +239,9 @@
 		<text name="CP_global_setting_title"															text="Globale Einstellungen"/>
 		<text name="CP_global_setting_subTitle_general"													text="Grundeinstellungen"/>
 
+		<text name="CP_global_setting_expertModeActive_title" 											text="Experten Modus"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Schaltet den Experten Modus an/aus um weitere Einstellungen frei zu schalten."/>
+
 		<text name="CP_global_setting_wageModifier_title" 												text="CP Fahrerlohn"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Fahrerlohn für CP Arbeiter, prozentual von dem standart Lohn."/>
 

@@ -241,6 +241,9 @@
 		<text name="CP_global_setting_title"															text="Глобальные настройки CoursePlay"/>
 		<text name="CP_global_setting_subTitle_general"													text="Основные настройки"/>
 
+		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+
 		<text name="CP_global_setting_wageModifier_title" 												text="Заработная плата работника"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Заработная плата работника CoursePlay в процентах от заработной платы обычного рабочего."/>
 

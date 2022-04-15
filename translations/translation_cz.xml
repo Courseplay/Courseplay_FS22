@@ -238,6 +238,9 @@
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>
 		<text name="CP_global_setting_subTitle_general"													text="Základní nastavení."/>
 
+		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+
 		<text name="CP_global_setting_wageModifier_title" 												text="Mzdy pracovníků"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Mzdy CP pracovníků jako procento mzdy normálního pracovníka."/>
 
