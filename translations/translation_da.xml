@@ -7,6 +7,7 @@
 		<text name="CP_automatic" 																		text="Automatisk" />
 		<text name="CP_unit_meter" 																		text="M"/>
 		<text name="CP_unit_foot" 																		text="Fod"/>
+		<text name="CP_copy"																			text="Kopier rute: "/>
 
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Få hjælp, ved fejl eller spørgsmål om patch noter, besøg da: https://github.com/Courseplay/Courseplay_FS22."/>
@@ -26,8 +27,8 @@
 		<text name="CP_jobParameters_startAt_bales"														text="Saml/Wrap Baller"/>
 
 		<text name="CP_jobParameters_subTitle_laneOffset"												text="Bane offset:"/>
-		<text name="CP_jobParameters_laneOffset_title"													text="Bane offset ved konvøj:"/>
-		<text name="CP_jobParameters_laneOffset_tooltip"												text="Rutevalg, når et konvøjforløb blev oprettet."/>
+		<text name="CP_jobParameters_laneOffset_title"													text="Bane offset ved konvoj:"/>
+		<text name="CP_jobParameters_laneOffset_tooltip"												text="Rutevalg, når et konvojforløb blev oprettet."/>
 		<text name="CP_jobParameters_laneOffset_center"													text="Mitte"/>
 		<text name="CP_jobParameters_laneOffset_left"													text="Venstre(1)"/>
 		<text name="CP_jobParameters_laneOffset_right"													text="Højre(1)"/>
@@ -66,6 +67,9 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Hud med mus åbne"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Hvis deaktiveret, kan Hud kun åbnes med den valgte tast som er valgt hertil."/>
 
+		<text name="CP_vehicle_setting_fuelSave_title"													text="brændstofs besparrelse"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="sluk for køretøj, ved venteposition."/>
+
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop ved Enden"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Køretøjet bliver stående når opgaven er udført."/>
 
@@ -99,6 +103,9 @@
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Redskab forskudt lodret"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Redskab Versatz vertikal"/>
+
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Tjek for ensilagetilsætning."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Hvis aktiv og ensilageadditiv er tom, stopper føreren."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Kør altid snegl ud"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Kør altid snegl ud, når mejetærsker er fuld og venter på vogn."/>
@@ -121,6 +128,9 @@
 
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Gødningsfunktion på såmaskine"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Gødningsfunktion på såmaskine til/fra."/>
+
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="så option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Tænder eller slukker for maskinens ekstra såfunktion"/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrisk baneskift"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Symmetrisk baneskift"/>
@@ -210,6 +220,23 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_title"									text="Antal af køretøjer på ruten" />
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Hvor mange køre på ruten samtidig." />
 
+		<!-- Vine Course Generator-->
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Vin rute generator"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Grundlæggende indstillinger"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Rutens placering"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Skal ruten køres på eller ved siden af ​​vinstokken. Dette afhænger af værktøjet. Mere information i hjælpemenuen."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Vestre side af vinstokken"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="På vinstokken"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Højre side af vinstokken"/>
+
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Køretøjer per rute."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Hvor mange køretøjer kan arbejde sammen. Mere information i hjælpemenuen."/>
+		
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Overspring vinstokke"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vinstokke bør kun bruges, når køretøjet fungerer på begge vinstokke (venstre og højre)."/>
+
+
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Globale indstillinger"/>
 		<text name="CP_global_setting_subTitle_general"													text="Grund indstillinger"/>
@@ -223,6 +250,12 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Opretholde 100%"/>
+
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Brændstofstærskel"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Føreren fyres, hvis brændstofprocenten er mindre."/>
+
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Vedligholdestærskel"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Føreren fyres, hvis køretøjet eller et redskab er mere ødelagt. 100% er funktionen deaktiveret."/>
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Brugerindstillinger"/>
 
@@ -242,6 +275,15 @@
 
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Vis alle ruter"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Vis kun indlæste ruter."/>
+
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Vis info tekst vindue"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Viser info tekst vindue."/>
+
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Mus begivenhed"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Aktiverer/deaktiverer afspillerens musehændelse for infotekstvisning uden for et køretøj."/>
+
+		<text name="CP_global_setting_preferCustomFields_title"											text="Foretræk brugerdefinerede marker"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Foretræk brugerdefinerede marker hvis der også er et original mark på den valgte position."/>
 
 	<!-- CourseManager -->
 		<text name="CP_courseManager_title"																text="Rute Manager(%s) %s"/>
@@ -276,7 +318,19 @@
 		<text name="CP_courseManager_advancedSettings"													text="Rediger Rute/Mappe."/>
 
 		<text name="CP_courseManager_activate"															text="Activatere"/>
-
+	
+	<!-- Info texts -->
+		<text name="CP_infoTexts_isStuck"																text="Køretøjet sidder fast"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Er i trafik"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Skal tankes"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Skal tankes"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Skal repareres"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Skal fyldes"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Skal tømmes"/>
+		<text name="CP_infoTexts_workFinished"															text="Arbejder er udført"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Ikke nok penge"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Venter på at regnen stopper"/>
+		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Ønsker du at slette den brugerdefinerede mark	%s?"/>
@@ -290,17 +344,131 @@
 		<text name="CP_controllerGui_startRecording"													text="Start brugerdefineret markoptegnelse."/>
 		<text name="CP_controllerGui_stopRecording"														text="Stop brugerdefineret markoptegnelse."/>
 
-	<!-- In game help menu-->
+<!-- In game help menu-->
 		<text name="CP_help_title"																		text="Courseplay"/>
-		<text name="CP_help_page_courseManager_title"													text="Kursmanager"/>
-		<text name="CP_help_page_courseManager_text"													text="Der er 7 forskellige handlinger for Rutemanager:
-- Oprette ny mappe.
-- Slet rute fra køretøj.
-- Gemme den aktuelle rute.
-- indlæse rute.
-- Flytte rute over i en anden mappe.
-- Slette mappe eller rute.
-- omdøbe mappe eller rute."/>
+		<!--This stays blank and is just to create blank spots for better overview in the menu-->
+		<text name="CP_help_page_blank"																	text=""/>
+		<!--Job Menu-->
+		<text name="CP_help_page_extendedJobMenu_title"													text="Udvidet AI-menu"/>
+		<text name="CP_help_page_startJobMenuBase_text"													text="
+Først skal du vælge et køretøj i AI-menuen for at generere en rute eller få adgang til køretøjsindstillingerne og rute generatoren.
+Den aktuelt indlæste rute vil blive vist på kortet.
+De globale indstillinger er altid synlige.
+For at generere en rute og starte ruteopgaverne skal du oprette jobbet CP: markarbejde eller CP: Indsamle/wrappe baller, ligesom ved Giants-hjælperen.
+"/>
+		<text name="CP_help_page_startJobMenuFunctions_text"											text="
+For at starte dit første CP-job, skal du vælge et køretøj og et eventuelt gyldigt redskab, som understøttes til jobbet.
+Derefter kan du ved at klikke på opret job vælge CP: markarbejde eller CP: Indsamle/wrappe baller
+med en balleindpakning eller balleopsamler påsat..
+"/>
+		<text name="CP_help_page_readyJobMenuBase_text"													text="
+Med et CP-job valgt, skal du placere markpositionen på en mark for at generere ruten eller bruge ballefinderen på den.
+markpositionen styrer også nogenlunde udgangspunktet for dit forløb.
+Hvis du vil bruge Giants-hjælperen til at køre til feltet, så skal du også indstille målpositionen tæt på banens startpunkt.
+Bane offset-indstillingen bruges kun, hvis du ønsker at have flere hjælpere, der arbejder på den samme mark. For dette bedes du tjekke den separate hjælpemenuside nedenfor.
+"/>
+		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
+Når markpositionen er placeret korrekt på en mark, vil du se markgrænsen tegnet på kortet.
+Hvis du opretter et CP: markarbejde, får du adgang til rutegeneratorens indstillinger. 
+"/>
+		<text name="CP_help_page_JobMenuExtras_text"													text="
+Nu er det muligt at starte hjølperen direkte fra menuen. Giants hjælperen kører til målpositionen, og derfra overtager CP-jobbet automatisk.
+Alternativt kan du også starte hjælperen fra HUD'en, hvis du er tæt på marken med køretøjet eller bruge AutoDrive-mod til at levere CP-jobbet tæt på marken.
+"/>
+		<!--CourseGenerator-->
+		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
+		<text name="CP_help_page_courseGeneratorBase_text"												text="
+Hvert rute genereres af rutegeneratoren. Dette er et mægtigt værktøj, som giver dig mulighed for at tilpasse det genererede rute efter dine behov.
+Hvis du er ny til dette, bør du nok starte med kun at ændre indstillingen for foragermængde.
+Derefter kan du altid ændre de andre værdier og trykke generer rute og se, hvilken indflydelse visse værdier har for ruten .
+At eksperimentere med det og tjekke, hvilken indflydelse de forskellige indstillinger på forskellige marker har, er den bedste måde at vænne sig til det.
+"/>
+		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
+Grundlæggende:
+De første par værdier, du ser her, er rigtige grundlæggende ting.
+- Arbejdsbredde: De fleste redskaber registrerer den nøjagtige arbejdsbredde, og du behøver slet ikke at bekymre dig om denne indstilling. Hvis du justerer det, vil det have indflydelse på dit overordnede forløb.
+- Flere redskaber: Denne indstilling bruges, når du vil have mere end blot ét køretøj til at arbejde på din rute. Da dette bliver lidt mere kompliceret, er der et separat hjælpeemne til det.
+- Antal forager: Den bedste måde at holde dine køretøjer på marken, mens de drejer for enden af ​​hver række, er at tilføje forager.
+Antallet af forager ganget med arbejdsbredden skal mindst være den samlede længde af dit køretøj plus det påkoblede reskab.
+Center muligheder:
+- Markcenter: Der er forskellige tilstande til, hvordan dit markcentermønster skal se ud. Den klassiske og mest brugte er op/ned.
+Spiral, cirkelformede og bede har deres egne specifikke fordele i forhold til de andre. BNede vil f.eks. have mejetærskerens rør spids ud af frugten det meste af tiden for lettere at tømme dem.
+- Op/ned rækkeretning: automatisk finder for det meste den bedste retning, men nogle gange passer den længste kant bedre. Hvis du ikke er tilfreds med nogen af ​​dem, skal du vælge manuel og indstille retningen manuelt.
+- Rækker, der skal springes over: Dette er en meget nyttig mulighed for at fremskynde dit arbejde, da køretøjet behøver ikke at bakke frem og tilbage komme til den næste række.
+- Rækker pr. Bede: Dette har kun indflydelse, når markcentret er indstillet til Bede og vil fortælle generatoren, hvor mange rækker hvert bede skal have. Jo flere rækker, jo færre bede vil blive genereret.
+- Op/ned rækkevinkel: Når op/ned rækkeretningen er indstillet til manuel, vil denne indstilling fortælle genereringsretningen.
+
+
+Basics:
+The first few values you see here, are real basic stuff.
+- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
+- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
+The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
+Center options:
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
+- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
+- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
+- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
+- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+"/>
+		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
+Foragerindstillinger vises kun, når du har indstillet mindst 1 ved Antal forager.
+Du får muligheder for, hvor du skal starte, hjørneindstillinger, retning og overlapning.
+Forager anbefales for at forhindre køretøjet i at forlade marken, når de drejer.
+"/>
+		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
+- Start arbejde på: Som nævnt i den udvidede AI-menu, bruges markpositionen til at indstille start- eller slutpositionen for markarbejdet.
+Når den indstilles til at starte i forager, fortæller den, hvor starten skal være. Når den ændres til at starte på rækker, vil den fortælle, hvor arbejdet skal afsluttes.
+- Foragerhjørner: Glatte vil have en enkel udjævning over hjørnerne. Dette virker for alle værktøjer, men vil føre til små ubearbejdede pletter i hjørnerne.
+De kan reduceres med overlap, men forsvinder aldrig. Skarp vil generere en drejning baseret på vinklen på markgrænsevinklen.
+Runde vil tage højde for de aktuelle valgte køretøjers drejeradius for at få det bedste runde hjørne for det pågældende redskab.
+- Foragerretning: med eller mod uret. Dette kan være vigtigt for mejetærskere og mejetærskere, afhængig af hvilken side sneglen eller transportbåndet er.
+- Forageroverlap: Hvor meget % overlap skal alle forager have. Den første vil ikke have noget overlap med markgrænsen, men de indre vil overlappe hinanden.
+"/>
+		<text name="CP_help_page_courseGeneratorExtras_text"											text="
+Markgrænse forklaring:
+Positive værdier reducerer markstørrelsen for at tilføje en buffer omkring det bearbejdede område, hvis du har forhindringer nær markgrænsen.
+Negative værdier forstørrer det bearbejdede område ud over markgrænsen for at dække over markgrænser, der ikke er perfekt detekteret.
+"/>
+		<!--CourseManager-->
+		<text name="CP_help_page_courseManager_title"													text="Rute manager"/>
+		<text name="CP_help_page_courseManagerBase_text"												text="
+Rutegeneratoren giver dig mulighed for at gemme ruter og giver dig mulighed for at indlæse den gemte rute senere igen.
+Dette er virkelig vigtigt, når du vil have flere arbejdere, der kører den samme rute for konvoj.
+Denne funktion giver dig også mulighed for at hente skåret efterladt af en mejetærsker eller en skårlægger med en fodervogn eller en ballepresser.
+
+Gemmestedet for kursusfilerne er: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap.
+Rute manageren arbejder anderledes end hvad du er vant til i FS19.
+Ruter gemmes i mapper, som vil blive vist til venstre. Det betyder, at du skal bruge mindst én mappe for at begynde at gemme ruter i.
+Mapper kan simpelthen oprettes ved at trykke på knappen nederst på skærmen og indtaste et navn.
+Ruter gemmes kun lokalt indtil videre.
+"/>
+
+		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
+Når du har en rute indlæst, kan du gemme den ved at klikke på knappen Gem rute og derefter på mappen. Så kommer et pop op-vindue frem, hvor du kan indtaste navnet på ruten.
+Navn og placering kan ændres senere.
+For at fjerne rute fra dit køretøj skal du klikke på knappen 'slet aktuel rute'.
+For at indlæse en rute skal du først vælge mappen, klikke på indlæs rute-knappen og derefter blot klikke på den rute, du vil indlæse.
+Ved at klikke på ændringstilstand aktiveres rutegeneratorens redigeringstilstand.
+"/>
+		<text name="CP_help_page_courseManagerEdit_text"												text="
+Når redigeringstilstanden er aktiv, har du disse muligheder:
+- Flytte en rute til en anden mappe.
+- Sletning af rute eller mapper.
+- Omdøbning af rute eller mapper.
+"/>
+		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
+For at flytte en rute:
+  1) Klik på flytteknappen nederst på skærmen.
+  2) Klik på den ruten, du vil flytte.
+  3) Klik på det bibliotek, hvor du ønsker ruten flyttet til.
+For at omdøbe skal du blot klikke på omdøb-knappen og derefter mappen eller ruten. Så skal du bare indtaste det nye navn.
+For at slette en rute eller mappe, klik på slet-knappen og derefter den mappe eller den rute, du ønsker at slette.
+Mapper skal være tomme, hvis du vil slette dem.
+"/>
+		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
 A: Klik på køretøjets navn for at hente køretøjsindstillingerne.
@@ -312,29 +480,116 @@ F: Ved at klikke på ikonet åbnes de grundindstillinger.
 G: Lukke HUD.
 H: Reducerer eller øger arbejdsbredden. En rød streg på køretøjet viser indstillingen.
 I: Vandret offset værdi, + venstre, - højre.
-J: Lodret offset værdi, + tilbage, - frem.
-K, L og M: Klik på teksten for at nulstille værdierne.
-N: Det er her baneforskydningen vises, hvis et konvøjforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
+J: Kopiér og indsæt en rute i et andet køretøj.
+     Når først kopieringsknappen blev trykket, kan banen indsættes i et køretøj uden en rute, når ikonet bliver grønt.
+K og L: Klik på teksten for at nulstille værdierne.
+M: Visser den kopierede rute.
+N: Det er her baneforskydningen vises, hvis et konvojforløb er blevet indlæst. Ved at klikke på teksten ændres banen.
 O: Start/stop Optegning af brugerdefineret mark.
-P: fjern rute fra køretøj"/>
+P: Fjern rute fra køretøj
+Q: Ændrer rutens synlighed mellem: tændt, slukket og kun start/stop.
+R: Fjerner den kopierede rute fra udklipsholderen.
+"/>
+		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Brugerdefineret marker"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
 Du kan oprette brugerdefineret mark på to måder.
 Den første er ved at benytte markoptegnelse i HUD.
 Start markoptegnelse ved at trykke på record knappen.
-når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne."/>
+når du er færdig tryk igen på record knappen, du bliver herefter spurgt om du vil gemme denne.
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 Den optegnede mark i AI hjælper menu.
-Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den."/>
+Hvis du klikker på navnet til marken, for du nu mulighed for at omdøbe den eller slette den.
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 Den næste mulighed er at optegne den inde i AI hjælper menu på kortet.
 Du må ikke sidde i et køretøj (venstreklik på kortet), du for nu mulighed for at optagne marken.
-Når den startes, vil teksten Optegn brugerdefineret mark med højre museknap blive vist.
+Når den startes, vil teksten Optegn brugerdefineret mark med højre museknap. Blive vist.
 Brug den højre museknap til at klikke på en position, hvor du vil starte.
-Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje."/>
+Det næste højreklik vil tegne en linje fra dit startpunkt til din anden position, som vil være startpunktet for den næste linje.
+"/>
+		<!--Multitool and Convoy-->
+		<text name="CP_help_page_multiConvoy_title"														text="konvoj"/>
+		<text name="CP_help_page_multitoolBasic_text"													text="
+Det er muligt at have op til 5 køretøjer, der arbejder sammen på samme mark i en konvoj.
+		"/>
+		<text name="CP_help_page_multitoolFunction_text"												text="
+Når en konvojrute er indlæst, skal du vælge vognbanen til føreren.
+Disse baner hedder altid det samme:
+venstre(2), venstre(1), center, højre(1), højre(2).
+2 køretøjer vil have venstre(1) og højre(1), 4 vil have venstre(2) og højre(2).
+Med 3 eller 5 køretøjer får du også centermuligheden.
 
+Once a multi tool course is loaded you will need to select the lane for the driver.
+Those lanes are always named the same:
+left(2), left(1), center, right(1), right(2).
+2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
+With 3 or 5 vehicles you will also gain the center option.
+"/>
+		<text name="CP_help_page_convoyBasic_text"														text="
+Konvojen fungerer kun, hvis køretøjerne har indlæst ens rute.
+De vil automatisk holde en lille afstand til køretøjet foran.
+Derudover bliver konvojfunktionen også anvendt, når for eksempel en ballepresser kører bag en mejetærsker på samme rute.
+for example a baler is driving behind a combine on the same course.
+"/>
+		<text name="CP_help_page_convoyFunction_text"													text="
+Køretøjsindstillingen for konvojafstand ændrer afstanden mellem køretøjerne.
+Afstanden for alle køretøjer med samme rutenavn vil automatisk blive indstillet til den højeste værdi af alle køretøjer i konvojen.
+"/>
+		<!--Wrap and Collect-->
+		<text name="CP_help_page_wrapCollect_title"														text="Indpakning og opsamling af baller"/>
+		<text name="CP_help_page_wrapCollectBasic_text"													text="
+Indpakning og opsamling af baller kan foregå på to forskellige måder.
+Den første er at indlæse den samme rute, som du brugte til din ballepresser, og lade indpakkeren eller opsamleren køre denne rute.
+Dette kan dog være vanskeligt, da nogle baller elsker at rulle væk fra ruten.
+På dette tidspunkt kan vores wrap and collect jobtype hjælpe, da det ikke behøver en rute.
+Bliv på marken og start bare chaufføren fra HUD'en med wrap/saml baller eller brug AI-kortet til at sende ham til en mark for at starte jobbet.
+"/>
+		<text name="CP_help_page_wrapBasic_text"														text="
+Indpakning af baller er meget enkel. Indlæs en rute af din ballepresser og start som ethvert andet markarbejde, eller uden en rute,
+start den med balleindpakning/indsamling fra HUD'en eller AI-menuen..
+"/>
+		<text name="CP_help_page_wrapFunction_text"														text="
+Når man bruger en rute, kører hjælperen med en forudindstillet offset, så wrapperens pickup er midt i ruten.
+Uden en rute scanner Courseplay marken for uindpakkede baller og bruger stifinderen til at finde en måde at
+den bedste balle, der er tættest på at pakke.
+Automatisk back-up, hvis en balle er foran køretøjet, eller hvis vi er for tæt på markgrænsen, skal forhindre ulykker.
+"/>
+		<text name="CP_help_page_collectBasic_text"														text="
+At samle baller fungerer nogenlunde det samme, med eller uden en rute.
+Når opsamleren er fuld, stopper den arbejdet og fortæller brugeren, at den skal aflæsses. Hvis du har AutoDrive
+installeret kan du bruge den til at køre en automatisk aflæsning af ballesamleren.
+"/>
+		<!--Vine work-->
+		<text name="CP_help_page_vineWork_title"														text="Vin arbejde"/>
+		<text name="CP_help_page_vineWorkConditions_text"												text="
+At arbejde på vinstokke er lidt mere komplekst end at arbejde på en normal mark.
+For at få det bedste resultat skal vinstokkene alle være ved siden af ​​hinanden inden for standardgitteret.
+Slutningen og starten af ​​hver vinstok skal også have nogenlunde samme længde.
+Hvis vinstokkene er på en eksisterende mark, kan du åbne generatoren direkte som normalt.
+Hvis de ikke er på en mark, skal du gå over AI-menuen og placere markmarkøren på vinstokkene.
+"/>
+		<text name="CP_help_page_vineWorkGenerator_text"												text="
+Generatoren til vinstokke har færre muligheder.
+Afhængigt af redskabet skal du vælge at arbejde på vinstokkene eller ved siden af ​​vinstokkene.
+For eksempel. standardhøsteren skal køre og arbejde på vinstokken.
+     Forbeskæreren skal køre til venstre fra vinstokkene, men virker på vinstokken, så du skal vælge at arbejde på vinstokken, men køre med en offset.
+     Sprøjter skal køre ved siden af ​​vinstokkene og skal springe en række over, da den sprøjter til venstre og højre.
+"/>
+		<text name="CP_help_page_vineWorkHarvester_text"												text="
+En rute skal genereres på vinstokkene, da den kom til at køre og arbejde på vinstokkene.
+"/>
+		<text name="CP_help_page_vineWorkPruner_text"													text="
+Forbeskæreren virker på vinstokkene, så banen skal genereres på vinstokkene.
+Værktøjet kommer med en offset til traktoren, så traktoren kører mellem vinstokkene.
+"/>
+		<text name="CP_help_page_vineWorkSprayer_text"													text="
+Sprøjten arbejder ved siden af ​​vinstokkene, så den skal køre enten til venstre eller højre fra vinstokkene.
+Da sprøjten kan arbejde på venstre og højre vinstokke på samme tid, kan vi springe en række over.
+"/>
 
-		<!-- Input bindings -->
+	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Vælg næste Debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_SELECT_NEXT" 													text="CP: Vælg sidste Debug channel."/>
 		<text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT"												text="CP: Ændre Debug channel."/>
