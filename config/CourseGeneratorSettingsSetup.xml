@@ -24,7 +24,7 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="headlandCornerType" >
+		<Setting classType="AIParameterSettingList" name="headlandCornerType" isExpertModeOnly="true" default="1">
 			<Values>
 				<Value name="HEADLAND_CORNER_TYPE_SMOOTH">1</Value> 
 				<Value name="HEADLAND_CORNER_TYPE_SHARP">2</Value> 
@@ -36,7 +36,7 @@
 				<Text>round</Text> 
 			</Texts> 
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="isClockwise">
+		<Setting classType="AIParameterSettingList" name="isClockwise" isExpertModeOnly="true" default="1">
 			<Values>
 				<Value name="HEADLAND_CLOCKWISE">1</Value>
 				<Value name="HEADLAND_COUNTERCLOCKWISE">2</Value>
@@ -46,7 +46,7 @@
 				<Text>counterclockwise</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4"/>
+		<Setting classType="AIParameterSettingList" name="headlandOverlapPercent" min="0" max="25" default="7" unit="4" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="center">
 		<Setting classType="AIParameterSettingList" name="centerMode">
@@ -63,7 +63,7 @@
 				<Text>lands</Text> 
 			</Texts> 
 		</Setting>	
-		<Setting classType="AIParameterSettingList" name="rowDirection" >
+		<Setting classType="AIParameterSettingList" name="rowDirection" default="5" isExpertModeOnly="true">
 			<Values>
 				<Value name="ROW_DIRECTION_AUTOMATIC">5</Value>
 				<Value name="ROW_DIRECTION_LONGEST_EDGE">6</Value>
@@ -77,7 +77,7 @@
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="rowsToSkip" min="0" max="6"/>
 		<Setting classType="AIParameterSettingList" name="rowsPerLand" min="2" max="24" default="6"/>
-		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5"/>
+		<Setting classType="AIParameterSettingList" name="manualRowAngleDeg" min="0" max="175" incremental="5" unit="5" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="advanced">
 		<Setting classType="AIParameterSettingList" name="islandBypassMode">
@@ -92,6 +92,6 @@
 				<Text>none</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2"/>
+		<Setting classType="AIParameterSettingList" name="fieldMargin" min="-5" max="6" default="0" incremental="0.2" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 </Settings>
