@@ -60,7 +60,7 @@ end
 
 function CpGlobalSettingsFrame.updateGui()
 	local self = g_currentMission.inGameMenu.pageCpGlobalSettings
-	if g_gui:getIsGuiVisible() and g_currentMission.inGameMenu.currentPage == self then
+	if self and g_gui:getIsGuiVisible() and g_currentMission.inGameMenu.currentPage == self then
 		self:onFrameClose()
 		self:onFrameOpen()
 	end
