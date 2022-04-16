@@ -38,7 +38,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 			headlandCornerType, headlandOverlapPercent, centerMode)
 	CourseGenerator.debug('                   row direction %d, rows to skip %d, rows per land %d',
 			rowDirection, rowsToSkip, rowsPerLand)
-	CourseGenerator.debug('					  multiTools %d, pipe on left %s',
+	CourseGenerator.debug('                   multiTools %d, pipe on left %s',
 			multiTools, pipeOnLeftSide)
 
 
