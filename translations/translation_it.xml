@@ -238,8 +238,8 @@
 		<text name="CP_global_setting_title"															text="Impostazioni Courseplay"/>
 		<text name="CP_global_setting_subTitle_general"													text="Generali"/>
 		
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Modalità avanzata "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Abilita/disabilita modalità avanzata per impostazioni addizionali."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Salario autista"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Percentuale Salario autista Courseplay (Percentuale basata su lavoratore normale del gioco)"/>
