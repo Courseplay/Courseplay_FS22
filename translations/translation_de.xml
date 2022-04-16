@@ -349,6 +349,24 @@
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
+		<!--General-->
+		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_GeneralBase_title"														text="
+What can you do with Courseplay:
+- Do Fieldwork with a generated course.
+- Vine fields with a generated course.
+- Let the Combine self unload.
+- Wrap and colelct bales with or without a course.
+- Manage your generated courses.
+- Refill or Unload together with AutoDrive.
+- Create custom fields with recording or drawing on the AI Map.
+- Do fieldwork with up to 5 Vehicles in a convoy.
+
+What is the expert Mode:
+When the expert Mode is deactivated, you have only access to some settings.
+The other settings are hidden and set to default values, wich works in most situations.
+That way, we try to help Users to get easier into Courseplay without being knocked off from all the settings.
+"/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menü"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
