@@ -569,7 +569,7 @@ In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und
 		<!--Info Panel-->
 		<text name="CP_help_page_infoPanel_title"														text="Info Fenster"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-Dies ist unser Info Fenster, es kann genauso mit der Maus bewegt werden, wie das mini HUD.
+Das ist unser Info Fenster, es kann genauso mit der Maus bewegt werden, wie das mini HUD.
 Neben den Namen und der Version unserer Mod, zeigt es dir an, wenn ein Courseplay Helfer einen gewissen Status hat.
 Fährst du mit der Maus über den Text, wird der Name des Fahrzeugs angezeigt.
 Klickst du darauf, springst du direkt in das entsprechende Fahrzeug.
@@ -585,6 +585,7 @@ Die Informationen sind:
 - Muss entladen werden
 - Arbeit beendet
 - Kein Geld mehr
+- Wartet auf besseres Wetter
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>
