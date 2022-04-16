@@ -328,8 +328,13 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
         return dz < 0 , true, nil
     else
         -- dz will be negative as we are behind the target node. Also, dx must be close enough, otherwise
-        -- we'll lower them way too early if approaching the turn end from the side at about 90°
-        return dz > - loweringDistance and math.abs(dxFront) < loweringDistance * 1.5 , true, dz
+        -- we'll lower them way too early if approaching the turn end from the side at about 90° (and we
+        -- want a constant value here, certainly not the loweringDistance which changes with the current speed
+        -- and thus introduces a feedback loop, causing the return value to oscillate, that is, we say should be
+        -- lowered, than the vehicle stops, but now the loweringDistance will be low, so we say should not be
+        -- lowering, vehicle starts again, and so on ...
+        local normalLoweringDistance = self.loweringDurationMs * self.settings.turnSpeed:getValue() / 3600
+        return dz > - loweringDistance and math.abs(dxFront) < normalLoweringDistance * 1.5, true, dz
     end
 end
 
