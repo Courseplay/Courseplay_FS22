@@ -332,7 +332,7 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
 		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		
 	<!--Custom Field-->
