@@ -7,7 +7,7 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="pieds" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="Course copiée : "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Pour toute demande d'assistance, signalement de bug ou suivi des mises à jour, rendez vous sur le site officiel : https://github.com/Courseplay/Courseplay_FS22." />
@@ -240,8 +240,8 @@
 		<text name="CP_global_setting_title"															text="Paramètres globaux"/>
 		<text name="CP_global_setting_subTitle_general"													text="Paramètres généraux"/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Mode expert"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Affiche/Masque des réglages avancés supplémentaires."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Salaire des ouvriers Courseplay"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Salaire des ouvriers Courseplay en pourcentage du salaire des ouvriers normaux."/>
@@ -253,11 +253,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Maintenir à 100%"/>
 
-		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Seuil de carburant"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="L'ouvrier CP s'arrêtera si la jauge de carburant descend sous ce seuil."/>
 
-		<text name="CP_global_setting_brokenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Seuil de maintenance"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="L'ouvrier CP s'arrêtera si le véhicule ou un outil est abimé avec un état d'entretien sous ce seuil. 100% = éteint."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Paramètres utilisateur"/>
 
@@ -330,8 +330,8 @@
 		<text name="CP_infoTexts_needsFilling"  														text="doit être réapprovisionné"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="doit être déchargé"/>
 		<text name="CP_infoTexts_workFinished"															text="a terminé son travail"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
-		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Plus d'argent disponible"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Attend que la pluie s'arrête pour continuer"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Souhaitez-vous sauvegarder la course enregistrée comme contour de champ personnalisé %s?"/>
@@ -427,7 +427,7 @@ L'emplacement des sauvegarde se trouve ici : ..\My Games\FarmingSimulator2022\mo
 Le gestionnaire fonctionne différement de celui présent dans FS19.
 Les courses sont sauvegardées dans des dossiers affichés sur le côté gauche. Il faudra donc au moins créer un dossier pour commencer à sauvegarder vos courses. 
 Les dossiers peuvent être créés en utilisant le bouton correspondant en bas de l'écran et en spécifiant un nom.
-Courses are only saved localy for now.
+Les courses sont uniquement sauvegardées en local (et non sur le serveur) pour l'instant.
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
@@ -464,15 +464,15 @@ F: Cliquez sur l'icone pour ouvrir les paramètres généraux.
 G: Ferme l'ATH.
 H: Augmente ou diminue la largeur de travail. Visible via une ligne rouge sur le véhicule.
 I: Valeur du décalage horizontal, + gauche, - droite.
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: Copie / Colle une course vers un autre véhicule.
+     Depuis le véhicule contenant la course à copier, appuyez sur le bouton de copie puis rendez-vous dans le véhicule cible (qui ne doit pas avoir de course active) et appuyez sur l'icône verte permettant de coller la course.
 K and L: Cliquez sur le texte pour rétablir les valeurs automatiques.
-M: Shows the copied course.
+M: Affiche la course à copier.
 N: Affichage du décalage de rang lorsque vous avez chargé une course multi-outils. Cliquez sur le texte pour intervertir les positions.
 O: Démarrer/Arrêter l'enregistrement d'un contour de champ personnalisé.
 P: Réinitialiser la course active.
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+Q: Change l'affichage de la course entre : aucun, tout, départ/arrivée uniquement.
+R: Efface la course copiée du presse papier.
 "/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Champs personnalisés"/>
