@@ -908,6 +908,9 @@ end
 function Course:copy(vehicle, first, last)
 	local newCourse = Course(vehicle or self.vehicle, self.waypoints, self:isTemporary(), first, last)
 	newCourse:setName(self:getName())
+	newCourse.multiTools = self.multiTools
+	newCourse.workWidth = self.workWidth
+	newCourse.numHeadlands = self.numHeadlands
 	return newCourse
 end
 

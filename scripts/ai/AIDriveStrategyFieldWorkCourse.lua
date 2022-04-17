@@ -58,27 +58,6 @@ function AIDriveStrategyFieldWorkCourse:delete()
     self:rememberWaypointToContinueFieldWork()
 end
 
-function AIDriveStrategyFieldWorkCourse:getGeneratedCourse(jobParameters)
-    local course = self.vehicle:getFieldWorkCourse()
-    local numMultiTools = course:getMultiTools()
-    local laneNumber = numMultiTools > 1 and jobParameters.laneOffset:getValue() or 0
-    if numMultiTools < 2 then
-        self:debug('Single vehicle fieldwork course')
-        return course
-    elseif laneNumber == 0 then
-        self:debug('Multitool course, center vehicle, using original course')
-        return course
-    else
-        self:debug('Multitool course, non-center vehicle, generating offset course for lane number %d',laneNumber)
-        --- Lane number needs to be zero for only one vehicle.
-        --- Work width of a single vehicle.
-        local width = course:getWorkWidth() / numMultiTools
-        local offsetCourse = course:calculateOffsetCourse(numMultiTools, laneNumber, width,
-                                                        self.settings.symmetricLaneChange:getValue())
-        return offsetCourse
-    end
-end
-
 --- Start a fieldwork course. We expect that something else dropped us off close enough to startIx so
 --- the most we need is an alignment course to lower the implements
 function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
@@ -245,6 +224,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, CombineController, Combine, defaultDisabledStates)
 
     self:addImplementController(vehicle, MotorController, Motorized, {})
+    self:addImplementController(vehicle, WearableController, Wearable, {})
     self:addImplementController(vehicle, VineCutterController, VineCutter, defaultDisabledStates)
 end
 
@@ -348,8 +328,13 @@ function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEnd
         return dz < 0 , true, nil
     else
         -- dz will be negative as we are behind the target node. Also, dx must be close enough, otherwise
-        -- we'll lower them way too early if approaching the turn end from the side at about 90°
-        return dz > - loweringDistance and math.abs(dxFront) < loweringDistance * 1.5 , true, dz
+        -- we'll lower them way too early if approaching the turn end from the side at about 90° (and we
+        -- want a constant value here, certainly not the loweringDistance which changes with the current speed
+        -- and thus introduces a feedback loop, causing the return value to oscillate, that is, we say should be
+        -- lowered, than the vehicle stops, but now the loweringDistance will be low, so we say should not be
+        -- lowering, vehicle starts again, and so on ...
+        local normalLoweringDistance = self.loweringDurationMs * self.settings.turnSpeed:getValue() / 3600
+        return dz > - loweringDistance and math.abs(dxFront) < normalLoweringDistance * 1.5, true, dz
     end
 end
 
@@ -496,10 +481,10 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
         alignmentCourse = self:createAlignmentCourse(fieldWorkCourse, startIx)
     end
     self.ppc:setShortLookaheadDistance()
-    local fm, bm = self:getFrontAndBackMarkers()
-    self.turnContext = TurnContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
-            self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
     if alignmentCourse then
+        local fm, bm = self:getFrontAndBackMarkers()
+        self.turnContext = RowStartOrFinishContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
+                self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
         self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, alignmentCourse, fieldWorkCourse, self.workWidth)
         self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
     else
@@ -595,7 +580,7 @@ end
 function AIDriveStrategyFieldWorkCourse:updateFieldworkOffset()
     self.course:setOffset(
         self.settings.toolOffsetX:getValue() + self.aiOffsetX + (self.tightTurnOffset or 0),
-        self.settings.toolOffsetZ:getValue() + self.aiOffsetZ)
+        0 + self.aiOffsetZ)
 end
 
 function AIDriveStrategyFieldWorkCourse:setOffsetX()

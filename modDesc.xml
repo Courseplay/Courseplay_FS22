@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="64">
-    <version>7.0.1.9</version>
+    <version>7.0.1.12</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
 		<en>CoursePlay</en>
@@ -119,6 +119,7 @@ Funktionen:
 		<sourceFile filename="scripts/ai/controllers/CombineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/MotorController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/VineCutterController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/WearableController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>

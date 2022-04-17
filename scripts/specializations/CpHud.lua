@@ -233,7 +233,7 @@ function CpHud:onDraw()
 			WorkWidthUtil.showWorkWidth(self,
 										self:getCourseGeneratorSettings().workWidth:getValue(),
 											self:getCpSettings().toolOffsetX:getValue(),
-											self:getCpSettings().toolOffsetZ:getValue())
+											0)
 		end
 	end
 end

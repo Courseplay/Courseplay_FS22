@@ -1175,8 +1175,7 @@ end
 
 function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     
-  if self:isFillableTrailerUnderPipe() or self:isAutoDriveWaitingForPipe() or (self:isWaitingForUnload() and 
-		  self.settings.pipeAlwaysUnfold:getValue()) then
+  if self:isFillableTrailerUnderPipe() or self:isAutoDriveWaitingForPipe() then
 		self:openPipe()
 		if self.pipe and self.pipe.currentState == AIUtil.PIPE_STATE_OPEN then 
 			-- TODO_22 self:isWorkingToolPositionReached(dt,1)

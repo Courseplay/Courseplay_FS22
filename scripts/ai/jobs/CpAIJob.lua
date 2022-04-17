@@ -288,23 +288,15 @@ end
 function CpAIJob:showNotification(aiMessage)
 	if not g_Courseplay.globalSettings.infoTextHudActive:getValue() then 
 		CpAIJob:superClass().showNotification(self, aiMessage)
+		return
+	end
+	local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(aiMessage)
+	local vehicle = self:getVehicle()
+	--- Makes sure the message is shown, when a player is in the vehicle.
+	if releaseMessage and vehicle:getIsEntered() then 
+		g_currentMission:showBlinkingWarning(releaseMessage:getText(), 5000)
 	end
 end
-
---- Automatically repairs the vehicle, depending on the auto repair setting.
-function CpAIJob.onUpdateTickWearable(object, ...)
-	if object:getIsAIActive() and object:getUsageCausesDamage() then 
-		if object.rootVehicle and object.rootVehicle.getIsCpActive and object.rootVehicle:getIsCpActive() then 
-			local dx =  g_Courseplay.globalSettings:getSettings().autoRepair:getValue()
-			local repairStatus = (1 - object:getDamageAmount())*100
-			if repairStatus < dx then 
-				object:repairVehicle()
-			end		
-		end
-	end
-end
-Wearable.onUpdateTick = Utils.appendedFunction(Wearable.onUpdateTick, CpAIJob.onUpdateTickWearable)
-
 
 --- Ugly hack to fix a mp problem from giants, where the job class can not be found.
 function CpAIJob.getJobTypeIndex(aiJobTypeManager, superFunc, job)

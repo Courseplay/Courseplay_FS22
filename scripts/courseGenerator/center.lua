@@ -226,6 +226,14 @@ local function addWaypointsToBlocks(blocks, width, nHeadlandPasses)
 	return nTotalTracks
 end
 
+local function reverseTracks( tracks )
+	local reversedTracks = {}
+	for i = #tracks, 1, -1 do
+		table.insert( reversedTracks, tracks[ i ])
+	end
+	return reversedTracks
+end
+
 --- Link the parallel tracks in the center of the field to one
 -- continuous track.
 -- if bottomToTop == true then start at the bottom and work our way up
@@ -305,47 +313,39 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 		distanceFromBoundary = width
 	end
 
+	-- get the innermost headland
+	local innermostHeadland = headlands[#headlands]
 	-- translate headlands so we can rotate them around their center. This way all points
 	-- will be approximately the same distance from the origin and the rotation calculation
-	-- will be more accurate
-	-- get the innermost headland
-	local boundary = headlands[#headlands]
+	-- will be more accurate. This will the boundary of the field center where the parallel rows are running
+	local boundary = Polygon:copy(innermostHeadland)
 	local dx, dy = boundary:getCenter()
-
-	-- headlands transformed in the field centered coordinate system. First, just translate, will rotate once
+	-- boundary transformed in the field centered coordinate system. First, just translate, will rotate once
 	-- we figure out the angle
-	local transformedHeadlands = {}
-	for _, headland in ipairs(headlands) do
-		local h = Polygon:copy(headland)
-		h:translate(-dx, -dy)
-		table.insert(transformedHeadlands, h)
-	end
+	boundary:translate(-dx, -dy)
 
 	local translatedIslands = Island.translateAll( islands, -dx, -dy )
 
 	local bestAngle, nTracks, nBlocks, resultIsOk
 	-- Now, determine the angle where the number of tracks is the minimum
-	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle( transformedHeadlands[#transformedHeadlands], translatedIslands, width, distanceFromBoundary, centerSettings )
+	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle(boundary, translatedIslands, width, distanceFromBoundary, centerSettings)
 	if nBlocks < 1 then
 		CourseGenerator.debug( "No room for up/down rows." )
 		return nil, 0, 0, nil, true
 	end
 	if not bestAngle then
-		bestAngle = boundary.bestDirection.dir
+		bestAngle = headlands[#headlands].bestDirection.dir
 		CourseGenerator.debug( "No best angle found, use the longest edge direction " .. bestAngle )
 	end
 	rotatedMarks = Polygon:new()
 	-- now, generate the tracks according to the implement width within the rotated boundary's bounding box
 	-- using the best angle
 	-- rotate everything we'll need later
-	for _, headland in ipairs(transformedHeadlands) do
-		headland:rotate(math.rad(bestAngle))
-	end
-	local transformedBoundary = transformedHeadlands[#transformedHeadlands]
+	boundary:rotate(math.rad(bestAngle))
 	local rotatedIslands = Island.rotateAll( translatedIslands, math.rad( bestAngle ))
 
 	-- if we have headlands, let all rows have the same width, the last one overlapping with the headland
-	local parallelTracks = CourseGenerator.generateParallelTracks(transformedBoundary, rotatedIslands, width, distanceFromBoundary, nHeadlandPasses > 0)
+	local parallelTracks, offset = CourseGenerator.generateParallelTracks(boundary, rotatedIslands, width, distanceFromBoundary, nHeadlandPasses > 0)
 
 	local blocks = splitCenterIntoBlocks( parallelTracks, width )
 
@@ -363,8 +363,8 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 	-- Now we have to connect the first block with the end of the headland track
 	-- and then connect each block so we cover the entire polygon.
 	math.randomseed( CourseGenerator.getCurrentTime())
-	local blocksInSequence = findBlockSequence( blocks, transformedBoundary, boundary.circleStart, boundary.circleStep, nHeadlandPasses, centerSettings.nRowsToSkip)
-	local workedBlocks = linkBlocks( blocksInSequence, transformedBoundary, boundary.circleStart, boundary.circleStep, centerSettings.nRowsToSkip)
+	local blocksInSequence = findBlockSequence( blocks, boundary, innermostHeadland.circleStart, innermostHeadland.circleStep, nHeadlandPasses, centerSettings.nRowsToSkip)
+	local workedBlocks = linkBlocks( blocksInSequence, boundary, innermostHeadland.circleStart, innermostHeadland.circleStep, centerSettings.nRowsToSkip)
 
 	-- workedBlocks has now a the list of blocks we need to work on, including the track
 	-- leading to the block from the previous block or the headland.
@@ -434,8 +434,15 @@ end
 -- are not connected
 ---@param useSameWidth boolean if true, the distance between all rows is the same, otherwise, the last
 --- row is narrower so it does not overlap with the headland or the area around the field
+---@return table[], number rows and the offset. The last row we generate (which is on the top) will always
+--- overlap either the previous row or the headland (if useSameWidth true). At this point however, we don't know
+--- if the last generated row will also be the last worked on, depending on many factors, especially if there are
+--- multiple blocks, the rows may be worked on in the opposite order. However, we always want the last row to
+--- overlap, so if it turns out later that the rows are worked in the opposite order, we'll just need to shift
+--- all rows down by offset meters.
 function CourseGenerator.generateParallelTracks(polygon, islands, width, distanceFromBoundary, useSameWidth)
 	local tracks = {}
+	local offset
 	local function addTrack( fromX, toX, y, ix )
 		local from = { x = fromX, y = y, track=ix }
 		local to = { x = toX, y = y, track=ix }
@@ -452,7 +459,9 @@ function CourseGenerator.generateParallelTracks(polygon, islands, width, distanc
 	end
 	-- add the last track
 	addTrack(polygon.boundingBox.minX, polygon.boundingBox.maxX, y, trackIndex)
-	if not useSameWidth then
+	if useSameWidth then
+		offset = distanceFromBoundary - (polygon.boundingBox.maxY - tracks[#tracks].from.y)
+	else
 		-- pull the last row in so it does not extend over the field center
 		tracks[#tracks].from.y = polygon.boundingBox.maxY - distanceFromBoundary
 		tracks[#tracks].to.y = polygon.boundingBox.maxY - distanceFromBoundary
@@ -471,7 +480,7 @@ function CourseGenerator.generateParallelTracks(polygon, islands, width, distanc
 			findIntersections( island.headlandTracks[ island.outermostHeadlandIx ], tracks, island.id )
 		end
 	end
-	return tracks
+	return tracks, offset
 end
 
 --- Input is a field boundary (like the innermost headland track or a
@@ -643,14 +652,6 @@ function addWaypointsForTurnsWhenNeeded( track )
 	end
 	CourseGenerator.debug( "track had " .. #track .. ", result has " .. #result )
 	return result
-end
-
-function reverseTracks( tracks )
-	local reversedTracks = {}
-	for i = #tracks, 1, -1 do
-		table.insert( reversedTracks, tracks[ i ])
-	end
-	return reversedTracks
 end
 
 --- Reorder parallel tracks for alternating track fieldwork.

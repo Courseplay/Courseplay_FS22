@@ -116,28 +116,8 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
-    local hasFinished, releaseMessage, event
-    if message:isa(AIMessageErrorOutOfFill) then 
-        hasFinished = true
-        releaseMessage = g_infoTextManager.NEEDS_FILLING
-        event = "onCpEmpty"
-    elseif message:isa(AIMessageErrorIsFull) then 
-        hasFinished = true
-        releaseMessage = g_infoTextManager.NEEDS_UNLOADING
-        event = "onCpFull"
-    elseif message:isa(AIMessageSuccessFinishedJob) then 
-        hasFinished = true
-        releaseMessage = g_infoTextManager.WORK_FINISHED
-        event = "onCpFinished"
-    elseif message:isa(AIMessageErrorOutOfFuel) then 
-        hasFinished = true
-        releaseMessage = g_infoTextManager.FUEL_IS_EMPTY
-        event = "onCpFuelEmpty"
-    elseif message:isa(AIMessageErrorVehicleBroken) then 
-        hasFinished = true
-        releaseMessage = g_infoTextManager.IS_COMPLETELY_BROKEN
-        event = "onCpBroken"
-    end
+    local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(message)
+
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s", 
                                                     tostring(hasFinished), tostring(event))
 
@@ -160,6 +140,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         end
     end
     self:resetCpAllActiveInfoTexts()
+    --- Only add the info text, if it's available and nobody is in the vehicle.
     if not self:getIsControlled() and releaseMessage then 
         self:setCpInfoTextActive(releaseMessage)
     end

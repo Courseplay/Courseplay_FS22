@@ -62,6 +62,9 @@ function AIDriveStrategyDriveToFieldWorkStart:initializeImplementControllers(veh
     self:addImplementController(vehicle, PickupController, Pickup, {})
     self:addImplementController(vehicle, CutterController, Cutter, {})
     self:addImplementController(vehicle, SowingMachineController, SowingMachine, {})
+
+    self:addImplementController(vehicle, MotorController, Motorized, {})
+    self:addImplementController(vehicle, WearableController, Wearable, {})
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParameters)
@@ -165,8 +168,12 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         local fruitAtTarget = PathfinderUtil.hasFruit(x, z, self.workWidth, self.workWidth)
         self.pathfindingStartedAt = g_currentMission.time
         local done, path
+        local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+        -- always drive a behind the target waypoint so there's room to straighten out towed implements
+        -- a bit before start working
+        self:debug('Pathfinding to waypoint %d, with zOffset min(%.1f, %.1f)', ix, -self.frontMarkerDistance, -steeringLength)
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
-                self.multitoolOffset, math.min(-self.frontMarkerDistance, 0), self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
+                self.multitoolOffset, math.min(-self.frontMarkerDistance, -steeringLength), self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then
             return self:onPathfindingDoneToCourseStart(path)
