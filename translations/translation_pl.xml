@@ -99,10 +99,10 @@
 		<text name="CP_vehicle_setting_avoidFruit_tooltip" 							  					text="Pracownik spróbuje uniknąć jazdy na skróty przez uprawy."/>
 
 		<text name="CP_vehicle_setting_toolOffsetX_title" 												text="Przes. poziome dla narzędzi"/>
-		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Przesunięcie horyzontalne dla narzędzi."/>
+		<text name="CP_vehicle_setting_toolOffsetX_tooltip" 											text="Przesunięcie horyzontalne (poziome) dla narzędzi."/>
 
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Przes. pionowe dla narzędzi"/>
-		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne dla narzędzi."/>
+		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Przesunięcie wertykalne (pionowe) dla narzędzi."/>
 
 		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Sprawdź dodatek do kiszenia"/>
 		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Jeśli aktywne i dodatek do zakiszania jest pusty, kierowca się zatrzyma."/>
@@ -240,8 +240,8 @@
 		<text name="CP_global_setting_title"															text="Ustawienia globalne"/>
 		<text name="CP_global_setting_subTitle_general"													text="Ustawienia podstawowe"/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Tryb zaawansowany"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Włącza/Wyłącza tryb zaawansowany z dodatkowymi funkcjami."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Wynagrodzenie pracowników CP"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Procentowe wynagrodzenie pracowników CP względem zwykłych pracowników"/>
@@ -253,11 +253,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Zawsze"/>
 
-		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Próg paliwa"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Kierowca zostanie zwolniony, jeśli poziom paliwa spadnie poniżej ustawionego progu procentowego."/>
 
-		<text name="CP_global_setting_brokenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Próg zużycia"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Kierowca zostanie zwolniony, jeśli pojazd lub maszyna/narzędzie jest uszkodzona w ustalonym progu procentowym. 100% oznacza wyłączone."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Ustawienia użytkownika"/>
 
@@ -322,7 +322,7 @@
 		<text name="CP_courseManager_activate"															text="Potwierdź"/>
 
 	<!-- Info texts -->
-		<text name="CP_infoTexts_isStuck"																text="Pomocnik utknął"/>
+		<text name="CP_infoTexts_isStuck"																text="Utknął"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Jest w ruchu"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="Powinien zostać zatankowany"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Musi zostać zatankowany"/>
@@ -330,8 +330,8 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Musi zostać załadowany"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Musi zostać rozładowany"/>
 		<text name="CP_infoTexts_workFinished"															text="Zakończył pracę"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Ouf of money"/>
-		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Brak pieniędzy"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Oczekuje na koniec opadów"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Czy chcesz zapisać nagrany kurs jako nowe pole %s?"/>
@@ -430,7 +430,7 @@ Lokalizacja zapisu plików kursu to: Dokumenty\My Games\FarmingSimulator2022\mod
 Menedżer kursu działa inaczej niż ten, do którego przywykłeś w FS19.
 Kursy zapisywane są w folderach, które wyświetlą się po lewej stronie. Oznacza to, że aby rozpocząć zapisywanie kursów, potrzebujesz co najmniej jednego folderu.
 Foldery można po prostu utworzyć, naciskając przycisk u dołu ekranu i wprowadzając nazwę.
-Courses are only saved localy for now.
+Na razie kursy są zapisywane tylko lokalnie.
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
@@ -474,7 +474,7 @@ M: Pokazuje skopiowany kurs.
 N: Ten obszar pokazuje przesunięcie linii jeśli masz załadowany kurs dla wielu narzędzi. Kliknięcie na tekst przełącza pozycję.
 O: Rozpocznij/Zakończ nagrywanie nowego pola.
 P: Usuń kurs z pojazdu.
-Q: Zmienia widoczność kursu między: Włączony, Wyłaczony i tylko Start/Stop.
+Q: Zmienia widoczność kursu między: Włączony, Wyłączony i tylko Start/Stop.
 R: Usuwa skopiowany kurs ze schowka.
 "/>
 		<!--CustomField-->
