@@ -1032,6 +1032,10 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
 	if self:isCottonHarvester() then 
 		return false
 	end
+	--- Enables fuel save, while waiting for the rain to stop.
+	if self.combine:getIsThreshingDuringRain() then 
+		return true
+	end
     return not self:isFillableTrailerUnderPipe() and self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
