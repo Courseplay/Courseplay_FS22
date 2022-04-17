@@ -398,8 +398,10 @@ end
 
 --- Gets a specific value.
 function AIParameterSettingList:getValue()
-	--- In the simple user mode returns the default values.
-	if self.data.isExpertModeOnly and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
+	--- In the simple mode, the default value will be returned, but only in singleplayer.
+	if not g_currentMission.missionDynamicInfo.isMultiplayer and self.data.isExpertModeOnly 
+		and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
+		
 		if self.data.default then 
 			return self.data.default
 		end
