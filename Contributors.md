@@ -5,7 +5,6 @@
 * [schwiti6190](https://github.com/schwiti6190)
 
 ### Translators
-* Brazilian Portuguese: [Thodor12](https://github.com/Thodor12)
 * Chinese Simplified: [kgdtuu](https://github.com/kgdtuu)
 * Czech: [SniperKittenCZ](https://github.com/SniperKittenCZ), [chroja](https://github.com/chroja)
 * Danish: [o0bonde](https://github.com/o0bonde)
