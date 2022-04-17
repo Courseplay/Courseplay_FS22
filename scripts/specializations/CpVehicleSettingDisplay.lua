@@ -131,7 +131,7 @@ end
 --- Gets called by the active mini gui, as vehicle:onDraw() is otherwise not displayed.
 function CpVehicleSettingDisplay:onDraw()
 	local spec = self.spec_cpVehicleSettingDisplay
-	WorkWidthUtil.showWorkWidth(self,spec.workWidth:getValue(),spec.toolOffsetX:getValue(),spec.toolOffsetZ:getValue())
+	WorkWidthUtil.showWorkWidth(self,spec.workWidth:getValue(),spec.toolOffsetX:getValue(),0)
 end
 
 

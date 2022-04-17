@@ -114,7 +114,7 @@
 		<text name="CP_vehicle_setting_stopForUnload_tooltip" 											text="始终停车执行卸载。"/>
 
 		<text name="CP_vehicle_setting_selfUnload_title" 												text="收割机自助卸载"/>
-		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="收割机自动在田间或会合附近的拖车进行卸载，不支持多工具模式。"/>
+		<text name="CP_vehicle_setting_selfUnload_tooltip" 							  					text="收割机自动在田间或会合附近的拖车进行卸载。"/>
 
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_title" 									text="在第一个地头卸载"/>
 		<text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" 				  					text="收割机将在第一个地头呼叫拖车。"/>
@@ -240,6 +240,9 @@
 		<text name="CP_global_setting_title"															text="全局设置"/>
 		<text name="CP_global_setting_subTitle_general"													text="基本设置"/>
 
+		<text name="CP_global_setting_expertModeActive_title" 											text="专家模式"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="启用/禁用具有附加功能的专家模式。"/>
+
 		<text name="CP_global_setting_wageModifier_title" 												text="Cp帮手工资"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Cp帮手工资占普通帮手工资的百分比。"/>
 
@@ -249,6 +252,12 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="保持100%"/>
+
+		<text name="CP_global_setting_fuelThreshold_title" 												text="燃料临界值"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="如果燃料剩余量过低，司机将停止工作。"/>
+
+		<text name="CP_global_setting_brokenThreshold_title" 											text="损坏临界值"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="如果车辆或工具损坏过多，司机将停止工作。100%为关闭。"/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="用户设置"/>
 
@@ -322,7 +331,9 @@
 		<text name="CP_infoTexts_needsFilling"  														text="需要重新填充"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="需要卸载"/>
 		<text name="CP_infoTexts_workFinished"															text="完成工作"/>
-
+		<text name="CP_infoTexts_outOfMoney"															text="资金不足"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="等待雨停"/>
+		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="是否要将录制的任务保存为自定义田地 %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="要删除自定义田地吗 %s?"/>
@@ -347,25 +358,25 @@
 当前加载的任务将显示在地图上。
 全局设置总是可见的。
 为了生成任务路线并开始作业，您需要创建作业CP: 田地工作或CP: 扎捆/收集草垛，类似于官方的雇佣工人。
-		"/>
+"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
 为了开始你的第一个CP作业，你必须选择一辆车和一个支持当前任务的有效工具。
 然后,通过单击创建工作,您可以选择CP:田地工作或CP:扎捆/收集草垛。
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
 选择CP作业后，您需要将田地位置放置在田地中，以生成路线或在其上使用草垛收集功能。
 这个位置也大致控制着你的路线起点。
 如果你想雇佣官方助手开车到田地，那么你还需要把目标位置设置在接近田地工作起点的地方。
 工具横纵向设置仅在你想让多个工人在同一块田地中工作时使用。 为此，请查看下面的单独帮助菜单页面。 
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
 当田地的位置被正确地放置在田地中时，您将看到田地的边界绘制在地图上。
 如果您正在创建CP:田地工作，那么您将获得对任务路线创建设置的访问权。 
-		"/>
+"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
 现在可以直接从菜单中启动车辆了。 助手将驾驶到目标位置，到了目的地CP工作将自动接管。
 你也可以从迷你HUD启动车辆，如果你驾驶的车辆离田地很近，或者使用AutoDrive mod到达离田地很近的地方，CP作业将会自动接管。
-		"/>
+"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="工作路线创建"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
@@ -373,7 +384,7 @@
 如果你是新手，你应该从改变地头数量开始。
 你可以随时改变其它设置，点击生成天地工作路线，看看特定的设置对工作路线有什么影响。
 最好的方法是使用它，并检查不同的设置对不同的田地有什么影响。
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
 基础知识：
 你在这里看到的前几个设置，是非常基本的。
@@ -388,12 +399,12 @@
 - 要跳过的路径：这是一个非常有用的选项，可以加快您的工作，使车辆不会在地头的转向、倒车时花费太多的时间。
 - 每块土地的行数:这只中心路径被设置为土地时才有影响，并将告诉生成器每块土地应该有多少行。行越多，产生的土地就越少。
 - 方向角度:往返方向设置为手动时,该设置将影响生成方向。
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
 田间地头设置，只会当你设置了至少1个地头数量时显示。
 你可以选择从哪里开始，转角设置，方向和地头重叠。
 强烈建议使用地头，以防止工具在转弯时离开田地范围。
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
 - 开始工作:如AI扩展菜单中所述，田地位置用于设置田地工作过程的开始或结束位置。
 当设置从地头出发时，它会告诉起点应该在哪里。当更改为从路径点开始时，它将告诉在哪里结束工作。
@@ -402,12 +413,12 @@
 循环会根据当前选定的车辆转弯半径，以获得该工具的最佳圆角。 
 - 地头方向： 从左往右或从右往左。 这对于联合收割机和收割机来说可能很重要，具体取决于管道或传送带的哪一侧。 
 - 地头重叠：所有地头应有多少重叠百分比。 第一个与字田地边界没有重叠，但中间的将与其邻居重叠。
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
 田地边界说明：
 正值会减小田地大小以在工作区域周围添加缓冲区，以防您田地边界附近有障碍物。 
 负值将工作区域扩大到田地边界之外，以覆盖未完全检测到的田地边界。 
-		"/>
+"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="任务管理"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
@@ -417,7 +428,9 @@
 任务文件的保存位置是：..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (或vanilla，例如MapUS).
 任务管理的工作方式与您在 FS19 中习惯的方式不同。 
 任务被保存到文件夹中，该文件夹将显示在左侧。 这意味着您至少需要一个文件夹才能开始将任务保存到其中。
-文件夹可以通过屏幕底部的按钮简单地创建并输入名称。 		"/>
+文件夹可以通过屏幕底部的按钮简单地创建并输入名称。
+Courses are only saved localy for now.
+"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
 加载任务后，您可以通过单击保存任务按钮，然后单击文件夹来保存它。  然后会出现一个弹出窗口，您可以在其中输入任务名称。 
@@ -425,13 +438,13 @@
 要从您的车辆中删除任务，请单击“清除当前任务”按钮。
 要加载任务，您必须先选择文件夹，单击加载任务按钮，然后只需单击要加载的任务。 
 单击更改模式会激活任务管理的编辑模式。 
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
 在编辑模式处于活动状态时，您有以下选项：
 - 将任务移动到另一个文件夹。
 - 删除任务或文件夹。 
 - 重命名任务或文件夹。 
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
 对于移动任务： 
   1) 单击屏幕底部的移动按钮。 
@@ -440,7 +453,7 @@
 要重命名，您只需单击重命名按钮，然后单击文件夹或任务。 然后只需输入新名称。 
 要删除任务或文件夹，请单击删除按钮，然后单击要删除的文件夹或任务。 
 如果要删除文件夹，文件夹必须为空。 
-		"/>
+"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="迷你HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
@@ -462,7 +475,7 @@ O：开始/停止录制自定义田间任务。
 P：从车辆上移除路线
 Q: 更改 开、关和 仅开始/停止 之间的课程可见性。
 R: 从剪贴板中删除复制的路线。
-		"/>
+"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="自定义田地"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
@@ -470,37 +483,37 @@ R: 从剪贴板中删除复制的路线。
 第一个是使用HUD的记录功能。
 开始记录并记录田地边界。
 完成后，再次按下按钮，系统会询问您是否要保存它。
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="查看 AI 菜单，您将看到记录的田地边界。
 通过单击名称，您将获得删除或重命名的选项。 
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="第二个选项是在 AI 菜单地图上绘制它。
 没有选择拖拉机或其他车辆（左键单击地图上的某处），您可以选择绘制自定义田地。
 开始时，将显示文本右键单击绘制自定义田地线。
 使用鼠标右键单击要开始的位置。
 下一次右键单击将从您的起点画一条线到您的第二个位置，这将是下一条线的起点。
-		"/>
+"/>
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="多工具与车队"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
 一个车队最多可以有 5 辆车在同一田地上一起工作（也称为多工具任务）。 
-		"/>
+"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
 加载多工具任务后，您需要为驾驶员选择车道。 
 这些车道的名称总是相同的： 
 左（1），左（2），右（1），右（2）。 
  2辆车有左（1）和右（1），4 辆车有左（2）和右（2）。 
 拥有 3 或 5 辆车时，您还将获得中间选项。 
-		"/>
+"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 只有当车辆具有相同的多工具路线并加载相同的名称时，车队才能工作。 
 它们会自动与前面的车辆保持一小段距离。 
 此外，当打包机在同一路线上的联合收割机后面行驶时，也会应用车辆距离功能。
-		"/>
+"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 车辆距离设置更改车辆之间的距离。
 所有具有相同任务名称的车辆的距离将自动设置为车队中所有车辆的最大值。 
-		"/>
+"/>
 		<!--Wrap and Collect-->
 		<text name="CP_help_page_wrapCollect_title"														text="扎捆和草垛收集"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
@@ -509,20 +522,20 @@ R: 从剪贴板中删除复制的路线。
 然而，这可能很棘手，因为有些草垛喜欢滚动或飞离路径。
 此时，我们的 扎捆和草垛收集 作业类型可以提供帮助，因为它不需要创建任务路径。 
 留在场地上，只需从 迷你HUD 启动司机，使用扎捆/草垛收集或使用 AI 地图将他送到场地开始工作。 
-		"/>
+"/>
 		<text name="CP_help_page_wrapBasic_text"														text="
 扎捆包非常简单。 加载您的打包机任务并像任何其他田地工作一样开始，或者没有任务，从 迷你HUD 或 AI 菜单开始扎捆/草垛收集。 
-		"/>
+"/>
 		<text name="CP_help_page_wrapFunction_text"														text="
 使用路线时，助手以预设工具纵横向调整行驶，因此草垛打包机位于路线中间。 
 如果没有路线，Courseplay 会扫描田地以识别未收集的草垛，并使用路径查找寻找最接近收集车辆的草垛。 
 如果草垛在车前或太靠近田地边缘，则会自动倒车防止事故的发生。 
-		"/>
+"/>
 		<text name="CP_help_page_collectBasic_text"														text="
 收集草垛的工作是类似的，有或没有路线。
 当收集拖车已满时，它将停止工作并告诉玩家需要卸载它。如果你有AutoDrive
 安装后，您可以使用它运行一个自动卸载草垛拖车的任务。
-		"/>
+"/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="葡萄树的工作"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
@@ -531,25 +544,25 @@ R: 从剪贴板中删除复制的路线。
 每根藤蔓的末端和起点，也应该大致相同的长度。
 葡萄藤在现有的田地上，您可以像平常一样直接启动任务。
 如果它们不在田里，您必须翻一下人工智能菜单，把田标放在葡萄藤上。
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 葡萄树任务的选择较少。
 根据工具的不同，你必须选择在藤蔓上工作还是在藤蔓旁边工作。
 例如，默认的收割机需要在葡萄藤上行驶和工作。
      预修剪机需要从葡萄藤的左边行驶，但在葡萄藤上工作，所以你必须选择在葡萄藤上工作，但需要一定的横纵向行驶调整。
      喷雾器需要开到葡萄藤旁边，需要跳过一行，因为它的喷雾器向左和向右。
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
 葡萄树任务应该在葡萄树上创建，因为它需要在有葡萄树的路线上工作。
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 修剪机对葡萄藤进行修剪，所以任务必须在葡萄藤上创建。
 设置工具与拖拉机的横纵方向调整，以便在葡萄藤之间工作.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
 喷雾器工作在葡萄藤旁边，所以它必须从葡萄藤上向左或向右行驶。
 由于喷雾器可以同时在左右藤上工作，我们可以跳过一行。
-		"/>
+"/>
 
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: 选择下一个调试通道。"/>

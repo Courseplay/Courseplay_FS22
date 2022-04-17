@@ -28,6 +28,8 @@ CpSettingsUtil.classTypes = {
 			- isDisabled (string): function called from the parent container, to disable all setting under the subtitle.
 			- isVisible (string): function called from the parent container, to change the visibility of all setting under the subtitle.
 
+			- isExpertModeOnly(bool): are the setting visible in the expert version?, default = false
+
 			- Setting(?)
 				- classType (string): class name
 				- name (string): name of the setting 
@@ -37,6 +39,7 @@ CpSettingsUtil.classTypes = {
 				- defaultBool(bool) : default value to be set. (optional)
 				- textInput(bool) : is text input allowed ? (optional), every automatic generated number sequence is automatically allowed.
 				- isUserSetting(bool): should the setting be saved in the game settings and not in the savegame dir.
+				- isExpertModeOnly(bool): is the setting visible in the expert version?, default = false
 
 				- min (int): min value
 				- max (int): max value
@@ -76,6 +79,7 @@ function CpSettingsUtil.init()
 	
 	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
 	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
+	schema:register(XMLValueType.BOOL, key.."#isExpertModeOnly", "Is enabled in simple mode?", false) -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?)"
     schema:register(XMLValueType.STRING, key.."#name", "Setting name",nil,true)
@@ -85,7 +89,8 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.INT, key.."#default", "Setting default value") -- optional
 	schema:register(XMLValueType.BOOL, key.."#defaultBool", "Setting default bool value") -- optional
 	schema:register(XMLValueType.BOOL, key .. "#textInput", "Setting input text allowed.") --optional
-	schema:register(XMLValueType.BOOL, key .. "#isUserSetting", "Setting will be saved in the gameSettings file.") --optional
+	schema:register(XMLValueType.BOOL, key .. "#isUserSetting", "Setting will be saved in the gameSettings file.", false) --optional
+	schema:register(XMLValueType.BOOL, key.."#isExpertModeOnly", "Is enabled in simple mode?", false) -- optional
 
 	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
 	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
@@ -141,12 +146,14 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 
 		local isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
 		local isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
+		local isExpertModeOnly = xmlFile:getValue(masterKey.."#isExpertModeOnly",false)
 
 		local subTitleSettings = {
 			title = subTitle,
 			elements = {},
 			isDisabledFunc = isDisabledFunc,
 			isVisibleFunc = isVisibleFunc,
+			isExpertModeOnly = isExpertModeOnly,
 			class = class
 		}
 		xmlFile:iterate(masterKey..".Setting", function (i, baseKey)
@@ -170,6 +177,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
 			settingParameters.textInputAllowed = xmlFile:getValue(baseKey.."#textInput",false)
 			settingParameters.isUserSetting = xmlFile:getValue(baseKey.."#isUserSetting",false)
+			settingParameters.isExpertModeOnly = xmlFile:getValue(baseKey.."#isExpertModeOnly",false)
 
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")
@@ -302,6 +310,10 @@ function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout,settingsBySub
 			valid = true
 			local isDisabledFunc = settingsBySubTitle[j].isDisabledFunc
 			local isVisibleFunc = settingsBySubTitle[j].isVisibleFunc
+			local isVisibleExpertMode = settingsBySubTitle[j].isExpertModeOnly
+			if isVisibleExpertMode and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
+				valid = false
+			end
 			local class = settingsBySubTitle[j].class
 			if vehicle then 
 				if class[isVisibleFunc] then 
@@ -318,6 +330,7 @@ function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout,settingsBySub
 					element:setDisabled(class[isDisabledFunc](vehicle))
 				end
 			end
+			
 			element:setVisible(valid)
 			j =  j + 1
 		end

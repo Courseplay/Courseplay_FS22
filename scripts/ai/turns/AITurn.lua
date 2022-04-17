@@ -970,9 +970,11 @@ StartRowOnly = CpObject(CourseTurn)
 ---@param fieldWorkCourse Course field work course
 ---@param workWidth number
 function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
-	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'AlignmentTurn')
+	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'StartRow')
 	self.turnCourse = startRowCourse
-	TurnManeuver.setLowerImplements(self.turnCourse, math.max(math.abs(turnContext.frontMarkerDistance), self.steeringLength))
+	-- add a turn ending section into the row to make sure the implements are lowered correctly
+	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
+	TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
 	self.ppc:setCourse(self.turnCourse)
 	self.ppc:initialize(1)
 	self.state = self.states.TURNING

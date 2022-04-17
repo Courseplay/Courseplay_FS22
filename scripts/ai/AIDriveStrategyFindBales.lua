@@ -54,6 +54,10 @@ function AIDriveStrategyFindBales:delete()
     TurnContext.deleteNodes(self.turnNodes)
 end
 
+function AIDriveStrategyFindBales:getGeneratedCourse(jobParameters)
+    return nil
+end
+
 function AIDriveStrategyFindBales:startWithoutCourse()
     -- to always have a valid course (for the traffic conflict detector mainly)
     self.course = self:getStraightForwardCourse(25)
@@ -111,6 +115,9 @@ function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
         self.baleWrapperController:setDriveStrategy(self)
         table.insert(self.controllers, self.baleWrapperController)
     end
+    self:addImplementController(vehicle, MotorController, Motorized, {})
+    self:addImplementController(vehicle, WearableController, Wearable, {})
+
 end
 
 -----------------------------------------------------------------------------------------------------------------------

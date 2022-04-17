@@ -73,7 +73,7 @@
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Parar no final"/>
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Permitir marcha a ré no caminho da rota"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Quando aplicável, permitir gere rotas contendo marcha a ré"/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Quando aplicável, permitir gerar rotas contendo marcha a ré"/>
 
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Permiti a rota nas manobras"/>
 		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Permite usar rotas em curvas, para evitar obstáculos e plantações"/>
@@ -231,12 +231,15 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Implemento po rota."/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Quantos implementos podem trabalhar juntas. Mais informações no menu de ajuda."/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Pular fileiras de vinhas"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Pular fileiras de videiras só devem ser usadas quando o implemento funcionar em ambos os lados (esquerda e direita)."/>
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Configurações global"/>
 		<text name="CP_global_setting_subTitle_general"													text="Configurações Basicas"/>
+
+		<text name="CP_global_setting_expertModeActive_title" 											text="Modo especialista "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Ativa/desativa o modo especialista com recursos adicionais."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Cp pagamento ao motorista"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Cp pagamento ao motorista por porcentagem"/>
@@ -247,6 +250,12 @@
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Manter sempre reparado"/>
+
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Limite de combustível"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Motorista será liberado, se a porcentagem de combustível for menor."/>
+
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Limite de danos"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Motorista será liberado, se o veículo ou implemento estiver 100% danificado."/>
 		
 		<text name="CP_global_setting_subTitle_userSettings"											text="Configurações do usuário"/>
 
@@ -281,7 +290,7 @@
 		<text name="CP_courseManager_no_current_course"													text="nenhum"/>
 		<text name="CP_courseManager_temporary_course"													text="temporário"/>
 
-		<text name="CP_courseManager_change_mode"														text="Change mode"/>
+		<text name="CP_courseManager_change_mode"														text="Mudar modo"/>
 
 		<text name="CP_courseManager_load_courses"														text="Carregar rota"/>
 		<text name="CP_courseManager_save_courses"														text="Salvar rota"/>
@@ -319,7 +328,9 @@
 		<text name="CP_infoTexts_needsFilling"  														text="Precisa ser recarregado"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="Precisa ser descarregado"/>
 		<text name="CP_infoTexts_workFinished"															text="Trabalho feito"/>
-
+		<text name="CP_infoTexts_outOfMoney"															text="Sem dinheiro"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Esperando a chuva passar"/>
+		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo customizado %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Deseja excluir o campo customizado %s?"/>
@@ -345,26 +356,26 @@ Primeiro você precisa selecionar um veículo no menu AI para criar uma rota de 
 A rota carregada atualmente será exibido no mapa.
 As configurações globais estão sempre visíveis.
 Para criar uma rota e iniciar os trabalhos do courseplay, você precisará criar o trabalho CP: Trabalho no campo ou CP: fardos coletar/embalar, similar ao Giants ajuda.
-		"/>
+"/>
 		<text name="CP_help_page_startJobMenuFunctions_text"											text="
 Para começar com seu primeiro trabalho de CP, você terá que selecionar um veículo e um possível implemento válido que seja suportado para o trabalho.
 Então, clicando em criar trabalho, você pode selecionar CP: Trabalho no campo ou CP: fardos coletar/embalar
 com um empacotador de fardos ou coletor de fardos anexado.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuBase_text"													text="
 Com um trabalho de CP selecionado, você precisaria colocar a posição de campo em um campo para criar a rota ou usar o localizador de fardos nele.
 A posição também controla aproximadamente o ponto de partida da rota.
 Se você quiser usar o ajudante do Giants para dirigir até o campo, também precisará definir a posição alvo perto do ponto de partida do percurso.
 A configuração de deslocamento de pista só é usada se você quiser ter vários ajudantes trabalhando no mesmo campo. Para isso, verifique a página separada do menu de ajuda abaixo.
-		"/>
+"/>
 		<text name="CP_help_page_readyJobMenuFunctions_text"											text="
 Quando a posição do campo é colocada corretamente em um campo, você verá a borda do campo desenhada no mapa.
 Se você estiver criando um trabalho CP: Trabalho no campo, você terá acesso às configurações do gerador de rota. 
-		"/>
+"/>
 		<text name="CP_help_page_JobMenuExtras_text"													text="
 Agora é possível iniciar o motorista diretamente do menu. O ajuda do Giants irá dirigir até a posição alvo e a partir daí o trabalho de CP assume automaticamente.
 Alternativamente, você também pode iniciar o motorista a partir do HUD se estiver perto do campo com o veículo ou usando o mod AutoDrive para entregar o trabalho de CP perto do campo.
-		"/>
+"/>
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
@@ -372,7 +383,7 @@ Cada rota de trabalho de campo é criado pelo gerador de rotas. Esta é uma ferr
 Se você é novo nisso, provavelmente deve começar alterando apenas a configuração da quantidade de cabeceira.
 Depois disso, você sempre pode alterar os outros valores e clicar em gerar rotas e dar uma olhada, que impacto certos valores têm na rota.
 Experimentar e verificar o impacto que as diferentes configurações em diferentes campos têm é a melhor maneira de se acostumar com isso.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorBaseFunctions_text"										text="
 Fundamentos:
 Os primeiros valores que você vê aqui são coisas realmente básicas.
@@ -392,7 +403,7 @@ Espiral, Pista e Terrenos têm suas próprias vantagens específicas sobre os ou
 As configurações de cabeceira só serão exibidas quando você definir pelo menos 1 em Número de cabeceiras.
 Você ganha opções de por onde começar, configurações de canto, direção e sobreposição.
 As cabeceiras são altamente recomendadas para evitar que os implementos saiam do campo ao virar.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorHeadlandFunctions_text"									text="
 - Iniciar trabalho em: Conforme mencionado no menu AI estendido, a posição de campo é usada para definir a posição inicial ou final para a rota de trabalho de campo.
 Quando definido para iniciar na cabeceira, informa onde deve ser a largada. Quando alterado para iniciar em fileiras, ele informará onde terminar o trabalho.
@@ -401,12 +412,12 @@ Eles podem ser reduzidos com sobreposição, mas nunca desaparecem. Sharp gerar�
 Round levará em consideração o raio de giro dos veículos selecionados atualmente para ter o melhor canto arredondado para esse implemento.
 - Direção da cabeceira: no sentido horário ou anti-horário. Isso pode ser importante para colheitadeiras e colheitadeiras, dependendo de qual lado está o tubo ou a correia transportadora.
 - Sobreposição de cabeceira: Qual a % de sobreposição que todas as cabeceiras devem ter. O primeiro não terá sobreposição com a borda do campo, mas os internos se sobreporão ao vizinho.
-		"/>
+"/>
 		<text name="CP_help_page_courseGeneratorExtras_text"											text="
 Explicação da margem do campo:
 Valores positivos reduzem o tamanho do campo para adicionar um buffer ao redor da área trabalhada caso haja obstáculos próximos à borda do campo.
 Os valores negativos aumentam a área trabalhada além do limite do campo para cobrir as bordas do campo que não são perfeitamente detectadas.
-		"/>
+"/>
 		<!--CourseManager-->
 		<text name="CP_help_page_courseManager_title"													text="Course manager"/>
 		<text name="CP_help_page_courseManagerBase_text"												text="
@@ -417,7 +428,9 @@ Este recurso também permite que você colete a fileira para trás por uma colhe
 O local para salvar os arquivos de rotas é: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (ou para vanilla, por exemplo, MapUS).
 O gestor de rotas funciona de forma diferente do que você está acostumado no FS19.
 As rotas são salvas em pastas, que serão exibidas à esquerda. Isso significa que você precisaria de pelo menos uma pasta para começar a salvar rotas.
-As pastas podem ser criadas simplesmente pelo botão na parte inferior da tela e digitando um nome.		"/>
+As pastas podem ser criadas simplesmente pelo botão na parte inferior da tela e digitando um nome.
+As rotas serão salvas apenas localmente por enquanto.
+"/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
 Quando você tem uma rota carregado, você pode salvá-lo clicando no botão salvar rota e depois na pasta. Em seguida, uma janela pop-up aparecerá onde você pode inserir o nome da sua rota.
@@ -425,13 +438,13 @@ O nome e o local podem ser alterados posteriormente.
 Para remover a rota do seu veículo, clique no botão 'Limpar rota atual'.
 Para carregar uma rota você terá que selecionar a pasta primeiro, clicar no botão carregar rota e depois simplesmente clicar na rota que deseja carregar.
 Clicar no modo de alteração ativa o modo de edição do gerenciador de rotas.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEdit_text"												text="
 Com o modo de edição ativo você tem estas opções:
 - Mover uma rota para outra pasta.
 - Excluir uma rota ou pasta.
 - Renomear rota ou pasta.
-		"/>
+"/>
 		<text name="CP_help_page_courseManagerEditFunctions_text"										text="
 Para mover uma rota:
    1) Clique no botão mover na parte inferior da tela.
@@ -440,7 +453,7 @@ Para mover uma rota:
 Para renomear, basta clicar no botão renomear e depois ns pasta ou rota. Em seguida, basta digitar o novo nome.
 Para excluir uma rota ou pasta, clique no botão excluir e depois na pasta ou rota que deseja excluir.
 As pastas devem estar vazios se você quiser excluí-los.
-		"/>
+"/>
 		<!--MiniHud-->
 		<text name="CP_help_page_minihud_title"															text="Mini HUD"/>
 		<text name="CP_help_page_minihud_text"															text="
@@ -464,7 +477,7 @@ O: Iniciar/parar a gravação de campos customizados.
 P: Remove a rota do veículo.
 Q: Altera a visibilidade da rota entre: apenas ligar, desligar e iniciar/parar.
 R: Remove a rota copiada da área de transferência.
-		"/>
+"/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Campo Customizado"/>
 		<text name="CP_help_page_customFieldRecord_text"												text="
@@ -472,11 +485,11 @@ Há duas formas de criar um campo customizado.
 A primeira é usar a função de gravar do HUD.
 Inicie a gravação na borda do campo.
 Uma vez feito, pressione o botão novamente e você será perguntado se deseja salvá-lo.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDone_text"													text="
 No Menu AI, você verá sua borda de campo gravada.
 Ao clicar no nome, você terá a opção de excluí-lo ou renomeá-lo.
-		"/>
+"/>
 		<text name="CP_help_page_customFieldDraw_text"													text="
 A segunda opção é desenhar o campo customizado no mapa do menu AI.
 Se nenhum ponto de acesso estiver selecionado, você pode pressionar o botão desenhar campo customizado abaixo.
@@ -484,28 +497,28 @@ Depois disso, um texto aparece na parte superior da tela.
 Comece clicando com o botão direito do mouse para definir a posição inicial.
 Os próximos cliques criarão linhas para o clique anterior.
 Clique no botão salvar na parte inferior para terminar de desenhar o campo	
-		"/>
+"/>
 		<!--Multitool and Convoy-->
 		<text name="CP_help_page_multiConvoy_title"														text="Multi implementos e Comboio"/>
 		<text name="CP_help_page_multitoolBasic_text"													text="
 É possível ter até 5 veículos trabalhando juntos no mesmo campo em um comboio (também chamado de rota multi implementos).
-		"/>
+"/>
 		<text name="CP_help_page_multitoolFunction_text"												text="
 Uma vez que uma rota multi implementos é carregado, você precisará selecionar a pista para o motorista.
 Essas pistas são sempre nomeadas da mesma forma:
 esquerda(2), esquerda(1), centro, direita(1), direita(2).
 2 veículos terão esquerda(1) e direita(1), 4 terão esquerda(2) e direita(2).
 Com 3 ou 5 veículos você também ganhará a opção de centro.
-		"/>
+"/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 O comboio só funciona se os veículos tiverem a mesma rota de multi implementos com o mesmo nome carregado.
 Eles manterão automaticamente uma pequena distância em direção ao veículo à frente.
 Além disso, o recurso de comboio também é aplicado quando, por exemplo, uma enfardadeira está dirigindo atrás de uma colheitadeira na mesma rota.
-		"/>
+"/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 A configuração do veículo de distância do comboio altera a distância entre os veículos.
 A distância de todos os veículos com o mesmo noma da rota será automaticamente definida para o valor mais alto de todos os veículos do comboio.
-		"/>
+"/>
 		<!--Wrap and Collect-->
 		<text name="CP_help_page_wrapCollect_title"														text="Fardos coletar e embalar"/>
 		<text name="CP_help_page_wrapCollectBasic_text"													text="
@@ -514,7 +527,7 @@ A primeira é carregar a mesma rota que você usou para sua enfardadeira e deixa
 No entanto, isso pode ser complicado, pois alguns fardos adoram rolar ou voar para fora do caminho.
 Neste ponto, nosso tipo de trabalho coletar e embalar pode ajudar, pois não precisa de uma rota.
 Fique no campo e apenas inicie o motorista a partir do HUD com os fardos coletar/embalar ou use o Mapa de IA para enviá-lo a um campo para iniciar o trabalho.		
-		"/>
+"/>
 		<text name="CP_help_page_wrapBasic_text"														text="
 Embalar fardos é muito simples. Carregue uma rota da sua enfardadeira e comece como qualquer outro trabalho de campo, ou sem uma rota,
 inicie-o com o fardos coletar/embalar no HUD ou no Menu AI.
@@ -524,12 +537,12 @@ Ao usar um curso, o motorista dirige com um deslocamento predefinido para que a 
 Sem uma rota, o Courseplay examina o campo em busca de fardos desembalados e usa o pathfinder para encontrar uma maneira de
 de buscar fardo mais próximo para embalar.
 O recuo automático se um fardo estiver na frente do veículo ou se estivermos muito perto da borda do campo deve evitar acidentes.		
-		"/>
+"/>
 		<text name="CP_help_page_collectBasic_text"														text="
 A coleta de fardos funciona da mesma forma, com ou sem rota.
 Quando o coletor estiver cheio, ele interromperá o trabalho e informará ao usuário que precisa ser descarregado. Se você tiver o AutoDrive
 instalado, você pode usá-lo para executar e descarregar o coletor de fardos automaticamente.
-		"/>
+"/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Trabalho na videira"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
@@ -545,18 +558,18 @@ Dependendo do implemento, você deve optar por trabalhar nas videiras ou ao lado
 Por exemplo. a colheitadeira padrão precisa dirigir e trabalhar na videira.
       O pré-podador precisa dirigir para a esquerda das videiras, mas funciona na videira, então você deve optar por trabalhar na videira, mas dirigir com um deslocamento.
       Os pulverizadores precisam dirigir ao lado das videiras e precisam pular uma fileira, pois pulveriza para a esquerda e para a direita.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
 Uma rota de videira deve ser criado nas videiras, pois ele deve conduzir e trabalhar nas videiras.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkPruner_text"													text="
 O pré-podador trabalha nas videiras, então a rota deve ser criada nas videiras.
 Os implementos vêm com um deslocamento para o trator, para que o trator se mova entre as videiras.
-		"/>
+"/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
 O pulverizador trabalha próximo às videiras, por isso deve dirigir para a esquerda ou para a direita das videiras.
 Como o pulverizador pode trabalhar nas videiras esquerda e direita ao mesmo tempo, podemos pular uma fileira.
-		"/>
+"/>
 		
 	<!-- Input bindings -->
 		<text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" 												text="CP: Selecione próximo canal debug."/>

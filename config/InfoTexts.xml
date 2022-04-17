@@ -5,17 +5,26 @@
 	name: The name for the info text to call it in the lua scripts.
 	text: The button text shown.
 
+	optional: 
+		hasFinished: Called when the driver has finished.
+		event: Event called, when the info text is activated.
+		aiMessageClass: string reference to a giants ai message.
+
 	The priority is from top to bottom, which makes the first the highest priority in the hud.
+
+	TODO: AIMessageErrorBlockedByObject
 -->
 
 <InfoTexts prefix="CP_infoTexts_">
-	<InfoText name="IS_STUCK"								text="isStuck"/>
-	<InfoText name="TRAFFIC"  								text="isInTraffic"/>
+	<InfoText name="IS_STUCK"					text="isStuck"/>
+	<InfoText name="TRAFFIC"  					text="isInTraffic"/>
 
-	<InfoText name="FUEL_IS_LOW"							text="shouldRefuel"/>
-	<InfoText name="FUEL_IS_EMPTY"  						text="needsFuel"/>
-	<InfoText name="IS_COMPLETELY_BROKEN"  					text="needsRepair"/>
-	<InfoText name="NEEDS_FILLING"  						text="needsFilling"/>
-	<InfoText name="NEEDS_UNLOADING"  						text="needsUnloading"/>
-	<InfoText name="WORK_FINISHED"							text="workFinished"/>
+	<InfoText name="OUT_OF_MONEY"				text="outOfMoney"	  class="AIMessageErrorOutOfMoney"/>
+	<InfoText name="FUEL_IS_EMPTY"  			text="needsFuel"      hasFinished="true" event="onCpFuelEmpty" class="AIMessageErrorOutOfFuel"/>
+	<InfoText name="IS_COMPLETELY_BROKEN"  		text="needsRepair"    hasFinished="true" event="onCpBroken" class="AIMessageErrorVehicleBroken"/>
+	<InfoText name="NEEDS_FILLING"  			text="needsFilling"   hasFinished="true" event="onCpEmpty" class="AIMessageErrorOutOfFill"/>
+	<InfoText name="NEEDS_UNLOADING"  			text="needsUnloading" hasFinished="true" event="onCpFull" class="AIMessageErrorIsFull"/>
+	<InfoText name="FUEL_IS_LOW"				text="shouldRefuel"/>
+	<InfoText name="WAITING_FOR_RAIN_TO_FINISH" text="waitForRainToFinish"/>
+	<InfoText name="WORK_FINISHED"				text="workFinished"   hasFinished="true" event="onCpFinished" class="AIMessageSuccessFinishedJob"/>
 </InfoTexts>
