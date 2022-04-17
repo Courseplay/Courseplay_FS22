@@ -239,8 +239,8 @@
 		<text name="CP_global_setting_title"															text="Ajustes globales"/>
 		<text name="CP_global_setting_subTitle_general"													text="Ajustes globales"/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Modo Experto"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Habilita/Desabilita el modo experto con características adicionales."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Salarios de conductores CP"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Salarios de conductores CP en porcentaje"/>
