@@ -4,15 +4,14 @@ name: Update contributors
 # Controls when the workflow will run
 on: 
   push:
-    branches:
-      - main
-    paths:
-      - "**/translations/**"
 
 # The list of jobs this workflow executes
 jobs:
-  update-contributors:
+  get_all_files:
+    name: Get all files
     runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.getcommits.outputs.files }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -22,12 +21,35 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - name: Get changed files
-        uses: tj-actions/changed-files@v14.6
+      - name: Filter commits of author
+        id: getcommits
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const promises = context.payload.commits
+              .filter(commit => commit.author.username === context.actor)
+              .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id], {
+                silent: true
+              }));
+            const output = (await Promise.all(promises))
+              .flatMap(m => m.stdout.split(/\r?\n/))
+              .map(m => m.trim())
+              .filter(f => f !== "");
+            console.log(output);
+            core.setOutput("files", JSON.stringify(output));
+  update_contributors:
+    name: Update contributors
+    runs-on: ubuntu-latest
+    needs: [get_all_files]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
-          node index.js ${{ github.actor }} ${{ steps.changed-files.outputs.all_changed_files }}
+          node index.js ${{ github.actor }} ${{ join(fromJSON(needs.get_all_files.outputs.files), ' ') }}
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
