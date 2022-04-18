@@ -54,24 +54,28 @@ function ProximitySensor:update()
     -- already updated in this loop, no need to raycast again
     if g_updateLoopIndex == self.lastUpdateLoopIndex then return end
     self.lastUpdateLoopIndex = g_updateLoopIndex
-    local x, y, z = localToWorld(self.node, self.xOffset, 0, 0)
+    local x, _, z = localToWorld(self.node, self.xOffset, 0, 0)
+    -- we want the rays run parallel to the terrain, so always use the terrain height (because the node itself
+    -- can be under ground at sudden elevation changes, even node y + height, and when the ray starts from under
+    -- the ground, it seems to cause a hit, even if it should not for the terrain
+    local y1 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
     -- get the terrain height at the end of the raycast line
     local tx, _, tz = localToWorld(self.node, self.dx + self.xOffset, 0, self.dz)
     local y2 = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tx, 0, tz)
     -- make sure the raycast line is parallel with the ground
-    local ny = (y2 - y) / self.range
+    local ny = (y2 - y1) / self.range
     local nx, _, nz = localDirectionToWorld(self.node, self.lx, 0, self.lz)
     self.distanceOfClosestObject = math.huge
     self.objectId = nil
     if self.enabled then
         local raycastMask = CollisionFlag.STATIC_OBJECTS + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
-        raycastClosest(x, y + self.height, z, nx, ny, nz, 'raycastCallback', self.range, self, raycastMask)
-        --DebugUtil.drawDebugLine(x, y + self.height, z, x + 5 * nx, y + self.height + 5 * ny, z + 5 * nz, 0, 1, 0)
+        raycastClosest(x, y1 + self.height, z, nx, ny, nz, 'raycastCallback', self.range, self, raycastMask)
+        --DebugUtil.drawDebugLine(x, y1 + self.height, z, x + 5 * nx, y1 + self.height + 5 * ny, z + 5 * nz, 0, 1, 0)
     end
     if CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) and self.distanceOfClosestObject <= self.range then
         local green = self.distanceOfClosestObject / self.range
         local red = 1 - green
-        DebugUtil.drawDebugLine(x, y + self.height, z, self.closestObjectX, self.closestObjectY, self.closestObjectZ, red, green, 0)
+        DebugUtil.drawDebugLine(x, y1 + self.height, z, self.closestObjectX, self.closestObjectY, self.closestObjectZ, red, green, 0)
     end
 end
 
