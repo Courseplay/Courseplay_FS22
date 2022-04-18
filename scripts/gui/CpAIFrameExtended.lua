@@ -24,9 +24,10 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	local xmlFile = loadXMLFile("Temp", Utils.getFilename("config/gui/CourseGeneratorSettingsFrame.xml",Courseplay.BASE_DIRECTORY))
 	g_gui:loadGuiRec(xmlFile, "CourseGeneratorLayout", element, self)
-	element:updateAbsolutePosition()
 	delete(xmlFile)
 	self:exposeControlsAsFields()
+	self.courseGeneratorLayout:onGuiSetupFinished()
+	element:updateAbsolutePosition()
 
 	self.drawingCustomFieldHeader:setVisible(false)
 	self.drawingCustomFieldHeader:setText(g_i18n:getText("CP_customFieldManager_draw_header"))
@@ -216,9 +217,6 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 		self.courseGeneratorHeader:setText(title)
 		vehicle:validateCourseGeneratorSettings()
 		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )
-		self.courseGeneratorLayoutElements.elements = {}
-		CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
 		CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements,settingsBySubTitle,vehicle)
 	end
 end
