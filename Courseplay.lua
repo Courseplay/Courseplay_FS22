@@ -123,12 +123,16 @@ function Courseplay:setupGui()
 		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
 	end
 	
+	--- As precision farming decided to be moved in between the normal map and the ai map,
+	--- we move it down one position.
+	local pos = g_modIsLoaded["FS22_precisionFarming"] and 4 or 3
+
 	CpGuiUtil.fixInGameMenuPage(vehicleSettingsFrame, "pageCpVehicleSettings",
-			{896, 0, 128, 128}, 3, predicateFunc)
+			{896, 0, 128, 128}, pos + 1, predicateFunc)
 	CpGuiUtil.fixInGameMenuPage(globalSettingsFrame, "pageCpGlobalSettings",
-			{768, 0, 128, 128}, 4, function () return true end)
+			{768, 0, 128, 128}, pos + 1, function () return true end)
 	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
-			{256, 0, 128, 128}, 5, predicateFunc)
+			{256, 0, 128, 128}, pos + 1, predicateFunc)
 	CpGuiUtil.fixInGameMenu()
 	self.infoTextsHud = CpHudInfoTexts()
 
