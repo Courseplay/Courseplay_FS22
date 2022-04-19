@@ -362,10 +362,10 @@ What can you do with Courseplay:
 - Create custom fields with recording or drawing on the AI Map.
 - Do fieldwork with up to 5 Vehicles in a convoy.
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, wich works in most situations.
-That way, we try to help Users to get easier into Courseplay without being knocked off from all the settings.
+What is the expert mode:
+When the expert Mode is deactivated, you only gain access to some settings.
+The other settings are hidden and set to their default values, wich works in most situations.
+This allows new users an easier time without getting lost in all the settings and possiblities.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menü"/>
@@ -565,23 +565,23 @@ Hast du AutoDrive installiert, lässt sich das entladen auch komplett Automatisi
 		<!--Symetric lange change-->
 		<text name="CP_help_page_symetricLaneChange_title"												text="Symetrischer Bahnenwechsel"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Der symetrische Bahnenwechsel wird in Multitool Kurse benutzt und sagt der Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Der symetrische Bahnenwechsel wird in Multitool Kurse benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
 Da dies etwas zu kompliziert zu erklären ist, werfen wir einen Blick auf 2 Beispiele.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
 Ist der symetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset Bahn.
 Das heist er fährt immer links oder rechts vom Kurs.
-Das hat den Vorteil, dass die Offset Bahnen keinen direkte Begegnungsverkehr haben.
-Es wird zu keinen Kontakt zwischen 2 Geräten kommen, wenn sie aufeinander zu fahren.
+Das hat den Vorteil, dass die Offset Bahnen keinen direkten Begegnungsverkehr haben.
+Somit wird es keinen Kontakt zwischen 2 Geräten geben, falls sie aufeinander fahren.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
 Bei eingeschaltetem Bahnenwechsel, wird im turn links und rechts getauscht (nicht aber im HUD).
-So können sich Fahrzeuge an ihren Bahnen begegnen. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
+Das führt dazu, dass Fahrzeug auf direkt aneinader liegen Bahnen fahren können. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
 Was bringt der symetrische Bahnenwechsel dann ?
 Schaut man sich die Reihnfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
 Ohne symetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
 Mit symetrischen Wechsel: links, rechts, rechts, links - von links nach rechts also eine Bahn nach der anderen.
-In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn Frucht neben sich hat.
+In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn mit Frucht neben sich hat.
 "/>
 
 		<!--Info Panel-->
