@@ -135,10 +135,15 @@ function Courseplay:setupGui()
 end
 
 --- Adds cp help info to the in game help menu.
-function Courseplay:loadMapDataHelpLineManager(xmlFile, missionInfo)
-	self:loadFromXML(Utils.getFilename("config/HelpMenu.xml", Courseplay.BASE_DIRECTORY))
+function Courseplay:loadMapDataHelpLineManager(superFunc, ...)
+	local ret = superFunc(self, ...)
+	if ret then
+		self:loadFromXML(Utils.getFilename("config/HelpMenu.xml", Courseplay.BASE_DIRECTORY))
+		return true
+	end
+	return false
 end
-HelpLineManager.loadMapData = Utils.appendedFunction( HelpLineManager.loadMapData, Courseplay.loadMapDataHelpLineManager)
+HelpLineManager.loadMapData = Utils.overwrittenFunction( HelpLineManager.loadMapData, Courseplay.loadMapDataHelpLineManager)
 
 --- Saves all global data, for example global settings.
 function Courseplay.saveToXMLFile(missionInfo)
