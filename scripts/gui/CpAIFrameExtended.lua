@@ -27,6 +27,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	delete(xmlFile)
 	self:exposeControlsAsFields()
 	self.courseGeneratorLayout:onGuiSetupFinished()
+	element:applyScreenAlignment()
 	element:updateAbsolutePosition()
 
 	self.drawingCustomFieldHeader:setVisible(false)
