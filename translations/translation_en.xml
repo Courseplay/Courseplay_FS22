@@ -565,18 +565,18 @@ installed you can use it to run an unload the bale collector automatically.
 		<!--Symetric lange change-->
 		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symetric lane change is used in multitool courses and tells the driver in wich lane he got to drive after the turn.
+Symetric lane change is used in multitool courses and tells the driver in wich lane he has to drive after the turn.
 This is a bit hard to understand so let's have a look at two examples.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symetric lane change is turned off, the vehicle stays on its offset lane.
+When the symetric lane change is turned off, the vehicle stays on it's offset lane.
 That means he always drives left or right from the course.
-The Advantage of this is, the offset lane got no direct contact to the encounter lane.
-There won't be a risk on conflict with an encounter Tool.
+This ensures, that the helpers are not driving alongside each other.
+There won't be a risk of on conflict with another driver.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If snymetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other when they drive towards each other.
+If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
+Vehicles can conflict with eachother, when they drive towards each other.
 What is the advantage of symetric lange change then ?
 If you have a look at the order of the lanes, from left to right, it will be clear:
 Without symetric change: left, right, left, right - it is almost like skipping a lane.
@@ -588,8 +588,8 @@ In the example with the Combine it means, no Combine will have fruit left and ri
 		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
 This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the Name and the Version of our Mod, it will show an Information Text that will inform you about some status of your courseplay drivers.
-If you hover with the mouse over it, the Name of the vehicle will be displayed.
+Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
+While hovering the status message, the name of the vehicle will be displayed.
 By clicking on it, you can jump directly into the vehicle.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
