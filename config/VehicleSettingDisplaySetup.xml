@@ -10,5 +10,4 @@
 	<Setting type="jobParameters" name = "laneOffset" />
 	<Setting type="courseGeneratorSettings" name = "workWidth" />
 	<Setting type="vehicleSettings" name = "toolOffsetX" />
-	<Setting type="vehicleSettings" name = "toolOffsetZ" />
 </Settings>
