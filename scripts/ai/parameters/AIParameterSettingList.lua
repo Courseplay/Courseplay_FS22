@@ -131,7 +131,7 @@ end
 
 -- Is the current value same as the param?
 function AIParameterSettingList:is(value)
-	return self.values[self.current] == value
+	return self:getValue() == value
 end
 
 -- Get the current text key (for the logs, for example)
