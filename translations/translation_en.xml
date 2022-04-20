@@ -357,7 +357,7 @@ What can you do with Courseplay:
 - Do Fieldwork with a generated course.
 - Vine fields with a generated course.
 - Let the Combine self unload.
-- Wrap and colelct bales with or without a course.
+- Wrap and collect bales with or without a course.
 - Manage your generated courses.
 - Refill or Unload together with AutoDrive.
 - Create custom fields with recording or drawing on the AI Map.
@@ -365,8 +365,8 @@ What can you do with Courseplay:
 
 What is the expert Mode:
 When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, wich works in most situations.
-That way, we try to help Users to get easier into Courseplay without being knocked off from all the settings.
+The other settings are hidden and set to default values, which works in most situations.
+That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Extended AI Menu"/>
@@ -565,19 +565,19 @@ installed you can use it to run an unload the bale collector automatically.
 		<!--Symetric lange change-->
 		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symetric lane change is used in multitool courses and tells the driver in wich lane he has to drive after the turn.
+Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
 This is a bit hard to understand so let's have a look at two examples.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symetric lane change is turned off, the vehicle stays on it's offset lane.
+When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
 That means he always drives left or right from the course.
 This ensures, that the helpers are not driving alongside each other.
 There won't be a risk of on conflict with another driver.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
 If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with eachother, when they drive towards each other.
-What is the advantage of symetric lange change then ?
+Vehicles can conflict with each other, when they drive towards each other.
+What is the advantage of symmetric lange change then ?
 If you have a look at the order of the lanes, from left to right, it will be clear:
 Without symetric change: left, right, left, right - it is almost like skipping a lane.
 With symetric change: left, right, right, left - from left to right, one lane after the other.
