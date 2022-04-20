@@ -133,7 +133,6 @@ function Courseplay:setupGui()
 			{768, 0, 128, 128}, pos + 1, function () return true end)
 	CpGuiUtil.fixInGameMenuPage(courseManagerFrame, "pageCpCourseManager",
 			{256, 0, 128, 128}, pos + 1, predicateFunc)
-	CpGuiUtil.fixInGameMenu()
 	self.infoTextsHud = CpHudInfoTexts()
 
 end
