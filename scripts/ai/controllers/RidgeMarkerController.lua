@@ -8,7 +8,7 @@ function RidgeMarkerController:init(vehicle, implement)
 end
 
 function RidgeMarkerController:update()
-	if self.settings.ridgeMarkersAutomatic:is(false) then
+	if not self.settings.ridgeMarkersAutomatic:getValue() then
 		self:debugSparse('Ridge marker handling disabled.')
 		return
 	end
