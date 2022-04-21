@@ -323,7 +323,6 @@
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Wird blockiert"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Steckt im Verkehr fest"/>
-
 		<text name="CP_infoTexts_shouldRefuel"															text="Sollte aufgetankt werden"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Muss aufgetankt werden"/>
 		<text name="CP_infoTexts_needsRepair"  															text="Sollte repariert werden"/>
@@ -350,6 +349,28 @@
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
+		<!--General-->
+		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_GeneralBase_title"														text="
+
+Mit Courseplay ist es möglich, Feldkurse mit zusätzlichen Funktionen zu generieren, beispielsweise Vorgewende.
+Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welcher zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
+Eine weitere Funktion ist das Ballenwickeln oder Aufsammeln auf einem Feld.
+Ganz neu in Courseplay ist die Bearbeitung von Reben.
+Feldkurse können auch als Multitool Kurs gebaut werden, dadurch ist es möglich bis zu 5 Arbeitsgeräte im Fahrzeugverband auf dem gleichen Feld arbeiten zu lassen.
+Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
+Eigene Feldränder können aufgezeichnet mit einem Fahrzeug oder auf der Menü Karte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
+Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
+
+Für weite Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
+Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
+Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
+
+Was ist der Experten Modus:
+Wenn der Experten Modus ausgeschaltet ist, sind weniger Einstellungen verfügbar.
+Die anderen Einstellungen sind versteckt und verwenden ihren Standartwert, welcher in den meisten Fällen optimal ist.
+Mit dieser Funktion versuchen wir neuen Courseplay Nutzern den Einstieg zu erleichtern, ohne diese durch die ganzen Einstellmöglichkeiten zu überfordern.
+"/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Erweitertes Helfer Menü"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
@@ -544,6 +565,49 @@ Sollte mal ein Ballen vor dem Fahrzeug liegen, oder das Fahrzeug zu dicht am Fel
 Das Sammeln von Ballen funktioniert im Grunde genauso wie das Wickeln, mit und ohne Kurs.
 Wenn der Sammler voll ist, wird er stehen bleiben und eine Meldung im Infofenster ausgeben, dass er entladen werden muss.
 Hast du AutoDrive installiert, lässt sich das entladen auch komplett Automatisieren. Siehe dir dazu AutoDrive Tutorials an.
+"/>
+		<!--Symetric lange change-->
+		<text name="CP_help_page_symetricLaneChange_title"												text="Symetrischer Bahnenwechsel"/>
+		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
+Der symetrische Bahnenwechsel wird in Multitool Kurse benutzt und sagt dem Helfer, in welche Bahn er nach dem Wendemanöver fahren soll.
+Da dies etwas zu kompliziert zu erklären ist, werfen wir einen Blick auf 2 Beispiele.
+"/>
+		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
+Ist der symetrische Bahnenwechsel ausgeschaltet, bleibt das Fahrzeug immer auf seiner Offset Bahn.
+Das heist er fährt immer links oder rechts vom Kurs.
+Das hat den Vorteil, dass die Offset Bahnen keinen direkten Begegnungsverkehr haben.
+Somit wird es keinen Kontakt zwischen 2 Geräten geben, falls sie aufeinander fahren.
+"/>
+		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
+Bei eingeschaltetem Bahnenwechsel, wird im turn links und rechts getauscht (nicht aber im HUD).
+Das führt dazu, dass Fahrzeug auf direkt aneinader liegen Bahnen fahren können. Sollten die Geräte zu breit sein, kann es zu einer Kollision kommen.
+Was bringt der symetrische Bahnenwechsel dann ?
+Schaut man sich die Reihnfolge der Bahnen an, die von links nach rechts bearbeitet werden, wird es klar:
+Ohne symetrischen Wechsel: links, rechts, links, rechts - fast wie eine Bahn überspringen.
+Mit symetrischen Wechsel: links, rechts, rechts, links - von links nach rechts also eine Bahn nach der anderen.
+In dem Beispiel mit den Dreschern sorgt das dafür, dass kein Drescher links und rechts eine Bahn mit Frucht neben sich hat.
+"/>
+
+		<!--Info Panel-->
+		<text name="CP_help_page_infoPanel_title"														text="Info Fenster"/>
+		<text name="CP_help_page_infoPanelBasic_text"													text="
+Das ist unser Info Fenster, es kann genauso mit der Maus bewegt werden, wie das mini HUD.
+Neben den Namen und der Version unserer Mod, zeigt es dir an, wenn ein Courseplay Helfer einen gewissen Status hat.
+Fährst du mit der Maus über den Text, wird der Name des Fahrzeugs angezeigt.
+Klickst du darauf, springst du direkt in das entsprechende Fahrzeug.
+"/>
+<text name="CP_help_page_infoPanelMsg_text"																text="
+Die Informationen sind:
+- Wird blockiert
+- Steckt im Verkehr fest
+- Sollte aufgetankt werden
+- Muss aufgetankt werden
+- Sollte repariert werden
+- Muss aufgefüllt werden
+- Muss entladen werden
+- Arbeit beendet
+- Kein Geld mehr
+- Wartet auf besseres Wetter
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Arbeit auf Reben"/>

@@ -3,6 +3,11 @@
 <helpLines>
 	<!--Courseplay category-->
 	<category title="$l10n_CP_help_title">
+		<page title="$l10n_CP_help_page_General_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_GeneralBase_text"/>
+			</paragraph>
+		</page>
 		<page title="$l10n_CP_help_page_extendedJobMenu_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_startJobMenuBase_text"/>
@@ -112,6 +117,39 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_collectBasic_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay symetric lane change-->
+		<page title="$l10n_CP_help_page_symetricLaneChange_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="CP_img/helpmenu/regularchange.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOff_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="CP_img/helpmenu/symetricchange.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOn_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Info Panel-->
+		<page title="$l10n_CP_help_page_infoPanel_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_blank"/>
+				<image filename="CP_img/helpmenu/infopanel.dds" size="768px 512px"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_infoPanelBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_infoPanelMsg_text"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Vine work-->
