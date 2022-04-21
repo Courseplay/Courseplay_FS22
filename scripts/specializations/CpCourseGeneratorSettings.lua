@@ -206,8 +206,3 @@ function CpCourseGeneratorSettings:hasHeadlandsSelected()
     local spec = self.spec_cpCourseGeneratorSettings
     return spec.numberOfHeadlands:getValue()>0
 end
-
-function CpCourseGeneratorSettings:updateGui()
-    local spec = self.spec_cpCourseGeneratorSettings
-    CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(spec.gui)
-end
