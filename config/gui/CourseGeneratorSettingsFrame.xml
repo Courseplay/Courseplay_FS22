@@ -9,9 +9,11 @@
 				</GuiElement>
 				<GuiElement type="bitmap" profile="topScrollClipper" name="topClipper"/>
 				<GuiElement type="bitmap" profile="bottomScrollClipper"  name="bottomClipper"/> 
-				<GuiElement type="scrollingLayout" profile="cpIngameMenuSettingsLayout" id="courseGeneratorLayoutElements" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper">
-						
-				</GuiElement>
+				<!-- Course generator layout -->
+				<GuiElement type="scrollingLayout" profile="cpIngameMenuSettingsLayout" id="courseGeneratorLayoutElements" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper"/>
+				<!-- Vine course generator layout -->
+				<GuiElement type="scrollingLayout" profile="cpIngameMenuSettingsLayout" id="vineCourseGeneratorLayoutElements" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper"/>
+
 
 
 				<!--	<GuiElement type="threePartBitmap" profile="verticalListSliderRightDocked">

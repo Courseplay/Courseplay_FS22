@@ -560,9 +560,9 @@ function CpBaseHud:preOpeningInGameMenu(vehicle)
     local pageAI = inGameMenu.pageAI
     pageAI.controlledVehicle = vehicle
     pageAI.currentHotspot = nil
-    inGameMenu:updatePages()
-    g_gui:showGui("InGameMenu")
-    inGameMenu:changeScreen(InGameMenu)
+    if g_gui.currentGuiName ~= "InGameMenu" then
+		g_gui:showGui("InGameMenu")
+	end
     return inGameMenu
 end
 
@@ -576,8 +576,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
     local pageAI = inGameMenu.pageAI
     --- Opens the ai inGame menu
-    local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(pageAI)
-    inGameMenu.pageSelector:setState(pageIx, true)
+    inGameMenu:goToPage(pageAI)
     self:debug("opened ai inGame menu.")
     if vehicle:getIsCpActive() then 
         return
@@ -610,14 +609,12 @@ end
 
 function CpBaseHud:openVehicleSettingsGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
-    local vehiclePageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpVehicleSettings)
-    inGameMenu.pageSelector:setState(vehiclePageIx, true)
+    inGameMenu:goToPage(inGameMenu.pageCpVehicleSettings)
 end
 
 function CpBaseHud:openGlobalSettingsGui(vehicle)
     local inGameMenu = self:preOpeningInGameMenu(vehicle)
-    local pageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpGlobalSettings)
-    inGameMenu.pageSelector:setState(pageIx, true)
+    inGameMenu:goToPage(inGameMenu.pageCpGlobalSettings)
 end
 
 --- Saves hud position.

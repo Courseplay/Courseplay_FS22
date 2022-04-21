@@ -17,7 +17,8 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpInGameMenuAIFrameExtended.setupButtons(self)		
 
 	self:registerControls({"multiTextOptionPrefab","subTitlePrefab","courseGeneratorLayoutElements",
-							"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader"})
+							"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader",
+							"vineCourseGeneratorLayoutElements"})
 
 
 	local element = self:getDescendantByName("ingameMenuAI")
@@ -38,12 +39,22 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.multiTextOptionPrefab:unlinkElement()
 	FocusManager:removeElement(self.multiTextOptionPrefab)
 
-	local settingsBySubTitle,pageTitle = CpCourseGeneratorSettings.getSettingSetup()
+	--- Vine course generator layout
+	local settingsBySubTitle = CpCourseGeneratorSettings.getVineSettingSetup()
+	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
+	self.vineCourseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
+	self.vineCourseGeneratorLayoutElements:setVisible(false)
+	self.vineCourseGeneratorLayoutElements:setDisabled(true)
+	self.vineCourseGeneratorLayoutElements:invalidateLayout()
+	--- Default course generator layout
+	local settingsBySubTitle = CpCourseGeneratorSettings.getSettingSetup()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
-	self.courseGeneratorLayoutPageTitle = pageTitle
-	self.courseGeneratorLayout:setVisible(false)
+	self.courseGeneratorLayoutElements:setVisible(false)
+	self.courseGeneratorLayoutElements:setDisabled(true)
 	self.courseGeneratorLayoutElements:invalidateLayout()
+
+	self.courseGeneratorLayout:setVisible(false)
 	--- Makes the last selected hotspot is not sold before reopening.
 	local function validateCurrentHotspot(currentMission,hotspot)
 		local page = currentMission.inGameMenu.pageAI
@@ -212,24 +223,47 @@ function InGameMenuAIFrame:onClickOpenCloseCourseGenerator()
 end
 
 function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
-	if self.currentJob and self.currentJob.getCourseGeneratorSettings then 
-		local vehicle, settings, settingsBySubTitle, title = self.currentJob:getCourseGeneratorSettings()
-		self.settings = settings
-		self.courseGeneratorHeader:setText(title)
+	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.currentHotspot)
+	if vehicle ~=nil and vehicle.getCourseGeneratorSettings then
+		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." ) 
 		vehicle:validateCourseGeneratorSettings()
-		CpUtil.debugVehicle( CpUtil.DBG_HUD,vehicle, "binding course generator settings." )
+		self.settings = vehicle:getCourseGeneratorSettingsTable()
+		local settingsBySubTitle, title = CpCourseGeneratorSettings.getSettingSetup(vehicle)
 		CpSettingsUtil.linkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements,settingsBySubTitle,vehicle)
+	
+		self.vineSettings = vehicle:getCpVineSettingsTable()
+		local settingsBySubTitle, vineTitle = CpCourseGeneratorSettings.getSettingSetup(vehicle)
+		CpSettingsUtil.linkGuiElementsAndSettings(self.vineSettings,self.vineCourseGeneratorLayoutElements,settingsBySubTitle,vehicle)
+
+		if self.currentJob:hasFoundVines() then 
+			self.vineCourseGeneratorLayoutElements:setVisible(true)
+			self.vineCourseGeneratorLayoutElements:setDisabled(false)
+			self.courseGeneratorHeader:setText(vineTitle)
+		else 
+			self.courseGeneratorLayoutElements:setVisible(true)
+			self.courseGeneratorLayoutElements:setDisabled(false)
+			self.courseGeneratorHeader:setText(title)
+		end
 	end
 end
 
-function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
+function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings(unbind)
 	if self.courseGeneratorLayout and self.courseGeneratorLayout:getIsVisible() then 
+		if unbind then 
+			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
+		end
 		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
-		FocusManager:loadElementFromCustomValues(self.courseGeneratorLayoutElements)
-		self.courseGeneratorLayoutElements:invalidateLayout()
+		local layout 
+		if self.currentJob:hasFoundVines() then 
+			layout = self.vineCourseGeneratorLayoutElements
+		else 
+			layout = self.courseGeneratorLayoutElements
+		end
+		FocusManager:loadElementFromCustomValues(layout)
+		layout:invalidateLayout()
 		if FocusManager:getFocusedElement() == nil then
 			self:setSoundSuppressed(true)
-			FocusManager:setFocus(self.courseGeneratorLayoutElements)
+			FocusManager:setFocus(layout)
 			self:setSoundSuppressed(false)
 		end
 	end
@@ -240,6 +274,14 @@ function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.courseGeneratorLayoutElements)
 		self.courseGeneratorLayoutElements:invalidateLayout()
 	end
+	if self.vineSettings then
+		CpSettingsUtil.unlinkGuiElementsAndSettings(self.vineSettings,self.vineCourseGeneratorLayoutElements)
+		self.vineCourseGeneratorLayoutElements:invalidateLayout()
+	end
+	self.vineCourseGeneratorLayoutElements:setVisible(false)
+	self.vineCourseGeneratorLayoutElements:setDisabled(true)
+	self.courseGeneratorLayoutElements:setVisible(false)
+	self.courseGeneratorLayoutElements:setDisabled(true)
 end
 
 
