@@ -44,12 +44,14 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.vineCourseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.vineCourseGeneratorLayoutElements:setVisible(false)
+	self.vineCourseGeneratorLayoutElements:setDisabled(true)
 	self.vineCourseGeneratorLayoutElements:invalidateLayout()
 	--- Default course generator layout
 	local settingsBySubTitle = CpCourseGeneratorSettings.getSettingSetup()
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.courseGeneratorLayoutElements,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.courseGeneratorLayoutElements:setVisible(false)
+	self.courseGeneratorLayoutElements:setDisabled(true)
 	self.courseGeneratorLayoutElements:invalidateLayout()
 
 	self.courseGeneratorLayout:setVisible(false)
@@ -235,9 +237,11 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 
 		if self.currentJob:hasFoundVines() then 
 			self.vineCourseGeneratorLayoutElements:setVisible(true)
+			self.vineCourseGeneratorLayoutElements:setDisabled(false)
 			self.courseGeneratorHeader:setText(vineTitle)
 		else 
 			self.courseGeneratorLayoutElements:setVisible(true)
+			self.courseGeneratorLayoutElements:setDisabled(false)
 			self.courseGeneratorHeader:setText(title)
 		end
 	end
@@ -272,7 +276,9 @@ function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
 		self.vineCourseGeneratorLayoutElements:invalidateLayout()
 	end
 	self.vineCourseGeneratorLayoutElements:setVisible(false)
+	self.vineCourseGeneratorLayoutElements:setDisabled(true)
 	self.courseGeneratorLayoutElements:setVisible(false)
+	self.courseGeneratorLayoutElements:setDisabled(true)
 end
 
 
