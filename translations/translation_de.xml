@@ -354,11 +354,11 @@
 		<text name="CP_help_page_GeneralBase_title"														text="
 
 Mit Courseplay ist es möglich, Feldkurse mit zusätzlichen Funktionen zu generieren, beispielsweise Vorgewende.
-Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welche zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
+Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welcher zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
 Eine weitere Funktion ist das Ballenwickeln oder Aufsammeln auf einem Feld.
 Ganz neu in Courseplay ist die Bearbeitung von Reben.
 Feldkurse können auch als Multitool Kurs gebaut werden, dadurch ist es möglich bis zu 5 Arbeitsgeräte im Fahrzeugverband auf dem gleichen Feld arbeiten zu lassen.
-Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einem Anhänger nahe des Felds.
+Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können aufgezeichnet mit einem Fahrzeug oder auf der Menü Karte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
 
@@ -367,7 +367,7 @@ Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen v
 Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
 
 Was ist der Experten Modus:
-Wenn der Experten Modus ausgeschaltet ist, erhaltet ihr Zugriff auf weniger Einstellungen.
+Wenn der Experten Modus ausgeschaltet ist, sind weniger Einstellungen verfügbar.
 Die anderen Einstellungen sind versteckt und verwenden ihren Standartwert, welcher in den meisten Fällen optimal ist.
 Mit dieser Funktion versuchen wir neuen Courseplay Nutzern den Einstieg zu erleichtern, ohne diese durch die ganzen Einstellmöglichkeiten zu überfordern.
 "/>
