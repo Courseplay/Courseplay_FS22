@@ -350,7 +350,7 @@
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
 		<text name="CP_help_page_General_title"															text="Informazioni Generali"/>
-		<text name="CP_help_page_GeneralBase_title"														text="
+		<text name="CP_help_page_GeneralBase_text"														text="
 Courseplay ti consente di generare percorsi sul campo con funzionalità aggiuntive, ad esempio: promontori.
 Consente inoltre l'utilizzo di presse per balle e carri per foraggio, che possono essere usati sullo stesso percorso, delle falciatrici o mietitrebbie.
 Un'altra grande caratteristica è la raccolta o l'avvolgimento delle balle sul campo.

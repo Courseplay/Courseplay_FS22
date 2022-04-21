@@ -350,8 +350,8 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
-		<text name="CP_help_page_General_title"															text="General Information"/>
-		<text name="CP_help_page_GeneralBase_title"														text="
+		<text name="CP_help_page_General_title"															text="Generelle Informationen"/>
+		<text name="CP_help_page_GeneralBase_text"														text="
 
 Mit Courseplay ist es möglich, Feldkurse mit zusätzlichen Funktionen zu generieren, beispielsweise Vorgewende.
 Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welcher zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
