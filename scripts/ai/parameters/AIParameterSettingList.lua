@@ -532,6 +532,9 @@ function AIParameterSettingList:registerMouseInputEvent()
 		end
 		
 		local eventUsed = superFunc(element,posX, posY, isDown, isUp, button, eventUsed)
+		if element:getIsDisabled() or not element:getIsVisible() then 
+			return eventUsed
+		end
 		if self.textInputAllowed then
 			local x, y = unpack(element.textElement.absPosition)
 			local width, height = unpack(element.textElement.absSize)
