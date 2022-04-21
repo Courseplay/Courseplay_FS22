@@ -267,12 +267,8 @@ function CpAIJobFieldWork:stop(aiMessage)
 	end
 end
 
-function CpAIJobFieldWork:getCourseGeneratorSettings()
-	local vehicle = self:getVehicle()
-	if self.foundVines then 
-		return vehicle, vehicle:getCpVineSettingsTable(), CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
-	end
-	return vehicle, vehicle:getCourseGeneratorSettingsTable(), CpCourseGeneratorSettings.getSettingSetup(vehicle)
+function CpAIJobFieldWork:hasFoundVines()
+	return self.foundVines
 end
 
 function CpAIJobFieldWork:setStartPosition(startPosition)
