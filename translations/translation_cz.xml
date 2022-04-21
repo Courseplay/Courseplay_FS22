@@ -348,6 +348,27 @@
 		<text name="CP_help_title"																		text="Courseplay"/>
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
+		<!--General-->
+		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_GeneralBase_title"														text="
+Courseplay allows you to generate field courses with additional features, for example: headlands.
+It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
+Another big feature is the collecting or wraping of bales on the field.
+New with this iteration of CP is the vine fieldwork.
+Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
+It's also possible to have the combine unload in a trailer on/near the field automatically.
+Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
+Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+
+For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
+There you can get help or report any issue you've experienced.
+Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+
+What is the expert Mode:
+When the expert Mode is deactivated, you have only access to some settings.
+The other settings are hidden and set to default values, which works in most situations.
+That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+"/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Rozšířené menu AI"/>
 		<text name="CP_help_page_startJobMenuBase_text"													text="
@@ -537,6 +558,48 @@ Automatické couvání, pokud je balík před vozidlem nebo pokud jsme příliš
 Sběr balíků funguje stejně, s kurzem nebo bez něj.
 Když je sběrač plný, zastaví práci a oznámí uživateli, že je třeba vyložit. Pokud máte AutoDrive
 nainstalován, můžete jej použít k automatickému spuštění vykládky sběrače balíků.
+"/>
+		<!--Symetric lange change-->
+		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
+Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
+This is a bit hard to understand so let's have a look at two examples.
+"/>
+		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
+When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
+That means he always drives left or right from the course.
+This ensures, that the helpers are not driving alongside each other.
+There won't be a risk of on conflict with another driver.
+"/>
+		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
+If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
+Vehicles can conflict with each other, when they drive towards each other.
+What is the advantage of symmetric lange change then ?
+If you have a look at the order of the lanes, from left to right, it will be clear:
+Without symetric change: left, right, left, right - it is almost like skipping a lane.
+With symetric change: left, right, right, left - from left to right, one lane after the other.
+In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+"/>
+		<!--Info Panel-->
+		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanelBasic_text"													text="
+This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
+Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
+While hovering the status message, the name of the vehicle will be displayed.
+By clicking on it, you can jump directly into the vehicle.
+"/>
+<text name="CP_help_page_infoPanelMsg_text"																text="
+The Informations are the following:
+- Helper is stuck
+- Is in traffic
+- Should be refueled
+- Needs to be refueled
+- Needs to be repaired
+- Needs to be refilled
+- Needs to be unloaded
+- Finished work
+- Ouf of money
+- Waiting for rain to finish
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vinice"/>
