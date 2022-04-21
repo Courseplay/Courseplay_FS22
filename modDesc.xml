@@ -14,32 +14,34 @@
     <description>
         <en>
 			<![CDATA[Courseplay FS22
-Full Multiplayer and controller support.
-Functionality:
-- Course generation
-- Field work with generated courses
-- Vine fields with generated courses
-- Refill or unload with the mod "AutoDrive"
-- Combine self unload into a parked trailer near the field
-- Wrap and collect bales with or without a course
-- Save/load/rename courses
-- Create custom fields with recording or drawing on the AI Map
-- Vehicle Convoy for field work
+Courseplay allows you to generate field courses with additional features, for example: headlands.
+It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
+Another big feature is the collecting or wraping of bales on the field.
+New with this iteration of CP is the vine fieldwork.
+Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
+It's also possible to have the combine unload in a trailer on/near the field automatically.
+Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
+Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+
+For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
+There you can get help or report any issue you've experienced.
+Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
 ]]>
 		</en>
         <de>
 			<![CDATA[Courseplay FS22
-Vollständige Mehrspieler und Controller Unterstützung.
-Funktionen:
-- Kurs Generatation
-- Feldarbeit mit generierten Kursen
-- Weinfelder mit generierten Kursen ab arbeiten
-- Auffüllen und entladen mit dem Mod: "Autodrive"
-- Drescher können selber abtanken in Anhänger am Feldrand
-- Ballen wickeln und sammeln mit oder ohne Kurs
-- Speichern/laden/umbenennen von Kursen
-- Erstellung eigener Kurse durch Kursaufzeichnung oder Zeichnen im AI Menü auf der Karte
-- Fahrzeugverband für Feldarbeit
+Mit Courseplay ist es möglich, Feldkurse mit zusätzlichen Funktionen zu generieren, beispielsweise Vorgewende.
+Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welcher zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
+Eine weitere Funktion ist das Ballenwickeln oder Aufsammeln auf einem Feld.
+Ganz neu in Courseplay ist die Bearbeitung von Reben.
+Feldkurse können auch als Multitool Kurs gebaut werden, dadurch ist es möglich bis zu 5 Arbeitsgeräte im Fahrzeugverband auf dem gleichen Feld arbeiten zu lassen.
+Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
+Eigene Feldränder können aufgezeichnet mit einem Fahrzeug oder auf der Menü Karte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
+Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
+
+Für weite Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
+Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
+Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
 ]]>
 		</de>
     </description>
