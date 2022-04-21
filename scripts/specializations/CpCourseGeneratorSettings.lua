@@ -206,3 +206,9 @@ function CpCourseGeneratorSettings:hasHeadlandsSelected()
     local spec = self.spec_cpCourseGeneratorSettings
     return spec.numberOfHeadlands:getValue()>0
 end
+
+--- Updates the layout on change, as gui elements might change their visibility.
+function CpCourseGeneratorSettings:updateGui()
+    local spec = self.spec_cpCourseGeneratorSettings
+    CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(spec.gui, true)
+end

@@ -247,8 +247,11 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 	end
 end
 
-function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings()
+function CpInGameMenuAIFrameExtended:updateCourseGeneratorSettings(unbind)
 	if self.courseGeneratorLayout and self.courseGeneratorLayout:getIsVisible() then 
+		if unbind then 
+			CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
+		end
 		CpInGameMenuAIFrameExtended.bindCourseGeneratorSettings(self)
 		local layout 
 		if self.currentJob:hasFoundVines() then 
