@@ -238,8 +238,8 @@
 		<text name="CP_global_setting_title"															text="Globální nastavení"/>
 		<text name="CP_global_setting_subTitle_general"													text="Základní nastavení."/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Expertní režim"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Aktivuje/deaktivuje expertní režim s dalšími funkcemi."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Mzdy pracovníků"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Mzdy CP pracovníků jako procento mzdy normálního pracovníka."/>
@@ -329,7 +329,7 @@
 		<text name="CP_infoTexts_needsUnloading"  														text="Je třeba vyložit"/>
 		<text name="CP_infoTexts_workFinished"															text="Dokončil práci"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Došly peníze"/>
-		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Čekání na konec deště"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
@@ -349,25 +349,23 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
-		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_General_title"															text="Všeobecné informace"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
-
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
-
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+Courseplay vám umožňuje generovat polní práce s dalšími funkcemi, například: souvratě.
+Umožňuje také použití lisů a sběracích vozů, které lze poslat na stejnou trať jako sekačku nebo kombajn z dřívějška.
+Další funkcí je sbírání nebo balení balíků na poli.
+Novinkou této iterace CP je práce s révou.
+Kurzy polních prací lze nastavit v režimu více nástrojů, který umožňuje použití až 5 řidičů pracujících v konvoji na stejném poli.
+Je také možné nechat sklízecí mlátičku automaticky vyložit v přívěsu na poli/v blízkosti pole.
+Pro hru lze přiřadit vlastní ohraničení pole, která se použijí například: v případě louky, která není rozpoznána jako normální pole.
+Konečně CP má rozhraní pro Autodrive, které umožňuje doplnění secího stroje v nedalekém sile nebo vyložení secího vozu a tak dále.
+Pro více informací navštivte náš github: https://github.com/Courseplay/Courseplay_FS22.
+Zde můžete získat pomoc nebo nahlásit jakýkoli problém, se kterým jste se setkali.
+Nakonec děkujeme všem překladatelům a naší komunitě za nahlášení chyb, poskytnutí zpětné vazby a nových nápadů.
+Co je expertní režim:
+Když je expertní režim deaktivován, máte přístup pouze k některým nastavením.
+Ostatní nastavení jsou skrytá a nastavena na výchozí hodnoty, což funguje ve většině situací.
+Tímto způsobem se snažíme uživatelům pomoci se snadněji dostat do Courseplay, aniž by byli zahlceni všemi nastaveními.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Rozšířené menu AI"/>
@@ -560,46 +558,46 @@ Když je sběrač plný, zastaví práci a oznámí uživateli, že je třeba vy
 nainstalován, můžete jej použít k automatickému spuštění vykládky sběrače balíků.
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="Symetrická změna jízdního pruhu"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
+Symetrická změna jízdního pruhu se používá v kurzech s více stroji a říká řidiči, ve kterém pruhu má jet po odbočení.
+To je trochu těžké pochopit, takže se podívejme na dva příklady.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+Když je symetrická změna jízdního pruhu vypnuta, vozidlo zůstane ve svém posunutém jízdním pruhu.
+To znamená, že vždy jede vlevo nebo vpravo z kurzu.
+Tím je zajištěno, že pomocníci nejedou vedle sebe.
+Nebude hrozit konflikt s jiným řidičem.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+Pokud je zapnuta symetrická změna jízdního pruhu, dojde k záměně levého a pravého pruhu (nezobrazeno na HUD).
+Vozidla se mohou vzájemně střetávat, když jedou proti sobě.
+Jaká je potom výhoda symetrické změny pruhu?
+Pokud se podíváte na pořadí jízdních pruhů zleva doprava, bude to jasné:
+Bez symetrické změny: vlevo, vpravo, vlevo, vpravo - je to skoro jako přeskakování jízdního pruhu.
+Se symetrickou změnou: vlevo, vpravo, vpravo, vlevo - zleva doprava, jeden jízdní pruh za druhým.
+V příkladu s kombajnem to znamená, že žádný kombajn nebude mít plodinu nalevo a napravo od své dráhy.
 "/>
 		<!--Info Panel-->
-		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanel_title"														text="Informační panel"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
-While hovering the status message, the name of the vehicle will be displayed.
-By clicking on it, you can jump directly into the vehicle.
+Toto je náš informační panel, lze s ním pohybovat pomocí kurzoru myši, stejně jako náš Mini HUD.
+Kromě názvu a verze našeho Modu také zobrazuje stavové informace o ovladačích CP.
+Při najetí na stavovou zprávu se zobrazí název vozidla.
+Kliknutím na něj můžete skočit přímo do vozidla.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-The Informations are the following:
-- Helper is stuck
-- Is in traffic
-- Should be refueled
-- Needs to be refueled
-- Needs to be repaired
-- Needs to be refilled
-- Needs to be unloaded
-- Finished work
-- Ouf of money
-- Waiting for rain to finish
+Informace jsou následující:
+- Pomocník se zasekl
+- Je v provozu
+- Mělo by se natankovat
+- Je třeba doplnit palivo
+- Potřebuje opravit
+- Je třeba doplnit
+- Je třeba vyložit
+- Hotová práce
+- Nedostatek peněz
+- Čekání, až skončí déšť
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vinice"/>
