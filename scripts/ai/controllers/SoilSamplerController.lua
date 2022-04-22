@@ -12,11 +12,14 @@ function SoilSamplerController:init(vehicle, implement)
 end
 
 function SoilSamplerController:onLowering()
-	self.implement:startSoilSampling()
+	self:startSampling()
+
 	self.isRaised = false
 end
 
 function SoilSamplerController:onRaising()
+	self:startSampling()
+
 	self.isRaised = true
 end
 
@@ -42,12 +45,16 @@ function SoilSamplerController:getDriveData()
 		local x, z, lastDistMoved = unpack(self.lastSampleTaken)
 		local vx, _, vz = getWorldTranslation(self.soilSamplerSpec.samplingNode)
 		if MathUtil.vector2Length(x-vx, z-vz) > self.distBetweenProbes or (self.vehicle.lastMovedDistance - lastDistMoved) > self.distBetweenProbes then 
-			if not self.soilSamplerSpec.isSampling then 
-				self.implement:startSoilSampling()
-				self.lastSampleTaken = nil
-			end
+			self:startSampling()
 		end
 	end
 
 	return nil, nil, nil, maxSpeed
+end
+
+function SoilSamplerController:startSampling()
+	if not self.soilSamplerSpec.isSampling then 
+		self.implement:startSoilSampling()
+		self.lastSampleTaken = nil
+	end
 end
