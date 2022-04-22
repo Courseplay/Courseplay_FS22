@@ -96,8 +96,8 @@ function CpCourseGeneratorSettings:onPostAttachImplement()
     CpCourseGeneratorSettings.validateSettings(self)
 end
 
-function CpCourseGeneratorSettings:onPreDetachImplement()
-    CpCourseGeneratorSettings.setAutomaticWorkWidth(self)
+function CpCourseGeneratorSettings:onPreDetachImplement(implement)
+    CpCourseGeneratorSettings.setAutomaticWorkWidth(self, implement.object)
     CpCourseGeneratorSettings.validateSettings(self)
 end
 
@@ -174,9 +174,11 @@ function CpCourseGeneratorSettings:raiseCallback(callbackStr, setting, ...)
     SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
 end
 
-function CpCourseGeneratorSettings:setAutomaticWorkWidth()
+---@param ignoreObject table ignore this object when calculating the width (as it is being detached, for instance)
+function CpCourseGeneratorSettings:setAutomaticWorkWidth(ignoreObject)
     local spec = self.spec_cpCourseGeneratorSettings
-    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+    local width = WorkWidthUtil.getAutomaticWorkWidth(self, nil, ignoreObject)
+    spec.workWidth:setFloatValue(width)
 end
 
 function CpCourseGeneratorSettings:validateSettings()

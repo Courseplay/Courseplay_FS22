@@ -260,7 +260,7 @@ end
 ---@param turnStartNode number at the last waypoint of the row, pointing in the direction of travel. This is where
 --- the implement should be raised when beginning a turn
 function AIDriveStrategyFieldWorkCourse:shouldRaiseThisImplement(object, turnStartNode)
-    local aiFrontMarker, _, aiBackMarker = WorkWidthUtil.getAIMarkers(object, nil, true)
+    local aiFrontMarker, _, aiBackMarker = WorkWidthUtil.getAIMarkers(object, true)
     -- if something (like a combine) does not have an AI marker it should not prevent from raising other implements
     -- like the header, which does have markers), therefore, return true here
     if not aiBackMarker or not aiFrontMarker then return true end
@@ -305,7 +305,7 @@ end
 ---@return boolean, boolean, number the second one is true when the first is valid, and the distance to the work start
 --- in meters (<0) when driving forward, nil when driving backwards.
 function AIDriveStrategyFieldWorkCourse:shouldLowerThisImplement(object, turnEndNode, reversing)
-    local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object, nil, true)
+    local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object, true)
     if not aiLeftMarker then return false, false, nil end
     local dxLeft, _, dzLeft = localToLocal(aiLeftMarker, turnEndNode, 0, 0, 0)
     local dxRight, _, dzRight = localToLocal(aiRightMarker, turnEndNode, 0, 0, 0)
@@ -354,7 +354,7 @@ function AIDriveStrategyFieldWorkCourse:areAllImplementsAligned(node)
 end
 
 function AIDriveStrategyFieldWorkCourse:isThisImplementAligned(object, node)
-    local aiFrontMarker, _, _ = WorkWidthUtil.getAIMarkers(object, nil, true)
+    local aiFrontMarker, _, _ = WorkWidthUtil.getAIMarkers(object, true)
     if not aiFrontMarker then return true end
     return CpMathUtil.isSameDirection(aiFrontMarker, node, 2)
 end
