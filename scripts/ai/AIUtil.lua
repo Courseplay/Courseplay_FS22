@@ -413,13 +413,17 @@ end
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
 ---@param vehicle Vehicle
----@param specialization table
+---@param specialization table 
+---@param specializationReference string alternative for mod specializations, as their object is not accessible by us.
 ---@return table all found vehicles/implements
 ---@return boolean at least one vehicle/implement was found
-function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization)
+function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
 	local validVehicles = {}
 	for _, childVehicle in pairs(vehicle:getChildVehicles()) do 
-		if SpecializationUtil.hasSpecialization(specialization, childVehicle.specializations) then
+		if specializationReference and childVehicle[specializationReference] then 
+			table.insert(validVehicles, childVehicle)
+		end
+		if specialization and SpecializationUtil.hasSpecialization(specialization, childVehicle.specializations) then
 			table.insert(validVehicles, childVehicle)
 		end
 	end
@@ -432,8 +436,8 @@ end
 ---@param vehicle Vehicle
 ---@param specialization table
 ---@return boolean
-function AIUtil.hasChildVehicleWithSpecialization(vehicle, specialization)
-	local _, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization)
+function AIUtil.hasChildVehicleWithSpecialization(vehicle, specialization, specializationReference)
+	local _, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
 	return found
 end
 

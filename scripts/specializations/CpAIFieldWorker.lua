@@ -255,7 +255,9 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             -- built in helper can't handle forage harvesters.
             AIUtil.hasImplementWithSpecialization(self, Cutter) or 
             AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
-            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) then
+            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or
+            --- precision farming
+            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_soilSampler") then
         return true
     end
     return self:getCanStartFieldWork()

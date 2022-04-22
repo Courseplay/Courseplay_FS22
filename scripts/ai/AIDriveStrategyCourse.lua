@@ -186,9 +186,9 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, states)
+function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, states, specReference)
     --- If multiple implements have this spec, then add a controller for each implement.
-    for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec)) do
+    for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec, specReference)) do
         local controller = class(vehicle, childVehicle)
         controller:setDisabledStates(states)
         controller:setDriveStrategy(self)
