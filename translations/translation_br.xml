@@ -350,25 +350,25 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
-		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_General_title"															text="Informação Geral"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+Courseplay permite gerar rotas no campo com recursos adicionais, por exemplo: cabeceiras.
+Também possibilita o uso de enfardadeiras e forrageiras, que podem ser enviadas na mesma rota, como colheitadeira de grama.
+Outra grande característica é a coleta ou embalagem de fardos no campo.
+Novo com esta iteração do CP é o trabalho de campo com vinhas.
+Os rotas de campo podem ser configurados no modo multi implementos, o que permite o uso de até 5 motoristas trabalhando em um comboio no mesmo campo.
+Também é possível que a colheitadeira seja descarregada em um trailer perto do campo automaticamente..
+As bordas de campo customizado podem ser atribuídas para uso de rotas, por exemplo: no caso de uma área, que não é reconhecida como um campo normal..
+Por fim, o CP possui uma interface para o Autodrive, que permite o reabastecimento de uma semeadora em um silo próximo ou descarregar uma carreta e assim por diante.
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+Para mais informações, visite nosso github: https://github.com/Courseplay/Courseplay_FS22.
+Lá você pode obter ajuda ou relatar qualquer problema que tenha enfrentado.
+Por fim, agradecemos a todos os tradutores e nossa comunidade por relatar bugs, fornecer feedback de uso e novas ideias.
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+O que é o modo especialista:
+Quando o modo especialista está desativado, você tem acesso apenas a algumas configurações.
+As outras configurações estão ocultas e definidas com valores padrão, o que funciona na maioria das situações.
+Dessa forma, tentamos ajudar os usuários a entrar mais facilmente no Courseplay sem ficar sobrecarregado com todas as configurações.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Estender menu AI"/>
@@ -554,7 +554,7 @@ Embalar fardos é muito simples. Carregue uma rota da sua enfardadeira e comece 
 inicie-o com o fardos coletar/embalar no HUD ou no Menu AI.
 		"/>
 		<text name="CP_help_page_wrapFunction_text"														text="
-Ao usar um curso, o motorista dirige com um deslocamento predefinido para que a coleta das embalagens esteja no meio do curso.
+Ao usar uma rota, o motorista dirige com um deslocamento predefinido para que a coleta das embalagens esteja no meio da rota.
 Sem uma rota, o Courseplay examina o campo em busca de fardos desembalados e usa o pathfinder para encontrar uma maneira de
 de buscar fardo mais próximo para embalar.
 O recuo automático se um fardo estiver na frente do veículo ou se estivermos muito perto da borda do campo deve evitar acidentes.		
@@ -565,46 +565,46 @@ Quando o coletor estiver cheio, ele interromperá o trabalho e informará ao usu
 instalado, você pode usá-lo para executar e descarregar o coletor de fardos automaticamente.
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="Mudança de faixa simétrica"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
+A mudança de faixa simétrica é usada em rotas multi implementos e informa ao motorista em qual faixa ele deve dirigir após a curva.
+Isso é um pouco difícil de entender, então vamos dar uma olhada em dois exemplos.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+Quando a mudança de faixa simétrica é desativada, o veículo permanece em sua faixa de deslocamento.
+Isso significa que ele sempre dirige para a esquerda ou para a direita da rota.
+Isso garante que os veículos não estejam dirigindo lado a lado.
+Não haverá risco de conflito com outro motorista.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+Se a mudança de faixa simétrica estiver ativada, a esquerda e a direita serão trocadas (mas não mostradas no HUD).
+Os veículos podem entrar em conflito uns com os outros, quando se dirigem um para o outro.
+Qual é a vantagem da mudança de faixa simétrica então?
+Se você der uma olhada na ordem das faixas, da esquerda para a direita, ficará claro:
+Sem mudança simétrica: esquerda, direita, esquerda, direita - é quase como pular uma faixa.
+Com mudança simétrica: esquerda, direita, direita, esquerda - da esquerda para a direita, uma faixa após a outra.
+No exemplo com a colheitadeira, significa que nenhuma colheitadeira terá frutas à esquerda e à direita de sua faixa
 "/>
 		<!--Info Panel-->
-		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanel_title"														text="Painel Info"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
-While hovering the status message, the name of the vehicle will be displayed.
-By clicking on it, you can jump directly into the vehicle.
+Este é o nosso Painel de Informações, ele pode ser movido com o mouse, assim como nosso Mini HUD.
+Além do nome e da versão do nosso Mod, também mostra informações de status sobre os veículos no CP.
+Ao passar o mouse sobre a mensagem de status, o nome do veículo será exibido.
+Ao clicar nele, você pode pular diretamente para o veículo.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-The Informations are the following:
-- Helper is stuck
-- Is in traffic
-- Should be refueled
-- Needs to be refueled
-- Needs to be repaired
-- Needs to be refilled
-- Needs to be unloaded
-- Finished work
-- Ouf of money
-- Waiting for rain to finish
+As Informações são as seguintes:
+- O motorista está preso
+- Está no trânsito
+- Deve ser reabastecido
+- Precisa ser reabastecido
+- Precisa ser reparado
+- Precisa ser recarregado
+- Precisa ser descarregado
+- Trabalho feito
+- Sem dinheiro
+- Esperando a chuva passar
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Trabalho na videira"/>
