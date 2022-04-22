@@ -226,6 +226,8 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {})
     self:addImplementController(vehicle, WearableController, Wearable, {})
     self:addImplementController(vehicle, VineCutterController, VineCutter, defaultDisabledStates)
+
+    self:addImplementController(vehicle, SoilSamplerController, nil, defaultDisabledStates, "spec_soilSampler")
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    

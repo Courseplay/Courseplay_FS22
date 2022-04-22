@@ -45,6 +45,11 @@ function WorkWidthUtil.getAutomaticWorkWidth(object,logPrefix)
         end
     end
 
+    --- Work width for soil samplers.
+    if not width and object.spec_soilSampler then 
+        width = object.spec_soilSampler.samplingRadius and 2*object.spec_soilSampler.samplingRadius/ math.sqrt(2)
+    end
+
     if not width then
         --- Gets the work width if the object is a shield.
      --   width = WorkWidthUtil.getShieldWorkWidth(object,logPrefix)
