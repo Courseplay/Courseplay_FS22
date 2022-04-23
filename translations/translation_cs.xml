@@ -352,25 +352,25 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
-		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_General_title"															text="一般信息"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
+它还可以使用打包机和饲料车，它们可以像以前的割草机或收割机一样行驶到同一路线上。
+另一个大特点是在场地上收集或包装草垛。
+本次 CP 迭代的新功能是葡萄树工作路线。
+可以在多工具模式下设置田地工作路线，这允许使用多达 5 名司机在同一田地的车队中工作。
+也可以将联合收割机自动卸载到田间/附近的拖车中。
+可以分配自定义田地边界供CP使用，例如：在草地的情况下，它不被识别为普通田地。
+最后，cp 有一个 Autodrive 接口，允许在附近的筒仓重新填充播种机或卸载饲料车等。
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+更多信息请访问我们的github： https://github.com/Courseplay/Courseplay_FS22 .
+您可以在那里获得帮助或报告您遇到的任何问题。
+最后，我们感谢每一位翻译和来社区报告错误、提供使用反馈和新想法的玩家。
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+什么是专家模式：
+禁用专家模式后，您只能更改部分设置。
+其他设置是隐藏的，并设置为默认值，这在大多数情况下都有效。
+我们尝试通过这种方式，帮助玩家更轻松地使用CP，而不会因为繁杂的设置感到使用困难。
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="扩展AI菜单"/>
@@ -558,46 +558,46 @@ R: 从剪贴板中删除复制的路线。
 安装后，您可以使用它运行一个自动卸载草垛拖车的任务。
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="对称变道"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
+对称变道用于多工具任务模式，能使AI司机转弯后知道他必须在哪条车道上行驶。
+这有点难以理解，所以让我们看两个例子。
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+当对称变道关闭时，车辆保持在侧置车道上。
+这意味着他总是在车道靠左行驶或靠右行驶。
+这就确保了AI助手们不会并排行驶。
+不会有与其他车辆发生碰撞的风险。
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+如果开启了对称变道，左右将会交换(但不显示在HUD中)。
+车辆在彼此相向行驶时可能会发生碰撞。
+那么，对称变道的优势是什么呢?
+如果你看一下车道的次序，从左到右，就会很清楚:
+没有对称的变化:左，右，左，右——它几乎就像跳过一个车道。
+有对称的变化:左，右，右，左——从左到右，一条车道接着另一条。
+在联合收割机的例子中，它的意思是，没有联合收割机的车道左右都不会有作物。
 "/>
 		<!--Info Panel-->
-		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanel_title"														text="信息面板"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
-While hovering the status message, the name of the vehicle will be displayed.
-By clicking on it, you can jump directly into the vehicle.
+这是我们的信息面板，它可以通过鼠标移动，就像我们的迷你HUD一样。
+除了Mod的名称和版本，它还显示了关于cp任务车辆的状态信息。
+当鼠标悬停在状态信息上时，车辆的名称将显示出来。
+点击它，你就可以直接切换到车辆。
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-The Informations are the following:
-- Helper is stuck
-- Is in traffic
-- Should be refueled
-- Needs to be refueled
-- Needs to be repaired
-- Needs to be refilled
-- Needs to be unloaded
-- Finished work
-- Ouf of money
-- Waiting for rain to finish
+信息如下:
+- 助手卡住了
+- 正在路上
+- 应该加油
+- 需要加油
+- 需要修理
+- 需要重新填充
+- 需要卸载
+- 已完成工作
+- 资金不足
+- 等待雨停
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="葡萄树的工作"/>
