@@ -327,10 +327,10 @@
 		<text name="CP_infoTexts_isStuck"																text="Hjälparen sitter fast"/>
 		<text name="CP_infoTexts_isInTraffic"  															text="Är i trafik"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="Bör tankas"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Måste tankas"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repareras"/>
-		<text name="CP_infoTexts_needsFilling"  														text="Needs to be fyllas på"/>
-		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be tömmas"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Behöver tankas"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Behöver repareras"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Måste fyllas på"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Måste tömmas"/>
 		<text name="CP_infoTexts_workFinished"															text="Slutfört arbetet"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Slut på pengar"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Väntar på att det ska sluta regna för att slutföra"/>
