@@ -26,8 +26,6 @@ end
 
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpCourseGeneratorSettings)
 end
@@ -87,18 +85,9 @@ end
 function CpCourseGeneratorSettings:onLoadFinished(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
     if not spec.wasLoaded then
-        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+        local width, offset WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
+        spec.workWidth:setFloatValue(width)
     end
-end
-
-function CpCourseGeneratorSettings:onPostAttachImplement()
-    CpCourseGeneratorSettings.setAutomaticWorkWidth(self)
-    CpCourseGeneratorSettings.validateSettings(self)
-end
-
-function CpCourseGeneratorSettings:onPreDetachImplement(implement)
-    CpCourseGeneratorSettings.setAutomaticWorkWidth(self, implement.object)
-    CpCourseGeneratorSettings.validateSettings(self)
 end
 
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
@@ -107,7 +96,8 @@ function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
     local self = object.rootVehicle
     if self:getIsSynchronized() and self.spec_cpCourseGeneratorSettings then
         local spec = self.spec_cpCourseGeneratorSettings
-        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+        local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
+        spec.workWidth:setFloatValue(width)
     end
 end
 VariableWorkWidth.updateSections = Utils.appendedFunction(VariableWorkWidth.updateSections,CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged)
@@ -172,13 +162,6 @@ end
 ---@param setting AIParameterSettingList setting that raised the callback.
 function CpCourseGeneratorSettings:raiseCallback(callbackStr, setting, ...)
     SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
-end
-
----@param ignoreObject table ignore this object when calculating the width (as it is being detached, for instance)
-function CpCourseGeneratorSettings:setAutomaticWorkWidth(ignoreObject)
-    local spec = self.spec_cpCourseGeneratorSettings
-    local width = WorkWidthUtil.getAutomaticWorkWidth(self, nil, ignoreObject)
-    spec.workWidth:setFloatValue(width)
 end
 
 function CpCourseGeneratorSettings:validateSettings()

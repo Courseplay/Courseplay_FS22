@@ -260,7 +260,7 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:setAllStaticParameters()
-    self.workWidth = WorkWidthUtil.getAutomaticWorkWidth(self.vehicle)
+    self.workWidth = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self.vehicle)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
 end
 

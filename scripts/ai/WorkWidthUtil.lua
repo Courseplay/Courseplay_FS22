@@ -23,8 +23,8 @@ function WorkWidthUtil.hasValidWorkArea(object)
     return object and object.getWorkAreaByIndex and object.spec_workArea.workAreas
 end
 
---- Shovel/shield calculation disabled for now.
---- Gets an automatic calculated work width or a pre configured in vehicle configurations.
+--- Gets the working width and offset calculated from all built-in and attached implements. If an implement has
+--- a width or offset configured, it takes precedence over the calculated values.
 ---
 --- Working width can be tricky if there are multiple implements attached. There is no guarantee that all work areas are
 --- in the centerline of the vehicle, for instance mowers can be offset on one side. To get the true working width, we must
@@ -35,50 +35,46 @@ end
 ---@param object table
 ---@param referenceNode number the node for calculating the work width, if not supplied, use the object's root node
 ---@param ignoreObject table ignore this object when calculating the width (as it is being detached, for instance)
-function WorkWidthUtil.getAutomaticWorkWidth(object, referenceNode, ignoreObject)
+function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ignoreObject)
     -- when first called for the vehicle, referenceNode is empty, so use the vehicle root node
     referenceNode = referenceNode or object.rootNode
     WorkWidthUtil.debug(object, 'getting working width...')
     -- check if we have a manually configured working width
-    local width = g_vehicleConfigurations:get(object, 'workingWidth')
+    local configuredWidth = g_vehicleConfigurations:get(object, 'workingWidth')
+    local configuredOffset = g_vehicleConfigurations:get(object, 'toolOffsetX')
+
     local left, right = -math.huge, math.huge
-    if not width then
-        if object.getVariableWorkWidth then
-            --- Gets the variable work width to the left + to the right.
-            local w1,_,isValid1 = object:getVariableWorkWidth(true)
-            local w2,_,isValid2 = object:getVariableWorkWidth()
-            if isValid1 and isValid2 then
-                width = math.abs(w1) + math.abs(w2)
-                WorkWidthUtil.debug(object, '%s: left = %.1f, right = %.1f, setting variable work width of %.1f.',
-                        w1, w2, width)
-            end
+    local width, offset
+
+    if object.getVariableWorkWidth then
+        --- Gets the variable work width to the left + to the right.
+        local w1,_,isValid1 = object:getVariableWorkWidth(true)
+        local w2,_,isValid2 = object:getVariableWorkWidth()
+        if isValid1 and isValid2 then
+            width = math.abs(w1) + math.abs(w2)
+            WorkWidthUtil.debug(object, '%s: left = %.1f, right = %.1f, setting variable work width of %.1f.',
+                    w1, w2, width)
         end
     end
 
     --- Work width for soil samplers.
     if not width and object.spec_soilSampler then 
-        width = object.spec_soilSampler.samplingRadius and 2*object.spec_soilSampler.samplingRadius/ math.sqrt(2)
+        width = object.spec_soilSampler.samplingRadius and 2 * object.spec_soilSampler.samplingRadius/ math.sqrt(2)
     end
 
-    if not width then
-        --- Gets the work width if the object is a shield.
-        --   width = WorkWidthUtil.getShieldWorkWidth(object)
-    end
+    -- if something is foldable, and is folded, we unfold before measuring the width. This makes sure
+    -- implements which have the work area/AI markers folding with the implement have a correct width detected
+    local wasFolded = false
 
     if not width then
-        --- Gets the work width if the object is a shovel.
-        --     width = WorkWidthUtil.getShovelWorkWidth(object)
-    end
-
-    local wasFolded = ImplementUtil.unfoldForGettingWidth(object)
-
-    if not width then
+        wasFolded = ImplementUtil.unfoldForGettingWidth(object)
         -- no manual config, check AI markers
         width, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
     end
 
     if not width then
         if WorkWidthUtil.hasWorkAreas(object) then
+            wasFolded = ImplementUtil.unfoldForGettingWidth(object)
             -- no AI markers, check work areas
             width, left, right = WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
         else
@@ -91,25 +87,42 @@ function WorkWidthUtil.getAutomaticWorkWidth(object, referenceNode, ignoreObject
         -- get width of all implements
         for _, implement in ipairs(implements) do
             if implement.object ~= ignoreObject then
-                local _, thisLeft, thisRight = WorkWidthUtil.getAutomaticWorkWidth(implement.object)
+                local _, _, thisLeft, thisRight = WorkWidthUtil.getAutomaticWorkWidthAndOffset(implement.object)
                 left = math.max(thisLeft or 0, left or -math.huge)
                 right = math.min(thisRight or 0, right or math.huge)
             end
         end
     end
-    if left and right then
-        width = left - right
-        WorkWidthUtil.debug(object, 'working width is %.1f, left %.1f, right %.1f.', width, left, right)
-    else
-        width = 0
-        WorkWidthUtil.debug(object, 'Could not determine working width')
-    end
 
+    -- tuck everything back nicely if we unfolded it
     if wasFolded then
         ImplementUtil.foldAfterGettingWidth(object)
     end
 
-    return width, left, right
+    if configuredWidth then
+        width = configuredWidth
+        WorkWidthUtil.debug(object, 'using configured working width of %.1f.', configuredWidth)
+    elseif left and right then
+        width = left - right
+        WorkWidthUtil.debug(object, 'working width is %.1f, left %.1f, right %.1f.', width, left, right)
+    else
+        width = 0
+        WorkWidthUtil.debug(object, 'could not determine working width')
+    end
+
+    if configuredOffset then
+        offset = configuredOffset
+        WorkWidthUtil.debug(object, 'using configured tool offset of %.1f.', configuredOffset)
+    elseif left and right then
+        offset = left - width / 2
+        WorkWidthUtil.debug(object, 'calculated tool offset is %.1f.', offset)
+    else
+        offset = 0
+        WorkWidthUtil.debug(object, 'could not determine offset, using 0')
+    end
+
+    --return math.floor(width * 10 + 0.5) / 10, math.floor(offset * 10 + 0.5) / 10, left, right
+    return width, offset, left, right
 end
 
 

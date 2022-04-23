@@ -311,7 +311,7 @@ local function setValueInternal(self, value, comparisonFunc)
 		if comparisonFunc(self.values[i], value) then
 			new = self:checkAndSetValidValue(i)
 			self:setToIx(new)
-			return
+			return false
 		end
 	end
 	return value ~= new
@@ -324,7 +324,7 @@ end
 function AIParameterSettingList:setFloatValue(value, epsilon)
 	return setValueInternal(self, value, function(a, b)
 								local epsilon = epsilon or self.data.incremental or 0.1
-		return MathUtil.equalEpsilon(a, b, epsilon) end)
+		return a > b - epsilon / 2 and a <= b + epsilon / 2 end)
 end
 
 --- Gets the closest value ix and absolute difference, relative to the value searched for.
