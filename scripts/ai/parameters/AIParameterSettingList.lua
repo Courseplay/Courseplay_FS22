@@ -323,7 +323,8 @@ end
 ---@return boolean value is not valid and could not be set.
 function AIParameterSettingList:setFloatValue(value, epsilon)
 	return setValueInternal(self, value, function(a, b)
-								local epsilon = epsilon or self.data.incremental or 0.1
+		local epsilon = epsilon or self.data.incremental or 0.1
+		if a == nil or b == nil then return false end
 		return a > b - epsilon / 2 and a <= b + epsilon / 2 end)
 end
 
