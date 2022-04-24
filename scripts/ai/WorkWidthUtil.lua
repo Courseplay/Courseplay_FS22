@@ -77,6 +77,9 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
             wasFolded = ImplementUtil.unfoldForGettingWidth(object)
             -- no AI markers, check work areas
             width, left, right = WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
+            if not width then
+                WorkWidthUtil.debug(object, 'has NO valid work areas')
+            end
         else
             WorkWidthUtil.debug(object, 'has NO work areas')
         end
@@ -129,19 +132,22 @@ end
 ---@param object table
 function WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
     -- TODO: check if there's a better way to find out if the implement has a work area
-    local maxLeft, minRight = -math.huge, math.huge
+    local hasValidWorkArea, maxLeft, minRight = false, -math.huge, math.huge
     for i, wa in WorkWidthUtil.workAreaIterator(object) do
-        -- work areas are defined by three nodes: start, width and height. These nodes
-        -- define a rectangular work area which you can make visible with the
-        -- gsVehicleDebugAttributes console command and then pressing F5
-        local left, _, _ = localToLocal(wa.start, referenceNode, 0, 0, 0)
-        local right, _, _ = localToLocal(wa.width, referenceNode, 0, 0, 0)
-        maxLeft = math.max(maxLeft, left)
-        minRight = math.min(minRight, right)
-        WorkWidthUtil.debug(object, 'work area %d is %s, left = %.1f, right %.1f m',
-                i, g_workAreaTypeManager.workAreaTypes[wa.type].name, left, right)
+        if WorkWidthUtil.isValidWorkArea(wa) then
+            hasValidWorkArea = true
+            -- work areas are defined by three nodes: start, width and height. These nodes
+            -- define a rectangular work area which you can make visible with the
+            -- gsVehicleDebugAttributes console command and then pressing F5
+            local left, _, _ = localToLocal(wa.start, referenceNode, 0, 0, 0)
+            local right, _, _ = localToLocal(wa.width, referenceNode, 0, 0, 0)
+            maxLeft = math.max(maxLeft, left)
+            minRight = math.min(minRight, right)
+            WorkWidthUtil.debug(object, 'work area %d is %s, left = %.1f, right %.1f m',
+                    i, g_workAreaTypeManager.workAreaTypes[wa.type].name, left, right)
+        end
     end
-    return maxLeft - minRight, maxLeft, minRight
+    return hasValidWorkArea and maxLeft - minRight, maxLeft, minRight
 end
 
 ---@param object table
