@@ -58,8 +58,13 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     end
 
     --- Work width for soil samplers.
-    if not width and object.spec_soilSampler then 
-        width = object.spec_soilSampler.samplingRadius and 2 * object.spec_soilSampler.samplingRadius/ math.sqrt(2)
+    if not width and object.spec_soilSampler then
+        if object.spec_soilSampler.samplingRadius then
+            width = 2 * object.spec_soilSampler.samplingRadius / math.sqrt(2)
+            WorkWidthUtil.debug(object, 'using soil sampler width of %.1f (from sampling radius).', width)
+        else
+            WorkWidthUtil.debug(object, 'soil sampler has no sampling radius, can\'t calculate width')
+        end
     end
 
     -- if something is foldable, and is folded, we unfold before measuring the width. This makes sure
@@ -108,7 +113,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     elseif left and right then
         width = left - right
         WorkWidthUtil.debug(object, 'working width is %.1f, left %.1f, right %.1f.', width, left, right)
-    else
+    elseif not width then
         width = 0
         WorkWidthUtil.debug(object, 'could not determine working width')
     end
@@ -116,7 +121,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     if configuredOffset then
         offset = configuredOffset
         WorkWidthUtil.debug(object, 'using configured tool offset of %.1f.', configuredOffset)
-    elseif left and right then
+    elseif width and left and right then
         offset = left - width / 2
         WorkWidthUtil.debug(object, 'calculated tool offset is %.1f.', offset)
     else
@@ -124,7 +129,6 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         WorkWidthUtil.debug(object, 'could not determine offset, using 0')
     end
 
-    --return math.floor(width * 10 + 0.5) / 10, math.floor(offset * 10 + 0.5) / 10, left, right
     return width, offset, left, right
 end
 
