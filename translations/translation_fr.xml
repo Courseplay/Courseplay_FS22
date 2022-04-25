@@ -351,25 +351,24 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
-		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_General_title"															text="Informations générales"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+Courseplay vous permet de générer des courses (des parcours de travaux dans les champs) avec des caractéristiques améliorées par rapport aux ouvriers classiques, par exemple : les fourrières.
+Il permet également d'utiliser des presses et des autochargeuses en utilisant le même parcours qu'une faucheuse ou une moissonneuse. Il peut également automatiquement détecter les bottes dans un champ pour les ramasser et/ou les enrubanner.
+Nouveauté pour cette édition FS22, le Courseplay vous permettra également de générer des courses dans les vignes.
+Il existe également des courses à outils multiples permettant jusqu'à 5 ouvriers Courseplay de travailler en même temps dans le même champ.
+Les moissonneuses-batteuses peuvent automatiquement aller se vider dans une remorque située près ou sur le champ moissonné.
+Vous pouvez définir des contours de champs personnalisés si nécessaire afin que le Courseplay puisse également travailler des surfaces non déclarées initialement sur la carte (comme par exemple l'entretien des prairies).
+Enfin, Courseplay dispose d'une interface avec Autodrive, pour permettre à l'ouvrier devant recharger un semoir de se rendre à un point de recharge ou encore aller automatiquement décharger une autochargeuse à un silo désiré.
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+Pour plus d'informations, veuillez vous rendre sur notre github : https://github.com/Courseplay/Courseplay_FS22 .
+Vous pouvez y obtenir de l'aide ou signaler tout problème que vous avez rencontré.
+Enfin, nous remercions tous les traducteurs et notre communauté pour leur signalement des bogues ainsi que les retours d'utilisation et leurs nouvelles idées.
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+Qu'est-ce que le mode expert ?
+Lorsque le mode expert est désactivé, vous n'avez accès qu'à certains paramètres.
+Les autres paramètres sont cachés et réglés sur les valeurs par défaut, ce qui fonctionnera dans la plupart des situations.
+De cette façon, nous essayons d'aider les nouveaux utilisateurs à se familiariser avec Courseplay sans être submergés par tous les paramètres.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Nouveau menu des ouvriers"/>
@@ -557,46 +556,44 @@ Le ramassage des bottes fonctionne de la même manière que l'enrubannage, soit 
 Lorsqu'il n'y aura plus de place pour charger d'autres bottes, l'ouvrier s'arrêtera et attendra votre intervention pour la suite des opérations. Si vous utilisez Autodrive, vous pouvez le paramétrer pour définir une voie à suivre pour aller décharger les bottes automatiquement à un point donné avant de revenir continuer les opérations dans le champ.
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="Changement symétrique de rangées"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
+Le changement symétrique de rangées est uniquement utilisé dans une course à outils multiples afin d'indiquer de quel côté le chauffeur se rendra (gauche ou droite) lors du travail dans la prochaine rangée.
+Pour mieux comprendre, prenons deux exemples :
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+Lorsque le changement symétrique est désactivé, le véhicule restera toujours de son côté dans toutes les rangées, c'est à dire toujours à gauche ou toujours à droite.
+Cela évite ainsi tout risque de collision par croisement avec les autres véhicules.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+Lorsque le changement symétrique est désactivé, les côtés gauche et droit seront alternés à chaque nouvelle rangée (non indiqué par l'ATH).
+Il y a un risque de collision par croisement avec d'autres véhicules dans ce cas.
+Quel est donc l'avantage d'utiliser cette fonction ?
+En observant une course par rangées d'aller-retour de gauche vers la droite :
+Sans changement symétrique : gauche, droite, gauche, droite - presque comme si l'ouvrier ignorait une rangée.
+Avec changement symétrique: gauche, droite, droite, gauche - le travail est continu de gauche vers la droite.
+Avec l'exemple des moissonneuses, cela veut dire qu'aucune d'entre elles n'auront de risque d'avoir de la culture restante à côté de leurs rangées.
 "/>
 		<!--Info Panel-->
-		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanel_title"														text="Fenêtre d'informations"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
-While hovering the status message, the name of the vehicle will be displayed.
-By clicking on it, you can jump directly into the vehicle.
+Cette fenêtre d'informations peut être déplacée en maintenant le curseur, tout comme l'ATH.
+En plus de l'affichage du mod et de sa version, elle donne des informations sur les ouvriers CP actuellement actifs.
+En laissant le curseur au-dessous du message, vous verrez apparaître le nom du véhicule concerné.
+En cliquant dessus, vous arrivez directement dans le véhicule.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-The Informations are the following:
-- Helper is stuck
-- Is in traffic
-- Should be refueled
-- Needs to be refueled
-- Needs to be repaired
-- Needs to be refilled
-- Needs to be unloaded
-- Finished work
-- Ouf of money
-- Waiting for rain to finish
+Les informations concernant l'ouvrier peuvent être les suivantes:
+- Est bloqué
+- Est en transit
+- Devrait bientôt refaire le plein de carburant
+- Doit refaire le plein de carburant
+- Doit être réparé
+- Doit être ravitaillé
+- Doit être vidé
+- A terminé son travail
+- N'a plus d'argent
+- Attend la fin de la pluie pour reprendre
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Travail dans les vignes"/>
