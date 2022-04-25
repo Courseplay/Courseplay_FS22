@@ -20,7 +20,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 							"courseGeneratorLayout","courseGeneratorHeader","drawingCustomFieldHeader",
 							"vineCourseGeneratorLayoutElements"})
 
-
+	--- TODO: Figure out the correct implementation for Issues #1015 & #1457.
 	local element = self:getDescendantByName("ingameMenuAI")
 
 	local xmlFile = loadXMLFile("Temp", Utils.getFilename("config/gui/CourseGeneratorSettingsFrame.xml",Courseplay.BASE_DIRECTORY))
@@ -28,7 +28,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	delete(xmlFile)
 	self:exposeControlsAsFields()
 	self.courseGeneratorLayout:onGuiSetupFinished()
-	element:applyScreenAlignment()
+--	element:applyScreenAlignment()
 	element:updateAbsolutePosition()
 
 	self.drawingCustomFieldHeader:setVisible(false)
