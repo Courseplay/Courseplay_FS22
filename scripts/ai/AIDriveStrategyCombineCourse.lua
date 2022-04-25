@@ -165,13 +165,6 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
-	-- TODO: need a cleaner way to keep a cotton harvester going (otherwise it won't drop the bale)
-	if self:isCottonHarvester() then
-		self:debug('Cotton harvester, set max fill level to 100 to trigger bale unload when full')
-		self.fillLevelFullPercentage = 100
-	else
-		self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
-	end
 end
 
 -- This part of an ugly workaround to make the chopper pickups work
@@ -300,9 +293,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		end
 	elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
 		local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-		--- Makes sure the cotton harvester gets release at the end of the course.
-		--- TODO: Unload the unfinished bale from the cotton harvester.
-		if fillLevel < 0.01 or self:isCottonHarvester() then
+		if fillLevel < 0.01 then
 			self:debug('Unloading finished after fieldwork ended, end course')
 			AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
 		else
@@ -608,10 +599,6 @@ function AIDriveStrategyCombineCourse:isFull()
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
-	if not self.pipe then
-		-- no pipe, no sense making a pocket (like cotton harvesters)
-		return false
-	end
 	if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
 		-- fruit both sides
 		return true
@@ -1029,9 +1016,6 @@ end
 
 --- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
 function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
-	if self:isCottonHarvester() then 
-		return false
-	end
 	--- Enables fuel save, while waiting for the rain to stop.
 	if self.combine:getIsThreshingDuringRain() then 
 		return true
@@ -1390,17 +1374,6 @@ function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
 		if self.vehicle:getFillUnitSupportsFillType(i, FillType.POTATO) or
 			self.vehicle:getFillUnitSupportsFillType(i, FillType.SUGARBEET) then
 			self:debug('This is a potato or sugar beet harvester.')
-			return true
-		end
-	end
-	return false
-end
-
-
-function AIDriveStrategyCombineCourse:isCottonHarvester()
-	for i, fillUnit in ipairs(self.vehicle:getFillUnits()) do
-		if self.vehicle:getFillUnitSupportsFillType(i, FillType.COTTON) then
-			self:debug('This is a cotton harvester.')
 			return true
 		end
 	end

@@ -308,13 +308,14 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
         spec.driveStrategies = {}
     end
     local cpDriveStrategy
+    local combine = AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
     --- Checks if there are any vine nodes close to the starting point.
     if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
         CpUtil.infoVehicle(self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
         cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
-    elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
-           and not AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) then
-        CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
+    elseif combine and SpecializationUtil.hasSpecialization(Pipe, combine.specializations) then
+        --- Makes sure the combine strategy is only used for combines with a pipe.
+        CpUtil.infoVehicle(self, 'Found a combine with pipe, install CP combine drive strategy for it')
         cpDriveStrategy = AIDriveStrategyCombineCourse.new()
         self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
     elseif AIUtil.hasImplementWithSpecialization(self, Plow) then
