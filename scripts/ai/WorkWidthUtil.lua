@@ -43,24 +43,25 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     local configuredWidth = g_vehicleConfigurations:get(object, 'workingWidth')
     local configuredOffset = g_vehicleConfigurations:get(object, 'toolOffsetX')
 
-    local left, right = -math.huge, math.huge
-    local width, offset
+    local left, right
 
     if object.getVariableWorkWidth then
         --- Gets the variable work width to the left + to the right.
         local w1,_,isValid1 = object:getVariableWorkWidth(true)
         local w2,_,isValid2 = object:getVariableWorkWidth()
         if isValid1 and isValid2 then
-            width = math.abs(w1) + math.abs(w2)
+            left, right = w1, w2
+            local width = math.abs(w1) + math.abs(w2)
             WorkWidthUtil.debug(object, '%s: left = %.1f, right = %.1f, setting variable work width of %.1f.',
                     w1, w2, width)
         end
     end
 
     --- Work width for soil samplers.
-    if not width and object.spec_soilSampler then
+    if not left and object.spec_soilSampler then
         if object.spec_soilSampler.samplingRadius then
-            width = 2 * object.spec_soilSampler.samplingRadius / math.sqrt(2)
+            local width = 2 * object.spec_soilSampler.samplingRadius / math.sqrt(2)
+            left, right = width / 2, width / 2
             WorkWidthUtil.debug(object, 'using soil sampler width of %.1f (from sampling radius).', width)
         else
             WorkWidthUtil.debug(object, 'soil sampler has no sampling radius, can\'t calculate width')
@@ -71,18 +72,18 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     -- implements which have the work area/AI markers folding with the implement have a correct width detected
     local wasFolded = false
 
-    if not width then
+    if not left then
         wasFolded = ImplementUtil.unfoldForGettingWidth(object)
         -- no manual config, check AI markers
-        width, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
+        _, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
     end
 
-    if not width then
+    if not left then
         if WorkWidthUtil.hasWorkAreas(object) then
             wasFolded = ImplementUtil.unfoldForGettingWidth(object)
             -- no AI markers, check work areas
-            width, left, right = WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
-            if not width then
+            left, right = WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
+            if not left then
                 WorkWidthUtil.debug(object, 'has NO valid work areas')
             end
         else
@@ -107,6 +108,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         ImplementUtil.foldAfterGettingWidth(object)
     end
 
+    local width, offset
     if configuredWidth then
         width = configuredWidth
         WorkWidthUtil.debug(object, 'using configured working width of %.1f.', configuredWidth)
@@ -121,6 +123,11 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     if configuredOffset then
         offset = configuredOffset
         WorkWidthUtil.debug(object, 'using configured tool offset of %.1f.', configuredOffset)
+        if width == 0 then
+            -- some vine tools have no working width but we do have a configured offset. Make sure that
+            -- the vehicle will inherit this offset by returning a left, right pair at offset
+            left, right = offset, offset
+        end
     elseif width and left and right then
         offset = left - width / 2
         WorkWidthUtil.debug(object, 'calculated tool offset is %.1f.', offset)
@@ -151,7 +158,11 @@ function WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
                     i, g_workAreaTypeManager.workAreaTypes[wa.type].name, left, right)
         end
     end
-    return hasValidWorkArea and maxLeft - minRight, maxLeft, minRight
+    if hasValidWorkArea then
+        return maxLeft, minRight
+    else
+        return nil, nil
+    end
 end
 
 ---@param object table
