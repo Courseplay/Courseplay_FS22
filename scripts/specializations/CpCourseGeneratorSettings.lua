@@ -85,8 +85,7 @@ end
 function CpCourseGeneratorSettings:onLoadFinished(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
     if not spec.wasLoaded then
-        local width, offset WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
-        spec.workWidth:setFloatValue(width)
+        CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
     end
 end
 
@@ -95,12 +94,17 @@ function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
     --- Object could be an implement, so make sure we use the root vehicle.
     local self = object.rootVehicle
     if self:getIsSynchronized() and self.spec_cpCourseGeneratorSettings then
-        local spec = self.spec_cpCourseGeneratorSettings
-        local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
-        spec.workWidth:setFloatValue(width)
+        CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
     end
 end
 VariableWorkWidth.updateSections = Utils.appendedFunction(VariableWorkWidth.updateSections,CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged)
+
+function CpCourseGeneratorSettings:setAutomaticWorkWidthAndOffset()
+    local spec = self.spec_cpCourseGeneratorSettings
+    local width, offset, _, _ = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
+    spec.workWidth:setFloatValue(width)
+    self:getCpSettings().toolOffsetX:setFloatValue(offset)
+end
 
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()

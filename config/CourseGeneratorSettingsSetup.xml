@@ -8,7 +8,7 @@
 
 <Settings prefixText="CP_vehicle_courseGeneratorSetting_" autoUpdateGui="true">
 	<SettingSubTitle title="basic">
-		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidth" onChangeCallback="cpShowWorkWidth"/>
+		<Setting classType="AIParameterSettingList" name="workWidth" min="1" max="50" incremental="0.1" unit="2" setDefault="setAutomaticWorkWidthAndOffset" onChangeCallback="cpShowWorkWidth"/>
 		<Setting classType="AIParameterSettingList" name="multiTools" min="1" max="5" default="1"/>
 		<Setting classType="AIParameterSettingList" name="numberOfHeadlands" min="0" max="40"/>
 	</SettingSubTitle>
