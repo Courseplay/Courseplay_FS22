@@ -61,7 +61,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     if not left and object.spec_soilSampler then
         if object.spec_soilSampler.samplingRadius then
             local width = 2 * object.spec_soilSampler.samplingRadius / math.sqrt(2)
-            left, right = width / 2, width / 2
+            left, right = width / 2, - width / 2
             WorkWidthUtil.debug(object, 'using soil sampler width of %.1f (from sampling radius).', width)
         else
             WorkWidthUtil.debug(object, 'soil sampler has no sampling radius, can\'t calculate width')
