@@ -843,12 +843,13 @@ function Course:getNextFwdWaypointIx(ix)
 	return ix
 end
 
-function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, lookAheadDistance)
-	for i = ix, #self.waypoints do
+function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx)
+	-- only look at the next few waypoints, we don't want to find anything far away, really, it should be in front of us
+	for i = ix, math.min(ix + 10, #self.waypoints) do
 		if not self:isReverseAt(i) then
 			local uX, uY, uZ = self:getWaypointPosition(i)
-			local _, _, z = worldToLocal(vehicleNode, uX, uY, uZ);
-			if z > lookAheadDistance then
+			local dx, _, dz = worldToLocal(vehicleNode, uX, uY, uZ);
+			if dz > 0 and math.abs(dx) < maxDx then
 				return i
 			end
 		end

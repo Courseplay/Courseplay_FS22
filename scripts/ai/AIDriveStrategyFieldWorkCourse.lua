@@ -506,7 +506,8 @@ function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
     self:lowerImplements()
     -- restore our own listeners for waypoint changes
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix, self.vehicle:getAIDirectionNode(), 0)
+    local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix,
+            self.vehicle:getAIDirectionNode(), self.workWidth / 2)
     self:startCourse(self.course, startIx)
 end
 
