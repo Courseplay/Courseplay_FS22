@@ -352,23 +352,23 @@
 		<!--General-->
 		<text name="CP_help_page_General_title"															text="General Information"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+CoursePlay te permite generar cursos en los campos con características adicionales, por ejemplo: Cabeceras.
+También habilita el uso de Empacadoras y remolques de Forrage, que pueden ser enviados en el mismo curso, detrás de una Segadora o Cosechadora
+Otra gran caraterística es la recogida o encintado de pacas en el campo.
+La nueva iteración de CP el el trabajo en Vides.
+Los cursos de trabajo pueden ser configurados en el modo Multi-Herramientas, que permite el uso de hasta 5 conductores en convoy en el mismo campo.
+También es posible hacer que la cosechadora se descargue en un remolque en/cerca del campo automáticamente.
+Se pueden asignar bordes de campo personalizados para usar en el campo, por ejemplo: en el caso de un prado, que no se reconoce como un campo normal.
+Finalmente CP tiene una interfaz para AutoDrive, lo que permite recargar una sembradora en un silo cercano o descargar un vagón de forraje, etc.
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+Para más información visite nuestro enlace en GitHub: https://github.com/Courseplay/Courseplay_FS22 .
+Ahí puedes obtener ayuda o reportar cualquier problema que haya experimentado.
+Finalmente, agradecemos a todos los traductores y a nuestra comunidad por informar errores, brindar comentarios y nuevas ideas.
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+Qué es el Modo Experto:
+Cuando el Modo Experto es desactivado, solo tienes acceso a algunas configuraciones.
+Las otras configuraciones están ocultas y configuradas en valores predeterminados, lo que funciona en la mayoría de las situaciones.
+De esa forma, tratamos de ayudar a los usuarios a que se familiaricen más fácilmente con Courseplay sin sentirse abrumados por todas las configuraciones.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Menú IA Extendido"/>
@@ -562,46 +562,46 @@ Cuando el colector esté lleno, detendrá el trabajo y le indicará al usuario q
 instalado, puede usarlo para ejecutar y descargar el recolector de pacas automáticamente.
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="Cambio a carril simétrico"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
+El cambio de carril simétrico se utiliza en cursos multiherramienta y le dice al conductor en qué carril debe conducir después del giro.
+Esto es un poco difícil de entender, así que echemos un vistazo a dos ejemplos:
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+Cuando el cambio de carril simétrico está desactivado, el vehículo permanece en su carril de compensación.
+Eso significa que siempre conducirá a la izquierda o a la derecha del curso.
+Esto asegura que los ayudantes no conduzcan uno al lado del otro.
+No habrá riesgo de conflicto con otro conductor.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+Si el cambio de carril simétrico está activado, se intercambiarán izquierda y derecha (pero no se muestra en el HUD).
+Los vehículos pueden entrar en conflicto entre sí cuando conducen uno hacia el otro.
+Entonces, ¿cuál es la ventaja del cambio de carril simétrico?
+Si echas un vistazo al orden de los carriles, de izquierda a derecha, te quedará claro:
+Sin cambio simétrico: izquierda, derecha, izquierda, derecha - es casi como saltarse un carril.
+Con cambio simétrico: izquierda, derecha, derecha, izquierda - de izquierda a derecha, un carril tras otro.
+En el ejemplo con Cosechadoras, significa que ninguna tendrá frutas a la izquierda y derecha de su carril.
 "/>
 		<!--Info Panel-->
-		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
+		<text name="CP_help_page_infoPanel_title"														text="Panel de Información"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
-While hovering the status message, the name of the vehicle will be displayed.
-By clicking on it, you can jump directly into the vehicle.
+Este es nuestro Panel de información, se puede mover con el cursor del mouse, al igual que nuestro Mini HUD.
+Además del nombre y la versión de nuestro Mod, también muestra información de estado sobre los controladores de cp.
+Mientras se desplaza el mensaje de estado, se mostrará el nombre del vehículo.
+Al hacer clic en él, puede saltar directamente al vehículo.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-The Informations are the following:
-- Helper is stuck
-- Is in traffic
-- Should be refueled
-- Needs to be refueled
-- Needs to be repaired
-- Needs to be refilled
-- Needs to be unloaded
-- Finished work
-- Ouf of money
-- Waiting for rain to finish
+Las informaciones son las siguientes:
+- El ayudante está atascado
+- Está en el tráfico
+- Debe ser repostado
+- Necesita ser repostado
+- Necesita ser reparado
+- Necesita ser rellenado
+- Necesita ser descargado
+- Trabajo terminado
+- Sin dinero
+- Esperando a que termine la lluvia
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Trabajo en Vids"/>
