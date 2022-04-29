@@ -344,16 +344,13 @@ end
 --- Create a corner based on the turn context's start and end waypoints
 ---@param vehicle table
 ---@param r number turning radius in m
----@param sideOffset number (left < 0, right > 0) side offset to use when the course has an offset, for example
---- due to a tool setting.
---- TODO_22: side offset used the toolOffsetX setting for the vehicle
-function TurnContext:createCorner(vehicle, r, sideOffset)
+function TurnContext:createCorner(vehicle, r)
     -- use the average angle of the turn end and the next wp as there is often a bend there
     local endAngleDeg = self:getAverageEndAngleDeg()
     CpUtil.debugVehicle(CpDebug.DBG_TURN, vehicle, 'start angle: %.1f, end angle: %.1f (from %.1f and %.1f)', self.beforeTurnStartWp.angle,
             endAngleDeg, self.turnEndWp.angle, self.afterTurnEndWp.angle)
     return Corner(vehicle, self.beforeTurnStartWp.angle, self.turnStartWp, endAngleDeg, self.turnEndWp, r,
-            sideOffset)
+            vehicle:getCpSettings().toolOffsetX:getValue())
 end
 
 --- Course to reverse before starting a turn to make sure the turn is completely on the field

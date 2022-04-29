@@ -68,6 +68,7 @@ function AIDriveStrategyDriveToFieldWorkStart:initializeImplementControllers(veh
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParameters)
+    self:updateFieldworkOffset(course)
     local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, startIx)
     if distance < AIDriveStrategyDriveToFieldWorkStart.minDistanceToDrive then
         self:debug('Closer than %.0f m to start waypoint (%d), start fieldwork directly',
@@ -161,6 +162,7 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         self:rememberCourse(course, ix)
         self:setFrontAndBackMarkers()
         local x, _, z = course:getWaypointPosition(ix)
+        self:debug('offsetx %.1f, x %.1f, z %.1f', course.offsetX, x, z)
         self.state = self.states.WAITING_FOR_PATHFINDER
         local fieldNum = CpFieldUtil.getFieldIdAtWorldPosition(x, z)
         -- if there is fruit at the target, create an area around it where the pathfinder ignores the fruit
@@ -172,7 +174,7 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         -- always drive a behind the target waypoint so there's room to straighten out towed implements
         -- a bit before start working
         self:debug('Pathfinding to waypoint %d, with zOffset min(%.1f, %.1f)', ix, -self.frontMarkerDistance, -steeringLength)
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course:getWaypoint(ix),
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course, ix,
                 self.multitoolOffset, math.min(-self.frontMarkerDistance, -steeringLength), self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then

@@ -62,6 +62,7 @@ end
 --- the most we need is an alignment course to lower the implements
 function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
+    self:updateFieldworkOffset(course)
     self.fieldWorkCourse = course
     -- remember at which waypoint we started, especially for the convoy
     self.startWaypointIx = startIx
@@ -124,7 +125,7 @@ end
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
 function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
-    self:updateFieldworkOffset()
+    self:updateFieldworkOffset(self.course)
     self:updateLowFrequencyImplementControllers()
 
     local moveForwards = not self.ppc:isReversing()
@@ -576,14 +577,6 @@ function AIDriveStrategyFieldWorkCourse:getBestWaypointToContinueFieldWork()
     end
     self:debug('Best return to fieldwork waypoint is %d', bestWpIx)
     return bestWpIx
-end
-
---- We already set the offsets on the course at start, this is to update those values
--- if the user changed them during the run or the AI driver wants to add an offset
-function AIDriveStrategyFieldWorkCourse:updateFieldworkOffset()
-    self.course:setOffset(
-        self.settings.toolOffsetX:getValue() + self.aiOffsetX + (self.tightTurnOffset or 0),
-        0 + self.aiOffsetZ)
 end
 
 function AIDriveStrategyFieldWorkCourse:setOffsetX()
