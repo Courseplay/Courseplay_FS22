@@ -777,7 +777,8 @@ end
 --- Interface function to start the pathfinder in the game
 ------------------------------------------------------------------------------------------------------------------------
 ---@param vehicle table, will be used as the start location/heading, turn radius and size
----@param goalWaypoint Waypoint The destination waypoint (x, z, angle)
+---@param course Course the course with the destination waypoint
+---@param goalWaypointIx number index of the waypoint
 ---@param xOffset number side offset of the goal from the goalWaypoint
 ---@param zOffset number length offset of the goal from the goalWaypoint
 ---@param allowReverse boolean allow reverse driving
@@ -788,12 +789,12 @@ end
 ---@param offFieldPenalty number penalty to apply to nodes off the field
 ---@param areaToAvoid PathfinderUtil.NodeArea nodes in this area will be penalized so the path will most likely avoid it
 ---@param areaToIgnoreFruit PathfinderUtil.Area area to ignore fruit
-function PathfinderUtil.startPathfindingFromVehicleToWaypoint(vehicle, goalWaypoint,
+function PathfinderUtil.startPathfindingFromVehicleToWaypoint(vehicle, course, goalWaypointIx,
                                                               xOffset, zOffset, allowReverse,
                                                               fieldNum, vehiclesToIgnore, maxFruitPercent,
 															  offFieldPenalty, areaToAvoid, areaToIgnoreFruit)
-
-    local goal = State3D(goalWaypoint.x, -goalWaypoint.z, CourseGenerator.fromCpAngleDeg(goalWaypoint.angle))
+    local x, _, z = course:getWaypointPosition(goalWaypointIx)
+    local goal = State3D(x, -z, CourseGenerator.fromCpAngleDeg(course:getWaypointAngleDeg(goalWaypointIx)))
     local offset = Vector(zOffset, -xOffset)
     goal:add(offset:rotate(goal.t))
     return PathfinderUtil.startPathfindingFromVehicleToGoal(

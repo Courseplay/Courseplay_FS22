@@ -1579,7 +1579,7 @@ function AIDriveStrategyCombineCourse:returnToFieldworkAfterSelfUnload()
 		self:debug('Return to fieldwork after self unload at waypoint %d', ix)
 		local done, path
 		self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-				self.vehicle, fieldWorkCourse:getWaypoint(ix), 0,0,
+				self.vehicle, fieldWorkCourse, ix, 0,0,
 				self:getAllowReversePathfinding(), nil)
 		if done then
 			return self:onPathfindingDoneAfterSelfUnload(path)

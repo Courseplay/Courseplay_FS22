@@ -487,11 +487,17 @@ function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
 end
 
-
 --- Event raised when the drive is finished.
 --- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
 function AIDriveStrategyCourse:onFinished()
     self:raiseControllerEvent(self.onFinishedEvent)
+end
+
+--- This is to set the offsets on the course at start, or update those values
+--- if the user changed them during the run or the AI driver wants to add an offset
+function AIDriveStrategyCourse:updateFieldworkOffset(course)
+    course:setOffset(self.settings.toolOffsetX:getValue() + (self.aiOffsetX or 0) + (self.tightTurnOffset or 0),
+            (self.aiOffsetZ or 0))
 end
 
 ------------------------------------------------------------------------------------------------------------------------

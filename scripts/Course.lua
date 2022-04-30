@@ -421,6 +421,7 @@ function Course:useTightTurnOffset(ix)
 end
 
 --- Returns the position of the waypoint at ix with the current offset applied.
+---@param ix number waypoint index
 ---@return number, number, number x, y, z
 function Course:getWaypointPosition(ix)
 	if self:isTurnStartAtIx(ix) then
