@@ -24,7 +24,7 @@
 				<Text>up_down_rows</Text>
 			</Texts>
 		</Setting>
-		<Setting classType="AIParameterSettingList" name="headlandCornerType" isExpertModeOnly="true" default="1">
+		<Setting classType="AIParameterSettingList" name="headlandCornerType" default="1">
 			<Values>
 				<Value name="HEADLAND_CORNER_TYPE_SMOOTH">1</Value> 
 				<Value name="HEADLAND_CORNER_TYPE_SHARP">2</Value> 
