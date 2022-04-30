@@ -483,9 +483,11 @@ function AlignmentCourse:init(vehicle, vehicleDirectionNode, turningRadius, cour
 	self:debug('creating alignment course to waypoint %d, zOffset = %.1f', ix, zOffset)
 	local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicleDirectionNode, 0, 0)
 	local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
-	local targetWp = course:getWaypoint(ix)
-	x, _, z = targetWp:getOffsetPosition(0, zOffset)
+	x, _, z = course:getWaypointPosition(ix)
 	local goal = State3D(x, -z, CourseGenerator.fromCpAngle(math.rad(course:getWaypointAngleDeg(ix))))
+
+	local offset = Vector(zOffset, 0)
+	goal:add(offset:rotate(goal.t))
 
 	-- have a little reserve to make sure vehicles can always follow the course
 	turningRadius = turningRadius * 1.1
