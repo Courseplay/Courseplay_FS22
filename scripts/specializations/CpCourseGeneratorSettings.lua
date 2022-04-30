@@ -26,8 +26,6 @@ end
 
 function CpCourseGeneratorSettings.registerEventListeners(vehicleType)	
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpCourseGeneratorSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished",CpCourseGeneratorSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpCourseGeneratorSettings)
 end
@@ -87,18 +85,8 @@ end
 function CpCourseGeneratorSettings:onLoadFinished(savegame)
     local spec = self.spec_cpCourseGeneratorSettings
     if not spec.wasLoaded then
-        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+        CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
     end
-end
-
-function CpCourseGeneratorSettings:onPostAttachImplement()
-    CpCourseGeneratorSettings.setAutomaticWorkWidth(self)
-    CpCourseGeneratorSettings.validateSettings(self)
-end
-
-function CpCourseGeneratorSettings:onPreDetachImplement()
-    CpCourseGeneratorSettings.setAutomaticWorkWidth(self)
-    CpCourseGeneratorSettings.validateSettings(self)
 end
 
 --- Makes sure the automatic work width gets recalculated after the variable work width was changed by the user.
@@ -106,11 +94,17 @@ function CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged(object)
     --- Object could be an implement, so make sure we use the root vehicle.
     local self = object.rootVehicle
     if self:getIsSynchronized() and self.spec_cpCourseGeneratorSettings then
-        local spec = self.spec_cpCourseGeneratorSettings
-        spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
+        CpCourseGeneratorSettings.setAutomaticWorkWidthAndOffset(self)
     end
 end
 VariableWorkWidth.updateSections = Utils.appendedFunction(VariableWorkWidth.updateSections,CpCourseGeneratorSettings.onVariableWorkWidthSectionChanged)
+
+function CpCourseGeneratorSettings:setAutomaticWorkWidthAndOffset()
+    local spec = self.spec_cpCourseGeneratorSettings
+    local width, offset, _, _ = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
+    spec.workWidth:setFloatValue(width)
+    self:getCpSettings().toolOffsetX:setFloatValue(offset)
+end
 
 --- Loads the generic settings setup from an xmlFile.
 function CpCourseGeneratorSettings.loadSettingsSetup()
@@ -172,11 +166,6 @@ end
 ---@param setting AIParameterSettingList setting that raised the callback.
 function CpCourseGeneratorSettings:raiseCallback(callbackStr, setting, ...)
     SpecializationUtil.raiseEvent(self, callbackStr, setting, ...)
-end
-
-function CpCourseGeneratorSettings:setAutomaticWorkWidth()
-    local spec = self.spec_cpCourseGeneratorSettings
-    spec.workWidth:setFloatValue(WorkWidthUtil.getAutomaticWorkWidth(self))
 end
 
 function CpCourseGeneratorSettings:validateSettings()

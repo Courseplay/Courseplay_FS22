@@ -54,7 +54,9 @@
 			</Texts>
 		</Setting>
 		<!--Tool Offset X-->
-		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2" onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
+		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"
+				 onChangeCallback="cpShowWorkWidth" setDefault="setAutomaticWorkWidthAndOffset"
+				 isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
 		<!--Silage additives needed?-->
 		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
 	</SettingSubTitle>

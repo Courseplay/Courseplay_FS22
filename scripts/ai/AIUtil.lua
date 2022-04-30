@@ -459,7 +459,7 @@ function AIUtil.isValidAIImplement(object)
 		-- has work areas, good.
 		return true
 	else
-		local aiLeftMarker, _, _ = WorkWidthUtil.getAIMarkers(object, nil, true)
+		local aiLeftMarker, _, _ = WorkWidthUtil.getAIMarkers(object, true)
 		if aiLeftMarker then
 			-- has AI markers, good
 			return true

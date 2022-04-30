@@ -404,12 +404,7 @@ function ImplementUtil.setPipeAttributes(object, vehicle, combine)
         -- check the pipe length:
         -- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
         local wasFolded, wasClosed
-        if vehicle.spec_foldable then
-            wasFolded = not vehicle.spec_foldable:getIsUnfolded()
-            if wasFolded then
-                Foldable.setAnimTime(vehicle.spec_foldable, vehicle.spec_foldable.startAnimTime == 1 and 0 or 1, true)
-            end
-        end
+        wasFolded = ImplementUtil.unfoldForGettingWidth(vehicle)
         if object.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
             wasClosed = true
             if object.pipe.animation.name then
@@ -441,19 +436,36 @@ function ImplementUtil.setPipeAttributes(object, vehicle, combine)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
-        if vehicle.spec_foldable then
-            if wasFolded then
-                Foldable.setAnimTime(vehicle.spec_foldable, vehicle.spec_foldable.startAnimTime == 1 and 1 or 0, true)
-                -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
-                -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
-                Foldable.actionControllerFoldEvent(vehicle, -1)
-                Foldable.actionControllerFoldEvent(vehicle, 1)
-            end
+        if wasFolded then
+            ImplementUtil.foldAfterGettingWidth(vehicle)
+            -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
+            -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
+            Foldable.actionControllerFoldEvent(object, -1)
+            Foldable.actionControllerFoldEvent(object, 1)
         end
     else
         -- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
         -- periodically even when CP isn't driving, and even for cotton harvesters...
         object.pipeOffsetX, object.pipeOffsetZ = 0, 0
         object.pipeOnLeftSide = true
+    end
+end
+
+--- Unfold object so we can get measurements (width, pipe length, etc.)
+---@return boolean true when object had to be unfolded
+function ImplementUtil.unfoldForGettingWidth(object)
+    if object.spec_foldable then
+        local wasFolded = not object.spec_foldable:getIsUnfolded()
+        if wasFolded then
+            Foldable.setAnimTime(object.spec_foldable, object.spec_foldable.startAnimTime == 1 and 0 or 1, true)
+            return true
+        end
+    end
+    return false
+end
+
+function ImplementUtil.foldAfterGettingWidth(object)
+    if object.spec_foldable then
+        Foldable.setAnimTime(object.spec_foldable, object.spec_foldable.startAnimTime == 1 and 1 or 0, true)
     end
 end

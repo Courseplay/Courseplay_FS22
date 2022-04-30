@@ -75,9 +75,11 @@ function CpVehicleSettings:onPostAttachImplement(object)
     if spec.wasLoaded then 
         return
     end
+
+    CpVehicleSettings.setAutomaticWorkWidthAndOffset(self)
+
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
-    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.toolOffsetX, 'toolOffsetX')
     CpVehicleSettings.validateSettings(self)
 end
 
@@ -87,10 +89,19 @@ function CpVehicleSettings:onPreDetachImplement(implement)
     if spec.wasLoaded then 
         return
     end
+
+    CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, implement.object)
+
     CpVehicleSettings.resetToDefault(self, implement.object, spec.raiseImplementLate, 'raiseLate', false)
     CpVehicleSettings.resetToDefault(self, implement.object, spec.lowerImplementEarly, 'lowerEarly', false)
-    CpVehicleSettings.resetToDefault(self, implement.object, spec.toolOffsetX, 'toolOffsetX', 0)
     CpVehicleSettings.validateSettings(self)
+end
+
+function CpVehicleSettings:setAutomaticWorkWidthAndOffset(ignoreObject)
+    local spec = self.spec_cpVehicleSettings
+    local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self, nil, ignoreObject)
+    self:getCourseGeneratorSettings().workWidth:setFloatValue(width)
+    spec.toolOffsetX:setFloatValue(offset)
 end
 
 function CpVehicleSettings:onReadStream(streamId)
