@@ -257,7 +257,9 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
             AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or
             --- precision farming
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_soilSampler") then
+            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_soilSampler") or 
+            --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
+            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader") then
         return true
     end
     return self:getCanStartFieldWork()
