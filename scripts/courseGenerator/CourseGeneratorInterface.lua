@@ -108,16 +108,18 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		islandBypassMode, centerSettings, fieldMargin
 	)
 
-	-- return on exception (but continue on not ok as that is just a warning)
-	if not status then
-		return status, ok
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s', status, ok)
+
+	-- return on exception or if the result is not usable
+	if not status or not ok then
+		return false
 	end
 
 	--removeRidgeMarkersFromLastTrack(field.course,
 	--	vehicle.cp.courseGeneratorSettings.startOnHeadland:is(CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS))
 	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, multiTools)
 	course:setFieldPolygon(fieldPolygon)
-	return status, ok, course
+	return true, course
 end
 
 --- Generates a vine course, where the fieldPolygon are the start/end of the vine node.

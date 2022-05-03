@@ -301,7 +301,8 @@ local function linkParallelTracks(parallelTracks, bottomToTop, leftToRight, cent
 end
 
 --- Generate up/down rows covering a polygon at the optimum angle
--- 
+---@return table[], number, number, table[], boolean course, bestAngle, #parallelTracks, blocks,
+--- resultIsOk if false, no usable course is generated
 function CourseGenerator.generateFieldCenter( headlands, islands, width, headlandSettings, centerSettings )
 
 	local nHeadlandPasses = (headlandSettings.mode == CourseGenerator.HEADLAND_MODE_NORMAL or

@@ -186,14 +186,14 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local settings = vehicle:getCourseGeneratorSettings()
 	local tx, tz = self.fieldPositionParameter:getPosition()
-	local status, ok, course
+	local ok, course
 	if self.foundVines then 
 		local vineSettings = vehicle:getCpVineSettings()
 		local vertices, width, startingPoint, rowAngleDeg = g_vineScanner:getCourseGeneratorVertices(
 			vineSettings.vineCenterOffset:getValue(),
 			tx, tz
 		)
-		status, ok, course = CourseGeneratorInterface.generateVineCourse(vertices,
+		ok, course = CourseGeneratorInterface.generateVineCourse(vertices,
 			startingPoint,
 			width,
 			AIUtil.getTurningRadius(vehicle),
@@ -203,7 +203,7 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 		)
 	else 
 
-		status, ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
+		ok, course = CourseGeneratorInterface.generate(self.fieldPolygon,
 			{x = tx, z = tz},
 			settings.isClockwise:getValue(),
 			settings.workWidth:getValue(),
@@ -224,8 +224,7 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 			self:isPipeOnLeftSide(vehicle)
 		)
 	end
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s, course %s', status, ok, course)
-	if not status then
+	if not ok then
 		g_gui:showInfoDialog({
 			dialogType = DialogElement.TYPE_ERROR,
 			text = g_i18n:getText('CP_error_could_not_generate_course')
