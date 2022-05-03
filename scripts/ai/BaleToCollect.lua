@@ -62,7 +62,9 @@ function BaleToCollect:isStillValid()
 end
 
 function BaleToCollect:isLoaded()
-	return self.bale.mountObject
+	return self.bale.mountObject or
+	--- Loaded by this mod: FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
+	self.bale.currentlyLoadedOnAPalletAutoLoaderId ~= nil
 end
 
 function BaleToCollect:getFieldId()
