@@ -132,7 +132,9 @@ function calculateHeadlandTrack( polygon, mode, isClockwise, targetOffset, minDi
 			newFrom.turnEnd = true
 			--table.insert(lines, {{x = newFrom.x, y = newFrom.y}, {x = newTo.x, y = newTo.y}} )
 		end
-
+		-- keep connecting track info for offset (multitool) tracks
+		newFrom.isConnectingTrack = edge.from.isConnectingTrack
+		newTo.isConnectingTrack = edge.to.isConnectingTrack
 		table.insert( offsetEdges, { from = newFrom, to = newTo })
 	end
 
@@ -179,9 +181,10 @@ function cleanupOffsetEdges(offsetEdges, result, minDistanceBetweenPoints)
 				table.insert( result, edge.from )
 			end
 		end
-		-- making sure a turn end is carried over to the next iteration, this is to keep headland turns when creating
-		-- offset courses from an existing course
+		-- making sure turn end and connecting track info is carried over to the next iteration,
+		-- this is to keep headland turns and connecting tracks when creating offset courses from an existing course
 		result[#result].turnEnd = edge.from.turnEnd
+		result[#result].isConnectingTrack = edge.from.isConnectingTrack
 	end
 
 	if not result.canWrapAround() then
