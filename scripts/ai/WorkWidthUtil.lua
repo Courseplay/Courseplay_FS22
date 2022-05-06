@@ -80,7 +80,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
 
     if not left then
         if WorkWidthUtil.hasWorkAreas(object) then
-            wasFolded = ImplementUtil.unfoldForGettingWidth(object)
+            wasFolded = wasFolded or ImplementUtil.unfoldForGettingWidth(object)
             -- no AI markers, check work areas
             left, right = WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
             if not left then
@@ -105,6 +105,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
 
     -- tuck everything back nicely if we unfolded it
     if wasFolded then
+        WorkWidthUtil.debug(object, 'folding after getting width')
         ImplementUtil.foldAfterGettingWidth(object)
     end
 

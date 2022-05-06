@@ -457,6 +457,7 @@ function ImplementUtil.unfoldForGettingWidth(object)
     if object.spec_foldable then
         local wasFolded = not object.spec_foldable:getIsUnfolded()
         if wasFolded then
+            CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, "unfolding to get width.")
             Foldable.setAnimTime(object.spec_foldable, object.spec_foldable.startAnimTime == 1 and 0 or 1, true)
             return true
         end
