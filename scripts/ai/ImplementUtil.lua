@@ -440,8 +440,8 @@ function ImplementUtil.setPipeAttributes(object, vehicle, combine)
             ImplementUtil.foldAfterGettingWidth(vehicle)
             -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
             -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
-            Foldable.actionControllerFoldEvent(object, -1)
-            Foldable.actionControllerFoldEvent(object, 1)
+            Foldable.actionControllerFoldEvent(vehicle, -1)
+            Foldable.actionControllerFoldEvent(vehicle, 1)
         end
     else
         -- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
