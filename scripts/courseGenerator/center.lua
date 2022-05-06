@@ -200,8 +200,8 @@ function CourseGenerator.findBestTrackAngle( polygon, islands, width, distanceFr
 	CourseGenerator.debug( "Best angle=%d, nBlocks=%d, nTracks=%d, smallBlockScore=%d, score=%.1f",
 		b.angle, b.nBlocks, b.nTracks, b.smallBlockScore, b.score)
 	-- if we used the angle given by the user and got small blocks generated,
-	-- warn them that the course may be less than perfect.
-	return b.angle, b.nTracks, b.nBlocks, b.smallBlockScore == 0 or centerSettings.useBestAngle
+	-- we might want to warn them that the course may be less than perfect.
+	return b.angle, b.nTracks, b.nBlocks
 end
 
 local function addWaypointsToBlocks(blocks, width, nHeadlandPasses)
@@ -327,9 +327,9 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 
 	local translatedIslands = Island.translateAll( islands, -dx, -dy )
 
-	local bestAngle, nTracks, nBlocks, resultIsOk
+	local bestAngle, nTracks, nBlocks
 	-- Now, determine the angle where the number of tracks is the minimum
-	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle(boundary, translatedIslands, width, distanceFromBoundary, centerSettings)
+	bestAngle, nTracks, nBlocks = CourseGenerator.findBestTrackAngle(boundary, translatedIslands, width, distanceFromBoundary, centerSettings)
 	if nBlocks < 1 then
 		CourseGenerator.debug( "No room for up/down rows." )
 		return nil, 0, 0, nil, true
@@ -422,7 +422,7 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 		b.polygon:rotate( -math.rad( bestAngle ))
 		b.polygon:translate( dx, dy )
 	end
-	return translatePoints( rotatePoints( track, -math.rad( bestAngle )), dx, dy ), bestAngle, #parallelTracks, blocks, resultIsOk
+	return translatePoints( rotatePoints( track, -math.rad( bestAngle )), dx, dy ), bestAngle, #parallelTracks, blocks, true
 end
 
 ----------------------------------------------------------------------------------
