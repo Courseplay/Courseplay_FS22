@@ -1,4 +1,3 @@
-
 ---@class WorkWidthUtil
 WorkWidthUtil = {}
 
@@ -9,7 +8,9 @@ function WorkWidthUtil.workAreaIterator(object)
     return function()
         i = i + 1
         local wa = WorkWidthUtil.hasValidWorkArea(object) and object:getWorkAreaByIndex(i)
-        if wa then return i, wa end
+        if wa then
+            return i, wa
+        end
     end
 end
 
@@ -35,6 +36,7 @@ end
 ---@param object table
 ---@param referenceNode number the node for calculating the work width, if not supplied, use the object's root node
 ---@param ignoreObject table ignore this object when calculating the width (as it is being detached, for instance)
+---@return number, number, number, number
 function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ignoreObject)
     -- when first called for the vehicle, referenceNode is empty, so use the vehicle root node
     referenceNode = referenceNode or object.rootNode
@@ -47,8 +49,8 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
 
     if object.getVariableWorkWidth then
         --- Gets the variable work width to the left + to the right.
-        local w1,_,isValid1 = object:getVariableWorkWidth(true)
-        local w2,_,isValid2 = object:getVariableWorkWidth()
+        local w1, _, isValid1 = object:getVariableWorkWidth(true)
+        local w2, _, isValid2 = object:getVariableWorkWidth()
         if isValid1 and isValid2 then
             left, right = w1, w2
             local width = math.abs(w1) + math.abs(w2)
@@ -61,7 +63,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     if not left and object.spec_soilSampler then
         if object.spec_soilSampler.samplingRadius then
             local width = 2 * object.spec_soilSampler.samplingRadius / math.sqrt(2)
-            left, right = width / 2, - width / 2
+            left, right = width / 2, -width / 2
             WorkWidthUtil.debug(object, 'using soil sampler width of %.1f (from sampling radius).', width)
         else
             WorkWidthUtil.debug(object, 'soil sampler has no sampling radius, can\'t calculate width')
@@ -97,10 +99,16 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         end
     end
 
+    -- left > 0, right < 0. Offset > 0 and offset < 0 when the center line of all work areas are to the left and right,
+    -- respectively, of the vehicle.
     local width, offset
     if configuredWidth then
         width = configuredWidth
-        WorkWidthUtil.debug(object, 'using configured working width of %.1f.', configuredWidth)
+        -- for now, assuming offset 0
+        left = width / 2
+        right = - width / 2
+        WorkWidthUtil.debug(object, 'using configured working width of %.1f, resulting left/right is %.1f/%.1f.',
+                configuredWidth, left, right)
     elseif left and right then
         width = left - right
         WorkWidthUtil.debug(object, 'working width is %.1f, left %.1f, right %.1f.', width, left, right)
@@ -111,12 +119,16 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
 
     if configuredOffset then
         offset = configuredOffset
-        WorkWidthUtil.debug(object, 'using configured tool offset of %.1f.', configuredOffset)
         if width == 0 then
             -- some vine tools have no working width but we do have a configured offset. Make sure that
             -- the vehicle will inherit this offset by returning a left, right pair at offset
             left, right = offset, offset
+        else
+            left = width / 2 + offset
+            right = - width / 2 + offset
         end
+        WorkWidthUtil.debug(object, 'using configured tool offset of %.1f, resulting left/right is %.1f/%.1f.',
+                configuredOffset, left, right)
     elseif width and left and right then
         offset = left - width / 2
         WorkWidthUtil.debug(object, 'calculated tool offset is %.1f.', offset)
@@ -127,7 +139,6 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
 
     return width, offset, left, right
 end
-
 
 ---@param object table
 function WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
@@ -192,11 +203,15 @@ function WorkWidthUtil.getAIMarkers(object, suppressLog)
                 return nil, nil, nil
             end
         else
-            if not suppressLog then WorkWidthUtil.debug(object, 'AI markers from work area set') end
+            if not suppressLog then
+                WorkWidthUtil.debug(object, 'AI markers from work area set')
+            end
             return aiLeftMarker, aiRightMarker, aiBackMarker
         end
     else
-        if not suppressLog then WorkWidthUtil.debug(object, 'AI markers set') end
+        if not suppressLog then
+            WorkWidthUtil.debug(object, 'AI markers set')
+        end
         return aiLeftMarker, aiRightMarker, aiBackMarker
     end
 end
@@ -211,7 +226,7 @@ function WorkWidthUtil.getAIMarkersFromWorkAreas(object, suppressLog)
         if WorkWidthUtil.isValidWorkArea(area) then
             -- for now, just use the first valid work area we find
             if not suppressLog then
-                WorkWidthUtil.debug(object,'Using %s work area markers as AIMarkers',
+                WorkWidthUtil.debug(object, 'Using %s work area markers as AIMarkers',
                         g_workAreaTypeManager.workAreaTypes[area.type].name)
             end
             return area.start, area.width, area.height
@@ -231,7 +246,7 @@ end
 function WorkWidthUtil.getShieldWorkWidth(object)
     if object.spec_leveler then
         local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-        WorkWidthUtil.debug(object, 'is a shield with work width: %.1f',width)
+        WorkWidthUtil.debug(object, 'is a shield with work width: %.1f', width)
         return width
     end
 end
@@ -240,7 +255,7 @@ end
 function WorkWidthUtil.getShovelWorkWidth(object)
     if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
-        WorkWidthUtil.debug(object, 'is a shovel with work width: %.1f',width)
+        WorkWidthUtil.debug(object, 'is a shovel with work width: %.1f', width)
         return width
     end
 end
@@ -250,49 +265,47 @@ end
 ---@param workWidth number
 ---@param offsX number
 ---@param offsZ number
-function WorkWidthUtil.showWorkWidth(vehicle,workWidth,offsX,offsZ)
-    local firstObject =  AIUtil.getFirstAttachedImplement(vehicle,true)
-    local lastObject =  AIUtil.getLastAttachedImplement(vehicle,true)
+function WorkWidthUtil.showWorkWidth(vehicle, workWidth, offsX, offsZ)
+    local firstObject = AIUtil.getFirstAttachedImplement(vehicle, true)
+    local lastObject = AIUtil.getLastAttachedImplement(vehicle, true)
 
-
-    local function show(object,workWidth,offsX,offsZ)
+    local function show(object, workWidth, offsX, offsZ)
         if object == nil then
             return
         end
-        local f, b = 0,0
+        local f, b = 0, 0
         local aiLeftMarker, _, aiBackMarker = object:getAIMarkers()
         if aiLeftMarker and aiBackMarker then
-            _,_,b = localToLocal(aiBackMarker, object.rootNode, 0, 0, 0)
-            _,_,f = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)
+            _, _, b = localToLocal(aiBackMarker, object.rootNode, 0, 0, 0)
+            _, _, f = localToLocal(aiLeftMarker, object.rootNode, 0, 0, 0)
         end
 
-        local left =  (workWidth *  0.5) + offsX
+        local left = (workWidth * 0.5) + offsX
         local right = (workWidth * -0.5) + offsX
 
-        local p1x, p1y, p1z = localToWorld(object.rootNode, left,  1.6, b - offsZ)
+        local p1x, p1y, p1z = localToWorld(object.rootNode, left, 1.6, b - offsZ)
         local p2x, p2y, p2z = localToWorld(object.rootNode, right, 1.6, b - offsZ)
         local p3x, p3y, p3z = localToWorld(object.rootNode, right, 1.6, f - offsZ)
-        local p4x, p4y, p4z = localToWorld(object.rootNode, left,  1.6, f - offsZ)
+        local p4x, p4y, p4z = localToWorld(object.rootNode, left, 1.6, f - offsZ)
 
-     --   cpDebug:drawPoint(p1x, p1y, p1z, 1, 1, 0)
-       -- cpDebug:drawPoint(p2x, p2y, p2z, 1, 1, 0)
-       -- cpDebug:drawPoint(p3x, p3y, p3z, 1, 1, 0)
-       -- cpDebug:drawPoint(p4x, p4y, p4z, 1, 1, 0)
+        --   cpDebug:drawPoint(p1x, p1y, p1z, 1, 1, 0)
+        -- cpDebug:drawPoint(p2x, p2y, p2z, 1, 1, 0)
+        -- cpDebug:drawPoint(p3x, p3y, p3z, 1, 1, 0)
+        -- cpDebug:drawPoint(p4x, p4y, p4z, 1, 1, 0)
 
-  
+
         DebugUtil.drawDebugLine(p1x, p1y, p1z, p2x, p2y, p2z, 1, 0, 0)
         DebugUtil.drawDebugLine(p2x, p2y, p2z, p3x, p3y, p3z, 1, 0, 0)
         DebugUtil.drawDebugLine(p3x, p3y, p3z, p4x, p4y, p4z, 1, 0, 0)
         DebugUtil.drawDebugLine(p4x, p4y, p4z, p1x, p1y, p1z, 1, 0, 0)
     end
-    show(firstObject,workWidth,offsX,offsZ)
+    show(firstObject, workWidth, offsX, offsZ)
     if firstObject ~= lastObject then
-        show(lastObject,workWidth,offsX,offsZ)
+        show(lastObject, workWidth, offsX, offsZ)
     end
 end
 
-
 ---@param object table
-function WorkWidthUtil.debug(object, str,...)
-    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s: ' .. str, CpUtil.getName(object), ...)
+function WorkWidthUtil.debug(object, str, ...)
+    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, '%s: ' .. str, CpUtil.getName(object), ...)
 end
