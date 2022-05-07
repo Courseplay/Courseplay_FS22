@@ -174,7 +174,8 @@ end
 
 --- We expect this to be called before the turn starts, so after the turn
 function AIDriveStrategyPlowCourse:getTurnEndSideOffset()
-    if self:hasRotatablePlow() then
+    -- only when we are working (and making 180 turns), not when aligning for start
+    if self:hasRotatablePlow() and self:isWorking() then
         local toolOffsetX = self.settings.toolOffsetX:getValue()
         -- need the double tool offset as the turn end still has the current offset, after the rotation it'll be
         -- on the other side, (one toolOffsetX would put it to 0 only)
