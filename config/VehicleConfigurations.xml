@@ -187,13 +187,6 @@ You can define the following custom settings:
     <Vehicle name="koralin9840.xml"
              implementWheelAlwaysOnGround = "true"
     />
-    <!--vehicles\gregoireBesson-->
-    <Vehicle name="SPSL9.xml"
-             toolOffsetX="2.1"
-             turnRadius = "7.5"
-             implementWheelAlwaysOnGround = "true"
-			 workingWidth = "10.5"
-    />
     <!--\vehicles\lizard-->
     <Vehicle name="SWT7.xml"
              toolOffsetX="-2.2"
@@ -304,6 +297,13 @@ You can define the following custom settings:
     <!--Harvester-->
 
     <!--Implements-->
+    <!--Mod: Gregoire Besson SPSL9 -->
+    <Vehicle name="spsl9.xml"
+             toolOffsetX="2.1"
+             turnRadius = "7.5"
+             implementWheelAlwaysOnGround = "true"
+			 workingWidth = "10.5"
+    />
     <!--Mod: KOECKERLING Vector 460-->
 	<Vehicle name="vector460.xml"
 			 implementWheelAlwaysOnGround = "true"

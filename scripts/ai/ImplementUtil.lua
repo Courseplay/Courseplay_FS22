@@ -44,7 +44,9 @@ end
 --		rotLimits will return either:	1. A table of all the rotLimits of the componentJoint, found from fromNode to toNode, if the jointNode that connects to the toNode is found.
 --										2: nil if no jointNode is found.
 function ImplementUtil.findJointNodeConnectingToNode(workTool, fromNode, toNode, doReverse)
-    if fromNode == toNode then return toNode end
+    if fromNode == toNode then
+        return toNode
+    end
 
     -- Attempt to find the jointNode by backtracking the compomentJoints.
     for index, component in ipairs(workTool.components) do
@@ -54,11 +56,15 @@ function ImplementUtil.findJointNodeConnectingToNode(workTool, fromNode, toNode,
                     if joint.componentIndices[2] == index then
                         if workTool.components[joint.componentIndices[1]].node == toNode then
                             --          node            backtrack         rotLimits
-                            return joint.jointNode, {joint.jointNode}, {joint.rotLimit}
+                            return joint.jointNode, { joint.jointNode }, { joint.rotLimit }
                         else
                             local node, backTrack, rotLimits = ImplementUtil.findJointNodeConnectingToNode(workTool, workTool.components[joint.componentIndices[1]].node, toNode)
-                            if backTrack then table.insert(backTrack, 1, joint.jointNode) end
-                            if rotLimits then table.insert(rotLimits, 1, joint.rotLimit) end
+                            if backTrack then
+                                table.insert(backTrack, 1, joint.jointNode)
+                            end
+                            if rotLimits then
+                                table.insert(rotLimits, 1, joint.rotLimit)
+                            end
                             return node, backTrack, rotLimits
                         end
                     end
@@ -70,11 +76,15 @@ function ImplementUtil.findJointNodeConnectingToNode(workTool, fromNode, toNode,
                 if joint.componentIndices[1] == index then
                     if workTool.components[joint.componentIndices[2]].node == toNode then
                         --          node            backtrack         rotLimits
-                        return joint.jointNode, {joint.jointNode}, {joint.rotLimit}
+                        return joint.jointNode, { joint.jointNode }, { joint.rotLimit }
                     else
                         local node, backTrack, rotLimits = ImplementUtil.findJointNodeConnectingToNode(workTool, workTool.components[joint.componentIndices[2]].node, toNode, true)
-                        if backTrack then table.insert(backTrack, 1, joint.jointNode) end
-                        if rotLimits then table.insert(rotLimits, 1, joint.rotLimit) end
+                        if backTrack then
+                            table.insert(backTrack, 1, joint.jointNode)
+                        end
+                        if rotLimits then
+                            table.insert(rotLimits, 1, joint.rotLimit)
+                        end
                         return node, backTrack, rotLimits
                     end
                 end
@@ -91,14 +101,12 @@ function ImplementUtil.findJointNodeConnectingToNode(workTool, fromNode, toNode,
     return nil, nil
 end
 
-
-
 local allowedJointTypes = {}
 ---@param implement table implement object
 function ImplementUtil.isWheeledImplement(implement)
     if #allowedJointTypes == 0 then
-        local jointTypeList = {"implement", "trailer", "trailerLow", "semitrailer"}
-        for _,jointType in ipairs(jointTypeList) do
+        local jointTypeList = { "implement", "trailer", "trailerLow", "semitrailer" }
+        for _, jointType in ipairs(jointTypeList) do
             local index = AttacherJoints.jointTypeNameToInt[jointType]
             if index then
                 table.insert(allowedJointTypes, index, true)
@@ -148,8 +156,8 @@ function ImplementUtil.getLastComponentNodeWithWheels(implement)
                                 if joint.componentIndices[2] == index then
                                     if implement.components[joint.componentIndices[1]].node == node then
                                         -- Check if the component is behind the node.
-                                        local xJoint,yJoint,zJoint = getWorldTranslation(joint.jointNode)
-                                        local offset,_,direction = worldToLocal(node, xJoint,yJoint,zJoint)
+                                        local xJoint, yJoint, zJoint = getWorldTranslation(joint.jointNode)
+                                        local offset, _, direction = worldToLocal(node, xJoint, yJoint, zJoint)
                                         --offset check to make sure we are selecting a node that is centered
                                         if direction < 0 and offset == 0 then
                                             -- Component is behind, so set the node to the new component node.
@@ -173,12 +181,10 @@ function ImplementUtil.getLastComponentNodeWithWheels(implement)
     return implement.rootNode
 end
 
-
 ---@param implement table implement object
 function ImplementUtil.getRealTrailerFrontNode(implement)
     local activeInputAttacherJoint = implement:getActiveInputAttacherJoint()
-    local jointNode, backtrack = 
-        ImplementUtil.findJointNodeConnectingToNode(implement, activeInputAttacherJoint.rootNode, implement.rootNode)
+    local jointNode, backtrack = ImplementUtil.findJointNodeConnectingToNode(implement, activeInputAttacherJoint.rootNode, implement.rootNode)
     local realFrontNode
     if jointNode and backtrack and activeInputAttacherJoint.jointType ~= AttacherJoints.JOINTTYPE_IMPLEMENT then
         local rootNode
@@ -192,7 +198,7 @@ function ImplementUtil.getRealTrailerFrontNode(implement)
         if rootNode then
             realFrontNode = CpUtil.createNode("realFrontNode", 0, 0, 0, rootNode)
             local x, y, z = getWorldTranslation(jointNode)
-            local _,_,delta = worldToLocal(rootNode, x, y, z)
+            local _, _, delta = worldToLocal(rootNode, x, y, z)
             setTranslation(realFrontNode, 0, 0, delta)
         end
     end
@@ -240,13 +246,13 @@ function ImplementUtil.getRealTrailerDistanceToPivot(implement)
     local node, backTrack = ImplementUtil.findJointNodeConnectingToNode(implement, activeInputAttacherJoint.rootNode,
             ImplementUtil.getLastComponentNodeWithWheels(implement))
     if node then
-        local x,y,z
+        local x, y, z
         if node == implement.rootNode then
-            x,y,z = getWorldTranslation(activeInputAttacherJoint.node)
+            x, y, z = getWorldTranslation(activeInputAttacherJoint.node)
         else
-            x,y,z = getWorldTranslation(node)
+            x, y, z = getWorldTranslation(node)
         end
-        local _,_,tz = worldToLocal(implement.steeringAxleNode, x,y,z)
+        local _, _, tz = worldToLocal(implement.steeringAxleNode, x, y, z)
         return tz
     else
         return 3
@@ -258,50 +264,50 @@ function ImplementUtil.getDirectionNodeToTurnNodeLength(vehicle)
     local totalDistance = 0
 
     --- If this have not been set before after last stop command, we need to reset it again.
-        local distances = vehicle.cp.distances
+    local distances = vehicle.cp.distances
 
+    for _, imp in ipairs(vehicle:getAttachedImplements()) do
+        if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
+            local workTool = imp.object
+            local activeInputAttacherJoint = workTool:getActiveInputAttacherJoint()
+            if ImplementUtil.isWheeledImplement(workTool) then
+                local workToolDistances = workTool.cp.distances
+
+                if workToolDistances.attacherJointToPivot then
+                    totalDistance = totalDistance + workToolDistances.attacherJointToPivot
+                    ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointToPivot=%.2fm'):format(
+                            nameNum(workTool), workToolDistances.attacherJointToPivot), CpDebug.DBG_IMPLEMENTS)
+                end
+
+                totalDistance = totalDistance + workToolDistances.attacherJointOrPivotToTurningNode
+                ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointOrPivotToTurningNode=%.2fm'):format(
+                        nameNum(workTool), workToolDistances.attacherJointOrPivotToTurningNode), CpDebug.DBG_IMPLEMENTS)
+                ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointToTurningNode=%.2fm'):format(
+                        nameNum(workTool), totalDistance), CpDebug.DBG_IMPLEMENTS)
+            else
+                if not distances.attacherJointOrPivotToTurningNode and distances.attacherJointToRearTrailerAttacherJoints then
+                    totalDistance = totalDistance + distances.attacherJointToRearTrailerAttacherJoints[activeInputAttacherJoint.jointType]
+                end
+                totalDistance = totalDistance + ImplementUtil.getDirectionNodeToTurnNodeLength(workTool)
+                --ImplementUtil.debug(('%s: directionNodeToTurnNodeLength=%.2fm'):format(nameNum(workTool), totalDistance), CpDebug.DBG_IMPLEMENTS)
+            end
+            break
+        end
+    end
+
+    if vehicle.cp.directionNode and totalDistance > 0 then
         for _, imp in ipairs(vehicle:getAttachedImplements()) do
-            if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
+            if ImplementUtil.isRearAttached(vehicle, imp.jointDescIndex) then
                 local workTool = imp.object
                 local activeInputAttacherJoint = workTool:getActiveInputAttacherJoint()
-                if ImplementUtil.isWheeledImplement(workTool) then
-                    local workToolDistances = workTool.cp.distances
-
-                    if workToolDistances.attacherJointToPivot then
-                        totalDistance = totalDistance + workToolDistances.attacherJointToPivot
-                        ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointToPivot=%.2fm'):format(
-                                nameNum(workTool), workToolDistances.attacherJointToPivot), CpDebug.DBG_IMPLEMENTS)
-                    end
-
-                    totalDistance = totalDistance + workToolDistances.attacherJointOrPivotToTurningNode
-                    ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointOrPivotToTurningNode=%.2fm'):format(
-                            nameNum(workTool), workToolDistances.attacherJointOrPivotToTurningNode), CpDebug.DBG_IMPLEMENTS)
-                    ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: attacherJointToTurningNode=%.2fm'):format(
-                            nameNum(workTool), totalDistance), CpDebug.DBG_IMPLEMENTS)
-                else
-                    if not distances.attacherJointOrPivotToTurningNode and distances.attacherJointToRearTrailerAttacherJoints then
-                        totalDistance = totalDistance + distances.attacherJointToRearTrailerAttacherJoints[activeInputAttacherJoint.jointType]
-                    end
-                    totalDistance = totalDistance + ImplementUtil.getDirectionNodeToTurnNodeLength(workTool)
-                    --ImplementUtil.debug(('%s: directionNodeToTurnNodeLength=%.2fm'):format(nameNum(workTool), totalDistance), CpDebug.DBG_IMPLEMENTS)
-                end
+                totalDistance = totalDistance + distances.turningNodeToRearTrailerAttacherJoints[activeInputAttacherJoint.jointType]
                 break
             end
         end
-
-        if vehicle.cp.directionNode and totalDistance > 0 then
-            for _, imp in ipairs(vehicle:getAttachedImplements()) do
-                if ImplementUtil.isRearAttached(vehicle, imp.jointDescIndex) then
-                    local workTool = imp.object
-                    local activeInputAttacherJoint = workTool:getActiveInputAttacherJoint()
-                    totalDistance = totalDistance + distances.turningNodeToRearTrailerAttacherJoints[activeInputAttacherJoint.jointType]
-                    break
-                end
-            end
-            vehicle.cp.directionNodeToTurnNodeLength = totalDistance
-            ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: directionNodeToTurnNodeLength=%.2fm'):format(
-                    nameNum(vehicle), totalDistance), CpDebug.DBG_IMPLEMENTS)
-        end
+        vehicle.cp.directionNodeToTurnNodeLength = totalDistance
+        ImplementUtil.debug(('getDirectionNodeToTurnNodeLength() -> %s: directionNodeToTurnNodeLength=%.2fm'):format(
+                nameNum(vehicle), totalDistance), CpDebug.DBG_IMPLEMENTS)
+    end
 
     return vehicle.cp.directionNodeToTurnNodeLength or totalDistance
 end
@@ -331,7 +337,7 @@ function ImplementUtil.getDistanceToImplementNode(referenceNode, implementObject
         local _, _, attacherJointToImplementRoot = localToLocal(attacherJoint.node, implementNode, 0, 0, 0)
         -- we call this offset, and is negative when behind the reference node, positive when in front of it
         -- (need to reverse attacherJointToImplementRoot)
-        rootToReferenceNodeOffset = - attacherJointToImplementRoot + referenceToAttacherJoint
+        rootToReferenceNodeOffset = -attacherJointToImplementRoot + referenceToAttacherJoint
         CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, '%s: ref to attacher joint %.1f, att to implement root %.1f, impl root to ref %.1f',
                 implementObject:getName(), referenceToAttacherJoint, attacherJointToImplementRoot, rootToReferenceNodeOffset)
     else
@@ -352,8 +358,8 @@ end
 
 --- Is the vehicle/implement a Chopper 
 function ImplementUtil.isChopper(implement)
-    local spec = implement and  implement.spec_combine
-	return spec and implement:getFillUnitCapacity(spec.fillUnitIndex) > 10000000
+    local spec = implement and implement.spec_combine
+    return spec and implement:getFillUnitCapacity(spec.fillUnitIndex) > 10000000
 end
 
 --- Find the object to use as the combine
@@ -371,8 +377,8 @@ function ImplementUtil.findCombineObject(vehicle)
             combine = peletizerImplement
             combine.fillUnitIndex = 1
             combine.spec_aiImplement.rightMarker = combine.rootNode
-            combine.spec_aiImplement.leftMarker  = combine.rootNode
-            combine.spec_aiImplement.backMarker  = combine.rootNode
+            combine.spec_aiImplement.leftMarker = combine.rootNode
+            combine.spec_aiImplement.backMarker = combine.rootNode
             combine.isPremos = true --- This is needed as there is some logic in the CombineUnloadManager for it.
         else
             CpUtil.infoVehicle(vehicle, 'Vehicle is not a combine and could not find implement with spec_combine')
@@ -424,7 +430,7 @@ function ImplementUtil.setPipeAttributes(object, vehicle, combine)
         -- use combine so attached harvesters have the offset relative to the harvester's root node
         -- (and thus, does not depend on the angle between the tractor and the harvester)
         object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node, combine.rootNode, 0, 0, 0)
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle,'Pipe offset: x = %.1f, z = %.1f',
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe offset: x = %.1f, z = %.1f',
                 object.pipeOffsetX, object.pipeOffsetZ)
         if wasClosed then
             if object.pipe.animation.name then
@@ -457,6 +463,7 @@ function ImplementUtil.unfoldForGettingWidth(object)
     if object.spec_foldable then
         local wasFolded = not object.spec_foldable:getIsUnfolded()
         if wasFolded then
+            CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, "unfolding to get width.")
             Foldable.setAnimTime(object.spec_foldable, object.spec_foldable.startAnimTime == 1 and 0 or 1, true)
             return true
         end
