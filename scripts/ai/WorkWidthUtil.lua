@@ -68,19 +68,13 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         end
     end
 
-    -- if something is foldable, and is folded, we unfold before measuring the width. This makes sure
-    -- implements which have the work area/AI markers folding with the implement have a correct width detected
-    local wasFolded = false
-
     if not left then
-        wasFolded = ImplementUtil.unfoldForGettingWidth(object)
         -- no manual config, check AI markers
         _, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
     end
 
     if not left then
         if WorkWidthUtil.hasWorkAreas(object) then
-            wasFolded = wasFolded or ImplementUtil.unfoldForGettingWidth(object)
             -- no AI markers, check work areas
             left, right = WorkWidthUtil.getWorkAreaWidth(object, referenceNode)
             if not left then
@@ -101,12 +95,6 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
                 right = math.min(thisRight or 0, right or math.huge)
             end
         end
-    end
-
-    -- tuck everything back nicely if we unfolded it
-    if wasFolded then
-        WorkWidthUtil.debug(object, 'folding after getting width')
-        ImplementUtil.foldAfterGettingWidth(object)
     end
 
     local width, offset
