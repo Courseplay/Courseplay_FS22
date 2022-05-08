@@ -54,7 +54,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         if isValid1 and isValid2 then
             left, right = w1, w2
             local width = math.abs(w1) + math.abs(w2)
-            WorkWidthUtil.debug(object, '%s: left = %.1f, right = %.1f, setting variable work width of %.1f.',
+            WorkWidthUtil.debug(object, 'left = %.1f, right = %.1f, setting variable work width of %.1f.',
                     w1, w2, width)
         end
     end
