@@ -53,7 +53,7 @@ function DevHelper:update()
         end
 
         self.vehicle = g_currentMission.controlledVehicle
-        self.node = g_currentMission.controlledVehicle.rootNode
+        self.node = g_currentMission.controlledVehicle:getAIDirectionNode()
         lx, _, lz = localDirectionToWorld(self.node, 0, 0, 1)
 
     else
