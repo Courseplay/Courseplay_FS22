@@ -102,7 +102,7 @@ function calculateHeadlandTrack( polygon, mode, isClockwise, targetOffset, minDi
 	-- so the resulting offset polygon is always clean (its edges don't intersect
 	-- each other)
 	-- this can be ensured by choosing an offset small enough
-	local deltaOffset = polygon.shortestEdgeLength / 8
+	local deltaOffset = math.max(polygon.shortestEdgeLength / 8, 0.01)
 
 	--CourseGenerator.debug( "** Before target=%.2f, current=%.2f, delta=%.2f, target-current=%.2f", targetOffset, currentOffset, deltaOffset, targetOffset - currentOffset )
 	if currentOffset >= targetOffset then return polygon end
@@ -444,12 +444,13 @@ function generateAllHeadlandTracks(field, implementWidth, headlandSettings, cent
 		field.headlandTracks[ j ] = calculateHeadlandTrack( previousTrack, headlandSettings.mode, previousTrack.isClockwise, width,
 			minDistanceBetweenPoints, minSmoothAngle, maxSmoothAngle, 0, not fromInside,
 			centerSettings, j)
-		CourseGenerator.debug( "Generated headland track #%d, area %1.f, clockwise = %s", j, field.headlandTracks[ j ].area, tostring( field.headlandTracks[ j ].isClockwise ))
+		CourseGenerator.debug( "Generated headland track #%d, area %.0f, clockwise = %s", j, field.headlandTracks[ j ].area, tostring( field.headlandTracks[ j ].isClockwise ))
 		-- check if the area within the last headland has a reasonable size
 		local minArea = 0.75 * width * field.headlandTracks[ j ].circumference / 2
 
-		if ( field.headlandTracks[ j ].area >= previousTrack.area or field.headlandTracks[ j ].area <= minArea ) and not fromInside then
-			CourseGenerator.debug( "Can't fit more headlands in field, using %d", j - 1 )
+		if (field.headlandTracks[ j ].area >= previousTrack.area or field.headlandTracks[ j ].area <= minArea ) and not fromInside then
+			CourseGenerator.debug( "Can't fit more headlands in field, using %d (min expected area: %.0f, previous headland area: %.0f",
+					j - 1, minArea, previousTrack.area)
 			field.headlandTracks[ j ] = nil
 			break
 		end
