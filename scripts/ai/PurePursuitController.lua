@@ -55,6 +55,10 @@ HOW TO USE
 ---@class PurePursuitController
 PurePursuitController = CpObject()
 
+--- if the vehicle is more than cutOutDistanceLimit meters from the current segment's endpoints, cut-out the
+--- controller to stop. Some error must have caused us to wander way off-track, unlikely to recover.
+PurePursuitController.cutOutDistanceLimit = 50
+
 -- constructor
 function PurePursuitController:init(vehicle)
 	self.normalLookAheadDistance = math.min(vehicle.maxTurningRadius, 6)
@@ -472,6 +476,11 @@ function PurePursuitController:findGoalPoint()
 					self.lookAheadDistance, self.crossTrackError)
 				-- current waypoint is the waypoint at the end of the path segment
 				self:setCurrentWaypoint(ix + 1)
+			end
+			if (q1 > self.cutOutDistanceLimit) and (q2 > self.cutOutDistanceLimit) then
+				CpUtil.infoVehicle(self.vehicle, 'vehicle off track, shutting off Courseplay now.')
+				self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
+				return
 			end
 			break
 		end
