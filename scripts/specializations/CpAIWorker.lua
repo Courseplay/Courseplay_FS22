@@ -46,6 +46,8 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
+    SpecializationUtil.registerFunction(vehicleType, "freezeCp", CpAIWorker.freezeCp)
+    SpecializationUtil.registerFunction(vehicleType, "unfreezeCp", CpAIWorker.unfreezeCp)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -264,4 +266,15 @@ function CpAIWorker:onUpdate(dt)
             end
         end
     end
+end
+
+--- Freeze (set speed to 0) of the CP driver, but keep everything up and running, showing all debug
+--- drawings, etc. This is for troubleshooting only
+function CpAIWorker:freezeCp()
+    self:getCpDriveStrategy():freeze()
+end
+
+--- Unfreeze, continue work normally.
+function CpAIWorker:unfreezeCp()
+    self:getCpDriveStrategy():unfreeze()
 end
