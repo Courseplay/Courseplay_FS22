@@ -352,8 +352,8 @@ end
 -- speed set in this loop.
 function AIDriveStrategyCourse:setMaxSpeed(speed)
     if self.maxSpeedUpdatedLoopIndex == nil or self.maxSpeedUpdatedLoopIndex ~= g_updateLoopIndex then
-        -- new loop, reset max speed
-        self.maxSpeed = self.vehicle:getSpeedLimit(true)
+        -- new loop, reset max speed. Always 0 if frozen
+        self.maxSpeed = self.frozen and 0 or self.vehicle:getSpeedLimit(true)
         self.maxSpeedUpdatedLoopIndex = g_updateLoopIndex
     end
     self.maxSpeed = math.min(self.maxSpeed, speed)
@@ -363,6 +363,16 @@ function AIDriveStrategyCourse:getMaxSpeed()
     return self.maxSpeed or self.vehicle:getSpeedLimit(true)
 end
 
+--- Freeze (force speed to 0), but keep everything up and running otherwise, showing all debug
+--- drawings, etc. This is for troubleshooting only. Unlike pausing the game, this still calls update() and
+--- getDriveData() so all debug drawings remain visible during the freeze.
+function AIDriveStrategyCourse:freeze()
+    self.frozen = true
+end
+
+function AIDriveStrategyCourse:unfreeze()
+    self.frozen = false
+end
 
 --- Slow down a bit towards the end of course or near direction changes, and later maybe where the turn radius is
 --- small, unless we are reversing, as then (hopefully) we already have a slow speed set
