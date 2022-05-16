@@ -172,8 +172,11 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.ON_CONNECTING_TRACK then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
+
     self:setAITarget()
     self:limitSpeed()
+    self:checkProximitySensors()
+
     -- keep away from others working on the same course
     self:setMaxSpeed(self.fieldWorkerProximityController:getMaxSpeed(self.settings.convoyDistance:getValue(), self.maxSpeed))
 

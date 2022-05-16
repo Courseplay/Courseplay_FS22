@@ -50,21 +50,8 @@ AIDriveStrategyCombineCourse.myStates = {
 	RETURNING_FROM_SELF_UNLOAD = {}
 }
 
--- Proximity sensor
--- how far the sensor can see
-AIDriveStrategyCombineCourse.proximitySensorRange = 10
--- the sensor will proportionally reduce speed when objects are in range down to this limit (won't set a speed lower than this)
-AIDriveStrategyCombineCourse.proximityMinLimitedSpeed = 2
 -- stop limit we use for self unload to approach the trailer
-AIDriveStrategyCombineCourse.proximityLimitStopNormal = 1.5
--- stop limit we use for self unload to approach the trailer
-AIDriveStrategyCombineCourse.proximityLimitStopSelfUnload = 0.1
--- if anything closer than this, we reverse
-AIDriveStrategyCombineCourse.proximityLimitReverse = 1
--- an obstacle is considered ahead of us if the reported angle is less then this
--- (and we won't stop or reverse if the angle is higher than this, thus obstacles to the left or right)
-AIDriveStrategyCombineCourse.proximityAngleAheadDeg = 75
-
+AIDriveStrategyCombineCourse.proximityStopThresholdSelfUnload = 0.1
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -92,10 +79,7 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	-- hold the harvester temporarily
 	self.temporaryHold = CpTemporaryObject(false)
 
-	-- if anything closer than this, we stop
-	self.proximityLimitStop = CpTemporaryObject(AIDriveStrategyCombineCourse.proximityLimitStopNormal)
-
-	--- Register info texts 
+	--- Register info texts
 	self:registerInfoTextForStates(self:getFillLevelInfoText(), {
 		states = {
 			[self.states.UNLOADING_ON_FIELD] = true
@@ -140,10 +124,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	self:measureBackDistance()
 	Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
 
-	self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
-			self.vehicle, self.ppc, Markers.getFrontMarkerNode(self.vehicle), self.proximitySensorRange, 1, self:getWorkWidth())
-	self.backwardLookingProximitySensorPack = BackwardLookingProximitySensorPack(
-			self.vehicle, self.ppc, Markers.getBackMarkerNode(self.vehicle), self.proximitySensorRange, 1)
+	self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyCombineCourse.isProximitySlowDownEnabled)
 
 	-- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
 	self.pullBackRightSideOffset = math.abs(self.pipeOffsetX) - self:getWorkWidth() / 2 + 5
@@ -157,7 +138,6 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	-- register ourselves at our boss
 	-- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
 	self:measureBackDistance()
-	self.vehicleIgnoredByFrontProximitySensor = CpTemporaryObject()
 	self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
 	-- if this is not nil, we have a pending rendezvous
 	---@type CpTemporaryObject
@@ -172,6 +152,11 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	else
 		self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 	end
+end
+
+function AIDriveStrategyCombineCourse:getProximitySensorWidth()
+	-- proximity sensor width across the entire working width
+	return self:getWorkWidth()
 end
 
 -- This part of an ugly workaround to make the chopper pickups work
@@ -211,7 +196,6 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	if self.state == self.states.WORKING then
 		-- Harvesting
 		self:checkRendezvous()
-		--self:checkBlockingUnloader()
 		if self:isFull() then
 			self:changeToUnloadOnField()
 		end
@@ -232,7 +216,6 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 			self:setMaxSpeed(0)
 		end
 	end
-	self:checkProximitySensors()
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
@@ -348,7 +331,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 			-- disable stock collision detection as we have to drive very close to the tractor/trailer
 			self:disableCollisionDetection()
 			-- we'll be very close to the tractor/trailer, don't stop too soon
-			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
+			self.proximityController:setTemporaryStopThreshold(self.proximityStopThresholdSelfUnload, 3000)
 		else
 			self:setMaxSpeed( self.settings.fieldSpeed:getValue())
 		end
@@ -386,7 +369,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
 		if self:isCloseToCourseStart(25) then
 			self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
 			-- we'll be very close to the tractor/trailer, don't stop too soon
-			self.proximityLimitStop:set(self.proximityLimitStopSelfUnload, 3000)
+			self.proximityController:setTemporaryStopThreshold(self.proximityStopThresholdSelfUnload, 3000)
 		else
 			self:setMaxSpeed(self.settings.fieldSpeed:getValue())
 			self:enableCollisionDetection()
@@ -802,18 +785,6 @@ function AIDriveStrategyCombineCourse:canUnloadWhileMovingAtWaypoint(ix)
 		return false
 	end
 	return true
-end
-
--- TODO: put this in onBlocked()?
-function AIDriveStrategyCombineCourse:checkBlockingUnloader()
-	if not self.backwardLookingProximitySensorPack then return end
-	local d, blockingVehicle = self.backwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
-	if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and self:isReversing() and not self:isWaitingForUnload() then
-		self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
-		if blockingVehicle.cp.driver and blockingVehicle.cp.driver.onBlockingOtherVehicle then
-			blockingVehicle.cp.driver:onBlockingOtherVehicle(self.vehicle)
-		end
-	end
 end
 
 function AIDriveStrategyCombineCourse:checkFruitAtNode(node, offsetX, offsetZ)
@@ -1892,28 +1863,6 @@ function AIDriveStrategyCombineCourse:raycastBackCallback(hitObjectId, x, y, z, 
 		else
 			return true
 		end
-	end
-end
-
-function AIDriveStrategyCombineCourse:checkProximitySensors()
-	local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
-	local pack = self.ppc:isReversing() and self.backwardLookingProximitySensorPack or self.forwardLookingProximitySensorPack
-	if pack then
-		d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
-		range = pack:getRange()
-	end
-	local normalizedD = d / (range - self.proximityLimitStop:get())
-	local obstacleAhead = math.abs(deg) < self.proximityAngleAheadDeg
-	if d < self.proximityLimitStop:get() and obstacleAhead then
-		-- too close, stop
-		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg)
-		self:setMaxSpeed(0)
-	elseif normalizedD < 1 and self:isProximitySlowDownEnabled(vehicle) then
-		-- something in range, reduce speed proportionally when enabled
-		local deltaV = self:getMaxSpeed() - self.proximityMinLimitedSpeed
-		local speed = self.proximityMinLimitedSpeed + normalizedD * deltaV
-		self:debugSparse('Obstacle ahead, d = %.1f, deg = %.1f, slowing down to %.1f', d, deg, speed)
-		self:setMaxSpeed(speed)
 	end
 end
 

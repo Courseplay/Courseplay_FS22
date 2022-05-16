@@ -87,6 +87,7 @@ Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die 
 		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
 		<sourceFile filename="scripts/ai/AIUtil.lua"/>
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
+		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
