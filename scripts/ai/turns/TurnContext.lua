@@ -233,8 +233,13 @@ function TurnContext:isPointingToTurnEnd(node, thresholdDeg)
 end
 
 function TurnContext:isHeadlandCorner()
-    -- TODO: there should be a better way to find this out
-    return math.abs( self.directionChangeDeg ) < 150
+	-- in headland turns there's no significant direction change at the turn start waypoint, as the turn end waypoint
+	-- marks the actual corner. In a non-headland turn (usually 180) there is about 90 degrees direction change at
+	-- both the turn start and end waypoints
+    -- a turn is a headland turn only when there is minimal direction change at the turn start and the total direction
+    -- change is less than 150 degrees
+	return math.abs(getDeltaAngle(math.rad(self.turnStartWp.angle), math.rad(self.beforeTurnStartWp.angle))) < (math.pi / 6) and
+            math.abs( self.directionChangeDeg ) < 150
 end
 
 --- A simple wide turn is where there's no corner to avoid, no headland to follow, there is a straight line on the
