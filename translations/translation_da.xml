@@ -129,7 +129,7 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Gødningsfunktion på såmaskine"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Gødningsfunktion på såmaskine til/fra."/>
 
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="så option"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Så option"/>
 		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Tænder eller slukker for maskinens ekstra såfunktion"/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Symmetrisk baneskift"/>
@@ -156,7 +156,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Rutegenerator indstilling for (%s)"/>
 
 		<!-- Subtitles-->	
-		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="basal"/>
+		<text name="CP_vehicle_courseGeneratorSetting_subTitle_basic"									text="Basal"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_headland"								text="Forager"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_center"									text="Mitte"/>
 		<text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced"								text="Advanceret"/>
@@ -244,8 +244,8 @@
 		<text name="CP_global_setting_wageModifier_title" 												text="CP Chaufførløn"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Chaufførløn til CP Arbejter, procentvis af stanard løn."/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Eksperttilstand"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Aktiverer/deaktiverer eksperttilstand med yderligere funktioner."/>
 
 		<text name="CP_global_setting_autoRepair_title" 												text="Automatisk reparation"/>
 		<text name="CP_global_setting_autoRepair_tooltip" 												text="CP Chauffør reparere automatisk køretøj og redskab."/>
@@ -324,7 +324,7 @@
 	
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Køretøjet sidder fast"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="Er i trafik"/>
+		<text name="CP_infoTexts_isInTraffic"  															text="Er undervejs"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="Skal tankes"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Skal tankes"/>
 		<text name="CP_infoTexts_needsRepair"  															text="Skal repareres"/>
@@ -354,23 +354,23 @@
 		<!--General-->
 		<text name="CP_help_page_General_title"															text="General Information"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+Courseplay giver dig mulighed for at generere markbaner med yderligere funktioner, for eksempel: forager.
+Det gør det også muligt at bruge ballepressere og fodervogne, der kan sendes på samme kurs, som slåmaskine eller høstmaskine fra før.
+En anden stor egenskab er indsamling eller indpakning af baller på marken.
+Nyt med denne iteration af CP er vinmarksarbejdet.
+markarbejdet kan sættes op til konvoj, som tillader brug af op til 5 chauffører, der arbejder i en konvoj på samme mark.
+Det er også muligt automatisk at få mejetærskeren til at læsse af i en trailer på/nær marken.
+Brugerdefinerede feltgrænser kan tildeles til banespil til brug, for eksempel: i tilfælde af en eng, som ikke genkendes som en normal mark.
+Endelig har cp et interface til Autodrive, som giver mulighed for genopfyldning af en såmaskine ved en nærliggende silo eller aflæsning af en fodervogn og så videre.
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+For mere information besøg venligst vores github: https://github.com/Courseplay/Courseplay_FS22.
+Der kan du få hjælp eller rapportere ethvert problem, du har oplevet.
+Til sidst takker vi alle oversættere og vores fællesskab for at rapportere fejl, give feedback til brug og nye ideer.
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+Hvad er eksperttilstanden:
+Når eksperttilstanden er deaktiveret, har du kun adgang til nogle indstillinger.
+De andre indstillinger er skjulte og indstillet til standardværdier, hvilket virker i de fleste situationer.
+På den måde forsøger vi at hjælpe brugerne med at komme lettere ind i Courseplay uden at blive overvældet af alle indstillingerne.
 "/>
 		<!--Job Menu-->
 		<text name="CP_help_page_extendedJobMenu_title"													text="Udvidet AI-menu"/>
@@ -421,21 +421,6 @@ Spiral, cirkelformede og bede har deres egne specifikke fordele i forhold til de
 - Rækker, der skal springes over: Dette er en meget nyttig mulighed for at fremskynde dit arbejde, da køretøjet behøver ikke at bakke frem og tilbage komme til den næste række.
 - Rækker pr. Bede: Dette har kun indflydelse, når markcentret er indstillet til Bede og vil fortælle generatoren, hvor mange rækker hvert bede skal have. Jo flere rækker, jo færre bede vil blive genereret.
 - Op/ned rækkevinkel: Når op/ned rækkeretningen er indstillet til manuel, vil denne indstilling fortælle genereringsretningen.
-
-
-Basics:
-The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
-The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
-Center options:
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
 "/>
 		<text name="CP_help_page_courseGeneratorHeadland_text"											text="
 Foragerindstillinger vises kun, når du har indstillet mindst 1 ved Antal forager.
@@ -544,12 +529,6 @@ Disse baner hedder altid det samme:
 venstre(2), venstre(1), center, højre(1), højre(2).
 2 køretøjer vil have venstre(1) og højre(1), 4 vil have venstre(2) og højre(2).
 Med 3 eller 5 køretøjer får du også centermuligheden.
-
-Once a multi tool course is loaded you will need to select the lane for the driver.
-Those lanes are always named the same:
-left(2), left(1), center, right(1), right(2).
-2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
-With 3 or 5 vehicles you will also gain the center option.
 "/>
 		<text name="CP_help_page_convoyBasic_text"														text="
 Konvojen fungerer kun, hvis køretøjerne har indlæst ens rute.
@@ -586,46 +565,45 @@ Når opsamleren er fuld, stopper den arbejdet og fortæller brugeren, at den ska
 installeret kan du bruge den til at køre en automatisk aflæsning af ballesamleren.
 "/>
 		<!--Symetric lange change-->
-		<text name="CP_help_page_symetricLaneChange_title"												text="Symetric lange change"/>
+		<text name="CP_help_page_symetricLaneChange_title"												text="Symetrisk vognbaneskift"/>
 		<text name="CP_help_page_symetricLaneChangeBasic_text"											text="
-Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
-This is a bit hard to understand so let's have a look at two examples.
-"/>
+Symmetrisk vognbaneskift bruges i konvojtilstand og fortæller chaufføren, i hvilken vognbane han skal køre efter svinget.
+Dette er lidt svært at forstå, så lad os tage et kig på to eksempler."/>
+
 		<text name="CP_help_page_symetricLaneChangeExampleOff_text"										text="
-When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
-That means he always drives left or right from the course.
-This ensures, that the helpers are not driving alongside each other.
-There won't be a risk of on conflict with another driver.
+Når det symmetriske vognbaneskift er slået fra, forbliver køretøjet på dets forskudte vognbane.
+Det betyder, at han altid kører til venstre eller højre fra banen.
+Dette sikrer, at hjælperne ikke kører ved siden af ​​hinanden.
+Der vil ikke være risiko for konflikt med en anden chauffør.
 "/>
 		<text name="CP_help_page_symetricLaneChangeExampleOn_text"										text="
-If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
-Vehicles can conflict with each other, when they drive towards each other.
-What is the advantage of symmetric lange change then ?
-If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
-In the example with the Combine it means, no Combine will have fruit left and right of its lane.
-"/>
+Hvis symmetrisk vognbaneskift er slået til, vil venstre og højre blive udskiftet (men ikke vist i HUD).
+Køretøjer kan komme i konflikt med hinanden, når de kører mod hinanden.
+Hvad er fordelen ved symmetrisk langeskift så?
+Hvis du ser på rækkefølgen af ​​banerne, fra venstre mod højre, vil det være tydeligt:
+Uden symetrisk ændring: venstre, højre, venstre, højre - det er næsten som at springe en bane over.
+Med symetrisk ændring: venstre, højre, højre, venstre - fra venstre mod højre, den ene bane efter den anden.
+I eksemplet med en mejetærsker betyder det, at ingen mejetærsker vil have afgrøder til venstre og højre for sin bane."/>
 		<!--Info Panel-->
 		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
-While hovering the status message, the name of the vehicle will be displayed.
-By clicking on it, you can jump directly into the vehicle.
+Dette er vores infopanel, det kan flyttes rundt med musen, ligesom vores Mini HUD.
+Udover navnet og versionen af ​​vores Mod, viser den også statusoplysninger om cp-driverne.
+Mens du holder over statusmeddelelsen, vil navnet på køretøjet blive vist.
+Ved at klikke på den kan du hoppe direkte ind i køretøjet.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
-The Informations are the following:
-- Helper is stuck
-- Is in traffic
-- Should be refueled
-- Needs to be refueled
-- Needs to be repaired
-- Needs to be refilled
-- Needs to be unloaded
-- Finished work
-- Ouf of money
-- Waiting for rain to finish
+Informationerne er følgende:
+- Hjælperen sidder fast
+- Er undervejs
+- Skal tankes op
+- Skal tankes op
+- Skal repareres
+- Skal fyldes op igen
+- Skal losses
+- Arbejdet er udført
+- Ikke nok penge
+- Venter på at regnen stopper
 "/>
 		<!--Vine work-->
 		<text name="CP_help_page_vineWork_title"														text="Vin arbejde"/>
