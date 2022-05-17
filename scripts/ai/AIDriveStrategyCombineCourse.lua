@@ -124,7 +124,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	self:measureBackDistance()
 	Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
 
-	self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyCombineCourse.isProximitySlowDownEnabled)
+	--self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyCombineCourse.isProximitySlowDownEnabled)
 
 	-- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
 	self.pullBackRightSideOffset = math.abs(self.pipeOffsetX) - self:getWorkWidth() / 2 + 5

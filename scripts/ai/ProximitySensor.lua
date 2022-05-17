@@ -24,6 +24,10 @@ ProximitySensor.maxRotation = math.rad(30)
 function ProximitySensor:init(node, yRotationDeg, range, height, xOffset, vehicle)
     self.node = node
     self.xOffset = xOffset
+    local _, _, dz = localToLocal(node, vehicle.rootNode, 0, 0, 0)
+    self.angleToRootNode = math.abs(math.atan2(xOffset, dz))
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Proximity sensor dx %.1f, angle %.1f, angle to root %.1f',
+            xOffset, yRotationDeg, math.deg(self.angleToRootNode))
     self.range = range
     -- the normal rotation (direction) of this sensor when the wheels are straight
     self.baseYRotation = math.rad(yRotationDeg)
@@ -72,7 +76,16 @@ function ProximitySensor:update()
     self.lastUpdateLoopIndex = g_updateLoopIndex
 
     -- rotate with the steering angle
-    self:setRotation(self.vehicle.rotatedTime and self.vehicle.rotatedTime * self.maxRotation or 0)
+    if self.vehicle.rotatedTime then
+        -- we add a correction here depending on the position of the sensor relative to the vehicle's root node
+        -- and on the turn direction. The idea is that when the vehicle is turning, the sensor is moving on
+        -- a radius around the vehicle's root node (in addition to the forward movement of the vehicle), and we want
+        -- to point the sensor's ray in the resulting vector's direction. At the end, sensor's on the inside of the turn
+        -- are rotated more into the turn than those on the outside due to this is what this correction factor
+        local correction = (self.vehicle.rotatedTime / self.xOffset) >= 0 and self.angleToRootNode or -self.angleToRootNode
+        self:setRotation(MathUtil.clamp(self.vehicle.rotatedTime * (2 * self.maxRotation + correction),
+                -2 * self.maxRotation, 2 * self.maxRotation))
+    end
 
     local x, _, z = localToWorld(self.node, self.xOffset, 0, 0)
     -- we want the rays run parallel to the terrain, so always use the terrain height (because the node itself
@@ -113,7 +126,7 @@ function ProximitySensor:raycastCallback(objectId, x, y, z, distance)
 end
 
 function ProximitySensor:getClosestObjectDistance()
-    self:showDebugInfo()
+    --self:showDebugInfo()
     return self.distanceOfClosestObject
 end
 
@@ -303,6 +316,7 @@ WideForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 
 --- Pack looking forward, but sensors distributed evenly through the width of the vehicle
 function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width)
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide forward proximity sensor %.1fm', width)
     local directionsDeg = {10, 8, 5, 3, 0, -3, -5, -8, -10}
     local xOffsets = {}
     -- spread them out evenly across the width
@@ -318,6 +332,7 @@ end
 BackwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 
 function BackwardLookingProximitySensorPack:init(vehicle, node, range, height)
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating backward proximity sensor')
     ProximitySensorPack.init(self, 'backward', vehicle, node, range, height,
             {120, 150, 180, -150, -120},
             {0,     0,   0,    0,    0})
