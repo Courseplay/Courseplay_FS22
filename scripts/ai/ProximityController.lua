@@ -11,7 +11,7 @@ ProximityController.states = {
 ProximityController.sensorRange = 10
 -- the sensor will proportionally reduce speed when objects are in range down to this limit (won't set a speed lower than this)
 ProximityController.minLimitedSpeed = 2
--- stop limit we use for self unload to approach the trailer
+-- will stop under this threshold
 ProximityController.stopThresholdNormal = 1.5
 -- stop limit we use for self unload to approach the trailer
 ProximityController.stopThresholdSelfUnload = 0.1

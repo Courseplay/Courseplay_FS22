@@ -21,9 +21,10 @@ ProximitySensor = CpObject()
 -- maximum angle we rotate the sensor into the direction the vehicle is turning
 ProximitySensor.maxRotation = math.rad(30)
 
-function ProximitySensor:init(node, yRotationDeg, range, height, xOffset, vehicle)
+function ProximitySensor:init(node, yRotationDeg, range, height, xOffset, vehicle, rotationEnabled)
     self.node = node
     self.xOffset = xOffset
+    self.rotationEnabled = rotationEnabled
     local _, _, dz = localToLocal(node, vehicle.rootNode, 0, 0, 0)
     self.angleToRootNode = math.abs(math.atan2(xOffset, dz))
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Proximity sensor dx %.1f, angle %.1f, angle to root %.1f',
@@ -76,7 +77,7 @@ function ProximitySensor:update()
     self.lastUpdateLoopIndex = g_updateLoopIndex
 
     -- rotate with the steering angle
-    if self.vehicle.rotatedTime then
+    if self.rotationEnabled and self.vehicle.rotatedTime then
         -- we add a correction here depending on the position of the sensor relative to the vehicle's root node
         -- and on the turn direction. The idea is that when the vehicle is turning, the sensor is moving on
         -- a radius around the vehicle's root node (in addition to the forward movement of the vehicle), and we want
@@ -179,7 +180,8 @@ ProximitySensorPack.maxRotation = math.rad(30)
 ---@param height number height relative to the node in meters
 ---@param directionsDeg table of numbers, list of angles in degrees to emit a ray to find objects, 0 is forward, >0 left, <0 right
 ---@param xOffsets table of numbers, left/right offset of the corresponding sensor in meters, left > 0, right < 0
-function ProximitySensorPack:init(name, vehicle, node, range, height, directionsDeg, xOffsets)
+---@param rotationEnabled boolean if true, rotate the sensors in the direction the vehicle is turning
+function ProximitySensorPack:init(name, vehicle, node, range, height, directionsDeg, xOffsets, rotationEnabled)
     ---@type ProximitySensor[]
     self.sensors = {}
     self.vehicle = vehicle
@@ -198,7 +200,7 @@ function ProximitySensorPack:init(name, vehicle, node, range, height, directions
     self.xOffsets = xOffsets
     self.rotation = 0
     for i, deg in ipairs(self.directionsDeg) do
-        table.insert(self.sensors, ProximitySensor(self.node, deg, self.range, height, xOffsets[i] or 0, vehicle))
+        table.insert(self.sensors, ProximitySensor(self.node, deg, self.range, height, xOffsets[i] or 0, vehicle, rotationEnabled))
     end
 end
 
@@ -325,7 +327,7 @@ function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height
         table.insert(xOffsets, xOffset)
     end
     ProximitySensorPack.init(self, 'wideForward', vehicle, node, range, height,
-            directionsDeg, xOffsets)
+            directionsDeg, xOffsets, true)
 end
 
 ---@class BackwardLookingProximitySensorPack : ProximitySensorPack
