@@ -312,7 +312,6 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'cpSaveAllVehiclePositions', 'Save the position of all vehicles', 'cpSaveAllVehiclePositions', self)
 	addConsoleCommand( 'cpRestoreAllVehiclePositions', 'Restore the position of all vehicles', 'cpRestoreAllVehiclePositions', self)
 	addConsoleCommand( 'cpSetPathfinderDebug', 'Set pathfinder visual debug level (0-2)', 'cpSetPathfinderDebug', self )
-	addConsoleCommand( 'cpSetPathfinderDebug', 'Set pathfinder visual debug level (0-2)', 'cpSetPathfinderDebug', self )
 	addConsoleCommand( 'cpFreeze', 'Freeze the CP driver', 'cpFreeze', self )
 	addConsoleCommand( 'cpUnfreeze', 'Unfreeze the CP driver', 'cpUnfreeze', self )
 
