@@ -578,7 +578,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
     --- Opens the ai inGame menu
     inGameMenu:goToPage(pageAI)
     self:debug("opened ai inGame menu.")
-    if vehicle:getIsCpActive() then 
+    if vehicle:getIsCpActive() or not g_currentMission:getHasPlayerPermission("hireAssistant") then 
         return
     end
     self:debug("opened ai inGame job creation.")
