@@ -587,7 +587,7 @@ function AIDriveStrategyFieldWorkCourse:setOffsetX()
 end
 
 function AIDriveStrategyFieldWorkCourse:isWorking()
-    return self.state == self.states.WORKING
+    return self.state == self.states.WORKING or self.state == self.states.TURNING
 end
 
 --- Gets the current ridge marker state.
