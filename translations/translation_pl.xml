@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Pracownik SI %s niespodziewanie przerwał pracę - zbiornik jest pełny!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Ustawienia pojazdu dla (%s)"/>

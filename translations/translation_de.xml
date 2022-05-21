@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Helfer %s hat die Arbeit gestoppt - Gerät ist voll!" />
+		<text name="CP_ai_messageError" 																text="Helfer %s hat die Arbeit gestoppt - Kurs verlassen!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Fahrzeugeinstellungen für (%s)"/>

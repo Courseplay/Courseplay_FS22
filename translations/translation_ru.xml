@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="ИИ-работник %s неожиданно прекратил работу - заполнен бункер!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Настройки техники CoursePlay"/>

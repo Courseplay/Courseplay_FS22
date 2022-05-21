@@ -44,6 +44,7 @@
 
 		<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="%s segítő váratlanul abbahagyta a munkát - az eszkőz megtelt!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 		<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="CoursePlay jármű beállítások"/>

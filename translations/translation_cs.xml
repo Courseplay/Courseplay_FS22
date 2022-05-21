@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="工人%s 停止工作-储存箱已满!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="车辆设置(%s)"/>

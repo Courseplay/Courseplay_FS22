@@ -44,6 +44,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuración del vehículo (%s)"/>
