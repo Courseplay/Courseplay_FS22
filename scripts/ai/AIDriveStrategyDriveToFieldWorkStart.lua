@@ -145,6 +145,9 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
             self:setMaxSpeed(self.settings.turnSpeed:getValue())
         end
     end
+
+    self:checkProximitySensors()
+
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 

@@ -262,6 +262,12 @@ end
 function AIDriveStrategyCourse:setAllStaticParameters()
     self.workWidth = self.vehicle:getCourseGeneratorSettings().workWidth:getValue()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
+    self.proximityController = ProximityController(self.vehicle, self.ppc, self:getProximitySensorWidth())
+end
+
+function AIDriveStrategyCourse:getProximitySensorWidth()
+    -- a bit less as size.width always has plenty of buffer
+    return self.vehicle.size.width - 0.5
 end
 
 --- Find the foremost and rearmost AI marker
@@ -342,6 +348,11 @@ function AIDriveStrategyCourse:getReverseDriveData()
         maxSpeed = self.settings.reverseSpeed:getValue()
     end
     return gx, gz, maxSpeed
+end
+
+function AIDriveStrategyCourse:checkProximitySensors()
+    local _, _, _, maxSpeed = self.proximityController:getDriveData(self:getMaxSpeed())
+    self:setMaxSpeed(maxSpeed)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
