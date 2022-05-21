@@ -479,7 +479,7 @@ function PurePursuitController:findGoalPoint()
 			end
 			if (q1 > self.cutOutDistanceLimit) and (q2 > self.cutOutDistanceLimit) then
 				CpUtil.infoVehicle(self.vehicle, 'vehicle off track, shutting off Courseplay now.')
-				self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
+				self.vehicle:stopCurrentAIJob(AIMessageCpError.new())
 				return
 			end
 			break

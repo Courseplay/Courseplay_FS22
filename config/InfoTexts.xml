@@ -16,6 +16,8 @@
 -->
 
 <InfoTexts prefix="CP_infoTexts_">
+	<InfoText name="ERROR_STOPPED"				text="errorStopped" class="AIMessageCpError"/>
+
 	<InfoText name="IS_STUCK"					text="isStuck"/>
 	<InfoText name="TRAFFIC"  					text="isInTraffic"/>
 
