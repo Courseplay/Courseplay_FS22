@@ -324,7 +324,7 @@
 
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="助手卡住了"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="正在路上"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="应该加油"/>
 		<text name="CP_infoTexts_needsFuel"  															text="需要加油"/>
 		<text name="CP_infoTexts_needsRepair"  															text="需要修理"/>
@@ -333,6 +333,7 @@
 		<text name="CP_infoTexts_workFinished"															text="完成工作"/>
 		<text name="CP_infoTexts_outOfMoney"															text="资金不足"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="等待雨停"/>
+		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="是否要将录制的任务保存为自定义田地 %s?"/>

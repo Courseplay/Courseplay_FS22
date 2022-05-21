@@ -63,7 +63,7 @@ end
 function ProximityController:getDriveData(maxSpeed)
 
     --- Resets the traffic info text.
-    self.vehicle:resetCpActiveInfoText(InfoTextManager.TRAFFIC)
+    self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
 
     local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
     local pack = self.ppc:isReversing() and self.backwardLookingProximitySensorPack or self.forwardLookingProximitySensorPack
@@ -78,7 +78,7 @@ function ProximityController:getDriveData(maxSpeed)
         self:setState(self.states.STOP,
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
         maxSpeed = 0
-        self.vehicle:setCpInfoTextActive(InfoTextManager.TRAFFIC)
+        self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
     elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) then
         -- something in range, reduce speed proportionally when enabled
         local deltaV = maxSpeed - self.minLimitedSpeed
