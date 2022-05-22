@@ -40,6 +40,9 @@ function BalerController:handleBaler()
         if self:isWrappingBale() then 
             return 0
         end
+        if self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
+            return 0
+        end
         --- Waits until the bale dropped to the platform.
         if self.balerSpec.platformDropInProgress then
             return self.balerSpec.platformAIDropSpeed
