@@ -28,7 +28,7 @@ AIDriveStrategyFindBales.myStates = {
     DRIVING_TO_NEXT_BALE = {},
     APPROACHING_BALE = {},
     WORKING_ON_BALE = {},
-    REVERSING_AFTER_PATHFINDER_FAILURE ={}
+    REVERSING_AFTER_PATHFINDER_FAILURE = {}
 }
 
 function AIDriveStrategyFindBales.new(customMt)
@@ -87,7 +87,7 @@ function AIDriveStrategyFindBales:collectNextBale()
             self:findPathToNextBale()
             return
         end
-        if self.baleLoader and self.baleLoaderController:hasBales() then 
+        if self.baleLoader and self.baleLoaderController:hasBales() then
             if self.baleLoaderController:canBeFolded() then
                 --- Wait until the animations have finished and then make sure the bale loader can be send back with auto drive.
                 self:info('There really are no more bales on the field')
@@ -150,7 +150,7 @@ end
 ---@param bale BaleToCollect
 function AIDriveStrategyFindBales:isBaleOnField(bale)
     local x, _, z = bale:getPosition()
-    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) 
+    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
 end
 
 --- Find bales on field
@@ -221,7 +221,9 @@ function AIDriveStrategyFindBales:getDubinsPathLengthToBale(bale)
 end
 
 function AIDriveStrategyFindBales:findPathToNextBale()
-    if not self.bales then return end
+    if not self.bales then
+        return
+    end
     local bale, d, ix = self:findClosestBale(self.bales)
     if ix then
         if bale:isLoaded() then
@@ -265,9 +267,8 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
                 configuredOffset and string.format('%.1f', configuredOffset) or 'n/a')
         local done, path, goalNodeInvalid
         -- use no off-field penalty if we are on a custom field
-        self.pathfinder, done, path, goalNodeInvalid =
-        PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, nil,
-                {}, self.lastBale and {self.lastBale} or {}, nil, nil)
+        self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(self.vehicle, goal, false, nil,
+                {}, self:getBalesToIgnore(), nil, nil)
         if done then
             return self:onPathfindingDoneToNextBale(path, goalNodeInvalid)
         else
@@ -326,13 +327,26 @@ function AIDriveStrategyFindBales:isObstacleAhead()
             return true
         end
     end
+    local objectsToIgnore = self:getBalesToIgnore()
     -- then a more thorough check, we want to ignore the last bale we worked on as that may lay around too close
     -- to the baler. This happens for example to the Andersen bale wrapper.
-    self:debug('Check obstacles ahead, ignoring bale object %s', self.lastBale and self.lastBale or 'nil')
-    local leftOk, rightOk, straightOk =
-    PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, self.lastBale and{self.lastBale})
+    self:debug('Check obstacles ahead, ignoring %d bale object, first is %s', #objectsToIgnore, objectsToIgnore[1] or 'nil')
+    local leftOk, rightOk, straightOk = PathfinderUtil.checkForObstaclesAhead(self.vehicle, self.turningRadius, objectsToIgnore)
     -- if at least one is ok, we are good to go.
     return not (leftOk or rightOk or straightOk)
+end
+
+function AIDriveStrategyFindBales:getBalesToIgnore()
+    local objectsToIgnore = {}
+    if self.lastBale then
+        objectsToIgnore = { self.lastBale }
+    elseif AIUtil.hasImplementWithSpecialization(self.vehicle, FS22_aPalletAutoLoader.APalletAutoLoader) then
+        self:debug('Auto pallet loader found, look for loaded pallets')
+        for object, _ in pairs(AIUtil.getImplementWithSpecialization(self.vehicle, FS22_aPalletAutoLoader.APalletAutoLoader).spec_aPalletAutoLoader.triggeredObjects) do
+            table.insert(objectsToIgnore, object)
+        end
+    end
+    return objectsToIgnore
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
