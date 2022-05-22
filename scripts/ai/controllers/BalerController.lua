@@ -25,6 +25,7 @@ function BalerController:init(vehicle, baler)
     self.slowDownFillLevel = 200
     self.slowDownStartSpeed = 20
     self.balerSpec = self.baler.spec_baler
+    self.baleWrapperSpec = self.baler.spec_baleWrapper
     self:debug('Baler controller initialized')
 end
 
@@ -34,6 +35,14 @@ function BalerController:getDriveData()
 end
 
 function BalerController:handleBaler()
+    if self.driveStrategy:isTurning() then 
+        --- Waits for the bale wrapping and unload at the start of a turn.
+        if self:isWrappingBale() then 
+            return 0
+        end
+        --- Makes sure the slowdown is not applied, while turning.
+        return 
+    end
     local maxSpeed    
     if not self.balerSpec.nonStopBaling and self.balerSpec.hasUnloadingAnimation then
         local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
@@ -50,8 +59,14 @@ function BalerController:handleBaler()
     elseif self.balerSpec.platformDropInProgress then
         maxSpeed = self.balerSpec.platformAIDropSpeed
     end
-
     return maxSpeed
+end
+
+function BalerController:isWrappingBale()
+    if self.baleWrapperSpec then 
+        local state = self.baleWrapperSpec.baleWrapperState
+        return state ~= BaleWrapper.STATE_NONE and state ~= BaleWrapper.STATE_WRAPPER_FINSIHED
+    end
 end
 
 function BalerController:isWaitingForBaleOutput()
