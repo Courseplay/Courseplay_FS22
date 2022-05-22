@@ -209,7 +209,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
         self.states.TURNING,
         self.states.DRIVING_TO_WORK_START_WAYPOINT
     }
-    self:addImplementController(vehicle, BalerController, Baler, defaultDisabledStates)
+    self:addImplementController(vehicle, BalerController, Baler, {})
     self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, defaultDisabledStates)
     self:addImplementController(vehicle, BaleLoaderController, BaleLoader, defaultDisabledStates)
 
@@ -445,6 +445,10 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
         self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
     end
     self.state = self.states.TURNING
+end
+
+function AIDriveStrategyFieldWorkCourse:isTurning()
+    return self.state == self.states.TURNING    
 end
 
 -----------------------------------------------------------------------------------------------------------------------
