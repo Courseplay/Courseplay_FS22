@@ -587,7 +587,7 @@ En cliquant dessus, vous arrivez directement dans le véhicule.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 Les informations concernant l'ouvrier peuvent être les suivantes:
 - Est bloqué
-- Est en transit
+- Blocked by an object
 - Devrait bientôt refaire le plein de carburant
 - Doit refaire le plein de carburant
 - Doit être réparé

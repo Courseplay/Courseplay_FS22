@@ -595,7 +595,7 @@ Al hacer clic en él, puede saltar directamente al vehículo.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 Las informaciones son las siguientes:
 - El ayudante está atascado
-- Está en el tráfico
+- Blocked by an object
 - Debe ser repostado
 - Necesita ser repostado
 - Necesita ser reparado

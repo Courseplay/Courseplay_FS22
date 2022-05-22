@@ -596,7 +596,7 @@ Klikając na nią, możesz wskoczyć bezpośrednio do pojazdu.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 Informacje są następujące:
 - Utknął
-- Jest w ruchu
+- Blocked by an object
 - Powinien zostać zatankowany
 - Musi zostać zatankowany
 - Musi zostać naprawiony

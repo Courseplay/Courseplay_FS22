@@ -591,7 +591,7 @@ R: 从剪贴板中删除复制的路线。
 <text name="CP_help_page_infoPanelMsg_text"																text="
 信息如下:
 - 助手卡住了
-- 正在路上
+- Blocked by an object
 - 应该加油
 - 需要加油
 - 需要修理

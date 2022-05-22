@@ -599,7 +599,7 @@ By clicking on it, you can jump directly into the vehicle.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 The Informations are the following:
 - Helper is stuck
-- Is in traffic
+- Blocked by an object
 - Should be refueled
 - Needs to be refueled
 - Needs to be repaired
