@@ -16,8 +16,10 @@
 -->
 
 <InfoTexts prefix="CP_infoTexts_">
+	<InfoText name="ERROR_STOPPED"				text="errorStopped" class="AIMessageCpError"/>
+
 	<InfoText name="IS_STUCK"					text="isStuck"/>
-	<InfoText name="TRAFFIC"  					text="isInTraffic"/>
+	<InfoText name="BLOCKED_BY_OBJECT"  		text="blockedByObject"/>
 
 	<InfoText name="OUT_OF_MONEY"				text="outOfMoney"	  class="AIMessageErrorOutOfMoney"/>
 	<InfoText name="FUEL_IS_EMPTY"  			text="needsFuel"      hasFinished="true" event="onCpFuelEmpty" class="AIMessageErrorOutOfFuel"/>

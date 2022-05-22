@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuração do veículo para (%s)"/>
 		
@@ -321,7 +322,7 @@
 		
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="O ajudante está preso"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="Está no trânsito"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="Precisa reabastecer"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Precisa reabastecer urgente"/>
 		<text name="CP_infoTexts_needsRepair"  															text="Precisa ser reparado"/>
@@ -330,6 +331,7 @@
 		<text name="CP_infoTexts_workFinished"															text="Trabalho feito"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Sem dinheiro"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Esperando a chuva passar"/>
+		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Deseja salvar a rota gravado como campo customizado %s?"/>
@@ -596,7 +598,7 @@ Ao clicar nele, você pode pular diretamente para o veículo.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 As Informações são as seguintes:
 - O motorista está preso
-- Está no trânsito
+- Blocked by an object
 - Deve ser reabastecido
 - Precisa ser reabastecido
 - Precisa ser reparado

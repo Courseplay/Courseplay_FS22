@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Vehicle settings for (%s)"/>
 		
@@ -322,7 +323,7 @@
 
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="Is in traffic"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
 		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
@@ -331,7 +332,7 @@
 		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
-
+		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
@@ -598,7 +599,7 @@ By clicking on it, you can jump directly into the vehicle.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 The Informations are the following:
 - Helper is stuck
-- Is in traffic
+- Blocked by an object
 - Should be refueled
 - Needs to be refueled
 - Needs to be repaired

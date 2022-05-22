@@ -45,6 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="工人%s 停止工作-储存箱已满!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="车辆设置(%s)"/>
@@ -324,7 +325,7 @@
 
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="助手卡住了"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="正在路上"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="应该加油"/>
 		<text name="CP_infoTexts_needsFuel"  															text="需要加油"/>
 		<text name="CP_infoTexts_needsRepair"  															text="需要修理"/>
@@ -333,6 +334,7 @@
 		<text name="CP_infoTexts_workFinished"															text="完成工作"/>
 		<text name="CP_infoTexts_outOfMoney"															text="资金不足"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="等待雨停"/>
+		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="是否要将录制的任务保存为自定义田地 %s?"/>
@@ -589,7 +591,7 @@ R: 从剪贴板中删除复制的路线。
 <text name="CP_help_page_infoPanelMsg_text"																text="
 信息如下:
 - 助手卡住了
-- 正在路上
+- Blocked by an object
 - 应该加油
 - 需要加油
 - 需要修理

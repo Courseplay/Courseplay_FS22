@@ -44,6 +44,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="L'ouvrier %s a interrompu son travail - la tremie est pleine!" />
+		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
 
 
 	<!-- VehicleSettings -->
@@ -323,7 +324,7 @@
 
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="L'ouvrier est bloqué"/>
-		<text name="CP_infoTexts_isInTraffic"  															text="est en transit"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="a besoin de faire le plein d'essence"/>
 		<text name="CP_infoTexts_needsFuel"  															text="doit faire le plein d'essence"/>
 		<text name="CP_infoTexts_needsRepair"  															text="doit être réparé"/>
@@ -332,6 +333,7 @@
 		<text name="CP_infoTexts_workFinished"															text="a terminé son travail"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Plus d'argent disponible"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Attend que la pluie s'arrête pour continuer"/>
+		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Souhaitez-vous sauvegarder la course enregistrée comme contour de champ personnalisé %s?"/>
@@ -585,7 +587,7 @@ En cliquant dessus, vous arrivez directement dans le véhicule.
 <text name="CP_help_page_infoPanelMsg_text"																text="
 Les informations concernant l'ouvrier peuvent être les suivantes:
 - Est bloqué
-- Est en transit
+- Blocked by an object
 - Devrait bientôt refaire le plein de carburant
 - Doit refaire le plein de carburant
 - Doit être réparé
