@@ -40,6 +40,10 @@ function BalerController:handleBaler()
         if self:isWrappingBale() then 
             return 0
         end
+        --- Waits until the bale dropped to the platform.
+        if self.balerSpec.platformDropInProgress then
+            return self.balerSpec.platformAIDropSpeed
+        end
         --- Makes sure the slowdown is not applied, while turning.
         return 
     end
