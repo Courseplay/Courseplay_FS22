@@ -312,17 +312,23 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
     if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
         CpUtil.infoVehicle(self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
         cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
-    elseif AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
-           and not AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) then
-        CpUtil.infoVehicle(self, 'Found a combine, install CP combine drive strategy for it')
-        cpDriveStrategy = AIDriveStrategyCombineCourse.new()
-        self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
-    elseif AIUtil.hasImplementWithSpecialization(self, Plow) then
+    elseif AIUtil.hasImplementWithSpecialization(self, Plow) then 
         CpUtil.infoVehicle(self, 'Found a plow, install CP plow drive strategy for it')
         cpDriveStrategy = AIDriveStrategyPlowCourse.new()
     else
-        CpUtil.infoVehicle(self, 'Installing default CP fieldwork drive strategy')
-        cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
+        local combine = AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
+        local pipe = combine and SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
+        if combine and pipe or -- Default harvesters with a pipe.
+            SpecializationUtil.hasSpecialization(Combine, self.specializations) then -- Cotton harvester
+            --- TODO: Make sure the combine strategy is only used for combines with a pipe and not the cotton harvesters!
+            CpUtil.infoVehicle(self, 'Found a combine with pipe, install CP combine drive strategy for it')
+            cpDriveStrategy = AIDriveStrategyCombineCourse.new()
+            self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy
+        end
+        if not cpDriveStrategy then 
+            CpUtil.infoVehicle(self, 'Installing default CP fieldwork drive strategy')
+            cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
+        end
     end
     cpDriveStrategy:setAIVehicle(self, jobParameters)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
