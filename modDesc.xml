@@ -109,6 +109,7 @@ Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die 
 		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/APalletAutoLoaderController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SowingMachineController.lua"/>

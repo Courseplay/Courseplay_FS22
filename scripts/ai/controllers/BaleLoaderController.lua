@@ -81,3 +81,8 @@ function BaleLoaderController:onStart()
         self.baleLoader:doStateChange(BaleLoader.CHANGE_BUTTON_WORK_TRANSPORT)
     end
 end
+
+--- Get a list of bale objects to ignore when pathfinding.
+function BaleLoaderController:getBalesToIgnore()
+    return {}
+end

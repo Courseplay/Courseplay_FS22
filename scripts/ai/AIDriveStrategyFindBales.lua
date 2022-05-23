@@ -110,6 +110,13 @@ function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
     self.baleLoader = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
     if self.baleLoader then
         self.baleLoaderController = BaleLoaderController(vehicle, self.baleLoader)
+    else
+        self.baleLoader = AIUtil.getImplementWithSpecialization(vehicle, FS22_aPalletAutoLoader.APalletAutoLoader)
+        if self.baleLoader then
+            self.baleLoaderController = APalletAutoLoaderController(vehicle, self.baleLoader)
+        end
+    end
+    if self.baleLoader then
         self.baleLoaderController:setDriveStrategy(self)
         table.insert(self.controllers, self.baleLoaderController)
     end
@@ -339,14 +346,10 @@ end
 function AIDriveStrategyFindBales:getBalesToIgnore()
     local objectsToIgnore = {}
     if self.lastBale then
-        objectsToIgnore = { self.lastBale }
-    elseif AIUtil.hasImplementWithSpecialization(self.vehicle, FS22_aPalletAutoLoader.APalletAutoLoader) then
-        self:debug('Auto pallet loader found, look for loaded pallets')
-        for object, _ in pairs(AIUtil.getImplementWithSpecialization(self.vehicle, FS22_aPalletAutoLoader.APalletAutoLoader).spec_aPalletAutoLoader.triggeredObjects) do
-            table.insert(objectsToIgnore, object)
-        end
+        return { self.lastBale }
+    elseif self.baleLoaderController then
+        return self.baleLoaderController:getBalesToIgnore()
     end
-    return objectsToIgnore
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
