@@ -33,7 +33,7 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
         -- or with the back component of an articulated vehicle. Just need to find out the distance correctly
         local dx, _, dz = localToLocal(reverserNode, vehicle.rootNode, 0, 0, 0)
         local dBetweenRootAndReverserNode = MathUtil.vector2Length(dx, dz)
-        backMarkerOffset = dBetweenRootAndReverserNode - vehicle.sizeLength / 2 - vehicle.lengthOffset
+        backMarkerOffset = dBetweenRootAndReverserNode - vehicle.size.length / 2 - vehicle.size.lengthOffset
         referenceNode = reverserNode
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the %s node for the rear proximity sensor %d m from root node (%d m between root and reverser)',
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
