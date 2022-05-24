@@ -73,19 +73,16 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		inGameMenu.pageAI.lastVehicle = nil
 		inGameMenu.pageAI.hudVehicle = nil
 		inGameMenu.pageAI.currentHotspot = nil
-		inGameMenu:updatePages()
 	end
 	--- Reloads the current vehicle on opening the in game menu.
-	local function onOpenInGameMenu(mission)
-		local pageAI = mission.inGameMenu.pageAI
+	local function onOpenInGameMenu(inGameMenu)
+		local pageAI = inGameMenu.pageAI
 		if CpInGameMenuAIFrameExtended.getVehicle() == nil then 
 			pageAI.lastVehicle = g_currentMission.controlledVehicle
-			mission.inGameMenu:updatePages()
 		end
 	end
-	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
-	g_currentMission.inGameMenu.onClose = Utils.appendedFunction(g_currentMission.inGameMenu.onClose,onCloseInGameMenu)
-	g_currentMission.inGameMenu.onButtonBack = Utils.appendedFunction(g_currentMission.inGameMenu.onButtonBack,onCloseInGameMenu)
+	g_messageCenter:subscribe(MessageType.GUI_AFTER_CLOSE, onCloseInGameMenu, g_currentMission.inGameMenu)
+	g_messageCenter:subscribe(MessageType.GUI_BEFORE_OPEN, onOpenInGameMenu, g_currentMission.inGameMenu)
 	--- Closes the course generator settings with the back button.
 	local function onClickBack(pageAI,superFunc)
 		if pageAI.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
