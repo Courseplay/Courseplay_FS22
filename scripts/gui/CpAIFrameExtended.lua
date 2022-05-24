@@ -68,13 +68,6 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 		end
 	end
 	g_currentMission.removeMapHotspot = Utils.appendedFunction(g_currentMission.removeMapHotspot,validateCurrentHotspot)
-	--- Reloads the current vehicle on opening the in game menu.
-	local function onOpenInGameMenu(mission)
-		local pageAI = mission.inGameMenu.pageAI
-		pageAI.controlledVehicle = g_currentMission.controlledVehicle
-		pageAI.currentHotspot = nil
-	end
-	g_currentMission.onToggleMenu = Utils.prependedFunction(g_currentMission.onToggleMenu,onOpenInGameMenu)	
 
 	--- Closes the course generator settings with the back button.
 	local function onClickBack(pageAI,superFunc)
@@ -288,10 +281,10 @@ end
 --- Updates the visibility of the vehicle settings on select/unselect of a vehicle in the ai menu page.
 --- Also updates the field position map hotspot.
 function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
-	g_currentMission.inGameMenu:updatePages()
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
 	if hotspot ~= nil then
 		local vehicle = InGameMenuMapUtil.getHotspotVehicle(hotspot)
+		self.lastVehicle = vehicle
 		if vehicle then 
 			if vehicle.getJob ~= nil then
 				local job = vehicle:getJob()
@@ -306,7 +299,7 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 			end
 		end
 	end
-
+	g_currentMission.inGameMenu:updatePages()
 end
 InGameMenuAIFrame.setMapSelectionItem = Utils.appendedFunction(InGameMenuAIFrame.setMapSelectionItem, CpInGameMenuAIFrameExtended.setMapSelectionItem)
 
@@ -315,10 +308,11 @@ function CpInGameMenuAIFrameExtended:onAIFrameOpen()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_COURSE_GENERATOR then 
 		self.contextBox:setVisible(false)
 	end
-	self.controlledVehicle = nil
 	CpInGameMenuAIFrameExtended.addMapHotSpots(self)
 	g_customFieldManager:refresh()
 	self.drawingCustomFieldHeader:setVisible(false)
+	self.lastVehicle = nil
+	g_currentMission.inGameMenu:updatePages()
 end
 InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, CpInGameMenuAIFrameExtended.onAIFrameOpen)
 
@@ -333,6 +327,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
 	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
+	g_currentMission.inGameMenu:updatePages()
 end
 InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose,CpInGameMenuAIFrameExtended.onAIFrameClose)
 
@@ -531,3 +526,8 @@ function CpInGameMenuAIFrameExtended:mouseEvent(superFunc,posX, posY, isDown, is
 	return superFunc(self,posX, posY, isDown, isUp, button, eventUsed)
 end
 InGameMenuAIFrame.mouseEvent = Utils.overwrittenFunction(InGameMenuAIFrame.mouseEvent,CpInGameMenuAIFrameExtended.mouseEvent)
+
+function CpInGameMenuAIFrameExtended.getVehicle()
+	local pageAI = g_currentMission.inGameMenu.pageAI
+	return InGameMenuMapUtil.getHotspotVehicle(pageAI.currentHotspot) or pageAI.lastVehicle
+end
