@@ -118,11 +118,7 @@ function Courseplay:setupGui()
 	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
 				 "CpCourseManagerFrame", courseManagerFrame, true)
 	local function predicateFunc()
-		local inGameMenu = g_gui.screenControllers[InGameMenu]
-		return CpInGameMenuAIFrameExtended.getVehicle() or 
-				inGameMenu.currentPage == inGameMenu.pageCpCourseManager or 
-				inGameMenu.currentPage == inGameMenu.pageCpGlobalSettings or 
-				inGameMenu.currentPage == inGameMenu.pageCpVehicleSettings
+		return CpInGameMenuAIFrameExtended.getVehicle() ~= nil
 	end
 	
 	--- As precision farming decided to be moved in between the normal map and the ai map,

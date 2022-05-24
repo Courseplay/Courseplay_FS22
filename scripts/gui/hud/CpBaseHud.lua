@@ -557,9 +557,7 @@ end
 
 function CpBaseHud:preOpeningInGameMenu(vehicle)
     local inGameMenu =  g_currentMission.inGameMenu
-    local pageAI = inGameMenu.pageAI
-    pageAI.controlledVehicle = vehicle
-    pageAI.currentHotspot = nil
+    inGameMenu.pageAI.hudVehicle = self.vehicle
     if g_gui.currentGuiName ~= "InGameMenu" then
 		g_gui:showGui("InGameMenu")
 	end
