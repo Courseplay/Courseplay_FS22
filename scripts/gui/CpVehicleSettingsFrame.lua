@@ -46,9 +46,7 @@ end
 --- Binds the settings of the selected vehicle to the gui elements.
 function CpVehicleSettingsFrame:onFrameOpen()
 	CpVehicleSettingsFrame:superClass().onFrameOpen(self)
-	local pageAI = g_currentMission.inGameMenu.pageAI
-	local currentHotspot = pageAI.currentHotspot
-	self.currentVehicle =  pageAI.controlledVehicle or InGameMenuMapUtil.getHotspotVehicle(currentHotspot)
+	self.currentVehicle = CpInGameMenuAIFrameExtended.getVehicle()
 	self.header:setText()
 	--- Changes the page title.
 	local title = string.format(self.pageTitle,self.currentVehicle:getName())
@@ -79,5 +77,4 @@ function CpVehicleSettingsFrame:onFrameClose()
 	end
 	self.settings = nil
 	self.boxLayout:invalidateLayout()
-	g_currentMission.inGameMenu:updatePages()
 end

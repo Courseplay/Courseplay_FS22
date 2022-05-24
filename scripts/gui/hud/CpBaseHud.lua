@@ -557,9 +557,7 @@ end
 
 function CpBaseHud:preOpeningInGameMenu(vehicle)
     local inGameMenu =  g_currentMission.inGameMenu
-    local pageAI = inGameMenu.pageAI
-    pageAI.controlledVehicle = vehicle
-    pageAI.currentHotspot = nil
+    inGameMenu.pageAI.hudVehicle = self.vehicle
     if g_gui.currentGuiName ~= "InGameMenu" then
 		g_gui:showGui("InGameMenu")
 	end
@@ -577,8 +575,10 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
     local pageAI = inGameMenu.pageAI
     --- Opens the ai inGame menu
     inGameMenu:goToPage(pageAI)
+    local hotspot = self.vehicle:getMapHotspot()
+    pageAI:setMapSelectionItem(hotspot)
     self:debug("opened ai inGame menu.")
-    if vehicle:getIsCpActive() or not g_currentMission:getHasPlayerPermission("hireAssistant") then 
+    if self.vehicle:getIsCpActive() or not g_currentMission:getHasPlayerPermission("hireAssistant") then 
         return
     end
     self:debug("opened ai inGame job creation.")

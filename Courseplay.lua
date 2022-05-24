@@ -118,9 +118,7 @@ function Courseplay:setupGui()
 	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
 				 "CpCourseManagerFrame", courseManagerFrame, true)
 	local function predicateFunc()
-		local inGameMenu = g_gui.screenControllers[InGameMenu]
-		local aiPage = inGameMenu.pageAI
-		return aiPage.currentHotspot ~= nil or aiPage.controlledVehicle ~= nil 
+		return CpInGameMenuAIFrameExtended.getVehicle() ~= nil
 	end
 	
 	--- As precision farming decided to be moved in between the normal map and the ai map,
@@ -305,6 +303,7 @@ function Courseplay:registerConsoleCommands()
 	addConsoleCommand( 'printVehicleVariable', 'Print g_currentMission.controlledVehicle.variable', 'printVehicleVariable', self )
 	addConsoleCommand( 'printImplementVariable', 'printImplementVariable <implement index> <variable>', 'printImplementVariable', self )
 	addConsoleCommand( 'printStrategyVariable', 'Print a CP drive strategy variable', 'printStrategyVariable', self )
+	addConsoleCommand( 'printAiPageVariable', 'Print a in game menu ai page variable.', 'printAiPageVariable', self )
 	addConsoleCommand( 'cpLoadFile', 'Load a lua file', 'loadFile', self )
 	addConsoleCommand( 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'toggleDevHelper', self )
 	addConsoleCommand( 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'cpSaveAllFields', self )
@@ -395,6 +394,11 @@ function Courseplay:printGlobalCpVariable(variableName, maxDepth, printToXML, pr
 	else 
 		self:printVariable('g_Courseplay', maxDepth, printToXML, printToSeparateXmlFiles)
 	end
+end
+
+function Courseplay:printAiPageVariable(variableName, maxDepth, printToXML, printToSeparateXmlFiles)
+	local prefix = 'g_currentMission.inGameMenu.pageAI'
+	self:printVariableInternal( prefix, variableName, maxDepth, printToXML, printToSeparateXmlFiles)
 end
 
 --- Load a Lua file
