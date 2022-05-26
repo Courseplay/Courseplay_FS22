@@ -45,7 +45,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="工人%s 停止工作-储存箱已满!" />
-		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
+		<text name="CP_ai_messageError" 																text="AI 帮手 %s 意外停止工作 - 离开了路线！" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="车辆设置(%s)"/>
@@ -181,8 +181,8 @@
 
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_title"								text="地头方向" />
 		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip"								text="车辆在田间地头上是从左往右还是从右往左行驶。" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="从左往右" />
-		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="从右往左" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" 							text="从左往右(CW)" />
+		<text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" 					text="从右往左(CCW)" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_title"									text="田地中心路径" />
 		<text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip"								text="选择中心路径类型。" />
@@ -195,7 +195,7 @@
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip"						text="在田地两头的转向方式。 " />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" 						text="平滑转向" />
 		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" 						text="倒车" />
-		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="循环" />
+		<text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" 						text="圆形的" />
 
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_title"								text="路径起始方向" />
 		<text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip"								text="选择路径起始方向。" />
@@ -221,14 +221,14 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="使用相同工具进行相同任务的车辆数量。 " />
 
 		<!-- Vine Course Generator-->
-		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="葡萄藤任务"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="葡萄与橄榄任务"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="基本设置"/>
 
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="路线位置"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="工作路线应该在葡萄藤上面或旁边。这取决于工具。更多信息请参见“帮助”菜单。"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="葡萄藤的左边"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="葡萄藤的上面"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="葡萄藤的右边"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="工作路线应该在树藤上面或旁边。这取决于工具。更多信息请参见“帮助”菜单。"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="树藤的左边"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="树藤的上面"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="树藤的右边"/>
 
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="每项任务的工具"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="多少个工具可以一起工作。更多信息在帮助菜单。"/>
@@ -282,8 +282,8 @@
 		<text name="CP_global_setting_infoTextHudActive_title"											text="显示信息文本窗口 "/>
 		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="显示一个信息文本窗口。"/>
 
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="玩家鼠标事件"/>
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="启用/禁用玩家鼠标事件的信息文本显示在车外。"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="车外鼠标交互"/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="启用/禁用车辆外的鼠标交互。"/>
 
 		<text name="CP_global_setting_preferCustomFields_title"											text="首选自定义田地"/>
 		<text name="CP_global_setting_preferCustomFields_tooltip"										text="使用自定义田地，即使有原始田地。"/>
@@ -325,7 +325,7 @@
 
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="助手卡住了"/>
-		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="被物体挡住"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="应该加油"/>
 		<text name="CP_infoTexts_needsFuel"  															text="需要加油"/>
 		<text name="CP_infoTexts_needsRepair"  															text="需要修理"/>
@@ -334,7 +334,7 @@
 		<text name="CP_infoTexts_workFinished"															text="完成工作"/>
 		<text name="CP_infoTexts_outOfMoney"															text="资金不足"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="等待雨停"/>
-		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
+		<text name="CP_infoTexts_errorStopped"															text="离开了路线，停止工作"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="是否要将录制的任务保存为自定义田地 %s?"/>
@@ -452,7 +452,7 @@ Courseplay 允许您生成具有附加功能的任务路线，例如：地头。
 任务管理的工作方式与您在 FS19 中习惯的方式不同。 
 任务被保存到文件夹中，该文件夹将显示在左侧。 这意味着您至少需要一个文件夹才能开始将任务保存到其中。
 文件夹可以通过屏幕底部的按钮简单地创建并输入名称。
-Courses are only saved localy for now.
+任务目前仅保存在本地。
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
@@ -591,7 +591,7 @@ R: 从剪贴板中删除复制的路线。
 <text name="CP_help_page_infoPanelMsg_text"																text="
 信息如下:
 - 助手卡住了
-- Blocked by an object
+- 被物体挡住
 - 应该加油
 - 需要加油
 - 需要修理
@@ -602,7 +602,7 @@ R: 从剪贴板中删除复制的路线。
 - 等待雨停
 "/>
 		<!--Vine work-->
-		<text name="CP_help_page_vineWork_title"														text="葡萄树的工作"/>
+		<text name="CP_help_page_vineWork_title"														text="葡萄与橄榄的工作"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
 种植葡萄藤比种植普通田地要复杂一些。
 为了获得最好的结果，葡萄藤应该在默认的网格中彼此相邻。
