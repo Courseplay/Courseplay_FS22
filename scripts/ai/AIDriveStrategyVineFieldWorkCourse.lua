@@ -48,6 +48,12 @@ function AIDriveStrategyVineFieldWorkCourse:getImplementLowerEarly()
     return true
 end
 
+-- disable proximity sensor to prevent vines stopping us...
+function AIDriveStrategyVineFieldWorkCourse:checkProximitySensors()
+    -- TODO: make proximity sensor ignore vines?
+    -- TODO: enable sensor in turns only?
+end
+
 function AIDriveStrategyVineFieldWorkCourse:startTurn(ix)
 
     local _, frontMarkerDistance = AIUtil.getFirstAttachedImplement(self.vehicle)
