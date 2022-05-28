@@ -36,11 +36,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="Lewo(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="Prawo(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Typ bel:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Typ bel:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="Wszystkie"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="Tylko owinięte"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="Tylko nieowinięte"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Prace polowe" />
@@ -52,7 +52,7 @@
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Pracownik SI %s niespodziewanie przerwał pracę - zbiornik jest pełny!" />
 		<text name="CP_ai_messageError" 																text="Pracownik SI %s niespodziewanie przerwał pracę - opuścił kurs!" />															text="AI worker %s has stopped work unexpectedly - left the course!" />
-		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="Pracownik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Ustawienia pojazdu dla (%s)"/>
@@ -341,7 +341,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Brak pieniędzy"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Oczekuje na koniec opadów"/>
 		<text name="CP_infoTexts_errorStopped"															text="Opuścił kurs, zatrzymał się"/>														text="Left the course, stopped"/>
-		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Niewłaściwy typ beli"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Czy chcesz zapisać nagrany kurs jako nowe pole %s?"/>
