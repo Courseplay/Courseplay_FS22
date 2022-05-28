@@ -36,14 +36,19 @@ end
 
 --- Call this before attempting to construct a BaleToCollect to check the validity of the object
 ---@param baleWrapper table bale wrapper, if exists
-function BaleToCollect.isValidBale(object, baleWrapper, baleLoader)
+function BaleToCollect.isValidBale(object, baleWrapper, baleLoader, onlyWrappedBales)
 	-- nodeId is sometimes 0, causing issues for the BaleToCollect constructor
 	if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
 		if baleWrapper then
 			-- if there is a bale wrapper, the bale must be wrappable
 			return baleWrapper:getIsBaleWrappable(object)
-		elseif baleLoader then
-			return baleLoader:getBaleTypeByBale(object) ~= nil
+		elseif baleLoader and baleLoader:getBaleTypeByBale(object) ~= nil then
+			if onlyWrappedBales == CpBaleFinderJobParameters.ONLY_WRAPPED_BALES then 
+				return object.wrappingState > 0, object.wrappingState > 0
+			elseif  onlyWrappedBales == CpBaleFinderJobParameters.ONLY_NOT_WRAPPED_BALES then 
+				return object.wrappingState <= 0, object.wrappingState <= 0
+			end
+			return true
 		else
 			return true
 		end
@@ -64,6 +69,18 @@ end
 
 function BaleToCollect:getId()
 	return self.bale.id
+end
+
+function BaleToCollect:getFillType()
+	return self.bale:getFillType()	
+end
+
+function BaleToCollect:getIsFermenting()
+	return self.bale:getIsFermenting()	
+end
+
+function BaleToCollect:getFillTypeInfo(...)
+	return self.bale:getFillTypeInfo(...)	
 end
 
 function BaleToCollect:getBaleObjectId()

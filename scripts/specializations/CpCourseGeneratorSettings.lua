@@ -196,6 +196,11 @@ function CpCourseGeneratorSettings:hasHeadlandsSelected()
     return spec.numberOfHeadlands:getValue()>0
 end
 
+--- Only show the work width, if the bale finder can't be started.
+function CpCourseGeneratorSettings:isWorkWidthSettingVisible()
+    return not self:getCanStartCpBaleFinder()
+end
+
 --- Updates the layout on change, as gui elements might change their visibility.
 function CpCourseGeneratorSettings:updateGui()
     local spec = self.spec_cpCourseGeneratorSettings

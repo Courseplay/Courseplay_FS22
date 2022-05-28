@@ -41,6 +41,7 @@ CpSettingsUtil.classTypes = {
 				- isUserSetting(bool): should the setting be saved in the game settings and not in the savegame dir.
 				- isExpertModeOnly(bool): is the setting visible in the expert version?, default = false
 
+				- generateValuesFunction(string): dynamically adds value, when the setting is created.
 				- min (int): min value
 				- max (int): max value
 				- incremental (float): increment (optional), default "1"
@@ -69,21 +70,21 @@ function CpSettingsUtil.init()
     CpSettingsUtil.setupXmlSchema = XMLSchema.new("SettingsSetup")
     local schema = CpSettingsUtil.setupXmlSchema	
 	-- valueTypeId, path, description, defaultValue, isRequired
-	schema:register(XMLValueType.STRING, "Settings#title","Settings prefix text",nil,true)
-	schema:register(XMLValueType.STRING, "Settings#prefixText","Settings prefix text",nil,true)
-	schema:register(XMLValueType.STRING, "Settings#autoUpdateGui","Gui gets updated automatically")
+	schema:register(XMLValueType.STRING, "Settings#title", "Settings prefix text", nil, true)
+	schema:register(XMLValueType.STRING, "Settings#prefixText", "Settings prefix text", nil, true)
+	schema:register(XMLValueType.STRING, "Settings#autoUpdateGui", "Gui gets updated automatically")
 
 	local key = "Settings.SettingSubTitle(?)"
-	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title",nil,true)
-	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix",true)
+	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title", nil, true)
+	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix", true)
 	
 	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
 	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
 	schema:register(XMLValueType.BOOL, key.."#isExpertModeOnly", "Is enabled in simple mode?", false) -- optional
 
 	key = "Settings.SettingSubTitle(?).Setting(?)"
-    schema:register(XMLValueType.STRING, key.."#name", "Setting name",nil,true)
-    schema:register(XMLValueType.STRING, key.."#classType", "Setting class type",nil,true)
+    schema:register(XMLValueType.STRING, key.."#name", "Setting name", nil, true)
+    schema:register(XMLValueType.STRING, key.."#classType", "Setting class type", nil, true)
 	schema:register(XMLValueType.STRING, key.."#title", "Setting tile") -- optional
     schema:register(XMLValueType.STRING, key.."#tooltip", "Setting tooltip") -- optional
 	schema:register(XMLValueType.INT, key.."#default", "Setting default value") -- optional
@@ -92,11 +93,12 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.BOOL, key .. "#isUserSetting", "Setting will be saved in the gameSettings file.", false) --optional
 	schema:register(XMLValueType.BOOL, key.."#isExpertModeOnly", "Is enabled in simple mode?", false) -- optional
 
+	schema:register(XMLValueType.STRING, key .. "#generateValuesFunction", "Function to generate values.")
 	schema:register(XMLValueType.INT, key.."#min", "Setting min value")
 	schema:register(XMLValueType.INT, key.."#max", "Setting max value")
-	schema:register(XMLValueType.FLOAT, key.."#incremental", "Setting incremental",1) -- optional
+	schema:register(XMLValueType.FLOAT, key.."#incremental", "Setting incremental", 1) -- optional
 	schema:register(XMLValueType.STRING, key.."#text", "Setting text") -- optional
-	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h,m ...)") --optional
+	schema:register(XMLValueType.INT, key .. "#unit", "Setting value unit (km/h, m ...)") --optional
 
 	schema:register(XMLValueType.STRING, key.."#vehicleConfiguration", "vehicleConfiguration that will be used to reset the setting.") --optional
 	--- callbacks:
@@ -117,8 +119,8 @@ function CpSettingsUtil.init()
 end
 CpSettingsUtil.init()
 
-function CpSettingsUtil.getSettingFromParameters(parameters,...)
-    return CpSettingsUtil.classTypes[parameters.classType](parameters,...)
+function CpSettingsUtil.getSettingFromParameters(parameters, ...)
+    return CpSettingsUtil.classTypes[parameters.classType](parameters, ...)
 end
 
 function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
@@ -137,7 +139,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 	xmlFile:iterate("Settings.SettingSubTitle", function (i, masterKey)
 		local subTitle = xmlFile:getValue(masterKey.."#title")
 		--- This flag can by used to simplify the translation text. 
-		local pre = xmlFile:getValue(masterKey.."#prefix",true)	
+		local pre = xmlFile:getValue(masterKey.."#prefix", true)	
 		if pre then 
 			subTitle = g_i18n:getText(setupKey.."subTitle_"..subTitle)
 		else 
@@ -146,7 +148,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 
 		local isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
 		local isVisibleFunc = xmlFile:getValue(masterKey.."#isVisible")
-		local isExpertModeOnly = xmlFile:getValue(masterKey.."#isExpertModeOnly",false)
+		local isExpertModeOnly = xmlFile:getValue(masterKey.."#isExpertModeOnly", false)
 
 		local subTitleSettings = {
 			title = subTitle,
@@ -175,13 +177,14 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			end
 			settingParameters.default = xmlFile:getValue(baseKey.."#default")
 			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
-			settingParameters.textInputAllowed = xmlFile:getValue(baseKey.."#textInput",false)
-			settingParameters.isUserSetting = xmlFile:getValue(baseKey.."#isUserSetting",false)
-			settingParameters.isExpertModeOnly = xmlFile:getValue(baseKey.."#isExpertModeOnly",false)
+			settingParameters.textInputAllowed = xmlFile:getValue(baseKey.."#textInput", false)
+			settingParameters.isUserSetting = xmlFile:getValue(baseKey.."#isUserSetting", false)
+			settingParameters.isExpertModeOnly = xmlFile:getValue(baseKey.."#isExpertModeOnly", false)
 
+			settingParameters.generateValuesFunction = xmlFile:getValue(baseKey.."#generateValuesFunction")
 			settingParameters.min = xmlFile:getValue(baseKey.."#min")
 			settingParameters.max = xmlFile:getValue(baseKey.."#max")
-			settingParameters.incremental = MathUtil.round(xmlFile:getValue(baseKey.."#incremental"),3)
+			settingParameters.incremental = MathUtil.round(xmlFile:getValue(baseKey.."#incremental"), 3)
 			settingParameters.textStr = xmlFile:getValue(baseKey.."#text")
 			settingParameters.unit = xmlFile:getValue(baseKey.."#unit")
 
@@ -199,7 +202,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			xmlFile:iterate(baseKey..".Values.Value", function (i, key)
 				local name = xmlFile:getValue(key.."#name")
 				local value = xmlFile:getValue(key)
-				table.insert(settingParameters.values,value)
+				table.insert(settingParameters.values, value)
 				if name ~= nil and name ~= "" then
 					class[name] = value
 				end
@@ -210,11 +213,11 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.texts = {}
 			xmlFile:iterate(baseKey..".Texts.Text", function (i, key)
 				--- This flag can by used to simplify the translation text. 
-				local prefix = xmlFile:getValue(key.."#prefix",true)
+				local prefix = xmlFile:getValue(key.."#prefix", true)
 				local text = xmlFile:getValue(key)
 				if prefix then
 					text = g_i18n:getText(setupKey..settingParameters.name.."_"..text)
-					table.insert(settingParameters.texts,text)
+					table.insert(settingParameters.texts, text)
 				else 
 					table.insert(settingParameters.texts, g_i18n:getText(text))
 				end
@@ -222,14 +225,14 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 
 			settingParameters.uniqueID = uniqueID
 
-			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters,nil,class)
+			local setting = CpSettingsUtil.getSettingFromParameters(settingParameters, nil, class)
 			class[settingParameters.name] = setting
-			table.insert(class.settings,setting)
-			table.insert(subTitleSettings.elements,setting)
+			table.insert(class.settings, setting)
+			table.insert(subTitleSettings.elements, setting)
 
 			uniqueID = uniqueID + 1
 		end)
-		table.insert(class.settingsBySubTitle,subTitleSettings)
+		table.insert(class.settingsBySubTitle, subTitleSettings)
 	end)
 	xmlFile:delete()
 end
@@ -237,18 +240,18 @@ end
 --- Clones a settings table.
 ---@param class table 
 ---@param settings table
-function CpSettingsUtil.cloneSettingsTable(class,settings,...)
+function CpSettingsUtil.cloneSettingsTable(class, settings, ...)
 	class.settings = {}
-	for _,setting in ipairs(settings) do 
+	for _, setting in ipairs(settings) do 
 		local settingClone = setting:clone(...)
-		table.insert(class.settings,settingClone)
+		table.insert(class.settings, settingClone)
 		class[settingClone:getName()] = settingClone
 	end
 end
 
 --- Copies settings values from a settings tables to another.
-function CpSettingsUtil.copySettingsValues(settingsTable,settingsTableToCopy)
-    for i,p in ipairs(settingsTable.settings) do 
+function CpSettingsUtil.copySettingsValues(settingsTable, settingsTableToCopy)
+    for i, p in ipairs(settingsTable.settings) do 
         p:copy(settingsTableToCopy.settings[i])
     end
 end
@@ -258,12 +261,12 @@ end
 ---@param parentGuiElement GuiElement
 ---@param genericSettingElement GuiElement
 ---@param genericSubTitleElement GuiElement
-function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,parentGuiElement,genericSettingElement,genericSubTitleElement)
-	for _,data in ipairs(settingsBySubTitle) do 
+function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle, parentGuiElement, genericSettingElement, genericSubTitleElement)
+	for _, data in ipairs(settingsBySubTitle) do 
 		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
 		clonedSubTitleElement:setText(data.title)
 		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
-		for _,setting in ipairs(data.elements) do 
+		for _, setting in ipairs(data.elements) do 
 			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
 			setting:setGenericGuiElementValues(clonedSettingElement)
 			FocusManager:loadElementFromCustomValues(clonedSettingElement)
@@ -276,14 +279,15 @@ end
 ---@param settings table
 ---@param parentGuiElement GuiElement
 ---@param genericSettingElement GuiElement
-function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings,parentGuiElement,genericSettingElementTitle,genericSettingElement)
-	for _,setting in ipairs(settings) do 
+function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings, parentGuiElement, genericSettingElementTitle, genericSettingElement)
+	for _, setting in ipairs(settings) do 
 
-		local titleElement = genericSettingElementTitle:clone(parentGuiElement,true)
+		local titleElement = genericSettingElementTitle:clone(parentGuiElement, true)
 		titleElement:setText(setting.data.title)
 		genericSettingElement:unlinkElement()
-		CpUtil.debugFormat(CpDebug.DBG_HUD,"Bound setting %s",setting:getName())
-		local clonedSettingElement = genericSettingElement:clone(parentGuiElement,true)
+		CpUtil.debugFormat(CpDebug.DBG_HUD, "Bound setting %s", setting:getName())
+		local clonedSettingElement = genericSettingElement:clone(parentGuiElement, true)
+		clonedSettingElement.cpTitleElement = titleElement
 --			parentGuiElement:invalidateLayout()
 		setting:setGenericGuiElementValues(clonedSettingElement)
 	end
@@ -293,15 +297,19 @@ end
 --- Links the gui elements to the correct settings.
 ---@param settings any
 ---@param layout any
-function CpSettingsUtil.linkGuiElementsAndSettings(settings,layout,settingsBySubTitle,vehicle)
+function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsBySubTitle, vehicle)
 	local valid = true
 	local i = 1
 	local j = 1
-	for _,element in ipairs(layout.elements) do 
+	for ix, element in ipairs(layout.elements) do 
 		if element:isa(MultiTextOptionElement) then 
 			if valid then
-				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s",settings[i]:getName())
-				settings[i]:setGuiElement(element)
+				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s", settings[i]:getName())
+				if not settingsBySubTitle then
+					settings[i]:setGuiElement(element, layout.elements[ix-1])
+				else
+					settings[i]:setGuiElement(element)
+				end
 			else 
 				element:setVisible(false)
 			end
@@ -340,11 +348,11 @@ end
 --- Unlinks the gui elements to the correct settings.
 ---@param settings any
 ---@param layout any
-function CpSettingsUtil.unlinkGuiElementsAndSettings(settings,layout)
+function CpSettingsUtil.unlinkGuiElementsAndSettings(settings, layout)
 	local i = 1
-	for _,element in ipairs(layout.elements) do 
+	for _, element in ipairs(layout.elements) do 
 		if element:isa(MultiTextOptionElement) then 
-			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s",settings[i]:getName())
+			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s", settings[i]:getName())
 			settings[i]:resetGuiElement()
 			i = i + 1
 		end
@@ -354,10 +362,10 @@ end
 --- Generates Gui button in the ai job menu from settings.
 ---@param settingsBySubTitle table
 ---@param class table
-function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle,class,settings)
-	for _,data in ipairs(settingsBySubTitle) do 
+function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle, class, settings)
+	for _, data in ipairs(settingsBySubTitle) do 
 		local parameterGroup = AIParameterGroup.new(data.title)
-		for _,setting in ipairs(data.elements) do 
+		for _, setting in ipairs(data.elements) do 
 			local s = settings[setting:getName()]
 			parameterGroup:addParameter(s)
 		end
@@ -366,7 +374,7 @@ function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubT
 end
 
 function CpSettingsUtil.updateAiParameters(currentJobElements)
-	for i,element in pairs(currentJobElements) do 
+	for i, element in pairs(currentJobElements) do 
 		if element.setDataSource then
 			element:setDataSource(element.aiParameter)
 			element:setDisabled(element.aiParameter:getIsDisabled())
@@ -378,10 +386,10 @@ end
 --- Raises an event for all settings.
 ---@param settings table
 ---@param eventName string
-function CpSettingsUtil.raiseEventForSettings(settings,eventName,...)
-	for _,setting in ipairs(settings) do 
+function CpSettingsUtil.raiseEventForSettings(settings, eventName, ...)
+	for _, setting in ipairs(settings) do 
 		if setting[eventName] then 
-			setting[eventName](setting,...)
+			setting[eventName](setting, ...)
 		end
 	end
 end

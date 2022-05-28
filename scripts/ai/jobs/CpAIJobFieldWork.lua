@@ -173,7 +173,10 @@ end
 
 --- Is course generation allowed ?
 function CpAIJobFieldWork:isCourseGenerationAllowed()
-	return self:getCanGenerateFieldWorkCourse()
+	local vehicle = self:getVehicle()
+	--- Disables the course generation for bale loaders and wrappers.
+	local baleFinderAllowed = vehicle and vehicle:getCanStartCpBaleFinder()
+	return self:getCanGenerateFieldWorkCourse() and not baleFinderAllowed
 end
 
 function CpAIJobFieldWork:getCanStartJob()

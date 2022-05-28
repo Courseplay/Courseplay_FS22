@@ -28,9 +28,25 @@ function AIMessageCpError:getMessage()
 	return g_i18n:getText("CP_ai_messageError")
 end
 
+AIMessageErrorWrongBaleWrapType = {
+	name = "CP_ERROR_WRONG_WRAP_TYPE"
+}
+local AIMessageErrorWrongBaleWrapType_mt = Class(AIMessageErrorWrongBaleWrapType, AIMessage)
+
+function AIMessageErrorWrongBaleWrapType.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorWrongBaleWrapType_mt)
+
+	return self
+end
+
+function AIMessageErrorWrongBaleWrapType:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorWrongBaleWrapType")
+end
+
 function AIMessageErrorIsFull.register()
 	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorIsFull.name, AIMessageErrorIsFull)
 	g_currentMission.aiMessageManager:registerMessage(AIMessageCpError.name, AIMessageCpError)
+	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorWrongBaleWrapType.name, AIMessageErrorWrongBaleWrapType)
 end
 
 --- Another ugly hack, as the giants code to get the message index in mp isn't working ..

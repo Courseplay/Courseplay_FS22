@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	Bale finder ai parameters.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_baleFinderJobParameters_">
+	<SettingSubTitle title="fillType">
+		<Setting classType="AIParameterSettingList" name="onlyWrappedBales" isVisible="isBaleWrapSettingVisible">
+			<Values>
+				<Value name="ALL_BALES">1</Value>
+				<Value name="ONLY_WRAPPED_BALES">2</Value>
+				<Value name="ONLY_NOT_WRAPPED_BALES">3</Value>
+			</Values>
+			<Texts>
+				<Text>all_bales</Text>
+				<Text>only_wrapped_bales</Text>
+				<Text>only_not_wrapped_bales</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+</Settings>

@@ -27,7 +27,7 @@ end
 
 function CpAITaskBaleFinder:start()
 	if self.isServer then
-		self.vehicle:startCpBaleFinder(self.fieldPolygon)
+		self.vehicle:startCpBaleFinder(self.fieldPolygon, self.job:getCpJobParameters())
 	end
 
 	CpAITaskBaleFinder:superClass().start(self)

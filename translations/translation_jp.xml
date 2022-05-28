@@ -36,6 +36,9 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="左(第2レーン)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="右(第2レーン)" />
 
+		<text name="CP_baleFinderJobParameters_subTitle_onlyWrappedBales"										text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_onlyWrappedBales_title"											text="Baletype:"/>
+
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="コースプレイ:野外作業" />
 		<text name="CP_job_baleCollect"																	text="コースプレイ:ベール収集/ラップ" />
@@ -46,6 +49,7 @@
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="AIヘルパー %s が予期せず作業を停止しました - タンクが満杯です!" />
 		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="[%s]の車両設定"/>
@@ -334,6 +338,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
+		<text name="Cp_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="カスタムコース「%s」を保存しますか?"/>

@@ -499,7 +499,7 @@ function Courseplay.register(typeManager)
 		CpAIWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
-		CpVehicleSettingDisplay.register(typeManager, typeName,typeEntry.specializations)
+		CpGamePadHud.register(typeManager, typeName,typeEntry.specializations)
 		CpHud.register(typeManager, typeName, typeEntry.specializations)
 		CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)
 	end

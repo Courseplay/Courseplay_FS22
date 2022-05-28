@@ -36,6 +36,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
+		<text name="CP_baleFinderJobParameters_subTitle_onlyWrappedBales"								text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_onlyWrappedBales_title"									text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_onlyWrappedBales_all_bales"								text="all bales"/>
+		<text name="CP_baleFinderJobParameters_onlyWrappedBales_only_wrapped_bales"						text="only wrapped"/>
+		<text name="CP_baleFinderJobParameters_onlyWrappedBales_only_not_wrapped_bales"					text="only not wrapped"/>
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Fieldwork" />
 		<text name="CP_job_baleCollect"																	text="CP: Bale collect/wrap" />
@@ -46,6 +51,7 @@
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="AI worker %s has stopped work unexpectedly - tank is full!" />
 		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Vehicle settings for (%s)"/>
 		
@@ -333,6 +339,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
+		<text name="Cp_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Do you want to save the recorded course as custom field %s?"/>
 		<text name="CP_customFieldManager_confirm_delete"												text="Do you want to delete the custom field %s?"/>
