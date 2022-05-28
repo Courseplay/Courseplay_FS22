@@ -30,13 +30,16 @@
 		<text name="CP_jobParameters_laneOffset_title"													text="Position dans la rangée" />
 		<text name="CP_jobParameters_laneOffset_tooltip"												text="Choix de la rangée lors d'un travail à plusieurs outils (maximum 5)." />
 		<text name="CP_jobParameters_laneOffset_center"													text="centre" />
-		<text name="CP_jobParameters_laneOffset_left"														text="gauche(1)" />
+		<text name="CP_jobParameters_laneOffset_left"													text="gauche(1)" />
 		<text name="CP_jobParameters_laneOffset_right"													text="droite(1)" />
 		<text name="CP_jobParameters_laneOffset_left_2"													text="gauche(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="droite(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"											text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />

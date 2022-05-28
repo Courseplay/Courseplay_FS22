@@ -35,8 +35,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="Izquierdo(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="Derecho(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"											text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
 
 	<!--Drivemodes-->
 		<text name="CP_job_fieldWork"																	text="CP: Trabajo de campo" />
