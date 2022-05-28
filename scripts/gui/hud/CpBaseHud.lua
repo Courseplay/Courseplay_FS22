@@ -285,8 +285,8 @@ function CpBaseHud:init(vehicle)
                                      xRight, self.defaultFontSize)
     local callback = {
         callbackStr = "onClickPrimary",
-        class =  vehicle:getCpBaleFinderJobParameters().onlyWrappedBales,
-        func =   vehicle:getCpBaleFinderJobParameters().onlyWrappedBales.setNextItem,
+        class =  vehicle:getCpBaleFinderJobParameters().baleWrapType,
+        func =   vehicle:getCpBaleFinderJobParameters().baleWrapType.setNextItem,
     }
     self.baleFinderFillTypeBtn:setCallback(callback, callback)                                           
 
@@ -515,10 +515,10 @@ function CpBaseHud:draw(status)
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
-    local onlyWrappedBales = self.vehicle:getCpBaleFinderJobParameters().onlyWrappedBales
-    self.baleFinderFillTypeBtn:setTextDetails(onlyWrappedBales:getTitle(), onlyWrappedBales:getString())
+    local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
+    self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
 
-    self.baleFinderFillTypeBtn:setVisible(onlyWrappedBales:getIsVisible())
+    self.baleFinderFillTypeBtn:setVisible(baleWrapType:getIsVisible())
 
     if self.vehicle:hasCpCourse() then 
         self.courseVisibilityBtn:setVisible(true)

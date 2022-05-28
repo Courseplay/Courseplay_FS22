@@ -36,8 +36,8 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="left(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="right(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_onlyWrappedBales"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_onlyWrappedBales_title"											text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"										text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"											text="Baletype:"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Fieldwork" />

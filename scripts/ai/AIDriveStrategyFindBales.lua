@@ -141,8 +141,8 @@ end
 
 --- Fill type for the bale loader. 
 function AIDriveStrategyFindBales:setJobParameterValues(jobParameters)
-    self.onlyWrappedBales = jobParameters.onlyWrappedBales:getValue()
-    self:debug("Bale fill type set to: %s", g_fillTypeManager:getFillTypeNameByIndex(self.onlyWrappedBales))
+    self.baleWrapType = jobParameters.baleWrapType:getValue()
+    self:debug("Bale fill type set to: %s", g_fillTypeManager:getFillTypeNameByIndex(self.baleWrapType))
 end
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
@@ -159,7 +159,7 @@ function AIDriveStrategyFindBales:findBales()
     local balesFound, baleWithWrongWrapType = {}, false
     for _, object in pairs(g_currentMission.nodeToObject) do
         local isValid, wrongWrapType = BaleToCollect.isValidBale(object, 
-                self.baleWrapper, self.baleLoader, self.onlyWrappedBales)
+                self.baleWrapper, self.baleLoader, self.baleWrapType)
         if isValid then
             local bale = BaleToCollect(object)
             -- if the bale has a mountObject it is already on the loader so ignore it
