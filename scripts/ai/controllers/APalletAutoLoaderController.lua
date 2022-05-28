@@ -50,6 +50,8 @@ function APalletAutoLoaderController:isFuelSaveAllowed()
 end
 
 function APalletAutoLoaderController:onStart()
+    -- turning the autoloader on when CP starts
+    self.autoLoader:SetLoadingState(FS22_aPalletAutoLoader.APalletAutoLoaderLoadingState.RUNNING)
 end
 
 --- Ignore all already loaded bales when pathfinding
