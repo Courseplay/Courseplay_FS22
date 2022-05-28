@@ -499,7 +499,8 @@ function generateTwoSideHeadlands( polygon, islands, implementWidth, headlandSet
 
 	local bestAngle, nTracks, nBlocks, resultIsOk
 	-- Now, determine the angle where the number of tracks is the minimum
-	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle( boundary, translatedIslands, implementWidth, 0, centerSettings )
+	bestAngle, nTracks, nBlocks, resultIsOk = CourseGenerator.findBestTrackAngle( boundary, translatedIslands, implementWidth,
+		0, centerSettings, headlandSettings.nPasses )
 	if nBlocks < 1 then
 		CourseGenerator.debug( "No room for up/down rows." )
 		return nil, 0, 0, nil, true
