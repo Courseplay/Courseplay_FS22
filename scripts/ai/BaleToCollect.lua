@@ -42,13 +42,15 @@ function BaleToCollect.isValidBale(object, baleWrapper, baleLoader, baleWrapType
 		if baleWrapper then
 			-- if there is a bale wrapper, the bale must be wrappable
 			return baleWrapper:getIsBaleWrappable(object)
-		elseif baleLoader and baleLoader:getBaleTypeByBale(object) ~= nil then
-			if baleWrapType == CpBaleFinderJobParameters.ONLY_WRAPPED_BALES then 
-				return object.wrappingState > 0, object.wrappingState > 0
-			elseif  baleWrapType == CpBaleFinderJobParameters.ONLY_NOT_WRAPPED_BALES then 
-				return object.wrappingState <= 0, object.wrappingState <= 0
+		elseif baleLoader then
+			if baleLoader:getBaleTypeByBale(object) ~= nil then
+				if baleWrapType == CpBaleFinderJobParameters.ONLY_WRAPPED_BALES then 
+					return object.wrappingState > 0, object.wrappingState > 0
+				elseif  baleWrapType == CpBaleFinderJobParameters.ONLY_NOT_WRAPPED_BALES then 
+					return object.wrappingState <= 0, object.wrappingState <= 0
+				end
+				return true
 			end
-			return true
 		else
 			return true
 		end
