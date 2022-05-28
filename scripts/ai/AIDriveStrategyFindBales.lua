@@ -94,7 +94,7 @@ function AIDriveStrategyFindBales:collectNextBale()
                 self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
             end
         elseif self.baleLoader and wrongWrapType then 
-            self:info('Only bales with a wrong fill type are left.')
+            self:info('Only bales with a wrong wrap type left.')
             self.vehicle:stopCurrentAIJob(AIMessageErrorWrongBaleWrapType.new())
         else
             self:info('There really are no more bales on the field')
@@ -142,7 +142,7 @@ end
 --- Fill type for the bale loader. 
 function AIDriveStrategyFindBales:setJobParameterValues(jobParameters)
     self.baleWrapType = jobParameters.baleWrapType:getValue()
-    self:debug("Bale fill type set to: %s", g_fillTypeManager:getFillTypeNameByIndex(self.baleWrapType))
+    self:debug("Bale type selected: %s", tostring(self.baleWrapType))
 end
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
