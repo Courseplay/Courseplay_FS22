@@ -340,7 +340,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Kein Geld mehr"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Warte auf besseres Wetter"/>
 		<text name="CP_infoTexts_errorStopped"															text="Hat den Kurs verlassen, gestoppt"/>
-		<text name="Cp_infoTexts_wrongBaleWrapType"														text="Ballentyp nicht gefunden"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Ballentyp nicht gefunden"/>
 
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Möchtest du diesen benutzerdefinierten Randkurs als %s speichern?"/>
