@@ -3,7 +3,7 @@
 AIParameterSettingList = {}
 local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
 
-function AIParameterSettingList.new(data,vehicle,class,customMt)
+function AIParameterSettingList.new(data, vehicle, class, customMt)
 	---@type AIParameterSettingList
 	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
 	self.type = AIParameterType.SELECTOR
@@ -17,18 +17,22 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 	if next(data.values) ~=nil then
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
-	else
+	elseif data.min ~= nil and data.max ~=nil then
 		self.data.values = {}
 		self.data.texts = {}
-		AIParameterSettingList.generateValues(self,self.data.values,self.data.texts,data.min,data.max,data.incremental,data.unit)
+		AIParameterSettingList.generateValues(self, self.data.values, self.data.texts, data.min, data.max, data.incremental, data.unit)
 		self.values = table.copy(self.data.values)
 		if self.data.texts ~= nil then
 			self.texts = table.copy(self.data.texts)
 		end
 		data.textInputAllowed = true
+	elseif data.generateValuesFunction then
+		self.data.values, self.data.texts = CpSettingsUtil[data.generateValuesFunction]()
+		self.values = table.copy(self.data.values)
+		self.texts = table.copy(self.data.texts)
 	end
 	self.textInputAllowed = data.textInputAllowed
---	self:debug("textInputAllowed: %s",tostring(self.textInputAllowed))
+--	self:debug("textInputAllowed: %s", tostring(self.textInputAllowed))
 	self.title = data.title
 	self.tooltip = data.tooltip
 
@@ -39,17 +43,17 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 
 	if self.texts == nil or next(self.texts) == nil then
 		self.data.texts = {}
-		AIParameterSettingList.enrichTexts(self,self.data.texts,data.unit)
+		AIParameterSettingList.enrichTexts(self, self.data.texts, data.unit)
 		self.texts = table.copy(self.data.texts)
 	end
 
 	if data.default ~=nil then
-		AIParameterSettingList.setFloatValue(self,data.default)
-		self:debug("set to default %s",data.default)
+		AIParameterSettingList.setFloatValue(self, data.default)
+		self:debug("set to default %s", data.default)
 	end
 	if data.defaultBool ~= nil then
-		AIParameterSettingList.setValue(self,data.defaultBool)
-		self:debug("set to default %s",tostring(data.defaultBool))
+		AIParameterSettingList.setValue(self, data.defaultBool)
+		self:debug("set to default %s", tostring(data.defaultBool))
 	end
 
 	self.callbacks = data.callbacks
@@ -68,14 +72,14 @@ function AIParameterSettingList.new(data,vehicle,class,customMt)
 end
 
 function AIParameterSettingList.getSpeedText(value)
-	return string.format("%.1f %s",g_i18n:getSpeed(value),g_i18n:getSpeedMeasuringUnit())
+	return string.format("%.1f %s", g_i18n:getSpeed(value), g_i18n:getSpeedMeasuringUnit())
 end
 
 function AIParameterSettingList.getDistanceText(value)
 	if g_i18n.useMiles then 
-		return string.format("%.1f %s",value*AIParameterSettingList.FOOT_FACTOR,g_i18n:getText("CP_unit_foot"))
+		return string.format("%.1f %s", value*AIParameterSettingList.FOOT_FACTOR, g_i18n:getText("CP_unit_foot"))
 	end
-	return string.format("%.1f %s",value,g_i18n:getText("CP_unit_meter"))
+	return string.format("%.1f %s", value, g_i18n:getText("CP_unit_meter"))
 end
 
 function AIParameterSettingList.getAreaText(value)
@@ -107,19 +111,19 @@ AIParameterSettingList.INPUT_VALUE_THRESHOLD = 2
 ---@param max number
 ---@param inc number
 ---@param unit number
-function AIParameterSettingList:generateValues(values,texts,min,max,inc,unit)
+function AIParameterSettingList:generateValues(values, texts, min, max, inc, unit)
 	inc = inc or 1
-	for i=min,max,inc do 
-		table.insert(values,i)
-		local value = MathUtil.round(i,2)
+	for i=min, max, inc do 
+		table.insert(values, i)
+		local value = MathUtil.round(i, 2)
 		local text = unit and AIParameterSettingList.UNITS_TEXTS[unit] and AIParameterSettingList.UNITS_TEXTS[unit](value) or tostring(value)
-		table.insert(texts,text)
+		table.insert(texts, text)
 	end
 end
 
 --- Enriches texts with values of values, if they are not explicit declared. 
-function AIParameterSettingList:enrichTexts(texts,unit)
-	for i,value in ipairs(self.values) do 
+function AIParameterSettingList:enrichTexts(texts, unit)
+	for i, value in ipairs(self.values) do 
 		local text = tostring(value)
 		if unit then 
 			text = AIParameterSettingList.UNITS_TEXTS[unit](value)
@@ -173,21 +177,21 @@ function AIParameterSettingList:isValueDisabled(value)
 	local disabledFunc = self.disabledValuesFuncs and self.disabledValuesFuncs[value]
 	if disabledFunc ~= nil and self:hasCallback(disabledFunc) then 
 		if self:getCallback(disabledFunc) then 
-			self:debug("value %s is disabled",tostring(value))
+			self:debug("value %s is disabled", tostring(value))
 			return true
 		end 
 	end
---	self:debug("value %s is valid",tostring(value))
+--	self:debug("value %s is valid", tostring(value))
 end
 
 --- Excludes deactivated values from the current values and texts tables.
 function AIParameterSettingList:refresh()
 	self.values = {}
 	self.texts = {}
-	for ix,v in ipairs(self.data.values) do 
+	for ix, v in ipairs(self.data.values) do 
 		if not self:isValueDisabled(v) then
-			table.insert(self.values,v)
-			table.insert(self.texts,self.data.texts[ix])
+			table.insert(self.values, v)
+			table.insert(self.texts, self.data.texts[ix])
 		end	
 	end
 	self:validateCurrentValue()
@@ -208,8 +212,8 @@ function AIParameterSettingList:validateTexts()
 	if unit then 
 		local unitStrFunc = AIParameterSettingList.UNITS_TEXTS[unit]
 		local fixedTexts = {}
-		for ix,value in ipairs(self.values) do 
-			local value = MathUtil.round(value,2)
+		for ix, value in ipairs(self.values) do 
+			local value = MathUtil.round(value, 2)
 			local text = unitStrFunc(value)
 			fixedTexts[ix] = text
 		end
@@ -344,7 +348,7 @@ function AIParameterSettingList:getClosestIx(value)
 			closestDifference = d
 		end
 	end
-	return closestIx,closestDifference
+	return closestIx, closestDifference
 end
 
 --- Sets a value.
@@ -387,7 +391,7 @@ function AIParameterSettingList:setDefault(noEventSend)
 		return
 	end
 	if self.data.defaultBool ~= nil then
-		AIParameterSettingList.setValue(self,self.data.defaultBool)
+		AIParameterSettingList.setValue(self, self.data.defaultBool)
 		self:debug("set to default %s", tostring(self.data.defaultBool))
 		return
 	end
@@ -437,7 +441,7 @@ function AIParameterSettingList:setPreviousItem()
 end
 
 function AIParameterSettingList:clone(...)
-	return AIParameterSettingList.new(self.data,...)
+	return AIParameterSettingList.new(self.data, ...)
 end
 
 --- Copy the value to another setting.
@@ -490,11 +494,11 @@ function AIParameterSettingList:updateGuiElementValues()
 	self.guiElement:setDisabled(self.isDisabled)
 end
 
-function AIParameterSettingList:setGuiElement(guiElement)
+function AIParameterSettingList:setGuiElement(guiElement, titleGuiElement)
 	self:validateCurrentValue()
 	self.guiElement = guiElement
 	self.guiElement.target = self
-	self.guiElement.onClickCallback = function(setting,state,element)
+	self.guiElement.onClickCallback = function(setting, state, element)
 		setting:onClick(state)
 		CpGuiUtil.debugFocus(element.parent)
 		if not FocusManager:setFocus(element) then 
@@ -510,29 +514,32 @@ function AIParameterSettingList:setGuiElement(guiElement)
 	self:updateGuiElementValues()
 	self.guiElement:setVisible(self:getIsVisible())
 	self.guiElement:setDisabled(self:getIsDisabled())
+	if titleGuiElement then
+		titleGuiElement:setVisible(self:getIsVisible())
+	end
 	self:registerMouseInputEvent()
 	local max = FocusManager.FIRST_LOCK
 	local min = 50
-	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5,min,max)
+	self.guiElement.scrollDelayDuration = MathUtil.clamp(max-#self.values*2.5, min, max)
 end
 
 --- Adds text input option to the setting.
 function AIParameterSettingList:registerMouseInputEvent()
-	local function mouseClick(element,superFunc,posX, posY, isDown, isUp, button, eventUsed)
+	local function mouseClick(element, superFunc, posX, posY, isDown, isUp, button, eventUsed)
 
 		--- Disables not visible settings in a scrolling layout.
 		--- This fixes a bug from giants.
 		if element.parent then 
 			local parent = element.parent
-			local x,y = element.absPosition[1]+element.absSize[1]/2,element.absPosition[2]+element.absSize[2]/3
-			local cursorInElement = GuiUtils.checkOverlayOverlap(x,y, parent.absPosition[1], parent.absPosition[2], parent.absSize[1], parent.absSize[2], parent.hotspot)
+			local x, y = element.absPosition[1]+element.absSize[1]/2, element.absPosition[2]+element.absSize[2]/3
+			local cursorInElement = GuiUtils.checkOverlayOverlap(x, y, parent.absPosition[1], parent.absPosition[2], parent.absSize[1], parent.absSize[2], parent.hotspot)
 			if not cursorInElement then 
 								
 				return
 			end
 		end
 		
-		local eventUsed = superFunc(element,posX, posY, isDown, isUp, button, eventUsed)
+		local eventUsed = superFunc(element, posX, posY, isDown, isUp, button, eventUsed)
 		if element:getIsDisabled() or not element:getIsVisible() then 
 			return eventUsed
 		end
@@ -564,10 +571,10 @@ end
 function AIParameterSettingList:showInputTextDialog()
 	g_gui:showTextInputDialog({
 		disableFilter = true,
-		callback = function (self,value,clickOk)
+		callback = function (self, value, clickOk)
 			if clickOk and value ~= nil then
-				local v = value:match("-%d[%d.,]*")
-				v = v or value:match("%d[%d.,]*")
+				local v = value:match("-%d[%d., ]*")
+				v = v or value:match("%d[%d., ]*")
 				v = v and tonumber(v)
 				if v then
 					local unit = self.data.unit
@@ -577,7 +584,7 @@ function AIParameterSettingList:showInputTextDialog()
 							v = unitStrFunc(v)
 						end
 					end
-					local ix,diff = self:getClosestIx(v)
+					local ix, diff = self:getClosestIx(v)
 					if diff < self.INPUT_VALUE_THRESHOLD then
 						self:setToIx(ix)
 						self:raiseDirtyFlag()
@@ -686,7 +693,7 @@ function AIParameterSettingList:raiseDirtyFlag()
 	if not self:getIsUserSetting() then
 		if self.klass and self.klass.raiseDirtyFlag then
 			if self.vehicle ~= nil then 
-				self.klass.raiseDirtyFlag(self.vehicle,self)
+				self.klass.raiseDirtyFlag(self.vehicle, self)
 			else
 				self.klass:raiseDirtyFlag(self)
 			end
@@ -694,11 +701,11 @@ function AIParameterSettingList:raiseDirtyFlag()
 	end
 end
 
-function AIParameterSettingList:debug(str,...)
-	local name = string.format("%s: ",self.name)
+function AIParameterSettingList:debug(str, ...)
+	local name = string.format("%s: ", self.name)
 	if self.vehicle == nil then
-		CpUtil.debugFormat(CpUtil.DBG_HUD,name..str,...)
+		CpUtil.debugFormat(CpUtil.DBG_HUD, name..str, ...)
 	else 
-		CpUtil.debugVehicle(CpUtil.DBG_HUD,self.vehicle,name..str,...)
+		CpUtil.debugVehicle(CpUtil.DBG_HUD, self.vehicle, name..str, ...)
 	end
 end

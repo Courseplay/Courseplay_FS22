@@ -9,5 +9,6 @@
 	<Setting type="jobParameters" name = "startAt" />
 	<Setting type="jobParameters" name = "laneOffset" />
 	<Setting type="courseGeneratorSettings" name = "workWidth" />
+	<Setting type="baleFinderJobParameters" name = "baleWrapType" />
 	<Setting type="vehicleSettings" name = "toolOffsetX" />
 </Settings>

@@ -29,7 +29,7 @@ function CpJobParameters:init(job)
         -- initialize the class members first so the class can be used to access constants, etc.
         CpSettingsUtil.loadSettingsFromSetup(CpJobParameters, filePath)
     end
-    CpSettingsUtil.cloneSettingsTable(self,CpJobParameters.settings,nil,self)
+    CpSettingsUtil.cloneSettingsTable(self, CpJobParameters.settings, nil, self)
     self.job = job
 end
 
@@ -44,26 +44,26 @@ function CpJobParameters.getSettings(vehicle)
 end
 
 function CpJobParameters:validateSettings()
-    for i,setting in ipairs(self.settings) do 
+    for i, setting in ipairs(self.settings) do 
         setting:refresh()
     end
 end
 
 function CpJobParameters:writeStream(streamId, connection)
-    for i,setting in ipairs(self.settings) do 
+    for i, setting in ipairs(self.settings) do 
         setting:writeStream(streamId, connection)
     end
 end
 
 function CpJobParameters:readStream(streamId, connection)
-    for i,setting in ipairs(self.settings) do 
+    for i, setting in ipairs(self.settings) do 
         setting:readStream(streamId, connection)
     end
 end
 
 function CpJobParameters:saveToXMLFile(xmlFile, baseKey, usedModNames)
 	for i, parameter in ipairs(self.settings) do 
-        local key = string.format("%s(%d)", baseKey..self.xmlKey ,i-1)
+        local key = string.format("%s(%d)", baseKey..self.xmlKey , i-1)
         parameter:saveToXMLFile(xmlFile, key)
         xmlFile:setValue(key.."#name", parameter:getName())
     end
@@ -104,4 +104,30 @@ end
 
 function CpJobParameters:lessThanThreeMultiTools()
     return self:getMultiTools() < 4
+end
+
+--- AI parameters for the bale finder job.
+---@class CpBaleFinderJobParameters
+CpBaleFinderJobParameters = CpObject(CpJobParameters)
+
+local filePath = Utils.getFilename("config/BaleFinderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+
+function CpBaleFinderJobParameters:init(job)
+    if not CpBaleFinderJobParameters.settings then
+        -- initialize the class members first so the class can be used to access constants, etc.
+        CpSettingsUtil.loadSettingsFromSetup(CpBaleFinderJobParameters, filePath)
+    end
+    CpSettingsUtil.cloneSettingsTable(self, CpBaleFinderJobParameters.settings, nil, self)
+    self.job = job
+end
+
+function CpBaleFinderJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAIBaleFinder.cpJob:getCpJobParameters()
+end
+
+function CpBaleFinderJobParameters:isBaleWrapSettingVisible()
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        return AIUtil.hasChildVehicleWithSpecialization(vehicle, BaleLoader)
+    end
 end

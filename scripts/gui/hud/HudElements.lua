@@ -368,7 +368,7 @@ end
 
 
 --- Hud element for setting list settings.
----@class CpHudSettingElement : CpTextHudElement
+---@class CpHudSettingElement : CpHudButtonElement
 CpHudSettingElement = {}
 local CpHudSettingElement_mt = Class(CpHudSettingElement, CpHudButtonElement)
 function CpHudSettingElement.new(parentHudElement, posX, posY, maxPosX, posBtnY, incrementalOverlay, decrementalOverlay, 
@@ -453,3 +453,80 @@ function CpHudSettingElement:setDisabled(disabled)
     end
     CpHudSettingElement:superClass().setDisabled(self, disabled)
 end
+
+function CpHudSettingElement:setVisible(visible)
+    self.incrementalElement:setVisible(visible)
+    self.decrementalElement:setVisible(visible)
+    self.textElement:setVisible(visible)
+    self.labelElement:setVisible(visible)
+    CpHudSettingElement:superClass().setVisible(self, visible)
+end
+
+--- Hud element for setting list settings.
+---@class CpHudTextSettingElement : CpHudButtonElement
+CpHudTextSettingElement = {}
+local CpHudTextSettingElement_mt = Class(CpHudTextSettingElement, CpHudButtonElement)
+function CpHudTextSettingElement.new(parentHudElement, posX, posY, maxPosX, textSize, customMt)
+    if customMt == nil then
+        customMt = CpHudTextSettingElement_mt
+    end
+    --- Not used, but needed for inheritance form HUDElement, similar to HUDDisplayElement
+    local backgroundOverlay = Overlay.new(nil, 0, 0, 0, 0)
+
+	backgroundOverlay:setColor(1, 1, 1, 1)
+    local self = CpHudButtonElement.new(backgroundOverlay, parentHudElement, customMt)
+    self:setPosition(posX, posY)
+    self.labelElement = CpTextHudElement.new(parentHudElement, posX, posY, textSize)
+    self.labelElement:setTextDetails("Label")
+
+    self.textElement = CpTextHudElement.new(parentHudElement, maxPosX, posY, textSize,RenderText.ALIGN_RIGHT)
+    self.textElement:setTextDetails("100.00")
+  
+
+    return self
+end
+
+function CpHudTextSettingElement:setTextDetails(labelText, text, labelTextDetails, textDetails)
+    labelTextDetails = labelTextDetails or {}
+    textDetails = textDetails or {}
+    self.textElement:setTextDetails(text, textDetails.textSize, textDetails.textAlignment,
+                                     textDetails.textColor, textDetails.textBold)
+    self.labelElement:setTextDetails(labelText, labelTextDetails.textSize, labelTextDetails.textAlignment,
+                                     labelTextDetails.textColor, labelTextDetails.textBold)
+    
+end
+
+function CpHudTextSettingElement:setCallback(callbackLabel,callbackText)
+    if callbackLabel then
+        self.labelElement:setCallback(callbackLabel.callbackStr, 
+                                    callbackLabel.class,
+                                    callbackLabel.func
+                                 --   unpack(callbackLabel.args)
+                                )
+    end
+    if callbackText then
+        self.textElement:setCallback(callbackText.callbackStr, 
+                                    callbackText.class,
+                                    callbackText.func
+                                --    unpack(callbackText.args)
+                            )
+    end                 
+end
+
+function CpHudTextSettingElement:setDisabled(disabled)
+    if disabled then 
+        self.textElement:setDisabled(true)
+        self.labelElement:setDisabled(true)
+    else 
+        self.textElement:setDisabled(false)
+        self.labelElement:setDisabled(false)
+    end
+    CpHudTextSettingElement:superClass().setDisabled(self, disabled)
+end
+
+function CpHudTextSettingElement:setVisible(visible)
+    self.textElement:setVisible(visible)
+    self.labelElement:setVisible(visible)
+    CpHudTextSettingElement:superClass().setVisible(self, visible)
+end
+

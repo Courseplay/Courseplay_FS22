@@ -36,6 +36,12 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="links(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="rechts(2)" />
 
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Veldwerk" />
 		<text name="CP_job_baleCollect"																	text="CP: Baal verzamelen/wikkelen" />
@@ -46,6 +52,7 @@
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="AI-werker %s is onverwacht gestopt met werken - tank is vol!" />
 		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Voertuiginstellingen voor (%s)"/>
@@ -334,6 +341,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
 		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Wil je de geregistreerde koers opslaan als aangepast veld %s?"/>

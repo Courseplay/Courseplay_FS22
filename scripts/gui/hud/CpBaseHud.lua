@@ -278,6 +278,19 @@ function CpBaseHud:init(vehicle)
     self.workWidthBtn = self:addLineTextButton(self.baseHud, 3, self.defaultFontSize, 
                                                 self.vehicle:getCourseGeneratorSettings().workWidth)
 
+    --- Bale finder fill type
+    local x, y = unpack(self.lines[3].left)
+    local xRight,_ = unpack(self.lines[3].right)
+    self.baleFinderFillTypeBtn = CpHudTextSettingElement.new(self.baseHud, x, y,
+                                     xRight, self.defaultFontSize)
+    local callback = {
+        callbackStr = "onClickPrimary",
+        class =  vehicle:getCpBaleFinderJobParameters().baleWrapType,
+        func =   vehicle:getCpBaleFinderJobParameters().baleWrapType.setNextItem,
+    }
+    self.baleFinderFillTypeBtn:setCallback(callback, callback)                                           
+
+
     --- Tool offset x
     self.toolOffsetXBtn = self:addLineTextButton(self.baseHud, 2, self.defaultFontSize, 
                                                 self.vehicle:getCpSettings().toolOffsetX)
@@ -495,11 +508,17 @@ function CpBaseHud:draw(status)
     local workWidth = self.vehicle:getCourseGeneratorSettings().workWidth
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
 
+    self.workWidthBtn:setVisible(workWidth:getIsVisible())
+
     local toolOffsetX = self.vehicle:getCpSettings().toolOffsetX
     local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
+    local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
+    self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
+
+    self.baleFinderFillTypeBtn:setVisible(baleWrapType:getIsVisible())
 
     if self.vehicle:hasCpCourse() then 
         self.courseVisibilityBtn:setVisible(true)

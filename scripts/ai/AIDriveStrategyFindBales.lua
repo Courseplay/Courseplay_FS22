@@ -80,7 +80,8 @@ function AIDriveStrategyFindBales:collectNextBale()
         self:findPathToNextBale()
     else
         self:info('No bales found, scan the field once more before leaving for the unload course.')
-        self.bales = self:findBales()
+        local wrongWrapType
+        self.bales, wrongWrapType = self:findBales()
         if #self.bales > 0 then
             self:info('Found more bales, collecting them')
             self:findPathToNextBale()
@@ -92,6 +93,9 @@ function AIDriveStrategyFindBales:collectNextBale()
                 self:info('There really are no more bales on the field')
                 self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
             end
+        elseif self.baleLoader and wrongWrapType then 
+            self:info('Only bales with a wrong wrap type left.')
+            self.vehicle:stopCurrentAIJob(AIMessageErrorWrongBaleWrapType.new())
         else
             self:info('There really are no more bales on the field')
             self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
@@ -135,6 +139,11 @@ function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
     self.fieldPolygon = fieldPolygon
 end
 
+--- Fill type for the bale loader. 
+function AIDriveStrategyFindBales:setJobParameterValues(jobParameters)
+    self.baleWrapType = jobParameters.baleWrapType:getValue()
+    self:debug("Bale type selected: %s", tostring(self.baleWrapType))
+end
 -----------------------------------------------------------------------------------------------------------------------
 --- Bale finding
 -----------------------------------------------------------------------------------------------------------------------
@@ -147,9 +156,11 @@ end
 --- Find bales on field
 ---@return BaleToCollect[] list of bales found
 function AIDriveStrategyFindBales:findBales()
-    local balesFound = {}
+    local balesFound, baleWithWrongWrapType = {}, false
     for _, object in pairs(g_currentMission.nodeToObject) do
-        if BaleToCollect.isValidBale(object, self.baleWrapper, self.baleLoader) then
+        local isValid, wrongWrapType = BaleToCollect.isValidBale(object, 
+                self.baleWrapper, self.baleLoader, self.baleWrapType)
+        if isValid then
             local bale = BaleToCollect(object)
             -- if the bale has a mountObject it is already on the loader so ignore it
             if not object.mountObject and object:getOwnerFarmId() == self.vehicle:getOwnerFarmId() and
@@ -158,14 +169,14 @@ function AIDriveStrategyFindBales:findBales()
                 balesFound[object.id] = bale
             end
         end
+        baleWithWrongWrapType = baleWithWrongWrapType or wrongWrapType
     end
-    -- convert it to a normal array so lua can give us the number of entries
     local bales = {}
     for _, bale in pairs(balesFound) do
         table.insert(bales, bale)
     end
-    self:debug('Found %d bales', #bales)
-    return bales
+    self:debug('Found %d bales.', #bales)
+    return bales, baleWithWrongWrapType
 end
 
 ---@return BaleToCollect, number closest bale and its distance

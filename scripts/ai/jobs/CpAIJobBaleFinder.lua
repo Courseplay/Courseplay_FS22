@@ -22,7 +22,9 @@ function CpAIJobBaleFinder:setupTasks(isServer)
 end
 
 function CpAIJobBaleFinder:setupCpJobParameters()
-	--- No cp job parameters needed for now.
+	self.cpJobParameters = CpBaleFinderJobParameters(self)
+	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
+	self.cpJobParameters:validateSettings()
 end
 
 --- Disables course generation.

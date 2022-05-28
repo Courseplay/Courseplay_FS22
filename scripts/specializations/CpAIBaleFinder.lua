@@ -33,7 +33,7 @@ function CpAIBaleFinder.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpBaleFinder", CpAIBaleFinder.startCpBaleFinder)
 
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBaleFinder", CpAIBaleFinder.getCanStartCpBaleFinder)
-
+    SpecializationUtil.registerFunction(vehicleType, "getCpBaleFinderJobParameters", CpAIBaleFinder.getCpBaleFinderJobParameters)
 end
 
 function CpAIBaleFinder.registerOverwrittenFunctions(vehicleType)
@@ -54,6 +54,11 @@ function CpAIBaleFinder:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
     spec.cpJob:setVehicle(self)
+end
+
+function CpAIBaleFinder:getCpBaleFinderJobParameters()
+    local spec = self.spec_cpAIBaleFinder
+    return spec.cpJob:getCpJobParameters() 
 end
 
 function CpAIBaleFinder:getCpDriveStrategy(superFunc)
@@ -119,18 +124,18 @@ function CpAIBaleFinder:startCpAtLastWp(superFunc)
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIBaleFinder:startCpBaleFinder(fieldPolygon)
+function CpAIBaleFinder:startCpBaleFinder(fieldPolygon, jobParameters)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAIBaleFinder.replaceDriveStrategies(self, fieldPolygon)
+        CpAIBaleFinder.replaceDriveStrategies(self, fieldPolygon, jobParameters)
     end
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
-function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon)
+function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon, jobParameters)
     CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -144,6 +149,7 @@ function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon)
 	CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
     local cpDriveStrategy = AIDriveStrategyFindBales.new()
     cpDriveStrategy:setFieldPolygon(fieldPolygon)
+    cpDriveStrategy:setJobParameterValues(jobParameters)
     cpDriveStrategy:setAIVehicle(self)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.

@@ -1,6 +1,6 @@
 --- Small gui window to display workWidth, tool offset.
 
-VehicleSettingDisplayDialog = {
+CpGamePadHudScreen = {
 	CONTROLS = {
 		BUTTON_BACK = "backButton",
 		BUTTON_START = "startButton",
@@ -13,21 +13,21 @@ VehicleSettingDisplayDialog = {
 		LAYOUT = "layout"
 	},
 }
-VehicleSettingDisplayDialog.texts = {
+CpGamePadHudScreen.texts = {
 	startRecording = g_i18n:getText("CP_controllerGui_startRecording"),
 	stopRecording = g_i18n:getText("CP_controllerGui_stopRecording")
 }
 
-local VehicleSettingDisplayDialog_mt = Class(VehicleSettingDisplayDialog, ScreenElement)
+local CpGamePadHudScreen_mt = Class(CpGamePadHudScreen, ScreenElement)
 
-function VehicleSettingDisplayDialog.new(settings,target, custom_mt)
-	local self = ScreenElement.new(target, custom_mt or VehicleSettingDisplayDialog_mt)
-	self:registerControls(VehicleSettingDisplayDialog.CONTROLS)
+function CpGamePadHudScreen.new(settings,target, custom_mt)
+	local self = ScreenElement.new(target, custom_mt or CpGamePadHudScreen_mt)
+	self:registerControls(CpGamePadHudScreen.CONTROLS)
 	self.settings = settings
 	return self
 end
 
-function VehicleSettingDisplayDialog:onGuiSetupFinished()
+function CpGamePadHudScreen:onGuiSetupFinished()
 	self.settingTemplate:unlinkElement()
 	FocusManager:removeElement(self.settingTemplate)
 
@@ -55,18 +55,18 @@ function VehicleSettingDisplayDialog:onGuiSetupFinished()
 
 	self.layout:invalidateLayout()
 
-	VehicleSettingDisplayDialog:superClass().onGuiSetupFinished(self)
+	CpGamePadHudScreen:superClass().onGuiSetupFinished(self)
 end
 
 --- Links gui elements with the settings.
-function VehicleSettingDisplayDialog:setData(vehicle,settings) 
+function CpGamePadHudScreen:setData(vehicle,settings) 
 	self.vehicle = vehicle
 	self.settings = settings
 	CpSettingsUtil.linkGuiElementsAndSettings(settings,self.layout)
 end
 
-function VehicleSettingDisplayDialog:onOpen(element)
-	VehicleSettingDisplayDialog:superClass().onOpen(self)
+function CpGamePadHudScreen:onOpen(element)
+	CpGamePadHudScreen:superClass().onOpen(self)
 	FocusManager:loadElementFromCustomValues(self.layout)
 	self.layout:invalidateLayout()
 	self:setSoundSuppressed(true)
@@ -81,19 +81,19 @@ function VehicleSettingDisplayDialog:onOpen(element)
 	local _, eventId = g_inputBinding:registerActionEvent(InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, self.onClickBack, false, true, false, true)
 end
 
-function VehicleSettingDisplayDialog:onClose(element)
-	VehicleSettingDisplayDialog:superClass().onClose(self)
+function CpGamePadHudScreen:onClose(element)
+	CpGamePadHudScreen:superClass().onClose(self)
 	if self.settings then
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.layout)
 	end
 	g_inputBinding:removeActionEventsByTarget(self)
 end
 
-function VehicleSettingDisplayDialog:onClickBack()
+function CpGamePadHudScreen:onClickBack()
 	g_gui:showGui("")
 end
 
-function VehicleSettingDisplayDialog:onClickOk()
+function CpGamePadHudScreen:onClickOk()
 	if self.vehicle then
 		self.vehicle:cpStartStopDriver()
 
@@ -106,8 +106,8 @@ function VehicleSettingDisplayDialog:onClickOk()
 	end
 end
 
-function VehicleSettingDisplayDialog:update(...)
-	VehicleSettingDisplayDialog:superClass().update(self,...)
+function CpGamePadHudScreen:update(...)
+	CpGamePadHudScreen:superClass().update(self,...)
 	if not self.vehicle then
 		return
 	end
@@ -124,7 +124,7 @@ function VehicleSettingDisplayDialog:update(...)
 	self.clearButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
 end
 
-function VehicleSettingDisplayDialog:onClickRecord()
+function CpGamePadHudScreen:onClickRecord()
 	if not self.vehicle then
 		return
 	end
@@ -135,7 +135,7 @@ function VehicleSettingDisplayDialog:onClickRecord()
 	end
 end
 
-function VehicleSettingDisplayDialog:onClickClearCourse()
+function CpGamePadHudScreen:onClickClearCourse()
 	if not self.vehicle then
 		return
 	end
@@ -144,7 +144,7 @@ function VehicleSettingDisplayDialog:onClickClearCourse()
 	end
 end
 
-function VehicleSettingDisplayDialog:draw(...)
-	VehicleSettingDisplayDialog:superClass().draw(self,...)
-	CpVehicleSettingDisplay.onDraw(self.vehicle)	
+function CpGamePadHudScreen:draw(...)
+	CpGamePadHudScreen:superClass().draw(self,...)
+	CpGamePadHud.onDraw(self.vehicle)	
 end

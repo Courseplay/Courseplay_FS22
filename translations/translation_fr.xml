@@ -30,10 +30,16 @@
 		<text name="CP_jobParameters_laneOffset_title"													text="Position dans la rangée" />
 		<text name="CP_jobParameters_laneOffset_tooltip"												text="Choix de la rangée lors d'un travail à plusieurs outils (maximum 5)." />
 		<text name="CP_jobParameters_laneOffset_center"													text="centre" />
-		<text name="CP_jobParameters_laneOffset_left"														text="gauche(1)" />
+		<text name="CP_jobParameters_laneOffset_left"													text="gauche(1)" />
 		<text name="CP_jobParameters_laneOffset_right"													text="droite(1)" />
 		<text name="CP_jobParameters_laneOffset_left_2"													text="gauche(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="droite(2)" />
+
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP:Travail" />
@@ -45,6 +51,7 @@
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="L'ouvrier %s a interrompu son travail - la tremie est pleine!" />
 		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
 
 
 	<!-- VehicleSettings -->
@@ -334,6 +341,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Plus d'argent disponible"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Attend que la pluie s'arrête pour continuer"/>
 		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Souhaitez-vous sauvegarder la course enregistrée comme contour de champ personnalisé %s?"/>

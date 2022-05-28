@@ -22,6 +22,7 @@
 	<InfoText name="BLOCKED_BY_OBJECT"  		text="blockedByObject"/>
 
 	<InfoText name="OUT_OF_MONEY"				text="outOfMoney"	  class="AIMessageErrorOutOfMoney"/>
+	<InfoText name="WRONG_BALE_WRAP_TYPE"		text="wrongBaleWrapType" class="AIMessageErrorWrongBaleWrapType"/>
 	<InfoText name="FUEL_IS_EMPTY"  			text="needsFuel"      hasFinished="true" event="onCpFuelEmpty" class="AIMessageErrorOutOfFuel"/>
 	<InfoText name="IS_COMPLETELY_BROKEN"  		text="needsRepair"    hasFinished="true" event="onCpBroken" class="AIMessageErrorVehicleBroken"/>
 	<InfoText name="NEEDS_FILLING"  			text="needsFilling"   hasFinished="true" event="onCpEmpty" class="AIMessageErrorOutOfFill"/>
