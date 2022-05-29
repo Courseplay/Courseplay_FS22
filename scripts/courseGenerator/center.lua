@@ -150,7 +150,7 @@ end
 --- Find the best angle to use for the tracks in a polygon.
 --  The best angle results in the minimum number of tracks
 --  (and thus, turns) needed to cover the polygon.
-function CourseGenerator.findBestTrackAngle( polygon, islands, width, distanceFromBoundary, centerSettings )
+function CourseGenerator.findBestTrackAngle( polygon, islands, width, distanceFromBoundary, centerSettings, nHeadlandPasses )
 	local bestAngleStats = {}
 	local bestAngleIndex
 	local score
@@ -179,7 +179,8 @@ function CourseGenerator.findBestTrackAngle( polygon, islands, width, distanceFr
 
 		local rotatedIslands = Island.rotateAll( islands, math.rad( angle ))
 
-		local tracks = CourseGenerator.generateParallelTracks( rotated, rotatedIslands, width, distanceFromBoundary )
+		local tracks = CourseGenerator.generateParallelTracks( rotated, rotatedIslands, width, distanceFromBoundary,
+			nHeadlandPasses > 0 )
 		local blocks = splitCenterIntoBlocks( tracks, width )
 		local smallBlockScore = countSmallBlockScore( blocks )
 		-- instead of just the number of tracks, consider some other factors. We prefer just one block (that is,
@@ -329,7 +330,8 @@ function CourseGenerator.generateFieldCenter( headlands, islands, width, headlan
 
 	local bestAngle, nTracks, nBlocks
 	-- Now, determine the angle where the number of tracks is the minimum
-	bestAngle, nTracks, nBlocks = CourseGenerator.findBestTrackAngle(boundary, translatedIslands, width, distanceFromBoundary, centerSettings)
+	bestAngle, nTracks, nBlocks = CourseGenerator.findBestTrackAngle(boundary, translatedIslands, width, distanceFromBoundary,
+		centerSettings, headlandSettings.nPasses)
 	if nBlocks < 1 then
 		CourseGenerator.debug( "No room for up/down rows." )
 		return nil, 0, 0, nil, true
