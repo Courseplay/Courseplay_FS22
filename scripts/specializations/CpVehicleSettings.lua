@@ -29,6 +29,7 @@ function CpVehicleSettings.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpVehicleSettings)
+    SpecializationUtil.registerEventListener(vehicleType, "onStateChange", CpVehicleSettings)
 end
 
 function CpVehicleSettings.registerFunctions(vehicleType)
@@ -95,6 +96,22 @@ function CpVehicleSettings:onPreDetachImplement(implement)
     CpVehicleSettings.resetToDefault(self, implement.object, spec.raiseImplementLate, 'raiseLate', false)
     CpVehicleSettings.resetToDefault(self, implement.object, spec.lowerImplementEarly, 'lowerEarly', false)
     CpVehicleSettings.validateSettings(self)
+end
+
+--- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
+--- For example Lime and Fertilizer might have a different work width.
+function CpVehicleSettings:onStateChange(state, data)
+    if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE then
+        local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)
+        if hasSprayer then 
+            local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self, nil, nil)
+            local oldWidth = self:getCourseGeneratorSettings().workWidth:getValue()
+            if not MathUtil.equalEpsilon(width, oldWidth, 1)  then 
+                CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self, "Changed work width, as the fill type changed.")
+                self:getCourseGeneratorSettings().workWidth:setFloatValue(width)
+            end
+        end
+    end
 end
 
 function CpVehicleSettings:setAutomaticWorkWidthAndOffset(ignoreObject)
