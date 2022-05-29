@@ -10,10 +10,7 @@ function CpGlobalSettings:init()
 end
 
 function CpGlobalSettings:registerXmlSchema(schema,baseKey)
-    local key = baseKey..CpGlobalSettings.KEY.."(?)"
-	schema:register(XMLValueType.INT, key.."#value", "Old setting save format.")
-    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
-    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
+    CpSettingsUtil.registerXmlSchema(schema, baseKey..CpGlobalSettings.KEY.."(?)")
 end
 
 --- Loads settings setup form an xmlFile.
@@ -22,41 +19,23 @@ function CpGlobalSettings:loadSettingsSetup()
     CpSettingsUtil.loadSettingsFromSetup(self,filePath)
 end
 
-function CpGlobalSettings:loadFromXMLFile(xmlFile,baseKey)
-    xmlFile:iterate(baseKey..CpGlobalSettings.KEY, function (ix, key)
-		local name = xmlFile:getValue(key.."#name")
-        local setting = self[name]
-        if setting then
-            setting:loadFromXMLFile(xmlFile, key)
-            CpUtil.debugFormat(CpUtil.DBG_HUD,"Loaded setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-        end
-    end)
+function CpGlobalSettings:loadFromXMLFile(xmlFile, baseKey)
+    CpSettingsUtil.loadFromXmlFile(self, xmlFile, 
+    baseKey .. CpGlobalSettings.KEY, nil)
 end
 
 function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)
-    local ix = 0
-    for i,setting in ipairs(self.settings) do 
-        if not setting:getIsUserSetting() then
-            local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,ix)
-            setting:saveToXMLFile(xmlFile, key)
-            xmlFile:setValue(key.."#name",setting:getName())
-            CpUtil.debugFormat(CpUtil.DBG_HUD,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-            ix = ix + 1
-        end
-    end
+    CpSettingsUtil.saveToXmlFile(self.settings, xmlFile, baseKey .. CpGlobalSettings.KEY, 
+        nil, function (setting)
+            return not setting:getIsUserSetting()
+        end)
 end
 
 function CpGlobalSettings:saveUserSettingsToXmlFile(xmlFile,baseKey)
-    local ix = 0
-    for i,setting in ipairs(self.settings) do 
-        if setting:getIsUserSetting() then
-            local key = string.format("%s%s(%d)",baseKey,CpGlobalSettings.KEY,ix)         
-            setting:saveToXMLFile(xmlFile, key)
-            xmlFile:setValue(key.."#name",setting:getName())
-            CpUtil.debugFormat(CpUtil.DBG_HUD,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-            ix = ix + 1
-        end
-    end
+    CpSettingsUtil.saveToXmlFile(self.settings, xmlFile, baseKey .. CpGlobalSettings.KEY, 
+        nil, function (setting)
+            return setting:getIsUserSetting()
+        end)
 end
 
 function CpGlobalSettings:getSettings()
@@ -82,7 +61,11 @@ end
 
 function CpGlobalSettings:raiseDirtyFlag(setting)
     GlobalSettingsEvent.sendEvent(setting)
-end 
+end
+
+function CpGlobalSettings:onCpUserSettingChanged()
+    g_Courseplay:saveUserSettings()
+end
 
 function CpGlobalSettings:onHudSelectionChanged()
     local vehicle = g_currentMission.controlledVehicle

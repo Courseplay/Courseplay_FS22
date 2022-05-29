@@ -7,12 +7,21 @@ CpCourseGeneratorSettings = {}
 
 CpCourseGeneratorSettings.MOD_NAME = g_currentModName
 CpCourseGeneratorSettings.KEY = "."..CpCourseGeneratorSettings.MOD_NAME..".cpCourseGeneratorSettings"
+CpCourseGeneratorSettings.SETTINGS_KEY = ".settings"
+CpCourseGeneratorSettings.VINE_SETTINGS_KEY = ".vineSettings"
 function CpCourseGeneratorSettings.initSpecialization()
 	local schema = Vehicle.xmlSchemaSavegame
-    local key = "vehicles.vehicle(?)"..CpCourseGeneratorSettings.KEY.."(?)"
-    schema:register(XMLValueType.INT, key.."#value", "Old setting save format.")
-    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
-    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
+    --- Old save format
+    CpSettingsUtil.registerXmlSchema(schema, 
+        "vehicles.vehicle(?)"..CpCourseGeneratorSettings.KEY.."(?)")
+    
+    --- Normal course generator settings.
+    CpSettingsUtil.registerXmlSchema(schema, 
+        "vehicles.vehicle(?)"..CpCourseGeneratorSettings.KEY..CpCourseGeneratorSettings.SETTINGS_KEY.."(?)")
+    
+    --- Vine course generator settings.
+    CpSettingsUtil.registerXmlSchema(schema, 
+        "vehicles.vehicle(?)"..CpCourseGeneratorSettings.KEY..CpCourseGeneratorSettings.VINE_SETTINGS_KEY.."(?)")
 end
 
 
@@ -131,6 +140,7 @@ end
 function CpCourseGeneratorSettings:loadSettings(savegame)
     if savegame == nil or savegame.resetVehicles then return end
     local spec = self.spec_cpCourseGeneratorSettings
+    --- Old save format
 	savegame.xmlFile:iterate(savegame.key..CpCourseGeneratorSettings.KEY, function (ix, key)
 		local name = savegame.xmlFile:getValue(key.."#name")
         local setting = spec[name] or spec.vineSettings[name]
@@ -140,25 +150,27 @@ function CpCourseGeneratorSettings:loadSettings(savegame)
         end
         spec.wasLoaded = true
     end)
+
+    --- Loads the normal course generator settings.
+    CpSettingsUtil.loadFromXmlFile(spec, savegame.xmlFile, 
+                        savegame.key .. CpCourseGeneratorSettings.KEY ..  CpCourseGeneratorSettings.SETTINGS_KEY, self)
+
+    --- Loads the vine course generator settings.
+    CpSettingsUtil.loadFromXmlFile(spec.vineSettings, savegame.xmlFile, 
+                        savegame.key .. CpCourseGeneratorSettings.KEY .. CpCourseGeneratorSettings.VINE_SETTINGS_KEY, self)
 end
 
-function CpCourseGeneratorSettings:saveToXMLFile(xmlFile, key, usedModNames)
+function CpCourseGeneratorSettings:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpCourseGeneratorSettings
-    local lastIx = 0
-    for i,setting in ipairs(spec.settings) do 
-        local key = string.format("%s(%d)",key,i-1)
-        setting:saveToXMLFile(xmlFile, key, usedModNames)
-        xmlFile:setValue(key.."#name",setting:getName())
-        CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-        lastIx = lastIx + 1
-    end
-    for i,setting in ipairs(spec.vineSettings.settings) do 
-        local key = string.format("%s(%d)",key, lastIx)
-        setting:saveToXMLFile(xmlFile, key, usedModNames)
-        xmlFile:setValue(key.."#name",setting:getName())
-        CpUtil.debugVehicle(CpUtil.DBG_HUD,self,"Saved setting: %s, value:%s, key: %s",setting:getName(),setting:getValue(),key)
-        lastIx = lastIx + 1
-    end
+
+    --- Saves the normal course generator settings.
+    CpSettingsUtil.saveToXmlFile(spec.settings, xmlFile, 
+    baseKey .. CpCourseGeneratorSettings.SETTINGS_KEY, self, nil)
+
+    --- Saves the vine course generator settings.
+    CpSettingsUtil.saveToXmlFile(spec.vineSettings.settings, xmlFile, 
+    baseKey .. CpCourseGeneratorSettings.VINE_SETTINGS_KEY, self, nil)
+
 end
 
 --- Callback raised by a setting and executed as an vehicle event.

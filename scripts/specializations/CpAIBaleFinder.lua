@@ -9,10 +9,12 @@ CpAIBaleFinder.startText = g_i18n:getText("CP_jobParameters_startAt_bales")
 CpAIBaleFinder.MOD_NAME = g_currentModName or modName
 CpAIBaleFinder.NAME = ".cpAIBaleFinder"
 CpAIBaleFinder.SPEC_NAME = CpAIBaleFinder.MOD_NAME .. CpAIBaleFinder.NAME
-CpAIBaleFinder.KEY = "."..CpAIBaleFinder.MOD_NAME..CpAIBaleFinder.NAME .. "."
+CpAIBaleFinder.KEY = "."..CpAIBaleFinder.MOD_NAME..CpAIBaleFinder.NAME
 
 function CpAIBaleFinder.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
+    local key = "vehicles.vehicle(?)" .. CpAIBaleFinder.KEY
+    CpJobParameters.registerXmlSchema(schema, key..".cpJob")
 end
 
 function CpAIBaleFinder.prerequisitesPresent(specializations)
@@ -27,6 +29,7 @@ end
 
 function CpAIBaleFinder.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAIBaleFinder)
+    SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAIBaleFinder)
 end
 
 function CpAIBaleFinder.registerFunctions(vehicleType)
@@ -54,6 +57,18 @@ function CpAIBaleFinder:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
     spec.cpJob:setVehicle(self)
+end
+
+function CpAIBaleFinder:onLoadFinished(savegame)
+    local spec = self.spec_cpAIBaleFinder
+    if savegame ~= nil then 
+        spec.cpJob:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIBaleFinder.KEY..".cpJob")
+    end
+end
+
+function CpAIBaleFinder:saveToXMLFile(xmlFile, baseKey, usedModNames)
+    local spec = self.spec_cpAIBaleFinder
+    spec.cpJob:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJob")
 end
 
 function CpAIBaleFinder:getCpBaleFinderJobParameters()
