@@ -35,11 +35,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="Venstre(2)"/>
 		<text name="CP_jobParameters_laneOffset_right_2"												text="Højre(2)"/>
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Balle type:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Balle type:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="Alle baller"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="Kun wrappede"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="Kun ikke wrappede"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Markarbejde"/>
@@ -51,15 +51,15 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!"/>
-		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
-		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
+		<text name="CP_ai_messageError" 																text="AI-medarbejder %s har stoppet arbejdet uventet - forlod bane!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI-arbejder %s har stoppet arbejdet uventet - ingen baller af valgt type fundet!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Køretøjsinstillinger (%s)"/>
 		
 		<!--Titel-->
 		<text name="CP_vehicle_setting_subTitle_basic"													text="Grundinstillinger"/>
-		<text name="CP_vehicle_setting_subTitle_implement"												text="redskabsinstillinger"/>
+		<text name="CP_vehicle_setting_subTitle_implement"												text="Redskabsinstillinger"/>
 		<text name="CP_vehicle_setting_subTitle_combine"												text="Instillinger til mejetærsker"/>
 		<text name="CP_vehicle_setting_subTitle_seeder"													text="Instillinger til såmaskine"/>
 		<text name="CP_vehicle_setting_subTitle_multitool"												text="Multiredskabs instillinger"/>
@@ -75,14 +75,14 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Hud med mus åbne"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Hvis deaktiveret, kan Hud kun åbnes med den valgte tast som er valgt hertil."/>
 
-		<text name="CP_vehicle_setting_fuelSave_title"													text="brændstofs besparrelse"/>
-		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="sluk for køretøj, ved venteposition."/>
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Brændstofs besparrelse"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Sluk for køretøj, i venteposition."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Stop ved Enden"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Køretøjet bliver stående når opgaven er udført."/>
 
 		<text name="CP_vehicle_setting_allowReversePathfinding_title" 									text="Pathfinder må køre baglens"/>
-		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Tillad Pathfinder at generer en baglens kurs."/>
+		<text name="CP_vehicle_setting_allowReversePathfinding_tooltip" 								text="Tillad Pathfinder at generer en baglens rute."/>
 
 		<text name="CP_vehicle_setting_allowPathfinderTurns_title" 										text="Benyt Pathfinder ved vendemanøvre"/>
 		<text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" 									text="Aktiver Pathfinder for vendemanøvre, f.eks. for at undvige objekter eller afgrøde."/>
@@ -90,7 +90,7 @@
 		<text name="CP_vehicle_setting_foldImplementAtEnd_title" 										text="Sammenklap redskab"/>
 		<text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" 										text="Sammenklap redskab ved afslutning ja/nej."/>
 
-		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="hæv redskab"/>
+		<text name="CP_vehicle_setting_raiseImplementLate_title" 										text="Hæv redskab"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_tooltip" 										text="Hæv redskab tidligt eller sent."/>
 		<text name="CP_vehicle_setting_raiseImplementLate_early" 										text="Tidligt"/>
 		<text name="CP_vehicle_setting_raiseImplementLate_late" 										text="Sent"/>
@@ -233,7 +233,7 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Grundlæggende indstillinger"/>
 
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Rutens placering"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Skal ruten køres på eller ved siden af ??vinstokken. Dette afhænger af værktøjet. Mere information i hjælpemenuen."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Skal ruten køres på eller ved siden af vinstokken. Dette afhænger af værktøjet. Mere information i hjælpemenuen."/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Vestre side af vinstokken"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="På vinstokken"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Højre side af vinstokken"/>
@@ -263,7 +263,7 @@
 		<text name="CP_global_setting_autoRepair_always" 												text="Opretholde 100%"/>
 
 		<text name="CP_global_setting_fuelThreshold_title" 												text="Brændstofstærskel"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Føreren fyres, hvis brændstofprocenten er mindre."/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Føreren fyres, hvis brændstofprocenten er mindre end."/>
 
 		<text name="CP_global_setting_brokenThreshold_title" 											text="Vedligholdestærskel"/>
 		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Føreren fyres, hvis køretøjet eller et redskab er mere ødelagt. 100% er funktionen deaktiveret."/>
@@ -332,7 +332,7 @@
 	
 	<!-- Info texts -->
 		<text name="CP_infoTexts_isStuck"																text="Køretøjet sidder fast"/>
-		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Blokeret af et objekt"/>
 		<text name="CP_infoTexts_shouldRefuel"															text="Skal tankes"/>
 		<text name="CP_infoTexts_needsFuel"  															text="Skal tankes"/>
 		<text name="CP_infoTexts_needsRepair"  															text="Skal repareres"/>
@@ -341,8 +341,8 @@
 		<text name="CP_infoTexts_workFinished"															text="Arbejdet er udført"/>
 		<text name="CP_infoTexts_outOfMoney"															text="Ikke nok penge"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Venter på at regnen stopper"/>
-		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
-		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
+		<text name="CP_infoTexts_errorStopped"															text="Forlod ruten, stoppet"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Forkerte balle type"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
@@ -365,9 +365,8 @@
 		<text name="CP_help_page_General_title"															text="General Information"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
 Courseplay giver dig mulighed for at generere markbaner med yderligere funktioner, for eksempel: forager.
-Det gør det også muligt at bruge ballepressere og fodervogne, der kan sendes på samme kurs, som slåmaskine eller høstmaskine fra før.
+Det gør det også muligt at bruge ballepressere og fodervogne, der kan sendes på samme rute, som slåmaskine eller høstmaskine fra før.
 En anden stor egenskab er indsamling eller indpakning af baller på marken.
-Nyt med denne iteration af CP er vinmarksarbejdet.
 markarbejdet kan sættes op til konvoj, som tillader brug af op til 5 chauffører, der arbejder i en konvoj på samme mark.
 Det er også muligt automatisk at få mejetærskeren til at læsse af i en trailer på/nær marken.
 Brugerdefinerede feltgrænser kan tildeles til banespil til brug, for eksempel: i tilfælde af en eng, som ikke genkendes som en normal mark.
@@ -412,7 +411,7 @@ Alternativt kan du også starte hjælperen fra HUD'en, hvis du er tæt på marke
 		<!--CourseGenerator-->
 		<text name="CP_help_page_courseGenerator_title"													text="Course generator"/>
 		<text name="CP_help_page_courseGeneratorBase_text"												text="
-Hvert rute genereres af rutegeneratoren. Dette er et mægtigt værktøj, som giver dig mulighed for at tilpasse det genererede rute efter dine behov.
+Hvert rute genereres af rutegeneratoren. Dette er et mægtigt værktøj, som giver dig mulighed for at tilpasse den genererede rute efter dine behov.
 Hvis du er ny til dette, bør du nok starte med kun at ændre indstillingen for foragermængde.
 Derefter kan du altid ændre de andre værdier og trykke generer rute og se, hvilken indflydelse visse værdier har for ruten .
 At eksperimentere med det og tjekke, hvilken indflydelse de forskellige indstillinger på forskellige marker har, er den bedste måde at vænne sig til det.
@@ -543,9 +542,7 @@ Med 3 eller 5 køretøjer får du også centermuligheden.
 		<text name="CP_help_page_convoyBasic_text"														text="
 Konvojen fungerer kun, hvis køretøjerne har indlæst ens rute.
 De vil automatisk holde en lille afstand til køretøjet foran.
-Derudover bliver konvojfunktionen også anvendt, når for eksempel en ballepresser kører bag en mejetærsker på samme rute.
-for example a baler is driving behind a combine on the same course.
-"/>
+Derudover bliver konvojfunktionen også anvendt, når for eksempel en ballepresser kører bag en mejetærsker på samme rute."/>
 		<text name="CP_help_page_convoyFunction_text"													text="
 Køretøjsindstillingen for konvojafstand ændrer afstanden mellem køretøjerne.
 Afstanden for alle køretøjer med samme rutenavn vil automatisk blive indstillet til den højeste værdi af alle køretøjer i konvojen.
@@ -556,7 +553,7 @@ Afstanden for alle køretøjer med samme rutenavn vil automatisk blive indstille
 Indpakning og opsamling af baller kan foregå på to forskellige måder.
 Den første er at indlæse den samme rute, som du brugte til din ballepresser, og lade indpakkeren eller opsamleren køre denne rute.
 Dette kan dog være vanskeligt, da nogle baller elsker at rulle væk fra ruten.
-På dette tidspunkt kan vores wrap and collect jobtype hjælpe, da det ikke behøver en rute.
+På dette tidspunkt kan vores wrap/saml jobtype hjælpe, da det ikke behøver en rute.
 Bliv på marken og start bare chaufføren fra HUD'en med wrap/saml baller eller brug AI-kortet til at sende ham til en mark for at starte jobbet.
 "/>
 		<text name="CP_help_page_wrapBasic_text"														text="
@@ -565,9 +562,8 @@ start den med balleindpakning/indsamling fra HUD'en eller AI-menuen..
 "/>
 		<text name="CP_help_page_wrapFunction_text"														text="
 Når man bruger en rute, kører hjælperen med en forudindstillet offset, så wrapperens pickup er midt i ruten.
-Uden en rute scanner Courseplay marken for uindpakkede baller og bruger stifinderen til at finde en måde at
-den bedste balle, der er tættest på at pakke.
-Automatisk back-up, hvis en balle er foran køretøjet, eller hvis vi er for tæt på markgrænsen, skal forhindre ulykker.
+Uden en rute scanner Courseplay marken for uindpakkede baller og bruger stifinderen til at finde den bedste balle, der er tættest på at indpakke.
+Bakker automatisk, hvis en balle er foran køretøjet, eller hvis vi er for tæt på markgrænsen, skal forhindre ulykker.
 "/>
 		<text name="CP_help_page_collectBasic_text"														text="
 At samle baller fungerer nogenlunde det samme, med eller uden en rute.
@@ -598,14 +594,14 @@ I eksemplet med en mejetærsker betyder det, at ingen mejetærsker vil have afgr
 		<text name="CP_help_page_infoPanel_title"														text="Info panel"/>
 		<text name="CP_help_page_infoPanelBasic_text"													text="
 Dette er vores infopanel, det kan flyttes rundt med musen, ligesom vores Mini HUD.
-Udover navnet og versionen af ​​vores Mod, viser den også statusoplysninger om cp-driverne.
+Udover navnet og versionen af ​​vores Mod, viser den også statusoplysninger om cp-chauffører.
 Mens du holder over statusmeddelelsen, vil navnet på køretøjet blive vist.
 Ved at klikke på den kan du hoppe direkte ind i køretøjet.
 "/>
 <text name="CP_help_page_infoPanelMsg_text"																text="
 Informationerne er følgende:
 - Hjælperen sidder fast
-- Blocked by an object
+- Blokeret af et objekt
 - Skal tankes op
 - Skal tankes op
 - Skal repareres
@@ -619,17 +615,17 @@ Informationerne er følgende:
 		<text name="CP_help_page_vineWork_title"														text="Vin arbejde"/>
 		<text name="CP_help_page_vineWorkConditions_text"												text="
 At arbejde på vinstokke er lidt mere komplekst end at arbejde på en normal mark.
-For at få det bedste resultat skal vinstokkene alle være ved siden af ??hinanden inden for standardgitteret.
-Slutningen og starten af ??hver vinstok skal også have nogenlunde samme længde.
+For at få det bedste resultat skal vinstokkene alle være ved siden af hinanden inden for standardgitteret.
+Slutningen og starten af hver vinstok skal også have nogenlunde samme længde.
 Hvis vinstokkene er på en eksisterende mark, kan du åbne generatoren direkte som normalt.
 Hvis de ikke er på en mark, skal du gå over AI-menuen og placere markmarkøren på vinstokkene.
 "/>
 		<text name="CP_help_page_vineWorkGenerator_text"												text="
 Generatoren til vinstokke har færre muligheder.
-Afhængigt af redskabet skal du vælge at arbejde på vinstokkene eller ved siden af ??vinstokkene.
+Afhængigt af redskabet skal du vælge at arbejde på vinstokkene eller ved siden af vinstokkene.
 For eksempel. standardhøsteren skal køre og arbejde på vinstokken.
      Forbeskæreren skal køre til venstre fra vinstokkene, men virker på vinstokken, så du skal vælge at arbejde på vinstokken, men køre med en offset.
-     Sprøjter skal køre ved siden af ??vinstokkene og skal springe en række over, da den sprøjter til venstre og højre.
+     Sprøjter skal køre ved siden af vinstokkene og skal springe en række over, da den sprøjter til venstre og højre.
 "/>
 		<text name="CP_help_page_vineWorkHarvester_text"												text="
 En rute skal genereres på vinstokkene, da den kom til at køre og arbejde på vinstokkene.
@@ -639,7 +635,7 @@ Forbeskæreren virker på vinstokkene, så banen skal genereres på vinstokkene.
 Værktøjet kommer med en offset til traktoren, så traktoren kører mellem vinstokkene.
 "/>
 		<text name="CP_help_page_vineWorkSprayer_text"													text="
-Sprøjten arbejder ved siden af ??vinstokkene, så den skal køre enten til venstre eller højre fra vinstokkene.
+Sprøjten arbejder ved siden af vinstokkene, så den skal køre enten til venstre eller højre for vinstokkene.
 Da sprøjten kan arbejde på venstre og højre vinstokke på samme tid, kan vi springe en række over.
 "/>
 
