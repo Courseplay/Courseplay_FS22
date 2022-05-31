@@ -146,7 +146,7 @@ function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
     self.fieldPolygon = fieldPolygon
 end
 
---- Fill type for the bale loader. 
+--- Bale wrap type for the bale loader. 
 function AIDriveStrategyFindBales:setJobParameterValues(jobParameters)
     self.baleWrapType = jobParameters.baleWrapType:getValue()
     self:debug("Bale type selected: %s", tostring(self.baleWrapType))
@@ -350,6 +350,7 @@ function AIDriveStrategyFindBales:getBalesToIgnore()
     elseif self.baleLoaderController then
         return self.baleLoaderController:getBalesToIgnore()
     end
+    return objectsToIgnore
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
