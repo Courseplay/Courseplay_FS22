@@ -7,7 +7,7 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="м" />
 		<text name="CP_unit_foot" 																		text="ft" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="Копировать курс: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22." />
@@ -36,11 +36,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="влево(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="вправо(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Типы тюков:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Типы тюков:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="все тюки"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="только обёрнутые"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="только не обёрнутые"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Работа в поле" />
@@ -51,7 +51,7 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="ИИ-работник %s неожиданно прекратил работу - заполнен бункер!" />
-		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
+		<text name="CP_ai_messageError" 																text="ИИ-работник %s неожиданно прекратил работу - оставил курс!" />
 		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
 
 	<!-- VehicleSettings -->
@@ -75,8 +75,8 @@
 		<text name="CP_vehicle_setting_openHudWithMouse_title"											text="Открывать HUD мышью"/>
 		<text name="CP_vehicle_setting_openHudWithMouse_tooltip"										text="Если отключить, HUD можно будет открыть только с помощью клавиш."/>
 
-		<text name="CP_vehicle_setting_fuelSave_title"													text="Fuel save"/>
-		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Turns off the vehicle, while waiting."/>
+		<text name="CP_vehicle_setting_fuelSave_title"													text="Экономить топливо"/>
+		<text name="CP_vehicle_setting_fuelSave_tooltip"												text="Выключать двигатель во время ожидания."/>
 
 		<text name="CP_vehicle_setting_stopAtEnd_title" 												text="Остановить в конце"/>
 		<text name="CP_vehicle_setting_stopAtEnd_tooltip" 												text="Остановить по окончании работы на маршруте."/>
@@ -112,8 +112,8 @@
 		<text name="CP_vehicle_setting_toolOffsetZ_title" 												text="Продольное смещение"/>
 		<text name="CP_vehicle_setting_toolOffsetZ_tooltip" 											text="Продольное смещение инструмента."/>
 
-		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Check for silage additive."/>
-		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="If active and silage additive is emtpy, the driver will stop."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_title"										text="Контроль силосной добавки."/>
+		<text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip"										text="Если активная и силовая добавка закончилась, водитель остановится."/>
 	
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_title" 											text="Всегда разворачивать трубу"/>
 		<text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" 										text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>
@@ -137,8 +137,8 @@
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" 							text="Удобрение сеялкой"/>
 		<text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" 							text="Включает / отключает использование удобрений сеялками."/>
 
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Sowing option"/>
-		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Turns on or off the additional sowing function of the machine"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" 								text="Доп.функции сеялки"/>
+		<text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" 							text="Включает или выключите дополнительную функцию посева машины."/>
 
 		<text name="CP_vehicle_setting_symmetricLaneChange_title" 										text="Симметричная смена полосы движения"/>
 		<text name="CP_vehicle_setting_symmetricLaneChange_tooltip" 									text="Симметричная смена полосы движения"/>
@@ -228,20 +228,20 @@
 		<text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip"								text="Количество транспортных средств с одинаковым оборудованием на том же курсе." />
 
 		<!-- Vine Course Generator-->
-		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Vine course generator"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Basic Settings"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_title"										text="Генератор винного курса"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic"								text="Основные настройки"/>
 
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Position of the course"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu."/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="Left side of the vine"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="On the vine"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="Right side of the vine"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title"						text="Положение курса"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip"						text="Должен курс будет проложен на или рядом с виноградной лозой. Это зависит от инструмента. Больше информации в меню помощи."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left"						text="слева от лозы"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center"						text="по лозе"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right"						text="справа от лозы"/>
 
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Tools per course."/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="How many Tools can work together. More Information in the help Menu."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Инструментов на курсе."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Сколько инструментов может работать вместе. Больше информации в меню помощи."/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Пропускать лозы"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Пропустить лозы следует использовать только тогда, когда инструмент работает на обеих лозах (слева и справа)."/>
 
 
 
@@ -249,8 +249,8 @@
 		<text name="CP_global_setting_title"															text="Глобальные настройки CoursePlay"/>
 		<text name="CP_global_setting_subTitle_general"													text="Основные настройки"/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Экспертный режим "/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Включить/отключить экспертный режим с дополнительными функциями."/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="Заработная плата работника"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="Заработная плата работника CoursePlay в процентах от заработной платы обычного рабочего."/>
@@ -262,11 +262,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="поддерживать в рабочем состоянии"/>
 
-		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Порог топлива"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Водитель будет отпущен, если уровень топлива меньше порога."/>
 
-		<text name="CP_global_setting_brokenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Порог поломок"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Водитель будет отпущен, если транспортное средство или оборудование будут изношенным более порога. 100% это ВЫКЛ."/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Пользовательские настройки"/>
 
@@ -287,14 +287,14 @@
 		<text name="CP_global_setting_showsAllActiveCourses_title" 										text="Показать все активные курсы"/>
 		<text name="CP_global_setting_showsAllActiveCourses_tooltip" 									text="Показать все активные курсы на игровой карте."/>
 
-		<text name="CP_global_setting_infoTextHudActive_title"											text="Show info texts window"/>
-		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Displays an info text window."/>
+		<text name="CP_global_setting_infoTextHudActive_title"											text="Окно с инфотекстом"/>
+		<text name="CP_global_setting_infoTextHudActive_tooltip"										text="Отображать окно с информационным текстом."/>
 
 		<text name="CP_global_setting_infoTextHudPlayerMouseActive_title"								text="Player mouse event"/>
-		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
+		<text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip"								text="Включить/отключить Player Mouse Event для отображения окна с инфотекстом за пределами транспортного средства."/>
 
-		<text name="CP_global_setting_preferCustomFields_title"											text="Prefer custom fields"/>
-		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Prefer custom field if there is also a regular field at the selected position."/>
+		<text name="CP_global_setting_preferCustomFields_title"											text="Предпочитать пользовательские поля"/>
+		<text name="CP_global_setting_preferCustomFields_tooltip"										text="Предпочитать пользовательское поле, если в выбранной позиции также есть обычное поле."/>
 
 	<!-- CourseManager -->
 
@@ -332,18 +332,18 @@
 		<text name="CP_courseManager_activate"															text="Активировать"/>
 
 	<!-- Info texts -->
-		<text name="CP_infoTexts_isStuck"																text="Helper is stuck"/>
-		<text name="CP_infoTexts_blockedByObject"  														text="Blocked by an object"/>
-		<text name="CP_infoTexts_shouldRefuel"															text="Should be refueled"/>
-		<text name="CP_infoTexts_needsFuel"  															text="Needs to be refueled"/>
-		<text name="CP_infoTexts_needsRepair"  															text="Needs to be repaired"/>
-		<text name="CP_infoTexts_needsFilling"  														text="Needs to be refilled"/>
-		<text name="CP_infoTexts_needsUnloading"  														text="Needs to be unloaded"/>
-		<text name="CP_infoTexts_workFinished"															text="Finished work"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
-		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
-		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
-		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
+		<text name="CP_infoTexts_isStuck"																text="Помощник застрял"/>
+		<text name="CP_infoTexts_blockedByObject"  														text="Заблокирован каким-то объектом"/>
+		<text name="CP_infoTexts_shouldRefuel"															text="Должен быть заправлен"/>
+		<text name="CP_infoTexts_needsFuel"  															text="Нуждается в заправке топливом"/>
+		<text name="CP_infoTexts_needsRepair"  															text="Нуждается в ремонте"/>
+		<text name="CP_infoTexts_needsFilling"  														text="Нуждается в заправке"/>
+		<text name="CP_infoTexts_needsUnloading"  														text="Нуждается в разгрузке"/>
+		<text name="CP_infoTexts_workFinished"															text="Завершил работу"/>
+		<text name="CP_infoTexts_outOfMoney"															text="Закончились деньги"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="Ожидает пока закончится дождь"/>
+		<text name="CP_infoTexts_errorStopped"															text="Покинул курс, остановился"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Неправильный тип тюка"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Вы хотите сохранить записанный курс как пользовательское поле %s?"/>
@@ -500,15 +500,15 @@ F: Клик на иконке открывает страницу глобаль
 G: Можно закрыть HUD.
 H: Увеличение и уменьшение рабочей ширины. Красная линия возле техники отображаете текущие настройки.
 I: Значение для поперечного смещения: + влево, - вправо.
-J: Copy and paste a course to a different vehicle.
-     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+J: Скопировать и вставить курс в другую технику.
+     Как только кнопка копирования была нажата, то курс может быть вставлен в транспортное средство без курса, когда значок станет зеленым.
 K и L: Нажатие на текст сбросит ваши изменения до автоматически определённых значений.
-M: Shows the copied course.
+M: Показывает скопированный курс.
 N: Эта область показывает смещение полосы движения, если у вас будет загруженный курс для работы нескольких орудий. Нажатие на текст переключает позиции.
-O: Start/stop recording a custom field course.
-P: Removes course from vehicle.
-Q: Changes the course visibility between: on, off and start/stop only.
-R: Removes the copied course from the clipboard.
+O: Начать/остановить запись пользовательского полевого курса.
+P: Удаляет курс с техники.
+Q: Изменяет видимость курса между: включено, выключено и только начало/конец.
+R: Удаляет скопированный курс из буфера обмена.
 "/>
 		<!--CustomField-->
 		<text name="CP_help_page_customField_title"														text="Пользовательское поля"/>
