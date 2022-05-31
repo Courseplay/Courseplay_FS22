@@ -350,6 +350,7 @@ function AIDriveStrategyFindBales:getBalesToIgnore()
     elseif self.baleLoaderController then
         return self.baleLoaderController:getBalesToIgnore()
     end
+    return objectsToIgnore
 end
 
 function AIDriveStrategyFindBales:isNearFieldEdge()
