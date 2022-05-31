@@ -35,22 +35,33 @@ function BaleToCollect:init(baleObject)
 end
 
 --- Call this before attempting to construct a BaleToCollect to check the validity of the object
+---@param object table Bale
 ---@param baleWrapper table bale wrapper, if exists
-function BaleToCollect.isValidBale(object, baleWrapper, baleLoader)
+---@param baleLoader table bale loader, if exists
+---@param baleWrapType number bale wrap type for the bale loader
+function BaleToCollect.isValidBale(object, baleWrapper, baleLoader, baleWrapType)
 	-- nodeId is sometimes 0, causing issues for the BaleToCollect constructor
 	if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
 		if baleWrapper then
 			-- if there is a bale wrapper, the bale must be wrappable
 			return baleWrapper:getIsBaleWrappable(object)
 		elseif baleLoader and baleLoader.getBaleTypeByBale then
-			if baleLoader:getBaleTypeByBale(object) ~= nil then
-				if baleWrapType == CpBaleFinderJobParameters.ONLY_WRAPPED_BALES then
-					return object.wrappingState > 0, object.wrappingState > 0
-				elseif  baleWrapType == CpBaleFinderJobParameters.ONLY_NOT_WRAPPED_BALES then
-					return object.wrappingState <= 0, object.wrappingState <= 0
+			local baleType = baleLoader:getBaleTypeByBale(object)
+			local spec = baleLoader.spec_baleLoader
+			if spec and baleType ~= nil then 
+				local isValid = true
+				--- Avoid bale types, that can't be loaded.
+				if baleType ~= spec.currentBaleType and baleLoader:getFillUnitFillLevel(spec.currentBaleType.fillUnitIndex) ~= 0 then
+					isValid = false
 				end
-				return true
-			end
+				if baleWrapType == CpBaleFinderJobParameters.ONLY_WRAPPED_BALES then
+					return isValid and object.wrappingState > 0, object.wrappingState > 0
+				elseif baleWrapType == CpBaleFinderJobParameters.ONLY_NOT_WRAPPED_BALES then
+					return isValid and object.wrappingState <= 0, object.wrappingState <= 0
+				end	
+				return isValid		
+			end		
+			return false
 		else
 			return true
 		end
