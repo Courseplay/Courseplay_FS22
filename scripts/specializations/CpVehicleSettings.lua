@@ -101,7 +101,7 @@ end
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
 --- For example Lime and Fertilizer might have a different work width.
 function CpVehicleSettings:onStateChange(state, data)
-    if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE then
+    if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE and self:getIsSynchronized() then
         local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)
         if hasSprayer then 
             local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self, nil, nil)
