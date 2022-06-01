@@ -35,11 +35,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="Vlevo(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="Vpravo(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Typ balíků:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Typ balíků:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="všechny balíky"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="pouze ovinuté"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="pouze neovinuté"/>
 
 	<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Polní práce" />
@@ -51,7 +51,7 @@
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Pracovník %s přestal neočekávaně pracovat – zásobník je plný!" />
 		<text name="CP_ai_messageError" 																text="Pracovník %s přestal neočekávaně pracovat - opustil kurz!" />															text="AI worker %s has stopped work unexpectedly - left the course!" />
-		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="Pracovník %s přestal neočekávaně pracovat – nebyl nalezen zvolený typ balíků!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Nastavení pro vozidlo (%s)"/>
@@ -339,7 +339,7 @@
 		<text name="CP_infoTexts_outOfMoney"															text="Došly peníze"/>
 		<text name="CP_infoTexts_waitForRainToFinish"													text="Čekání na konec deště"/>
 		<text name="CP_infoTexts_errorStopped"															text="Opustil trasu, zastavil"/>
-		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="Špatný typ balíku"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="Chcete uložit zaznamenaný kurz jako vlastní pole %s?"/>
@@ -456,7 +456,7 @@ Umístění pro uložení souborů kurzu je: ..\My Games\FarmingSimulator2022\mo
 Správce kurzu funguje jinak, než na co jste zvyklí ve FS19.
 Kurzy se ukládají do složek, které se zobrazí vlevo. To znamená, že k ukládání kurzů budete potřebovat alespoň jednu složku.
 Složky lze jednoduše vytvořit tlačítkem v dolní části obrazovky a zadáním názvu.
-Courses are only saved localy for now.
+Trasy jsou nyní ukládány pouze lokálně.
 "/>
 
 		<text name="CP_help_page_courseManagerBaseFunctions_text"										text="
