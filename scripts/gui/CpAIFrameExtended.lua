@@ -421,26 +421,19 @@ function CpInGameMenuAIFrameExtended:onClickPositionParameter(element,...)
 	end
 end
 
---- Custom version of InGameMenuAIFrame:updateParameterValueTexts(), as 
---- there is no support for our field position hotspot.
-function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc)
-	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
-	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
-	local addedPositionHotspot = false
+--- Added support for the cp field target position.
+function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 	if self.currentJobElements == nil then 
 		return
 	end
+	superFunc(self, ...)
+	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
 	for _, element in ipairs(self.currentJobElements) do
 		local parameter = element.aiParameter
 		local parameterType = parameter:getType()
-
-		if parameterType == AIParameterType.TEXT then
-			local title = element:getDescendantByName("title")
-
-			title:setText(parameter:getString())
-		elseif parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
+		if parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
 			element:setText(parameter:getString())
-
 			if parameter.isCpFieldPositionTarget then
 				g_currentMission:addMapHotspot(self.secondAiTargetMapHotspot)
 				local x, z = parameter:getPosition()
@@ -460,11 +453,8 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc)
 					self.aiTargetMapHotspot:setWorldRotation(angle)
 				end
 			end
-		else
-			element:updateTitle()
 		end
 	end
-
 end
 InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,
 															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
