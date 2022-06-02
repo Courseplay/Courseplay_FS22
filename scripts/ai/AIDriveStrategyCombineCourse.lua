@@ -892,26 +892,6 @@ function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnUpDownRows(ix, i
 	end
 end
 
-function AIDriveStrategyCombineCourse:updateLightsOnField()
-	-- handle beacon lights to call unload driver
-	-- copy/paste from AIDriveStrategyCombine
-	local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-	local capacity = self.vehicle:getFillUnitCapacity(self.combine.fillUnitIndex)
-	if fillLevel > (0.8 * capacity) then
-		if not self.beaconLightsActive then
-			self.vehicle:setAIMapHotspotBlinking(true)
-			self.vehicle:setBeaconLightsVisibility(true)
-			self.beaconLightsActive = true
-		end
-	else
-		if self.beaconLightsActive then
-			self.vehicle:setAIMapHotspotBlinking(false)
-			self.vehicle:setBeaconLightsVisibility(false)
-			self.beaconLightsActive = false
-		end
-	end
-end
-
 --- Create a temporary course to pull back to the right when the pipe is in the fruit so the tractor does not have
 -- to drive in the fruit to get under the pipe
 function AIDriveStrategyCombineCourse:createPullBackCourse()
