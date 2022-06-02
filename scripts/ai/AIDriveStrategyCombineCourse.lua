@@ -1057,6 +1057,12 @@ function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterPulledBack()
 			self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
 end
 
+
+--- Can the cutter be turned off ?
+function AIDriveStrategyCombineCourse:getCanCutterBeTurnedOff()
+	return self:isWaitingForUnload() or self.state == self.states.UNLOADING_ON_FIELD and self:isUnloadStateOneOf(self.selfUnloadStates)
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Turns
 -----------------------------------------------------------------------------------------------------------------------
@@ -1700,6 +1706,16 @@ function AIDriveStrategyCombineCourse:initUnloadStates()
 		self.states.WAITING_FOR_UNLOAD_IN_POCKET,
 		self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED,
 		self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW
+	}
+	--- All self unload states.
+	self.selfUnloadStates = {
+		DRIVING_TO_SELF_UNLOAD = {},
+		SELF_UNLOADING = {},
+		SELF_UNLOADING_WAITING_FOR_DISCHARGE = {},
+		DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED = {},
+		SELF_UNLOADING_AFTER_FIELDWORK_ENDED = {},
+		SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE = {},
+		RETURNING_FROM_SELF_UNLOAD = {}
 	}
 end
 
