@@ -11,7 +11,7 @@ end
 function CutterController:getDriveData()
 	self:disableCutterTimer()
 	--- Turns off the cutter, while the driver is waiting for unloading.
-	if self.driveStrategy.isWaitingForUnload and self.driveStrategy:isWaitingForUnload() then 
+	if self.driveStrategy.getCanCutterBeTurnedOff and self.driveStrategy:getCanCutterBeTurnedOff() then 
 		if self.implement:getIsTurnedOn() then 
 			self.implement:setIsTurnedOn(false)
 		end

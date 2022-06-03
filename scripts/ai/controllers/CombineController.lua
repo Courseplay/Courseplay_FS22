@@ -6,6 +6,8 @@ function CombineController:init(vehicle, combine)
     ImplementController.init(self, vehicle, combine)
     self.combineSpec = combine.spec_combine
     self.settings = vehicle:getCpSettings()
+    self.beaconLightsActive = false
+    self.hasPipe = SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
 end
 
 function CombineController:update()
@@ -29,5 +31,29 @@ function CombineController:getDriveData()
     else 
         self:clearInfoText(InfoTextManager.WAITING_FOR_RAIN_TO_FINISH)
     end
+    if self.hasPipe then
+        --- Updates the beacon lights and the blinking hotspot.
+        local dischargeNode = self.implement:getCurrentDischargeNode()
+        if dischargeNode ~= nil then
+            local fillLevel = self.implement:getFillUnitFillLevel(dischargeNode.fillUnitIndex)
+            local capacity = self.implement:getFillUnitCapacity(dischargeNode.fillUnitIndex)
+            if fillLevel ~= nil and fillLevel ~= math.huge then
+                if fillLevel > 0.8 * capacity then
+                    if not self.beaconLightsActive then
+                        self.vehicle:setAIMapHotspotBlinking(true)
+                        self.vehicle:setBeaconLightsVisibility(true)
+                        self.beaconLightsActive = true
+                    end
+                else
+                    if self.beaconLightsActive then
+                        self.vehicle:setAIMapHotspotBlinking(false)
+                        self.vehicle:setBeaconLightsVisibility(false)
+                        self.beaconLightsActive = false
+                    end
+                end
+            end
+        end
+    end
+
     return nil, nil, nil, maxSpeed
 end
