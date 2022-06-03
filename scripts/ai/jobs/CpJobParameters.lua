@@ -34,9 +34,7 @@ function CpJobParameters:init(job)
 end
 
 function CpJobParameters.registerXmlSchema(schema, baseKey)
-    local key = baseKey..CpJobParameters.xmlKey.."(?)"
-    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
-    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
+    CpSettingsUtil.registerXmlSchema(schema, baseKey..CpJobParameters.xmlKey.."(?)")
 end
 
 function CpJobParameters.getSettings(vehicle)
@@ -62,20 +60,12 @@ function CpJobParameters:readStream(streamId, connection)
 end
 
 function CpJobParameters:saveToXMLFile(xmlFile, baseKey, usedModNames)
-	for i, parameter in ipairs(self.settings) do 
-        local key = string.format("%s(%d)", baseKey..self.xmlKey , i-1)
-        parameter:saveToXMLFile(xmlFile, key)
-        xmlFile:setValue(key.."#name", parameter:getName())
-    end
+    CpSettingsUtil.saveToXmlFile(self.settings, xmlFile, 
+        baseKey ..self.xmlKey, self.job:getVehicle(), nil)
 end
 
 function CpJobParameters:loadFromXMLFile(xmlFile, baseKey)
-	xmlFile:iterate(baseKey .. self.xmlKey, function (ix, key)
-        local name = xmlFile:getValue(key.."#name")
-        if name then
-            self[name]:loadFromXMLFile(xmlFile, key)
-        end
-	end)
+    CpSettingsUtil.loadFromXmlFile(self, xmlFile, baseKey .. self.xmlKey, self.job:getVehicle())
 end
 
 

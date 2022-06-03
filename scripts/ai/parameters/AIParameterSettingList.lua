@@ -170,6 +170,10 @@ function AIParameterSettingList:onChange()
 		if self.data.autoUpdateGui then 
 			self:getCallback("updateGui")
 		end
+		--- The client user settings are automatically saved on change.
+		if g_server == nil and self:getIsUserSetting() then 
+			self:raiseCallback("onCpUserSettingChanged")
+		end
 	end
 end
 
@@ -247,22 +251,42 @@ function AIParameterSettingList:loadFromXMLFile(xmlFile, key)
 	end
 end
 
+function AIParameterSettingList:readStreamInternal(streamId, connection)
+	local setupIx = streamReadInt32(streamId)
+	self:setToIx(self:getClosestIxFromSetup(setupIx))
+	self:debug("set to %s from stream.", tostring(self:getString()))
+end
+
 function AIParameterSettingList:readStream(streamId, connection)
 	if not self:getIsUserSetting() then
-		local setupIx = streamReadInt32(streamId)
-		self:setToIx(self:getClosestIxFromSetup(setupIx))
-		self:debug("set to %s from stream.", tostring(self:getString()))
+		self:readStreamInternal(streamId, connection)
 	else 
-		self:debug("is user setting, skip stream.")
+		if streamReadBool(streamId) then 
+			self:readStreamInternal(streamId, connection)
+		else 
+			self:debug("is user setting, skip stream.")
+		end
 	end
+end
+
+function AIParameterSettingList:writeStreamInternal(streamId, connection)
+	streamWriteInt32(streamId, self:getClosestSetupIx())
+	self:debug("send %s to stream.", tostring(self:getString()))
 end
 
 function AIParameterSettingList:writeStream(streamId, connection)
 	if not self:getIsUserSetting() then
-		streamWriteInt32(streamId, self:getClosestSetupIx())
-		self:debug("send %s to stream.", tostring(self:getString()))
-	else
-		self:debug("is user setting, skip stream.")
+		self:writeStreamInternal(streamId, connection)
+	else 
+		local userSettingValue = self:getCallback("getCpSavedUserSettingValue", connection)
+		if userSettingValue ~= nil then 
+			streamWriteBool(streamId, true)
+			streamWriteInt32(streamId, userSettingValue)
+			self:debug("send %s to stream.", tostring(self:getString()))
+		else
+			streamWriteBool(streamId, false)
+			self:debug("is user setting, skip stream.")
+		end
 	end
 end
 
@@ -679,12 +703,12 @@ function AIParameterSettingList:hasCallback(callbackStr)
 	end
 end
 
-function AIParameterSettingList:getCallback(callbackStr)
+function AIParameterSettingList:getCallback(callbackStr, ...)
 	if self:hasCallback(callbackStr) then
 		if self.vehicle ~= nil then 
-			return self.klass[callbackStr](self.vehicle)
+			return self.klass[callbackStr](self.vehicle, self, ...)
 		else
-			return self.klass[callbackStr](self.klass)
+			return self.klass[callbackStr](self.klass, self, ...)
 		end
 	end
 end

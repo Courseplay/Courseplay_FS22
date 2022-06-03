@@ -393,3 +393,57 @@ function CpSettingsUtil.raiseEventForSettings(settings, eventName, ...)
 		end
 	end
 end
+
+function CpSettingsUtil.registerXmlSchema(schema, key)
+	schema:register(XMLValueType.INT, key.."#value", "Old setting save format.")
+    schema:register(XMLValueType.STRING, key.."#currentValue", "Setting value")
+    schema:register(XMLValueType.STRING, key.."#name", "Setting name")
+end
+
+--- Loads setting values from an xml file.
+---@param dataTable table
+---@param xmlFile table
+---@param baseKey string
+---@param vehicle table optional for debug
+function CpSettingsUtil.loadFromXmlFile(dataTable, xmlFile, baseKey, vehicle)
+	xmlFile:iterate(baseKey, function (ix, key)
+		local name = xmlFile:getValue(key.."#name")
+		local setting = dataTable[name]
+		if setting then
+			setting:loadFromXMLFile(xmlFile, key)
+			if vehicle then
+				CpUtil.debugVehicle(CpUtil.DBG_HUD, vehicle, "Loaded setting: %s, value:%s, key: %s", 
+									setting:getName(), setting:getValue(), key)
+			else 
+				CpUtil.debugFormat(CpUtil.DBG_HUD, "Loaded setting: %s, value:%s, key: %s", 
+									setting:getName(), setting:getValue(), key)
+			end
+		end
+		dataTable.wasLoaded = true
+	end)
+end
+
+--- Saves setting values to an xml file.
+---@param settingsTable table
+---@param xmlFile table
+---@param baseKey string
+---@param vehicle table
+---@param lambda function optional to disable the saving of specific settings.
+function CpSettingsUtil.saveToXmlFile(settingsTable, xmlFile, baseKey, vehicle, lambda)
+	local ix = 0
+	for i, setting in ipairs(settingsTable) do 
+		if lambda == nil or lambda(setting) then
+			local key = string.format("%s(%d)", baseKey, ix)
+			setting:saveToXMLFile(xmlFile, key)
+			xmlFile:setValue(key.."#name", setting:getName())
+			if vehicle then
+				CpUtil.debugVehicle(CpUtil.DBG_HUD, vehicle, "Saved setting: %s, value:%s, key: %s", 
+									setting:getName(), setting:getValue(), key)
+			else 
+				CpUtil.debugFormat(CpUtil.DBG_HUD, "Saved setting: %s, value:%s, key: %s", 
+									setting:getName(), setting:getValue(), key)
+			end		
+			ix = ix + 1
+		end
+    end
+end
