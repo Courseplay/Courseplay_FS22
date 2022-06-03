@@ -101,9 +101,10 @@ function CpFieldUtil.saveAllFields()
         end
         saveXMLFile(xmlFile);
         delete(xmlFile);
-        print(string.format('Saved all fields to %s', fileName))
+        
+        CpUtil.info('Saved all fields to %s', fileName)
     else
-        print("Error: field could not be saved to " .. CpManager.cpCoursesFolderPath);
+        CpUtil.info("Error: field could not be saved to " , g_Courseplay.debugPrintDir);
     end;
 end
 

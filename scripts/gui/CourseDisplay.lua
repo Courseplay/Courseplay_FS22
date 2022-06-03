@@ -24,7 +24,7 @@ CourseDisplay = CpObject()
 
 function CourseDisplay:init()
 	self.courses = {}
-	print('## Courseplay: setting up signs')
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, '## Courseplay: setting up signs' )
 
 	local globalRootNode = getRootNode()
 

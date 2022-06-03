@@ -173,7 +173,7 @@ end
 function CourseGenerator.debug( ... )
 	if CourseGenerator.isRunningInGame() then
 		-- TODO: debug channel
-		print( string.format( ... ))
+		CpUtil.debugFormat(CpDebug.DBG_COURSES, ... )
 	else
 		print( string.format( ... ))
 		io.stdout:flush()
@@ -183,7 +183,7 @@ end
 function CourseGenerator.info( ... )
 	if CourseGenerator.isRunningInGame() then
 		-- TODO: debug channel (info)
-		print( string.format( ... ))
+		CpUtil.info(... )
 	else
 		print( string.format( ... ))
 		io.stdout:flush()

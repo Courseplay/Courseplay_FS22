@@ -37,7 +37,7 @@ end
 
 
 function DevHelper:debug(...)
-    print(string.format(...))
+    CpUtil.info(string.format(...))
 end
 
 function DevHelper:update()
@@ -272,7 +272,7 @@ function DevHelper.saveVehiclePosition(vehicle, vehiclePositionData)
     for _,impl in pairs(vehicle:getAttachedImplements()) do
         DevHelper.saveVehiclePosition(impl.object, vehiclePositionData)
     end
-    Courseplay.info('Saved position of %s', vehicle:getName())
+    CpUtil.info('Saved position of %s', vehicle:getName())
 end
 
 function DevHelper.restoreVehiclePosition(vehicle)
@@ -280,7 +280,7 @@ function DevHelper.restoreVehiclePosition(vehicle)
         for _, savedPosition in pairs(vehicle.vehiclePositionData) do
             savedPosition[1]:setAbsolutePosition(savedPosition[2].x, savedPosition[2].y, savedPosition[2].z,
                     savedPosition[2].xRot, savedPosition[2].yRot, savedPosition[2].zRot)
-            Courseplay.info('Restored position of %s', savedPosition[1]:getName())
+            CpUtil.info('Restored position of %s', savedPosition[1]:getName())
         end
     end
 end
