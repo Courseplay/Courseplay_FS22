@@ -57,18 +57,21 @@ function CpAIBaleFinder:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
     spec.cpJob:setVehicle(self)
+    spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
 end
 
 function CpAIBaleFinder:onLoadFinished(savegame)
     local spec = self.spec_cpAIBaleFinder
     if savegame ~= nil then 
         spec.cpJob:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIBaleFinder.KEY..".cpJob")
+        spec.cpJobStartAtLastWp:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIFieldWorker.KEY..".cpJobStartAtLastWp")
     end
 end
 
 function CpAIBaleFinder:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAIBaleFinder
     spec.cpJob:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+    spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
 
 function CpAIBaleFinder:getCpBaleFinderJobParameters()
@@ -127,11 +130,11 @@ function CpAIBaleFinder:startCpAtLastWp(superFunc)
     if not superFunc(self) then 
         if self:getCanStartCpBaleFinder() then 
             local spec = self.spec_cpAIBaleFinder
-            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-            spec.cpJob:setValues()
-            local success = spec.cpJob:validate(false)
+            spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+            spec.cpJobStartAtLastWp:setValues()
+            local success = spec.cpJobStartAtLastWp:validate(false)
             if success then
-                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJobStartAtLastWp, self:getOwnerFarmId()))
                 return true
             end
         end
@@ -147,6 +150,10 @@ function CpAIBaleFinder:startCpBaleFinder(fieldPolygon, jobParameters)
     if self.isServer then 
         --- Replaces drive strategies.
         CpAIBaleFinder.replaceDriveStrategies(self, fieldPolygon, jobParameters)
+
+        --- Remembers the last bale warp type setting value that was used.
+        local spec = self.spec_cpAIBaleFinder
+        spec.cpJobStartAtLastWp:getCpJobParameters().baleWrapType:setValue(jobParameters.baleWrapType:getValue())
     end
 end
 

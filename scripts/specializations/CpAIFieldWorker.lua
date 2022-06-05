@@ -82,9 +82,10 @@ function CpAIFieldWorker:onLoad(savegame)
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJob:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_NEAREST_POINT)
     spec.cpJob:setVehicle(self)
+    --- TODO: Rename these to startByExternalMod and continueByExternalMod or something similar.
     --- Theses jobs are used for external mod, for example AutoDrive.
     spec.cpJobStartAtFirstWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
-    spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
+    spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_NEAREST_POINT)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
     
@@ -217,11 +218,7 @@ function CpAIFieldWorker:startCpAtLastWp()
     self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-        --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
-        --- TODO: This should only be applied, if the driver was started for the first time by ad and not every time.
-        spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(self:getCpLaneOffsetSetting():getValue())
         spec.cpJobStartAtLastWp:setValues()
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "lane offset: %s", spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:getString())
         local success = spec.cpJobStartAtLastWp:validate(false)
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "lane offset: %s", spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:getString())
         if success then
