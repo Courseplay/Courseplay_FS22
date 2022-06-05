@@ -840,7 +840,7 @@ function Course:getNextFwdWaypointIx(ix)
 			return i
 		end
 	end
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
 	return ix
 end
 
@@ -855,7 +855,7 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx)
 			end
 		end
 	end
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
 	return ix
 end
 
@@ -869,7 +869,7 @@ function Course:getNextRevWaypointIxFromVehiclePosition(ix, vehicleNode, lookAhe
 			end
 		end
 	end
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
 	return ix
 end
 
@@ -1212,7 +1212,7 @@ function Course:addReverseForAutoDriveCourse()
 		local deltaAngleDeg = math.abs(math.deg(getDeltaAngle(self.waypoints[i].yRot, self.waypoints[i - 1].yRot)))
 		if deltaAngleDeg >= 100 then
 			reverse = not reverse
-			CpUtil.debugFormat(CpDebug.DBG_COURSES,
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle,
 				'Adding reverse for AutoDrive: direction change at %d (delta angle %.1f, reverse is now %s',
 				i, deltaAngleDeg, tostring(reverse))
 		end
@@ -1410,7 +1410,7 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 		origHeadlandsCourse, ix = self:getNextHeadlandSection(currentLaneNumber, ix)
 		if origHeadlandsCourse:getNumberOfWaypoints() > 0 then
 			if origHeadlandsCourse:getNumberOfWaypoints() > 2 then
-				CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Headland section to %d', ix)
+				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland section to %d', ix)
 				CourseGenerator.pointsToXyInPlace(origHeadlandsCourse.waypoints)
 				local origHeadlands = Polyline:new(origHeadlandsCourse.waypoints)
 				origHeadlands:calculateData()
@@ -1426,36 +1426,36 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 					offsetHeadlands:calculateData()
 					self:markAsHeadland(offsetHeadlands, currentLaneNumber)
 					if origHeadlandsCourse:isTurnStartAtIx(origHeadlandsCourse:getNumberOfWaypoints()) then
-						CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
+						CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Original headland transitioned to the center with a turn, adding a turn start to the offset one')
 						offsetHeadlands[#offsetHeadlands].turnStart = true
 					end
 					addTurnsToCorners(offsetHeadlands, math.rad(60), true)
 					CourseGenerator.pointsToXzInPlace(offsetHeadlands)
 					offsetCourse:appendWaypoints(offsetHeadlands)
-					CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Headland done %d', ix)
+					CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland done %d', ix)
 				end
 			else
-				CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Short headland section to %d', ix)
+				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Short headland section to %d', ix)
 				origHeadlandsCourse:offsetUpDownRows(offset, 0)
 				offsetCourse:append(origHeadlandsCourse)
 			end
 		else
 			local upDownCourse
-			CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Get next non-headland %d', ix)
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Get next non-headland %d', ix)
 			upDownCourse, ix = self:getNextNonHeadlandSection(ix)
 			if upDownCourse:getNumberOfWaypoints() > 0 then
-				CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Up/down section to %d', ix)
+				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Up/down section to %d', ix)
 				upDownCourse:offsetUpDownRows(offset, 0, useSameTurnWidth)
 				offsetCourse:append(upDownCourse)
 			end
 		end
 	end
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Original headland length %.0f m, new headland length %.0f m (%.1f %%, %.1f m)',
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Original headland length %.0f m, new headland length %.0f m (%.1f %%, %.1f m)',
 		self.headlandLength, offsetCourse.headlandLength, 100 * offsetCourse.headlandLength / self.headlandLength,
 		offsetCourse.headlandLength - self.headlandLength)
 	local originalNonHeadlandLength = self.length - self.headlandLength
 	local offsetNonHeadlandLength = offsetCourse.length - offsetCourse.headlandLength
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Original non-headland length %.0f m, new non-headland length %.0f m (%.1f %%, %.1f m)',
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Original non-headland length %.0f m, new non-headland length %.0f m (%.1f %%, %.1f m)',
 		originalNonHeadlandLength, offsetNonHeadlandLength,
 		100 * offsetNonHeadlandLength / originalNonHeadlandLength,
 		offsetNonHeadlandLength - originalNonHeadlandLength)
@@ -1605,14 +1605,14 @@ end
 function Course:addWaypointsForRows()
 	local waypoints = self:initWaypoints()
 
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: adding waypoints for rows')
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for rows')
 
 	for i = 1, #self.waypoints - 1 do
 		table.insert(waypoints, Waypoint(self.waypoints[i]))
 		local p = self.waypoints[i]
 		if self:isTurnEndAtIx(i) and self:isTurnStartAtIx(i + 1) and
 			p.dToNext > CourseGenerator.waypointDistance + 0.1 then
-			CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: adding waypoints for row, length %.1f', p.dToNext)
+			CpUtil.debugVehiccle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for row, length %.1f', p.dToNext)
 			for n = 1, (p.dToNext / CourseGenerator.waypointDistance) - 1 do
 				local newWp = Waypoint(p)
 				newWp.turnEnd = nil
@@ -1624,7 +1624,7 @@ function Course:addWaypointsForRows()
 	end
 	table.insert(waypoints, Waypoint(self.waypoints[#self.waypoints]))
 	self.waypoints = waypoints
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course: has now %d waypoints', #self.waypoints)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: has now %d waypoints', #self.waypoints)
 	self:enrichWaypointData()
 end
 

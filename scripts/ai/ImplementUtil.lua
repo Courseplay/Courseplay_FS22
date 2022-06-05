@@ -338,7 +338,7 @@ function ImplementUtil.getDistanceToImplementNode(referenceNode, implementObject
         -- we call this offset, and is negative when behind the reference node, positive when in front of it
         -- (need to reverse attacherJointToImplementRoot)
         rootToReferenceNodeOffset = -attacherJointToImplementRoot + referenceToAttacherJoint
-        CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, '%s: ref to attacher joint %.1f, att to implement root %.1f, impl root to ref %.1f',
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, implementObject, '%s: ref to attacher joint %.1f, att to implement root %.1f, impl root to ref %.1f',
                 implementObject:getName(), referenceToAttacherJoint, attacherJointToImplementRoot, rootToReferenceNodeOffset)
     else
         _, _, rootToReferenceNodeOffset = localToLocal(implementNode, referenceNode, 0, 0, 0)

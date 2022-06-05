@@ -437,7 +437,7 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
     self:debug('Starting a turn at waypoint %d', ix)
     local fm, bm = self:getFrontAndBackMarkers()
     self.ppc:setShortLookaheadDistance()
-    self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(), fm, bm,
+    self.turnContext = TurnContext(self.vehicle, self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
     if AITurn.canMakeKTurn(self.vehicle, self.turnContext, self.workWidth, self:isTurnOnFieldActive()) then
         self.aiTurn = KTurn(self.vehicle, self, self.ppc, self.turnContext, self.workWidth)
@@ -493,7 +493,7 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
     self.ppc:setShortLookaheadDistance()
     if alignmentCourse then
         local fm, bm = self:getFrontAndBackMarkers()
-        self.turnContext = RowStartOrFinishContext(fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
+        self.turnContext = RowStartOrFinishContext(self.vehicle, fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
                 self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
         self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, alignmentCourse, fieldWorkCourse, self.workWidth)
         self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
