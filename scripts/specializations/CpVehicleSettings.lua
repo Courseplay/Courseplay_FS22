@@ -21,7 +21,7 @@ function CpVehicleSettings.initSpecialization()
    
     --- MP vehicle user settings
 
-    schema:register(XMLValueType.INT,"vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)#userId", "User id")
+    schema:register(XMLValueType.STRING,"vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)#userId", "User id")
     CpSettingsUtil.registerXmlSchema(schema, 
         "vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)")
 end
