@@ -15,6 +15,7 @@ function CpAIBaleFinder.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     local key = "vehicles.vehicle(?)" .. CpAIBaleFinder.KEY
     CpJobParameters.registerXmlSchema(schema, key..".cpJob")
+    CpJobParameters.registerXmlSchema(schema, key..".cpJobStartAtLastWp")
 end
 
 function CpAIBaleFinder.prerequisitesPresent(specializations)
