@@ -111,7 +111,7 @@ function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
     if self.baleLoader then
         self.baleLoaderController = BaleLoaderController(vehicle, self.baleLoader)
     else
-        local implements, found = AIUtil.getAllChildVehiclesWithSpecialization(self, nil, "spec_aPalletAutoLoader")
+        local implements, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, nil, "spec_aPalletAutoLoader")
         if found then
             self.baleLoaderController = APalletAutoLoaderController(vehicle, implements[1])
         end
