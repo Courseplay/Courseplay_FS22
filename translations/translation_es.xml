@@ -7,7 +7,7 @@
 		<text name="CP_automatic" 																		text="Automático" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="Copiar Curso:"/>
 
 	<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s):Para obtener ayuda, informar de errores o notas de parches, visite:https://github.com/Courseplay/Courseplay_FS22." />
@@ -35,11 +35,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="Izquierdo(2)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="Derecho(2)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Tipo de paca:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Tipo de paca:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="Todas las palas"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="Solo envueltas"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="Solo no envueltas"/>
 
 	<!--Drivemodes-->
 		<text name="CP_job_fieldWork"																	text="CP: Trabajo de campo" />
@@ -50,8 +50,8 @@
 
 	<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!" />
-		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
-		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
+		<text name="CP_ai_messageError" 																text="Trabajador CP %s ha dejado de trabajar inesperadamente - abandonó el curso!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!" />
 
 	<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="Configuración del vehículo (%s)"/>
@@ -360,7 +360,7 @@
 		<!--This stays blank and is just to create blank spots for better overview in the menu-->
 		<text name="CP_help_page_blank"																	text=""/>
 		<!--General-->
-		<text name="CP_help_page_General_title"															text="General Information"/>
+		<text name="CP_help_page_General_title"															text="Información General"/>
 		<text name="CP_help_page_GeneralBase_text"														text="
 CoursePlay te permite generar cursos en los campos con características adicionales, por ejemplo: Cabeceras.
 También habilita el uso de Empacadoras y remolques de Forrage, que pueden ser enviados en el mismo curso, detrás de una Segadora o Cosechadora
