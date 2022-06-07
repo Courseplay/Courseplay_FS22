@@ -20,7 +20,7 @@ function FieldScanner:init(resolution)
 end
 
 function FieldScanner:debug(...)
-    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'FieldScanner: ' .. string.format(...))
+    CpUtil.debugVehicle(CpDebug.DBG_COURSES, g_currentMission.controlledVehicle, 'FieldScanner: ' .. string.format(...))
 end
 
 function FieldScanner:info(...)

@@ -554,7 +554,7 @@ end
 function AIUtil.getShieldWorkWidth(object,logPrefix)
 	if object.spec_leveler then 
 		local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-		CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS,'%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, '%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
 		return width
 	end
 end
@@ -572,13 +572,13 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	end
 
 	local loweringDurationMs = getLoweringDurationMs(vehicle)
-	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Lowering duration: %d ms', loweringDurationMs)
+	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Lowering duration: %d ms', loweringDurationMs)
 
 	-- check all implements first
 	local implements = vehicle:getAttachedImplements()
 	for _, implement in ipairs(implements) do
 		local implementLoweringDurationMs = getLoweringDurationMs(implement.object)
-		CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Lowering duration (%s): %d ms', implement.object:getName(), implementLoweringDurationMs)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Lowering duration (%s): %d ms', implement.object:getName(), implementLoweringDurationMs)
 		if implementLoweringDurationMs > loweringDurationMs then
 			loweringDurationMs = implementLoweringDurationMs
 		end
@@ -587,7 +587,7 @@ function AIUtil.findLoweringDurationMs(vehicle)
 		if vehicle.spec_attacherJoints and jointDescIndex then
 			local ajs = vehicle.spec_attacherJoints:getAttacherJoints()
 			local ajLoweringDurationMs = ajs[jointDescIndex] and ajs[jointDescIndex].moveDefaultTime or 0
-			CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Lowering duration (%s attacher joint): %d ms', implement.object:getName(), ajLoweringDurationMs)
+			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Lowering duration (%s attacher joint): %d ms', implement.object:getName(), ajLoweringDurationMs)
 			if ajLoweringDurationMs > loweringDurationMs then
 				loweringDurationMs = ajLoweringDurationMs
 			end
@@ -595,9 +595,9 @@ function AIUtil.findLoweringDurationMs(vehicle)
 	end
 	if not loweringDurationMs or loweringDurationMs <= 1 then
 		loweringDurationMs = 2000
-		CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'No lowering duration found, setting to: %d ms', loweringDurationMs)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'No lowering duration found, setting to: %d ms', loweringDurationMs)
 	end
-	CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, 'Final lowering duration: %d ms', loweringDurationMs)
+	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Final lowering duration: %d ms', loweringDurationMs)
 	return loweringDurationMs
 end
 

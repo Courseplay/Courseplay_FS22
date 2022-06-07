@@ -12,7 +12,7 @@ end
 
 function CpAITaskDriveTo:start()
     if self.isServer then
-        CpUtil.infoVehicle(self.vehicle, 'CP drive to task started')
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self.vehicle, 'CP drive to task started')
         self.vehicle:startCpDriveTo(self, self.job:getCpJobParameters())
     end
 end
@@ -22,7 +22,7 @@ end
 
 function CpAITaskDriveTo:stop()
     if self.isServer then
-        CpUtil.infoVehicle(self.vehicle, 'CP drive to task stopped')
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self.vehicle, 'CP drive to task stopped')
         self.vehicle:stopCpDriveTo()
     end
     AITask.stop(self)

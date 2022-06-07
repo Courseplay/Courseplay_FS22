@@ -164,7 +164,7 @@ end
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
 -- field work.
 function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon, jobParameters)
-    CpUtil.infoVehicle(self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
         for i = #spec.driveStrategies, 1, -1 do
@@ -174,7 +174,7 @@ function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon, jobParameters)
 
         spec.driveStrategies = {}
     end
-	CpUtil.infoVehicle(self, 'Bale collect/wrap job, install CP drive strategy for it')
+	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, 'Bale collect/wrap job, install CP drive strategy for it')
     local cpDriveStrategy = AIDriveStrategyFindBales.new()
     cpDriveStrategy:setFieldPolygon(fieldPolygon)
     cpDriveStrategy:setJobParameterValues(jobParameters)

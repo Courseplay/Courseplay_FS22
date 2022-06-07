@@ -113,7 +113,7 @@ end
 --- TODO: This function is a mess and desperately needs a better solution!
 function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     if message then 
-        CpUtil.infoVehicle(self, "stop message: %s", message:getMessage())
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
     else
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
@@ -163,11 +163,11 @@ end
 
 --- Directly starts a cp job or stops a currently active job.
 function CpAIWorker:startStopDriver()
-    CpUtil.infoVehicle(self, "Start/stop cp helper")
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Start/stop cp helper")
     local spec = self.spec_cpAIWorker
     if self:getIsAIActive() then
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
-        CpUtil.infoVehicle(self, "Stopped current helper.")
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Stopped current helper.")
 	else
         self:updateAIFieldWorkerImplementData()
 		local job = self:getCpStartableJob()
@@ -180,15 +180,15 @@ function CpAIWorker:startStopDriver()
             local success, message = job:validate(false)
             if success then
                 g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(job, self:getOwnerFarmId()))
-                CpUtil.infoVehicle(self, "Cp helper started.")
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Cp helper started.")
             else
-                CpUtil.infoVehicle(self, "Could not start CP helper: %s", tostring(message))
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Could not start CP helper: %s", tostring(message))
                 if message then
                     g_currentMission:showBlinkingWarning("CP: "..message, 5000)
                 end
             end
         else
-            CpUtil.infoVehicle(self, "Could not start CP helper, it needs a course when not collecting bales.")
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Could not start CP helper, it needs a course when not collecting bales.")
         end
 	end
 end

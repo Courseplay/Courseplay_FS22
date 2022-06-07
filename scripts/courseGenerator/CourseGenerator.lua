@@ -1,5 +1,8 @@
 --- Setting up packages
-CourseGenerator = {}
+if not CourseGenerator then
+    -- recreate only if does not exist to allow for reload
+    CourseGenerator = {}
+end
 
 -- Distance of waypoints on the generated track in meters
 CourseGenerator.waypointDistance = 5
@@ -14,24 +17,24 @@ CourseGenerator.ROW_DIRECTION_LONGEST_EDGE = 6
 CourseGenerator.ROW_DIRECTION_MANUAL = 7
 
 CourseGenerator.trackDirectionRanges = {
-	{ angle =  0  },
-	{ angle =  1 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_N' },
-	{ angle =  3 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_NNE' },
-	{ angle =  5 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_NE' },
-	{ angle =  7 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_ENE' },
-	{ angle =  9 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_E' },
-	{ angle = 11 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_ESE' },
-	{ angle = 13 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_SE' },
-	{ angle = 15 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_SSE' },
-	{ angle = 17 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_S' },
-	{ angle = 19 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_SSW' },
-	{ angle = 21 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_SW' },
-	{ angle = 23 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_WSW' },
-	{ angle = 25 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_W' },
-	{ angle = 27 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_WNW' },
-	{ angle = 29 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_NW' },
-	{ angle = 31 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_NNW' },
-	{ angle = 32 * math.pi / 16,  text = 'COURSEPLAY_DIRECTION_N' },
+    { angle = 0 },
+    { angle = 1 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_N' },
+    { angle = 3 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_NNE' },
+    { angle = 5 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_NE' },
+    { angle = 7 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_ENE' },
+    { angle = 9 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_E' },
+    { angle = 11 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_ESE' },
+    { angle = 13 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_SE' },
+    { angle = 15 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_SSE' },
+    { angle = 17 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_S' },
+    { angle = 19 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_SSW' },
+    { angle = 21 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_SW' },
+    { angle = 23 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_WSW' },
+    { angle = 25 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_W' },
+    { angle = 27 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_WNW' },
+    { angle = 29 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_NW' },
+    { angle = 31 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_NNW' },
+    { angle = 32 * math.pi / 16, text = 'COURSEPLAY_DIRECTION_N' },
 }
 
 -- corners of a field block
@@ -67,7 +70,7 @@ CourseGenerator.HEADLAND_MODE_NARROW_FIELD = 3
 -- 0-n headland rows on two opposite ends of the field, up/down rows between.
 CourseGenerator.HEADLAND_MODE_TWO_SIDE = 4
 
-CourseGenerator.headlandModeTexts = { 'none', 'normal', 'narrow', 'two side'}
+CourseGenerator.headlandModeTexts = { 'none', 'normal', 'narrow', 'two side' }
 
 CourseGenerator.HEADLAND_CLOCKWISE = 1
 CourseGenerator.HEADLAND_COUNTERCLOCKWISE = 2
@@ -80,7 +83,7 @@ CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS = 2
 CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH = 1
 CourseGenerator.HEADLAND_CORNER_TYPE_SHARP = 2
 CourseGenerator.HEADLAND_CORNER_TYPE_ROUND = 3
-CourseGenerator.headlandCornerTypeTexts = {'smooth', 'sharp', 'round'}
+CourseGenerator.headlandCornerTypeTexts = { 'smooth', 'sharp', 'round' }
 
 -- Up/down mode is a regular up/down pattern, may skip rows between for wider turns
 
@@ -139,7 +142,7 @@ CourseGenerator.CENTER_MODE_CIRCULAR = 3
 --  -----12 ---- > -------  /
 CourseGenerator.CENTER_MODE_LANDS = 4
 
-CourseGenerator.centerModeTexts = {'up/down', 'spiral', 'circular', 'lands'}
+CourseGenerator.centerModeTexts = { 'up/down', 'spiral', 'circular', 'lands' }
 CourseGenerator.CENTER_MODE_MIN = CourseGenerator.CENTER_MODE_UP_DOWN
 CourseGenerator.CENTER_MODE_MAX = CourseGenerator.CENTER_MODE_LANDS
 
@@ -158,36 +161,34 @@ CourseGenerator.headlandLaneChangeMinDistanceToCorner = 20
 CourseGenerator.headlandLaneChangeMinDistanceFromCorner = 10
 
 CourseGenerator.cornerTypeText = {
-	'COURSEPLAY_HEADLAND_CORNER_TYPE_SMOOTH',
-	'COURSEPLAY_HEADLAND_CORNER_TYPE_SHARP',
-	'COURSEPLAY_HEADLAND_CORNER_TYPE_ROUND' }
+    'COURSEPLAY_HEADLAND_CORNER_TYPE_SMOOTH',
+    'COURSEPLAY_HEADLAND_CORNER_TYPE_SHARP',
+    'COURSEPLAY_HEADLAND_CORNER_TYPE_ROUND' }
 
-
-function CourseGenerator.isOrdinalDirection( startingLocation )
-	return startingLocation >= CourseGenerator.STARTING_LOCATION_SW and
-		startingLocation <= CourseGenerator.STARTING_LOCATION_SE
+function CourseGenerator.isOrdinalDirection(startingLocation)
+    return startingLocation >= CourseGenerator.STARTING_LOCATION_SW and
+            startingLocation <= CourseGenerator.STARTING_LOCATION_SE
 end
 
 --- Debug print, will either just call print when running standalone
 --  or use the CP debug channel when running in the game.
-function CourseGenerator.debug( ... )
-	if CourseGenerator.isRunningInGame() then
-		-- TODO: debug channel
-		print( string.format( ... ))
-	else
-		print( string.format( ... ))
-		io.stdout:flush()
-	end
+function CourseGenerator.debug(...)
+    if CourseGenerator.isRunningInGame() then
+        CpUtil.debugVehicle(CpDebug.DBG_COURSES, g_currentMission.controlledVehicle, ...)
+    else
+        print(string.format(...))
+        io.stdout:flush()
+    end
 end
 
-function CourseGenerator.info( ... )
-	if CourseGenerator.isRunningInGame() then
-		-- TODO: debug channel (info)
-		print( string.format( ... ))
-	else
-		print( string.format( ... ))
-		io.stdout:flush()
-	end
+function CourseGenerator.info(...)
+    if CourseGenerator.isRunningInGame() then
+        -- TODO: debug channel (info)
+        CpUtil.info(...)
+    else
+        print(string.format(...))
+        io.stdout:flush()
+    end
 end
 
 --- Return true when running in the game
@@ -195,97 +196,96 @@ end
 -- for example, io.flush is not available from within the game.
 --
 function CourseGenerator.isRunningInGame()
-	return g_currentMission ~= nil and not g_currentMission.mock;
+    return g_currentMission ~= nil and not g_currentMission.mock;
 end
 
 function CourseGenerator.getCurrentTime()
-	if CourseGenerator.isRunningInGame() then
-		return g_currentMission.time
-	else
-		return os.time()
-	end
+    if CourseGenerator.isRunningInGame() then
+        return g_currentMission.time
+    else
+        return os.time()
+    end
 end
 --- Function to convert between CP/Giants coordinate representations
 -- and the course generator conventional x/y coordinates.
 --
-function CourseGenerator.pointsToXy( points )
-	local result = {}
-	for _, point in ipairs( points ) do
-		table.insert( result, {x = point.x, y = -point.z})
-	end
-	return result
+function CourseGenerator.pointsToXy(points)
+    local result = {}
+    for _, point in ipairs(points) do
+        table.insert(result, { x = point.x, y = -point.z })
+    end
+    return result
 end
 
-function CourseGenerator.pointsToXz( points )
-	local result = {}
-	for _, point in ipairs( points) do
-		table.insert( result, {x = point.x, z = -point.y})
-	end
-	return result
+function CourseGenerator.pointsToXz(points)
+    local result = {}
+    for _, point in ipairs(points) do
+        table.insert(result, { x = point.x, z = -point.y })
+    end
+    return result
 end
 
 --- Convert an array of points from x/y to x/z in place (also keeping other attributes)
 function CourseGenerator.pointsToXzInPlace(points)
-	for _, point in ipairs(points) do
-		point.z = -point.y
-		-- wipe y as it is a different coordinate in this system
-		point.y = nil
-	end
-	return points
+    for _, point in ipairs(points) do
+        point.z = -point.y
+        -- wipe y as it is a different coordinate in this system
+        point.y = nil
+    end
+    return points
 end
 
 --- Convert an array of points from x/z to x/y in place (also keeping other attributes)
 function CourseGenerator.pointsToXyInPlace(points)
-	for _, point in ipairs(points) do
-		point.y = -point.z
-		point.z = nil
-	end
-	return points
+    for _, point in ipairs(points) do
+        point.y = -point.z
+        point.z = nil
+    end
+    return points
 end
 
-function CourseGenerator.pointToXy( point )
-	return({ x = point.x or point.cx, y = - ( point.z or point.cz )})
+function CourseGenerator.pointToXy(point)
+    return ({ x = point.x or point.cx, y = -(point.z or point.cz) })
 end
 
-function CourseGenerator.pointToXz( point )
-	return({ x = point.x, z = -point.y })
+function CourseGenerator.pointToXz(point)
+    return ({ x = point.x, z = -point.y })
 end
 
-	--- Convert our angle representation (measured from the x axis up in radians)
+--- Convert our angle representation (measured from the x axis up in radians)
 -- into CP's, where 0 is to the south, to our negative y axis.
 --
-function CourseGenerator.toCpAngleDeg( angle )
-	local a = math.deg( angle ) + 90
-	if a > 180 then
-		a = a - 360
-	end
-	return a
+function CourseGenerator.toCpAngleDeg(angle)
+    local a = math.deg(angle) + 90
+    if a > 180 then
+        a = a - 360
+    end
+    return a
 end
 
-function CourseGenerator.toCpAngle( angle )
-	local a = angle + math.pi / 2
-	if a > math.pi then
-		a = a - 2 * math.pi
-	end
-	return a
+function CourseGenerator.toCpAngle(angle)
+    local a = angle + math.pi / 2
+    if a > math.pi then
+        a = a - 2 * math.pi
+    end
+    return a
 end
-
 
 --- Convert the Courseplay angle to the Cartesian representation
 function CourseGenerator.fromCpAngleDeg(angleDeg)
-	local a = angleDeg - 90
-	if a < 0 then
-		a = 360 + a
-	end
-	return math.rad(a)
+    local a = angleDeg - 90
+    if a < 0 then
+        a = 360 + a
+    end
+    return math.rad(a)
 end
 
 function CourseGenerator.fromCpAngle(angle)
-	local a = angle - math.pi / 2
-	if a < 0 then
-		a = 2 * math.pi + a
-	end
-	return a
+    local a = angle - math.pi / 2
+    if a < 0 then
+        a = 2 * math.pi + a
+    end
+    return a
 end
 
 --- Find the starting location coordinates when the user wants to start
@@ -293,52 +293,52 @@ end
 -- as the starting location and let the generator find the closest part
 -- of the field which will be the corner as long as it is more or less
 -- rectangular. Oddly shaped fields may produce odd results.
-function CourseGenerator.getStartingLocation( boundary, startingCorner )
-	local x, y = 0, 0
-	if startingCorner == CourseGenerator.STARTING_LOCATION_NW then
-		x, y = boundary.boundingBox.minX, boundary.boundingBox.maxY
-	elseif startingCorner == CourseGenerator.STARTING_LOCATION_NE then
-		x, y = boundary.boundingBox.maxX, boundary.boundingBox.maxY
-	elseif startingCorner == CourseGenerator.STARTING_LOCATION_SE then
-		x, y = boundary.boundingBox.maxX, boundary.boundingBox.minY
-	elseif startingCorner == CourseGenerator.STARTING_LOCATION_SW then
-		x, y = boundary.boundingBox.minX, boundary.boundingBox.minY
-	end
-	return { x = x, y = y }
+function CourseGenerator.getStartingLocation(boundary, startingCorner)
+    local x, y = 0, 0
+    if startingCorner == CourseGenerator.STARTING_LOCATION_NW then
+        x, y = boundary.boundingBox.minX, boundary.boundingBox.maxY
+    elseif startingCorner == CourseGenerator.STARTING_LOCATION_NE then
+        x, y = boundary.boundingBox.maxX, boundary.boundingBox.maxY
+    elseif startingCorner == CourseGenerator.STARTING_LOCATION_SE then
+        x, y = boundary.boundingBox.maxX, boundary.boundingBox.minY
+    elseif startingCorner == CourseGenerator.STARTING_LOCATION_SW then
+        x, y = boundary.boundingBox.minX, boundary.boundingBox.minY
+    end
+    return { x = x, y = y }
 end
 
-function CourseGenerator.getCompassDirectionText( gameAngleDeg )
-	local compassAngle = math.rad( CourseGenerator.getCompassAngleDeg( gameAngleDeg ))
-	for r = 2, #CourseGenerator.trackDirectionRanges, 1 do
-		if compassAngle >= CourseGenerator.trackDirectionRanges[ r - 1 ].angle and
-			compassAngle < CourseGenerator.trackDirectionRanges[ r ].angle then
-			return CourseGenerator.trackDirectionRanges[ r ].text
-		end
-	end
+function CourseGenerator.getCompassDirectionText(gameAngleDeg)
+    local compassAngle = math.rad(CourseGenerator.getCompassAngleDeg(gameAngleDeg))
+    for r = 2, #CourseGenerator.trackDirectionRanges, 1 do
+        if compassAngle >= CourseGenerator.trackDirectionRanges[r - 1].angle and
+                compassAngle < CourseGenerator.trackDirectionRanges[r].angle then
+            return CourseGenerator.trackDirectionRanges[r].text
+        end
+    end
 end
 
 --- Convert the game direction angles to compass direction
-function CourseGenerator.getCompassAngleDeg( gameAngleDeg )
-	return ( 360 + gameAngleDeg - 90 ) % 360
+function CourseGenerator.getCompassAngleDeg(gameAngleDeg)
+    return (360 + gameAngleDeg - 90) % 360
 end
 
 function CourseGenerator.setCornerParameters(headlandSettings, headlandCornerType)
-	local minSmoothAngle, maxSmoothAngle
-	if headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH then
-		-- do not generate turns on headland
-		headlandSettings.minHeadlandTurnAngleDeg = 150
-		-- use smoothing instead
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(150)
-	elseif headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND then
-		-- generate turns for whatever is left after rounding the corners, for example
-		-- the transitions between headland and up/down rows.
-		headlandSettings.minHeadlandTurnAngleDeg = 75
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(75)
-	else
-		-- generate turns over 75 degrees
-		headlandSettings.minHeadlandTurnAngleDeg = 60
-		-- smooth only below 75 degrees
-		minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(60)
-	end
-	return minSmoothAngle, maxSmoothAngle
+    local minSmoothAngle, maxSmoothAngle
+    if headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_SMOOTH then
+        -- do not generate turns on headland
+        headlandSettings.minHeadlandTurnAngleDeg = 150
+        -- use smoothing instead
+        minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(150)
+    elseif headlandCornerType == CourseGenerator.HEADLAND_CORNER_TYPE_ROUND then
+        -- generate turns for whatever is left after rounding the corners, for example
+        -- the transitions between headland and up/down rows.
+        headlandSettings.minHeadlandTurnAngleDeg = 75
+        minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(75)
+    else
+        -- generate turns over 75 degrees
+        headlandSettings.minHeadlandTurnAngleDeg = 60
+        -- smooth only below 75 degrees
+        minSmoothAngle, maxSmoothAngle = math.rad(25), math.rad(60)
+    end
+    return minSmoothAngle, maxSmoothAngle
 end
