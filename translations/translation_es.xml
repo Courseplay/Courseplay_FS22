@@ -37,7 +37,7 @@
 
 		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Tipo de paca:"/>
 		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Tipo de paca:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="Todas las palas"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="Todas las pacas"/>
 		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="Solo envueltas"/>
 		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="Solo no envueltas"/>
 
