@@ -259,7 +259,7 @@
 		<text name="CP_global_setting_autoRepair_off" 													text="Não conserte"/>
 		<text name="CP_global_setting_autoRepair_less_than_25" 											text="&lt; 25%"/>
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
-		<text name="CP_global_setting_autoRepair_always" 												text="Mantenha-o saudável/>
+		<text name="CP_global_setting_autoRepair_always" 												text="Mantenha-o saudável"/>
 
 		<text name="CP_global_setting_fuelThreshold_title" 												text="Limite de combustível"/>
 		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="O motorista será liberado, se a porcentagem de combustível for menor."/>
