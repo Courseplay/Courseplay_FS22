@@ -423,7 +423,7 @@ function VineScanner:debugSparse(...)
 end
 
 function VineScanner:draw()
-	if g_currentMission.x and CpDebug:isChannelActive(CpDebug.DBG_COURSES, g_currentMission.controlledVehicle) and self:foundVines() then 
+	if g_currentMission.controlledVehicle and CpDebug:isChannelActive(CpDebug.DBG_COURSES, g_currentMission.controlledVehicle) and self:foundVines() then 
 		self:drawSegments(self.lines)
 		self:drawFieldBorder()
 	end
