@@ -520,7 +520,6 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
 		-- is our pipe in the fruit? (assuming pipe is on the left side)
 		local pullBackCourse = self:createPullBackCourse()
 		if pullBackCourse then
-			pullBackCourse:print()
 			self:debug('Pipe in fruit, pulling back to make room for unloading')
 			self:stopForUnload(self.states.PULLING_BACK_FOR_UNLOAD, true)
 			self.courseAfterPullBack = self.course
@@ -1059,7 +1058,7 @@ end
 function AIDriveStrategyCombineCourse:startTurn(ix)
 	self:debug('Starting a combine turn.')
 
-	self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
+	self.turnContext = TurnContext(self.vehicle, self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
 			self.frontMarkerDistance, self.backMarkerDistance,
 			self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
 
@@ -1485,7 +1484,6 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 		-- little straight section parallel to the trailer to align better
 		self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
 				offsetX, -alignLength + 1, -self.pipeOffsetZ, 1, false)
-		self.selfUnloadAlignCourse:print()
 	local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
 		local done, path
 		-- require full accuracy from pathfinder as we must exactly line up with the trailer

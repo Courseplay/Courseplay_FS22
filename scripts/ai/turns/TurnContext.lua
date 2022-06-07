@@ -50,11 +50,11 @@ TurnContext = CpObject()
 ---@param turnEndForwardOffset number offset of the turn end in meters forward (>0) or back (<0), additional to the
 --- frontMarkerDistance. This can be used to compensate for edge cases like sprayers where the working width is
 --- much bigger than the turning diameter so the implement's tip on the turn inside is ahead of the vehicle.
-function TurnContext:init(course, turnStartIx, turnEndIx, turnNodes, workWidth,
+function TurnContext:init(vehicle, course, turnStartIx, turnEndIx, turnNodes, workWidth,
                           frontMarkerDistance, backMarkerDistance, turnEndSideOffset, turnEndForwardOffset)
     self.debugChannel = CpDebug.DBG_TURN
     self.workWidth = workWidth
-
+    self.vehicle = vehicle
     --- Setting up turn waypoints
     ---
     ---@type Waypoint
@@ -107,7 +107,7 @@ function TurnContext.deleteNodes(turnNodes)
 end
 
 function TurnContext:debug(...)
-    CpUtil.debugFormat(self.debugChannel, 'Turn context: ' .. string.format(...))
+    CpUtil.debugVehicle(self.debugChannel, self.vehicle, 'Turn context: ' .. string.format(...))
 end
 
 --- Get overshoot for a headland corner (how far further we need to drive if the corner isn't 90 degrees

@@ -307,5 +307,5 @@ end
 
 ---@param object table
 function WorkWidthUtil.debug(object, str, ...)
-    CpUtil.debugFormat(CpDebug.DBG_IMPLEMENTS, '%s: ' .. str, CpUtil.getName(object), ...)
+    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, '%s: ' .. str, CpUtil.getName(object), ...)
 end

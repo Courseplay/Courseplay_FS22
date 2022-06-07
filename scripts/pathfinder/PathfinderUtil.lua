@@ -913,7 +913,7 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
 	local rightOk = isValidPath(constraints, path)
 	path = findPath(start, context.trailerHitchLength, 0, safeTurnRadius)
 	local straightOk = isValidPath(constraints, path)
-	CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'Obstacle check: left ok: %s, right ok: %s, straight ok %s',
+	CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, vehicle, 'Obstacle check: left ok: %s, right ok: %s, straight ok %s',
 		tostring(leftOk), tostring(rightOk), tostring(straightOk))
 	return leftOk, rightOk, straightOk
 end

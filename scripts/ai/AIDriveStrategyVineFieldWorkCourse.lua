@@ -71,7 +71,7 @@ function AIDriveStrategyVineFieldWorkCourse:startTurn(ix)
     self.ppc:setShortLookaheadDistance()
 
 
-    self.turnContext = TurnContext(self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
+    self.turnContext = TurnContext(self.vehicle, self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(),
             frontMarkerDistance, -backMarkerDistance, 0, 0)
     self.aiTurn = VineTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
     self.state = self.states.TURNING

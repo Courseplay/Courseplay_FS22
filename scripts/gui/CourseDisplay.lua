@@ -24,7 +24,7 @@ CourseDisplay = CpObject()
 
 function CourseDisplay:init()
 	self.courses = {}
-	print('## Courseplay: setting up signs')
+	CpUtil.debugFormat(CpDebug.DBG_COURSES, '## Courseplay: setting up signs' )
 
 	local globalRootNode = getRootNode()
 
@@ -270,7 +270,6 @@ end
 ---@param isVisible boolean
 ---@param displayMode number show none, all or start/stop only
 function CourseDisplay:setSignsVisibility(courseId, isVisible, displayMode)
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'setting waypoint visibility %s, mode %d', isVisible, displayMode)
 	if self.courses[courseId] == nil or (#self.courses[courseId].current == 0 and #self.courses[courseId].crossing == 0) then
 		return
 	end

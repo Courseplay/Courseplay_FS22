@@ -238,7 +238,7 @@ end
 --- Adds player mouse action event, for global info texts.
 function Courseplay.addPlayerActionEvents(mission)
 	if mission.player then
-		print("Added player input events")
+		CpUtil.debugFormat(CpDebug.DBG_HUD, "Added player input events")
 		mission.player.inputInformation.registrationList[InputAction.CP_TOGGLE_MOUSE] = {
 			text = "",
 			triggerAlways = false,
@@ -320,7 +320,7 @@ end
 function Courseplay:restartSaveGame(saveGameNumber)
 	if g_server then
 		doRestart(true, " -autoStartSavegameId " .. saveGameNumber)
-		Courseplay.info('Restarting savegame %d', saveGameNumber)
+		CpUtil.info('Restarting savegame %d', saveGameNumber)
 	end
 end
 
@@ -453,24 +453,6 @@ end
 
 function Courseplay:cpUnfreeze()
 	g_currentMission.controlledVehicle:unfreezeCp()
-end
-
-
-function Courseplay.info(...)
-	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-	local timestamp = getDate( ":%S")
-	print(string.format('%s [info lp%d] %s', timestamp, updateLoopIndex, string.format( ... )))
-end
-
-function Courseplay.infoVehicle(vehicle, ...)
-	local vehicleName = vehicle and vehicle:getName() or "Unknown vehicle"
-	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
-	local timestamp = getDate( ":%S")
-	print(string.format('%s [info lp%d] %s: %s', timestamp, updateLoopIndex, vehicleName, string.format( ... )))
-end
-
-function Courseplay.error(str, ...)
-	Courseplay.info("error: "..str, ...)
 end
 
 --- Fixes global translations.
