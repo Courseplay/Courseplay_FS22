@@ -108,7 +108,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 		islandBypassMode, centerSettings, fieldMargin
 	)
 
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Course generator returned status %s, ok %s', status, ok)
+	CourseGenerator.debug('Course generator returned status %s, ok %s', status, ok)
 
 	-- return on exception or if the result is not usable
 	if not status or not ok then
@@ -117,7 +117,7 @@ function CourseGeneratorInterface.generate(fieldPolygon,
 
 	--removeRidgeMarkersFromLastTrack(field.course,
 	--	vehicle.cp.courseGeneratorSettings.startOnHeadland:is(CourseGenerator.HEADLAND_START_ON_UP_DOWN_ROWS))
-	local course = Course.createFromGeneratedCourse({}, field.course, workWidth, #field.headlandTracks, multiTools)
+	local course = Course.createFromGeneratedCourse(nil, field.course, workWidth, #field.headlandTracks, multiTools)
 	course:setFieldPolygon(fieldPolygon)
 	return true, course
 end
@@ -162,4 +162,3 @@ function CourseGeneratorInterface.generateVineCourse(
 	)
 					
 end
-

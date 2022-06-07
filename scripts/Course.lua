@@ -268,7 +268,8 @@ function Course:enrichWaypointData(startIx)
 			directionChangeFound = true
 		end
 	end
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle or g_currentMission.controlledVehicle,
+			'Course with %d waypoints created/updated, %.1f meters, %d turns', #self.waypoints, self.length, self.totalTurns)
 end
 
 function Course:calculateSignedRadius(ix)
@@ -1792,7 +1793,7 @@ function Course.createFromGeneratedCourse(vehicle, generatedCourse, workWidth, n
 	for i, wp in ipairs(generatedCourse) do
 		table.insert(waypoints, Waypoint.initFromGeneratedWp(wp, i))
 	end
-	local course = Course(vehicle, waypoints)
+	local course = Course(vehicle or g_currentMission.controlledVehicle, waypoints)
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
@@ -1801,7 +1802,6 @@ end
 
 --- When creating a course from an analytic path, we want to have the direction of the last waypoint correct
 function Course.createFromAnalyticPath(vehicle, path, isTemporary)
-	State3D.printPath(path)
 	local course = Course(vehicle, CourseGenerator.pointsToXzInPlace(path), isTemporary)
 	-- enrichWaypointData rotated the last waypoint in the direction of the second to last,
 	-- correct that according to the analytic path's last waypoint
