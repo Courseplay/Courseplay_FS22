@@ -86,7 +86,7 @@ end
 
 --- Is the bale finder allowed?
 function CpAIBaleFinder:getCanStartCpBaleFinder()
-	return AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
+	return (AIUtil.hasImplementWithSpecialization(self, BaleWrapper) and not AIUtil.hasImplementWithSpecialization(self, Baler)) or
 			AIUtil.hasImplementWithSpecialization(self, BaleLoader) or 
             --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
             AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader") 
