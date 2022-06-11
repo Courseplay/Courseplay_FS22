@@ -106,10 +106,6 @@ function TurnContext.deleteNodes(turnNodes)
     end
 end
 
-function TurnContext:debug(...)
-    CpUtil.debugVehicle(self.debugChannel, self.vehicle, 'Turn context: ' .. string.format(...))
-end
-
 --- Get overshoot for a headland corner (how far further we need to drive if the corner isn't 90 degrees
 --- for full coverage
 function TurnContext:getOvershootForHeadlandCorner()
@@ -482,7 +478,7 @@ function TurnContext:getTurnEndNodeAndOffsets(steeringLength)
 end
 
 function TurnContext:debug(...)
-    CpUtil.debugFormat(self.debugChannel, 'TurnContext: ' .. string.format(...))
+    CpUtil.debugVehicle(self.debugChannel, self.vehicle, 'Turn context: ' .. string.format(...))
 end
 
 function TurnContext:drawDebug()
