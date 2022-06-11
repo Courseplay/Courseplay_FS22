@@ -174,7 +174,7 @@ function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon, jobParameters)
 
         spec.driveStrategies = {}
     end
-	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, 'Bale collect/wrap job, install CP drive strategy for it')
+	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Bale collect/wrap job, install CP drive strategy for it')
     local cpDriveStrategy = AIDriveStrategyFindBales.new()
     cpDriveStrategy:setFieldPolygon(fieldPolygon)
     cpDriveStrategy:setJobParameterValues(jobParameters)
