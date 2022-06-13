@@ -51,7 +51,12 @@ end
 
 function APalletAutoLoaderController:onStart()
     -- turning the autoloader on when CP starts
-    self.autoLoader:SetLoadingState(FS22_aPalletAutoLoader.APalletAutoLoaderLoadingState.RUNNING)
+    self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+end
+
+function APalletAutoLoaderController:onFinished()
+    -- turning the autoloader on when CP starts
+    self.vehicle:raiseAIEvent("onAIFieldWorkerEnd", "onAIImplementEnd")
 end
 
 --- Ignore all already loaded bales when pathfinding
