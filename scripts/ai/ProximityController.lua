@@ -65,26 +65,28 @@ function ProximityController:getDriveData(maxSpeed)
     --- Resets the traffic info text.
     self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
 
-    local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
+    local d, vehicle, objectId, range, deg, dAvg = math.huge, nil, nil, 10, 0
     local pack = self.ppc:isReversing() and self.backwardLookingProximitySensorPack or self.forwardLookingProximitySensorPack
     if pack then
-        d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
+        d, vehicle, objectId, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
         range = pack:getRange()
     end
     local normalizedD = d / (range - self.stopThreshold:get())
     local obstacleAhead = math.abs(deg) < self.angleAheadDeg
-    if d < self.stopThreshold:get() and obstacleAhead then
+    if d < self.stopThreshold:get() and obstacleAhead and vehicle ~= self.vehicle.rootVehicle then
         -- too close, stop
         self:setState(self.states.STOP,
-                string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
+                string.format('Obstacle (%s) ahead, d = %.1f, deg = %.1f, too close, stop.',
+                        ProximitySensor.getObstacleDescription(objectId), d, deg))
         maxSpeed = 0
         self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
-    elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) then
+    elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) and vehicle ~= self.vehicle.rootVehicle then
         -- something in range, reduce speed proportionally when enabled
         local deltaV = maxSpeed - self.minLimitedSpeed
         maxSpeed = self.minLimitedSpeed + normalizedD * deltaV
         self:setState(self.states.SLOW_DOWN,
-                string.format('Obstacle ahead, d = %.1f, deg = %.1f, slowing down to %.1f', d, deg, maxSpeed))
+                string.format('Obstacle (%s) ahead, d = %.1f, deg = %.1f, slowing down to %.1f',
+                        ProximitySensor.getObstacleDescription(objectId), d, deg, maxSpeed))
     else
         self:setState(self.states.NO_OBSTACLE, 'No obstacle')
     end

@@ -328,7 +328,7 @@ end
 function AIDriveStrategyFindBales:isObstacleAhead()
     -- TODO_22 check the proximity sensor first
     if self.forwardLookingProximitySensorPack then
-        local d, vehicle, _, deg, dAvg = self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
+        local d, vehicle, objectId, deg, dAvg = self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
         if d < 1.2 * self.turningRadius then
             self:debug('Obstacle ahead at %.1f m', d)
             return true

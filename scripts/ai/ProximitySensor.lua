@@ -73,7 +73,9 @@ end
 
 function ProximitySensor:update()
     -- already updated in this loop, no need to raycast again
-    if g_updateLoopIndex == self.lastUpdateLoopIndex then return end
+    if g_updateLoopIndex == self.lastUpdateLoopIndex then
+        return
+    end
     self.lastUpdateLoopIndex = g_updateLoopIndex
 
     -- rotate with the steering angle
@@ -135,6 +137,10 @@ function ProximitySensor:getClosestObject()
     return g_currentMission:getNodeObject(self.objectId)
 end
 
+function ProximitySensor:getClosestObjectId()
+    return self.objectId
+end
+
 function ProximitySensor:getClosestRootVehicle()
     if self.objectId then
         local object = g_currentMission:getNodeObject(self.objectId)
@@ -145,25 +151,30 @@ function ProximitySensor:getClosestRootVehicle()
 end
 
 function ProximitySensor:showDebugInfo()
-    if not CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) then return end
+    if not CpDebug:isChannelActive(CpDebug.DBG_TRAFFIC, self.vehicle) then
+        return
+    end
     local text = string.format('%.1f ', self.distanceOfClosestObject)
     if self.objectId then
-        local object = g_currentMission:getNodeObject(self.objectId)
-        if object then
-            if object.getRootVehicle then
-                text = text .. 'vehicle ' .. object:getName()
-            else
-                text = text .. object:getName()
-            end
-        else
-            for key, classId in pairs(ClassIds) do
-                if getHasClassId(self.objectId, classId) then
-                    text = text .. ' ' .. key
-                end
+        text = text .. ProximitySensor.getObstacleDescription(self.objectId)
+    end
+    renderText(0.6, 0.4 + self.yRotation / 10, 0.018, text .. string.format(' %d', math.deg(self.yRotation)))
+end
+
+function ProximitySensor.getObstacleDescription(objectId)
+    local object = g_currentMission:getNodeObject(objectId)
+    local description = 'unknown'
+    if object then
+        description = object:getName()
+    else
+        description = ''
+        for key, classId in pairs(ClassIds) do
+            if getHasClassId(self.objectId, classId) then
+                description = description .. ' ' .. key
             end
         end
     end
-    renderText(0.6, 0.4 + self.yRotation / 10, 0.018, text .. string.format(' %d', math.deg(self.yRotation)))
+    return description
 end
 
 ---@class ProximitySensorPack
@@ -256,13 +267,13 @@ function ProximitySensorPack:setIgnoredVehicle(vehicle, ttlMs)
     self:callForAllSensors(ProximitySensor.setIgnoredVehicle, vehicle, ttlMs)
 end
 
---- @return number, table, number distance of closest object in meters, root vehicle of the closest object,
---- the closest object, average direction of the obstacle in degrees, > 0 right, < 0 left
+--- @return number, table, number, number, number distance of closest object in meters, root vehicle of the closest object,
+--- ID of the closest object, average direction of the obstacle in degrees, > 0 right, < 0 left, average distance
 function ProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
     -- make sure we have the latest info, the sensors will make sure they only raycast once per loop
     self:update()
     local closestDistance = math.huge
-    local closestRootVehicle, closestObject
+    local closestRootVehicle, closestObjectId
     -- weighted average over the different direction, weight depends on how close the closest object is
     local totalWeight, totalDegs, totalDistance = 0, 0, 0
     for _, sensor in ipairs(self.sensors) do
@@ -278,13 +289,13 @@ function ProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
         if d < closestDistance then
             closestDistance = d
             closestRootVehicle = sensor:getClosestRootVehicle()
-            closestObject = sensor:getClosestObject()
+            closestObjectId = sensor:getClosestObjectId()
         end
     end
     if closestRootVehicle == self.vehicle then
         self:adjustForwardPosition()
     end
-    return closestDistance, closestRootVehicle, closestObject, totalDegs / totalWeight, totalDistance / totalWeight
+    return closestDistance, closestRootVehicle, closestObjectId, totalDegs / totalWeight, totalDistance / totalWeight
 end
 
 function ProximitySensorPack:disableRightSide()
@@ -309,8 +320,8 @@ ForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 --- Pack looking forward, all sensors are in the middle of the vehicle
 function ForwardLookingProximitySensorPack:init(vehicle, node, range, height)
     ProximitySensorPack.init(self, 'forward', vehicle, node, range, height,
-            {0, 15, 30, 60, 80, -15, -30, -60, -80},
-            {0,  0,  0,  0,  0,   0,   0,   0,  0})
+            { 0, 15, 30, 60, 80, -15, -30, -60, -80 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0 })
 end
 
 ---@class WideForwardLookingProximitySensorPack : ProximitySensorPack
@@ -319,11 +330,11 @@ WideForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 --- Pack looking forward, but sensors distributed evenly through the width of the vehicle
 function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide forward proximity sensor %.1fm', width)
-    local directionsDeg = {10, 8, 5, 3, 0, -3, -5, -8, -10}
+    local directionsDeg = { 10, 8, 5, 3, 0, -3, -5, -8, -10 }
     local xOffsets = {}
     -- spread them out evenly across the width
     local dx = width / #directionsDeg
-    for xOffset = width / 2 - dx / 2, - width / 2 + dx / 2 - 0.1, - dx do
+    for xOffset = width / 2 - dx / 2, -width / 2 + dx / 2 - 0.1, -dx do
         table.insert(xOffsets, xOffset)
     end
     ProximitySensorPack.init(self, 'wideForward', vehicle, node, range, height,
@@ -336,6 +347,6 @@ BackwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 function BackwardLookingProximitySensorPack:init(vehicle, node, range, height)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating backward proximity sensor')
     ProximitySensorPack.init(self, 'backward', vehicle, node, range, height,
-            {120, 150, 180, -150, -120},
-            {0,     0,   0,    0,    0})
+            { 120, 150, 180, -150, -120 },
+            { 0, 0, 0, 0, 0 })
 end
