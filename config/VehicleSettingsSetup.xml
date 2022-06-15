@@ -26,7 +26,7 @@
 		<!--Open hud with mouse-->
 		<Setting classType="AIParameterBooleanSetting" name="fuelSave" defaultBool="true" isExpertModeOnly="true"/>
 		<!--Stop At End-->
-		<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true" isExpertModeOnly="true"/>
+		<!--<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true" isExpertModeOnly="true"/> turn this setting off for now, as it is not active right now.-->
 		<!--Turn on Field-->
 		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true"/>
 		<!--Avoid Fruit-->
