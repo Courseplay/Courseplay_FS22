@@ -295,6 +295,9 @@ You can define the following custom settings:
     <!--[MODS]-->
 
     <!--Harvester-->
+    <Vehucle name="ClaasCougar1500.xml"
+             workingWidth = "15"
+    />
 
     <!--Implements-->
     <!--Mod: Gregoire Besson SPSL9 -->
