@@ -219,6 +219,14 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
+function AIDriveStrategyCombineCourse:checkDistanceToOtherFieldWorkers()
+	-- do not slow down/stop for convoy while unloading
+	if self.state ~= self.states.UNLOADING_ON_FIELD then
+		self:setMaxSpeed(self.fieldWorkerProximityController:getMaxSpeed(self.settings.convoyDistance:getValue(), self.maxSpeed))
+	end
+end
+
+
 --- Take care of unloading on the field. This could be stopping and waiting for an unloader or
 --- self unloading.
 --- The output of this function is:
