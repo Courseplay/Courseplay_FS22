@@ -176,11 +176,14 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
     self:setAITarget()
     self:limitSpeed()
     self:checkProximitySensors()
-
-    -- keep away from others working on the same course
-    self:setMaxSpeed(self.fieldWorkerProximityController:getMaxSpeed(self.settings.convoyDistance:getValue(), self.maxSpeed))
+    self:checkDistanceToOtherFieldWorkers()
 
     return gx, gz, moveForwards, self.maxSpeed, 100
+end
+
+function AIDriveStrategyFieldWorkCourse:checkDistanceToOtherFieldWorkers()
+    -- keep away from others working on the same course
+    self:setMaxSpeed(self.fieldWorkerProximityController:getMaxSpeed(self.settings.convoyDistance:getValue(), self.maxSpeed))
 end
 
 -- Seems like the Giants AIDriveStrategyCollision needs these variables on the vehicle to be set
