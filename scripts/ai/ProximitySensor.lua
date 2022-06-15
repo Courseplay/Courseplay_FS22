@@ -169,7 +169,7 @@ function ProximitySensor.getObstacleDescription(objectId)
     else
         description = ''
         for key, classId in pairs(ClassIds) do
-            if getHasClassId(self.objectId, classId) then
+            if getHasClassId(objectId, classId) then
                 description = description .. ' ' .. key
             end
         end
