@@ -108,6 +108,16 @@ You can define the following custom settings:
     />
     <!-- Implements -->
 
+    <!--\vehicles\johndeer-->
+    <Vehicle name="planter1775NT.xml"
+             turnRadius = "12"
+    />
+
+    <!--\vehicles\kinze-->
+    <Vehicle name="planter4900.xml"
+             turnRadius = "12"
+    />
+
     <!--\vehicles\agromasz-->
     <Vehicle name="pov5xl.xml"
              raiseLate="true"
