@@ -17,7 +17,7 @@
 
 
 	<!-- AI job menu -->
-		<text name="CP_jobParameters_fieldPosition_title"												text="Field position:" />
+		<text name="CP_jobParameters_fieldPosition_title"												text="Feldposition:" />
 		<text name="CP_jobParameters_subTitle_startAt"													text="Start am:" />
 		<text name="CP_jobParameters_startAt_title"														text="Start am:" />
 		<text name="CP_jobParameters_startAt_tooltip"													text="Wo wird die Arbeit gestartet." />

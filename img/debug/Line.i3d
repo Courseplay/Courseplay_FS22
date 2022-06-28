@@ -2,7 +2,7 @@
 
 <i3D name="untitled" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
   <Asset>
-    <Export program="GIANTS Editor 64bit" version="8.1.0"/>
+    <Export program="GIANTS Editor 64bit" version="9.0.2"/>
   </Asset>
 
   <Files>
@@ -27,7 +27,7 @@
   </Dynamics>
 
   <Scene>
-    <Shape shapeId="1" name="Line" nodeId="7" materialIds="4"/>
+      <Shape shapeId="1" name="Line" nodeId="7" materialIds="4"/>
   </Scene>
 
 </i3D>

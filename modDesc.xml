@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="65">
+<modDesc descVersion="66">
     <version>7.1.0.0</version>
 	<author><![CDATA[Courseplay.devTeam]]></author>
 	<title>
@@ -46,7 +46,7 @@ Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die 
 		</de>
     </description>
 
-	<iconFilename>img/icon_courseplay.dds</iconFilename>
+	<iconFilename>icon_courseplay.dds</iconFilename>
 	<l10n filenamePrefix="translations/translation" />
     <multiplayer supported="true" />
 	
