@@ -11,14 +11,14 @@
 		<page title="$l10n_CP_help_page_extendedJobMenu_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_startJobMenuBase_text"/>
-				<image filename="CP_img/helpmenu/startjobmenuhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/startjobmenuhelp.dds" size="1024 1024" uvs="0px 0px 1020px 895px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_startJobMenuFunctions_text"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_readyJobMenuBase_text"/>
-				<image filename="CP_img/helpmenu/readyjobmenuhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/readyjobmenuhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_readyJobMenuFunctions_text"/>
@@ -31,14 +31,14 @@
 		<page title="$l10n_CP_help_page_courseGenerator_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBase_text"/>
-				<image filename="CP_img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/generatorbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorBaseFunctions_text"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorHeadland_text"/>
-				<image filename="CP_img/helpmenu/generatorheadlandhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/generatorheadlandhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_courseGeneratorHeadlandFunctions_text"/>
@@ -51,14 +51,14 @@
         <page title="$l10n_CP_help_page_courseManager_title">
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerBase_text"/>
-				<image filename="CP_img/helpmenu/managerbasehelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/managerbasehelp.dds" size="1024 1024" uvs="0px 0px 765px 430px"/>
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerBaseFunctions_text"/>
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerEdit_text"/>
-				<image filename="CP_img/helpmenu/manageredithelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/manageredithelp.dds" size="1024 1024" uvs="0px 0px 765px 430px"/>
             </paragraph>
 			<paragraph>
                 <text text="$l10n_CP_help_page_courseManagerEditFunctions_text"/>
@@ -68,7 +68,7 @@
 		<page title="$l10n_CP_help_page_minihud_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="CP_img/helpmenu/minihudhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/minihudhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
             </paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_minihud_text"/>
@@ -78,15 +78,15 @@
 		<page title="$l10n_CP_help_page_customField_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_customFieldRecord_text"/>
-				<image filename="CP_img/helpmenu/recordcustomhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/recordcustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_customFieldDone_text"/>
-				<image filename="CP_img/helpmenu/donecustomhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/donecustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>	
 			<paragraph>	
 				<text text="$l10n_CP_help_page_customFieldDraw_text"/>
-				<image filename="CP_img/helpmenu/drawcustomhelp.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/drawcustomhelp.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
             </paragraph>
 		</page>
 		<!--Courseplay Multitool and Convoy-->
@@ -126,14 +126,14 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="CP_img/helpmenu/regularchange.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/regularchange.dds" size="1024 1024" uvs="0px 0px 1020px 765px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOff_text"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="CP_img/helpmenu/symetricchange.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/symetricchange.dds" size="1024 1024" uvs="0px 0px 1020px 765px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_symetricLaneChangeExampleOn_text"/>
@@ -143,7 +143,7 @@
 		<page title="$l10n_CP_help_page_infoPanel_title">
 			<paragraph>
 				<text text="$l10n_CP_help_page_blank"/>
-				<image filename="CP_img/helpmenu/infopanel.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/infopanel.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_infoPanelBasic_text"/>
@@ -159,19 +159,19 @@
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkGenerator_text"/>
-				<image filename="CP_img/helpmenu/vineworkgen.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/vineworkgen.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkHarvester_text"/>
-				<image filename="CP_img/helpmenu/vineworkharvest.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/vineworkharvest.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkPruner_text"/>
-				<image filename="CP_img/helpmenu/vineworkpruner.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/vineworkpruner.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 			<paragraph>
 				<text text="$l10n_CP_help_page_vineWorkSprayer_text"/>
-				<image filename="CP_img/helpmenu/vineworkspray.dds" size="1024 1024" uvs="0px 0px 768px 512px"/>
+				<image filename="CP_img/helpmenu/vineworkspray.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
 			</paragraph>
 		</page>
 	</category>
