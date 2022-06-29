@@ -455,12 +455,6 @@ function Courseplay:cpUnfreeze()
 	g_currentMission.controlledVehicle:unfreezeCp()
 end
 
---- Fixes global translations.
-function Courseplay.getText(i18n, superFunc, name, customEnv)
-	return superFunc(i18n, name, customEnv or Courseplay.MOD_NAME)
-end
-I18N.getText = Utils.overwrittenFunction(I18N.getText, Courseplay.getText)
-
 --- Registers all cp specializations.
 ---@param typeManager TypeManager
 function Courseplay.register(typeManager)
