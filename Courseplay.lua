@@ -455,12 +455,6 @@ function Courseplay:cpUnfreeze()
 	g_currentMission.controlledVehicle:unfreezeCp()
 end
 
---- Fixes global translations.
-function Courseplay.getText(i18n, superFunc, name, customEnv)
-	return superFunc(i18n, name, customEnv or Courseplay.MOD_NAME)
-end
-I18N.getText = Utils.overwrittenFunction(I18N.getText, Courseplay.getText)
-
 --- Registers all cp specializations.
 ---@param typeManager TypeManager
 function Courseplay.register(typeManager)
@@ -490,15 +484,3 @@ TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, C
 
 g_Courseplay = Courseplay()
 addModEventListener(g_Courseplay)
-
---- Adds possibility to use giants gui functionality with custom image filenames.
---- Every special filename needs to start with CP_ as prefix, with will be ignored for the path.
-local function getFilename(filename, superFunc, baseDir)
-	if Courseplay and string.startsWith(filename, "CP_") then 
-		filename = string.gsub(filename, "CP_", "")
-		return superFunc(filename, g_Courseplay.BASE_DIRECTORY)
-	else
-		return superFunc(filename, baseDir)
-	end
-end
-Utils.getFilename = Utils.overwrittenFunction(Utils.getFilename, getFilename)
