@@ -26,6 +26,16 @@ Lastly cp has a interface for Autodrive, which allows for refilling of a seeder 
 For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
 There you can get help or report any issue you've experienced.
 Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+
+Changelog 7.1.0.0:
+- initial ModHub Release 7.1.0.0
+- Added vine fieldwork
+- The hud is easier to use and a separate gamepad hud was added.
+- Ingame help menu extended with Courseplay topics
+- Complete new course manager integrated into the ingame menu.
+- Works now great with AutoDrive, let Courseplay take care of the field work and use AutoDrive to transport your harvest.
+
+For a complete changelog please visit our Release side on github: https://github.com/Courseplay/Courseplay_FS22/releases
 ]]>
 		</en>
         <de>
@@ -42,6 +52,16 @@ Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmasch
 Für weite Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
 Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
+
+Changelog 7.1.0.0:
+- Initiale ModHub Version 7.1.0.0
+- Reben Helfer hinzugefügt
+- Das HUD ist einfacher zu benutzen und ein seperates gamepad HUD wurde hinzugefügt.
+- Ingame Hilfemenü wurde durch Courseplay Einträge erweitert.
+- Komplett neuer Kurse Manager in das Ingame Menu integriert.
+- Funktioniert jetzt gut mit AutoDrive zusammen, Courseplay übernimmt die Arbeit auf dem Feld und AutoDrive transportiert deine Ernte.
+
+Für eine komplette Changelog, schaut bitte auf unsere Release Seite auf github vorbei: https://github.com/Courseplay/Courseplay_FS22/releases
 ]]>
 		</de>
     </description>
