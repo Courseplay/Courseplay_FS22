@@ -7,7 +7,7 @@
 		<text name="CP_automatic" 																		text="auto" />
 		<text name="CP_unit_meter" 																		text="m" />
 		<text name="CP_unit_foot" 																		text="ft" />
-		<text name="CP_copy"																			text="Copy course: "/>
+		<text name="CP_copy"																			text="Útvonal másolás: "/>
 
 		<!-- User info text -->
 		<text name="CP_infoText"																		text="Courseplay(%s): Ha segítségre van szükséged, hibajelentéseket vagy javításokat szeretnél benyújtani, látogass el a következő oldalra: https://github.com/Courseplay/Courseplay_FS22." />
@@ -35,11 +35,11 @@
 		<text name="CP_jobParameters_laneOffset_left_2"													text="bal (külső)" />
 		<text name="CP_jobParameters_laneOffset_right_2"												text="jobb (külsó)" />
 
-		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Baletype:"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="all bales"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="only wrapped"/>
-		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="only not wrapped"/>
+		<text name="CP_baleFinderJobParameters_subTitle_baleWrapType"									text="Bálatípus:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_title"										text="Bálatípus:"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_all_bales"									text="összes"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales"							text="csak csomagolt"/>
+		<text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales"						text="csak nem csomagolt"/>
 
 		<!-- CP Jobs -->
 		<text name="CP_job_fieldWork"																	text="CP: Terepmunka" />
@@ -50,8 +50,8 @@
 
 		<!-- AI messages -->
 		<text name="CP_ai_messageErrorIsFull" 															text="%s segítő váratlanul abbahagyta a munkát - az eszkőz megtelt!" />
-		<text name="CP_ai_messageError" 																text="AI worker %s has stopped work unexpectedly - left the course!" />
-		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="AI worker %s has stopped work unexpectedly - no bales of selected type found!" />
+		<text name="CP_ai_messageError" 																text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!" />
+		<text name="CP_ai_messageErrorWrongBaleWrapType" 												text="%s segítő váratlanul abbahagyta a munkát - nincs több bála!" />
 
 		<!-- VehicleSettings -->
 		<text name="CP_vehicle_setting_title"															text="CoursePlay jármű beállítások"/>
@@ -238,16 +238,16 @@
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title"							text="Munkagépek száma"/>
 		<text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip"						text="Hány munkagép dolgozik egyszerre ugyanazon a táblán. Részletek a súgóban."/>
 		
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Vines to skip"/>
-		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title"							text="Sor kihagyása"/>
+		<text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip"						text="Akkor használd, ha a szerszám a sor mindkét oldalán megműveli a tőkéket"/>
 
 
 	<!-- GlobalSettings -->
 		<text name="CP_global_setting_title"															text="Általános beállítások"/>
 		<text name="CP_global_setting_subTitle_general"													text="Alapbeállítások"/>
 
-		<text name="CP_global_setting_expertModeActive_title" 											text="Expert mode "/>
-		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Enables/disables expert mode with additional features."/>
+		<text name="CP_global_setting_expertModeActive_title" 											text="Haladó mód"/>
+		<text name="CP_global_setting_expertModeActive_tooltip" 										text="Engedélyezi a haladó módban elérhető beállításokat"/>
 
 		<text name="CP_global_setting_wageModifier_title" 												text="CP segítő bére"/>
 		<text name="CP_global_setting_wageModifier_tooltip" 											text="CP segítő bére a normál segítői bér százalékában"/>
@@ -259,11 +259,11 @@
 		<text name="CP_global_setting_autoRepair_less_than_70" 											text="&lt; 70%"/>
 		<text name="CP_global_setting_autoRepair_always" 												text="Javítsa"/>
 
-		<text name="CP_global_setting_fuelThreshold_title" 												text="Fuel threshold"/>
-		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Driver will be released, if the fuel percentage is less."/>
+		<text name="CP_global_setting_fuelThreshold_title" 												text="Minimum üzemananyagszint"/>
+		<text name="CP_global_setting_fuelThreshold_tooltip" 											text="Segítő megáll, ha ez alá megy az üzemanyagszint"/>
 
-		<text name="CP_global_setting_brokenThreshold_title" 											text="Broken threshold"/>
-		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+		<text name="CP_global_setting_brokenThreshold_title" 											text="Minimum járműállapot"/>
+		<text name="CP_global_setting_brokenThreshold_tooltip" 											text="Segítő leáll, ha a jármű állapota ez alá csökken. 100% soha nem áll le"/>
 
 		<text name="CP_global_setting_subTitle_userSettings"											text="Felhasználói beállítások"/>
 
@@ -336,10 +336,10 @@
 		<text name="CP_infoTexts_needsFilling"  														text="fel kell tölteni"/>
 		<text name="CP_infoTexts_needsUnloading"  														text="üríteni kell"/>
 		<text name="CP_infoTexts_workFinished"															text="készen van"/>
-		<text name="CP_infoTexts_outOfMoney"															text="Out of money"/>
-		<text name="CP_infoTexts_waitForRainToFinish"													text="Waiting for rain to finish"/>
-		<text name="CP_infoTexts_errorStopped"															text="Left the course, stopped"/>
-		<text name="CP_infoTexts_wrongBaleWrapType"														text="Wrong bale type"/>
+		<text name="CP_infoTexts_outOfMoney"															text="elfogyott a pénz"/>
+		<text name="CP_infoTexts_waitForRainToFinish"													text="várja, hogy elálljon az eső"/>
+		<text name="CP_infoTexts_errorStopped"															text="letért az útvonalról, megállt"/>
+		<text name="CP_infoTexts_wrongBaleWrapType"														text="nem jó bálatípus"/>
 		
 	<!--Custom Field-->
 		<text name="CP_customFieldManager_confirm_save"													text="El akarod menteni az útvonalat szántóföldként %s néven?"/>
