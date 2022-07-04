@@ -63,7 +63,7 @@ jobs:
       - name: changed files into json file
         id: get-json
         run: |
-          const output = steps.changed-files.outputs.all_changed_file
+          const output = ${{ steps.changed-files.outputs.all_changed_files }};
           console.log(output);
           core.setOutput("files", JSON.stringify(output));
 
