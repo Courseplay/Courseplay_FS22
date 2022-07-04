@@ -4,12 +4,19 @@ name: Update translations and contributors
 # Controls when the workflow will run
 on: 
   push:
-  #  branches:
-   #   - main
+    branches:
+      - main
     paths:
       - "**/translations/**"
       - "**/config/MasterTranslations.xml"
-      
+  pull_request:
+    branches:
+      - main
+      - 'TranslationFileHandeling' # for test only
+    paths:
+      - "**/translations/**"
+      - "**/config/MasterTranslations.xml"
+
 # The list of jobs this workflow executes
 jobs:
   # Updates the translations
@@ -18,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Setup python
@@ -43,9 +50,15 @@ jobs:
       files: ${{ steps.getcommits.outputs.files }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+      # Pulls the translation changes from above.
+      - name: Pull changes
+        run:
+          git pull origin
       - name: Setup node
         uses: actions/setup-node@v2
         with:
@@ -72,9 +85,15 @@ jobs:
     needs: [get_all_files, update_translations]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+      # Pulls the translation changes from above.
+      - name: Pull changes
+        run:
+          git pull origin
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
