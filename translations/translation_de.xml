@@ -8,7 +8,7 @@
     <!---->
     <!--basic-->
     <!---->
-    <text name="CP_activated" text="test"/>
+    <text name="CP_activated" text="test2"/>
     <text name="CP_deactivated" text="deaktiviert"/>
     <text name="CP_automatic" text="auto"/>
     <text name="CP_unit_meter" text="m"/>
