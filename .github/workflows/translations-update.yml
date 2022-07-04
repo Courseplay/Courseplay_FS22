@@ -103,7 +103,7 @@ jobs:
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
-          node index.js ${{ github.actor }} ${{ join(fromJSON(needs.get_all_files.outputs.files), ' ') }}
+          node index.js ${{ github.actor }} ${{ needs.get_all_files.outputs.files }}
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
