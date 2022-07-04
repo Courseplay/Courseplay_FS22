@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update_translations]
     outputs:
-      files: ${{ steps.get-json.outputs.files }}
+      files: ${{ steps.getJson.outputs.files }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -58,14 +58,14 @@ jobs:
         with:
           node-version: "14"
       - name: Get changed files
-        id: changed-files
+        id: changedFiles
         uses: tj-actions/changed-files@v23
       - name: changed files into json file
-        id: get-json
+        id: getJson
         uses: actions/github-script@v6
         with:
           script: |
-            const output = ${{ steps.changed-files.outputs.all_changed_files }};
+            const output = ${{steps.changedFiles.outputs.all_changed_files}};
             console.log(output);
             core.setOutput("files", JSON.stringify(output));
 
