@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update_translations]
     outputs:
-      files: ${{ steps.getcommits.outputs.files }}
+      files: ${{ steps.get-json.outputs.files }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -63,22 +63,32 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - name: Filter commits of author
-        id: getcommits
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const promises = context.payload.commits
-              .filter(commit => commit.author.username === context.actor)
-              .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id], {
-                silent: true
-              }));
-            const output = (await Promise.all(promises))
-              .flatMap(m => m.stdout.split(/\r?\n/))
-              .map(m => m.trim())
-              .filter(f => f !== "");
-            console.log(output);
-            core.setOutput("files", JSON.stringify(output));
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v23
+      - name: changed files into json file
+        id: get-json
+        run: |
+          const output = steps.changed-files.outputs.all_changed_file
+          console.log(output);
+          core.setOutput("files", JSON.stringify(output));
+
+    #  - name: Filter commits of author
+    #    id: getcommits
+    #    uses: actions/github-script@v6
+    #    with:
+    #      script: |
+    #        const promises = context.payload.commits
+    #          .filter(commit => commit.author.username === context.actor)
+    #          .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id], {
+   #             silent: true
+    #          }));
+    #        const output = (await Promise.all(promises))
+     #         .flatMap(m => m.stdout.split(/\r?\n/))
+      #        .map(m => m.trim())
+       #       .filter(f => f !== "");
+        #    console.log(output);
+         #   core.setOutput("files", JSON.stringify(output));
   update_contributors:
     name: Update contributors
     runs-on: ubuntu-latest
