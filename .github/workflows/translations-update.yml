@@ -62,13 +62,11 @@ jobs:
       - name: Get changed files
         id: changedFiles
         uses: tj-actions/changed-files@v23
-      - name: changed files into json file
-        id: getJson
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const output = ${{steps.changedFiles.outputs.all_changed_files}};
-            console.log(output);
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changedFiles.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
         #    core.setOutput("files", JSON.stringify(output));
 
     #  - name: Filter commits of author
