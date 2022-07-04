@@ -1,3 +1,9 @@
+
+# 1) This workflow formats and updates the translation files.
+# 2) Adds translators to the contributor files.
+
+# Original implementation by: https://github.com/Thodor12
+
 # The workflow name
 name: Update translations and contributors
 
@@ -12,7 +18,6 @@ on:
   pull_request:
     branches:
       - main
-      - 'TranslationFileHandeling' # for test only
     paths:
       - "**/translations/**"
       - "**/config/MasterTranslations.xml"
@@ -47,38 +52,24 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update_translations]
     outputs:
-      files: ${{ steps.getcommits.outputs.files }}
+      files: ${{ steps.changedFiles.outputs.all_changed_files }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
-      # Pulls the translation changes from above.
-      - name: Pull changes
-        run:
-          git pull origin
+          fetch-depth: 2
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - name: Filter commits of author
-        id: getcommits
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const promises = context.payload.commits
-              .filter(commit => commit.author.username === context.actor)
-              .map(commit => exec.getExecOutput("git", ["log", "-p", "-1", "--name-only", "--pretty=format:", commit.id], {
-                silent: true
-              }));
-            const output = (await Promise.all(promises))
-              .flatMap(m => m.stdout.split(/\r?\n/))
-              .map(m => m.trim())
-              .filter(f => f !== "");
-            console.log(output);
-            core.setOutput("files", JSON.stringify(output));
+      - name: Get changed files
+        id: changedFiles
+        uses: tj-actions/changed-files@v23
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changedFiles.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
   update_contributors:
     name: Update contributors
     runs-on: ubuntu-latest
@@ -97,7 +88,7 @@ jobs:
       - name: Create local changes
         run: |
           cd .github/scripts/update-contributors
-          node index.js ${{ github.actor }} ${{ join(fromJSON(needs.get_all_files.outputs.files), ' ') }}
+          node index.js ${{ github.actor }} ${{ needs.get_all_files.outputs.files }}
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
