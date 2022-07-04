@@ -2,7 +2,6 @@
 ### Developers
 * [Tensuko](https://github.com/Tensuko)
 * [pvaiko](https://github.com/pvaiko)
-* [schwiti6190](https://github.com/schwiti6190)
 
 ### Translators
 * Chinese Simplified: [kgdtuu](https://github.com/kgdtuu)
@@ -10,7 +9,7 @@
 * Danish: [o0bonde](https://github.com/o0bonde)
 * Dutch: [Thodor12](https://github.com/Thodor12)
 * French: [Lactic68](https://github.com/Lactic68)
-* German: [RealNeo80](https://github.com/RealNeo80)
+* German: [RealNeo80](https://github.com/RealNeo80), [schwiti6190](https://github.com/schwiti6190)
 * Italian: [Roby1164](https://github.com/Roby1164)
 * Polish: [KITT3000](https://github.com/KITT3000)
 * Portuguese: [Admilson](https://github.com/Admilson)
