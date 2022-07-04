@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
       - name: Pull changes
         run:
-          git pull
+          git pull origin
       - name: Setup python
         uses: actions/setup-python@v2
         with:
