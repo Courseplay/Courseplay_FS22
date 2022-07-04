@@ -92,6 +92,10 @@ function Course:getName()
 	return self.name
 end
 
+function Course:getAllWaypoints()
+	return self.waypoints
+end
+
 function Course:initWaypoints()
 	return setmetatable({}, {
 		-- add a function to clamp the index between 1 and #self.waypoints

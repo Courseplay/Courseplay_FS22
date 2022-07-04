@@ -1,322 +1,362 @@
---[[
-
-Legacy code to display a course in 3D
-
-]]
-local deg, rad = math.deg, math.rad
-
-local signData = {
-	normal = { 10000, 'current',  4.5 }, -- orig height=5
-	start =  {   500, 'current',  4.5 }, -- orig height=3
-	stop =   {   500, 'current',  4.5 }, -- orig height=3
-	wait =   {  1000, 'current',  4.5 }, -- orig height=3
-	unload = {  2000, 'current', 4.0 },
-	cross =  {  2000, 'crossing', 4.0 }
+--- Wrapper for a sign with the attached waypoint line.
+---@class SimpleSign
+SimpleSign = CpObject()
+SimpleSign.TYPES = {
+	NORMAL = 0,
+	START = 1,
+	STOP = 2
 }
-local waypointColors = {
-	regular   = { 1.000, 0.212, 0.000, 1.000 }, -- orange
-	turnStart = { 0.200, 0.900, 0.000, 1.000 }, -- green
-	turnEnd   = { 0.896, 0.000, 0.000, 1.000 } -- red
-}
-
----@class CourseDisplay
-CourseDisplay = CpObject()
-
-function CourseDisplay:init()
-	self.courses = {}
-	CpUtil.debugFormat(CpDebug.DBG_COURSES, '## Courseplay: setting up signs' )
-
-	local globalRootNode = getRootNode()
-
-	self.buffer = {}
-	self.bufferMax = {}
-	self.sections = {}
-	self.heightPos = {}
-	self.protoTypes = {}
-
-	for signType, data in pairs(signData) do
-		self.buffer[signType] =    {}
-		self.bufferMax[signType] = data[1]
-		self.sections[signType] =  data[2]
-		self.heightPos[signType] = data[3]
-		local i3dNode =  g_i3DManager:loadSharedI3DFile( Courseplay.BASE_DIRECTORY .. 'img/signs/' .. signType .. '.i3d')
-		local itemNode = getChildAt(i3dNode, 0)
-		link(globalRootNode, itemNode)
-		setRigidBodyType(itemNode, RigidBodyType.NONE)
-		setTranslation(itemNode, 0, 0, 0)
-		setVisibility(itemNode, false)
-		delete(i3dNode)
-		self.protoTypes[signType] = itemNode
-	end
+function SimpleSign:init(type, node, heightOffset, protoTypes)
+	self.type = type
+	self.node = node
+	self.heightOffset = heightOffset
+	self.protoTypes = protoTypes
 end
 
-function CourseDisplay:delete()
-	for _, courseId in pairs(self.courses) do
-		for _, course in pairs(courseId) do
-			for _, section in pairs(course) do
-				self:deleteSign(section.sign)
-			end
-		end
-	end
-
-	for _,itemNode in pairs(self.protoTypes) do
-		self:deleteSign(itemNode)
-	end
+--- Creates a new line prototype, which can be cloned.
+function SimpleSign.new(type, filename,  heightOffset, protoTypes)
+	local i3dNode =  g_i3DManager:loadSharedI3DFile( Courseplay.BASE_DIRECTORY .. 'img/signs/' .. filename .. '.i3d')
+	local itemNode = getChildAt(i3dNode, 0)
+	link(getRootNode(), itemNode)
+	setRigidBodyType(itemNode, RigidBodyType.NONE)
+	setTranslation(itemNode, 0, 0, 0)
+	setVisibility(itemNode, true)
+	delete(i3dNode)
+	return SimpleSign(type, itemNode, heightOffset, protoTypes)
 end
 
-function CourseDisplay:addSign(courseId, signType, x, z, rotX, rotY, insertIndex, distanceToNext, diamondColor)
-
-	if self.courses[courseId] == nil then
-		-- this is the first sign for this course ID, set it up...
-		self:updateWaypointSigns(courseId, {{x = x, z = z, angle = rotY}})
-	end
-
-	signType = signType or 'normal'
-
-	local sign
-	local signFromBuffer = {}
-	local receivedSignFromBuffer = CourseDisplay:tableMove(self.buffer[signType], signFromBuffer)
-
-	if receivedSignFromBuffer then
-		sign = signFromBuffer[1].sign
-	else
-		sign = clone(self.protoTypes[signType], true)
-	end
-
-	self:setTranslation(sign, signType, x, z)
-	rotX = rotX or 0
-	rotY = rotY or 0
-	setRotation(sign, rad(rotX), rad(rotY), 0)
-	if signType == 'normal' or signType == 'start' or signType == 'wait' then
-		if signType == 'start' or signType == 'wait' then
-			local signPart = getChildAt(sign, 1)
-			setRotation(signPart, rad(-rotX), 0, 0)
-		end
-		if distanceToNext and distanceToNext > 0.01 then
-			self:setWaypointSignLine(sign, distanceToNext, true)
-		else
-			self:setWaypointSignLine(sign, nil, false)
-		end
-	end
-	setVisibility(sign, true)
-
-	local signData = { type = signType, sign = sign, posX = x, posZ = z, rotY = rotY }
-	if diamondColor and signType ~= 'cross' then
-		self:setSignColor(signData, diamondColor)
-	end
-
-	local section = self.sections[signType]
-	insertIndex = insertIndex or (#self.courses[courseId][section] + 1)
-	table.insert(self.courses[courseId][section], insertIndex, signData)
+function SimpleSign:isStartSign()
+	return self.type == self.TYPES.START
 end
 
-function CourseDisplay:moveToBuffer(courseId, vehicleIndex, signData)
-	local signType = signData.type
-	local section = self.sections[signType]
-
-	if #self.buffer[signType] < self.bufferMax[signType] then
-		setVisibility(signData.sign, false)
-		CourseDisplay:tableMove(self.courses[courseId][section], self.buffer[signType], vehicleIndex)
-	else
-		self:deleteSign(signData.sign)
-		self.courses[courseId][section][vehicleIndex] = nil
-	end
-
+function SimpleSign:isStopSign()
+	return self.type == self.TYPES.STOP
 end
 
-function CourseDisplay:setTranslation(sign, signType, x, z)
+function SimpleSign:isNormalSign()
+	return self.type == self.TYPES.NORMAL
+end
+
+function SimpleSign:getNode()
+	return self.node	
+end
+
+function SimpleSign:getLineNode()
+	return getChildAt(self.node, 0)
+end
+
+function SimpleSign:getHeight(x, z)
 	local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 300, z)
-	setTranslation(sign,	 x, terrainHeight + self.heightPos[signType], z)
+	return terrainHeight + self.heightOffset
 end
 
-function CourseDisplay:changeSignType(courseId, vehicleIndex, oldType, newType)
-	local section = self.sections[oldType]
-	local signData = self.courses[courseId][section][vehicleIndex]
-	self:moveToBuffer(courseId, vehicleIndex, signData)
-	self:addSign(courseId, newType, signData.posX, signData.posZ, signData.rotX, signData.rotY, vehicleIndex, nil, 'regular')
+function SimpleSign:translate(x, z)
+	setTranslation(self.node, x, self:getHeight(x, z), z)
 end
 
-function CourseDisplay:setWaypointSignLine(sign, distance, vis)
-	local line = getChildAt(sign, 0)
-	if line ~= 0 then
-		if vis and distance ~= nil then
-			setScale(line, 1, 1, distance)
-		end
-		if vis ~= nil then
-			setVisibility(line, vis)
-		end
+function SimpleSign:rotate(xRot, yRot)
+	setRotation(self.node, xRot, yRot, 0)
+end
+
+function SimpleSign:setVisible(visible)
+	setVisibility(self.node, visible)
+end
+
+function SimpleSign:clone(heightOffset)
+	local newNode = clone(self.node, true)
+	return SimpleSign(self.type, newNode, heightOffset or self.heightOffset)
+end
+
+function SimpleSign:delete()
+	CpUtil.destroyNode(self.node)
+end
+
+function SimpleSign:scaleLine(dist)
+	local line = getChildAt(self.node, 0)
+	if line ~= nil and line ~= 0 then
+		setScale(line, 1, 1, dist)
 	end
 end
 
----@param courseId table any unique identifier for the owner of this course, usually courseId
-function CourseDisplay:updateWaypointSigns(courseId, waypoints, section, idx)
-	if not waypoints then return end
+function SimpleSign:setColor(color)
+	self.color = color
+	local x, y, z, w = unpack(color)
+	setShaderParameter(self.node, 'shapeColor', x, y, z, w, false)
+end
 
-	if self.courses[courseId] == nil then
-		self.courses[courseId] = {current = {}, crossing = {}}
+function SimpleSign:setLineColor(color)
+	local line = getChildAt(self.node, 0)
+	if line ~= nil and line ~= 0 and self.type ~= SimpleSign.TYPES.STOP then
+		self.lineColor = color
+		local x, y, z, w = unpack(color)
+		setShaderParameter(line, 'shapeColor', x, y, z, w, false)
+	end
+end
+
+--- Applies the waypoint rotation and length to the next waypoint.
+function SimpleSign:setWaypointData(wp, np)
+	if wp ~=nil and np ~= nil then
+		local y = self:getHeight(wp.x, wp.z)
+		local ny = self:getHeight(np.x, np.z)
+		local yRot, xRot, dist = 0, 0, 0
+		dist = MathUtil.vector3Length(np.x - wp.x, ny - y, np.z - wp.z)
+		local dx, dy, dz = MathUtil.vector3Normalize(np.x - wp.x, ny - y, np.z - wp.z)
+		if dx == dx and dz == dz then
+			xRot = -math.sin((ny-y)/dist)
+			yRot = MathUtil.getYRotationFromDirection(dx, dz)
+		end	
+		self:rotate(xRot, yRot)
+		self:scaleLine(dist)
+	end
+end
+
+SignPrototypes = CpObject()
+SignPrototypes.HEIGHT_OFFSET = 4.5
+function SignPrototypes:init(heightOffset)
+	heightOffset = heightOffset or SignPrototypes.HEIGHT_OFFSET
+
+	self.protoTypes = {
+		NORMAL = SimpleSign.new(SimpleSign.TYPES.NORMAL, "normal", heightOffset, self),
+		START = SimpleSign.new(SimpleSign.TYPES.START, "start", heightOffset, self),
+		STOP = SimpleSign.new(SimpleSign.TYPES.STOP, "stop", heightOffset, self)
+	}
+	self.signs = {}
+end
+
+function SignPrototypes:getPrototypes()
+	return self.protoTypes
+end
+
+function SignPrototypes:delete()
+	for i, prototype in pairs(self.protoTypes) do 
+		prototype:delete()
+	end
+end
+
+g_signPrototypes = SignPrototypes()
+
+--- A simple 3D course display without a buffer for a single course.
+---@class SimpleCourseDisplay
+SimpleCourseDisplay = CpObject()
+SimpleCourseDisplay.COLORS = {
+	NORMAL   = { 1.000, 0.212, 0.000, 1.000 }, -- orange
+	TURN_START = { 0.200, 0.900, 0.000, 1.000 }, -- green
+	TURN_END   = { 0.896, 0.000, 0.000, 1.000 }, -- red
+}
+
+SimpleCourseDisplay.HEIGHT_OFFSET = 4.5
+
+function SimpleCourseDisplay:init()
+	self.protoTypes = g_signPrototypes:getPrototypes()
+	self.signs = {}
+end
+
+function SimpleCourseDisplay:cloneSign(protoType)
+	return protoType:clone(self.HEIGHT_OFFSET)
+end
+
+function SimpleCourseDisplay:setNormalSign(i)
+	--- Selects the stop waypoint sign.
+	if self.signs[i] == nil then
+		self.signs[i] = self:cloneSign(self.protoTypes.NORMAL)
+	elseif not self.signs[i]:isNormalSign() then 
+		self:deleteSign(self.signs[i])
+		self.signs[i] = self:cloneSign(self.protoTypes.NORMAL)
+	end
+end
+
+--- Applies the waypoint data and the correct sign type.
+function SimpleCourseDisplay:updateWaypoint(i)
+	local wp = self.course.waypoints[i]
+	local np = self.course.waypoints[i + 1]
+	local pp = self.course.waypoints[i - 1]
+	if i == 1 then 
+		--- Selects the start sign.
+		if self.signs[i] == nil then
+			self.signs[i] = self:cloneSign(self.protoTypes.START)
+		elseif not self.signs[i]:isStartSign() then 
+			self:deleteSign(self.signs[i])
+			self.signs[i] = self:cloneSign(self.protoTypes.START)
+		end
+		self.signs[i]:setWaypointData(wp, np)
+	elseif i == self.course:getNumberOfWaypoints() then
+		--- Selects the stop waypoint sign.
+		if self.signs[i] == nil then
+			self.signs[i] = self:cloneSign(self.protoTypes.STOP)
+		elseif not self.signs[i]:isStopSign() then 
+			self:deleteSign(self.signs[i])
+			self.signs[i] = self:cloneSign(self.protoTypes.STOP)
+		end
+		self.signs[i]:setWaypointData(pp, wp)
+	else 
+		--- Selects the normal waypoint sign.
+		self:setNormalSign(i)
+		self.signs[i]:setWaypointData(wp, np)
+	end
+	self.signs[i]:translate(wp.x, wp.z)
+	--- Changes the sign colors.
+	if self.course:isTurnStartAtIx(i) then 
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_START)
+	elseif self.course:isTurnEndAtIx(i) then 
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_END)
+	else
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.NORMAL)
+	end
+end
+
+--- Sets a new course for the display.
+function SimpleCourseDisplay:setCourse(course)
+	self.course = course
+	--- Removes signs that are not needed.
+	for i = #self.signs, course:getNumberOfWaypoints() + 1, -1 do 
+		self.signs[i]:delete()
+		table.remove(self.signs, i)
+	end
+	for i = 1, course:getNumberOfWaypoints() do
+		self:updateWaypoint(i)
+	end
+	
+end
+
+function SimpleCourseDisplay:clearCourse()
+	self.course = nil
+	self:deleteSigns()
+end
+
+--- Updates changes from ix or ix-1 onwards.
+function SimpleCourseDisplay:updateChanges(ix)
+	for i = #self.signs, self.course:getNumberOfWaypoints() + 1, -1 do 
+		self.signs[i]:delete()
+		table.remove(self.signs, i)
+	end
+	ix = ix or 1
+	if ix - 1 > 0 then 
+		ix = ix - 1
+	end
+	for j = ix, self.course:getNumberOfWaypoints() do
+		self:updateWaypoint(j)
+	end
+end
+
+--- Updates changes between waypoints.
+function SimpleCourseDisplay:updateChangesBetween(firstIx, secondIx)
+	for i = #self.signs, self.course:getNumberOfWaypoints() + 1, -1 do 
+		self.signs[i]:delete()
+		table.remove(self.signs, i)
 	end
 
-	section = section or 'all' --section: 'all', 'crossing', 'current'
+	for j = math.max(1, firstIx-1), math.min(self.course:getNumberOfWaypoints(), secondIx + 1) do
+		self:updateWaypoint(j)
+	end
+end
 
-	if section == 'all' or section == 'current' then
-		local neededPoints = #waypoints
-
-		--move not needed ones to buffer
-		if #self.courses[courseId].current > neededPoints then
-			for j=#self.courses[courseId].current, neededPoints+1, -1 do --go backwards so we can safely move/delete
-				local signData = self.courses[courseId].current[j]
-				self:moveToBuffer(courseId, j, signData)
+--- Changes the visibility of the course.
+function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible)
+	if self.course then
+		local numWp = self.course:getNumberOfWaypoints()
+		for j = 1, numWp do
+			if self.signs[j] then 
+				self.signs[j]:setVisible(visible)
+				if not self.signs[j]:isNormalSign() or j == numWp - 1 then 
+					self.signs[j]:setVisible(visible or onlyStartStopVisible)
+				end	
 			end
 		end
-
-		local np
-		for i, wp in pairs(waypoints) do
-    		if idx == nil or i == idx then  -- add this for courseEditor
-    			local neededSignType = 'normal'
-    			if i == 1 then
-    				neededSignType = 'start'
-    			elseif i == #waypoints then
-    				neededSignType = 'stop'
-    			elseif wp.wait or wp.interact then
-    				neededSignType = 'wait'
-    			elseif wp.unload then
-    				neededSignType = 'unload'
-    			end
-
-    			-- direction + angle
-    			if wp.rotX == nil then wp.rotX = 0 end
-    			if wp.y == nil or wp.y == 0 then
-    				wp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wp.x, 0, wp.z)
-    			end
-
-    			if i < #waypoints then
-    				np = waypoints[i + 1]
-    				if np.y == nil or np.y == 0 then
-    					np.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, np.x, 0, np.z)
-    				end
-
-    				wp.dirX, wp.dirY, wp.dirZ = MathUtil.vector3Normalize(np.x - wp.x, np.y - wp.y, np.z - wp.z)
-    				if wp.dToNext <= 0.01 and i > 1 then
-    					local pp = waypoints[i - 1]
-    					wp.dirX, wp.dirY, wp.dirZ = pp.dirX, pp.dirY, pp.dirZ
-    				end
-
-    				local dy = np.y - wp.y
-    				local dist2D = MathUtil.vector2Length(np.x - wp.x, np.z - wp.z)
-    				wp.rotX = -MathUtil.getYRotationFromDirection(dy, dist2D)
-    			else
-    				local pp = waypoints[i - 1]
-					if pp then
-						wp.dirX, wp.dirY, wp.dirZ, wp.dToNext = pp.dirX, pp.dirY, pp.dirZ, 0
-						wp.rotX = 0
-						wp.rotY = pp.rotY
-					end
-    			end
-
-    			local diamondColor = 'regular'
-    			if wp.turnStart then
-    				diamondColor = 'turnStart'
-    			elseif wp.turnEnd then
-    				diamondColor = 'turnEnd'
-    			end
-
-    			local existingSignData = self.courses[courseId].current[i]
-    			if existingSignData ~= nil then
-    				if existingSignData.type == neededSignType then
-    					self:setTranslation(existingSignData.sign, existingSignData.type, wp.x, wp.z)
-    					if wp.rotX and wp.rotY then
-    						setRotation(existingSignData.sign, wp.rotX, wp.rotY, 0)
-    						if neededSignType == 'normal' or neededSignType == 'start' or neededSignType == 'wait' or neededSignType == 'unload' then
-    							if neededSignType == 'start' or neededSignType == 'wait' or neededSignType == 'unload' then
-    								local signPart = getChildAt(existingSignData.sign, 1)
-    								setRotation(signPart, -wp.rotX, 0, 0)
-    							end
-    							self:setWaypointSignLine(existingSignData.sign, wp.dToNext, true)
-    						end
-    						if neededSignType ~= 'cross' then
-    							self:setSignColor(existingSignData, diamondColor)
-    						end
-    					end
-    				else
-    					self:moveToBuffer(courseId, i, existingSignData)
-    					self:addSign(courseId, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
-    				end
-    			else
-    				self:addSign(courseId, neededSignType, wp.x, wp.z, deg(wp.rotX), wp.angle, i, wp.dToNext, diamondColor)
-    			end
-    		end
-		end
-	end
-
-	self:setSignsVisibility(courseId, true, CpVehicleSettings.SHOW_COURSE_ALL)
-end
-
-function CourseDisplay:setSignColor(signData, colorName)
-	if signData.type ~= 'cross' and (signData.color == nil or signData.color ~= colorName) then
-		local x,y,z,w = unpack(waypointColors[colorName])
-		setShaderParameter(signData.sign, 'shapeColor', x,y,z,w, false)
-		signData.color = colorName
 	end
 end
 
-
-function CourseDisplay:deleteSign(sign)
-	unlink(sign)
-	delete(sign)
+function SimpleCourseDisplay:deleteSigns()
+	for i, sign in pairs(self.signs) do 
+		self:deleteSign(sign)
+	end
+	self.signs = {}
 end
 
---- Changes the visibility of the courses attached to the courseId. 
----@param courseId courseId
----@param isVisible boolean
----@param displayMode number show none, all or start/stop only
-function CourseDisplay:setSignsVisibility(courseId, isVisible, displayMode)
-	if self.courses[courseId] == nil or (#self.courses[courseId].current == 0 and #self.courses[courseId].crossing == 0) then
-		return
-	end
+function SimpleCourseDisplay:deleteSign(sign)
+	sign:delete()
+end
 
-	local numSigns = #self.courses[courseId].current
+function SimpleCourseDisplay:delete()
+	self:deleteSigns()
+end
 
-	local vis, isStartEndPoint
-	for k,signData in pairs(self.courses[courseId].current) do
-		vis = false
-		isStartEndPoint = k <= 2 or k >= (numSigns - 2)
+--- 3D course display with buffer
+---@class BufferedCourseDisplay : SimpleCourseDisplay
+BufferedCourseDisplay = CpObject(SimpleCourseDisplay)
+BufferedCourseDisplay.buffer = {}
+BufferedCourseDisplay.bufferMax = 10000
 
-		if (signData.type == 'wait' or signData.type == 'unload') and displayMode >= CpVehicleSettings.SHOW_COURSE_START_STOP then
-			vis = true
-			local line = getChildAt(signData.sign, 0)
-			if displayMode ==CpVehicleSettings.SHOW_COURSE_START_STOP then
-				setVisibility(line, isStartEndPoint and isVisible)
-			else
-				setVisibility(line, isVisible)
-			end
+function BufferedCourseDisplay:setNormalSign(i)
+	local function getNewSign()
+		local sign
+		if #BufferedCourseDisplay.buffer > 0 then 
+			sign = BufferedCourseDisplay.buffer[1] 
+			table.remove(BufferedCourseDisplay.buffer, 1)
+			sign:setVisible(true)
 		else
-			if displayMode ==CpVehicleSettings.SHOW_COURSE_ALL then
-				vis = true
-			elseif displayMode >=CpVehicleSettings.SHOW_COURSE_START_STOP and isStartEndPoint then
-				vis = true
-			end
+			sign = self:cloneSign(self.protoTypes.NORMAL)
 		end
-		setVisibility(signData.sign, vis and isVisible)
+		return sign
+	end
+	if self.signs[i] == nil then
+		self.signs[i] = getNewSign()
+	elseif not self.signs[i]:isNormalSign() then 
+		self.signs[i]:delete()
+		self.signs[i] = getNewSign()
 	end
 end
 
--- legacy function that seems to remove the last element of t1 and append it to t2
--- the original author, as usual, did not bother explaining the purpose
-function CourseDisplay:tableMove(t1, t2, t1_index, t2_index)
-	t1_index = t1_index or (#t1)
-	t2_index = t2_index or (#t2 + 1)
-	if t1[t1_index] == nil then
-		return false
+function BufferedCourseDisplay:deleteSign(sign)
+	if sign:isNormalSign() and #BufferedCourseDisplay.buffer < self.bufferMax then 
+		sign:setVisible(false)
+		table.insert(BufferedCourseDisplay.buffer, sign)
+	else 
+		sign:delete()
 	end
-
-	t2[t2_index] = t1[t1_index]
-	table.remove(t1, t1_index)
-	return t2[t2_index] ~= nil
 end
 
--- Recreate if already exists. This is only for development to recreate the global instance if this
--- file is reloaded while the game is running
-if g_courseDisplay then
-	g_courseDisplay:delete()
-	g_courseDisplay = CourseDisplay()
+function BufferedCourseDisplay.deleteBuffer()
+	for i, sign in pairs(BufferedCourseDisplay.buffer) do 
+		sign:delete()
+	end
+end
+
+
+--- 3D course display for the editor
+---@class EditorCourseDisplay : SimpleCourseDisplay
+EditorCourseDisplay = CpObject(SimpleCourseDisplay)
+EditorCourseDisplay.COLORS = {
+	HOVERED     = {0, 1, 1, 1.000 }, -- blue green
+	SELECTED    = {1, 0, 1, 1.000 },  -- red blue
+	NORMAL_LINE = {0, 1, 1, 1.000 },
+	HEADLAND_LINE = {1, 0, 1, 1.000 },
+	CONNECTING_LINE = {0, 0, 0, 0 } 
+}
+EditorCourseDisplay.HEIGHT_OFFSET = 1
+
+function EditorCourseDisplay:init(editor)
+	SimpleCourseDisplay.init(self)
+	self.editor = editor
+end
+
+function EditorCourseDisplay:setCourse(courseWrapper)
+	self.courseWrapper = courseWrapper
+	SimpleCourseDisplay.setCourse(self, courseWrapper:getCourse())
+end
+
+function EditorCourseDisplay:updateWaypoint(i)
+	SimpleCourseDisplay.updateWaypoint(self, i)
+	if self.courseWrapper:isSelected(i) then 
+		self.signs[i]:setColor(EditorCourseDisplay.COLORS.SELECTED)
+	end
+	if self.courseWrapper:isHovered(i) then 
+		self.signs[i]:setColor(EditorCourseDisplay.COLORS.HOVERED)
+	end
+	self.signs[i]:setLineColor(EditorCourseDisplay.COLORS.NORMAL_LINE)
+	if self.courseWrapper:isHeadland(i) or self.courseWrapper:isOnRowNumber(i) then 
+		self.signs[i]:setLineColor(EditorCourseDisplay.COLORS.HEADLAND_LINE)
+	end
+	if self.courseWrapper:isConnectingTrack(i) then 
+		self.signs[i]:setLineColor(EditorCourseDisplay.COLORS.CONNECTING_LINE)
+	end
 end

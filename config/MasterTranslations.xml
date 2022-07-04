@@ -885,6 +885,10 @@
 			<Text language="de"><![CDATA[Kurs speichern]]></Text>
 			<Text language="en"><![CDATA[Save course]]></Text>
 		</Translation>
+		<Translation name="CP_courseManager_edit_course">
+			<Text language="de"><![CDATA[Kurs Editor öffnen]]></Text>
+			<Text language="en"><![CDATA[Open course editor]]></Text>
+		</Translation>
 		<Translation name="CP_courseManager_clear_current_courses">
 			<Text language="de"><![CDATA[Kurs aus Fahrzeug löschen]]></Text>
 			<Text language="en"><![CDATA[Clear current course]]></Text>
@@ -917,9 +921,19 @@
 			<Text language="de"><![CDATA[Kursname:]]></Text>
 			<Text language="en"><![CDATA[Course name:]]></Text>
 		</Translation>
-		<Translation name="CP_courseManager_deleteWarning">
-			<Text language="de"><![CDATA[Sicher, dass du (%s) löschen möchtest ?]]></Text>
-			<Text language="en"><![CDATA[Are you sure, you want to delete (%s)?]]></Text>
+		<Translation name="CP_courseManager_editCourseWarning">
+			<Text language="de"><![CDATA[Das bearbeiten von Kursen kann zu Problemen führen beim Abfahren des Kurses.
+Dieses sollte nur als Notlösung gemacht werden, falls es mit dem Kursgenerator nicht klappt.
+Der Kurs wird automatisch gespeichert bei schließen des Editors und überschreibt den Kurs.
+]]></Text>
+			<Text language="en"><![CDATA[Course editing might create problems for the course drivers.
+You should only use this tool, when the course generator can't create a good enough course.
+The course is saved automatically on closing of the editor and overrides the selected course.
+]]></Text>
+		</Translation>
+		<Translation name="CP_courseManager_edit_course">
+			<Text language="de"><![CDATA[Kurs Editor öffnen]]></Text>
+			<Text language="en"><![CDATA[Open course editor]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_deleteError">
 			<Text language="de"><![CDATA[Ordner ist nicht leer (%s)!]]></Text>
@@ -952,6 +966,140 @@
 		<Translation name="CP_courseManager_activate">
 			<Text language="de"><![CDATA[aktivieren]]></Text>
 			<Text language="en"><![CDATA[Activate]]></Text>
+		</Translation>
+	</Category>
+	<Category name="Course editor">	
+		<Translation name="CP_editor_course_title">
+			<Text language="de"><![CDATA[Kurseditor]]></Text>
+			<Text language="en"><![CDATA[Course editor]]></Text>
+		</Translation>
+		<Translation name="CP_editor_delete_title">
+			<Text language="de"><![CDATA[Wegpunkte löschen]]></Text>
+			<Text language="en"><![CDATA[Delete waypoints]]></Text>
+		</Translation>
+		<Translation name="CP_editor_delete_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_delete_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_basic_title">
+			<Text language="de"><![CDATA[Basic]]></Text>
+			<Text language="en"><![CDATA[Basic]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_basic_move_title">
+			<Text language="de"><![CDATA[Wegpunkt bewegen]]></Text>
+			<Text language="en"><![CDATA[Move a waypoint]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_basic_move_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_basic_insert_title">
+			<Text language="de"><![CDATA[Wegpunkte einfügen]]></Text>
+			<Text language="en"><![CDATA[Insert waypoints]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_basic_insert_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_basic_insert_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_title">
+			<Text language="de"><![CDATA[Ändert Wegpunkt Attribute]]></Text>
+			<Text language="en"><![CDATA[Change waypoint attributes]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_change_title">
+			<Text language="de"><![CDATA[Wegpunkt Type ändern]]></Text>
+			<Text language="en"><![CDATA[Changes waypoint type]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_change_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeHeadland_title">
+			<Text language="de"><![CDATA[Ändert Vorgewende]]></Text>
+			<Text language="en"><![CDATA[Changes headland]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeHeadland_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeHeadland_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text">
+			<Text language="de"><![CDATA[primary axis]]></Text>
+			<Text language="en"><![CDATA[primary axis]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_title">
+			<Text language="de"><![CDATA[Setzt Überfahrtstrecke]]></Text>
+			<Text language="en"><![CDATA[Sets connecting track]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_title">
+			<Text language="de"><![CDATA[Ändert Bahn Nummer]]></Text>
+			<Text language="en"><![CDATA[Changes row number]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text">
+			<Text language="de"><![CDATA[primary axis]]></Text>
+			<Text language="en"><![CDATA[primary axis]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_title">
+			<Text language="de"><![CDATA[Advanced]]></Text>
+			<Text language="en"><![CDATA[Advanced]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_title">
+			<Text language="de"><![CDATA[Mehrere Wegpunkte bewegen]]></Text>
+			<Text language="en"><![CDATA[Moves multiple waypoints]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_primary_axis_text">
+			<Text language="de"><![CDATA[primary axis]]></Text>
+			<Text language="en"><![CDATA[primary axis]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_title">
+			<Text language="de"><![CDATA[Wegpunkte als Kurve einfügen]]></Text>
+			<Text language="en"><![CDATA[Inserts waypoints as curve]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_primary_text">
+			<Text language="de"><![CDATA[primary]]></Text>
+			<Text language="en"><![CDATA[primary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
+			<Text language="de"><![CDATA[secondary]]></Text>
+			<Text language="en"><![CDATA[secondary]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_primary_axis_text">
+			<Text language="de"><![CDATA[primary axis]]></Text>
+			<Text language="en"><![CDATA[primary axis]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Info texts">	
@@ -1020,6 +1168,10 @@
 		<Translation name="CP_customFieldManager_rename">
 			<Text language="de"><![CDATA[Randkurs umbenennen]]></Text>
 			<Text language="en"><![CDATA[Rename custom field]]></Text>
+		</Translation>
+		<Translation name="CP_customFieldManager_edit">
+			<Text language="de"><![CDATA[Randkurs bearbeiten]]></Text>
+			<Text language="en"><![CDATA[Edit custom field]]></Text>
 		</Translation>
 		<Translation name="CP_customFieldManager_draw">
 			<Text language="de"><![CDATA[Randkurs zeichen]]></Text>

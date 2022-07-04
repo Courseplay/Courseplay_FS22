@@ -105,19 +105,38 @@ function CustomFieldManager:renameField(field,hotspot)
 	})
 end
 
+function CustomFieldManager:editField(fieldToEdit, hotspot)
+    for i, field in pairs(self.fields) do
+        if field == fieldToEdit then
+            local file = self.currentView:getEntryByName(fieldToEdit:getName())
+            if file then 
+                g_courseEditor:activateCustomField(file:getEntity(), fieldToEdit)
+            end
+        end
+    end
+end
+
+function CustomFieldManager:saveField(file, field, forceReload)
+    file:save(CustomField.rootXmlKey, 
+    CustomField.xmlSchema,
+    CustomField.rootXmlKey, 
+    CustomField.saveToXml, 
+    field,
+    field:getName())
+    if forceReload then
+        self:delete()
+        self:load()
+    end
+end
+
 --- Creates a new file with a given name.
 function CustomFieldManager:onClickSaveDialog(clickOk, field)
     local fieldValid = false
     if clickOk then
         CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Saving custom field %s', field:getName())
-        local file,fileCreated = self.currentView:addFile(field:getName())
+        local file, fileCreated = self.currentView:addFile(field:getName())
         if fileCreated then 
-            file:save(CustomField.rootXmlKey, 
-            CustomField.xmlSchema,
-            CustomField.rootXmlKey, 
-            CustomField.saveToXml, 
-            field,
-            field:getName())
+            self:saveField(file, field)
             fieldValid = true
             table.insert(self.fields, field)
             self.fileSystem:refresh()

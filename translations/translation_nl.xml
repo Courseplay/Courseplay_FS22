@@ -254,6 +254,7 @@
     <text name="CP_courseManager_change_mode" text="Modus wijzigen"/>
     <text name="CP_courseManager_load_courses" text="Koers laden"/>
     <text name="CP_courseManager_save_courses" text="Koers opslaan"/>
+    <text name="CP_courseManager_edit_course" text="Open course editor"/>
     <text name="CP_courseManager_clear_current_courses" text="Huidige koers wissen"/>
     <text name="CP_courseManager_create_directory" text="Nieuwe map aanmaken"/>
     <text name="CP_courseManager_move_entry" text="Verplaats item"/>
@@ -262,7 +263,10 @@
     <text name="CP_courseManager_copy_entry" text="Kopieer item"/>
     <text name="CP_courseManager_folder_dialog" text="Map naam:"/>
     <text name="CP_courseManager_course_dialog" text="Koers naam:"/>
-    <text name="CP_courseManager_deleteWarning" text="Weet u zeker dat u (%s) wilt verwijderen?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
+You should only use this tool, when the course generator can't create a good enough course.
+The course is saved automatically on closing of the editor and overrides the selected course.
+"/>
     <text name="CP_courseManager_deleteError" text="Map (%s) is niet leeg!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Bestand bestaat al in doelmap (%s)!"/>
     <text name="CP_courseManager_noAccessError" text="Geen toegang tot de map (%s)!"/>
@@ -271,6 +275,42 @@
     <text name="CP_courseManager_basicSettings" text="Koers interactie."/>
     <text name="CP_courseManager_advancedSettings" text="Wijzig bestanden."/>
     <text name="CP_courseManager_activate" text="Activeren"/>
+    <!---->
+    <!--Course editor-->
+    <!---->
+    <text name="CP_editor_course_title" text="Course editor"/>
+    <text name="CP_editor_delete_title" text="Delete waypoints"/>
+    <text name="CP_editor_delete_primary_text" text="primary"/>
+    <text name="CP_editor_delete_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_title" text="Basic"/>
+    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_title" text="Change waypoint attributes"/>
+    <text name="CP_editor_course_changeAttributes_change_title" text="Changes waypoint type"/>
+    <text name="CP_editor_course_changeAttributes_change_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Changes headland"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_title" text="Sets connecting track"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_title" text="Changes row number"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_title" text="Advanced"/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_axis_text" text="primary axis"/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -293,6 +333,7 @@
     <text name="CP_customFieldManager_confirm_delete" text="Wilt u het aangepaste veld %s verwijderen?"/>
     <text name="CP_customFieldManager_delete" text="Delete custom field"/>
     <text name="CP_customFieldManager_rename" text="Rename custom field"/>
+    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
     <text name="CP_customFieldManager_draw" text="Draw custom field"/>
     <text name="CP_customFieldManager_draw_header" text="Draw custom field lines with right click."/>
     <text name="CP_customFieldManager_save" text="Save custom field"/>

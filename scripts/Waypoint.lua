@@ -101,6 +101,8 @@ function Waypoint:set(wp, cpIndex)
 	self.turnControls = table.copy(wp.turnControls)
 	self.dToNext = wp.dToNext
 	self.yRot = wp.yRot
+
+	self.rawData = wp
 end
 
 --- Set from a generated waypoint (output of the course generator)
@@ -199,6 +201,26 @@ end
 function Waypoint:getDistanceFromNode(node)
 	local x, _, z = getWorldTranslation(node)
 	return self:getDistanceFromPoint(x, z)
+end
+
+function Waypoint:setPosition(x, z, y)
+	self.x = x 
+	self.z = z 
+	if y then 
+		self.y = y 
+	else 
+		self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
+	end
+end
+
+function Waypoint:translate(dx, dz)
+	self.x = self.x + dx
+	self.z = self.z + dz
+	self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.x, 0, self.z)
+end
+
+function Waypoint:clone()
+	return Waypoint(self.rawData)
 end
 
 -- a node related to a waypoint

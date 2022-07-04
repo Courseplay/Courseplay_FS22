@@ -2,7 +2,7 @@
 
 <i3D name="Start" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
   <Asset>
-    <Export program="GIANTS Editor 64bit" version="9.0.1"/>
+    <Export program="GIANTS Editor 64bit" version="9.0.2"/>
   </Asset>
 
   <Files>
@@ -13,12 +13,13 @@
 
 
   <Materials>
-    <Material name="diamond" materialId="5" customShaderId="2">
+    <Material name="diamond" materialId="4" customShaderId="2">
       <Emissivemap fileId="1"/>
       <CustomParameter name="shapeColor" value="1 0.212 0 1"/>
     </Material>
-    <Material name="line" materialId="4">
+    <Material name="line" materialId="32" customShaderId="2">
       <Emissivemap fileId="1"/>
+      <CustomParameter name="shapeColor" value="0 1 1 1"/>
     </Material>
     <Material name="Sign" materialId="6" specularColor="0.247059 1 0.247059">
       <Texture fileId="3"/>
@@ -34,11 +35,11 @@
   </Dynamics>
 
   <Scene>
-      <Shape shapeId="1" name="diamond" clipDistance="175" nodeId="12" materialIds="5" castsShadows="true" receiveShadows="true">
-        <Shape shapeId="2" name="Line" clipDistance="100" nodeId="13" materialIds="4" castsShadows="true" receiveShadows="true"/>
-        <TransformGroup name="StartSign" nodeId="14">
-          <Shape shapeId="3" name="Front" nodeId="15" materialIds="6" castsShadows="true" receiveShadows="true"/>
-          <Shape shapeId="4" name="Back" nodeId="16" materialIds="6" castsShadows="true" receiveShadows="true"/>
+      <Shape shapeId="1" name="diamond" clipDistance="175" nodeId="38" materialIds="4" castsShadows="true" receiveShadows="true">
+        <Shape shapeId="2" name="Line" clipDistance="100" nodeId="39" materialIds="32" castsShadows="true" receiveShadows="true"/>
+        <TransformGroup name="StartSign" nodeId="40">
+          <Shape shapeId="3" name="Front" nodeId="41" materialIds="6" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="4" name="Back" nodeId="42" materialIds="6" castsShadows="true" receiveShadows="true"/>
         </TransformGroup>
       </Shape>
   </Scene>

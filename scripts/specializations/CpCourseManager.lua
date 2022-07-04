@@ -110,12 +110,11 @@ function CpCourseManager:onLoad(savegame)
     self.spec_cpCourseManager  = self["spec_" .. specName]
     local spec = self.spec_cpCourseManager 
     spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
-    spec.courseRecorder = CourseRecorder()
 
     spec.courses = {}
-    
- --   TODO: make this an instance similar to course plot
- --   self.courseDisplay = CourseDisplay() 
+
+    spec.courseDisplay = BufferedCourseDisplay() 
+    spec.courseRecorder = CourseRecorder(spec.courseDisplay)
     g_assignedCoursesManager:registerVehicle(self, self.id)
 
     spec.legacyWaypoints = {}
@@ -265,18 +264,23 @@ function CpCourseManager:hasCourse()
 end
 
 function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
-    g_courseDisplay:setSignsVisibility(self, true, showCourseSetting:getValue());
+    local spec = self.spec_cpCourseManager 
+    spec.courseDisplay:updateVisibility(showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+                                        showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
     if isControlling then
-        g_courseDisplay:setSignsVisibility(self, true, self:getCpSettings().showCourse:getValue());
+        local spec = self.spec_cpCourseManager 
+        spec.courseDisplay:updateVisibility(self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+                                            self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
     end
 end
 
 function CpCourseManager:onLeaveVehicle(wasEntered)
     if wasEntered then
-        g_courseDisplay:setSignsVisibility(self, false, self:getCpSettings().showCourse:getValue());
+        local spec = self.spec_cpCourseManager 
+        spec.courseDisplay:updateVisibility(false, false)
     end
 end
 
@@ -289,15 +293,18 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
         if noEventSend == nil or noEventSend == false then 
             CoursesEvent.sendEvent(self,spec.courses)   
         end
+        if g_client then
+            local spec = self.spec_cpCourseManager 
+            spec.courseDisplay:setCourse(self:getFieldWorkCourse())
+            spec.courseDisplay:updateVisibility(self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+                                                self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
+        end
     else 
         spec.coursePlot:setVisible(false)
         self:rememberCpLastWaypointIx()
+        local spec = self.spec_cpCourseManager 
+        spec.courseDisplay:clearCourse()
     end
-    if g_client then
-        CpCourseManager.updateLegacyWaypoints(self)
-        g_courseDisplay:updateWaypointSigns(self, self:getCpLegacyWaypoints())
-        g_courseDisplay:setSignsVisibility(self, self:getIsControlled(), self:getCpSettings().showCourse:getValue())
-	end
 end
 
 function CpCourseManager:drawCpCoursePlot(map)
@@ -339,6 +346,8 @@ end
 function CpCourseManager:onPreDelete()
     g_assignedCoursesManager:unregisterVehicle(self,self.id)
     CpCourseManager.resetCourses(self)
+    local spec = self.spec_cpCourseManager 
+    spec.courseDisplay:delete()
 end
 
 ------------------------------------------------------------------------

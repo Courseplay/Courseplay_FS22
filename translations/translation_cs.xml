@@ -254,6 +254,7 @@
     <text name="CP_courseManager_change_mode" text="更改模式"/>
     <text name="CP_courseManager_load_courses" text="加载任务"/>
     <text name="CP_courseManager_save_courses" text="保存任务"/>
+    <text name="CP_courseManager_edit_course" text="Open course editor"/>
     <text name="CP_courseManager_clear_current_courses" text="清除当前任务"/>
     <text name="CP_courseManager_create_directory" text="创建新文件夹"/>
     <text name="CP_courseManager_move_entry" text="移动"/>
@@ -262,7 +263,10 @@
     <text name="CP_courseManager_copy_entry" text="复制"/>
     <text name="CP_courseManager_folder_dialog" text="文件夹名称:"/>
     <text name="CP_courseManager_course_dialog" text="任务名称:"/>
-    <text name="CP_courseManager_deleteWarning" text="你确定要删除 (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
+You should only use this tool, when the course generator can't create a good enough course.
+The course is saved automatically on closing of the editor and overrides the selected course.
+"/>
     <text name="CP_courseManager_deleteError" text="文件夹不是空的 (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="文件已经存在于目标文件夹中 (%s)!"/>
     <text name="CP_courseManager_noAccessError" text="无法访问该文件夹 (%s)!"/>
@@ -271,6 +275,42 @@
     <text name="CP_courseManager_basicSettings" text="任务交互。 "/>
     <text name="CP_courseManager_advancedSettings" text="编辑文件。"/>
     <text name="CP_courseManager_activate" text="激活"/>
+    <!---->
+    <!--Course editor-->
+    <!---->
+    <text name="CP_editor_course_title" text="Course editor"/>
+    <text name="CP_editor_delete_title" text="Delete waypoints"/>
+    <text name="CP_editor_delete_primary_text" text="primary"/>
+    <text name="CP_editor_delete_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_title" text="Basic"/>
+    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_title" text="Change waypoint attributes"/>
+    <text name="CP_editor_course_changeAttributes_change_title" text="Changes waypoint type"/>
+    <text name="CP_editor_course_changeAttributes_change_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Changes headland"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_title" text="Sets connecting track"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_title" text="Changes row number"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_title" text="Advanced"/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_axis_text" text="primary axis"/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -293,6 +333,7 @@
     <text name="CP_customFieldManager_confirm_delete" text="要删除自定义田地吗 %s?"/>
     <text name="CP_customFieldManager_delete" text="删除自定义田地"/>
     <text name="CP_customFieldManager_rename" text="重命名自定义田地"/>
+    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
     <text name="CP_customFieldManager_draw" text="绘制自定义田地"/>
     <text name="CP_customFieldManager_draw_header" text="右键绘制自定义田地范围"/>
     <text name="CP_customFieldManager_save" text="保存自定义田地"/>

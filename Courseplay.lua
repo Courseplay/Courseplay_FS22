@@ -105,6 +105,15 @@ function Courseplay:loadMap(filename)
 	--- Ugly hack to get access to the global AutoDrive table, as this global is dependent on the auto drive folder name.
 	self.autoDrive = FS22_AutoDrive and FS22_AutoDrive.AutoDrive
 	CpUtil.info("Auto drive found: %s", tostring(self.autoDrive~=nil))
+
+	g_courseEditor:load()
+end
+
+function Courseplay:deleteMap()
+	g_courseEditor:delete()
+	BufferedCourseDisplay.deleteBuffer()
+	g_signPrototypes:delete()
+	g_customFieldManager:delete()
 end
 
 function Courseplay:setupGui()
@@ -222,7 +231,6 @@ function Courseplay:load()
 	g_customFieldManager = CustomFieldManager(FileSystem(self.customFieldDir, g_currentMission.missionInfo.mapId))
 	--- Adds reference to the custom fields, for extern mod support.
 	g_fieldManager.cpCustomFields = g_customFieldManager.fields
-	g_courseDisplay = CourseDisplay()
 	g_vehicleConfigurations:loadFromXml()
 	g_assignedCoursesManager:registerXmlSchema()
 

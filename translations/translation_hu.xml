@@ -254,6 +254,7 @@
     <text name="CP_courseManager_change_mode" text="Módváltás"/>
     <text name="CP_courseManager_load_courses" text="Útvonal betöltése"/>
     <text name="CP_courseManager_save_courses" text="Útvonal mentése"/>
+    <text name="CP_courseManager_edit_course" text="Open course editor"/>
     <text name="CP_courseManager_clear_current_courses" text="Jelenlegi útvonal törlése"/>
     <text name="CP_courseManager_create_directory" text="Hozzon létre új mappát"/>
     <text name="CP_courseManager_move_entry" text="Bejegyzés áthelyezése"/>
@@ -262,7 +263,10 @@
     <text name="CP_courseManager_copy_entry" text="Bejegyzés másolása"/>
     <text name="CP_courseManager_folder_dialog" text="Mappa neve:"/>
     <text name="CP_courseManager_course_dialog" text="Útvonal neve:"/>
-    <text name="CP_courseManager_deleteWarning" text="Biztos vagy benne, hogy törölni akarod (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
+You should only use this tool, when the course generator can't create a good enough course.
+The course is saved automatically on closing of the editor and overrides the selected course.
+"/>
     <text name="CP_courseManager_deleteError" text="A mappa nem üres (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="A fájl már létezik a célmappában (%s)!"/>
     <text name="CP_courseManager_noAccessError" text="Nincs hozzáférés a mappához (%s)!"/>
@@ -271,6 +275,42 @@
     <text name="CP_courseManager_basicSettings" text="Útvonal kezelés"/>
     <text name="CP_courseManager_advancedSettings" text="Fájlok szerkesztése"/>
     <text name="CP_courseManager_activate" text="Aktiválás"/>
+    <!---->
+    <!--Course editor-->
+    <!---->
+    <text name="CP_editor_course_title" text="Course editor"/>
+    <text name="CP_editor_delete_title" text="Delete waypoints"/>
+    <text name="CP_editor_delete_primary_text" text="primary"/>
+    <text name="CP_editor_delete_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_title" text="Basic"/>
+    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_title" text="Change waypoint attributes"/>
+    <text name="CP_editor_course_changeAttributes_change_title" text="Changes waypoint type"/>
+    <text name="CP_editor_course_changeAttributes_change_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Changes headland"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_title" text="Sets connecting track"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_title" text="Changes row number"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_title" text="Advanced"/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_axis_text" text="primary axis"/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -293,6 +333,7 @@
     <text name="CP_customFieldManager_confirm_delete" text="Törlöd a %s szántóföldet?"/>
     <text name="CP_customFieldManager_delete" text="Szántóföld törlés"/>
     <text name="CP_customFieldManager_rename" text="Szántóföld átnevezés"/>
+    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
     <text name="CP_customFieldManager_draw" text="Szántóföld rajzolás"/>
     <text name="CP_customFieldManager_draw_header" text="Jobbklikkel tudod a szántóföld határait megrajzolni"/>
     <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>

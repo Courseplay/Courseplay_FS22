@@ -1,8 +1,9 @@
 ---@class CourseRecorder
 CourseRecorder = CpObject()
 
-function CourseRecorder:init()
+function CourseRecorder:init(courseDisplay)
     self.recording = false
+    self.courseDisplay = courseDisplay
 end
 
 function CourseRecorder:debug(...)
@@ -12,12 +13,12 @@ end
 function CourseRecorder:update()
     if not self.recording then return end
     local waypoint = self:getVehiclePositionAsWaypoint()
-    local previousWaypoint = self.waypoints[#self.waypoints]
+    local previousWaypoint = self.course:getWaypoint(self.course:getNumberOfWaypoints())
     local dist = previousWaypoint:getDistanceFromVehicle(self.vehicle)
     local angleDiff = math.abs(waypoint.yRot - previousWaypoint.yRot)
     if dist > 5 or angleDiff > math.rad(10) then
         self:addWaypoint(waypoint)
-        self:debug('Recorded waypoint %d.', #self.waypoints)
+        self:debug('Recorded waypoint %d.', self.course:getNumberOfWaypoints())
     end
 end
 
@@ -25,16 +26,15 @@ function CourseRecorder:start(vehicle)
     self.recording = true
     self.vehicle = vehicle
     self:debug('Course recording started')
-    self.waypoints = {}
+    self.course = Course(vehicle, {})
+    self.courseDisplay:setCourse(self.course)
     self:addWaypoint(self:getVehiclePositionAsWaypoint())
-    g_courseDisplay:updateWaypointSigns(self, self.waypoints)
-    g_courseDisplay:setSignsVisibility(self, true, CpVehicleSettings.SHOW_COURSE_ALL)
 end
 
 function CourseRecorder:stop()
     self.recording = false
-    self:debug('Course recording stopped, recorded %d waypoints', #self.waypoints)
-    g_courseDisplay:setSignsVisibility(self, false, CpVehicleSettings.SHOW_COURSE_ALL)
+    self:debug('Course recording stopped, recorded %d waypoints', self.course:getNumberOfWaypoints())
+    self.courseDisplay:clearCourse()
 end
 
 function CourseRecorder:isRecording()
@@ -42,17 +42,16 @@ function CourseRecorder:isRecording()
 end
 
 function CourseRecorder:getRecordedCourse()
-    return Course(self.vehicle, self.waypoints)
+    return self.course
 end
 
 function CourseRecorder:getRecordedWaypoints()
-    return self.waypoints
+    return self.course:getAllWaypoints()
 end
 
 function CourseRecorder:addWaypoint(waypoint)
-    table.insert(self.waypoints, waypoint)
-    g_courseDisplay:addSign(self, nil, waypoint.x, waypoint.z, nil,
-            math.deg(waypoint.yRot), nil, nil, 'regular');
+    self.course:appendWaypoints({waypoint})
+    self.courseDisplay:updateChanges()
 end
 
 function CourseRecorder:getVehiclePositionAsWaypoint()

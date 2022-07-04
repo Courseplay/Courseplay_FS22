@@ -12,12 +12,13 @@
 
 
   <Materials>
-    <Material name="diamond" materialId="5" customShaderId="2">
+    <Material name="diamond" materialId="4" customShaderId="2">
       <Emissivemap fileId="1"/>
-      <CustomParameter name="diffuseColor" value="1 0.212 0 1"/>
+      <CustomParameter name="shapeColor" value="1 0.212 0 1"/>
     </Material>
-    <Material name="line" materialId="4">
+    <Material name="line" materialId="58" customShaderId="2">
       <Emissivemap fileId="1"/>
+      <CustomParameter name="shapeColor" value="0 1 1 1"/>
     </Material>
   </Materials>
 
@@ -30,8 +31,8 @@
   </Dynamics>
 
   <Scene>
-      <Shape shapeId="1" name="Waypoint" clipDistance="100" nodeId="9" materialIds="5" castsShadows="true">
-        <Shape shapeId="2" name="Line" nodeId="10" materialIds="4" castsShadows="true"/>
+      <Shape shapeId="1" name="Waypoint" clipDistance="100" nodeId="62" materialIds="4" castsShadows="true">
+        <Shape shapeId="2" name="Line" nodeId="63" materialIds="58" castsShadows="true"/>
       </Shape>
   </Scene>
 
