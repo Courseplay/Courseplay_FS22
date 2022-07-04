@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <l10n>
   <texts>
-    <!--Swedish translation-->
+    <!--Swedish translation By piplarsson-->
     <!---->
     <!--These translations are automatically reformated on a github push.-->
     <!---->
@@ -13,7 +13,7 @@
     <text name="CP_automatic" text="Automatisk"/>
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="ft"/>
-    <text name="CP_copy" text="Copy course: "/>
+    <text name="CP_copy" text="Kopiera kurs: "/>
     <text name="CP_infoText" text="Courseplay(%s): För hjälp, bug rapport och uppdaterings info, vänligen besök: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Generera en kurs innan du startat ett arbete."/>
     <text name="CP_error_could_not_generate_course" text="Kunde inte generera kursen. Loggen kan ha mer information."/>
@@ -21,13 +21,13 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Fältposition:"/>
+    <text name="CP_jobParameters_fieldPosition_title" text="Fältposition: (Start markör)"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Starta på:"/>
     <text name="CP_jobParameters_startAt_title" text="Starta på:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Vart ska fältarbetet börja"/>
     <text name="CP_jobParameters_startAt_nearest" text="Närmast vägpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Första vägpunkt"/>
-    <text name="CP_jobParameters_startAt_last" text="last waypoint"/>
+    <text name="CP_jobParameters_startAt_last" text="Senaste vägpunkten"/>
     <text name="CP_jobParameters_startAt_unload" text="Lasta av tröska/Sträng"/>
     <text name="CP_jobParameters_startAt_bales" text="Samla in/plastade balar"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Körfältförskjutning:"/>
@@ -43,9 +43,9 @@
     <!---->
     <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Baletype:"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="all bales"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="alla balar"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="bara plastade"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="bara oplastade"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -56,9 +56,9 @@
     <!---->
     <!--AI error messages-->
     <!---->
-    <text name="CP_ai_messageErrorIsFull" text="Ai Arbetare %s har slutat arbeta oväntat - tanken är full!"/>
-    <text name="CP_ai_messageError" text="AI worker %s has stopped work unexpectedly - left the course!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
+    <text name="CP_ai_messageErrorIsFull" text="AI-arbetaren %s har slutat arbeta oväntat - tanken är full!"/>
+    <text name="CP_ai_messageError" text="AI-arbetaren %s har slutat arbeta oväntat - lämnade kursen!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbetaren %s har slutat arbeta oväntat - inga balar av vald typ hittades!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -275,7 +275,7 @@
     <!--Info texts-->
     <!---->
     <text name="CP_infoTexts_isStuck" text="Hjälparen sitter fast"/>
-    <text name="CP_infoTexts_blockedByObject" text="Blocked by an object"/>
+    <text name="CP_infoTexts_blockedByObject" text="Blockerad av ett objekt"/>
     <text name="CP_infoTexts_shouldRefuel" text="Bör tankas"/>
     <text name="CP_infoTexts_needsFuel" text="Behöver tankas"/>
     <text name="CP_infoTexts_needsRepair" text="Behöver repareras"/>
@@ -284,8 +284,8 @@
     <text name="CP_infoTexts_workFinished" text="Slutfört arbetet"/>
     <text name="CP_infoTexts_outOfMoney" text="Slut på pengar"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Väntar på att det ska sluta regna för att slutföra"/>
-    <text name="CP_infoTexts_errorStopped" text="Left the course, stopped"/>
-    <text name="CP_infoTexts_wrongBaleWrapType" text="Wrong bale type"/>
+    <text name="CP_infoTexts_errorStopped" text="Lämnade kursen, stannade"/>
+    <text name="CP_infoTexts_wrongBaleWrapType" text="Fel baltyp"/>
     <!---->
     <!--Custom field manager-->
     <!---->
