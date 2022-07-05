@@ -14,7 +14,7 @@
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="ft"/>
     <text name="CP_copy" text="Copiar Curso:"/>
-    <text name="CP_infoText" text="Courseplay(%s):Para obtener ayuda, informar de errores o notas de parches, visite:https://github.com/Courseplay/Courseplay_FS22."/>
+    <text name="CP_infoText" text="Courseplay(%s): Para obtener ayuda, informar de errores o notas de parches, visite: https://github.com/Courseplay/Courseplay_FS22"/>
     <text name="CP_error_no_course" text="Genera una ruta antes de comenzar el trabajo."/>
     <text name="CP_error_could_not_generate_course" text="No se ha podido generar una ruta. El Log puede contener más información."/>
     <text name="CP_error_not_on_field" text="El objetivo no está en un campo."/>
@@ -57,7 +57,7 @@
     <!--AI error messages-->
     <!---->
     <text name="CP_ai_messageErrorIsFull" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!"/>
-    <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - abandonó el curso!"/>
+    <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Abandonó el curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
     <!---->
     <!--Vehicle settings-->
@@ -226,7 +226,7 @@
     <text name="CP_global_setting_fuelThreshold_title" text="Límite de Combustible"/>
     <text name="CP_global_setting_fuelThreshold_tooltip" text="El conductor será liberado, si el porcentaje de combustible es menor."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Límite de ruptura"/>
-    <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. 100% is off."/>
+    <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. Si es 100% se desactiva."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Ajustes de usuario"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatible con gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud."/>
@@ -314,7 +314,7 @@ También es posible hacer que la cosechadora se descargue en un remolque en/cerc
 Se pueden asignar bordes de campo personalizados para usar en el campo, por ejemplo: en el caso de un prado, que no se reconoce como un campo normal.
 Finalmente CP tiene una interfaz para AutoDrive, lo que permite recargar una sembradora en un silo cercano o descargar un vagón de forraje, etc.
 
-Para más información visite nuestro enlace en GitHub: https://github.com/Courseplay/Courseplay_FS22 .
+Para más información visite nuestro enlace en GitHub: https://github.com/Courseplay/Courseplay_FS22
 Ahí puedes obtener ayuda o reportar cualquier problema que haya experimentado.
 Finalmente, agradecemos a todos los traductores y a nuestra comunidad por informar errores, brindar comentarios y nuevas ideas.
 
