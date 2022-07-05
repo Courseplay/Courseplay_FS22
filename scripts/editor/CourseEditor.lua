@@ -257,7 +257,7 @@ local function buildTerrainSculptBrushes(screen, superFunc, numItems)
 		local categoryName = CourseEditor.CATEGORY_COURSE
 		local category = g_storeManager:getConstructionCategoryByName(categoryName)
 		for j, tabData in ipairs(category.tabs) do 
-			if g_courseEditor.field == nil or j ~= 2 then
+		--	if g_courseEditor.field == nil or j ~= 2 then
 				local tabName = tabData.name
 				local ix = g_storeManager:getConstructionTabByName(tabName, categoryName).index
 				local tab = screen.items[category.index][ix]
@@ -278,7 +278,7 @@ local function buildTerrainSculptBrushes(screen, superFunc, numItems)
 					})
 				end
 			end
-		end
+	--	end
 	else 
 		numItems = superFunc(screen, numItems)
 	end

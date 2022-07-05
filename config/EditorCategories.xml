@@ -5,12 +5,14 @@
 			<Brush name="insert" class="CpBrushInsertWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="move" class="CpBrushMoveWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 		</Tab>
+		<!-- 
 		<Tab name="changeAttributes" iconFilename="img/iconSprite.dds"  refSize="256 512" iconUVs="0 366px 28px 28px">
 			<Brush name="change" class="CpBrushChangeWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="changeHeadland" class="CpBrushChangeHeadlandWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="changeRowNumber" class="CpBrushChangeRowNumberWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="changeConnectingTrack" class="CpBrushChangeConnectingTrackWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 		</Tab>
+	-->
         <Tab name="advanced" iconFilename="img/iconSprite.dds"  refSize="256 512" iconUVs="0 366px 28px 28px">
 			<Brush name="moveExtended" class="CpBrushAdvancedMoveWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="curveInsert" class="CpBrushCurveInsertWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>

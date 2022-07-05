@@ -78,6 +78,14 @@ function SimpleSign:scaleLine(dist)
 	end
 end
 
+function SimpleSign:setBottomLineToGround()
+	local line = getChildAt(self.node, 1)
+	if line ~= nil and line ~= 0 then
+		setVisibility(line, true)
+		setScale(line, 1, 1, 1.5 * self.heightOffset)
+	end
+end
+
 function SimpleSign:setColor(color)
 	self.color = color
 	local x, y, z, w = unpack(color)
@@ -332,7 +340,7 @@ EditorCourseDisplay.COLORS = {
 	HEADLAND_LINE = {1, 0, 1, 1.000 },
 	CONNECTING_LINE = {0, 0, 0, 0 } 
 }
-EditorCourseDisplay.HEIGHT_OFFSET = 1
+EditorCourseDisplay.HEIGHT_OFFSET = 4.5
 
 function EditorCourseDisplay:init(editor)
 	SimpleCourseDisplay.init(self)
@@ -359,4 +367,5 @@ function EditorCourseDisplay:updateWaypoint(i)
 	if self.courseWrapper:isConnectingTrack(i) then 
 		self.signs[i]:setLineColor(EditorCourseDisplay.COLORS.CONNECTING_LINE)
 	end
+	self.signs[i]:setBottomLineToGround()
 end
