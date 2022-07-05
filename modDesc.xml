@@ -23,7 +23,7 @@ It's also possible to have the combine unload in a trailer on/near the field aut
 Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
 Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
+For more information please visit <a href="https://github.com/Courseplay/Courseplay_FS22">github</a>.
 There you can get help or report any issue you've experienced.
 Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
 
@@ -35,7 +35,7 @@ Changelog 7.1.0.0:
 - Complete new course manager integrated into the ingame menu.
 - Works now great with AutoDrive, let Courseplay take care of the field work and use AutoDrive to transport your harvest.
 
-For a complete changelog please visit our Release side on github: https://github.com/Courseplay/Courseplay_FS22/releases
+For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release side</a> on github.
 ]]>
 		</en>
         <de>
@@ -49,7 +49,7 @@ Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anh�
 Eigene Feldränder können aufgezeichnet mit einem Fahrzeug oder auf der Menü Karte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
 
-Für weite Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
+Für weite Informationen, schaut bitte auf <a href="https://github.com/Courseplay/Courseplay_FS22">github</a> vorbei.
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
 Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
 
@@ -61,7 +61,7 @@ Changelog 7.1.0.0:
 - Komplett neuer Kurse Manager in das Ingame Menu integriert.
 - Funktioniert jetzt gut mit AutoDrive zusammen, Courseplay übernimmt die Arbeit auf dem Feld und AutoDrive transportiert deine Ernte.
 
-Für eine komplette Changelog, schaut bitte auf unsere Release Seite auf github vorbei: https://github.com/Courseplay/Courseplay_FS22/releases
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf github vorbei.
 ]]>
 		</de>
     </description>
