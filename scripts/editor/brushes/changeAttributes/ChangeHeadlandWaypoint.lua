@@ -44,11 +44,13 @@ function CpBrushChangeHeadlandWP:onAxisPrimary(inputValue)
 	end
 	self.courseWrapper:setHeadlandMode(self.mode)
 	self.editor:updateChanges(1)
+	self:setInputTextDirty()
 end
 
 function CpBrushChangeHeadlandWP:activate()
 	self.courseWrapper:setHeadlandMode(self.mode)
 	self.editor:updateChanges(1)
+	self:setInputTextDirty()
 end
 
 function CpBrushChangeHeadlandWP:deactivate()
@@ -65,5 +67,6 @@ function CpBrushChangeHeadlandWP:getButtonSecondaryText()
 end
 
 function CpBrushChangeHeadlandWP:getAxisPrimaryText()
-	return self:getTranslation(self.primaryAxisText)
+	local text = self.mode == self.NO_HEADLANDS and self.TRANSLATIONS.NO_HEADLAND or self.mode
+	return self:getTranslation(self.primaryAxisText, text)
 end

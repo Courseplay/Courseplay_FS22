@@ -280,37 +280,37 @@ Der Kurs wird automatisch gespeichert bei schließen des Editors und überschrei
     <!---->
     <text name="CP_editor_course_title" text="Kurseditor"/>
     <text name="CP_editor_delete_title" text="Wegpunkte löschen"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
+    <text name="CP_editor_delete_primary_text" text="Löscht den ausgewählten Wegpunkt."/>
+    <text name="CP_editor_delete_secondary_text" text="Löscht Wegpunkte über, die die Maus gezogen wird."/>
+    <text name="CP_editor_course_basic_title" text="Einfach"/>
     <text name="CP_editor_course_basic_move_title" text="Wegpunkt bewegen"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="Bewegt den ausgewählten Wegpunkt zur Mausposition."/>
     <text name="CP_editor_course_basic_insert_title" text="Wegpunkte einfügen"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="Füngt ein Wegpunkt vor dem ausgewählten Wegpunkt ein."/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="Füngt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_changeAttributes_title" text="Ändert Wegpunkt Attribute"/>
-    <text name="CP_editor_course_changeAttributes_change_title" text="Wegpunkt Type ändern"/>
-    <text name="CP_editor_course_changeAttributes_change_primary_text" text="primary"/>
+    <text name="CP_editor_course_changeAttributes_change_title" text="Wegpunkt als Wendepunkt makieren."/>
+    <text name="CP_editor_course_changeAttributes_change_primary_text" text="Ändert den ausgewählten Wegpunkt zwischen: Normal, Wendepunkt Start und Wendepunkt Ende."/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Ändert Vorgewende"/>
-    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="primary"/>
-    <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="Weißt dem ausgewählten Wegpunkt die Vorgewendenummer zu."/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="Ändert die Vorgewendenummer für Wepunkte über, die die Maus gezogen wird."/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text" text="Ändert die ausgewählte Vorgewende (%s)."/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_noHeadland" text="keine Vorgewende"/>
     <text name="CP_editor_course_changeAttributes_changeConnectingTrack_title" text="Setzt Überfahrtstrecke"/>
-    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text" text="primary"/>
-    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text" text="Markiert den ausgewählten Wegpunkt als Überfahrstrecke."/>
+    <text name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text" text="Makiert Wegpunkte über die mit der Maus gezogen wird als Überfahrstrecke."/>
     <text name="CP_editor_course_changeAttributes_changeRowNumber_title" text="Ändert Bahn Nummer"/>
-    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_text" text="primary"/>
-    <text name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_text" text="Ändert die Bahnnummer des ausgewählten Wegpunktes."/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text" text="Ändert die Bahnnummer für alle Wegpunkte über die mit der Maus gezogen wird."/>
+    <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text" text="Ändert die ausgewählte Bahnnummer(%s)."/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_noRow" text="keine Bahn"/>
     <text name="CP_editor_course_advanced_title" text="Advanced"/>
     <text name="CP_editor_course_advanced_moveExtended_title" text="Mehrere Wegpunkte bewegen"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Wählt zwei Wegpunkte aus und bewegt diese zusammen mit alle da zwischen."/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Setzt die ausgewählten Wegpunkte zurück."/>
     <text name="CP_editor_course_advanced_curveInsert_title" text="Wegpunkte als Kurve einfügen"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Wählt zwei Wegpunkte aus und bewegt diese zusammen mit alle da zwischen."/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Setzt die ausgewählten Wegpunkte zurück."/>
     <!---->
     <!--Info texts-->
     <!---->

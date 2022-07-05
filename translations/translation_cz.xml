@@ -296,6 +296,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="primary"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="secondary"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_noHeadland" text="no headland"/>
     <text name="CP_editor_course_changeAttributes_changeConnectingTrack_title" text="Sets connecting track"/>
     <text name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text" text="primary"/>
     <text name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text" text="secondary"/>
@@ -303,15 +304,14 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_text" text="primary"/>
     <text name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text" text="secondary"/>
     <text name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text" text="primary axis"/>
+    <text name="CP_editor_course_changeAttributes_changeHeadland_noRow" text="no row"/>
     <text name="CP_editor_course_advanced_title" text="Advanced"/>
     <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
     <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
     <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_axis_text" text="primary axis"/>
     <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
     <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
     <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_axis_text" text="primary axis"/>
     <!---->
     <!--Info texts-->
     <!---->

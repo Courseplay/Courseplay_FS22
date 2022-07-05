@@ -2,6 +2,7 @@
 --- Changes a new waypoint at the mouse position.
 ---@class CpBrushChangeRowNumberWP : CpBrush
 CpBrushChangeRowNumberWP = {
+	NO_ROW = 0,
 	TRANSLATIONS = {
 		NO_ROW = "noRow"
 	}
@@ -43,11 +44,13 @@ function CpBrushChangeRowNumberWP:onAxisPrimary(inputValue)
 	end
 	self.courseWrapper:setRowNumberMode(self.mode)
 	self.editor:updateChanges(1)
+	self:setInputTextDirty()
 end
 
 function CpBrushChangeRowNumberWP:activate()
 	self.courseWrapper:setRowNumberMode(self.mode)
 	self.editor:updateChanges(1)
+	self:setInputTextDirty()
 end
 
 function CpBrushChangeRowNumberWP:deactivate()
@@ -64,5 +67,6 @@ function CpBrushChangeRowNumberWP:getButtonSecondaryText()
 end
 
 function CpBrushChangeRowNumberWP:getAxisPrimaryText()
-	return self:getTranslation(self.primaryAxisText)
+	local text = self.mode == self.NO_ROW and self.TRANSLATIONS.NO_ROW or self.mode
+	return self:getTranslation(self.primaryAxisText, text)
 end

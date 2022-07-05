@@ -10,7 +10,6 @@ function CpBrushCurveInsertWP.new(customMt, cursor)
 	self.supportsPrimaryButton = true
 	self.supportsPrimaryDragging = true
 	self.supportsSecondaryButton = true
-	self.supportsPrimaryAxis = true
 	self.delay = g_time
 
 	self.selectedFirstIx = nil
@@ -61,10 +60,6 @@ function CpBrushCurveInsertWP:onButtonSecondary()
 	self.editor:updateChanges(1)
 end
 
-function CpBrushCurveInsertWP:onAxisPrimary()
-	
-end
-
 function CpBrushCurveInsertWP:deactivate()
 	self.courseWrapper:resetSelected()
 	self.editor:updateChanges(1)
@@ -76,8 +71,4 @@ end
 
 function CpBrushCurveInsertWP:getButtonSecondaryText()
 	return self:getTranslation(self.secondaryButtonText)
-end
-
-function CpBrushCurveInsertWP:getAxisPrimaryText()
-	return self:getTranslation(self.primaryAxisText)
 end

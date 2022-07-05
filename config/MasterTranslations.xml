@@ -978,15 +978,15 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Delete waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Löscht den ausgewählten Wegpunkt.]]></Text>
+			<Text language="en"><![CDATA[Deletes the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
+			<Text language="de"><![CDATA[Löscht Wegpunkte über, die die Maus gezogen wird.]]></Text>
+			<Text language="en"><![CDATA[Continues deletion of hovered waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_title">
-			<Text language="de"><![CDATA[Basic]]></Text>
+			<Text language="de"><![CDATA[Einfach]]></Text>
 			<Text language="en"><![CDATA[Basic]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_move_title">
@@ -994,76 +994,84 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Move a waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_move_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Bewegt den ausgewählten Wegpunkt zur Mausposition.]]></Text>
+			<Text language="en"><![CDATA[Moves the waypoint to the mouse position.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_title">
 			<Text language="de"><![CDATA[Wegpunkte einfügen]]></Text>
 			<Text language="en"><![CDATA[Insert waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Füngt ein Wegpunkt vor dem ausgewählten Wegpunkt ein.]]></Text>
+			<Text language="en"><![CDATA[Inserts a waypoint in front of the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
+			<Text language="de"><![CDATA[Füngt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein.]]></Text>
+			<Text language="en"><![CDATA[Inserts a waypoint at the back of the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_title">
 			<Text language="de"><![CDATA[Ändert Wegpunkt Attribute]]></Text>
 			<Text language="en"><![CDATA[Change waypoint attributes]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_change_title">
-			<Text language="de"><![CDATA[Wegpunkt Type ändern]]></Text>
-			<Text language="en"><![CDATA[Changes waypoint type]]></Text>
+			<Text language="de"><![CDATA[Wegpunkt als Wendepunkt makieren.]]></Text>
+			<Text language="en"><![CDATA[Marks a waypoint as turn.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_change_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Ändert den ausgewählten Wegpunkt zwischen: Normal, Wendepunkt Start und Wendepunkt Ende.]]></Text>
+			<Text language="en"><![CDATA[Switches the selected waypoint between: normal, turn start and turn end.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_title">
 			<Text language="de"><![CDATA[Ändert Vorgewende]]></Text>
 			<Text language="en"><![CDATA[Changes headland]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Weißt dem ausgewählten Wegpunkt die Vorgewendenummer zu.]]></Text>
+			<Text language="en"><![CDATA[Assignes the headland number to the selcted waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
+			<Text language="de"><![CDATA[Ändert die Vorgewendenummer für Wepunkte über, die die Maus gezogen wird.]]></Text>
+			<Text language="en"><![CDATA[Continues assigning of the headland number to the hovered waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_primary_axis_text">
-			<Text language="de"><![CDATA[primary axis]]></Text>
-			<Text language="en"><![CDATA[primary axis]]></Text>
+			<Text language="de"><![CDATA[Ändert die ausgewählte Vorgewende (%s).]]></Text>
+			<Text language="en"><![CDATA[Changes the selected headland (%s).]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeHeadland_noHeadland">
+			<Text language="de"><![CDATA[keine Vorgewende]]></Text>
+			<Text language="en"><![CDATA[no headland]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_title">
 			<Text language="de"><![CDATA[Setzt Überfahrtstrecke]]></Text>
 			<Text language="en"><![CDATA[Sets connecting track]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Markiert den ausgewählten Wegpunkt als Überfahrstrecke.]]></Text>
+			<Text language="en"><![CDATA[Changes the selected waypoint to a connecting track.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeConnectingTrack_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
+			<Text language="de"><![CDATA[Makiert Wegpunkte über die mit der Maus gezogen wird als Überfahrstrecke.]]></Text>
+			<Text language="en"><![CDATA[Continues assigning of waypoints to connecting track.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_title">
 			<Text language="de"><![CDATA[Ändert Bahn Nummer]]></Text>
 			<Text language="en"><![CDATA[Changes row number]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Ändert die Bahnnummer des ausgewählten Wegpunktes.]]></Text>
+			<Text language="en"><![CDATA[Changes the row number of the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
+			<Text language="de"><![CDATA[Ändert die Bahnnummer für alle Wegpunkte über die mit der Maus gezogen wird.]]></Text>
+			<Text language="en"><![CDATA[Continues assigning of waypoints with a row number.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeRowNumber_primary_axis_text">
-			<Text language="de"><![CDATA[primary axis]]></Text>
-			<Text language="en"><![CDATA[primary axis]]></Text>
+			<Text language="de"><![CDATA[Ändert die ausgewählte Bahnnummer(%s).]]></Text>
+			<Text language="en"><![CDATA[Changes the selected row number(%s).]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_changeAttributes_changeHeadland_noRow">
+			<Text language="de"><![CDATA[keine Bahn]]></Text>
+			<Text language="en"><![CDATA[no row]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_title">
 			<Text language="de"><![CDATA[Advanced]]></Text>
@@ -1074,32 +1082,24 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Moves multiple waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und bewegt diese zusammen mit alle da zwischen.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoint and moves these with the waypoints in between.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_moveExtended_primary_axis_text">
-			<Text language="de"><![CDATA[primary axis]]></Text>
-			<Text language="en"><![CDATA[primary axis]]></Text>
+			<Text language="de"><![CDATA[Setzt die ausgewählten Wegpunkte zurück.]]></Text>
+			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_title">
 			<Text language="de"><![CDATA[Wegpunkte als Kurve einfügen]]></Text>
 			<Text language="en"><![CDATA[Inserts waypoints as curve]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_primary_text">
-			<Text language="de"><![CDATA[primary]]></Text>
-			<Text language="en"><![CDATA[primary]]></Text>
+			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und bewegt diese zusammen mit alle da zwischen.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoint and moves these with the waypoints in between.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
-			<Text language="de"><![CDATA[secondary]]></Text>
-			<Text language="en"><![CDATA[secondary]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_curveInsert_primary_axis_text">
-			<Text language="de"><![CDATA[primary axis]]></Text>
-			<Text language="en"><![CDATA[primary axis]]></Text>
+			<Text language="de"><![CDATA[Setzt die ausgewählten Wegpunkte zurück.]]></Text>
+			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Info texts">	
