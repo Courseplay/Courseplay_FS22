@@ -10,8 +10,6 @@ name: Update translations and contributors
 # Controls when the workflow will run
 on: 
   push:
-    branches:
-      - main
     paths:
       - "**/translations/**"
       - "**/config/MasterTranslations.xml"
