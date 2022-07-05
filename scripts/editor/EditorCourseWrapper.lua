@@ -274,9 +274,8 @@ function EditorCourseWrapper:updateCurve(firstIx, lastIx, x, z)
 	local np = self.course:getWaypoint(lastIx)
 
 	if wp and np then 
-		local dist = MathUtil.vector2Length(np.x - x,np.z - z) + MathUtil.vector2Length(wp.x - x,wp.z - z)
-								 
-		local dt = 1/dist
+		local dist = (MathUtil.vector2Length(np.x - x,np.z - z) + MathUtil.vector2Length(wp.x - x,wp.z - z))/2					 
+		local dt = 1/(1.5*dist)	
 		local points = {
 			{
 				wp.x,
@@ -298,15 +297,6 @@ function EditorCourseWrapper:updateCurve(firstIx, lastIx, x, z)
 			local p = self:insertWaypointBehind(i)
 			p:setPosition(dx, dz)
 			i = i + 1
-		end
-		--- Cleans points that are to close to each other.
-		for j=i, firstIx, -1 do 
-			local wp = self.course:getWaypoint(j)
-			local pp = self.course:getWaypoint(j - 1)
-			if wp and pp and MathUtil.vector2Length(wp.x - pp.x, wp.z - pp.z) < 0.75 then 
-				table.remove(self.course.waypoints, j)
-				i = i - 1
-			end
 		end
 		return i + 1
 	end
