@@ -265,8 +265,10 @@ end
 
 function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
     local spec = self.spec_cpCourseManager 
-    spec.courseDisplay:updateVisibility(showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
-                                        showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
+    if spec then
+        spec.courseDisplay:updateVisibility(showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+                                            showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
+    end
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
