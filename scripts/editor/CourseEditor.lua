@@ -222,12 +222,14 @@ function CourseEditor:loadFromXml(filename)
 					local brushRefSize = xmlFile:getVector(bKey .. "#refSize", defaultRefSize, 2)
 					local brushIconUVs = GuiUtils.getUVs(xmlFile:getString(bKey .. "#iconUVs", "0 0 1 1"), brushRefSize)
 					local brushTranslation = tabTranslation .. "_" .. brushName
+					local brushIsCourseOnly = xmlFile:getBool(bKey .. "#isCourseOnly", false) 
 					local brushData = {
 						translation = brushTranslation,
 						title = g_i18n:getText(brushTranslation .. "_title", CourseEditor.MOD_NAME),
 						className = brushClass,
 						iconFilename = brushIconFilename,
-						iconUvs = brushIconUVs
+						iconUvs = brushIconUVs,
+						isCourseOnly = brushIsCourseOnly
 					}
 					table.insert(brushes, brushData)
 				end)
@@ -257,11 +259,11 @@ local function buildTerrainSculptBrushes(screen, superFunc, numItems)
 		local categoryName = CourseEditor.CATEGORY_COURSE
 		local category = g_storeManager:getConstructionCategoryByName(categoryName)
 		for j, tabData in ipairs(category.tabs) do 
-		--	if g_courseEditor.field == nil or j ~= 2 then
-				local tabName = tabData.name
-				local ix = g_storeManager:getConstructionTabByName(tabName, categoryName).index
-				local tab = screen.items[category.index][ix]
-				for i, brushData in ipairs(tabData.brushes) do 
+			local tabName = tabData.name
+			local ix = g_storeManager:getConstructionTabByName(tabName, categoryName).index
+			local tab = screen.items[category.index][ix]
+			for i, brushData in ipairs(tabData.brushes) do 
+				if not brushData.isCourseOnly or brushData.isCourseOnly and g_courseEditor.field == nil then
 					numItems = numItems + 1
 					table.insert(tab, {
 						price = 0,
@@ -278,7 +280,7 @@ local function buildTerrainSculptBrushes(screen, superFunc, numItems)
 					})
 				end
 			end
-	--	end
+		end
 	else 
 		numItems = superFunc(screen, numItems)
 	end

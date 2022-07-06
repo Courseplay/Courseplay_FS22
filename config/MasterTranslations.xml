@@ -1013,11 +1013,11 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Ändert Wegpunkt Attribute]]></Text>
 			<Text language="en"><![CDATA[Change waypoint attributes]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_basic_change_title">
+		<Translation name="CP_editor_course_advanced_change_title">
 			<Text language="de"><![CDATA[Wegpunkt als Wendepunkt makieren.]]></Text>
 			<Text language="en"><![CDATA[Marks a waypoint as turn.]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_basic_change_primary_text">
+		<Translation name="CP_editor_course_advanced_change_primary_text">
 			<Text language="de"><![CDATA[Ändert den ausgewählten Wegpunkt zwischen: Normal, Wendepunkt Start und Wendepunkt Ende.]]></Text>
 			<Text language="en"><![CDATA[Switches the selected waypoint between: normal, turn start and turn end.]]></Text>
 		</Translation>

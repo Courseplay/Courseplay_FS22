@@ -15,7 +15,7 @@
         <Tab name="advanced" iconFilename="img/iconSprite.dds"  refSize="256 512" iconUVs="0 366px 28px 28px">
 			<Brush name="moveExtended" class="CpBrushAdvancedMoveWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
 			<Brush name="curveInsert" class="CpBrushCurveInsertWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
-			<Brush name="change" class="CpBrushChangeWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px"/>
+			<Brush name="change" class="CpBrushChangeWP" iconFilename="img/iconSprite.dds" refSize="256 512" iconUVs="0 366px 28px 28px" isCourseOnly="true"/>
 		</Tab>
     </Category>
 </Categories>
