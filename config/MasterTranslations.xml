@@ -1074,7 +1074,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[no row]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_title">
-			<Text language="de"><![CDATA[Advanced]]></Text>
+			<Text language="de"><![CDATA[Erweitert]]></Text>
 			<Text language="en"><![CDATA[Advanced]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_title">
