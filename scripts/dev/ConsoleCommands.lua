@@ -20,7 +20,7 @@ CpConsoleCommands.commands = {
 	{ 'cpSetPathfinderDebug', 'Set pathfinder visual debug level (0-2)', 'cpSetPathfinderDebug' },
 	{ 'cpFreeze', 'Freeze the CP driver', 'cpFreeze' },
 	{ 'cpUnfreeze', 'Unfreeze the CP driver', 'cpUnfreeze' },
-	{ 'cpStopAll', 'Unfreeze the CP driver', 'cpStopAll' },
+	{ 'cpStopAll', 'Stops all cp drivers', 'cpStopAll' },
 }
 
 function CpConsoleCommands:init(devHelper)
