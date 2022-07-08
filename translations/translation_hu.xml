@@ -41,11 +41,11 @@
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
-    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="all bales"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
+    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Bálatípus:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Bálatípus:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="összes"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="csak a csomagoltak"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="csak a nem csomagoltak"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -57,8 +57,8 @@
     <!--AI error messages-->
     <!---->
     <text name="CP_ai_messageErrorIsFull" text="%s segítő váratlanul abbahagyta a munkát - az eszkőz megtelt!"/>
-    <text name="CP_ai_messageError" text="AI worker %s has stopped work unexpectedly - left the course!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
+    <text name="CP_ai_messageError" text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -206,15 +206,15 @@
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right" text="a tőkék jobb oldalán"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title" text="Munkagépek száma"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip" text="Hány munkagép dolgozik egyszerre ugyanazon a táblán. Részletek a súgóban."/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title" text="Vines to skip"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip" text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title" text="Kihagyandó sorok"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip" text="Csak akkor hagyj ki sorokat, ha a szerszám a sor mindkét oldalán dolgozik."/>
     <!---->
     <!--Global settings-->
     <!---->
     <text name="CP_global_setting_title" text="Általános beállítások"/>
     <text name="CP_global_setting_subTitle_general" text="Alapbeállítások"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
+    <text name="CP_global_setting_expertModeActive_title" text="Haladó mód"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Haladó beállítások engedélyezése."/>
     <text name="CP_global_setting_wageModifier_title" text="CP segítő bére"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="CP segítő bére a normál segítői bér százalékában"/>
     <text name="CP_global_setting_autoRepair_title" text="Automatikus javítás"/>
@@ -223,10 +223,10 @@
     <text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%"/>
     <text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%"/>
     <text name="CP_global_setting_autoRepair_always" text="Javítsa"/>
-    <text name="CP_global_setting_fuelThreshold_title" text="Fuel threshold"/>
-    <text name="CP_global_setting_fuelThreshold_tooltip" text="Driver will be released, if the fuel percentage is less."/>
-    <text name="CP_global_setting_brokenThreshold_title" text="Broken threshold"/>
-    <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+    <text name="CP_global_setting_fuelThreshold_title" text="Minimum üzemanagszint"/>
+    <text name="CP_global_setting_fuelThreshold_tooltip" text="A segítő abbahagyja a munkát, ha az üzemanyagszint ez alá csökken."/>
+    <text name="CP_global_setting_brokenThreshold_title" text="Maximum meghibásodás"/>
+    <text name="CP_global_setting_brokenThreshold_tooltip" text="A segítő abbahagyja a munkát, ha a jármű/szerszám ennél jobban meghibásodik. 100% soha nem hagyja abba."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Felhasználói beállítások"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepaddal használható HUD"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Használja a gamepaddal is vezérelhető HUD-ot"/>
@@ -275,17 +275,17 @@
     <!--Info texts-->
     <!---->
     <text name="CP_infoTexts_isStuck" text="elakadt"/>
-    <text name="CP_infoTexts_blockedByObject" text="Blocked by an object"/>
+    <text name="CP_infoTexts_blockedByObject" text="valamiben elakadt"/>
     <text name="CP_infoTexts_shouldRefuel" text="hamarosan tankolni kell"/>
     <text name="CP_infoTexts_needsFuel" text="tankolni kell"/>
     <text name="CP_infoTexts_needsRepair" text="javítani kell"/>
     <text name="CP_infoTexts_needsFilling" text="fel kell tölteni"/>
     <text name="CP_infoTexts_needsUnloading" text="üríteni kell"/>
     <text name="CP_infoTexts_workFinished" text="készen van"/>
-    <text name="CP_infoTexts_outOfMoney" text="Out of money"/>
-    <text name="CP_infoTexts_waitForRainToFinish" text="Waiting for rain to finish"/>
-    <text name="CP_infoTexts_errorStopped" text="Left the course, stopped"/>
-    <text name="CP_infoTexts_wrongBaleWrapType" text="Wrong bale type"/>
+    <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
+    <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
+    <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
+    <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
     <!---->
     <!--Custom field manager-->
     <!---->
