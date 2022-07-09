@@ -619,6 +619,28 @@ Das Tool hat einen automatischen Offset, damit der Traktor zwischen den Reben f�
 Die Spritze arbeitet neben den Reben und muss entweder links oder rechts von den Reben fahren.
 Da die Spritze die Reben links und rechts bearbeitet, kann man eine Reihe überspringen.
 "/>
+    <text name="CP_help_page_editor_title" text="Kurs Editor"/>
+    <text name="CP_help_page_editorGeneral_text" text="
+Mit dem Kurs Editor können Kurse und erstellte Feldränder bearbeitet werden.
+Die geladenen Kurse werden automatisch gespeichtert/überschrieben, wenn der Editor geschlossen wird.
+
+1) Um ein Feldrand zu bearbeiten, muss dieser in the Helfer Menü ausgewählt werden.
+2) Um einen Kurs zu bearbeiten, muss dieser im Kursmanager ausgewählt sein.
+   Dieses klappt nur für gespeicherte Kurse und in dem aktuellen Fahrzeug darf kein Kurs geladen sein. 
+"/>
+    <text name="CP_help_page_editorBasic_text" text="
+Unter der Basic Kategorie gibt es:
+1) Ausgewählten Wegpunkt zur Pinselposition bewegen.
+2) Wegpunkte vor oder hinter einem ausgewählten Wegpunkt einfügen.
+
+Löschen von Wegpunkten kann mit der roten Löschen Taste gemacht werden.
+"/>
+    <text name="CP_help_page_editorAdvanced_text" text="
+Unter der Erweiterten Kategorie gibt es:
+1) Ein Pinsel um mehere Wegpunkte zu bewegen.
+2) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
+3) Ein Pinsel um das Wendepunkt Attribut eines Wegpunktes anzupassen(nur für Kurse und nicht Feldränder).&#9;&#9;&#9;
+&#9;&#9;&#9;&#9;"/>
     <!---->
     <!--Input bindings-->
     <!---->
