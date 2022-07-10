@@ -1885,7 +1885,7 @@ Under the basic category are:
 2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
 
 Deleting of waypoints can be done with the red delete button.
-				]]></Text>
+]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_editorAdvanced_text">
 			<Text language="de"><![CDATA[
@@ -1893,13 +1893,13 @@ Unter der Erweiterten Kategorie gibt es:
 1) Ein Pinsel um mehere Wegpunkte zu bewegen.
 2) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
 3) Ein Pinsel um das Wendepunkt Attribut eines Wegpunktes anzupassen(nur für Kurse und nicht Feldränder).			
-				]]></Text>
+]]></Text>
 			<Text language="en"><![CDATA[
 Under the advanced category are:
 1) A brush to move multiple waypoints in between to selected waypoints.
 2) A brush to insert a curve of waypoints between to selected waypoints.
 3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
-				]]></Text>
+]]></Text>
 		</Translation>
 
 	</Category>
