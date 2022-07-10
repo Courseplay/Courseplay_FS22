@@ -286,8 +286,8 @@ Der Kurs wird automatisch gespeichert bei schließen des Editors und überschrei
     <text name="CP_editor_course_basic_move_title" text="Wegpunkt bewegen"/>
     <text name="CP_editor_course_basic_move_primary_text" text="Bewegt den ausgewählten Wegpunkt zur Mausposition."/>
     <text name="CP_editor_course_basic_insert_title" text="Wegpunkte einfügen"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="Füngt ein Wegpunkt vor dem ausgewählten Wegpunkt ein."/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="Füngt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein."/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein."/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="Fügt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_changeAttributes_title" text="Ändert Wegpunkt Attribute"/>
     <text name="CP_editor_course_advanced_change_title" text="Wegpunkt als Wendepunkt makieren."/>
     <text name="CP_editor_course_advanced_change_primary_text" text="Ändert den ausgewählten Wegpunkt zwischen: Normal, Wendepunkt Start und Wendepunkt Ende."/>
