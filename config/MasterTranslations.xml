@@ -1002,11 +1002,11 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Insert waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_primary_text">
-			<Text language="de"><![CDATA[Füngt ein Wegpunkt vor dem ausgewählten Wegpunkt ein.]]></Text>
+			<Text language="de"><![CDATA[Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein.]]></Text>
 			<Text language="en"><![CDATA[Inserts a waypoint in front of the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_secondary_text">
-			<Text language="de"><![CDATA[Füngt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein.]]></Text>
+			<Text language="de"><![CDATA[Fügt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein.]]></Text>
 			<Text language="en"><![CDATA[Inserts a waypoint at the back of the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_title">
