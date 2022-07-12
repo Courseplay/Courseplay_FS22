@@ -286,7 +286,7 @@ Der Kurs wird automatisch gespeichert bei schließen des Editors und überschrei
     <text name="CP_editor_course_basic_move_title" text="Wegpunkt bewegen"/>
     <text name="CP_editor_course_basic_move_primary_text" text="Bewegt den ausgewählten Wegpunkt durch festhalten der Maustaste."/>
     <text name="CP_editor_course_basic_insert_title" text="Wegpunkte einfügen"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="Fügt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein."/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="Fügt einen Wegpunkt nach dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_basic_insert_secondary_text" text="Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_changeAttributes_title" text="Ändert Wegpunkt Attribute"/>
     <text name="CP_editor_course_advanced_change_title" text="Wegpunkt als Wendepunkt makieren."/>
@@ -307,10 +307,10 @@ Der Kurs wird automatisch gespeichert bei schließen des Editors und überschrei
     <text name="CP_editor_course_advanced_title" text="Erweitert"/>
     <text name="CP_editor_course_advanced_moveExtended_title" text="Mehrere Wegpunkte bewegen"/>
     <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Wählt zwei Wegpunkte aus und bewegt diese zusammen mit allen Wegpunkten dazwischen."/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Setzt die ausgewählten Wegpunkte zurück."/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Setzt die Auswahl der Wegpunkte zurück."/>
     <text name="CP_editor_course_advanced_curveInsert_title" text="Wegpunkte als Kurve einfügen"/>
     <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Wählt zwei Wegpunkte aus und fügt dann mehrere Wegpunkte ein, die als Kurve erstellt werden."/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Setzt die ausgewählten Wegpunkte zurück."/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Setzt die Auswahl der Wegpunkte zurück."/>
     <!---->
     <!--Info texts-->
     <!---->
