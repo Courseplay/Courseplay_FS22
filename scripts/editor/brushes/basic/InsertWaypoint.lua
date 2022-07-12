@@ -13,7 +13,7 @@ end
 function CpBrushInsertWP:onButtonPrimary()
 	local ix = self:getHoveredWaypointIx()
 	if ix then 
-		self.courseWrapper:insertWaypointAhead(ix)
+		self.courseWrapper:insertWaypointBehind(ix)
 		self.courseWrapper:resetHovered()
 		self.editor:updateChanges(1)
 	end
@@ -22,7 +22,7 @@ end
 function CpBrushInsertWP:onButtonSecondary()
 	local ix = self:getHoveredWaypointIx()
 	if ix then 
-		self.courseWrapper:insertWaypointBehind(ix)
+		self.courseWrapper:insertWaypointAhead(ix)
 		self.editor:updateChanges(1)
 	end
 end

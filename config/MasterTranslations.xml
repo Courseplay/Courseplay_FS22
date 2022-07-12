@@ -1002,12 +1002,12 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Insert waypoints]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_primary_text">
-			<Text language="de"><![CDATA[Fügt ein Wegpunkt hinter dem ausgewählten Wegpunkt ein.]]></Text>
-			<Text language="en"><![CDATA[Inserts a waypoint at the back of the selected waypoint.]]></Text>
+			<Text language="de"><![CDATA[Fügt einen Wegpunkt nach dem ausgewählten Wegpunkt ein.]]></Text>
+			<Text language="en"><![CDATA[Inserts a waypoint after the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_secondary_text">
 			<Text language="de"><![CDATA[Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein.]]></Text>
-			<Text language="en"><![CDATA[Inserts a waypoint in front of the selected waypoint.]]></Text>
+			<Text language="en"><![CDATA[Inserts a waypoint before the selected waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_title">
 			<Text language="de"><![CDATA[Ändert Wegpunkt Attribute]]></Text>
@@ -1086,7 +1086,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Selects two waypoint and moves these with all the waypoints in between.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_secondary_text">
-			<Text language="de"><![CDATA[Setzt die ausgewählten Wegpunkte zurück.]]></Text>
+			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
 			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_title">
@@ -1098,7 +1098,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Selects two waypoint and adds some waypoints, wich can be created as a curve.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
-			<Text language="de"><![CDATA[Setzt die ausgewählten Wegpunkte zurück.]]></Text>
+			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
 			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
 		</Translation>
 	</Category>
