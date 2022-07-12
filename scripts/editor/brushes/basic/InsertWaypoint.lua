@@ -31,6 +31,6 @@ function CpBrushInsertWP:getButtonPrimaryText()
 	return self:getTranslation(self.primaryButtonText)
 end
 
-function CpBrushInsertWP:getButtonPrimaryText()
+function CpBrushInsertWP:getButtonSecondaryText()
 	return self:getTranslation(self.secondaryButtonText)
 end
