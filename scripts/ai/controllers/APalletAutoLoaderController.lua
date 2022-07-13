@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
---- Controller for the pallet autoloader https://bitbucket.org/Achimobil79/ls22_palletautoloader
+--- Controller for the auto loader script: https://bitbucket.org/Achimobil79/ls22_palletautoloader
 
 ---@class APalletAutoLoaderController : BaleLoaderController
 APalletAutoLoaderController = CpObject(BaleLoaderController)
@@ -34,11 +34,11 @@ end
 
 --- Is at least one bale loaded?
 function APalletAutoLoaderController:hasBales()
-    return self.autoLoader:getFillUnitFillLevelPercentage(self.autoLoaderSpec.fillUnitIndex) >= 0.01
+    return self.autoLoader:PalHasBales()
 end
 
 function APalletAutoLoaderController:isFull()
-    return self.autoLoader:getFillUnitFreeCapacity(self.autoLoaderSpec.fillUnitIndex) <= 0.01
+    return self.autoLoader:PalIsFull()
 end
 
 function APalletAutoLoaderController:canBeFolded()
@@ -50,20 +50,14 @@ function APalletAutoLoaderController:isFuelSaveAllowed()
 end
 
 function APalletAutoLoaderController:onStart()
-    -- turning the autoloader on when CP starts
     self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
 end
 
 function APalletAutoLoaderController:onFinished()
-    -- turning the autoloader on when CP starts
     self.vehicle:raiseAIEvent("onAIFieldWorkerEnd", "onAIImplementEnd")
 end
 
 --- Ignore all already loaded bales when pathfinding
 function APalletAutoLoaderController:getBalesToIgnore()
-    local objectsToIgnore = {}
-    for object, _ in pairs(self.autoLoaderSpec.triggeredObjects) do
-        table.insert(objectsToIgnore, object)
-    end
-    return objectsToIgnore
+    return self.autoLoader:PalGetBalesToIgnore()
 end
