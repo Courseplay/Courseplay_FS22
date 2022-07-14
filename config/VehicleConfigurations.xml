@@ -136,6 +136,7 @@ You can define the following custom settings:
     <Vehicle name="fsx6372.xml"
              toolOffsetX="-2.4"
              balerUnloadDistance="-3.8"
+             turnRadius="12"
     />
     <!--\vehicles\grimme-->
     <Vehicle name="rootster604.xml"
