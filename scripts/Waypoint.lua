@@ -90,7 +90,7 @@ function Waypoint:set(wp, cpIndex)
 	self.cpIndex = cpIndex or 0
 	self.turnStart = wp.turnStart
 	self.turnEnd = wp.turnEnd
-	self.interact = wp.wait or false
+	self.interact = wp.wait or wp.interact or false
 	self.isConnectingTrack = wp.isConnectingTrack or nil
 	self.lane = wp.lane
 	self.rowNumber = wp.rowNumber
@@ -101,8 +101,6 @@ function Waypoint:set(wp, cpIndex)
 	self.turnControls = table.copy(wp.turnControls)
 	self.dToNext = wp.dToNext
 	self.yRot = wp.yRot
-
-	self.rawData = wp
 end
 
 --- Set from a generated waypoint (output of the course generator)
@@ -220,7 +218,7 @@ function Waypoint:translate(dx, dz)
 end
 
 function Waypoint:clone()
-	return Waypoint(self.rawData)
+	return Waypoint(self)
 end
 
 -- a node related to a waypoint
