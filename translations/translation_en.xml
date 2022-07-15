@@ -631,15 +631,22 @@ Incorrect editing might couse problems for the cp driver, as the waypoints have 
     <text name="CP_help_page_editorBasic_text" text="
 Under the basic category are:
 1) Grap a Waypoint with the mouse coursor and move it.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+2) The insert brush can insert waypoints ahead or behind of the waypoint that you click on.
 
 Deleting of waypoints can be done with the red delete button on the right side.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+1) A brush to set the turn attribute of a waypoint (only with a course and not a custom field).
+Clicking multiple times on the waypoint will toggle between &quot;normale&quot; (orange), &quot;turn start&quot; (green) and &quot;turn end&quot; (red)
+
+2) A brush to move multiple waypoints in between to selected waypoints.
+To do this, you mark 2 Waypoints with the left mouse button, then by holding the left mousebutton, you can move all waypoints inbetween including the marked ones.
+The unmark the waypoints, click the right mouse button.
+
+3) A brush to insert a curve of waypoints between to selected waypoints.
+Just like moving more waypoints, mark 2 waypoints, then hold the left mouse button and move the mouse.
+Attention: As soon as you release the mouse button, the waypoints will be set, this can't be undone! (ofc you can delete those waypoints.)
 "/>
     <!---->
     <!--Input bindings-->

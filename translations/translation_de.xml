@@ -624,7 +624,7 @@ Da die Spritze die Reben links und rechts bearbeitet, kann man eine Reihe übers
 Mit dem Kurs Editor können Kurse und erstellte Feldränder bearbeitet werden.
 Die geladenen Kurse werden automatisch gespeichtert/überschrieben, wenn der Editor geschlossen wird.
 
-1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt werden und anschließen auf Randkurs bearbeiten klicken.
+1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt werden und anschließend auf Randkurs bearbeiten klicken.
 2) Um einen Kurs zu bearbeiten, muss dieser im Kursmanager ausgewählt sein und auf Kurs editor öffnen geklickt werden.
    Dieses klappt nur für gespeicherte Kurse und in dem aktuellen Fahrzeug darf kein Kurs geladen sein. 
 
@@ -632,17 +632,24 @@ Eine Kurs sollte nur bearbeitet werden, wenn es der Generator nicht geschafft ha
 Eine falsche Bearbeitung kann zu unerwünschten Fahrverhalten führen, da Wegpunkte noch weitere, versteckte Eigenschaften haben.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Unter der Basic Kategorie gibt es:
+Unter der Basis Kategorie gibt es:
 1) Einen Wegpunkte mit der Maus festhalten und bewegen.
-2) Wegpunkte vor oder hinter einem ausgewählten Wegpunkt einfügen.
+2) Wegpunkte vor oder hinter einem angeklickten Wegpunkt einfügen.
 
-Löschen von Wegpunkten kann mit dem roten Löschen Button auf der rechten Seite gemacht werden.
+Das löschen von Wegpunkten wird mit dem roten Löschen Button auf der rechten Seite durchgeführt.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Unter der Erweiterten Kategorie gibt es:
-1) Ein Pinsel um mehere Wegpunkte zu bewegen.
-2) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
-3) Ein Pinsel um das Wendepunkt Attribut eines Wegpunktes anzupassen(nur für Kurse und nicht Feldränder).&#9;&#9;&#9;
+1) Ein Pinsel um das Wendepunkt Attribut eines Wegpunktes anzupassen (nur für Kurse und nicht Feldränder).
+Durch mehrfaches anklicken wechselt der Wegpunkt seine Farbe zwischen &quot;Wegpunkt normal&quot; (orange), &quot;Wendepunkt Anfang&quot; (grün) und &quot;Wendepunkt Ende&quot; (rot).
+
+2) Ein Pinsel um mehere Wegpunkte zu bewegen.
+Dazu markeirst du 2 Wegpunkte mit der linken Maustaste und anschließend kannst du alle Wegpunkte inklusive der markierten Wegpunkte mit der gedrückten linken Maustaste bewegen.
+Um die Markierung auf zu heben, betätige einfach die rechte Maustaste.
+
+3) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
+Wie auch beim bewegen mehrerer Wegpunkte, markeirst du zunächst 2 Wegpunkte, anschließen hälst du die linke Maustaste gedrückt und bewegst die Maus.
+Achtung: Sobald du los lässt, werden die Wegpunkte abgesetzt, dies kann nicht rückgängig gemacht werden! (Wegpunkte lassen sich natürlich löschen.)
 "/>
     <!---->
     <!--Input bindings-->
