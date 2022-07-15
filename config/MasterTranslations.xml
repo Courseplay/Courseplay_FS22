@@ -922,12 +922,12 @@
 			<Text language="en"><![CDATA[Course name:]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_editCourseWarning">
-			<Text language="de"><![CDATA[Das bearbeiten von Kursen kann zu Problemen führen beim Abfahren des Kurses.
-Dieses sollte nur als Notlösung genutzt werden, falls es mit dem Kursgenerator nicht geklappt hat.
-Der Kurs wird automatisch gespeichert beim schließen des Editors und überschreibt den Kurs.
+			<Text language="de"><![CDATA[Das bearbeiten von Kursen kann zu Problemen beim Abfahren des Kurses führen.
+Dieses sollte nur als Notlösung genutzt werden, falls es Probleme mit dem generierten Kurs gibt.
+Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
 ]]></Text>
 			<Text language="en"><![CDATA[Course editing might create problems for the helper.
-You should only use this tool, when the course generator couldn't create a good enough course.
+You should only use this tool, when geting problems with the generated course.
 The course is saved automatically on closing of the editor and overrides the selected course.
 ]]></Text>
 		</Translation>
@@ -1864,7 +1864,7 @@ The loaded courses will be saved/overritten automatically, when the editor is cl
 
 1) Editing a custom field can be done by selecting one on the ai menu page and clicking on edit custom field.
 2) Editing a course can be done in the course manager by selecting it and clicking on open course editor. 
-   This only works with saved courses. Make sure you no course is loaded into the vehicle.
+   This only works with saved courses. Make sure no course is loaded in the vehicle.
 
 Editing of courses should only be done, when the course generator couldn't produce a good enough course.
 Incorrect editing might couse problems for the driver, as the waypoints have hidden attributes.	
@@ -1881,7 +1881,7 @@ Das Löschen von Wegpunkten wird mit dem roten Löschen Taste durchgeführt.
 			<Text language="en"><![CDATA[
 Under the basic category are:
 1) Moving of a grabbed waypoint.
-2) The inserting waypoints ahead or behind of the waypoint that you click on.
+2) Inserting waypoints ahead or behind of the waypoint that you click on.
 
 Deleting of waypoints can be done with the red delete button.
 ]]></Text>
@@ -1907,7 +1907,7 @@ Clicking multiple times on the waypoint will toggle between "normale" (orange), 
 
 2) A brush to move multiple waypoints in between to selected waypoints.
 To do this, you mark 2 Waypoints with the left mouse button, then by holding the left mouse button, you can move all waypoints in between including the marked ones.
-Ro unmark the waypoints, click the right mouse button.
+To unmark the waypoints, click the right mouse button.
 
 3) A brush to insert a curve of waypoints between two selected waypoints.
 Just like moving more waypoints, mark 2 waypoints, then hold the left mouse button and move the mouse.
