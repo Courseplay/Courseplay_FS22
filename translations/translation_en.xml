@@ -264,7 +264,7 @@
     <text name="CP_courseManager_folder_dialog" text="Folder name:"/>
     <text name="CP_courseManager_course_dialog" text="Course name:"/>
     <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the helper.
-You should only use this tool, when geting problems with the generated course.
+You should only use this tool, when problems with the generated course occur.
 The course is saved automatically on closing of the editor and overrides the selected course.
 "/>
     <text name="CP_courseManager_deleteError" text="Folder is not empty (%s)!"/>
