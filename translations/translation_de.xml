@@ -289,8 +289,8 @@ Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
     <text name="CP_editor_course_basic_insert_primary_text" text="Fügt einen Wegpunkt nach dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_basic_insert_secondary_text" text="Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_changeAttributes_title" text="Ändert Wegpunkt Attribute"/>
-    <text name="CP_editor_course_advanced_change_title" text="Wegpunkt als Wendepunkt makieren."/>
-    <text name="CP_editor_course_advanced_change_primary_text" text="Ändert den ausgewählten Wegpunkt zwischen: Normal, Wendepunkt Start und Wendepunkt Ende."/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Wegpunkt als Wendepunkt makieren."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Fügt einen Wendepunkt ein oder löscht diesen. (Der ausgewählte Wegpunkt wird der Wendepunktstart.)"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Ändert Vorgewende"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="Weißt dem ausgewählten Wegpunkt die Vorgewendenummer zu."/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="Ändert die Vorgewendenummer für Wepunkte über, die die Maus gezogen wird."/>
