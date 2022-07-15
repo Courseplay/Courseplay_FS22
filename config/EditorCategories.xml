@@ -13,7 +13,7 @@
 		</Tab>
 	-->
         <Tab name="advanced" iconFilename="img/iconSprite.dds"  refSize="256 512" iconUVs="0 366px 28px 28px">
-			<Brush name="change" class="CpBrushChangeWP" iconFilename="img/ui_courseplay.dds" refSize="1024 1024" iconUVs="512px 640px 128px 128px" isCourseOnly="true"/>
+			<Brush name="changeTurn" class="CpBrushChangeTurnWP" iconFilename="img/ui_courseplay.dds" refSize="1024 1024" iconUVs="512px 640px 128px 128px" isCourseOnly="true"/>
 			<Brush name="moveExtended" class="CpBrushAdvancedMoveWP" iconFilename="img/ui_courseplay.dds" refSize="1024 1024" iconUVs="768px 640px 128px 128px"/>
 			<Brush name="curveInsert" class="CpBrushCurveInsertWP" iconFilename="img/ui_courseplay.dds" refSize="1024 1024" iconUVs="896px 640px 128px 128px"/>
 		</Tab>

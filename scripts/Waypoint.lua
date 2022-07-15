@@ -221,6 +221,31 @@ function Waypoint:clone()
 	return Waypoint(self)
 end
 
+function Waypoint:getIsTurnStart()
+	return self.turnStart
+end
+
+function Waypoint:getIsTurnEnd()
+	return self.turnEnd
+end
+
+function Waypoint:getIsTurn()
+	return self.turnStart or self.turnEnd
+end
+
+function Waypoint:setTurnStart(turnStart)
+	self.turnStart = turnStart	
+end
+
+function Waypoint:setTurnEnd(turnEnd)
+	self.turnEnd = turnEnd	
+end
+
+function Waypoint:resetTurn()
+	self.turnEnd = false	
+	self.turnStart = false	
+end
+
 -- a node related to a waypoint
 ---@class WaypointNode
 WaypointNode = CpObject()
