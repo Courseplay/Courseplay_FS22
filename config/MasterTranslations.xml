@@ -923,17 +923,13 @@
 		</Translation>
 		<Translation name="CP_courseManager_editCourseWarning">
 			<Text language="de"><![CDATA[Das bearbeiten von Kursen kann zu Problemen führen beim Abfahren des Kurses.
-Dieses sollte nur als Notlösung gemacht werden, falls es mit dem Kursgenerator nicht klappt.
-Der Kurs wird automatisch gespeichert bei schließen des Editors und überschreibt den Kurs.
+Dieses sollte nur als Notlösung genutzt werden, falls es mit dem Kursgenerator nicht geklappt hat.
+Der Kurs wird automatisch gespeichert beim schließen des Editors und überschreibt den Kurs.
 ]]></Text>
-			<Text language="en"><![CDATA[Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
+			<Text language="en"><![CDATA[Course editing might create problems for the helper.
+You should only use this tool, when the course generator couldn't create a good enough course.
 The course is saved automatically on closing of the editor and overrides the selected course.
 ]]></Text>
-		</Translation>
-		<Translation name="CP_courseManager_edit_course">
-			<Text language="de"><![CDATA[Kurs Editor öffnen]]></Text>
-			<Text language="en"><![CDATA[Open course editor]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_deleteError">
 			<Text language="de"><![CDATA[Ordner ist nicht leer (%s)!]]></Text>
@@ -991,11 +987,11 @@ The course is saved automatically on closing of the editor and overrides the sel
 		</Translation>
 		<Translation name="CP_editor_course_basic_move_title">
 			<Text language="de"><![CDATA[Wegpunkt bewegen]]></Text>
-			<Text language="en"><![CDATA[Move a waypoint]]></Text>
+			<Text language="en"><![CDATA[Moves a waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_move_primary_text">
 			<Text language="de"><![CDATA[Bewegt den ausgewählten Wegpunkt durch festhalten der Maustaste.]]></Text>
-			<Text language="en"><![CDATA[Drag and drop a waypoint with the Mouse.]]></Text>
+			<Text language="en"><![CDATA[Drag and drops a waypoint with the Mouse.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_basic_insert_title">
 			<Text language="de"><![CDATA[Wegpunkte einfügen]]></Text>
@@ -1095,7 +1091,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_primary_text">
 			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und fügt dann mehrere Wegpunkte ein, die als Kurve erstellt werden.]]></Text>
-			<Text language="en"><![CDATA[Selects two waypoint and adds some waypoints, wich can be created as a curve.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoint and adds some waypoints in between as a curve.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
 			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
@@ -1855,7 +1851,7 @@ Since the sprayer can work on the left and right vines at the same time, we can 
 Mit dem Kurs Editor können Kurse und erstellte Feldränder bearbeitet werden.
 Die geladenen Kurse werden automatisch gespeichtert/überschrieben, wenn der Editor geschlossen wird.
 
-1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt werden und anschließend auf Randkurs bearbeiten klicken.
+1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt sein und anschließend auf Randkurs bearbeiten geklickt werden.
 2) Um einen Kurs zu bearbeiten, muss dieser im Kursmanager ausgewählt sein und auf Kurs editor öffnen geklickt werden.
    Dieses klappt nur für gespeicherte Kurse und in dem aktuellen Fahrzeug darf kein Kurs geladen sein. 
 
@@ -1866,12 +1862,12 @@ Eine falsche Bearbeitung kann zu unerwünschten Fahrverhalten führen, da Wegpun
 The course editor can be used to edit courses and custom fields.
 The loaded courses will be saved/overritten automatically, when the editor is closed.
 
-1) Editing a custom field can be done by selecting one on the ai menu page and click on edit custom field.
-2) Editing a course can be done in the course manager by selecting it and click on open course editor. 
-   This does only work with saved course and be sure you cleared the currently loaded course from the vehicle.
+1) Editing a custom field can be done by selecting one on the ai menu page and clicking on edit custom field.
+2) Editing a course can be done in the course manager by selecting it and clicking on open course editor. 
+   This only works with saved courses. Make sure you no course is loaded into the vehicle.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.	
+Editing of courses should only be done, when the course generator couldn't produce a good enough course.
+Incorrect editing might couse problems for the driver, as the waypoints have hidden attributes.	
 				]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_editorBasic_text">
@@ -1880,14 +1876,14 @@ Unter der Basis Kategorie gibt es:
 1) Einen Wegpunkte mit der Maus festhalten und bewegen.
 2) Wegpunkte vor oder hinter einem angeklickten Wegpunkt einfügen.
 
-Das löschen von Wegpunkten wird mit dem roten Löschen Button auf der rechten Seite durchgeführt.
+Das Löschen von Wegpunkten wird mit dem roten Löschen Taste durchgeführt.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Under the basic category are:
-1) Grap a Waypoint with the mouse coursor and move it.
-2) The insert brush can insert waypoints ahead or behind of the waypoint that you click on.
+1) Moving of a grabbed waypoint.
+2) The inserting waypoints ahead or behind of the waypoint that you click on.
 
-Deleting of waypoints can be done with the red delete button on the right side.
+Deleting of waypoints can be done with the red delete button.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_editorAdvanced_text">
@@ -1901,21 +1897,21 @@ Dazu markeirst du 2 Wegpunkte mit der linken Maustaste und anschließend kannst 
 Um die Markierung auf zu heben, betätige einfach die rechte Maustaste.
 
 3) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
-Wie auch beim bewegen mehrerer Wegpunkte, markeirst du zunächst 2 Wegpunkte, anschließen hälst du die linke Maustaste gedrückt und bewegst die Maus.
+Wie auch beim bewegen mehrerer Wegpunkte, markierst du zunächst 2 Wegpunkte, anschließen hältst du die linke Maustaste gedrückt und bewegst die Maus.
 Achtung: Sobald du los lässt, werden die Wegpunkte abgesetzt, dies kann nicht rückgängig gemacht werden! (Wegpunkte lassen sich natürlich löschen.)
 ]]></Text>
 			<Text language="en"><![CDATA[
 Under the advanced category are:
 1) A brush to set the turn attribute of a waypoint (only with a course and not a custom field).
-Clicking multiple times on the waypoint will toggle between "normale" (orange), "turn start" (green) and "turn end" (red)
+Clicking multiple times on the waypoint will toggle between "normale" (orange), "turn start" (green) and "turn end" (red).
 
 2) A brush to move multiple waypoints in between to selected waypoints.
-To do this, you mark 2 Waypoints with the left mouse button, then by holding the left mousebutton, you can move all waypoints inbetween including the marked ones.
-The unmark the waypoints, click the right mouse button.
+To do this, you mark 2 Waypoints with the left mouse button, then by holding the left mouse button, you can move all waypoints in between including the marked ones.
+Ro unmark the waypoints, click the right mouse button.
 
-3) A brush to insert a curve of waypoints between to selected waypoints.
+3) A brush to insert a curve of waypoints between two selected waypoints.
 Just like moving more waypoints, mark 2 waypoints, then hold the left mouse button and move the mouse.
-Attention: As soon as you release the mouse button, the waypoints will be set, this can't be undone! (ofc you can delete those waypoints.)
+Attention: As soon as you release the mouse button, the waypoints will be set, this can't be undone! (of course you can delete those waypoints.)
 ]]></Text>
 		</Translation>
 
