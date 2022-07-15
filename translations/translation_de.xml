@@ -264,8 +264,8 @@
     <text name="CP_courseManager_folder_dialog" text="Ordnername:"/>
     <text name="CP_courseManager_course_dialog" text="Kursname:"/>
     <text name="CP_courseManager_editCourseWarning" text="Das bearbeiten von Kursen kann zu Problemen führen beim Abfahren des Kurses.
-Dieses sollte nur als Notlösung gemacht werden, falls es mit dem Kursgenerator nicht klappt.
-Der Kurs wird automatisch gespeichert bei schließen des Editors und überschreibt den Kurs.
+Dieses sollte nur als Notlösung genutzt werden, falls es mit dem Kursgenerator nicht geklappt hat.
+Der Kurs wird automatisch gespeichert beim schließen des Editors und überschreibt den Kurs.
 "/>
     <text name="CP_courseManager_deleteError" text="Ordner ist nicht leer (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Kurs im Ordner (%s) bereits vorhanden!"/>
@@ -624,7 +624,7 @@ Da die Spritze die Reben links und rechts bearbeitet, kann man eine Reihe übers
 Mit dem Kurs Editor können Kurse und erstellte Feldränder bearbeitet werden.
 Die geladenen Kurse werden automatisch gespeichtert/überschrieben, wenn der Editor geschlossen wird.
 
-1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt werden und anschließend auf Randkurs bearbeiten klicken.
+1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt sein und anschließend auf Randkurs bearbeiten geklickt werden.
 2) Um einen Kurs zu bearbeiten, muss dieser im Kursmanager ausgewählt sein und auf Kurs editor öffnen geklickt werden.
    Dieses klappt nur für gespeicherte Kurse und in dem aktuellen Fahrzeug darf kein Kurs geladen sein. 
 
@@ -636,7 +636,7 @@ Unter der Basis Kategorie gibt es:
 1) Einen Wegpunkte mit der Maus festhalten und bewegen.
 2) Wegpunkte vor oder hinter einem angeklickten Wegpunkt einfügen.
 
-Das löschen von Wegpunkten wird mit dem roten Löschen Button auf der rechten Seite durchgeführt.
+Das Löschen von Wegpunkten wird mit dem roten Löschen Taste durchgeführt.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Unter der Erweiterten Kategorie gibt es:
@@ -648,7 +648,7 @@ Dazu markeirst du 2 Wegpunkte mit der linken Maustaste und anschließend kannst 
 Um die Markierung auf zu heben, betätige einfach die rechte Maustaste.
 
 3) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
-Wie auch beim bewegen mehrerer Wegpunkte, markeirst du zunächst 2 Wegpunkte, anschließen hälst du die linke Maustaste gedrückt und bewegst die Maus.
+Wie auch beim bewegen mehrerer Wegpunkte, markierst du zunächst 2 Wegpunkte, anschließen hältst du die linke Maustaste gedrückt und bewegst die Maus.
 Achtung: Sobald du los lässt, werden die Wegpunkte abgesetzt, dies kann nicht rückgängig gemacht werden! (Wegpunkte lassen sich natürlich löschen.)
 "/>
     <!---->
