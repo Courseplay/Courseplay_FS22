@@ -29,15 +29,30 @@ function APalletAutoLoaderController:init(vehicle, autoLoader)
 end
 
 function APalletAutoLoaderController:isGrabbingBale()
+    if self.autoLoader:PalIsGrabbingBale ~= nil then
+        return self.autoLoader:PalIsGrabbingBale();
+    end
+    
+    -- fallback for older AL versions
     return false
 end
 
 --- Is at least one bale loaded?
 function APalletAutoLoaderController:hasBales()
+    if self.autoLoader:PalHasBales ~= nil then
+        return self.autoLoader:PalHasBales();
+    end
+    
+    -- fallback for older AL versions
     return self.autoLoader:getFillUnitFillLevelPercentage(self.autoLoaderSpec.fillUnitIndex) >= 0.01
 end
 
 function APalletAutoLoaderController:isFull()
+    if self.autoLoader:PalIsFull ~= nil then
+        return self.autoLoader:PalIsFull();
+    end
+    
+    -- fallback for older AL versions
     return self.autoLoader:getFillUnitFreeCapacity(self.autoLoaderSpec.fillUnitIndex) <= 0.01
 end
 
@@ -61,6 +76,11 @@ end
 
 --- Ignore all already loaded bales when pathfinding
 function APalletAutoLoaderController:getBalesToIgnore()
+    if self.autoLoader:PalIsFull ~= nil then
+        return self.autoLoader:PalIsFull();
+    end
+    
+    -- fallback for older AL versions
     local objectsToIgnore = {}
     for object, _ in pairs(self.autoLoaderSpec.triggeredObjects) do
         table.insert(objectsToIgnore, object)

@@ -116,7 +116,7 @@ function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
             self.baleLoaderController = APalletAutoLoaderController(vehicle, implements[1])
         end
     end
-    if self.baleLoader then
+    if self.baleLoaderController then
         self.baleLoaderController:setDriveStrategy(self)
         table.insert(self.controllers, self.baleLoaderController)
     end
@@ -416,7 +416,7 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
 end
 
 function AIDriveStrategyFindBales:approachBale()
-    if self.baleLoader then
+    if self.baleLoaderController then
         if self.baleLoaderController:isGrabbingBale() then
             self:debug('Start picking up bale')
             self.state = self.states.WORKING_ON_BALE
@@ -432,7 +432,7 @@ function AIDriveStrategyFindBales:approachBale()
 end
 
 function AIDriveStrategyFindBales:workOnBale()
-    if self.baleLoader then
+    if self.baleLoaderController then
         if not self.baleLoaderController:isGrabbingBale() then
             self:debug('Bale picked up, moving on to the next')
             self:collectNextBale()
