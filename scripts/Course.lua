@@ -1759,7 +1759,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	local numHeadlands = courseXml:getValue( courseKey .. '#numHeadlands')
 	local multiTools = courseXml:getValue( courseKey .. '#multiTools')
 	local isCompressed = courseXml:getValue(courseKey  .. '#isCompressed')
-	local wasEdited = courseXml:getValue(courseKey  .. '#wasEdited')
+	local wasEdited = courseXml:getValue(courseKey  .. '#wasEdited', false)
 	local waypoints = {}
 	if courseXml:hasProperty(courseKey  .. Waypoint.xmlKey) then 
 		local d

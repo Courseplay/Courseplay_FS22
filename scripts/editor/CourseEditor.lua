@@ -47,6 +47,7 @@ function CourseEditor:saveCourse()
 	local function save(self, xmlFile, baseKey)
 		if self.courseWrapper then
 			local key = string.format("%s(%d)", baseKey, 0)
+			self.courseWrapper:getCourse():setEditedByCourseEditor()
 			self.courseWrapper:getCourse():saveToXml(xmlFile, key)
 		end
 	end
