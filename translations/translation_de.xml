@@ -263,9 +263,9 @@
     <text name="CP_courseManager_copy_entry" text="Eintrag kopieren"/>
     <text name="CP_courseManager_folder_dialog" text="Ordnername:"/>
     <text name="CP_courseManager_course_dialog" text="Kursname:"/>
-    <text name="CP_courseManager_editCourseWarning" text="Das bearbeiten von Kursen kann zu Problemen führen beim Abfahren des Kurses.
-Dieses sollte nur als Notlösung genutzt werden, falls es mit dem Kursgenerator nicht geklappt hat.
-Der Kurs wird automatisch gespeichert beim schließen des Editors und überschreibt den Kurs.
+    <text name="CP_courseManager_editCourseWarning" text="Das bearbeiten von Kursen kann zu Problemen beim Abfahren des Kurses führen.
+Dieses sollte nur als Notlösung genutzt werden, falls es Probleme mit dem generierten Kurs gibt.
+Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
 "/>
     <text name="CP_courseManager_deleteError" text="Ordner ist nicht leer (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Kurs im Ordner (%s) bereits vorhanden!"/>
