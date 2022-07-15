@@ -1855,7 +1855,7 @@ Since the sprayer can work on the left and right vines at the same time, we can 
 Mit dem Kurs Editor können Kurse und erstellte Feldränder bearbeitet werden.
 Die geladenen Kurse werden automatisch gespeichtert/überschrieben, wenn der Editor geschlossen wird.
 
-1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt werden und anschließen auf Randkurs bearbeiten klicken.
+1) Um einen Feldrand zu bearbeiten, muss dieser im Helfer Menü ausgewählt werden und anschließend auf Randkurs bearbeiten klicken.
 2) Um einen Kurs zu bearbeiten, muss dieser im Kursmanager ausgewählt sein und auf Kurs editor öffnen geklickt werden.
    Dieses klappt nur für gespeicherte Kurse und in dem aktuellen Fahrzeug darf kein Kurs geladen sein. 
 
@@ -1876,16 +1876,16 @@ Incorrect editing might couse problems for the cp driver, as the waypoints have 
 		</Translation>
 		<Translation name="CP_help_page_editorBasic_text">
 			<Text language="de"><![CDATA[
-Unter der Basic Kategorie gibt es:
+Unter der Basis Kategorie gibt es:
 1) Einen Wegpunkte mit der Maus festhalten und bewegen.
-2) Wegpunkte vor oder hinter einem ausgewählten Wegpunkt einfügen.
+2) Wegpunkte vor oder hinter einem angeklickten Wegpunkt einfügen.
 
-Löschen von Wegpunkten kann mit dem roten Löschen Button auf der rechten Seite gemacht werden.
+Das löschen von Wegpunkten wird mit dem roten Löschen Button auf der rechten Seite durchgeführt.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Under the basic category are:
 1) Grap a Waypoint with the mouse coursor and move it.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+2) The insert brush can insert waypoints ahead or behind of the waypoint that you click on.
 
 Deleting of waypoints can be done with the red delete button on the right side.
 ]]></Text>
@@ -1893,15 +1893,29 @@ Deleting of waypoints can be done with the red delete button on the right side.
 		<Translation name="CP_help_page_editorAdvanced_text">
 			<Text language="de"><![CDATA[
 Unter der Erweiterten Kategorie gibt es:
-1) Ein Pinsel um mehere Wegpunkte zu bewegen.
-2) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
-3) Ein Pinsel um das Wendepunkt Attribut eines Wegpunktes anzupassen(nur für Kurse und nicht Feldränder).			
+1) Ein Pinsel um das Wendepunkt Attribut eines Wegpunktes anzupassen (nur für Kurse und nicht Feldränder).
+Durch mehrfaches anklicken wechselt der Wegpunkt seine Farbe zwischen "Wegpunkt normal" (orange), "Wendepunkt Anfang" (grün) und "Wendepunkt Ende" (rot).
+
+2) Ein Pinsel um mehere Wegpunkte zu bewegen.
+Dazu markeirst du 2 Wegpunkte mit der linken Maustaste und anschließend kannst du alle Wegpunkte inklusive der markierten Wegpunkte mit der gedrückten linken Maustaste bewegen.
+Um die Markierung auf zu heben, betätige einfach die rechte Maustaste.
+
+3) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
+Wie auch beim bewegen mehrerer Wegpunkte, markeirst du zunächst 2 Wegpunkte, anschließen hälst du die linke Maustaste gedrückt und bewegst die Maus.
+Achtung: Sobald du los lässt, werden die Wegpunkte abgesetzt, dies kann nicht rückgängig gemacht werden! (Wegpunkte lassen sich natürlich löschen.)
 ]]></Text>
 			<Text language="en"><![CDATA[
 Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+1) A brush to set the turn attribute of a waypoint (only with a course and not a custom field).
+Clicking multiple times on the waypoint will toggle between "normale" (orange), "turn start" (green) and "turn end" (red)
+
+2) A brush to move multiple waypoints in between to selected waypoints.
+To do this, you mark 2 Waypoints with the left mouse button, then by holding the left mousebutton, you can move all waypoints inbetween including the marked ones.
+The unmark the waypoints, click the right mouse button.
+
+3) A brush to insert a curve of waypoints between to selected waypoints.
+Just like moving more waypoints, mark 2 waypoints, then hold the left mouse button and move the mouse.
+Attention: As soon as you release the mouse button, the waypoints will be set, this can't be undone! (ofc you can delete those waypoints.)
 ]]></Text>
 		</Translation>
 
