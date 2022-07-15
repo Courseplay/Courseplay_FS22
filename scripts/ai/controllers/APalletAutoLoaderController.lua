@@ -29,7 +29,7 @@ function APalletAutoLoaderController:init(vehicle, autoLoader)
 end
 
 function APalletAutoLoaderController:isGrabbingBale()
-    if self.autoLoader:PalIsGrabbingBale ~= nil then
+    if self.autoLoader.PalIsGrabbingBale ~= nil then
         return self.autoLoader:PalIsGrabbingBale();
     end
     
@@ -39,7 +39,7 @@ end
 
 --- Is at least one bale loaded?
 function APalletAutoLoaderController:hasBales()
-    if self.autoLoader:PalHasBales ~= nil then
+    if self.autoLoader.PalHasBales ~= nil then
         return self.autoLoader:PalHasBales();
     end
     
@@ -48,7 +48,7 @@ function APalletAutoLoaderController:hasBales()
 end
 
 function APalletAutoLoaderController:isFull()
-    if self.autoLoader:PalIsFull ~= nil then
+    if self.autoLoader.PalIsFull ~= nil then
         return self.autoLoader:PalIsFull();
     end
     
@@ -76,8 +76,8 @@ end
 
 --- Ignore all already loaded bales when pathfinding
 function APalletAutoLoaderController:getBalesToIgnore()
-    if self.autoLoader:PalIsFull ~= nil then
-        return self.autoLoader:PalIsFull();
+    if self.autoLoader.PalGetBalesToIgnore ~= nil then
+        return self.autoLoader:PalGetBalesToIgnore();
     end
     
     -- fallback for older AL versions
