@@ -117,10 +117,13 @@ end
 
 --- Wait for the giants bale loader to finish grabbing the bale.
 function AIDriveStrategyFindBales:isReadyToLoadNextBale()
-    if self.baleLoaderController then 
-        return not self.baleLoaderController:isGrabbingBale()
+    local isGrabbingBale = false
+    for i, controller in pairs(self.controllers) do 
+        if controller.isGrabbingBale then 
+            isGrabbingBale = isGrabbingBale or controller:isGrabbingBale()
+        end
     end
-    return true
+    return not isGrabbingBale
 end
 
 --- Have any bales been loaded?
@@ -220,6 +223,13 @@ function AIDriveStrategyFindBales:findBales()
             end
         end
         baleWithWrongWrapType = baleWithWrongWrapType or wrongWrapType
+    end
+    --- Ignores the loaded auto loader bales.
+    local loadedBales = self:getBalesToIgnore()
+    for _, bale in pairs(loadedBales) do 
+        if balesFound[bale.id] then 
+            balesFound[bale.id] = nil
+        end
     end
     local bales = {}
     for _, bale in pairs(balesFound) do

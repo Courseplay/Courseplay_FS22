@@ -61,3 +61,16 @@ end
 function APalletAutoLoaderController:getBalesToIgnore()
     return self.autoLoader:PalGetBalesToIgnore()
 end
+
+function APalletAutoLoaderController:getDriveData()
+    local maxSpeed 
+    if self:isFull() then
+        self:debugSparse("is full and waiting for release after animation has finished.")
+        maxSpeed = 0
+    end
+    return nil, nil, nil, maxSpeed
+end
+
+function APalletAutoLoaderController:isChangingBaleSize()
+    return false
+end
