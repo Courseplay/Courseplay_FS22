@@ -927,7 +927,7 @@ Dieses sollte nur als Notlösung genutzt werden, falls es Probleme mit dem gener
 Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
 ]]></Text>
 			<Text language="en"><![CDATA[Course editing might create problems for the helper.
-You should only use this tool, when geting problems with the generated course.
+You should only use this tool, when problems with the generated course occur.
 The course is saved automatically on closing of the editor and overrides the selected course.
 ]]></Text>
 		</Translation>
