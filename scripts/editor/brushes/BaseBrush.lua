@@ -48,20 +48,9 @@ end
 
 function CpBrush:update(dt)
 	local ix = self:getHoveredWaypointIx()
-	if ix == nil then 
-		self.courseWrapper:resetHovered()
-		if self.lastHoveredIx then
-			self.editor:updateChangeSingle(self.lastHoveredIx)
-			self.lastHoveredIx = nil
-		else 
-			self.editor:updateChanges(1)
-		end
-	else 
-		if self.lastHoveredIx ~= ix then 
-			self.courseWrapper:setHovered(ix)
-			self.editor:updateChangeSingle(ix)
-			self.lastHoveredIx = ix
-		end
+	local lastIx = self.courseWrapper:setHovered(ix)
+	if lastIx ~= nil then 
+		self.editor:updateChangeSingle(lastIx)
 	end
 end
 

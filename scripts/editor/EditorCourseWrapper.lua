@@ -39,11 +39,15 @@ end
 
 --- Sets the hovered waypoint by the editor brush.
 function EditorCourseWrapper:setHovered(ix)
+	local lastHovered = self.hoveredWaypointIx
 	self.hoveredWaypointIx = ix
+	return lastHovered
 end
 
 function EditorCourseWrapper:resetHovered()
+	local lastHovered = self.hoveredWaypointIx
 	self.hoveredWaypointIx = nil
+	return lastHovered
 end
 
 --- Is the waypoint selected by a editor brush?
