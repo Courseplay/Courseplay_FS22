@@ -29,16 +29,31 @@ function APalletAutoLoaderController:init(vehicle, autoLoader)
 end
 
 function APalletAutoLoaderController:isGrabbingBale()
+    if self.autoLoader.PalIsGrabbingBale ~= nil then
+        return self.autoLoader:PalIsGrabbingBale();
+    end
+    
+    -- fallback for older AL versions
     return false
 end
 
 --- Is at least one bale loaded?
 function APalletAutoLoaderController:hasBales()
-    return self.autoLoader:PalHasBales()
+    if self.autoLoader.PalHasBales ~= nil then
+        return self.autoLoader:PalHasBales();
+    end
+    
+    -- fallback for older AL versions
+    return self.autoLoader:getFillUnitFillLevelPercentage(self.autoLoaderSpec.fillUnitIndex) >= 0.01
 end
 
 function APalletAutoLoaderController:isFull()
-    return self.autoLoader:PalIsFull()
+    if self.autoLoader.PalIsFull ~= nil then
+        return self.autoLoader:PalIsFull();
+    end
+    
+    -- fallback for older AL versions
+    return self.autoLoader:getFillUnitFreeCapacity(self.autoLoaderSpec.fillUnitIndex) <= 0.01
 end
 
 function APalletAutoLoaderController:canBeFolded()
@@ -50,16 +65,27 @@ function APalletAutoLoaderController:isFuelSaveAllowed()
 end
 
 function APalletAutoLoaderController:onStart()
+    -- turning the autoloader on when CP starts
     self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
 end
 
 function APalletAutoLoaderController:onFinished()
+    -- turning the autoloader on when CP starts
     self.vehicle:raiseAIEvent("onAIFieldWorkerEnd", "onAIImplementEnd")
 end
 
 --- Ignore all already loaded bales when pathfinding
 function APalletAutoLoaderController:getBalesToIgnore()
-    return self.autoLoader:PalGetBalesToIgnore()
+    if self.autoLoader.PalGetBalesToIgnore ~= nil then
+        return self.autoLoader:PalGetBalesToIgnore();
+    end
+    
+    -- fallback for older AL versions
+    local objectsToIgnore = {}
+    for object, _ in pairs(self.autoLoaderSpec.triggeredObjects) do
+        table.insert(objectsToIgnore, object)
+    end
+    return objectsToIgnore
 end
 
 function APalletAutoLoaderController:getDriveData()
