@@ -147,7 +147,7 @@ function CpConsoleCommands:loadFile(fileName)
 		return 'Could not load ' .. path
 	else
 		local code = getXMLString(g_xmlFile, 'code')
-		local f = getfenv(0).loadstring('setfenv(1, '.. CpConsoleCommands.MOD_NAME .. '); ' .. code)
+		local f = getfenv(0).loadstring('setfenv(1, '.. Courseplay.MOD_NAME .. '); ' .. code)
 		if f then
 			f()
 			return 'OK: ' .. path .. ' loaded.'

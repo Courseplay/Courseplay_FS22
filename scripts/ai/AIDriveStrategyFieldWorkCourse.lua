@@ -395,10 +395,9 @@ function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
         -- towards the end of the field course make sure the implement reaches the last waypoint
         -- TODO: this needs refactoring, for now don't do this for temporary courses like a turn as it messes up reversing
         if ix > self.course:getNumberOfWaypoints() - 3 and not self.course:isTemporary() then
-            if self.frontMarkerDistance then
-                self:debug('adding offset (%.1f front marker) to make sure we do not miss anything when the course ends', self.frontMarkerDistance)
-                self.aiOffsetZ = -self.frontMarkerDistance
-            end
+            local _, bm = self:getFrontAndBackMarkers()
+            self:debug('adding offset (%.1f front marker) to make sure we do not miss anything when the course ends', bm)
+            self.aiOffsetZ = -bm
         end
     end
 end
