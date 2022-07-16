@@ -616,8 +616,8 @@ The loaded courses will be saved/overritten automatically, when the editor is cl
    This only works with saved courses. Make sure no course is loaded in the vehicle.
 
 Editing of courses should only be done, when the course generator couldn't produce a good enough course.
-Incorrect editing might couse problems for the driver, as the waypoints have hidden attributes.&#9;
-&#9;&#9;&#9;&#9;"/>
+Incorrect editing might couse problems for the driver, as the waypoints have hidden attributes.
+"/>
     <text name="CP_help_page_editorBasic_text" text="
 Under the basic category are:
 1) Moving of a grabbed waypoint.
