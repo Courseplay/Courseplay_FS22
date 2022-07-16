@@ -40,6 +40,7 @@ function Course:init(vehicle, waypoints, temporary, first, last)
 	self.numberOfHeadlands = 0
 	self.workWidth = 0
 	self.name = ''
+	self.editedByCourseEditor = false
 	-- only for logging purposes
 	self.vehicle = vehicle
 	self.temporary = temporary or false
@@ -90,6 +91,19 @@ end
 
 function Course:getName()
 	return self.name
+end
+
+function Course:setEditedByCourseEditor()
+	self.editedByCourseEditor = true
+end
+
+function Course:wasEditedByCourseEditor()
+	return self.editedByCourseEditor
+end
+
+
+function Course:getAllWaypoints()
+	return self.waypoints
 end
 
 function Course:initWaypoints()
@@ -1715,6 +1729,7 @@ function Course:saveToXml(courseXml, courseKey)
 	courseXml:setValue(courseKey  .. '#workWidth',self.workWidth or 0)
 	courseXml:setValue(courseKey  .. '#numHeadlands',self.numHeadlands or 0)
 	courseXml:setValue(courseKey  .. '#multiTools',self.multiTools or 0)
+	courseXml:setValue(courseKey  .. '#wasEdited', self.editedByCourseEditor)
 	--- For backward compatibility a flag is set to indicate, that the waypoints between rows are not saved.
 	--courseXml:setValue(courseKey  .. '#isCompressed',true)
 	for i,p in ipairs(self.waypoints) do 
@@ -1729,6 +1744,7 @@ function Course:writeStream(vehicle,streamId, connection)
 	streamWriteInt32(streamId, self.numHeadlands or 0 )
 	streamWriteInt32(streamId, self.multiTools or 1)
 	streamWriteInt32(streamId, #self.waypoints or 0)
+	streamWriteBool(streamId, self.editedByCourseEditor)
 	for i,p in ipairs(self.waypoints) do 
 		streamWriteString(streamId,p:getXmlString())
 	end
@@ -1743,6 +1759,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	local numHeadlands = courseXml:getValue( courseKey .. '#numHeadlands')
 	local multiTools = courseXml:getValue( courseKey .. '#multiTools')
 	local isCompressed = courseXml:getValue(courseKey  .. '#isCompressed')
+	local wasEdited = courseXml:getValue(courseKey  .. '#wasEdited', false)
 	local waypoints = {}
 	if courseXml:hasProperty(courseKey  .. Waypoint.xmlKey) then 
 		local d
@@ -1761,6 +1778,7 @@ function Course.createFromXml(vehicle, courseXml, courseKey)
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
+	course.editedByCourseEditor = wasEdited
 	if isCompressed then
 		course:addWaypointsForRows()
 	end
@@ -1774,6 +1792,7 @@ function Course.createFromStream(vehicle,streamId, connection)
 	local numHeadlands = streamReadInt32(streamId)
 	local multiTools = streamReadInt32(streamId)
 	local numWaypoints = streamReadInt32(streamId)
+	local wasEdited = streamReadBool(streamId)
 	local waypoints = {}
 	for ix=1,numWaypoints do 
 		local d = CpUtil.getXmlVectorValues(streamReadString(streamId))
@@ -1784,6 +1803,7 @@ function Course.createFromStream(vehicle,streamId, connection)
 	course.workWidth = workWidth
 	course.numHeadlands = numHeadlands
 	course.multiTools = multiTools
+	course.editedByCourseEditor = wasEdited
 	CpUtil.debugVehicle(CpDebug.DBG_MULTIPLAYER, vehicle, 'Course with %d waypoints loaded.', #course.waypoints)
 	return course
 end

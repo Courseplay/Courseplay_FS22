@@ -40,13 +40,18 @@ function CustomField:setup(name, vertices)
 
     self.name = name
     self.fieldId = name --- used for external mods
+    self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
+    self.fieldPlot:setVisible(true)
+
     self.vertices = vertices
     self:findFieldCenter()
-    self.area = CpMathUtil.getAreaOfPolygon(self.vertices)
+    self.area = CpMathUtil.getAreaOfPolygon(vertices)
     self.fieldArea = self.area/10000 -- area in ha
-    self.fieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
     self.fieldPlot:setWaypoints(vertices)
-    self.fieldPlot:setVisible(true)
+end
+
+function CustomField:setVertices(vertices)
+    self.vertices = vertices
 end
 
 function CustomField:delete()
@@ -54,6 +59,7 @@ function CustomField:delete()
         g_currentMission:removeMapHotspot(self.fieldHotspot)
         self.fieldHotspot:delete()
     end
+    self.fieldPlot:delete()
 end
 
 function CustomField:addHotspot()

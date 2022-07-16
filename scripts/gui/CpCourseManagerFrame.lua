@@ -18,34 +18,36 @@ CpCourseManagerFrame = {
 }
 
 CpCourseManagerFrame.translations = {
-	["title"] = "CP_courseManager_title",
+	title = "CP_courseManager_title",
 
-	["loadCourse"] = "CP_courseManager_load_courses",
-	["saveCourse"] = "CP_courseManager_save_courses",
-	["clearCurrentCourse"] = "CP_courseManager_clear_current_courses",
+	loadCourse = "CP_courseManager_load_courses",
+	saveCourse = "CP_courseManager_save_courses",
+	clearCurrentCourse = "CP_courseManager_clear_current_courses",
+	editCourse = "CP_courseManager_edit_course",
+
+	changeMode = "CP_courseManager_change_mode",
+	activate = "CP_courseManager_activate",
+
+	deleteEntry = "CP_courseManager_delete_entry",
+	renameEntry = "CP_courseManager_rename_entry",
+	createDirectory = "CP_courseManager_create_directory",
+	moveEntry = "CP_courseManager_move_entry",
+	copyEntry = "CP_courseManager_copy_entry",
 	
-	["changeMode"] = "CP_courseManager_change_mode",
-	["activate"] = "CP_courseManager_activate",
+	folderDialogTitle = "CP_courseManager_folder_dialog",
+	courseDialogTitle = "CP_courseManager_course_dialog",
 
-	["deleteEntry"] = "CP_courseManager_delete_entry",
-	["renameEntry"] = "CP_courseManager_rename_entry",
-	["createDirectory"] = "CP_courseManager_create_directory",
-	["moveEntry"] = "CP_courseManager_move_entry",
-	["copyEntry"] = "CP_courseManager_copy_entry",
-	
-	["folderDialogTitle"] = "CP_courseManager_folder_dialog",
-	["courseDialogTitle"] = "CP_courseManager_course_dialog",
+	deleteWarning = "CP_courseManager_deleteWarning",
+	editWarning = "CP_courseManager_editCourseWarning",
 
-	["deleteWarning"] = "CP_courseManager_deleteWarning",
+	deleteError = "CP_courseManager_deleteError",
+	entryExistAlreadyError = "CP_courseManager_entryExistAlreadyError",
+	noAccessError = "CP_courseManager_noAccessError",
+	targetIsNoFolder = "CP_courseManager_targetIsNoFolderError",
+	targetIsNoCourse = "CP_courseManager_targetIsNoCourseError",
 
-	["deleteError"] = "CP_courseManager_deleteError",
-	["entryExistAlreadyError"] = "CP_courseManager_entryExistAlreadyError",
-	["noAccessError"] = "CP_courseManager_noAccessError",
-	["targetIsNoFolder"] = "CP_courseManager_targetIsNoFolderError",
-	["targetIsNoCourse"] = "CP_courseManager_targetIsNoCourseError",
-
-	["basicSettings"] = "CP_courseManager_basicSettings",
-	["advancedSettings"] = "CP_courseManager_advancedSettings",
+	basicSettings = "CP_courseManager_basicSettings",
+	advancedSettings = "CP_courseManager_advancedSettings",
 }
 
 CpCourseManagerFrame.minMode = 1
@@ -129,6 +131,17 @@ function CpCourseManagerFrame:onGuiSetupFinished()
 					self:updateMenuButtons()
 				end,
 				callbackDisabled = self.clearCurrentCourseDisabled
+			},
+			---  Opens the course editor.
+			{
+				profile = "buttonActivate",
+				inputAction = InputAction.MENU_CANCEL,
+				text = g_i18n:getText(self.translations.editCourse),
+				callback = function ()
+					self.onClickOpenEditor(self)
+					self:updateMenuButtons()
+				end,
+				callbackDisabled = self.openEditorDisabled
 			},
 			--- Saves the current courses.
 			{
@@ -561,6 +574,25 @@ function CpCourseManagerFrame:onClickActivate()
 	end
 end
 
+function CpCourseManagerFrame:onClickOpenEditor()
+	local layout = FocusManager:getFocusedElement()
+	if layout then  
+		local element = layout:getSelectedElement()
+		local viewEntry = element.viewEntry
+		if viewEntry == nil then 
+			return 
+		end
+		if not viewEntry:isDirectory() then 
+			g_courseEditor:activate(viewEntry:getEntity())
+			self.showInfoDialog(
+				self.translations.editWarning, viewEntry)
+		else 
+			self.showInfoDialog(
+				self.translations.targetIsNoCourse,viewEntry)
+		end
+	end
+end
+
 ---------------------------------------------------
 --- Gui dialogs
 ---------------------------------------------------
@@ -643,4 +675,8 @@ end
 
 function CpCourseManagerFrame:modeDisabled()
 	return self.actionState ~= self.actionStates.disabled
+end
+
+function CpCourseManagerFrame:openEditorDisabled()
+	return not self:clearCurrentCourseDisabled() or self.actionState ~= self.actionStates.disabled
 end

@@ -112,6 +112,9 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     local course = self:getGeneratedCourse(jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
+        if course:wasEditedByCourseEditor() then 
+            self:info('The fieldwork course was edited by the course editor.')
+        end
         local startIx = self:getStartingPointWaypointIx(course, jobParameters.startAt:getValue())
         self:start(course, startIx, jobParameters)
     else

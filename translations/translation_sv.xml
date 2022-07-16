@@ -254,6 +254,7 @@
     <text name="CP_courseManager_change_mode" text="Ändra läge"/>
     <text name="CP_courseManager_load_courses" text="Ladda kurs"/>
     <text name="CP_courseManager_save_courses" text="Spara kurs"/>
+    <text name="CP_courseManager_edit_course" text="Open course editor"/>
     <text name="CP_courseManager_clear_current_courses" text="Sluta använd den aktiva kursen"/>
     <text name="CP_courseManager_create_directory" text="Skapa en ny mapp"/>
     <text name="CP_courseManager_move_entry" text="Flytta den markerade"/>
@@ -262,7 +263,11 @@
     <text name="CP_courseManager_copy_entry" text="Kopiera den markerade"/>
     <text name="CP_courseManager_folder_dialog" text="Mappens namn:"/>
     <text name="CP_courseManager_course_dialog" text="Kursens namn:"/>
-    <text name="CP_courseManager_deleteWarning" text="Är du säker på att du vill ta bort (%s)?"/>
+    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
+You should only use this tool, when the course generator can't create a good enough course.
+The course is saved automatically on closing of the editor and overrides the selected course.
+"/>
     <text name="CP_courseManager_deleteError" text="Mappen är inte tom (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Filen exixterar redan i denna mapp (%s)!"/>
     <text name="CP_courseManager_noAccessError" text="Du har ingen tillåtelse till denna mapp (%s)!"/>
@@ -271,6 +276,32 @@
     <text name="CP_courseManager_basicSettings" text="Kursinteraktion."/>
     <text name="CP_courseManager_advancedSettings" text="Redigera filen."/>
     <text name="CP_courseManager_activate" text="Aktivera"/>
+    <!---->
+    <!--Course editor-->
+    <!---->
+    <text name="CP_editor_course_title" text="Course editor"/>
+    <text name="CP_editor_delete_title" text="Delete waypoints"/>
+    <text name="CP_editor_delete_primary_text" text="primary"/>
+    <text name="CP_editor_delete_secondary_text" text="secondary"/>
+    <text name="CP_editor_delete_err" text="To few waypoints left."/>
+    <text name="CP_editor_course_basic_title" text="Basic"/>
+    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
+    <text name="CP_editor_course_advanced_title" text="Advanced"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -293,6 +324,7 @@
     <text name="CP_customFieldManager_confirm_delete" text="Vill du radera det anpassade fältet %s?"/>
     <text name="CP_customFieldManager_delete" text="Ta bort anpassat fält"/>
     <text name="CP_customFieldManager_rename" text="Byt namn på anpassat fält"/>
+    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
     <text name="CP_customFieldManager_draw" text="Rita anpassat fält"/>
     <text name="CP_customFieldManager_draw_header" text="Rita anpassade fältlinjer med högerklicka."/>
     <text name="CP_customFieldManager_save" text="Spara anpassat fält"/>
@@ -569,6 +601,31 @@ Verktygen kommer med en förskjutning för traktorn, så traktorn kör mellan vi
     <text name="CP_help_page_vineWorkSprayer_text" text="
 Sprutan fungerar bredvid vinrankorna så att den måste köra antingen vänster eller höger från vinrankorna.
 Eftersom sprutan kan fungera till vänster och höger vinstockar samtidigt kan vi hoppa över en rad.
+"/>
+    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editorGeneral_text" text="
+The course editor can be used to edit courses and custom fields.
+The loaded courses will be saved/overritten automatically, when the editor is closed.
+
+1) Editing a custom field can be done with a selected field on the ai menu page.
+2) Editing a course can be done in the course manager. 
+   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+
+Editing of course should only be done, when the course generator can't produce a good enough course.
+Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+"/>
+    <text name="CP_help_page_editorBasic_text" text="
+Under the basic category are:
+1) The move brush moves a hovered waypoint to the brush position.
+2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+
+Deleting of waypoints can be done with the red delete button.
+"/>
+    <text name="CP_help_page_editorAdvanced_text" text="
+Under the advanced category are:
+1) A brush to move multiple waypoints in between to selected waypoints.
+2) A brush to insert a curve of waypoints between to selected waypoints.
+3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
 "/>
     <!---->
     <!--Input bindings-->

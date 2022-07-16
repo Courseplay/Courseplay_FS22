@@ -37,7 +37,12 @@ end
 
 function CustomFieldHotspot:onClickRename()
 	CpUtil.debugFormat(CpDebug.DBG_HUD,"Rename custom field %s.", self.name)
-	g_customFieldManager:renameField(self.field,self)
+	g_customFieldManager:renameField(self.field, self)
+end
+
+function CustomFieldHotspot:onClickEdit()
+	CpUtil.debugFormat(CpDebug.DBG_HUD,"Edit custom field %s.", self.name)
+	g_customFieldManager:editField(self.field, self)
 end
 
 function CustomFieldHotspot:getAreaText()

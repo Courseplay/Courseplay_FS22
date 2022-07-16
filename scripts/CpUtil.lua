@@ -268,3 +268,22 @@ function CpUtil.getXmlVectorString(data)
 	end
 	return table.concat(values, " ")
 end
+
+function CpUtil.getClassObject(className)
+	local parts = string.split(className, ".")
+	local currentTable = _G[parts[1]]
+
+	if type(currentTable) ~= "table" then
+		return nil
+	end
+
+	for i = 2, #parts do
+		currentTable = currentTable[parts[i]]
+
+		if type(currentTable) ~= "table" then
+			return nil
+		end
+	end
+
+	return currentTable
+end

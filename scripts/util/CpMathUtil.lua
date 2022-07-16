@@ -117,3 +117,25 @@ function CpMathUtil.getAreaOfPolygon(polygon)
 	end
 	return math.abs(area)
 end
+
+--- De-Casteljau algorithm for bezier curves.
+--- https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm
+function CpMathUtil.de_casteljau(t, points)
+--[[
+	for i = 1, #points do
+		for j = 1, #points-i do
+			points[j] = {
+				points[j][1] * (1-t) + points[j+1][1] * t,
+				points[j][2] * (1-t) + points[j+1][2] * t,
+			}
+		end
+	end
+	return points[1][1], points[1][2]
+	]]
+	local q0_x, q0_y = (1-t) * points[1][1] + t * points[2][1],
+					(1-t) * points[1][2] + t * points[2][2]
+	local q1_x, q1_y = (1-t) * points[2][1] + t * points[3][1],
+					(1-t) * points[2][2] + t * points[3][2]
+	
+	return (1-t)*q0_x + t*q1_x, (1-t)*q0_y + t*q1_y
+end

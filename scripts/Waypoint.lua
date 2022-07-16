@@ -90,7 +90,7 @@ function Waypoint:set(wp, cpIndex)
 	self.cpIndex = cpIndex or 0
 	self.turnStart = wp.turnStart
 	self.turnEnd = wp.turnEnd
-	self.interact = wp.wait or false
+	self.interact = wp.wait or wp.interact or false
 	self.isConnectingTrack = wp.isConnectingTrack or nil
 	self.lane = wp.lane
 	self.rowNumber = wp.rowNumber
@@ -199,6 +199,51 @@ end
 function Waypoint:getDistanceFromNode(node)
 	local x, _, z = getWorldTranslation(node)
 	return self:getDistanceFromPoint(x, z)
+end
+
+function Waypoint:setPosition(x, z, y)
+	self.x = x 
+	self.z = z 
+	if y then 
+		self.y = y 
+	else 
+		self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
+	end
+end
+
+function Waypoint:translate(dx, dz)
+	self.x = self.x + dx
+	self.z = self.z + dz
+	self.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.x, 0, self.z)
+end
+
+function Waypoint:clone()
+	return Waypoint(self)
+end
+
+function Waypoint:getIsTurnStart()
+	return self.turnStart
+end
+
+function Waypoint:getIsTurnEnd()
+	return self.turnEnd
+end
+
+function Waypoint:getIsTurn()
+	return self.turnStart or self.turnEnd
+end
+
+function Waypoint:setTurnStart(turnStart)
+	self.turnStart = turnStart	
+end
+
+function Waypoint:setTurnEnd(turnEnd)
+	self.turnEnd = turnEnd	
+end
+
+function Waypoint:resetTurn()
+	self.turnEnd = false	
+	self.turnStart = false	
 end
 
 -- a node related to a waypoint

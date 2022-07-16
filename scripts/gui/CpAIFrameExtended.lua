@@ -11,7 +11,8 @@ CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
 }, AITargetHotspot.FILE_RESOLUTION)
 
 CpInGameMenuAIFrameExtended.curDrawPositions={}
-
+CpInGameMenuAIFrameExtended.drawDelay = g_updateLoopIndex
+CpInGameMenuAIFrameExtended.DELAY = 1 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	CpInGameMenuAIFrameExtended.setupButtons(self)		
@@ -136,7 +137,12 @@ function CpInGameMenuAIFrameExtended:setupButtons()
 
 	self.buttonRenameCustomField = createBtn(self.buttonGotoJob,
 											"CP_customFieldManager_rename",
-											"onClickRenameCustomField")		
+											"onClickRenameCustomField")	
+											
+	self.buttonEditCustomField = createBtn(self.buttonStartJob,
+											"CP_customFieldManager_edit",
+											"onClickEditCustomField")	
+
 	self.buttonDrawFieldBorder = createBtn(self.buttonGotoJob,
 											"CP_customFieldManager_draw",
 											"onClickCreateFieldBorder")			
@@ -158,6 +164,7 @@ function CpInGameMenuAIFrameExtended:updateContextInputBarVisibility()
 	
 	self.buttonDeleteCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
 	self.buttonRenameCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
+	self.buttonEditCustomField:setVisible(self.currentHotspot and self.currentHotspot:isa(CustomFieldHotspot))
 
 	self.buttonDrawFieldBorder:setVisible(CpInGameMenuAIFrameExtended.isCreateFieldBorderBtnVisible(self))
 	self.buttonDrawFieldBorder:setText(
@@ -493,6 +500,13 @@ function InGameMenuAIFrame:onClickRenameCustomField()
 	end
 end
 
+function InGameMenuAIFrame:onClickEditCustomField()
+	local hotspot = self.currentHotspot
+	if hotspot and hotspot:isa(CustomFieldHotspot) then 
+		hotspot:onClickEdit()
+	end
+end
+
 --- Activate/deactivate the custom field drawing mode.
 function InGameMenuAIFrame:onClickCreateFieldBorder()
 	if self.mode == CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER then 
@@ -513,19 +527,20 @@ function CpInGameMenuAIFrameExtended:mouseEvent(superFunc,posX, posY, isDown, is
 		local localX, localY = self.ingameMap:getLocalPosition(posX, posY)
 		local worldX, worldZ = self.ingameMap:localToWorldPos(localX, localY)
 		if button == Input.MOUSE_BUTTON_RIGHT then 
-			if isUp then 
-				if #CpInGameMenuAIFrameExtended.curDrawPositions>1 then
+			if isUp and g_updateLoopIndex > CpInGameMenuAIFrameExtended.drawDelay then 
+				if #CpInGameMenuAIFrameExtended.curDrawPositions > 0 then
 					--- Makes sure that waypoints are inserted between long lines,
 					--- as the coursegenerator depends on these.
 					local pos = CpInGameMenuAIFrameExtended.curDrawPositions[#CpInGameMenuAIFrameExtended.curDrawPositions]
 					local dx,dz,length = CpMathUtil.getPointDirection( pos, {x = worldX, z = worldZ})
-					for i=0, length-3, 5 do 
+					for i=3, length-3, 3 do 
 						table.insert(CpInGameMenuAIFrameExtended.curDrawPositions, 
 						{x = pos.x + dx * i,
 							z =  pos.z + dz * i})
 					end
 				end
 				table.insert(CpInGameMenuAIFrameExtended.curDrawPositions, {x = worldX, z = worldZ})
+				CpInGameMenuAIFrameExtended.drawDelay = g_updateLoopIndex + CpInGameMenuAIFrameExtended.DELAY
 			end
 		end
 	end
