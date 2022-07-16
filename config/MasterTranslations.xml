@@ -921,6 +921,10 @@
 			<Text language="de"><![CDATA[Kursname:]]></Text>
 			<Text language="en"><![CDATA[Course name:]]></Text>
 		</Translation>
+		<Translation name="CP_courseManager_deleteWarning">
+			<Text language="de"><![CDATA[Sicher, dass du (%s) löschen möchtest ?]]></Text>
+			<Text language="en"><![CDATA[Are you sure, you want to delete (%s)?]]></Text>
+		</Translation>
 		<Translation name="CP_courseManager_editCourseWarning">
 			<Text language="de"><![CDATA[Das bearbeiten von Kursen kann zu Problemen beim Abfahren des Kurses führen.
 Dieses sollte nur als Notlösung genutzt werden, falls es Probleme mit dem generierten Kurs gibt.
