@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
---- Controller for the pallet autoloader https://bitbucket.org/Achimobil79/ls22_palletautoloader
+--- Controller for the auto loader script: https://bitbucket.org/Achimobil79/ls22_palletautoloader
 
 ---@class APalletAutoLoaderController : BaleLoaderController
 APalletAutoLoaderController = CpObject(BaleLoaderController)
@@ -29,15 +29,30 @@ function APalletAutoLoaderController:init(vehicle, autoLoader)
 end
 
 function APalletAutoLoaderController:isGrabbingBale()
+    if self.autoLoader.PalIsGrabbingBale ~= nil then
+        return self.autoLoader:PalIsGrabbingBale();
+    end
+    
+    -- fallback for older AL versions
     return false
 end
 
 --- Is at least one bale loaded?
 function APalletAutoLoaderController:hasBales()
+    if self.autoLoader.PalHasBales ~= nil then
+        return self.autoLoader:PalHasBales();
+    end
+    
+    -- fallback for older AL versions
     return self.autoLoader:getFillUnitFillLevelPercentage(self.autoLoaderSpec.fillUnitIndex) >= 0.01
 end
 
 function APalletAutoLoaderController:isFull()
+    if self.autoLoader.PalIsFull ~= nil then
+        return self.autoLoader:PalIsFull();
+    end
+    
+    -- fallback for older AL versions
     return self.autoLoader:getFillUnitFreeCapacity(self.autoLoaderSpec.fillUnitIndex) <= 0.01
 end
 
@@ -61,9 +76,27 @@ end
 
 --- Ignore all already loaded bales when pathfinding
 function APalletAutoLoaderController:getBalesToIgnore()
+    if self.autoLoader.PalGetBalesToIgnore ~= nil then
+        return self.autoLoader:PalGetBalesToIgnore();
+    end
+    
+    -- fallback for older AL versions
     local objectsToIgnore = {}
     for object, _ in pairs(self.autoLoaderSpec.triggeredObjects) do
         table.insert(objectsToIgnore, object)
     end
     return objectsToIgnore
+end
+
+function APalletAutoLoaderController:getDriveData()
+    local maxSpeed 
+    if self:isFull() then
+        self:debugSparse("is full and waiting for release after animation has finished.")
+        maxSpeed = 0
+    end
+    return nil, nil, nil, maxSpeed
+end
+
+function APalletAutoLoaderController:isChangingBaleSize()
+    return false
 end

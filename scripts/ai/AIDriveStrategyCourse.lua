@@ -186,14 +186,25 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
+--- Adds implement controllers for every implement, that has the given specialization.
+---@param vehicle table
+---@param class ImplementController
+---@param spec table
+---@param states table
+---@param specReference string
+---@return table last implement found.
+---@return table last implement controller
 function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, states, specReference)
     --- If multiple implements have this spec, then add a controller for each implement.
+    local lastImplement, lastController
     for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec, specReference)) do
         local controller = class(vehicle, childVehicle)
         controller:setDisabledStates(states)
         controller:setDriveStrategy(self)
         table.insert(self.controllers, controller)
+        lastImplement, lastController = childVehicle, controller
     end
+    return lastImplement, lastController
 end
 
 --- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.

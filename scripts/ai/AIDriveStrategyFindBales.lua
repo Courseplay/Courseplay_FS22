@@ -87,8 +87,8 @@ function AIDriveStrategyFindBales:collectNextBale()
             self:findPathToNextBale()
             return
         end
-        if self.baleLoader and self.baleLoaderController:hasBales() then
-            if self.baleLoaderController:canBeFolded() then
+        if self.baleLoader and self:hasBalesLoaded() and not (self.baleLoaderController and self.baleLoaderController:isChangingBaleSize()) then
+            if self:isReadyToFoldImplements() then
                 --- Wait until the animations have finished and then make sure the bale loader can be send back with auto drive.
                 self:info('There really are no more bales on the field')
                 self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
@@ -107,28 +107,74 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
-    self.baleLoader = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
-    if self.baleLoader then
-        self.baleLoaderController = BaleLoaderController(vehicle, self.baleLoader)
-    else
-        local implements, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, nil, "spec_aPalletAutoLoader")
-        if found then
-            self.baleLoaderController = APalletAutoLoaderController(vehicle, implements[1])
+    --- The bale loader variable is used to check if a bale loader or wrapper was found.
+    self.baleLoader, self.baleLoaderController = self:addImplementController(vehicle, BaleLoaderController, BaleLoader, {}, nil)
+    self.baleWrapper = self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, {}, nil)
+    self.baleLoader = self.baleLoader or self:addImplementController(vehicle, APalletAutoLoaderController, nil, {}, "spec_aPalletAutoLoader")
+    self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
+    self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
+end
+
+--- Wait for the giants bale loader to finish grabbing the bale.
+function AIDriveStrategyFindBales:isReadyToLoadNextBale()
+    local isGrabbingBale = false
+    for i, controller in pairs(self.controllers) do 
+        if controller.isGrabbingBale then 
+            isGrabbingBale = isGrabbingBale or controller:isGrabbingBale()
         end
     end
-    if self.baleLoader then
-        self.baleLoaderController:setDriveStrategy(self)
-        table.insert(self.controllers, self.baleLoaderController)
-    end
-    self.baleWrapper = AIUtil.getImplementWithSpecialization(vehicle, BaleWrapper)
-    if self.baleWrapper then
-        self.baleWrapperController = BaleWrapperController(vehicle, self.baleWrapper)
-        self.baleWrapperController:setDriveStrategy(self)
-        table.insert(self.controllers, self.baleWrapperController)
-    end
-    self:addImplementController(vehicle, MotorController, Motorized, {})
-    self:addImplementController(vehicle, WearableController, Wearable, {})
+    return not isGrabbingBale
+end
 
+--- Have any bales been loaded?
+function AIDriveStrategyFindBales:hasBalesLoaded()
+    local hasBales = false
+    for i, controller in pairs(self.controllers) do 
+        if controller.hasBales then 
+            hasBales = hasBales or controller:hasBales()
+        end
+    end
+    return hasBales
+end
+
+--- Can all bale loaders be folded?
+function AIDriveStrategyFindBales:isReadyToFoldImplements()
+    local canBeFolded = true
+    for i, controller in pairs(self.controllers) do 
+        if controller.canBeFolded then 
+            canBeFolded = canBeFolded and controller:canBeFolded()
+        end
+    end
+    return canBeFolded
+end
+
+function AIDriveStrategyFindBales:areBaleLoadersFull()
+    local allBaleLoadersFilled = true
+    for i, controller in pairs(self.controllers) do 
+        if controller.isFull then 
+            allBaleLoadersFilled = allBaleLoadersFilled and controller:isFull()
+        end
+    end
+    return allBaleLoadersFilled
+end
+
+function AIDriveStrategyFindBales:getBalesToIgnore()
+    local objectsToIgnore = {}
+    if self.lastBale then
+        return { self.lastBale }
+    elseif self.baleLoaderController then 
+        return self.baleLoaderController:getBalesToIgnore()
+    else
+        for i, controller in pairs(self.controllers) do 
+            if controller.getBalesToIgnore then 
+                for i, bale in pairs(controller:getBalesToIgnore()) do 
+                    table.insert(objectsToIgnore, bale)
+                end
+               
+            end
+        end
+    end
+    return objectsToIgnore
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -177,6 +223,13 @@ function AIDriveStrategyFindBales:findBales()
             end
         end
         baleWithWrongWrapType = baleWithWrongWrapType or wrongWrapType
+    end
+    --- Ignores the loaded auto loader bales.
+    local loadedBales = self:getBalesToIgnore()
+    for _, bale in pairs(loadedBales) do 
+        if balesFound[bale.id] then 
+            balesFound[bale.id] = nil
+        end
     end
     local bales = {}
     for _, bale in pairs(balesFound) do
@@ -343,16 +396,6 @@ function AIDriveStrategyFindBales:isObstacleAhead()
     return not (leftOk or rightOk or straightOk)
 end
 
-function AIDriveStrategyFindBales:getBalesToIgnore()
-    local objectsToIgnore = {}
-    if self.lastBale then
-        return { self.lastBale }
-    elseif self.baleLoaderController then
-        return self.baleLoaderController:getBalesToIgnore()
-    end
-    return objectsToIgnore
-end
-
 function AIDriveStrategyFindBales:isNearFieldEdge()
     local x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 0)
     local vehicleIsOnField = CpFieldUtil.isOnField(x, z)
@@ -417,7 +460,7 @@ end
 
 function AIDriveStrategyFindBales:approachBale()
     if self.baleLoader then
-        if self.baleLoaderController:isGrabbingBale() then
+        if not self:isReadyToLoadNextBale() then
             self:debug('Start picking up bale')
             self.state = self.states.WORKING_ON_BALE
         end
@@ -433,7 +476,7 @@ end
 
 function AIDriveStrategyFindBales:workOnBale()
     if self.baleLoader then
-        if not self.baleLoaderController:isGrabbingBale() then
+        if self:isReadyToLoadNextBale() then
             self:debug('Bale picked up, moving on to the next')
             self:collectNextBale()
         end
@@ -483,4 +526,9 @@ end
 function AIDriveStrategyFindBales:update()
     AIDriveStrategyFindBales:superClass().update(self)
     self:updateImplementControllers()
+
+    if self:areBaleLoadersFull() and self:isReadyToFoldImplements() then
+        self:info('Bale loader is full, stopping job.')
+        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+    end
 end

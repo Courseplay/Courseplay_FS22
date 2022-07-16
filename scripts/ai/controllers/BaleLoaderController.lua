@@ -50,24 +50,26 @@ function BaleLoaderController:isFull()
 end
 
 function BaleLoaderController:canBeFolded()
-    return not self:isGrabbingBale() and self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE
+    return not self:isGrabbingBale() and self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE and not (self:isChangingBaleSize() and self:hasBales())
 end
 
 function BaleLoaderController:update()
-    --- The bale loader is full.
-    if self:isFull() and self:canBeFolded() then
-        --- Only stop the driver when any possible animations have finished playing.
-        self:info('Bale loader is full, stopping job.')
-        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+    if self:isFull() and self:isChangingBaleSize() then 
+        if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_NONE then
+            self.baleLoader:startAutomaticBaleUnloading()
+        end
     end
 end
 
 function BaleLoaderController:getDriveData()
     --- While animations are playing and the bale loader is full, then just wait.
     local maxSpeed 
-    if self:isFull() then 
+    if self:isFull() or self.baleLoaderSpec.emptyState ~= BaleLoader.EMPTY_NONE then
         self:debugSparse("is full and waiting for release after animation has finished.")
         maxSpeed = 0
+    end
+    if self.baleLoaderSpec.emptyState == BaleLoader.EMPTY_WAIT_TO_SINK then
+        maxSpeed = 1
     end
     return nil, nil, nil, maxSpeed
 end
@@ -85,4 +87,9 @@ end
 --- Get a list of bale objects to ignore when pathfinding.
 function BaleLoaderController:getBalesToIgnore()
     return {}
+end
+
+--- Is the bale loader transforming the picked up bale to a different bale size ?
+function BaleLoaderController:isChangingBaleSize()
+    return self.baleLoaderSpec.balePacker.node ~= nil and self.baleLoaderSpec.balePacker.filename ~= nil
 end
