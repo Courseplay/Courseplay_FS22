@@ -129,6 +129,7 @@ def saveLanguageFiles():
                             method='xml')
 		xml_object = xml_object.decode('utf-8')
 		xml_object = re.sub("&#10;", "\n", xml_object) # Another hack, to keep the correct formatting.
+		xml_object = re.sub("&#9;", "", xml_object) # Another hack, to remove tabs in the file.
 		with open(filename, "wb") as writter: 
 			writter.write(xml_object.encode('utf-8'))
   
