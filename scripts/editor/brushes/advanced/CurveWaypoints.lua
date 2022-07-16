@@ -2,7 +2,8 @@
 --- Moves a new waypoint at the mouse position.
 ---@class CpBrushCurveInsertWP : CpBrush
 CpBrushCurveInsertWP = {
-	DELAY = 100
+	DELAY = 100,
+	ERR_SELECT_MESSAGE_DURATION = 15 * 1000 -- 15 sec
 }
 local CpBrushMoveWP_mt = Class(CpBrushCurveInsertWP, CpBrush)
 function CpBrushCurveInsertWP.new(customMt, cursor)
@@ -14,6 +15,7 @@ function CpBrushCurveInsertWP.new(customMt, cursor)
 
 	self.selectedFirstIx = nil
 	self.selectedSecondIx = nil
+	self.selectingErrorMsgTimer = CpTemporaryObject(false)
 	return self
 end
 
@@ -22,14 +24,21 @@ function CpBrushCurveInsertWP:onButtonPrimary(isDown, isDrag, isUp)
 		if self.delay <= g_time then 
 			local ix = self:getHoveredWaypointIx()
 			if ix then
-				if self.selectedFirstIx == nil then 
-					self.selectedFirstIx = ix
-					self.courseWrapper:setSelected(self.selectedFirstIx)
-				elseif self.selectedSecondIx == nil and self.selectedFirstIx ~= ix then 
-					self.selectedSecondIx = ix
-					self.courseWrapper:setSelected(self.selectedSecondIx)
-					if self.selectedSecondIx and self.selectedSecondIx < self.selectedFirstIx then 
-						self.selectedFirstIx, self.selectedSecondIx = self.selectedSecondIx, self.selectedFirstIx
+				if self.courseWrapper:isWaypointTurn(ix) then 		
+					if self.selectedFirstIx == nil or self.selectedSecondIx == nil then
+						self.selectingErrorMsgTimer:set(true, self.ERR_SELECT_MESSAGE_DURATION)
+					end
+				else 
+					self.selectingErrorMsgTimer:reset()
+					if self.selectedFirstIx == nil then 
+						self.selectedFirstIx = ix
+						self.courseWrapper:setSelected(self.selectedFirstIx)
+					elseif self.selectedSecondIx == nil and self.selectedFirstIx ~= ix then 
+						self.selectedSecondIx = ix
+						self.courseWrapper:setSelected(self.selectedSecondIx)
+						if self.selectedSecondIx and self.selectedSecondIx < self.selectedFirstIx then 
+							self.selectedFirstIx, self.selectedSecondIx = self.selectedSecondIx, self.selectedFirstIx
+						end
 					end
 				end
 			end
@@ -50,6 +59,13 @@ function CpBrushCurveInsertWP:onButtonPrimary(isDown, isDrag, isUp)
 	end
 	if isUp then
 		
+	end
+end
+
+function CpBrushCurveInsertWP:update(dt)
+	CpBrushCurveInsertWP:superClass().update(self, dt)
+	if self.selectingErrorMsgTimer:get() then
+		self.cursor:setErrorMessage(self:getTranslation("err_turn"))
 	end
 end
 

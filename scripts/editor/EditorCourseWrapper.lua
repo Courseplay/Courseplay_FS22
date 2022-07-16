@@ -28,6 +28,11 @@ function EditorCourseWrapper:getAllWaypoints()
 	return self.course:getAllWaypoints()
 end
 
+function EditorCourseWrapper:isWaypointTurn(ix)
+	local wp = ix ~=nil and self.course:getWaypoint(ix)
+	return wp and wp:getIsTurn()
+end
+
 ------------------------------------
 --- Course display interaction.
 ------------------------------------
@@ -115,11 +120,15 @@ end
 --- The inserted waypoint has the same attributes, as the selected one.
 function EditorCourseWrapper:insertWaypointAhead(ix)
 	local waypoint = self.course:getWaypoint(ix)
-	if waypoint and not waypoint:getIsTurnEnd() then 
+	local wp
+	if waypoint then 
+		if waypoint:getIsTurnEnd() then 
+			return nil, false
+		end
 		local frontWp = self.course:getWaypoint(ix-1)
 		if frontWp and ix > 1 then 
 			local x, z = frontWp.x + (waypoint.x - frontWp.x)/2 , frontWp.z + (waypoint.z - frontWp.z)/2
-			local wp = waypoint:clone()
+			wp = waypoint:clone()
 			wp:resetTurn()
 			wp:setPosition(x, z)
 			table.insert(self.course.waypoints, ix, wp)
@@ -128,14 +137,14 @@ function EditorCourseWrapper:insertWaypointAhead(ix)
 			if backWp then
 				local dx, dz = MathUtil.vector2Normalize(backWp.x - waypoint.x, backWp.z - waypoint.z)
 				local x, z = waypoint.x - dx * 3, waypoint.z - dz * 3
-				local wp = waypoint:clone()
+				wp = waypoint:clone()
 				wp:resetTurn()
 				wp:setPosition(x, z)
 				table.insert(self.course.waypoints, 1, wp)
 			end
 		end
-		
 	end
+	return wp, true
 end
 
 --- Inserts a waypoint behind the given waypoint.
@@ -143,7 +152,10 @@ end
 function EditorCourseWrapper:insertWaypointBehind(ix)
 	local waypoint = self.course:getWaypoint(ix)
 	local wp
-	if waypoint and not waypoint:getIsTurnStart() then 
+	if waypoint then 
+		if waypoint:getIsTurnStart() then 
+			return nil, false
+		end
 		local backWp = self.course:getWaypoint(ix+1)
 		if backWp and ix < #self.course.waypoints then 
 			local x, z = waypoint.x + (backWp.x - waypoint.x)/2 , waypoint.z + (backWp.z - waypoint.z)/2
@@ -163,7 +175,7 @@ function EditorCourseWrapper:insertWaypointBehind(ix)
 			end
 		end
 	end
-	return wp
+	return wp, true
 end
 
 --- Moves the waypoint to a given world position.
@@ -198,6 +210,7 @@ function EditorCourseWrapper:deleteWaypoint(ix)
 			end
 		end
 		table.remove(self.course.waypoints, ix)
+		return true
 	end
 end
 
@@ -214,22 +227,27 @@ end
 --- Changes the waypoint type between normal, turn start and turn end.
 function EditorCourseWrapper:changeWaypointTurnType(ix)
 	local wp = self.course:getWaypoint(ix)
+	local np = self.course.waypoints[ix+1]
+	local pp = self.course.waypoints[ix-1]
 	if wp then 
 		if wp:getIsTurnStart() then 
-			wp:setTurnStart(false)
-			if self.course.waypoints[ix+1] then 
-				self.course:getWaypoint(ix+1):resetTurn()
+			wp:resetTurn()
+			if np then 
+				np:resetTurn()
 			end
 		elseif wp:getIsTurnEnd() then 
-			wp:setTurnEnd(false)
-			if self.course.waypoints[ix-1] then 
-				self.course:getWaypoint(ix-1):resetTurn()
+			wp:resetTurn()
+			if pp then 
+				pp:resetTurn()
 			end
-		elseif self.course.waypoints[ix+1] then 
+		elseif np and not np:getIsTurn() then 
 			wp:setTurnStart(true) 
-			self.course:getWaypoint(ix+1):setTurnEnd(true)
+			np:setTurnEnd(true)
+		else 
+			return false
 		end
 	end
+	return true
 end
 
 --- Gets the waypoint type (normal, turn start and turn end)

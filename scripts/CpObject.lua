@@ -91,6 +91,12 @@ function CpTemporaryObject:get()
 	return self.value
 end
 
+--- Resets the object.
+function CpTemporaryObject:reset()
+	self.expiryTime = g_time
+	self.value = self.valueWhenExpired
+end
+
 --- Object slowly adjusting its value
 ---@class CpSlowChangingObject
 CpSlowChangingObject = CpObject()

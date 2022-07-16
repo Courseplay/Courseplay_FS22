@@ -7,6 +7,7 @@ CpBrushChangeTurnWP = {
 		TURN_START = 2,
 		TURN_END = 3
 	},
+	ERR_MESSAGE_DURATION = 15 * 1000 -- 15 sec
 }
 CpBrushChangeTurnWP.TYPES_TRANSLATIONS = {
 	[CpBrushChangeTurnWP.TYPES.NORMAL] = "type_normal",
@@ -18,19 +19,29 @@ local CpBrushChangeWP_mt = Class(CpBrushChangeTurnWP, CpBrush)
 function CpBrushChangeTurnWP.new(customMt, cursor)
 	local self =  CpBrush.new(customMt or CpBrushChangeWP_mt, cursor)
 	self.supportsPrimaryButton = true
-
+	self.turnErrorMsgTimer = CpTemporaryObject(false)
 	return self
 end
 
 function CpBrushChangeTurnWP:onButtonPrimary()
 	local ix = self:getHoveredWaypointIx()
 	if ix then 
-		self.courseWrapper:changeWaypointTurnType(ix)
-		self.editor:updateChangesBetween(ix - 1, ix + 1)
+		if self.courseWrapper:changeWaypointTurnType(ix) then
+			self.editor:updateChangesBetween(ix - 1, ix + 1)
+			self.turnErrorMsgTimer:reset()
+		else
+			self.turnErrorMsgTimer:set(true, self.ERR_MESSAGE_DURATION)
+		end
+	end
+end
+
+function CpBrushChangeTurnWP:update(dt)
+	CpBrushChangeTurnWP:superClass().update(self, dt)
+	if self.turnErrorMsgTimer:get() then
+		self.cursor:setErrorMessage(self:getTranslation("err"))
 	end
 end
 
 function CpBrushChangeTurnWP:getButtonPrimaryText()
-	local type = self.courseWrapper:getWaypointType(self.lastHoveredIx)
-	return self:getTranslation(self.primaryButtonText, type~=nil and self:getTranslation(self.TYPES_TRANSLATIONS[type]))
+	return self:getTranslation(self.primaryButtonText)
 end
