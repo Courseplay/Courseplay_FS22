@@ -263,6 +263,7 @@
     <text name="CP_courseManager_copy_entry" text="Eintrag kopieren"/>
     <text name="CP_courseManager_folder_dialog" text="Ordnername:"/>
     <text name="CP_courseManager_course_dialog" text="Kursname:"/>
+    <text name="CP_courseManager_deleteWarning" text="Sicher, dass du (%s) löschen möchtest ?"/>
     <text name="CP_courseManager_editCourseWarning" text="Das bearbeiten von Kursen kann zu Problemen beim Abfahren des Kurses führen.
 Dieses sollte nur als Notlösung genutzt werden, falls es Probleme mit dem generierten Kurs gibt.
 Der Kurs wird beim schließen automatisch gespeichert und überschrieben.

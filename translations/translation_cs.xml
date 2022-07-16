@@ -263,6 +263,7 @@
     <text name="CP_courseManager_copy_entry" text="复制"/>
     <text name="CP_courseManager_folder_dialog" text="文件夹名称:"/>
     <text name="CP_courseManager_course_dialog" text="任务名称:"/>
+    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
     <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
 You should only use this tool, when the course generator can't create a good enough course.
 The course is saved automatically on closing of the editor and overrides the selected course.
