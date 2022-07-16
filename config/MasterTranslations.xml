@@ -981,7 +981,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Löscht Wegpunkte, über die die Maus gezogen wird.]]></Text>
 			<Text language="en"><![CDATA[Continues deletion of hovered waypoints.]]></Text>
 		</Translation>
-		<Translation name="CP_editor_delete_err_to_few_waypoints">
+		<Translation name="CP_editor_delete_err">
 			<Text language="de"><![CDATA[Zu wenige Wegpunkte übrig.]]></Text>
 			<Text language="en"><![CDATA[To few waypoints left.]]></Text>
 		</Translation>
@@ -1009,13 +1009,13 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein.]]></Text>
 			<Text language="en"><![CDATA[Inserts a waypoint before the selected waypoint.]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_basic_insert_err_turn">
+		<Translation name="CP_editor_course_basic_insert_err">
 			<Text language="de"><![CDATA[Einfügen zwischen Wendepunkte ist verboten.]]></Text>
 			<Text language="en"><![CDATA[Inserting between a turning point is not allowed.]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_changeAttributes_title">
-			<Text language="de"><![CDATA[Ändert Wegpunkt Attribute]]></Text>
-			<Text language="en"><![CDATA[Change waypoint attributes]]></Text>
+		<Translation name="CP_editor_course_advanced_title">
+			<Text language="de"><![CDATA[Erweitert]]></Text>
+			<Text language="en"><![CDATA[Advanced]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_changeTurn_title">
 			<Text language="de"><![CDATA[Wegpunkt als Wendepunkt makieren.]]></Text>
@@ -1028,6 +1028,39 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_editor_course_advanced_changeTurn_err">
 			<Text language="de"><![CDATA[Zu nahe zu einem weiteren Wendepunkt.]]></Text>
 			<Text language="en"><![CDATA[To close to another turning point.]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_title">
+			<Text language="de"><![CDATA[Mehrere Wegpunkte bewegen]]></Text>
+			<Text language="en"><![CDATA[Moves multiple waypoints]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_primary_text">
+			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und bewegt diese zusammen mit allen Wegpunkten dazwischen.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoint and moves these with all the waypoints in between.]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_moveExtended_secondary_text">
+			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
+			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_title">
+			<Text language="de"><![CDATA[Wegpunkte als Kurve einfügen]]></Text>
+			<Text language="en"><![CDATA[Inserts waypoints as curve]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_primary_text">
+			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und fügt dann mehrere Wegpunkte ein, die als Kurve erstellt werden.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoint and adds some waypoints in between as a curve.]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
+			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
+			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
+		</Translation>
+		<Translation name="CP_editor_course_advanced_curveInsert_err">
+			<Text language="de"><![CDATA[Eine Wendepunkt darf nicht ausgewählt werden.]]></Text>
+			<Text language="en"><![CDATA[Selecting a turning point is not allowed.]]></Text>
+		</Translation>
+		<!-- 
+		<Translation name="CP_editor_course_changeAttributes_title">
+			<Text language="de"><![CDATA[Ändert Wegpunkt Attribute]]></Text>
+			<Text language="en"><![CDATA[Change waypoint attributes]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_changeAttributes_changeHeadland_title">
 			<Text language="de"><![CDATA[Ändert Vorgewende]]></Text>
@@ -1081,38 +1114,8 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[keine Bahn]]></Text>
 			<Text language="en"><![CDATA[no row]]></Text>
 		</Translation>
-		<Translation name="CP_editor_course_advanced_title">
-			<Text language="de"><![CDATA[Erweitert]]></Text>
-			<Text language="en"><![CDATA[Advanced]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_moveExtended_title">
-			<Text language="de"><![CDATA[Mehrere Wegpunkte bewegen]]></Text>
-			<Text language="en"><![CDATA[Moves multiple waypoints]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_moveExtended_primary_text">
-			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und bewegt diese zusammen mit allen Wegpunkten dazwischen.]]></Text>
-			<Text language="en"><![CDATA[Selects two waypoint and moves these with all the waypoints in between.]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_moveExtended_secondary_text">
-			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
-			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_curveInsert_title">
-			<Text language="de"><![CDATA[Wegpunkte als Kurve einfügen]]></Text>
-			<Text language="en"><![CDATA[Inserts waypoints as curve]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_curveInsert_primary_text">
-			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und fügt dann mehrere Wegpunkte ein, die als Kurve erstellt werden.]]></Text>
-			<Text language="en"><![CDATA[Selects two waypoint and adds some waypoints in between as a curve.]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
-			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
-			<Text language="en"><![CDATA[Resets the selected waypoints.]]></Text>
-		</Translation>
-		<Translation name="CP_editor_course_advanced_curveInsert_err_turn">
-			<Text language="de"><![CDATA[Eine Wendepunkt darf nicht ausgewählt werden.]]></Text>
-			<Text language="en"><![CDATA[Selecting a turning point is not allowed.]]></Text>
-		</Translation>
+		-->
+
 	</Category>
 	<Category name="Info texts">	
 		<Translation name="CP_infoTexts_isStuck">

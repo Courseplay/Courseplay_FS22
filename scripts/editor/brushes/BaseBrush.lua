@@ -11,7 +11,9 @@ CpBrush = {
 	secondaryAxisText = "secondary_axis_text",
 	tertiaryButtonText = "tertiary_text",
 	inputTitle = "input_title",
-	yesNoTitle = "yesNo_title"
+	yesNoTitle = "yesNo_title",
+	errMessage = "err",
+	ERR_MESSAGE_DURATION = 15 * 1000 -- 15 sec
 }
 local CpBrush_mt = Class(CpBrush, ConstructionBrush)
 function CpBrush.new(customMt, cursor)
@@ -19,6 +21,7 @@ function CpBrush.new(customMt, cursor)
 	self.cursor:setShapeSize(self.radius)
 	self.cursor:setShape(GuiTopDownCursor.SHAPES.CIRCLE)
 	self.lastHoveredIx = nil
+	self.errorMsgTimer = CpTemporaryObject(false)
 	return self
 end
 
@@ -52,6 +55,9 @@ function CpBrush:update(dt)
 	if lastIx ~= nil then 
 		self.editor:updateChangeSingle(lastIx)
 	end
+	if self.errorMsgTimer:get() then
+		self.cursor:setErrorMessage(self:getErrorMessage())
+	end
 end
 
 function CpBrush:openTextInput(callback, title, args)
@@ -80,4 +86,16 @@ end
 --- Gets the translation with the translation prefix.
 function CpBrush:getTranslation(translation, ...)
 	return string.format(g_i18n:getText(self.translation .. "_" .. translation), ...)
+end
+
+function CpBrush:getErrorMessage()
+	return self:getTranslation(self.errMessage)
+end
+
+function CpBrush:setError()
+	self.errorMsgTimer:set(true, self.ERR_MESSAGE_DURATION)
+end
+
+function CpBrush:resetError()
+	self.errorMsgTimer:reset()
 end
