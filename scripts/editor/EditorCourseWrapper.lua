@@ -115,7 +115,7 @@ end
 --- The inserted waypoint has the same attributes, as the selected one.
 function EditorCourseWrapper:insertWaypointAhead(ix)
 	local waypoint = self.course:getWaypoint(ix)
-	if waypoint then 
+	if waypoint and not waypoint:getIsTurnEnd() then 
 		local frontWp = self.course:getWaypoint(ix-1)
 		if frontWp and ix > 1 then 
 			local x, z = frontWp.x + (waypoint.x - frontWp.x)/2 , frontWp.z + (waypoint.z - frontWp.z)/2
@@ -143,7 +143,7 @@ end
 function EditorCourseWrapper:insertWaypointBehind(ix)
 	local waypoint = self.course:getWaypoint(ix)
 	local wp
-	if waypoint then 
+	if waypoint and not waypoint:getIsTurnStart() then 
 		local backWp = self.course:getWaypoint(ix+1)
 		if backWp and ix < #self.course.waypoints then 
 			local x, z = waypoint.x + (backWp.x - waypoint.x)/2 , waypoint.z + (backWp.z - waypoint.z)/2
