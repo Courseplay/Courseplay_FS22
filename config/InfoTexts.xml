@@ -11,15 +11,13 @@
 		aiMessageClass: string reference to a giants ai message.
 
 	The priority is from top to bottom, which makes the first the highest priority in the hud.
-
-	TODO: AIMessageErrorBlockedByObject
 -->
 
 <InfoTexts prefix="CP_infoTexts_">
 	<InfoText name="ERROR_STOPPED"				text="errorStopped" class="AIMessageCpError"/>
 
 	<InfoText name="IS_STUCK"					text="isStuck"/>
-	<InfoText name="BLOCKED_BY_OBJECT"  		text="blockedByObject"/>
+	<InfoText name="BLOCKED_BY_OBJECT"  		text="blockedByObject" class="AIMessageErrorBlockedByObject"/>
 
 	<InfoText name="OUT_OF_MONEY"				text="outOfMoney"	  class="AIMessageErrorOutOfMoney"/>
 	<InfoText name="WRONG_BALE_WRAP_TYPE"		text="wrongBaleWrapType" class="AIMessageErrorWrongBaleWrapType"/>
