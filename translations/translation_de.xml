@@ -282,15 +282,18 @@ Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
     <text name="CP_editor_delete_title" text="Wegpunkte löschen"/>
     <text name="CP_editor_delete_primary_text" text="Löscht den ausgewählten Wegpunkt."/>
     <text name="CP_editor_delete_secondary_text" text="Löscht Wegpunkte, über die die Maus gezogen wird."/>
+    <text name="CP_editor_delete_err_to_few_waypoints" text="Zu wenige Wegpunkte übrig."/>
     <text name="CP_editor_course_basic_title" text="Einfach"/>
     <text name="CP_editor_course_basic_move_title" text="Wegpunkt bewegen"/>
     <text name="CP_editor_course_basic_move_primary_text" text="Bewegt den ausgewählten Wegpunkt durch festhalten der Maustaste."/>
     <text name="CP_editor_course_basic_insert_title" text="Wegpunkte einfügen"/>
     <text name="CP_editor_course_basic_insert_primary_text" text="Fügt einen Wegpunkt nach dem ausgewählten Wegpunkt ein."/>
     <text name="CP_editor_course_basic_insert_secondary_text" text="Fügt ein Wegpunkt vor dem ausgewählten Wegpunkt ein."/>
+    <text name="CP_editor_course_basic_insert_err_turn" text="Einfügen zwischen Wendepunkte ist verboten."/>
     <text name="CP_editor_course_changeAttributes_title" text="Ändert Wegpunkt Attribute"/>
     <text name="CP_editor_course_advanced_changeTurn_title" text="Wegpunkt als Wendepunkt makieren."/>
     <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Fügt einen Wendepunkt ein oder löscht diesen. (Der ausgewählte Wegpunkt wird der Wendepunktstart.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Zu nahe zu einem weiteren Wendepunkt."/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Ändert Vorgewende"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="Weißt dem ausgewählten Wegpunkt die Vorgewendenummer zu."/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="Ändert die Vorgewendenummer für Wepunkte über, die die Maus gezogen wird."/>
@@ -311,6 +314,7 @@ Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
     <text name="CP_editor_course_advanced_curveInsert_title" text="Wegpunkte als Kurve einfügen"/>
     <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Wählt zwei Wegpunkte aus und fügt dann mehrere Wegpunkte ein, die als Kurve erstellt werden."/>
     <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Setzt die Auswahl der Wegpunkte zurück."/>
+    <text name="CP_editor_course_advanced_curveInsert_err_turn" text="Eine Wendepunkt darf nicht ausgewählt werden."/>
     <!---->
     <!--Info texts-->
     <!---->

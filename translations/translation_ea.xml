@@ -282,15 +282,18 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_delete_title" text="Delete waypoints"/>
     <text name="CP_editor_delete_primary_text" text="primary"/>
     <text name="CP_editor_delete_secondary_text" text="secondary"/>
+    <text name="CP_editor_delete_err_to_few_waypoints" text="To few waypoints left."/>
     <text name="CP_editor_course_basic_title" text="Basic"/>
     <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
     <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
     <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
     <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
     <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_insert_err_turn" text="Inserting between a turning point is not allowed."/>
     <text name="CP_editor_course_changeAttributes_title" text="Change waypoint attributes"/>
     <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
     <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_title" text="Changes headland"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_primary_text" text="primary"/>
     <text name="CP_editor_course_changeAttributes_changeHeadland_secondary_text" text="secondary"/>
@@ -311,6 +314,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
     <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
     <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_err_turn" text="Selecting a turning point is not allowed."/>
     <!---->
     <!--Info texts-->
     <!---->
