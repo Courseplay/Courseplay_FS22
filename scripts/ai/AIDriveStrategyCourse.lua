@@ -474,7 +474,7 @@ end
 function AIDriveStrategyCourse:createAlignmentCourse(course, ix)
     self:debug('Generate alignment course to waypoint %d', ix)
     local alignmentCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(), self.turningRadius,
-            course, ix, math.min(-self.frontMarkerDistance, 0)):getCourse()
+            course, ix, math.min(-self.frontMarkerDistance, -1)):getCourse()
     return alignmentCourse
 end
 

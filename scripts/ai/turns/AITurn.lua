@@ -774,7 +774,7 @@ function CourseTurn:generateCalculatedTurn()
 		if self.steeringLength > 0 and not (SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) or
 				SpecializationUtil.hasSpecialization(Crawler, self.vehicle.specializations)) then
 			self:debug('Enabling tight turn offset')
-			self.enableTightTurnOffset = 1
+			self.enableTightTurnOffset = true
 		end
 	end
 	self.turnCourse = turnManeuver:getCourse()
@@ -974,6 +974,8 @@ StartRowOnly = CpObject(CourseTurn)
 function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse, fieldWorkCourse, workWidth)
 	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, 'StartRow')
 	self.turnCourse = startRowCourse
+	self.enableTightTurnOffset = true
+	self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
 	-- add a turn ending section into the row to make sure the implements are lowered correctly
 	local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
 	TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
