@@ -158,9 +158,9 @@ function AIReverseDriver:setReversingProperties(implement)
 	else
 		implement.reversingProperties.frontNode = ImplementUtil.getRealDollyFrontNode(attacherVehicle)
 		if implement.reversingProperties.frontNode then
-			self:debug('--> self.reversingImplement %q has dolly')
+			self:debug('--> self.reversingImplement %s has dolly', CpUtil.getName(implement))
 		else
-			self:debug('--> self.reversingImplement %q has invalid dolly -> return')
+			self:debug('--> self.reversingImplement %s has invalid dolly -> return', CpUtil.getName(implement))
 			return
 		end
 	end
