@@ -28,7 +28,7 @@
     <text name="CP_jobParameters_startAt_nearest" text="nearest waypoint"/>
     <text name="CP_jobParameters_startAt_first" text="first waypoint"/>
     <text name="CP_jobParameters_startAt_last" text="last waypoint"/>
-    <text name="CP_jobParameters_startAt_unload" text="unloading combine/chopper"/>
+    <text name="CP_jobParameters_startAt_unload" text="unload combine"/>
     <text name="CP_jobParameters_startAt_bales" text="collecting/wrapping bales"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Lane offset:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Lane offset:"/>
@@ -47,10 +47,15 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Fieldwork"/>
     <text name="CP_job_baleCollect" text="CP: Bale collect/wrap"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Generate fieldwork course."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Open/close course generator."/>
     <!---->
