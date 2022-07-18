@@ -13,10 +13,10 @@
     <text name="CP_automatic" text="automático"/>
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="ft"/>
-    <text name="CP_copy" text="Copy course: "/>
+    <text name="CP_copy" text="Copiar rota: "/>
     <text name="CP_infoText" text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Criar rota primeiro."/>
-    <text name="CP_error_could_not_generate_course" text="Could not generate course. The log may have more information."/>
+    <text name="CP_error_could_not_generate_course" text="Não foi possível criar a rota. O arquivo log pode ter mais informações."/>
     <text name="CP_error_not_on_field" text="Destino não é um campo."/>
     <!---->
     <!--AI job parameters-->
@@ -41,11 +41,11 @@
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
-    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="all bales"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
+    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Tipo de fardo:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Tipo de fardo:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="todos os fardos"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="somente embalado"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não embalado"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -57,8 +57,8 @@
     <!--AI error messages-->
     <!---->
     <text name="CP_ai_messageErrorIsFull" text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!"/>
-    <text name="CP_ai_messageError" text="AI worker %s has stopped work unexpectedly - left the course!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
+    <text name="CP_ai_messageError" text="O trabalhador A %s parou de trabalhar inesperadamente - deixou a rota!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -263,10 +263,10 @@
     <text name="CP_courseManager_copy_entry" text="Copiar entrada"/>
     <text name="CP_courseManager_folder_dialog" text="Nome da pasta:"/>
     <text name="CP_courseManager_course_dialog" text="Nome da rota:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Tem certeza que deseja excluir (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="A edição de rotas pode criar problemas para os condutores da rota.
+Você só deve usar esta ferramenta quando o gerador de rotas não puder criar uma rota bom o suficiente.
+A rota é salva automaticamente ao fechar o editor e substituir a rota selecionado.
 "/>
     <text name="CP_courseManager_deleteError" text="Pasta não está vazia (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Arquivo já existe na pasta (%s)!"/>
@@ -279,34 +279,34 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="Editor de rota"/>
+    <text name="CP_editor_delete_title" text="Excluir waypoints"/>
+    <text name="CP_editor_delete_primary_text" text="primário"/>
+    <text name="CP_editor_delete_secondary_text" text="secundário"/>
+    <text name="CP_editor_delete_err" text="Para poucos waypoints restantes."/>
+    <text name="CP_editor_course_basic_title" text="Básico"/>
+    <text name="CP_editor_course_basic_move_title" text="Mover um waypoint"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primário"/>
+    <text name="CP_editor_course_basic_insert_title" text="Inserir waypoints"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primário"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secundário"/>
+    <text name="CP_editor_course_basic_insert_err" text="A inserção entre um waypoint de virada não é permitida."/>
+    <text name="CP_editor_course_advanced_title" text="Avançado"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Marca um waypoint como curva."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adiciona ou exclui um waypoint de virada. (O waypoint selecionado será o início da curva.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Para fechar a outro waypoint da curva."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Mover multiplos waypoints"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primário"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secundário"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserir waypoints como curva(s)"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primário"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secundário"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Não é permitido selecionar um waypoint de virada."/>
     <!---->
     <!--Info texts-->
     <!---->
     <text name="CP_infoTexts_isStuck" text="O ajudante está preso"/>
-    <text name="CP_infoTexts_blockedByObject" text="Blocked by an object"/>
+    <text name="CP_infoTexts_blockedByObject" text="Bloqueado por um objeto"/>
     <text name="CP_infoTexts_shouldRefuel" text="Precisa reabastecer"/>
     <text name="CP_infoTexts_needsFuel" text="Precisa reabastecer urgente"/>
     <text name="CP_infoTexts_needsRepair" text="Precisa ser reparado"/>
@@ -324,7 +324,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_confirm_delete" text="Deseja excluir o campo customizado %s?"/>
     <text name="CP_customFieldManager_delete" text="Excluir campo customizado"/>
     <text name="CP_customFieldManager_rename" text="Renomear campo customizado"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Editar campo customizado"/>
     <text name="CP_customFieldManager_draw" text="Desenhar campo customizado"/>
     <text name="CP_customFieldManager_draw_header" text="Clique no botão direito do mouse para desenhar linhas no campo customizado."/>
     <text name="CP_customFieldManager_save" text="Salvar campo customizado"/>
@@ -607,30 +607,30 @@ Os implementos vêm com um deslocamento para o trator, para que o trator se mova
 O pulverizador trabalha próximo às videiras, por isso deve dirigir para a esquerda ou para a direita das videiras.
 Como o pulverizador pode trabalhar nas videiras esquerda e direita ao mesmo tempo, podemos pular uma fileira.
 "/>
-    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editor_title" text="Editor rota"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+O editor de rotas pode ser usado para editar rotas e campos customizados.
+As rotas carregadas serão salvos/substituídos automaticamente, quando o editor for fechado.
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) A edição de um campo customizados pode ser feita com um campo selecionado na página do menu ai.
+2) A edição de uma rota pode ser feita no gerenciador de rotas.
+    Lá você pode editar uma rota salva, mas certifique-se de ter apagado a rota atualmente carregada do veículo.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+A edição da rota só deve ser feita quando o gerador de rotas não puder produzir uma rota bom o suficiente.
+A edição incorreta pode causar problemas para o motorita cp, pois os waypoints possuem atributos ocultos.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+Na categoria básica estão:
+1) O pincel de movimento move um waypoint pairado para a posição do pincel.
+2) O pincel de inserção pode inserir waypoints à frente ou atrás de um waypoint selecionado.
 
-Deleting of waypoints can be done with the red delete button.
+A exclusão de waypoints pode ser feita com o botão vermelho delete.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+Na categoria avançada estão:
+1) Um pincel para mover vários waypoints entre os waypoints selecionados.
+2) Um pincel para inserir uma curva de waypoints entre os waypoints selecionados.
+3) Um pincel para definir o atributo de curva de um waypoint (apenas em uma rota e não um campo customizado).
 "/>
     <!---->
     <!--Input bindings-->
@@ -640,7 +640,7 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Mudar canal de debug atual."/>
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostrar canal de debug sim/não."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
-    <text name="input_CP_START_STOP" text="CP: Dirigir/stop driver"/>
+    <text name="input_CP_START_STOP" text="CP: Dirigir/stop motorista"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mouse cursor on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Abrir/fechar hud"/>
     <text name="TEST_TRANSLATION" text="_TEST"/>
