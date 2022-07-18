@@ -6,7 +6,7 @@
 -->
 
 <Settings prefixText="CP_baleFinderJobParameters_">
-	<SettingSubTitle title="fillType">
+	<SettingSubTitle title="general">
 		<Setting classType="AIParameterSettingList" name="baleWrapType" isVisible="isBaleWrapSettingVisible">
 			<Values>
 				<Value name="ALL_BALES">1</Value>

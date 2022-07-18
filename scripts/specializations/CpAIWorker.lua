@@ -164,7 +164,6 @@ end
 --- Directly starts a cp job or stops a currently active job.
 function CpAIWorker:startStopDriver()
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Start/stop cp helper")
-    local spec = self.spec_cpAIWorker
     if self:getIsAIActive() then
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Stopped current helper.")
@@ -172,8 +171,6 @@ function CpAIWorker:startStopDriver()
         self:updateAIFieldWorkerImplementData()
 		local job = self:getCpStartableJob()
         if self:getCanStartCp() and job then
-
-            job = self:getCpStartableJob()
 
             job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             job:setValues()
