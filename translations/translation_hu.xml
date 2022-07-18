@@ -47,10 +47,15 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="csak a csomagoltak"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="csak a nem csomagoltak"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Terepmunka"/>
     <text name="CP_job_baleCollect" text="CP: Bálagyűjtés/csomagolás"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Útvonaltervezés"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Útvonaltervező megnyitása/zárása."/>
     <!---->
