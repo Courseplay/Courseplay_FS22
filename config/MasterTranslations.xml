@@ -82,8 +82,8 @@
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload">
-			<Text language="de"><![CDATA[Entlade Drescher/Häcksler]]></Text>
-			<Text language="en"><![CDATA[unloading combine/chopper]]></Text>
+			<Text language="de"><![CDATA[Entlade Drescher]]></Text>
+			<Text language="en"><![CDATA[unload combine]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bales">
 			<Text language="de"><![CDATA[Sammel/Wickel Ballen]]></Text>
@@ -144,7 +144,13 @@
 			<Text language="en"><![CDATA[only not wrapped]]></Text>
 		</Translation>
 	</Category>
-	<Category name="AI jobs">	
+	<Category name="AI combine unloader job parameters">
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_isFull">
+			<Text language="de"><![CDATA[Full threshold:]]></Text>
+			<Text language="en"><![CDATA[Full threshold:]]></Text>
+		</Translation>
+	</Category>
+	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
 			<Text language="de"><![CDATA[CP: Feldarbeit]]></Text>
 			<Text language="en"><![CDATA[CP: Fieldwork]]></Text>
@@ -152,6 +158,10 @@
 		<Translation name="CP_job_baleCollect">
 			<Text language="de"><![CDATA[CP: Ballen sammeln/wickeln]]></Text>
 			<Text language="en"><![CDATA[CP: Bale collect/wrap]]></Text>
+		</Translation>
+		<Translation name="CP_job_combineUnload">
+			<Text language="de"><![CDATA[CP: Entlade Drescher]]></Text>
+			<Text language="en"><![CDATA[CP: Unload Combine]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_generate_course">
 			<Text language="de"><![CDATA[CP: Generiere Feldkurs.]]></Text>

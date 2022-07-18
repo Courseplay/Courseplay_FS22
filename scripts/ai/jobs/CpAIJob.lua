@@ -314,6 +314,7 @@ AIJobTypeManager.getJobTypeIndex = Utils.overwrittenFunction(AIJobTypeManager.ge
 function CpAIJob.registerJob(AIJobTypeManager)
 	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.translations.jobName, CpAIJobFieldWork)
 	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.translations.jobName, CpAIJobBaleFinder)
+	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.translations.jobName, CpAIJobCombineUnloader)
 end
 
 

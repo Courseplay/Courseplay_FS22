@@ -15,6 +15,7 @@ CpGamePadHud.SETTING_TYPES = {
 	courseGeneratorSettings = CpCourseGeneratorSettings,
 	jobParameters = CpJobParameters,
 	baleFinderJobParameters = CpBaleFinderJobParameters,
+	combineUnloaderJobParameters = CpCombineUnloaderJobParameters,
 	globalSettings = CpGlobalSettings
 }
 

@@ -22,11 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 CpJobParameters = CpObject()
 CpJobParameters.xmlKey = ".cpJobParameters"
 
-local filePath = Utils.getFilename("config/JobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
 
 function CpJobParameters:init(job)
     if not CpJobParameters.settings then
         -- initialize the class members first so the class can be used to access constants, etc.
+        local filePath = Utils.getFilename("config/JobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         CpSettingsUtil.loadSettingsFromSetup(CpJobParameters, filePath)
     end
     CpSettingsUtil.cloneSettingsTable(self, CpJobParameters.settings, nil, self)
@@ -100,11 +100,11 @@ end
 ---@class CpBaleFinderJobParameters
 CpBaleFinderJobParameters = CpObject(CpJobParameters)
 
-local filePath = Utils.getFilename("config/BaleFinderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
 
 function CpBaleFinderJobParameters:init(job)
     if not CpBaleFinderJobParameters.settings then
         -- initialize the class members first so the class can be used to access constants, etc.
+        local filePath = Utils.getFilename("config/BaleFinderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         CpSettingsUtil.loadSettingsFromSetup(CpBaleFinderJobParameters, filePath)
     end
     CpSettingsUtil.cloneSettingsTable(self, CpBaleFinderJobParameters.settings, nil, self)
@@ -118,6 +118,32 @@ end
 function CpBaleFinderJobParameters:isBaleWrapSettingVisible()
     local vehicle = self.job:getVehicle()
     if vehicle then 
+        return AIUtil.hasChildVehicleWithSpecialization(vehicle, BaleLoader)
+    end
+end
+
+--- AI parameters for the bale finder job.
+---@class CpCombineUnloaderJobParameters
+CpCombineUnloaderJobParameters = CpObject(CpJobParameters)
+
+
+function CpCombineUnloaderJobParameters:init(job)
+    if not CpCombineUnloaderJobParameters.settings then
+    local filePath = Utils.getFilename("config/CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        -- initialize the class members first so the class can be used to access constants, etc.
+        CpSettingsUtil.loadSettingsFromSetup(CpCombineUnloaderJobParameters, filePath)
+    end
+    CpSettingsUtil.cloneSettingsTable(self, CpCombineUnloaderJobParameters.settings, nil, self)
+    self.job = job
+end
+
+function CpCombineUnloaderJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAIBaleFinder.cpJob:getCpJobParameters()
+end
+
+function CpCombineUnloaderJobParameters:isBaleWrapSettingVisible()
+    local vehicle = self.job:getVehicle()
+    if vehicle then
         return AIUtil.hasChildVehicleWithSpecialization(vehicle, BaleLoader)
     end
 end
