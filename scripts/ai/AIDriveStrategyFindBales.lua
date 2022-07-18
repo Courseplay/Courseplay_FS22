@@ -44,7 +44,7 @@ function AIDriveStrategyFindBales.new(customMt)
     self.turnNodes = {}
     -- course offsets dynamically set by the AI and added to all tool and other offsets
     self.aiOffsetX, self.aiOffsetZ = 0, 0
-    self.debugChannel = CpDebug.DBG_FIELDWORK
+    self.debugChannel = CpDebug.DBG_FIND_BALES
     ---@type ImplementController[]
     self.controllers = {}
     self.bales = {}
