@@ -41,11 +41,11 @@
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
-    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="all bales"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
+    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Tipo di balla:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Tipo di balla:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="Tutte le balle"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="solo avvolte"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Solo non avvolte"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -58,7 +58,7 @@
     <!---->
     <text name="CP_ai_messageErrorIsFull" text="Il lavoratore IA %s ha feramto il lavoro - il cassone è pieno!"/>
     <text name="CP_ai_messageError" text="Il lavoratore IA %s ha feramto il lavoro - ha lasciato il percorso!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'operatore CP %s ha interrotto il lavoro in modo imprevisto - non sono state trovate balle del tipo selezionato!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -263,10 +263,10 @@
     <text name="CP_courseManager_copy_entry" text="Copia voce"/>
     <text name="CP_courseManager_folder_dialog" text="Nome cartella:"/>
     <text name="CP_courseManager_course_dialog" text="Nome percorso:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Sei sicuro di voler eliminare (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="La modifica del percorso potrebbe creare problemi ai conducenti del percorso.
+Dovresti usare questo strumento solo quando il generatore di percorsi non è in grado di creare un percorso sufficientemente buono.
+Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascrive il percorso selezionato.
 "/>
     <text name="CP_courseManager_deleteError" text="La cartella (%s) non è vuota!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Il file (%s) esiste già nella cartella di destinazione!"/>
@@ -280,28 +280,28 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!--Course editor-->
     <!---->
     <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_delete_title" text="Cancella punto di passaggio"/>
+    <text name="CP_editor_delete_primary_text" text="primario"/>
+    <text name="CP_editor_delete_secondary_text" text="secondario"/>
+    <text name="CP_editor_delete_err" text="Pochi punti di passaggio rimasti."/>
+    <text name="CP_editor_course_basic_title" text="Base"/>
+    <text name="CP_editor_course_basic_move_title" text="muovi punto di passaggio"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primario"/>
+    <text name="CP_editor_course_basic_insert_title" text="Inserisci punto di passaggio"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primario"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secondario"/>
+    <text name="CP_editor_course_basic_insert_err" text="L'inserimento tra un punto di svolta non è consentito."/>
+    <text name="CP_editor_course_advanced_title" text="Avanzato"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Contrassegna un punto di passaggio come svolta."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Aggiunge o elimina un punto di svolta. (Il punto di passaggio selezionato sarà l'inizio della svolta.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Troppo vicino ad un altro punto di svolta."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Sposta più punti di passaggio"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="priamrio"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondario"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserisce punto di passaggio come curva"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="priamrio"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondario"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Non è consentito selezionare un punto di svolta."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -606,28 +606,28 @@ Poiché l'irroratrice può lavorare contemporaneamente sulla vite sinistra e des
 "/>
     <text name="CP_help_page_editor_title" text="Course editor"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+L'editor del percorso può essere utilizzato per modificare percorsi e campi personalizzati.
+I percorsi caricati verranno salvati/sovrascritti automaticamente, alla chiusura dell'editor.
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) La modifica di un campo personalizzato può essere eseguita con un campo selezionato nella pagina del menu ai.
+2) La modifica di un percorso può essere eseguita nel gestore del percorso.
+    Lì puoi modificare un percorso salvato, ma assicurati di aver cancellato il percorso attualmente caricato dal veicolo.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+La modifica del percorso dovrebbe essere eseguita solo quando il generatore di percorsi non è in grado di produrre un percorso sufficientemente buono.
+Una modifica errata potrebbe causare problemi al driver cp, poiché i waypoint hanno attributi nascosti.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+Sotto la categoria base ci sono:
+1) Il movimento pennello sposta un waypoint sospeso nella posizione del pennello.
+2) Il pennello di inserimento può inserire waypoint davanti o dietro a un waypoint selezionato.
 
-Deleting of waypoints can be done with the red delete button.
+L'eliminazione dei waypoint può essere eseguita con il pulsante rosso di eliminazione.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+Nella categoria avanzata ci sono:
+1) Un pennello per spostare più waypoint tra i waypoint selezionati.
+2) Un pennello per inserire una curva di waypoint tra i waypoint selezionati.
+3) Un pennello per impostare l'attributo virata di un waypoint (solo con una rotta e non un campo personalizzato).
 "/>
     <!---->
     <!--Input bindings-->
