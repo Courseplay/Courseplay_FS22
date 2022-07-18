@@ -47,10 +47,15 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Kun wrappede"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Kun ikke wrappede"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Markarbejde"/>
     <text name="CP_job_baleCollect" text="CP: Indsamle/wrappe baller"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Genere markrute."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Åbne/Lukke rutegenerator."/>
     <!---->

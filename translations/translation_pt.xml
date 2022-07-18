@@ -47,10 +47,15 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="apenas embrulhado"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não embrulhado"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: trabalho de campo"/>
     <text name="CP_job_baleCollect" text="CP: Coleta/embalagem de fardos"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Gerar curso de trabalho de campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Gerador de curso aberto/fechado."/>
     <!---->

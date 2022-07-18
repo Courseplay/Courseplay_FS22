@@ -28,7 +28,7 @@
     <text name="CP_jobParameters_startAt_nearest" text="Nahester Wegpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Erster Wegpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Letzter Wegpunkt"/>
-    <text name="CP_jobParameters_startAt_unload" text="Entlade Drescher/Häcksler"/>
+    <text name="CP_jobParameters_startAt_unload" text="Entlade Drescher"/>
     <text name="CP_jobParameters_startAt_bales" text="Sammel/Wickel Ballen"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bahn:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Bahn:"/>
@@ -47,10 +47,15 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Nur gewickelte"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Nur ungewickelte"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Feldarbeit"/>
     <text name="CP_job_baleCollect" text="CP: Ballen sammeln/wickeln"/>
+    <text name="CP_job_combineUnload" text="CP: Entlade Drescher"/>
     <text name="CP_ai_page_generate_course" text="CP: Generiere Feldkurs."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Öffne/Schließe Kursgenerator."/>
     <!---->
