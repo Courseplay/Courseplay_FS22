@@ -306,8 +306,14 @@ You can define the following custom settings:
     <!--[MODS]-->
 
     <!--Harvester-->
-    <Vehucle name="ClaasCougar1500.xml"
+    <!--Mod: ClaasCougar1500-->
+    <Vehicle name="ClaasCougar1500.xml"
              workingWidth = "15"
+    />
+    <!--Mod: Jacto NPK 5030-->
+    <Vehicle name="Jacto_NPK_5030.xml"
+             workingWidth="49.8"
+             turnRadius="22"
     />
 
     <!--Implements-->
