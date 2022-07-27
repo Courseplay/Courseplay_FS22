@@ -579,13 +579,13 @@ function AIDriveStrategyCombineCourse:isUnloadFinished()
 	return (not self:isFull() and not discharging) or fillLevel < 0.1
 end
 
-function AIDriveStrategyCombineCourse:isFull()
+function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
 	local fillLevelInfo = {}
 	self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
 	for fillType, info in pairs(fillLevelInfo) do
 		if self.fillLevelManager:isValidFillType(self.vehicle, fillType) then
 			local percentage =  info.fillLevel / info.capacity * 100
-			if info.fillLevel >= info.capacity or percentage > self.fillLevelFullPercentage  then
+			if info.fillLevel >= info.capacity or percentage > (fillLevelFullPercentage or self.fillLevelFullPercentage) then
 				self:debugSparse('Full or refillUntilPct reached: %.2f', percentage)
 				return true
 			end
@@ -687,6 +687,13 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
 		self.course:getDistanceBetweenWaypoints(self.waypointIxWhenFull, self.course:getCurrentWaypointIx())
 	self:debug('Will be full at waypoint %d in %d m',
 			self.waypointIxWhenFull or -1, self.distanceToWaypointWhenFull)
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Unloader handling
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCombineCourse:needUnloader(fillLevelThreshold)
+	return self:isFull(fillLevelThreshold)
 end
 
 function AIDriveStrategyCombineCourse:checkRendezvous()

@@ -95,7 +95,7 @@ end
 
 function CpAICombineUnloader:getCpStartableJob(superFunc)
     local spec = self.spec_cpAICombineUnloader
-	return self:getCanStartCpCombineUnloader() and spec.cpJob
+    return superFunc(self) or self:getCanStartCpCombineUnloader() and spec.cpJob
 end
 
 function CpAICombineUnloader:getCpStartText(superFunc)

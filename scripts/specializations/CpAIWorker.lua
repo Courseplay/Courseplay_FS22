@@ -1,4 +1,4 @@
---- Base cp ai specialization.
+    --- Base cp ai specialization.
 local modName = CpAIWorker and CpAIWorker.MOD_NAME -- for reload
 
 ---@class CpAIWorker
@@ -14,7 +14,7 @@ function CpAIWorker.initSpecialization()
 end
 
 function CpAIWorker.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations)
 end
 
 function CpAIWorker.register(typeManager, typeName, specializations)
@@ -89,7 +89,7 @@ function CpAIWorker:updateActionEvents()
 
 	if actionEvent ~= nil and self.isActiveForInputIgnoreSelectionIgnoreAI then
 		if self:getShowAIToggleActionEvent() then
-            if self:getIsAIActive() then 
+            if self:getIsAIActive() then
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
                 local text = string.format("CP: %s\n(%s)", giantsSpec.texts.hireEmployee, self:getCpStartText())
@@ -108,11 +108,11 @@ function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSel
 end
 
 
---- Used to enable/disable release of the helper 
+--- Used to enable/disable release of the helper
 --- and handles post release functionality with for example auto drive.
 --- TODO: This function is a mess and desperately needs a better solution!
 function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
-    if message then 
+    if message then
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
     else
         CpUtil.infoVehicle(self, "no stop message was given.")
@@ -120,13 +120,13 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     end
     local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(message)
 
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s", 
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s",
                                                     tostring(hasFinished), tostring(event))
 
     local wasCpActive = self:getIsCpActive()
     if wasCpActive then
         local driveStrategy = self:getCpDriveStrategy()
-        if driveStrategy then 
+        if driveStrategy then
             -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
             local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
             if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
@@ -143,21 +143,21 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     end
     self:resetCpAllActiveInfoTexts()
     --- Only add the info text, if it's available and nobody is in the vehicle.
-    if not self:getIsControlled() and releaseMessage then 
+    if not self:getIsControlled() and releaseMessage then
         self:setCpInfoTextActive(releaseMessage)
     end
     --- Reset the flag.
     self.spec_cpAIWorker.motorDisabled = false
     superFunc(self, message,...)
-    if wasCpActive then 
-        if event then 
+    if wasCpActive then
+        if event then
             SpecializationUtil.raiseEvent(self, event)
         end
         if hasFinished and self:getCpSettings().foldImplementAtEnd:getValue() then
             --- Folds implements at the end if the setting is active.
             self:prepareForAIDriving()
         end
-    
+
     end
 end
 
@@ -190,7 +190,7 @@ function CpAIWorker:startStopDriver()
 	end
 end
 
---- Is a cp worker active ? 
+--- Is a cp worker active ?
 --- Every cp job should be an instance of type CpAIJob.
 function CpAIWorker:getIsCpActive()
     return self:getIsAIActive() and self:getJob() and self:getJob():isa(CpAIJob)
@@ -206,7 +206,7 @@ function CpAIWorker:getCpStartableJob()
 	
 end
 
---- Gets the additional action event start text, 
+--- Gets the additional action event start text,
 --- for example the starting point.
 function CpAIWorker:getCpStartText()
 	return ""
@@ -214,7 +214,7 @@ end
 
 --- Makes sure giants isn't turning the motor back on, when we have turned it off.
 function CpAIWorker:getCanMotorRun(superFunc, ...)
-    if self:getIsCpActive() and self.spec_cpAIWorker.motorDisabled then 
+    if self:getIsCpActive() and self.spec_cpAIWorker.motorDisabled then
         return false
     end
     return superFunc(self, ...)

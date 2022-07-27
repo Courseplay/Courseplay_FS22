@@ -46,8 +46,33 @@ function CpAIJobCombineUnloader:getCanStartJob()
 end
 
 
+---@param vehicle Vehicle
+---@param mission Mission
+---@param farmId number
+---@param isDirectStart boolean disables the drive to by giants
+---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
 function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
-	CpAIJobCombineUnloader:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
+	CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+
+	local x, z
+
+	if vehicle.getLastJob ~= nil then
+		local lastJob = vehicle:getLastJob()
+		if lastJob ~= nil and lastJob.cpJobParameters then
+			x, z = lastJob.fieldPositionParameter:getPosition()
+		end
+	end
+
+	-- no field position from the previous job, use the vehicle's current position
+	if x == nil or z == nil then
+		x, _, z = getWorldTranslation(vehicle.rootNode)
+	end
+
+	self.fieldPositionParameter:setPosition(x, z)
+
+	if isStartPositionInvalid then
+		self:resetStartPositionAngle(vehicle)
+	end
 end
 
 function CpAIJobCombineUnloader:setValues()
@@ -58,13 +83,20 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobCombineUnloader:validate(farmId)
+	if not self.fieldPolygon then
+		-- after a savegame is loaded, we still have the job parameters (positions), but we do not save the
+		-- field polygon, so just regenerate it here if we can
+		self.fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(self.fieldPositionParameter.x, self.fieldPositionParameter.z)
+		if self.fieldPolygon then
+			self.hasValidPosition = true
+		end
+	end
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
-	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
-	return isValid, errorMessage
+	return true
 end
 
 function CpAIJobCombineUnloader:readStream(streamId, connection)
@@ -79,7 +111,7 @@ function CpAIJobCombineUnloader:writeStream(streamId, connection)
 	if self.fieldPolygon then
 		streamWriteBool(streamId, true)
 		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
-	else 
+	else
 		streamWriteBool(streamId, false)
 	end
 	CpAIJobCombineUnloader:superClass().writeStream(self, streamId, connection)
