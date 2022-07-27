@@ -629,14 +629,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Convoy management
------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyFieldWorkCourse:hasSameCourse(otherVehicle)
-    local otherCourse = otherVehicle.getFieldWorkCourse and otherVehicle:getFieldWorkCourse()
-     return otherCourse and
-            otherCourse:getName() == self.fieldWorkCourse:getName() and
-            otherCourse:getMultiTools() == self.fieldWorkCourse:getMultiTools()
-end
-
+----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:getProgress()
     return self.fieldWorkCourse:getProgress()
 end
