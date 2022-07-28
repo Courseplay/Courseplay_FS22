@@ -107,10 +107,13 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
-    --- The bale loader variable is used to check if a bale loader or wrapper was found.
-    self.baleLoader, self.baleLoaderController = self:addImplementController(vehicle, BaleLoaderController, BaleLoader, {}, nil)
+    --- The bale loader/wrapper variable is used to check if a bale loader or wrapper was found.
     self.baleWrapper = self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, {}, nil)
-    self.baleLoader = self.baleLoader or self:addImplementController(vehicle, APalletAutoLoaderController, nil, {}, "spec_aPalletAutoLoader")
+    --- Only install the bale loader controllers, if it's not a bale wrap mode.
+    if self.baleWrapper == nil then 
+        self.baleLoader, self.baleLoaderController = self:addImplementController(vehicle, BaleLoaderController, BaleLoader, {}, nil)
+        self.baleLoader = self.baleLoader or self:addImplementController(vehicle, APalletAutoLoaderController, nil, {}, "spec_aPalletAutoLoader")
+    end
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
 end
