@@ -255,7 +255,7 @@
     <text name="CP_courseManager_change_mode" text="Změnit režim"/>
     <text name="CP_courseManager_load_courses" text="Nahrát trasu"/>
     <text name="CP_courseManager_save_courses" text="Uložit trasu"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Otevřít editor tras"/>
     <text name="CP_courseManager_clear_current_courses" text="Vymazat aktuální trasu"/>
     <text name="CP_courseManager_create_directory" text="Vytvořit novou složku"/>
     <text name="CP_courseManager_move_entry" text="Přesunout záznam"/>
@@ -264,10 +264,10 @@
     <text name="CP_courseManager_copy_entry" text="Zkopírovat záznam"/>
     <text name="CP_courseManager_folder_dialog" text="Název složky:"/>
     <text name="CP_courseManager_course_dialog" text="Název trasy:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Jste si jistí, že chcete smazat (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Editace trasy může způsobit problémy řidičům.
+Tento nástroj byste měli používat pouze tehdy, když generátor trasy nedokáže vytvořit dostatečně dobrý kurz.
+Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
 "/>
     <text name="CP_courseManager_deleteError" text="Složka není prázdná (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Soubor již v cílové složce existuje (%s)!"/>
@@ -280,29 +280,29 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="Editor tras"/>
+    <text name="CP_editor_delete_title" text="Vymazat body"/>
+    <text name="CP_editor_delete_primary_text" text="primární"/>
+    <text name="CP_editor_delete_secondary_text" text="sekundární"/>
+    <text name="CP_editor_delete_err" text="Příliš málo bodů na trase"/>
+    <text name="CP_editor_course_basic_title" text="Základní"/>
+    <text name="CP_editor_course_basic_move_title" text="Posunout bod"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primární"/>
+    <text name="CP_editor_course_basic_insert_title" text="Vložit bod"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primární"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="sekundární"/>
+    <text name="CP_editor_course_basic_insert_err" text="Vkládání mezi bod otáčení není povoleno."/>
+    <text name="CP_editor_course_advanced_title" text="Pokročilé"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Označí trasový bod jako obrátku."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Přidat nebo odstranit bod obratu. (Vybraný trasový bod bude začátek obrátky.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Příliš blízko k dalšímu bodu obratu."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Přesunout více trasových bodů"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primární"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="sekundární"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Vložit trasové body jako křivku"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primární"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="sekundární"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Výběr bodu obrat není povolen."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -325,7 +325,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_confirm_delete" text="Chcete odstranit vlastní pole %s?"/>
     <text name="CP_customFieldManager_delete" text="Vymazat vlastní pole"/>
     <text name="CP_customFieldManager_rename" text="Přejmenovat vlastní pole"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Upravit vlastní pole"/>
     <text name="CP_customFieldManager_draw" text="Kreslit vlastní pole"/>
     <text name="CP_customFieldManager_draw_header" text="Nakreslí vlastní trasy na poli kliknutím pravým tlačítkem"/>
     <text name="CP_customFieldManager_save" text="Uložit vlastní pole"/>
@@ -567,14 +567,14 @@ Kliknutím na něj můžete skočit přímo do vozidla.
 Informace jsou následující:
 - Pomocník se zasekl
 - Je blokován objektem
-- Mělo by se natankovat
+- Měl by se natankovat
 - Je třeba doplnit palivo
 - Potřebuje opravit
 - Je třeba doplnit
 - Je třeba vyložit
 - Práce dokončena
 - Nedostatek peněz
-- Čekání, až skončí déšť
+- Čeká, až skončí déšť
 "/>
     <text name="CP_help_page_vineWork_title" text="Vinice"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
@@ -602,30 +602,30 @@ Nástroje jsou dodávány s odsazením pro traktor, takže traktor jezdí mezi r
 Postřikovač pracuje vedle vinné révy, takže musí od vinné révy jet buď vlevo, nebo vpravo.
 Vzhledem k tomu, že postřikovač může pracovat na levé i pravé révě současně, můžeme řadu přeskočit.
 "/>
-    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editor_title" text="Editor tras"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+Editor tras lze použít k úpravě tras a vlastních polí.
+Po zavření editoru budou načtené trasy automaticky uloženy/přepsány.
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) Úpravu vlastního pole lze provést pomocí vybraného pole na stránce nabídky ai.
+2) Editaci trasy lze provést ve správci trasy.
+    Zde můžete upravit uložený kurz, ale ujistěte se, že jste vymazali aktuálně načtený kurz z vozidla.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+Úpravy by samozřejmě měly být prováděny pouze tehdy, když generátor tras nemůže vytvořit dostatečně dobrý kurz.
+Nesprávná úprava může způsobit problémy ovladači cp, protože trasové body mají skryté atributy.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+V základní kategorii jsou:
+1) Pohyblivý štětec přesune visící navigační bod do polohy štětce.
+2) Vkládací štětec může vkládat trasové body před nebo za vybraný trasový bod.
 
-Deleting of waypoints can be done with the red delete button.
+Mazání trasových bodů lze provést červeným tlačítkem mazání.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+Pod pokročilou kategorií jsou:
+1) Štětec pro přesun více trasových bodů mezi vybrané trasové body.
+2) Štětec pro vložení křivky trasových bodů mezi vybrané trasové body.
+3) Štětec pro nastavení atributu otočení trasového bodu (pouze s kurzem a ne vlastním polem).
 "/>
     <!---->
     <!--Input bindings-->
