@@ -637,7 +637,9 @@ end
 local function getOutermostHeadland(course)
     local headland = Polygon:new()
     for i = 1, course:getNumberOfWaypoints() do
-        if course:isOnOutermostHeadland(i) then
+        -- do not want to include the connecting track parts as those are overlap with the first part
+        -- of the headland confusing the shortest path finding
+        if course:isOnOutermostHeadland(i) and not course:isOnConnectingTrack(i) then
             local x, y, z = course:getWaypointPosition(i)
             headland:add({x = x, y = -z})
         end
@@ -656,7 +658,6 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius)
     headland:calculateData()
     local path = {}
     for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
-        CourseGenerator.debug('%.1f %.1f', p.x, p.y)
         table.insert(path, State3D(p.x, p.y, 0))
     end
     return path
