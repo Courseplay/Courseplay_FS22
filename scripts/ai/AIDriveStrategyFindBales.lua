@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 --- Drive strategy to find bales on a field and collect or wrap them
+--- TODO: Separate bale wrapper and bale loaders.
+---       Might be a good idea to have the bale loader strategy derive from the find bales(only wrapper) strategy.
 
 ---@class AIDriveStrategyFindBales : AIDriveStrategyCourse
 AIDriveStrategyFindBales = {}
@@ -108,12 +110,9 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
     --- The bale loader/wrapper variable is used to check if a bale loader or wrapper was found.
-    self.baleWrapper = self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, {}, nil)
-    --- Only install the bale loader controllers, if it's not a bale wrap mode.
-    if self.baleWrapper == nil then 
-        self.baleLoader, self.baleLoaderController = self:addImplementController(vehicle, BaleLoaderController, BaleLoader, {}, nil)
-        self.baleLoader = self.baleLoader or self:addImplementController(vehicle, APalletAutoLoaderController, nil, {}, "spec_aPalletAutoLoader")
-    end
+    self.baleWrapper, self.baleWrapperController = self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, {}, nil)
+    self.baleLoader, self.baleLoaderController = self:addImplementController(vehicle, BaleLoaderController, BaleLoader, {}, nil)
+    self.baleLoader = self.baleLoader or self:addImplementController(vehicle, APalletAutoLoaderController, nil, {}, "spec_aPalletAutoLoader")
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
 end
@@ -152,7 +151,7 @@ function AIDriveStrategyFindBales:isReadyToFoldImplements()
 end
 
 function AIDriveStrategyFindBales:areBaleLoadersFull()
-    local allBaleLoadersFilled = true
+    local allBaleLoadersFilled = self.baleLoader ~= nil
     for i, controller in pairs(self.controllers) do 
         if controller.isFull then 
             allBaleLoadersFilled = allBaleLoadersFilled and controller:isFull()
