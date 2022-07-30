@@ -792,7 +792,7 @@
 			<Text language="en"><![CDATA[User settings]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_controllerHudSelected_title">
-			<Text language="de"><![CDATA[Gamepad freundliches Hud]]></Text>
+			<Text language="de"><![CDATA[Gamepadfreundliches Hud]]></Text>
 			<Text language="en"><![CDATA[Gamepad friendly Hud]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_controllerHudSelected_tooltip">
