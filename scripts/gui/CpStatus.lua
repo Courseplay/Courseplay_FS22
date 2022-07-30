@@ -19,7 +19,11 @@ function CpStatus:reset()
     self.isActive = false
     self.currentWaypointIx = nil
     self.numberOfWaypoints = nil
-    self.timeRemaining = 0
+    self.timeRemaining = ""
+    if self.remainingTime then
+        self.remainingTime:delete()
+    end
+    self.remainingTime = nil
 end
 
 function CpStatus:setActive(active)
@@ -29,13 +33,26 @@ function CpStatus:setActive(active)
     end
 end
 
-function CpStatus:setWaypointData(currentWaypointIx,numberOfWaypoints,timeRemaining)
-    if self.currentWaypointIx ~= currentWaypointIx then 
-        self.currentWaypointIx = currentWaypointIx
-        self.numberOfWaypoints = numberOfWaypoints
-        self:raiseDirtyFlag()
+function CpStatus:setWaypointData(course, dt, startIx)
+    if self.isActive then
+        local currentWaypointIx = course:getCurrentWaypointIx()
+
+        if not self.remainingTime and course then
+            self.remainingTime = CpRemainingTime(self.vehicle, course, startIx)
+        end
+        --- Needs to be updated even if the value is not applied.
+        if self.remainingTime then
+            self.remainingTime:update(dt)
+        end
+        if currentWaypointIx and self.currentWaypointIx ~= currentWaypointIx then 
+            self.currentWaypointIx = currentWaypointIx
+            self.numberOfWaypoints = course:getNumberOfWaypoints()
+            local timeRemaining = self.remainingTime:getTimeRemaining()
+            self.timeRemaining = CpGuiUtil.getFormatTimeText(timeRemaining) or ""
+
+            self:raiseDirtyFlag()
+        end
     end
-    self.timeRemaining = timeRemaining
 end
 
 function CpStatus:getWaypointText()
@@ -47,9 +64,9 @@ end
 
 function CpStatus:getTimeRemainingText()
     if self.isActive and self.timeRemaining then
-        return self.timeRemaining and CpGuiUtil.getFormatTimeText(self.timeRemaining) or "WIP"
+        return self.timeRemaining
     end 
-    return '--/--'
+    return ""
 end
 
 function CpStatus:getIsActive()
@@ -62,16 +79,20 @@ end
 
 function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
 	if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, self.dirtyFlag) ~= 0) then
-		streamWriteInt32(streamId,self.numberOfWaypoints or 0)
-        streamWriteInt32(streamId,self.currentWaypointIx or 0)
-        streamWriteBool(streamId,self.isActive or false)
+        streamWriteInt32(streamId, self.numberOfWaypoints or 0)
+        streamWriteInt32(streamId, self.currentWaypointIx or 0)
+        streamWriteBool(streamId, self.isActive or false)
+
+        streamWriteString(streamId, self.timeRemaining or "")
 	end
 end
 
 function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
 	if connection:getIsServer() and streamReadBool(streamId) then
-        self.numberOfWaypoints = streamReadInt32(streamId,self.numberOfWaypoints)
-        self.currentWaypointIx = streamReadInt32(streamId,self.currentWaypointIx)
-        self.isActive = streamReadBool(streamId,self.currentWaypointIx)
+        self.numberOfWaypoints = streamReadInt32(streamId, self.numberOfWaypoints)
+        self.currentWaypointIx = streamReadInt32(streamId, self.currentWaypointIx)
+        self.isActive = streamReadBool(streamId, self.currentWaypointIx)
+
+        self.timeRemaining = streamReadString(streamId)
 	end
 end

@@ -176,6 +176,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
 		<sourceFile filename="scripts/gui/CpAIHotspots.lua"/>
 		<sourceFile filename="scripts/gui/CpGamePadHudScreen.lua"/>
+		<sourceFile filename="scripts/gui/CpRemainingTime.lua"/>
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>

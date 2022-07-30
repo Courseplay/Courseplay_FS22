@@ -164,6 +164,11 @@ function CpBaseHud:init(vehicle)
                                     self:openVehicleSettingsGui(self.vehicle)
                                 end)
 
+    --- Time remaining 
+    local x,y = unpack(self.lines[6].left)
+    x = x + cpIconWidth + self.wMargin
+    self.timeRemainingText = CpTextHudElement.new(self.baseHud ,x , y, self.defaultFontSize)
+
     --- Starting point
     self.startingPointBtn = self:addLeftLineTextButton(self.baseHud, 5, self.defaultFontSize, 
         function (vehicle)
@@ -298,21 +303,21 @@ function CpBaseHud:init(vehicle)
     --- Copy course btn.                                          
     self:addCopyCourseBtn(1)
 
-    ---- Disables zoom, while mouse is over the cp hud. 
-    local function disableCameraZoomOverHud(vehicle, superFunc, ...)
-        if vehicle.getIsMouseOverCpHud and vehicle:getIsMouseOverCpHud() then 
-            return
-        end
-        return superFunc(vehicle, ...)
-    end                                                   
-
-    Enterable.actionEventCameraZoomIn = Utils.overwrittenFunction(Enterable.actionEventCameraZoomIn, disableCameraZoomOverHud)
-    Enterable.actionEventCameraZoomOut = Utils.overwrittenFunction(Enterable.actionEventCameraZoomOut, disableCameraZoomOverHud)
-
     self.baseHud:setVisible(false)
 
     self.baseHud:setScale(self.uiScale, self.uiScale)
 end
+
+---- Disables zoom, while mouse is over the cp hud. 
+local function disableCameraZoomOverHud(vehicle, superFunc, ...)
+    if vehicle.getIsMouseOverCpHud and vehicle:getIsMouseOverCpHud() then 
+        return
+    end
+    return superFunc(vehicle, ...)
+end                                                   
+
+Enterable.actionEventCameraZoomIn = Utils.overwrittenFunction(Enterable.actionEventCameraZoomIn, disableCameraZoomOverHud)
+Enterable.actionEventCameraZoomOut = Utils.overwrittenFunction(Enterable.actionEventCameraZoomOut, disableCameraZoomOverHud)
 
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
     local x, y = unpack(self.lines[line].left)
@@ -483,12 +488,16 @@ function CpBaseHud:draw(status)
         self.startingPointBtn:setDisabled(false)
         self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
     end
-   
+
     if status:getIsActive() then
+        if self.vehicle:hasCpCourse() then 
+            self.timeRemainingText:setTextDetails(status:getTimeRemainingText())
+        end
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
         self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
+        self.timeRemainingText:setTextDetails("")
     end
     self.onOffButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 

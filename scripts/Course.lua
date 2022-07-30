@@ -156,6 +156,10 @@ function Course:getNumberOfHeadlands()
 	return self.numberOfHeadlands
 end
 
+function Course:getNumberOfTurns()
+	return self.totalTurns
+end
+
 --- get number of waypoints in course
 function Course:getNumberOfWaypoints()
 	return #self.waypoints

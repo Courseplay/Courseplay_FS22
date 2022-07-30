@@ -175,14 +175,13 @@ end
 ---unit_minutesShort
 function CpGuiUtil.getFormatTimeText(seconds)
 	local minutes = math.floor(seconds/60)
-	seconds = seconds %60
 	local hours = math.floor(minutes/60)
-	seconds = seconds %60
 	minutes = minutes %60
 	if hours > 0 then 
-		return string.format("%dh/%dm/%ds",hours,minutes,seconds)
+		return string.format("%dh:%dm",hours,minutes,seconds)
 	elseif minutes>0 then 
-		return string.format("%dm/%ds",minutes,seconds)
+		seconds = seconds %60
+		return string.format("%dm:%ds",minutes,seconds)
 	else 
 		return string.format("%ds",seconds)
 	end
