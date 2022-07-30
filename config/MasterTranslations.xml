@@ -1193,7 +1193,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Edit custom field]]></Text>
 		</Translation>
 		<Translation name="CP_customFieldManager_draw">
-			<Text language="de"><![CDATA[Randkurs zeichen]]></Text>
+			<Text language="de"><![CDATA[Randkurs zeichnen]]></Text>
 			<Text language="en"><![CDATA[Draw custom field]]></Text>
 		</Translation>
 		<Translation name="CP_customFieldManager_draw_header">
