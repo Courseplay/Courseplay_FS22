@@ -325,7 +325,7 @@ Der Kurs wird beim schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_delete" text="Randkurs löschen"/>
     <text name="CP_customFieldManager_rename" text="Randkurs umbenennen"/>
     <text name="CP_customFieldManager_edit" text="Randkurs bearbeiten"/>
-    <text name="CP_customFieldManager_draw" text="Randkurs zeichen"/>
+    <text name="CP_customFieldManager_draw" text="Randkurs zeichnen"/>
     <text name="CP_customFieldManager_draw_header" text="Zeichne Linien mit Rechtsklick."/>
     <text name="CP_customFieldManager_save" text="Speicher Randkurs"/>
     <text name="CP_controllerGui_startRecording" text="Starte Feldrandaufnahme."/>
