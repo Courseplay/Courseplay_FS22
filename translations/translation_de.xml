@@ -228,7 +228,7 @@
     <text name="CP_global_setting_brokenThreshold_title" text="Zustand Minimum"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Benutzereinstellungen"/>
-    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad freundliches Hud"/>
+    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepadfreundliches Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Benutze das Hud, welches sich über ein Gamepad bedienen lässt."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Zeige Tastenbelegung"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
