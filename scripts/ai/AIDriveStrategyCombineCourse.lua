@@ -73,7 +73,9 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.stopDisabledAfterEmpty = CpTemporaryObject(false)
 	self.stopDisabledAfterEmpty:set(false, 1)
 	self.pipeOffsetX = 0
-	self.unloaders = {}
+	--- My unloader. This expires in a few seconds, so unloaders have to renew their registration periodically
+	---@type CpTemporaryObject
+	self.unloader = CpTemporaryObject(nil)
 	self:initUnloadStates()
 	self.chopperCanDischarge = CpTemporaryObject(false)
 	-- hold the harvester temporarily
@@ -693,7 +695,7 @@ end
 -- Unloader handling
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:needUnloader(fillLevelThreshold)
-	return self:isFull(fillLevelThreshold)
+	return self.unloader:get() == nil and self:isFull(fillLevelThreshold)
 end
 
 function AIDriveStrategyCombineCourse:checkRendezvous()
@@ -1607,27 +1609,20 @@ end
 --- takes care about coordinating the work between multiple combines.
 function AIDriveStrategyCombineCourse:clearAllUnloaderInformation()
 	self:cancelRendezvous()
-	-- the unloaders table hold all registered unloaders, key and value are both the unloader AIDriver
-	self.unloaders = {}
+	self.unloader:reset()
 end
 
 --- Register a combine unload AI driver for notification about combine events
 --- Unloaders can renew their registration as often as they want to make sure they remain registered.
----@param driver CombineUnloadAIDriver
-function AIDriveStrategyCombineCourse:registerUnloader(driver,noEventSend)
-	self.unloaders[driver] = driver
-	if not noEventSend then 
-		--UnloaderEvents:sendRegisterUnloaderEvent(driver,self)
-	end
+---@param driver AIDriveStrategyUnloadCombine
+function AIDriveStrategyCombineCourse:registerUnloader(driver)
+	self.unloader:set(driver, 1000)
 end
 
 --- Deregister a combine unload AI driver from notifications
 ---@param driver CombineUnloadAIDriver
 function AIDriveStrategyCombineCourse:deregisterUnloader(driver,noEventSend)
-	self.unloaders[driver] = nil
-	if not noEventSend then 
-		--UnloaderEvents:sendDeregisterUnloaderEvent(driver,self)
-	end
+	self.unloader:reset()
 end
 
 --- Make life easier for unloaders, increase chopper discharge distance
