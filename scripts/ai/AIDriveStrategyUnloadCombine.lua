@@ -473,7 +473,6 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     if self.state == self.states.ON_FIELD then
         if self.state == self.states.DRIVE_TO_UNLOAD_COURSE then
             self:setNewState(self.states.ON_UNLOAD_COURSE)
-            self:closeCovers(self.vehicle)
             --AIDriver.onLastWaypoint(self)
             return
         elseif self.state == self.states.DRIVE_TO_FIRST_UNLOADER then
@@ -888,7 +887,6 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startUnloadCourse()
     self:debug('Changing to unload course.')
-    self:closeCovers(self.vehicle)
     if self.vehicle.spec_autodrive and self.vehicle.cp.settings.autoDriveMode:useForUnloadOrRefill() then
         -- directly hand over to AD as in other modes
         self.state = self.states.ON_UNLOAD_WITH_AUTODRIVE
@@ -1521,7 +1519,8 @@ function AIDriveStrategyUnloadCombine:changeToUnloadWhenFull()
             self:startMovingBackFromCombine(self.states.MOVE_BACK_FROM_EMPTY_COMBINE)
         else
             self:releaseUnloader()
-            self:startUnloadCourse()
+            self:setMaxSpeed(0)
+            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         end
         return true
     end
