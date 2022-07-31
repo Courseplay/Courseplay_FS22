@@ -196,7 +196,7 @@ end
 
 function CpConsoleCommands:cpSaveAllVehiclePositions()
     for _, vehicle in pairs(g_currentMission.vehicles) do
-		if SpecializationUtil.hasSpecialization(CpAIWorker, vehicle) then
+		if SpecializationUtil.hasSpecialization(CpAIWorker, vehicle.specializations) then
 			vehicle.vehiclePositionData = {}
 			CpConsoleCommands.saveVehiclePosition(vehicle, vehicle.vehiclePositionData)
 		end

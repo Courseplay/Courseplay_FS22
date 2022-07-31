@@ -704,7 +704,7 @@ function AIDriveStrategyCombineCourse:checkRendezvous()
 			if d < 10 then
 				self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
 						self.agreedUnloaderRendezvousWaypointIx)
-				self:setMaxSpeed(self:getWorkSpeed() / 2)
+				self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
 				local dToTurn = self.course:getDistanceToNextTurn(self.agreedUnloaderRendezvousWaypointIx) or math.huge
 				if dToTurn < 20 then
 					self:debug('Unloader rendezvous waypoint %d is before a turn, waiting for the unloader here',
@@ -734,7 +734,7 @@ end
 function AIDriveStrategyCombineCourse:cancelRendezvous()
 	local unloader = self.unloadAIDriverToRendezvous:get()
 	self:debug('Rendezvous with %s at waypoint %d cancelled',
-			unloader and nameNum(self.unloadAIDriverToRendezvous:get() or 'N/A'),
+			unloader and CpUtil.getName(self.unloadAIDriverToRendezvous:get() or 'N/A'),
 			self.agreedUnloaderRendezvousWaypointIx or -1)
 	self.agreedUnloaderRendezvousWaypointIx = nil
 	self.unloadAIDriverToRendezvous:set(nil, 0)
@@ -763,7 +763,7 @@ end
 ---@return Waypoint, number, number waypoint to meet the unloader, index of waypoint, time we need to reach that waypoint
 function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEstimatedSecondsEnroute, unloadAIDriver, isPipeInFruitAllowed)
 
-	local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self:getWorkSpeed() / 3.6
+	local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self.settings.fieldWorkSpeed:getValue() / 3.6
 	-- this is where we'll be when the unloader gets here
 	local unloaderRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
 			self.course:getCurrentWaypointIx(), dToUnloaderRendezvous) or
@@ -810,7 +810,7 @@ end
 --- Is pipe in fruit according to the current field harvest state at waypoint?
 function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix)
 	if not self.storage.fruitCheckHelperWpNode then
-		self.storage.fruitCheckHelperWpNode = WaypointNode(nameNum(self.vehicle) .. 'fruitCheckHelperWpNode')
+		self.storage.fruitCheckHelperWpNode = WaypointNode(CpUtil.getName(self.vehicle) .. 'fruitCheckHelperWpNode')
 	end
 	self.storage.fruitCheckHelperWpNode:setToWaypoint(course, ix)
 	local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX)
@@ -1617,16 +1617,16 @@ end
 function AIDriveStrategyCombineCourse:registerUnloader(driver,noEventSend)
 	self.unloaders[driver] = driver
 	if not noEventSend then 
-		UnloaderEvents:sendRegisterUnloaderEvent(driver,self)
+		--UnloaderEvents:sendRegisterUnloaderEvent(driver,self)
 	end
 end
 
---- Deregister a combine unload AI driver from notificiations
+--- Deregister a combine unload AI driver from notifications
 ---@param driver CombineUnloadAIDriver
 function AIDriveStrategyCombineCourse:deregisterUnloader(driver,noEventSend)
 	self.unloaders[driver] = nil
 	if not noEventSend then 
-		UnloaderEvents:sendDeregisterUnloaderEvent(driver,self)
+		--UnloaderEvents:sendDeregisterUnloaderEvent(driver,self)
 	end
 end
 
@@ -1739,7 +1739,7 @@ function AIDriveStrategyCombineCourse:getClosestFieldworkWaypointIx()
 		return self.course:getLastPassedWaypointIx()
 	else
 		-- if currently on the fieldwork course, this is the best estimate
-		return self:getRelevantWaypointIx()
+		return self.ppc:getRelevantWaypointIx()
 	end
 end
 
