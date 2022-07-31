@@ -154,7 +154,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Fill Levels
 ---------------------------------------------------------------------------------------------------------------------------
-function FillLevelManager:getAllFillLevels(object, fillLevelInfo, driver)
+function FillLevelManager:getAllFillLevels(object, fillLevelInfo)
     -- get own fill levels
     if object.getFillUnits then
         for _, fillUnit in pairs(object:getFillUnits()) do
@@ -173,7 +173,7 @@ function FillLevelManager:getAllFillLevels(object, fillLevelInfo, driver)
     end
     -- collect fill levels from all attached implements recursively
     for _,impl in pairs(object:getAttachedImplements()) do
-        self:getAllFillLevels(impl.object, fillLevelInfo, driver)
+        self:getAllFillLevels(impl.object, fillLevelInfo)
     end
 end
 
