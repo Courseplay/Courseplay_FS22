@@ -58,7 +58,7 @@
     <!---->
     <text name="CP_ai_messageErrorIsFull" text="ИИ-работник %s неожиданно прекратил работу - заполнен бункер!"/>
     <text name="CP_ai_messageError" text="ИИ-работник %s неожиданно прекратил работу - оставил курс!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="ИИ-работник %s неожиданно прекратил работу - не найдено выбранного типа тюков!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -254,7 +254,7 @@
     <text name="CP_courseManager_change_mode" text="Изменить режим"/>
     <text name="CP_courseManager_load_courses" text="Загрузить курс"/>
     <text name="CP_courseManager_save_courses" text="Сохранить курс"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Открыть редактор курсов"/>
     <text name="CP_courseManager_clear_current_courses" text="Очистить текущий курс"/>
     <text name="CP_courseManager_create_directory" text="Создать новую папку"/>
     <text name="CP_courseManager_move_entry" text="Переместить запись"/>
@@ -263,10 +263,10 @@
     <text name="CP_courseManager_copy_entry" text="Копировать запись"/>
     <text name="CP_courseManager_folder_dialog" text="Название папки:"/>
     <text name="CP_courseManager_course_dialog" text="Название курса:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Вы уверены, что хотите удалить (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Редактирование курса может создать проблемы для водителей на курсе.
+Вам следует использовать этот инструмент, только когда генератор курсов не может создать достаточно хороший курс.
+Курс автоматически сохраняется при закрытии редактора и переопределяет выбранный курс.
 "/>
     <text name="CP_courseManager_deleteError" text="Папка не пуста (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Файл уже существует в целевой папке (%s)!"/>
@@ -279,29 +279,29 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="Редактор курсов"/>
+    <text name="CP_editor_delete_title" text="Удалить путевую точку"/>
+    <text name="CP_editor_delete_primary_text" text="Удаляет выбранную путевую точку"/>
+    <text name="CP_editor_delete_secondary_text" text="Продолжает удаление близлежащих ПТ"/>
+    <text name="CP_editor_delete_err" text="Несколько оставшихся путевых точек."/>
+    <text name="CP_editor_course_basic_title" text="Основные"/>
+    <text name="CP_editor_course_basic_move_title" text="Передвижение путевой точки"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="Перетащите и бросьте путевую точку мышью"/>
+    <text name="CP_editor_course_basic_insert_title" text="Вставка путевой точки"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="Вставка путевой точки после выбранной"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="Вставка путевой точки перед выбранной"/>
+    <text name="CP_editor_course_basic_insert_err" text="Вставка между точками поворота не допускается."/>
+    <text name="CP_editor_course_advanced_title" text="Продвинутые"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Обозначение путевых точек как поворот."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Добавляет или удаляет точку поворота. (Выбранная пут.точка будет началом поворота.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Слишком близко к другой точке поворота."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Перемещение нескольких путевых точек."/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Выберите две ПТ и переместите их и все ПТ между ними."/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Сброс выбранных путевых точек"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Вставка путевых точек как кривую."/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Выберите две ПТ и добавьте несколько путевых точек между как кривую."/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Сброс выбранных путевых точек"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Выбор точки поворота не допускается."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -324,7 +324,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_confirm_delete" text="Вы хотите удалить пользовательское поле %s?"/>
     <text name="CP_customFieldManager_delete" text="Удалить пользовательское поле"/>
     <text name="CP_customFieldManager_rename" text="Переименовать пользовательское поле"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Редактировать пользовательское поле"/>
     <text name="CP_customFieldManager_draw" text="Нарисовать пользовательское поле"/>
     <text name="CP_customFieldManager_draw_header" text="Нарисуйте линии пользовательского поля с помощью правого клика."/>
     <text name="CP_customFieldManager_save" text="Сохранить пользовательское поле"/>
@@ -605,30 +605,30 @@ R: Удаляет скопированный курс из буфера обме
 Опрыскиватель работает рядом с виноградными лозами, поэтому он должен ездить либо слева, либо справа от лоз.
 Поскольку опрыскиватель может работать на левой и правой лозе одновременно, мы можем пропускать ряд.
 "/>
-    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editor_title" text="Редактор курсов"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+Редактор курсов может применяться для редактирования сгенерированных курсов и пользовательских полей.
+Загруженные курсы будут сохранены/перезаписаны автоматически, после закрытия редактора.
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) Редактирование пользовательского поля может быть выполнено с помощью выбранного поля на странице меню ИИ.
+2) Редактирование курса может быть осуществлено в менеджере курса.
+    Там вы можете отредактировать сохраненный курс, но убедитесь, что вы очистили в настоящее время загруженный курс с автомобиля.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+Редактирование курса должно применяться только тогда, когда генератор курсов не может создать достаточно хороший курс.
+Неправильное редактирование может привести к проблемы у водителей CP, так как у путевых точек есть скрытые атрибуты.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+Под основной категорией:
+1) Кисть движения перемещает зависшую путевую точку в положение кисти.
+2) Вставная кисть может вставлять путевые точки перед или за выбранной путевой точкой.
 
-Deleting of waypoints can be done with the red delete button.
+Удаление путевых точек может быть сделано с помощью красной кнопки удаления.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+Под продвинутой категорией:
+1) Кисть для перемещения нескольких путевых точек между выбранными путевыми точками.
+2) Кисть для вставки путевых точек для кривой между выбранными путевыми точками.
+3) Кисть для установки атрибута поворота путевой точки (только из сгенерированным курсом, а не на курсе пользовательского поля).
 "/>
     <!---->
     <!--Input bindings-->
