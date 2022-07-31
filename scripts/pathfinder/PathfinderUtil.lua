@@ -330,7 +330,7 @@ function PathfinderUtil.hasFruit(x, z, length, width, areaToIgnoreFruit)
     if areaToIgnoreFruit and areaToIgnoreFruit:contains(x, z) then
         return false
     end
-    local fruitsToIgnore = { 9, 13, 14 } -- POTATO, GRASS, DRYGRASS, we can drive through these...
+    local fruitsToIgnore = { FruitType.POTATO, FruitType.GRASS, FruitType.MEADOW } -- POTATO, GRASS, MEADOW, we can drive through these...
     for _, fruitType in ipairs(g_fruitTypeManager.fruitTypes) do
         local ignoreThis = false
         for _, fruitToIgnore in ipairs(fruitsToIgnore) do
