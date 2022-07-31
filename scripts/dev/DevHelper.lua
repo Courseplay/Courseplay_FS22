@@ -69,7 +69,7 @@ function DevHelper:update()
     self.data.x, self.data.y, self.data.z = getWorldTranslation(self.node)
 --    self.data.fieldNum = courseplay.fields:getFieldNumForPosition(self.data.x, self.data.z)
 
---    self.data.hasFruit, self.data.fruitValue, self.data.fruit = PathfinderUtil.hasFruit(self.data.x, self.data.z, 5, 3.6)
+    self.data.hasFruit, self.data.fruitValue, self.data.fruit = PathfinderUtil.hasFruit(self.data.x, self.data.z, 1, 1)
 
     self.data.landId =  CpFieldUtil.getFieldIdAtWorldPosition(self.data.x, self.data.z)
     --self.data.owned =  PathfinderUtil.isWorldPositionOwned(self.data.x, self.data.z)
@@ -260,5 +260,9 @@ function DevHelper:showAIMarkers()
 end
 
 -- make sure to recreate the global dev helper whenever this script is (re)loaded
+if g_devHelper then
+    g_devHelper:delete()
+end
+
 g_devHelper = DevHelper()
 
