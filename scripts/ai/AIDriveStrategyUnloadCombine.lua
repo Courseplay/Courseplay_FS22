@@ -123,7 +123,7 @@ end
 
 function AIDriveStrategyUnloadCombine:startWithoutCourse()
     -- to always have a valid course (for the traffic conflict detector mainly)
-    self.course = Course.createFromNode(self.vehicle, self.vehicle.rootNode, 0, 0, 25, 5, false)
+    self.course = Course.createStraightForwardCourse(self.vehicle, 25)
 
     self:startCourse(self.course, 1)
 
@@ -225,7 +225,7 @@ function AIDriveStrategyUnloadCombine:isWaitingForAssignment()
 end
 
 function AIDriveStrategyUnloadCombine:startWaitingForCombine()
-    self.course = Course.createFromNode(self.vehicle, self.vehicle.rootNode, 0, 0, 25, 5, false)
+    self.course = Course.createStraightForwardCourse(self.vehicle, 25)
     self:setNewState(self.states.WAITING_FOR_COMBINE_TO_CALL)
 end
 
@@ -1712,7 +1712,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState)
     self:releaseUnloader()
-    local reverseCourse = self:getStraightReverseCourse()
+    local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
     self:startCourse(reverseCourse, 1)
     self:setNewState(newState)
     return
@@ -1749,7 +1749,7 @@ function AIDriveStrategyUnloadCombine:handleChopperHeadlandTurn()
     --if the chopper is reversing, drive backwards
     if self:isMyCombineReversing() then
         self:debug('Detected reversing chopper.')
-        local reverseCourse = self:getStraightReverseCourse()
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 50)
         self:startCourse(reverseCourse, 1)
         self:setNewState(self.states.MOVE_BACK_FROM_REVERSING_CHOPPER)
     end
@@ -1995,7 +1995,7 @@ function AIDriveStrategyUnloadCombine:onBlockingOtherVehicle(blockedVehicle)
     then
         -- reverse back a bit, this usually solves the problem
         -- TODO: there may be better strategies depending on the situation
-        local reverseCourse = self:getStraightReverseCourse(25)
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
         self:startCourse(reverseCourse, 1, self.course, self.course:getCurrentWaypointIx())
         self.stateAfterMovedOutOfWay = self.state
         self:debug('Moving out of the way for %s', blockedVehicle:getName())

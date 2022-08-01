@@ -60,7 +60,7 @@ end
 
 function AIDriveStrategyFindBales:startWithoutCourse()
     -- to always have a valid course (for the traffic conflict detector mainly)
-    self.course = self:getStraightForwardCourse(25)
+    self.course = Course.createStraightForwardCourse(self.vehicle, 25)
     self:startCourse(self.course, 1)
 
     self:info('Starting bale collect/wrap')
@@ -374,7 +374,7 @@ function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInva
 end
 
 function AIDriveStrategyFindBales:startReversing()
-    self:startCourse(self:getStraightReverseCourse(10), 1)
+    self:startCourse(Course.createStraightReverseCourse(self.vehicle, 10), 1)
     self.state = self.states.REVERSING_AFTER_PATHFINDER_FAILURE
 end
 
@@ -430,7 +430,7 @@ end
 
 function AIDriveStrategyFindBales:startApproachingBale()
     self:debug('Approaching bale...')
-    self:startCourse(self:getStraightForwardCourse(20), 1)
+    self:startCourse(Course.createStraightForwardCourse(self.vehicle, 20), 1)
     self.state = self.states.APPROACHING_BALE
 end
 
@@ -509,18 +509,6 @@ end
 
 function AIDriveStrategyFindBales:isStoppingAtWaitPointAllowed()
     return true
-end
-
---- Helper functions to generate a straight course
-function AIDriveStrategyFindBales:getStraightForwardCourse(length)
-    local l = length or 100
-    return Course.createFromNode(self.vehicle, self.vehicle.rootNode, 0, 0, l, 5, false)
-end
-
-function AIDriveStrategyFindBales:getStraightReverseCourse(length)
-    local lastTrailer = AIUtil.getLastAttachedImplement(self.vehicle)
-    local l = length or 100
-    return Course.createFromNode(self.vehicle, lastTrailer.rootNode or self.vehicle.rootNode, 0, 0, -l, -5, true)
 end
 
 function AIDriveStrategyFindBales:update()
