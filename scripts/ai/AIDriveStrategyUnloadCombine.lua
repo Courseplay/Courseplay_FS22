@@ -360,6 +360,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         end
 
     elseif self.state == self.states.MOVE_BACK_FULL then
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         local _, dx, dz = self:getDistanceFromCombine(self.combineJustUnloaded)
         -- drive back way further if we are behind a chopper to have room
         local dDriveBack = math.abs(dx) < 3 and 0.75 * self.settings.turnDiameter:get() or -10
@@ -368,6 +369,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         end
 
     elseif self.state == self.states.MOVE_BACK_FROM_EMPTY_COMBINE then
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         -- drive back until the combine is in front of us
         local _, _, dz = self:getDistanceFromCombine(self.combineJustUnloaded)
         if dz > 0 then
@@ -1456,8 +1458,8 @@ end
 --- back offset (local z) of the combine's back in the tractor's front coordinate system (positive if the tractor is behind
 --- the combine)
 function AIDriveStrategyUnloadCombine:getDistanceFromCombine(combine)
-    local dx, _, dz = localToLocal(self:getBackMarkerNode(combine or self.combineToUnload),
-            self:getFrontMarkerNode(self.vehicle), 0, 0, 0)
+    local dx, _, dz = localToLocal(Markers.getBackMarkerNode(combine or self.combineToUnload),
+            Markers.getFrontMarkerNode(self.vehicle), 0, 0, 0)
     return MathUtil.vector2Length(dx, dz), dx, dz
 end
 
@@ -1624,7 +1626,7 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
         return
     end
     local combineDriver = self.combineToUnload:getCpDriveStrategy()
-    if combineDriver:unloadFinished() then
+    if combineDriver:isUnloadFinished() then
         if combineDriver:isWaitingForUnloadAfterCourseEnded() then
             if combineDriver:getFillLevelPercentage() < 0.1 then
                 self:debug('Finished unloading combine at end of fieldwork, changing to unload course')
@@ -1842,7 +1844,7 @@ function AIDriveStrategyUnloadCombine:handleChopper180Turn()
 
     if self.combineToUnload:getCpDriveStrategy():isTurningButNotEndingTurn() then
         -- move forward until we reach the turn start waypoint
-        local _, _, d = self.turnContext:getLocalPositionFromWorkEnd(self:getFrontMarkerNode(self.vehicle))
+        local _, _, d = self.turnContext:getLocalPositionFromWorkEnd(Markers.getFrontMarkerNode(self.vehicle))
         self:debugSparse('Waiting for the chopper to turn, distance from row end %.1f', d)
         -- stop a bit before the end of the row to let the tractor slow down.
         if d > -3 then
