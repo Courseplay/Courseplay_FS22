@@ -55,6 +55,12 @@ function ProximityController:isSlowdownEnabled(vehicle)
     end
 end
 
+
+---@return number, table distance of vehicle and vehicle if there is one in range
+function ProximityController:checkBlockingVehicleBack()
+    return self.backwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
+end
+
 ---@param maxSpeed number current maximum allowed speed for vehicle
 ---@return number gx world x coordinate to drive to or nil
 ---@return number gz world z coordinate to drive to or nil

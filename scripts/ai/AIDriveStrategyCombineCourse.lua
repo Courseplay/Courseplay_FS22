@@ -198,6 +198,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
 	if self.state == self.states.WORKING then
 		-- Harvesting
 		self:checkRendezvous()
+		self:checkBlockingUnloader()
 		if self:isFull() then
 			self:changeToUnloadOnField()
 		end
@@ -695,7 +696,8 @@ end
 -- Unloader handling
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:needUnloader(fillLevelThreshold)
-	return self.unloader:get() == nil and self:isFull(fillLevelThreshold)
+	return self.unloader:get() == nil and
+			(self:isFull(fillLevelThreshold) or self:isWaitingForUnload())
 end
 
 function AIDriveStrategyCombineCourse:checkRendezvous()
@@ -1925,6 +1927,17 @@ function AIDriveStrategyCombineCourse:isProximitySlowDownEnabled(vehicle)
 		return false
 	else
 		return true
+	end
+end
+
+function AIDriveStrategyCombineCourse:checkBlockingUnloader()
+	local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
+	if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and AIUtil.isReversing(self.vehicle) and
+			not self:isWaitingForUnload() then
+		self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
+		if blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy().onBlockingOtherVehicle then
+			blockingVehicle:getCpDriveStrategy():onBlockingOtherVehicle(self.vehicle)
+		end
 	end
 end
 
