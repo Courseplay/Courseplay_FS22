@@ -55,6 +55,10 @@ function ProximityController:isSlowdownEnabled(vehicle)
     end
 end
 
+---@return number, table distance of vehicle and vehicle if there is one in range
+function ProximityController:checkBlockingVehicleFront()
+    return self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
+end
 
 ---@return number, table distance of vehicle and vehicle if there is one in range
 function ProximityController:checkBlockingVehicleBack()

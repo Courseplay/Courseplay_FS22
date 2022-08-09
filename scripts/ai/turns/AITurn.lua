@@ -809,6 +809,9 @@ function CourseTurn:onPathfindingDone(path)
 		else
 			self.turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 		end
+
+		self.turnCourse:adjustForTowedImplements( 2)
+
 		-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 		self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
 		local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, nil, true)
