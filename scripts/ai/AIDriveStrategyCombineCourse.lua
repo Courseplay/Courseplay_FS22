@@ -456,7 +456,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
 			self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
 			self:debug('Pulled back, now wait for unload')
 		elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
-			self:debug('Self unloading point reached, fill level %.1f, waiting for unload to start to start.', fillLevel)
+			self:debug('Self unloading point reached, fill level %.1f, waiting for unload to start.', fillLevel)
 			self.unloadState = self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE
 		elseif 	self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
 			self:debug('Self unloading point reached after fieldwork ended, fill level %.1f, waiting for unload to start.', fillLevel)
@@ -696,7 +696,7 @@ end
 -- Unloader handling
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:needUnloader(fillLevelThreshold)
-	return self.unloader:get() == nil and
+	return self.unloader:get() == nil and self.vehicle:getIsCpActive() and
 			(self:isFull(fillLevelThreshold) or self:isWaitingForUnload())
 end
 

@@ -370,7 +370,7 @@ function ReedsSheppTurnManeuver:findAnalyticPath(vehicleDirectionNode, startOffs
 				turnEndNode, 0, goalOffset, self.turningRadius)
 	end
 	local course = Course.createFromAnalyticPath(self.vehicle, path, true)
-	course:adjustForTowedImplements(1.5 * self.steeringLength)
+	course:adjustForTowedImplements(1.5 * self.steeringLength + 1)
 	return course
 end
 
