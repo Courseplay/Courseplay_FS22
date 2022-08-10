@@ -35,6 +35,7 @@ end
 
 function CpAICombineUnloader.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpCombineUnloader", CpAICombineUnloader.startCpCombineUnloader)
+    SpecializationUtil.registerFunction(vehicleType, "startCpCombineUnloaderUnloading", CpAICombineUnloader.startCpCombineUnloaderUnloading)
 
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpCombineUnloader", CpAICombineUnloader.getCanStartCpCombineUnloader)
     SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderJobParameters", CpAICombineUnloader.getCpCombineUnloaderJobParameters)
@@ -161,4 +162,9 @@ function CpAICombineUnloader:replaceDriveStrategies(fieldPolygon, jobParameters)
     table.insert(spec.driveStrategies, driveStrategyCollision)
     --- Only the last driving strategy can stop the helper, while it is running.
     table.insert(spec.driveStrategies, cpDriveStrategy)
+end
+
+--- Forces the driver to unload now.
+function CpAICombineUnloader:startCpCombineUnloaderUnloading()
+    
 end

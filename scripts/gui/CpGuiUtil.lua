@@ -206,6 +206,29 @@ function CpGuiUtil.setTarget(element,target)
 	element.targetName = target.name
 end
 
+------------------------------------------------
+--- Hud 
+------------------------------------------------
+
+--- Creates a new Overlay
+---@param size table x, y
+---@param iconData table filename, uvs
+---@param color table r, g, b, alpha
+---@param alignment table vertical, horizontal alignments
+function CpGuiUtil.createOverlay(size, iconData, color, alignment)
+	local filename, uvs = unpack(iconData)
+	local overlay = Overlay.new(filename, 0, 0, unpack(size))
+    overlay:setUVs(uvs)
+    overlay:setColor(unpack(color))
+    overlay:setAlignment(unpack(alignment))
+	return overlay
+end
+
+
+
+
+
+
 --- Enable/disable camera rotation when a vehicle is selected. We want to disable camera rotation per mouse
 --- when we enable the mouse cursor so it can be used click controls on a GUI
 ---@param vehicle table
