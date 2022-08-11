@@ -86,6 +86,13 @@ end
 
 -- The field polygon used to generate the course
 function Course:getFieldPolygon()
+	local i = 1
+	while self.fieldPolygon == nil and i < self:getNumberOfWaypoints() do
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Field polygon not found, regenerating it (%d).', i)
+		local px, _, pz = self:getWaypointPosition(i)
+		self.fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(px, pz)
+		i = i + 1
+	end
 	return self.fieldPolygon
 end
 

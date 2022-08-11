@@ -1291,17 +1291,7 @@ end
 
 function AIDriveStrategyCombineCourse:canLoadTrailer(trailer)
 	local fillType = self:getFillType()
-	if fillType then
-		local fillUnits = trailer:getFillUnits()
-		for i = 1, #fillUnits do
-			local supportedFillTypes = trailer:getFillUnitSupportedFillTypes(i)
-			local freeCapacity =  trailer:getFillUnitFreeCapacity(i)
-			if supportedFillTypes[fillType] and freeCapacity > 0 then
-				return true, freeCapacity, i
-			end
-		end
-	end
-	return false, 0
+	return FillLevelManager.canLoadTrailer(trailer, fillType)
 end
 
 function AIDriveStrategyCombineCourse:getCurrentDischargeNode()
@@ -1385,97 +1375,14 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
 -----------------------------------------------------------------------------------------------------------------------
------- Find a trailer we can use for self unloading
-function AIDriveStrategyCombineCourse:findBestTrailer()
-	local bestTrailer, bestFillUnitIndex
-	local minDistance = math.huge
-	local maxCapacity = 0
-	for _, vehicle in pairs(g_currentMission.vehicles) do
-		if SpecializationUtil.hasSpecialization(Trailer, vehicle.specializations) then
-			local rootVehicle = vehicle:getRootVehicle()
-			local attacherVehicle
-			if SpecializationUtil.hasSpecialization(Attachable, vehicle.specializations) then
-				attacherVehicle = vehicle.spec_attachable:getAttacherVehicle()
-			end
-			local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
-			local myFieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-			local x, _, z = getWorldTranslation(vehicle.rootNode)
-			local closestDistance = self:getClosestDistanceToFieldEdge(x, z)
-			local lastSpeed = rootVehicle:getLastSpeed()
-			self:debug('%s is a trailer on field %d, closest distance to %d is %.1f, attached to %s, root vehicle is %s, last speed %.1f', vehicle:getName(),
-					fieldNum, myFieldNum, closestDistance, attacherVehicle and attacherVehicle:getName() or 'none', rootVehicle:getName(), lastSpeed)
-			-- consider only trailer on my field or close to my field
-			if rootVehicle ~= self.vehicle and fieldNum == myFieldNum or myFieldNum == 0 or
-					closestDistance < 20 and lastSpeed < 0.1 then
-				local d = calcDistanceFrom(self.vehicle:getAIDirectionNode(), vehicle.rootNode or vehicle.nodeId)
-				local canLoad, freeCapacity, fillUnitIndex = self:canLoadTrailer(vehicle)
-				if d < minDistance and canLoad then
-					bestTrailer = vehicle
-					bestFillUnitIndex = fillUnitIndex
-					minDistance = d
-					maxCapacity = freeCapacity
-				end
-			end
-		end
-	end
-	local fillRootNode
-	if bestTrailer then
-		fillRootNode = bestTrailer:getFillUnitExactFillRootNode(bestFillUnitIndex)
-		self:debug('Best trailer is %s at %.1f meters, free capacity %d, root node %s', bestTrailer:getName(), minDistance, maxCapacity, tostring(fillRootNode))
-		local bestFillNode = self:findBestFillNode(fillRootNode, self.pipeOffsetX)
-		return bestTrailer, bestFillNode
-	else
-		self:info('Found no trailer to unload to.')
-		return nil
-	end
-end
-
-function AIDriveStrategyCombineCourse:getClosestDistanceToFieldEdge(x, z)
-	local closestDistance = math.huge
-	local fieldPolygon = self.fieldWorkCourse:getFieldPolygon()
-	local i = 1
-	-- TODO: this should either be saved with the field or regenerated when the course is loaded...
-	while fieldPolygon == nil and i < self.fieldWorkCourse:getNumberOfWaypoints() do
-		self:debug('Field polygon not found, regenerating it (%d).', i)
-		local px, _, pz = self.fieldWorkCourse:getWaypointPosition(i)
-		fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(px, pz)
-		i = i + 1
-	end
-	self.fieldWorkCourse:setFieldPolygon(fieldPolygon)
-	for _, p in ipairs(fieldPolygon) do
-		local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
-		closestDistance = d < closestDistance and d or closestDistance
-	end
-	return closestDistance
-end
-
-function AIDriveStrategyCombineCourse:findBestFillNode(fillRootNode, offset)
-	local dx, dy, dz = localToLocal(fillRootNode, AIUtil.getDirectionNode(self.vehicle), offset, 0, 0)
-	local dLeft = MathUtil.vector3Length(dx, dy, dz)
-	dx, dy, dz = localToLocal(fillRootNode, AIUtil.getDirectionNode(self.vehicle), -offset, 0, 0)
-	local dRight = MathUtil.vector3Length(dx, dy, dz)
-	self:debug('Trailer left side distance %d, right side %d', dLeft, dRight)
-	if dLeft <= dRight then
-		-- left side of the trailer is closer, so turn the fillRootNode around as the combine must approach the
-		-- trailer from the front of the trailer
-		-- (as always, we always persist nodes in storage so they survive the AIDriver object and won't leak)
-		if not self.storage.bestFillNode then
-			self.storage.bestFillNode = CpUtil.createNode('bestFillNode', 0, 0, math.pi, fillRootNode)
-		else
-			unlink(self.storage.bestFillNode)
-			link(fillRootNode, self.storage.bestFillNode)
-			setRotation(self.storage.bestFillNode, 0, math.pi, 0)
-		end
-		return self.storage.bestFillNode
-	else
-		-- right side closer, combine approaches the trailer from the rear, driving the same direction as the getFillUnitExactFillRootNode
-		return fillRootNode
-	end
-end
-
 --- Find a path to the best trailer to unload
 function AIDriveStrategyCombineCourse:startSelfUnload()
-	local bestTrailer, fillRootNode = self:findBestTrailer()
+	local bestTrailer, fillRootNode = SelfUnloadHelper:findBestTrailer(
+			self.fieldWorkCourse:getFieldPolygon(),
+			self.vehicle,
+			self:getFillType(),
+			self.pipeOffsetX)
+
 	if not bestTrailer then return false end
 
 	if not self.pathfinder or not self.pathfinder:isActive() then
