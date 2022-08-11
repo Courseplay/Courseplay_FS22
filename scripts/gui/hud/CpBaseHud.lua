@@ -53,6 +53,13 @@ CpBaseHud.uvs = {
     copySymbol = {
         {127, 637, 128, 128}
     },
+    goalSymbol = GuiUtils.getUVs({
+        788,
+	30,
+	44,
+	44
+    }, AITargetHotspot.FILE_RESOLUTION),
+    
     exitSymbol = {
         {148, 184, 32, 32}, {256, 512}
     },
@@ -337,13 +344,6 @@ function CpBaseHud:init(vehicle)
     --- Full threshold 
     self.fullThresholdBtn = self:addLineTextButton(self.combineUnloaderLayout, 3, self.defaultFontSize, 
                                                 self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold)
-
-    --- Starting point
---    self.startingPointBtn = self:addLeftLineTextButton(self.baseHud, 4, self.defaultFontSize, 
---        function (vehicle)
- --           vehicle:getCpStartingPointSetting():setNextItem()
- --       end, self.vehicle)
-
     --- Drive now button
     local x, y = unpack(self.lines[4].left)
     self.driveNowBtn = CpTextHudElement.new(self.combineUnloaderLayout, x, y,
@@ -352,7 +352,20 @@ function CpBaseHud:init(vehicle)
     self.driveNowBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         vehicle:startCpCombineUnloaderUnloading()
     end)
-                                                  
+           
+    --- Goal button.
+    local width, height = getNormalizedScreenValues(40, 40)    
+    local goalOverlay = CpGuiUtil.createOverlay({width, height},
+                                                {AITargetHotspot.FILENAME, self.uvs.goalSymbol}, 
+                                                self.OFF_COLOR,
+                                                self.alignments.bottomRight)
+    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.combineUnloaderLayout)
+    local x, y = unpack(self.lines[4].right)
+    self.goalBtn:setPosition(x, y)
+    self.goalBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        self:openCourseGeneratorGui(vehicle)
+    end)
+    
 
     --- Copy course btn.                                          
     self:addCopyCourseBtn(1)
@@ -574,7 +587,9 @@ function CpBaseHud:draw(status)
     self.startStopRecordingBtn:setVisible(self.vehicle:getCanStartCpCourseRecorder())
 
     self.waypointProgressBtn:setTextDetails(status:getWaypointText())
-    
+    self.waypointProgressBtn:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+    self.waypointProgressBtn:setVisible(not self.vehicle:getCanStartCpCombineUnloader())
+
     local laneOffset = self.vehicle:getCpLaneOffsetSetting()
     self.laneOffsetBtn:setVisible(laneOffset:getCanBeChanged())
     self.laneOffsetBtn:setTextDetails(laneOffset:getString())
