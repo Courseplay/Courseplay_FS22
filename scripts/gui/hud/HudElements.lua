@@ -94,10 +94,16 @@ end
 function CpHudElement:setVisible(visible)
     CpHudElement:superClass().setVisible(self,visible)
     self.visible = visible
+    for _, child in pairs(self.children) do
+        child:setVisible(visible)
+    end
 end
 
 function CpHudElement:setDisabled(disabled)
     self.disabled = disabled
+    for _, child in pairs(self.children) do
+        child:setDisabled(disabled)
+    end
 end
 
 function CpHudElement:getIsDisabled()

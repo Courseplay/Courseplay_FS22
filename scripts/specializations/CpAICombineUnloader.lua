@@ -166,5 +166,5 @@ end
 
 --- Forces the driver to unload now.
 function CpAICombineUnloader:startCpCombineUnloaderUnloading()
-    
+    print("Drive now!")
 end

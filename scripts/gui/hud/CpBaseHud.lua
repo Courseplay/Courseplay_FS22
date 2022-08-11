@@ -345,14 +345,11 @@ function CpBaseHud:init(vehicle)
     self.fullThresholdBtn = self:addLineTextButton(self.combineUnloaderLayout, 3, self.defaultFontSize, 
                                                 self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold)
     --- Drive now button
-    local x, y = unpack(self.lines[4].left)
-    self.driveNowBtn = CpTextHudElement.new(self.combineUnloaderLayout, x, y,
-                                      self.defaultFontSize)
-    self.driveNowBtn:setTextDetails("DriveNow WIP")
-    self.driveNowBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
-        vehicle:startCpCombineUnloaderUnloading()
-    end)
-           
+    self.driveNowBtn = self:addLeftLineTextButton(self.combineUnloaderLayout, 4, self.defaultFontSize, 
+                                                        function()
+                                                            self.vehicle:startCpCombineUnloaderUnloading()
+                                                        end, self.vehicle)                      
+
     --- Goal button.
     local width, height = getNormalizedScreenValues(40, 40)    
     local goalOverlay = CpGuiUtil.createOverlay({width, height},
@@ -384,6 +381,7 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setVisible(false)
 
     self.baseHud:setScale(self.uiScale, self.uiScale)
+    self.driveNowBtn:setTextDetails("DriveNow WIP")
 end
 
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
@@ -640,7 +638,7 @@ function CpBaseHud:draw(status)
 end
 
 function CpBaseHud:updateCopyBtn(status)
-    if self.courseCache then 
+    if self.courseCache and not self.vehicle:getCanStartCpCombineUnloader() then 
         local courseName =  CpCourseManager.getCourseName(self.courseCache)
         self.copyCacheText:setTextDetails(self.copyText .. courseName)
         self.clearCacheBtn:setVisible(true)
@@ -653,11 +651,18 @@ function CpBaseHud:updateCopyBtn(status)
             self.copyCacheText:setTextColorChannels(unpack(self.WHITE_COLOR))
             self.pasteButton:setColor(unpack(self.ON_COLOR))
         end
+        self.copyButton:setDisabled(false)
+        self.pasteButton:setDisabled(false)
+        self.clearCacheBtn:setDisabled(false)
     else
         self.copyCacheText:setTextDetails("")
         self.clearCacheBtn:setVisible(false)
         self.pasteButton:setVisible(false)
-        self.copyButton:setVisible(self.vehicle:hasCpCourse())
+        self.copyButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getCanStartCpCombineUnloader())
+        self.copyButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+        self.copyButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+        self.pasteButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+        self.clearCacheBtn:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
     end
 end
 
