@@ -362,8 +362,6 @@ function CpBaseHud:init(vehicle)
     self.goalBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         self:openCourseGeneratorGui(vehicle)
     end)
-    
-
     --- Copy course btn.                                          
     self:addCopyCourseBtn(1)
 
