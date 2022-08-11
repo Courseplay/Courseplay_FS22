@@ -275,3 +275,23 @@ function FillLevelManager:getMixerWagonFillLevelForFillTypes(object,fillType)
         end
     end
 end
+
+--- Can load this fill type into the trailer?
+---@param trailer table
+---@param fillType number
+---@return boolean true if this trailer has capacity for fill type
+---@return number free capacity
+function FillLevelManager.canLoadTrailer(trailer, fillType)
+    if fillType then
+        local fillUnits = trailer:getFillUnits()
+        for i = 1, #fillUnits do
+            local supportedFillTypes = trailer:getFillUnitSupportedFillTypes(i)
+            local freeCapacity =  trailer:getFillUnitFreeCapacity(i)
+            if supportedFillTypes[fillType] and freeCapacity > 0 then
+                return true, freeCapacity, i
+            end
+        end
+    end
+    return false, 0
+end
+
