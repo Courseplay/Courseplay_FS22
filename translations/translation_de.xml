@@ -50,7 +50,7 @@
     <!--AI combine unloader job parameters-->
     <!---->
     <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Abtanken ab:"/>
     <!---->
     <!--AI jobs-->
     <!---->
