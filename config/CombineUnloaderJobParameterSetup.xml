@@ -6,7 +6,7 @@
 -->
 
 <Settings prefixText="CP_combineUnloaderJobParameters_">
-	<SettingSubTitle title="general">
+	<SettingSubTitle title="fullThreshold">
 		<Setting classType="AIParameterSettingList" name="fullThreshold" min="50" max="100" incremental="5" default="85" unit="4"/>
 	</SettingSubTitle>
 </Settings>
