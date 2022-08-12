@@ -3,7 +3,7 @@
 CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
 	translations = {
-		jobName = "CP_job_unloadCombine"
+		jobName = "CP_job_combineUnload"
 	}
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork)

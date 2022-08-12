@@ -149,6 +149,10 @@
 			<Text language="de"><![CDATA[Full threshold:]]></Text>
 			<Text language="en"><![CDATA[Full threshold:]]></Text>
 		</Translation>
+		<Translation name="CP_combineUnloaderjobParameters_fullThreshold_title">
+			<Text language="de"><![CDATA[Full threshold:]]></Text>
+			<Text language="en"><![CDATA[Full threshold:]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
