@@ -213,7 +213,7 @@ function CpBaseHud:init(vehicle)
         end, self.vehicle)
 
      --- Course name
-    self.courseNameBtn = self:addLeftLineTextButton(self.fieldworkLayout, 4, self.defaultFontSize, 
+    self.courseNameBtn = self:addLeftLineTextButton(self.baseHud, 4, self.defaultFontSize, 
                                                         function()
                                                             self:openCourseGeneratorGui(self.vehicle)
                                                         end, self.vehicle)                                
@@ -351,14 +351,15 @@ function CpBaseHud:init(vehicle)
                                                         end, self.vehicle)                      
 
     --- Goal button.
-    local width, height = getNormalizedScreenValues(40, 40)    
+    local width, height = getNormalizedScreenValues(37, 37)    
     local goalOverlay = CpGuiUtil.createOverlay({width, height},
                                                 {AITargetHotspot.FILENAME, self.uvs.goalSymbol}, 
                                                 self.OFF_COLOR,
                                                 self.alignments.bottomRight)
-    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.combineUnloaderLayout)
+    
+    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
     local x, y = unpack(self.lines[4].right)
-    self.goalBtn:setPosition(x, y)
+    self.goalBtn:setPosition(x, y + self.hMargin/2)
     self.goalBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         self:openCourseGeneratorGui(vehicle)
     end)
@@ -553,8 +554,14 @@ function CpBaseHud:draw(status)
     self.combineUnloaderLayout:setVisible(self.vehicle:getCanStartCpCombineUnloader())
     self.combineUnloaderLayout:setDisabled(not self.vehicle:getCanStartCpCombineUnloader())
 
-     --- Set variable data.
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
+    local isCourseNameBtnDisabled = self.vehicle:getCanStartCpCombineUnloader() or self.vehicle:getCanStartCpBaleFinder() and not self.vehicle:hasCpCourse()
+    self.courseNameBtn:setDisabled(isCourseNameBtnDisabled)
+    self.courseNameBtn:setVisible(not isCourseNameBtnDisabled)
+
+    self.goalBtn:setDisabled(not self.fieldworkLayout:getIsDisabled())
+    self.goalBtn:setVisible(not self.fieldworkLayout:getVisible())
+
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
     if self.vehicle:hasCpCourse() then 
         self.startingPointBtn:setDisabled(false)
@@ -711,7 +718,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
             self:debug("opened ai inGame menu job %s.", job:getDescription())
             pageAI.currentJob = nil
             pageAI:setActiveJobTypeSelection(jobTypeIndex)
-            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, true)
+            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, pageAI.currentJob:getCanGenerateFieldWorkCourse())
             pageAI:updateParameterValueTexts()
             pageAI:validateParameters()
             --- Fixes the job selection gui element.

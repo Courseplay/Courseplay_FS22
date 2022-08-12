@@ -62,16 +62,14 @@ function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDi
 		end
 	end
 
+	x, z = vehicle:getCpCombineUnloaderFieldPosition()
+
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 	end
 
 	self.fieldPositionParameter:setPosition(x, z)
-
-	if isStartPositionInvalid then
-		self:resetStartPositionAngle(vehicle)
-	end
 end
 
 function CpAIJobCombineUnloader:setValues()
@@ -109,6 +107,12 @@ function CpAIJobCombineUnloader:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
+	local vehicle = self.vehicleParameter:getVehicle()
+	if vehicle then 
+		local x, z = self.fieldPositionParameter:getPosition()
+		vehicle:setCpCombineUnloaderFieldPosition(x, z)
+	end
+
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
 	return isValid, errorMessage
