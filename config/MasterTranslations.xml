@@ -145,8 +145,8 @@
 		</Translation>
 	</Category>
 	<Category name="AI combine unloader job parameters">
-		<Translation name="CP_combineUnloaderJobParameters_subTitle_isFull">
-			<Text language="de"><![CDATA[Full threshold:]]></Text>
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_fullThreshold">
+			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
 			<Text language="en"><![CDATA[Full threshold:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_fullThreshold_title">
