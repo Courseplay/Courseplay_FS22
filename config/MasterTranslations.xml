@@ -150,7 +150,7 @@
 			<Text language="en"><![CDATA[Full threshold:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_fullThreshold_title">
-			<Text language="de"><![CDATA[Full threshold:]]></Text>
+			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
 			<Text language="en"><![CDATA[Full threshold:]]></Text>
 		</Translation>
 	</Category>
