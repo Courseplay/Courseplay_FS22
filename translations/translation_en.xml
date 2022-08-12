@@ -189,7 +189,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="simple"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="circle"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Start work on"/>
-    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Start working on the headland (harvest) or center of the field (other works)"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Start working on the headland or center of the field"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="headland"/>
     <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="center"/>
     <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiple tools"/>
@@ -283,7 +283,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_delete_title" text="Delete waypoints"/>
     <text name="CP_editor_delete_primary_text" text="Deletes the selected waypoint."/>
     <text name="CP_editor_delete_secondary_text" text="Continues deletion of hovered waypoints."/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
+    <text name="CP_editor_delete_err" text="Too few waypoints left."/>
     <text name="CP_editor_course_basic_title" text="Basic"/>
     <text name="CP_editor_course_basic_move_title" text="Moves a waypoint"/>
     <text name="CP_editor_course_basic_move_primary_text" text="Drag and drops a waypoint with the Mouse."/>
@@ -629,7 +629,7 @@ Deleting of waypoints can be done with the red delete button.
     <text name="CP_help_page_editorAdvanced_text" text="
 Under the advanced category are:
 1) A brush to set the turn attribute of a waypoint (only with a course and not a custom field).
-Clicking multiple times on the waypoint will toggle between &quot;normale&quot; (orange), &quot;turn start&quot; (green) and &quot;turn end&quot; (red).
+Clicking multiple times on the waypoint will toggle between &quot;normal&quot; (orange), &quot;turn start&quot; (green) and &quot;turn end&quot; (red).
 
 2) A brush to move multiple waypoints in between to selected waypoints.
 To do this, you mark 2 Waypoints with the left mouse button, then by holding the left mouse button, you can move all waypoints in between including the marked ones.
