@@ -156,6 +156,10 @@ function CpAIJobFieldWork:getFieldPositionTarget()
     return self.fieldPositionParameter:getPosition()
 end
 
+function CpAIJobFieldWork:setFieldPositionTarget(x, z)
+    self.fieldPositionParameter:setPosition(x, z)
+end
+
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
     return self.hasValidPosition
 end
