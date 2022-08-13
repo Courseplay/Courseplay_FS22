@@ -3,7 +3,7 @@
 CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
 	translations = {
-		jobName = "CP_job_unloadCombine"
+		jobName = "CP_job_combineUnload"
 	}
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork)
@@ -11,7 +11,6 @@ local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork
 
 function CpAIJobCombineUnloader.new(isServer, customMt)
 	local self = CpAIJobFieldWork.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
-	
 	return self
 end
 
@@ -63,16 +62,14 @@ function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDi
 		end
 	end
 
+	x, z = vehicle:getCpCombineUnloaderFieldPosition()
+
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 	end
 
 	self.fieldPositionParameter:setPosition(x, z)
-
-	if isStartPositionInvalid then
-		self:resetStartPositionAngle(vehicle)
-	end
 end
 
 function CpAIJobCombineUnloader:setValues()
@@ -83,6 +80,7 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobCombineUnloader:validate(farmId)
+--[[
 	if not self.fieldPolygon then
 		-- after a savegame is loaded, we still have the job parameters (positions), but we do not save the
 		-- field polygon, so just regenerate it here if we can
@@ -95,8 +93,30 @@ function CpAIJobCombineUnloader:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
+	if not self.fieldPolygon then 
+		self.selectedFieldPlot:setVisible(false)
+		return false, g_i18n:getText("CP_error_not_on_field")
+	end
+	self.selectedFieldPlot:setWaypoints(self.fieldPolygon)
+	self.selectedFieldPlot:setVisible(true)
+	self.selectedFieldPlot:setBrightColor(true)
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
 	return true
+	]]--
+	local isValid, errorMessage = CpAIJob.validate(self, farmId)
+	if not isValid then
+		return isValid, errorMessage
+	end
+	local vehicle = self.vehicleParameter:getVehicle()
+	if vehicle then 
+		local x, z = self.fieldPositionParameter:getPosition()
+		vehicle:setCpCombineUnloaderFieldPosition(x, z)
+	end
+
+	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
+	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
+	return isValid, errorMessage
+
 end
 
 function CpAIJobCombineUnloader:readStream(streamId, connection)

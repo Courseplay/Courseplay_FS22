@@ -1,5 +1,7 @@
---- TODO: Make the hud static and only one instance.
----       Apply the update only when data has changed.
+--- TODO: - Make the hud static and only one instance.
+---         Apply the update only when data has changed.
+---       - Move all the constants into a xml file similar
+---         to the gui setup by giants.
 ---@class CpBaseHud
 CpBaseHud = CpObject()
 
@@ -9,10 +11,12 @@ CpBaseHud.RECORDER_ON_COLOR = {1, 0, 0, 0.9}
 CpBaseHud.ON_COLOR = {0, 0.6, 0, 0.9}
 CpBaseHud.SEMI_ON_COLOR = {0.6, 0.6, 0, 0.9}
 CpBaseHud.WHITE_COLOR = {1, 1, 1, 0.9}
+CpBaseHud.BACKGROUND_COLOR = {0, 0, 0, 0.7}
 
-CpBaseHud.colorHeader = {
+CpBaseHud.HEADER_COLOR = {
     0, 0.4, 0.6, 1
 }
+CpBaseHud.BASE_COLOR = {1, 1, 1, 1}
 
 CpBaseHud.basePosition = {
     x = 810,
@@ -49,18 +53,41 @@ CpBaseHud.uvs = {
     copySymbol = {
         {127, 637, 128, 128}
     },
+    goalSymbol = GuiUtils.getUVs({
+        788,
+	30,
+	44,
+	44
+    }, AITargetHotspot.FILE_RESOLUTION),
+    
     exitSymbol = {
-        {148, 184, 32, 32}
+        {148, 184, 32, 32}, {256, 512}
     },
     circleSymbol = {
-        {0, 366, 28, 28}
+        {0, 366, 28, 28}, {256, 512}
     },
     clearCourseSymbol = {
-        {40, 256, 32, 32}
+        {40, 256, 32, 32}, {256, 512}
     },
     eye = { 
-        {148, 148, 32, 32} 
+        {148, 148, 32, 32}, {256, 512}
+    },
+    cpIcon = {
+        {80, 26, 144, 144}, {256, 256}
     }
+}
+
+--- Vertical + horizontal overlay alignment
+CpBaseHud.alignments = {
+    bottomLeft =    {Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT},
+    bottomCenter =  {Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_CENTER},
+    bottomRight =   {Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT},
+    middleLeft =    {Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT},
+    middleCenter =  {Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_CENTER},
+    middleRight =   {Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_RIGHT},
+    topLeft =       {Overlay.ALIGN_VERTICAL_TOP,    Overlay.ALIGN_HORIZONTAL_LEFT},
+    topCenter =     {Overlay.ALIGN_VERTICAL_TOP,    Overlay.ALIGN_HORIZONTAL_CENTER},
+    topRight =      {Overlay.ALIGN_VERTICAL_TOP,    Overlay.ALIGN_HORIZONTAL_RIGHT}
 }
 
 CpBaseHud.xmlKey = "Hud"
@@ -90,10 +117,6 @@ function CpBaseHud:init(vehicle)
     end
     self.width, self.height = getNormalizedScreenValues(self.baseSize.x, self.baseSize.y)
 
-    local background = Overlay.new(g_baseUIFilename, 0, 0, self.width, self.height)
-    background:setUVs(g_colorBgUVs)
-    background:setColor(0, 0, 0, 0.7)
-
     
     self.lineHeight = self.height/(self.numLines+2)
     self.hMargin = self.lineHeight
@@ -113,21 +136,39 @@ function CpBaseHud:init(vehicle)
         self.lines[i] = line
     end
 
+    
+    local background = CpGuiUtil.createOverlay({self.width, self.height},
+                                            {g_baseUIFilename, g_colorBgUVs}, 
+                                            self.BACKGROUND_COLOR,
+                                            self.alignments.bottomLeft)
+
     --- Root element
     self.baseHud = CpHudMoveableElement.new(background)
     self.baseHud:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, self.moveToPosition)
 
+    self.fieldworkLayout = CpHudElement.new(nil, self.baseHud)
+    self.fieldworkLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
+    self.fieldworkLayout:setDimension(self.width, self.height)
+
+    self.baleFinderLayout = CpHudElement.new(nil, self.baseHud)
+    self.baleFinderLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
+    self.baleFinderLayout:setDimension(self.width, self.height)
+
+    self.combineUnloaderLayout = CpHudElement.new(nil, self.baseHud)
+    self.combineUnloaderLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
+    self.combineUnloaderLayout:setDimension(self.width, self.height)
     --------------------------------------
     --- Header
     --------------------------------------
     
     local headerHeight = self.hMargin
-    local headerBackground = Overlay.new(g_baseUIFilename, 0, 0, self.width, headerHeight)
-    headerBackground:setUVs(g_colorBgUVs)
-    headerBackground:setColor(unpack(self.colorHeader))
-    headerBackground:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT)
+
+    local headerBackground = CpGuiUtil.createOverlay({self.width, headerHeight},
+                                                    {g_baseUIFilename, g_colorBgUVs}, 
+                                                    self.HEADER_COLOR,
+                                                    self.alignments.bottomLeft)
 
     local topElement = CpHudElement.new(headerBackground, self.baseHud)
     topElement:setPosition(CpBaseHud.x, CpBaseHud.y + self.height - headerHeight)
@@ -144,9 +185,10 @@ function CpBaseHud:init(vehicle)
 
     --- Cp icon 
     local cpIconWidth, height = getNormalizedScreenValues(22, 22)
-    local cpIconOverlay =  Overlay.new(Utils.getFilename("img/courseplayIconHud.dds", Courseplay.BASE_DIRECTORY), 0, 0, cpIconWidth, height)
-    cpIconOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_LEFT)
-    cpIconOverlay:setUVs(GuiUtils.getUVs({80, 26, 144, 144}, {256, 256}))
+    local cpIconOverlay = CpGuiUtil.createOverlay({cpIconWidth, height},
+                                                    {Utils.getFilename("img/courseplayIconHud.dds", Courseplay.BASE_DIRECTORY), GuiUtils.getUVs(unpack(self.uvs.cpIcon))}, 
+                                                    self.BASE_COLOR,
+                                                    self.alignments.bottomLeft)
     self.cpIcon = CpHudButtonElement.new(cpIconOverlay, self.baseHud)
     local x, y = unpack(self.lines[7].left)
     y = y - self.hMargin/4
@@ -174,7 +216,7 @@ function CpBaseHud:init(vehicle)
     self.courseNameBtn = self:addLeftLineTextButton(self.baseHud, 4, self.defaultFontSize, 
                                                         function()
                                                             self:openCourseGeneratorGui(self.vehicle)
-                                                        end, self.vehicle)
+                                                        end, self.vehicle)                                
 
     --------------------------------------
     --- Right side
@@ -183,10 +225,11 @@ function CpBaseHud:init(vehicle)
     --- Exit button                                                  
     local width, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local exitBtnOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    exitBtnOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    exitBtnOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.exitSymbol), {256, 512}))
-    exitBtnOverlay:setColor(unpack(self.WHITE_COLOR))
+    local exitBtnOverlay = CpGuiUtil.createOverlay({width, height},
+                                                    {imageFilename, GuiUtils.getUVs(unpack(self.uvs.exitSymbol))}, 
+                                                    self.WHITE_COLOR,
+                                                    self.alignments.bottomRight)
+
     self.exitBtn = CpHudButtonElement.new(exitBtnOverlay, self.baseHud)
     local x, y = CpBaseHud.x + self.width -width/3 , CpBaseHud.y + self.height - headerHeight + self.hMargin/8
     self.exitBtn:setPosition(x, y) 
@@ -197,10 +240,10 @@ function CpBaseHud:init(vehicle)
 
     --- Create start/stop button
     local onOffBtnWidth, height = getNormalizedScreenValues(20, 20)
-    local onOffIndicatorOverlay =  Overlay.new(g_baseUIFilename, 0, 0, onOffBtnWidth, height)
-    onOffIndicatorOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    onOffIndicatorOverlay:setUVs(GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW))
-    onOffIndicatorOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    local onOffIndicatorOverlay = CpGuiUtil.createOverlay({onOffBtnWidth, height},
+                                                        {g_baseUIFilename, GuiUtils.getUVs(MixerWagonHUDExtension.UV.RANGE_MARKER_ARROW)}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
     self.onOffButton = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)
     local x, y = unpack(self.lines[6].right)
     self.onOffButton:setPosition(x, y)
@@ -209,10 +252,10 @@ function CpBaseHud:init(vehicle)
     --- Create start/stop field boarder record button
     local recordingBtnWidth, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local circleOverlay =  Overlay.new(imageFilename, 0, 0, recordingBtnWidth, height)
-    circleOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    circleOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.circleSymbol), {256, 512}))
-    circleOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    local circleOverlay = CpGuiUtil.createOverlay({recordingBtnWidth, height},
+                                                {imageFilename, GuiUtils.getUVs(unpack(self.uvs.circleSymbol))}, 
+                                                self.OFF_COLOR,
+                                                self.alignments.bottomRight)
     self.startStopRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
     local x, y = unpack(self.lines[6].right)
     x = x - onOffBtnWidth - self.wMargin/2
@@ -228,10 +271,10 @@ function CpBaseHud:init(vehicle)
     --- Clear course button.
     local width, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local clearCourseOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    clearCourseOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol), {256, 512}))
-    clearCourseOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
+                                                {imageFilename, GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol))}, 
+                                                self.OFF_COLOR,
+                                                self.alignments.bottomRight)
     self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
     local x, y = unpack(self.lines[6].right)
     x = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth - self.wMargin/4
@@ -245,10 +288,10 @@ function CpBaseHud:init(vehicle)
     --- Toggle waypoint visibility.
     local width, height = getNormalizedScreenValues(20, 20)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local courseVisibilityOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    courseVisibilityOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    courseVisibilityOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.eye), {256, 512}))
-    courseVisibilityOverlay:setColor(unpack(CpBaseHud.OFF_COLOR))
+    local courseVisibilityOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.eye))}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
     self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self.baseHud)
     local _, y = unpack(self.lines[6].right)
     y = y - self.hMargin/16
@@ -259,11 +302,10 @@ function CpBaseHud:init(vehicle)
     end)
     
     --- Lane offset
-    self.laneOffsetBtn = self:addRightLineTextButton(self.baseHud, 5, self.defaultFontSize, 
+    self.laneOffsetBtn = self:addRightLineTextButton(self.fieldworkLayout, 5, self.defaultFontSize, 
         function (vehicle)
             vehicle:getCpLaneOffsetSetting():setNextItem()
         end, self.vehicle)
-  
     --- Waypoint progress
     self.waypointProgressBtn = self:addRightLineTextButton(self.baseHud, 4, self.defaultFontSize, 
                                                         function()
@@ -275,13 +317,13 @@ function CpBaseHud:init(vehicle)
     --------------------------------------
    
     --- Work width
-    self.workWidthBtn = self:addLineTextButton(self.baseHud, 3, self.defaultFontSize, 
+    self.workWidthBtn = self:addLineTextButton(self.fieldworkLayout, 3, self.defaultFontSize, 
                                                 self.vehicle:getCourseGeneratorSettings().workWidth)
 
     --- Bale finder fill type
     local x, y = unpack(self.lines[3].left)
     local xRight,_ = unpack(self.lines[3].right)
-    self.baleFinderFillTypeBtn = CpHudTextSettingElement.new(self.baseHud, x, y,
+    self.baleFinderFillTypeBtn = CpHudTextSettingElement.new(self.baleFinderLayout, x, y,
                                      xRight, self.defaultFontSize)
     local callback = {
         callbackStr = "onClickPrimary",
@@ -295,6 +337,32 @@ function CpBaseHud:init(vehicle)
     self.toolOffsetXBtn = self:addLineTextButton(self.baseHud, 2, self.defaultFontSize, 
                                                 self.vehicle:getCpSettings().toolOffsetX)
 
+    --- Tool offset z
+    self.toolOffsetZBtn = self:addLineTextButton(self.combineUnloaderLayout, 1, self.defaultFontSize, 
+                                                self.vehicle:getCpSettings().toolOffsetZ)
+
+    --- Full threshold 
+    self.fullThresholdBtn = self:addLineTextButton(self.combineUnloaderLayout, 3, self.defaultFontSize, 
+                                                self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold)
+    --- Drive now button
+    self.driveNowBtn = self:addLeftLineTextButton(self.combineUnloaderLayout, 4, self.defaultFontSize, 
+                                                        function()
+                                                            self.vehicle:startCpCombineUnloaderUnloading()
+                                                        end, self.vehicle)                      
+
+    --- Goal button.
+    local width, height = getNormalizedScreenValues(37, 37)    
+    local goalOverlay = CpGuiUtil.createOverlay({width, height},
+                                                {AITargetHotspot.FILENAME, self.uvs.goalSymbol}, 
+                                                self.OFF_COLOR,
+                                                self.alignments.bottomRight)
+    
+    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
+    local x, y = unpack(self.lines[4].right)
+    self.goalBtn:setPosition(x, y + self.hMargin/2)
+    self.goalBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        self:openCourseGeneratorGui(vehicle)
+    end)
     --- Copy course btn.                                          
     self:addCopyCourseBtn(1)
 
@@ -312,6 +380,7 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setVisible(false)
 
     self.baseHud:setScale(self.uiScale, self.uiScale)
+    self.driveNowBtn:setTextDetails("DriveNow WIP")
 end
 
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
@@ -330,17 +399,23 @@ function CpBaseHud:addRightLineTextButton(parent, line, textSize, callbackFunc, 
 end
 
 function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
+    if setting == nil then 
+        self:debug("Setting is nil!")
+        printCallstack()
+        return
+    end
     local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
 
     local width, height = getNormalizedScreenValues(16, 16)
-    local incrementalOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    incrementalOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    incrementalOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.plusSymbol)))
-    incrementalOverlay:setColor(unpack(self.OFF_COLOR))
-    local decrementalOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-  --  decrementalOverlay:setAlignment(Overlay.ALIGN_VERTICAL_TOP, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    decrementalOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.minusSymbol)))
-    decrementalOverlay:setColor(unpack(self.OFF_COLOR))
+    local incrementalOverlay = CpGuiUtil.createOverlay({width, height},
+                                                            {imageFilename, GuiUtils.getUVs(unpack(self.uvs.plusSymbol))}, 
+                                                            self.OFF_COLOR,
+                                                            self.alignments.bottomRight)
+
+    local decrementalOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.minusSymbol))}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomLeft)
 
     local x, y = unpack(self.lines[line].left)
     local dx, dy = unpack(self.lines[line].right)
@@ -397,20 +472,21 @@ function CpBaseHud:addCopyCourseBtn(line)
 
     local width, height = getNormalizedScreenValues(22, 22)
     
-    local copyOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    copyOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.copySymbol)))
-    copyOverlay:setColor(unpack(self.OFF_COLOR))
-    copyOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    local copyOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.copySymbol))}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
 
-    local pasteOverlay =  Overlay.new(imageFilename, 0, 0, width, height)
-    pasteOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.pasteSymbol)))
-    pasteOverlay:setColor(unpack(self.OFF_COLOR))
-    pasteOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
+    local pasteOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.pasteSymbol))}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
 
-    local clearCourseOverlay =  Overlay.new(imageFilename2, 0, 0, width, height)
-    clearCourseOverlay:setAlignment(Overlay.ALIGN_VERTICAL_BOTTOM, Overlay.ALIGN_HORIZONTAL_RIGHT)
-    clearCourseOverlay:setUVs(GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol), {256, 512}))
-    clearCourseOverlay:setColor(unpack(self.OFF_COLOR))
+   
+    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename2, GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol))}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
 
     self.copyButton = CpHudButtonElement.new(copyOverlay, self.baseHud)
     self.copyButton:setPosition(rightX, rightY-btnYOffset)
@@ -470,13 +546,27 @@ end
 
 ---@param status CpStatus
 function CpBaseHud:draw(status)
-     --- Set variable data.
+
+    self.fieldworkLayout:setVisible(not (self.vehicle:getCanStartCpBaleFinder() or self.vehicle:getCanStartCpCombineUnloader()))
+    self.fieldworkLayout:setDisabled(self.vehicle:getCanStartCpBaleFinder() or self.vehicle:getCanStartCpCombineUnloader())
+    self.baleFinderLayout:setVisible(self.vehicle:getCanStartCpBaleFinder())
+    self.baleFinderLayout:setDisabled(not self.vehicle:getCanStartCpBaleFinder())
+    self.combineUnloaderLayout:setVisible(self.vehicle:getCanStartCpCombineUnloader())
+    self.combineUnloaderLayout:setDisabled(not self.vehicle:getCanStartCpCombineUnloader())
+
     self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
+    local isCourseNameBtnDisabled = self.vehicle:getCanStartCpCombineUnloader() or self.vehicle:getCanStartCpBaleFinder() and not self.vehicle:hasCpCourse()
+    self.courseNameBtn:setDisabled(isCourseNameBtnDisabled)
+    self.courseNameBtn:setVisible(not isCourseNameBtnDisabled)
+
+    self.goalBtn:setDisabled(not self.fieldworkLayout:getIsDisabled())
+    self.goalBtn:setVisible(not self.fieldworkLayout:getVisible())
+
     self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
     if self.vehicle:hasCpCourse() then 
         self.startingPointBtn:setDisabled(false)
         self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
-    elseif self.vehicle:getCanStartCpBaleFinder() then 
+    elseif self.vehicle:getCanStartCpBaleFinder() or self.vehicle:getCanStartCpCombineUnloader() then 
         self.startingPointBtn:setDisabled(true)
         self.startingPointBtn:setTextDetails(self.vehicle:getCpStartText())
     else 
@@ -500,7 +590,9 @@ function CpBaseHud:draw(status)
     self.startStopRecordingBtn:setVisible(self.vehicle:getCanStartCpCourseRecorder())
 
     self.waypointProgressBtn:setTextDetails(status:getWaypointText())
-    
+    self.waypointProgressBtn:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+    self.waypointProgressBtn:setVisible(not self.vehicle:getCanStartCpCombineUnloader())
+
     local laneOffset = self.vehicle:getCpLaneOffsetSetting()
     self.laneOffsetBtn:setVisible(laneOffset:getCanBeChanged())
     self.laneOffsetBtn:setTextDetails(laneOffset:getString())
@@ -509,11 +601,21 @@ function CpBaseHud:draw(status)
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
 
     self.workWidthBtn:setVisible(workWidth:getIsVisible())
+    
 
     local toolOffsetX = self.vehicle:getCpSettings().toolOffsetX
     local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
+
+    
+    local toolOffsetZ = self.vehicle:getCpSettings().toolOffsetZ
+    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), toolOffsetZ:getString())
+    self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
+
+    local fullThreshold = self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold
+    self.fullThresholdBtn:setTextDetails(fullThreshold:getTitle(), fullThreshold:getString())
+    self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
 
     local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
     self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
@@ -541,7 +643,7 @@ function CpBaseHud:draw(status)
 end
 
 function CpBaseHud:updateCopyBtn(status)
-    if self.courseCache then 
+    if self.courseCache and not self.vehicle:getCanStartCpCombineUnloader() then 
         local courseName =  CpCourseManager.getCourseName(self.courseCache)
         self.copyCacheText:setTextDetails(self.copyText .. courseName)
         self.clearCacheBtn:setVisible(true)
@@ -554,11 +656,18 @@ function CpBaseHud:updateCopyBtn(status)
             self.copyCacheText:setTextColorChannels(unpack(self.WHITE_COLOR))
             self.pasteButton:setColor(unpack(self.ON_COLOR))
         end
+        self.copyButton:setDisabled(false)
+        self.pasteButton:setDisabled(false)
+        self.clearCacheBtn:setDisabled(false)
     else
         self.copyCacheText:setTextDetails("")
         self.clearCacheBtn:setVisible(false)
         self.pasteButton:setVisible(false)
-        self.copyButton:setVisible(self.vehicle:hasCpCourse())
+        self.copyButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getCanStartCpCombineUnloader())
+        self.copyButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+        self.copyButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+        self.pasteButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
+        self.clearCacheBtn:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
     end
 end
 
@@ -609,7 +718,7 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
             self:debug("opened ai inGame menu job %s.", job:getDescription())
             pageAI.currentJob = nil
             pageAI:setActiveJobTypeSelection(jobTypeIndex)
-            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, true)
+            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, pageAI.currentJob:getCanGenerateFieldWorkCourse())
             pageAI:updateParameterValueTexts()
             pageAI:validateParameters()
             --- Fixes the job selection gui element.

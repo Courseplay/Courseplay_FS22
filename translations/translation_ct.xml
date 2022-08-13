@@ -49,7 +49,8 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_isFull" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <!---->
     <!--AI jobs-->
     <!---->
