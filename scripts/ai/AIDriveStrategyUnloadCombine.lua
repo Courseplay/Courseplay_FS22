@@ -177,8 +177,7 @@ function AIDriveStrategyUnloadCombine:isProximitySwerveEnabled(vehicle)
 end
 
 function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
-    return (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.enableProximitySpeedControl) or
-            (self.state == self.states.ON_FIELD and self.state.properties.enableProximitySpeedControl)
+    return true
 end
 
 function AIDriveStrategyUnloadCombine:isWaitingForAssignment()
@@ -513,33 +512,61 @@ function AIDriveStrategyUnloadCombine:isWithinSafeManeuveringDistance(vehicle)
     return d < self.safeManeuveringDistance
 end
 
-function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(maxDirectionDifferenceDeg)
+function AIDriveStrategyUnloadCombine:debugIf(enabled, ...)
+    if enabled then
+        self:debug(...)
+    end
+end
+
+function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
-
-    -- close enough and approximately same direction and behind and not too far to the left or right
-    return dz < 0 and math.abs(dx) < math.abs(1.5 * pipeOffset) and MathUtil.vector2Length(dx, dz) < 30 and
-            CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-                    maxDirectionDifferenceDeg or 45)
-
+    if dz > 0 then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
+        return false
+    end
+    if math.abs(dx) > math.abs(1.5 * pipeOffset) then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
+        return false
+    end
+    local d = MathUtil.vector2Length(dx, dz)
+    if d > 30 then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
+        return false
+    end
+    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 45) then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > 45)')
+        return false
+    end
+    -- close enough and approximately same direction and behind and not too far to the left or right, about the same
+    -- direction
+    return true
 end
 
 --- In front of the combine, right distance from pipe to start unloading and the combine is moving
-function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(maxDirectionDifferenceDeg)
+function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEnabled)
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
-
-    -- in front of the combine, close enough and approximately same direction, about pipe offset side distance
-    -- and is not waiting (stopped) for the unloader
-    if dz >= 0 and math.abs(dx) < math.abs(pipeOffset) * 1.5 and math.abs(dx) > math.abs(pipeOffset) * 0.5 and
-            MathUtil.vector2Length(dx, dz) < 30 and
-            CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-                    maxDirectionDifferenceDeg or 30) and
-            not self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
-        return true
-    else
+    if dz < 0 then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: dz < 0')
         return false
     end
+    if math.abs(dx) > math.abs(1.5 * pipeOffset) and math.abs(dx) < math.abs(pipeOffset) * 0.5 then
+        self:debugIf(debugEnabled,
+                'isInFrontAndAlignedToMovingCombine: dx (%.1f) not between 0.5 and 1.5 pipe offset (%.1f)', dx, pipeOffset)
+        return false
+    end
+    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 30) then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: direction difference is > 30)')
+        return false
+    end
+    if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: combine is not moving')
+        return false
+    end
+    -- in front of the combine, close enough and approximately same direction, about pipe offset side distance
+    -- and is not waiting (stopped) for the unloader
+    return true
 end
 
 function AIDriveStrategyUnloadCombine:isOkToStartUnloadingCombine()
@@ -628,9 +655,12 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     -- try to find the waypoint closest to the vehicle, as startIx we got is right beside the combine
     -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
     -- and we may end up between the end of the pipe and the combine
-    startIx = startIx - 10
-    startIx = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startIx > 0 and startIx or 1,
-            self.vehicle:getAIDirectionNode(), 3)
+    local startSearchAt = startIx - 5
+    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startSearchAt > 0 and startSearchAt or 1,
+            self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth())
+    if found then
+        startIx = nextFwdIx
+    end
     self.combineOffset = self:getPipeOffset(self.combineToUnload)
     self.followCourse:setOffset(-self.combineOffset, 0)
     self:debug('Will follow combine\'s course at waypoint %d, side offset %.1f', startIx, self.followCourse.offsetX)
@@ -725,13 +755,13 @@ end
 -- (which may be considerably longer than a direct path between the unloader and the combine)
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startPathfindingForDistance()
-    if self.justFinishedPathfindingForDistance:get() then
-        self:debug('just finished another pathfinding for distance, wait a bit before starting another')
-        self:startWaitingForCombine()
-        return
-    end
     -- ignore node direction as all we want to know here is the distance
     if self:isPathfindingNeeded(self.vehicle, self:getCombineRootNode(), 0, -15, nil, 360) then
+        if self.justFinishedPathfindingForDistance:get() then
+            self:debug('just finished another pathfinding for distance, wait a bit before starting another')
+            self:startWaitingForCombine()
+            return
+        end
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
         local done, path, goalNodeInvalid
         self.pathfindingStartedAt = g_time
@@ -1211,15 +1241,12 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
     if self.combineToUnload:getCpDriveStrategy():isManeuvering() then
         self:setMaxSpeed(0)
     elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
-        local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
-        local pipeOffset = self:getPipeOffset(self.combineToUnload)
-        local sameDirection = CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(),
-                self.combineToUnload:getAIDirectionNode(), 15)
-        local willWait = self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish()
-        self:info('not in a good position to unload, trying to recover')
-        self:info('dx = %.2f, dz = %.2f, offset = %.2f, sameDir = %s', dx, dz, pipeOffset, tostring(sameDirection))
-        -- switch to driving only when not holding for maneuvering combine
+        -- call these again just to log the reason
+        self:isBehindAndAlignedToCombine(true)
+        self:isInFrontAndAlignedToMovingCombine(true)
+        self:info('not in a good position to unload, cancelling rendezvous, trying to recover')
         -- for some reason (like combine turned) we are not in a good position anymore then set us up again
+        self.combineToUnload:getCpDriveStrategy():cancelRendezvous()
         self:startDrivingToCombine()
     end
 end

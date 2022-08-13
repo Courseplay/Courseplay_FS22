@@ -64,6 +64,10 @@ function AIDriveStrategyCourse:getStateAsString()
     return self.state.name
 end
 
+function AIDriveStrategyCourse:getName()
+    return CpUtil.getName(self.vehicle)
+end
+
 function AIDriveStrategyCourse:debug(...)
     CpUtil.debugVehicle(self.debugChannel, self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end

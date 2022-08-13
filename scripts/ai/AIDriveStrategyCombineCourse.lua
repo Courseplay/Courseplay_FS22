@@ -73,9 +73,6 @@ function AIDriveStrategyCombineCourse.new(customMt)
 	self.stopDisabledAfterEmpty = CpTemporaryObject(false)
 	self.stopDisabledAfterEmpty:set(false, 1)
 	self.pipeOffsetX = 0
-	--- My unloader. This expires in a few seconds, so unloaders have to renew their registration periodically
-	---@type CpTemporaryObject
-	self.unloader = CpTemporaryObject(nil)
 	self:initUnloadStates()
 	self.chopperCanDischarge = CpTemporaryObject(false)
 	-- hold the harvester temporarily
@@ -141,9 +138,12 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 	-- TODO_22 g_combineUnloadManager:addCombineToList(self.vehicle, self)
 	self:measureBackDistance()
 	self.waitingForUnloaderAtEndOfRow = CpTemporaryObject()
-	-- if this is not nil, we have a pending rendezvous
+	--- My unloader. This expires in a few seconds, so unloaders have to renew their registration periodically
 	---@type CpTemporaryObject
-	self.unloadAIDriverToRendezvous = CpTemporaryObject()
+	self.unloader = CpTemporaryObject(nil)
+	--- if this is not nil, we have a pending rendezvous with our unloader
+	---@type CpTemporaryObject
+	self.unloadAIDriverToRendezvous = CpTemporaryObject(nil)
 	local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
 	self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
 			total, pipeInFruit)
@@ -741,7 +741,7 @@ function AIDriveStrategyCombineCourse:cancelRendezvous()
 			unloader and CpUtil.getName(self.unloadAIDriverToRendezvous:get() or 'N/A'),
 			self.agreedUnloaderRendezvousWaypointIx or -1)
 	self.agreedUnloaderRendezvousWaypointIx = nil
-	self.unloadAIDriverToRendezvous:set(nil, 0)
+	self.unloadAIDriverToRendezvous:reset()
 end
 
 --- Before the unloader asks for a rendezvous (which may result in a lengthy pathfinding to figure out
@@ -762,7 +762,7 @@ end
 --- This waypoint should be a good location to unload (pipe not in fruit, not in a turn, etc.)
 --- If no such waypoint found, reject the rendezvous.
 ---@param unloaderEstimatedSecondsEnroute number minimum time the unloader needs to get to the combine
----@param unloadAIDriver CombineUnloadAIDriver the driver requesting the rendezvous
+---@param unloadAIDriver AIDriveStrategyUnloadCombine the driver requesting the rendezvous
 ---@param isPipeInFruitAllowed boolean a rendezvous waypoint where the pipe is in fruit is ok
 ---@return Waypoint, number, number waypoint to meet the unloader, index of waypoint, time we need to reach that waypoint
 function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEstimatedSecondsEnroute, unloadAIDriver, isPipeInFruitAllowed)
@@ -1531,6 +1531,7 @@ end
 --- Deregister a combine unload AI driver from notifications
 ---@param driver CombineUnloadAIDriver
 function AIDriveStrategyCombineCourse:deregisterUnloader(driver,noEventSend)
+	self:cancelRendezvous()
 	self.unloader:reset()
 end
 
