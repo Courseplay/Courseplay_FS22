@@ -14,18 +14,22 @@
     <description>
         <en>
 			<![CDATA[Courseplay FS22
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
+- use headlands
+- work on irregularly shaped fields, not just rectangles
+- work around islands in the field (like power lines)
+- save auto-generated courses to use a forage wagon to collect what a mower or harvester cut before
+- find and collect or wrap all bales on a field
+- work on vines
+- let up to 5 helpers work on the same field in a group
+- combines find a trailer to self-unload when full
+- set up your own fields wherever you like
+- works great together with AutoDrive, let Courseplay do the fieldwork and AutoDrive to refill a sower or unload a forage wagon
+- customize the automatically created fieldwork courses to your liking with the course editor
 
-For more information please visit <a href="https://github.com/Courseplay/Courseplay_FS22">github</a>.
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+For more information, help, and report issues please visit <a href="https://github.com/Courseplay/Courseplay_FS22">github</a>.
+
+Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.1.0.3:
 - Added missing translation files, so every language supported by the game can be edited now.
@@ -42,7 +46,7 @@ Changelog 7.1.0.0:
 - Complete new course manager integrated into the ingame menu.
 - Works now great with AutoDrive, let Courseplay take care of the field work and use AutoDrive to transport your harvest.
 
-For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release side</a> on github.
+For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 ]]>
 		</en>
         <de>
