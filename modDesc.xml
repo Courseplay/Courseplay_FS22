@@ -27,6 +27,13 @@ For more information please visit <a href="https://github.com/Courseplay/Coursep
 There you can get help or report any issue you've experienced.
 Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
 
+Changelog 7.1.0.3:
+- Added missing translation files, so every language supported by the game can be edited now.
+- Added new course editor for fieldwork courses and custom field borders (more information in the help menu).
+- Improved the interface for the auto load mod: FS22_aPalletAutoLoader.
+- Arcusin Multipack F14 now unloads the compacted bales on the field.
+- Some more fixes and enhancements.
+
 Changelog 7.1.0.0:
 - initial ModHub Release 7.1.0.0
 - Added vine fieldwork
@@ -52,6 +59,13 @@ Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmasch
 Für weite Informationen, schaut bitte auf <a href="https://github.com/Courseplay/Courseplay_FS22">github</a> vorbei.
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
 Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
+
+Changelog 7.1.0.3:
+- Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
+- Neuen Kursgenerator für Feldarbeitskurse und eigene Feldrandkurse hinzugefügt (mehr Informationen dazu im Ingame Hilfe Menü)
+- Interface zum Mod FS22_aPalletAutoLoader verbessert.
+- Arcusin Multipack F14 entlädt die gepackten Ballen jetzt auf dem Feld.
+- Weitere bug fixes und Verbesserungen.
 
 Changelog 7.1.0.0:
 - Initiale ModHub Version 7.1.0.0
