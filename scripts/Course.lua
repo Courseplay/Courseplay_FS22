@@ -861,6 +861,8 @@ function Course:getNextFwdWaypointIx(ix)
 	return ix
 end
 
+---@return number index of next waypoint in front of us, or ix when not found
+---@return boolean true if we found the next waypoint
 function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx)
 	-- only look at the next few waypoints, we don't want to find anything far away, really, it should be in front of us
 	for i = ix, math.min(ix + 10, #self.waypoints) do
@@ -868,12 +870,12 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx)
 			local uX, uY, uZ = self:getWaypointPosition(i)
 			local dx, _, dz = worldToLocal(vehicleNode, uX, uY, uZ);
 			if dz > 0 and math.abs(dx) < maxDx then
-				return i
+				return i, true
 			end
 		end
 	end
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
-	return ix
+	return ix, false
 end
 
 function Course:getNextRevWaypointIxFromVehiclePosition(ix, vehicleNode, lookAheadDistance)
