@@ -96,7 +96,7 @@ function ProximityController:getDriveData(maxSpeed)
         self:setState(self.states.SLOW_DOWN,
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, slowing down to %.1f', d, deg, maxSpeed))
     else
-        self:setState(self.states.NO_OBSTACLE, 'No obstacle')
+        self:setState(self.states.NO_OBSTACLE, string.format('No obstacle, d = %.1f, deg = %.1f.', d, deg))
     end
     return nil, nil, nil, maxSpeed
 end
