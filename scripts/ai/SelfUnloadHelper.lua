@@ -103,3 +103,32 @@ function SelfUnloadHelper:findBestFillNode(myVehicle, fillRootNode, offset)
     end
 end
 
+function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType, objectWithPipeAttributes)
+
+    local bestTrailer, fillRootNode = SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType,
+            objectWithPipeAttributes.pipeOffsetX)
+
+    if not bestTrailer then
+        return nil
+    end
+
+    local targetNode = fillRootNode or bestTrailer.rootNode
+    local trailerRootNode = bestTrailer.rootNode
+    local trailerLength = bestTrailer.size.length
+    local trailerWidth = bestTrailer.size.width
+
+    local _, _, dZ = localToLocal(trailerRootNode, targetNode, 0, 0, 0)
+
+    -- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
+    -- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
+    -- than what is absolutely necessary.
+    local offsetX = math.abs(objectWithPipeAttributes.pipeOffsetX) + trailerWidth / 2 - 1.1
+    offsetX = objectWithPipeAttributes.pipeOnLeftSide and -offsetX or offsetX
+    -- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
+    local _, steeringLength = AIUtil.getSteeringParameters(myVehicle)
+    local alignLength = (trailerLength / 2) + dZ + math.max(myVehicle.size.length / 2, steeringLength)
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, myVehicle,
+            'Trailer length: %.1f, width: %.1f, align length %.1f, steering length %.1f, offsetX %.1f',
+            trailerLength, trailerWidth, alignLength, steeringLength, offsetX)
+    return targetNode, alignLength, offsetX
+end

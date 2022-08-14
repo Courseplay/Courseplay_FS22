@@ -22,11 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class AIUtil
 AIUtil = {}
 
--- chopper: 0= pipe folded (really? isn't this 1?), 2,= autoaiming;  combine: 1 = closed  2= open
-AIUtil.PIPE_STATE_MOVING = 0
-AIUtil.PIPE_STATE_CLOSED = 1
-AIUtil.PIPE_STATE_OPEN = 2
-
 function AIUtil.isReverseDriving(vehicle)
 	if not vehicle then
 		printCallstack()

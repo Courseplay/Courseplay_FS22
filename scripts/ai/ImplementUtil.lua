@@ -369,17 +369,8 @@ function ImplementUtil.findCombineObject(vehicle)
         combine = vehicle.spec_combine
     else
         local combineImplement = AIUtil.getImplementWithSpecialization(vehicle, Combine)
-        local peletizerImplement = FS19_addon_strawHarvest and
-                AIUtil.getAIImplementWithSpecialization(vehicle, FS19_addon_strawHarvest.StrawHarvestPelletizer) or nil
         if combineImplement then
             combine = combineImplement.spec_combine
-        elseif peletizerImplement then
-            combine = peletizerImplement
-            combine.fillUnitIndex = 1
-            combine.spec_aiImplement.rightMarker = combine.rootNode
-            combine.spec_aiImplement.leftMarker = combine.rootNode
-            combine.spec_aiImplement.backMarker = combine.rootNode
-            combine.isPremos = true --- This is needed as there is some logic in the CombineUnloadManager for it.
         else
             CpUtil.infoVehicle(vehicle, 'Vehicle is not a combine and could not find implement with spec_combine')
         end
@@ -391,8 +382,9 @@ end
 --- pipe, objectWithPipe, pipeOnLeftSide, pipeOffsetX, pipeOffsetZ
 ---@param object table object we want to decorate with these attributes
 ---@param vehicle table
----@param combine table combine object, see ImplementUtil.findCombineObject()
-function ImplementUtil.setPipeAttributes(object, vehicle, combine)
+---@param referenceVehicle table reference to calculate pipe offset and side,
+---                              usually a combine object, must have getCurrentDischargeNode()
+function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
     if vehicle.spec_pipe then
         object.pipe = vehicle.spec_pipe
         object.objectWithPipe = vehicle
@@ -411,32 +403,32 @@ function ImplementUtil.setPipeAttributes(object, vehicle, combine)
         -- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
         local wasFolded, wasClosed
         wasFolded = ImplementUtil.unfoldForGettingWidth(vehicle)
-        if object.pipe.currentState == AIUtil.PIPE_STATE_CLOSED then
+        if object.pipe.currentState == PipeController.PIPE_STATE_CLOSED then
             wasClosed = true
             if object.pipe.animation.name then
                 object.pipe:setAnimationTime(object.pipe.animation.name, 1, true)
             else
                 -- as seen in the Giants pipe code
-                object.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_OPEN, true)
+                object.objectWithPipe:setPipeState(PipeController.PIPE_STATE_OPEN, true)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
                 -- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
-        local dischargeNode = combine:getCurrentDischargeNode()
-        local dx, _, _ = localToLocal(dischargeNode.node, combine.rootNode, 0, 0, 0)
+        local dischargeNode = referenceVehicle:getCurrentDischargeNode()
+        local dx, _, _ = localToLocal(dischargeNode.node, referenceVehicle.rootNode, 0, 0, 0)
         object.pipeOnLeftSide = dx >= 0
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe on left side %s', tostring(object.pipeOnLeftSide))
         -- use combine so attached harvesters have the offset relative to the harvester's root node
         -- (and thus, does not depend on the angle between the tractor and the harvester)
-        object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node, combine.rootNode, 0, 0, 0)
+        object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node, referenceVehicle.rootNode, 0, 0, 0)
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe offset: x = %.1f, z = %.1f',
                 object.pipeOffsetX, object.pipeOffsetZ)
         if wasClosed then
             if object.pipe.animation.name then
                 object.pipe:setAnimationTime(object.pipe.animation.name, 0, true)
             else
-                object.objectWithPipe:setPipeState(AIUtil.PIPE_STATE_CLOSED, true)
+                object.objectWithPipe:setPipeState(PipeController.PIPE_STATE_CLOSED, true)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
                 -- this second call magically unfolds the sugarbeet harvesters, ask Stefan Maurus why :)
                 object.objectWithPipe:updatePipeNodes(999999, nil)

@@ -1399,6 +1399,74 @@ function AIDriveStrategyUnloadCombine:findCombine()
     end
 end
 
+-----------------------------------------------------------------------------------------------------------------------
+--- Self unload
+-----------------------------------------------------------------------------------------------------------------------
+--- Find a path to the best trailer to unload
+function AIDriveStrategyUnloadCombine:startSelfUnload()
+
+    if not self.pathfinder or not self.pathfinder:isActive() then
+        self:rememberCourse(self.fieldWorkCourse, self:getBestWaypointToContinueFieldWork())
+        self.pathfindingStartedAt = g_currentMission.time
+        self.courseAfterPathfinding = nil
+        self.waypointIxAfterPathfinding = nil
+
+        local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(
+                self.fieldPolygon,
+                self.vehicle,
+                self:getFillType(),
+                self)
+
+        if not targetNode then
+            return false
+        end
+
+        -- little straight section parallel to the trailer to align better
+        self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
+                offsetX, -alignLength + 1, -self.pipeOffsetZ, 1, false)
+
+        local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+        local done, path
+        -- require full accuracy from pathfinder as we must exactly line up with the trailer
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
+                self.vehicle, targetNode, offsetX, -alignLength,
+                self:getAllowReversePathfinding(),
+        -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
+                fieldNum, {}, nil, 0.1, nil, true)
+        if done then
+            return self:onPathfindingDoneBeforeSelfUnload(path)
+        else
+            self:setPathfindingDoneCallback(self, self.onPathfindingDoneBeforeSelfUnload)
+        end
+    else
+        self:debug('Pathfinder already active')
+    end
+    return true
+end
+
+function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
+    if path and #path > 2 then
+        self:debug('Pathfinding to self unload finished with %d waypoints (%d ms)',
+                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
+        local selfUnloadCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        if self.selfUnloadAlignCourse then
+            selfUnloadCourse:append(self.selfUnloadAlignCourse)
+            self.selfUnloadAlignCourse = nil
+        end
+        self:startCourse(selfUnloadCourse, 1)
+        return true
+    else
+        self:debug('No path found to self unload in %d ms',
+                g_currentMission.time - (self.pathfindingStartedAt or 0))
+        if self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
+            self.unloadState = self.states.WAITING_FOR_UNLOAD_ON_FIELD
+        elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
+            self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
+        end
+        return false
+    end
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Debug
 ------------------------------------------------------------------------------------------------------------------------
