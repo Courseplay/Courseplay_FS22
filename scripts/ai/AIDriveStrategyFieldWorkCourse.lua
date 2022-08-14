@@ -93,7 +93,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     end
 end
 
-function AIDriveStrategyFieldWorkCourse:update()
+function AIDriveStrategyFieldWorkCourse:update(dt)
     AIDriveStrategyFieldWorkCourse:superClass().update(self)
     if CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
         if self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
@@ -119,7 +119,7 @@ function AIDriveStrategyFieldWorkCourse:update()
     if self.fieldWorkerProximityController then
         self.fieldWorkerProximityController:draw()
     end
-    self:updateImplementControllers()
+    self:updateImplementControllers(dt)
 end
 
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
@@ -229,12 +229,14 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, CutterController, Cutter, {}) --- Makes sure the cutter timer gets reset always.
     self:addImplementController(vehicle, StonePickerController, StonePicker, defaultDisabledStates)
     self:addImplementController(vehicle, CombineController, Combine, defaultDisabledStates)
+    self:addImplementController(vehicle, PipeController, Pipe, defaultDisabledStates)
 
     self:addImplementController(vehicle, MotorController, Motorized, {})
     self:addImplementController(vehicle, WearableController, Wearable, {})
     self:addImplementController(vehicle, VineCutterController, VineCutter, defaultDisabledStates)
 
     self:addImplementController(vehicle, SoilSamplerController, nil, defaultDisabledStates, "spec_soilSampler")
+
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    
