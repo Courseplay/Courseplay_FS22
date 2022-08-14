@@ -51,22 +51,27 @@ For a complete changelog please visit our <a href="https://github.com/Courseplay
 		</en>
         <de>
 			<![CDATA[Courseplay FS22
-Mit Courseplay ist es möglich, Feldkurse mit zusätzlichen Funktionen zu generieren, beispielsweise Vorgewende.
-Ebenso ermöglicht es die Nutzung von Ballenpressen und Sammelwagen mit dem Helfer auf dem selben Kurs, welcher zuvor von einem Mähwerk oder Drescher bearbeitet wurde.
-Eine weitere Funktion ist das Ballenwickeln oder Aufsammeln auf einem Feld.
-Ganz neu in Courseplay ist die Bearbeitung von Reben.
-Feldkurse können auch als Multitool Kurs gebaut werden, dadurch ist es möglich bis zu 5 Arbeitsgeräte im Fahrzeugverband auf dem gleichen Feld arbeiten zu lassen.
-Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
-Eigene Feldränder können aufgezeichnet mit einem Fahrzeug oder auf der Menü Karte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
-Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sähmaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
+Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge intelligenter:
+- Nutze Vorgewende
+- Arbeite auf nicht rechteckigen Feldern
+- Arbeite um Feldinseln(z.b. Strommasten) umher
+- Speicher die generierten Kurse von z.b. einem Drescher ab, um diese zum Aufsammeln mit einem Ladewagen oder einer Ballenpresse zu nutzen.
+- Sammel/wickel Ballen automatisch auf einem Feld.
+- Arbeite auf und zwischen den Weinreben
+- Lasse bis zu 5 Helfer auf dem gleichen Feld in einer Gruppe zusammenarbeiten
+- Lasse dein Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
+- Erstelle deine eigenen Felder, wo immer du möchtest
+- Arbeitet super mit Autodrive zusammen, lasse Courseplay die Feldarbeit erledigen und 
+  Autodrive erledigt das abtanken eines Ladewagen oder auffüllen einer Sähmaschine.
+- Verändere die generierten Kurse mit dem Kurseditor 
 
-Für weite Informationen, schaut bitte auf <a href="https://github.com/Courseplay/Courseplay_FS22">github</a> vorbei.
-Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
-Ein ganz großes Danke geht an unsere Übersetzer und an die Community für die Zahlreichen bug reports, Feedbacks und Ideen.
+Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">Github</a>.
+
+Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
 
 Changelog 7.1.0.3:
 - Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
-- Neuen Kursgenerator für Feldarbeitskurse und eigene Feldrandkurse hinzugefügt (mehr Informationen dazu im Ingame Hilfe Menü)
+- Neuen Kurseditor für Feldarbeitskurse und eigene Feldrandkurse hinzugefügt (mehr Informationen dazu im Ingame Hilfe Menü)
 - Interface zum Mod FS22_aPalletAutoLoader verbessert.
 - Arcusin Multipack F14 entlädt die gepackten Ballen jetzt auf dem Feld.
 - Weitere bug fixes und Verbesserungen.
@@ -79,7 +84,7 @@ Changelog 7.1.0.0:
 - Komplett neuer Kurse Manager in das Ingame Menu integriert.
 - Funktioniert jetzt gut mit AutoDrive zusammen, Courseplay übernimmt die Arbeit auf dem Feld und AutoDrive transportiert deine Ernte.
 
-Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf github vorbei.
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf Github vorbei.
 ]]>
 		</de>
     </description>
