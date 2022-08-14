@@ -234,8 +234,8 @@ end
 
 --- Normal update function called every frame.
 --- For releasing the helper in the controller, use this one.
-function AIDriveStrategyCourse:updateImplementControllers()
-    self:raiseControllerEvent(self.updateEvent)
+function AIDriveStrategyCourse:updateImplementControllers(dt)
+    self:raiseControllerEvent(self.updateEvent, dt)
 end
 
 --- Called in the low frequency function for the helper.

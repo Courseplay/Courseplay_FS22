@@ -476,3 +476,29 @@ function ImplementUtil.foldAfterGettingWidth(object)
         Foldable.setAnimTime(object.spec_foldable, object.spec_foldable.startAnimTime == 1 and 1 or 0, true)
     end
 end
+
+--- Moves the moving tool rotation to a given rotation target.
+---@param implement table
+---@param tool table moving tool
+---@param dt number
+---@param rotTarget number target rotation in radiant
+function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
+    if tool.rotSpeed == nil then
+		return
+	end
+	local spec = implement.spec_cylindered
+	tool.curRot[1], tool.curRot[2], tool.curRot[3] = getRotation(tool.node)
+	local oldRot = tool.curRot[tool.rotationAxis]
+	local diff = rotTarget - oldRot
+	local rotSpeed = MathUtil.clamp(diff * tool.rotSpeed, tool.rotSpeed, 0.5)
+	if math.abs(diff) < 0.03 or rotSpeed == 0 then
+		tool.move = 0
+		return 
+	end
+	if Cylindered.setToolRotation(implement, tool, rotSpeed, dt, diff) then
+		Cylindered.setDirty(implement, tool)
+
+		implement:raiseDirtyFlags(tool.dirtyFlag)
+		implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
+	end
+end
