@@ -32,6 +32,7 @@ For more information, help, and report issues please visit <a href="https://gith
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.1.0.3:
+- Updated mod description
 - Added missing translation files, so every language supported by the game can be edited now.
 - Added new course editor for fieldwork courses and custom field borders (more information in the help menu).
 - Improved the interface for the auto load mod: FS22_aPalletAutoLoader.
@@ -52,6 +53,7 @@ For a complete changelog please visit our <a href="https://github.com/Courseplay
         <de>
 			<![CDATA[Courseplay FS22
 Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge intelligenter:
+- Modbeschreibung aktualisiert
 - Nutze Vorgewende
 - Arbeite auf nicht rechteckigen Feldern
 - Arbeite um Feldinseln(z.b. Strommasten) umher
