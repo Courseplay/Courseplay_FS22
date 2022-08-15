@@ -319,6 +319,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_needsFilling" text="Ha bisogno di essere caricato"/>
     <text name="CP_infoTexts_needsUnloading" text="Ha bisogno di essere scaricato"/>
     <text name="CP_infoTexts_workFinished" text="Ha finito il lavoro"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Senza soldi"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="In attesa che finisca la pioggia"/>
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>

@@ -319,6 +319,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_needsFilling" text="Muss aufgefüllt werden"/>
     <text name="CP_infoTexts_needsUnloading" text="Muss entladen werden"/>
     <text name="CP_infoTexts_workFinished" text="Arbeit beendet"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Fährt zum Drescher"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="ÜLW entladen"/>
     <text name="CP_infoTexts_outOfMoney" text="Kein Geld mehr"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Warte auf besseres Wetter"/>
     <text name="CP_infoTexts_errorStopped" text="Hat den Kurs verlassen, gestoppt"/>
