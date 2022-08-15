@@ -303,6 +303,23 @@ function ProximitySensorPack:enableRightSide()
     end
 end
 
+
+function ProximitySensorPack:disableLeftSide()
+    for _, sensor in ipairs(self.sensors) do
+        if sensor:getBaseRotationDeg() > 0 then
+            sensor:disable()
+        end
+    end
+end
+
+function ProximitySensorPack:enableLeftSide()
+    for _, sensor in ipairs(self.sensors) do
+        if sensor:getBaseRotationDeg() > 0 then
+            sensor:enable()
+        end
+    end
+end
+
 ---@class ForwardLookingProximitySensorPack : ProximitySensorPack
 ForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 

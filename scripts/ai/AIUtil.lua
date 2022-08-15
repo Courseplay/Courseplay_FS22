@@ -515,7 +515,7 @@ end
 --- Are there any trailer under the pipe ?
 ---@param pipe table 
 ---@param shouldTrailerBeStandingStill boolean
-function AIUtil.isTrailerUnderPipe(pipe,shouldTrailerBeStandingStill)
+function AIUtil.isTrailerUnderPipe(pipe, shouldTrailerBeStandingStill)
 	if not pipe then return end
 	for trailer, value in pairs(pipe.objectsInTriggers) do
 		if value > 0 then

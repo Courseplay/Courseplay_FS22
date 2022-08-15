@@ -28,5 +28,6 @@
 	<InfoText name="FUEL_IS_LOW"				text="shouldRefuel"/>
 	<InfoText name="WAITING_FOR_RAIN_TO_FINISH" text="waitForRainToFinish"/>
 	<InfoText name="WORK_FINISHED"				text="workFinished"   hasFinished="true" event="onCpFinished" class="AIMessageSuccessFinishedJob"/>
-	<InfoText name="DRIVE_TO_COMBINE"			text="driveToCombine"/>
+	<InfoText name="DRIVING_TO_COMBINE"			text="drivingToCombine"/>
+	<InfoText name="DRIVING_TO_SELF_UNLOAD"		text="drivingToSelfUnload"/>
 </InfoTexts>

@@ -65,6 +65,14 @@ function ProximityController:checkBlockingVehicleBack()
     return self.backwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
 end
 
+function ProximityController:disableLeftFront()
+    self.forwardLookingProximitySensorPack:disableLeftSide()
+end
+
+function ProximityController:enableLeftFront()
+    self.forwardLookingProximitySensorPack:enableLeftSide()
+end
+
 ---@param maxSpeed number current maximum allowed speed for vehicle
 ---@return number gx world x coordinate to drive to or nil
 ---@return number gz world z coordinate to drive to or nil
