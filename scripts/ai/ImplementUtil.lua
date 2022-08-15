@@ -382,7 +382,7 @@ end
 --- pipe, objectWithPipe, pipeOnLeftSide, pipeOffsetX, pipeOffsetZ
 ---@param object table object we want to decorate with these attributes
 ---@param vehicle table
----@param referenceVehicle table reference to calculate pipe offset and side,
+---@param referenceVehicle table optional reference to calculate pipe offset and side,
 ---                              usually a combine object, must have getCurrentDischargeNode()
 function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
     if vehicle.spec_pipe then
@@ -415,7 +415,8 @@ function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
-        local dischargeNode = referenceVehicle:getCurrentDischargeNode()
+        referenceVehicle = referenceVehicle or vehicle.rootVehicle
+        local dischargeNode = object.objectWithPipe:getCurrentDischargeNode()
         local dx, _, _ = localToLocal(dischargeNode.node, referenceVehicle.rootNode, 0, 0, 0)
         object.pipeOnLeftSide = dx >= 0
         CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe on left side %s', tostring(object.pipeOnLeftSide))

@@ -58,9 +58,11 @@ function PipeController:openPipe()
     end
 end
 
-function PipeController:closePipe()
-    if self:needToOpenPipe() and
-            self.pipeSpec.numObjectsInTriggers <= 0 and -- only close when there are nothing under the pipe
+---@param checkForObjectsUnderPipe boolean check if there is a trigger object (like a trailer) under the pipe and
+---                                        only close if there aren't any
+function PipeController:closePipe(checkForObjectsUnderPipe)
+    local okToClose = self.pipeSpec.numObjectsInTriggers <= 0 or not checkForObjectsUnderPipe
+    if self:needToOpenPipe() and okToClose and -- only close when there are nothing under the pipe
             self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
             self.pipeSpec.currentState ~= PipeController.PIPE_STATE_CLOSED then
         self:debug('Closing pipe')

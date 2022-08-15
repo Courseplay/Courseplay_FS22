@@ -1161,7 +1161,7 @@ function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
     if self.pipeController:isFillableTrailerUnderPipe() or self:isAutoDriveWaitingForPipe() then
         self.pipeController:openPipe()
     else
-        self.pipeController:closePipe()
+        self.pipeController:closePipe(true)
     end
 end
 
@@ -1364,7 +1364,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
                 self.vehicle, targetNode, offsetX, -alignLength,
                 self:getAllowReversePathfinding(),
-        -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
+                -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
                 fieldNum, {}, nil, 0.1, nil, true)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)

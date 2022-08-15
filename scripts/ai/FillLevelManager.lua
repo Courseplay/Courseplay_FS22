@@ -82,7 +82,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
     -- special handling for extra frontTanks as they seems to change their fillType random
     -- if we don't have a seeds and either liquidFertilizer or herbicide just continue until both are empty
     if not allOk and not fillLevelInfo[FillType.SEEDS] and(liquidFertilizerFillLevel > 0 or herbicideFillLevel > 0) then
-        self:debugSparse('we probably have an empty front Tank')
+        self:debugSparse('we probably have an empty front tank')
         allOk = true
     end
     -- special handling for sowing machines with fertilizer

@@ -1192,6 +1192,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Arbeit beendet]]></Text>
 			<Text language="en"><![CDATA[Finished work]]></Text>
 		</Translation>
+		<Translation name="CP_infoTexts_drivingToCombine">
+			<Text language="de"><![CDATA[Fährt zum Drescher]]></Text>
+			<Text language="en"><![CDATA[Driving to combine]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_drivingToSelfUnload">
+			<Text language="de"><![CDATA[ÜLW entladen]]></Text>
+			<Text language="en"><![CDATA[Driving to trailer]]></Text>
+		</Translation>
 		<Translation name="CP_infoTexts_outOfMoney">
 			<Text language="de"><![CDATA[Kein Geld mehr]]></Text>
 			<Text language="en"><![CDATA[Out of money]]></Text>
