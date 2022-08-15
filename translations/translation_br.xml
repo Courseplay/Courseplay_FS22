@@ -325,6 +325,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_needsFilling" text="Precisa ser recarregado"/>
     <text name="CP_infoTexts_needsUnloading" text="Precisa ser descarregado"/>
     <text name="CP_infoTexts_workFinished" text="Trabalho feito"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Sem dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando a chuva passar"/>
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>

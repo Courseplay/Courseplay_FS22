@@ -325,6 +325,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_infoTexts_needsFilling" text="Måste fyllas på"/>
     <text name="CP_infoTexts_needsUnloading" text="Måste tömmas"/>
     <text name="CP_infoTexts_workFinished" text="Slutfört arbetet"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Slut på pengar"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Väntar på att det ska sluta regna för att kunna slutföra"/>
     <text name="CP_infoTexts_errorStopped" text="Lämnade kursen, stannade"/>

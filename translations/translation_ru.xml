@@ -325,6 +325,8 @@
     <text name="CP_infoTexts_needsFilling" text="Нуждается в заправке"/>
     <text name="CP_infoTexts_needsUnloading" text="Нуждается в разгрузке"/>
     <text name="CP_infoTexts_workFinished" text="Завершил работу"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Закончились деньги"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Ожидает пока закончится дождь"/>
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>

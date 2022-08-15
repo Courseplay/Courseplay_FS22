@@ -325,6 +325,8 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_needsFilling" text="Necesita ser rellenado"/>
     <text name="CP_infoTexts_needsUnloading" text="Necesita ser descargado"/>
     <text name="CP_infoTexts_workFinished" text="Trabajo finalizado"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Sin dinero"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando que termine la lluvia"/>
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
