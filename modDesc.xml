@@ -186,6 +186,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
+		<sourceFile filename="scripts/ai/parameters/CpAIParameterUnloadingStation.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJob.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobFieldWork.lua"/>

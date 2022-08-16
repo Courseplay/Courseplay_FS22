@@ -620,7 +620,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
         end
     else
         self:debug('Have no auger wagon, stop, so eventually AD can take over.')
-        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+        --- The job instance decides if the job has to quit.
+        self.vehicle:getJob():onTrailerFull(self.vehicle, self) 
     end
 end
 
