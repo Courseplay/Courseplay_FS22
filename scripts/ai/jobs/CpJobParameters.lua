@@ -128,22 +128,40 @@ CpCombineUnloaderJobParameters = CpObject(CpJobParameters)
 
 
 function CpCombineUnloaderJobParameters:init(job)
+    self.job = job
     if not CpCombineUnloaderJobParameters.settings then
     local filePath = Utils.getFilename("config/CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         -- initialize the class members first so the class can be used to access constants, etc.
         CpSettingsUtil.loadSettingsFromSetup(CpCombineUnloaderJobParameters, filePath)
     end
     CpSettingsUtil.cloneSettingsTable(self, CpCombineUnloaderJobParameters.settings, nil, self)
-    self.job = job
 end
 
 function CpCombineUnloaderJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAIBaleFinder.cpJob:getCpJobParameters()
 end
 
-function CpCombineUnloaderJobParameters:isBaleWrapSettingVisible()
+function CpCombineUnloaderJobParameters:hasPipe()
     local vehicle = self.job:getVehicle()
     if vehicle then
-        return AIUtil.hasChildVehicleWithSpecialization(vehicle, BaleLoader)
+        return AIUtil.hasChildVehicleWithSpecialization(vehicle, Pipe)
     end
+end
+
+--- Inserts the current available unloading stations into the setting values/texts.
+function CpCombineUnloaderJobParameters:generateUnloadingStations(setting)
+    local unloadingStationIds = {}
+    local texts = {}
+    if self.job then
+        for i, unloadingStation in ipairs(self.job:getUnloadingStations()) do 
+            local id = NetworkUtil.getObjectId(unloadingStation)
+            table.insert(unloadingStationIds, id)
+            table.insert(texts,  unloadingStation:getName() or "")
+        end
+    end
+    if #unloadingStationIds <=0 then 
+        table.insert(unloadingStationIds, -1)
+        table.insert(texts, "")
+    end
+    return unloadingStationIds, texts
 end

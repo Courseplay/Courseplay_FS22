@@ -46,7 +46,8 @@ end
 
 --- Does the automatic unloading similar to the Pipe spec.
 function StonePickerController:handleDischargeRaycast(superFunc, dischargeNode, hitObject, hitShape, hitDistance, hitFillUnitIndex, hitTerrain)
-	if not self.rootVehicle.getIsCpActive or not self.rootVehicle:getIsCpActive() then 
+	local _, hasStonePicker = AIUtil.getAllChildVehiclesWithSpecialization(self.rootVehicle, StonePicker)
+	if not hasStonePicker or not self.rootVehicle.getIsCpFieldWorkActive or not self.rootVehicle:getIsCpFieldWorkActive() then 
 		return superFunc(self, dischargeNode, hitObject, hitShape, hitDistance, hitFillUnitIndex, hitTerrain)
 	end
 

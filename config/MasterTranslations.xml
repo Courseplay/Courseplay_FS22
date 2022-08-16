@@ -51,6 +51,10 @@
 			<Text language="de"><![CDATA[Ziel ist nicht auf einem Feld.]]></Text>
 			<Text language="en"><![CDATA[Target is not on a field.]]></Text>
 		</Translation>
+		<Translation name="CP_error_giants_unloader_not_available">
+			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
+			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_fieldPosition_title">
@@ -153,6 +157,19 @@
 			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
 			<Text language="en"><![CDATA[Full threshold:]]></Text>
 		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">
+			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
+			<Text language="en"><![CDATA[Giants unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_useGiantsUnload_title">
+			<Text language="de"><![CDATA[Giants Ablader benutzen:]]></Text>
+			<Text language="en"><![CDATA[Use giants unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadingStation_title">
+			<Text language="de"><![CDATA[Abladestation:]]></Text>
+			<Text language="en"><![CDATA[Unloading station:]]></Text>
+		</Translation>
+
 	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
