@@ -248,10 +248,10 @@ end
 
 function CpAIFieldWorker:getCanStartCpFieldWork()
     -- built in helper can't handle it, but we may be able to ...
-    if AIUtil.hasImplementWithSpecialization(self, Baler) or
+    if AIUtil.hasChildVehicleWithSpecialization(self, Baler) or
             AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
             AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
-            AIUtil.hasImplementWithSpecialization(self, ForageWagon) or
+            AIUtil.hasChildVehicleWithSpecialization(self, ForageWagon) or
             -- built in helper can't handle forage harvesters.
             AIUtil.hasImplementWithSpecialization(self, Cutter) or 
             AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
