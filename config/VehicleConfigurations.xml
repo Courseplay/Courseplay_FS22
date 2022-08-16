@@ -260,6 +260,10 @@ You can define the following custom settings:
     <!--Harvester-->
 
     <!--Implements-->
+    <!--Vermeer-->
+    <Vehicle name="tm1410.xml"
+             offset="-4"
+    />
     <!--Anderson-->
     <Vehicle name="RB580.xml"
              baleCollectorOffset="1.4"
