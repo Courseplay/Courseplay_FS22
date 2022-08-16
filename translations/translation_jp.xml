@@ -18,6 +18,7 @@
     <text name="CP_error_no_course" text="仕事を開始する前に、コースを生成してください"/>
     <text name="CP_error_could_not_generate_course" text="コースを生成できませんでした。詳細はログを参照してください"/>
     <text name="CP_error_not_on_field" text="フィールドポジションが選択されていません"/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -51,6 +52,9 @@
     <!---->
     <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
     <!---->
     <!--AI jobs-->
     <!---->
