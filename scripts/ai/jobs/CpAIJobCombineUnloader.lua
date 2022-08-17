@@ -135,17 +135,17 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 			end
 		end
 	end
-
-	table.sort(self.dischargeNodeInfos, function (a, b)
-		return b.offsetZ < a.offsetZ
-	end)
 	self.driveToUnloadingTask:setVehicle(vehicle)
 	self.dischargeTask:setVehicle(vehicle)
+	if #self.dischargeNodeInfos > 0 then 
+		table.sort(self.dischargeNodeInfos, function (a, b)
+			return b.offsetZ < a.offsetZ
+		end)
+		local maxOffset = self.dischargeNodeInfos[#self.dischargeNodeInfos].offsetZ
 
-	local maxOffset = self.dischargeNodeInfos[#self.dischargeNodeInfos].offsetZ
+		self.driveToUnloadingTask:setTargetOffset(-maxOffset)
 
-	self.driveToUnloadingTask:setTargetOffset(-maxOffset)
-
+	end
 	local unloadingStation = self.cpJobParameters.unloadingStation:getUnloadingStation()
 	local x, z, dirX, dirZ, trigger = unloadingStation:getAITargetPositionAndDirection(FillType.UNKNOWN)
 
