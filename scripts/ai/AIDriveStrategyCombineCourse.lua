@@ -207,7 +207,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             -- player does not want us to move while discharging
             self:setMaxSpeed(0)
         end
-    elseif self.state == self.states.WORKING then
+    elseif self.state == self.states.TURNING then
         self:checkBlockingUnloader()
     elseif self.state == self.states.WAITING_FOR_LOWER then
         if self:isFull() then
