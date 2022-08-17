@@ -62,39 +62,50 @@ function CpObject(base, init)
 	return c
 end
 
---- Object with a time to live.
+--- Object that holds a value temporarily. You can tell when to set the value and how long it should keep that
+--- value, in milliseconds. Great for timers.
 ---@class CpTemporaryObject
 CpTemporaryObject = CpObject()
 
 function CpTemporaryObject:init(valueWhenExpired)
 	self.valueWhenExpired = valueWhenExpired
-	self.value = self.valueWhenExpired
-	self.expiryTime = g_time
+	self:reset()
 end
 
 --- Set temporary value for object
----@value anything the temporary value
----@ttlMs Time To Live, for ttlMs milliseconds, CpTemporaryObject:get() will
---- return this value, otherwise valueWhenExpired
-function CpTemporaryObject:set(value, ttlMs)
+---@param value any the temporary value
+---@param expiryMs number for expiryMs milliseconds after startMs, the object will return the value set above,
+--- valueWhenExpired otherwise. When nil, it'll remain value forever
+---@param startMs number after starMs milliseconds from now, the object will return the value set above
+--- (for expiryMs milliseconds). When not nil, the value is set immediately.
+function CpTemporaryObject:set(value, expiryMs, startMs)
 	self.value = value
-	self.expiryTime = g_time + ttlMs
+	self.startTime = startMs and g_time + startMs or g_time
+	self.expiryTime = expiryMs and self.startTime + expiryMs or math.huge
 end
 
 --- Get the value of the temporary object
---- If expired, returns the default value
+--- Returns the value set if the current time is between the start time end expiry time, otherwise the default value
 function CpTemporaryObject:get()
-	if g_time > self.expiryTime then
-		-- value expired, reset it
-		self.value = self.valueWhenExpired
-	end 
-	return self.value
+	if g_time < self.startTime or g_time > self.expiryTime then
+		-- value not yet due or already expired
+		return self.valueWhenExpired
+	else
+		return self.value
+	end
+end
+
+--- Is the object waiting for the startTime (set() has been called, but value not set yet)
+function CpTemporaryObject:isPending()
+	return g_time < self.startTime
 end
 
 --- Resets the object.
 function CpTemporaryObject:reset()
 	self.expiryTime = g_time
 	self.value = self.valueWhenExpired
+	self.expiryTime = g_time
+	self.startTime = g_time
 end
 
 --- Object slowly adjusting its value

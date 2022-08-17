@@ -106,6 +106,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.doNotSwerveForVehicle = CpTemporaryObject()
     self.justFinishedPathfindingForDistance = CpTemporaryObject()
     self.timeToCheckCombines = CpTemporaryObject(true)
+    self.vehicleInFrontOfUS = CpTemporaryObject()
     self:resetPathfinder()
     return self
 end
@@ -240,7 +241,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:waitForManeuveringCombine()
 
     elseif self.state == self.states.MOVING_OUT_OF_WAY then
-
+        -- reversing combine asking us to move
         self:moveOutOfWay()
 
     elseif self.state == self.states.UNLOADING_MOVING_COMBINE then
@@ -248,12 +249,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:unloadMovingCombine(dt)
 
     elseif self.state == self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE then
-        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        local d = calcDistanceFrom(self.vehicle.rootNode, self.blockingVehicle.rootNode)
-        if d > 2 * self.turningRadius then
-            self:debug('Moved away from blocking vehicle')
-            self:startWaitingForCombine()
-        end
+        -- someone is blocking us
+        self:moveAwayFromBlockingVehicle()
 
     elseif self.state == self.states.MOVING_BACK_WITH_TRAILER_FULL then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
@@ -342,6 +339,9 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startWorking()
     elseif self.state == self.states.MOVING_OUT_OF_WAY then
         self:setNewState(self.stateAfterMovedOutOfWay)
+        self:startRememberedCourse()
+    elseif self.state == self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE then
+        self:startWaitingForCombine()
     elseif self.state == self.states.DRIVING_TO_SELF_UNLOAD then
         self:onLastWaypointPassedWhenDrivingToSelfUnload()
     end
@@ -566,7 +566,7 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: dz < 0')
         return false
     end
-    if math.abs(dx) > math.abs(1.5 * pipeOffset) and math.abs(dx) < math.abs(pipeOffset) * 0.5 then
+    if math.abs(dx) > math.abs(1.5 * pipeOffset) or math.abs(dx) < math.abs(pipeOffset) * 0.5 then
         self:debugIf(debugEnabled,
                 'isInFrontAndAlignedToMovingCombine: dx (%.1f) not between 0.5 and 1.5 pipe offset (%.1f)', dx, pipeOffset)
         return false
@@ -1303,25 +1303,36 @@ end
 -- Is there another vehicle blocking us?
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:checkBlockingVehicle()
-    local d, blockingVehicle = self.proximityController:checkBlockingVehicleFront()
-    if blockingVehicle then
+    local d, vehicleInFrontOfUs = self.proximityController:checkBlockingVehicleFront()
+    if self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
+            self.state ~= self.states.MOVING_OUT_OF_WAY and
+            vehicleInFrontOfUs and d < self.minDistanceWhenMovingOutOfWay / 2 then
         -- someone in front of us
-        if blockingVehicle == self.blockingVehicle and self.blockedByAnotherVehicleTime - 10000 > g_time then
+        if vehicleInFrontOfUs == self.vehicleInFrontOfUS:get() then
             -- have been blocked by this guy long enough, try to recover
-            self:debug('%s has been blocking us for a while, move back a bit', CpUtil.getName(blockingVehicle))
+            self.blockingVehicle = vehicleInFrontOfUs
+            self:debug('%s has been blocking us for a while at %.1f m, move back a bit', CpUtil.getName(vehicleInFrontOfUs), d)
             local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
             self:startCourse(reverseCourse, 1)
             self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
         end
-        if self.blockingVehicle == nil then
+        if not self.vehicleInFrontOfUS:isPending() then
             -- first time we are being blocked, remember the time
-            self:debug('%s is blocking us', CpUtil.getName(blockingVehicle))
-            self.blockedByAnotherVehicleTime = g_time
+            self:debug('%s is blocking us (%.1fm)', CpUtil.getName(vehicleInFrontOfUs), d)
+            self.vehicleInFrontOfUS:set(vehicleInFrontOfUs, nil, 10000)
         end
-        self.blockingVehicle = blockingVehicle
     else
         -- no one in front of us
-        self.blockingVehicle = nil
+        self.vehicleInFrontOfUS:reset()
+    end
+end
+
+function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
+    self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+    local d = calcDistanceFrom(self.vehicle.rootNode, self.blockingVehicle.rootNode)
+    if d > 2 * self.turningRadius then
+        self:debug('Moved away from blocking vehicle')
+        self:startWaitingForCombine()
     end
 end
 
@@ -1329,19 +1340,22 @@ end
 -- We are blocking another vehicle who wants us to move out of way
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:onBlockingOtherVehicle(blockedVehicle)
-    if not self:isActive() then
+    if not self.vehicle:getIsCpActive() then
         return
     end
     self:debugSparse('%s wants me to move out of way', blockedVehicle:getName())
     if self.state ~= self.states.MOVING_OUT_OF_WAY and
             self.state ~= self.states.MOVING_BACK and
+            slef.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
             self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL
     then
         -- reverse back a bit, this usually solves the problem
         -- TODO: there may be better strategies depending on the situation
-        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
-        self:startCourse(reverseCourse, 1, self.course, self.course:getCurrentWaypointIx())
+        self:rememberCourse(self.course, self.course:getCurrentWaypointIx())
         self.stateAfterMovedOutOfWay = self.state
+
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
+        self:startCourse(reverseCourse, 1)
         self:debug('Moving out of the way for %s', blockedVehicle:getName())
         self.blockedVehicle = blockedVehicle
         self:setNewState(self.states.MOVING_OUT_OF_WAY)
