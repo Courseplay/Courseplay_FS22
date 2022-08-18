@@ -1346,7 +1346,7 @@ function AIDriveStrategyUnloadCombine:onBlockingOtherVehicle(blockedVehicle)
     self:debugSparse('%s wants me to move out of way', blockedVehicle:getName())
     if self.state ~= self.states.MOVING_OUT_OF_WAY and
             self.state ~= self.states.MOVING_BACK and
-            slef.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
+            self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
             self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL
     then
         -- reverse back a bit, this usually solves the problem
@@ -1373,15 +1373,15 @@ function AIDriveStrategyUnloadCombine:moveOutOfWay()
     -- d may be big enough but parts of the combine still close
     local d = self:getDistanceFromCombine(self.blockedVehicle)
     local dProximity, vehicle = self.proximityController:checkBlockingVehicleFront()
-    local combineSpeed = (vehicle.lastSpeedReal * 3600)
+    local combineSpeed = (self.blockedVehicle.lastSpeedReal * 3600)
     local speed = combineSpeed + MathUtil.clamp(self.minDistanceWhenMovingOutOfWay - math.min(d, dProximity),
             -combineSpeed, self.settings.reverseSpeed:getValue() * 1.2)
 
     self:setMaxSpeed(speed)
 
     -- combine stopped reversing or stopped and waiting for unload, resume what we were doing before
-    if not AIUtil.isReversing(vehicle) or
-            (self.vehicle.getCpDriveStrategy and self.vehicle.getCpDriveStrategy.willWaitForUnloadToFinish and
+    if not AIUtil.isReversing(self.blockedVehicle) or
+            (self.vehicle.getCpDriveStrategy and self.vehicle:getCpDriveStrategy().willWaitForUnloadToFinish and
                     self.vehicle:getCpDriveStrategy():willWaitForUnloadToFinish()) then
         -- end reversing course prematurely, it'll resume previous course
         self:onLastWaypointPassed()
