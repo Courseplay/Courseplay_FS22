@@ -68,14 +68,14 @@ end
 function CpAICombineUnloader:onLoadFinished(savegame)
     local spec = self.spec_cpAICombineUnloader
     if savegame ~= nil then 
-        spec.cpJob:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAICombineUnloader.KEY..".cpJob")
+        spec.cpJob:loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAICombineUnloader.KEY..".cpJob")
         spec.cpJobStartAtLastWp:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIFieldWorker.KEY..".cpJobStartAtLastWp")
     end
 end
 
 function CpAICombineUnloader:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAICombineUnloader
-    spec.cpJob:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+    spec.cpJob:saveToXMLFile(xmlFile, baseKey.. ".cpJob")
     spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
 
