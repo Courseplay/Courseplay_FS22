@@ -207,6 +207,17 @@ function CpAIJobCombineUnloader:writeStream(streamId, connection)
 end
 
 
+function CpAIJobCombineUnloader:saveToXMLFile(xmlFile, key, usedModNames)
+	CpAIJobCombineUnloader:superClass().saveToXMLFile(self, xmlFile, key)
+	self.cpJobParameters:saveToXMLFile(xmlFile, key)
+
+	return true
+end
+
+function CpAIJobCombineUnloader:loadFromXMLFile(xmlFile, key)
+	CpAIJobCombineUnloader:superClass().loadFromXMLFile(self, xmlFile, key)
+	self.cpJobParameters:loadFromXMLFile(xmlFile, key)
+end
 function CpAIJobCombineUnloader:getNextTaskIndex(isSkipTask)
 	--- Giants unload, sets the correct dischargeNode and vehicle.
 	if self.currentTaskIndex == self.driveToUnloadingTask.taskIndex or self.currentTaskIndex == self.dischargeTask.taskIndex then
