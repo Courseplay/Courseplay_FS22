@@ -13,8 +13,6 @@ ProximityController.sensorRange = 10
 ProximityController.minLimitedSpeed = 2
 -- will stop under this threshold
 ProximityController.stopThresholdNormal = 1.5
--- stop limit we use for self unload to approach the trailer
-ProximityController.stopThresholdSelfUnload = 0.1
 -- an obstacle is considered ahead of us if the reported angle is less then this
 -- (and we won't stop or reverse if the angle is higher than this, thus obstacles to the left or right)
 ProximityController.angleAheadDeg = 75
@@ -24,6 +22,7 @@ function ProximityController:init(vehicle, ppc, width)
     self.ppc = ppc
     -- if anything closer than this, we stop
     self.stopThreshold = CpTemporaryObject(self.stopThresholdNormal)
+    self.blockingVehicle = CpTemporaryObject(nil)
     self:setState(self.states.NO_OBSTACLE, 'proximity controller initialized')
     self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
             self.vehicle, Markers.getFrontMarkerNode(self.vehicle), self.sensorRange, 1, width)
@@ -52,6 +51,21 @@ function ProximityController:isSlowdownEnabled(vehicle)
         return self.isSlowdownEnabledCallback(self.isSlowdownEnabledCallbackObject, vehicle)
     else
         return true
+    end
+end
+
+--- Register a function the controller calls when a vehicle has been blocking us for some time.
+function ProximityController:registerBlockingVehicleListener(object, callback)
+    self.onBlockingVehicleCallback = callback
+    self.onBlockingVehicleObject = object
+end
+
+---@param vehicle table the vehicle blocking us
+---@param isBack boolean true if it was detected behind us
+function ProximityController:onBlockingVehicle(vehicle, isBack)
+    if self.onBlockingVehicleObject then
+        -- notify our listeners
+        self.onBlockingVehicleCallback(self.onBlockingVehicleObject, vehicle, isBack)
     end
 end
 
@@ -97,6 +111,18 @@ function ProximityController:getDriveData(maxSpeed)
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
         maxSpeed = 0
         self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
+        if vehicle == self.blockingVehicle:get() then
+            -- have been blocked by this guy long enough, try to recover
+            CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
+                    '%s has been blocking us for a while at %.1f m', CpUtil.getName(vehicle), d)
+            self:onBlockingVehicle(vehicle, self.ppc:isReversing())
+        end
+        if not self.blockingVehicle:isPending() then
+            -- first time we are being blocked, remember the time
+            CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, '%s is blocking us (%.1fm)', CpUtil.getName(vehicle), d)
+            self.blockingVehicle:set(vehicle, nil, 10000)
+        end
+
     elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) then
         -- something in range, reduce speed proportionally when enabled
         local deltaV = maxSpeed - self.minLimitedSpeed
@@ -105,6 +131,7 @@ function ProximityController:getDriveData(maxSpeed)
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, slowing down to %.1f', d, deg, maxSpeed))
     else
         self:setState(self.states.NO_OBSTACLE, string.format('No obstacle, d = %.1f, deg = %.1f.', d, deg))
+        self.blockingVehicle:reset()
     end
     return nil, nil, nil, maxSpeed
 end

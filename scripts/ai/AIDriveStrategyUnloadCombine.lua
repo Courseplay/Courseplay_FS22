@@ -78,10 +78,10 @@ AIDriveStrategyUnloadCombine.myStates = {
     DRIVING_TO_MOVING_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
     UNLOADING_MOVING_COMBINE = {},
     UNLOADING_STOPPED_COMBINE = {},
-    MOVING_BACK = {},
-    MOVING_BACK_WITH_TRAILER_FULL = {},
-    MOVING_OUT_OF_WAY = {},
-    MOVING_AWAY_FROM_BLOCKING_VEHICLE = {},
+    MOVING_BACK = {vehicle = nil},
+    MOVING_BACK_WITH_TRAILER_FULL = {vehicle = nil}, -- moving back from a combine we just unloaded (not assigned anymore)
+    MOVING_OUT_OF_REVERSING_COMBINES_WAY = {vehicle = nil}, -- reversing as long as the combine is reversing
+    MOVING_AWAY_FROM_BLOCKING_VEHICLE = {vehicle = nil}, -- reversing until we have enough space between us and the combine
     WAITING_FOR_MANEUVERING_COMBINE = {},
     ON_UNLOAD_WITH_AUTODRIVE = {},
     DRIVING_TO_SELF_UNLOAD = {},
@@ -145,6 +145,7 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self.ppc, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
+    self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
     _, self.pipeController = self:addImplementController(self.vehicle, PipeController, Pipe, {}, nil)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
@@ -194,6 +195,19 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
+
+    local moveForwards = not self.ppc:isReversing()
+    local gx, gz
+
+    ----------------------------------------------------------------
+    if not moveForwards then
+        local maxSpeed
+        gx, gz, maxSpeed = self:getReverseDriveData()
+        self:setMaxSpeed(maxSpeed)
+    else
+        gx, _, gz = self.ppc:getGoalPointPosition()
+    end
+
     -- make sure if we have a combine we stay registered
     if self.combineToUnload then
         self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
@@ -240,7 +254,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
         self:waitForManeuveringCombine()
 
-    elseif self.state == self.states.MOVING_OUT_OF_WAY then
+    elseif self.state == self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
         -- reversing combine asking us to move
         self:moveOutOfWay()
 
@@ -254,7 +268,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.MOVING_BACK_WITH_TRAILER_FULL then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        local _, dx, dz = self:getDistanceFromCombine(self.combineJustUnloaded)
+        local _, dx, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
         -- drive back way further if we are behind a chopper to have room
         local dDriveBack = math.abs(dx) < 3 and 1.5 * self.turningRadius or -10
         if dz > dDriveBack then
@@ -265,7 +279,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         -- drive back until the combine is in front of us
-        local _, _, dz = self:getDistanceFromCombine(self.combineJustUnloaded)
+        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
         if dz > 0 then
             self:startWaitingForCombine()
         end
@@ -279,8 +293,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     end
 
     self:checkProximitySensors()
-    self:checkBlockingVehicle()
-    return AIDriveStrategyUnloadCombine.superClass().getDriveData(self, dt, vX, vY, vZ)
+    return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
 function AIDriveStrategyUnloadCombine:startWaitingForCombine()
@@ -337,7 +350,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     if self.state == self.states.DRIVING_TO_COMBINE or
             self.state == self.states.DRIVING_TO_MOVING_COMBINE then
         self:startWorking()
-    elseif self.state == self.states.MOVING_OUT_OF_WAY then
+    elseif self.state == self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
         self:setNewState(self.stateAfterMovedOutOfWay)
         self:startRememberedCourse()
     elseif self.state == self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE then
@@ -1093,7 +1106,7 @@ function AIDriveStrategyUnloadCombine:changeToUnloadWhenTrailerFull()
             self:debug('... moving back a little in case AD wants to take over')
         end
         self:releaseCombine()
-        self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL)
+        self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
         return true
     end
     return false
@@ -1199,13 +1212,14 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
             if combineDriver:getFillLevelPercentage() < 0.1 then
                 self:debug('Finished unloading combine at end of fieldwork, changing to unload course')
                 self.ppc:setNormalLookaheadDistance()
-                self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL)
+                self:releaseCombine()
+                self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
             else
                 self:driveBesideCombine()
             end
         else
             self:debug('finished unloading stopped combine, move back a bit to make room for it to continue')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK)
+            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
             self.ppc:setNormalLookaheadDistance()
         end
     else
@@ -1239,12 +1253,12 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         --when the combine is in a pocket, make room to get back to course
         if self.combineToUnload:getCpDriveStrategy():isWaitingInPocket() then
             self:debug('combine empty and in pocket, drive back')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK)
+            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
             return
         elseif self.combineToUnload:getCpDriveStrategy():isTurning() or
                 self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
             self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
-            self:startMovingBackFromCombine(self.states.MOVING_BACK)
+            self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
             return
         else
             self:debug('combine empty and moving forward')
@@ -1278,10 +1292,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState)
+function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combine)
     local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 15)
     self:startCourse(reverseCourse, 1)
     self:setNewState(newState)
+    self.state.properties.vehicle = combine
     return
 end
 
@@ -1304,34 +1319,23 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Is there another vehicle blocking us?
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:checkBlockingVehicle()
-    local d, vehicleInFrontOfUs = self.proximityController:checkBlockingVehicleFront()
+function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
+    if not self.vehicle:getIsCpActive() then
+        return
+    end
     if self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
-            self.state ~= self.states.MOVING_OUT_OF_WAY and
-            vehicleInFrontOfUs and d < self.minDistanceWhenMovingOutOfWay / 2 then
-        -- someone in front of us
-        if vehicleInFrontOfUs == self.vehicleInFrontOfUS:get() then
-            -- have been blocked by this guy long enough, try to recover
-            self.blockingVehicle = vehicleInFrontOfUs
-            self:debug('%s has been blocking us for a while at %.1f m, move back a bit', CpUtil.getName(vehicleInFrontOfUs), d)
-            local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
-            self:startCourse(reverseCourse, 1)
-            self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
-        end
-        if not self.vehicleInFrontOfUS:isPending() then
-            -- first time we are being blocked, remember the time
-            self:debug('%s is blocking us (%.1fm)', CpUtil.getName(vehicleInFrontOfUs), d)
-            self.vehicleInFrontOfUS:set(vehicleInFrontOfUs, nil, 10000)
-        end
-    else
-        -- no one in front of us
-        self.vehicleInFrontOfUS:reset()
+            self.state ~= self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
+        self:debug('%s has been blocking us for a while, move back a bit', CpUtil.getName(blockingVehicle))
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
+        self:startCourse(reverseCourse, 1)
+        self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
+        self.state.properties.vehicle = blockingVehicle
     end
 end
 
 function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
     self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-    local d = calcDistanceFrom(self.vehicle.rootNode, self.blockingVehicle.rootNode)
+    local d = calcDistanceFrom(self.vehicle.rootNode, self.state.properties.vehicle.rootNode)
     if d > 2 * self.turningRadius then
         self:debug('Moved away from blocking vehicle')
         self:startWaitingForCombine()
@@ -1341,12 +1345,12 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- We are blocking another vehicle who wants us to move out of way
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:onBlockingOtherVehicle(blockedVehicle)
+function AIDriveStrategyUnloadCombine:requestToMoveOutOfWay(blockedVehicle)
     if not self.vehicle:getIsCpActive() then
         return
     end
-    self:debugSparse('%s wants me to move out of way', blockedVehicle:getName())
-    if self.state ~= self.states.MOVING_OUT_OF_WAY and
+    self:debug('%s wants me to move out of way', blockedVehicle:getName())
+    if self.state ~= self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY and
             self.state ~= self.states.MOVING_BACK and
             self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
             self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL
@@ -1359,11 +1363,11 @@ function AIDriveStrategyUnloadCombine:onBlockingOtherVehicle(blockedVehicle)
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
         self:startCourse(reverseCourse, 1)
         self:debug('Moving out of the way for %s', blockedVehicle:getName())
-        self.blockedVehicle = blockedVehicle
-        self:setNewState(self.states.MOVING_OUT_OF_WAY)
+        self:setNewState(self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY)
+        self.state.properties.vehicle = blockedVehicle
         -- this state ends when we reach the end of the course or when the combine stops reversing
     else
-        self:debugSparse('Already busy moving out of the way')
+        self:debug('Already busy moving out of the way')
     end
 end
 
@@ -1373,16 +1377,17 @@ end
 function AIDriveStrategyUnloadCombine:moveOutOfWay()
     -- check both distances and use the smaller one, proximity sensor may not see the combine or
     -- d may be big enough but parts of the combine still close
-    local d = self:getDistanceFromCombine(self.blockedVehicle)
+    local blockedVehicle = self.state.properties.vehicle
+    local d = self:getDistanceFromCombine(blockedVehicle)
     local dProximity, vehicle = self.proximityController:checkBlockingVehicleFront()
-    local combineSpeed = (self.blockedVehicle.lastSpeedReal * 3600)
+    local combineSpeed = (blockedVehicle.lastSpeedReal * 3600)
     local speed = combineSpeed + MathUtil.clamp(self.minDistanceWhenMovingOutOfWay - math.min(d, dProximity),
             -combineSpeed, self.settings.reverseSpeed:getValue() * 1.2)
 
     self:setMaxSpeed(speed)
 
     -- combine stopped reversing or stopped and waiting for unload, resume what we were doing before
-    if not AIUtil.isReversing(self.blockedVehicle) or
+    if not AIUtil.isReversing(blockedVehicle) or
             (self.vehicle.getCpDriveStrategy and self.vehicle:getCpDriveStrategy().willWaitForUnloadToFinish and
                     self.vehicle:getCpDriveStrategy():willWaitForUnloadToFinish()) then
         -- end reversing course prematurely, it'll resume previous course
