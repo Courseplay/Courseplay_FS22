@@ -1368,7 +1368,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 
         -- little straight section parallel to the trailer to align better
         self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
-                offsetX, -alignLength + 1, -self.pipeOffsetZ, 1, false)
+                offsetX, -alignLength + 1, -self.pipeOffsetZ - 1, 1, false)
 
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
         local done, path
