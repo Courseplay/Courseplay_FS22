@@ -1084,7 +1084,7 @@ function AIDriveStrategyUnloadCombine:changeToUnloadWhenTrailerFull()
         else
             self:debug('trailer full, changing to unload course.')
         end
-        if self.followCourse and self.followCourse:isCloseToNextTurn(10) and not self.followCourse:isCloseToLastTurn(20) then
+        if self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
             self:debug('... but we are too close to the end of the row, moving back before changing to unload course')
         elseif self.combineToUnload and self.combineToUnload:getCpDriveStrategy():isAboutToReturnFromPocket() then
             self:debug('... letting the combine return from the pocket')
@@ -1240,7 +1240,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
             self:debug('combine empty and in pocket, drive back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK)
             return
-        elseif self.followCourse:isCloseToNextTurn(10) and not self.followCourse:isCloseToLastTurn(20) then
+        elseif self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
             self:debug('combine empty and moving forward but we are too close to the end of the row, moving back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK)
             return
@@ -1277,7 +1277,7 @@ end
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState)
-    local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
+    local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 15)
     self:startCourse(reverseCourse, 1)
     self:setNewState(newState)
     return

@@ -217,7 +217,8 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING_ON_FIELD then
         -- Unloading
         self:driveUnloadOnField()
-    elseif self:isTurning() and not self:isTurningOnHeadland() then
+    end
+    if self:isTurning() and not self:isTurningOnHeadland() then
         if self:shouldHoldInTurnManeuver() then
             self:setMaxSpeed(0)
         end
@@ -1021,7 +1022,7 @@ function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     local discharging = self:isDischarging() and not self:isChopper()
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
     local waitForStraw = self.combine.strawPSenabled and not isFinishingRow
-    self:debugSparse('discharging %s, held for unload %s, straw active %s, finishing row = %s',
+    self:debug('discharging %s, held for unload %s, straw active %s, finishing row = %s',
             tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isFinishingRow))
     return discharging or self.heldForUnloadRefill or waitForStraw
 end
@@ -1060,6 +1061,15 @@ end
 function AIDriveStrategyCombineCourse:isWaitingForUnloadAfterPulledBack()
     return self.state == self.states.UNLOADING_ON_FIELD and
             self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
+end
+
+---@return boolean the combine is about to turn
+function AIDriveStrategyCombineCourse:isAboutToTurn()
+    if self.state == self.states.WORKING and self.course then
+        return self.course:isCloseToNextTurn(10)
+    else
+        return false
+    end
 end
 
 --- Can the cutter be turned off ?
