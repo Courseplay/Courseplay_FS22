@@ -1084,8 +1084,9 @@ function AIDriveStrategyUnloadCombine:changeToUnloadWhenTrailerFull()
         else
             self:debug('trailer full, changing to unload course.')
         end
-        if self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
-            self:debug('... but we are too close to the end of the row, moving back before changing to unload course')
+        if self.combineToUnload:getCpDriveStrategy():isTurning() or
+                self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
+            self:debug('... but we are too close to the end of the row, or combine is turning, moving back before changing to unload course')
         elseif self.combineToUnload and self.combineToUnload:getCpDriveStrategy():isAboutToReturnFromPocket() then
             self:debug('... letting the combine return from the pocket')
         else
@@ -1240,8 +1241,9 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
             self:debug('combine empty and in pocket, drive back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK)
             return
-        elseif self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
-            self:debug('combine empty and moving forward but we are too close to the end of the row, moving back')
+        elseif self.combineToUnload:getCpDriveStrategy():isTurning() or
+                self.combineToUnload:getCpDriveStrategy():isAboutToTurn() then
+            self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK)
             return
         else
