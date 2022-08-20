@@ -124,7 +124,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self:measureBackDistance()
     Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
 
-    --self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyCombineCourse.isProximitySlowDownEnabled)
+    self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyCombineCourse.onBlockingVehicle)
 
     -- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
     self.pullBackRightSideOffset = math.abs(self.pipeOffsetX) - self:getWorkWidth() / 2 + 5
@@ -1803,12 +1803,26 @@ function AIDriveStrategyCombineCourse:isProximitySlowDownEnabled(vehicle)
     end
 end
 
+--- This is called by the proximity controller if we have been blocked by another vehicle for a while
+function AIDriveStrategyCombineCourse:onBlockingVehicle(vehicle, isBack)
+    if isBack then
+        self:debug('Proximity sensor: blocking vehicle %s behind us', CpUtil.getName(vehicle))
+        self:checkBlockingUnloader()
+    else
+        self:debug('Proximity sensor: blocking vehicle %s in front of us', CpUtil.getName(vehicle))
+        if vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy().onBlockingVehicle then
+            vehicle:getCpDriveStrategy():onBlockingVehicle(self.vehicle, isBack)
+        end
+    end
+end
+
+--- Check if the unloader is blocking us when we are reversing in a turn and immediately notify it
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
     if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and not self:isWaitingForUnload() then
         self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
-        if blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy().onBlockingOtherVehicle then
-            blockingVehicle:getCpDriveStrategy():onBlockingOtherVehicle(self.vehicle)
+        if blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy().requestToMoveOutOfWay then
+            blockingVehicle:getCpDriveStrategy():requestToMoveOutOfWay(self.vehicle)
         end
     end
 end
