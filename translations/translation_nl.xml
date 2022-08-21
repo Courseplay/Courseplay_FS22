@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Padvinder instellingen"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Hoekverschil op doel"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maximaal toegestane hoekverschil bij het doel, grotere waarden zijn sneller maar minder nauwkeurig"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Delta hoek relax factor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Factor om de nauwkeurigheid van de padvinder te verminderen bij mislukte iteraties, grotere waarden zijn sneller"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Hoekverschil op doel"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximaal toegestane hoekverschil bij het doel, grotere waarden zijn sneller maar minder nauwkeurig"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta hoek relax factor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor om de nauwkeurigheid van de padvinder te verminderen bij mislukte iteraties, grotere waarden zijn sneller"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Toont alle actieve koersen"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Toont alle actieve koersen op de in-game kaart."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>

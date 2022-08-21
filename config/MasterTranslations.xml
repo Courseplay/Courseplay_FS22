@@ -842,19 +842,19 @@
 			<Text language="de"><![CDATA[Pathfindereinstellungen]]></Text>
 			<Text language="en"><![CDATA[Pathfinder settings]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_maxDeltaAngleAtGoal_title">
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_title">
 			<Text language="de"><![CDATA[Ankunftswinkel am Ziel]]></Text>
 			<Text language="en"><![CDATA[Angle difference at goal]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_maxDeltaAngleAtGoal_tooltip">
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip">
 			<Text language="de"><![CDATA[Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller.]]></Text>
 			<Text language="en"><![CDATA[Maximum angle difference allowed at goal, bigger values are faster but less accurate]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_deltaAngleRelaxFactor_title">
+		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_title">
 			<Text language="de"><![CDATA[Änderungsfaktor Pathfinder]]></Text>
 			<Text language="en"><![CDATA[Delta angle relax factor]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_deltaAngleRelaxFactor_tooltip">
+		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip">
 			<Text language="de"><![CDATA[Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller.]]></Text>
 			<Text language="en"><![CDATA[Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster]]></Text>
 		</Translation>

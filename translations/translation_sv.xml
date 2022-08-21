@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Action Event Hjälp"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Visar action händelse hjälp texter."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder inställningar"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Vinkelskillnad vid mål"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Den maximala vinklens skillnaden vid mål, större nummer är snabbare men mindre exakt"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Toleransfaktor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Vinkelskillnad vid mål"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Den maximala vinklens skillnaden vid mål, större nummer är snabbare men mindre exakt"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Toleransfaktor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visa alla aktiva kurser"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Visa alla aktiva kurser på spelets map/pda"/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>

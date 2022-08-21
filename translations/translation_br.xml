@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Ajuda do evento de ação"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mostra os textos de ajuda do evento de ação."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Configurações Pathfinder"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Meta diferença angular"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Diferença angular máxima permitida na meta, valores maiores são mais rápidos, mas menos precisos"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Fator de relaxamento do ângulo delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Meta diferença angular"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferença angular máxima permitida na meta, valores maiores são mais rápidos, mas menos precisos"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Fator de relaxamento do ângulo delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Mostrar todas as rotas ativas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostrar todas as rotas ativas no mapa."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>

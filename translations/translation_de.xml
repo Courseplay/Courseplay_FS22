@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Zeige Tastenbelegung"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Schaltet die Anzeige der Tastenbelegung an und aus."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Pathfindereinstellungen"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Ankunftswinkel am Ziel"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Änderungsfaktor Pathfinder"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ankunftswinkel am Ziel"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Änderungsfaktor Pathfinder"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zeige alle Kurse"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zeigt alle geladenen Kurse auf der Karte."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Zeige Kurse auf der Minikarte"/>

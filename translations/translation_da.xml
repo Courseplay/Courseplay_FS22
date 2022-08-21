@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Hjælp til handlingsarrangementer"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Viser hjælpetekster til handlingsbegivenheder."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder Indstillinger"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Ankomstvinkel ved mål"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maksimal tilladt vinkel ved målet. Små vinkler er mere nøjagtige, store er hurtigere"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Ændringsfaktor pathfinder"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Faktor for at reducere pathfinder nøjagtighed ved mislykkede forsøg. Større værdier er hurtigere"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ankomstvinkel ved mål"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maksimal tilladt vinkel ved målet. Små vinkler er mere nøjagtige, store er hurtigere"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Ændringsfaktor pathfinder"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor for at reducere pathfinder nøjagtighed ved mislykkede forsøg. Større værdier er hurtigere"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Vis alle ruter"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Vis kun indlæste ruter."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>

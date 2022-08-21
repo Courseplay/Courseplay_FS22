@@ -55,7 +55,7 @@
 		</Setting>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="pathfinder" isExpertModeOnly="true">
-		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoal" min="5" max="90" incremental="5" default="45" isExpertModeOnly="true"/>
-		<Setting classType="AIParameterSettingList" name="deltaAngleRelaxFactor" min="10" max="100" incremental="10" default="10" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoalDeg" min="5" max="90" incremental="5" default="45" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterSettingList" name="deltaAngleRelaxFactorDeg" min="10" max="100" incremental="10" default="10" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 </Settings>
