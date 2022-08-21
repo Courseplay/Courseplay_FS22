@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="経路探索設定"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="ゴール時の角度差"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="ゴール時の最大角度差、値が大きいと高速だが精度が落ちる"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="デルタ角緩和値"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="反復に失敗した場合に経路探索の精度を低下させる係数で、値が大きいほど速くなる"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="ゴール時の角度差"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="ゴール時の最大角度差、値が大きいと高速だが精度が落ちる"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="デルタ角緩和値"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="反復に失敗した場合に経路探索の精度を低下させる係数で、値が大きいほど速くなる"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="すべてのコースを表示"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="アクティブなコースを全てマップに表示します"/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Show info texts window"/>

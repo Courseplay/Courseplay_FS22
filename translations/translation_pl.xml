@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Okno pomocy"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Wyświetla klawisze od funkcji w oknie pomocy."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Ustawienia szukania ścieżki"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Różnica kątów na bramce"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maksymalna dopuszczalna różnica kątów na bramce, większe wartości są szybsze, ale mniej dokładne."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Współczynnik relaksu kątu delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Różnica kątów na bramce"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maksymalna dopuszczalna różnica kątów na bramce, większe wartości są szybsze, ale mniej dokładne."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Współczynnik relaksu kątu delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Pokaż wszystkie aktywne kursy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Pokazuje wszystkie aktywne kursy na podglądzie mapy."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Pokaż okno informacyjne"/>

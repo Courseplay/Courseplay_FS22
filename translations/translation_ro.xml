@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder settings"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Angle difference at goal"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Delta angle relax factor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Angle difference at goal"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta angle relax factor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Shows all active courses"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Shows all active courses on the in game map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Show info texts window"/>

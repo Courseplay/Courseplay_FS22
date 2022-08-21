@@ -244,10 +244,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Nápověda k akci"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Zobrazuje texty nápovědy k akci."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Nastavení generování trasy"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Rozdíl úhlů v cíli"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Faktor Delta úhlů"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Rozdíl úhlů v cíli"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Faktor Delta úhlů"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zobrazit všechny aktivní trasy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zobrazuje všechny aktivní trasy na herní mapě."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Zobrazit informační textové okno"/>

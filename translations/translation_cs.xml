@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="行动事件帮助"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="显示行动事件帮助文本。"/>
     <text name="CP_global_setting_subTitle_pathfinder" text="路径生成设置"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="目标的角度差"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="接近目标的最大允许角度差。数值越大，速度越快，精度越低。"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="路径精度"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="允许在每次创建路径时放宽路径搜索的限制。值越高，计算速度越快。"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="目标的角度差"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="接近目标的最大允许角度差。数值越大，速度越快，精度越低。"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="路径精度"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="允许在每次创建路径时放宽路径搜索的限制。值越高，计算速度越快。"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="显示所有活动任务 "/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="在地图上显示所有活动任务。 "/>
     <text name="CP_global_setting_infoTextHudActive_title" text="显示信息文本窗口 "/>

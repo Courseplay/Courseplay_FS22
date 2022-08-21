@@ -243,10 +243,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Súgó a műveletekhez"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mutassa a súgót a különböző műveletekhez."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="útkereső beállításai"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Célszög különbség"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Simítási szög tényező"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Célszög különbség"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Simítási szög tényező"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Az összes aktív útvonal megjelenítése"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Az összes aktív útvonal megjelenítése a játéktérképen."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Infóablak megjelenítése"/>

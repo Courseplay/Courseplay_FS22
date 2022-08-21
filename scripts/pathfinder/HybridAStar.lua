@@ -370,7 +370,7 @@ function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
 	self.deltaPosGoal = 2 * self.deltaPos
 	-- if the goal heading is within self.deltaThetaDeg degrees we consider it reached
 	self.deltaThetaGoal = math.rad(self.deltaThetaDeg)
-	self.maxDeltaTheta = math.rad(g_Courseplay.globalSettings:getSettings().maxDeltaAngleAtGoal:getValue())
+	self.maxDeltaTheta = math.rad(g_Courseplay.globalSettings:getSettings().maxDeltaAngleAtGoalDeg:getValue())
 	self.originalDeltaThetaGoal = self.deltaThetaGoal
 	-- the same two parameters are used to discretize the continuous state space
 	self.analyticSolverEnabled = true
@@ -569,7 +569,7 @@ function HybridAStar:findPath(start, goal, turnRadius, allowReverse, constraints
 		if not self.mustBeAccurate then
 			self.deltaThetaGoal = math.min(self.maxDeltaTheta,
 					self.originalDeltaThetaGoal +
-							math.rad(g_Courseplay.globalSettings:getSettings().deltaAngleRelaxFactor:getValue()) * r)
+							math.rad(g_Courseplay.globalSettings:getSettings().deltaAngleRelaxFactorDeg:getValue()) * r)
 		end
 	end
 	--self:printOpenList(openList)
