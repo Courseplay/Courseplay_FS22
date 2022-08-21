@@ -665,6 +665,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingStoppedCombine()
     self:setNewState(self.states.UNLOADING_STOPPED_COMBINE)
 end
 
+---@return Course fieldwork course of the combine
+---@return number approximate waypoint index of the combine's current position
 function AIDriveStrategyUnloadCombine:setupFollowCourse()
     ---@type Course
     self.combineCourse = self.combineToUnload:getCpDriveStrategy():getFieldworkCourse()
@@ -690,9 +692,10 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     -- try to find the waypoint closest to the vehicle, as startIx we got is right beside the combine
     -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
     -- and we may end up between the end of the pipe and the combine
+    -- use a higher look ahead as we may be in front of the combine
     local startSearchAt = startIx - 5
     local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startSearchAt > 0 and startSearchAt or 1,
-            self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth())
+            self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
     if found then
         startIx = nextFwdIx
     end

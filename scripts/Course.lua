@@ -861,11 +861,15 @@ function Course:getNextFwdWaypointIx(ix)
 	return ix
 end
 
+---@param ix number waypoint index to start the search at
+---@param vehicleNode number node representing the vehicle position
+---@param maxDx number maximum lateral deviation of the found waypoint
+---@param lookAhead number number of waypoints in front of ix to search for, default 10
 ---@return number index of next waypoint in front of us, or ix when not found
 ---@return boolean true if we found the next waypoint
-function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx)
+function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx, lookAhead)
 	-- only look at the next few waypoints, we don't want to find anything far away, really, it should be in front of us
-	for i = ix, math.min(ix + 10, #self.waypoints) do
+	for i = ix, math.min(ix + (lookAhead or 10), #self.waypoints) do
 		if not self:isReverseAt(i) then
 			local uX, uY, uZ = self:getWaypointPosition(i)
 			local dx, _, dz = worldToLocal(vehicleNode, uX, uY, uZ);
