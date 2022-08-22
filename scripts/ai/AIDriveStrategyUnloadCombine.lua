@@ -144,7 +144,7 @@ end
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyUnloadCombine:superClass().setAIVehicle(self, vehicle)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
-    self.proximityController = ProximityController(self.vehicle, self.ppc, self:getProximitySensorWidth())
+    self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
     _, self.pipeController = self:addImplementController(self.vehicle, PipeController, Pipe, {}, nil)
@@ -293,7 +293,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:unloadAugerWagon()
     end
 
-    self:checkProximitySensors()
+    self:checkProximitySensors(moveForwards)
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 

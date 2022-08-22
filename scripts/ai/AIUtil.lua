@@ -488,6 +488,19 @@ function AIUtil.isReversing(vehicle)
 	return vehicle.movingDirection == -1 and vehicle.lastSpeedReal * 3600 > 0.1
 end
 
+-- Note that this may temporarily return false even if it is reversing
+function AIUtil.isReversing(vehicle)
+	if (AIUtil.isInReverseGear(vehicle) and math.abs(vehicle.lastSpeedReal) > 0.00001) then
+		return true
+	else
+		return false
+	end
+end
+
+function AIUtil.isInReverseGear(vehicle)
+	return vehicle.getMotor and vehicle:getMotor():getGearRatio() < 0
+end
+
 --- Get the current normalized steering angle:
 ---@return number between -1 and +1, -1 full right steering, +1 full left steering
 function AIUtil.getCurrentNormalizedSteeringAngle(vehicle)

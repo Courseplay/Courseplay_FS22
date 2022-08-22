@@ -280,7 +280,7 @@ end
 function AIDriveStrategyCourse:setAllStaticParameters()
     self.workWidth = self.vehicle:getCourseGeneratorSettings().workWidth:getValue()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
-    self.proximityController = ProximityController(self.vehicle, self.ppc, self:getProximitySensorWidth())
+    self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
 end
 
 function AIDriveStrategyCourse:getProximitySensorWidth()
@@ -368,8 +368,8 @@ function AIDriveStrategyCourse:getReverseDriveData()
     return gx, gz, maxSpeed
 end
 
-function AIDriveStrategyCourse:checkProximitySensors()
-    local _, _, _, maxSpeed = self.proximityController:getDriveData(self:getMaxSpeed())
+function AIDriveStrategyCourse:checkProximitySensors(moveForwards)
+    local _, _, _, maxSpeed = self.proximityController:getDriveData(self:getMaxSpeed(), moveForwards)
     self:setMaxSpeed(maxSpeed)
 end
 
