@@ -13,6 +13,7 @@ function PipeController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.pipeSpec = self.implement.spec_pipe
     self.cylinderedSpec = self.implement.spec_cylindered
+    self.dischargeSpec = self.implement.spec_dischargeable
     self.validMovingTools = {}
     if self.cylinderedSpec and self.pipeSpec.numAutoAimingStates <= 0 then
         for i, m in ipairs(self.cylinderedSpec.movingTools) do
@@ -23,6 +24,10 @@ function PipeController:init(vehicle, implement)
         end
     end
     self.hasPipeMovingTools = #self.validMovingTools > 0
+    if self.dischargeSpec then
+        self.dischargeNodeIndex = self.implement:getPipeDischargeNodeIndex()
+        self.dischargeNode = self.dischargeSpec.dischargeNodes[self.dischargeNodeIndex]
+    end
 end
 
 function PipeController:update(dt)
@@ -30,17 +35,36 @@ function PipeController:update(dt)
         if self.pipeSpec.unloadingStates[self.pipeSpec.currentState] == true then
             for i, m in ipairs(self.validMovingTools) do
                 -- Only move the base pipe rod.
-                if #m.dependentAnimations <= 0 then
+                if m.axis == "AXIS_PIPE" then
                     self:movePipeUp(m, dt)
-                    return
+                else 
+                    self:moveDependedPipePart(m, dt)
                 end
             end
         end
     end
 end
 
+--- TODO: might be a good idea to make this variable for the trailer min height.
+function PipeController:moveDependedPipePart(tool, dt)
+    local toolNode = tool.node   
+    local curRot, curRelativeRot = {}, {}
+    curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
+    --- Gets rotation delta to move the upper pipe part to the same vertical rotation as the implement/vehicle.
+    curRelativeRot[1], curRelativeRot[2], curRelativeRot[3] = localRotationToLocal(toolNode, self.implement.rootNode, 0, 0 ,0)
+    local oldRot = curRot[tool.rotationAxis]
+    local oldRelativeRot = curRelativeRot[tool.rotationAxis]
+
+    local targetRot = MathUtil.clamp(oldRot - oldRelativeRot, tool.rotMin, tool.rotMax)
+   -- self:debug("Fine tuning: targetRot: %.2f, oldRot: %.2f, oldRelativeRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, oldRelativeRot, tool.rotMin, tool.rotMax)
+    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, targetRot)
+end
+
 function PipeController:movePipeUp(tool, dt)
     local rotTarget = tool.invertAxis and tool.rotMin or tool.rotMax
+    local curRot ={}
+    curRot[1], curRot[2], curRot[3] = getRotation(tool.node)
+   -- self:debug("Move up: rotTarget, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", rotTarget, curRot[tool.rotationAxis], tool.rotMin, tool.rotMax)
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, rotTarget)
 end
 
