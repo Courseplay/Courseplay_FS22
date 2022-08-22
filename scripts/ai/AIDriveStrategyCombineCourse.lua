@@ -1835,8 +1835,9 @@ function AIDriveStrategyCombineCourse:checkBlockingUnloader()
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
     if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and not self:isWaitingForUnload() then
         self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
-        if blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy().requestToMoveOutOfWay then
-            blockingVehicle:getCpDriveStrategy():requestToMoveOutOfWay(self.vehicle)
+        local strategy = blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy()
+        if strategy and strategy.requestToMoveOutOfWay then
+            strategy:requestToMoveOutOfWay(self.vehicle)
         end
     end
 end

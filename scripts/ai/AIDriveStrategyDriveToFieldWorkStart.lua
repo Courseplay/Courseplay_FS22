@@ -146,7 +146,7 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
         end
     end
 
-    self:checkProximitySensors()
+    self:checkProximitySensors(moveForwards)
 
     return gx, gz, moveForwards, self.maxSpeed, 100
 end

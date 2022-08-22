@@ -17,9 +17,8 @@ ProximityController.stopThresholdNormal = 1.5
 -- (and we won't stop or reverse if the angle is higher than this, thus obstacles to the left or right)
 ProximityController.angleAheadDeg = 75
 
-function ProximityController:init(vehicle, ppc, width)
+function ProximityController:init(vehicle, width)
     self.vehicle = vehicle
-    self.ppc = ppc
     -- if anything closer than this, we stop
     self.stopThreshold = CpTemporaryObject(self.stopThresholdNormal)
     self.blockingVehicle = CpTemporaryObject(nil)
@@ -88,17 +87,18 @@ function ProximityController:enableLeftFront()
 end
 
 ---@param maxSpeed number current maximum allowed speed for vehicle
+---@param moveForwards boolean are we moving forwards?
 ---@return number gx world x coordinate to drive to or nil
 ---@return number gz world z coordinate to drive to or nil
 ---@return boolean direction is forwards if true or nil
 ---@return number maximum speed adjusted to slow down (or 0 to stop) when obstacles are ahead, otherwise maxSpeed
-function ProximityController:getDriveData(maxSpeed)
+function ProximityController:getDriveData(maxSpeed, moveForwards)
 
     --- Resets the traffic info text.
     self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
 
     local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
-    local pack = self.ppc:isReversing() and self.backwardLookingProximitySensorPack or self.forwardLookingProximitySensorPack
+    local pack = moveForwards and self.forwardLookingProximitySensorPack or self.backwardLookingProximitySensorPack
     if pack then
         d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
         range = pack:getRange()
@@ -115,7 +115,7 @@ function ProximityController:getDriveData(maxSpeed)
             -- have been blocked by this guy long enough, try to recover
             CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
                     '%s has been blocking us for a while at %.1f m', CpUtil.getName(vehicle), d)
-            self:onBlockingVehicle(vehicle, self.ppc:isReversing())
+            self:onBlockingVehicle(vehicle, not moveForwards)
         end
         if not self.blockingVehicle:isPending() then
             -- first time we are being blocked, remember the time

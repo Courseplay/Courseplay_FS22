@@ -175,7 +175,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
 
     self:setAITarget()
     self:limitSpeed()
-    self:checkProximitySensors()
+    self:checkProximitySensors(moveForwards)
     self:checkDistanceToOtherFieldWorkers()
 
     return gx, gz, moveForwards, self.maxSpeed, 100
