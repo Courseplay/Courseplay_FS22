@@ -107,6 +107,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.justFinishedPathfindingForDistance = CpTemporaryObject()
     self.timeToCheckCombines = CpTemporaryObject(true)
     self.vehicleInFrontOfUS = CpTemporaryObject()
+    self.blockedVehicleReversing = CpTemporaryObject(false)
     self:resetPathfinder()
     return self
 end
@@ -577,6 +578,10 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
     if dz < 0 then
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: dz < 0')
+        return false
+    end
+    if MathUtil.vector2Length(dx, dz) > 30 then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: more than 30 m from combine')
         return false
     end
     if math.abs(dx) > math.abs(1.5 * pipeOffset) or math.abs(dx) < math.abs(pipeOffset) * 0.5 then
@@ -1130,6 +1135,18 @@ function AIDriveStrategyUnloadCombine:checkForCombineProximity()
 
 end
 
+--- If the combine has a turn between its current position and the rendezvous waypoint,
+--- we probably rather not approach the area around the turn so we are not in the way
+--- of the combine while it is turning.
+function AIDriveStrategyUnloadCombine:checkForCombineTurnArea()
+    local turnAreaCenterWp, r = self.combineToUnload:getCpDriveStrategy():getTurnArea()
+    if turnAreaCenterWp and turnAreaCenterWp:getDistanceFromVehicle(self.vehicle) <= r then
+        self:debugSparse('Waiting for combine to pass the turn at %.1f, %.1f (r = %.1f) before the rendezvous waypoint',
+                turnAreaCenterWp.x, turnAreaCenterWp.z, r)
+        self:setMaxSpeed(0)
+    end
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Drive to stopped combine
 ------------------------------------------------------------------------------------------------------------------------
@@ -1156,6 +1173,8 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     self:setInfoText("DRIVING_TO_COMBINE");
 
     self:setFieldSpeed()
+
+    self:checkForCombineTurnArea()
 
     -- stop when too close to a combine not ready to unload (wait until it is done with turning for example)
     if self:isWithinSafeManeuveringDistance(self.combineToUnload) and self.combineToUnload:getCpDriveStrategy():isManeuvering() then
@@ -1389,8 +1408,13 @@ function AIDriveStrategyUnloadCombine:moveOutOfWay()
 
     self:setMaxSpeed(speed)
 
+    if AIUtil.isReversing(blockedVehicle) then
+        -- add a little delay as isReversing may return false for a brief period if the combine stops or very slow
+        self.blockedVehicleReversing:set(true, 1000)
+    end
+
     -- combine stopped reversing or stopped and waiting for unload, resume what we were doing before
-    if not AIUtil.isReversing(blockedVehicle) or
+    if not self.blockedVehicleReversing:get() or
             (self.vehicle.getCpDriveStrategy and self.vehicle:getCpDriveStrategy().willWaitForUnloadToFinish and
                     self.vehicle:getCpDriveStrategy():willWaitForUnloadToFinish()) then
         -- end reversing course prematurely, it'll resume previous course

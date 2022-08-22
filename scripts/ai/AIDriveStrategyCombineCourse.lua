@@ -797,6 +797,19 @@ function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEsti
     end
 end
 
+--- An area where the combine is expected to perform a turn between now and the rendezvous waypoint
+---@return Waypoint a waypoint, the center of the maneuvering area
+---@return number radius around the waypoint, defining a circular area
+function AIDriveStrategyCombineCourse:getTurnArea()
+    if self.agreedUnloaderRendezvousWaypointIx then
+        for ix = self.course:getCurrentWaypointIx(), self.agreedUnloaderRendezvousWaypointIx do
+            if self.course:isTurnEndAtIx(ix) then
+               return self.course:getWaypoint(ix), self.turningRadius * 2
+            end
+        end
+    end
+end
+
 function AIDriveStrategyCombineCourse:canUnloadWhileMovingAtWaypoint(ix)
     if self.course:isPipeInFruitAt(ix) then
         self:debug('pipe would be in fruit at the planned rendezvous waypoint %d', ix)
@@ -894,7 +907,7 @@ function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnUpDownRows(ix, i
         end
     else
         if (pipeInFruit) then
-            self:debug('pipe would be in fruite at waypoint %d, acceptable for user', ix)
+            self:debug('pipe would be in fruit at waypoint %d, acceptable for user', ix)
         else
             self:debug('pipe is not in fruit at %d. If it is towards the end of the row, bring it up a bit', ix)
         end
@@ -1818,6 +1831,7 @@ end
 
 --- Check if the unloader is blocking us when we are reversing in a turn and immediately notify it
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
+    if not self.ppc:isReversing() then return end
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
     if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and not self:isWaitingForUnload() then
         self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
