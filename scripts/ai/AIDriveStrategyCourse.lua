@@ -73,9 +73,9 @@ function AIDriveStrategyCourse:debug(...)
 end
 
 function AIDriveStrategyCourse:debugSparse(...)
-    -- since we are not called on every loop (maybe every 4th) use a prime number which should
-    -- make sure that we are called once in a while
-    if g_updateLoopIndex % 17 == 0 then
+    -- report every 5 seconds
+    -- TODO: make this a parameter in seconds?
+    if g_time % 5000 == 0 then
         self:debug(...)
     end
 end
