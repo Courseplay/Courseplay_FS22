@@ -8,9 +8,12 @@ CpAIWorker.MOD_NAME = g_currentModName or modName
 CpAIWorker.NAME = ".cpAIWorker"
 CpAIWorker.SPEC_NAME = CpAIWorker.MOD_NAME .. CpAIWorker.NAME
 CpAIWorker.KEY = "."..CpAIWorker.MOD_NAME..CpAIWorker.NAME .. "."
+CpAIWorker.LAST_JOB_KEY = "vehicles.vehicle(?).aiJobVehicle.lastJob"
 
 function CpAIWorker.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
+    --- Registers the last job key.
+    CpJobParameters.registerXmlSchema(schema, CpAIWorker.LAST_JOB_KEY)
 end
 
 function CpAIWorker.prerequisitesPresent(specializations)
