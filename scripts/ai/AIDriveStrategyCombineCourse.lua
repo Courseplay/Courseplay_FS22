@@ -1831,7 +1831,7 @@ end
 
 --- Check if the unloader is blocking us when we are reversing in a turn and immediately notify it
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
-    if not self.ppc:isReversing() then return end
+    if not self.ppc:isReversing() and not AIUtil.isReversing(self.vehicle) then return end
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
     if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and not self:isWaitingForUnload() then
         self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
