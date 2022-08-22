@@ -484,7 +484,10 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
 	local oldRot = tool.curRot[tool.rotationAxis]
 	local diff = rotTarget - oldRot
 	local rotSpeed = MathUtil.clamp(diff * tool.rotSpeed, tool.rotSpeed, 0.5)
-	if math.abs(diff) < 0.03 or rotSpeed == 0 then
+	if diff < 0 then
+		rotSpeed=rotSpeed*(-1)
+	end
+	if math.abs(diff) < 0.003 or rotSpeed == 0 then
 		tool.move = 0
 		return 
 	end
