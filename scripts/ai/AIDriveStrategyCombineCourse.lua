@@ -566,6 +566,15 @@ function AIDriveStrategyCombineCourse:startWaitingForUnloadBeforeNextRow()
     self.unloadState = self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW
 end
 
+--- The unloader may call this repeatedly to confirm that the rendezvous still stands, making sure the
+--- combine won't give up and keeps waiting
+function AIDriveStrategyCombineCourse:reconfirmRendezvous()
+    if self.waitingForUnloaderAtEndOfRow:get() then
+        -- ok, we'll wait another 30 seconds
+        self.waitingForUnloaderAtEndOfRow:set(true, 30000)
+    end
+end
+
 function AIDriveStrategyCombineCourse:isUnloadFinished()
     local discharging = true
     local dischargingNow = false

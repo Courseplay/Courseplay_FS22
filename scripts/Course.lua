@@ -873,6 +873,7 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx, 
 		if not self:isReverseAt(i) then
 			local uX, uY, uZ = self:getWaypointPosition(i)
 			local dx, _, dz = worldToLocal(vehicleNode, uX, uY, uZ);
+			CpUtil.info('i = %d dx = %.1f dz = %.1f', i, dx, dz)
 			if dz > 0 and math.abs(dx) < maxDx then
 				return i, true
 			end
@@ -1532,27 +1533,6 @@ function Course:getNearestWaypoints(node)
 	return ixClosest, dClosest, ixClosestRightDirection, dClosestRightDirection
 end
 
---- Based on what option the user selected, find the waypoint index to start this course
---- @param node table the node around we are looking for waypoints
---- @param startingPoint StartingPointSetting at which waypoint to start the course
-function Course:getStartingWaypointIx(node, startingPoint)
-	if startingPoint:is(StartingPointSetting.START_AT_FIRST_POINT) then
-		return 1
-	end
-	if startingPoint:is(StartingPointSetting.START_AT_LAST_POINT) then
-		return self:getNumberOfWaypoints()
-	end
-
-	local ixClosest, _, ixClosestRightDirection, _ = self:getNearestWaypoints(node)
-	if startingPoint:is(StartingPointSetting.START_AT_NEAREST_POINT) then
-		return ixClosest
-	end
-	if startingPoint:is(StartingPointSetting.START_AT_NEXT_POINT) then
-		return ixClosestRightDirection
-	end
-	return self:getCurrentWaypointIx()
-end
-
 function Course:isPipeInFruitAt(ix)
 	return self.waypoints[ix].pipeInFruit
 end
@@ -1618,6 +1598,12 @@ function Course:setPipeInFruitMap(pipeOffsetX, workWidth)
 			totalNonHeadlandWps = totalNonHeadlandWps + 1
 			-- check if the pipe is in an unworked row
 			self.waypoints[i].pipeInFruit = setPipeInFruit(i, pipeOffsetX, rowsNotDone)
+			-- turn start waypoints point towards the turn end waypoint so setPipeInFruit magic won't work,
+			-- offset position is not towards to previous row, so here, just use the same setting as the
+			-- waypoint before the turn
+			if self.waypoints[i].pipeInFruit and i < #self.waypoints and self:isTurnStartAtIx(i + 1) then
+				self.waypoints[i + 1].pipeInFruit = true
+			end
 			pipeInFruitWps = pipeInFruitWps + (self.waypoints[i].pipeInFruit and 1 or 0)
 			if self:isTurnEndAtIx(i) then
 				-- we are at the start of a row (where the turn ends)

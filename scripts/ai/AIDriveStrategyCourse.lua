@@ -75,7 +75,7 @@ end
 function AIDriveStrategyCourse:debugSparse(...)
     -- report every 5 seconds
     -- TODO: make this a parameter in seconds?
-    if g_time % 5000 == 0 then
+    if math.floor(g_time / 1000) % 5 == 0 then
         self:debug(...)
     end
 end
