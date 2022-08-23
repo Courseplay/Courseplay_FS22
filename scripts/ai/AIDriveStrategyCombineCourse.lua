@@ -813,7 +813,7 @@ function AIDriveStrategyCombineCourse:getTurnArea()
     if self.agreedUnloaderRendezvousWaypointIx then
         for ix = self.course:getCurrentWaypointIx(), self.agreedUnloaderRendezvousWaypointIx do
             if self.course:isTurnEndAtIx(ix) then
-               return self.course:getWaypoint(ix), self.turningRadius * 2
+               return self.course:getWaypoint(ix), self.turningRadius * 3
             end
         end
     end
@@ -1842,7 +1842,10 @@ end
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
     if not self.ppc:isReversing() and not AIUtil.isReversing(self.vehicle) then return end
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
-    if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and not self:isWaitingForUnload() then
+    if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and
+            not self:isWaitingForUnload() and not self:shouldHoldInTurnManeuver() then
+        -- try requesting only if the unloader really blocks us, that is we are actually backing up but
+        -- can't move because of the unloader, and not when we are stopped for other reasons
         self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
         local strategy = blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy()
         if strategy and strategy.requestToMoveOutOfWay then

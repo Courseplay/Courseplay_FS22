@@ -73,10 +73,12 @@ function AIDriveStrategyCourse:debug(...)
 end
 
 function AIDriveStrategyCourse:debugSparse(...)
+    local nowSecs = math.floor(g_time / 1000)
     -- report every 5 seconds
     -- TODO: make this a parameter in seconds?
-    if math.floor(g_time / 1000) % 5 == 0 then
+    if not self.lastLogSecs or (nowSecs > self.lastLogSecs and nowSecs % 5 == 0) then
         self:debug(...)
+        self.lastLogSecs = nowSecs
     end
 end
 
