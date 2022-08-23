@@ -484,10 +484,6 @@ function AIUtil.isStopped(vehicle)
 	return math.abs(vehicle.lastSpeedReal) < 0.0001
 end
 
-function AIUtil.isReversing(vehicle)
-	return vehicle.movingDirection == -1 and vehicle.lastSpeedReal * 3600 > 0.1
-end
-
 -- Note that this may temporarily return false even if it is reversing
 function AIUtil.isReversing(vehicle)
 	if (AIUtil.isInReverseGear(vehicle) and math.abs(vehicle.lastSpeedReal) > 0.00001) then
