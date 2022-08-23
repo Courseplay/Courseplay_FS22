@@ -694,6 +694,8 @@ end
 function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     local startIx
     self.followCourse, startIx = self:setupFollowCourse()
+    self.combineOffset = self:getPipeOffset(self.combineToUnload)
+    self.followCourse:setOffset(-self.combineOffset, 0)
     -- try to find the waypoint closest to the vehicle, as startIx we got is right beside the combine
     -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
     -- and we may end up between the end of the pipe and the combine
@@ -704,8 +706,6 @@ function AIDriveStrategyUnloadCombine:startCourseFollowingCombine()
     if found then
         startIx = nextFwdIx
     end
-    self.combineOffset = self:getPipeOffset(self.combineToUnload)
-    self.followCourse:setOffset(-self.combineOffset, 0)
     self:debug('Will follow combine\'s course at waypoint %d, side offset %.1f', startIx, self.followCourse.offsetX)
     self:startCourse(self.followCourse, startIx)
     self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
@@ -1175,6 +1175,9 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     self:setFieldSpeed()
 
     self:checkForCombineTurnArea()
+
+    -- yes honey, I'm on my way!
+    self.combineToUnload:getCpDriveStrategy():reconfirmRendezvous()
 
     -- stop when too close to a combine not ready to unload (wait until it is done with turning for example)
     if self:isWithinSafeManeuveringDistance(self.combineToUnload) and self.combineToUnload:getCpDriveStrategy():isManeuvering() then
