@@ -1832,8 +1832,9 @@ function AIDriveStrategyCombineCourse:onBlockingVehicle(vehicle, isBack)
         self:checkBlockingUnloader()
     else
         self:debug('Proximity sensor: blocking vehicle %s in front of us', CpUtil.getName(vehicle))
-        if vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy().onBlockingVehicle then
-            vehicle:getCpDriveStrategy():onBlockingVehicle(self.vehicle, isBack)
+        local strategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
+        if strategy and strategy.onBlockingVehicle then
+            strategy:onBlockingVehicle(self.vehicle, isBack)
         end
     end
 end
