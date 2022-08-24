@@ -28,6 +28,20 @@ function PipeController:init(vehicle, implement)
         self.dischargeNodeIndex = self.implement:getPipeDischargeNodeIndex()
         self.dischargeNode = self.dischargeSpec.dischargeNodes[self.dischargeNodeIndex]
     end
+    for i, m in ipairs(self.validMovingTools) do
+        local validBaseTool = true
+        for i, mm in ipairs(self.validMovingTools) do
+            if m ~= mm and getParent(m.node) == mm.node then 
+                validBaseTool = false
+            end
+        end
+        if validBaseTool then 
+            self.baseMovingTool = m
+            break
+        end
+    end
+    self.tempNode = CpUtil.createNode("tempPipeNode", 0, 0, 0)
+    self.goalNode = CpUtil.createNode("goalPipeNode", 0, 0, 0)
 end
 
 function PipeController:update(dt)
@@ -35,7 +49,7 @@ function PipeController:update(dt)
         if self.pipeSpec.unloadingStates[self.pipeSpec.currentState] == true then
             for i, m in ipairs(self.validMovingTools) do
                 -- Only move the base pipe rod.
-                if m.axis == "AXIS_PIPE" then
+                if m == self.baseMovingTool then
                     self:movePipeUp(m, dt)
                 else 
                     self:moveDependedPipePart(m, dt)
@@ -48,15 +62,54 @@ end
 --- TODO: might be a good idea to make this variable for the trailer min height.
 function PipeController:moveDependedPipePart(tool, dt)
     local toolNode = tool.node   
-    local curRot, curRelativeRot = {}, {}
-    curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
-    --- Gets rotation delta to move the upper pipe part to the same vertical rotation as the implement/vehicle.
-    curRelativeRot[1], curRelativeRot[2], curRelativeRot[3] = localRotationToLocal(toolNode, self.implement.rootNode, 0, 0 ,0)
-    local oldRot = curRot[tool.rotationAxis]
-    local oldRelativeRot = curRelativeRot[tool.rotationAxis]
+    local dischargeNode = self.dischargeNode.node
+    local toolBaseNode = getParent(tool.node)   
 
-    local targetRot = MathUtil.clamp(oldRot - oldRelativeRot, tool.rotMin, tool.rotMax)
-   -- self:debug("Fine tuning: targetRot: %.2f, oldRot: %.2f, oldRelativeRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, oldRelativeRot, tool.rotMin, tool.rotMax)
+ 
+  --  local l1 = calcDistanceFrom(toolNode, toolBaseNode)
+    local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
+
+    DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
+    DebugUtil.drawDebugNode(toolNode, "toolNode")
+   -- DebugUtil.drawDebugNode(toolBaseNode, "toolBaseNode")
+
+    local curRot = {}
+    curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
+    local oldRot = curRot[tool.rotationAxis]
+
+    local dx, dy, dz = localToLocal(dischargeNode, toolNode, 0, 0, 0)
+    --- Goal position of the tool
+    local gx, _, gz = localToWorld(toolNode, dx, 0, dz)
+    local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
+    setTranslation(self.goalNode, gx, gy, gz)
+    DebugUtil.drawDebugNode(self.goalNode, "goalNode")
+   
+    --- Temp node 
+    local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
+    setTranslation(self.tempNode, tx, gy, tz)
+    DebugUtil.drawDebugNode(self.tempNode, "tempNode")
+
+    local toolTempDist = calcDistanceFrom(toolNode, self.tempNode)
+    --- Absolute angle difference needed to be adjustment.
+    local alpha = math.acos(toolTempDist/toolDischargeDist)
+    --[[
+    local rx, ry, rz = localRotationToLocal(toolBaseNode, toolNode, 0, 0, 0)
+    self:debug("rx: %.2f, ry: %.2f, rz: %.2f",  rx, ry, rz )
+    local rx, ry, rz = localRotationToLocal(toolNode, toolBaseNode, 0, 0, 0)
+    self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rx, ry, rz )
+    local rx, ry, rz = localRotationToLocal(toolBaseNode, toolNode, 0, 0, alpha)
+    self:debug("rx: %.2f, ry: %.2f, rz: %.2f",  rx, ry, rz )
+    local rx, ry, rz = localRotationToLocal(toolNode, toolBaseNode, 0, 0, alpha)
+    self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rx, ry, rz )
+    self:debug("oldRot: %.2f, alpha: %.2f", oldRot, alpha)
+    ]]--
+    local targetRot = 0
+    if ty < gy then 
+        --- Discharge node is below the tool node
+        targetRot = MathUtil.clamp(oldRot + alpha, tool.rotMin, tool.rotMax)
+    else 
+        targetRot = MathUtil.clamp(oldRot - alpha, tool.rotMin, tool.rotMax)
+    end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, targetRot)
 end
 
@@ -64,7 +117,7 @@ function PipeController:movePipeUp(tool, dt)
     local rotTarget = tool.invertAxis and tool.rotMin or tool.rotMax
     local curRot ={}
     curRot[1], curRot[2], curRot[3] = getRotation(tool.node)
-   -- self:debug("Move up: rotTarget, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", rotTarget, curRot[tool.rotationAxis], tool.rotMin, tool.rotMax)
+    --self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", rotTarget, curRot[tool.rotationAxis], tool.rotMin, tool.rotMax)
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, rotTarget)
 end
 
