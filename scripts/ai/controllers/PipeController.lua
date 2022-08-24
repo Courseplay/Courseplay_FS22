@@ -41,7 +41,6 @@ function PipeController:init(vehicle, implement)
         end
     end
     self.tempNode = CpUtil.createNode("tempPipeNode", 0, 0, 0)
-    self.goalNode = CpUtil.createNode("goalPipeNode", 0, 0, 0)
 end
 
 function PipeController:update(dt)
@@ -63,29 +62,14 @@ end
 function PipeController:moveDependedPipePart(tool, dt)
     local toolNode = tool.node   
     local dischargeNode = self.dischargeNode.node
-    local toolBaseNode = getParent(tool.node)   
-
- 
-  --  local l1 = calcDistanceFrom(toolNode, toolBaseNode)
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
 
     DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
     DebugUtil.drawDebugNode(toolNode, "toolNode")
-   -- DebugUtil.drawDebugNode(toolBaseNode, "toolBaseNode")
 
-    local curRot = {}
-    curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
-    local oldRot = curRot[tool.rotationAxis]
-
-    local dx, dy, dz = localToLocal(dischargeNode, toolNode, 0, 0, 0)
-    --- Goal position of the tool
-    local gx, _, gz = localToWorld(toolNode, dx, 0, dz)
-    local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
-    setTranslation(self.goalNode, gx, gy, gz)
-    DebugUtil.drawDebugNode(self.goalNode, "goalNode")
-   
     --- Temp node 
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
+    local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
     setTranslation(self.tempNode, tx, gy, tz)
     DebugUtil.drawDebugNode(self.tempNode, "tempNode")
 
@@ -97,12 +81,19 @@ function PipeController:moveDependedPipePart(tool, dt)
     self:debug("rx: %.2f, ry: %.2f, rz: %.2f",  rx, ry, rz )
     local rx, ry, rz = localRotationToLocal(toolNode, toolBaseNode, 0, 0, 0)
     self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rx, ry, rz )
-    local rx, ry, rz = localRotationToLocal(toolBaseNode, toolNode, 0, 0, alpha)
+
+    local rx, ry, rz = localRotationToLocal(self.tempNode, toolNode, 0, 0, 0)
     self:debug("rx: %.2f, ry: %.2f, rz: %.2f",  rx, ry, rz )
-    local rx, ry, rz = localRotationToLocal(toolNode, toolBaseNode, 0, 0, alpha)
-    self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rx, ry, rz )
-    self:debug("oldRot: %.2f, alpha: %.2f", oldRot, alpha)
+
+    local rotDiff = {}
+
+    rotDiff[1], rotDiff[2], rotDiff[3] = localRotationToLocal(toolNode, self.tempNode, 0, 0, 0)
+    self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rotDiff[1], rotDiff[2], rotDiff[3] )
+    self:debug("oldRot: %.2f, alpha: %.2f, rotationAxis: %d", oldRot, alpha, tool.rotationAxis)
     ]]--
+    local curRot = {}
+    curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
+    local oldRot = curRot[tool.rotationAxis]
     local targetRot = 0
     if ty < gy then 
         --- Discharge node is below the tool node
@@ -169,4 +160,8 @@ function PipeController:isFillableTrailerUnderPipe()
         end
     end
     return false
+end
+
+function PipeController:delete()
+    CpUtil.destroyNode(self.tempNode)
 end
