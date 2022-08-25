@@ -13,9 +13,6 @@ ProximityController.sensorRange = 10
 ProximityController.minLimitedSpeed = 2
 -- will stop under this threshold
 ProximityController.stopThresholdNormal = 1.5
--- an obstacle is considered ahead of us if the reported angle is less then this
--- (and we won't stop or reverse if the angle is higher than this, thus obstacles to the left or right)
-ProximityController.angleAheadDeg = 75
 
 function ProximityController:init(vehicle, width)
     self.vehicle = vehicle
@@ -25,8 +22,8 @@ function ProximityController:init(vehicle, width)
     self:setState(self.states.NO_OBSTACLE, 'proximity controller initialized')
     self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
             self.vehicle, Markers.getFrontMarkerNode(self.vehicle), self.sensorRange, 1, width)
-    self.backwardLookingProximitySensorPack = BackwardLookingProximitySensorPack(
-            self.vehicle, Markers.getBackMarkerNode(self.vehicle), self.sensorRange, 1)
+    self.backwardLookingProximitySensorPack = WideBackwardLookingProximitySensorPack(
+            self.vehicle, Markers.getBackMarkerNode(self.vehicle), self.sensorRange, 1, self.vehicle.size.width)
 end
 
 function ProximityController:setState(state, debugString)
@@ -104,8 +101,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         range = pack:getRange()
     end
     local normalizedD = d / (range - self.stopThreshold:get())
-    local obstacleAhead = math.abs(deg) < self.angleAheadDeg
-    if d < self.stopThreshold:get() and obstacleAhead then
+    if d < self.stopThreshold:get() then
         -- too close, stop
         self:setState(self.states.STOP,
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
