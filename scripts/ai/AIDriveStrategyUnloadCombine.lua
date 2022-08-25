@@ -62,6 +62,7 @@ AIDriveStrategyUnloadCombine.safeManeuveringDistance = 30 -- distance to keep fr
 AIDriveStrategyUnloadCombine.unloaderFollowingDistance = 30 -- distance to keep between two unloaders assigned to the same chopper
 AIDriveStrategyUnloadCombine.pathfindingRange = 5 -- won't do pathfinding if target is closer than this
 AIDriveStrategyUnloadCombine.proximitySensorRange = 15
+AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg = 35 -- under this angle the unloader considers itself aligned with the combine
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -563,8 +564,10 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end
-    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 45) then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > 45)')
+    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
+            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > %d)',
+                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
         return false
     end
     -- close enough and approximately same direction and behind and not too far to the left or right, about the same
@@ -589,8 +592,10 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
                 'isInFrontAndAlignedToMovingCombine: dx (%.1f) not between 0.5 and 1.5 pipe offset (%.1f)', dx, pipeOffset)
         return false
     end
-    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(), 30) then
-        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: direction difference is > 30)')
+    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
+            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: direction difference is > %d)',
+                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
         return false
     end
     if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
