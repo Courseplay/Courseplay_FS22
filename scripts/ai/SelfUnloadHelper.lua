@@ -128,7 +128,7 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType,
     local _, steeringLength = AIUtil.getSteeringParameters(myVehicle)
     local alignLength = (trailerLength / 2) + dZ + math.max(myVehicle.size.length / 2, steeringLength)
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, myVehicle,
-            'Trailer length: %.1f, width: %.1f, align length %.1f, steering length %.1f, offsetX %.1f',
-            trailerLength, trailerWidth, alignLength, steeringLength, offsetX)
+            'Trailer length: %.1f, width: %.1f, dZ: %.1f, align length %.1f, my length: %.1f, steering length %.1f, offsetX %.1f',
+            trailerLength, trailerWidth, dZ, alignLength, myVehicle.size.length, steeringLength, offsetX)
     return targetNode, alignLength, offsetX
 end

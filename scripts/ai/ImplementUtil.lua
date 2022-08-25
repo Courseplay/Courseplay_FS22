@@ -417,14 +417,13 @@ function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
         end
         referenceVehicle = referenceVehicle or vehicle.rootVehicle
         local dischargeNode = object.objectWithPipe:getCurrentDischargeNode()
-        local dx, _, _ = localToLocal(dischargeNode.node, referenceVehicle.rootNode, 0, 0, 0)
-        object.pipeOnLeftSide = dx >= 0
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe on left side %s', tostring(object.pipeOnLeftSide))
         -- use combine so attached harvesters have the offset relative to the harvester's root node
         -- (and thus, does not depend on the angle between the tractor and the harvester)
-        object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node, referenceVehicle.rootNode, 0, 0, 0)
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe offset: x = %.1f, z = %.1f',
-                object.pipeOffsetX, object.pipeOffsetZ)
+        object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node,
+                (referenceVehicle.getAIDirectionNode and referenceVehicle:getAIDirectionNode()) or referenceVehicle.rootNode, 0, 0, 0)
+        object.pipeOnLeftSide = object.pipeOffsetX >= 0
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe offset: x = %.1f, z = %.1f, on left side %s',
+                object.pipeOffsetX, object.pipeOffsetZ, tostring(object.pipeOnLeftSide))
         if wasClosed then
             if object.pipe.animation.name then
                 object.pipe:setAnimationTime(object.pipe.animation.name, 0, true)

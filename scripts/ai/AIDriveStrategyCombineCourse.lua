@@ -181,6 +181,7 @@ end
 function AIDriveStrategyCombineCourse:update(dt)
     AIDriveStrategyFieldWorkCourse.update(self, dt)
     self:updateChopperFillType()
+    self:onDraw()
 end
 
 --- Hold the harvester for a period of periodMs milliseconds
@@ -1764,15 +1765,12 @@ function AIDriveStrategyCombineCourse:raycastBackCallback(hitObjectId, x, y, z, 
 end
 
 function AIDriveStrategyCombineCourse:onDraw()
-    if not CpUtil.isVehicleDebugActive(self.vehicle) then
-        return
-    end
-
-    if CpDebug:isChannelActive(CpDebug.DBG_IMPLEMENTS) then
+    if CpDebug:isChannelActive(CpDebug.DBG_IMPLEMENTS, self.vehicle) then
 
         local dischargeNode = self:getCurrentDischargeNode()
         if dischargeNode then
-            DebugUtil.drawDebugNode(dischargeNode.node, 'discharge')
+            local dx, _, dz = localToLocal(dischargeNode.node, self.vehicle:getAIDirectionNode(), 0, 0, 0)
+            DebugUtil.drawDebugNode(dischargeNode.node, string.format('discharge\n%.1f %.1f', dx, dz))
         end
 
         if self.storage.backMarkerNode then
@@ -1780,7 +1778,7 @@ function AIDriveStrategyCombineCourse:onDraw()
         end
     end
 
-    if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER) then
+    if CpDebug:isChannelActive(CpDebug.DBG_PATHFINDER, self.vehicle) then
         local areaToAvoid = self:getAreaToAvoid()
         if areaToAvoid then
             local x, y, z = localToWorld(areaToAvoid.node, areaToAvoid.xOffset, 0, areaToAvoid.zOffset)
