@@ -22,7 +22,10 @@ local AIDriveStrategyCombineCourse_mt = Class(AIDriveStrategyCombineCourse, AIDr
 
 -- fill level when we start making a pocket to unload if we are on the outermost headland
 AIDriveStrategyCombineCourse.pocketFillLevelFullPercentage = 95
-AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 40
+AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
+-- when fill level is above this threshold, don't start the next row if the pipe would be
+-- in the fruit
+AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold = 95
 
 AIDriveStrategyCombineCourse.myStates = {
     -- main states
@@ -706,6 +709,20 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
             self.waypointIxWhenFull or -1, self.distanceToWaypointWhenFull)
 end
 
+-- If close to the end of the row and the pipe would be in the fruit after the turn, and our fill level is high,
+-- just rather wait here for an unloader
+function AIDriveStrategyCombineCourse:checkEndOfRow()
+    local nextRowStartIx = self.course:getNextRowStartIx()
+    if nextRowStartIx and self.course:isCloseToNextTurn(AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow) and
+            self:isPipeInFruitAtWaypointNow(self.course, nextRowStartIx) and
+            self:isFull(AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold) then
+        self:debug('Closer than %.1f m to a turn, pipe would be in fruit after turn at %d, fill level over %.1f',
+                AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, nextRowStartIx,
+                AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold)
+        self:startWaitingForUnloadBeforeNextRow()
+    end
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Unloader handling
 ------------------------------------------------------------------------------------------------------------------------
@@ -723,8 +740,7 @@ function AIDriveStrategyCombineCourse:checkRendezvous()
                 self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
                         self.agreedUnloaderRendezvousWaypointIx)
                 self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
-                local dToTurn = self.course:getDistanceToNextTurn(self.agreedUnloaderRendezvousWaypointIx) or math.huge
-                if dToTurn < 20 then
+                if self.course:isCloseToNextTurn(AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow) then
                     self:debug('Unloader rendezvous waypoint %d is before a turn, waiting for the unloader here',
                             self.agreedUnloaderRendezvousWaypointIx)
                     self:startWaitingForUnloadBeforeNextRow()
@@ -925,7 +941,7 @@ function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnUpDownRows(ix, i
         if ixAtRowStart and dToNextTurn < AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow then
             local safeIx = self.course:getPreviousWaypointIxWithinDistance(ix,
                     AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow)
-            newWpIx = math.max(ixAtRowStart + 1, safeIx or -1, ix - 4)
+            newWpIx = math.max(ixAtRowStart + 1, safeIx or -1, ix - 4, currentIx)
         end
     end
     -- no better idea, just use the original estimated, making sure we avoid turn start waypoints
@@ -1771,10 +1787,6 @@ function AIDriveStrategyCombineCourse:onDraw()
         if dischargeNode then
             local dx, _, dz = localToLocal(dischargeNode.node, self.vehicle:getAIDirectionNode(), 0, 0, 0)
             DebugUtil.drawDebugNode(dischargeNode.node, string.format('discharge\n%.1f %.1f', dx, dz))
-        end
-
-        if self.storage.backMarkerNode then
-            DebugUtil.drawDebugNode(self.storage.backMarkerNode, 'back marker')
         end
     end
 
