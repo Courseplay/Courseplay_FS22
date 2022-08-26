@@ -349,6 +349,7 @@ end
 -- On last waypoint
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
+    self:debug('Last waypoint passed')
     if self.state == self.states.DRIVING_TO_COMBINE or
             self.state == self.states.DRIVING_TO_MOVING_COMBINE then
         self:startWorking()
