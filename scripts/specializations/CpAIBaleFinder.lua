@@ -89,7 +89,9 @@ function CpAIBaleFinder:getCanStartCpBaleFinder()
 	return (AIUtil.hasImplementWithSpecialization(self, BaleWrapper) and not AIUtil.hasImplementWithSpecialization(self, Baler)) or
 			AIUtil.hasImplementWithSpecialization(self, BaleLoader) or 
             --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader") 
+            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader") or 
+            --- FS22_UniversalAutoload form loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
+            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_universalAutoload")
 end
 
 function CpAIBaleFinder:getCanStartCp(superFunc)

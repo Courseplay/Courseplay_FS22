@@ -158,6 +158,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/APalletAutoLoaderController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/UniversalAutoloadController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SowingMachineController.lua"/>
