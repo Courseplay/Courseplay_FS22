@@ -75,7 +75,7 @@ AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 AIDriveStrategyUnloadCombine.myStates = {
     ON_FIELD = {},
     ON_UNLOAD_COURSE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
-    WAITING_FOR_COMBINE_TO_CALL = {},
+    WAITING_FOR_COMBINE_TO_CALL = { fuelSaveAllowed = true}, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
     DRIVING_TO_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
     DRIVING_TO_MOVING_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
@@ -150,7 +150,10 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
+    --- Implement controllers
     _, self.pipeController = self:addImplementController(self.vehicle, PipeController, Pipe, {}, nil)
+    self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
+    self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     self:resetPathfinder()
@@ -502,6 +505,10 @@ function AIDriveStrategyUnloadCombine:releaseCombine()
     end
     self.combineJustUnloaded = self.combineToUnload
     self.combineToUnload = nil
+end
+
+function AIDriveStrategyUnloadCombine:isFuelSaveAllowed()
+	return self.state.properties.fuelSaveAllowed
 end
 
 ------------------------------------------------------------------------------------------------------------------------
