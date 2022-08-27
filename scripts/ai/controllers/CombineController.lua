@@ -95,14 +95,14 @@ function CombineController:updateStrawSwath(isOnHeadland)
     if self.combineSpec.isSwathActive then
         if strawMode == CpVehicleSettings.STRAW_SWATH_OFF or isOnHeadland and strawMode == CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then
             self:setStrawSwath(false)
-            self:debugSparse('straw swath should be off!')
+            self:debug('straw swath should be off!')
         end
     else
-        if strawMode > CpVehicleSettings.STRAW_SWATH_OFF then
+        if strawMode ~= CpVehicleSettings.STRAW_SWATH_OFF then
             if isOnHeadland and strawMode == CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then
                 return
             end
-            self:debugSparse('straw swath should be on!')
+            self:debug('straw swath should be on!')
             self:setStrawSwath(true)
         end
     end
@@ -110,7 +110,7 @@ end
 
 function CombineController:setStrawSwath(enable)
     local strawSwathCanBeEnabled = false
-    local fruitType = g_fruitTypeManager:getFruitTypeIndexByFillTypeIndex(self:getFillUnitIndex())
+    local fruitType = g_fruitTypeManager:getFruitTypeIndexByFillTypeIndex(self.implement:getFillUnitFillType(self:getFillUnitIndex()))
     if fruitType ~= nil and fruitType ~= FruitType.UNKNOWN then
         local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitType)
         if fruitDesc.hasWindrow then
