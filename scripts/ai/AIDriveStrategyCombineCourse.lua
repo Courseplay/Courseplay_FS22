@@ -1081,14 +1081,15 @@ function AIDriveStrategyCombineCourse:shouldReturnToFirstPoint()
     return false
 end
 
---- Interface for Mode 2 and AutoDrive
----@return boolean true when the combine is waiting to be unloaded
+--- Interface for the unloader and AutoDrive
+---@return boolean true when the combine is waiting to be unloaded (and won't move until the unloader gets there)
 function AIDriveStrategyCombineCourse:isWaitingForUnload()
     return self.state == self.states.UNLOADING_ON_FIELD and
             (self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD or
                     self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
                     self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
-                    self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED)
+                    self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED or
+                    self.unloadState == self.states.WAITING_FOR_UNLOAD_BEFORE_STARTING_NEXT_ROW)
 end
 
 --- Interface for AutoDrive
