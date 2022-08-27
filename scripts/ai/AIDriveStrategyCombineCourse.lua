@@ -204,9 +204,13 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
         -- Harvesting
         self:checkRendezvous()
         self:checkBlockingUnloader()
+
         if self:isFull() then
             self:changeToUnloadOnField()
+        elseif self:shouldWaitAtEndOfRow() then
+            self:startWaitingForUnloadBeforeNextRow()
         end
+
         if self:shouldStopForUnloading() then
             -- player does not want us to move while discharging
             self:setMaxSpeed(0)
@@ -709,19 +713,27 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
             self.waypointIxWhenFull or -1, self.distanceToWaypointWhenFull)
 end
 
--- If close to the end of the row and the pipe would be in the fruit after the turn, and our fill level is high,
--- just rather wait here for an unloader
-function AIDriveStrategyCombineCourse:checkEndOfRow()
-    local nextRowStartIx = self.course:getNextRowStartIx()
+function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
+    local nextRowStartIx = self.course:getNextRowStartIx(self.ppc:getRelevantWaypointIx())
     local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
-    if nextRowStartIx and
-            self.course:getDistanceToNextTurn(lastPassedWaypointIx) < AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow and
+    local closeToTurn = self.course:getDistanceToNextTurn(lastPassedWaypointIx) < AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow
+    -- If close to the end of the row and the pipe would be in the fruit after the turn, and our fill level is high,
+    -- we always wait here for an unloader, regardless of having a rendezvous or not
+    if nextRowStartIx and closeToTurn and
             self:isPipeInFruitAtWaypointNow(self.course, nextRowStartIx) and
             self:isFull(AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold) then
-    self:debug('Closer than %.1f m to a turn, pipe would be in fruit after turn at %d, fill level over %.1f',
+        self:debug('Closer than %.1f m to a turn, pipe would be in fruit after turn at %d, fill level over %.1f',
                 AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, nextRowStartIx,
                 AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold)
-        self:startWaitingForUnloadBeforeNextRow()
+        return true
+    end
+    -- Or, if we passed our rendezvous waypoint and are close to the next turn
+    if self.agreedUnloaderRendezvousWaypointIx and
+            lastPassedWaypointIx > self.agreedUnloaderRendezvousWaypointIx and
+            closeToTurn then
+        self:debug('Passed unloader rendezvous waypoint %d which is before a turn, waiting for the unloader here',
+                self.agreedUnloaderRendezvousWaypointIx)
+        return true
     end
 end
 
@@ -734,32 +746,25 @@ function AIDriveStrategyCombineCourse:needUnloader(fillLevelThreshold)
 end
 
 function AIDriveStrategyCombineCourse:checkRendezvous()
-    if self.state == self.states.WORKING then
-        if self.unloadAIDriverToRendezvous:get() then
-            local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
-            local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.agreedUnloaderRendezvousWaypointIx)
-            if d < 10 then
-                self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
-                        self.agreedUnloaderRendezvousWaypointIx)
-                self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
-            elseif lastPassedWaypointIx > self.agreedUnloaderRendezvousWaypointIx then
-                if self.course:isCloseToNextTurn(AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow) then
-                    self:debug('Passed unloader rendezvous waypoint %d which is before a turn, waiting for the unloader here',
-                            self.agreedUnloaderRendezvousWaypointIx)
-                    self:startWaitingForUnloadBeforeNextRow()
-                else
-                    self:debug('Unloader missed the rendezvous at %d', self.agreedUnloaderRendezvousWaypointIx)
-                    local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
-                    -- need to call this before onMissedRendezvous as the unloader will call back to set up a new rendezvous
-                    -- and we don't want to cancel that right away
-                    self:cancelRendezvous()
-                    unloaderWhoDidNotShowUp:onMissedRendezvous(self)
-                end
-            end
-            if self:isDischarging() then
-                self:debug('Discharging, cancelling unloader rendezvous')
-                self:cancelRendezvous()
-            end
+    if self.unloadAIDriverToRendezvous:get() then
+        local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
+        local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.agreedUnloaderRendezvousWaypointIx)
+        if d < 10 then
+            self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
+                    self.agreedUnloaderRendezvousWaypointIx)
+            self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
+        elseif lastPassedWaypointIx > self.agreedUnloaderRendezvousWaypointIx then
+            -- past the rendezvous waypoint
+            self:debug('Unloader missed the rendezvous at %d', self.agreedUnloaderRendezvousWaypointIx)
+            local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
+            -- need to call this before onMissedRendezvous as the unloader will call back to set up a new rendezvous
+            -- and we don't want to cancel that right away
+            self:cancelRendezvous()
+            unloaderWhoDidNotShowUp:onMissedRendezvous(self)
+        end
+        if self:isDischarging() then
+            self:debug('Discharging, cancelling unloader rendezvous')
+            self:cancelRendezvous()
         end
     end
 end
@@ -864,7 +869,7 @@ function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix)
     end
     self.storage.fruitCheckHelperWpNode:setToWaypoint(course, ix)
     local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX)
-    self:debug('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
+    self:debugSparse('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
     return hasFruit, fruitValue
 end
 
@@ -1064,7 +1069,7 @@ function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     local discharging = self:isDischarging() and not self:isChopper()
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
     local waitForStraw = self.combine.strawPSenabled and not isFinishingRow
-    self:debug('discharging %s, held for unload %s, straw active %s, finishing row = %s',
+    self:debugSparse('discharging %s, held for unload %s, straw active %s, finishing row = %s',
             tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isFinishingRow))
     return discharging or self.heldForUnloadRefill or waitForStraw
 end

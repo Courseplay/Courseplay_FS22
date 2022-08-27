@@ -63,6 +63,8 @@ AIDriveStrategyUnloadCombine.unloaderFollowingDistance = 30 -- distance to keep 
 AIDriveStrategyUnloadCombine.pathfindingRange = 5 -- won't do pathfinding if target is closer than this
 AIDriveStrategyUnloadCombine.proximitySensorRange = 15
 AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg = 35 -- under this angle the unloader considers itself aligned with the combine
+-- Add a short straight section to align with the combine's course in case it is late for the rendezvous
+AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength = 10
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -350,9 +352,10 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     self:debug('Last waypoint passed')
-    if self.state == self.states.DRIVING_TO_COMBINE or
-            self.state == self.states.DRIVING_TO_MOVING_COMBINE then
+    if self.state == self.states.DRIVING_TO_COMBINE then
         self:startWorking()
+    elseif self.state == self.states.DRIVING_TO_MOVING_COMBINE then
+        self:startCourseFollowingCombine()
     elseif self.state == self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
         self:setNewState(self.stateAfterMovedOutOfWay)
         self:startRememberedCourse()
@@ -790,6 +793,8 @@ end
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToMovingCombine(path, goalNodeInvalid)
     if self:isPathFound(path, goalNodeInvalid, CpUtil.getName(self.combineToUnload)) and self.state == self.states.WAITING_FOR_PATHFINDER then
         local driveToCombineCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        -- add a short straight section to align in case we get there before the combine
+        driveToCombineCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength)
         self:startCourse(driveToCombineCourse, 1)
         self:setNewState(self.states.DRIVING_TO_MOVING_COMBINE)
         return true
@@ -1182,9 +1187,6 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
 
     self:checkForCombineTurnArea()
 
-    -- yes honey, I'm on my way!
-    self.combineToUnload:getCpDriveStrategy():reconfirmRendezvous()
-
     -- stop when too close to a combine not ready to unload (wait until it is done with turning for example)
     if self:isWithinSafeManeuveringDistance(self.combineToUnload) and self.combineToUnload:getCpDriveStrategy():isManeuvering() then
         self:startWaitingForManeuveringCombine()
@@ -1192,15 +1194,25 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
         self:startUnloadingCombine()
     end
 
-    if self.combineToUnload:getCpDriveStrategy():isWaitingForUnloadAfterPulledBack() then
-        self:debug('combine is now waiting for unload after pulled back, recalculate path')
+    if self.combineToUnload:getCpDriveStrategy():isWaitingForUnload() then
+        self:debug('combine is now stopped and waiting for unload, recalculate path')
         self:startDrivingToCombine()
+    end
+
+    if self.course:isCloseToLastWaypoint(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength / 2) and
+            self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self) then
+        self:debugSparse('Combine is late, waiting ...')
+        self:setMaxSpeed(0)
+        -- stop confirming the rendezvous, allow the combine to time out if it can't get here on time
+    else
+        -- yes honey, I'm on my way!
+        self.combineToUnload:getCpDriveStrategy():reconfirmRendezvous()
     end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Waiting for maneuvering combine
-------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------`-------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startWaitingForManeuveringCombine()
     self:debug('Too close to maneuvering combine, stop.')
     -- remember where the combine was when we started waiting
