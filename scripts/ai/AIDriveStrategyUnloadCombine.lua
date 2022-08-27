@@ -73,7 +73,6 @@ AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength = 10
 AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 
 AIDriveStrategyUnloadCombine.myStates = {
-    ON_FIELD = {},
     ON_UNLOAD_COURSE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
     WAITING_FOR_COMBINE_TO_CALL = { fuelSaveAllowed = true}, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
@@ -177,25 +176,20 @@ end
 
 function AIDriveStrategyUnloadCombine:isTrafficConflictDetectionEnabled()
     return self.trafficConflictDetectionEnabled and
-            (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.checkForTrafficConflict) or
-            (self.state == self.states.ON_FIELD and self.state.properties.checkForTrafficConflict)
+            (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.checkForTrafficConflict)
 end
 
 function AIDriveStrategyUnloadCombine:isProximitySwerveEnabled(vehicle)
     if vehicle == self.doNotSwerveForVehicle:get() then
         return false
     end
-    return (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.enableProximitySwerve) or
-            (self.state == self.states.ON_FIELD and self.state.properties.enableProximitySwerve)
+    return (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.enableProximitySwerve)
 end
 
 function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
     return true
 end
 
-function AIDriveStrategyUnloadCombine:isWaitingForAssignment()
-    return self.state == self.states.ON_FIELD and self.state == self.states.WAITING_FOR_COMBINE_TO_CALL
-end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Main loop
@@ -334,16 +328,6 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
     self:setMaxSpeed(math.max(0, speed))
 end
 
-function AIDriveStrategyUnloadCombine:onEndCourse()
-    if self.state == self.states.ON_UNLOAD_COURSE or self.state == self.states.ON_UNLOAD_WITH_AUTODRIVE then
-        self:setNewState(self.states.ON_FIELD)
-        self:startWaitingForCombine()
-        self:setDriveUnloadNow(false)
-        self:openCovers(self.vehicle)
-        self:disableCollisionDetection()
-    end
-end
-
 function AIDriveStrategyUnloadCombine:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
         self:onLastWaypointPassed()
@@ -367,21 +351,6 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     elseif self.state == self.states.DRIVING_TO_SELF_UNLOAD then
         self:onLastWaypointPassedWhenDrivingToSelfUnload()
     end
-end
-
--- if closer than this to the last waypoint, start slowing down
-function AIDriveStrategyUnloadCombine:getSlowDownDistanceBeforeLastWaypoint()
-    local d = AIDriver.defaultSlowDownDistanceBeforeLastWaypoint
-    -- in some states there's no need to slow down before reaching the last waypoints
-    if self.state == self.states.ON_FIELD then
-        if self.state == self.states.DRIVING_TO_FIRST_UNLOADER then
-            d = 0
-        else
-            -- in general, be more bold than the standard AI Driver to not waste time for rendezvous
-            d = AIDriver.defaultSlowDownDistanceBeforeLastWaypoint / 3
-        end
-    end
-    return d
 end
 
 function AIDriveStrategyUnloadCombine:setFieldSpeed()
@@ -446,10 +415,6 @@ end
 
 function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
     return self.combineToUnload:getCpDriveStrategy():getMeasuredBackDistance()
-end
-
-function AIDriveStrategyUnloadCombine:getCanShowDriveOnButton()
-    return self.state == self.states.ON_FIELD or AIDriver.getCanShowDriveOnButton(self)
 end
 
 function AIDriveStrategyUnloadCombine:getAllTrailersFull()
@@ -1355,7 +1320,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:onMissedRendezvous(combineAIDriver)
     self:debug('missed the rendezvous with %s', CpUtil.getName(combineAIDriver.vehicle))
-    if self.state == self.states.ON_FIELD and self.state == self.states.DRIVING_TO_MOVING_COMBINE and
+    if self.state == self.states.DRIVING_TO_MOVING_COMBINE and
             self.combineToUnload == combineAIDriver.vehicle then
         if self.course:getDistanceToLastWaypoint(self.course:getCurrentWaypointIx()) > 100 then
             self:debug('over 100 m from the combine to rendezvous, re-planning')
