@@ -873,7 +873,6 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx, 
 		if not self:isReverseAt(i) then
 			local uX, uY, uZ = self:getWaypointPosition(i)
 			local dx, _, dz = worldToLocal(vehicleNode, uX, uY, uZ);
-			CpUtil.info('i = %d dx = %.1f dz = %.1f', i, dx, dz)
 			if dz > 0 and math.abs(dx) < maxDx then
 				return i, true
 			end
