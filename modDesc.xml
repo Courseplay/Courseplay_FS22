@@ -175,6 +175,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/controllers/WearableController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SoilSamplerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/PipeController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CoverController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
