@@ -300,7 +300,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             self:changeToFieldWork()
         end
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
-        local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
+        local fillLevel = self.combineController:getFillLevel()
         if fillLevel < 0.01 then
             self:debug('Unloading finished after fieldwork ended, end course')
             AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
