@@ -806,7 +806,7 @@ end
 ---@return Waypoint, number, number waypoint to meet the unloader, index of waypoint, time we need to reach that waypoint
 function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEstimatedSecondsEnroute, unloadAIDriver, isPipeInFruitAllowed)
 
-    local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self.settings.fieldWorkSpeed:getValue() / 3.6
+    local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self.vehicle:getSpeedLimit(true) / 3.6
     -- this is where we'll be when the unloader gets here
     local unloaderRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
             self.course:getCurrentWaypointIx(), dToUnloaderRendezvous) or
