@@ -381,28 +381,20 @@ end
 --- Set all pipe related attributes on object for a vehicle:
 --- pipe, objectWithPipe, pipeOnLeftSide, pipeOffsetX, pipeOffsetZ
 ---@param object table object we want to decorate with these attributes
----@param vehicle table
----@param referenceVehicle table optional reference to calculate pipe offset and side,
----                              usually a combine object, must have getCurrentDischargeNode()
-function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
-    if vehicle.spec_pipe then
-        object.pipe = vehicle.spec_pipe
-        object.objectWithPipe = vehicle
-    else
-        local implementWithPipe = AIUtil.getImplementWithSpecialization(vehicle, Pipe)
-        if implementWithPipe then
-            object.pipe = implementWithPipe.spec_pipe
-            object.objectWithPipe = implementWithPipe
-        else
-            CpUtil.infoVehicle(vehicle, 'Could not find implement with pipe')
-        end
+---@param implementWithPipe table implement with a pipe
+function ImplementUtil.setPipeAttributes(object, implementWithPipe)
+    if not implementWithPipe.spec_pipe then 
+        CpUtil.infoVehicle(implementWithPipe, 'Could not find implement with pipe')
+        return 
     end
-
+    object.pipe = implementWithPipe.spec_pipe
+    object.objectWithPipe = implementWithPipe
+    local referenceVehicle = implementWithPipe.rootVehicle 
     if object.pipe then
         -- check the pipe length:
         -- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
         local wasFolded, wasClosed
-        wasFolded = ImplementUtil.unfoldForGettingWidth(vehicle)
+        wasFolded = ImplementUtil.unfoldForGettingWidth(implementWithPipe)
         if object.pipe.currentState == PipeController.PIPE_STATE_CLOSED then
             wasClosed = true
             if object.pipe.animation.name then
@@ -415,14 +407,14 @@ function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
-        referenceVehicle = referenceVehicle or vehicle.rootVehicle
-        local dischargeNode = object.objectWithPipe:getCurrentDischargeNode()
+        local dischargeIx = object.objectWithPipe:getPipeDischargeNodeIndex()
+        local dischargeNode = object.objectWithPipe:getDischargeNodeByIndex(dischargeIx)
         -- use combine so attached harvesters have the offset relative to the harvester's root node
         -- (and thus, does not depend on the angle between the tractor and the harvester)
         object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node,
                 (referenceVehicle.getAIDirectionNode and referenceVehicle:getAIDirectionNode()) or referenceVehicle.rootNode, 0, 0, 0)
         object.pipeOnLeftSide = object.pipeOffsetX >= 0
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Pipe offset: x = %.1f, z = %.1f, on left side %s',
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, referenceVehicle, 'Pipe offset: x = %.1f, z = %.1f, on left side %s',
                 object.pipeOffsetX, object.pipeOffsetZ, tostring(object.pipeOnLeftSide))
         if wasClosed then
             if object.pipe.animation.name then
@@ -435,11 +427,11 @@ function ImplementUtil.setPipeAttributes(object, vehicle, referenceVehicle)
             end
         end
         if wasFolded then
-            ImplementUtil.foldAfterGettingWidth(vehicle)
+            ImplementUtil.foldAfterGettingWidth(referenceVehicle)
             -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
             -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
-            Foldable.actionControllerFoldEvent(vehicle, -1)
-            Foldable.actionControllerFoldEvent(vehicle, 1)
+            Foldable.actionControllerFoldEvent(referenceVehicle, -1)
+            Foldable.actionControllerFoldEvent(referenceVehicle, 1)
         end
     else
         -- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()

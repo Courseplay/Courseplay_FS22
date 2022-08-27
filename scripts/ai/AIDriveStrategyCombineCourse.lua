@@ -75,7 +75,6 @@ function AIDriveStrategyCombineCourse.new(customMt)
     self.beaconLightsActive = false
     self.stopDisabledAfterEmpty = CpTemporaryObject(false)
     self.stopDisabledAfterEmpty:set(false, 1)
-    self.pipeOffsetX = 0
     self:initUnloadStates()
     self.chopperCanDischarge = CpTemporaryObject(false)
     -- hold the harvester temporarily
@@ -111,17 +110,11 @@ end
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
     AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
     self:debug('AIDriveStrategyCombineCourse set')
-
-    self.combine = ImplementUtil.findCombineObject(self.vehicle)
-    ImplementUtil.setPipeAttributes(self, self.vehicle, self.combine)
-    _, self.pipeController = self:addImplementController(self.vehicle, PipeController, Pipe, {}, nil)
-
+  
     if self:isChopper() then
         self:debug('This is a chopper.')
     end
 
-    local dischargeNode = self:getCurrentDischargeNode()
-    self:fixDischargeDistance(dischargeNode)
 
     self:checkMarkers()
     self:measureBackDistance()
@@ -130,8 +123,8 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyCombineCourse.onBlockingVehicle)
 
     -- distance to keep to the right (>0) or left (<0) when pulling back to make room for the tractor
-    self.pullBackRightSideOffset = math.abs(self.pipeOffsetX) - self:getWorkWidth() / 2 + 5
-    self.pullBackRightSideOffset = self.pipeOnLeftSide and self.pullBackRightSideOffset or -self.pullBackRightSideOffset
+    self.pullBackRightSideOffset = math.abs(self.pipeController:getPipeOffsetX()) - self:getWorkWidth() / 2 + 5
+    self.pullBackRightSideOffset = self:isPipeOnLeft() and self.pullBackRightSideOffset or -self.pullBackRightSideOffset
     -- should be at pullBackRightSideOffset to the right or left at pullBackDistanceStart
     self.pullBackDistanceStart = 2 * AIUtil.getTurningRadius(self.vehicle)
     -- and back up another bit
@@ -148,16 +141,16 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     --- if this is not nil, we have a pending rendezvous with our unloader
     ---@type CpTemporaryObject
     self.unloadAIDriverToRendezvous = CpTemporaryObject(nil)
-    local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
+    local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeController:getPipeOffsetX(), self:getWorkWidth())
     self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
             total, pipeInFruit)
-    -- TODO: need a cleaner way to keep a cotton harvester going (otherwise it won't drop the bale)
-    if self:isCottonHarvester() then
-        self:debug('Cotton harvester, set max fill level to 100 to trigger bale unload when full')
-        self.fillLevelFullPercentage = 100
-    else
-        self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
-    end
+    self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
+end
+
+function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
+    local _
+    _, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
+    self.combine, self.combineController = self:addImplementController(vehicle, CombineController, Combine, {}, nil)
 end
 
 function AIDriveStrategyCombineCourse:getProximitySensorWidth()
@@ -308,9 +301,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         end
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED then
         local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
-        --- Makes sure the cotton harvester gets release at the end of the course.
-        --- TODO: Unload the unfinished bale from the cotton harvester.
-        if fillLevel < 0.01 or self:isCottonHarvester() then
+        if fillLevel < 0.01 then
             self:debug('Unloading finished after fieldwork ended, end course')
             AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
         else
@@ -422,7 +413,8 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
         self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
     end
 
-    self:shouldStrawSwathBeOn(ix)
+    local isOnHeadland = self.course:isOnHeadland(ix)
+    self.combineController:updateStrawSwath(isOnHeadland)
 
     if self.state == self.states.WORKING then
         self:checkDistanceUntilFull(ix)
@@ -585,10 +577,7 @@ end
 
 function AIDriveStrategyCombineCourse:isUnloadFinished()
     local discharging = true
-    local dischargingNow = false
-    if self.pipe then
-        dischargingNow = self.pipe:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
-    end
+    local dischargingNow = self:isDischarging()
     --wait for 10 frames before taking discharging as false
     if not dischargingNow then
         self.notDischargingSinceLoopIndex = self.notDischargingSinceLoopIndex and self.notDischargingSinceLoopIndex or g_updateLoopIndex
@@ -598,39 +587,29 @@ function AIDriveStrategyCombineCourse:isUnloadFinished()
     else
         self.notDischargingSinceLoopIndex = nil
     end
-    local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
+    local fillLevel = self.combineController:getFillLevel()
     -- unload is done when fill levels are ok (not full) and not discharging anymore (either because we
     -- are empty or the trailer is full)
     return (not self:isFull() and not discharging) or fillLevel < 0.1
 end
 
 function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
-    local fillLevelInfo = {}
-    self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
-    for fillType, info in pairs(fillLevelInfo) do
-        if self.fillLevelManager:isValidFillType(self.vehicle, fillType) then
-            local percentage = info.fillLevel / info.capacity * 100
-            if info.fillLevel >= info.capacity or percentage > (fillLevelFullPercentage or self.fillLevelFullPercentage) then
-                self:debugSparse('Full or refillUntilPct reached: %.2f', percentage)
-                return true
-            end
-            if percentage < 0.1 then
-                self.stopDisabledAfterEmpty:set(true, 2000)
-            end
-        end
+    local fillLevelPercentage = self.combineController:getFillLevelPercentage()
+    if fillLevelPercentage >= 100 or fillLevelPercentage > (fillLevelFullPercentage or self.fillLevelFullPercentage) then 
+        self:debugSparse('Full or refillUntilPct reached: %.2f', fillLevelPercentage)
+        return true
+    end
+    if fillLevelPercentage < 0.1 then
+        self.stopDisabledAfterEmpty:set(true, 2000)
     end
     return false
 end
 
 function AIDriveStrategyCombineCourse:shouldMakePocket()
-    if not self.pipe then
-        -- no pipe, no sense making a pocket (like cotton harvesters)
-        return false
-    end
     if self.fruitLeft > 0.75 and self.fruitRight > 0.75 then
         -- fruit both sides
         return true
-    elseif self.pipeOnLeftSide then
+    elseif self:isPipeOnLeft() then
         -- on the outermost headland clockwise (field edge)
         return not self.fieldOnLeft
     else
@@ -644,12 +623,12 @@ function AIDriveStrategyCombineCourse:shouldPullBack()
 end
 
 function AIDriveStrategyCombineCourse:isPipeOnLeft()
-    return self.pipeOnLeftSide
+    return self.pipeController:isPipeOnTheLeftSide()
 end
 
 function AIDriveStrategyCombineCourse:isPipeInFruit()
     -- is our pipe in the fruit?
-    if self.pipeOnLeftSide then
+    if self:isPipeOnLeft() then
         return self.fruitLeft > self.fruitRight
     else
         return self.fruitLeft < self.fruitRight
@@ -683,7 +662,8 @@ end
 
 function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
     -- calculate fill rate so the combine driver knows if it can make the next row without unloading
-    local fillLevel = self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex)
+    local fillLevel = self.combineController:getFillLevel()
+    local capacity = self.combineController:getCapacity()
     if ix > 1 then
         if self.fillLevelAtLastWaypoint and self.fillLevelAtLastWaypoint > 0 and self.fillLevelAtLastWaypoint <= fillLevel then
             local litersPerMeter = (fillLevel - self.fillLevelAtLastWaypoint) / self.course:getDistanceToNextWaypoint(ix - 1)
@@ -704,7 +684,7 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
         self.fillLevelLastCheckedTime = g_currentMission.time
         self:debug('Fill rate is %.1f l/m, %.1f l/s', self.litersPerMeter, self.litersPerSecond)
     end
-    local litersUntilFull = self.combine:getFillUnitCapacity(self.combine.fillUnitIndex) - fillLevel
+    local litersUntilFull = capacity - fillLevel
     local dUntilFull = litersUntilFull / self.litersPerMeter * 0.9  -- safety margin
     self.secondsUntilFull = self.litersPerSecond > 0 and (litersUntilFull / self.litersPerSecond) or nil
     self.waypointIxWhenFull = self.course:getNextWaypointIxWithinDistance(ix, dUntilFull) or self.course:getNumberOfWaypoints()
@@ -869,7 +849,7 @@ function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix)
         self.storage.fruitCheckHelperWpNode = WaypointNode(CpUtil.getName(self.vehicle) .. 'fruitCheckHelperWpNode')
     end
     self.storage.fruitCheckHelperWpNode:setToWaypoint(course, ix)
-    local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX)
+    local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeController:getPipeOffsetX())
     self:debugSparse('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
     return hasFruit, fruitValue
 end
@@ -1053,14 +1033,11 @@ end
 
 --- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
 function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
-    if self:isCottonHarvester() then
-        return false
-    end
     --- Enables fuel save, while waiting for the rain to stop.
     if self.combine:getIsThreshingDuringRain() then
         return true
     end
-    return not (self.pipeController and self.pipeController:isFillableTrailerUnderPipe())
+    return not self.pipeController:isFillableTrailerUnderPipe()
             and self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
@@ -1201,19 +1178,17 @@ function AIDriveStrategyCombineCourse:getFieldworkCourse()
 end
 
 function AIDriveStrategyCombineCourse:isChopper()
-    return self.combine:getFillUnitCapacity(self.combine.fillUnitIndex) > 10000000
+    return self.combineController:isChopper()
 end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Pipe handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:handlePipe(dt)
-    if self.pipeController then
-        if self:isChopper() then
-            self:handleChopperPipe()
-        else
-            self:handleCombinePipe(dt)
-        end
+    if self:isChopper() then
+        self:handleChopperPipe()
+    else
+        self:handleCombinePipe(dt)
     end
 end
 
@@ -1229,42 +1204,8 @@ end
 --- Not exactly sure what this does, but without this the chopper just won't move.
 --- Copied from AIDriveStrategyCombine:update()
 function AIDriveStrategyCombineCourse:updateChopperFillType()
-
-    -- no pipe, no discharge node
-    if self.combine.getCurrentDischargeNode == nil then
-        return
-    end
-
-    local capacity = 0
-    local dischargeNode = self.combine:getCurrentDischargeNode()
-
-    if dischargeNode ~= nil then
-        capacity = self.combine:getFillUnitCapacity(dischargeNode.fillUnitIndex)
-    end
-
-    if capacity == math.huge then
-        local rootVehicle = self.vehicle.rootVehicle
-
-        if rootVehicle.getAIFieldWorkerIsTurning ~= nil and not rootVehicle:getAIFieldWorkerIsTurning() then
-            local trailer = NetworkUtil.getObject(self.combine.spec_pipe.nearestObjectInTriggers.objectId)
-
-            if trailer ~= nil then
-                local trailerFillUnitIndex = self.combine.spec_pipe.nearestObjectInTriggers.fillUnitIndex
-                local fillType = self.combine:getDischargeFillType(dischargeNode)
-
-                if fillType == FillType.UNKNOWN then
-                    fillType = trailer:getFillUnitFillType(trailerFillUnitIndex)
-
-                    if fillType == FillType.UNKNOWN then
-                        fillType = trailer:getFillUnitFirstSupportedFillType(trailerFillUnitIndex)
-                    end
-
-                    self.combine:setForcedFillTypeIndex(fillType)
-                else
-                    self.combine:setForcedFillTypeIndex(nil)
-                end
-            end
-        end
+    if self:isChopper() then 
+        self.combineController:updateChopperFillType()
     end
 end
 
@@ -1311,7 +1252,7 @@ end
 
 
 function AIDriveStrategyCombineCourse:isPipeMoving()
-    return self.pipeController and self.pipeController:isPipeMoving()
+    return self.pipeController:isPipeMoving()
 end
 
 function AIDriveStrategyCombineCourse:canLoadTrailer(trailer)
@@ -1320,14 +1261,11 @@ function AIDriveStrategyCombineCourse:canLoadTrailer(trailer)
 end
 
 function AIDriveStrategyCombineCourse:getCurrentDischargeNode()
-    if self.combine and self.combine.getCurrentDischargeNode then
-        return self.combine:getCurrentDischargeNode()
-    end
+    return self.pipeController:getDischargeNode()
 end
 
 function AIDriveStrategyCombineCourse:getFillLevelPercentage()
-    return 100 * self.vehicle:getFillUnitFillLevel(self.combine.fillUnitIndex) /
-            self.vehicle:getFillUnitCapacity(self.combine.fillUnitIndex)
+    return self.combineController:getFillLevelPercentage()
 end
 
 --- Support for AutoDrive mod: they'll only find us if we open the pipe
@@ -1337,7 +1275,7 @@ function AIDriveStrategyCombineCourse:isAutoDriveWaitingForPipe()
 end
 
 function AIDriveStrategyCombineCourse:shouldStopForUnloading()
-    if self.settings.stopForUnload:getValue() and self.pipe then
+    if self.settings.stopForUnload:getValue() then
         if self:isDischarging() and not self.stopDisabledAfterEmpty:get() then
             -- stop only if the pipe is discharging AND we have been emptied a while ago.
             -- this makes sure the combine will start driving after it is emptied but the trailer
@@ -1349,28 +1287,18 @@ function AIDriveStrategyCombineCourse:shouldStopForUnloading()
 end
 
 function AIDriveStrategyCombineCourse:getFillType()
-    return self.pipeController and self.pipeController:getFillType()
+    return self.pipeController:getFillType()
 end
 
 -- even if there is a trailer in range, we should not start moving until the pipe is turned towards the
 -- trailer and can start discharging. This returning true does not mean there's a trailer under the pipe,
 -- this seems more like for choppers to check if there's a potential target around
 function AIDriveStrategyCombineCourse:canDischarge()
-    -- TODO: self.vehicle should be the combine, which may not be the vehicle in case of towed harvesters
-    local dischargeNode = self:getCurrentDischargeNode()
-    if dischargeNode then
-        local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
-        return targetObject
-    end
-    return false
+    return self.pipeController:getCanDischargeToObject()
 end
 
 function AIDriveStrategyCombineCourse:isDischarging()
-    local currentDischargeNode = self:getCurrentDischargeNode()
-    if currentDischargeNode then
-        return currentDischargeNode.isEffectActive
-    end
-    return false
+   return self.pipeController:isDischarging()
 end
 
 function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
@@ -1384,15 +1312,6 @@ function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
     return false
 end
 
-function AIDriveStrategyCombineCourse:isCottonHarvester()
-    for i, fillUnit in ipairs(self.vehicle:getFillUnits()) do
-        if self.vehicle:getFillUnitSupportsFillType(i, FillType.COTTON) then
-            self:debug('This is a cotton harvester.')
-            return true
-        end
-    end
-    return false
-end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
@@ -1417,7 +1336,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
 
         -- little straight section parallel to the trailer to align better
         self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
-                offsetX, -alignLength + 1, -self.pipeOffsetZ - 1, 1, false)
+                offsetX, -alignLength + 1, -self.pipeController:getPipeOffsetZ() - 1, 1, false)
 
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
         local done, path
@@ -1508,7 +1427,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
 end
 
 function AIDriveStrategyCombineCourse:continueSelfUnloadToNextTrailer()
-    local fillLevel = self.fillLevelManager:getTotalFillLevelPercentage(self.vehicle)
+    local fillLevel = self.combineController:getFillLevel()
     if fillLevel > 20 then
         self:debug('Self unloading finished, but fill level is %.1f, is there another trailer around we can unload to?', fillLevel)
         if self:startSelfUnload() then
@@ -1544,18 +1463,8 @@ function AIDriveStrategyCombineCourse:deregisterUnloader(driver, noEventSend)
     self.unloader:reset()
 end
 
---- Make life easier for unloaders, increase chopper discharge distance
-function AIDriveStrategyCombineCourse:fixDischargeDistance(dischargeNode)
-    if self:isChopper() and dischargeNode and dischargeNode.maxDistance then
-        local safeDischargeNodeMaxDistance = 40
-        if dischargeNode.maxDistance < safeDischargeNodeMaxDistance then
-            self:debug('Chopper maximum throw distance is %.1f, increasing to %.1f', dischargeNode.maxDistance, safeDischargeNodeMaxDistance)
-            dischargeNode.maxDistance = safeDischargeNodeMaxDistance
-        end
-    end
-end
-
 --- Make life easier for unloaders, increases reach of the pipe
+--- Old code ??
 function AIDriveStrategyCombineCourse:fixMaxRotationLimit()
     if self.pipe then
         local lastPipeNode = self.pipe.nodes and self.pipe.nodes[#self.pipe.nodes]
@@ -1567,6 +1476,7 @@ function AIDriveStrategyCombineCourse:fixMaxRotationLimit()
     end
 end
 
+--- Old code ??
 function AIDriveStrategyCombineCourse:resetFixMaxRotationLimit()
     if self.pipe then
         local lastPipeNode = self.pipe.nodes and self.pipe.nodes[#self.pipe.nodes]
@@ -1583,13 +1493,14 @@ end
 --- greater than 0 -> to the left, less than zero -> to the right
 ---@param additionalOffsetZ number forward (>0)/backward (<0) offset from the pipe
 function AIDriveStrategyCombineCourse:getPipeOffset(additionalOffsetX, additionalOffsetZ)
-    return self.pipeOffsetX + (additionalOffsetX or 0), self.pipeOffsetZ + (additionalOffsetZ or 0)
+    local pipeOffsetX, pipeOffsetZ = self.pipeController:getPipeOffset()
+    return pipeOffsetX + (additionalOffsetX or 0), pipeOffsetZ + (additionalOffsetZ or 0)
 end
 
 --- Pipe side offset relative to course. This is to help the unloader
 --- to find the pipe when we are waiting in a pocket
 function AIDriveStrategyCombineCourse:getPipeOffsetFromCourse()
-    return self.pipeOffsetX, self.pipeOffsetZ
+    return self.pipeController:getPipeOffset()
 end
 
 function AIDriveStrategyCombineCourse:initUnloadStates()
@@ -1721,37 +1632,6 @@ function AIDriveStrategyCombineCourse:isAboutToReturnFromPocket()
     return self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
             (self.unloadState == self.states.WAITING_FOR_UNLOADER_TO_LEAVE and
                     self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET)
-end
-
-function AIDriveStrategyCombineCourse:shouldStrawSwathBeOn(ix)
-    local strawMode = self.settings.strawSwath:getValue()
-    local headland = self.course:isOnHeadland(ix)
-    if self.combine.isSwathActive then
-        if strawMode == CpVehicleSettings.STRAW_SWATH_OFF or headland and strawMode == CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then
-            self:setStrawSwath(false)
-            self:debugSparse('straw swath should be off!')
-        end
-    else
-        if strawMode > CpVehicleSettings.STRAW_SWATH_OFF then
-            if headland and strawMode == CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then
-                return
-            end
-            self:debugSparse('straw swath should be on!')
-            self:setStrawSwath(true)
-        end
-    end
-end
-
-function AIDriveStrategyCombineCourse:setStrawSwath(enable)
-    local strawSwathCanBeEnabled = false
-    local fruitType = g_fruitTypeManager:getFruitTypeIndexByFillTypeIndex(self.vehicle:getFillUnitFillType(self.combine.fillUnitIndex))
-    if fruitType ~= nil and fruitType ~= FruitType.UNKNOWN then
-        local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitType)
-        if fruitDesc.hasWindrow then
-            strawSwathCanBeEnabled = true
-        end
-        self.vehicle:setIsSwathActive(enable and strawSwathCanBeEnabled)
-    end
 end
 
 ------------------------------------------------------------------------------------------------------------------------

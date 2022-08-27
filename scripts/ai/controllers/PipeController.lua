@@ -14,6 +14,108 @@ function PipeController:init(vehicle, implement)
     self.pipeSpec = self.implement.spec_pipe
     self.cylinderedSpec = self.implement.spec_cylindered
     self.dischargeSpec = self.implement.spec_dischargeable
+
+    self:setupMoveablePipe()
+
+    self.pipeOffsetX, self.pipeOffsetZ = 0, 0
+    self.pipeOnLeftSide = true
+    ImplementUtil.setPipeAttributes(self, self.implement)
+end
+
+function PipeController:update(dt)
+    self:updateMoveablePipe(dt)
+end
+
+function PipeController:needToOpenPipe()
+    -- some pipes are not movable (like potato harvesters)
+    return self.pipeSpec.numStates > 1
+end
+
+function PipeController:openPipe()
+    if self:needToOpenPipe() and
+            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
+            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_OPEN then
+        self:debug('Opening pipe')
+        self.implement:setPipeState(PipeController.PIPE_STATE_OPEN)
+    end
+end
+
+---@param checkForObjectsUnderPipe boolean check if there is a trigger object (like a trailer) under the pipe and
+---                                        only close if there aren't any
+function PipeController:closePipe(checkForObjectsUnderPipe)
+    local okToClose = self.pipeSpec.numObjectsInTriggers <= 0 or not checkForObjectsUnderPipe
+    if self:needToOpenPipe() and okToClose and -- only close when there are nothing under the pipe
+            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
+            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_CLOSED then
+        self:debug('Closing pipe')
+        self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED)
+    end
+end
+
+function PipeController:isPipeMoving()
+    return self:needToOpenPipe() and self.pipeSpec.currentState == PipeController.PIPE_STATE_MOVING
+end
+
+function PipeController:getFillType()
+    local dischargeNode = self.implement:getDischargeNodeByIndex(self.implement:getPipeDischargeNodeIndex())
+    if dischargeNode then
+        return self.implement:getFillUnitFillType(dischargeNode.fillUnitIndex)
+    end
+    return nil
+end
+
+
+function PipeController:isFillableTrailerUnderPipe()
+    for trailer, value in pairs(self.pipeSpec.objectsInTriggers) do
+        if value > 0 then
+            if FillLevelManager.canLoadTrailer(trailer, self:getFillType()) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+function PipeController:getPipeOffset()
+    return self.pipeOffsetX, self.pipeOffsetZ    
+end
+
+function PipeController:getPipeOffsetX()
+    return self.pipeOffsetX
+end
+
+function PipeController:getPipeOffsetZ()
+    return self.pipeOffsetZ    
+end
+
+function PipeController:isPipeOnTheLeftSide()
+    return self.pipeOnLeftSide
+end
+
+function PipeController:isDischarging()
+    return self.implement:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
+end
+
+function PipeController:getDischargeNode()
+    local ix = self.implement:getPipeDischargeNodeIndex()
+	local dischargeNode = self.implement:getDischargeNodeByIndex(ix)
+    return dischargeNode
+end
+
+function PipeController:getCanDischargeToObject()
+    local dischargeNode = self:getDischargeNode()
+    if dischargeNode then
+        local targetObject, _ = self.implement:getDischargeTargetObject(dischargeNode)
+        return targetObject
+    end
+    return false
+end
+
+--------------------------------------------------------------------
+--- Moveable pipe
+--------------------------------------------------------------------
+
+function PipeController:setupMoveablePipe()
     self.validMovingTools = {}
     if self.cylinderedSpec and self.pipeSpec.numAutoAimingStates <= 0 then
         for i, m in ipairs(self.cylinderedSpec.movingTools) do
@@ -43,7 +145,7 @@ function PipeController:init(vehicle, implement)
     self.tempNode = CpUtil.createNode("tempPipeNode", 0, 0, 0)
 end
 
-function PipeController:update(dt)
+function PipeController:updateMoveablePipe(dt)
     if self.hasPipeMovingTools then
         if self.pipeSpec.unloadingStates[self.pipeSpec.currentState] == true then
             for i, m in ipairs(self.validMovingTools) do
@@ -57,6 +159,7 @@ function PipeController:update(dt)
         end
     end
 end
+
 
 --- TODO: might be a good idea to make this variable for the trailer min height.
 function PipeController:moveDependedPipePart(tool, dt)
@@ -110,56 +213,6 @@ function PipeController:movePipeUp(tool, dt)
     curRot[1], curRot[2], curRot[3] = getRotation(tool.node)
     --self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", rotTarget, curRot[tool.rotationAxis], tool.rotMin, tool.rotMax)
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, rotTarget)
-end
-
-function PipeController:needToOpenPipe()
-    -- some pipes are not movable (like potato harvesters)
-    return self.pipeSpec.numStates > 1
-end
-
-function PipeController:openPipe()
-    if self:needToOpenPipe() and
-            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
-            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_OPEN then
-        self:debug('Opening pipe')
-        self.implement:setPipeState(PipeController.PIPE_STATE_OPEN)
-    end
-end
-
----@param checkForObjectsUnderPipe boolean check if there is a trigger object (like a trailer) under the pipe and
----                                        only close if there aren't any
-function PipeController:closePipe(checkForObjectsUnderPipe)
-    local okToClose = self.pipeSpec.numObjectsInTriggers <= 0 or not checkForObjectsUnderPipe
-    if self:needToOpenPipe() and okToClose and -- only close when there are nothing under the pipe
-            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
-            self.pipeSpec.currentState ~= PipeController.PIPE_STATE_CLOSED then
-        self:debug('Closing pipe')
-        self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED)
-    end
-end
-
-function PipeController:isPipeMoving()
-    return self:needToOpenPipe() and self.pipeSpec.currentState == PipeController.PIPE_STATE_MOVING
-end
-
-function PipeController:getFillType()
-    local dischargeNode = self.implement:getDischargeNodeByIndex(self.implement:getPipeDischargeNodeIndex())
-    if dischargeNode then
-        return self.implement:getFillUnitFillType(dischargeNode.fillUnitIndex)
-    end
-    return nil
-end
-
-
-function PipeController:isFillableTrailerUnderPipe()
-    for trailer, value in pairs(self.pipeSpec.objectsInTriggers) do
-        if value > 0 then
-            if FillLevelManager.canLoadTrailer(trailer, self:getFillType()) then
-                return true
-            end
-        end
-    end
-    return false
 end
 
 function PipeController:delete()
