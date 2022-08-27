@@ -1211,13 +1211,11 @@ end
 
 -- TODO: move this to the PipeController?
 function AIDriveStrategyCombineCourse:handleChopperPipe()
-    local trailer = NetworkUtil.getObject(self.combine.spec_pipe.nearestObjectInTriggers.objectId)
-    local currentPipeTargetState = self.combine.spec_pipe.targetState
-    if currentPipeTargetState ~= 2 then
-        self.combine:setPipeState(2)
-    end
-    local dischargeNode = self.combine:getCurrentDischargeNode()
-    local targetObject, _ = self.combine:getDischargeTargetObject(dischargeNode)
+    self.pipeController:handleChopperPipe()
+    
+    local trailer = self.pipeController:getClosestObject()
+    local dischargeNode = self.pipeController:getDischargeNode()
+    local targetObject = self.pipeController:getDischargeObject()
     self:debug('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
     if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
         self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
@@ -1294,7 +1292,7 @@ end
 -- trailer and can start discharging. This returning true does not mean there's a trailer under the pipe,
 -- this seems more like for choppers to check if there's a potential target around
 function AIDriveStrategyCombineCourse:canDischarge()
-    return self.pipeController:getCanDischargeToObject()
+    return self.pipeController:getDischargeObject()
 end
 
 function AIDriveStrategyCombineCourse:isDischarging()

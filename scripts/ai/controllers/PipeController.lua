@@ -102,7 +102,7 @@ function PipeController:getDischargeNode()
     return dischargeNode
 end
 
-function PipeController:getCanDischargeToObject()
+function PipeController:getDischargeObject()
     local dischargeNode = self:getDischargeNode()
     if dischargeNode then
         local targetObject, _ = self.implement:getDischargeTargetObject(dischargeNode)
@@ -110,6 +110,19 @@ function PipeController:getCanDischargeToObject()
     end
     return false
 end
+
+function PipeController:getClosestObject()
+    local id = self.pipeSpec.nearestObjectInTriggers.objectId
+    return id and NetworkUtil.getObject(id)
+end
+
+function PipeController:handleChopperPipe()
+    local currentPipeTargetState = self.pipeSpec.targetState
+    if currentPipeTargetState ~= 2 then
+        self.implement:setPipeState(2)
+    end
+end
+
 
 --------------------------------------------------------------------
 --- Moveable pipe
