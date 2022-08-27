@@ -148,6 +148,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
 end
 
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
+    AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
     local _
     _, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
     self.combine, self.combineController = self:addImplementController(vehicle, CombineController, Combine, {}, nil)
