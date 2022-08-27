@@ -72,14 +72,15 @@ AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength = 10
 -- Therefore, use this instead, this is safe after a reload.
 AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 
+--- Allowing of fuel save and open cover state can be set for each state below as property.
 AIDriveStrategyUnloadCombine.myStates = {
     ON_UNLOAD_COURSE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
     WAITING_FOR_COMBINE_TO_CALL = { fuelSaveAllowed = true}, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
     DRIVING_TO_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
     DRIVING_TO_MOVING_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
-    UNLOADING_MOVING_COMBINE = {},
-    UNLOADING_STOPPED_COMBINE = {},
+    UNLOADING_MOVING_COMBINE = { openCoverAllowed = true},
+    UNLOADING_STOPPED_COMBINE = { openCoverAllowed = true},
     MOVING_BACK = {vehicle = nil},
     MOVING_BACK_WITH_TRAILER_FULL = {vehicle = nil}, -- moving back from a combine we just unloaded (not assigned anymore)
     MOVING_OUT_OF_REVERSING_COMBINES_WAY = {vehicle = nil}, -- reversing as long as the combine is reversing
@@ -149,21 +150,23 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
-    --- Implement controllers
-    _, self.pipeController = self:addImplementController(self.vehicle, PipeController, Pipe, {}, nil)
-    self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
-    self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     self:resetPathfinder()
 
-    self.augerWagon = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Pipe)
     if self.augerWagon then
         ImplementUtil.setPipeAttributes(self, self.augerWagon)
         self:debug('Found an auger wagon.')
     else
         self:debug('No auger wagon found.')
     end
+end
+
+function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
+    self.augerWagon, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
+    self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
+    self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
+    self:addImplementController(vehicle, CoverController, Cover, {}, nil)
 end
 
 function AIDriveStrategyUnloadCombine:resetPathfinder()
@@ -472,8 +475,16 @@ function AIDriveStrategyUnloadCombine:releaseCombine()
     self.combineToUnload = nil
 end
 
+------------------------------------------------------------------------------------------------------------------------
+-- Implement controller handling.
+------------------------------------------------------------------------------------------------------------------------
+
 function AIDriveStrategyUnloadCombine:isFuelSaveAllowed()
 	return self.state.properties.fuelSaveAllowed
+end
+
+function AIDriveStrategyUnloadCombine:isCoverOpeningAllowed()
+    return self.state.properties.openCoverAllowed
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -1582,13 +1593,14 @@ function AIDriveStrategyUnloadCombine:debug(...)
     CpUtil.debugVehicle(self.debugChannel, self.vehicle, combineName .. ' ' .. self:getStateAsString() .. ': ' .. string.format(...))
 end
 
-function AIDriveStrategyUnloadCombine:update()
+function AIDriveStrategyUnloadCombine:update(dt)
     AIDriveStrategyUnloadCombine:superClass().update(self)
     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         if self.course then
             self.course:draw()
         end
     end
+    self:updateImplementControllers(dt)
 end
 
 function AIDriveStrategyUnloadCombine:renderText(x, y, ...)
