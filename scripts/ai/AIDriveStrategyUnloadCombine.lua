@@ -777,7 +777,12 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToMovingCombine(path, goa
     if self:isPathFound(path, goalNodeInvalid, CpUtil.getName(self.combineToUnload)) and self.state == self.states.WAITING_FOR_PATHFINDER then
         local driveToCombineCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         -- add a short straight section to align in case we get there before the combine
-        driveToCombineCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength)
+        -- pathfinding does not guarantee the last section points into the target direction so we may
+        -- end up not parallel to the combine's course when we extend the pathfinder course in the direction of the
+        -- last waypoint. Therefore, use the rendezvousWaypoint's direction instead
+        local dx = self.rendezvousWaypoint and self.rendezvousWaypoint.dx
+        local dz = self.rendezvousWaypoint and self.rendezvousWaypoint.dz
+        driveToCombineCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
         self:startCourse(driveToCombineCourse, 1)
         self:setNewState(self.states.DRIVING_TO_MOVING_COMBINE)
         return true
@@ -894,22 +899,22 @@ function AIDriveStrategyUnloadCombine:arrangeRendezvousWithCombine(d)
         return
     end
     local estimatedSecondsEnroute = d / (self.settings.fieldSpeed:getValue() / 3.6) + 3 -- add a few seconds to allow for starting the engine/accelerating
-    local rendezvousWaypoint, rendezvousWaypointIx = self.combineToUnload:getCpDriveStrategy():getUnloaderRendezvousWaypoint(estimatedSecondsEnroute, self,
+    self.rendezvousWaypoint, self.rendezvousWaypointIx = self.combineToUnload:getCpDriveStrategy():getUnloaderRendezvousWaypoint(estimatedSecondsEnroute, self,
             not self.settings.avoidFruit:getValue())
-    if rendezvousWaypoint then
+    if self.rendezvousWaypoint then
         local xOffset, zOffset = self:getPipeOffset(self.combineToUnload)
-        if self:isPathfindingNeeded(self.vehicle, rendezvousWaypoint, xOffset, zOffset, 25) then
+        if self:isPathfindingNeeded(self.vehicle, self.rendezvousWaypoint, xOffset, zOffset, 25) then
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
             -- just in case, as the combine may give us a rendezvous waypoint
             -- where it is full, make sure we are behind the combine
             zOffset = -self:getCombinesMeasuredBackDistance() - 5
             self:debug('Start pathfinding to moving combine, %d m, ETE: %d s, meet combine at waypoint %d, xOffset = %.1f, zOffset = %.1f',
-                    d, estimatedSecondsEnroute, rendezvousWaypointIx, xOffset, zOffset)
-            self:startPathfinding(rendezvousWaypoint, xOffset, zOffset,
+                    d, estimatedSecondsEnroute, self.rendezvousWaypointIx, xOffset, zOffset)
+            self:startPathfinding(self.rendezvousWaypoint, xOffset, zOffset,
                     CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload),
                     { self.combineToUnload }, self.onPathfindingDoneToMovingCombine)
         else
-            self:debug('Rendezvous waypoint %d to moving combine too close, wait a bit', rendezvousWaypointIx)
+            self:debug('Rendezvous waypoint %d to moving combine too close, wait a bit', self.rendezvousWaypointIx)
             self:startWaitingForCombine()
             return
         end
