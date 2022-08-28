@@ -1853,8 +1853,8 @@ function AIDriveStrategyCombineCourse:onBlockingVehicle(vehicle, isBack)
     else
         self:debug('Proximity sensor: blocking vehicle %s in front of us', CpUtil.getName(vehicle))
         local strategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-        if strategy and strategy.onBlockingVehicle then
-            strategy:onBlockingVehicle(self.vehicle, isBack)
+        if strategy and strategy.requestToMoveOutOfWay then
+            strategy:requestToMoveOutOfWay(self.vehicle, isBack)
         end
     end
 end
@@ -1869,8 +1869,8 @@ function AIDriveStrategyCombineCourse:checkBlockingUnloader()
         -- can't move because of the unloader, and not when we are stopped for other reasons
         self:debugSparse('Can\'t reverse, %s at %.1f m is blocking', blockingVehicle:getName(), d)
         local strategy = blockingVehicle.getCpDriveStrategy and blockingVehicle:getCpDriveStrategy()
-        if strategy and strategy.requestToMoveOutOfWay then
-            strategy:requestToMoveOutOfWay(self.vehicle)
+        if strategy and strategy.requestToBackupForReversingCombine then
+            strategy:requestToBackupForReversingCombine(self.vehicle)
         end
     end
 end

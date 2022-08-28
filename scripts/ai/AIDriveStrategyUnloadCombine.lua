@@ -83,7 +83,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     UNLOADING_STOPPED_COMBINE = { openCoverAllowed = true},
     MOVING_BACK = {vehicle = nil},
     MOVING_BACK_WITH_TRAILER_FULL = {vehicle = nil}, -- moving back from a combine we just unloaded (not assigned anymore)
-    MOVING_OUT_OF_REVERSING_COMBINES_WAY = {vehicle = nil}, -- reversing as long as the combine is reversing
+    BACKING_UP_FOR_REVERSING_COMBINE = {vehicle = nil}, -- reversing as long as the combine is reversing
     MOVING_AWAY_FROM_BLOCKING_VEHICLE = {vehicle = nil}, -- reversing until we have enough space between us and the combine
     WAITING_FOR_MANEUVERING_COMBINE = {},
     ON_UNLOAD_WITH_AUTODRIVE = {},
@@ -258,7 +258,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
         self:waitForManeuveringCombine()
 
-    elseif self.state == self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
+    elseif self.state == self.states.BACKING_UP_FOR_REVERSING_COMBINE then
         -- reversing combine asking us to move
         self:moveOutOfWay()
 
@@ -346,7 +346,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startWorking()
     elseif self.state == self.states.DRIVING_TO_MOVING_COMBINE then
         self:startCourseFollowingCombine()
-    elseif self.state == self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
+    elseif self.state == self.states.BACKING_UP_FOR_REVERSING_COMBINE then
         self:setNewState(self.stateAfterMovedOutOfWay)
         self:startRememberedCourse()
     elseif self.state == self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE then
@@ -1357,13 +1357,17 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
         return
     end
     if self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
-            self.state ~= self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY then
+            self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE then
         self:debug('%s has been blocking us for a while, move back a bit', CpUtil.getName(blockingVehicle))
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
         self:startCourse(reverseCourse, 1)
         self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
         self.state.properties.vehicle = blockingVehicle
     end
+end
+
+function AIDriveStrategyUnloadCombine:requestToMoveOutOfWay(vehicle)
+    self:onBlockingVehicle(vehicle)
 end
 
 function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
@@ -1376,14 +1380,14 @@ function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- We are blocking another vehicle who wants us to move out of way
+-- Combine is reversing and we are behind it
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:requestToMoveOutOfWay(blockedVehicle)
+function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blockedVehicle)
     if not self.vehicle:getIsCpActive() then
         return
     end
     self:debug('%s wants me to move out of way', blockedVehicle:getName())
-    if self.state ~= self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY and
+    if self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE and
             self.state ~= self.states.MOVING_BACK and
             self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
             self.state ~= self.states.MOVING_BACK_WITH_TRAILER_FULL
@@ -1396,7 +1400,7 @@ function AIDriveStrategyUnloadCombine:requestToMoveOutOfWay(blockedVehicle)
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
         self:startCourse(reverseCourse, 1)
         self:debug('Moving out of the way for %s', blockedVehicle:getName())
-        self:setNewState(self.states.MOVING_OUT_OF_REVERSING_COMBINES_WAY)
+        self:setNewState(self.states.BACKING_UP_FOR_REVERSING_COMBINE)
         self.state.properties.vehicle = blockedVehicle
         -- this state ends when we reach the end of the course or when the combine stops reversing
     else
