@@ -732,7 +732,7 @@ function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
     if nextRowStartIx and closeToTurn and
         self.agreedUnloaderRendezvousWaypointIx and
             nextRowStartIx > self.agreedUnloaderRendezvousWaypointIx then
-        self:debug('shouldWaitAtEndOfRow: CLoser than %.1f m to a turn and rendezvous waypoint %d is before the turn, waiting for the unloader here',
+        self:debug('shouldWaitAtEndOfRow: Closer than %.1f m to a turn and rendezvous waypoint %d is before the turn, waiting for the unloader here',
                 AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, self.agreedUnloaderRendezvousWaypointIx)
         return true
     end

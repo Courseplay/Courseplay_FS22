@@ -1157,6 +1157,8 @@ function AIDriveStrategyUnloadCombine:driveToCombine()
 
     self:setFieldSpeed()
 
+    self.combineToUnload:getCpDriveStrategy():reconfirmRendezvous()
+
     if self:isOkToStartUnloadingCombine() then
         self:startUnloadingCombine()
     end
@@ -1169,7 +1171,7 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
 
     self:checkForCombineProximity()
 
-    self:setInfoText("DRIVING_TO_COMBINE");
+    self:setInfoText("DRIVING_TO_MOVING_COMBINE");
 
     self:setFieldSpeed()
 
