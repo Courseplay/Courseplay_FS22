@@ -1579,9 +1579,10 @@ end
 -- Unload the auger wagon into the trailer
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:unloadAugerWagon()
-    local currentDischargeNode = self.augerWagon:getCurrentDischargeNode()
+
     self:setMaxSpeed(0)
 
+    local currentDischargeNode = self.augerWagon:getCurrentDischargeNode()
     if not self.augerWagon:getCanDischargeToObject(currentDischargeNode) then
         self:debug('Unloading to trailer ended')
         self.pipeController:closePipe(false)
