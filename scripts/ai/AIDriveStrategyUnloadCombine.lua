@@ -153,17 +153,11 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     self:resetPathfinder()
-
-    if self.augerWagon then
-        ImplementUtil.setPipeAttributes(self, self.augerWagon)
-        self:debug('Found an auger wagon.')
-    else
-        self:debug('No auger wagon found.')
-    end
 end
 
 function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
     self.augerWagon, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
+    self:debug('Auger wagon found: %s', self.augerWagon ~= nil)
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     self:addImplementController(vehicle, CoverController, Cover, {}, nil)
@@ -1500,7 +1494,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
                 -- TODO: this is just a shot in the dark there should be a better way to find out what we have in
                 -- the trailer
                 self.augerWagon:getFillUnitFirstSupportedFillType(1),
-                self)
+                self.pipeController)
 
         if not self.selfUnloadTargetNode then
             return false
@@ -1508,7 +1502,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
 
         -- little straight section parallel to the trailer to align better
         self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, self.selfUnloadTargetNode,
-                offsetX, -alignLength + 1, -self.pipeOffsetZ - 1, 1, false)
+                offsetX, -alignLength + 1, -self.pipeController:getPipeOffsetZ() - 1, 1, false)
 
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
