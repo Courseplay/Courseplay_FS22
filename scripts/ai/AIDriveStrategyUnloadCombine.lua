@@ -1494,7 +1494,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
                 -- TODO: this is just a shot in the dark there should be a better way to find out what we have in
                 -- the trailer
                 self.augerWagon:getFillUnitFirstSupportedFillType(1),
-                self)
+                self.pipeController)
 
         if not self.selfUnloadTargetNode then
             return false

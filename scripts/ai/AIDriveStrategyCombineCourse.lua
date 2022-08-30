@@ -1327,7 +1327,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
         local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(self.fieldWorkCourse:getFieldPolygon(),
                 self.vehicle,
                 self:getFillType(),
-                self)
+                self.pipeController)
 
         if not targetNode then
             return false
