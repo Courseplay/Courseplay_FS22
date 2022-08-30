@@ -406,8 +406,7 @@ end
 ---(x > 0 left, z > 0 forward) corrected with the manual offset settings
 function AIDriveStrategyUnloadCombine:getPipeOffset(combine)
     -- TODO: unloader offset
-    --return combine:getCpDriveStrategy():getPipeOffset(-self.settings.combineOffsetX:get(), self.settings.combineOffsetZ:get())
-    return combine:getCpDriveStrategy():getPipeOffset(0, 0)
+    return combine:getCpDriveStrategy():getPipeOffset(-self.settings.toolOffsetX:getValue(), self.settings.toolOffsetZ:getValue())
 end
 
 function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
@@ -1502,7 +1501,9 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
 
         -- little straight section parallel to the trailer to align better
         self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, self.selfUnloadTargetNode,
-                offsetX, -alignLength + 1, -self.pipeController:getPipeOffsetZ() - 1, 1, false)
+                offsetX, -alignLength + 1,
+                -self.pipeController:getPipeOffsetZ() - self.settings.toolOffsetZ:getValue() - 1,
+                1, false)
 
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
