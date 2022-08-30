@@ -263,7 +263,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
             self.unloadState == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK or
             self.unloadState == self.states.UNLOADING_BEFORE_STARTING_NEXT_ROW then
-        if self.combineController:isUnloadFinished() then
+        if self:isUnloadFinished() then
             -- reset offset to return to the original up/down row after we unloaded in the pocket
             self.aiOffsetX = 0
 
@@ -360,7 +360,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         end
     elseif self.unloadState == self.states.SELF_UNLOADING then
         self:setMaxSpeed(0)
-        if self.combineController:isUnloadFinished() then
+        if self:isUnloadFinished() then
             if not self:continueSelfUnloadToNextTrailer() then
                 self:debug('Self unloading finished, returning to fieldwork')
                 self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
@@ -376,7 +376,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         end
     elseif self.unloadState == self.states.SELF_UNLOADING_AFTER_FIELDWORK_ENDED then
         self:setMaxSpeed(0)
-        if self.combineController:isUnloadFinished() then
+        if self:isUnloadFinished() then
             if not self:continueSelfUnloadToNextTrailer() then
                 self:debug('Self unloading finished after fieldwork ended, finishing fieldwork')
                 AIDriveStrategyCombineCourse.superClass().finishFieldWork(self)
@@ -574,6 +574,24 @@ function AIDriveStrategyCombineCourse:reconfirmRendezvous()
         -- ok, we'll wait another 30 seconds
         self.waitingForUnloaderAtEndOfRow:set(true, 30000)
     end
+end
+
+function AIDriveStrategyCombineCourse:isUnloadFinished()
+    local discharging = true
+    local dischargingNow = self:isDischarging()
+    --wait for 10 frames before taking discharging as false
+    if not dischargingNow then
+        self.notDischargingSinceLoopIndex = self.notDischargingSinceLoopIndex and self.notDischargingSinceLoopIndex or g_updateLoopIndex
+        if g_updateLoopIndex - self.notDischargingSinceLoopIndex > 10 then
+            discharging = false
+        end
+    else
+        self.notDischargingSinceLoopIndex = nil
+    end
+    local fillLevel = self.combineController:getFillLevel()
+    -- unload is done when fill levels are ok (not full) and not discharging anymore (either because we
+    -- are empty or the trailer is full)
+    return (not self:isFull() and not discharging) or fillLevel < 0.1
 end
 
 function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
