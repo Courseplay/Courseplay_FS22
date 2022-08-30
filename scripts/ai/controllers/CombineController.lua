@@ -120,11 +120,6 @@ function CombineController:setStrawSwath(enable)
     end
 end
 
-function CombineController:isUnloadFinished()
-    local currentDischargeNode = self.implement:getCurrentDischargeNode()
-    return not self.implement:getCanDischargeToObject(currentDischargeNode)
-end
-
 -------------------------------------------------------------
 --- Chopper
 -------------------------------------------------------------
