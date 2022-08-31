@@ -787,6 +787,11 @@ end
 ---@return Waypoint, number, number waypoint to meet the unloader, index of waypoint, time we need to reach that waypoint
 function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEstimatedSecondsEnroute, unloadAIDriver, isPipeInFruitAllowed)
 
+    if not self:isWillingToRendezvous() then
+        self:debug('Rendezvous request: rejected, no unloading in current state')
+        return nil, 0, 0
+    end
+
     local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self.vehicle:getSpeedLimit(true) / 3.6
     -- this is where we'll be when the unloader gets here
     local unloaderRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
@@ -808,7 +813,7 @@ function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEsti
         self.agreedUnloaderRendezvousWaypointIx, unloaderEstimatedSecondsEnroute
     else
         self:cancelRendezvous()
-        self:debug('Rendezvous with unloader rejected')
+        self:debug('Rendezvous request: rejected, could not find a good location')
         return nil, 0, 0
     end
 end
