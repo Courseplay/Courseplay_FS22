@@ -39,7 +39,7 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
             local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(otherVehicle)
             local myFieldNum = CpFieldUtil.getFieldNumUnderVehicle(myVehicle)
             local x, _, z = getWorldTranslation(otherVehicle.rootNode)
-            local closestDistance = self:getClosestDistanceToFieldEdge(fieldPolygon, x, z)
+            local closestDistance = CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z)
             local lastSpeed = rootVehicle:getLastSpeed()
             local isCpActive = rootVehicle.getIsCpActive and rootVehicle:getIsCpActive()
             CpUtil.debugVehicle(self.debugChannel, myVehicle,
@@ -72,15 +72,6 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
         CpUtil.infoVehicle(myVehicle, 'Found no trailer to unload to.')
         return nil
     end
-end
-
-function SelfUnloadHelper:getClosestDistanceToFieldEdge(fieldPolygon, x, z)
-    local closestDistance = math.huge
-    for _, p in ipairs(fieldPolygon) do
-        local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
-        closestDistance = d < closestDistance and d or closestDistance
-    end
-    return closestDistance
 end
 
 function SelfUnloadHelper:findBestFillNode(myVehicle, fillRootNode, offset)

@@ -51,6 +51,10 @@
 			<Text language="de"><![CDATA[Ziel ist nicht auf einem Feld.]]></Text>
 			<Text language="en"><![CDATA[Target is not on a field.]]></Text>
 		</Translation>
+		<Translation name="CP_error_unloader_to_far_away_from_field">
+			<Text language="de"><![CDATA[Abfahrer ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Unloader to far away from the field.]]></Text>
+		</Translation>
 		<Translation name="CP_error_giants_unloader_not_available">
 			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>

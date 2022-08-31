@@ -113,6 +113,15 @@ function CpMathUtil.isPointInPolygon(polygon, x, z)
 	return pointInPolygon ~= -1
 end
 
+function CpMathUtil.getClosestDistanceToPolygonEdge(polygon, x, z)
+    local closestDistance = math.huge
+    for _, p in ipairs(polygon) do
+        local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
+        closestDistance = d < closestDistance and d or closestDistance
+    end
+    return closestDistance
+end
+
 --- Get the area of polygon in square meters
 ---@param polygon [] array elements can be {x, z}, {x, y, z} or {x, y}
 function CpMathUtil.getAreaOfPolygon(polygon)
