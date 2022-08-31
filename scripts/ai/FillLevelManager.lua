@@ -276,11 +276,16 @@ function FillLevelManager:getMixerWagonFillLevelForFillTypes(object,fillType)
     end
 end
 
+----------------------------------------------------------------------------------------------------------
+--- Trailer util functions.
+----------------------------------------------------------------------------------------------------------
+
 --- Can load this fill type into the trailer?
 ---@param trailer table
 ---@param fillType number
 ---@return boolean true if this trailer has capacity for fill type
 ---@return number free capacity
+---@return number fill unit index
 function FillLevelManager.canLoadTrailer(trailer, fillType)
     if fillType then
         local fillUnits = trailer:getFillUnits()
@@ -295,3 +300,61 @@ function FillLevelManager.canLoadTrailer(trailer, fillType)
     return false, 0
 end
 
+--- Are all trailers full ? Using the total capacity mass adjusted.
+---@param vehicle table
+---@param fullThreshold number optional threshold
+---@return boolean
+function FillLevelManager.areAllTrailersFull(vehicle, fullThreshold)
+    fullThreshold = fullThreshold or 0
+    local totalFillLevel, totalCapacity, totalCapacityMassAdjusted =  FillLevelManager.getAllTrailerFillLevels(vehicle)
+    return totalCapacityMassAdjusted - totalFillLevel < fullThreshold
+end
+
+--- Gets the total fill level percentage and total fill level percentage adjusted to the max fill volume mass adjusted.
+---@param vehicle table
+---@return number total fill level percentage in %
+---@return number total fill level percentage in % relative to max mass adjusted capacity.
+function FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
+    local totalFillLevel, totalCapacity, totalCapacityMassAdjusted =  FillLevelManager.getAllTrailerFillLevels(vehicle)
+    return 100 * totalFillLevel / totalCapacity, 100 * totalFillLevel / totalCapacityMassAdjusted
+end
+
+--- Gets the total fill level, capacity and mass adjusted capacity of all trailers.
+---@param vehicle table
+---@return number total fill level 
+---@return number total capacity
+---@return number total capacity mass adjusted
+function FillLevelManager.getAllTrailerFillLevels(vehicle)
+    local totalFillLevel, totalCapacity, totalCapacityMassAdjusted = 0, 0, 0
+    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Trailer, nil) 
+    for i, trailer in ipairs(trailers) do 
+        local fillLevel, capacity, capacityMassAdjusted = FillLevelManager.getTrailerFillLevels(trailer)
+        totalCapacityMassAdjusted = totalCapacityMassAdjusted + capacityMassAdjusted
+        totalFillLevel = totalFillLevel + fillLevel
+        totalCapacity = totalCapacity + capacity
+    end
+    return totalFillLevel, totalCapacity, totalCapacityMassAdjusted
+end
+
+--- Gets the total fill level, capacity and mass adjusted capacity of a trailer.
+---@param trailer table
+---@return number total fill level 
+---@return number total capacity
+---@return number total capacity mass adjusted
+function FillLevelManager.getTrailerFillLevels(trailer)
+    local totalFillLevel, totalCapacity, totalCapacityMassAdjusted = 0, 0, 0
+    local spec = trailer.spec_dischargeable
+    local fillUnitsUsed = {}
+    for i, dischargeNode in pairs( spec.dischargeNodes) do 
+        local fillUnitIndex = dischargeNode.fillUnitIndex
+        if not fillUnitsUsed[fillUnitIndex] then
+            local freeCapacity = trailer:getFillUnitFreeCapacity(fillUnitIndex)
+            local fillLevel = trailer:getFillUnitFillLevel(fillUnitIndex)
+            totalCapacityMassAdjusted = totalCapacityMassAdjusted + freeCapacity + fillLevel
+            totalFillLevel = totalFillLevel + fillLevel
+            totalCapacity = totalCapacity + trailer:getFillUnitCapacity(fillUnitIndex)
+            fillUnitsUsed[fillUnitIndex] = true
+        end
+    end
+    return totalFillLevel, totalCapacity, totalCapacityMassAdjusted
+end
