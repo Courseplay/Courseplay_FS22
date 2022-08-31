@@ -107,7 +107,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
         maxSpeed = 0
         self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
-        if vehicle == self.blockingVehicle:get() then
+        if vehicle ~= nil and vehicle == self.blockingVehicle:get() then
             -- have been blocked by this guy long enough, try to recover
             CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
                     '%s has been blocking us for a while at %.1f m', CpUtil.getName(vehicle), d)
