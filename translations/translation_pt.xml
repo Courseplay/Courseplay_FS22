@@ -18,6 +18,7 @@
     <text name="CP_error_no_course" text="Gerar um curso antes de iniciar o trabalho."/>
     <text name="CP_error_could_not_generate_course" text="Não foi possível gerar o curso. O log pode ter mais informações."/>
     <text name="CP_error_not_on_field" text="O alvo não está em um campo."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
