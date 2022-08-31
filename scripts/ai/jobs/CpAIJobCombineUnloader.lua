@@ -4,7 +4,8 @@ CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
 	translations = {
 		jobName = "CP_job_combineUnload"
-	}
+	},
+	minStartDistanceToField = 20
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork)
 
@@ -171,6 +172,17 @@ function CpAIJobCombineUnloader:validate(farmId)
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
+
+	if isValid and self.isDirectStart then 
+		--- Checks the distance for starting with the hud, as a safety check.
+		--- Alternative consider using the start position marker and not the root vehicle.
+		local x, _, z = getWorldTranslation(vehicle.rootNode)
+		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		if not isValid then 
+			return false, g_i18n:getText("CP_error_unloader_to_far_away_from_field")
+		end
+	end
 
 	--- Giants unload 
 	if self.cpJobParameters.useGiantsUnload:getValue() then 
