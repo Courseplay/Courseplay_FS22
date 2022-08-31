@@ -350,6 +350,10 @@ function CpBaseHud:init(vehicle)
                                                             self.vehicle:startCpCombineUnloaderUnloading()
                                                         end, self.vehicle)                      
 
+    --- Giants unloading station
+    local x, y = unpack(self.lines[6].left)
+    self.giantsUnloadStationText = CpTextHudElement.new(self.combineUnloaderLayout , x , y, self.defaultFontSize)                 
+
     --- Goal button.
     local width, height = getNormalizedScreenValues(37, 37)    
     local goalOverlay = CpGuiUtil.createOverlay({width, height},
@@ -616,6 +620,11 @@ function CpBaseHud:draw(status)
     local fullThreshold = self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold
     self.fullThresholdBtn:setTextDetails(fullThreshold:getTitle(), fullThreshold:getString())
     self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
+
+    local useGiantsUnload = self.vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload
+    self.giantsUnloadStationText:setVisible(useGiantsUnload:getValue())
+    local giantsUnloadStation = self.vehicle:getCpCombineUnloaderJobParameters().unloadingStation
+    self.giantsUnloadStationText:setTextDetails(giantsUnloadStation:getString())
 
     local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
     self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())

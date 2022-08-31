@@ -40,8 +40,8 @@ function CpAICombineUnloader.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpCombineUnloader", CpAICombineUnloader.getCanStartCpCombineUnloader)
     SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderJobParameters", CpAICombineUnloader.getCpCombineUnloaderJobParameters)
 
-    SpecializationUtil.registerFunction(vehicleType, "setCpCombineUnloaderFieldPosition", CpAICombineUnloader.setCpCombineUnloaderFieldPosition)
-    SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderFieldPosition", CpAICombineUnloader.getCpCombineUnloaderFieldPosition)
+    SpecializationUtil.registerFunction(vehicleType, "applyCpCombineUnloaderJobParameters", CpAICombineUnloader.applyCpCombineUnloaderJobParameters)
+    SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderJob", CpAICombineUnloader.getCpCombineUnloaderJob)
 end
 
 function CpAICombineUnloader.registerOverwrittenFunctions(vehicleType)
@@ -172,12 +172,13 @@ function CpAICombineUnloader:startCpCombineUnloaderUnloading()
     print("Drive now!")
 end
 
-function CpAICombineUnloader:setCpCombineUnloaderFieldPosition(x, z)
+function CpAICombineUnloader:applyCpCombineUnloaderJobParameters(job)
     local spec = self.spec_cpAICombineUnloader
-    spec.cpJob:setFieldPositionTarget(x, z)
+    spec.cpJob:getCpJobParameters():validateSettings()
+    spec.cpJob:copyFrom(job)
 end
 
-function CpAICombineUnloader:getCpCombineUnloaderFieldPosition()
+function CpAICombineUnloader:getCpCombineUnloaderJob()
     local spec = self.spec_cpAICombineUnloader
-    return spec.cpJob:getFieldPositionTarget()
+    return spec.cpJob
 end
