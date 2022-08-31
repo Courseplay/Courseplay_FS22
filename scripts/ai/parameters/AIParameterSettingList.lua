@@ -476,9 +476,9 @@ end
 --- Copy the value to another setting.
 function AIParameterSettingList:copy(setting)
 	if self.data.incremental and self.data.incremental ~= 1 then 
-		self:setFloatValue(setting.values[self.current])
+		self:setFloatValue(setting.values[setting.current])
 	else 
-		self:setValue(setting.values[self.current])
+		self:setValue(setting.values[setting.current])
 	end
 end
 
