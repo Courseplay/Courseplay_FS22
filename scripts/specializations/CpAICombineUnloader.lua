@@ -169,7 +169,8 @@ end
 
 --- Forces the driver to unload now.
 function CpAICombineUnloader:startCpCombineUnloaderUnloading()
-    print("Drive now!")
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Drive unload now requested')
+    self:getCpDriveStrategy():requestDriveUnloadNow()
 end
 
 function CpAICombineUnloader:applyCpCombineUnloaderJobParameters(job)
