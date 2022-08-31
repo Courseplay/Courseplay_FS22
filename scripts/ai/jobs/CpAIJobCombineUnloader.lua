@@ -309,34 +309,24 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	if not self.cpJobParameters.useGiantsUnload:getValue() then 
 		return CpAIJobCombineUnloader:superClass().getStartTaskIndex(self)
 	end
-	--- Giants unload, find the best starting task.
-	local hasOneEmptyFillUnit = false
+	local vehicle = self:getVehicle()
+	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
 
-	for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
-		local vehicle = dischargeNodeInfo.vehicle
-		local fillUnitIndex = dischargeNodeInfo.dischargeNode.fillUnitIndex
-
-		if vehicle:getFillUnitFillLevel(fillUnitIndex) == 0 then
-			hasOneEmptyFillUnit = true
-
-			break
-		end
-	end
-
+	local readyToDriveUnloading = self.cpJobParameters.fullThreshold:getValue() < fillLevelPercentage
+	
 	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
 	local tx, tz = self.positionAngleParameter:getPosition()
 	local targetReached = math.abs(x - tx) < 1 and math.abs(z - tz) < 1
 
 	if targetReached then
-		if not hasOneEmptyFillUnit then
+		if readyToDriveUnloading then
 			self.combineUnloaderTask:skip()
 		end
-
 		return self.combineUnloaderTask.taskIndex
 	end
 
-	if not hasOneEmptyFillUnit then
+	if readyToDriveUnloading then
 		self.driveToTask:skip()
 		self.combineUnloaderTask:skip()
 	end
