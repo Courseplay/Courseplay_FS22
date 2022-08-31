@@ -353,6 +353,10 @@ function CpBaseHud:init(vehicle)
     --- Giants unloading station
     local x, y = unpack(self.lines[6].left)
     self.giantsUnloadStationText = CpTextHudElement.new(self.combineUnloaderLayout , x , y, self.defaultFontSize)                 
+    self.giantsUnloadStationText:setCallback("onClickPrimary", self.vehicle, 
+    function(vehicle)
+        vehicle:getCpCombineUnloaderJobParameters().unloadingStation:setNextItem()
+    end)
 
     --- Goal button.
     local width, height = getNormalizedScreenValues(37, 37)    
@@ -623,6 +627,7 @@ function CpBaseHud:draw(status)
 
     local useGiantsUnload = self.vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload
     self.giantsUnloadStationText:setVisible(useGiantsUnload:getValue())
+    self.giantsUnloadStationText:setDisabled(not useGiantsUnload:getValue())
     local giantsUnloadStation = self.vehicle:getCpCombineUnloaderJobParameters().unloadingStation
     self.giantsUnloadStationText:setTextDetails(giantsUnloadStation:getString())
 
