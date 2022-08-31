@@ -110,6 +110,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.timeToCheckCombines = CpTemporaryObject(true)
     self.vehicleInFrontOfUS = CpTemporaryObject()
     self.blockedVehicleReversing = CpTemporaryObject(false)
+    self.driveUnloadNowRequested = CpTemporaryObject(false)
     self:resetPathfinder()
     return self
 end
@@ -216,7 +217,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WAITING_FOR_COMBINE_TO_CALL then
         self:setMaxSpeed(0)
 
-        if self:getDriveUnloadNow() or self:getAllTrailersFull() then
+        if self:isDriveUnloadNowRequested() or self:getAllTrailersFull() then
             self:startUnloadingTrailers()
         end
 
@@ -422,23 +423,21 @@ function AIDriveStrategyUnloadCombine:getFillLevelPercentage()
    return FillLevelManager.getTotalTrailerFillLevelPercentage(self.vehicle)
 end
 
-function AIDriveStrategyUnloadCombine:shouldDriveOn()
-    return self:getFillLevelPercentage() > self:getDriveOnThreshold()
-end
-
-function AIDriveStrategyUnloadCombine:getDriveUnloadNow()
-    --return self.settings.driveUnloadNow:get()
+function AIDriveStrategyUnloadCombine:isDriveUnloadNowRequested()
+    if self.driveUnloadNowRequested:get() then
+        self.driveUnloadNowRequested:reset()
+        self:debug('User requested drive unload now')
+        return true
+    end
     return false
 end
 
-function AIDriveStrategyUnloadCombine:setDriveUnloadNow(driveUnloadNow)
-    --self.settings.driveUnloadNow:set(driveUnloadNow)
-    --self:refreshHUD()
-end
-
-function AIDriveStrategyUnloadCombine:getDriveOnThreshold()
-    -- TODO
-    return 100
+--- Request to start unloading the trailer at our earliest convenience. We won't directly start it from
+--- here, just set this flag, as we may be in the middle of something, or may want to back up before
+--- starting on the (self)unload course.
+function AIDriveStrategyUnloadCombine:requestDriveUnloadNow()
+    -- will reset automatically after a second so we don't have to worry about it getting stuck :)
+    self.driveUnloadNowRequested:set(true, 1000)
 end
 
 function AIDriveStrategyUnloadCombine:releaseCombine()
@@ -1072,8 +1071,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:changeToUnloadWhenTrailerFull()
     --when trailer is full then go to unload
-    if self:getDriveUnloadNow() or self:getAllTrailersFull() then
-        if self:getDriveUnloadNow() then
+    if self:isDriveUnloadNowRequested() or self:getAllTrailersFull() then
+        if self:isDriveUnloadNowRequested() then
             self:debug('drive now requested, changing to unload course.')
         else
             self:debug('trailer full, changing to unload course.')
