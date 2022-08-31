@@ -164,6 +164,7 @@ function FillLevelManager:getAllFillLevels(object, fillLevelInfo)
             if not fillLevelInfo[fillType] then fillLevelInfo[fillType] = {fillLevel=0, capacity=0} end
             fillLevelInfo[fillType].fillLevel = fillLevelInfo[fillType].fillLevel + fillUnit.fillLevel
             fillLevelInfo[fillType].capacity = fillLevelInfo[fillType].capacity + fillUnit.capacity
+            fillLevelInfo[fillType].weightLimitReached = object:getMaxComponentMassReached()
             --used to check treePlanter fillLevel
             local treePlanterSpec = object.spec_treePlanter
             if treePlanterSpec then

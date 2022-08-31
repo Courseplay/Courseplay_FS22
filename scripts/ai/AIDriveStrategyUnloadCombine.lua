@@ -387,6 +387,7 @@ function AIDriveStrategyUnloadCombine:getTrailersTargetNode()
             end
         else
             self:debugSparse('Combine says it can\'t load trailer')
+            --TODO: maybe then send the unloader away if activated?
         end
     else
         self:debugSparse('Can\'t find trailer')
@@ -417,7 +418,7 @@ function AIDriveStrategyUnloadCombine:getAllTrailersFull()
     local fillLevelInfo = {}
     self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
     for fillType, info in pairs(fillLevelInfo) do
-        if self.fillLevelManager:isValidFillType(self.vehicle, fillType) and info.fillLevel < info.capacity then
+        if self.fillLevelManager:isValidFillType(self.vehicle, fillType) and info.fillLevel < info.capacity and not info.weightLimitReached then
             -- not fuel and not full, so not all full...
             -- TODO: this assumes that other than diesel, air, etc. the only fill type we have is the one the
             -- combine is harvesting. Could consider the combine's fill type but that sometimes is UNKNOWN
