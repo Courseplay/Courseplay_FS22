@@ -413,31 +413,12 @@ function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
 end
 
 function AIDriveStrategyUnloadCombine:getAllTrailersFull()
-    local fillLevelInfo = {}
-    self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
-    for fillType, info in pairs(fillLevelInfo) do
-        if self.fillLevelManager:isValidFillType(self.vehicle, fillType) and info.fillLevel < info.capacity then
-            -- not fuel and not full, so not all full...
-            -- TODO: this assumes that other than diesel, air, etc. the only fill type we have is the one the
-            -- combine is harvesting. Could consider the combine's fill type but that sometimes is UNKNOWN
-            return false
-        end
-    end
-    return true
+    return FillLevelManager.areAllTrailersFull(self.vehicle, 0)
 end
 
---- Fill level in %. Assumes all trailers have the same fill type
+--- Fill level in %.
 function AIDriveStrategyUnloadCombine:getFillLevelPercentage()
-    local fillLevelInfo = {}
-    local totalFillLevel, totalCapacity = 0, 0
-    self.fillLevelManager:getAllFillLevels(self.vehicle, fillLevelInfo)
-    for fillType, info in pairs(fillLevelInfo) do
-        if self.fillLevelManager:isValidFillType(self.vehicle, fillType) then
-            totalFillLevel = info.fillLevel
-            totalCapacity = info.capacity
-        end
-    end
-    return totalFillLevel / totalCapacity * 100
+   return FillLevelManager.getTotalTrailerFillLevelPercentage(self.vehicle)
 end
 
 function AIDriveStrategyUnloadCombine:shouldDriveOn()

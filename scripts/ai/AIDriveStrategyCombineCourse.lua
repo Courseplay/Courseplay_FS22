@@ -439,7 +439,7 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyCombineCourse:onLastWaypointPassed()
-    local fillLevel = self.fillLevelManager:getTotalFillLevelAndCapacity(self.vehicle)
+    local fillLevel = self.combineController:getFillLevel()
     if self.state == self.states.UNLOADING_ON_FIELD then
         if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
             self:debug('Pull back finished, returning to fieldwork')
