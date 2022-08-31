@@ -387,6 +387,7 @@ function AIDriveStrategyUnloadCombine:getTrailersTargetNode()
             end
         else
             self:debugSparse('Combine says it can\'t load trailer')
+            --TODO: maybe then send the unloader away if activated?
         end
     else
         self:debugSparse('Can\'t find trailer')
