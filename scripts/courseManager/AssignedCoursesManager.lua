@@ -41,13 +41,18 @@ function AssignedCoursesManager:saveAssignedCourses(savegameDir)
 	for _,vehicle in pairs(self.vehicles) do 
 		--- Checks if the vehicle has courses.
 		if vehicle:hasCpCourse() then
-			local key = string.format("%s(%d)", self.baseXmlKey, ix)
-			xmlFile:setValue(key.."#name", vehicle:getName())
-			vehicle:saveAssignedCpCourses(xmlFile, key..".Course")
-			--- Sets a unique ID to the vehicle, so the assigned courses can be loaded correctly into the vehicle.
-			--- This ID is saved in the CpCourseManager Spec.
-			vehicle:setCpAssignedCoursesID(ix)
-			ix = ix + 1
+			local courses = vehicle:getCpCourses()
+			--- Safety check, as it might happen, 
+			--- that a vehicle has a course without waypoints for some reason.
+			if courses[1] and courses[1].waypoints and #courses[1].waypoints > 0 then
+				local key = string.format("%s(%d)", self.baseXmlKey, ix)
+				xmlFile:setValue(key.."#name", vehicle:getName())
+				vehicle:saveAssignedCpCourses(xmlFile, key..".Course")
+				--- Sets a unique ID to the vehicle, so the assigned courses can be loaded correctly into the vehicle.
+				--- This ID is saved in the CpCourseManager Spec.
+				vehicle:setCpAssignedCoursesID(ix)
+				ix = ix + 1
+			end
 		end
 	end
 	xmlFile:save()
