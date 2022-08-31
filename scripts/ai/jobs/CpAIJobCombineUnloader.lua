@@ -70,8 +70,9 @@ function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDi
 			x, z = lastJob.fieldPositionParameter:getPosition()
 		end
 	end
+	self:copyFrom(vehicle:getCpCombineUnloaderJob())
 
-	x, z = vehicle:getCpCombineUnloaderFieldPosition()
+	x, z = self.fieldPositionParameter:getPosition()
 
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
@@ -165,8 +166,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 	end
 	local vehicle = self.vehicleParameter:getVehicle()
 	if vehicle then 
-		local x, z = self.fieldPositionParameter:getPosition()
-		vehicle:setCpCombineUnloaderFieldPosition(x, z)
+		vehicle:applyCpCombineUnloaderJobParameters(self)
 	end
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
@@ -344,4 +344,10 @@ end
 
 function CpAIJobCombineUnloader:getIsLooping()
 	return true
+end
+
+function CpAIJobCombineUnloader:copyFrom(job)
+	self.cpJobParameters:copyFrom(job.cpJobParameters)
+	local x, z = job:getFieldPositionTarget()
+	self.fieldPositionParameter:setValue(x, z)
 end

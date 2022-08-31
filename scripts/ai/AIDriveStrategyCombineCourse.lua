@@ -439,7 +439,7 @@ end
 
 --- Called when the last waypoint of a course is passed
 function AIDriveStrategyCombineCourse:onLastWaypointPassed()
-    local fillLevel = self.fillLevelManager:getTotalFillLevelAndCapacity(self.vehicle)
+    local fillLevel = self.combineController:getFillLevel()
     if self.state == self.states.UNLOADING_ON_FIELD then
         if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
             self:debug('Pull back finished, returning to fieldwork')
@@ -699,10 +699,12 @@ function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
     local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
     local distanceToNextTurn = self.course:getDistanceToNextTurn(lastPassedWaypointIx) or math.huge
     local closeToTurn = distanceToNextTurn < AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow
+    self:checkFruit()
     -- If close to the end of the row and the pipe would be in the fruit after the turn, and our fill level is high,
-    -- we always wait here for an unloader, regardless of having a rendezvous or not
+    -- we always wait here for an unloader, regardless of having a rendezvous or not (unless we have our pipe in fruit here)
     if nextRowStartIx and closeToTurn and
-            self:isPipeInFruitAtWaypointNow(self.course, nextRowStartIx) and
+            self.course:isPipeInFruitAt(nextRowStartIx) and
+            not self:isPipeInFruit() and
             self:isFull(AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold) then
         self:debug('shouldWaitAtEndOfRow: Closer than %.1f m to a turn, pipe would be in fruit after turn at %d, fill level over %.1f',
                 AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, nextRowStartIx,
@@ -787,6 +789,11 @@ end
 ---@return Waypoint, number, number waypoint to meet the unloader, index of waypoint, time we need to reach that waypoint
 function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEstimatedSecondsEnroute, unloadAIDriver, isPipeInFruitAllowed)
 
+    if not self:isWillingToRendezvous() then
+        self:debug('Rendezvous request: rejected, no unloading in current state')
+        return nil, 0, 0
+    end
+
     local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self.vehicle:getSpeedLimit(true) / 3.6
     -- this is where we'll be when the unloader gets here
     local unloaderRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
@@ -808,7 +815,7 @@ function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEsti
         self.agreedUnloaderRendezvousWaypointIx, unloaderEstimatedSecondsEnroute
     else
         self:cancelRendezvous()
-        self:debug('Rendezvous with unloader rejected')
+        self:debug('Rendezvous request: rejected, could not find a good location')
         return nil, 0, 0
     end
 end

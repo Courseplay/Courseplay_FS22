@@ -68,7 +68,11 @@ function CpJobParameters:loadFromXMLFile(xmlFile, baseKey)
     CpSettingsUtil.loadFromXmlFile(self, xmlFile, baseKey .. self.xmlKey, self.job:getVehicle())
 end
 
-
+function CpJobParameters:copyFrom(jobParameters)
+    for i, setting in ipairs(self.settings) do
+        setting:copy(jobParameters[setting.name])
+    end
+end
 
 function CpJobParameters:getMultiTools()
     local vehicle = self.job:getVehicle()
@@ -130,7 +134,7 @@ CpCombineUnloaderJobParameters = CpObject(CpJobParameters)
 function CpCombineUnloaderJobParameters:init(job)
     self.job = job
     if not CpCombineUnloaderJobParameters.settings then
-    local filePath = Utils.getFilename("config/CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        local filePath = Utils.getFilename("config/CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         -- initialize the class members first so the class can be used to access constants, etc.
         CpSettingsUtil.loadSettingsFromSetup(CpCombineUnloaderJobParameters, filePath)
     end
@@ -161,7 +165,7 @@ function CpCombineUnloaderJobParameters:generateUnloadingStations(setting)
     end
     if #unloadingStationIds <=0 then 
         table.insert(unloadingStationIds, -1)
-        table.insert(texts, "")
+        table.insert(texts, "---")
     end
     return unloadingStationIds, texts
 end
