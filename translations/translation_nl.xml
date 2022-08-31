@@ -18,6 +18,7 @@
     <text name="CP_error_no_course" text="Genereer een koers voordat u aan de taak begint."/>
     <text name="CP_error_could_not_generate_course" text="Kan koers niet genereren. De log bevat mogelijk meer informatie."/>
     <text name="CP_error_not_on_field" text="Het doelwit bevindt zich niet op een veld."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
