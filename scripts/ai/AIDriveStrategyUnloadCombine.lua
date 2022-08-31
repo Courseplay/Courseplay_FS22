@@ -1361,6 +1361,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             xOffset = dx > 0 and xOffset or -xOffset
             self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
+            self.state.properties.dx = nil
             if CpMathUtil.isOppositeDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
                 -- we are head on with the combine, so reverse
                 -- we will generate a straight reverse course relative to the blocking vehicle, but we want the course start
@@ -1381,11 +1382,15 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                 reverseCourse = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, false)
                 -- drive the entire course, making sure the trailer is also out of way
                 self.state.properties.dx = nil
+            else
+                self:debug('%s is a CP combine, not head on, not same direction', CpUtil.getName(blockingVehicle))
+                self.state.properties.dx = nil
             end
         else
             -- straight back, opposite to our own direction
             self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
+            self.state.properties.dx = nil
         end
         self:startCourse(reverseCourse, 1)
     end
