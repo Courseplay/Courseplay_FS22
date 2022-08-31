@@ -307,7 +307,7 @@ end
 function FillLevelManager.areAllTrailersFull(vehicle, fullThreshold)
     fullThreshold = fullThreshold or 0
     local totalFillLevel, totalCapacity, totalFreeCapacity =  FillLevelManager.getAllTrailerFillLevels(vehicle)
-    return totalFreeCapacity <= 0 or totalCapacity - totalFillLevel <= fullThreshold
+    return totalFreeCapacity <= fullThreshold
 end
 
 --- Gets the total fill level percentage and total fill level percentage adjusted to the max fill volume mass adjusted.

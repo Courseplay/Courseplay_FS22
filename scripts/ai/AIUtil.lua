@@ -404,6 +404,16 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 	end
 end
 
+--- Get number of child vehicles that have a certain specialization
+---@param vehicle Vehicle
+---@param specialization specialization to check for
+---@return integer number of found vehicles
+function AIUtil.getNumberOfChildVehiclesWithSpecialization(vehicle, specialization)
+	local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, nil)
+
+	return #vehicles
+end
+
 --- Gets all child vehicles with a given specialization. 
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
