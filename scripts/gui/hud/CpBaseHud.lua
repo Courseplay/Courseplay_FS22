@@ -53,6 +53,9 @@ CpBaseHud.uvs = {
     copySymbol = {
         {127, 637, 128, 128}
     },
+    driveNowSymbol = {
+        {0, 768, 128, 128}
+    },
     goalSymbol = GuiUtils.getUVs({
         788,
 	30,
@@ -343,19 +346,45 @@ function CpBaseHud:init(vehicle)
 
     --- Full threshold 
     self.fullThresholdBtn = self:addLineTextButton(self.combineUnloaderLayout, 3, self.defaultFontSize, 
-                                                self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold)
-    --- Drive now button
-    self.driveNowBtn = self:addLeftLineTextButton(self.combineUnloaderLayout, 4, self.defaultFontSize, 
-                                                        function()
-                                                            self.vehicle:startCpCombineUnloaderUnloading()
-                                                        end, self.vehicle)                      
+                                                self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold)              
 
     --- Giants unloading station
-    local x, y = unpack(self.lines[6].left)
+    local x, y = unpack(self.lines[4].left)
     self.giantsUnloadStationText = CpTextHudElement.new(self.combineUnloaderLayout , x , y, self.defaultFontSize)                 
     self.giantsUnloadStationText:setCallback("onClickPrimary", self.vehicle, 
     function(vehicle)
         vehicle:getCpCombineUnloaderJobParameters().unloadingStation:setNextItem()
+    end)
+
+    --- Drive now button
+    local width, height = getNormalizedScreenValues(26, 30)
+    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+    local driveNowOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.driveNowSymbol))}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
+    self.driveNowBtn = CpHudButtonElement.new(driveNowOverlay, self.combineUnloaderLayout)
+    local x, y = unpack(self.lines[6].right)
+    y = y - self.hMargin/4
+    x = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth + self.wMargin/16
+    self.driveNowBtn:setPosition(x, y)
+    self.driveNowBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        self.vehicle:startCpCombineUnloaderUnloading()
+    end)
+
+    --- Giants unload button
+    local width, height = getNormalizedScreenValues(22, 22)
+    local giantsUnloadOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {AIHotspot.FILENAME, AIHotspot.UVS}, 
+                                                        self.OFF_COLOR,
+                                                        self.alignments.bottomRight)
+    self.activateGiantsUnloadBtn = CpHudButtonElement.new(giantsUnloadOverlay, self.combineUnloaderLayout)
+    local _, y = unpack(self.lines[6].right)
+    y = y - self.hMargin/16
+    x = x - width - self.wMargin/4
+    self.activateGiantsUnloadBtn:setPosition(x, y)
+    self.activateGiantsUnloadBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload:setNextItem()
     end)
 
     --- Goal button.
@@ -388,7 +417,6 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setVisible(false)
 
     self.baseHud:setScale(self.uiScale, self.uiScale)
-    self.driveNowBtn:setTextDetails("DriveNow WIP")
 end
 
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
@@ -586,8 +614,8 @@ function CpBaseHud:draw(status)
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
-        self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
     end
+    self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive() and not not self.vehicle:getCanStartCpCombineUnloader())
     self.onOffButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 
     if self.vehicle:getIsCpCourseRecorderActive() then
@@ -626,10 +654,22 @@ function CpBaseHud:draw(status)
     self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
 
     local useGiantsUnload = self.vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload
-    self.giantsUnloadStationText:setVisible(useGiantsUnload:getValue())
-    self.giantsUnloadStationText:setDisabled(not useGiantsUnload:getValue())
+    self.giantsUnloadStationText:setVisible(useGiantsUnload:getValue() and not useGiantsUnload:getIsDisabled())
+    self.giantsUnloadStationText:setDisabled(not useGiantsUnload:getValue() or self.vehicle:getIsCpActive())
     local giantsUnloadStation = self.vehicle:getCpCombineUnloaderJobParameters().unloadingStation
     self.giantsUnloadStationText:setTextDetails(giantsUnloadStation:getString())
+
+    self.activateGiantsUnloadBtn:setColor(useGiantsUnload:getValue() and unpack(CpBaseHud.ON_COLOR) or unpack(CpBaseHud.OFF_COLOR))
+    self.activateGiantsUnloadBtn:setVisible(not useGiantsUnload:getIsDisabled())
+    self.activateGiantsUnloadBtn:setDisabled(useGiantsUnload:getIsDisabled() or self.vehicle:getIsCpActive())
+
+    local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(self.vehicle)
+    if fillLevelPercentage > 0.01 then 
+        self.driveNowBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))    
+    else
+        self.driveNowBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
+    end
+    self.driveNowBtn:setDisabled(not self.vehicle:getIsCpActive())
 
     local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
     self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
