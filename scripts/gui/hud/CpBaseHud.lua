@@ -394,7 +394,7 @@ function CpBaseHud:init(vehicle)
                                                 self.OFF_COLOR,
                                                 self.alignments.bottomRight)
     
-    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
+    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.combineUnloaderLayout)
     local x, y = unpack(self.lines[4].right)
     self.goalBtn:setPosition(x, y + self.hMargin/2)
     self.goalBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
