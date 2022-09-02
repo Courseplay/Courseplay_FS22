@@ -87,6 +87,7 @@ function CpGamePadHudScreen:onClose(element)
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.layout)
 	end
 	g_inputBinding:removeActionEventsByTarget(self)
+	self.vehicle:closeCpGamePadHud()
 end
 
 function CpGamePadHudScreen:onClickBack()
@@ -106,8 +107,8 @@ function CpGamePadHudScreen:onClickOk()
 	end
 end
 
-function CpGamePadHudScreen:update(...)
-	CpGamePadHudScreen:superClass().update(self,...)
+function CpGamePadHudScreen:update(dt, ...)
+	CpGamePadHudScreen:superClass().update(self,dt, ...)
 	if not self.vehicle then
 		return
 	end
@@ -122,6 +123,8 @@ function CpGamePadHudScreen:update(...)
 	end
 	self.startButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 	self.clearButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
+
+	g_currentMission.hud:updateBlinkingWarning(dt)
 end
 
 function CpGamePadHudScreen:onClickRecord()
@@ -147,6 +150,7 @@ end
 function CpGamePadHudScreen:draw(...)
 	CpGamePadHudScreen:superClass().draw(self,...)
 	CpGamePadHud.onDraw(self.vehicle)	
+	g_currentMission.hud:drawBlinkingWarning()
 end
 
 CpGamePadHudBaleLoaderScreen = {}

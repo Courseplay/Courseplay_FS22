@@ -64,6 +64,11 @@ function CpGamePadHud.loadFromXMLFile()
 	end
 	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible,getIsOverlayGuiVisible)
 
+	local function isHudPopupMessageVisible(hud, superFunc, ...)
+		print(tostring(g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.isCpGamePadHudActive and g_currentMission.controlledVehicle:isCpGamePadHudActive()))
+		return superFunc(hud, ...) or g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.isCpGamePadHudActive and g_currentMission.controlledVehicle:isCpGamePadHudActive()
+	end
+	g_currentMission.hud.popupMessage.getIsVisible = Utils.overwrittenFunction(g_currentMission.hud.popupMessage.getIsVisible, isHudPopupMessageVisible)
 end
 
 function CpGamePadHud.loadPageData(page, filePath)
@@ -99,7 +104,8 @@ function CpGamePadHud.registerEventListeners(vehicleType)
 end
 
 function CpGamePadHud.registerFunctions(vehicleType)
- 
+	SpecializationUtil.registerFunction(vehicleType, "isCpGamePadHudActive", CpGamePadHud.isCpGamePadHudActive)
+	SpecializationUtil.registerFunction(vehicleType, "closeCpGamePadHud", CpGamePadHud.closeCpGamePadHud)
 end
 
 function CpGamePadHud.registerOverwrittenFunctions(vehicleType)
@@ -114,6 +120,7 @@ function CpGamePadHud:onLoad(savegame)
     local spec = self.spec_cpGamePadHud
 	spec.text = g_i18n:getText("input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY")
 	spec.hudText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
+	spec.isVisible = false
 end
 
 function CpGamePadHud:onLoadFinished()
@@ -174,6 +181,7 @@ end
 
 function CpGamePadHud:actionEventOpenCloseDisplay()
 	local spec = self.spec_cpGamePadHud
+	spec.isVisible = true
 	local page = ""
 	if self:getCanStartCpCombineUnloader() then 
 		page = CpGamePadHud.UNLOADER_PAGE
@@ -185,3 +193,14 @@ function CpGamePadHud:actionEventOpenCloseDisplay()
 	CpGamePadHud.pages[page].screen:setData(self, spec.pages[page].settings) 
 	g_gui:showGui(page)
 end
+
+function CpGamePadHud:isCpGamePadHudActive()
+	local spec = self.spec_cpGamePadHud
+	return spec.isVisible
+end
+
+function CpGamePadHud:closeCpGamePadHud()
+	local spec = self.spec_cpGamePadHud
+	spec.isVisible = false
+end
+
