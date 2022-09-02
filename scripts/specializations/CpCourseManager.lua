@@ -479,5 +479,5 @@ end
 
 --- can only start recording when CP is not driving (actually, it would work, should later consider)
 function CpCourseManager:getCanStartCpCourseRecorder()
-    return not self:getIsCpActive()
+    return not self:getIsCpActive() and not self:hasCpCourse()
 end

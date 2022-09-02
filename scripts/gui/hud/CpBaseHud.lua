@@ -615,7 +615,7 @@ function CpBaseHud:draw(status)
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
     end
-    self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive() and not not self.vehicle:getCanStartCpCombineUnloader())
+    self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive() and not self.vehicle:getCanStartCpCombineUnloader())
     self.onOffButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 
     if self.vehicle:getIsCpCourseRecorderActive() then
