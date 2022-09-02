@@ -155,7 +155,14 @@ function PipeController:setupMoveablePipe()
             break
         end
     end
-    self.tempNode = CpUtil.createNode("tempPipeNode", 0, 0, 0)
+    for i, m in ipairs(self.validMovingTools) do 
+        if m ~= self.baseMovingTool then 
+            self.baseMovingToolChild = m
+        end
+    end
+
+    self.tempBaseNode = CpUtil.createNode("tempBaseNode", 0, 0, 0)
+    self.tempDependedNode = CpUtil.createNode("tempDependedNode", 0, 0, 0)
 end
 
 function PipeController:updateMoveablePipe(dt)
@@ -181,15 +188,15 @@ function PipeController:moveDependedPipePart(tool, dt)
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
 
     DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
-    DebugUtil.drawDebugNode(toolNode, "toolNode")
+  --  DebugUtil.drawDebugNode(toolNode, "toolNode")
 
     --- Temp node 
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
     local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
-    setTranslation(self.tempNode, tx, gy, tz)
-    DebugUtil.drawDebugNode(self.tempNode, "tempNode")
+    setTranslation(self.tempDependedNode, tx, gy, tz)
+    DebugUtil.drawDebugNode(self.tempDependedNode, "tempDependedNode")
 
-    local toolTempDist = calcDistanceFrom(toolNode, self.tempNode)
+    local toolTempDist = calcDistanceFrom(toolNode, self.tempDependedNode)
     --- Absolute angle difference needed to be adjustment.
     local alpha = math.acos(toolTempDist/toolDischargeDist)
     --[[
@@ -221,13 +228,37 @@ function PipeController:moveDependedPipePart(tool, dt)
 end
 
 function PipeController:movePipeUp(tool, dt)
-    local rotTarget = tool.invertAxis and tool.rotMin or tool.rotMax
-    local curRot ={}
-    curRot[1], curRot[2], curRot[3] = getRotation(tool.node)
+    local toolNode = tool.node   
+    local childToolNode = self.baseMovingToolChild.node
+    local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
+
+    DebugUtil.drawDebugNode(childToolNode, "childToolNode")
+    DebugUtil.drawDebugNode(toolNode, "toolNode")
+
+    --- Temp node 
+    local tx, ty, tz = localToWorld(childToolNode, 0, 0, 0)
+    local gx, gy, gz = localToWorld(toolNode, 0, 0, 0)
+    setTranslation(self.tempBaseNode, gx, ty, gz)
+    DebugUtil.drawDebugNode(self.tempBaseNode, "tempNode")
+
+    local toolTempDist = calcDistanceFrom(toolNode, self.tempBaseNode)
+    --- Absolute angle difference needed to be adjustment.
+    local alpha = math.asin(toolTempDist/toolChildToolDist)
+    local curRot = {}
+    curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
+    local oldRot = curRot[tool.rotationAxis]
+    local targetRot = 0
+    if ty > gy then 
+        --- Discharge node is below the tool node
+        targetRot = MathUtil.clamp(oldRot + alpha, tool.rotMin, tool.rotMax)
+    else 
+        targetRot = MathUtil.clamp(oldRot - alpha, tool.rotMin, tool.rotMax)
+    end
     --self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", rotTarget, curRot[tool.rotationAxis], tool.rotMin, tool.rotMax)
-    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, rotTarget)
+    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, targetRot)
 end
 
 function PipeController:delete()
-    CpUtil.destroyNode(self.tempNode)
+    CpUtil.destroyNode(self.tempBaseNode)
+    CpUtil.destroyNode(self.tempDependedNode)
 end

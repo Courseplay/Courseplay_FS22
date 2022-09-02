@@ -478,7 +478,7 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
 	if diff < 0 then
 		rotSpeed=rotSpeed*(-1)
 	end
-	if math.abs(diff) < 0.003 or rotSpeed == 0 then
+	if math.abs(diff) < 0.03 or rotSpeed == 0 then
 		tool.move = 0
 		return 
 	end
