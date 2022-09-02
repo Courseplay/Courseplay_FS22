@@ -93,7 +93,7 @@ function CpAIBaleFinder:getCanStartCpBaleFinder()
 end
 
 function CpAIBaleFinder:getCanStartCp(superFunc)
-    return superFunc(self) or self:getCanStartCpBaleFinder()
+    return superFunc(self) or self:getCanStartCpBaleFinder() and not self:getIsCpCourseRecorderActive()
 end
 
 --- Only use the bale finder, if the cp field work job is not possible.

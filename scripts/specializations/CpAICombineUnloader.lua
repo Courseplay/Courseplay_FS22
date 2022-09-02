@@ -94,7 +94,7 @@ function CpAICombineUnloader:getCanStartCpCombineUnloader()
 end
 
 function CpAICombineUnloader:getCanStartCp(superFunc)
-    return superFunc(self) or self:getCanStartCpCombineUnloader()
+    return superFunc(self) or self:getCanStartCpCombineUnloader() and not self:getIsCpCourseRecorderActive()
 end
 
 function CpAICombineUnloader:getCpStartableJob(superFunc)
