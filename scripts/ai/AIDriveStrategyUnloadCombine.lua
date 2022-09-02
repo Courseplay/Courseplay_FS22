@@ -1538,7 +1538,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
         -- little straight section parallel to the trailer to align better
         self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, self.selfUnloadTargetNode,
                 offsetX, -alignLength + 1,
-                -self.pipeController:getPipeOffsetZ() - self.settings.toolOffsetZ:getValue() - 1,
+                -self.pipeController:getPipeOffsetZ() - 1,
                 1, false)
 
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
