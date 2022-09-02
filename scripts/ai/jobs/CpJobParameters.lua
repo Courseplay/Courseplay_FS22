@@ -21,12 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class CpJobParameters
 CpJobParameters = CpObject()
 CpJobParameters.xmlKey = ".cpJobParameters"
-
+CpJobParameters.baseFilePath = "config/jobParameters/"
 
 function CpJobParameters:init(job)
     if not CpJobParameters.settings then
         -- initialize the class members first so the class can be used to access constants, etc.
-        local filePath = Utils.getFilename("config/JobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        local filePath = Utils.getFilename(self.baseFilePath .. "JobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         CpSettingsUtil.loadSettingsFromSetup(CpJobParameters, filePath)
     end
     CpSettingsUtil.cloneSettingsTable(self, CpJobParameters.settings, nil, self)
@@ -101,14 +101,14 @@ function CpJobParameters:lessThanThreeMultiTools()
 end
 
 --- AI parameters for the bale finder job.
----@class CpBaleFinderJobParameters
+---@class CpBaleFinderJobParameters : CpJobParameters
 CpBaleFinderJobParameters = CpObject(CpJobParameters)
 
 
 function CpBaleFinderJobParameters:init(job)
     if not CpBaleFinderJobParameters.settings then
         -- initialize the class members first so the class can be used to access constants, etc.
-        local filePath = Utils.getFilename("config/BaleFinderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        local filePath = Utils.getFilename(self.baseFilePath .. "BaleFinderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         CpSettingsUtil.loadSettingsFromSetup(CpBaleFinderJobParameters, filePath)
     end
     CpSettingsUtil.cloneSettingsTable(self, CpBaleFinderJobParameters.settings, nil, self)
@@ -127,22 +127,18 @@ function CpBaleFinderJobParameters:isBaleWrapSettingVisible()
 end
 
 --- AI parameters for the bale finder job.
----@class CpCombineUnloaderJobParameters
+---@class CpCombineUnloaderJobParameters : CpJobParameters
 CpCombineUnloaderJobParameters = CpObject(CpJobParameters)
 
 
 function CpCombineUnloaderJobParameters:init(job)
     self.job = job
     if not CpCombineUnloaderJobParameters.settings then
-        local filePath = Utils.getFilename("config/CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        local filePath = Utils.getFilename(self.baseFilePath .. "CombineUnloaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
         -- initialize the class members first so the class can be used to access constants, etc.
         CpSettingsUtil.loadSettingsFromSetup(CpCombineUnloaderJobParameters, filePath)
     end
     CpSettingsUtil.cloneSettingsTable(self, CpCombineUnloaderJobParameters.settings, nil, self)
-end
-
-function CpCombineUnloaderJobParameters.getSettings(vehicle)
-    return vehicle.spec_cpAIBaleFinder.cpJob:getCpJobParameters()
 end
 
 function CpCombineUnloaderJobParameters:hasPipe()
@@ -168,4 +164,8 @@ function CpCombineUnloaderJobParameters:generateUnloadingStations(setting)
         table.insert(texts, "---")
     end
     return unloadingStationIds, texts
+end
+
+function CpCombineUnloaderJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAICombineUnloader.cpJob:getCpJobParameters()
 end

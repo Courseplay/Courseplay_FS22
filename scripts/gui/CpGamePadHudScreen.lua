@@ -20,7 +20,7 @@ CpGamePadHudScreen.texts = {
 
 local CpGamePadHudScreen_mt = Class(CpGamePadHudScreen, ScreenElement)
 
-function CpGamePadHudScreen.new(settings,target, custom_mt)
+function CpGamePadHudScreen.new(settings, target, custom_mt)
 	local self = ScreenElement.new(target, custom_mt or CpGamePadHudScreen_mt)
 	self:registerControls(CpGamePadHudScreen.CONTROLS)
 	self.settings = settings
@@ -147,4 +147,22 @@ end
 function CpGamePadHudScreen:draw(...)
 	CpGamePadHudScreen:superClass().draw(self,...)
 	CpGamePadHud.onDraw(self.vehicle)	
+end
+
+CpGamePadHudBaleLoaderScreen = {}
+local CpGamePadHudBaleLoaderScreen_mt = Class(CpGamePadHudBaleLoaderScreen, CpGamePadHudScreen)
+
+function CpGamePadHudBaleLoaderScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudBaleLoaderScreen_mt)
+
+	return self
+end
+
+CpGamePadHudUnloaderScreen = {}
+local CpGamePadHudUnloaderScreen_mt = Class(CpGamePadHudUnloaderScreen, CpGamePadHudScreen)
+
+function CpGamePadHudUnloaderScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudUnloaderScreen_mt)
+
+	return self
 end
