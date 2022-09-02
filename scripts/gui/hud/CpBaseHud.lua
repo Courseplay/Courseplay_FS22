@@ -357,17 +357,17 @@ function CpBaseHud:init(vehicle)
     end)
 
     --- Drive now button
-    local width, height = getNormalizedScreenValues(26, 30)
+    local driveNowBtnWidth, height = getNormalizedScreenValues(26, 30)
     local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
-    local driveNowOverlay = CpGuiUtil.createOverlay({width, height},
+    local driveNowOverlay = CpGuiUtil.createOverlay({driveNowBtnWidth, height},
                                                         {imageFilename, GuiUtils.getUVs(unpack(self.uvs.driveNowSymbol))}, 
                                                         self.OFF_COLOR,
                                                         self.alignments.bottomRight)
     self.driveNowBtn = CpHudButtonElement.new(driveNowOverlay, self.combineUnloaderLayout)
     local x, y = unpack(self.lines[6].right)
     y = y - self.hMargin/4
-    x = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth + self.wMargin/16
-    self.driveNowBtn:setPosition(x, y)
+    local driveNowBtnX = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth - self.wMargin/8
+    self.driveNowBtn:setPosition(driveNowBtnX, y)
     self.driveNowBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         self.vehicle:startCpCombineUnloaderUnloading()
     end)
@@ -381,7 +381,7 @@ function CpBaseHud:init(vehicle)
     self.activateGiantsUnloadBtn = CpHudButtonElement.new(giantsUnloadOverlay, self.combineUnloaderLayout)
     local _, y = unpack(self.lines[6].right)
     y = y - self.hMargin/16
-    x = x - width - self.wMargin/4
+    x = driveNowBtnX - driveNowBtnWidth - self.wMargin/8
     self.activateGiantsUnloadBtn:setPosition(x, y)
     self.activateGiantsUnloadBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
         vehicle:getCpCombineUnloaderJobParameters().useGiantsUnload:setNextItem()
