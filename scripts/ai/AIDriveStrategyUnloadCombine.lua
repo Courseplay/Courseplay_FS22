@@ -219,10 +219,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
         if self:isDriveUnloadNowRequested() or self:getAllTrailersFull() then
             self:startUnloadingTrailers()
-        end
-
-        -- every few seconds, check for a combine which needs an unloader
-        if self.timeToCheckCombines:get() then
+        elseif self.timeToCheckCombines:get() then
+            -- every few seconds, check for a combine which needs an unloader
             self:debug('Check if there\'s a combine to unload')
             self.combineToUnload, _ = self:findCombine()
             if self.combineToUnload then
