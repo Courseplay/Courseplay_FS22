@@ -108,6 +108,11 @@ You can define the following custom settings:
     />
     <!-- Implements -->
 
+    <!--\vehicles\Bergmann-->
+    <Vehicle name="rrw500.xml"
+             turnRadius = "10"
+    />
+
     <!--\vehicles\johndeer-->
     <Vehicle name="planter1775NT.xml"
              turnRadius = "12"
