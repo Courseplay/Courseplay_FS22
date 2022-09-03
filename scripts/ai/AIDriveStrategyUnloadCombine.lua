@@ -1596,6 +1596,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
         return true
     else
         self:debug('No path found to self unload in %d ms', g_currentMission.time - (self.pathfindingStartedAt or 0))
+        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
         return false
     end
 end
