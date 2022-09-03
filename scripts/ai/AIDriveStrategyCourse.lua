@@ -47,6 +47,8 @@ function AIDriveStrategyCourse.new(customMt)
     ---@type ImplementController[]
     self.controllers = {}
     self.registeredInfoTexts = {}
+    --- To temporary hold a vehicle (will force speed to 0)
+    self.held = CpTemporaryObject()
     return self
 end
 
@@ -395,7 +397,7 @@ end
 function AIDriveStrategyCourse:setMaxSpeed(speed)
     if self.maxSpeedUpdatedLoopIndex == nil or self.maxSpeedUpdatedLoopIndex ~= g_updateLoopIndex then
         -- new loop, reset max speed. Always 0 if frozen
-        self.maxSpeed = self.frozen and 0 or self.vehicle:getSpeedLimit(true)
+        self.maxSpeed = (self.frozen or self:isBeingHeld()) and 0 or self.vehicle:getSpeedLimit(true)
         self.maxSpeedUpdatedLoopIndex = g_updateLoopIndex
     end
     self.maxSpeed = math.min(self.maxSpeed, speed)
@@ -403,6 +405,29 @@ end
 
 function AIDriveStrategyCourse:getMaxSpeed()
     return self.maxSpeed or self.vehicle:getSpeedLimit(true)
+end
+
+--- Hold the vehicle (set speed to 0) temporary. This is meant to be used for other vehicles to coordinate movements,
+--- for instance tell a vehicle it should not move as the other vehicle is driving around it.
+---@param milliseconds number milliseconds to hold
+function AIDriveStrategyCourse:hold(milliseconds)
+    if not self.held:get() then
+        self:debug('Hold requested for %.1f seconds', milliseconds / 1000)
+    end
+    self.held:set(true, milliseconds)
+end
+
+--- Release a hold anytime, even before it is released automatically after the time given at hold()
+function AIDriveStrategyCourse:unhold()
+    if self.held:get() then
+        self:debug("Hold reset")
+    end
+    self.held:reset()
+end
+
+--- Are we currently being held?
+function AIDriveStrategyCourse:isBeingHeld()
+    return self.held:get()
 end
 
 --- Freeze (force speed to 0), but keep everything up and running otherwise, showing all debug
