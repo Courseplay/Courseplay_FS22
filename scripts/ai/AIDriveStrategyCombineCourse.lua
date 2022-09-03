@@ -699,17 +699,18 @@ function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
     local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
     local distanceToNextTurn = self.course:getDistanceToNextTurn(lastPassedWaypointIx) or math.huge
     local closeToTurn = distanceToNextTurn < AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow
-    self:checkFruit()
     -- If close to the end of the row and the pipe would be in the fruit after the turn, and our fill level is high,
     -- we always wait here for an unloader, regardless of having a rendezvous or not (unless we have our pipe in fruit here)
     if nextRowStartIx and closeToTurn and
             self.course:isPipeInFruitAt(nextRowStartIx) and
-            not self:isPipeInFruit() and
             self:isFull(AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold) then
-        self:debug('shouldWaitAtEndOfRow: Closer than %.1f m to a turn, pipe would be in fruit after turn at %d, fill level over %.1f',
-                AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, nextRowStartIx,
-                AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold)
-        return true
+        self:checkFruit()
+        if not self:isPipeInFruit() then
+            self:debug('shouldWaitAtEndOfRow: Closer than %.1f m to a turn, pipe would be in fruit after turn at %d, fill level over %.1f',
+                    AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, nextRowStartIx,
+                    AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold)
+            return true
+        end
     end
     -- Or, if we are close to the turn and have a rendezvous waypoint before the turn
     if nextRowStartIx and closeToTurn and

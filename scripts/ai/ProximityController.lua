@@ -75,6 +75,18 @@ function ProximityController:checkBlockingVehicleBack()
     return self.backwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
 end
 
+--- Is vehicle in range of the front or rear sensors?
+---@param vehicle table
+---@return boolean, number true if vehicle is in range, distance of vehicle
+function ProximityController:isVehicleInRange(vehicle)
+    for _, sensorPack in ipairs({self.forwardLookingProximitySensorPack, self.backwardLookingProximitySensorPack}) do
+        local d, otherVehicle = sensorPack:getClosestObjectDistanceAndRootVehicle()
+        if otherVehicle == vehicle then
+            return true, d
+        end
+    end
+end
+
 function ProximityController:disableLeftFront()
     self.forwardLookingProximitySensorPack:disableLeftSide()
 end

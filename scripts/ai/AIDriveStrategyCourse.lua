@@ -285,11 +285,6 @@ function AIDriveStrategyCourse:setAllStaticParameters()
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
 end
 
-function AIDriveStrategyCourse:getProximitySensorWidth()
-    -- a bit less as size.width always has plenty of buffer
-    return self.vehicle.size.width - 0.5
-end
-
 --- Find the foremost and rearmost AI marker
 function AIDriveStrategyCourse:setFrontAndBackMarkers()
     local markers= {}
@@ -370,9 +365,25 @@ function AIDriveStrategyCourse:getReverseDriveData()
     return gx, gz, maxSpeed
 end
 
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Proximity
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:getProximitySensorWidth()
+    -- a bit less as size.width always has plenty of buffer
+    return self.vehicle.size.width - 0.5
+end
+
 function AIDriveStrategyCourse:checkProximitySensors(moveForwards)
     local _, _, _, maxSpeed = self.proximityController:getDriveData(self:getMaxSpeed(), moveForwards)
     self:setMaxSpeed(maxSpeed)
+end
+
+--- Is vehicle close to the front or rear proximity sensors?
+---@param vehicle table
+---@return boolean, number true if vehicle is in proximity, distance of vehicle
+function AIDriveStrategyCourse:isVehicleInProximity(vehicle)
+    return self.proximityController:isVehicleInRange(vehicle)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

@@ -111,6 +111,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.vehicleInFrontOfUS = CpTemporaryObject()
     self.blockedVehicleReversing = CpTemporaryObject(false)
     self.driveUnloadNowRequested = CpTemporaryObject(false)
+    self.movingAwayDelay = CpTemporaryObject(false)
     self:resetPathfinder()
     return self
 end
@@ -1331,11 +1332,13 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE then
         self:debug('%s has been blocking us for a while, move back a bit', CpUtil.getName(blockingVehicle))
         -- by default just reverse straight
-        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
+        local course = Course.createStraightReverseCourse(self.vehicle, 25)
         if self:isActiveCpCombine(blockingVehicle) then
+            local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
             -- except we are blocking our buddy, so set up a course parallel to the combine's direction,
-            -- with an offset from the combine that makes sure we are clear
-            local dx, _, _ = localToLocal(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 0, 0, 0)
+            -- with an offset from the combine that makes sure we are clear. Use the trailer's root node (and not
+            -- the tractor's) as when we reversing, it is easier when the trailer remains on the same side of the combine
+            local dx, _, _ = localToLocal(trailer.rootNode, blockingVehicle:getAIDirectionNode(), 0, 0, 0)
             local xOffset = self.vehicle.size.width / 2 + blockingVehicle:getCpDriveStrategy():getWorkWidth() / 2 + 2
             xOffset = dx > 0 and xOffset or -xOffset
             self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
@@ -1348,7 +1351,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                 local _, _, from = localToLocal(Markers.getBackMarkerNode(self.vehicle), blockingVehicle:getAIDirectionNode(), 0, 0, 0)
                 self:debug('%s is a CP combine, head on, so generate a course from %.1f m, xOffset %.1f',
                         CpUtil.getName(blockingVehicle), from, xOffset)
-                reverseCourse = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, true)
+                course = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, true)
                 -- we will stop reversing when we are far enough from the combine's path
                 self.state.properties.dx = xOffset
             elseif CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
@@ -1356,11 +1359,11 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                 -- we will generate a straight forward course relative to the blocking vehicle, but we want the course start
                 -- approximately where our front marker is
                 local _, _, from = localToLocal(Markers.getFrontMarkerNode(self.vehicle), blockingVehicle:getAIDirectionNode(), 0, 0, 0)
-                self:debug('%s is a CP combine, same direction, generate a course with xOffset %.1f',
+                self:debug('%s is a CP combine, same direction, generate a course from %.1f with xOffset %.1f',
                         CpUtil.getName(blockingVehicle), from, xOffset)
-                reverseCourse = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, false)
+                course = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, false)
                 -- drive the entire course, making sure the trailer is also out of way
-                self.state.properties.dx = nil
+                self.state.properties.dx = xOffset
             else
                 self:debug('%s is a CP combine, not head on, not same direction', CpUtil.getName(blockingVehicle))
                 self.state.properties.dx = nil
@@ -1371,7 +1374,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             self.state.properties.vehicle = blockingVehicle
             self.state.properties.dx = nil
         end
-        self:startCourse(reverseCourse, 1)
+        self:startCourse(course, 1)
     end
 end
 
@@ -1381,18 +1384,38 @@ end
 
 function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
     self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+
+    -- Are we still close to the vehicle we are blocking?
+    if self.state.properties.vehicle:getCpDriveStrategy():isVehicleInProximity(self.vehicle) then
+        -- keep driving
+        self:debugSparse('Still in proximity of %s', CpUtil.getName(self.state.properties.vehicle))
+        self.movingAwayDelay:set(true, 2000)
+        return
+    end
+
+    -- keep driving for a while after we are out of the proximity of the vehicle we were blocking, to make
+    -- sure we have enough clearance
+    if self.movingAwayDelay:get() then
+        return
+    end
+
     if self.state.properties.dx then
         -- moving away from a CP combine head on with us, move until dx is big enough so it can continue straight
-        local dx, _, _ = localToLocal(self.vehicle:getAIDirectionNode(), self.state.properties.vehicle:getAIDirectionNode(), 0, 0, 0)
-        self:debug('%.1f %.1f', dx, self.state.properties.dx)
-        if math.abs(dx) > math.abs(self.state.properties.dx) - 1 then
-            self:debug('Moved away from blocking CP combine %s', CpUtil.getName(self.state.properties.vehicle))
-            self:startWaitingForCombine()
+        for _, childVehicle in ipairs(self.vehicle:getChildVehicles()) do
+            local dx, _, _ = localToLocal(childVehicle.rootNode, self.state.properties.vehicle:getAIDirectionNode(), 0, 0, 0)
+            self:debugSparse('dx between %s and my %s is %.1f', CpUtil.getName(self.state.properties.vehicle), CpUtil.getName(childVehicle), dx)
+            if math.abs(dx) < math.abs(self.state.properties.dx) - 1 then
+                return
+            end
         end
+        -- none of my child vehicles are closer than dx to the combine
+        self:debug('Moved away from blocking CP combine %s', CpUtil.getName(self.state.properties.vehicle))
+        self:startWaitingForCombine()
     else
         -- moving away from some other vehicle, or our combine not head on, just move until we can
         -- recalculate a path
         local d = calcDistanceFrom(self.vehicle.rootNode, self.state.properties.vehicle.rootNode)
+        self:debugSparse('d from %s is %.1f', CpUtil.getName(self.state.properties.vehicle), d)
         if d > 2 * self.turningRadius then
             self:debug('Moved away from blocking vehicle %s', CpUtil.getName(self.state.properties.vehicle))
             self:startWaitingForCombine()
