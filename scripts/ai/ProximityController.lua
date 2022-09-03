@@ -128,7 +128,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         if not self.blockingVehicle:isPending() then
             -- first time we are being blocked, remember the time
             CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, '%s is blocking us (%.1fm)', CpUtil.getName(vehicle), d)
-            self.blockingVehicle:set(vehicle, nil, 10000)
+            self.blockingVehicle:set(vehicle, nil, 7000)
         end
 
     elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) then
