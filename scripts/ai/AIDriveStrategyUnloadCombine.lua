@@ -419,7 +419,7 @@ end
 
 --- Fill level in %.
 function AIDriveStrategyUnloadCombine:getFillLevelPercentage()
-   return FillLevelManager.getTotalTrailerFillLevelPercentage(self.vehicle)
+    return FillLevelManager.getTotalTrailerFillLevelPercentage(self.vehicle)
 end
 
 function AIDriveStrategyUnloadCombine:isDriveUnloadNowRequested()
@@ -507,6 +507,18 @@ function AIDriveStrategyUnloadCombine:debugIf(enabled, ...)
     end
 end
 
+--- Is the vehicle lined up with the pipes, based on the two offset values and a tolerance
+---@param dx number side offset of the vehicle from the combine's centerline, left > 0 > right
+---@param pipeOffset number side offset of the pipe from the combine's centerline
+---@param tolerance number +- tolerance in relation of the pipe offset
+function AIDriveStrategyUnloadCombine:isLinedUpWithPipe(dx, pipeOffset, tolerance)
+    -- if the pipe is on the right side (has a negative offset), turn it over to the left side
+    -- so we are always comparing positive numbers
+    local myDx = pipeOffset > 0 and dx or -dx
+    local myPipeOffset = pipeOffset > 0 and pipeOffset or -pipeOffset
+    return dx > myPipeOffset * (1 - tolerance) and dx < myPipeOffset * (1 + tolerance)
+end
+
 function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
@@ -514,7 +526,9 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
-    if math.abs(dx) > math.abs(1.5 * pipeOffset) then
+    -- TODO: this does not take the pipe's side into account, and will return true when we are at the
+    -- wrong side of the combine. That happens rarely as we
+    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
         return false
     end
@@ -546,7 +560,7 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: more than 30 m from combine')
         return false
     end
-    if math.abs(dx) > math.abs(1.5 * pipeOffset) or math.abs(dx) < math.abs(pipeOffset) * 0.5 then
+    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
         self:debugIf(debugEnabled,
                 'isInFrontAndAlignedToMovingCombine: dx (%.1f) not between 0.5 and 1.5 pipe offset (%.1f)', dx, pipeOffset)
         return false
@@ -1324,12 +1338,17 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Is there another vehicle blocking us?
 ------------------------------------------------------------------------------------------------------------------------
+--- If the other vehicle is a combine driven by CP, we will try get out of its way. Otherwise, if we are not being
+--- held, we tell the other vehicle to hold, and will attempt to get out of its way.
+--- This is to make sure that only one of the two vehicles yields to the other one
 function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
-    if not self.vehicle:getIsCpActive() then
+    if not self.vehicle:getIsCpActive() or isBack then
+        self:debug('%s has been blocking us for a while, ignoring as either not active or in the back', CpUtil.getName(blockingVehicle))
         return
     end
     if self.state ~= self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE and
-            self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE then
+            self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE and
+            not self:isBeingHeld() then
         self:debug('%s has been blocking us for a while, move back a bit', CpUtil.getName(blockingVehicle))
         -- by default just reverse straight
         local course = Course.createStraightReverseCourse(self.vehicle, 25)
@@ -1373,6 +1392,10 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
             self.state.properties.dx = nil
+            if blockingVehicle.getCpDriveStrategy then
+                -- ask the other vehicle for hold until we drive around
+                blockingVehicle:getCpDriveStrategy():hold(20000)
+            end
         end
         self:startCourse(course, 1)
     end
@@ -1384,9 +1407,9 @@ end
 
 function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
     self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-
+    local driveStrategy = self.state.properties.vehicle.getCpDriveStrategy and self.state.properties.vehicle:getCpDriveStrategy()
     -- Are we still close to the vehicle we are blocking?
-    if self.state.properties.vehicle:getCpDriveStrategy():isVehicleInProximity(self.vehicle) then
+    if driveStrategy and driveStrategy:isVehicleInProximity(self.vehicle) then
         -- keep driving
         self:debugSparse('Still in proximity of %s', CpUtil.getName(self.state.properties.vehicle))
         self.movingAwayDelay:set(true, 2000)
