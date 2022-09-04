@@ -265,10 +265,9 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.MOVING_BACK_WITH_TRAILER_FULL then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        local _, dx, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
-        -- drive back way further if we are behind a chopper to have room
-        local dDriveBack = math.abs(dx) < 3 and 1.5 * self.turningRadius or -10
-        if dz > dDriveBack then
+        -- drive back until the combine backmarker is 3m behind us to have some room for the pathfinder
+        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
+        if dz > -3 then
             self:startUnloadingTrailers()
         end
 
