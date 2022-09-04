@@ -1173,6 +1173,7 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     if self.combineToUnload:getCpDriveStrategy():isWaitingForUnload() then
         self:debug('combine is now stopped and waiting for unload, recalculate path')
         self:startDrivingToCombine()
+        return
     end
 
     if self.course:isCloseToLastWaypoint(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength / 2) and
