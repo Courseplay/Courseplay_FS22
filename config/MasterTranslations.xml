@@ -210,6 +210,10 @@
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no bales of selected type found!]]></Text>
 		</Translation>
+		<Translation name="CP_ai_messageErrorNoPathFound">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no Path found!]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
 		<Translation name="CP_vehicle_setting_title">
@@ -1236,6 +1240,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_wrongBaleWrapType">
 			<Text language="de"><![CDATA[Ballentyp nicht gefunden]]></Text>
 			<Text language="en"><![CDATA[Wrong bale type]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorNoPathFound">
+			<Text language="de"><![CDATA[Keinen Weg gefunden]]></Text>
+			<Text language="en"><![CDATA[No path found]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
