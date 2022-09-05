@@ -70,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!"/>
     <text name="CP_ai_messageError" text="O trabalhador A %s parou de trabalhar inesperadamente - deixou a rota!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -336,6 +337,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando a chuva passar"/>
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

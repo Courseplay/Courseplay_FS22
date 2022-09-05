@@ -70,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Pracovník %s přestal neočekávaně pracovat – zásobník je plný!"/>
     <text name="CP_ai_messageError" text="Pracovník %s přestal neočekávaně pracovat - opustil kurz!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pracovník %s přestal neočekávaně pracovat – nebyl nalezen zvolený typ balíků!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -337,6 +338,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_infoTexts_waitForRainToFinish" text="Čekání na konec deště"/>
     <text name="CP_infoTexts_errorStopped" text="Opustil trasu, zastavil"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->
