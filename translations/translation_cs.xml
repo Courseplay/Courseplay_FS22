@@ -70,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="工人%s 停止工作-储存箱已满!"/>
     <text name="CP_ai_messageError" text="AI 帮手 %s 意外停止工作 - 离开了路线！"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI 帮手 %s 已意外停止工作 - 未找到选定类型的草垛！"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -330,6 +331,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_waitForRainToFinish" text="等待雨停"/>
     <text name="CP_infoTexts_errorStopped" text="离开了路线，停止工作"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="错误的草垛类型"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

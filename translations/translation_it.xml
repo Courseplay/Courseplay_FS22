@@ -70,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Il lavoratore IA %s ha feramto il lavoro - il cassone è pieno!"/>
     <text name="CP_ai_messageError" text="Il lavoratore IA %s ha feramto il lavoro - ha lasciato il percorso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'operatore CP %s ha interrotto il lavoro in modo imprevisto - non sono state trovate balle del tipo selezionato!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -330,6 +331,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_waitForRainToFinish" text="In attesa che finisca la pioggia"/>
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

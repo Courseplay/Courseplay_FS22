@@ -70,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!"/>
     <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Abandonó el curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -330,6 +331,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando que termine la lluvia"/>
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

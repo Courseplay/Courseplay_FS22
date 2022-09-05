@@ -70,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Helfer %s hat die Arbeit gestoppt - Gerät ist voll!"/>
     <text name="CP_ai_messageError" text="Helfer %s hat die Arbeit gestoppt - Kurs verlassen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -330,6 +331,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_waitForRainToFinish" text="Warte auf besseres Wetter"/>
     <text name="CP_infoTexts_errorStopped" text="Hat den Kurs verlassen, gestoppt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Ballentyp nicht gefunden"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Keinen Weg gefunden"/>
     <!---->
     <!--Custom field manager-->
     <!---->
