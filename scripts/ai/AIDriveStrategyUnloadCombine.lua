@@ -610,8 +610,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
         if self:startSelfUnload() then
             self:debug('Trailer to unload to found, attempting self unload now')
         else
-            self:debug('Self unload did not work out, stop, so eventually AD can take over.')
-            self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+            self:debug('Self unload did not work out, stop.')
+            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         end
     else
         self:debug('Have no auger wagon, stop, so eventually AD can take over.')
@@ -1619,7 +1619,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
         return true
     else
         self:debug('No path found to self unload in %d ms', g_currentMission.time - (self.pathfindingStartedAt or 0))
-        self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         return false
     end
 end
