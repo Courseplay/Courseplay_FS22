@@ -352,5 +352,15 @@ end
 function CpAIJobCombineUnloader:copyFrom(job)
 	self.cpJobParameters:copyFrom(job.cpJobParameters)
 	local x, z = job:getFieldPositionTarget()
-	self.fieldPositionParameter:setValue(x, z)
+	if x ~=nil then
+		self.fieldPositionParameter:setValue(x, z)
+	end
+	local x, z = job.positionAngleParameter:getPosition()
+	if x ~= nil then
+		self.positionAngleParameter:setPosition(x, z)
+	end
+	local angle = job.positionAngleParameter:getAngle()
+	if angle ~= nil then
+		self.positionAngleParameter:setAngle(angle)
+	end
 end
