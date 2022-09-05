@@ -339,6 +339,7 @@ function CpAIJobCombineUnloader:onTrailerFull(vehicle, driveStrategy)
 	if self.cpJobParameters.useGiantsUnload:getValue() then 
 		--- Giants unload
 		self.combineUnloaderTask:skip()
+		SpecializationUtil.raiseEvent(vehicle, "onCpTakeoverByGiants")
 	else 
 		vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
 	end

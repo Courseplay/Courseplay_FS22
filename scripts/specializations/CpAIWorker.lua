@@ -32,6 +32,7 @@ function CpAIWorker.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpFull")
     SpecializationUtil.registerEvent(vehicleType, "onCpFuelEmpty")
     SpecializationUtil.registerEvent(vehicleType, "onCpBroken")
+    SpecializationUtil.registerEvent(vehicleType, "onCpTakeoverByGiants")
 end
 
 function CpAIWorker.registerEventListeners(vehicleType)
@@ -39,6 +40,7 @@ function CpAIWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpTakeoverByGiants", CpAIWorker)
 end
 
 function CpAIWorker.registerFunctions(vehicleType)
@@ -221,6 +223,10 @@ function CpAIWorker:getCanMotorRun(superFunc, ...)
         return false
     end
     return superFunc(self, ...)
+end
+
+function CpAIWorker:onCpTakeoverByGiants()
+    self.spec_cpAIWorker.motorDisabled = false
 end
 
 function CpAIWorker:startCpDriveTo(task, jobParameters)
