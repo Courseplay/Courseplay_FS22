@@ -670,7 +670,7 @@ function CpBaseHud:draw(status)
         self.driveNowBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
     end
     self.driveNowBtn:setDisabled(not self.vehicle:getIsCpActive())
-
+    self.driveNowBtn:setVisible(self.vehicle:getIsCpActive())
     local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
     self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
 
