@@ -166,7 +166,7 @@ function PipeController:setupMoveablePipe()
 end
 
 function PipeController:updateMoveablePipe(dt)
-    if self.hasPipeMovingTools then
+    if self.hasPipeMovingTools and self.baseMovingTool and self.baseMovingToolChild then
         if self.pipeSpec.unloadingStates[self.pipeSpec.currentState] == true then
             for i, m in ipairs(self.validMovingTools) do
                 -- Only move the base pipe rod.
