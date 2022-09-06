@@ -37,6 +37,9 @@ end
 function CpAIWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
 end
@@ -67,6 +70,29 @@ function CpAIWorker:onLoad(savegame)
     local spec = self.spec_cpAIWorker
     --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
     spec.motorDisabled = false
+
+    if SpecializationUtil.hasSpecialization(Pipe, self.specializations) then 
+        spec.pipeController = PipeController(self, self)
+    end
+end
+
+function CpAIWorker:onLoadFinished()
+    
+end
+
+function CpAIWorker:onPreDetachImplement(implement)
+    local spec = self.spec_cpAIWorker
+    if spec.pipeController and spec.pipeController.implement == implement.object then 
+        spec.pipeController:delete()
+        spec.pipeController = nil
+    end
+end
+
+function CpAIWorker:onPostAttachImplement(object)
+    local spec = self.spec_cpAIWorker
+    if SpecializationUtil.hasSpecialization(Pipe, object.specializations) then 
+        spec.pipeController = PipeController(self, object)
+    end
 end
 
 --- Registers the start stop action event.
@@ -236,6 +262,11 @@ function CpAIWorker:stopCpDriveTo()
 end
 
 function CpAIWorker:onUpdate(dt)
+    local spec = self.spec_cpAIWorker
+    if spec.pipeController then 
+        spec.pipeController:update(dt)
+    end
+
     if self.driveToFieldWorkStartStrategy and self.isServer then
         if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')

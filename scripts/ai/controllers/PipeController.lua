@@ -19,7 +19,7 @@ function PipeController:init(vehicle, implement)
 
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
-    ImplementUtil.setPipeAttributes(self, self.implement)
+ --   ImplementUtil.setPipeAttributes(self, self.implement)
 end
 
 function PipeController:update(dt)
@@ -105,8 +105,8 @@ end
 function PipeController:getDischargeObject()
     local dischargeNode = self:getDischargeNode()
     if dischargeNode then
-        local targetObject, _ = self.implement:getDischargeTargetObject(dischargeNode)
-        return targetObject
+        local targetObject, fillUnitIndex = self.implement:getDischargeTargetObject(dischargeNode)
+        return targetObject, fillUnitIndex
     end
     return false
 end
@@ -186,45 +186,47 @@ function PipeController:moveDependedPipePart(tool, dt)
     local toolNode = tool.node   
     local dischargeNode = self.dischargeNode.node
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
+    local exactFillRootNode
+    local objectId = self.pipeSpec.nearestObjectInTriggers.objectId 
+	local fillUnitIndex = self.pipeSpec.nearestObjectInTriggers.fillUnitIndex
+    if objectId and fillUnitIndex then 
+        local object = NetworkUtil.getObject(objectId)
+        exactFillRootNode = object and object:getFillUnitExactFillRootNode(fillUnitIndex)
+    end
 
-    DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
-  --  DebugUtil.drawDebugNode(toolNode, "toolNode")
-
-    --- Temp node 
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
     local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
+    DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
     setTranslation(self.tempDependedNode, tx, gy, tz)
     DebugUtil.drawDebugNode(self.tempDependedNode, "tempDependedNode")
 
     local toolTempDist = calcDistanceFrom(toolNode, self.tempDependedNode)
     --- Absolute angle difference needed to be adjustment.
     local alpha = math.acos(toolTempDist/toolDischargeDist)
-    --[[
-    local rx, ry, rz = localRotationToLocal(toolBaseNode, toolNode, 0, 0, 0)
-    self:debug("rx: %.2f, ry: %.2f, rz: %.2f",  rx, ry, rz )
-    local rx, ry, rz = localRotationToLocal(toolNode, toolBaseNode, 0, 0, 0)
-    self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rx, ry, rz )
 
-    local rx, ry, rz = localRotationToLocal(self.tempNode, toolNode, 0, 0, 0)
-    self:debug("rx: %.2f, ry: %.2f, rz: %.2f",  rx, ry, rz )
-
-    local rotDiff = {}
-
-    rotDiff[1], rotDiff[2], rotDiff[3] = localRotationToLocal(toolNode, self.tempNode, 0, 0, 0)
-    self:debug("r2x: %.2f, r2y: %.2f, r2z: %.2f",  rotDiff[1], rotDiff[2], rotDiff[3] )
-    self:debug("oldRot: %.2f, alpha: %.2f, rotationAxis: %d", oldRot, alpha, tool.rotationAxis)
-    ]]--
     local curRot = {}
     curRot[1], curRot[2], curRot[3] = getRotation(toolNode)
     local oldRot = curRot[tool.rotationAxis]
     local targetRot = 0
     if ty < gy then 
         --- Discharge node is below the tool node
-        targetRot = MathUtil.clamp(oldRot + alpha, tool.rotMin, tool.rotMax)
+        targetRot = oldRot + alpha
     else 
-        targetRot = MathUtil.clamp(oldRot - alpha, tool.rotMin, tool.rotMax)
+        targetRot = oldRot - alpha
     end
-    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, targetRot)
+
+    if exactFillRootNode then 
+        DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
+        local _, gyT, _ = localToWorld(exactFillRootNode, 0, 0, 0)
+        gyT = gyT + 1
+        if gyT > gy then
+            local d = gyT - gy
+            local beta = math.sin(d/toolDischargeDist)
+            targetRot  = targetRot + beta
+        end
+    end
+
+    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
 function PipeController:movePipeUp(tool, dt)
