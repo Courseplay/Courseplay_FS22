@@ -32,7 +32,6 @@ function CpAIWorker.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpFull")
     SpecializationUtil.registerEvent(vehicleType, "onCpFuelEmpty")
     SpecializationUtil.registerEvent(vehicleType, "onCpBroken")
-    SpecializationUtil.registerEvent(vehicleType, "onCpTakeoverByGiants")
 end
 
 function CpAIWorker.registerEventListeners(vehicleType)
@@ -40,7 +39,6 @@ function CpAIWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
-    SpecializationUtil.registerEventListener(vehicleType, "onCpTakeoverByGiants", CpAIWorker)
 end
 
 function CpAIWorker.registerFunctions(vehicleType)
@@ -58,6 +56,7 @@ end
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopCurrentAIJob', CpAIWorker.stopCurrentAIJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanMotorRun', CpAIWorker.getCanMotorRun)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopFieldWorker', CpAIWorker.stopFieldWorker)
 end
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
@@ -151,8 +150,6 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     if not self:getIsControlled() and releaseMessage then
         self:setCpInfoTextActive(releaseMessage)
     end
-    --- Reset the flag.
-    self.spec_cpAIWorker.motorDisabled = false
     superFunc(self, message,...)
     if wasCpActive then
         if event then
@@ -225,10 +222,6 @@ function CpAIWorker:getCanMotorRun(superFunc, ...)
     return superFunc(self, ...)
 end
 
-function CpAIWorker:onCpTakeoverByGiants()
-    self.spec_cpAIWorker.motorDisabled = false
-end
-
 function CpAIWorker:startCpDriveTo(task, jobParameters)
     self.driveToTask = task
     ---@type AIDriveStrategyDriveToFieldWorkStart
@@ -283,4 +276,10 @@ end
 --- Unfreeze, continue work normally.
 function CpAIWorker:unfreezeCp()
     self:getCpDriveStrategy():unfreeze()
+end
+
+function CpAIWorker:stopFieldWorker(superFunc, ...)
+    --- Reset the flag.
+    self.spec_cpAIWorker.motorDisabled = false
+    superFunc(self, ...)    
 end
