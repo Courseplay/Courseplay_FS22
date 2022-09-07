@@ -474,7 +474,7 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
 	tool.curRot[1], tool.curRot[2], tool.curRot[3] = getRotation(tool.node)
 	local oldRot = tool.curRot[tool.rotationAxis]
 	local diff = rotTarget - oldRot
-	local rotSpeed = MathUtil.clamp(diff * tool.rotSpeed, tool.rotSpeed/10, 0.5)
+	local rotSpeed = MathUtil.clamp(diff * tool.rotSpeed, tool.rotSpeed/3, 0.5)
 	if diff < 0 then
 		rotSpeed=rotSpeed*(-1)
 	end
