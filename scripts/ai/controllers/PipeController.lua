@@ -111,6 +111,16 @@ function PipeController:getDischargeObject()
     return false
 end
 
+function PipeController:getClosestExactFillRootNode()
+    local objectId = self.pipeSpec.nearestObjectInTriggers.objectId 
+	local fillUnitIndex = self.pipeSpec.nearestObjectInTriggers.fillUnitIndex
+    if objectId and fillUnitIndex then 
+        local object = NetworkUtil.getObject(objectId)
+        return object and object:getFillUnitExactFillRootNode(fillUnitIndex)
+    end
+end
+
+
 function PipeController:getClosestObject()
     local id = self.pipeSpec.nearestObjectInTriggers.objectId
     return id and NetworkUtil.getObject(id)
@@ -166,15 +176,13 @@ function PipeController:setupMoveablePipe()
 end
 
 function PipeController:updateMoveablePipe(dt)
-    if self.hasPipeMovingTools and self.baseMovingTool and self.baseMovingToolChild then
+    if self.hasPipeMovingTools then
         if self.pipeSpec.unloadingStates[self.pipeSpec.currentState] == true then
-            for i, m in ipairs(self.validMovingTools) do
-                -- Only move the base pipe rod.
-                if m == self.baseMovingTool then
-                    self:movePipeUp(m, dt)
-                else 
-                    self:moveDependedPipePart(m, dt)
-                end
+            if self.baseMovingTool and self.baseMovingToolChild then 
+                self:movePipeUp( self.baseMovingTool, self.baseMovingToolChild.node, dt)
+                self:moveDependedPipePart(self.baseMovingToolChild, dt)
+            else 
+                self:movePipeUp( self.baseMovingTool, self.dischargeNode.node, dt)
             end
         end
     end
@@ -186,13 +194,7 @@ function PipeController:moveDependedPipePart(tool, dt)
     local toolNode = tool.node   
     local dischargeNode = self.dischargeNode.node
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
-    local exactFillRootNode
-    local objectId = self.pipeSpec.nearestObjectInTriggers.objectId 
-	local fillUnitIndex = self.pipeSpec.nearestObjectInTriggers.fillUnitIndex
-    if objectId and fillUnitIndex then 
-        local object = NetworkUtil.getObject(objectId)
-        exactFillRootNode = object and object:getFillUnitExactFillRootNode(fillUnitIndex)
-    end
+    local exactFillRootNode = self:getClosestExactFillRootNode()
 
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
     local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
@@ -221,7 +223,7 @@ function PipeController:moveDependedPipePart(tool, dt)
         gyT = gyT + 1
         if gyT > gy then
             local d = gyT - gy
-            local beta = math.sin(d/toolDischargeDist)
+            local beta = math.asin(d/toolDischargeDist)
             targetRot  = targetRot + beta
         end
     end
@@ -229,15 +231,15 @@ function PipeController:moveDependedPipePart(tool, dt)
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
-function PipeController:movePipeUp(tool, dt)
+function PipeController:movePipeUp(tool, childToolNode, dt)
     local toolNode = tool.node   
-    local childToolNode = self.baseMovingToolChild.node
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
 
     DebugUtil.drawDebugNode(childToolNode, "childToolNode")
     DebugUtil.drawDebugNode(toolNode, "toolNode")
 
-    --- Temp node 
+    local exactFillRootNode = self:getClosestExactFillRootNode()
+   
     local tx, ty, tz = localToWorld(childToolNode, 0, 0, 0)
     local gx, gy, gz = localToWorld(toolNode, 0, 0, 0)
     setTranslation(self.tempBaseNode, gx, ty, gz)
@@ -252,12 +254,27 @@ function PipeController:movePipeUp(tool, dt)
     local targetRot = 0
     if ty > gy then 
         --- Discharge node is below the tool node
-        targetRot = MathUtil.clamp(oldRot + alpha, tool.rotMin, tool.rotMax)
+        targetRot = oldRot + alpha
     else 
-        targetRot = MathUtil.clamp(oldRot - alpha, tool.rotMin, tool.rotMax)
+        targetRot = oldRot - alpha
     end
-    --self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", rotTarget, curRot[tool.rotationAxis], tool.rotMin, tool.rotMax)
-    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, targetRot)
+
+    if exactFillRootNode then 
+        DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
+        local gxT, gyT, gzT = localToWorld(exactFillRootNode, 0, 0, 0)
+        gyT = gyT + 2
+        local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 5
+        gyT = math.max(gyT, terrainHeight)
+        local offset = gyT - gy
+        if gyT < ty then
+            local d = math.abs(gyT - gy + offset)
+            local beta = math.asin(d/toolChildToolDist)
+            --targetRot = targetRot + beta
+            targetRot = oldRot - beta
+            self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
+        end
+    end
+    ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
 function PipeController:delete()
