@@ -182,7 +182,8 @@ function PipeController:updateMoveablePipe(dt)
                 self:movePipeUp( self.baseMovingTool, self.baseMovingToolChild.node, dt)
                 self:moveDependedPipePart(self.baseMovingToolChild, dt)
             else 
-                self:movePipeUp( self.baseMovingTool, self.dischargeNode.node, dt)
+                DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
+                self:moveDependedPipePart( self.baseMovingTool, dt)
             end
         end
     end
@@ -227,7 +228,9 @@ function PipeController:moveDependedPipePart(tool, dt)
             targetRot  = targetRot + beta
         end
     end
-
+    if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
+        self:debug("Move depended: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
+    end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
@@ -273,7 +276,9 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
             DebugUtil.drawDebugLine(tx, ty, tz, gxT, gyT, gzT, 0, 0, 1)
             --targetRot = targetRot + beta
             targetRot = oldRot - beta
-            self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
+            if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
+                self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
+            end
         end
     end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
