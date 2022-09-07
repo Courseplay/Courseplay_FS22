@@ -263,12 +263,14 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
         DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
         local gxT, gyT, gzT = localToWorld(exactFillRootNode, 0, 0, 0)
         gyT = gyT + 2
-        local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 5
+        local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 4
         gyT = math.max(gyT, terrainHeight)
         local offset = gyT - gy
         if gyT < ty then
             local d = math.abs(gyT - gy + offset)
             local beta = math.asin(d/toolChildToolDist)
+            DebugUtil.drawDebugLine(gxT, gyT, gzT, gx, gy, gz, 0, 0, 1)
+            DebugUtil.drawDebugLine(tx, ty, tz, gxT, gyT, gzT, 0, 0, 1)
             --targetRot = targetRot + beta
             targetRot = oldRot - beta
             self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
