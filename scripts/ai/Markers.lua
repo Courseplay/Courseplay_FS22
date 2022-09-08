@@ -23,7 +23,7 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
         local lastImplement
         lastImplement, backMarkerOffset = AIUtil.getLastAttachedImplement(vehicle)
         referenceNode = vehicle.rootNode
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, 'Using the last implement\'s rear distance for the rear proximity sensor, %d m from root node', backMarkerOffset)
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, 'Using the last implement\'s rear distance for the back marker node, %d m from root node', backMarkerOffset)
     elseif measuredBackDistance then
         referenceNode = vehicle.rootNode
         backMarkerOffset = -measuredBackDistance
@@ -35,12 +35,12 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
         local dBetweenRootAndReverserNode = MathUtil.vector2Length(dx, dz)
         backMarkerOffset = dBetweenRootAndReverserNode - vehicle.size.length / 2 - vehicle.size.lengthOffset
         referenceNode = reverserNode
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the %s node for the rear proximity sensor %d m from root node (%d m between root and reverser)',
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the %s node for the back marker node %d m from root node (%d m between root and reverser)',
                 debugText, backMarkerOffset, dBetweenRootAndReverserNode)
     else
         referenceNode = vehicle.rootNode
         backMarkerOffset = - vehicle.size.length / 2 + vehicle.size.lengthOffset
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the vehicle\'s root node for the rear proximity sensor, %d m from root node', backMarkerOffset)
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the vehicle\'s root node for the back marker node, %d m from root node', backMarkerOffset)
     end
 
     createMarkerIfDoesNotExist(vehicle, 'backMarkerNode', referenceNode)
@@ -48,12 +48,13 @@ local function setBackMarkerNode(vehicle, measuredBackDistance)
     unlink(g_vehicleMarkers[vehicle].backMarkerNode)
     link(referenceNode, g_vehicleMarkers[vehicle].backMarkerNode)
     setTranslation(g_vehicleMarkers[vehicle].backMarkerNode, 0, 0, backMarkerOffset)
+    g_vehicleMarkers[vehicle].backMarkerOffset = backMarkerOffset
 end
 
 -- Put a node on the front of the vehicle for easy distance checks use this instead of the root/direction node
 local function setFrontMarkerNode(vehicle)
     local firstImplement, frontMarkerOffset = AIUtil.getFirstAttachedImplement(vehicle)
-    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the %s\'s root node for the front proximity sensor, %d m from root node',
+    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,'Using the %s\'s root node for the front marker node, %d m from root node',
             firstImplement.getName and firstImplement:getName() or 'N/A', frontMarkerOffset)
 
     createMarkerIfDoesNotExist(vehicle, 'frontMarkerNode', vehicle.rootNode)
@@ -61,6 +62,7 @@ local function setFrontMarkerNode(vehicle)
     unlink(g_vehicleMarkers[vehicle].frontMarkerNode)
     link(vehicle.rootNode, g_vehicleMarkers[vehicle].frontMarkerNode)
     setTranslation(g_vehicleMarkers[vehicle].frontMarkerNode, 0, 0, frontMarkerOffset)
+    g_vehicleMarkers[vehicle].frontMarkerOffset = frontMarkerOffset
 end
 
 --- Create two nodes, one on the front and one on the back of the vehicle (including implements). The front node
@@ -73,17 +75,24 @@ function Markers.setMarkerNodes(vehicle, measuredBackDistance)
     setFrontMarkerNode(vehicle)
 end
 
+--- Get the front marker node and offset
+---@param vehicle table
+---@return number, number the front marker node, distance of front marker node from the vehicle's root node
 function Markers.getFrontMarkerNode(vehicle)
     if not g_vehicleMarkers[vehicle] or not g_vehicleMarkers[vehicle].frontMarkerNode then
         setFrontMarkerNode(vehicle)
     end
-    return g_vehicleMarkers[vehicle].frontMarkerNode
+    return g_vehicleMarkers[vehicle].frontMarkerNode, g_vehicleMarkers[vehicle].frontMarkerOffset
 end
 
+--- Get the back marker node and offset
+---@param vehicle table
+---@return number, number the back marker node, distance of back marker node from the vehicle's root node, most likely
+--- negative, as it will be behind the root node...
 function Markers.getBackMarkerNode(vehicle)
     if not g_vehicleMarkers[vehicle] or not g_vehicleMarkers[vehicle].backMarkerNode then
         setBackMarkerNode(vehicle)
     end
-    return g_vehicleMarkers[vehicle].backMarkerNode
+    return g_vehicleMarkers[vehicle].backMarkerNode, g_vehicleMarkers[vehicle].backMarkerOffset
 end
 
