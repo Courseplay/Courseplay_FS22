@@ -71,9 +71,6 @@ function CpAIWorker:onLoad(savegame)
     --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
     spec.motorDisabled = false
 
-    if SpecializationUtil.hasSpecialization(Pipe, self.specializations) then 
-        spec.pipeController = PipeController(self, self)
-    end
 end
 
 function CpAIWorker:onLoadFinished()
