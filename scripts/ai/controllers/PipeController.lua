@@ -187,7 +187,7 @@ function PipeController:updateMoveablePipe(dt)
                 if math.abs(y-ny) < 2 then 
                     self:movePipeUp( self.baseMovingTool, self.dischargeNode.node, dt)
                 else 
-                    DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
+               --     DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
                     self:moveDependedPipePart( self.baseMovingTool, dt)
                 end
             end
@@ -196,7 +196,7 @@ function PipeController:updateMoveablePipe(dt)
 end
 
 
---- TODO: might be a good idea to make this variable for the trailer min height.
+
 function PipeController:moveDependedPipePart(tool, dt)
     local toolNode = tool.node   
     local dischargeNode = self.dischargeNode.node
@@ -205,9 +205,9 @@ function PipeController:moveDependedPipePart(tool, dt)
 
     local tx, ty, tz = localToWorld(dischargeNode, 0, 0, 0)
     local _, gy, _ = localToWorld(toolNode, 0, 0, 0)
-    DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
+   -- DebugUtil.drawDebugNode(dischargeNode, "dischargeNode")
     setTranslation(self.tempDependedNode, tx, gy, tz)
-    DebugUtil.drawDebugNode(self.tempDependedNode, "tempDependedNode")
+   -- DebugUtil.drawDebugNode(self.tempDependedNode, "tempDependedNode")
 
     local toolTempDist = calcDistanceFrom(toolNode, self.tempDependedNode)
     --- Absolute angle difference needed to be adjustment.
@@ -231,7 +231,7 @@ function PipeController:moveDependedPipePart(tool, dt)
     end
 
     if exactFillRootNode then 
-        DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
+     --   DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
         local _, gyT, _ = localToWorld(exactFillRootNode, 0, 0, 0)
         gyT = gyT + 1
         if gyT > gy then
@@ -244,9 +244,9 @@ function PipeController:moveDependedPipePart(tool, dt)
             end
         end
     end
-    if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
-        self:debug("Move depended: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
-    end
+  --  if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
+  --      self:debug("Move depended: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
+  --  end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
 end
 
@@ -254,15 +254,15 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
     local toolNode = tool.node   
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
 
-    DebugUtil.drawDebugNode(childToolNode, "childToolNode")
-    DebugUtil.drawDebugNode(toolNode, "toolNode")
+  --  DebugUtil.drawDebugNode(childToolNode, "childToolNode")
+  --  DebugUtil.drawDebugNode(toolNode, "toolNode")
 
     local exactFillRootNode = self:getClosestExactFillRootNode()
    
     local tx, ty, tz = localToWorld(childToolNode, 0, 0, 0)
     local gx, gy, gz = localToWorld(toolNode, 0, 0, 0)
     setTranslation(self.tempBaseNode, gx, ty, gz)
-    DebugUtil.drawDebugNode(self.tempBaseNode, "tempNode")
+  --  DebugUtil.drawDebugNode(self.tempBaseNode, "tempNode")
 
     local toolTempDist = calcDistanceFrom(toolNode, self.tempBaseNode)
     --- Absolute angle difference needed to be adjustment.
@@ -285,7 +285,7 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
     end
 
     if exactFillRootNode then 
-        DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
+    --    DebugUtil.drawDebugNode(exactFillRootNode, "exactFillRootNode")
         local gxT, gyT, gzT = localToWorld(exactFillRootNode, 0, 0, 0)
         gyT = gyT + 2
         local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, gxT, 0, gzT) + 4
@@ -294,16 +294,15 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
         if gyT < ty then
             local d = math.abs(gyT - gy + offset)
             local beta = math.asin(d/toolChildToolDist)
-            DebugUtil.drawDebugLine(gxT, gyT, gzT, gx, gy, gz, 0, 0, 1)
-            DebugUtil.drawDebugLine(tx, ty, tz, gxT, gyT, gzT, 0, 0, 1)
-            --targetRot = targetRot + beta
+       --     DebugUtil.drawDebugLine(gxT, gyT, gzT, gx, gy, gz, 0, 0, 1)
+       --     DebugUtil.drawDebugLine(tx, ty, tz, gxT, gyT, gzT, 0, 0, 1)
             targetRot = oldRot - beta
             if not self.pipeOnLeftSide then
                 targetRot = oldRot + beta
             end
-            if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
-                self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
-            end
+        --    if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
+        --        self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
+        --    end
         end
     end
     ImplementUtil.moveMovingToolToRotation(self.implement, tool, dt, MathUtil.clamp(targetRot, tool.rotMin, tool.rotMax))
