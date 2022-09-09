@@ -82,17 +82,11 @@ end
 
 function CpAIWorker:onPreDetachImplement(implement)
     local spec = self.spec_cpAIWorker
-    if spec.pipeController and spec.pipeController.implement == implement.object then 
-        spec.pipeController:delete()
-        spec.pipeController = nil
-    end
 end
 
 function CpAIWorker:onPostAttachImplement(object)
     local spec = self.spec_cpAIWorker
-    if SpecializationUtil.hasSpecialization(Pipe, object.specializations) then 
-        spec.pipeController = PipeController(self, object)
-    end
+
 end
 
 --- Registers the start stop action event.
@@ -262,11 +256,6 @@ function CpAIWorker:stopCpDriveTo()
 end
 
 function CpAIWorker:onUpdate(dt)
-    local spec = self.spec_cpAIWorker
-    if spec.pipeController then 
-        spec.pipeController:update(dt)
-    end
-
     if self.driveToFieldWorkStartStrategy and self.isServer then
         if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
