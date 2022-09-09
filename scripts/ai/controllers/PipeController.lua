@@ -19,7 +19,7 @@ function PipeController:init(vehicle, implement)
 
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
- --   ImplementUtil.setPipeAttributes(self, self.implement)
+    CpUtil.try(ImplementUtil.setPipeAttributes, self, self.implement)
 end
 
 function PipeController:update(dt)
@@ -181,9 +181,15 @@ function PipeController:updateMoveablePipe(dt)
             if self.baseMovingTool and self.baseMovingToolChild then 
                 self:movePipeUp( self.baseMovingTool, self.baseMovingToolChild.node, dt)
                 self:moveDependedPipePart(self.baseMovingToolChild, dt)
-            else 
-                DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
-                self:moveDependedPipePart( self.baseMovingTool, dt)
+            else
+                local _, y, _ = localToWorld(self.baseMovingTool.node, 0, 0, 0)
+                local _, ny, _ = localToWorld(self.implement.rootNode, 0, 0, 0)
+                if math.abs(y-ny) < 2 then 
+                    self:movePipeUp( self.baseMovingTool, self.dischargeNode.node, dt)
+                else 
+                    DebugUtil.drawDebugNode(self.baseMovingTool.node, "baseMovingTool")
+                    self:moveDependedPipePart( self.baseMovingTool, dt)
+                end
             end
         end
     end
@@ -214,8 +220,14 @@ function PipeController:moveDependedPipePart(tool, dt)
     if ty < gy then 
         --- Discharge node is below the tool node
         targetRot = oldRot + alpha
+        if not self.pipeOnLeftSide then
+            targetRot = oldRot - alpha
+        end
     else 
         targetRot = oldRot - alpha
+        if not self.pipeOnLeftSide then
+            targetRot = oldRot + alpha
+        end
     end
 
     if exactFillRootNode then 
@@ -225,7 +237,11 @@ function PipeController:moveDependedPipePart(tool, dt)
         if gyT > gy then
             local d = gyT - gy
             local beta = math.asin(d/toolDischargeDist)
-            targetRot  = targetRot + beta
+            if self.pipeOnLeftSide then
+                targetRot  = targetRot + beta
+            else 
+                targetRot  = targetRot - beta
+            end
         end
     end
     if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
@@ -258,8 +274,14 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
     if ty > gy then 
         --- Discharge node is below the tool node
         targetRot = oldRot + alpha
+        if not self.pipeOnLeftSide then
+            targetRot = oldRot - alpha
+        end
     else 
         targetRot = oldRot - alpha
+        if not self.pipeOnLeftSide then
+            targetRot = oldRot + alpha
+        end
     end
 
     if exactFillRootNode then 
@@ -276,6 +298,9 @@ function PipeController:movePipeUp(tool, childToolNode, dt)
             DebugUtil.drawDebugLine(tx, ty, tz, gxT, gyT, gzT, 0, 0, 1)
             --targetRot = targetRot + beta
             targetRot = oldRot - beta
+            if not self.pipeOnLeftSide then
+                targetRot = oldRot + beta
+            end
             if g_currentMission.controlledVehicle and g_currentMission.controlledVehicle == self.vehicle then
                 self:debug("Move up: rotTarget: %.2f, oldRot: %.2f, rotMin: %.2f, rotMax: %.2f", targetRot, oldRot, tool.rotMin, tool.rotMax)
             end

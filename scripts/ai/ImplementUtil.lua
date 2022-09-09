@@ -426,7 +426,7 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
-        if wasFolded then
+        if wasFolded and referenceVehicle.spec_foldable then
             ImplementUtil.foldAfterGettingWidth(referenceVehicle)
             -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
             -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
