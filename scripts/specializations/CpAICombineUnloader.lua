@@ -90,7 +90,7 @@ end
 
 --- If we have a trailer which can be emptied, we can unload a combine
 function CpAICombineUnloader:getCanStartCpCombineUnloader()
-	return AIUtil.getNumberOfChildVehiclesWithSpecialization(self, Trailer) == 1
+	return not self:getCanStartCpFieldWork() and AIUtil.getNumberOfChildVehiclesWithSpecialization(self, Trailer) == 1
 end
 
 function CpAICombineUnloader:getCanStartCp(superFunc)
