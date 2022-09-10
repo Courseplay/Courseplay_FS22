@@ -98,3 +98,7 @@ end
 function BalerController:onStart()
     self.baler:setFoldDirection(-1)
 end
+
+function BalerController:onFinished()
+    Baler.actionEventUnloading(self.implement)
+end
