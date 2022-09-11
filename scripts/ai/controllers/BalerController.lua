@@ -100,5 +100,6 @@ function BalerController:onStart()
 end
 
 function BalerController:onFinished()
-    Baler.actionEventUnloading(self.implement)
+    -- TODO: not working, as this probably needs to be called, before the drive is released.
+    -- Baler.actionEventUnloading(self.implement)
 end
