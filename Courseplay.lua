@@ -145,6 +145,8 @@ function Courseplay:setupGui()
 			{256, 0, 128, 128}, pos + 1, predicateFunc)
 	self.infoTextsHud = CpHudInfoTexts()
 
+	g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, CpCourseManager.drawHud)
+
 end
 
 --- Adds cp help info to the in game help menu.

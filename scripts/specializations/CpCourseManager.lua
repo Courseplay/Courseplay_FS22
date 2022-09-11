@@ -310,10 +310,10 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
     end
 end
 
-function CpCourseManager:drawCpCoursePlot(map)
-    if CpCourseManager.hasCourse(self) then
+function CpCourseManager:drawCpCoursePlot(map, isHudMap)
+    if self:hasCpCourse() then
         local spec = self.spec_cpCourseManager
-        spec.coursePlot:draw(map)
+        spec.coursePlot:draw(map, isHudMap)
     end
 end
 
@@ -327,6 +327,16 @@ function CpCourseManager:onDraw()
                 content = course:getDebugTable()
             }
             CpDebug:drawVehicleDebugTable(self,{info})
+        end
+    end
+end
+
+--- Draws the course onto the hud.
+function CpCourseManager.drawHud(map)
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() then 
+        if vehicle:hasCpCourse() then
+            vehicle:drawCpCoursePlot(map, true)
         end
     end
 end
