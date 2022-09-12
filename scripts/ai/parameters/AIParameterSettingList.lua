@@ -76,7 +76,7 @@ function AIParameterSettingList.getSpeedText(value)
 end
 
 function AIParameterSettingList.getDistanceText(value)
-	if g_i18n.useMiles then 
+	if g_Courseplay.globalSettings and g_Courseplay.globalSettings.distanceUnit:getValue() == g_Courseplay.globalSettings.IMPERIAL_UNIT  then 
 		return string.format("%.1f %s", value*AIParameterSettingList.FOOT_FACTOR, g_i18n:getText("CP_unit_foot"))
 	end
 	return string.format("%.1f %s", value, g_i18n:getText("CP_unit_meter"))
@@ -96,7 +96,7 @@ AIParameterSettingList.UNITS_TEXTS = {
 
 AIParameterSettingList.UNITS_CONVERSION = {
 	function (value) return g_i18n.useMiles and value/AIParameterSettingList.MILES_FACTOR or value end,
-	function (value) return g_i18n.useMiles and value/AIParameterSettingList.FOOT_FACTOR or value end,
+	function (value) return g_Courseplay.globalSettings and g_Courseplay.globalSettings.distanceUnit:getValue() == g_Courseplay.globalSettings.IMPERIAL_UNIT and value/AIParameterSettingList.FOOT_FACTOR or value end,
 	function (value) return g_i18n.useAcre and value/AIParameterSettingList.ACRE_FACTOR or value end
 }
 
