@@ -57,6 +57,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpDrawHudMap", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
@@ -331,13 +332,10 @@ function CpCourseManager:onDraw()
     end
 end
 
---- Draws the course onto the hud.
-function CpCourseManager.drawHud(map)
-    local vehicle = g_currentMission.controlledVehicle
-    if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() then 
-        if vehicle:hasCpCourse() then
-            vehicle:drawCpCoursePlot(map, true)
-        end
+function CpCourseManager:onCpDrawHudMap(map)
+    if self:hasCpCourse() then
+        --- Draws the course onto the hud map.
+        self:drawCpCoursePlot(map, true)
     end
 end
 
