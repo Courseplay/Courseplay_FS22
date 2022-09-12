@@ -245,6 +245,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Włącza/wyłącza funkcje myszy dla wyświetlania tekstu informacyjnego poza pojazdem."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferuj własne pola"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Preferuj własne pole, jeśli na wybranej pozycji znajduje się również zwykłe pole."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->

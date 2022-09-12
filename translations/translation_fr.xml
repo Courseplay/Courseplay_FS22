@@ -245,6 +245,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Active ou désactive la gestion du curseur pour les autres mods utilisant également le curseur pour les textes d'information en dehors des véhicules. Améliore la compatibilité avec les mods de type VehicleInfo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Détection prioritaire des champs perso."/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Sélectionne en priorité un champ personnalisé si celui-ci est à cheval sur un champ déjà existant."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->

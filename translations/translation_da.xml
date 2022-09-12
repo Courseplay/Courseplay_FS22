@@ -245,6 +245,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverer/deaktiverer afspillerens musehændelse for infotekstvisning uden for et køretøj."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Foretræk brugerdefinerede marker"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Foretræk brugerdefinerede marker hvis der også er et original mark på den valgte position."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->

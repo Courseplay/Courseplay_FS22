@@ -245,6 +245,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Prefer custom fields"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Prefer custom field if there is also a regular field at the selected position."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->

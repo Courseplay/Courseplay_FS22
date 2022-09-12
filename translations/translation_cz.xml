@@ -246,6 +246,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Povolí/zakáže chování myši hráče pro zobrazení informačního textu mimo vozidlo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preference vlastního pole"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Upřednostňuje vlastní pole, pokud je na vybrané pozici také běžné pole."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->

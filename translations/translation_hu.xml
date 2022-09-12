@@ -245,6 +245,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Engedélyezi a jármüválasztást az infóablakból."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Felhasználói szántóföld előnyben"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Válassza a felhasználói szántóföldet ha ugyanott egy beépített föld is van."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->
