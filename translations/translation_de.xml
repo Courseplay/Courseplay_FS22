@@ -247,6 +247,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiviert/Deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Bevorzuge erstellten Feldrand"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distanz Einheit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distanzeinheit Meter oder Fuß."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Fuß"/>
     <!---->
     <!--Course manager-->
     <!---->

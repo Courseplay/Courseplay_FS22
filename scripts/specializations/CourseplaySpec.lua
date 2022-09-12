@@ -54,6 +54,7 @@ function CourseplaySpec:onLoad(savegame)
     self.spec_courseplaySpec = self["spec_" .. specName]
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], CourseplaySpec.onUnitChanged, self)
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], CourseplaySpec.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.CP_DISTANCE_UNIT_CHANGED, CourseplaySpec.onUnitChanged, self)
 end
 
 function CourseplaySpec:onUnitChanged()

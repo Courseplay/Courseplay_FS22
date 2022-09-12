@@ -247,6 +247,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="启用/禁用车辆外的鼠标交互。"/>
     <text name="CP_global_setting_preferCustomFields_title" text="首选自定义田地"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="使用自定义田地，即使有原始田地。"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->

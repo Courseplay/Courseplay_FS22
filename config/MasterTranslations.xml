@@ -867,6 +867,22 @@
 			<Text language="de"><![CDATA[Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt.]]></Text>
 			<Text language="en"><![CDATA[Prefer custom field if there is also a regular field at the selected position.]]></Text>
 		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_title">
+			<Text language="de"><![CDATA[Distanz Einheit]]></Text>
+			<Text language="en"><![CDATA[Distance unit]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_tooltip">
+			<Text language="de"><![CDATA[Distanzeinheit Meter oder Fuß.]]></Text>
+			<Text language="en"><![CDATA[Distance unit meter or Foot.]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_meter">
+			<Text language="de"><![CDATA[Meter]]></Text>
+			<Text language="en"><![CDATA[Meter]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_imperial">
+			<Text language="de"><![CDATA[Fuß]]></Text>
+			<Text language="en"><![CDATA[Foot]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Course manager">	
 		<Translation name="CP_courseManager_title">
