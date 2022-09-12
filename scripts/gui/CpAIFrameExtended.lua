@@ -379,7 +379,9 @@ function CpInGameMenuAIFrameExtended:draw()
 	if CoursePlotAlwaysVisible then
 		local vehicles = g_assignedCoursesManager:getRegisteredVehicles()
 		for _, v in pairs(vehicles) do
-			v:drawCpCoursePlot(self)
+			if g_currentMission.accessHandler:canPlayerAccess(v) then
+				v:drawCpCoursePlot(self)
+			end
 		end
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
 		vehicle:drawCpCoursePlot(self)

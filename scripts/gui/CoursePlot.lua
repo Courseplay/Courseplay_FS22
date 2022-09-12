@@ -39,11 +39,11 @@ end
 
 function CoursePlot:delete()
 	if self.courseOverlayId ~= 0 then
-		delete(self.courseOverlayId);
-	end;
+		delete(self.courseOverlayId)
+	end
 	if self.startSignOverlayId ~= 0 then
-		delete(self.startSignOverlayId);
-	end;
+		delete(self.startSignOverlayId)
+	end
 end
 
 function CoursePlot:setVisible( isVisible )
@@ -86,6 +86,7 @@ function CoursePlot:worldToScreen(map, worldX, worldZ, isHudMap)
 	local rot = 0
 	local visible = true
 	if isHudMap then 
+		--- The plot is displayed in the hud.
 		objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * map.mapExtensionScaleFactor + map.mapExtensionOffsetX
 		objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * map.mapExtensionScaleFactor + map.mapExtensionOffsetZ
 
@@ -139,19 +140,19 @@ function CoursePlot:drawPoints(map, isHudMap)
 	
 			-- render only if it is on the plot area
 			if startX and startY and endX and endY then
-				dx2D = endX - startX;
-				dy2D = ( endY - startY ) / g_screenAspectRatio;
-				width = MathUtil.vector2Length(dx2D, dy2D);
+				dx2D = endX - startX
+				dy2D = ( endY - startY ) / g_screenAspectRatio
+				width = MathUtil.vector2Length(dx2D, dy2D)
 
-				dx = np.x - wp.x;
-				dz = np.z - wp.z;
-				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation;
+				dx = np.x - wp.x
+				dz = np.z - wp.z
+				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation
 				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress)
 				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
 				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
 			end
-		end;
+		end
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
 end
@@ -168,6 +169,7 @@ function CoursePlot:draw(map, isHudMap)
 	local signSizeMeters = 0.02
 	local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
 	if isHudMap and map.state == IngameMap.STATE_MAP then 
+		--- When the hud is completely open, then the signs need to be scaled down.
 		zoom = zoom * 0.5
 	end
 	local signWidth, signHeight = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom * g_screenAspectRatio

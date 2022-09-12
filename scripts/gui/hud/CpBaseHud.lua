@@ -624,6 +624,9 @@ function CpBaseHud:openCourseGeneratorGui(vehicle)
             break
         end
     end
+    --- Moves the map, so the selected vehicle is directly visible.
+    local worldX, _, worldZ = getWorldTranslation(vehicle.rootNode)
+    CpGuiUtil.movesMapCenterTo(pageAI.ingameMap, worldX, worldZ)
 end
 
 function CpBaseHud:openVehicleSettingsGui(vehicle)
