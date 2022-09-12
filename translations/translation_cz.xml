@@ -240,6 +240,8 @@
     <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zobrazit všechny aktivní trasy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zobrazuje všechny aktivní trasy na herní mapě."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Zobrazit informační textové okno"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Zobrazí informační textové okno."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Chování myši hráče"/>
