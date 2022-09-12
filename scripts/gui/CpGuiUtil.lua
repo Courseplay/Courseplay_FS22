@@ -231,3 +231,13 @@ function CpGuiUtil.setCameraRotation(vehicle, enableRotation, savedRotatableInfo
 		camera.isRotatable = isRotatable
 	end
 end
+
+function CpGuiUtil.movesMapCenterTo(map, worldX, worldZ)
+    local width, height = map.ingameMap.fullScreenLayout:getMapSize()
+    local oldTargetX, oldTargetZ =  map:localToWorldPos(map:getLocalPointerTarget())
+    local diffX = worldX - oldTargetX
+    local diffZ = worldZ - oldTargetZ
+    local dx = diffX /  map.terrainSize * 0.5 * width
+    local dy = -diffZ /  map.terrainSize * 0.5 * height
+    map:moveCenter(-dx, -dy)
+end

@@ -239,6 +239,8 @@
     <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zeige alle Kurse"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zeigt alle geladenen Kurse auf der Karte."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Zeige Kurse auf der Minikarte"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Ermöglicht die Anzeige des Kurses auf der kleinen Karte."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Helfer-Infofenster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Schaltet das Infofenster für die CP-Helfer an oder aus."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spielermaus"/>

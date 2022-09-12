@@ -239,6 +239,8 @@
     <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="允许在每次创建路径时放宽路径搜索的限制。值越高，计算速度越快。"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="显示所有活动任务 "/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="在地图上显示所有活动任务。 "/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="显示信息文本窗口 "/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="显示一个信息文本窗口。"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="车外鼠标交互"/>

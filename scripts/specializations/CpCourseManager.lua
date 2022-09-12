@@ -57,6 +57,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpDrawHudMap", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
@@ -310,10 +311,10 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
     end
 end
 
-function CpCourseManager:drawCpCoursePlot(map)
-    if CpCourseManager.hasCourse(self) then
+function CpCourseManager:drawCpCoursePlot(map, isHudMap)
+    if self:hasCpCourse() then
         local spec = self.spec_cpCourseManager
-        spec.coursePlot:draw(map)
+        spec.coursePlot:draw(map, isHudMap)
     end
 end
 
@@ -328,6 +329,13 @@ function CpCourseManager:onDraw()
             }
             CpDebug:drawVehicleDebugTable(self,{info})
         end
+    end
+end
+
+function CpCourseManager:onCpDrawHudMap(map)
+    if self:hasCpCourse() then
+        --- Draws the course onto the hud map.
+        self:drawCpCoursePlot(map, true)
     end
 end
 

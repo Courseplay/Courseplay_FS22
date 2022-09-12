@@ -38,6 +38,7 @@
 		<Setting classType="AIParameterBooleanSetting" name="expertModeActive" isUserSetting="true" defaultBool="false" onChangeCallback="onExpertModeChanged"/>
 		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" isUserSetting="true" defaultBool="false" onChangeCallback="onHudSelectionChanged"/>
 		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true" defaultBool="false" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="drawOntoTheHudMap" isUserSetting="true" defaultBool="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="showActionEventHelp" isUserSetting="true" defaultBool="false" onChangeCallback="onActionEventTextVisibilityChanged"/>
 		<Setting classType="AIParameterBooleanSetting" name="infoTextHudActive" isUserSetting="true" defaultBool="true"/>
 		<Setting classType="AIParameterBooleanSetting" name="infoTextHudPlayerMouseActive" isUserSetting="true" defaultBool="true" isExpertModeOnly="true"/>
