@@ -247,10 +247,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Ativa/desativa o evento do mouse do jogador para a exibição do texto informativo fora de um veículo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Optar por campo customizado"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Optar por campo customizado mesmo sendo um campo regular na mesma posição."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Unidade de distândia"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Unidade de distância em metros ou Pés."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Metros"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Pés"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -647,7 +647,7 @@ Na categoria avançada estão:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostrar canal de debug sim/não."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Dirigir/stop motorista"/>
-    <text name="input_CP_TOGGLE_MOUSE" text="CP: Mouse cursor on/off"/>
+    <text name="input_CP_TOGGLE_MOUSE" text="CP: Cursor do mouse ligar/desligar"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Abrir/fechar hud"/>
     <text name="TEST_TRANSLATION" text="_TEST"/>
   </texts>
