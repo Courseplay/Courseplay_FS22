@@ -239,18 +239,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Pokaż wszystkie aktywne kursy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Pokazuje wszystkie aktywne kursy na podglądzie mapy."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Rysowanie kursu na minimapie"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Umożliwia narysowanie kursu na mini mapie."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Pokaż okno informacyjne"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Wyświetla okno z dodatkowymi informacjami."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Funkcje myszy"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Włącza/wyłącza funkcje myszy dla wyświetlania tekstu informacyjnego poza pojazdem."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferuj własne pola"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Preferuj własne pole, jeśli na wybranej pozycji znajduje się również zwykłe pole."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Jednostka długości"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Długość w metrach lub stopach."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="metr"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="stopa"/>
     <!---->
     <!--Course manager-->
     <!---->
