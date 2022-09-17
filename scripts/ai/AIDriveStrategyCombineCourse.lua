@@ -777,7 +777,9 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
     if self:isWaitingForUnload() then
         bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here')
-        bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
+        if bestUnloader then
+            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
+        end
     else
         if not self.waypointIxWhenCallUnloader then
             self:debug('callUnloaderWhenNeeded: don\'t know yet where to meet the unloader')

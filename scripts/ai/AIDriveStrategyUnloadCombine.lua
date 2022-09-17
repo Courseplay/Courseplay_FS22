@@ -595,6 +595,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
     self:setMaxSpeed(0)
+    self:releaseCombine()
     if self.augerWagon then
         self:debug('Have auger wagon, looking for a trailer.')
         if self:startSelfUnload() then
