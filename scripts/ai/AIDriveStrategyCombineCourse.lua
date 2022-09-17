@@ -693,14 +693,15 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
         self:debug('Fill rate is %.1f l/m, %.1f l/s', self.litersPerMeter, self.litersPerSecond)
     end
     local litersUntilFull = capacity - fillLevel
-    local dUntilFull = litersUntilFull / self.litersPerMeter * 0.9  -- safety margin
+    local dUntilFull = litersUntilFull / self.litersPerMeter
     local litersUntilCallUnloader = capacity * self.callUnloaderAtFillLevelPercentage / 100 - fillLevel
-    local dUntilCallUnloader = litersUntilCallUnloader / self.litersPerMeter * 0.9
+    local dUntilCallUnloader = litersUntilCallUnloader / self.litersPerMeter
     self.waypointIxWhenFull = self.course:getNextWaypointIxWithinDistance(ix, dUntilFull) or self.course:getNumberOfWaypoints()
-    self.waypointIxWhenCallUnloader = self.course:getNextWaypointIxWithinDistance(ix, dUntilCallUnloader) or self.course:getNumberOfWaypoints()
-    self:debug('Will be full at waypoint %d, fill level %d at waypoint %d (current waypoint %d)',
+    local wpDistance
+    self.waypointIxWhenCallUnloader, wpDistance = self.course:getNextWaypointIxWithinDistance(ix, dUntilCallUnloader)
+    self:debug('Will be full at waypoint %d, fill level %d at waypoint %d (current waypoint %d), %.1f m and %.1f l until call (currently %.1f l), wp distance %.1f',
             self.waypointIxWhenFull or -1, self.callUnloaderAtFillLevelPercentage, self.waypointIxWhenCallUnloader or - 1,
-            self.course:getCurrentWaypointIx())
+            self.course:getCurrentWaypointIx(), dUntilCallUnloader, litersUntilCallUnloader, fillLevel, wpDistance)
 end
 
 function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
@@ -788,24 +789,25 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
         -- Find a good waypoint to unload, as the calculated one may have issues, like pipe would be in the fruit,
         -- or in a turn, etc.
         -- TODO: isPipeInFruitAllowed
-        self.unloaderRendezvousWaypointIx = self:findBestWaypointToUnload(self.waypointIxWhenCallUnloader, false)
-        if not self.unloaderRendezvousWaypointIx then
+        local tentativeRendezvousWaypointIx = self:findBestWaypointToUnload(self.waypointIxWhenCallUnloader, false)
+        if not tentativeRendezvousWaypointIx then
             self:debug('callUnloaderWhenNeeded: can\'t find a good waypoint to meet the unloader')
             return
         end
-        bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(self.unloaderRendezvousWaypointIx))
+        bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(tentativeRendezvousWaypointIx))
         -- getSpeedLimit() may return math.huge (inf), when turning for example, not sure why, and that throws off
         -- our ETE calculation
         if bestUnloader and self.vehicle:getSpeedLimit(true) < 100 then
-            local dToUnloadWaypoint = self.course:getDistanceBetweenWaypoints(self.unloaderRendezvousWaypointIx,
+            local dToUnloadWaypoint = self.course:getDistanceBetweenWaypoints(tentativeRendezvousWaypointIx,
                     self.course:getCurrentWaypointIx())
             local myEte = dToUnloadWaypoint / (self.vehicle:getSpeedLimit(true) / 3.6)
             self:debug('callUnloaderWhenNeeded: best unloader ETE at waypoint %d %.1fs, my ETE %.1fs',
-                    self.unloaderRendezvousWaypointIx, bestEte, myEte)
+                    tentativeRendezvousWaypointIx, bestEte, myEte)
             if bestEte + 5 > myEte then
                 -- do not call too early (like minutes before we get there), only when it needs at least as
                 -- much time to get there as the combine (-5 seconds)
                 self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
+                self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
                 self:debug('callUnloaderWhenNeeded: harvesting, need unloader at waypoint %d', self.unloaderRendezvousWaypointIx)
                 bestUnloader:getCpDriveStrategy():call(self.vehicle, self.course:getWaypoint(self.unloaderRendezvousWaypointIx))
             end
