@@ -673,24 +673,25 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
     local fillLevel = self.combineController:getFillLevel()
     local capacity = self.combineController:getCapacity()
     if ix > 1 then
+        local dToNext = self.course:getDistanceToNextWaypoint(ix - 1)
         if self.fillLevelAtLastWaypoint and self.fillLevelAtLastWaypoint > 0 and self.fillLevelAtLastWaypoint <= fillLevel then
-            local litersPerMeter = (fillLevel - self.fillLevelAtLastWaypoint) / self.course:getDistanceToNextWaypoint(ix - 1)
+            local litersPerMeter = (fillLevel - self.fillLevelAtLastWaypoint) / dToNext
             -- make sure it won't end up being inf
             local litersPerSecond = math.min(1000, (fillLevel - self.fillLevelAtLastWaypoint) /
                     ((g_currentMission.time - (self.fillLevelLastCheckedTime or g_currentMission.time)) / 1000))
             -- smooth everything a bit, also ignore 0
-            self.litersPerMeter = litersPerMeter > 0 and (self.litersPerMeter + litersPerMeter) / 2 or self.litersPerMeter
-            self.litersPerSecond = litersPerSecond > 0 and (self.litersPerSecond + litersPerSecond) / 2 or self.litersPerSecond
-            self.fillLevelAtLastWaypoint = (self.fillLevelAtLastWaypoint + fillLevel) / 2
+            self.litersPerMeter = litersPerMeter > 0 and ((self.litersPerMeter + litersPerMeter) / 2) or self.litersPerMeter
+            self.litersPerSecond = litersPerSecond > 0 and ((self.litersPerSecond + litersPerSecond) / 2) or self.litersPerSecond
         else
             -- no history yet, so make sure we don't end up with some unrealistic numbers
             self.waypointIxWhenFull = nil
             self.litersPerMeter = 0
             self.litersPerSecond = 0
-            self.fillLevelAtLastWaypoint = fillLevel
         end
+        self:debug('Fill rate is %.1f l/m, %.1f l/s (fill level %.1f, last %.1f, dToNext = %.1f)',
+                self.litersPerMeter, self.litersPerSecond, fillLevel, self.fillLevelAtLastWaypoint, dToNext)
         self.fillLevelLastCheckedTime = g_currentMission.time
-        self:debug('Fill rate is %.1f l/m, %.1f l/s', self.litersPerMeter, self.litersPerSecond)
+        self.fillLevelAtLastWaypoint = fillLevel
     end
     local litersUntilFull = capacity - fillLevel
     local dUntilFull = litersUntilFull / self.litersPerMeter
