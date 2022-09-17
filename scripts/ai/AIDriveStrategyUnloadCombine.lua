@@ -903,7 +903,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 ---@param d number distance in meters to drive to the combine, preferably the pathfinder route around the crop
 function AIDriveStrategyUnloadCombine:arrangeRendezvousWithCombine(d)
-    if self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self) then
+    if self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self.vehicle) then
         self:debug('Have a pending rendezvous, wait a bit')
         self:startWaitingForCombine()
         return
@@ -1242,7 +1242,7 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     end
 
     if self.course:isCloseToLastWaypoint(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength / 2) and
-            self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self) then
+            self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self.vehicle) then
         self:debugSparse('Combine is late, waiting ...')
         self:setMaxSpeed(0)
         -- stop confirming the rendezvous, allow the combine to time out if it can't get here on time
@@ -1388,10 +1388,10 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- We missed a rendezvous with the combine
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:onMissedRendezvous(combineAIDriver)
-    self:debug('missed the rendezvous with %s', CpUtil.getName(combineAIDriver.vehicle))
+function AIDriveStrategyUnloadCombine:onMissedRendezvous(combine)
+    self:debug('missed the rendezvous with %s', CpUtil.getName(combine))
     if self.state == self.states.DRIVING_TO_MOVING_COMBINE and
-            self.combineToUnload == combineAIDriver.vehicle then
+            self.combineToUnload == combine then
         if self.course:getDistanceToLastWaypoint(self.course:getCurrentWaypointIx()) > 100 then
             self:debug('over 100 m from the combine to rendezvous, re-planning')
             self:startWorking()

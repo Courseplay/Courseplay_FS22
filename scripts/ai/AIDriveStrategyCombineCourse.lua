@@ -144,7 +144,7 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.unloader = CpTemporaryObject(nil)
     --- if this is not nil, we have a pending rendezvous with our unloader
     ---@type CpTemporaryObject
-    self.unloadAIDriverToRendezvous = CpTemporaryObject(nil)
+    self.unloaderToRendezvous = CpTemporaryObject(nil)
     local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeController:getPipeOffsetX(), self:getWorkWidth())
     self:debug('Pipe in fruit map created, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
             total, pipeInFruit)
@@ -297,7 +297,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             self:debug('Unloading started at end of row')
         end
         if not self.waitingForUnloaderAtEndOfRow:get() then
-            local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
+            local unloaderWhoDidNotShowUp = self.unloaderToRendezvous:get()
             self:cancelRendezvous()
             if unloaderWhoDidNotShowUp then
                 unloaderWhoDidNotShowUp:onMissedRendezvous(self)
@@ -805,7 +805,7 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
             if bestEte + 5 > myEte then
                 -- do not call too early (like minutes before we get there), only when it needs at least as
                 -- much time to get there as the combine (-5 seconds)
-                self.unloadAIDriverToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
+                self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
                 self:debug('callUnloaderWhenNeeded: harvesting, need unloader at waypoint %d', self.unloaderRendezvousWaypointIx)
                 bestUnloader:getCpDriveStrategy():call(self.vehicle, self.course:getWaypoint(self.unloaderRendezvousWaypointIx))
             end
@@ -877,7 +877,7 @@ function AIDriveStrategyCombineCourse:callUnloader(unloader)
 end
 
 function AIDriveStrategyCombineCourse:checkRendezvous()
-    if self.unloadAIDriverToRendezvous:get() then
+    if self.unloaderToRendezvous:get() then
         local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
         local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.unloaderRendezvousWaypointIx)
         if d < 10 then
@@ -887,11 +887,11 @@ function AIDriveStrategyCombineCourse:checkRendezvous()
         elseif lastPassedWaypointIx > self.unloaderRendezvousWaypointIx then
             -- past the rendezvous waypoint
             self:debug('Unloader missed the rendezvous at %d', self.unloaderRendezvousWaypointIx)
-            local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
+            local unloaderWhoDidNotShowUp = self.unloaderToRendezvous:get()
             -- need to call this before onMissedRendezvous as the unloader will call back to set up a new rendezvous
             -- and we don't want to cancel that right away
             self:cancelRendezvous()
-            unloaderWhoDidNotShowUp:onMissedRendezvous(self)
+            unloaderWhoDidNotShowUp:getCpDriveStrategy():onMissedRendezvous(self.vehicle)
         end
         if self:isDischarging() then
             self:debug('Discharging, cancelling unloader rendezvous')
@@ -900,17 +900,17 @@ function AIDriveStrategyCombineCourse:checkRendezvous()
     end
 end
 
-function AIDriveStrategyCombineCourse:hasRendezvousWith(unloadAIDriver)
-    return self.unloadAIDriverToRendezvous:get() == unloadAIDriver
+function AIDriveStrategyCombineCourse:hasRendezvousWith(unloader)
+    return self.unloaderToRendezvous:get() == unloader
 end
 
 function AIDriveStrategyCombineCourse:cancelRendezvous()
-    local unloader = self.unloadAIDriverToRendezvous:get()
+    local unloader = self.unloaderToRendezvous:get()
     self:debug('Rendezvous with %s at waypoint %d cancelled',
-            unloader and CpUtil.getName(self.unloadAIDriverToRendezvous:get() or 'N/A'),
+            unloader and CpUtil.getName(self.unloaderToRendezvous:get() or 'N/A'),
             self.unloaderRendezvousWaypointIx or -1)
     self.unloaderRendezvousWaypointIx = nil
-    self.unloadAIDriverToRendezvous:reset()
+    self.unloaderToRendezvous:reset()
 end
 
 --- Before the unloader asks for a rendezvous (which may result in a lengthy pathfinding to figure out
@@ -956,7 +956,7 @@ function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEsti
     -- now check if this is a good idea
     self.unloaderRendezvousWaypointIx = self:findBestWaypointToUnload(unloaderRendezvousWaypointIx, isPipeInFruitAllowed)
     if self.unloaderRendezvousWaypointIx then
-        self.unloadAIDriverToRendezvous:set(unloadAIDriver, 1000 * (unloaderEstimatedSecondsEnroute + 30))
+        self.unloaderToRendezvous:set(unloadAIDriver, 1000 * (unloaderEstimatedSecondsEnroute + 30))
         self:debug('Rendezvous with unloader at waypoint %d in %d m', self.agreedUnloaderRendezvousWaypointIx, dToUnloaderRendezvous)
         return self.course:getWaypoint(self.agreedUnloaderRendezvousWaypointIx),
         self.agreedUnloaderRendezvousWaypointIx, unloaderEstimatedSecondsEnroute
