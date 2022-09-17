@@ -325,7 +325,12 @@ end
 function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     self:debug('Last waypoint passed')
     if self.state == self.states.DRIVING_TO_COMBINE then
-        self:startWorking()
+        if self:isOkToStartUnloadingCombine() then
+            -- Right behind the combine, aligned, go for the pipe
+            self:startUnloadingCombine()
+        else
+            self:startWaitingForCombine()
+        end
     elseif self.state == self.states.DRIVING_TO_MOVING_COMBINE then
         self:startCourseFollowingCombine()
     elseif self.state == self.states.BACKING_UP_FOR_REVERSING_COMBINE then
@@ -575,18 +580,6 @@ function AIDriveStrategyUnloadCombine:isOkToStartUnloadingCombine()
     else
         self:debugSparse('combine not ready to unload, waiting')
         return false
-    end
-end
-
-------------------------------------------------------------------------------------------------------------------------
--- Start the real work now!
-------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:startWorking()
-    if self:isOkToStartUnloadingCombine() then
-        -- Right behind the combine, aligned, go for the pipe
-        self:startUnloadingCombine()
-    else
-        self:startDrivingToCombine()
     end
 end
 
@@ -1236,8 +1229,8 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     end
 
     if self.combineToUnload:getCpDriveStrategy():isWaitingForUnload() then
-        self:debug('combine is now stopped and waiting for unload, recalculate path')
-        self:startDrivingToCombine()
+        self:debug('combine is now stopped and waiting for unload, wait for it to call again')
+        self:startWaitingForCombine()
         return
     end
 
@@ -1276,7 +1269,7 @@ function AIDriveStrategyUnloadCombine:waitForManeuveringCombine()
         local distanceCombineMoved = MathUtil.vector2Length(dx, dz)
         if math.abs(yRotation - self.lastCombinePos.yRotation) > math.pi / 6 or distanceCombineMoved > 30 then
             self:debug('Combine moved (%d) or turned significantly while I was waiting, re-evaluate situation', distanceCombineMoved)
-            self:startWorking()
+            self:startWaitingForCombine()
         else
             self:setNewState(self.stateAfterWaitingForManeuveringCombine)
         end
@@ -1369,8 +1362,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         self:isInFrontAndAlignedToMovingCombine(true)
         self:info('not in a good position to unload, cancelling rendezvous, trying to recover')
         -- for some reason (like combine turned) we are not in a good position anymore then set us up again
-        self.combineToUnload:getCpDriveStrategy():cancelRendezvous()
-        self:startDrivingToCombine()
+        self:startWaitingForCombine()
     end
 end
 
@@ -1394,7 +1386,7 @@ function AIDriveStrategyUnloadCombine:onMissedRendezvous(combine)
             self.combineToUnload == combine then
         if self.course:getDistanceToLastWaypoint(self.course:getCurrentWaypointIx()) > 100 then
             self:debug('over 100 m from the combine to rendezvous, re-planning')
-            self:startWorking()
+            self:startWaitingForCombine()
         end
     else
         self:debug('ignore missed rendezvous, state %s, fieldwork state %s', self.state.name, self.state.name)
