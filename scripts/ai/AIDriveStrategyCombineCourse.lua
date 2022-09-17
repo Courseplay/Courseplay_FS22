@@ -79,6 +79,8 @@ function AIDriveStrategyCombineCourse.new(customMt)
     self.chopperCanDischarge = CpTemporaryObject(false)
     -- hold the harvester temporarily
     self.temporaryHold = CpTemporaryObject(false)
+    -- periodically check if we need to call an unloader
+    self.timeToCallUnloader = CpTemporaryObject(true)
 
     --- Register info texts
     self:registerInfoTextForStates(self:getFillLevelInfoText(), {
@@ -93,6 +95,8 @@ function AIDriveStrategyCombineCourse.new(customMt)
         }
     })
 
+    -- TODO: move this to a setting
+    self.callUnloaderAtFillLevelPercentage = 80
     return self
 end
 
@@ -225,6 +229,7 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             self:setMaxSpeed(0)
         end
     end
+    self:callUnloaderWhenNeeded()
     return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
@@ -408,7 +413,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 
     self:checkFruit()
 
-    -- make sure we start making a pocket while we still have some fill capacity left as we'll be
+   -- make sure we start making a pocket while we still have some fill capacity left as we'll be
     -- harvesting fruit while making the pocket unless we have self unload turned on
     if self:shouldMakePocket() and not self.settings.selfUnload:getValue() then
         self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
@@ -418,7 +423,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     self.combineController:updateStrawSwath(isOnHeadland)
 
     if self.state == self.states.WORKING then
-        self:checkDistanceUntilFull(ix)
+        self:estimateDistanceUntilFull(ix)
     end
 
     if self.state == self.states.UNLOADING_ON_FIELD and
@@ -661,7 +666,9 @@ function AIDriveStrategyCombineCourse:checkFruit()
             self.fruitLeft, self.fruitRight, tostring(self.fieldOnLeft), tostring(self.fieldOnRight))
 end
 
-function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
+--- Estimate the waypoint where the combine will be full/reach the fill level where it should start unloading
+--- (waypointIxWhenFull/waypointIxWhenCallUnloader), based on the current harvest rate
+function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
     -- calculate fill rate so the combine driver knows if it can make the next row without unloading
     local fillLevel = self.combineController:getFillLevel()
     local capacity = self.combineController:getCapacity()
@@ -687,11 +694,13 @@ function AIDriveStrategyCombineCourse:checkDistanceUntilFull(ix)
     end
     local litersUntilFull = capacity - fillLevel
     local dUntilFull = litersUntilFull / self.litersPerMeter * 0.9  -- safety margin
-    self.secondsUntilFull = self.litersPerSecond > 0 and (litersUntilFull / self.litersPerSecond) or nil
+    local litersUntilCallUnloader = capacity * self.callUnloaderAtFillLevelPercentage / 100 - fillLevel
+    local dUntilCallUnloader = litersUntilCallUnloader / self.litersPerMeter * 0.9
     self.waypointIxWhenFull = self.course:getNextWaypointIxWithinDistance(ix, dUntilFull) or self.course:getNumberOfWaypoints()
-    self.distanceToWaypointWhenFull = self.course:getDistanceBetweenWaypoints(self.waypointIxWhenFull, self.course:getCurrentWaypointIx())
-    self:debug('Will be full at waypoint %d in %d m',
-            self.waypointIxWhenFull or -1, self.distanceToWaypointWhenFull)
+    self.waypointIxWhenCallUnloader = self.course:getNextWaypointIxWithinDistance(ix, dUntilCallUnloader) or self.course:getNumberOfWaypoints()
+    self:debug('Will be full at waypoint %d, fill level %d at waypoint %d (current waypoint %d)',
+            self.waypointIxWhenFull or -1, self.callUnloaderAtFillLevelPercentage, self.waypointIxWhenCallUnloader or - 1,
+            self.course:getCurrentWaypointIx())
 end
 
 function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
@@ -714,33 +723,168 @@ function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
     end
     -- Or, if we are close to the turn and have a rendezvous waypoint before the turn
     if nextRowStartIx and closeToTurn and
-        self.agreedUnloaderRendezvousWaypointIx and
-            nextRowStartIx > self.agreedUnloaderRendezvousWaypointIx then
+        self.unloaderRendezvousWaypointIx and
+            nextRowStartIx > self.unloaderRendezvousWaypointIx then
         self:debug('shouldWaitAtEndOfRow: Closer than %.1f m to a turn and rendezvous waypoint %d is before the turn, waiting for the unloader here',
-                AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, self.agreedUnloaderRendezvousWaypointIx)
+                AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, self.unloaderRendezvousWaypointIx)
         return true
     end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
--- Unloader handling
+--- Unloader handling
+---
+--- We need to answer the following questions:
+--- 1. When to call the unloader?
+--- 2. Where to meet the unloader?
+--- 3. Which unloader to call?
+---
+--- To question #3, we check the distance between the unloader and the target (combine and a rendezvous point) and based
+--- on the unloader's distance to the target and its fill level, we calculate a score and call the unloader with
+--- the best score.
+---
+--- To questions #1 and #2, we have to cases:
+---
+--- The easy case
+---
+--- If the combine is stopped for unloading (either 100% full, or made a pocket or finished the course, etc.),
+--- the unloader must drive to the combine immediately.
+---
+--- The difficult case
+---
+--- The combine is still harvesting, and periodically calculates the waypoint/distance where it will reach the fill
+--- level threshold configured. This is the fill level when we want the unload process to start, so the unloader
+--- is supposed to meet the combine at that (rendezvous) spot. This answers #2, where to meet the unloader.
+--- But when to call the unloader? When it will reach the rendezvous point about the same time (or a little earlier)
+--- as the combine reaches it. So we ask around all unloaders to figure out what their estimated time en-route (ETE)
+--- to the rendezvous waypoint would be. Then pick the one with the shortest ETE, and if its ETE (plus some reserve)
+--- is more than the combine's ETE, call it.
+---
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyCombineCourse:needUnloader(fillLevelThreshold)
-    return self.unloader:get() == nil and self.vehicle:getIsCpActive() and
-            (self:isFull(fillLevelThreshold) or self:isWaitingForUnload())
+function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
+    if not self.timeToCallUnloader:get() then
+        return
+    end
+    -- check back again in a few seconds
+    self.timeToCallUnloader:set(false, 3000)
+
+    if self.unloader:get() then
+        self:debug('callUnloaderWhenNeeded: already has an unloader assigned (%s)', CpUtil.getName(self.unloader:get()))
+        return
+    end
+
+    local bestUnloader, bestEte
+    if self:isWaitingForUnload() then
+        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
+        self:debug('callUnloaderWhenNeeded: stopped, need unloader here')
+        bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
+    else
+        if not self.waypointIxWhenCallUnloader then
+            self:debug('callUnloaderWhenNeeded: don\'t know yet where to meet the unloader')
+            return
+        end
+        -- Find a good waypoint to unload, as the calculated one may have issues, like pipe would be in the fruit,
+        -- or in a turn, etc.
+        -- TODO: isPipeInFruitAllowed
+        self.unloaderRendezvousWaypointIx = self:findBestWaypointToUnload(self.waypointIxWhenCallUnloader, false)
+        if not self.unloaderRendezvousWaypointIx then
+            self:debug('callUnloaderWhenNeeded: can\'t find a good waypoint to meet the unloader')
+            return
+        end
+        bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(self.unloaderRendezvousWaypointIx))
+        -- getSpeedLimit() may return math.huge (inf), when turning for example, not sure why, and that throws off
+        -- our ETE calculation
+        if bestUnloader and self.vehicle:getSpeedLimit(true) < 100 then
+            local dToUnloadWaypoint = self.course:getDistanceBetweenWaypoints(self.unloaderRendezvousWaypointIx,
+                    self.course:getCurrentWaypointIx())
+            local myEte = dToUnloadWaypoint / (self.vehicle:getSpeedLimit(true) / 3.6)
+            self:debug('callUnloaderWhenNeeded: best unloader ETE at waypoint %d %.1fs, my ETE %.1fs',
+                    self.unloaderRendezvousWaypointIx, bestEte, myEte)
+            if bestEte + 5 > myEte then
+                -- do not call too early (like minutes before we get there), only when it needs at least as
+                -- much time to get there as the combine (-5 seconds)
+                self.unloadAIDriverToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
+                self:debug('callUnloaderWhenNeeded: harvesting, need unloader at waypoint %d', self.unloaderRendezvousWaypointIx)
+                bestUnloader:getCpDriveStrategy():call(self.vehicle, self.course:getWaypoint(self.unloaderRendezvousWaypointIx))
+            end
+        end
+    end
+end
+
+function AIDriveStrategyCombineCourse:isActiveCpUnloader(vehicle)
+    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
+        -- not driven by CP
+        return false
+    end
+    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
+    return driveStrategy.isServingPosition ~= nil
+end
+
+--- Find an unloader to drive to the target, which may either be the combine itself (when stopped and waiting for unload)
+--- or a waypoint which the combine will reach in the future
+function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
+    local bestScore = 0
+    local bestUnloader, bestEte
+    for _, vehicle in pairs(g_currentMission.vehicles) do
+        if self:isActiveCpUnloader(vehicle) then
+            local x, _, z = getWorldTranslation(self.vehicle.rootNode)
+            ---@type AIDriveStrategyUnloadCombine
+            local driveStrategy = vehicle:getCpDriveStrategy()
+            if driveStrategy:isServingPosition(x, z) then
+                if driveStrategy:isIdle() then
+                    local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
+                    local unloaderDistance, unloaderEte
+                    if combine then
+                        -- if already stopped, we want the unloader to come to us
+                        unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(combine)
+                    elseif self.waypointIxWhenCallUnloader then
+                        -- if still going, we want the unloader to meet us at the waypoint
+                        unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToWaypoint(waypoint)
+                    end
+                    local score = unloaderFillLevelPercentage + 0.1 * unloaderDistance
+                    self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
+                            CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
+                    if score > bestScore then
+                        bestUnloader = vehicle
+                        bestScore = score
+                        bestEte = unloaderEte
+                    end
+                else
+                    self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
+                end
+            else
+                self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
+            end
+        end
+    end
+    if bestUnloader then
+        self:debug('findUnloader: best unloader is %s (score %.1f, ETE %.1f)',
+                CpUtil.getName(bestUnloader), bestScore, bestEte)
+        return bestUnloader, bestEte
+    else
+        self:debug('findUnloader: no idle unloader found')
+    end
+end
+
+function AIDriveStrategyCombineCourse:callUnloader(unloader)
+    if self:isWaitingForUnload() then
+    else
+        self:debug('callUnloader: still going, call unloader to the spot where we reach fill level %d',
+                self.callUnloaderAtFillLevelPercentage)
+    end
 end
 
 function AIDriveStrategyCombineCourse:checkRendezvous()
     if self.unloadAIDriverToRendezvous:get() then
         local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
-        local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.agreedUnloaderRendezvousWaypointIx)
+        local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.unloaderRendezvousWaypointIx)
         if d < 10 then
             self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
-                    self.agreedUnloaderRendezvousWaypointIx)
+                    self.unloaderRendezvousWaypointIx)
             self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
-        elseif lastPassedWaypointIx > self.agreedUnloaderRendezvousWaypointIx then
+        elseif lastPassedWaypointIx > self.unloaderRendezvousWaypointIx then
             -- past the rendezvous waypoint
-            self:debug('Unloader missed the rendezvous at %d', self.agreedUnloaderRendezvousWaypointIx)
+            self:debug('Unloader missed the rendezvous at %d', self.unloaderRendezvousWaypointIx)
             local unloaderWhoDidNotShowUp = self.unloadAIDriverToRendezvous:get()
             -- need to call this before onMissedRendezvous as the unloader will call back to set up a new rendezvous
             -- and we don't want to cancel that right away
@@ -762,8 +906,8 @@ function AIDriveStrategyCombineCourse:cancelRendezvous()
     local unloader = self.unloadAIDriverToRendezvous:get()
     self:debug('Rendezvous with %s at waypoint %d cancelled',
             unloader and CpUtil.getName(self.unloadAIDriverToRendezvous:get() or 'N/A'),
-            self.agreedUnloaderRendezvousWaypointIx or -1)
-    self.agreedUnloaderRendezvousWaypointIx = nil
+            self.unloaderRendezvousWaypointIx or -1)
+    self.unloaderRendezvousWaypointIx = nil
     self.unloadAIDriverToRendezvous:reset()
 end
 
@@ -801,15 +945,15 @@ function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEsti
             self.course:getCurrentWaypointIx(), dToUnloaderRendezvous) or
             self.course:getNumberOfWaypoints()
 
-    self:debug('Rendezvous request: seconds until full: %d, unloader ETE: %d (around my wp %d, in %d meters), full at waypoint %d, ',
-            self.secondsUntilFull or -1, unloaderEstimatedSecondsEnroute, unloaderRendezvousWaypointIx, dToUnloaderRendezvous,
+    self:debug('Rendezvous request: unloader ETE: %d (around my wp %d, in %d meters), full at waypoint %d, ',
+            unloaderEstimatedSecondsEnroute, unloaderRendezvousWaypointIx, dToUnloaderRendezvous,
             self.waypointIxWhenFull or -1)
 
     -- rendezvous at whichever is closer
     unloaderRendezvousWaypointIx = math.min(unloaderRendezvousWaypointIx, self.waypointIxWhenFull or unloaderRendezvousWaypointIx)
     -- now check if this is a good idea
-    self.agreedUnloaderRendezvousWaypointIx = self:findBestWaypointToUnload(unloaderRendezvousWaypointIx, isPipeInFruitAllowed)
-    if self.agreedUnloaderRendezvousWaypointIx then
+    self.unloaderRendezvousWaypointIx = self:findBestWaypointToUnload(unloaderRendezvousWaypointIx, isPipeInFruitAllowed)
+    if self.unloaderRendezvousWaypointIx then
         self.unloadAIDriverToRendezvous:set(unloadAIDriver, 1000 * (unloaderEstimatedSecondsEnroute + 30))
         self:debug('Rendezvous with unloader at waypoint %d in %d m', self.agreedUnloaderRendezvousWaypointIx, dToUnloaderRendezvous)
         return self.course:getWaypoint(self.agreedUnloaderRendezvousWaypointIx),
@@ -825,8 +969,8 @@ end
 ---@return Waypoint a waypoint, the center of the maneuvering area
 ---@return number radius around the waypoint, defining a circular area
 function AIDriveStrategyCombineCourse:getTurnArea()
-    if self.agreedUnloaderRendezvousWaypointIx then
-        for ix = self.course:getCurrentWaypointIx(), self.agreedUnloaderRendezvousWaypointIx do
+    if self.unloaderRendezvousWaypointIx then
+        for ix = self.course:getCurrentWaypointIx(), self.unloaderRendezvousWaypointIx do
             if self.course:isTurnEndAtIx(ix) then
                return self.course:getWaypoint(ix), self.turningRadius * 3
             end
