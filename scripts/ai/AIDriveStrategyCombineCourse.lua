@@ -826,7 +826,11 @@ function AIDriveStrategyCombineCourse:isActiveCpUnloader(vehicle)
 end
 
 --- Find an unloader to drive to the target, which may either be the combine itself (when stopped and waiting for unload)
---- or a waypoint which the combine will reach in the future
+--- or a waypoint which the combine will reach in the future. Combine and waypoint parameters are mutually exclusive.
+---@param combine table the combine vehicle if we need the unloader come to the combine, otherwise nil
+---@param waypoint Waypoint the waypoint where the unloader should meet the combine, otherwise nil.
+---@return table, number the best fitting unloader or nil, the estimated time en-route for the unloader to reach the
+--- target (combine or waypoint)
 function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
     local bestScore = 0
     local bestUnloader, bestEte
@@ -928,46 +932,6 @@ function AIDriveStrategyCombineCourse:isWillingToRendezvous()
         return nil
     end
     return true
-end
-
---- When the unloader asks us for a rendezvous, provide him with a waypoint index to meet us.
---- This waypoint should be a good location to unload (pipe not in fruit, not in a turn, etc.)
---- If no such waypoint found, reject the rendezvous.
----@param unloaderEstimatedSecondsEnroute number minimum time the unloader needs to get to the combine
----@param unloadAIDriver AIDriveStrategyUnloadCombine the driver requesting the rendezvous
----@param isPipeInFruitAllowed boolean a rendezvous waypoint where the pipe is in fruit is ok
----@return Waypoint, number, number waypoint to meet the unloader, index of waypoint, time we need to reach that waypoint
-function AIDriveStrategyCombineCourse:getUnloaderRendezvousWaypoint(unloaderEstimatedSecondsEnroute, unloadAIDriver, isPipeInFruitAllowed)
-
-    if not self:isWillingToRendezvous() then
-        self:debug('Rendezvous request: rejected, no unloading in current state')
-        return nil, 0, 0
-    end
-
-    local dToUnloaderRendezvous = unloaderEstimatedSecondsEnroute * self.vehicle:getSpeedLimit(true) / 3.6
-    -- this is where we'll be when the unloader gets here
-    local unloaderRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
-            self.course:getCurrentWaypointIx(), dToUnloaderRendezvous) or
-            self.course:getNumberOfWaypoints()
-
-    self:debug('Rendezvous request: unloader ETE: %d (around my wp %d, in %d meters), full at waypoint %d, ',
-            unloaderEstimatedSecondsEnroute, unloaderRendezvousWaypointIx, dToUnloaderRendezvous,
-            self.waypointIxWhenFull or -1)
-
-    -- rendezvous at whichever is closer
-    unloaderRendezvousWaypointIx = math.min(unloaderRendezvousWaypointIx, self.waypointIxWhenFull or unloaderRendezvousWaypointIx)
-    -- now check if this is a good idea
-    self.unloaderRendezvousWaypointIx = self:findBestWaypointToUnload(unloaderRendezvousWaypointIx, isPipeInFruitAllowed)
-    if self.unloaderRendezvousWaypointIx then
-        self.unloaderToRendezvous:set(unloadAIDriver, 1000 * (unloaderEstimatedSecondsEnroute + 30))
-        self:debug('Rendezvous with unloader at waypoint %d in %d m', self.agreedUnloaderRendezvousWaypointIx, dToUnloaderRendezvous)
-        return self.course:getWaypoint(self.agreedUnloaderRendezvousWaypointIx),
-        self.agreedUnloaderRendezvousWaypointIx, unloaderEstimatedSecondsEnroute
-    else
-        self:cancelRendezvous()
-        self:debug('Rendezvous request: rejected, could not find a good location')
-        return nil, 0, 0
-    end
 end
 
 --- An area where the combine is expected to perform a turn between now and the rendezvous waypoint
