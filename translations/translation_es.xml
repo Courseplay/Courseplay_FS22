@@ -239,8 +239,8 @@
     <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Muestra todos las rutas activas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Muestra todos las rutas activas en el mapa del juego."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostrar los Cursos en el Minimapa."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Habilita/Desabilita el dibujado de los Cursos en el Minimapa"/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Ventana de Textos Informativos"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Muestra la Ventana de Textos Informativos."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Evento del mouse del jugador"/>
@@ -249,8 +249,8 @@
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Preferir el campo personalizado si existe un campo normal en la posición seleccionada."/>
     <text name="CP_global_setting_distanceUnit_title" text="Unidades de distancia"/>
     <text name="CP_global_setting_distanceUnit_tooltip" text="Unidades de distancia en Metros o Pies."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Metro"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Pié"/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Metros"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Pies"/>
     <!---->
     <!--Course manager-->
     <!---->
