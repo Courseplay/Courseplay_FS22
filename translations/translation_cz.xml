@@ -240,18 +240,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zobrazit všechny aktivní trasy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zobrazuje všechny aktivní trasy na herní mapě."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Zobrazit trasy na minimapě"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Umožňuje vykreslit trasu do mini mapy."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Zobrazit informační textové okno"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Zobrazí informační textové okno."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Chování myši hráče"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Povolí/zakáže chování myši hráče pro zobrazení informačního textu mimo vozidlo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preference vlastního pole"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Upřednostňuje vlastní pole, pokud je na vybrané pozici také běžné pole."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Jednotka vzdálenosti"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Jednotka vzdálenosti metr nebo stopa."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Metr"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Stopa"/>
     <!---->
     <!--Course manager-->
     <!---->
