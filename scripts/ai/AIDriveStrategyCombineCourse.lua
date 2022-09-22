@@ -850,7 +850,7 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
                         -- if still going, we want the unloader to meet us at the waypoint
                         unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToWaypoint(waypoint)
                     end
-                    local score = unloaderFillLevelPercentage + 0.1 * unloaderDistance
+                    local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
                     self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
                             CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
                     if score > bestScore then
