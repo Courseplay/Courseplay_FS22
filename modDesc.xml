@@ -214,6 +214,9 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpFieldworkHudPage.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpBaleFinderHudPage.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpCombineUnloaderHudPage.lua"/>
 		<sourceFile filename="scripts/editor/brushes/BaseBrush.lua"/>
 		<sourceFile filename="scripts/editor/brushes/basic/InsertWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/basic/MoveWaypoint.lua"/>
@@ -269,6 +272,23 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_h" />
 		</actionBinding>
 
+		<actionBinding action="CP_CHANGE_STARTING_POINT">
+			<binding device="" input="" />
+		</actionBinding>
+
+		<actionBinding action="CP_OPEN_VEHICLE_SETTINGS">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_OPEN_GLOBAL_SETTINGS">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_OPEN_COURSEGENERATOR_SETTINGS">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_OPEN_COURSEMANAGER">
+			<binding device="" input="" />
+		</actionBinding>
+
 		<actionBinding action="CP_TOGGLE_MOUSE">
 			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_RIGHT" />
 		</actionBinding>
@@ -282,6 +302,12 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 
 		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
 		<action name="CP_START_STOP" />
+		<action name="CP_CHANGE_STARTING_POINT"/>
+
+		<action name="CP_OPEN_VEHICLE_SETTINGS"/>
+		<action name="CP_OPEN_GLOBAL_SETTINGS"/>
+		<action name="CP_OPEN_COURSEGENERATOR_SETTINGS"/>
+		<action name="CP_OPEN_COURSEMANAGER"/>		
 
 		<action name="CP_TOGGLE_MOUSE" />
 	</actions>

@@ -224,11 +224,6 @@ function CpGuiUtil.createOverlay(size, iconData, color, alignment)
 	return overlay
 end
 
-
-
-
-
-
 --- Enable/disable camera rotation when a vehicle is selected. We want to disable camera rotation per mouse
 --- when we enable the mouse cursor so it can be used click controls on a GUI
 ---@param vehicle table
@@ -255,6 +250,98 @@ function CpGuiUtil.setCameraRotation(vehicle, enableRotation, savedRotatableInfo
 	end
 end
 
+--- Setup for the copy course btn.
+---@param layout CpHudPageElement
+---@param baseHud CpBaseHud
+---@param vehicle table
+---@param lines table
+---@param wMargin number
+---@param hMargin number
+---@param line number
+function CpGuiUtil.addCopyCourseBtn(layout, baseHud, vehicle, lines, wMargin, hMargin, line)    
+    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+    --- Copy course btn.                                          
+    layout.copyCourseElements = {}
+    layout.copyCourseIx = 1
+    layout.courseVehicles = {}
+    local leftX, leftY = unpack(lines[line].left)
+    local rightX, rightY = unpack(lines[line].right)
+    local btnYOffset = hMargin*0.2
+
+    local width, height = getNormalizedScreenValues(22, 22)
+    
+    local copyOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.copySymbol))}, 
+                                                        CpBaseHud.OFF_COLOR,
+                                                        CpBaseHud.alignments.bottomRight)
+
+    local pasteOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.pasteSymbol))}, 
+                                                        CpBaseHud.OFF_COLOR,
+                                                        CpBaseHud.alignments.bottomRight)
+
+   
+    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
+                                                        {imageFilename2, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
+                                                        CpBaseHud.OFF_COLOR,
+                                                        CpBaseHud.alignments.bottomRight)
+
+    layout.copyButton = CpHudButtonElement.new(copyOverlay, layout)
+    layout.copyButton:setPosition(rightX, rightY-btnYOffset)
+    layout.copyButton:setCallback("onClickPrimary", vehicle, function (vehicle)
+        if not CpBaseHud.courseCache and vehicle:hasCpCourse() then 
+            CpBaseHud.courseCache = vehicle:getFieldWorkCourse()
+        end
+    end)
+
+    layout.pasteButton = CpHudButtonElement.new(pasteOverlay, layout)
+    layout.pasteButton:setPosition(rightX, rightY-btnYOffset)
+    layout.pasteButton:setCallback("onClickPrimary", vehicle, function (vehicle)
+        if CpBaseHud.courseCache and not vehicle:hasCpCourse() then 
+            vehicle:cpCopyCourse(CpBaseHud.courseCache)
+        end
+    end)
+
+    layout.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, layout)
+    layout.clearCacheBtn:setPosition(rightX - width - wMargin/2, rightY - btnYOffset)
+    layout.clearCacheBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
+        CpBaseHud.courseCache = nil
+    end)
+
+    layout.copyCacheText = CpTextHudElement.new(layout, leftX, leftY,CpBaseHud.defaultFontSize)
+
+end
+
+--- Updates the copy buttons
+---@param layout CpHudPageElement
+---@param vehicle table
+---@param status CpStatus
+function CpGuiUtil.updateCopyBtn(layout, vehicle, status)
+    if CpBaseHud.courseCache then 
+        local courseName =  CpCourseManager.getCourseName(CpBaseHud.courseCache)
+        layout.copyCacheText:setTextDetails(CpBaseHud.copyText .. courseName)
+        layout.clearCacheBtn:setVisible(true)
+        layout.pasteButton:setVisible(true)
+        layout.copyButton:setVisible(false)
+        if vehicle:hasCpCourse() then 
+            layout.copyCacheText:setTextColorChannels(unpack(CpBaseHud.OFF_COLOR))
+            layout.pasteButton:setColor(unpack(CpBaseHud.OFF_COLOR))
+        else 
+            layout.copyCacheText:setTextColorChannels(unpack(CpBaseHud.WHITE_COLOR))
+            layout.pasteButton:setColor(unpack(CpBaseHud.ON_COLOR))
+        end
+        layout.copyButton:setDisabled(false)
+        layout.pasteButton:setDisabled(false)
+        layout.clearCacheBtn:setDisabled(false)
+    else
+        layout.copyCacheText:setTextDetails("")
+        layout.clearCacheBtn:setVisible(false)
+        layout.pasteButton:setVisible(false)
+        layout.copyButton:setVisible(vehicle:hasCpCourse())
+    end
+end
+
 function CpGuiUtil.movesMapCenterTo(map, worldX, worldZ)
     local width, height = map.ingameMap.fullScreenLayout:getMapSize()
     local oldTargetX, oldTargetZ =  map:localToWorldPos(map:getLocalPointerTarget())
@@ -263,4 +350,68 @@ function CpGuiUtil.movesMapCenterTo(map, worldX, worldZ)
     local dx = diffX /  map.terrainSize * 0.5 * width
     local dy = -diffZ /  map.terrainSize * 0.5 * height
     map:moveCenter(-dx, -dy)
+end
+
+function CpGuiUtil.preOpeningInGameMenu(vehicle)
+    local inGameMenu =  g_currentMission.inGameMenu
+    inGameMenu.pageAI.hudVehicle = vehicle
+    if g_gui.currentGuiName ~= "InGameMenu" then
+		g_gui:showGui("InGameMenu")
+	end
+    return inGameMenu
+end
+
+function CpGuiUtil.openCourseManagerGui(vehicle)
+    local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
+	inGameMenu:goToPage(inGameMenu.pageCpCourseManager)
+end
+
+function CpGuiUtil.openCourseGeneratorGui(vehicle)
+    local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
+    local pageAI = inGameMenu.pageAI
+    --- Opens the ai inGame menu
+    inGameMenu:goToPage(pageAI)
+    local hotspot = vehicle:getMapHotspot()
+    pageAI:setMapSelectionItem(hotspot)
+    CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu.")
+    if vehicle:getIsCpActive() or not g_currentMission:getHasPlayerPermission("hireAssistant") then 
+        return
+    end
+	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame job creation.")
+    vehicle:updateAIFieldWorkerImplementData()
+    pageAI:onCreateJob()
+    for _, job in pairs(pageAI.jobTypeInstances) do 
+        if job:isa(CpAIJobFieldWork) and job:getIsAvailableForVehicle(vehicle) then 
+            local jobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndex(job)
+            CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu job %s.", job:getDescription())
+            pageAI.currentJob = nil
+            pageAI:setActiveJobTypeSelection(jobTypeIndex)
+            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, true)
+            pageAI:updateParameterValueTexts()
+            pageAI:validateParameters()
+            --- Fixes the job selection gui element.
+            local currentIndex = table.findListElementFirstIndex(pageAI.currentJobTypes, jobTypeIndex, 1)
+            pageAI.jobTypeElement:setState(currentIndex)
+            if not vehicle:hasCpCourse() then 
+                if pageAI.currentJob:getCanGenerateFieldWorkCourse() then 
+                    CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu course generator.")
+                    pageAI:onClickOpenCloseCourseGenerator()
+                end
+            end
+            break
+        end
+    end
+    --- Moves the map, so the selected vehicle is directly visible.
+    local worldX, _, worldZ = getWorldTranslation(vehicle.rootNode)
+    CpGuiUtil.movesMapCenterTo(pageAI.ingameMap, worldX, worldZ)
+end
+
+function CpGuiUtil.openVehicleSettingsGui(vehicle)
+    local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
+    inGameMenu:goToPage(inGameMenu.pageCpVehicleSettings)
+end
+
+function CpGuiUtil.openGlobalSettingsGui(vehicle)
+    local inGameMenu = CpGuiUtil.preOpeningInGameMenu(vehicle)
+    inGameMenu:goToPage(inGameMenu.pageCpGlobalSettings)
 end

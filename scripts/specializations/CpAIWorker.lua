@@ -94,9 +94,22 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
 		self:clearActionEventsTable(spec.actionEvents)
 
         if self.spec_aiJobVehicle.supportsAIJobs and self:getIsActiveForInput(true, true) then
-			local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.CP_START_STOP, self, CpAIWorker.startStopDriver, false, true, false, true, nil)
-            g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
-            g_inputBinding:setActionEventTextVisibility(actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
+
+            local function addActionEvent(vehicle, event, callback)
+                local actionEventsVisible = g_Courseplay.globalSettings.showActionEventHelp:getValue()
+                local _, actionEventId = vehicle:addActionEvent(spec.actionEvents, event, vehicle, callback, false, true, false, true, nil)
+                g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
+                g_inputBinding:setActionEventTextVisibility(actionEventId, actionEventsVisible)
+            end
+
+            addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopDriver)
+            addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
+
+            addActionEvent(self, InputAction.CP_OPEN_VEHICLE_SETTINGS, CpGuiUtil.openVehicleSettingsGui)
+            addActionEvent(self, InputAction.CP_OPEN_GLOBAL_SETTINGS, CpGuiUtil.openGlobalSettingsGui)
+            addActionEvent(self, InputAction.CP_OPEN_COURSEGENERATOR_SETTINGS, CpGuiUtil.openCourseGeneratorGui)
+            addActionEvent(self, InputAction.CP_OPEN_COURSEMANAGER, CpGuiUtil.openCourseManagerGui)
+
             CpAIWorker.updateActionEvents(self)
 		end
 	end
@@ -178,6 +191,15 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         end
 
     end
+end
+
+
+-----------------------------------------------
+--- Action input events
+-----------------------------------------------
+
+function CpAIWorker:changeStartingPoint()
+    --- Input event
 end
 
 --- Directly starts a cp job or stops a currently active job.
