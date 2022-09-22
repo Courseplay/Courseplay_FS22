@@ -832,7 +832,7 @@ end
 ---@return table, number the best fitting unloader or nil, the estimated time en-route for the unloader to reach the
 --- target (combine or waypoint)
 function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
-    local bestScore = 0
+    local bestScore = -math.huge
     local bestUnloader, bestEte
     for _, vehicle in pairs(g_currentMission.vehicles) do
         if self:isActiveCpUnloader(vehicle) then
