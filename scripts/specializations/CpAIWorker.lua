@@ -95,20 +95,27 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
 
         if self.spec_aiJobVehicle.supportsAIJobs and self:getIsActiveForInput(true, true) then
 
-            local function addActionEvent(vehicle, event, callback)
+            local function addActionEvent(vehicle, event, callback, text)
                 local actionEventsVisible = g_Courseplay.globalSettings.showActionEventHelp:getValue()
                 local _, actionEventId = vehicle:addActionEvent(spec.actionEvents, event, vehicle, callback, false, true, false, true, nil)
                 g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
                 g_inputBinding:setActionEventTextVisibility(actionEventId, actionEventsVisible)
+                if text ~=nil then 
+                    g_inputBinding:setActionEventText(actionEventId, text)
+                end
             end
 
             addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopDriver)
             addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
 
-            addActionEvent(self, InputAction.CP_OPEN_VEHICLE_SETTINGS, CpGuiUtil.openVehicleSettingsGui)
-            addActionEvent(self, InputAction.CP_OPEN_GLOBAL_SETTINGS, CpGuiUtil.openGlobalSettingsGui)
-            addActionEvent(self, InputAction.CP_OPEN_COURSEGENERATOR_SETTINGS, CpGuiUtil.openCourseGeneratorGui)
-            addActionEvent(self, InputAction.CP_OPEN_COURSEMANAGER, CpGuiUtil.openCourseManagerGui)
+            addActionEvent(self, InputAction.CP_OPEN_VEHICLE_SETTINGS, CpGuiUtil.openVehicleSettingsGui,
+                    g_i18n:getText("input_CP_OPEN_VEHICLE_SETTINGS"))
+            addActionEvent(self, InputAction.CP_OPEN_GLOBAL_SETTINGS, CpGuiUtil.openGlobalSettingsGui,
+                    g_i18n:getText("input_CP_OPEN_GLOBAL_SETTINGS"))
+            addActionEvent(self, InputAction.CP_OPEN_COURSEGENERATOR_SETTINGS, CpGuiUtil.openCourseGeneratorGui,
+                    g_i18n:getText("input_CP_OPEN_COURSEGENERATOR_SETTINGS"))
+            addActionEvent(self, InputAction.CP_OPEN_COURSEMANAGER, CpGuiUtil.openCourseManagerGui,
+                    g_i18n:getText("input_CP_OPEN_COURSEMANAGER"))
 
             CpAIWorker.updateActionEvents(self)
 		end
@@ -118,11 +125,11 @@ end
 --- Updates the start stop action event visibility and text.
 function CpAIWorker:updateActionEvents()
     local spec = self.spec_cpAIWorker
-    local giantsSpec = self.spec_aiJobVehicle
-	local actionEvent = spec.actionEvents[InputAction.CP_START_STOP]
 
-	if actionEvent ~= nil and self.isActiveForInputIgnoreSelectionIgnoreAI then
-		if self:getShowAIToggleActionEvent() then
+	if self.isActiveForInputIgnoreSelectionIgnoreAI then
+        local actionEvent = spec.actionEvents[InputAction.CP_START_STOP]
+        if self:getShowAIToggleActionEvent() then
+            local giantsSpec = self.spec_aiJobVehicle
             if self:getIsAIActive() then
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
@@ -130,11 +137,15 @@ function CpAIWorker:updateActionEvents()
 			    g_inputBinding:setActionEventText(actionEvent.actionEventId, text)
             end
 
-			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
+			g_inputBinding:setActionEventActive(actionEvent.actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
 		else
 			g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
 		end
-	end
+        actionEvent = spec.actionEvents[InputAction.CP_CHANGE_STARTING_POINT]
+        local startingPointSetting = self:getCpStartingPointSetting()
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("%s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
+        g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:getCanStartCpFieldWork())
+    end
 end
 
 function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
