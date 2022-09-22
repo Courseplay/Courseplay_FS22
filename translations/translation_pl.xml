@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Wygeneruj kurs przed rozpoczęciem pracy."/>
     <text name="CP_error_could_not_generate_course" text="Nie udało się wygenerować kursu. Więcej informacji w pliku LOG."/>
     <text name="CP_error_not_on_field" text="Cel nie jest na polu."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Tylko owinięte"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Tylko nieowinięte"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Prace polowe"/>
     <text name="CP_job_baleCollect" text="CP: Zbieranie/Owijanie bel"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Wygeneruj kurs pracy polowej"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Otwórz/Zamknij generator kursu"/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Pracownik SI %s niespodziewanie przerwał pracę - zbiornik jest pełny!"/>
     <text name="CP_ai_messageError" text="Pracownik SI %s niespodziewanie przerwał pracę - opuścił kurs!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pracownik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Okno pomocy"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Wyświetla klawisze od funkcji w oknie pomocy."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Ustawienia szukania ścieżki"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Różnica kątów na bramce"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maksymalna dopuszczalna różnica kątów na bramce, większe wartości są szybsze, ale mniej dokładne."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Współczynnik relaksu kątu delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Różnica kątów na bramce"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maksymalna dopuszczalna różnica kątów na bramce, większe wartości są szybsze, ale mniej dokładne."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Współczynnik relaksu kątu delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Pokaż wszystkie aktywne kursy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Pokazuje wszystkie aktywne kursy na podglądzie mapy."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Rysowanie kursu na minimapie"/>
@@ -319,10 +331,13 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_needsFilling" text="Musi zostać załadowany"/>
     <text name="CP_infoTexts_needsUnloading" text="Musi zostać rozładowany"/>
     <text name="CP_infoTexts_workFinished" text="Zakończył pracę"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Brak pieniędzy"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Oczekuje na koniec opadów"/>
     <text name="CP_infoTexts_errorStopped" text="Opuścił kurs, zatrzymał się"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Genera una ruta antes de comenzar el trabajo."/>
     <text name="CP_error_could_not_generate_course" text="No se ha podido generar una ruta. El Log puede contener más información."/>
     <text name="CP_error_not_on_field" text="El objetivo no está en un campo."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Solo envueltas"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Solo no envueltas"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Trabajo de campo"/>
     <text name="CP_job_baleCollect" text="CP: Recoger/Envolver fardos"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Crear ruta de trabajo de campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Abrir/Cerrar generador de rutas."/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!"/>
     <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Abandonó el curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Ayuda de eventos de acción"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Muestra textos de ayuda de eventos de acción."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Ajustes del generador de rutas"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Ángulo máximo a usar"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Factor de ángulo Delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ángulo máximo a usar"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Factor de ángulo Delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Muestra todos las rutas activas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Muestra todos las rutas activas en el mapa del juego."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostrar los Cursos en el Minimapa."/>
@@ -319,10 +331,13 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_needsFilling" text="Necesita ser rellenado"/>
     <text name="CP_infoTexts_needsUnloading" text="Necesita ser descargado"/>
     <text name="CP_infoTexts_workFinished" text="Trabajo finalizado"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Sin dinero"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando que termine la lluvia"/>
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

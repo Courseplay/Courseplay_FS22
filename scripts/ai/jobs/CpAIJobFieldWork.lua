@@ -156,6 +156,10 @@ function CpAIJobFieldWork:getFieldPositionTarget()
     return self.fieldPositionParameter:getPosition()
 end
 
+function CpAIJobFieldWork:setFieldPositionTarget(x, z)
+    self.fieldPositionParameter:setPosition(x, z)
+end
+
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
     return self.hasValidPosition
 end
@@ -239,10 +243,10 @@ function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
 end
 
 function CpAIJobFieldWork:isPipeOnLeftSide(vehicle)
-    if AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Combine) then
+    local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
+    if pipeObject and SpecializationUtil.hasSpecialization(Combine, pipeObject.specializations) then
         local pipeAttributes = {}
-        local combine = ImplementUtil.findCombineObject(vehicle)
-        ImplementUtil.setPipeAttributes(pipeAttributes, vehicle, combine)
+        ImplementUtil.setPipeAttributes(pipeAttributes, pipeObject)
         return pipeAttributes.pipeOnLeftSide
     else
         return true

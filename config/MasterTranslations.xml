@@ -51,6 +51,14 @@
 			<Text language="de"><![CDATA[Ziel ist nicht auf einem Feld.]]></Text>
 			<Text language="en"><![CDATA[Target is not on a field.]]></Text>
 		</Translation>
+		<Translation name="CP_error_unloader_to_far_away_from_field">
+			<Text language="de"><![CDATA[Abfahrer ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Unloader to far away from the field.]]></Text>
+		</Translation>
+		<Translation name="CP_error_giants_unloader_not_available">
+			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
+			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_fieldPosition_title">
@@ -82,8 +90,8 @@
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload">
-			<Text language="de"><![CDATA[Entlade Drescher/Häcksler]]></Text>
-			<Text language="en"><![CDATA[unloading combine/chopper]]></Text>
+			<Text language="de"><![CDATA[Entlade Drescher]]></Text>
+			<Text language="en"><![CDATA[unload combine]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bales">
 			<Text language="de"><![CDATA[Sammel/Wickel Ballen]]></Text>
@@ -144,7 +152,30 @@
 			<Text language="en"><![CDATA[only not wrapped]]></Text>
 		</Translation>
 	</Category>
-	<Category name="AI jobs">	
+	<Category name="AI combine unloader job parameters">
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_fullThreshold">
+			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
+			<Text language="en"><![CDATA[Full threshold:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_fullThreshold_title">
+			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
+			<Text language="en"><![CDATA[Full threshold:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">
+			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
+			<Text language="en"><![CDATA[Giants unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_useGiantsUnload_title">
+			<Text language="de"><![CDATA[Giants Ablader benutzen:]]></Text>
+			<Text language="en"><![CDATA[Use giants unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadingStation_title">
+			<Text language="de"><![CDATA[Abladestation:]]></Text>
+			<Text language="en"><![CDATA[Unloading station:]]></Text>
+		</Translation>
+
+	</Category>
+	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
 			<Text language="de"><![CDATA[CP: Feldarbeit]]></Text>
 			<Text language="en"><![CDATA[CP: Fieldwork]]></Text>
@@ -152,6 +183,10 @@
 		<Translation name="CP_job_baleCollect">
 			<Text language="de"><![CDATA[CP: Ballen sammeln/wickeln]]></Text>
 			<Text language="en"><![CDATA[CP: Bale collect/wrap]]></Text>
+		</Translation>
+		<Translation name="CP_job_combineUnload">
+			<Text language="de"><![CDATA[CP: Entlade Drescher]]></Text>
+			<Text language="en"><![CDATA[CP: Unload Combine]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_generate_course">
 			<Text language="de"><![CDATA[CP: Generiere Feldkurs.]]></Text>
@@ -174,6 +209,10 @@
 		<Translation name="CP_ai_messageErrorWrongBaleWrapType">
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no bales of selected type found!]]></Text>
+		</Translation>
+		<Translation name="CP_ai_messageErrorNoPathFound">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no Path found!]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
@@ -811,19 +850,19 @@
 			<Text language="de"><![CDATA[Pathfindereinstellungen]]></Text>
 			<Text language="en"><![CDATA[Pathfinder settings]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_maxDeltaAngleAtGoal_title">
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_title">
 			<Text language="de"><![CDATA[Ankunftswinkel am Ziel]]></Text>
 			<Text language="en"><![CDATA[Angle difference at goal]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_maxDeltaAngleAtGoal_tooltip">
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip">
 			<Text language="de"><![CDATA[Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller.]]></Text>
 			<Text language="en"><![CDATA[Maximum angle difference allowed at goal, bigger values are faster but less accurate]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_deltaAngleRelaxFactor_title">
+		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_title">
 			<Text language="de"><![CDATA[Änderungsfaktor Pathfinder]]></Text>
 			<Text language="en"><![CDATA[Delta angle relax factor]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_deltaAngleRelaxFactor_tooltip">
+		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip">
 			<Text language="de"><![CDATA[Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller.]]></Text>
 			<Text language="en"><![CDATA[Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster]]></Text>
 		</Translation>
@@ -1178,6 +1217,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Arbeit beendet]]></Text>
 			<Text language="en"><![CDATA[Finished work]]></Text>
 		</Translation>
+		<Translation name="CP_infoTexts_drivingToCombine">
+			<Text language="de"><![CDATA[Fährt zum Drescher]]></Text>
+			<Text language="en"><![CDATA[Driving to combine]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_drivingToSelfUnload">
+			<Text language="de"><![CDATA[ÜLW entladen]]></Text>
+			<Text language="en"><![CDATA[Driving to trailer]]></Text>
+		</Translation>
 		<Translation name="CP_infoTexts_outOfMoney">
 			<Text language="de"><![CDATA[Kein Geld mehr]]></Text>
 			<Text language="en"><![CDATA[Out of money]]></Text>
@@ -1193,6 +1240,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_wrongBaleWrapType">
 			<Text language="de"><![CDATA[Ballentyp nicht gefunden]]></Text>
 			<Text language="en"><![CDATA[Wrong bale type]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorNoPathFound">
+			<Text language="de"><![CDATA[Keinen Weg gefunden]]></Text>
+			<Text language="en"><![CDATA[No path found]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	

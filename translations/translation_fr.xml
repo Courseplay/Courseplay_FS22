@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Générez ou chargez une course avant de démarrer la tâche"/>
     <text name="CP_error_could_not_generate_course" text="Impossible de générer la course. Plus d'informations dans le journal."/>
     <text name="CP_error_not_on_field" text="Le point de départ n'est pas dans un champ"/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Enrubannées"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Non enrubannées"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="L'ouvrier %s a interrompu son travail - la tremie est pleine!"/>
     <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Notification des actions CP"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Affiche les notifications lors des événements courseplay (CP)."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Réglages du Pathfinder"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Différence d'angle à l'objectif"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Différence maximum autorisée pour l'angle d'approche vers l'objectif. Les grandes valeurs facilitent la vitesse mais nuisent à la précision."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Facteur de tolérance"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Permet d'assouplir les contraintes sur le pathfinding à chaque nouvelle tentative de création d'un trajet. Plus la valeur est grande, plus la vitesse de calcul sera rapide."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Différence d'angle à l'objectif"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Différence maximum autorisée pour l'angle d'approche vers l'objectif. Les grandes valeurs facilitent la vitesse mais nuisent à la précision."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Facteur de tolérance"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Permet d'assouplir les contraintes sur le pathfinding à chaque nouvelle tentative de création d'un trajet. Plus la valeur est grande, plus la vitesse de calcul sera rapide."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Afficher les courses actives"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Affiche les courses actives sur la carte."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -319,10 +331,13 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_needsFilling" text="doit être réapprovisionné"/>
     <text name="CP_infoTexts_needsUnloading" text="doit être déchargé"/>
     <text name="CP_infoTexts_workFinished" text="a terminé son travail"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Plus d'argent disponible"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

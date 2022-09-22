@@ -130,9 +130,12 @@ function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 		local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
 		angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	end
-
-	self.positionAngleParameter:setPosition(x, z)
-	self.positionAngleParameter:setAngle(angle)
+	local dx, dz = self.positionAngleParameter:getPosition()
+	local dAngle = self.positionAngleParameter:getAngle()
+	if dx == nil or dAngle == nil then
+		self.positionAngleParameter:setPosition(x, z)
+		self.positionAngleParameter:setAngle(angle)
+	end
 end
 
 --- Can the vehicle be used for this job?
@@ -314,6 +317,7 @@ AIJobTypeManager.getJobTypeIndex = Utils.overwrittenFunction(AIJobTypeManager.ge
 function CpAIJob.registerJob(AIJobTypeManager)
 	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.translations.jobName, CpAIJobFieldWork)
 	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.translations.jobName, CpAIJobBaleFinder)
+	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.translations.jobName, CpAIJobCombineUnloader)
 end
 
 

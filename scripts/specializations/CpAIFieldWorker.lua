@@ -269,7 +269,7 @@ end
 
 --- Only allow the basic field work job to start, if a course is assigned.
 function CpAIFieldWorker:getCanStartCp(superFunc)
-    return self:hasCpCourse() and self:getCanStartCpFieldWork() or superFunc(self)
+    return not self:getIsCpCourseRecorderActive() and  self:hasCpCourse() and self:getCanStartCpFieldWork() or superFunc(self)
 end
 
 --- Gets the field work job for the hud or start action event.
@@ -322,9 +322,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
     else
         local combine = AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
         local pipe = combine and SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
-        if combine and pipe or -- Default harvesters with a pipe.
-            SpecializationUtil.hasSpecialization(Combine, self.specializations) then -- Cotton harvester
-            --- TODO: Make sure the combine strategy is only used for combines with a pipe and not the cotton harvesters!
+        if combine and pipe then -- Default harvesters with a pipe.
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a combine with pipe, install CP combine drive strategy for it')
             cpDriveStrategy = AIDriveStrategyCombineCourse.new()
             self.spec_cpAIFieldWorker.combineDriveStrategy = cpDriveStrategy

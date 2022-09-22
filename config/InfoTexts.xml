@@ -15,6 +15,7 @@
 
 <InfoTexts prefix="CP_infoTexts_">
 	<InfoText name="ERROR_STOPPED"				text="errorStopped" class="AIMessageCpError"/>
+	<InfoText name="ERROR_NO_PATH_FOUND"		text="errorNoPathFound" class="AIMessageCpErrorNoPathFound"/>
 
 	<InfoText name="IS_STUCK"					text="isStuck"/>
 	<InfoText name="BLOCKED_BY_OBJECT"  		text="blockedByObject" class="AIMessageErrorBlockedByObject"/>
@@ -28,4 +29,6 @@
 	<InfoText name="FUEL_IS_LOW"				text="shouldRefuel"/>
 	<InfoText name="WAITING_FOR_RAIN_TO_FINISH" text="waitForRainToFinish"/>
 	<InfoText name="WORK_FINISHED"				text="workFinished"   hasFinished="true" event="onCpFinished" class="AIMessageSuccessFinishedJob"/>
+	<InfoText name="DRIVING_TO_COMBINE"			text="drivingToCombine"/>
+	<InfoText name="DRIVING_TO_SELF_UNLOAD"		text="drivingToSelfUnload"/>
 </InfoTexts>

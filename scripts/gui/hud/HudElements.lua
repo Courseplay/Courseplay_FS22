@@ -7,6 +7,13 @@ function CpHudElement.new(overlay,parentHudElement,customMt)
     if customMt == nil then
         customMt = CpHudElement_mt
     end
+
+    if overlay == nil then 
+        --- Not used, but needed for inheritance form HUDElement, similar to HUDDisplayElement
+        overlay = Overlay.new(nil, 0, 0, 0, 0)
+        overlay:setColor(1, 1, 1, 1)
+    end
+
     local self = HUDElement.new(overlay, parentHudElement, customMt)
 
     self.callbacks = {}
@@ -14,6 +21,10 @@ function CpHudElement.new(overlay,parentHudElement,customMt)
     self.disabled = false
     self.hovered = false
     return self
+end
+
+function CpHudElement:addChildReference(child)
+    table.insert(self.children, child)
 end
 
 function CpHudElement:debug(str,...)
@@ -83,10 +94,16 @@ end
 function CpHudElement:setVisible(visible)
     CpHudElement:superClass().setVisible(self,visible)
     self.visible = visible
+    for _, child in pairs(self.children) do
+        child:setVisible(visible)
+    end
 end
 
 function CpHudElement:setDisabled(disabled)
     self.disabled = disabled
+    for _, child in pairs(self.children) do
+        child:setDisabled(disabled)
+    end
 end
 
 function CpHudElement:getIsDisabled()

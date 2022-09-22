@@ -82,7 +82,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
     -- special handling for extra frontTanks as they seems to change their fillType random
     -- if we don't have a seeds and either liquidFertilizer or herbicide just continue until both are empty
     if not allOk and not fillLevelInfo[FillType.SEEDS] and(liquidFertilizerFillLevel > 0 or herbicideFillLevel > 0) then
-        self:debugSparse('we probably have an empty front Tank')
+        self:debugSparse('we probably have an empty front tank')
         allOk = true
     end
     -- special handling for sowing machines with fertilizer
@@ -154,7 +154,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Fill Levels
 ---------------------------------------------------------------------------------------------------------------------------
-function FillLevelManager:getAllFillLevels(object, fillLevelInfo, driver)
+function FillLevelManager:getAllFillLevels(object, fillLevelInfo)
     -- get own fill levels
     if object.getFillUnits then
         for _, fillUnit in pairs(object:getFillUnits()) do
@@ -173,7 +173,7 @@ function FillLevelManager:getAllFillLevels(object, fillLevelInfo, driver)
     end
     -- collect fill levels from all attached implements recursively
     for _,impl in pairs(object:getAttachedImplements()) do
-        self:getAllFillLevels(impl.object, fillLevelInfo, driver)
+        self:getAllFillLevels(impl.object, fillLevelInfo)
     end
 end
 
@@ -274,4 +274,85 @@ function FillLevelManager:getMixerWagonFillLevelForFillTypes(object,fillType)
             end
         end
     end
+end
+
+----------------------------------------------------------------------------------------------------------
+--- Trailer util functions.
+----------------------------------------------------------------------------------------------------------
+
+--- Can load this fill type into the trailer?
+---@param trailer table
+---@param fillType number
+---@return boolean true if this trailer has capacity for fill type
+---@return number free capacity
+---@return number fill unit index
+function FillLevelManager.canLoadTrailer(trailer, fillType)
+    if fillType then
+        local fillUnits = trailer:getFillUnits()
+        for i = 1, #fillUnits do
+            local supportedFillTypes = trailer:getFillUnitSupportedFillTypes(i)
+            local freeCapacity =  trailer:getFillUnitFreeCapacity(i)
+            if supportedFillTypes[fillType] and freeCapacity > 0 then
+                return true, freeCapacity, i
+            end
+        end
+    end
+    return false, 0
+end
+
+--- Are all trailers full?
+---@param vehicle table
+---@param fullThreshold number optional threshold
+---@return boolean
+function FillLevelManager.areAllTrailersFull(vehicle, fullThreshold)
+    fullThreshold = fullThreshold or 0
+    local totalFillLevel, totalCapacity, totalFreeCapacity =  FillLevelManager.getAllTrailerFillLevels(vehicle)
+    return totalFreeCapacity <= fullThreshold
+end
+
+--- Gets the total fill level percentage and total fill level percentage adjusted to the max fill volume mass adjusted.
+---@param vehicle table
+---@return number total fill level percentage in %
+---@return number total fill level percentage in % relative to max mass adjusted capacity.
+function FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
+    local totalFillLevel, totalCapacity, totalCapacityMassAdjusted =  FillLevelManager.getAllTrailerFillLevels(vehicle)
+    return 100 * totalFillLevel / totalCapacity, 100 * totalFillLevel / totalCapacityMassAdjusted
+end
+
+--- Gets the total fill level, capacity and mass adjusted capacity of all trailers.
+---@param vehicle table
+---@return number total fill level 
+---@return number total capacity
+---@return number total free capacity
+function FillLevelManager.getAllTrailerFillLevels(vehicle)
+    local totalFillLevel, totalCapacity, totalFreeCapacity = 0, 0, 0
+    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Trailer, nil) 
+    for i, trailer in ipairs(trailers) do 
+        local fillLevel, capacity, freeCapacity = FillLevelManager.getTrailerFillLevels(trailer)
+        totalFreeCapacity = totalFreeCapacity + freeCapacity
+        totalFillLevel = totalFillLevel + fillLevel
+        totalCapacity = totalCapacity + capacity
+    end
+    return totalFillLevel, totalCapacity, totalFreeCapacity
+end
+
+--- Gets the total fill level, capacity and mass adjusted capacity of a trailer.
+---@param trailer table
+---@return number total fill level 
+---@return number total capacity
+---@return number total free capacity
+function FillLevelManager.getTrailerFillLevels(trailer)
+    local totalFillLevel, totalCapacity, totalFreeCapacity = 0, 0, 0
+    local spec = trailer.spec_dischargeable
+    local fillUnitsUsed = {}
+    for i, dischargeNode in pairs( spec.dischargeNodes) do 
+        local fillUnitIndex = dischargeNode.fillUnitIndex
+        if not fillUnitsUsed[fillUnitIndex] then
+            totalFreeCapacity = totalFreeCapacity + trailer:getFillUnitFreeCapacity(fillUnitIndex)
+            totalFillLevel = totalFillLevel + trailer:getFillUnitFillLevel(fillUnitIndex)
+            totalCapacity = totalCapacity + trailer:getFillUnitCapacity(fillUnitIndex)
+            fillUnitsUsed[fillUnitIndex] = true
+        end
+    end
+    return totalFillLevel, totalCapacity, totalFreeCapacity
 end

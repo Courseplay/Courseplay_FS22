@@ -5,6 +5,7 @@ CpSettingsUtil.classTypes = {
 	["AIParameterSettingList"] = AIParameterSettingList.new,
 	["AIParameterBooleanSetting"] = AIParameterBooleanSetting.new,
 	["AIParameterSpeedSetting"] = AIParameterSpeedSetting.new,
+	["CpAIParameterUnloadingStation"] = CpAIParameterUnloadingStation.new
 }
 
 --[[

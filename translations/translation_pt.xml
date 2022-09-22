@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Gerar um curso antes de iniciar o trabalho."/>
     <text name="CP_error_could_not_generate_course" text="Não foi possível gerar o curso. O log pode ter mais informações."/>
     <text name="CP_error_not_on_field" text="O alvo não está em um campo."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="apenas embrulhado"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não embrulhado"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: trabalho de campo"/>
     <text name="CP_job_baleCollect" text="CP: Coleta/embalagem de fardos"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Gerar curso de trabalho de campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Gerador de curso aberto/fechado."/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="O trabalhador de IA %s parou de trabalhar inesperadamente - o tanque está cheio!"/>
     <text name="CP_ai_messageError" text="O trabalhador de IA %s parou de trabalhar inesperadamente - saiu do curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador de IA %s parou de trabalhar inesperadamente - nenhum fardo do tipo selecionado foi encontrado!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Ajuda do evento de ação"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mostra os textos de ajuda do evento de ação."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Configurações do Pathfinder"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Configurações do Pathfinder"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Diferença máxima de ângulo permitida no gol, valores maiores são mais rápidos, mas menos precisos"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Fator de relaxamento do ângulo delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Configurações do Pathfinder"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferença máxima de ângulo permitida no gol, valores maiores são mais rápidos, mas menos precisos"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Fator de relaxamento do ângulo delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Mostra todos os cursos ativos"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostra todos os cursos ativos no mapa do jogo."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -319,10 +331,13 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_needsFilling" text="Precisa ser recarregado"/>
     <text name="CP_infoTexts_needsUnloading" text="Precisa ser descarregado"/>
     <text name="CP_infoTexts_workFinished" text="Trabalho feito"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Sem dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando a chuva terminar"/>
     <text name="CP_infoTexts_errorStopped" text="Deixou o curso, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

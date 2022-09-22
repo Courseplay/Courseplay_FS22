@@ -86,6 +86,13 @@ end
 
 -- The field polygon used to generate the course
 function Course:getFieldPolygon()
+	local i = 1
+	while self.fieldPolygon == nil and i < self:getNumberOfWaypoints() do
+		CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Field polygon not found, regenerating it (%d).', i)
+		local px, _, pz = self:getWaypointPosition(i)
+		self.fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(px, pz)
+		i = i + 1
+	end
 	return self.fieldPolygon
 end
 
@@ -471,11 +478,6 @@ function Course:getWaypointLocalPosition(node, ix)
 	return dx, dy, dz
 end
 
-function Course:havePhysicallyPassedWaypoint(node, ix)
-	local _, _, dz = self:getWaypointLocalPosition(node, ix)
-	return dz < 0;
-end
-
 function Course:getWaypointAngleDeg(ix)
 	return self.waypoints[math.min(#self.waypoints, ix)].angle
 end
@@ -859,19 +861,25 @@ function Course:getNextFwdWaypointIx(ix)
 	return ix
 end
 
-function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx)
+---@param ix number waypoint index to start the search at
+---@param vehicleNode number node representing the vehicle position
+---@param maxDx number maximum lateral deviation of the found waypoint
+---@param lookAhead number number of waypoints in front of ix to search for, default 10
+---@return number index of next waypoint in front of us, or ix when not found
+---@return boolean true if we found the next waypoint
+function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx, lookAhead)
 	-- only look at the next few waypoints, we don't want to find anything far away, really, it should be in front of us
-	for i = ix, math.min(ix + 10, #self.waypoints) do
+	for i = ix, math.min(ix + (lookAhead or 10), #self.waypoints) do
 		if not self:isReverseAt(i) then
 			local uX, uY, uZ = self:getWaypointPosition(i)
 			local dx, _, dz = worldToLocal(vehicleNode, uX, uY, uZ);
 			if dz > 0 and math.abs(dx) < maxDx then
-				return i
+				return i, true
 			end
 		end
 	end
 	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
-	return ix
+	return ix, false
 end
 
 function Course:getNextRevWaypointIxFromVehiclePosition(ix, vehicleNode, lookAheadDistance)
@@ -980,6 +988,26 @@ function Course.createFromNode(vehicle, referenceNode, xOffset, from, to, step, 
 	return course
 end
 
+--- Create a straight, forward course for the vehicle.
+---@param vehicle table the course will start at the root node of the vehicle
+---@param length number optional length of the course in meters, default is 100 meters
+---@param xOffset number optional side offset for the course
+function Course.createStraightForwardCourse(vehicle, length, xOffset)
+	local l = length or 100
+	return Course.createFromNode(vehicle, vehicle.rootNode, xOffset or 0, 0, l, 5, false)
+end
+
+--- Create a straight, reverse course for the vehicle.
+---@param vehicle table the course will start at the root node of the last implement attached to the vehicle, or
+--- at the vehicle's root node if there are not implements attached.
+---@param length number optional length of the course in meters, default is 100 meters
+---@param xOffset number optional side offset for the course
+function Course.createStraightReverseCourse(vehicle, length, xOffset)
+	local lastTrailer = AIUtil.getLastAttachedImplement(vehicle)
+	local l = length or 100
+	return Course.createFromNode(vehicle, lastTrailer.rootNode or vehicle.rootNode, xOffset or 0, 0, -l, -5, true)
+end
+
 --- Move a course by dx/dz world coordinates
 function Course:translate(dx, dz)
 	for _, wp in ipairs(self.waypoints) do
@@ -999,13 +1027,10 @@ function Course:adjustForTowedImplements(extensionLength)
 	for i = 2, #self.waypoints do
 		if self:switchingDirectionAt(i) then
 			local wp = self.waypoints[i - 1]
-			local wpDistance = 1
-			for j = wpDistance, math.max(extensionLength, wpDistance), wpDistance do
-				local newWp = Waypoint(wp)
-				newWp.x = wp.x + wp.dx * j
-				newWp.z = wp.z + wp.dz * j
-				table.insert(waypoints, newWp)
-			end
+			local newWp = Waypoint(wp)
+			newWp.x = wp.x + wp.dx * extensionLength
+			newWp.z = wp.z + wp.dz * extensionLength
+			table.insert(waypoints, newWp)
 		else
 			table.insert(waypoints, self.waypoints[i])
 		end
@@ -1507,27 +1532,6 @@ function Course:getNearestWaypoints(node)
 	return ixClosest, dClosest, ixClosestRightDirection, dClosestRightDirection
 end
 
---- Based on what option the user selected, find the waypoint index to start this course
---- @param node table the node around we are looking for waypoints
---- @param startingPoint StartingPointSetting at which waypoint to start the course
-function Course:getStartingWaypointIx(node, startingPoint)
-	if startingPoint:is(StartingPointSetting.START_AT_FIRST_POINT) then
-		return 1
-	end
-	if startingPoint:is(StartingPointSetting.START_AT_LAST_POINT) then
-		return self:getNumberOfWaypoints()
-	end
-
-	local ixClosest, _, ixClosestRightDirection, _ = self:getNearestWaypoints(node)
-	if startingPoint:is(StartingPointSetting.START_AT_NEAREST_POINT) then
-		return ixClosest
-	end
-	if startingPoint:is(StartingPointSetting.START_AT_NEXT_POINT) then
-		return ixClosestRightDirection
-	end
-	return self:getCurrentWaypointIx()
-end
-
 function Course:isPipeInFruitAt(ix)
 	return self.waypoints[ix].pipeInFruit
 end
@@ -1593,6 +1597,12 @@ function Course:setPipeInFruitMap(pipeOffsetX, workWidth)
 			totalNonHeadlandWps = totalNonHeadlandWps + 1
 			-- check if the pipe is in an unworked row
 			self.waypoints[i].pipeInFruit = setPipeInFruit(i, pipeOffsetX, rowsNotDone)
+			-- turn start waypoints point towards the turn end waypoint so setPipeInFruit magic won't work,
+			-- offset position is not towards to previous row, so here, just use the same setting as the
+			-- waypoint before the turn
+			if self.waypoints[i].pipeInFruit and i < #self.waypoints and self:isTurnStartAtIx(i + 1) then
+				self.waypoints[i + 1].pipeInFruit = true
+			end
 			pipeInFruitWps = pipeInFruitWps + (self.waypoints[i].pipeInFruit and 1 or 0)
 			if self:isTurnEndAtIx(i) then
 				-- we are at the start of a row (where the turn ends)

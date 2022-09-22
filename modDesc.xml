@@ -149,6 +149,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyUnloadCombine.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
 		<sourceFile filename="scripts/ai/AIMessages.lua"/>
 		<sourceFile filename="scripts/ai/Markers.lua"/>
@@ -174,21 +175,27 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/controllers/VineCutterController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/WearableController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/SoilSamplerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/PipeController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CoverController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
 		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
+		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>
 		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
 		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
 		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
+		<sourceFile filename="scripts/ai/parameters/CpAIParameterUnloadingStation.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJob.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobCombineUnloader.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskCombineUnloader.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskDriveTo.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
@@ -234,6 +241,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<specialization name="cpAIWorker" className="CpAIWorker" filename="scripts/specializations/CpAIWorker.lua"/>
 		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
 		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
+		<specialization name="cpAICombineUnloader" className="CpAICombineUnloader" filename="scripts/specializations/CpAICombineUnloader.lua"/>
 		<specialization name="cpGamePadHud" className="CpGamePadHud" filename="scripts/specializations/CpGamePadHud.lua"/>
 		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
 		<specialization name="cpInfoTexts" className="CpInfoTexts" filename="scripts/specializations/CpInfoTexts.lua"/>

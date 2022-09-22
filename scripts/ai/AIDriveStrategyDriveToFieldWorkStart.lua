@@ -89,9 +89,9 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
     self.startPosition = {x = x, z = z}
 end
 
-function AIDriveStrategyDriveToFieldWorkStart:update()
+function AIDriveStrategyDriveToFieldWorkStart:update(dt)
     AIDriveStrategyDriveToFieldWorkStart:superClass().update(self)
-    self:updateImplementControllers()
+    self:updateImplementControllers(dt)
     if self.ppc:getCourse():isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
         self.ppc:getCourse():draw()
     end
@@ -146,7 +146,7 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
         end
     end
 
-    self:checkProximitySensors()
+    self:checkProximitySensors(moveForwards)
 
     return gx, gz, moveForwards, self.maxSpeed, 100
 end

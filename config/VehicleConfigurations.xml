@@ -108,6 +108,11 @@ You can define the following custom settings:
     />
     <!-- Implements -->
 
+    <!--\vehicles\Bergmann-->
+    <Vehicle name="rrw500.xml"
+             turnRadius = "10"
+    />
+
     <!--\vehicles\johndeer-->
     <Vehicle name="planter1775NT.xml"
              turnRadius = "12"
@@ -321,6 +326,13 @@ You can define the following custom settings:
     />
 
     <!--Implements-->
+    <!--Mod: Kinze Wagon Pack-->
+    <Vehicle name="wagon851.xml"
+             turnRadius="10"
+    />
+    <Vehicle name="wagon1051.xml"
+             turnRadius="10"
+    />
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
              toolOffsetX="2.1"

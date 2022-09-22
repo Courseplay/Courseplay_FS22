@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Először hozz létre egy útvonalat"/>
     <text name="CP_error_could_not_generate_course" text="Hiba az útvonaltervezéskor"/>
     <text name="CP_error_not_on_field" text="Csak szántóföldön lehet munkát végezni"/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="csak a csomagoltak"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="csak a nem csomagoltak"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Terepmunka"/>
     <text name="CP_job_baleCollect" text="CP: Bálagyűjtés/csomagolás"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Útvonaltervezés"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Útvonaltervező megnyitása/zárása."/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="%s segítő váratlanul abbahagyta a munkát - az eszkőz megtelt!"/>
     <text name="CP_ai_messageError" text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Súgó a műveletekhez"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mutassa a súgót a különböző műveletekhez."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="útkereső beállításai"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Célszög különbség"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Simítási szög tényező"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Célszög különbség"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Simítási szög tényező"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Az összes aktív útvonal megjelenítése"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Az összes aktív útvonal megjelenítése a játéktérképen."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -319,10 +331,13 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_needsFilling" text="fel kell tölteni"/>
     <text name="CP_infoTexts_needsUnloading" text="üríteni kell"/>
     <text name="CP_infoTexts_workFinished" text="készen van"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

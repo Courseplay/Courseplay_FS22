@@ -27,7 +27,7 @@ function AIParameterSettingList.new(data, vehicle, class, customMt)
 		end
 		data.textInputAllowed = true
 	elseif data.generateValuesFunction then
-		self.data.values, self.data.texts = CpSettingsUtil[data.generateValuesFunction]()
+		self.data.values, self.data.texts = self.klass[data.generateValuesFunction](self.vehicle or self.klass, self)
 		self.values = table.copy(self.data.values)
 		self.texts = table.copy(self.data.texts)
 	end
@@ -190,6 +190,11 @@ end
 
 --- Excludes deactivated values from the current values and texts tables.
 function AIParameterSettingList:refresh()
+	if self.data.generateValuesFunction then 
+		self.values, self.texts = self.klass[self.data.generateValuesFunction](self.vehicle or self.klass, self)
+		self:validateCurrentValue()
+		return
+	end
 	self.values = {}
 	self.texts = {}
 	for ix, v in ipairs(self.data.values) do 
@@ -471,9 +476,9 @@ end
 --- Copy the value to another setting.
 function AIParameterSettingList:copy(setting)
 	if self.data.incremental and self.data.incremental ~= 1 then 
-		self:setFloatValue(setting.values[self.current])
+		self:setFloatValue(setting.values[setting.current])
 	else 
-		self:setValue(setting.values[self.current])
+		self:setValue(setting.values[setting.current])
 	end
 end
 

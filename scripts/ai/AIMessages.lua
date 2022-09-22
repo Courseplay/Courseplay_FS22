@@ -28,6 +28,22 @@ function AIMessageCpError:getMessage()
 	return g_i18n:getText("CP_ai_messageError")
 end
 
+AIMessageCpErrorNoPathFound = {
+	name = "CP_ERROR_NO_PATH_FOUND"
+}
+local AIMessageCpErrorNoPathFound_mt = Class(AIMessageCpErrorNoPathFound, AIMessage)
+
+function AIMessageCpErrorNoPathFound.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageCpErrorNoPathFound_mt)
+
+	return self
+end
+
+function AIMessageCpErrorNoPathFound:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorNoPathFound")
+end
+
+
 AIMessageErrorWrongBaleWrapType = {
 	name = "CP_ERROR_WRONG_WRAP_TYPE"
 }
@@ -46,6 +62,7 @@ end
 function AIMessageErrorIsFull.register()
 	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorIsFull.name, AIMessageErrorIsFull)
 	g_currentMission.aiMessageManager:registerMessage(AIMessageCpError.name, AIMessageCpError)
+	g_currentMission.aiMessageManager:registerMessage(AIMessageCpErrorNoPathFound.name, AIMessageCpErrorNoPathFound)
 	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorWrongBaleWrapType.name, AIMessageErrorWrongBaleWrapType)
 end
 

@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Generera en kurs innan du startat ett arbete."/>
     <text name="CP_error_could_not_generate_course" text="Kunde inte generera kursen. Loggen kan ha mer information."/>
     <text name="CP_error_not_on_field" text="Målet är inte på ett fält."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="bara plastade"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="bara oplastade"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Fältarbete"/>
     <text name="CP_job_baleCollect" text="CP: Bal Samla/Plasta"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Skapa en kurs för fältarbete."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Öppna/Stäng kurs skaparen."/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="AI-arbetaren %s har slutat arbeta oväntat - tanken är full!"/>
     <text name="CP_ai_messageError" text="AI-arbetaren %s har slutat arbeta oväntat - lämnade kursen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbetaren %s har slutat arbeta oväntat - inga balar av vald typ hittades!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Action Event Hjälp"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Visar action händelse hjälp texter."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder inställningar"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Vinkelskillnad vid mål"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Den maximala vinklens skillnaden vid mål, större nummer är snabbare men mindre exakt"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Toleransfaktor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Vinkelskillnad vid mål"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Den maximala vinklens skillnaden vid mål, större nummer är snabbare men mindre exakt"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Toleransfaktor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visa alla aktiva kurser"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Visa alla aktiva kurser på spelets map/pda"/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -319,10 +331,13 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_infoTexts_needsFilling" text="Måste fyllas på"/>
     <text name="CP_infoTexts_needsUnloading" text="Måste tömmas"/>
     <text name="CP_infoTexts_workFinished" text="Slutfört arbetet"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Slut på pengar"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Väntar på att det ska sluta regna för att kunna slutföra"/>
     <text name="CP_infoTexts_errorStopped" text="Lämnade kursen, stannade"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Fel baltyp"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

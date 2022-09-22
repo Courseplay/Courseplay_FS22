@@ -208,6 +208,16 @@ function ProximitySensorPack:debug(...)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, ...)
 end
 
+function ProximitySensorPack:getXOffsets(width, directionsDeg)
+    local xOffsets = {}
+    -- spread them out evenly across the width
+    local dx = width / #directionsDeg
+    for xOffset = width / 2 - dx / 2, - width / 2 + dx / 2 - 0.1, - dx do
+        table.insert(xOffsets, xOffset)
+    end
+    return xOffsets
+end
+
 function ProximitySensorPack:adjustForwardPosition()
     -- are we looking forward
     local forward = 1
@@ -303,6 +313,23 @@ function ProximitySensorPack:enableRightSide()
     end
 end
 
+
+function ProximitySensorPack:disableLeftSide()
+    for _, sensor in ipairs(self.sensors) do
+        if sensor:getBaseRotationDeg() > 0 then
+            sensor:disable()
+        end
+    end
+end
+
+function ProximitySensorPack:enableLeftSide()
+    for _, sensor in ipairs(self.sensors) do
+        if sensor:getBaseRotationDeg() > 0 then
+            sensor:enable()
+        end
+    end
+end
+
 ---@class ForwardLookingProximitySensorPack : ProximitySensorPack
 ForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 
@@ -320,15 +347,24 @@ WideForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
 function WideForwardLookingProximitySensorPack:init(vehicle, node, range, height, width)
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide forward proximity sensor %.1fm', width)
     local directionsDeg = {10, 8, 5, 3, 0, -3, -5, -8, -10}
-    local xOffsets = {}
-    -- spread them out evenly across the width
-    local dx = width / #directionsDeg
-    for xOffset = width / 2 - dx / 2, - width / 2 + dx / 2 - 0.1, - dx do
-        table.insert(xOffsets, xOffset)
-    end
+    local xOffsets = self:getXOffsets(width, directionsDeg)
     ProximitySensorPack.init(self, 'wideForward', vehicle, node, range, height,
             directionsDeg, xOffsets, true)
 end
+
+---@class WideBackwardLookingProximitySensorPack : ProximitySensorPack
+WideBackwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
+
+--- Pack looking backward, but sensors distributed evenly through the width of the vehicle
+function WideBackwardLookingProximitySensorPack:init(vehicle, node, range, height, width, rotationEnabled)
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating wide backward proximity sensor %.1fm', width)
+    local directionsDeg = {-190, -188, -185, -183, 180, 183, 185, 188, 190}
+    local xOffsets = self:getXOffsets(width, directionsDeg)
+    ProximitySensorPack.init(self, 'wideBackward', vehicle, node, range, height,
+            directionsDeg, xOffsets, rotationEnabled)
+end
+
+
 
 ---@class BackwardLookingProximitySensorPack : ProximitySensorPack
 BackwardLookingProximitySensorPack = CpObject(ProximitySensorPack)

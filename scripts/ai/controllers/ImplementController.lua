@@ -66,6 +66,10 @@ function ImplementController:update(dt)
     -- implement in the derived classes as needed
 end
 
+function ImplementController:delete()
+    
+end
+
 --- Called by the drive strategy on lowering of the implements.
 function ImplementController:onLowering()
     

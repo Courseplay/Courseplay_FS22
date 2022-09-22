@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Создайте курс до начала работы."/>
     <text name="CP_error_could_not_generate_course" text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация."/>
     <text name="CP_error_not_on_field" text="Цель не на поле."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,10 +49,19 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="только обёрнутые"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="только не обёрнутые"/>
     <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Работа в поле"/>
     <text name="CP_job_baleCollect" text="CP: Сбор/обмотка тюков"/>
+    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_ai_page_generate_course" text="CP: Сгенерировать курс"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Откр/закр. генератор курсов"/>
     <!---->
@@ -59,6 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="ИИ-работник %s неожиданно прекратил работу - заполнен бункер!"/>
     <text name="CP_ai_messageError" text="ИИ-работник %s неожиданно прекратил работу - оставил курс!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="ИИ-работник %s неожиданно прекратил работу - не найдено выбранного типа тюков!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -233,10 +245,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Справка для действий"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Отображать вспомогательный текст для действий."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Настройки поиска пути"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Разница углов у цели"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Фактор угла сглаживания"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Разница углов у цели"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Фактор угла сглаживания"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Показать все активные курсы"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Показать все активные курсы на игровой карте."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -319,10 +331,13 @@
     <text name="CP_infoTexts_needsFilling" text="Нуждается в заправке"/>
     <text name="CP_infoTexts_needsUnloading" text="Нуждается в разгрузке"/>
     <text name="CP_infoTexts_workFinished" text="Завершил работу"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Закончились деньги"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Ожидает пока закончится дождь"/>
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->

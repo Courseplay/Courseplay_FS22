@@ -22,11 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class AIUtil
 AIUtil = {}
 
--- chopper: 0= pipe folded (really? isn't this 1?), 2,= autoaiming;  combine: 1 = closed  2= open
-AIUtil.PIPE_STATE_MOVING = 0
-AIUtil.PIPE_STATE_CLOSED = 1
-AIUtil.PIPE_STATE_OPEN = 2
-
 function AIUtil.isReverseDriving(vehicle)
 	if not vehicle then
 		printCallstack()
@@ -409,6 +404,16 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 	end
 end
 
+--- Get number of child vehicles that have a certain specialization
+---@param vehicle Vehicle
+---@param specialization specialization to check for
+---@return integer number of found vehicles
+function AIUtil.getNumberOfChildVehiclesWithSpecialization(vehicle, specialization)
+	local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, nil)
+
+	return #vehicles
+end
+
 --- Gets all child vehicles with a given specialization. 
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
@@ -489,8 +494,17 @@ function AIUtil.isStopped(vehicle)
 	return math.abs(vehicle.lastSpeedReal) < 0.0001
 end
 
+-- Note that this may temporarily return false even if it is reversing
 function AIUtil.isReversing(vehicle)
-	return vehicle.movingDirection == -1 and vehicle.lastSpeedReal * 3600 > 0.1
+	if (AIUtil.isInReverseGear(vehicle) and math.abs(vehicle.lastSpeedReal) > 0.00001) then
+		return true
+	else
+		return false
+	end
+end
+
+function AIUtil.isInReverseGear(vehicle)
+	return vehicle.getMotor and vehicle:getMotor():getGearRatio() < 0
 end
 
 --- Get the current normalized steering angle:
@@ -520,7 +534,7 @@ end
 --- Are there any trailer under the pipe ?
 ---@param pipe table 
 ---@param shouldTrailerBeStandingStill boolean
-function AIUtil.isTrailerUnderPipe(pipe,shouldTrailerBeStandingStill)
+function AIUtil.isTrailerUnderPipe(pipe, shouldTrailerBeStandingStill)
 	if not pipe then return end
 	for trailer, value in pairs(pipe.objectsInTriggers) do
 		if value > 0 then

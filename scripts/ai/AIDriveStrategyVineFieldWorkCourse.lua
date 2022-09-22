@@ -49,7 +49,7 @@ function AIDriveStrategyVineFieldWorkCourse:getImplementLowerEarly()
 end
 
 -- disable proximity sensor to prevent vines stopping us...
-function AIDriveStrategyVineFieldWorkCourse:checkProximitySensors()
+function AIDriveStrategyVineFieldWorkCourse:checkProximitySensors(moveForwards)
     -- TODO: make proximity sensor ignore vines?
     -- TODO: enable sensor in turns only?
 end
