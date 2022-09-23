@@ -91,7 +91,7 @@ function CpAIBaleFinder:getCanStartCpBaleFinder()
             --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
             AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader") or 
             --- FS22_UniversalAutoload form loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
-            AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_universalAutoload")
+            AIUtil.hasValidUniversalTrailerAttached(self)
 end
 
 function CpAIBaleFinder:getCanStartCp(superFunc)

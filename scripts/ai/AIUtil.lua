@@ -636,3 +636,10 @@ function AIUtil.canReverse(vehicle)
 		return true
 	end
 end
+
+--- Checks if a valid Universal autoload trailer is attached.
+--- FS22_UniversalAutoload from Loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
+function AIUtil.hasValidUniversalTrailerAttached(vehicle)
+    local implements, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, nil, "spec_universalAutoload")
+	return found and implements[1].spec_universalAutoload.isAutoloadEnabled
+end
