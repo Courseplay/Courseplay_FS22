@@ -28,26 +28,26 @@
 		<!--Stop At End-->
 		<!--<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true" isExpertModeOnly="true"/> turn this setting off for now, as it is not active right now.-->
 		<!--Turn on Field-->
-		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true" isVisible="areCourseSettingsVisible"/>
 		<!--Avoid Fruit-->
 		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true" isExpertModeOnly="true"/>
 		<!--Pathfinder Reverse-->
-		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true" isExpertModeOnly="true"/>
-		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="false" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="false" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="implement">
 		<!--Fold at End-->
-		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
 		<!--Raise Implement-->
-		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate">
+		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate" isVisible="areCourseSettingsVisible">
 			<Texts>
 				<Text>early</Text>
 				<Text>late</Text>
 			</Texts>
 		</Setting>
 		<!--Lower Implement-->
-		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly" vehicleConfiguration="lowerEarly">
+		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly" vehicleConfiguration="lowerEarly" isVisible="areCourseSettingsVisible">
 			<Texts>
 				<Text>late</Text>
 				<Text>early</Text>

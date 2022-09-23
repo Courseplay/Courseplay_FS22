@@ -346,6 +346,10 @@ function CpVehicleSettings:isAdditiveFillUnitSettingVisible()
     return hasAdditiveTank
 end
 
+function CpVehicleSettings:areCourseSettingsVisible()
+    return not self:getCanStartCpCombineUnloader()
+end
+
 --- Saves the user value changed on the server.
 function CpVehicleSettings:onCpUserSettingChanged(setting)
     if not self.isServer then 

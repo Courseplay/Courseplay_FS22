@@ -659,8 +659,12 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Toont debug kanaalmenu ja/nee."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: mini GUI openen"/>
     <text name="input_CP_START_STOP" text="CP: Start/stop driver"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mouse cursor on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Open/close hud"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>

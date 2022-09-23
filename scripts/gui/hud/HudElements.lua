@@ -110,6 +110,27 @@ function CpHudElement:getIsDisabled()
     return self.disabled
 end
 
+--- Hud page
+---@class CpHudPageElement : CpHudElement
+CpHudPageElement = {}
+local CpHudPageElement_mt = Class(CpHudPageElement, CpHudElement)
+
+function CpHudPageElement.new(overlay, parentHudElement, customMt)
+    if customMt == nil then
+        customMt = CpHudPageElement_mt
+    end
+    local self = CpHudElement.new(overlay, parentHudElement, customMt)
+    return self
+end
+
+function CpHudPageElement:setupElements()
+
+end
+
+function CpHudPageElement:updateContent()
+	
+end
+
 --- Generic Hud button element with overlay.
 ---@class CpHudButtonElement : CpHudElement
 CpHudButtonElement = {}

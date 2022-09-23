@@ -659,8 +659,12 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="コースプレイ：デバッグメニューを表示/非表示"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="コースプレイ：ミニGUIを開く"/>
     <text name="input_CP_START_STOP" text="コースプレイ：開始/停止"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="コースプレイ：マウスカーソル ON/OFF"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="コースプレイ：HUDを開く"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>
