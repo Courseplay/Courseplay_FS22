@@ -18,8 +18,8 @@
     <text name="CP_error_no_course" text="Создайте курс до начала работы."/>
     <text name="CP_error_could_not_generate_course" text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация."/>
     <text name="CP_error_not_on_field" text="Цель не на поле."/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Разгружающий далеко от поля."/>
+    <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -51,17 +51,17 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Порог заполнения:"/>
+    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Порог заполнения:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего giants:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Работа в поле"/>
     <text name="CP_job_baleCollect" text="CP: Сбор/обмотка тюков"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP: Разгрузка комбайна"/>
     <text name="CP_ai_page_generate_course" text="CP: Сгенерировать курс"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Откр/закр. генератор курсов"/>
     <!---->
@@ -70,7 +70,7 @@
     <text name="CP_ai_messageErrorIsFull" text="ИИ-работник %s неожиданно прекратил работу - заполнен бункер!"/>
     <text name="CP_ai_messageError" text="ИИ-работник %s неожиданно прекратил работу - оставил курс!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="ИИ-работник %s неожиданно прекратил работу - не найдено выбранного типа тюков!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="ИИ-работник %s неожиданно прекратил работу - не найдено пути!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -251,18 +251,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Показать все активные курсы"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Показать все активные курсы на игровой карте."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Отображать курсы на миникарте"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Включает отрисовку курса на мини-карте."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Окно с инфотекстом"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Отображать окно с информационным текстом."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Player mouse event"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Включить/отключить Player Mouse Event для отображения окна с инфотекстом за пределами транспортного средства."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Предпочитать пользовательские поля"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Предпочитать пользовательское поле, если в выбранной позиции также есть обычное поле."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Единицы расстояния"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Установка единиц расстояния."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="метр"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="фут"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -331,13 +331,13 @@
     <text name="CP_infoTexts_needsFilling" text="Нуждается в заправке"/>
     <text name="CP_infoTexts_needsUnloading" text="Нуждается в разгрузке"/>
     <text name="CP_infoTexts_workFinished" text="Завершил работу"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Двигается к комбайну"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Двигается к прицепу"/>
     <text name="CP_infoTexts_outOfMoney" text="Закончились деньги"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Ожидает пока закончится дождь"/>
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Не найдено путь"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -632,7 +632,7 @@ R: Удаляет скопированный курс из буфера обме
 Загруженные курсы будут сохранены/перезаписаны автоматически, после закрытия редактора.
 
 1) Редактирование пользовательского поля может быть выполнено с помощью выбранного поля на странице меню ИИ.
-2) Редактирование курса может быть осуществлено в менеджере курса.
+2) Редактирование курса может быть осуществлено на вкладке управления курсов.
     Там вы можете отредактировать сохраненный курс, но убедитесь, что вы очистили в настоящее время загруженный курс с автомобиля.
 
 Редактирование курса должно применяться только тогда, когда генератор курсов не может создать достаточно хороший курс.
@@ -660,12 +660,12 @@ R: Удаляет скопированный курс из буфера обме
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Показать меню отладки канала да/нет."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Открыть mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Отправить/становить водителя"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Изменить точку отправки"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Курсор вкл/выкл"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Откр/закр HUD"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Открыть настройки автомобиля"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Открыть глобальные настройки"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Открыть генератор курсов/меню работ"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Открыть управление курсами"/>
   </texts>
 </l10n>
