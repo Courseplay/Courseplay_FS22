@@ -312,7 +312,7 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	local vehicle = self:getVehicle()
 	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
 
-	local readyToDriveUnloading = self.cpJobParameters.fullThreshold:getValue() < fillLevelPercentage
+	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
 	
 	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)

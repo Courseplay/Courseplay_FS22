@@ -20,7 +20,7 @@ function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, 
 
     --- Full threshold 
     self.fullThresholdBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
-                                                vehicle:getCpCombineUnloaderJobParameters().fullThreshold)              
+                                                vehicle:getCpSettings().fullThreshold)              
 
     --- Giants unloading station
     local x, y = unpack(lines[4].left)
@@ -92,7 +92,7 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), toolOffsetZ:getString())
     self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
 
-    local fullThreshold = vehicle:getCpCombineUnloaderJobParameters().fullThreshold
+    local fullThreshold = vehicle:getCpSettings().fullThreshold
     self.fullThresholdBtn:setTextDetails(fullThreshold:getTitle(), fullThreshold:getString())
     self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
 

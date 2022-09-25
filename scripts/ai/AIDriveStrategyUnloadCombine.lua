@@ -140,8 +140,7 @@ function AIDriveStrategyUnloadCombine:getGeneratedCourse(jobParameters)
 end
 
 function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
-    self.fullThresholdPercentage = jobParameters.fullThreshold:getValue()
-    self:debug("Will not wait for a combine over %d percent fill level", self.fullThresholdPercentage)
+    
 end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
@@ -217,8 +216,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WAITING_FOR_COMBINE_TO_CALL then
         self:setMaxSpeed(0)
 
-        if self:isDriveUnloadNowRequested() or self:getAllTrailersFull(self.fullThresholdPercentage) then
-            self:debug('Drive unload now requested or trailers over %d fill level', self.fullThresholdPercentage)
+        if self:isDriveUnloadNowRequested() or self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
+            self:debug('Drive unload now requested or trailers over %d fill level', self.settings.fullThreshold:getValue())
             self:startUnloadingTrailers()
         end
     elseif self.state == self.states.WAITING_FOR_PATHFINDER then
