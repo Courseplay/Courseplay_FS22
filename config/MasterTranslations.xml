@@ -154,12 +154,12 @@
 	</Category>
 	<Category name="AI combine unloader job parameters">
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_fullThreshold">
-			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
-			<Text language="en"><![CDATA[Full threshold:]]></Text>
+			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
+			<Text language="en"><![CDATA[Empty when over:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_fullThreshold_title">
-			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
-			<Text language="en"><![CDATA[Full threshold:]]></Text>
+			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
+			<Text language="en"><![CDATA[Empty when over:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">
 			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
