@@ -51,8 +51,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Порог заполнения:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Порог заполнения:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>
@@ -114,6 +112,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Поперечное смещение инструмента."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Продольное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Продольное смещение инструмента."/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Контроль силосной добавки."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Если активная и силовая добавка закончилась, водитель остановится."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Симметричная смена полосы движения"/>

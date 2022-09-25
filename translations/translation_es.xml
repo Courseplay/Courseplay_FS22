@@ -51,8 +51,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -114,6 +112,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Desp. Herramienta Izq/Der"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Desp. Herramienta Del/Tra"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Desp. Herramienta Del/Tra"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Comprobar Aditivo de Ensilaje."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Si está activo y el Aditivo de Ensilaje está vacío, el conductor se detendrá."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Cambio a carril simétrico"/>
