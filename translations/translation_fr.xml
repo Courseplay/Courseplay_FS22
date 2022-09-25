@@ -51,8 +51,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -114,6 +112,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Décalage vertical de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Décalage vertical de l'outil."/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Arrêt si additif d'ensilage vide"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Le conducteur s'arrêtera si la réserve d'additif d'ensilage est vide."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Changement de ligne symétrique"/>

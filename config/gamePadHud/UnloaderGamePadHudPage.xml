@@ -7,7 +7,7 @@
 <Settings title="CP_vehicle_setting_display">
 	<Setting type="combineUnloaderJobParameters" name = "useGiantsUnload" />
 	<Setting type="combineUnloaderJobParameters" name = "unloadingStation" />
-	<Setting type="combineUnloaderJobParameters" name = "fullThreshold" />
+	<Setting type="vehicleSettings" name = "fullThreshold" />
 	<Setting type="vehicleSettings" name = "toolOffsetX" />
 	<Setting type="vehicleSettings" name = "toolOffsetZ" />
 </Settings>

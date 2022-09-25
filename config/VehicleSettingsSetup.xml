@@ -60,6 +60,8 @@
 		<!--Tool Offset Z-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"
 				 onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" />
+		<!-- Full threshold -->
+		<Setting classType="AIParameterSettingList" name="fullThreshold" min="50" max="100" incremental="5" default="85" unit="4"/>
 		<!--Silage additives needed?-->
 		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
 	</SettingSubTitle>

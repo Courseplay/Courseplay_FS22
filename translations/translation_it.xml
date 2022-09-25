@@ -51,8 +51,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Soglia piena:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Soglia piena:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
@@ -114,6 +112,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Correzione oriz."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Correzione vert."/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Correzione vert."/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Controllare l'additivo per insilato."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Se attivo, e l'additivo per insilato è vuoto, il conducente si fermerà."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Cambio di corsia simmetrico"/>

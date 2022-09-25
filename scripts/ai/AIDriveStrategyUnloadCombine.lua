@@ -107,7 +107,6 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.combineToUnloadReversing = 0
     self.doNotSwerveForVehicle = CpTemporaryObject()
     self.justFinishedPathfindingForDistance = CpTemporaryObject()
-    self.timeToCheckCombines = CpTemporaryObject(true)
     self.vehicleInFrontOfUS = CpTemporaryObject()
     self.blockedVehicleReversing = CpTemporaryObject(false)
     self.driveUnloadNowRequested = CpTemporaryObject(false)
@@ -141,8 +140,7 @@ function AIDriveStrategyUnloadCombine:getGeneratedCourse(jobParameters)
 end
 
 function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
-    self.fullThreshold = jobParameters.fullThreshold:getValue()
-    self:debug("Will consider itself full over %d percent", self.fullThreshold)
+    
 end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
@@ -218,7 +216,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WAITING_FOR_COMBINE_TO_CALL then
         self:setMaxSpeed(0)
 
-        if self:isDriveUnloadNowRequested() or self:getAllTrailersFull() then
+        if self:isDriveUnloadNowRequested() or self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
+            self:debug('Drive unload now requested or trailers over %d fill level', self.settings.fullThreshold:getValue())
             self:startUnloadingTrailers()
         end
     elseif self.state == self.states.WAITING_FOR_PATHFINDER then
@@ -284,7 +283,6 @@ end
 
 function AIDriveStrategyUnloadCombine:startWaitingForCombine()
     self:releaseCombine()
-    self.timeToCheckCombines:set(false, 5000)
     self.course = Course.createStraightForwardCourse(self.vehicle, 25)
     self:setNewState(self.states.WAITING_FOR_COMBINE_TO_CALL)
 end
@@ -407,8 +405,8 @@ function AIDriveStrategyUnloadCombine:getCombinesMeasuredBackDistance()
     return self.combineToUnload:getCpDriveStrategy():getMeasuredBackDistance()
 end
 
-function AIDriveStrategyUnloadCombine:getAllTrailersFull()
-    return FillLevelManager.areAllTrailersFull(self.vehicle, 0)
+function AIDriveStrategyUnloadCombine:getAllTrailersFull(fullThresholdPercentage)
+    return FillLevelManager.areAllTrailersFull(self.vehicle, fullThresholdPercentage)
 end
 
 --- Fill level in %.
@@ -1488,26 +1486,6 @@ function AIDriveStrategyUnloadCombine:isActiveCpCombine(vehicle)
     end
     local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
     return driveStrategy.needUnloader ~= nil
-end
-
-function AIDriveStrategyUnloadCombine:findCombine()
-    for _, vehicle in pairs(g_currentMission.vehicles) do
-        if self:isActiveCpCombine(vehicle) then
-            local x, _, z = getWorldTranslation(vehicle.rootNode)
-            if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) then
-                local driveStrategy = vehicle:getCpDriveStrategy()
-                if driveStrategy:needUnloader(self.fullThreshold) then
-                    self:debug('Found combine %s on my field, fill level over %d in need of an unloader',
-                            CpUtil.getName(vehicle), self.fullThreshold)
-                    return vehicle, driveStrategy
-                else
-                    self:debug('Found combine %s on my field but it does not need an unloader', CpUtil.getName(vehicle))
-                end
-            else
-                self:debug('Combine %s is not on my field', CpUtil.getName(vehicle))
-            end
-        end
-    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------

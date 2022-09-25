@@ -302,12 +302,13 @@ end
 
 --- Are all trailers full?
 ---@param vehicle table
----@param fullThreshold number optional threshold
+---@param fullThresholdPercentage number optional threshold, if fill level in percentage is greater than the threshold,
+--- consider trailers full
 ---@return boolean
-function FillLevelManager.areAllTrailersFull(vehicle, fullThreshold)
-    fullThreshold = fullThreshold or 0
+function FillLevelManager.areAllTrailersFull(vehicle, fullThresholdPercentage)
     local totalFillLevel, totalCapacity, totalFreeCapacity =  FillLevelManager.getAllTrailerFillLevels(vehicle)
-    return totalFreeCapacity <= fullThreshold
+    local fillLevelPercentage = 100 * totalFillLevel / totalCapacity
+    return totalFreeCapacity <= 0 or fillLevelPercentage >= (fullThresholdPercentage or 100)
 end
 
 --- Gets the total fill level percentage and total fill level percentage adjusted to the max fill volume mass adjusted.

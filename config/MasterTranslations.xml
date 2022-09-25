@@ -153,14 +153,6 @@
 		</Translation>
 	</Category>
 	<Category name="AI combine unloader job parameters">
-		<Translation name="CP_combineUnloaderJobParameters_subTitle_fullThreshold">
-			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
-			<Text language="en"><![CDATA[Full threshold:]]></Text>
-		</Translation>
-		<Translation name="CP_combineUnloaderJobParameters_fullThreshold_title">
-			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
-			<Text language="en"><![CDATA[Full threshold:]]></Text>
-		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">
 			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
 			<Text language="en"><![CDATA[Giants unloader:]]></Text>
@@ -375,6 +367,14 @@
 		<Translation name="CP_vehicle_setting_toolOffsetZ_tooltip">
 			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fullThreshold_title">
+			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
+			<Text language="en"><![CDATA[Empty when over:]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fullThreshold_tooltip">
+			<Text language="de"><![CDATA[TODO]]></Text>
+			<Text language="en"><![CDATA[TODO]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_useAdditiveFillUnit_title">
 			<Text language="de"><![CDATA[Siliermittel überwachen.]]></Text>
