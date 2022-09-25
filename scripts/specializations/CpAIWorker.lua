@@ -125,11 +125,11 @@ end
 --- Updates the start stop action event visibility and text.
 function CpAIWorker:updateActionEvents()
     local spec = self.spec_cpAIWorker
-
-	if self.isActiveForInputIgnoreSelectionIgnoreAI then
+    local giantsSpec = self.spec_aiJobVehicle
+	if self.isActiveForInputIgnoreSelectionIgnoreAI and giantsSpec.supportsAIJobs then
         local actionEvent = spec.actionEvents[InputAction.CP_START_STOP]
+
         if self:getShowAIToggleActionEvent() then
-            local giantsSpec = self.spec_aiJobVehicle
             if self:getIsAIActive() then
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
