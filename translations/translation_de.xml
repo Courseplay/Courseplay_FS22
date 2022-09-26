@@ -113,7 +113,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Entleeren wenn über:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Siliermittel überwachen."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrischer Bahnenwechsel"/>
