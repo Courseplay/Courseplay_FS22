@@ -112,7 +112,7 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Correzione oriz."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Correzione vert."/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Correzione vert."/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vuota quando ha finito:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Controllare l'additivo per insilato."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Se attivo, e l'additivo per insilato è vuoto, il conducente si fermerà."/>
