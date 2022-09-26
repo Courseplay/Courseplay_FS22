@@ -373,8 +373,8 @@
 			<Text language="en"><![CDATA[Empty when over:]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_fullThreshold_tooltip">
-			<Text language="de"><![CDATA[TODO]]></Text>
-			<Text language="en"><![CDATA[TODO]]></Text>
+			<Text language="de"><![CDATA[Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten.]]></Text>
+			<Text language="en"><![CDATA[If the unloader's fill level is over this value, it won't wait for the combine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_useAdditiveFillUnit_title">
 			<Text language="de"><![CDATA[Siliermittel überwachen.]]></Text>
