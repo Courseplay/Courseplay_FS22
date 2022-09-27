@@ -19,6 +19,7 @@
     <text name="CP_error_could_not_generate_course" text="Impossibile generare il percorso. Il registro potrebbe contenere più informazioni."/>
     <text name="CP_error_not_on_field" text="L'obiettivo non si trova su di un campo!"/>
     <text name="CP_error_unloader_to_far_away_from_field" text="Scaricatore lontano dal campo."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
     <!---->
     <!--AI job parameters-->
