@@ -172,20 +172,29 @@ function CpAIJobCombineUnloader:validate(farmId)
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
-	local giantsUnloadActive = self.cpJobParameters.useGiantsUnload:getValue()
-	if isValid and self.isDirectStart and not giantsUnloadActive then 
+	if not isValid then 
+		return isValid, errorMessage
+	end
+	local useGiantsUnload = self.cpJobParameters.useGiantsUnload:getValue()
+	if isValid and self.isDirectStart then 
 		--- Checks the distance for starting with the hud, as a safety check.
-		--- Alternative consider using the start position marker and not the root vehicle.
+		--- Firstly check, if the vehicle is near the field.
 		local x, _, z = getWorldTranslation(vehicle.rootNode)
 		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
 				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
-		if not isValid then 
+		if not isValid and useGiantsUnload then 
+			--- Alternatively check, if the start marker is close to the field and giants unload is active.
+			local x, z = self.positionAngleParameter:getPosition()
+			isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		end
+		if not isValid then
 			return false, g_i18n:getText("CP_error_unloader_to_far_away_from_field")
 		end
 	end
 
 	--- Giants unload 
-	if giantsUnloadActive then 
+	if useGiantsUnload then 
 		isValid, errorMessage = self.cpJobParameters.unloadingStation:validateUnloadingStation()
 		
 		if not isValid then
