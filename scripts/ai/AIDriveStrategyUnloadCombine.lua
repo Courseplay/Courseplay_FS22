@@ -305,7 +305,8 @@ function AIDriveStrategyUnloadCombine:driveBesideCombine()
 
     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
             CpUtil.getName(self.vehicle), dz, speed, factor)
-    if not CpUtil.isVehicleDebugActive(self.vehicle) or not CpDebug:isChannelActive(self.debugChannel) then
+
+    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
         DebugUtil.drawDebugNode(targetNode, 'target')
     end
     self:setMaxSpeed(math.max(0, speed))
