@@ -187,6 +187,9 @@ function CpAIJobCombineUnloader:validate(farmId)
 			local x, z = self.positionAngleParameter:getPosition()
 			isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
 				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+			if not isValid then
+				return false, g_i18n:getText("CP_error_start_position_to_far_away_from_field")
+			end 
 		end
 		if not isValid then
 			return false, g_i18n:getText("CP_error_unloader_to_far_away_from_field")

@@ -55,6 +55,10 @@
 			<Text language="de"><![CDATA[Abfahrer ist zu weit vom Feld entfernt.]]></Text>
 			<Text language="en"><![CDATA[Unloader to far away from the field.]]></Text>
 		</Translation>
+		<Translation name="CP_error_start_position_to_far_away_from_field">
+			<Text language="de"><![CDATA[Startposition ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Starting position to far away from the field.]]></Text>
+		</Translation>
 		<Translation name="CP_error_giants_unloader_not_available">
 			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
