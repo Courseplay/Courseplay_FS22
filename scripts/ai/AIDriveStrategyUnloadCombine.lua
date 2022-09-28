@@ -509,7 +509,7 @@ function AIDriveStrategyUnloadCombine:isLinedUpWithPipe(dx, pipeOffset, toleranc
     -- so we are always comparing positive numbers
     local myDx = pipeOffset > 0 and dx or -dx
     local myPipeOffset = pipeOffset > 0 and pipeOffset or -pipeOffset
-    return dx > myPipeOffset * (1 - tolerance) and dx < myPipeOffset * (1 + tolerance)
+    return myDx > myPipeOffset * (1 - tolerance) and myDx < myPipeOffset * (1 + tolerance)
 end
 
 function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
