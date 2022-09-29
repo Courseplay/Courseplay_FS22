@@ -200,3 +200,11 @@ end
 function CpBunkerSiloJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAIBunkerSiloWorker.cpJob:getCpJobParameters()
 end
+
+function CpBunkerSiloJobParameters:isDrivingForwardsIntoSiloSettingVisible()
+    local vehicle = self.job:getVehicle()
+    if vehicle then
+        return not AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler)
+    end
+    return true
+end

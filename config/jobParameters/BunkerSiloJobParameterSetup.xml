@@ -7,7 +7,7 @@
 
 <Settings prefixText="CP_bunkerSiloJobParameters_">
 	<SettingSubTitle title="drivingForwardsIntoSilo">
-		<Setting classType="AIParameterBooleanSetting" name="drivingForwardsIntoSilo" defaultBool="true">
+		<Setting classType="AIParameterBooleanSetting" name="drivingForwardsIntoSilo" defaultBool="true" isVisible="isDrivingForwardsIntoSiloSettingVisible">
 			<Texts>
 				<Text>reverse</Text>
 				<Text>forwards</Text>

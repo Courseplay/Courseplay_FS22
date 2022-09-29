@@ -219,9 +219,10 @@ end
 --- Creates a controller for the vehicle.
 ---@param vehicle Vehicle
 ---@param driveStrategy AIDriveStrategyBunkerSilo
+---@param drivingForwardsIntoSilo boolean
 ---@return CpBunkerSiloVehicleController
-function CpBunkerSilo:setupTarget(vehicle, driveStrategy)
-	self.controllers[vehicle.rootNode] = CpBunkerSiloVehicleController(self, vehicle, driveStrategy)
+function CpBunkerSilo:setupTarget(vehicle, driveStrategy, drivingForwardsIntoSilo)
+	self.controllers[vehicle.rootNode] = CpBunkerSiloVehicleController(self, vehicle, driveStrategy, drivingForwardsIntoSilo)
 	self.numControllers = self.numControllers + 1 
 	return self.controllers[vehicle.rootNode]
 end

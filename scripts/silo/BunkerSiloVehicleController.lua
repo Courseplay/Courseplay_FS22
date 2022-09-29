@@ -1,16 +1,18 @@
 --- Controls a driver in the bunker silo. 
+---@class CpBunkerSiloVehicleController
 CpBunkerSiloVehicleController = CpObject()
 CpBunkerSiloVehicleController.LAST_DIRECTIONS = {
 	LEFT = 0,
 	RIGHT = 1
 }
 CpBunkerSiloVehicleController.WALL_OFFSET = 0.5
-function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy)
+function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, drivingForwardsIntoSilo)
 	self.silo = silo
 	self.vehicle = vehicle
 	self.driveStrategy = driveStrategy
+	self.isInverted = not drivingForwardsIntoSilo
 	if CpMathUtil.isSameDirection(vehicle:getAIDirectionNode(), self.silo.startNode, 45) then 
-		self.isInverted = true
+		self.isInverted = drivingForwardsIntoSilo
 	end
 	self.lastLine = 1
 	self.currentTarget = nil
@@ -140,11 +142,11 @@ function CpBunkerSiloVehicleController:draw()
 end
 
 --- Is the end of the silo reached.
-function CpBunkerSiloVehicleController:isEndReached(node, margin)
+function CpBunkerSiloVehicleController:isEndReached(node, margin, directionReverse)
 	if self.drivingTarget then
 		local x, z = unpack(self.drivingTarget)
 		local _, _, dz = worldToLocal(node, x, 0, z)
 		margin = margin or 0
-		return dz < 0
+		return math.abs(dz) < 1
 	end
 end

@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 --- Drive strategy for bunker silos.
+---@class AIDriveStrategyBunkerSilo : AIDriveStrategyCourse
 AIDriveStrategyBunkerSilo = {}
 local AIDriveStrategyBunkerSilo_mt = Class(AIDriveStrategyBunkerSilo, AIDriveStrategyCourse)
 
@@ -30,7 +31,6 @@ AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
 AIDriveStrategyBunkerSilo.isStuckMs = 1000 *15
 AIDriveStrategyBunkerSilo.isStuckBackOffset = 5
 
----@class AIDriveStrategyBunkerSilo : AIDriveStrategyCourse
 function AIDriveStrategyBunkerSilo.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategyBunkerSilo_mt
@@ -62,10 +62,17 @@ end
 function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     self:info('Starting bunker silo mode.')
 
-    self.drivingForwardsIntoSilo = jobParameters.drivingForwardsIntoSilo:getValue()
+
+    if self.leveler then 
+        if AIUtil.isObjectAttachedOnTheBack(self.vehicle, self.leveler) then 
+            self.drivingForwardsIntoSilo = false
+        end
+    else 
+        self.drivingForwardsIntoSilo = jobParameters.drivingForwardsIntoSilo:getValue()
+    end
 
     --- Setup the silo controller, that handles the driving conditions and coordinations.
-	self.siloController = self.silo:setupTarget(self.vehicle, self)
+	self.siloController = self.silo:setupTarget(self.vehicle, self, self.drivingForwardsIntoSilo)
 
     self:startDrivingIntoSilo()    
 end
@@ -78,7 +85,7 @@ end
 --- Implement handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyBunkerSilo:initializeImplementControllers(vehicle)
-    self:addImplementController(vehicle, LevelerController, Leveler, {})
+    self.leveler = self:addImplementController(vehicle, LevelerController, Leveler, {})
     self:addImplementController(vehicle, BunkerSiloCompacterController, BunkerSiloCompacter, {})
 end
 
@@ -98,7 +105,7 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
 
     self.isStuckTimer:setFinishCallback(function ()
             self:debug("is stuck, trying to drive out of the silo.")
-            if self:isTemporaryOutOfSiloDrivingAllowed() then 
+            if self:isTemporaryOutOfSiloDrivingAllowed() and not self.frozen then 
                 self:startDrivingTemporaryOutOfSilo()
             end
         end)
@@ -127,6 +134,17 @@ end
 
 function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
     local moveForwards = not self.ppc:isReversing()
+    local gx, gz
+
+    if not moveForwards then
+        local maxSpeed
+        gx, gz, maxSpeed = self:getReverseDriveData()
+       -- self:setMaxSpeed(maxSpeed)
+    else
+        gx, _, gz = self.ppc:getGoalPointPosition()
+    end
+
+    local moveForwards = not self.ppc:isReversing()
     self:updateLowFrequencyImplementControllers()
     self:drive()
     AIDriveStrategyFieldWorkCourse.setAITarget(self)
@@ -144,7 +162,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
         self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
     end
     
-    return AIDriveStrategyBunkerSilo.superClass().getDriveData(self, dt, vX, vY, vZ)
+    return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
 function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
@@ -195,7 +213,7 @@ function AIDriveStrategyBunkerSilo:drive()
 
         local marker = self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or Markers.getFrontMarkerNode(self.vehicle)
 
-        if self.siloController:isEndReached(marker, self:getEndOffset()) then 
+        if self.siloController:isEndReached(marker, self:getEndOffset(), self:isDriveDirectionReverse()) then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
         end
