@@ -249,6 +249,7 @@ end
 function CpAIFieldWorker:getCanStartCpFieldWork()
     -- built in helper can't handle it, but we may be able to ...
     if AIUtil.hasChildVehicleWithSpecialization(self, Baler) or
+            AIUtil.hasChildVehicleWithSpecialization(self, StonePicker) or
             AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or
             AIUtil.hasImplementWithSpecialization(self, BaleLoader) or
             AIUtil.hasChildVehicleWithSpecialization(self, ForageWagon) or
