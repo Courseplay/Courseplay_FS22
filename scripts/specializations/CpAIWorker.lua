@@ -32,6 +32,9 @@ function CpAIWorker.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpFull")
     SpecializationUtil.registerEvent(vehicleType, "onCpFuelEmpty")
     SpecializationUtil.registerEvent(vehicleType, "onCpBroken")
+    --- internal AD Events.
+    SpecializationUtil.registerEvent(vehicleType, "onCpADStartedByPlayer")
+    SpecializationUtil.registerEvent(vehicleType, "onCpADRestarted")
 end
 
 function CpAIWorker.registerEventListeners(vehicleType)
@@ -42,6 +45,9 @@ function CpAIWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
+    --- Autodrive events
+    SpecializationUtil.registerEventListener(vehicleType, "onStopAutoDrive", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onStartAutoDrive", CpAIWorker)
 end
 
 function CpAIWorker.registerFunctions(vehicleType)
@@ -70,7 +76,6 @@ function CpAIWorker:onLoad(savegame)
     local spec = self.spec_cpAIWorker
     --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
     spec.motorDisabled = false
-
 end
 
 function CpAIWorker:onLoadFinished()
@@ -332,4 +337,36 @@ function CpAIWorker:stopFieldWorker(superFunc, ...)
     --- Reset the flag.
     self.spec_cpAIWorker.motorDisabled = false
     superFunc(self, ...)    
+end
+
+--- Auto drive stop
+function CpAIWorker:onStopAutoDrive(isPassingToCP, isStartingAIVE)
+    if g_server then 
+        CpUtil.infoVehicle(self, "isPassingToCP: %s, isStartingAIVE: %s", tostring(isPassingToCP), tostring(isStartingAIVE))
+        if self.ad.restartCP then 
+            --- Is restarted for refilling or unloading.
+            CpUtil.infoVehicle(self, "Was refilled/unloaded by AD.")
+        else 
+            --- Is sent to a field.
+            CpUtil.infoVehicle(self, "Was sent to field by AD.")
+        end
+    end
+end
+
+--- Auto drive start
+function CpAIWorker:onStartAutoDrive()
+    if g_server then 
+        if self.ad.restartCP then 
+            --- Use last job parameters.
+            --- Only the start point needs to be forced back!
+            SpecializationUtil.raiseEvent(self, "onCpADRestarted")
+        elseif g_currentMission.controlledVehicle == self then 
+            --- Apply hud variables
+            SpecializationUtil.raiseEvent(self, "onCpADStartedByPlayer")
+        end
+    elseif g_currentMission.controlledVehicle == self then 
+        --- Apply hud variables
+        SpecializationUtil.raiseEvent(self, "onCpADStartedByPlayer")
+        CpJobStartAtLastWpSyncRequestEvent.sendEvent(self)
+    end
 end

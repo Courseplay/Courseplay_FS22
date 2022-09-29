@@ -31,6 +31,9 @@ end
 function CpAIBaleFinder.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAIBaleFinder)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAIBaleFinder)
+
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpADStartedByPlayer', CpAIBaleFinder)
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpADRestarted', CpAIBaleFinder)
 end
 
 function CpAIBaleFinder.registerFunctions(vehicleType)
@@ -115,6 +118,9 @@ function CpAIBaleFinder:startCpAtFirstWp(superFunc)
     if not superFunc(self) then 
         if self:getCanStartCpBaleFinder() then 
             local spec = self.spec_cpAIBaleFinder
+            --- Applies the bale wrap type set in the hud, so ad can start with the correct type.
+            --- TODO: This should only be applied, if the driver was started for the first time by ad and not every time.
+            spec.cpJobStartAtLastWp:getCpJobParameters().baleWrapType:setValue(spec.cpJob:getCpJobParameters().baleWrapType:getValue())
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
             local success = spec.cpJob:validate(false)
@@ -133,9 +139,6 @@ function CpAIBaleFinder:startCpAtLastWp(superFunc)
     if not superFunc(self) then 
         if self:getCanStartCpBaleFinder() then 
             local spec = self.spec_cpAIBaleFinder
-            --- Applies the bale wrap type set in the hud, so ad can start with the correct type.
-            --- TODO: This should only be applied, if the driver was started for the first time by ad and not every time.
-            spec.cpJobStartAtLastWp:getCpJobParameters().baleWrapType:setValue(spec.cpJob:getCpJobParameters().baleWrapType:getValue())
             spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJobStartAtLastWp:setValues()
             local success = spec.cpJobStartAtLastWp:validate(false)
@@ -147,6 +150,16 @@ function CpAIBaleFinder:startCpAtLastWp(superFunc)
     else 
         return true
     end
+end
+
+function CpAIBaleFinder:onCpADStartedByPlayer()
+    local spec = self.spec_cpAIBaleFinder
+    --- Applies the bale wrap type set in the hud, so ad can start with the correct type.
+    spec.cpJobStartAtLastWp:getCpJobParameters().baleWrapType:setValue(spec.cpJob:getCpJobParameters().baleWrapType:getValue())
+end
+
+function CpAIBaleFinder:onCpADRestarted()
+    
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()

@@ -42,6 +42,9 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPostDetachImplement", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onCpCourseChange', CpAIFieldWorker)
+
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpADStartedByPlayer', CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpADRestarted', CpAIFieldWorker)
 end
 
 function CpAIFieldWorker.registerFunctions(vehicleType)
@@ -75,7 +78,7 @@ end
 --- Event listeners
 ---------------------------------------------------------------------------------------------------------------------------
 function CpAIFieldWorker:onLoad(savegame)
-	--- Register the spec: spec_CpAIFieldWorker
+	--- Register the spec: spec_cpAIFieldWorker
     self.spec_cpAIFieldWorker = self["spec_" .. CpAIFieldWorker.SPEC_NAME]
     local spec = self.spec_cpAIFieldWorker
     --- This job is for starting the driving with a key bind or the hud.
@@ -87,7 +90,6 @@ function CpAIFieldWorker:onLoad(savegame)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
-    
 end
 
 function CpAIFieldWorker:onLoadFinished(savegame)
@@ -217,9 +219,6 @@ function CpAIFieldWorker:startCpAtLastWp()
     self:updateAIFieldWorkerImplementData()
     if self:hasCpCourse() and self:getCanStartCpFieldWork() then
         spec.cpJobStartAtLastWp:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
-        --- Applies the lane offset set in the hud, so ad can start with the correct lane offset.
-        --- TODO: This should only be applied, if the driver was started for the first time by ad and not every time.
-        spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(self:getCpLaneOffsetSetting():getValue())
         spec.cpJobStartAtLastWp:setValues()
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "lane offset: %s", spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:getString())
         local success = spec.cpJobStartAtLastWp:validate(false)
@@ -229,6 +228,18 @@ function CpAIFieldWorker:startCpAtLastWp()
             return true
         end
     end
+end
+
+function CpAIFieldWorker:onCpADStartedByPlayer()
+    local spec = self.spec_cpAIFieldWorker
+    --- Applies the lane offset set in the hud, so ad can start with the correct one.
+    spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(self:getCpLaneOffsetSetting():getValue())
+    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(self:getCpStartingPointSetting():getValue())
+end
+
+function CpAIFieldWorker:onCpADRestarted()
+    local spec = self.spec_cpAIFieldWorker
+    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
 end
 
 --- Event listener called, when an implement is full.

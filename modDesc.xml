@@ -234,6 +234,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
 		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
+		<sourceFile filename="scripts/events/CpJobStartAtLastWpSyncEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
