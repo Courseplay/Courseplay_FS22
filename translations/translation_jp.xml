@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="フィールドポジション（開始地点）"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="開始地点:"/>
     <text name="CP_jobParameters_startAt_title" text="開始地点:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="野外作業の開始地点"/>
     <text name="CP_jobParameters_startAt_nearest" text="近くのウェイポイント"/>
     <text name="CP_jobParameters_startAt_first" text="最初のウェイポイント"/>
     <text name="CP_jobParameters_startAt_last" text="最後のウェイポイント"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="コンバインの荷下ろし/チョッパー"/>
     <text name="CP_jobParameters_startAt_bales" text="ベール回収、ベールラッピング"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="レーンオフセット:"/>
@@ -56,11 +59,19 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="コースプレイ:野外作業"/>
     <text name="CP_job_baleCollect" text="コースプレイ:ベール収集/ラップ"/>
     <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="野外作業コースを生成する"/>
     <text name="CP_ai_page_open_course_generator" text="コースプレイ：コース生成を開く/閉じる"/>
     <!---->
@@ -79,7 +90,6 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="コンバイン（収穫機）設定"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="シーダー（播種）設定"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="共通設定"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="走行速度設定"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="デバッグ設定"/>
     <text name="CP_vehicle_setting_showCourse_title" text="コース表示"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="現在車両に設定されているコースを表示します"/>
@@ -121,6 +131,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="複数同時作業時、ラインに対して対称的にレーンの切り替えをします"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="隊列走行間隔"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="隊列走行及び複数同時作業時の車間距離（40～400m）"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="車両デバッグ"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="車両のデバッグを有効/無効にします"/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="野外作業"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="野外作業の走行速度を設定します（5～50km/h）"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="フィールド"/>
@@ -129,8 +150,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="旋回の走行速度を設定します（2～25km/h）"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="リバース"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="後退の走行速度を設定します（2～25km/h)"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="車両デバッグ"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="車両のデバッグを有効/無効にします"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +359,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Out of money"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Waiting for rain to finish"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Left the course, stopped"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Wrong bale type"/>
     <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>

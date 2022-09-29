@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Scaricatore lontano dal campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Posizione del campo:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Iniziare da:"/>
     <text name="CP_jobParameters_startAt_title" text="Iniziare da:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Da dove iniziare il lavoro sul campo"/>
     <text name="CP_jobParameters_startAt_nearest" text="Dal punto più vicino"/>
     <text name="CP_jobParameters_startAt_first" text="Dal primo punto - inizio"/>
     <text name="CP_jobParameters_startAt_last" text="Dall'ultimo punto lavorato"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="scarico mietitrebbia/trincia"/>
     <text name="CP_jobParameters_startAt_bales" text="raccogliere/avvolgere balle"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Calibrazione corsia:"/>
@@ -56,11 +59,19 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="Courseplay"/>
     <text name="CP_job_baleCollect" text="CP: Raccogli/Avvolgi balle"/>
     <text name="CP_job_combineUnload" text="CP: scarica mietitrebbia"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="[CP] Genera percorso di lavoro"/>
     <text name="CP_ai_page_open_course_generator" text="[CP] Apri/Chiudi menù"/>
     <!---->
@@ -79,7 +90,6 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Mietritrebbia"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Seminatrici"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Multiaccessori"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Velocità"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Debug"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Visualizza porcorso"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mostra il percorso attuale del veicolo"/>
@@ -121,6 +131,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Cambio di corsia simmetrico"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Distanza convoglio"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distanza tra i veicoli. Intervallo: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Debug veicolo"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Abilita/disabilita il debug per questo veicolo"/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Lavoro"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Velocità massima durante il lavoro sul campo. Intervallo: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Guida"/>
@@ -129,8 +150,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Velocità massima durante le manovre di svolta. Intervallo: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Retromarcia"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Velocità massima in retromarcia. Intervallo: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Debug veicolo"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Abilita/disabilita il debug per questo veicolo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +359,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_drivingToSelfUnload" text="Guida al rimorchio"/>
     <text name="CP_infoTexts_outOfMoney" text="Senza soldi"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="In attesa che finisca la pioggia"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nessun percorso trovato"/>

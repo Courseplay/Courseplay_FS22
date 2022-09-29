@@ -21,10 +21,16 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Benne ou transbordeur trop éloigné(e) du champ."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
+	<text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Point de départ dans le champ"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Démarrage"/>
     <text name="CP_jobParameters_startAt_title" text="Démarrage"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Point de départ du travail dans le champ"/>
@@ -32,6 +38,7 @@
     <text name="CP_jobParameters_startAt_first" text="Premier point"/>
     <text name="CP_jobParameters_startAt_last" text="Dernier point"/>
     <text name="CP_jobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
+	<text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
     <text name="CP_jobParameters_laneOffset_title" text="Position dans la rangée"/>
@@ -56,11 +63,20 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Utiliser un ouvrier IA pour le déchargement:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Station de déchargement:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
     <text name="CP_job_combineUnload" text="CP:Déchargement récolteuse"/>
+	<text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
@@ -80,7 +96,7 @@
     <text name="CP_vehicle_setting_subTitle_seeder" text="Paramètres semoir"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Paramètres outils multiples"/>
     <text name="CP_vehicle_setting_subTitle_speed" text="Vitesses"/>
-    <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de debogage"/>
+    <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de deboggage"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Afficher la course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Affiche la course actuelle du véhicule."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Points départ/arrivé uniquement"/>
@@ -121,6 +137,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Changement de ligne symétrique."/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Distance entre les véhicules"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Deboggage du vehicule"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le deboggage du vehicule."/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Travail"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Vitesse max pendant le travail dans le champ. Valeurs: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Déplacement"/>
@@ -129,8 +156,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Vitesse max lors des manoeuvres. Valeurs: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Marche arrière"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Vitesse max lors des marches arrières. Valeurs: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="debogage du vehicule"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le debogage du vehicule."/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +365,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_drivingToSelfUnload" text="en route vers la benne"/>
     <text name="CP_infoTexts_outOfMoney" text="Plus d'argent disponible"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>

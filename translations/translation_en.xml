@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Unloader too far away from the field."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Starting position too far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Field position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Start at:"/>
     <text name="CP_jobParameters_startAt_title" text="Start at:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Where to start field work"/>
     <text name="CP_jobParameters_startAt_nearest" text="nearest waypoint"/>
     <text name="CP_jobParameters_startAt_first" text="first waypoint"/>
     <text name="CP_jobParameters_startAt_last" text="last waypoint"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="unload combine"/>
     <text name="CP_jobParameters_startAt_bales" text="collecting/wrapping bales"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Lane offset:"/>
@@ -56,11 +59,19 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Fieldwork"/>
     <text name="CP_job_baleCollect" text="CP: Bale collect/wrap"/>
     <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP: Generate fieldwork course."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Open/close course generator."/>
     <!---->
@@ -79,7 +90,6 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Combine settings"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Seeder settings"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Multitool settings"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Debug settings"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Show course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Show the current course of the vehicle"/>
@@ -121,6 +131,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetric lane change"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Convoy Distance"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance between vehicles. Value: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Vehicle debug"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Enables/disables debug for this vehicle."/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Fieldwork"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximum speed while working on the field. Value: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Field"/>
@@ -129,8 +150,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximum speed during turn maneuvers. Value: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Reverse"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximum speed while reversing. Value: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Vehicle debug"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Enables/disables debug for this vehicle."/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +359,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="Out of money"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Waiting for rain to finish"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Left the course, stopped"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Wrong bale type"/>
     <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
