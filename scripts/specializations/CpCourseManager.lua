@@ -101,7 +101,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCpLastRememberedWaypointIx', CpCourseManager.getCpLastRememberedWaypointIx)
 
     SpecializationUtil.registerFunction(vehicleType, 'getCpAssignedCoursesID', CpCourseManager.getCpAssignedCoursesID)
-    SpecializationUtil.registerFunction(vehicleType, 'setCpAssignedCoursesID', CpCourseManager.setCpAssignedCourseID)
+    SpecializationUtil.registerFunction(vehicleType, 'setCpAssignedCoursesID', CpCourseManager.setCpAssignedCoursesID)
 
     SpecializationUtil.registerFunction(vehicleType, 'setCpCoursesFromNetworkEvent', CpCourseManager.setCoursesFromNetworkEvent)
 end
@@ -177,7 +177,7 @@ function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
     end
 end
 
-function CpCourseManager:setCpAssignedCourseID(id)
+function CpCourseManager:setCpAssignedCoursesID(id)
     local spec = self.spec_cpCourseManager 
     spec.assignedCoursesID = id
 end
@@ -219,6 +219,7 @@ function CpCourseManager:resetCourses()
     local spec = self.spec_cpCourseManager
     spec.offsetFieldWorkCourse = nil
     spec.courses = {}
+    spec.assignedCoursesID = nil
     SpecializationUtil.raiseEvent(self,"onCpCourseChange")
 end
 
