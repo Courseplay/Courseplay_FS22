@@ -66,6 +66,10 @@
 		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 
+	<SettingSubTitle title="bunkerSilo" isVisible="areBunkerSiloSettingsVisible">
+		<Setting classType="AIParameterSettingList" name="bunkerSiloWorkWidth" min="3" max="50" incremental="0.1" unit="2" setDefault="setAutomaticBunkerSiloWorkWidth" onChangeCallback="cpShowWorkWidth"/>
+	</SettingSubTitle>
+
 	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
 		<!--Stop for unload-->
 		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
@@ -113,6 +117,8 @@
 		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" default="8" unit="1" isExpertModeOnly="true"/>
 		<!--Reverse Speed-->
 		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1" isExpertModeOnly="true"/>
+		<!--Bunker silo speed-->
+		<Setting classType="AIParameterSpeedSetting" name="bunkerSiloSpeed" min="2" max="25" default="15" unit="1" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="debug">

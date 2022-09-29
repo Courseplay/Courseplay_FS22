@@ -84,12 +84,15 @@ function CpAIFieldWorker:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the hud.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJob:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_NEAREST_POINT)
-    spec.cpJob:setVehicle(self)
+    spec.cpJob:setVehicle(self, true)
     --- Theses jobs are used for external mod, for example AutoDrive.
     spec.cpJobStartAtFirstWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
+    spec.cpJobStartAtFirstWp:setVehicle(self, true)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
+    spec.cpJobStartAtLastWp:setVehicle(self, true)
+    
 end
 
 function CpAIFieldWorker:onLoadFinished(savegame)
@@ -258,6 +261,7 @@ function CpAIFieldWorker:onCpFinished()
 end
 
 function CpAIFieldWorker:getCanStartCpFieldWork()
+    self:updateAIFieldWorkerImplementData()
     -- built in helper can't handle it, but we may be able to ...
     if AIUtil.hasChildVehicleWithSpecialization(self, Baler) or
             AIUtil.hasChildVehicleWithSpecialization(self, StonePicker) or

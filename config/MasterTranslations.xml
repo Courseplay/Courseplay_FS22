@@ -63,11 +63,19 @@
 			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
 		</Translation>
+		<Translation name="CP_error_no_bunkerSilo_found">
+			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
+			<Text language="en"><![CDATA[No silo found.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_fieldPosition_title">
 			<Text language="de"><![CDATA[Feldposition:]]></Text>
 			<Text language="en"><![CDATA[Field position:]]></Text>
+		</Translation>
+		<Translation name="CP_jobParameters_bunkerSiloPosition_title">
+			<Text language="de"><![CDATA[Silo Position:]]></Text>
+			<Text language="en"><![CDATA[Silo position:]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_subTitle_startAt">
 			<Text language="de"><![CDATA[Start am:]]></Text>
@@ -92,6 +100,10 @@
 		<Translation name="CP_jobParameters_startAt_last">
 			<Text language="de"><![CDATA[Letzter Wegpunkt]]></Text>
 			<Text language="en"><![CDATA[last waypoint]]></Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_bunkerSilo">
+			<Text language="de"><![CDATA[Bunker silo mode]]></Text>
+			<Text language="en"><![CDATA[Bunker silo mode]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload">
 			<Text language="de"><![CDATA[Entlade Drescher]]></Text>
@@ -169,7 +181,24 @@
 			<Text language="de"><![CDATA[Abladestation:]]></Text>
 			<Text language="en"><![CDATA[Unloading station:]]></Text>
 		</Translation>
-
+	</Category>
+	<Category name="AI bunker silo worker job parameters">
+		<Translation name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo">
+			<Text language="de"><![CDATA[Fahrtrichtung in den Silo:]]></Text>
+			<Text language="en"><![CDATA[Direction into the silo:]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title">
+			<Text language="de"><![CDATA[Fahrtrichtung in den Silo:]]></Text>
+			<Text language="en"><![CDATA[Direction into the silo:]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards">
+			<Text language="de"><![CDATA[Vorwärts]]></Text>
+			<Text language="en"><![CDATA[Forwards]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse">
+			<Text language="de"><![CDATA[Rückwärts]]></Text>
+			<Text language="en"><![CDATA[Reverse]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
@@ -183,6 +212,10 @@
 		<Translation name="CP_job_combineUnload">
 			<Text language="de"><![CDATA[CP: Entlade Drescher]]></Text>
 			<Text language="en"><![CDATA[CP: Unload Combine]]></Text>
+		</Translation>
+		<Translation name="CP_job_bunkerSilo">
+			<Text language="de"><![CDATA[CP: Siloarbeit]]></Text>
+			<Text language="en"><![CDATA[CP: Silo work]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_generate_course">
 			<Text language="de"><![CDATA[CP: Generiere Feldkurs.]]></Text>
@@ -235,10 +268,6 @@
 		<Translation name="CP_vehicle_setting_subTitle_multitool">
 			<Text language="de"><![CDATA[Multitooleinstellungen]]></Text>
 			<Text language="en"><![CDATA[Multitool settings]]></Text>
-		</Translation>
-		<Translation name="CP_vehicle_setting_subTitle_speed">
-			<Text language="de"><![CDATA[Geschwindigkeiten]]></Text>
-			<Text language="en"><![CDATA[Speeds]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_subTitle_debug">
 			<Text language="de"><![CDATA[Debugeinstellungen]]></Text>
@@ -404,6 +433,30 @@
 			<Text language="de"><![CDATA[Entfernung zwischen den Fahrzeugen. Wert: 40 - 400]]></Text>
 			<Text language="en"><![CDATA[Distance between vehicles. Value: 40 - 400]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_debugActive_title">
+			<Text language="de"><![CDATA[Fahrzeug debug]]></Text>
+			<Text language="en"><![CDATA[Vehicle debug]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_debugActive_tooltip">
+			<Text language="de"><![CDATA[Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge.]]></Text>
+			<Text language="en"><![CDATA[Enables/disables debug for this vehicle.]]></Text>
+		</Translation>
+	</Category>
+	<Category name="Vehicle bunker silo settings">
+		<Translation name="CP_vehicle_setting_subTitle_bunkerSilo">
+			<Text language="de"><![CDATA[Siloarbeiter Einstellungen]]></Text>
+			<Text language="en"><![CDATA[Siloworker settings]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_bunkerSiloWorkWidth_title">
+			<Text language="de"><![CDATA[Arbeitsbreite]]></Text>
+			<Text language="en"><![CDATA[Work width]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip">
+			<Text language="de"><![CDATA[Arbeitsbreite. Wert: 0 - 50]]></Text>
+			<Text language="en"><![CDATA[Work width. Value: 0 - 50]]></Text>
+		</Translation>
+	</Category> 
+	<Category name="Vehicle settings speed">
 		<Translation name="CP_vehicle_setting_fieldWorkSpeed_title">
 			<Text language="de"><![CDATA[Feldarbeit]]></Text>
 			<Text language="en"><![CDATA[Fieldwork]]></Text>
@@ -436,13 +489,13 @@
 			<Text language="de"><![CDATA[Maximale Geschwindigkeit beim Rückwärtsfahren. Wert: 2 - 25]]></Text>
 			<Text language="en"><![CDATA[Maximum speed while reversing. Value: 2 - 25]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_setting_debugActive_title">
-			<Text language="de"><![CDATA[Fahrzeug-Debug]]></Text>
-			<Text language="en"><![CDATA[Vehicle debug]]></Text>
+		<Translation name="CP_vehicle_setting_bunkerSiloSpeed_title">
+			<Text language="de"><![CDATA[Silo]]></Text>
+			<Text language="en"><![CDATA[Silo]]></Text>
 		</Translation>
-		<Translation name="CP_vehicle_setting_debugActive_tooltip">
-			<Text language="de"><![CDATA[Debuginformationen für das Fahrzeug ein- und ausschalten. Visuell und Logeinträge.]]></Text>
-			<Text language="en"><![CDATA[Enables/disables debug for this vehicle.]]></Text>
+		<Translation name="CP_vehicle_setting_bunkerSiloSpeed_tooltip">
+			<Text language="de"><![CDATA[Maximale Geschwindigkeit im Silo. Wert: 2 - 25]]></Text>
+			<Text language="en"><![CDATA[Maximum speed while driving in a silo. Value: 2 - 25]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings sowing">
@@ -1244,6 +1297,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_waitForRainToFinish">
 			<Text language="de"><![CDATA[Warte auf besseres Wetter]]></Text>
 			<Text language="en"><![CDATA[Waiting for rain to finish]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_waitForUnloader">
+			<Text language="de"><![CDATA[Warte auf Abfahrer]]></Text>
+			<Text language="en"><![CDATA[Waiting on unloader]]></Text>
 		</Translation>
 		<Translation name="CP_infoTexts_errorStopped">
 			<Text language="de"><![CDATA[Hat den Kurs verlassen, gestoppt]]></Text>

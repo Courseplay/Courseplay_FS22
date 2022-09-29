@@ -189,11 +189,13 @@ FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.
 
 function Courseplay:update(dt)
 	g_devHelper:update()
+	g_bunkerSiloManager:update(dt)
 end
 
 function Courseplay:draw()
 	if not g_gui:getIsGuiVisible() then
 		g_vineScanner:draw()
+		g_bunkerSiloManager:draw()
 	end
 	g_devHelper:draw()
 	CpDebug:draw()
@@ -335,6 +337,7 @@ function Courseplay.register(typeManager)
 		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
 		CpAICombineUnloader.register(typeManager, typeName, typeEntry.specializations)
+		CpAIBunkerSiloWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpGamePadHud.register(typeManager, typeName,typeEntry.specializations)
 		CpHud.register(typeManager, typeName, typeEntry.specializations)
 		CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)

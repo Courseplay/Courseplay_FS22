@@ -65,6 +65,20 @@ function ProximityController:onBlockingVehicle(vehicle, isBack)
     end
 end
 
+--- Registers a function to ignore a object or vehicle.
+function ProximityController:registerIgnoreObjectCallback(object, callback)
+    self.ignoreObjectCallback = callback
+    self.ignoreObjectCallbackObject = object
+end
+
+function ProximityController:ignoreObject(object, vehicle)
+    if self.ignoreObjectCallback then
+        return self.ignoreObjectCallback(self.ignoreObjectCallbackObject, object, vehicle)
+    else
+        return true
+    end
+end
+
 ---@return number, table distance of vehicle and vehicle if there is one in range
 function ProximityController:checkBlockingVehicleFront()
     return self.forwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
@@ -116,8 +130,12 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
     local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
     local pack = moveForwards and self.forwardLookingProximitySensorPack or self.backwardLookingProximitySensorPack
     if pack then
-        d, vehicle, _, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
+        d, vehicle, object, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
         range = pack:getRange()
+    end
+    if self:ignoreObject(object, vehicle) then 
+        self:setState(self.states.NO_OBSTACLE, 'No obstacle')
+        return nil, nil, nil, maxSpeed
     end
     local normalizedD = d / (range - self.stopThreshold:get())
     if d < self.stopThreshold:get() then
@@ -149,4 +167,8 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         self.blockingVehicle:reset()
     end
     return nil, nil, nil, maxSpeed
+end
+
+function ProximityController:isStopped()
+    return self.state == self.states.STOP   
 end

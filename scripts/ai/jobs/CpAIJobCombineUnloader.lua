@@ -63,17 +63,9 @@ end
 function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 	CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 
-	local x, z
-
-	if vehicle.getLastJob ~= nil then
-		local lastJob = vehicle:getLastJob()
-		if lastJob ~= nil and lastJob.cpJobParameters then
-			x, z = lastJob.fieldPositionParameter:getPosition()
-		end
-	end
 	self:copyFrom(vehicle:getCpCombineUnloaderJob())
 
-	x, z = self.fieldPositionParameter:getPosition()
+	local x, z = self.fieldPositionParameter:getPosition()
 
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then

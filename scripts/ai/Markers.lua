@@ -96,3 +96,6 @@ function Markers.getBackMarkerNode(vehicle)
     return g_vehicleMarkers[vehicle].backMarkerNode, g_vehicleMarkers[vehicle].backMarkerOffset
 end
 
+function Markers.getMarkerNodes(vehicle)
+    return Markers.getFrontMarkerNode(vehicle), Markers.getBackMarkerNode(vehicle)
+end

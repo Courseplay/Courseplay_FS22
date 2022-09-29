@@ -515,7 +515,7 @@ function AIDriveStrategyFindBales:isStoppingAtWaitPointAllowed()
 end
 
 function AIDriveStrategyFindBales:update(dt)
-    AIDriveStrategyFindBales:superClass().update(self)
+    AIDriveStrategyFindBales:superClass().update(self, dt)
     self:updateImplementControllers(dt)
 
     if self:areBaleLoadersFull() and self:isReadyToFoldImplements() then

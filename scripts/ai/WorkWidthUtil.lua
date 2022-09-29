@@ -70,6 +70,11 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         end
     end
 
+    --- Work width levelers
+    if not left then 
+        left, right = WorkWidthUtil.getShieldWorkWidth(object)
+    end
+
     if not left then
         -- no manual config, check AI markers
         _, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
@@ -244,10 +249,10 @@ end
 
 ---@param object table
 function WorkWidthUtil.getShieldWorkWidth(object)
-    if object.spec_leveler then
-        local width = object.spec_leveler.nodes[1].maxDropWidth * 2
+    if object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] then
+        local width = object.spec_leveler.nodes[1].maxDropWidth
         WorkWidthUtil.debug(object, 'is a shield with work width: %.1f', width)
-        return width
+        return width / 2, -width / 2
     end
 end
 

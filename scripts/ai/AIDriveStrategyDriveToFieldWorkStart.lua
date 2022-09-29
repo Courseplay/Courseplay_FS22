@@ -90,7 +90,7 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
 end
 
 function AIDriveStrategyDriveToFieldWorkStart:update(dt)
-    AIDriveStrategyDriveToFieldWorkStart:superClass().update(self)
+    AIDriveStrategyDriveToFieldWorkStart:superClass().update(self, dt)
     self:updateImplementControllers(dt)
     if self.ppc:getCourse():isTemporary() and CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
         self.ppc:getCourse():draw()

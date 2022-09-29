@@ -222,7 +222,7 @@ function ProximitySensorPack:adjustForwardPosition()
     -- are we looking forward
     local forward = 1
     -- if a sensor about in the middle is pointing back, we are looking back
-    if math.abs(self.directionsDeg[math.floor(#self.directionsDeg / 2)]) > 90 then
+    if math.abs(self.directionsDeg[math.max(math.floor(#self.directionsDeg / 2),1)]) > 90 then
         forward = -1
     end
     local x, y, z = getTranslation(self.node)

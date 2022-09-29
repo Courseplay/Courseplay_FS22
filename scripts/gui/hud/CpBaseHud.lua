@@ -151,20 +151,14 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, self.moveToPosition)
 
-    self.fieldworkLayout = CpFieldWorkHudPageElement.new(nil, self.baseHud)
-    self.fieldworkLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
-    self.fieldworkLayout:setDimension(self.width, self.height)
-    self.fieldworkLayout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
+    self.fieldworkLayout = self:addHudPage(CpFieldWorkHudPageElement, vehicle)
 
-    self.baleFinderLayout = CpBaleFinderHudPageElement.new(nil, self.baseHud)
-    self.baleFinderLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
-    self.baleFinderLayout:setDimension(self.width, self.height)
-    self.baleFinderLayout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
+    self.baleFinderLayout = self:addHudPage(CpBaleFinderHudPageElement, vehicle)
 
-    self.combineUnloaderLayout = CpCombineUnloaderHudPageElement.new(nil, self.baseHud)
-    self.combineUnloaderLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
-    self.combineUnloaderLayout:setDimension(self.width, self.height)
-    self.combineUnloaderLayout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
+    self.combineUnloaderLayout = self:addHudPage(CpCombineUnloaderHudPageElement, vehicle)
+   
+    self.bunkerSiloWorkerLayout = self:addHudPage(CpBunkerSiloWorkerHudPageElement, vehicle)
+
     --------------------------------------
     --- Header
     --------------------------------------
@@ -285,6 +279,14 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setScale(self.uiScale, self.uiScale)
 end
 
+function CpBaseHud:addHudPage(class, vehicle)
+    local layout = class.new(nil, self.baseHud)
+    layout:setPosition(CpBaseHud.x, CpBaseHud.y)
+    layout:setDimension(self.width, self.height)
+    layout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
+    return layout
+end
+
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
     local x, y = unpack(self.lines[line].left)
     local element = CpTextHudElement.new(parent , x , y, textSize)
@@ -396,6 +398,8 @@ function CpBaseHud:getActiveHudPage(vehicle)
         return self.combineUnloaderLayout
     elseif vehicle:getCanStartCpBaleFinder() and not vehicle:hasCpCourse() then
         return self.baleFinderLayout
+    elseif vehicle:getCanStartCpBunkerSiloWorker() and vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO then
+        return self.bunkerSiloWorkerLayout
     else
         return self.fieldworkLayout
     end
@@ -410,14 +414,6 @@ end
 function CpBaseHud:updateContent(vehicle, status)
     self.vehicleNameBtn:setTextDetails(vehicle:getName())
 
-    if self.vehicle:getCanStartCpBaleFinder() or vehicle:getCanStartCpCombineUnloader() then 
-        self.startingPointBtn:setDisabled(true)
-        self.startingPointBtn:setTextDetails(vehicle:getCpStartText())
-    else 
-        self.startingPointBtn:setDisabled(false)
-        self.startingPointBtn:setTextDetails(vehicle:getCpStartingPointSetting():getString())
-    end
-   
     if status:getIsActive() then
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
@@ -439,11 +435,22 @@ function CpBaseHud:updateContent(vehicle, status)
     self.baleFinderLayout:setDisabled(true)
     self.combineUnloaderLayout:setVisible(false)
     self.combineUnloaderLayout:setDisabled(true)
+    self.bunkerSiloWorkerLayout:setVisible(false)
+    self.bunkerSiloWorkerLayout:setDisabled(true)
 
     local activeLayout = self:getActiveHudPage(vehicle)
     activeLayout:setVisible(true)
     activeLayout:setDisabled(false)
     activeLayout:updateContent(vehicle, status)
+
+    self.startingPointBtn:setDisabled(true)
+    if activeLayout.isStartingPointBtnDisabled then 
+        self.startingPointBtn:setDisabled(activeLayout:isStartingPointBtnDisabled(vehicle))
+    end
+    self.startingPointBtn:setTextDetails(vehicle:getCpStartText())
+    if activeLayout.getStartingPointBtnText then 
+        self.startingPointBtn:setTextDetails(activeLayout:getStartingPointBtnText(vehicle))
+    end
 end
 
 function CpBaseHud:delete()

@@ -11,7 +11,6 @@ local AIJobCp_mt = Class(CpAIJob, AIJob)
 
 function CpAIJob.new(isServer, customMt)
 	local self = AIJob.new(isServer, customMt or AIJobCp_mt)
-	
 	self.isDirectStart = false
 	self:setupTasks(isServer)
 	
@@ -51,8 +50,8 @@ function CpAIJob:setupJobParameters()
 end
 
 --- Optional to create custom cp job parameters.
-function CpAIJob:setupCpJobParameters(configFile)
-	self.cpJobParameters = CpJobParameters(self, configFile)
+function CpAIJob:setupCpJobParameters()
+	self.cpJobParameters = CpJobParameters(self)
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	self.cpJobParameters:validateSettings()
 
@@ -285,8 +284,16 @@ function CpAIJob:getVehicle()
 end
 
 --- Makes sure that the keybinding/hud job has the vehicle.
-function CpAIJob:setVehicle(v)
+function CpAIJob:setVehicle(v, isHudJob)
 	self.vehicle = v
+	self.isHudJob = isHudJob
+	if self.cpJobParameters then 
+		self.cpJobParameters:validateSettings()
+	end
+end
+
+function CpAIJob:getIsHudJob()
+	return self.isHudJob
 end
 
 function CpAIJob:showNotification(aiMessage)
@@ -300,6 +307,10 @@ function CpAIJob:showNotification(aiMessage)
 	if releaseMessage and vehicle:getIsEntered() then 
 		g_currentMission:showBlinkingWarning(releaseMessage:getText(), 5000)
 	end
+end
+
+function CpAIJob:getCanGenerateFieldWorkCourse()
+	return false
 end
 
 --- Ugly hack to fix a mp problem from giants, where the job class can not be found.
@@ -319,6 +330,7 @@ function CpAIJob.registerJob(AIJobTypeManager)
 	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.translations.jobName, CpAIJobFieldWork)
 	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.translations.jobName, CpAIJobBaleFinder)
 	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.translations.jobName, CpAIJobCombineUnloader)
+	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.translations.jobName, CpAIJobBunkerSilo)
 end
 
 
@@ -338,6 +350,11 @@ if g_currentMission then
 	if myJobTypeIndex then
 		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
 		myJobType.classObject = CpAIJobBaleFinder
+	end
+	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(CpAIJobBunkerSilo.name)
+	if myJobTypeIndex then
+		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
+		myJobType.classObject = CpAIJobBunkerSilo
 	end
 end
 
