@@ -167,11 +167,12 @@ function CpAIBunkerSiloWorker:startCpAtLastWp(superFunc, ...)
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(silo, jobParameters)
+function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(silo, jobParameters, parkPosition)
     local spec = self.spec_cpAIBunkerSiloWorker
     if self.isServer then 
         spec.bunkerSiloStrategy = AIDriveStrategyBunkerSilo.new()
         spec.bunkerSiloStrategy:setSilo(silo)
+        spec.bunkerSiloStrategy:setParkPosition(parkPosition)
         -- this also starts the strategy
         spec.bunkerSiloStrategy:setAIVehicle(self, jobParameters)
     end

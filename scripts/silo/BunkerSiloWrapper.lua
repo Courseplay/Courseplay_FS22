@@ -175,6 +175,11 @@ function CpBunkerSilo:isPointInSilo(x, z)
 	return self:isPointInArea(x, z, self.area)
 end
 
+function CpBunkerSilo:isVehicleInSilo(vehicle)
+	local x, _, z = getWorldTranslation(vehicle.rootNode)
+	return self:isPointInArea(x, z, self.area)
+end
+
 function CpBunkerSilo:isPointInArea(x, z, area)
 	return CpMathUtil.isPointInPolygon(area, x, z)	
 end
