@@ -34,7 +34,7 @@ function CpJobParameters:init(job)
 end
 
 function CpJobParameters.registerXmlSchema(schema, baseKey)
-    CpSettingsUtil.registerXmlSchema(schema, baseKey..CpJobParameters.xmlKey.."(?)")
+    CpSettingsUtil.registerXmlSchema(schema, baseKey .. CpJobParameters.xmlKey.."(?)")
 end
 
 function CpJobParameters.getSettings(vehicle)

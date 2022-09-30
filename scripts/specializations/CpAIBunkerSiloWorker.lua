@@ -9,10 +9,12 @@ CpAIBunkerSiloWorker.startText = g_i18n:getText("CP_jobParameters_startAt_bunker
 CpAIBunkerSiloWorker.MOD_NAME = g_currentModName or modName
 CpAIBunkerSiloWorker.NAME = ".cpAIBunkerSiloWorker"
 CpAIBunkerSiloWorker.SPEC_NAME = CpAIBunkerSiloWorker.MOD_NAME .. CpAIBunkerSiloWorker.NAME
-CpAIBunkerSiloWorker.KEY = "."..CpAIBunkerSiloWorker.MOD_NAME..CpAIBunkerSiloWorker.NAME .. "."
+CpAIBunkerSiloWorker.KEY = "."..CpAIBunkerSiloWorker.MOD_NAME..CpAIBunkerSiloWorker.NAME
 
 function CpAIBunkerSiloWorker.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
+    local key = "vehicles.vehicle(?)" .. CpAIBunkerSiloWorker.KEY
+    CpJobParameters.registerXmlSchema(schema, key..".cpJob")
 end
 
 function CpAIBunkerSiloWorker.prerequisitesPresent(specializations)

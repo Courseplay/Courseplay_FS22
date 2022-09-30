@@ -86,6 +86,11 @@ function CpAIJobBunkerSilo:validateBunkerSiloSetup(isValid, errorMessage)
 	end
 	]]--
 	self.bunkerSiloTask:setSilo(self.bunkerSilo)
+	
+	local x, z = self.positionAngleParameter:getPosition()
+	local angle = self.positionAngleParameter:getAngle()
+	local dirX, dirZ = self.positionAngleParameter:getDirection()
+	self.bunkerSiloTask:setParkPosition(x, z, angle, dirX, dirZ)
 
 	if not self.hasValidPosition then 
 		return false, g_i18n:getText("CP_error_no_bunkerSilo_found")
@@ -147,4 +152,16 @@ function CpAIJobBunkerSilo:copyFrom(job)
 	if angle ~= nil then
 		self.positionAngleParameter:setAngle(angle)
 	end
+end
+
+function CpAIJobBunkerSilo:saveToXMLFile(xmlFile, key, usedModNames)
+	CpAIJobBunkerSilo:superClass().saveToXMLFile(self, xmlFile, key)
+	self.cpJobParameters:saveToXMLFile(xmlFile, key)
+
+	return true
+end
+
+function CpAIJobBunkerSilo:loadFromXMLFile(xmlFile, key)
+	CpAIJobBunkerSilo:superClass().loadFromXMLFile(self, xmlFile, key)
+	self.cpJobParameters:loadFromXMLFile(xmlFile, key)
 end

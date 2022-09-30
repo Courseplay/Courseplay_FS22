@@ -51,6 +51,8 @@ function AIDriveStrategyBunkerSilo.new(customMt)
     self.siloController = nil
     self.drivingForwardsIntoSilo = true
 
+    
+
     self.isStuckTimer = Timer.new(self.isStuckMs)
     return self
 end
@@ -58,6 +60,12 @@ end
 function AIDriveStrategyBunkerSilo:delete()
     self.silo:resetTarget(self.vehicle)
     self.isStuckTimer:delete()
+    if self.pathfinderNode then
+       self.pathfinderNode:destroy()
+    end
+    if self.parkNode then 
+        self.parkNode:destroy()
+    end
     AIDriveStrategyBunkerSilo:superClass().delete(self)
 end
 
@@ -76,12 +84,12 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     --- Setup the silo controller, that handles the driving conditions and coordinations.
 	self.siloController = self.silo:setupTarget(self.vehicle, self, self.drivingForwardsIntoSilo)
 
-    if self.silo:isVehicleInSilo(self.vehicle) or not self.drivingForwardsIntoSilo then 
+    if self.silo:isVehicleInSilo(self.vehicle) then 
         self:startDrivingIntoSilo()
     else 
         --- TODO: Figure out how to enable reverse driven goal for pathfinder?
         local course, firstWpIx = self:getDriveIntoSiloCourse()
-        self:startCourseWithPathfinding( course, firstWpIx)
+        self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
     end
 end
 
@@ -126,6 +134,9 @@ end
 
 function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition)
     self.parkPosition = parkPosition    
+    if self.parkPosition.x ~= nil and self.parkPosition.z ~= nil and self.parkPosition.angle ~= nil then
+        self.parkNode = CpUtil.createNode("parkNode", self.parkPosition.x, self.parkPosition.z, self.parkPosition.angle)
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -135,8 +146,11 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
     if course:isLastWaypointIx(ix) then
         if self.state == self.states.DRIVING_INTO_SILO then 
             self:startDrivingOutOfSilo()
-        elseif self.state == self.states.DRIVING_OUT_OF_SILO or self.state == self.states.DRIVING_TO_SILO then
+        elseif self.state == self.states.DRIVING_OUT_OF_SILO then 
             self:startDrivingIntoSilo()
+        elseif self.state == self.states.DRIVING_TO_SILO then
+            local course = self:getRememberedCourseAndIx()
+            self:startDrivingIntoSilo(course)
         elseif self.state == self.states.DRIVING_TEMPORARY_OUT_OF_SILO then
             self:startDrivingIntoSilo(self.lastCourse)
             self.lastCourse = nil
@@ -216,6 +230,9 @@ function AIDriveStrategyBunkerSilo:update(dt)
         local frontMarkerNode, backMarkerNode = Markers.getMarkerNodes(self.vehicle)
         DebugUtil.drawDebugNode(frontMarkerNode, "FrontMarker", false, 1)
         DebugUtil.drawDebugNode(backMarkerNode, "BackMarker", false, 1)
+        if self.parkNode then 
+            DebugUtil.drawDebugNode(self.parkNode, "ParkNode", true, 3)
+        end
     end
 end
 
@@ -367,14 +384,12 @@ function AIDriveStrategyBunkerSilo:ignoreProximityObject(object, vehicle)
     end
 end
 
-
-
 ------------------------------------------------------------------------------------------------------------------------
 --- Pathfinding
 ---------------------------------------------------------------------------------------------------------------------------
 ---@param course Course
 ---@param ix number
-function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix)
+function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix, isReverse)
     if not self.pathfinder or not self.pathfinder:isActive() then
         -- set a course so the PPC is able to do its updates.
         self.course = course
@@ -392,9 +407,22 @@ function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix)
         -- a bit before start working
         self:debug('Pathfinding to waypoint %d, with zOffset min(%.1f, %.1f)', ix, -self.frontMarkerDistance, -steeringLength)
 
-        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-            self.vehicle, course, ix, 0, 0,
-            true, nil)
+        if not self.pathfinderNode then 
+            self.pathfinderNode = WaypointNode('pathfinderNode')
+        end
+        self.pathfinderNode:setToWaypoint(course, 1)
+        if isReverse then
+            --- Enables reverse path finding.
+            local _, yRot, _ = getRotation(self.pathfinderNode.node)
+            setRotation(self.pathfinderNode.node, 0, yRot + math.pi, 0)
+        end
+
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.vehicle, self.pathfinderNode.node,
+            0, 0, true)
+
+      --  self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
+      --      self.vehicle, course, ix, 0, 0,
+       --     true, nil)
         if done then
             return self:onPathfindingDoneToCourseStart(path)
         else

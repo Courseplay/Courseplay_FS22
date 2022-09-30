@@ -15,7 +15,6 @@ function CpAICombineUnloader.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     local key = "vehicles.vehicle(?)" .. CpAICombineUnloader.KEY
     CpJobParameters.registerXmlSchema(schema, key..".cpJob")
-    CpJobParameters.registerXmlSchema(schema, key..".cpJobStartAtLastWp")
 end
 
 function CpAICombineUnloader.prerequisitesPresent(specializations)
@@ -62,21 +61,19 @@ function CpAICombineUnloader:onLoad(savegame)
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.COMBINE_UNLOADER_CP)
     spec.cpJob:setVehicle(self)
-    spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.COMBINE_UNLOADER_CP)
 end
 
 function CpAICombineUnloader:onLoadFinished(savegame)
     local spec = self.spec_cpAICombineUnloader
     if savegame ~= nil then 
         spec.cpJob:loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAICombineUnloader.KEY..".cpJob")
-        spec.cpJobStartAtLastWp:getCpJobParameters():loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIFieldWorker.KEY..".cpJobStartAtLastWp")
     end
 end
 
 function CpAICombineUnloader:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAICombineUnloader
     spec.cpJob:saveToXMLFile(xmlFile, baseKey.. ".cpJob")
-    spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
+
 end
 
 function CpAICombineUnloader:getCpCombineUnloaderJobParameters()
