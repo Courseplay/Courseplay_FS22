@@ -130,6 +130,10 @@ function CpBunkerSiloVehicleController:getMaxSpeed()
 	return math.huge
 end
 
+function CpBunkerSiloVehicleController:isWaitingForUnloaders()
+	return self.silo:hasNearbyUnloader()
+end
+
 function CpBunkerSiloVehicleController:draw()
 	if self.map then
 		for _, line in pairs(self.map) do 

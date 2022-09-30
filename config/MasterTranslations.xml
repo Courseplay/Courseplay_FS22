@@ -199,6 +199,22 @@
 			<Text language="de"><![CDATA[Rückwärts]]></Text>
 			<Text language="en"><![CDATA[Reverse]]></Text>
 		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition">
+			<Text language="de"><![CDATA[Warten auf Abfahrer:]]></Text>
+			<Text language="en"><![CDATA[Waiting for unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_title">
+			<Text language="de"><![CDATA[Warten auf Abfahrer:]]></Text>
+			<Text language="en"><![CDATA[Waiting for unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo">
+			<Text language="de"><![CDATA[im Silo]]></Text>
+			<Text language="en"><![CDATA[in silo]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition">
+			<Text language="de"><![CDATA[bei Parkposition]]></Text>
+			<Text language="en"><![CDATA[at park position]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">

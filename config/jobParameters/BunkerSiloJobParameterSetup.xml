@@ -14,4 +14,12 @@
 			</Texts>
 		</Setting>
 	</SettingSubTitle>
+	<SettingSubTitle title="waitAtParkPosition">
+		<Setting classType="AIParameterBooleanSetting" name="waitAtParkPosition" defaultBool="false">
+			<Texts>
+				<Text>silo</Text>
+				<Text>parkPosition</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
 </Settings>

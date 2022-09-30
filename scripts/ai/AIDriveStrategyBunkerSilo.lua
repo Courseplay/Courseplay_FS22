@@ -24,6 +24,7 @@ local AIDriveStrategyBunkerSilo_mt = Class(AIDriveStrategyBunkerSilo, AIDriveStr
 AIDriveStrategyBunkerSilo.myStates = {
     DRIVING_TO_SILO = {},
     DRIVING_TO_PARK_POSITION = {},
+    WAITING_AT_PARK_POSITION = {},
     DRIVING_INTO_SILO = {},
 	DRIVING_OUT_OF_SILO = {},
     DRIVING_TEMPORARY_OUT_OF_SILO = {}
@@ -64,7 +65,7 @@ function AIDriveStrategyBunkerSilo:delete()
        self.pathfinderNode:destroy()
     end
     if self.parkNode then 
-        self.parkNode:destroy()
+        CpUtil.destroyNode(self.parkNode)
     end
     AIDriveStrategyBunkerSilo:superClass().delete(self)
 end
@@ -72,6 +73,7 @@ end
 function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     self:info('Starting bunker silo mode.')
 
+    self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
 
     if self.leveler then 
         if AIUtil.isObjectAttachedOnTheBack(self.vehicle, self.leveler) then 
@@ -87,7 +89,6 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     if self.silo:isVehicleInSilo(self.vehicle) then 
         self:startDrivingIntoSilo()
     else 
-        --- TODO: Figure out how to enable reverse driven goal for pathfinder?
         local course, firstWpIx = self:getDriveIntoSiloCourse()
         self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
     end
@@ -147,10 +148,17 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
         if self.state == self.states.DRIVING_INTO_SILO then 
             self:startDrivingOutOfSilo()
         elseif self.state == self.states.DRIVING_OUT_OF_SILO then 
-            self:startDrivingIntoSilo()
+            if self:isDrivingToParkPositionAllowed() and self.siloController:isWaitingForUnloaders() then
+                --- Only allow driving to park position here for now, as the silo interferes with the pathfinder.
+                self:startDrivingToParkPositionWithPathfinding()
+            else 
+                self:startDrivingIntoSilo()
+            end
         elseif self.state == self.states.DRIVING_TO_SILO then
             local course = self:getRememberedCourseAndIx()
             self:startDrivingIntoSilo(course)
+        elseif self.state == self.states.DRIVING_TO_PARK_POSITION then
+            self.state = self.states.WAITING_AT_PARK_POSITION
         elseif self.state == self.states.DRIVING_TEMPORARY_OUT_OF_SILO then
             self:startDrivingIntoSilo(self.lastCourse)
             self.lastCourse = nil
@@ -173,7 +181,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
     self:drive()
     AIDriveStrategyFieldWorkCourse.setAITarget(self)
-    self:setMaxSpeed(self.siloController:getMaxSpeed())
+
 	self:setMaxSpeed(self.settings.bunkerSiloSpeed:getValue())
     self:checkProximitySensors(moveForwards)
 
@@ -181,23 +189,19 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
         self.isStuckTimer:startIfNotRunning()
     end
 
-    if self.silo:hasNearbyUnloader() then 
+    if self.siloController:isWaitingForUnloaders() then 
         self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
     else
         self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
     end
     
-    if self.state == self.states.WAITING_FOR_PATHFINDER then
-        self:setMaxSpeed(0)
-    end
-
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
 function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
     return self.state == self.states.DRIVING_INTO_SILO and 
             AIUtil.isStopped(self.vehicle) 
-            and not self.silo:hasNearbyUnloader() 
+            and not self.siloController:isWaitingForUnloaders() 
             and not self.proximityController:isStopped()
 end
 
@@ -209,6 +213,30 @@ function AIDriveStrategyBunkerSilo:checkProximitySensors(moveForwards)
             self:debug("End wall detected.")
             self:startDrivingOutOfSilo()
         end
+
+        if self:isDrivingToParkPositionAllowed() then
+            if self.siloController:isWaitingForUnloaders() then 
+           --     self:startDrivingToParkPositionWithPathfinding()
+            end
+        else
+            self:setMaxSpeed(self.siloController:getMaxSpeed())
+        end
+    elseif self.state == self.states.DRIVING_OUT_OF_SILO then
+        if self:isDrivingToParkPositionAllowed() then
+            if self.siloController:isWaitingForUnloaders() then 
+              --  self:startDrivingToParkPositionWithPathfinding()
+            end
+        else
+            self:setMaxSpeed(self.siloController:getMaxSpeed())
+        end
+    elseif self.state == self.states.WAITING_FOR_PATHFINDER then
+        self:setMaxSpeed(0)
+    elseif self.state == self.states.WAITING_AT_PARK_POSITION then
+        self:setMaxSpeed(0)
+        if not self.siloController:isWaitingForUnloaders() then
+            local course, firstWpIx = self:getDriveIntoSiloCourse()
+            self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
+        end
     end
 end
 
@@ -216,7 +244,7 @@ function AIDriveStrategyBunkerSilo:update(dt)
     AIDriveStrategyBunkerSilo:superClass().update(self, dt)
     self:updateImplementControllers(dt)
 
-    if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then 
+    if CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
         if self.course then
             -- TODO_22 check user setting
             if self.course:isTemporary() then
@@ -250,6 +278,10 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startDrivingOutOfSilo()
         end
     end
+end
+
+function AIDriveStrategyBunkerSilo:isDrivingToParkPositionAllowed()
+    return self.waitAtParkPosition and self.parkNode ~= nil
 end
 
 --- Is the drive direction to drive into the silo reverse?
@@ -396,7 +428,6 @@ function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix, isReve
         self.ppc:setCourse(self.course)
         self.ppc:initialize(ix)
         self:rememberCourse(course, ix)
-        self:setFrontAndBackMarkers()
         local x, _, z = course:getWaypointPosition(ix)
         self:debug('offsetx %.1f, x %.1f, z %.1f', course.offsetX, x, z)
         self.state = self.states.WAITING_FOR_PATHFINDER    
@@ -420,9 +451,6 @@ function AIDriveStrategyBunkerSilo:startCourseWithPathfinding(course, ix, isReve
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.vehicle, self.pathfinderNode.node,
             0, 0, true)
 
-      --  self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-      --      self.vehicle, course, ix, 0, 0,
-       --     true, nil)
         if done then
             return self:onPathfindingDoneToCourseStart(path)
         else
@@ -439,7 +467,7 @@ end
 function AIDriveStrategyBunkerSilo:onPathfindingDoneToCourseStart(path)
     local course, ix = self:getRememberedCourseAndIx()
     if path and #path > 2 then
-        self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
+        self:debug('Pathfinding to silo finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         ix = 1
@@ -450,3 +478,48 @@ function AIDriveStrategyBunkerSilo:onPathfindingDoneToCourseStart(path)
         self:startDrivingIntoSilo(course)
     end
 end
+
+
+function AIDriveStrategyBunkerSilo:startDrivingToParkPositionWithPathfinding()
+    if not self:isDrivingToParkPositionAllowed() then 
+        self:debug("Driving to park position is not allowed!")
+        return 
+    end
+
+    if not self.pathfinder or not self.pathfinder:isActive() then
+        self.state = self.states.WAITING_FOR_PATHFINDER    
+        self.pathfindingStartedAt = g_currentMission.time
+        local done, path
+        local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+    
+        self:debug('Pathfinding to park position, with zOffset min(%.1f, %.1f)', -self.frontMarkerDistance, -steeringLength)
+
+        self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(self.vehicle, self.parkNode,
+            0, 0, true)
+
+        if done then
+            return self:onPathfindingDoneToParkPosition(path)
+        else
+            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToParkPosition)
+            return true
+        end
+    else
+        self:info('Pathfinder already active!')
+        self.state = self.states.DRIVING_TO_PARK_POSITION
+        return false
+    end
+end
+
+function AIDriveStrategyBunkerSilo:onPathfindingDoneToParkPosition(path)
+    if path and #path > 2 then
+        self:debug('Pathfinding to park position finished with %d waypoints (%d ms)',
+                #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
+        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self.state = self.states.DRIVING_TO_PARK_POSITION
+        self:startCourse(course, 1)
+    else
+        self:debug('Pathfinding park position failed, directly start.')
+        self:startDrivingIntoSilo()
+    end
+end
+

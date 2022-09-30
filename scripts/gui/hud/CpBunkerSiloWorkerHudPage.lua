@@ -21,7 +21,19 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 		class =  vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo,
 		func =   vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo.setNextItem,
 	}
-	self.driveDirectionBtn:setCallback(callback, callback)             					 
+	self.driveDirectionBtn:setCallback(callback, callback)             			
+    
+    --- Waiting at park position
+	local x, y = unpack(lines[2].left)
+	local xRight,_ = unpack(lines[2].right)
+	self.waitAtBtn = CpHudTextSettingElement.new(self, x, y,
+										xRight, CpBaseHud.defaultFontSize)
+	local callback = {
+		callbackStr = "onClickPrimary",
+		class =  vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition,
+		func =   vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition.setNextItem,
+	}
+	self.waitAtBtn:setCallback(callback, callback)             				
 	
     --- Work width
     self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
@@ -54,6 +66,10 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
 	local driveDirection = vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo
     self.driveDirectionBtn:setTextDetails(driveDirection:getTitle(), driveDirection:getString())
     self.driveDirectionBtn:setVisible(driveDirection:getIsVisible())
+
+    local waitAt = vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition
+    self.waitAtBtn:setTextDetails(waitAt:getTitle(), waitAt:getString())
+    self.waitAtBtn:setVisible(waitAt:getIsVisible())
 
 	local workWidth = vehicle:getCpSettings().bunkerSiloWorkWidth
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())

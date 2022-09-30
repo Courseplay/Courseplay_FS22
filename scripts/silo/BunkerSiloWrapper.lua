@@ -346,7 +346,9 @@ function CpBunkerSilo:updateUnloaders(dt)
 					end 
 				end
 			end
-			if not isValid then 
+			if isValid then 
+				self:addNearbyUnloader(vehicle)
+			else
 				self:removeNearbyUnloader(vehicle)
 			end
 		end
