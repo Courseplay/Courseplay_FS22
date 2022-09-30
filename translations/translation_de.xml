@@ -65,6 +65,10 @@
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Fahrtrichtung in den Silo:"/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Vorwärts"/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Rückwärts"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Warten auf Abfahrer:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Warten auf Abfahrer:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="im Silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="bei Parkposition"/>
     <!---->
     <!--AI jobs-->
     <!---->
