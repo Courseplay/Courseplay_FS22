@@ -149,14 +149,15 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 
 	end
 	local unloadingStation = self.cpJobParameters.unloadingStation:getUnloadingStation()
-	local x, z, dirX, dirZ, trigger = unloadingStation:getAITargetPositionAndDirection(FillType.UNKNOWN)
+	if unloadingStation ~= nil  then 
+		local x, z, dirX, dirZ, trigger = unloadingStation:getAITargetPositionAndDirection(FillType.UNKNOWN)
 
-	if trigger ~= nil then
-		self.driveToUnloadingTask:setTargetPosition(x, z)
-		self.driveToUnloadingTask:setTargetDirection(dirX, dirZ)
-		self.dischargeTask:setUnloadTrigger(trigger)
+		if trigger ~= nil then
+			self.driveToUnloadingTask:setTargetPosition(x, z)
+			self.driveToUnloadingTask:setTargetDirection(dirX, dirZ)
+			self.dischargeTask:setUnloadTrigger(trigger)
+		end
 	end
-
 end
 
 --- Called when parameters change, scan field

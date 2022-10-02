@@ -142,7 +142,7 @@ function CpAIWorker:updateActionEvents()
 			    g_inputBinding:setActionEventText(actionEvent.actionEventId, text)
             end
 
-			g_inputBinding:setActionEventActive(actionEvent.actionEventId, g_Courseplay.globalSettings.showActionEventHelp:getValue())
+			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
 		else
 			g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
 		end
@@ -215,7 +215,8 @@ end
 -----------------------------------------------
 
 function CpAIWorker:changeStartingPoint()
-    --- Input event
+    local startingPointSetting = self:getCpStartingPointSetting()
+    startingPointSetting:setNextItem()
 end
 
 --- Directly starts a cp job or stops a currently active job.
