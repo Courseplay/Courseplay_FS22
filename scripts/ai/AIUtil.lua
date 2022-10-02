@@ -149,28 +149,21 @@ function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 end
 
 -- Find the node to use by the PPC when driving in reverse
-function AIUtil.getReverserNode(vehicle)
+function AIUtil.getReverserNode(vehicle, reversingImplement)
 	local reverserNode, debugText
 	-- if there's a reverser node on the tool, use that
-	local reverserDirectionNode = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle)
-	local reversingWheeledWorkTool = AIUtil.getFirstReversingImplementWithWheels(vehicle)
-	if reverserDirectionNode then
-		reverserNode = reverserDirectionNode
-		debugText = 'implement reverse (Giants)'
-	elseif reversingWheeledWorkTool and reversingWheeledWorkTool.steeringAxleNode then
-		reverserNode = reversingWheeledWorkTool.steeringAxleNode
-		debugText = 'implement reverse (Courseplay)'
-	elseif vehicle.spec_articulatedAxis ~= nil then
+	reversingImplement = reversingImplement and reversingImplement or AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if reversingImplement and reversingImplement.steeringAxleNode then
+		reverserNode, debugText = reversingImplement.steeringAxleNode, 'implement steering axle node'
+	end
+	if not reverserNode then
+		reverserNode, debugText = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle), 'AIToolReverserDirectionNode'
+	end
+	if not reverserNode then
+		reverserNode, debugText = vehicle:getAIReverserNode(), 'AIReverserNode'
+	end
+	if not reverserNode and vehicle.spec_articulatedAxis ~= nil then
 		reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
-	else
-		-- otherwise see if the vehicle has a reverser node
-		if vehicle.getAIVehicleReverserNode then
-			reverserDirectionNode = vehicle:getAIVehicleReverserNode()
-			if reverserDirectionNode then
-				reverserNode = reverserDirectionNode
-				debugText = 'vehicle reverse'
-			end
-		end
 	end
 	return reverserNode, debugText
 end
