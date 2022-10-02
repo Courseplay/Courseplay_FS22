@@ -106,6 +106,13 @@ You can define the following custom settings:
              turnRadius="5"
              useVehicleSizeForMarkers="true"
     />
+    
+    <!--\vehicles\grimme-->
+    <Vehicle name="ventor4150.xml"
+             raiseLate = "true"
+             lowerEarly = "true"
+    />
+
     <!-- Implements -->
 
     <!--\vehicles\Bergmann-->
