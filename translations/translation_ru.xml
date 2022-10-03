@@ -113,7 +113,7 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Поперечное смещение инструмента."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Продольное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Продольное смещение инструмента."/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Опустошать когда заполнен:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Контроль силосной добавки."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Если активная и силовая добавка закончилась, водитель остановится."/>
