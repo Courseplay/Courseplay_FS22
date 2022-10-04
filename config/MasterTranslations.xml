@@ -880,7 +880,7 @@
 		</Translation>
 		<Translation name="CP_global_setting_drawOntoTheHudMap_title">
 			<Text language="de"><![CDATA[Zeige Kurse auf der Minikarte]]></Text>
-			<Text language="en"><![CDATA[Schows courses on the minimap]]></Text>
+			<Text language="en"><![CDATA[Shows courses on the minimap]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_drawOntoTheHudMap_tooltip">
 			<Text language="de"><![CDATA[Ermöglicht die Anzeige des Kurses auf der kleinen Karte.]]></Text>

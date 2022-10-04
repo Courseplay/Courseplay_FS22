@@ -19,7 +19,7 @@
     <text name="CP_error_could_not_generate_course" text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация."/>
     <text name="CP_error_not_on_field" text="Цель не на поле."/>
     <text name="CP_error_unloader_to_far_away_from_field" text="Разгружающий далеко от поля."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Начальная позиция далеко от поля."/>
     <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
     <!---->
     <!--AI job parameters-->
@@ -53,7 +53,7 @@
     <!--AI combine unloader job parameters-->
     <!---->
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>
     <!---->
     <!--AI jobs-->
@@ -114,7 +114,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Продольное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Продольное смещение инструмента."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Опустошать когда заполнен:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Если уровень заполнения выгрузчика превышает это значение, он не будет ждать комбайн."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Контроль силосной добавки."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Если активная и силовая добавка закончилась, водитель остановится."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Симметричная смена полосы движения"/>
@@ -648,9 +648,14 @@ R: Удаляет скопированный курс из буфера обме
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Под продвинутой категорией:
-1) Кисть для перемещения нескольких путевых точек между выбранными путевыми точками.
-2) Кисть для вставки путевых точек для кривой между выбранными путевыми точками.
-3) Кисть для установки атрибута поворота путевой точки (только из сгенерированным курсом, а не на курсе пользовательского поля).
+1) Кисть для установки атрибута поворота путевой точки (только из сгенерированным курсом, а не на курсе пользовательского поля).
+Несколько раз нажимая на путевую точку, будете переключаться между &quot;обычной&quot; (оранжевым), &quot;начало поворота&quot; (зеленым) и &quot;конец поворота&quot; (красным).
+2) Кисть для перемещения нескольких путевых точек между двумя выбранными путевыми точками.
+Для этого вы отмечаете 2 путевые точки левой кнопкой мыши, затем удерживая левую кнопку мыши, вы можете перемещать все путевые точки между ними, включая отмеченные.
+Чтобы снять отметки с путевых точек, нажмите правую кнопку мыши.
+3) Кисть для вставки путевых точек для кривой между выбранными путевыми точками.
+Точно так же, как при перемещении нескольких путевых точек, отметьте 2 путевые точки, затем удерживайте левую кнопку мыши и переместите её.
+Внимание: как только вы отпустите кнопку мыши, будут установлены путевые точки, это не может быть отменено! (Конечно, вы можете удалить эти путевые точки.)
 "/>
     <!---->
     <!--Input bindings-->
