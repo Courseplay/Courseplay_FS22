@@ -16,9 +16,16 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	local specSpray = sowingMachine.spec_sprayer
 	local sprayerParams = specSpray.workAreaParameters
 	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
+	local capacity = 1
+	for fillUnitIndex, fillUnit in pairs(sowingMachine:getFillUnits()) do
+		if fillUnit.fillType == sprayerParams.sprayFillType then
+			capacity = sowingMachine:getFillUnitCapacity(fillUnitIndex)
+			print("capacity: " .. tostring(capacity))
+		end
+	end
 	if not fertilizingEnabled then 
 		sprayerParams.sprayFillLevel = 0
-	elseif sprayerParams.sprayFillLevel <=0 then
+	elseif capacity > 0 and sprayerParams.sprayFillLevel <= 0 then
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,sowingMachine,"Stopped Cp, as the fertilizer is empty.")
 		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 	end
