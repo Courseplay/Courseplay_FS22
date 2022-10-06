@@ -1204,6 +1204,13 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
             self:debug('combine empty and moving forward but we are too close to the end of the row or combine is turning, moving back')
             self:startMovingBackFromCombine(self.states.MOVING_BACK, self.combineToUnload)
             return
+        elseif self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
+            -- make some room for the pathfinder, as the trailer may not be full but has reached the threshold,
+            -- which case is not caught in changeToUnloadWhenTrailerFull() as we want to keep unloading as long as
+            -- we can
+            self:debug('combine empty and moving forward but we want to leave, so move back a bit')
+            self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineToUnload)
+            return
         else
             self:debug('combine empty and moving forward')
             self:releaseCombine()
