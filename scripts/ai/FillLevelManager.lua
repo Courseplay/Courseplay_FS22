@@ -28,7 +28,7 @@ function FillLevelManager:init(vehicle, debugChannel)
 end
 
 function FillLevelManager:debug(...)
-    CpUtil.debugVehicle(self.debugChannel, self.vehicle, ...)
+    CpUtil.debugVehicle(self.debugChannel or CpDebug.DBG_IMPLEMENTS, self.vehicle, ...)
 end
 
 function FillLevelManager:debugSparse(...)
@@ -158,17 +158,19 @@ end
 function FillLevelManager.getAllFillLevels(object, fillLevelInfo)
     -- get own fill levels
     if object.getFillUnits then
-        for _, fillUnit in pairs(object:getFillUnits()) do
-            local fillType = FillLevelManager.getFillTypeFromFillUnit(fillUnit)
-            local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(fillType)
-            FillLevelManager:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
-            if not fillLevelInfo[fillType] then fillLevelInfo[fillType] = {fillLevel=0, capacity=0} end
-            fillLevelInfo[fillType].fillLevel = fillLevelInfo[fillType].fillLevel + fillUnit.fillLevel
-            fillLevelInfo[fillType].capacity = fillLevelInfo[fillType].capacity + fillUnit.capacity
-            --used to check treePlanter fillLevel
-            local treePlanterSpec = object.spec_treePlanter
-            if treePlanterSpec then
-                fillLevelInfo[fillType].treePlanterSpec = object.spec_treePlanter
+        for index, fillUnit in pairs(object:getFillUnits()) do
+            local supportedFillTypes = object:getFillUnitSupportedFillTypes(index)
+            for fillType, _ in pairs(supportedFillTypes) do
+                local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(fillType)
+                FillLevelManager:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
+                if not fillLevelInfo[fillType] then fillLevelInfo[fillType] = {fillLevel = 0, capacity = 0} end
+                fillLevelInfo[fillType].fillLevel = fillLevelInfo[fillType].fillLevel + fillUnit.fillLevel
+                fillLevelInfo[fillType].capacity = fillLevelInfo[fillType].capacity + fillUnit.capacity
+                --used to check treePlanter fillLevel
+                local treePlanterSpec = object.spec_treePlanter
+                if treePlanterSpec then
+                    fillLevelInfo[fillType].treePlanterSpec = object.spec_treePlanter
+                end
             end
         end
     end
