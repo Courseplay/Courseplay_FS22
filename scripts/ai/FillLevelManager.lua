@@ -174,7 +174,7 @@ function FillLevelManager.getAllFillLevels(object, fillLevelInfo)
     end
     -- collect fill levels from all attached implements recursively
     for _,impl in pairs(object:getAttachedImplements()) do
-        self:getAllFillLevels(impl.object, fillLevelInfo)
+        FillLevelManager.getAllFillLevels(impl.object, fillLevelInfo)
     end
 end
 
