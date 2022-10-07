@@ -37,16 +37,17 @@ function FillLevelManager:debugSparse(...)
     end
 end
 
-function FillLevelManager:needsRefill()
+function FillLevelManager.needsRefill()
     local fillLevelInfo = {}
-    self:getAllFillLevels(self.vehicle, fillLevelInfo)
-    return self:areFillLevelsOk(fillLevelInfo)
+    FillLevelManager.getAllFillLevels(self.vehicle, fillLevelInfo)
+    return FillLevelManager.areFillLevelsOk(fillLevelInfo)
 end
 
 
 -- is the fill level ok to continue? With fillable tools we need to stop working when we are out
 -- of material (seed, fertilizer, etc.)
-function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
+function FillLevelManager.areFillLevelsOk(fillLevelInfo, isWaitingForRefill)
+    local self = FillLevelManager
     local allOk = true
     local hasSeeds, hasNoFertilizer = false, false
     local liquidFertilizerFillLevel,herbicideFillLevel, seedsFillLevel, fertilizerFillLevel = 0, 0, 0, 0
@@ -63,7 +64,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
                 allOk = false
             end
         else
-            if self:isValidFillType(nil, fillType) and info.fillLevel == 0 and info.capacity > 0 and not self:helperBuysThisFillType(fillType) then
+            if self.isValidFillType(nil, fillType) and info.fillLevel == 0 and info.capacity > 0 and not self.helperBuysThisFillType(fillType) then
                 allOk = false
                 if fillType == FillType.FERTILIZER or fillType == FillType.LIQUIDFERTILIZER then hasNoFertilizer = true end
             else
@@ -104,7 +105,7 @@ function FillLevelManager:areFillLevelsOk(fillLevelInfo,isWaitingForRefill)
 end
 
 --- Does the helper buy this fill unit (according to the game settings)? If yes, we don't have to stop or refill when empty.
-function FillLevelManager:helperBuysThisFillType(fillType)
+function FillLevelManager.helperBuysThisFillType(fillType)
     if g_currentMission.missionInfo.helperBuySeeds and fillType == FillType.SEEDS then
         return true
     end
@@ -144,7 +145,7 @@ function FillLevelManager:helperBuysThisFillType(fillType)
             return true
         end
     end
-    if g_currentMission.missionInfo.helperBuyFuel and self:isValidFuelType(self.vehicle,fillType) then
+    if g_currentMission.missionInfo.helperBuyFuel and self.isValidFuelType(FillLevelManager.vehicle, fillType) then
         return true
     end
     return false
@@ -154,13 +155,13 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Fill Levels
 ---------------------------------------------------------------------------------------------------------------------------
-function FillLevelManager:getAllFillLevels(object, fillLevelInfo)
+function FillLevelManager.getAllFillLevels(object, fillLevelInfo)
     -- get own fill levels
     if object.getFillUnits then
         for _, fillUnit in pairs(object:getFillUnits()) do
-            local fillType = self:getFillTypeFromFillUnit(fillUnit)
+            local fillType = FillLevelManager.getFillTypeFromFillUnit(fillUnit)
             local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(fillType)
-            self:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
+            FillLevelManager:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
             if not fillLevelInfo[fillType] then fillLevelInfo[fillType] = {fillLevel=0, capacity=0} end
             fillLevelInfo[fillType].fillLevel = fillLevelInfo[fillType].fillLevel + fillUnit.fillLevel
             fillLevelInfo[fillType].capacity = fillLevelInfo[fillType].capacity + fillUnit.capacity
@@ -194,15 +195,15 @@ end
 ---@param object table
 ---@return number totalFillLevel
 ---@return number totalCapacity
-function FillLevelManager:getTotalFillLevelAndCapacity(object)
+function FillLevelManager.getTotalFillLevelAndCapacity(object)
 
     local fillLevelInfo = {}
-    self:getAllFillLevels(object, fillLevelInfo)
+    FillLevelManager.getAllFillLevels(object, fillLevelInfo)
 
     local totalFillLevel = 0
     local totalCapacity = 0
-    for fillType,data in pairs(fillLevelInfo) do
-        if self:isValidFillType(object,fillType) then
+    for fillType, data in pairs(fillLevelInfo) do
+        if FillLevelManager.isValidFillType(object,fillType) then
             totalFillLevel = totalFillLevel  + data.fillLevel
             totalCapacity = totalCapacity + data.capacity
         end
@@ -210,49 +211,71 @@ function FillLevelManager:getTotalFillLevelAndCapacity(object)
     return totalFillLevel,totalCapacity
 end
 
---- Gets the total fill level percentage.
+--- Gets the complete fill level and capacity without fuel for a single fillType
 ---@param object table
-function FillLevelManager:getTotalFillLevelPercentage(object)
-    local fillLevel,capacity = self:getTotalFillLevelAndCapacity(object)
-    return 100*fillLevel/capacity
+---@param fillTypeToFilter number fillTypeIndex to check for
+---@return number totalFillLevel
+---@return number totalCapacity
+
+function FillLevelManager.getTotalFillLevelAndCapacityForFillType(object, fillTypeToFilter)
+    local fillLevelInfo = {}
+    FillLevelManager.getAllFillLevels(object, fillLevelInfo)
+
+    local totalFillLevel = 0
+    local totalCapacity = 0
+    for fillType, data in pairs(fillLevelInfo) do
+        if FillLevelManager.isValidFillType(object, fillType) and fillType == fillTypeToFilter then
+            totalFillLevel = totalFillLevel + data.fillLevel
+            totalCapacity = totalCapacity + data.capacity
+        end
+    end
+
+    return totalFillLevel, totalCapacity
 end
 
-function FillLevelManager:getTotalFillLevelAndCapacityForObject(object)
+--- Gets the total fill level percentage.
+---@param object table
+function FillLevelManager.getTotalFillLevelPercentage(object)
+    local fillLevel,capacity = FillLevelManager.getTotalFillLevelAndCapacity(object)
+    return 100 * fillLevel / capacity
+end
+
+function FillLevelManager.getTotalFillLevelAndCapacityForObject(object)
     local totalFillLevel = 0
     local totalCapacity = 0
     if object.getFillUnits then
-        for index,fillUnit in pairs(object:getFillUnits()) do
-            local fillType = self:getFillTypeFromFillUnit(fillUnit)
-            if self:isValidFillType(object,fillType) then
+        for index, fillUnit in pairs(object:getFillUnits()) do
+            local fillType = FillLevelManager.getFillTypeFromFillUnit(fillUnit)
+            if FillLevelManager.isValidFillType(object, fillType) then
                 totalFillLevel = totalFillLevel + fillUnit.fillLevel
                 totalCapacity = totalCapacity + fillUnit.capacity
             end
         end
     end
-    return totalFillLevel,totalCapacity
+    return totalFillLevel, totalCapacity
 end
 
 ---@param object table
 ---@param fillType number
-function FillLevelManager:isValidFillType(object,fillType)
+function FillLevelManager.isValidFillType(object, fillType)
     --- Ignore silage additives for now. 
     --- TODO: maybe implement a setting if it is necessary to enable/disable detection.
     local spec = object.spec_combine or object.spec_forageWagon 
     if spec and spec.additives and spec.additives.fillUnitIndex then 
         local f = object:getFillUnitFillType(spec.additives.fillUnitIndex)
-        if f == fillType then 
+        if f == fillType then
             return false
         end
     end
 
-    return not self:isValidFuelType(object, fillType) and fillType ~= FillType.DEF and fillType ~= FillType.AIR
+    return not FillLevelManager.isValidFuelType(object, fillType) and fillType ~= FillType.DEF and fillType ~= FillType.AIR
 end
 
 --- Is the fill type fuel ?
 ---@param object table
 ---@param fillType number
 ---@param fillUnitIndex number
-function FillLevelManager:isValidFuelType(object, fillType, fillUnitIndex)
+function FillLevelManager.isValidFuelType(object, fillType, fillUnitIndex)
     if object and object.getConsumerFillUnitIndex then
         local index = object:getConsumerFillUnitIndex(fillType)
         if fillUnitIndex ~= nil then
@@ -265,7 +288,7 @@ end
 --- Gets the fill level of an mixerWagon for a fill type.
 ---@param object table
 ---@param fillType number
-function FillLevelManager:getMixerWagonFillLevelForFillTypes(object,fillType)
+function FillLevelManager.getMixerWagonFillLevelForFillTypes(object, fillType)
     local spec = object.spec_mixerWagon
     if spec then
         for _, data in pairs(spec.mixerWagonFillTypes) do
@@ -327,7 +350,7 @@ end
 ---@return number total free capacity
 function FillLevelManager.getAllTrailerFillLevels(vehicle)
     local totalFillLevel, totalCapacity, totalFreeCapacity = 0, 0, 0
-    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Trailer, nil) 
+    local trailers = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Trailer, nil)
     for i, trailer in ipairs(trailers) do 
         local fillLevel, capacity, freeCapacity = FillLevelManager.getTrailerFillLevels(trailer)
         totalFreeCapacity = totalFreeCapacity + freeCapacity
