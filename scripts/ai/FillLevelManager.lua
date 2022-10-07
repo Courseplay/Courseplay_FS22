@@ -178,7 +178,7 @@ function FillLevelManager.getAllFillLevels(object, fillLevelInfo)
     end
 end
 
-function FillLevelManager:getFillTypeFromFillUnit(fillUnit)
+function FillLevelManager.getFillTypeFromFillUnit(fillUnit)
     local fillType = fillUnit.lastValidFillType or fillUnit.fillType
     -- TODO: do we need to check more supported fill types? This will probably cover 99.9% of the cases
     if fillType == FillType.UNKNOWN then
