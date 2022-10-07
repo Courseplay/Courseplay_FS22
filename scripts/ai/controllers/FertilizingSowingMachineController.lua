@@ -10,7 +10,7 @@ end
 
 local function processSowingMachineArea(sowingMachine,superFunc,...)
 	local rootVehicle = sowingMachine.rootVehicle
-	if not rootVehicle.getIsCpActive or not rootVehicle:getIsCpActive() then 
+	if not rootVehicle.getIsCpActive or not rootVehicle:getIsCpActive() then
 		return superFunc(sowingMachine, ...)
 	end
 	local specSpray = sowingMachine.spec_sprayer
@@ -19,8 +19,7 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	local capacity = 1
 	for fillUnitIndex, fillUnit in pairs(sowingMachine:getFillUnits()) do
 		if fillUnit.fillType == sprayerParams.sprayFillType then
-			capacity = sowingMachine:getFillUnitCapacity(fillUnitIndex)
-			print("capacity: " .. tostring(capacity))
+			_, capacity = FillLevelManager.getTotalFillLevelAndCapacityForFillType(rootVehicle, fillUnit.fillType)
 		end
 	end
 	if not fertilizingEnabled then 
@@ -31,7 +30,7 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	end
 	return superFunc(sowingMachine, ...)
 end
-FertilizingSowingMachine.processSowingMachineArea = Utils.overwrittenFunction(
-	FertilizingSowingMachine.processSowingMachineArea,processSowingMachineArea)
+
+FertilizingSowingMachine.processSowingMachineArea = Utils.overwrittenFunction(FertilizingSowingMachine.processSowingMachineArea, processSowingMachineArea)
 
 
