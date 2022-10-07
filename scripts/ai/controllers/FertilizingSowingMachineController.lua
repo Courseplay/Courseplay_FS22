@@ -17,12 +17,12 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	local sprayerParams = specSpray.workAreaParameters
 	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
 	local capacity = 1
-	for fillUnitIndex, fillUnit in pairs(sowingMachine:getFillUnits()) do
-		if fillUnit.fillType == sprayerParams.sprayFillType then
-			_, capacity = FillLevelManager.getTotalFillLevelAndCapacityForFillType(rootVehicle, fillUnit.fillType)
-		end
+	local sprayFillUnit = sowingMachine:getSprayerFillUnitIndex()
+	for fillType, _ in pairs(sowingMachine:getFillUnitSupportedFillTypes(sprayFillUnit)) do
+		local _, capacityOfFillType = FillLevelManager.getTotalFillLevelAndCapacityForFillType(rootVehicle, fillType)
+		capacity = math.max(capacityOfFillType, capacity)
 	end
-	if not fertilizingEnabled then 
+	if not fertilizingEnabled then
 		sprayerParams.sprayFillLevel = 0
 	elseif capacity > 0 and sprayerParams.sprayFillLevel <= 0 then
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,sowingMachine,"Stopped Cp, as the fertilizer is empty.")
