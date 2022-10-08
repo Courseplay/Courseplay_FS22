@@ -11,7 +11,7 @@ with the course.
 
 This file is the global configuration coming with your copy of Courseplay. If you
 want your own vehicle config, you can create a file called
-vehicleConfigurations.xml in your modsSettings/Courseplay folder. Settings defined
+vehicleConfigurations.xml in your modSettings/FS22_Courseplay folder. Settings defined
 in that file will override the settings defined here.
 
 You can use the cpReadVehicleConfigurations console command to reload these files
