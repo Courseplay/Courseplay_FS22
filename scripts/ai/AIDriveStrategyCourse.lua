@@ -99,8 +99,6 @@ end
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self:initializeImplementControllers(vehicle)
-    ---@type FillLevelManager
-    self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     -- TODO_22 properly implement this in courseplaySpec
