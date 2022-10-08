@@ -65,6 +65,9 @@ AIDriveStrategyUnloadCombine.proximitySensorRange = 15
 AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg = 35 -- under this angle the unloader considers itself aligned with the combine
 -- Add a short straight section to align with the combine's course in case it is late for the rendezvous
 AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength = 10
+-- Auger wagons don't usually have a proper turn radius configured which causes problems when we
+-- are calculating the path to a trailer when unloading. Use this as a minimum turn radius.
+AIDriveStrategyUnloadCombine.minimumTurningRadiusWithAugerWagon = 10
 
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
@@ -145,6 +148,11 @@ end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyUnloadCombine:superClass().setAIVehicle(self, vehicle)
+    if self.augerWagon and self.turningRadius < AIDriveStrategyUnloadCombine.minimumTurningRadiusWithAugerWagon then
+        self:debug('Auger wagon turn radius %.1f is too small, setting it to %.1f', self.turningRadius,
+                AIDriveStrategyUnloadCombine.minimumTurningRadiusWithAugerWagon)
+        self.turningRadius = AIDriveStrategyUnloadCombine.minimumTurningRadiusWithAugerWagon
+    end
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
