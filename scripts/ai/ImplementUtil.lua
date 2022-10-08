@@ -389,7 +389,6 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
     end
     object.pipe = implementWithPipe.spec_pipe
     object.objectWithPipe = implementWithPipe
-    local referenceVehicle = implementWithPipe.rootVehicle 
     if object.pipe then
         -- check the pipe length:
         -- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
@@ -412,9 +411,9 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
         -- use combine so attached harvesters have the offset relative to the harvester's root node
         -- (and thus, does not depend on the angle between the tractor and the harvester)
         object.pipeOffsetX, _, object.pipeOffsetZ = localToLocal(dischargeNode.node,
-                (referenceVehicle.getAIDirectionNode and referenceVehicle:getAIDirectionNode()) or referenceVehicle.rootNode, 0, 0, 0)
+                (implementWithPipe.getAIDirectionNode and implementWithPipe:getAIDirectionNode()) or implementWithPipe.rootNode, 0, 0, 0)
         object.pipeOnLeftSide = object.pipeOffsetX >= 0
-        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, referenceVehicle, 'Pipe offset: x = %.1f, z = %.1f, on left side %s',
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, implementWithPipe, 'Pipe offset: x = %.1f, z = %.1f, on left side %s',
                 object.pipeOffsetX, object.pipeOffsetZ, tostring(object.pipeOnLeftSide))
         if wasClosed then
             if object.pipe.animation.name then
@@ -426,6 +425,7 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
+        local referenceVehicle = implementWithPipe.rootVehicle
         if wasFolded and referenceVehicle.spec_foldable then
             ImplementUtil.foldAfterGettingWidth(referenceVehicle)
             -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
