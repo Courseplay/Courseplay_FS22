@@ -119,6 +119,16 @@ You can define the following custom settings:
     <Vehicle name="rrw500.xml"
              turnRadius = "10"
     />
+	
+    <!--\vehicles\gtw330-->
+    <Vehicle name="gtw330.xml"
+             turnRadius = "10"
+    />
+
+    <!--\vehicles\ulw4000-->
+    <Vehicle name="ulw4000.xml"
+             turnRadius = "10"
+    />
 
     <!--\vehicles\johndeer-->
     <Vehicle name="planter1775NT.xml"
