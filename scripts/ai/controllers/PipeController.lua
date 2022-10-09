@@ -144,7 +144,10 @@ function PipeController:setupMoveablePipe()
         for i, m in ipairs(self.cylinderedSpec.movingTools) do
             -- Gets only the pipe moving tools.
             if m.freezingPipeStates ~= nil and next(m.freezingPipeStates) ~= nil then
-                table.insert(self.validMovingTools, m)
+                --- Only control pipe elements, that are controlled with the rot speed for now.
+                if m.rotSpeed ~= nil then 
+                    table.insert(self.validMovingTools, m)
+                end
             end
         end
     end
@@ -173,6 +176,9 @@ function PipeController:setupMoveablePipe()
 
     self.tempBaseNode = CpUtil.createNode("tempBaseNode", 0, 0, 0)
     self.tempDependedNode = CpUtil.createNode("tempDependedNode", 0, 0, 0)
+
+    self:debug("Number of moveable pipe elements found: %d", #self.validMovingTools)
+
 end
 
 function PipeController:updateMoveablePipe(dt)
@@ -311,4 +317,20 @@ end
 function PipeController:delete()
     CpUtil.destroyNode(self.tempBaseNode)
     CpUtil.destroyNode(self.tempDependedNode)
+end
+
+function PipeController:printMoveablePipeDebug()
+    CpUtil.infoImplement(self.implement, "Num of moveable tools: %d", #self.validMovingTools)
+    CpUtil.infoImplement(self.implement, "Base moving tool")
+    self:printMovingToolDebug(self.baseMovingTool)
+    CpUtil.infoImplement(self.implement, "Base moving tool child")
+    self:printMovingToolDebug(self.baseMovingToolChild)
+end
+
+function PipeController:printMovingToolDebug(tool)
+    if tool == nil then 
+        CpUtil.infoImplement(self.implement, "Tool not found.")
+        return
+    end
+    CpUtil.infoImplement(self.implement, "RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
 end
