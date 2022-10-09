@@ -204,6 +204,7 @@ function AIParameterSettingList:refresh()
 		end	
 	end
 	self:validateCurrentValue()
+	self:validateTexts()
 end
 
 function AIParameterSettingList:validateCurrentValue()

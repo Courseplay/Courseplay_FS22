@@ -25,6 +25,7 @@ end
 function CpGlobalSettings:loadFromXMLFile(xmlFile, baseKey)
     CpSettingsUtil.loadFromXmlFile(self, xmlFile, 
     baseKey .. CpGlobalSettings.KEY, nil)
+    self:onDistanceUnitChanged()
 end
 
 function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)

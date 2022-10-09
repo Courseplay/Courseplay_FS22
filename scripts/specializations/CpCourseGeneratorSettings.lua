@@ -217,4 +217,5 @@ end
 function CpCourseGeneratorSettings:updateGui()
     local spec = self.spec_cpCourseGeneratorSettings
     CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(spec.gui, true)
+    CpCourseGeneratorSettings.onCpUnitChanged(self)
 end
