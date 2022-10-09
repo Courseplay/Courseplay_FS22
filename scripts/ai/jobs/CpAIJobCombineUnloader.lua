@@ -108,6 +108,9 @@ end
 --- Sets static data for the giants unload. 
 function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 	self.dischargeNodeInfos = {}
+	if vehicle == nil then 
+		return
+	end
 	if vehicle.getAIDischargeNodes ~= nil then
 		for _, dischargeNode in ipairs(vehicle:getAIDischargeNodes()) do
 			local _, _, z = vehicle:getAIDischargeNodeZAlignedOffset(dischargeNode, vehicle)
