@@ -132,7 +132,7 @@ end
 --- more than one AD trailer waiting, but we want to make sure we unload into the first one only,
 --- the one which is ready to drive away.
 function SelfUnloadHelper:isInvalidAutoDriveTarget(myVehicle, otherVehicle)
-    if otherVehicle.ad and otherVehicle.ad.stateModule:isActive()
+    if otherVehicle and otherVehicle.ad and otherVehicle.ad.stateModule and otherVehicle.ad.stateModule:isActive()
             and not otherVehicle.ad.drivePathModule:isTargetReached() then
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, myVehicle,
                 '%s is an active AutoDrive vehicle but did not reach its target, ignoring', CpUtil.getName(otherVehicle))
