@@ -29,7 +29,7 @@ function FillLevelManager.getAllFillLevels(object, fillLevelInfo)
             local supportedFillTypes = object:getFillUnitSupportedFillTypes(index)
             for fillType, _ in pairs(supportedFillTypes) do
                 local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(fillType)
-                FillLevelManager:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
+                --FillLevelManager:debugSparse('%s: Fill levels: %s: %.1f/%.1f', object:getName(), fillTypeName, fillUnit.fillLevel, fillUnit.capacity)
                 if not fillLevelInfo[fillType] then fillLevelInfo[fillType] = {fillLevel = 0, capacity = 0} end
                 fillLevelInfo[fillType].fillLevel = fillLevelInfo[fillType].fillLevel + fillUnit.fillLevel
                 fillLevelInfo[fillType].capacity = fillLevelInfo[fillType].capacity + fillUnit.capacity
