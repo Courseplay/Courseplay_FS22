@@ -204,9 +204,18 @@ function AIUtil.getTurningRadius(vehicle)
 		end
 		if turnRadius == 0 then
 			if AIUtil.isImplementTowed(vehicle, implement.object) then
-				turnRadius = 6
-				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
+				if AIUtil.hasImplementWithSpecialization(vehicle, Trailer) and
+						AIUtil.hasImplementWithSpecialization(vehicle, Pipe) then
+					-- Auger wagons don't usually have a proper turn radius configured which causes problems when we
+					-- are calculating the path to a trailer when unloading. Use this as a minimum turn radius.
+					turnRadius = 10
+                    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, auger wagon, we use a default %.1f',
+                            implement.object:getName(), turnRadius)
+				else
+				    turnRadius = 6
+				    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
 						implement.object:getName(), turnRadius)
+				end
 			else
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
 					implement.object:getName())
@@ -411,14 +420,14 @@ end
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
 ---@param vehicle Vehicle
----@param specialization table 
+---@param specialization table
 ---@param specializationReference string alternative for mod specializations, as their object is not accessible by us.
 ---@return table all found vehicles/implements
 ---@return boolean at least one vehicle/implement was found
 function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
 	local validVehicles = {}
-	for _, childVehicle in pairs(vehicle:getChildVehicles()) do 
-		if specializationReference and childVehicle[specializationReference] then 
+	for _, childVehicle in pairs(vehicle:getChildVehicles()) do
+		if specializationReference and childVehicle[specializationReference] then
 			table.insert(validVehicles, childVehicle)
 		end
 		if specialization and SpecializationUtil.hasSpecialization(specialization, childVehicle.specializations) then
@@ -513,30 +522,30 @@ end
 --- Is a sugarcane trailer attached ?
 ---@param vehicle table
 function AIUtil.hasSugarCaneTrailer(vehicle)
-	if vehicle.spec_shovel and vehicle.spec_trailer then 
+	if vehicle.spec_shovel and vehicle.spec_trailer then
 		return true
 	end
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		local object = implement.object
-		if object.spec_shovel and object.spec_trailer then 
+		if object.spec_shovel and object.spec_trailer then
 			return true
 		end
 	end
 end
 
 --- Are there any trailer under the pipe ?
----@param pipe table 
+---@param pipe table
 ---@param shouldTrailerBeStandingStill boolean
 function AIUtil.isTrailerUnderPipe(pipe, shouldTrailerBeStandingStill)
 	if not pipe then return end
 	for trailer, value in pairs(pipe.objectsInTriggers) do
 		if value > 0 then
-			if shouldTrailerBeStandingStill then 
+			if shouldTrailerBeStandingStill then
 				local rootVehicle = trailer:getRootVehicle()
-				if rootVehicle then 
-					if AIUtil.isStopped(rootVehicle) then 
+				if rootVehicle then
+					if AIUtil.isStopped(rootVehicle) then
 						return true
-					else 
+					else
 						return false
 					end
 				end
@@ -556,10 +565,10 @@ function AIUtil.getVehicleAndImplementsTotalLength(vehicle)
 		end
 	end
 	return totalLength
-end 
+end
 
 function AIUtil.getShieldWorkWidth(object,logPrefix)
-	if object.spec_leveler then 
+	if object.spec_leveler then
 		local width = object.spec_leveler.nodes[1].maxDropWidth * 2
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, '%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
 		return width

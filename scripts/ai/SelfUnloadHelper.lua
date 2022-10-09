@@ -117,7 +117,7 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType,
     -- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
     -- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
     -- than what is absolutely necessary.
-    local offsetX = math.abs(objectWithPipeAttributes.pipeOffsetX) + trailerWidth / 2 - 1.1
+    local offsetX = math.abs(objectWithPipeAttributes.pipeOffsetX) + trailerWidth / 2 - 1.6
     offsetX = objectWithPipeAttributes.pipeOnLeftSide and -offsetX or offsetX
     -- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
     local _, steeringLength = AIUtil.getSteeringParameters(myVehicle)
