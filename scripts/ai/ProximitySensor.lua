@@ -375,3 +375,22 @@ function BackwardLookingProximitySensorPack:init(vehicle, node, range, height)
             {120, 150, 180, -150, -120},
             {0,     0,   0,    0,    0})
 end
+
+---@class SingleForwardLookingProximitySensorPack : ProximitySensorPack
+SingleForwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
+
+function SingleForwardLookingProximitySensorPack:init(vehicle, node, range, height)
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating single forward proximity sensor')
+    ProximitySensorPack.init(self, 'singleForward', vehicle, node, range, height,
+            {0}, {0}, false)
+end
+
+
+---@class SingleBackwardLookingProximitySensorPack : ProximitySensorPack
+SingleBackwardLookingProximitySensorPack = CpObject(ProximitySensorPack)
+
+function SingleBackwardLookingProximitySensorPack:init(vehicle, node, range, height)
+    CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Creating single backward proximity sensor')
+    ProximitySensorPack.init(self, 'singleBackward', vehicle, node, range, height,
+            {180}, {0}, false)
+end

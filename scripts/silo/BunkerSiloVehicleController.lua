@@ -10,9 +10,11 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, drivin
 	self.silo = silo
 	self.vehicle = vehicle
 	self.driveStrategy = driveStrategy
-	self.isInverted = not drivingForwardsIntoSilo
-	if CpMathUtil.isSameDirection(vehicle:getAIDirectionNode(), self.silo.startNode, 45) then 
-		self.isInverted = drivingForwardsIntoSilo
+	self.isInverted = false
+
+	local vehicleNode = vehicle:getAIDirectionNode()
+	if calcDistanceFrom(self.silo.startNode, vehicleNode) > calcDistanceFrom(self.silo.heightNode, vehicleNode) then
+		self.isInverted = true
 	end
 	self.lastLine = 1
 	self.currentTarget = nil

@@ -83,6 +83,14 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
         self.drivingForwardsIntoSilo = jobParameters.drivingForwardsIntoSilo:getValue()
     end
 
+    --- Proximity sensor to detect the silo end wall.
+    self.siloEndDetectionMarker = self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or
+                                                                     Markers.getFrontMarkerNode(self.vehicle)
+
+    self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
+                                                                        self.siloEndProximitySensorRange, 1)
+
+
     --- Setup the silo controller, that handles the driving conditions and coordinations.
 	self.siloController = self.silo:setupTarget(self.vehicle, self, self.drivingForwardsIntoSilo)
 
@@ -114,11 +122,6 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
     self:setFrontAndBackMarkers()
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 
-    self.siloEndNode = self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or Markers.getFrontMarkerNode(self.vehicle)
-
-    --- Proximity sensor to detect the silo end wall.
-    self.siloEndProximitySensor = ProximitySensorPack("siloEnd", self.vehicle, self.siloEndNode, self.siloEndProximitySensorRange, 1,
-                                 {0}, {}, false)
 
     self.isStuckTimer:setFinishCallback(function ()
             self:debug("is stuck, trying to drive out of the silo.")
@@ -207,37 +210,7 @@ end
 
 function AIDriveStrategyBunkerSilo:checkProximitySensors(moveForwards)
     AIDriveStrategyBunkerSilo:superClass().checkProximitySensors(self, moveForwards)
-    if self.state == self.states.DRIVING_INTO_SILO then
-        local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
-        if self.silo:isTheSameSilo(closestObject) then
-            self:debug("End wall detected.")
-            self:startDrivingOutOfSilo()
-        end
-
-        if self:isDrivingToParkPositionAllowed() then
-            if self.siloController:isWaitingForUnloaders() then 
-           --     self:startDrivingToParkPositionWithPathfinding()
-            end
-        else
-            self:setMaxSpeed(self.siloController:getMaxSpeed())
-        end
-    elseif self.state == self.states.DRIVING_OUT_OF_SILO then
-        if self:isDrivingToParkPositionAllowed() then
-            if self.siloController:isWaitingForUnloaders() then 
-              --  self:startDrivingToParkPositionWithPathfinding()
-            end
-        else
-            self:setMaxSpeed(self.siloController:getMaxSpeed())
-        end
-    elseif self.state == self.states.WAITING_FOR_PATHFINDER then
-        self:setMaxSpeed(0)
-    elseif self.state == self.states.WAITING_AT_PARK_POSITION then
-        self:setMaxSpeed(0)
-        if not self.siloController:isWaitingForUnloaders() then
-            local course, firstWpIx = self:getDriveIntoSiloCourse()
-            self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
-        end
-    end
+  
 end
 
 function AIDriveStrategyBunkerSilo:update(dt)
@@ -253,7 +226,7 @@ function AIDriveStrategyBunkerSilo:update(dt)
                 self.ppc:getCourse():draw()
             end
         end
-        DebugUtil.drawDebugNode(self.siloEndNode, "SiloEndNode", false, 1)
+        DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
 
         local frontMarkerNode, backMarkerNode = Markers.getMarkerNodes(self.vehicle)
         DebugUtil.drawDebugNode(frontMarkerNode, "FrontMarker", false, 1)
@@ -269,13 +242,43 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 
 function AIDriveStrategyBunkerSilo:drive()
-    if self.state == self.states.DRIVING_INTO_SILO then 
+
+    if self.state == self.states.DRIVING_INTO_SILO then
+        local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
+        if self.silo:isTheSameSilo(closestObject) then
+            self:debug("End wall detected.")
+            self:startDrivingOutOfSilo()
+        end
 
         local marker = self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or Markers.getFrontMarkerNode(self.vehicle)
-
         if self.siloController:isEndReached(marker, self:getEndOffset(), self:isDriveDirectionReverse()) then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
+        end
+
+        if self:isDrivingToParkPositionAllowed() then
+            if self.siloController:isWaitingForUnloaders() then 
+           --     self:startDrivingToParkPositionWithPathfinding()
+            end
+        else
+            self:setMaxSpeed(self.siloController:getMaxSpeed())
+        end
+
+    elseif self.state == self.states.DRIVING_OUT_OF_SILO then
+        if self:isDrivingToParkPositionAllowed() then
+            if self.siloController:isWaitingForUnloaders() then 
+              --  self:startDrivingToParkPositionWithPathfinding()
+            end
+        else
+            self:setMaxSpeed(self.siloController:getMaxSpeed())
+        end
+    elseif self.state == self.states.WAITING_FOR_PATHFINDER then
+        self:setMaxSpeed(0)
+    elseif self.state == self.states.WAITING_AT_PARK_POSITION then
+        self:setMaxSpeed(0)
+        if not self.siloController:isWaitingForUnloaders() then
+            local course, firstWpIx = self:getDriveIntoSiloCourse()
+            self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
         end
     end
 end
