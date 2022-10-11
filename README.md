@@ -17,14 +17,15 @@
 * Wrap and collect bales with or without a course
 * Save/load/rename/move courses
 * Create custom fields with recording or drawing on the AI Map
-* Vehicle Convoy
+* Vehicle convoy
+* Combine unloader
 
 ## Usage
 
-There is now a CP Fieldwork job available on the AI helper screen. Just with the built in helper, you can select a target position. When you start the job,
-the helper will drive to this position before starting the fieldwork. Use the Field position to tell the helper which field you want them to work on.
-Once you selected a valid Field position, you can click on the CP Open/Close Course Generator button on the bottom of the screen to open the course generator and generate a course.
-If your vehicle is already near or on the field, you can use the HUD or a keyboard shortcut to start the CP helper at the first, nearest or last waypoint of the fieldwork course.
+Courseplay functions are now documented in the in-game help:
+![image](https://user-images.githubusercontent.com/2379521/195123670-20773556-48d4-4292-ba06-28443a2f9c69.png)
+
+If you prefer videos, YouTube has many great [tutorials](https://www.youtube.com/results?search_query=courseplay+fs22)
 
 ## Turning on Debug Channels
 
