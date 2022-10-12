@@ -74,11 +74,10 @@ AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 
 --- Allowing of fuel save and open cover state can be set for each state below as property.
 AIDriveStrategyUnloadCombine.myStates = {
-    ON_UNLOAD_COURSE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
     WAITING_FOR_COMBINE_TO_CALL = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
-    DRIVING_TO_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
-    DRIVING_TO_MOVING_COMBINE = { checkForTrafficConflict = true, enableProximitySpeedControl = true, enableProximitySwerve = true },
+    DRIVING_TO_COMBINE = { collisionAvoidanceEnabled = true },
+    DRIVING_TO_MOVING_COMBINE = { collisionAvoidanceEnabled = true },
     UNLOADING_MOVING_COMBINE = { openCoverAllowed = true },
     UNLOADING_STOPPED_COMBINE = { openCoverAllowed = true },
     MOVING_BACK = { vehicle = nil },
@@ -86,7 +85,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
     MOVING_AWAY_FROM_BLOCKING_VEHICLE = { vehicle = nil }, -- reversing until we have enough space between us and the combine
     WAITING_FOR_MANEUVERING_COMBINE = {},
-    DRIVING_TO_SELF_UNLOAD = {},
+    DRIVING_TO_SELF_UNLOAD = { collisionAvoidanceEnabled = true },
     WAITING_FOR_AUGER_PIPE_TO_OPEN = {},
     UNLOADING_AUGER_WAGON = {}
 }
@@ -146,6 +145,7 @@ end
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyUnloadCombine:superClass().setAIVehicle(self, vehicle)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
+    self.collisionAvoidanceController = CollisionAvoidanceController(self.vehicle, self)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
@@ -170,22 +170,17 @@ function AIDriveStrategyUnloadCombine:resetPathfinder()
     self.pathfinderFailureCount = 0
 end
 
-function AIDriveStrategyUnloadCombine:isTrafficConflictDetectionEnabled()
-    return self.trafficConflictDetectionEnabled and
-            (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.checkForTrafficConflict)
-end
-
-function AIDriveStrategyUnloadCombine:isProximitySwerveEnabled(vehicle)
-    if vehicle == self.doNotSwerveForVehicle:get() then
-        return false
-    end
-    return (self.state == self.states.ON_UNLOAD_COURSE and self.state.properties.enableProximitySwerve)
-end
-
 function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
     return true
 end
 
+function AIDriveStrategyUnloadCombine:checkCollisionWarning()
+    if self.state.properties.collisionAvoidanceEnabled and
+            self.collisionAvoidanceController:isCollisionWarningActive() then
+        self:debugSparse('Collision warning, waiting...')
+        self:setMaxSpeed(0)
+    end
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Main loop
@@ -278,6 +273,9 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     end
 
     self:checkProximitySensors(moveForwards)
+
+    self:checkCollisionWarning()
+
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
@@ -346,6 +344,10 @@ function AIDriveStrategyUnloadCombine:setFieldSpeed()
     if self.course then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
+end
+
+function AIDriveStrategyUnloadCombine:getFieldSpeed()
+    return self.settings.fieldSpeed:getValue()
 end
 
 function AIDriveStrategyUnloadCombine:setNewState(newState)
@@ -1483,18 +1485,6 @@ function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, co
     end
 end
 
-
-------------------------------------------------------------------------------------------------------------------------
--- Combine management
-------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:isActiveCpCombine(vehicle)
-    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
-        -- not driven by CP
-        return false
-    end
-    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-    return driveStrategy.needUnloader ~= nil
-end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload

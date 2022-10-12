@@ -137,6 +137,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
 		<sourceFile filename="scripts/ai/ProximityController.lua"/>
 		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
+		<sourceFile filename="scripts/ai/CollisionAvoidanceController.lua"/>
 		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
 		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
 		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>

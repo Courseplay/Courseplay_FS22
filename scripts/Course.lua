@@ -1532,6 +1532,34 @@ function Course:getNearestWaypoints(node)
 	return ixClosest, dClosest, ixClosestRightDirection, dClosestRightDirection
 end
 
+--- Check if our course intersects otherCourse
+---@param otherCourse Course
+---@param lookahead number distance in meters we want to traverse on our course to check for an intersection
+---@param startAtCurrentWaypoint boolean if true, start checking at the current waypoint on both courses,
+--- otherwise at the first waypoint
+---@return number, number distance on my course to the intersection point (or nil when there is no intersection),
+--- distance on the other course until the intersection point.
+function Course:intersects(otherCourse, lookahead, startAtCurrentWaypoint)
+	local myDistance = 0
+	for i = startAtCurrentWaypoint and self:getCurrentWaypointIx() or 1, #self.waypoints - 1 do
+		local m1, m2 = self.waypoints[i], self.waypoints[i + 1]
+		myDistance = myDistance + m2.dToHere - m1.dToHere
+		local otherDistance = 0
+		for j = startAtCurrentWaypoint and otherCourse:getCurrentWaypointIx() or 1, #otherCourse.waypoints - 1 do
+			local o1, o2 = otherCourse.waypoints[j], otherCourse.waypoints[j + 1]
+			otherDistance = otherDistance + o2.dToHere - o1.dToHere
+			if CpMathUtil.getIntersectionPoint(m1.x, m1.z, m2.x, m2.z, o1.x, o1.z, o2.x, o2.z) then
+				-- these sections intersect
+				return myDistance, otherDistance
+			end
+		end
+		if myDistance > lookahead then
+			break
+		end
+	end
+	return nil
+end
+
 function Course:isPipeInFruitAt(ix)
 	return self.waypoints[ix].pipeInFruit
 end
