@@ -159,7 +159,7 @@ function AIUtil.getReverserNode(vehicle, reversingImplement)
 	if not reverserNode then
 		reverserNode, debugText = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle), 'AIToolReverserDirectionNode'
 	end
-	if not reverserNode then
+	if not reverserNode and vehicle.getAIReverserNode then
 		reverserNode, debugText = vehicle:getAIReverserNode(), 'AIReverserNode'
 	end
 	if not reverserNode and vehicle.spec_articulatedAxis ~= nil then

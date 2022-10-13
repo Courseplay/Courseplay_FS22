@@ -302,7 +302,7 @@ function CpAIWorker:startCpDriveTo(task, jobParameters)
     ---@type AIDriveStrategyDriveToFieldWorkStart
     self.driveToFieldWorkStartStrategy = AIDriveStrategyDriveToFieldWorkStart.new()
     -- this also starts the strategy
-    self.driveToFieldWorkStartStrategy:setAIVehicle(self, jobParameters)
+    CpUtil.try(self.driveToFieldWorkStartStrategy.setAIVehicle, self.driveToFieldWorkStartStrategy, self, jobParameters)
 end
 
 function CpAIWorker:stopCpDriveTo()

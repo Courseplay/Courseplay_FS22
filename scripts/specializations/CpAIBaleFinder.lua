@@ -193,7 +193,7 @@ function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon, jobParameters)
     local cpDriveStrategy = AIDriveStrategyFindBales.new()
     cpDriveStrategy:setFieldPolygon(fieldPolygon)
     cpDriveStrategy:setJobParameterValues(jobParameters)
-    cpDriveStrategy:setAIVehicle(self)
+    CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
