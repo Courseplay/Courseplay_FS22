@@ -2047,6 +2047,14 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 			<Text language="de"><![CDATA[CP: Ändert den Startpunkt]]></Text>
 			<Text language="en"><![CDATA[CP: Changes starting point]]></Text>
 		</Translation>
+		<Translation name="input_CP_CLEAR_COURSE">
+			<Text language="de"><![CDATA[CP: Löscht den geladen Kurs]]></Text>
+			<Text language="en"><![CDATA[CP: Clears currently loaded course]]></Text>
+		</Translation>
+		<Translation name="input_CP_CHANGE_COURSE_VISIBILITY">
+			<Text language="de"><![CDATA[Zeigt den Kurs des aktuell gewählten Fahrzeugs.]]></Text>
+			<Text language="en"><![CDATA[Show the current course of the vehicle]]></Text>
+		</Translation>
 		<Translation name="input_CP_TOGGLE_MOUSE">
 			<Text language="de"><![CDATA[CP: Mauszeiger an/aus]]></Text>
 			<Text language="en"><![CDATA[CP: Mouse cursor on/off]]></Text>

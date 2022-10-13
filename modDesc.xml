@@ -276,6 +276,12 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<actionBinding action="CP_CHANGE_STARTING_POINT">
 			<binding device="" input="" />
 		</actionBinding>
+		<actionBinding action="CP_CLEAR_COURSE">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_CHANGE_COURSE_VISIBILITY">
+			<binding device="" input="" />
+		</actionBinding>
 
 		<actionBinding action="CP_OPEN_VEHICLE_SETTINGS">
 			<binding device="" input="" />
@@ -303,7 +309,10 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 
 		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
 		<action name="CP_START_STOP" />
+
 		<action name="CP_CHANGE_STARTING_POINT"/>
+		<action name="CP_CLEAR_COURSE"/>
+		<action name="CP_CHANGE_COURSE_VISIBILITY"/>
 
 		<action name="CP_OPEN_VEHICLE_SETTINGS"/>
 		<action name="CP_OPEN_GLOBAL_SETTINGS"/>

@@ -1637,7 +1637,7 @@ function Course:addWaypointsForRows()
 		local p = self.waypoints[i]
 		if self:isTurnEndAtIx(i) and self:isTurnStartAtIx(i + 1) and
 			p.dToNext > CourseGenerator.waypointDistance + 0.1 then
-			CpUtil.debugVehiccle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for row, length %.1f', p.dToNext)
+			CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: adding waypoints for row, length %.1f', p.dToNext)
 			for n = 1, (p.dToNext / CourseGenerator.waypointDistance) - 1 do
 				local newWp = Waypoint(p)
 				newWp.turnEnd = nil
