@@ -656,6 +656,8 @@ Under the advanced category are:
     <text name="input_CP_START_STOP" text="CP: 启动/停止司机
 "/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: 鼠标光标开/关"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: 打开/关闭迷你HUB"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>

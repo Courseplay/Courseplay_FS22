@@ -659,6 +659,8 @@ Under den avancerade kategorin finns:
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Öppna mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Starta/Stoppa förare"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Musmarkör På/Av"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Öppna/Stäng HUD"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>

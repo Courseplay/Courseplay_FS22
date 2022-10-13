@@ -649,6 +649,8 @@ Dans la catégorie avancée :
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Affiche mini ATH"/>
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Curseur de la souris on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Affiche/masque l'ATH"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
