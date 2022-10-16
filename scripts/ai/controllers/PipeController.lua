@@ -56,6 +56,10 @@ function PipeController:isPipeMoving()
     return self:needToOpenPipe() and self.pipeSpec.currentState == PipeController.PIPE_STATE_MOVING
 end
 
+function PipeController:isPipeOpen()
+    return self:needToOpenPipe() and self.pipeSpec.currentState == PipeController.PIPE_STATE_OPEN
+end
+
 function PipeController:getFillType()
     local dischargeNode = self.implement:getDischargeNodeByIndex(self.implement:getPipeDischargeNodeIndex())
     if dischargeNode then
