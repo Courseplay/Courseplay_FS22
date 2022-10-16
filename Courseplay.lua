@@ -153,7 +153,7 @@ end
 function Courseplay.drawHudMap(map)
 	if g_Courseplay.globalSettings.drawOntoTheHudMap:getValue() then
 		local vehicle = g_currentMission.controlledVehicle
-		if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() and vehicle.spec_courseplaySpec then 
+		if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() and vehicle.spec_courseplaySpec and not vehicle.spec_locomotive then 
 			SpecializationUtil.raiseEvent(vehicle, "onCpDrawHudMap", map)
 		end
 	end
