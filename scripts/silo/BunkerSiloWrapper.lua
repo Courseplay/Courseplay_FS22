@@ -317,6 +317,14 @@ function CpBunkerSilo:hasNearbyUnloader()
 	return self.numNearbyUnloaders > 0
 end
 
+function CpBunkerSilo:shouldUnloadersWaitForSiloWorker()
+	local needsWaiting = false
+	for i, controller in pairs(self.controllers) do 
+		needsWaiting = needsWaiting or controller:isWaitingAtParkPosition() 
+	end
+	return needsWaiting
+end
+
 function CpBunkerSilo:addNearbyUnloader(vehicle)
 	if not self.nearbyUnloaders[vehicle.rootNode] then
 		self.nearbyUnloaders[vehicle.rootNode] = vehicle
@@ -353,8 +361,13 @@ function CpBunkerSilo:updateUnloaders(dt)
 			end
 		end
 	end
-	for i, unloader in pairs(self.nearbyUnloaders) do 
-		--- TODO: handle ad unloaders here.
+	if self:shouldUnloadersWaitForSiloWorker() then
+		--- Makes sure the AD driver wait for the silo worker. 
+		for i, unloader in pairs(self.nearbyUnloaders) do
+			if unloader.HoldDriving then 
+				unloader:HoldDriving()
+			end
+		end
 	end
 end
 

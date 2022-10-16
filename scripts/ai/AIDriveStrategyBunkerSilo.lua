@@ -151,7 +151,7 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
         if self.state == self.states.DRIVING_INTO_SILO then 
             self:startDrivingOutOfSilo()
         elseif self.state == self.states.DRIVING_OUT_OF_SILO then 
-            if self:isDrivingToParkPositionAllowed() and self.siloController:isWaitingForUnloaders() then
+            if self:isDrivingToParkPositionAllowed() and self.siloController:hasNearbyUnloader() then
                 --- Only allow driving to park position here for now, as the silo interferes with the pathfinder.
                 self:startDrivingToParkPositionWithPathfinding()
             else 
@@ -192,7 +192,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
         self.isStuckTimer:startIfNotRunning()
     end
 
-    if self.siloController:isWaitingForUnloaders() then 
+    if self.siloController:hasNearbyUnloader() then 
         self:setInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
     else
         self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
@@ -204,7 +204,7 @@ end
 function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
     return self.state == self.states.DRIVING_INTO_SILO and 
             AIUtil.isStopped(self.vehicle) 
-            and not self.siloController:isWaitingForUnloaders() 
+            and not self.siloController:hasNearbyUnloader() 
             and not self.proximityController:isStopped()
 end
 
@@ -257,7 +257,7 @@ function AIDriveStrategyBunkerSilo:drive()
         end
 
         if self:isDrivingToParkPositionAllowed() then
-            if self.siloController:isWaitingForUnloaders() then 
+            if self.siloController:hasNearbyUnloader() then 
            --     self:startDrivingToParkPositionWithPathfinding()
             end
         else
@@ -266,7 +266,7 @@ function AIDriveStrategyBunkerSilo:drive()
 
     elseif self.state == self.states.DRIVING_OUT_OF_SILO then
         if self:isDrivingToParkPositionAllowed() then
-            if self.siloController:isWaitingForUnloaders() then 
+            if self.siloController:hasNearbyUnloader() then 
               --  self:startDrivingToParkPositionWithPathfinding()
             end
         else
@@ -276,11 +276,19 @@ function AIDriveStrategyBunkerSilo:drive()
         self:setMaxSpeed(0)
     elseif self.state == self.states.WAITING_AT_PARK_POSITION then
         self:setMaxSpeed(0)
-        if not self.siloController:isWaitingForUnloaders() then
+        if not self.siloController:hasNearbyUnloader() then
             local course, firstWpIx = self:getDriveIntoSiloCourse()
             self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
         end
     end
+end
+
+function AIDriveStrategyBunkerSilo:isWaitingAtParkPosition()
+    return self.state == self.states.WAITING_AT_PARK_POSITION
+end
+
+function AIDriveStrategyBunkerSilo:isWaitingForUnloaders()
+    return self:isDrivingToParkPositionAllowed() and self.state == self.states.WAITING_AT_PARK_POSITION or self.siloController:hasNearbyUnloader()
 end
 
 function AIDriveStrategyBunkerSilo:isDrivingToParkPositionAllowed()

@@ -1,5 +1,5 @@
 --- Small gui window to display workWidth, tool offset.
-
+---@class CpGamePadHudScreen
 CpGamePadHudScreen = {
 	CONTROLS = {
 		BUTTON_BACK = "backButton",
@@ -59,10 +59,10 @@ function CpGamePadHudScreen:onGuiSetupFinished()
 end
 
 --- Links gui elements with the settings.
-function CpGamePadHudScreen:setData(vehicle,settings) 
+function CpGamePadHudScreen:setData(vehicle, settings) 
 	self.vehicle = vehicle
 	self.settings = settings
-	CpSettingsUtil.linkGuiElementsAndSettings(settings,self.layout)
+	CpSettingsUtil.linkGuiElementsAndSettings(settings, self.layout)
 end
 
 function CpGamePadHudScreen:onOpen(element)
@@ -84,7 +84,7 @@ end
 function CpGamePadHudScreen:onClose(element)
 	CpGamePadHudScreen:superClass().onClose(self)
 	if self.settings then
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.layout)
+		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings, self.layout)
 	end
 	g_inputBinding:removeActionEventsByTarget(self)
 	self.vehicle:closeCpGamePadHud()
@@ -108,7 +108,7 @@ function CpGamePadHudScreen:onClickOk()
 end
 
 function CpGamePadHudScreen:update(dt, ...)
-	CpGamePadHudScreen:superClass().update(self,dt, ...)
+	CpGamePadHudScreen:superClass().update(self, dt, ...)
 	if not self.vehicle then
 		return
 	end
@@ -148,11 +148,30 @@ function CpGamePadHudScreen:onClickClearCourse()
 end
 
 function CpGamePadHudScreen:draw(...)
-	CpGamePadHudScreen:superClass().draw(self,...)
+	CpGamePadHudScreen:superClass().draw(self, ...)
 	CpGamePadHud.onDraw(self.vehicle)	
 	g_currentMission.hud:drawBlinkingWarning()
 end
 
+---@class CpGamePadHudFieldWorkScreen : CpGamePadHudScreen
+CpGamePadHudFieldWorkScreen = {}
+local CpGamePadHudFieldWorkScreen_mt = Class(CpGamePadHudFieldWorkScreen, CpGamePadHudScreen)
+
+function CpGamePadHudFieldWorkScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudFieldWorkScreen_mt)
+
+	return self
+end
+
+function CpGamePadHudFieldWorkScreen:update(dt, ...)
+	CpGamePadHudFieldWorkScreen:superClass().update(self, dt, ...)
+	if self.vehicle:getCanStartCpBunkerSiloWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO then
+		self.vehicle:reopenCpGamePadHud()
+	end
+end
+
+
+---@class CpGamePadHudBaleLoaderScreen : CpGamePadHudScreen
 CpGamePadHudBaleLoaderScreen = {}
 local CpGamePadHudBaleLoaderScreen_mt = Class(CpGamePadHudBaleLoaderScreen, CpGamePadHudScreen)
 
@@ -162,6 +181,7 @@ function CpGamePadHudBaleLoaderScreen.new(settings, target, custom_mt)
 	return self
 end
 
+---@class CpGamePadHudUnloaderScreen : CpGamePadHudScreen
 CpGamePadHudUnloaderScreen = {}
 local CpGamePadHudUnloaderScreen_mt = Class(CpGamePadHudUnloaderScreen, CpGamePadHudScreen)
 
@@ -169,4 +189,21 @@ function CpGamePadHudUnloaderScreen.new(settings, target, custom_mt)
 	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudUnloaderScreen_mt)
 
 	return self
+end
+
+---@class CpGamePadHudBunkerSiloScreen : CpGamePadHudScreen
+CpGamePadHudBunkerSiloScreen = {}
+local CpGamePadHudBunkerSiloScreen_mt = Class(CpGamePadHudBunkerSiloScreen, CpGamePadHudScreen)
+
+function CpGamePadHudBunkerSiloScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudBunkerSiloScreen_mt)
+
+	return self
+end
+
+function CpGamePadHudBunkerSiloScreen:update(dt, ...)
+	CpGamePadHudBunkerSiloScreen:superClass().update(self, dt, ...)
+	if not self.vehicle:getCanStartCpBunkerSiloWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpJobParameters.START_AT_BUNKER_SILO then
+		self.vehicle:reopenCpGamePadHud()
+	end
 end

@@ -16,32 +16,35 @@ CpGamePadHud.SETTING_TYPES = {
 	jobParameters = CpJobParameters,
 	baleFinderJobParameters = CpBaleFinderJobParameters,
 	combineUnloaderJobParameters = CpCombineUnloaderJobParameters,
+	bunkerSiloJobParameters = CpBunkerSiloJobParameters,
 	globalSettings = CpGlobalSettings
 }
 
 CpGamePadHud.FIELDWORK_PAGE = "cpFieldworkGamePadHudPage"
 CpGamePadHud.BALE_LOADER_PAGE = "cpBaleLoaderGamePadHudPage"
 CpGamePadHud.UNLOADER_PAGE = "cpUnloaderGamePadHudPage"
+CpGamePadHud.BUNKER_SILO_PAGE = "cpBunkerSiloGamePadHudPage"
 
 CpGamePadHud.PAGE_FILES = {
-	[CpGamePadHud.FIELDWORK_PAGE ] = {"config/gamePadHud/FieldworkGamePadHudPage.xml", CpGamePadHudScreen},
+	[CpGamePadHud.FIELDWORK_PAGE ] = {"config/gamePadHud/FieldworkGamePadHudPage.xml", CpGamePadHudFieldWorkScreen},
 	[CpGamePadHud.BALE_LOADER_PAGE] = {"config/gamePadHud/BaleLoaderGamePadHudPage.xml", CpGamePadHudBaleLoaderScreen},
-	[CpGamePadHud.UNLOADER_PAGE] = {"config/gamePadHud/UnloaderGamePadHudPage.xml", CpGamePadHudUnloaderScreen}
+	[CpGamePadHud.UNLOADER_PAGE] = {"config/gamePadHud/UnloaderGamePadHudPage.xml", CpGamePadHudUnloaderScreen},
+	[CpGamePadHud.BUNKER_SILO_PAGE] = {"config/gamePadHud/BunkerSiloGamePadHudPage.xml", CpGamePadHudBunkerSiloScreen}
 }
 
 function CpGamePadHud.initSpecialization()
 	CpGamePadHud.xmlSchema = XMLSchema.new("CpGamePadHudSchema")
 	local schema = CpGamePadHud.xmlSchema
-	schema:register(XMLValueType.STRING,CpGamePadHud.XML_KEY_TITLE,"Title of the display.")
-	schema:register(XMLValueType.STRING,CpGamePadHud.XML_KEY.."(?)#name","Setting name to bind.")
-	schema:register(XMLValueType.STRING,CpGamePadHud.XML_KEY.."(?)#type","Setting parent.")
+	schema:register(XMLValueType.STRING, CpGamePadHud.XML_KEY_TITLE, "Title of the display.")
+	schema:register(XMLValueType.STRING, CpGamePadHud.XML_KEY.."(?)#name", "Setting name to bind.")
+	schema:register(XMLValueType.STRING, CpGamePadHud.XML_KEY.."(?)#type", "Setting parent.")
 end
 
 function CpGamePadHud.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
 end
 
-function CpGamePadHud.register(typeManager,typeName,specializations)
+function CpGamePadHud.register(typeManager, typeName, specializations)
 	if CpGamePadHud.prerequisitesPresent(specializations) then
 		typeManager:addSpecialization(typeName, CpGamePadHud.SPEC_NAME)
 	end
@@ -59,10 +62,10 @@ function CpGamePadHud.loadFromXMLFile()
 		g_gui:loadGui(Utils.getFilename("config/gui/ControllerGuiScreen.xml", Courseplay.BASE_DIRECTORY), pageName, CpGamePadHud.pages[pageName].screen)
 	end
 	--- Enables a few background hud elements, while the vehicle setting display is visible.
-	local function getIsOverlayGuiVisible(gui,superFunc)
+	local function getIsOverlayGuiVisible(gui, superFunc)
 		return CpGamePadHud.PAGE_FILES[gui.currentGuiName] ~= nil or superFunc(gui) 
 	end
-	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible,getIsOverlayGuiVisible)
+	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible, getIsOverlayGuiVisible)
 
 	local function isHudPopupMessageVisible(hud, superFunc, ...)
 		print(tostring(g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.isCpGamePadHudActive and g_currentMission.controlledVehicle:isCpGamePadHudActive()))
@@ -72,7 +75,7 @@ function CpGamePadHud.loadFromXMLFile()
 end
 
 function CpGamePadHud.loadPageData(page, filePath)
-	local xmlFile = XMLFile.load("CpGamePadHudXml",filePath,CpGamePadHud.xmlSchema)
+	local xmlFile = XMLFile.load("CpGamePadHudXml", filePath, CpGamePadHud.xmlSchema)
 	if xmlFile then 
 		page.title = xmlFile:getValue(CpGamePadHud.XML_KEY_TITLE)
 		page.settingsData = {}
@@ -84,11 +87,11 @@ function CpGamePadHud.loadPageData(page, filePath)
 				settingName = settingName,
 				settingType = settingType
 			}
-			table.insert(page.settingsData,settingData)
+			table.insert(page.settingsData, settingData)
 
 			local prefabSetting = CpGamePadHud.SETTING_TYPES[settingType][settingName]
 
-			table.insert(page.prefabSettingsData,prefabSetting)
+			table.insert(page.prefabSettingsData, prefabSetting)
 		end)
 		xmlFile:delete()
 	end
@@ -106,6 +109,7 @@ end
 function CpGamePadHud.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, "isCpGamePadHudActive", CpGamePadHud.isCpGamePadHudActive)
 	SpecializationUtil.registerFunction(vehicleType, "closeCpGamePadHud", CpGamePadHud.closeCpGamePadHud)
+	SpecializationUtil.registerFunction(vehicleType, "reopenCpGamePadHud", CpGamePadHud.reopenCpGamePadHud)
 end
 
 function CpGamePadHud.registerOverwrittenFunctions(vehicleType)
@@ -174,7 +178,7 @@ function CpGamePadHud:linkSettings()
 			local func = CpGamePadHud.SETTING_TYPES[data.settingType].getSettings
 			local settings = func(self)
 			local setting = settings[data.settingName]
-			table.insert(spec.pages[pageName].settings,setting)
+			table.insert(spec.pages[pageName].settings, setting)
 		end
 	end
 end
@@ -187,7 +191,9 @@ function CpGamePadHud:actionEventOpenCloseDisplay()
 		page = CpGamePadHud.UNLOADER_PAGE
 	elseif self:getCanStartCpBaleFinder() then 
 		page = CpGamePadHud.BALE_LOADER_PAGE
-	else
+	elseif self:getCanStartCpBunkerSiloWorker() and self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO  then 
+		page = CpGamePadHud.BUNKER_SILO_PAGE
+	else 
 		page = CpGamePadHud.FIELDWORK_PAGE
 	end
 	CpGamePadHud.pages[page].screen:setData(self, spec.pages[page].settings) 
@@ -204,3 +210,7 @@ function CpGamePadHud:closeCpGamePadHud()
 	spec.isVisible = false
 end
 
+function CpGamePadHud:reopenCpGamePadHud()
+	g_gui:showGui("")
+	CpGamePadHud.actionEventOpenCloseDisplay(self)
+end

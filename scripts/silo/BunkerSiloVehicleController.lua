@@ -132,8 +132,16 @@ function CpBunkerSiloVehicleController:getMaxSpeed()
 	return math.huge
 end
 
-function CpBunkerSiloVehicleController:isWaitingForUnloaders()
+function CpBunkerSiloVehicleController:hasNearbyUnloader()
 	return self.silo:hasNearbyUnloader()
+end
+
+function CpBunkerSiloVehicleController:isWaitingForUnloaders()
+	return self.driveStrategy:isWaitingForUnloaders()
+end
+
+function CpBunkerSiloVehicleController:isWaitingAtParkPosition()
+	return self.driveStrategy:isWaitingAtParkPosition()
 end
 
 function CpBunkerSiloVehicleController:draw()
