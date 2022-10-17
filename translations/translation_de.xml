@@ -675,7 +675,7 @@ Achtung: Sobald du loslässt, werden die Wegpunkte abgesetzt, dies kann nicht r�
     <text name="input_CP_START_STOP" text="CP: Starte/Stoppe CP-Helfer"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Ändert den Startpunkt"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Löscht den geladen Kurs"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Zeigt den Kurs des aktuell gewählten Fahrzeugs."/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Ändert die Kurs Sichtbarkeit"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mauszeiger an/aus"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Öffne/Schließe HUD"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Öffnet Fahrzeugeinstellungen"/>
