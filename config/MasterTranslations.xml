@@ -2052,8 +2052,8 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 			<Text language="en"><![CDATA[CP: Clears currently loaded course]]></Text>
 		</Translation>
 		<Translation name="input_CP_CHANGE_COURSE_VISIBILITY">
-			<Text language="de"><![CDATA[Zeigt den Kurs des aktuell gewählten Fahrzeugs.]]></Text>
-			<Text language="en"><![CDATA[Show the current course of the vehicle]]></Text>
+			<Text language="de"><![CDATA[CP: Ändert die Kurs Sichtbarkeit]]></Text>
+			<Text language="en"><![CDATA[CP: Toggles the course visibility]]></Text>
 		</Translation>
 		<Translation name="input_CP_TOGGLE_MOUSE">
 			<Text language="de"><![CDATA[CP: Mauszeiger an/aus]]></Text>

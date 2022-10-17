@@ -105,7 +105,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
                 local _, actionEventId = vehicle:addActionEvent(spec.actionEvents, event, vehicle, callback, false, true, false, true, nil)
                 g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
                 g_inputBinding:setActionEventTextVisibility(actionEventId, actionEventsVisible)
-                if text ~=nil then 
+                if text ~= nil then 
                     g_inputBinding:setActionEventText(actionEventId, text)
                 end
             end
@@ -113,7 +113,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
             addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopDriver)
             addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
             addActionEvent(self, InputAction.CP_CLEAR_COURSE, CpAIWorker.clearCourse, 
-                          g_i18n:getText("CP_courseManager_clear_current_courses"))
+                          g_i18n:getText("input_CP_CLEAR_COURSE"))
             addActionEvent(self, InputAction.CP_CHANGE_COURSE_VISIBILITY, CpAIWorker.changeCourseVisibility)
             
             addActionEvent(self, InputAction.CP_OPEN_VEHICLE_SETTINGS, CpGuiUtil.openVehicleSettingsGui,
@@ -151,12 +151,12 @@ function CpAIWorker:updateActionEvents()
 		end
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_STARTING_POINT]
         local startingPointSetting = self:getCpStartingPointSetting()
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("%s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
         g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:getCanStartCpFieldWork())
 
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_COURSE_VISIBILITY]
         local setting = self:getCpSettings().showCourse
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("%s %s", setting:getTitle(), setting:getString()))
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s: %s", setting:getTitle(), setting:getString()))
         g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:hasCpCourse())
 
         actionEvent = spec.actionEvents[InputAction.CP_CLEAR_COURSE]
