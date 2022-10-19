@@ -492,7 +492,7 @@ function AIUtil.isBehindOtherVehicle(vehicle, otherVehicle)
 end
 
 function AIUtil.isStopped(vehicle)
-	-- giants supplied last speed is in mm/s
+	-- giants supplied last speed is in m/ms
 	return math.abs(vehicle.lastSpeedReal) < 0.0001
 end
 

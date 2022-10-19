@@ -343,6 +343,20 @@ function AIDriveStrategyCourse:getWorkWidth()
     return self.workWidth
 end
 
+--- Get the currently active course (temporary or not)
+function AIDriveStrategyCourse:getCurrentCourse()
+    return self.ppc:getCourse() or self.course
+end
+
+function AIDriveStrategyCourse:isActiveCpCombine(vehicle)
+    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
+        -- not driven by CP
+        return false
+    end
+    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
+    return driveStrategy.callUnloader ~= nil
+end
+
 function AIDriveStrategyCourse:update()
     self.ppc:update()
     self:updatePathfinding()
