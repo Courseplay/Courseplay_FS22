@@ -344,7 +344,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
             cpDriveStrategy = AIDriveStrategyFieldWorkCourse.new()
         end
     end
-    cpDriveStrategy:setAIVehicle(self, jobParameters)
+    CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self, jobParameters)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.
 	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)

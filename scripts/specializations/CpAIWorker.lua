@@ -105,14 +105,17 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
                 local _, actionEventId = vehicle:addActionEvent(spec.actionEvents, event, vehicle, callback, false, true, false, true, nil)
                 g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_HIGH)
                 g_inputBinding:setActionEventTextVisibility(actionEventId, actionEventsVisible)
-                if text ~=nil then 
+                if text ~= nil then 
                     g_inputBinding:setActionEventText(actionEventId, text)
                 end
             end
 
             addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopDriver)
             addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
-
+            addActionEvent(self, InputAction.CP_CLEAR_COURSE, CpAIWorker.clearCourse, 
+                          g_i18n:getText("input_CP_CLEAR_COURSE"))
+            addActionEvent(self, InputAction.CP_CHANGE_COURSE_VISIBILITY, CpAIWorker.changeCourseVisibility)
+            
             addActionEvent(self, InputAction.CP_OPEN_VEHICLE_SETTINGS, CpGuiUtil.openVehicleSettingsGui,
                     g_i18n:getText("input_CP_OPEN_VEHICLE_SETTINGS"))
             addActionEvent(self, InputAction.CP_OPEN_GLOBAL_SETTINGS, CpGuiUtil.openGlobalSettingsGui,
@@ -127,7 +130,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
 	end
 end
 
---- Updates the start stop action event visibility and text.
+--- Updates the action event visibility and text.
 function CpAIWorker:updateActionEvents()
     local spec = self.spec_cpAIWorker
     local giantsSpec = self.spec_aiJobVehicle
@@ -148,8 +151,16 @@ function CpAIWorker:updateActionEvents()
 		end
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_STARTING_POINT]
         local startingPointSetting = self:getCpStartingPointSetting()
-        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("%s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
         g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:getCanStartCpFieldWork())
+
+        actionEvent = spec.actionEvents[InputAction.CP_CHANGE_COURSE_VISIBILITY]
+        local setting = self:getCpSettings().showCourse
+        g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s: %s", setting:getTitle(), setting:getString()))
+        g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:hasCpCourse())
+
+        actionEvent = spec.actionEvents[InputAction.CP_CLEAR_COURSE]
+        g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:hasCpCourse())
     end
 end
 
@@ -219,6 +230,14 @@ function CpAIWorker:changeStartingPoint()
     startingPointSetting:setNextItem()
 end
 
+function CpAIWorker:clearCourse()
+    self:resetCpCoursesFromGui()
+end
+
+function CpAIWorker:changeCourseVisibility()
+    self:getCpSettings().showCourse:setNextItem()
+end
+
 --- Directly starts a cp job or stops a currently active job.
 function CpAIWorker:startStopDriver()
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Start/stop cp helper")
@@ -283,7 +302,7 @@ function CpAIWorker:startCpDriveTo(task, jobParameters)
     ---@type AIDriveStrategyDriveToFieldWorkStart
     self.driveToFieldWorkStartStrategy = AIDriveStrategyDriveToFieldWorkStart.new()
     -- this also starts the strategy
-    self.driveToFieldWorkStartStrategy:setAIVehicle(self, jobParameters)
+    CpUtil.try(self.driveToFieldWorkStartStrategy.setAIVehicle, self.driveToFieldWorkStartStrategy, self, jobParameters)
 end
 
 function CpAIWorker:stopCpDriveTo()
@@ -343,13 +362,13 @@ end
 --- Auto drive stop
 function CpAIWorker:onStopAutoDrive(isPassingToCP, isStartingAIVE)
     if g_server then 
-        CpUtil.infoVehicle(self, "isPassingToCP: %s, isStartingAIVE: %s", tostring(isPassingToCP), tostring(isStartingAIVE))
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "isPassingToCP: %s, isStartingAIVE: %s", tostring(isPassingToCP), tostring(isStartingAIVE))
         if self.ad.restartCP then 
             --- Is restarted for refilling or unloading.
-            CpUtil.infoVehicle(self, "Was refilled/unloaded by AD.")
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Was refilled/unloaded by AD.")
         else 
             --- Is sent to a field.
-            CpUtil.infoVehicle(self, "Was sent to field by AD.")
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Was sent to field by AD.")
         end
     end
 end

@@ -169,6 +169,7 @@ function CustomFieldManager:onClickDeleteDialog(clickOk, fieldToDelete)
 end
 
 function CustomFieldManager:onClickRenameDialog(newName,clickOk,fieldToRename)
+    newName = CpUtil.cleanFilePath(newName)
     if clickOk then
         CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Trying to rename custom field from %s to %s.', fieldToRename:getName(),newName)
         for i, field in pairs(self.fields) do

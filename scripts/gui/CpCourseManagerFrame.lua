@@ -602,6 +602,7 @@ function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
 	g_gui:showTextInputDialog({
 		disableFilter = true,
 		callback = function (self,text,clickOk,viewEntry)
+			text = CpUtil.cleanFilePath(text)
 			callbackFunc(self,text,clickOk,viewEntry)
 			self:updateLists()
 		end,

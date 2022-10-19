@@ -656,6 +656,8 @@ Under the advanced category are:
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Åbne mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Start/stop CP hjælper"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Musemarkør on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Åben/luk Hud"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>

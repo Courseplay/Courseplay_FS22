@@ -659,6 +659,8 @@ Pod pokročilou kategorií jsou:
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Otevřt/zavřít nastavení vozidla"/>
     <text name="input_CP_START_STOP" text="CP: Spustit mini GUI"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Kurzor myši zap/vyp"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Otevřt/zavřít Hud"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>

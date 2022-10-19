@@ -296,3 +296,17 @@ function CpUtil.getClassObject(className)
 
 	return currentTable
 end
+
+--- Converts all invalid filename characters to '_' for now. 
+function CpUtil.cleanFilePath(name)
+	name = string.gsub(name, "<", "_")
+	name = string.gsub(name, ">", "_")
+	name = string.gsub(name, ":", "_")
+	name = string.gsub(name, '"', "_")
+	name = string.gsub(name, "/", "_")
+	name = string.gsub(name, '\\', "_")
+	name = string.gsub(name, "|", "_")
+	name = string.gsub(name, '?', "_")
+	name = string.gsub(name, "*", "_")
+	return name
+end
