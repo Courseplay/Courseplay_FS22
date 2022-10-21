@@ -65,8 +65,8 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
     if bestTrailer then
         fillRootNode = bestTrailer:getFillUnitExactFillRootNode(bestFillUnitIndex)
         CpUtil.debugVehicle(self.debugChannel, myVehicle,
-                'Best trailer is %s at %.1f meters, free capacity %d, root node %s',
-                bestTrailer:getName(), minDistance, maxCapacity, tostring(fillRootNode))
+                'Best trailer is %s at %.1f meters, free capacity %d, fill node %s',
+                bestTrailer:getName(), minDistance, maxCapacity, bestFillUnitIndex)
         local bestFillNode = self:findBestFillNode(myVehicle, fillRootNode, pipeOffsetX)
         return bestTrailer, bestFillNode
     else
