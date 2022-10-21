@@ -667,8 +667,8 @@ R: Удаляет скопированный курс из буфера обме
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Открыть mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Отправить/становить водителя"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Изменить точку отправки"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Очистить текущий загруженный курс"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Показать текущий курс на технике"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Курсор вкл/выкл"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Откр/закр HUD"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Открыть настройки автомобиля"/>
