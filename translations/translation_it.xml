@@ -661,8 +661,8 @@ Nella categoria avanzata ci sono:
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Apri mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Avvia/Ferma autista"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Cambia punto di partenza"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Cancella il percorso attualmente caricato"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Mostra il percorso attuale del veicolo"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Cursore Mouse on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Apri/Chiudi la hud"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Apre le impostazioni del veicolo"/>
