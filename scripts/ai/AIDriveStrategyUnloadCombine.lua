@@ -623,7 +623,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
         if self:startSelfUnload() then
             self:debug('Trailer to unload to found, attempting self unload now')
         else
-            self:debug('No trailer for self unload found but not full, keep waiting')
+            self:debug('No trailer for self unload found, keep waiting')
             self:startWaitingForSomethingToDo()
         end
     else

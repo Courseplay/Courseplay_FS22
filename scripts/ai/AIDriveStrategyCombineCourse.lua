@@ -223,13 +223,13 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING_ON_FIELD then
         -- Unloading
         self:driveUnloadOnField()
+        self:callUnloaderWhenNeeded()
     end
     if self:isTurning() and not self:isTurningOnHeadland() then
         if self:shouldHoldInTurnManeuver() then
             self:setMaxSpeed(0)
         end
     end
-    self:callUnloaderWhenNeeded()
     return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
@@ -424,6 +424,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 
     if self.state == self.states.WORKING then
         self:estimateDistanceUntilFull(ix)
+        self:callUnloaderWhenNeeded()
     end
 
     if self.state == self.states.UNLOADING_ON_FIELD and
