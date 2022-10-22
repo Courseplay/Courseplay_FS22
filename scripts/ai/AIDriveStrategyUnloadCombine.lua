@@ -79,7 +79,7 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
 --- Allowing of fuel save and open cover state can be set for each state below as property.
 AIDriveStrategyUnloadCombine.myStates = {
-    WAITING_FOR_COMBINE_TO_CALL = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
+    IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
     DRIVING_TO_COMBINE = { collisionAvoidanceEnabled = true },
     DRIVING_TO_MOVING_COMBINE = { collisionAvoidanceEnabled = true },
@@ -103,7 +103,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     end
     local self = AIDriveStrategyCourse.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyUnloadCombine.myStates)
-    self.state = self.states.WAITING_FOR_COMBINE_TO_CALL
+    self.state = self.states.IDLE
     self.debugChannel = CpDebug.DBG_UNLOAD_COMBINE
     ---@type ImplementController[]
     self.controllers = {}
@@ -117,6 +117,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.blockedVehicleReversing = CpTemporaryObject(false)
     self.driveUnloadNowRequested = CpTemporaryObject(false)
     self.movingAwayDelay = CpTemporaryObject(false)
+    self.checkForTrailerToUnloadTo = CpTemporaryObject(true)
     self:resetPathfinder()
     return self
 end
@@ -215,11 +216,20 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     -- safety check: combine has active AI driver
     if self.combineToUnload and not self.combineToUnload:getIsCpFieldWorkActive() then
         self:setMaxSpeed(0)
-    elseif self.state == self.states.WAITING_FOR_COMBINE_TO_CALL then
+    elseif self.state == self.states.IDLE then
+        -- nothing to do right now, wait for one of the following:
+        -- - combine calls
+        -- - user sends us to unload the trailer
+        -- - a trailer appears where we can unload our auger wagon if full
         self:setMaxSpeed(0)
 
-        if self:isDriveUnloadNowRequested() or self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
-            self:debug('Drive unload now requested or trailers over %d fill level', self.settings.fullThreshold:getValue())
+        if self:isDriveUnloadNowRequested() then
+            self:debug('Drive unload now requested')
+            self:startUnloadingTrailers()
+        elseif self.checkForTrailerToUnloadTo:get() and self:getAllTrailersFull(self.settings.fullThreshold:getValue()) then
+            -- every now and then check if should attempt to unload our trailer/auger wagon
+            self.checkForTrailerToUnloadTo:set(false, 10000)
+            self:debug('Trailers over %d fill level', self.settings.fullThreshold:getValue())
             self:startUnloadingTrailers()
         end
     elseif self.state == self.states.WAITING_FOR_PATHFINDER then
@@ -268,7 +278,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         -- drive back until the combine is in front of us
         local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
         if dz > 0 then
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
         end
 
     elseif self.state == self.states.DRIVING_TO_SELF_UNLOAD then
@@ -290,10 +300,12 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
-function AIDriveStrategyUnloadCombine:startWaitingForCombine()
-    self:releaseCombine()
-    self.course = Course.createStraightForwardCourse(self.vehicle, 25)
-    self:setNewState(self.states.WAITING_FOR_COMBINE_TO_CALL)
+function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
+    if self.state ~= self.states.IDLE then
+        self:releaseCombine()
+        self.course = Course.createStraightForwardCourse(self.vehicle, 25)
+        self:setNewState(self.states.IDLE)
+    end 
 end
 
 function AIDriveStrategyUnloadCombine:driveBesideCombine()
@@ -337,7 +349,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
             -- Right behind the combine, aligned, go for the pipe
             self:startUnloadingCombine()
         else
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
         end
     elseif self.state == self.states.DRIVING_TO_MOVING_COMBINE then
         self:startCourseFollowingCombine()
@@ -345,7 +357,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:setNewState(self.stateAfterMovedOutOfWay)
         self:startRememberedCourse()
     elseif self.state == self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE then
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
     elseif self.state == self.states.DRIVING_TO_SELF_UNLOAD then
         self:onLastWaypointPassedWhenDrivingToSelfUnload()
     elseif self.state == self.states.MOVING_TO_NEXT_FILL_NODE then
@@ -600,6 +612,8 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Start the course to unload the trailers
+---@param waitForCombineIfNotFull boolean when not full, and no trailer found, start waiting for the combine
+--- instead of just stopping
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
     self:setMaxSpeed(0)
@@ -609,11 +623,11 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
         if self:startSelfUnload() then
             self:debug('Trailer to unload to found, attempting self unload now')
         else
-            self:debug('Self unload did not work out, stop.')
-            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+            self:debug('No trailer for self unload found but not full, keep waiting')
+            self:startWaitingForSomethingToDo()
         end
     else
-        self:debug('Have no auger wagon, stop, so eventually AD can take over.')
+        self:debug('Full and have no auger wagon, stop, so eventually AD can take over.')
         --- The job instance decides if the job has to quit.
         self.vehicle:getJob():onTrailerFull(self.vehicle, self)
     end
@@ -736,7 +750,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToMovingCombine(path, goa
         self:setNewState(self.states.DRIVING_TO_MOVING_COMBINE)
         return true
     else
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
         return false
     end
 end
@@ -756,7 +770,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToCombine(onPathfindingDon
                 CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload), {}, onPathfindingDoneFunc)
     else
         self:debug('Can\'t start pathfinding, too close?')
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
     end
 end
 
@@ -767,7 +781,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToCombine(path, goalNodeI
         self:setNewState(self.states.DRIVING_TO_COMBINE)
         return true
     else
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
         return false
     end
 end
@@ -779,7 +793,7 @@ end
 
 --- Am I ready to be assigned to a combine in need?
 function AIDriveStrategyUnloadCombine:isIdle()
-    return self.state == self.states.WAITING_FOR_COMBINE_TO_CALL
+    return self.state == self.states.IDLE
 end
 
 --- Get the Dubins path length and the estimated seconds en-route to gaol
@@ -827,7 +841,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
                     { self.combineToUnload }, self.onPathfindingDoneToMovingCombine)
         else
             self:debug('call: Rendezvous waypoint to moving combine too close, wait a bit')
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
             return
         end
     else
@@ -1112,7 +1126,7 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
 
     if self.combineToUnload:getCpDriveStrategy():isWaitingForUnload() then
         self:debug('combine is now stopped and waiting for unload, wait for it to call again')
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
         return
     end
 
@@ -1151,7 +1165,7 @@ function AIDriveStrategyUnloadCombine:waitForManeuveringCombine()
         local distanceCombineMoved = MathUtil.vector2Length(dx, dz)
         if math.abs(yRotation - self.lastCombinePos.yRotation) > math.pi / 6 or distanceCombineMoved > 30 then
             self:debug('Combine moved (%d) or turned significantly while I was waiting, re-evaluate situation', distanceCombineMoved)
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
         else
             self:setNewState(self.stateAfterWaitingForManeuveringCombine)
         end
@@ -1230,7 +1244,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         else
             self:debug('combine empty and moving forward')
             self:releaseCombine()
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
             return
         end
     end
@@ -1251,7 +1265,7 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
         self:isInFrontAndAlignedToMovingCombine(true)
         self:info('not in a good position to unload, cancelling rendezvous, trying to recover')
         -- for some reason (like combine turned) we are not in a good position anymore then set us up again
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
     end
 end
 
@@ -1275,7 +1289,7 @@ function AIDriveStrategyUnloadCombine:onMissedRendezvous(combine)
             self.combineToUnload == combine then
         if self.course:getDistanceToLastWaypoint(self.course:getCurrentWaypointIx()) > 100 then
             self:debug('over 100 m from the combine to rendezvous, re-planning')
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
         end
     else
         self:debug('ignore missed rendezvous, state %s, fieldwork state %s', self.state.name, self.state.name)
@@ -1408,7 +1422,7 @@ function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
         end
         -- none of my child vehicles are closer than dx to the combine
         self:debug('Moved away from blocking CP combine %s', CpUtil.getName(self.state.properties.vehicle))
-        self:startWaitingForCombine()
+        self:startWaitingForSomethingToDo()
     else
         -- moving away from some other vehicle, or our combine not head on, just move until we can
         -- recalculate a path
@@ -1416,7 +1430,7 @@ function AIDriveStrategyUnloadCombine:moveAwayFromBlockingVehicle()
         self:debugSparse('d from %s is %.1f', CpUtil.getName(self.state.properties.vehicle), d)
         if d > 2 * self.turningRadius then
             self:debug('Moved away from blocking vehicle %s', CpUtil.getName(self.state.properties.vehicle))
-            self:startWaitingForCombine()
+            self:startWaitingForSomethingToDo()
         end
     end
 end
@@ -1530,6 +1544,10 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
             return true
         end
 
+        -- close the pipe, it may have been open if we are now looking for a second trailer
+        -- (we do not close if we just move to the next fill node of the same trailer)
+        self.pipeController:closePipe(false)
+
         self.unloadTrailer = unloadTrailer
 
         -- little straight section parallel to the trailer to align better
@@ -1629,12 +1647,12 @@ function AIDriveStrategyUnloadCombine:unloadAugerWagon()
         local fillLevelPercentage = self:getFillLevelPercentage()
         self:debug('Unloading to trailer ended, my fill level is %.1f', fillLevelPercentage)
         if fillLevelPercentage < 10 then
-            self.pipeController:closePipe(false)
-            self.proximityController:enableLeftFront()
             self:startMovingAwayFromUnloadTrailer()
         else
             self:debug('Just finished unloading but still have fruit, see if there is another trailer around')
-            self:startUnloadingTrailers()
+            if not self:startSelfUnload() then
+                self:startMovingAwayFromUnloadTrailer()
+            end
         end
     end
     -- forward or backward
@@ -1665,7 +1683,7 @@ function AIDriveStrategyUnloadCombine:moveToNextFillNode()
     local currentDischargeNode = self.augerWagon:getCurrentDischargeNode()
     local _, _, dz = localToLocal(currentDischargeNode.node, self.selfUnloadTargetNode, 0, 0, 0)
 
-    -- move forward or backward slowly until the pipe is within 20 cm of target
+    -- move forward or backward slowly towards the target fill node
     self:setMaxSpeed((math.abs(dz) > 0.2) and 1 or 0)
 
     if self.augerWagon:getCanDischargeToObject(currentDischargeNode) then
@@ -1680,6 +1698,8 @@ end
 -- Move a bit forward and away from the trailer/tractor we just unloaded into so the
 -- pathfinder won't have problems when search for a path to the combine
 function AIDriveStrategyUnloadCombine:startMovingAwayFromUnloadTrailer()
+    self.selfUnloadTargetNode = nil
+    self.pipeController:closePipe(false)
     self.course = Course.createStraightForwardCourse(self.vehicle, 25,
             self.pipeController:isPipeOnTheLeftSide() and -2 or 2)
     self:setNewState(self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER)
@@ -1692,7 +1712,8 @@ function AIDriveStrategyUnloadCombine:moveAwayFromUnloadTrailer()
     -- move until our tractor's back marker does not overlap the trailer or it's tractor
     if dz < - math.max(self.unloadTrailer.size.length / 2, self.unloadTrailer.rootVehicle.size.length / 2) then
         self:debug('Moved away from trailer so the pathfinder will work, dz = %.1f', dz)
-        self:startWaitingForCombine()
+        self.proximityController:enableLeftFront()
+        self:startWaitingForSomethingToDo()
     else
         self:setMaxSpeed(5)
     end
