@@ -305,7 +305,7 @@ function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
         self:releaseCombine()
         self.course = Course.createStraightForwardCourse(self.vehicle, 25)
         self:setNewState(self.states.IDLE)
-    end 
+    end
 end
 
 function AIDriveStrategyUnloadCombine:driveBesideCombine()
@@ -1516,6 +1516,17 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
 -----------------------------------------------------------------------------------------------------------------------
+---
+function AIDriveStrategyUnloadCombine:getSelfUnloadTargetParameters()
+    return SelfUnloadHelper:getTargetParameters(
+            self.fieldPolygon,
+            self.vehicle,
+    -- TODO: this is just a shot in the dark there should be a better way to find out what we have in
+    -- the trailer
+            self.augerWagon:getFillUnitFirstSupportedFillType(1),
+            self.pipeController)
+end
+
 --- Find a path to the best trailer to unload
 function AIDriveStrategyUnloadCombine:startSelfUnload()
 
@@ -1523,30 +1534,10 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
         self.pathfindingStartedAt = g_currentMission.time
 
         local alignLength, offsetX, unloadTrailer
-        self.selfUnloadTargetNode, alignLength, offsetX, unloadTrailer = SelfUnloadHelper:getTargetParameters(
-                self.fieldPolygon,
-                self.vehicle,
-        -- TODO: this is just a shot in the dark there should be a better way to find out what we have in
-        -- the trailer
-                self.augerWagon:getFillUnitFirstSupportedFillType(1),
-                self.pipeController)
-
+        self.selfUnloadTargetNode, alignLength, offsetX, unloadTrailer = self:getSelfUnloadTargetParameters()
         if not self.selfUnloadTargetNode then
             return false
         end
-
-        --self:debug('old %s/%s new %s/%s', self.unloadTrailer, self.selfUnloadTargetNode, unloadTrailer, self.selfUnloadTargetNode)
-
-        if unloadTrailer == self.unloadTrailer then
-            self:debug('Auger wagon has fruit after unloading and the same trailer (%s) seems to have capacity',
-                CpUtil.getName(unloadTrailer))
-            self:startMovingToNextFillNode(self.selfUnloadTargetNode)
-            return true
-        end
-
-        -- close the pipe, it may have been open if we are now looking for a second trailer
-        -- (we do not close if we just move to the next fill node of the same trailer)
-        self.pipeController:closePipe(false)
 
         self.unloadTrailer = unloadTrailer
 
@@ -1649,9 +1640,18 @@ function AIDriveStrategyUnloadCombine:unloadAugerWagon()
         if fillLevelPercentage < 10 then
             self:startMovingAwayFromUnloadTrailer()
         else
-            self:debug('Just finished unloading but still have fruit, see if there is another trailer around')
-            if not self:startSelfUnload() then
-                self:startMovingAwayFromUnloadTrailer()
+            local unloadTrailer
+            self.selfUnloadTargetNode, _, _, unloadTrailer = self:getSelfUnloadTargetParameters()
+
+            if self.selfUnloadTargetNode and unloadTrailer == self.unloadTrailer then
+                self:debug('Auger wagon has fruit after unloading and the same trailer (%s) seems to have capacity',
+                        CpUtil.getName(unloadTrailer))
+                self:startMovingToNextFillNode(self.selfUnloadTargetNode)
+            else
+                -- done with this trailer, move away from it and wait for the
+                self:debug('Auger wagon not empty after unloading but done with this trailer (%s) as it is full',
+                        CpUtil.getName(self.unloadTrailer))
+                self:startMovingAwayFromUnloadTrailer(true)
             end
         end
     end
@@ -1694,11 +1694,13 @@ function AIDriveStrategyUnloadCombine:moveToNextFillNode()
     return dz < 0
 end
 
-
 -- Move a bit forward and away from the trailer/tractor we just unloaded into so the
 -- pathfinder won't have problems when search for a path to the combine
-function AIDriveStrategyUnloadCombine:startMovingAwayFromUnloadTrailer()
+---@param attemptToUnloadAgainAfterMovedAway boolean after moved away, attempt to find a trailer to unload
+--- again as the auger wagon isn't empty yet
+function AIDriveStrategyUnloadCombine:startMovingAwayFromUnloadTrailer(attemptToUnloadAgainAfterMovedAway)
     self.selfUnloadTargetNode = nil
+    self.attemptToUnloadAgainAfterMovedAway = attemptToUnloadAgainAfterMovedAway
     self.pipeController:closePipe(false)
     self.course = Course.createStraightForwardCourse(self.vehicle, 25,
             self.pipeController:isPipeOnTheLeftSide() and -2 or 2)
@@ -1710,10 +1712,15 @@ function AIDriveStrategyUnloadCombine:moveAwayFromUnloadTrailer()
     local _, _, dz = localToLocal(self.unloadTrailer.rootNode, Markers.getBackMarkerNode(self.vehicle), 0, 0, 0)
     -- (conveniently ignoring the length offset)
     -- move until our tractor's back marker does not overlap the trailer or it's tractor
-    if dz < - math.max(self.unloadTrailer.size.length / 2, self.unloadTrailer.rootVehicle.size.length / 2) then
-        self:debug('Moved away from trailer so the pathfinder will work, dz = %.1f', dz)
+    if dz < -math.max(self.unloadTrailer.size.length / 2, self.unloadTrailer.rootVehicle.size.length / 2) then
         self.proximityController:enableLeftFront()
-        self:startWaitingForSomethingToDo()
+        if self.attemptToUnloadAgainAfterMovedAway then
+            self:debug('Moved away from trailer so the pathfinder will work, look for another trailer, dz = %.1f', dz)
+            self:startUnloadingTrailers()
+        else
+            self:debug('Moved away from trailer so the pathfinder will work, dz = %.1f', dz)
+            self:startWaitingForSomethingToDo()
+        end
     else
         self:setMaxSpeed(5)
     end
