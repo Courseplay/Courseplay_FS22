@@ -808,7 +808,7 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
                 -- do not call too early (like minutes before we get there), only when it needs at least as
                 -- much time to get there as the combine (-5 seconds)
                 if bestUnloader:getCpDriveStrategy():call(self.vehicle,
-                        self.course:getWaypoint(self.unloaderRendezvousWaypointIx)) then
+                        self.course:getWaypoint(tentativeRendezvousWaypointIx)) then
                     self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
                     self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
                     self:debug('callUnloaderWhenNeeded: harvesting, unloader accepted rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
