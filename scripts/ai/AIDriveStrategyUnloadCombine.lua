@@ -829,7 +829,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
     if waypoint then
         -- combine set up a rendezvous waypoint for us, go there
         local xOffset, zOffset = self:getPipeOffset(combine)
-        if self:isPathfindingNeeded(self.vehicle, self.rendezvousWaypoint, xOffset, zOffset, 25) then
+        if self:isPathfindingNeeded(self.vehicle, waypoint, xOffset, zOffset, 25) then
             self.rendezvousWaypoint = waypoint
             self.combineToUnload = combine
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
