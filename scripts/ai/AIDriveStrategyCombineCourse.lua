@@ -114,11 +114,10 @@ end
 function AIDriveStrategyCombineCourse:setAllStaticParameters()
     AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
     self:debug('AIDriveStrategyCombineCourse set')
-  
+
     if self:isChopper() then
         self:debug('This is a chopper.')
     end
-
 
     self:checkMarkers()
     self:measureBackDistance()
@@ -300,7 +299,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             local unloaderWhoDidNotShowUp = self.unloaderToRendezvous:get()
             self:cancelRendezvous()
             if unloaderWhoDidNotShowUp then
-                unloaderWhoDidNotShowUp:onMissedRendezvous(self)
+                unloaderWhoDidNotShowUp:getCpDriveStrategy():onMissedRendezvous(self)
             end
             self:debug('Waited for unloader at the end of the row but it did not show up, try to continue')
             self:changeToFieldWork()
@@ -413,7 +412,7 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 
     self:checkFruit()
 
-   -- make sure we start making a pocket while we still have some fill capacity left as we'll be
+    -- make sure we start making a pocket while we still have some fill capacity left as we'll be
     -- harvesting fruit while making the pocket unless we have self unload turned on
     if self:shouldMakePocket() and not self.settings.selfUnload:getValue() then
         self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
@@ -602,7 +601,7 @@ end
 
 function AIDriveStrategyCombineCourse:isFull(fillLevelFullPercentage)
     local fillLevelPercentage = self.combineController:getFillLevelPercentage()
-    if fillLevelPercentage >= 100 or fillLevelPercentage > (fillLevelFullPercentage or self.fillLevelFullPercentage) then 
+    if fillLevelPercentage >= 100 or fillLevelPercentage > (fillLevelFullPercentage or self.fillLevelFullPercentage) then
         self:debugSparse('Full or refillUntilPct reached: %.2f', fillLevelPercentage)
         return true
     end
@@ -702,7 +701,7 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
     local wpDistance
     self.waypointIxWhenCallUnloader, wpDistance = self.course:getNextWaypointIxWithinDistance(ix, dUntilCallUnloader)
     self:debug('Will be full at waypoint %d, fill level %d at waypoint %d (current waypoint %d), %.1f m and %.1f l until call (currently %.1f l), wp distance %.1f',
-            self.waypointIxWhenFull or -1, self.callUnloaderAtFillLevelPercentage, self.waypointIxWhenCallUnloader or - 1,
+            self.waypointIxWhenFull or -1, self.callUnloaderAtFillLevelPercentage, self.waypointIxWhenCallUnloader or -1,
             self.course:getCurrentWaypointIx(), dUntilCallUnloader, litersUntilCallUnloader, fillLevel, wpDistance)
 end
 
@@ -726,7 +725,7 @@ function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
     end
     -- Or, if we are close to the turn and have a rendezvous waypoint before the turn
     if nextRowStartIx and closeToTurn and
-        self.unloaderRendezvousWaypointIx and
+            self.unloaderRendezvousWaypointIx and
             nextRowStartIx > self.unloaderRendezvousWaypointIx then
         self:debug('shouldWaitAtEndOfRow: Closer than %.1f m to a turn and rendezvous waypoint %d is before the turn, waiting for the unloader here',
                 AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow, self.unloaderRendezvousWaypointIx)
@@ -808,10 +807,14 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
             if bestEte + 5 > myEte then
                 -- do not call too early (like minutes before we get there), only when it needs at least as
                 -- much time to get there as the combine (-5 seconds)
-                self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
-                self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
-                self:debug('callUnloaderWhenNeeded: harvesting, need unloader at waypoint %d', self.unloaderRendezvousWaypointIx)
-                bestUnloader:getCpDriveStrategy():call(self.vehicle, self.course:getWaypoint(self.unloaderRendezvousWaypointIx))
+                if bestUnloader:getCpDriveStrategy():call(self.vehicle,
+                        self.course:getWaypoint(self.unloaderRendezvousWaypointIx)) then
+                    self:debug('callUnloaderWhenNeeded: harvesting, unloader accepted rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
+                    self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
+                    self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
+                else
+                    self:debug('callUnloaderWhenNeeded: harvesting, unloader rejected rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
+                end
             end
         end
     end
@@ -942,7 +945,7 @@ function AIDriveStrategyCombineCourse:getTurnArea()
     if self.unloaderRendezvousWaypointIx then
         for ix = self.course:getCurrentWaypointIx(), self.unloaderRendezvousWaypointIx do
             if self.course:isTurnEndAtIx(ix) then
-               return self.course:getWaypoint(ix), self.turningRadius * 3
+                return self.course:getWaypoint(ix), self.turningRadius * 3
             end
         end
     end
@@ -1327,7 +1330,7 @@ end
 --- Not exactly sure what this does, but without this the chopper just won't move.
 --- Copied from AIDriveStrategyCombine:update()
 function AIDriveStrategyCombineCourse:updateChopperFillType()
-    if self:isChopper() then 
+    if self:isChopper() then
         self.combineController:updateChopperFillType()
     end
 end
@@ -1335,7 +1338,7 @@ end
 -- TODO: move this to the PipeController?
 function AIDriveStrategyCombineCourse:handleChopperPipe()
     self.pipeController:handleChopperPipe()
-    
+
     local trailer = self.pipeController:getClosestObject()
     local dischargeNode = self.pipeController:getDischargeNode()
     local targetObject = self.pipeController:getDischargeObject()
@@ -1370,7 +1373,6 @@ function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()
     end
     return false
 end
-
 
 function AIDriveStrategyCombineCourse:isPipeMoving()
     return self.pipeController:isPipeMoving()
@@ -1419,7 +1421,7 @@ function AIDriveStrategyCombineCourse:canDischarge()
 end
 
 function AIDriveStrategyCombineCourse:isDischarging()
-   return self.pipeController:isDischarging()
+    return self.pipeController:isDischarging()
 end
 
 function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
@@ -1432,7 +1434,6 @@ function AIDriveStrategyCombineCourse:isPotatoOrSugarBeetHarvester()
     end
     return false
 end
-
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
@@ -1465,7 +1466,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToNode(
                 self.vehicle, targetNode, offsetX, -alignLength,
                 self:getAllowReversePathfinding(),
-                -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
+        -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
                 fieldNum, {}, nil, 0.1, nil, true)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
@@ -1862,7 +1863,9 @@ end
 
 --- Check if the unloader is blocking us when we are reversing in a turn and immediately notify it
 function AIDriveStrategyCombineCourse:checkBlockingUnloader()
-    if not self.ppc:isReversing() and not AIUtil.isReversing(self.vehicle) then return end
+    if not self.ppc:isReversing() and not AIUtil.isReversing(self.vehicle) then
+        return
+    end
     local d, blockingVehicle = self.proximityController:checkBlockingVehicleBack()
     if d < 1000 and blockingVehicle and AIUtil.isStopped(self.vehicle) and
             not self:isWaitingForUnload() and not self:shouldHoldInTurnManeuver() then

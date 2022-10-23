@@ -824,13 +824,14 @@ end
 ---@param combine table the combine vehicle calling
 ---@param waypoint Waypoint if given, the combine wants to meet the unloader at this waypoint, otherwise wants the
 --- unloader to come to the combine.
+---@return boolean true if the unloader has accepted the request
 function AIDriveStrategyUnloadCombine:call(combine, waypoint)
-    self.combineToUnload = combine
     if waypoint then
         -- combine set up a rendezvous waypoint for us, go there
-        self.rendezvousWaypoint = waypoint
-        local xOffset, zOffset = self:getPipeOffset(self.combineToUnload)
+        local xOffset, zOffset = self:getPipeOffset(combine)
         if self:isPathfindingNeeded(self.vehicle, self.rendezvousWaypoint, xOffset, zOffset, 25) then
+            self.rendezvousWaypoint = waypoint
+            self.combineToUnload = combine
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
             -- just in case, as the combine may give us a rendezvous waypoint
             -- where it is full, make sure we are behind the combine
@@ -839,14 +840,16 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             self:startPathfinding(self.rendezvousWaypoint, xOffset, zOffset,
                     CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload),
                     { self.combineToUnload }, self.onPathfindingDoneToMovingCombine)
+            return true
         else
             self:debug('call: Rendezvous waypoint to moving combine too close, wait a bit')
             self:startWaitingForSomethingToDo()
-            return
+            return false
         end
     else
         -- combine wants us to drive directly to it
         self:debug('call: Combine is waiting for unload, start finding path to combine')
+        self.combineToUnload = combine
         local zOffset
         if self.combineToUnload:getCpDriveStrategy():isWaitingForUnloadAfterPulledBack() then
             -- combine pulled back so it's pipe is now out of the fruit. In this case, if the unloader is in front
@@ -862,6 +865,7 @@ function AIDriveStrategyUnloadCombine:call(combine, waypoint)
             zOffset = -self:getCombinesMeasuredBackDistance() - (pipeLength > 6 and 2 or 10)
         end
         self:startPathfindingToCombine(self.onPathfindingDoneToCombine, nil, zOffset)
+        return true
     end
 end
 
@@ -1292,7 +1296,7 @@ function AIDriveStrategyUnloadCombine:onMissedRendezvous(combine)
             self:startWaitingForSomethingToDo()
         end
     else
-        self:debug('ignore missed rendezvous, state %s, fieldwork state %s', self.state.name, self.state.name)
+        self:debug('ignore missed rendezvous')
     end
 end
 
