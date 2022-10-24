@@ -18,9 +18,9 @@
     <text name="CP_error_no_course" text="Před zahájením práce vygenerujte trasu."/>
     <text name="CP_error_could_not_generate_course" text="Trasu se nepodařilo vygenerovat. Log může obsahovat více informací."/>
     <text name="CP_error_not_on_field" text="Cíl není na poli."/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Odvozce je příliš daleko od pole."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Startovní pozice příliš daleko od pole."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants odvozce není k dispozici."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -52,15 +52,15 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants odvozce:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Použít Giants odvozce:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Místo vykládky:"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Polní práce"/>
     <text name="CP_job_baleCollect" text="CP: Ovíjení/sběr balíků"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP: Vykládka kombajnu"/>
     <text name="CP_ai_page_generate_course" text="CP: Vypočítat polní práce"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Zapnout/vypnout generátor tras"/>
     <!---->
@@ -69,7 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Pracovník %s přestal neočekávaně pracovat – zásobník je plný!"/>
     <text name="CP_ai_messageError" text="Pracovník %s přestal neočekávaně pracovat - opustil kurz!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pracovník %s přestal neočekávaně pracovat – nebyl nalezen zvolený typ balíků!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Pracovník AI %s neočekávaně ukončil práci - nebyla nalezena žádná cesta!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -113,8 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Nastaví horizontální odsazení nástroje."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Vertikální odsazení nástroje"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Nastaví vertikální odsazení nástroje."/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vyprázdnit po skončení:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="CO DĚLAT"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Kontrola silážních aditiv"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Pokud je aktivní a dojdou silážní aditiva, pracovník se zastaví."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Pravidelné otáčení"/>
@@ -333,13 +333,13 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_infoTexts_needsFilling" text="Je třeba doplnit"/>
     <text name="CP_infoTexts_needsUnloading" text="Je třeba vyložit"/>
     <text name="CP_infoTexts_workFinished" text="Dokončil práci"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Jede ke kombajnu"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Jede k odvozci"/>
     <text name="CP_infoTexts_outOfMoney" text="Došly peníze"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Čekání na konec deště"/>
     <text name="CP_infoTexts_errorStopped" text="Opustil trasu, zastavil"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Nenalezena trasa"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -652,20 +652,20 @@ Pod pokročilou kategorií jsou:
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Vyberte další kanál ladění"/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Vyberte předchozí kanál ladění."/>
-    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Změnit aktuální kanál ladění."/>
-    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Zobrazí nabídku kanálu ladění ano/ne."/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Vyberat další kanál ladění"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Vyberat předchozí kanál ladění"/>
+    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Změnit aktuální kanál ladění"/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Zobrazit nabídku kanálu ladění ano/ne"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Otevřt/zavřít nastavení vozidla"/>
     <text name="input_CP_START_STOP" text="CP: Spustit mini GUI"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Změnit startovní bod"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Vymazat aktuálně nahranou trasu"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Zobrazit aktuální trasu vozidla"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Kurzor myši zap/vyp"/>
-    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Otevřt/zavřít Hud"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Otevřít/zavřít Hud"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Otevřít nastavení vozidla"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Otevřít globální nastavení"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Otevřít generátor tras/nabídky pracovníků"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Otevřít správce tras"/>
   </texts>
 </l10n>
