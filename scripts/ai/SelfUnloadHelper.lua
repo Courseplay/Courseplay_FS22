@@ -65,8 +65,8 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
     if bestTrailer then
         fillRootNode = bestTrailer:getFillUnitExactFillRootNode(bestFillUnitIndex)
         CpUtil.debugVehicle(self.debugChannel, myVehicle,
-                'Best trailer is %s at %.1f meters, free capacity %d, root node %s',
-                bestTrailer:getName(), minDistance, maxCapacity, tostring(fillRootNode))
+                'Best trailer is %s at %.1f meters, free capacity %d, fill node %s',
+                bestTrailer:getName(), minDistance, maxCapacity, bestFillUnitIndex)
         local bestFillNode = self:findBestFillNode(myVehicle, fillRootNode, pipeOffsetX)
         return bestTrailer, bestFillNode
     else
@@ -125,7 +125,7 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType,
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, myVehicle,
             'Trailer length: %.1f, width: %.1f, dZ: %.1f, align length %.1f, my length: %.1f, steering length %.1f, offsetX %.1f',
             trailerLength, trailerWidth, dZ, alignLength, myVehicle.size.length, steeringLength, offsetX)
-    return targetNode, alignLength, offsetX
+    return targetNode, alignLength, offsetX, bestTrailer
 end
 
 --- Check if this trailer is driven by AutoDrive and is really ready to be loaded. There may be

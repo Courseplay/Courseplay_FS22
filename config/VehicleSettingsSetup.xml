@@ -98,7 +98,7 @@
 	</SettingSubTitle>
 	
 	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">
-		<!--Symetric Langechange-->
+		<!--Symmetric Lane Change-->
 		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
 		<!--Convoy Distance-->
 		<Setting classType="AIParameterSettingList" name="convoyDistance" min="40" max="400" default ="75" unit="2" isExpertModeOnly="true"/>
