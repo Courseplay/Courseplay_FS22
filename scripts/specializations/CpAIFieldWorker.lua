@@ -234,7 +234,7 @@ function CpAIFieldWorker:onCpADStartedByPlayer()
     local spec = self.spec_cpAIFieldWorker
     --- Applies the lane offset set in the hud, so ad can start with the correct one.
     spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(self:getCpLaneOffsetSetting():getValue())
-    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(self:getCpStartingPointSetting():getValue())
+    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
 end
 
 function CpAIFieldWorker:onCpADRestarted()
