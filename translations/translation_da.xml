@@ -18,9 +18,9 @@
     <text name="CP_error_no_course" text="Opret først en rute inden start."/>
     <text name="CP_error_could_not_generate_course" text="Kunne ikke oprette en rute. Logfilen kan indeholde yderligere informationer."/>
     <text name="CP_error_not_on_field" text="Målet er ikke på en mark."/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Aflæsser for langt væk fra marken."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="startpunkt for langt væk fra marken."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants aflæsser er ikke tilgæængelig."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -52,15 +52,15 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants aflæsser:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Brug giants aflæsser:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Aflæsningsstation:"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Markarbejde"/>
     <text name="CP_job_baleCollect" text="CP: Indsamle/wrappe baller"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP: aflæs mejetærsker"/>
     <text name="CP_ai_page_generate_course" text="CP: Genere markrute."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Åbne/Lukke rutegenerator."/>
     <!---->
@@ -69,7 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!"/>
     <text name="CP_ai_messageError" text="AI-medarbejder %s har stoppet arbejdet uventet - forlod bane!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbejder %s har stoppet arbejdet uventet - ingen baller af valgt type fundet!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI hjælper %s har stoppet arbejdet uventet - ingen sti fundet!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,8 +112,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Redskab forskudt vandret"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Redskab forskudt vandret"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Redskab forskudt lodret"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskab Versatz vertikal"/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskab forskudt vertikal"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Tøm, når den er færdig:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Tjek for ensilagetilsætning."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Hvis aktiv og ensilageadditiv er tom, stopper føreren."/>
@@ -121,7 +121,7 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetrisk baneskift"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Konvoj afstand"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Afstand mellem kørtøjer. Værdi: 40 - 400"/>
-    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Markarbewjde"/>
+    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Markarbejde"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximale hastighed ved markarbejde. Værdi: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Mark"/>
     <text name="CP_vehicle_setting_fieldSpeed_tooltip" text="Maximale hastighed ved i marken. Værdi: 5 - 50"/>
@@ -260,10 +260,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverer/deaktiverer afspillerens musehændelse for infotekstvisning uden for et køretøj."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Foretræk brugerdefinerede marker"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Foretræk brugerdefinerede marker hvis der også er et original mark på den valgte position."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance enhed"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance i meter eller Fod."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Fod"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -282,10 +282,10 @@
     <text name="CP_courseManager_copy_entry" text="Kopiere post"/>
     <text name="CP_courseManager_folder_dialog" text="Mappenavn:"/>
     <text name="CP_courseManager_course_dialog" text="Rutenavn:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Er du sikker på du vil slette (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Ruteredigeringen kan skabe problemer for ruter.
+Du bør kun bruge dette værktøj, når rutegeneratoren ikke kan skabe en god nok rute.
+Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rute.
 "/>
     <text name="CP_courseManager_deleteError" text="Mappen er ikke tom(%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="Ruten er allerede i mappen (%s)"/>
@@ -294,33 +294,33 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_courseManager_targetIsNoCourseError" text="Dette er ikke en rute (%s)!"/>
     <text name="CP_courseManager_basicSettings" text="Gem/indlæs rute."/>
     <text name="CP_courseManager_advancedSettings" text="Rediger Rute/Mappe."/>
-    <text name="CP_courseManager_activate" text="Activatere"/>
+    <text name="CP_courseManager_activate" text="Aktiveret"/>
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="Rute editor"/>
+    <text name="CP_editor_delete_title" text="Slet vejpunkter"/>
+    <text name="CP_editor_delete_primary_text" text="primær"/>
+    <text name="CP_editor_delete_secondary_text" text="sekundær"/>
+    <text name="CP_editor_delete_err" text="For få vejpunkter tilbage."/>
+    <text name="CP_editor_course_basic_title" text="grundlæggende"/>
+    <text name="CP_editor_course_basic_move_title" text="Flyt et vejpunkt"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="primær"/>
+    <text name="CP_editor_course_basic_insert_title" text="Indsæt et vejpunkt"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="primær"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="sekundær"/>
+    <text name="CP_editor_course_basic_insert_err" text="Indsætning mellem et vendepunkt er ikke tilladt."/>
+    <text name="CP_editor_course_advanced_title" text="Advanceret"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Markere et vejpunkt som et sving."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Tilføjer eller sletter et vendepunkt. (Det valgte vejpunkt vil være vendestarten.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="For at tæt på et andet vendepunkt."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Flytter flere vejpunkter"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Primær"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="sekundær"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Indsætter vejpunkter som kurve"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primær"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="sekundær"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Det er ikke tilladt at vælge et vendepunkt."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -332,21 +332,21 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_needsFilling" text="Skal fyldes"/>
     <text name="CP_infoTexts_needsUnloading" text="Skal tømmes"/>
     <text name="CP_infoTexts_workFinished" text="Arbejdet er udført"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="køre til mejetærsker"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="køre til anhænger"/>
     <text name="CP_infoTexts_outOfMoney" text="Ikke nok penge"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Venter på at regnen stopper"/>
     <text name="CP_infoTexts_errorStopped" text="Forlod ruten, stoppet"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Forkerte balle type"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Ingen rute fundet"/>
     <!---->
     <!--Custom field manager-->
     <!---->
-    <text name="CP_customFieldManager_confirm_save" text="Ønsker du at gemme den optagnede rute som en brugerdefineret mark %s?"/>
+    <text name="CP_customFieldManager_confirm_save" text="Ønsker du at gemme den optegnede rute som en brugerdefineret mark %s?"/>
     <text name="CP_customFieldManager_confirm_delete" text="Ønsker du at slette den brugerdefinerede mark %s?"/>
     <text name="CP_customFieldManager_delete" text="Slet brugerdefineret mark"/>
     <text name="CP_customFieldManager_rename" text="Omdøb brugerdefineret mark"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Ændre brugerdefineret mark"/>
     <text name="CP_customFieldManager_draw" text="Optegn brugerdefineret mark"/>
     <text name="CP_customFieldManager_draw_header" text="Optegn brugerdefineret mark med højre museknap."/>
     <text name="CP_customFieldManager_save" text="Gem brugerdefineret mark"/>
@@ -621,30 +621,39 @@ Værktøjet kommer med en offset til traktoren, så traktoren kører mellem vins
 Sprøjten arbejder ved siden af vinstokkene, så den skal køre enten til venstre eller højre for vinstokkene.
 Da sprøjten kan arbejde på venstre og højre vinstokke på samme tid, kan vi springe en række over.
 "/>
-    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editor_title" text="Rute editor"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+Rute-editoren kan bruges til at redigere ruter og brugerdefinerede marker.
+De indlæste ruter gemmes/overskrives automatisk, når editoren lukkes.
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) Redigering af en brugerdefineret mark kan gøres med et valgt felt på ai-menusiden.
+2) Redigering af en rute kan gøres i rute manageren. 
+   Der kan du redigere en gemt rute, men vær sikker på, at du har ryddet den aktuelt indlæste rute fra køretøjet.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+Redigering bør naturligvis kun foretages, hvis rutegeneratoren ikke kan generer en god nok rute.
+Forkert redigering kan give problemer for cp chaufføren, da vejpunkterne har skjulte attributter.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+Under den grundlæggende kategori er:
+1) Hold og flyt et vejpunkt med musen.
+2) Indsæt vejpunkt før eller efter et markeret vejpunkt..
 
-Deleting of waypoints can be done with the red delete button.
+Sletning af vejpunkter kan gøres med den røde slet-knap.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+Under den avancerede kategori er:
+1) En pensel til at justere vendepunktsegenskaben for et vejpunkt (kun for ruter og ikke markgrænser).
+Ved at klikke på det flere gange, skifter vejpunktet farve mellem  &quot;vejpunkt normal &quot; (orange),  &quot;vendepunkt begynder&quot; (grøn) og  &quot;vendepunkt slut&quot; (rød)..
+
+
+2) En pensel til at flytte flere vejpunkter.
+For at gøre dette markerer du 2 vejpunkter med venstre museknap og kan derefter flytte alle vejpunkter inklusive de markerede vejpunkter med venstre museknap nede.
+For at fjerne markeringen skal du blot klikke på højre museknap..
+
+
+3) En pensel til at indsætte en kurve af vejpunkter.
+Som med at flytte flere vejpunkter, skal du først markere 2 vejpunkter, derefter holde venstre museknap nede og flytte musen.
+OBS: Så snart du giver slip, vil vejpunkterne blive sat af, dette kan ikke fortrydes! (vejpunkter kan selvfølgelig slettes.)
 "/>
     <!---->
     <!--Input bindings-->
@@ -655,14 +664,14 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Vis debug channels menu ja/nej."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Åbne mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Start/stop CP hjælper"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Skift start punkt"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Fjern nuværende aktive rute"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Vis den aktive rute for køretøjet"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Musemarkør on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Åben/luk Hud"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Åbner køretøjets indstillinger"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Åbner globale indstillinger"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Åbner rutegenerator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Åbner rute manager"/>
   </texts>
 </l10n>
