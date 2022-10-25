@@ -844,8 +844,8 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
             if driveStrategy:isServingPosition(x, z) then
-                if driveStrategy:isIdle() then
-                    local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
+                local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
+                if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte
                     if combine then
                         -- if already stopped, we want the unloader to come to us
