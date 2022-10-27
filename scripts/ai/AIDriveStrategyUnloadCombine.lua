@@ -363,6 +363,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     elseif self.state == self.states.MOVING_TO_NEXT_FILL_NODE then
         -- should just for safety
         self:startMovingAwayFromUnloadTrailer()
+    elseif self.state == self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER then
+        self:startWaitingForSomethingToDo()
     end
 end
 
