@@ -364,7 +364,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         -- should just for safety
         self:startMovingAwayFromUnloadTrailer()
     elseif self.state == self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER then
-        self:startWaitingForSomethingToDo()
+        self:onMovedAwayFromUnloadTrailer()
     end
 end
 
@@ -1719,19 +1719,22 @@ function AIDriveStrategyUnloadCombine:moveAwayFromUnloadTrailer()
     -- (conveniently ignoring the length offset)
     -- move until our tractor's back marker does not overlap the trailer or it's tractor
     if dz < -math.max(self.unloadTrailer.size.length / 2, self.unloadTrailer.rootVehicle.size.length / 2) then
-        self.proximityController:enableLeftFront()
-        if self.attemptToUnloadAgainAfterMovedAway then
-            self:debug('Moved away from trailer so the pathfinder will work, look for another trailer, dz = %.1f', dz)
-            self:startUnloadingTrailers()
-        else
-            self:debug('Moved away from trailer so the pathfinder will work, dz = %.1f', dz)
-            self:startWaitingForSomethingToDo()
-        end
+        self:onMovedAwayFromUnloadTrailer()
     else
         self:setMaxSpeed(5)
     end
 end
 
+function AIDriveStrategyUnloadCombine:onMovedAwayFromUnloadTrailer()
+    self.proximityController:enableLeftFront()
+    if self.attemptToUnloadAgainAfterMovedAway then
+        self:debug('Moved away from trailer so the pathfinder will work, look for another trailer, dz = %.1f', dz)
+        self:startUnloadingTrailers()
+    else
+        self:debug('Moved away from trailer so the pathfinder will work, dz = %.1f', dz)
+        self:startWaitingForSomethingToDo()
+    end
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Debug
