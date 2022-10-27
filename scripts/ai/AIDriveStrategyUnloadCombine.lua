@@ -1728,10 +1728,10 @@ end
 function AIDriveStrategyUnloadCombine:onMovedAwayFromUnloadTrailer()
     self.proximityController:enableLeftFront()
     if self.attemptToUnloadAgainAfterMovedAway then
-        self:debug('Moved away from trailer so the pathfinder will work, look for another trailer, dz = %.1f', dz)
+        self:debug('Moved away from trailer so the pathfinder will work, look for another trailer')
         self:startUnloadingTrailers()
     else
-        self:debug('Moved away from trailer so the pathfinder will work, dz = %.1f', dz)
+        self:debug('Moved away from trailer so the pathfinder will work')
         self:startWaitingForSomethingToDo()
     end
 end
