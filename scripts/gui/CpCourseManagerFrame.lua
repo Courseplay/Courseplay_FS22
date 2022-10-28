@@ -366,7 +366,7 @@ function CpCourseManagerFrame:onClickItem(layout, element)
 		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.moveEntrySelect then
 		--- Selected a entity to move.
-		if viewEntry:hasAccess() then
+		if viewEntry:hasAccess() and not viewEntry:isDirectory() then
 			self.selectedEntry = viewEntry 
 			self.actionState = self.actionStates.moveEntryDestination
 		else 
