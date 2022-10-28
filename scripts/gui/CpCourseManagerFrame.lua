@@ -73,7 +73,7 @@ CpCourseManagerFrame.colors = {
 
 local CpCourseManagerFrame_mt = Class(CpCourseManagerFrame, TabbedMenuFrameElement)
 
-function CpCourseManagerFrame.new(courseStorage,target, custom_mt)
+function CpCourseManagerFrame.new(courseStorage, target, custom_mt)
 	local self = TabbedMenuFrameElement.new(target, custom_mt or CpCourseManagerFrame_mt)
 	self:registerControls(CpCourseManagerFrame.CONTROLS)
 	self.courseStorage = courseStorage
@@ -161,7 +161,7 @@ function CpCourseManagerFrame:onGuiSetupFinished()
 				text = g_i18n:getText(self.translations.createDirectory),
 				callback = function ()
 					CpCourseManagerFrame.showInputTextDialog(
-					self,self.translations.folderDialogTitle,
+					self, self.translations.folderDialogTitle,
 					self.onClickCreateDirectoryDialog)
 				--	self.actionState = CpCourseManagerFrame.actionStates.createDirectory
 					self:updateMenuButtons()
@@ -267,17 +267,17 @@ function CpCourseManagerFrame:getNumberOfItemsInSection(list, section)
 end
 
 function CpCourseManagerFrame.setFolderIcon(element)
-	element.iconImageSize = {32,32}
+	element.iconImageSize = {32, 32}
 	element:setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
-	element:setImageUVs(nil,unpack(GuiUtils.getUVs({0,220,32,32},{256,512})))
-	element:setImageColor(nil,0, 0, 0, 0.5)
+	element:setImageUVs(nil, unpack(GuiUtils.getUVs({0, 220, 32, 32}, {256, 512})))
+	element:setImageColor(nil, 0, 0, 0, 0.5)
 end
 
 function CpCourseManagerFrame.setCourseIcon(element)
-	element.iconImageSize = {32,32}
+	element.iconImageSize = {32, 32}
 	element:setImageFilename(Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY))
-	element:setImageUVs(nil,unpack(GuiUtils.getUVs({40,76,32,32},{256,512})))
-	element:setImageColor(nil,0, 0, 0, 0.5)
+	element:setImageUVs(nil, unpack(GuiUtils.getUVs({40, 76, 32, 32}, {256, 512})))
+	element:setImageColor(nil, 0, 0, 0, 0.5)
 end
 
 
@@ -297,7 +297,7 @@ function CpCourseManagerFrame:populateCellForItemInSection(list, section, index,
 	else
 	--	cell.alternateBackgroundColor =  CpCourseManagerFrame.colors.move
 		local ix = self.leftList:getSelectedIndexInSection()
-		local entry = self.courseStorage:getSubEntryByIndex(ix,index)
+		local entry = self.courseStorage:getSubEntryByIndex(ix, index)
 		cell.viewEntry = entry
 		if entry:isDirectory() then
 			self.setFolderIcon(cell:getAttribute("icon"))
@@ -315,15 +315,15 @@ end
 
 
 function CpCourseManagerFrame:onClickLeftItem(element)
-	self:onClickItem(self.leftList,element)
+	self:onClickItem(self.leftList, element)
 end
 
 
 function CpCourseManagerFrame:onClickRightItem(element)
-	self:onClickItem(self.rightList,element)
+	self:onClickItem(self.rightList, element)
 end
 
-function CpCourseManagerFrame:onClickItem(layout,element)
+function CpCourseManagerFrame:onClickItem(layout, element)
 	local viewEntry = element.viewEntry
 	if viewEntry == nil then 
 		return 
@@ -339,76 +339,78 @@ function CpCourseManagerFrame:onClickItem(layout,element)
 			self.currentVehicle:appendLoadedCpCourse(viewEntry:getEntity())
 		else
 			self.showInfoDialog(
-				self.translations.targetIsNoCourse,viewEntry)
+				self.translations.targetIsNoCourse, viewEntry)
 		end
 		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.saveCourse then 
 		--- Saves the course under a selected directory.
 		if viewEntry:isDirectory() then 
 			self.showInputTextDialog(
-				self,self.translations.courseDialogTitle,
-				self.onClickSaveEntryDialog,viewEntry)
+				self, self.translations.courseDialogTitle,
+				self.onClickSaveEntryDialog, viewEntry)
 		else 
 			self.showInfoDialog(
-				self.translations.targetIsNoFolder,viewEntry)
+				self.translations.targetIsNoFolder, viewEntry)
 		end
 		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.createDirectory then
 		--- Creates a new sub directory under a selected directory.
 		if viewEntry:isDirectory() then 
 			self.showInputTextDialog(
-				self,self.translations.folderDialogTitle,
-				self.onClickCreateDirectoryDialog,viewEntry)
+				self, self.translations.folderDialogTitle,
+				self.onClickCreateDirectoryDialog, viewEntry)
 		else 
 			self.showInfoDialog(
-				self.translations.targetIsNoFolder,viewEntry)
+				self.translations.targetIsNoFolder, viewEntry)
 		end
 		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.moveEntrySelect then
 		--- Selected a entity to move.
-		if viewEntry:hasAccess() then
+		if viewEntry:hasAccess() and not viewEntry:isDirectory() then
 			self.selectedEntry = viewEntry 
 			self.actionState = self.actionStates.moveEntryDestination
 		else 
 			self.showInfoDialog(
-				self.translations.noAccessError,viewEntry)
+				self.translations.noAccessError, viewEntry)
 			self.actionState = self.actionStates.disabled
 		end
 	elseif self.actionState == self.actionStates.moveEntryDestination then
 		--- Moves the previous selected entity to a given directory.
-		if viewEntry:isDirectory() then 
-			self.courseStorage:validate(viewEntry)
-			local wasMoved = self.selectedEntry:move(viewEntry)
-			if not wasMoved then 
+		if self.selectedEntry ~= viewEntry then
+			if viewEntry:isDirectory() then 
+				self.courseStorage:validate(viewEntry)
+				local wasMoved = self.selectedEntry:move(viewEntry)
+				if not wasMoved then
+					self.showInfoDialog(
+						self.translations.entryExistAlreadyError, viewEntry)
+				end
+			else
 				self.showInfoDialog(
-					self.translations.entryExistAlreadyError,viewEntry)
+					self.translations.targetIsNoFolder, viewEntry)
 			end
-		else 
-			self.showInfoDialog(
-				self.translations.targetIsNoFolder,viewEntry)
+			self.selectedEntry = nil
+			self.actionState = self.actionStates.disabled
 		end
-		self.selectedEntry = nil
-		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.deleteEntry then
 		--- Deletes a selected entity.
 		if viewEntry:isDeleteAllowed() then 
 			self.showYesNoDialog(
-				self,self.translations.deleteWarning,
-				self.onClickDeleteEntryDialog,viewEntry)
+				self, self.translations.deleteWarning,
+				self.onClickDeleteEntryDialog, viewEntry)
 		else 
 			self.showInfoDialog(
-				self.translations.noAccessError,viewEntry)
+				self.translations.noAccessError, viewEntry)
 		end
 		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.renameEntry then 
 		--- Renames a selected entity.
 		if viewEntry:isRenameAllowed() then
 			self.showInputTextDialog(
-						self,self.translations.renameEntry,
-						self.onClickRenameEntryDialog,viewEntry)
+						self, self.translations.renameEntry,
+						self.onClickRenameEntryDialog, viewEntry)
 		else 
 			self.showInfoDialog(
-				self.translations.noAccessError,viewEntry)
+				self.translations.noAccessError, viewEntry)
 		end
 		self.actionState = self.actionStates.disabled
 	elseif self.actionState == self.actionStates.copyEntrySelect then 
@@ -418,7 +420,7 @@ function CpCourseManagerFrame:onClickItem(layout,element)
 			self.actionState = self.actionStates.copyEntryDestination
 		else
 			self.showInfoDialog(
-				self.translations.noAccessError,viewEntry)
+				self.translations.noAccessError, viewEntry)
 			self.actionState = self.actionStates.disabled
 		end
 	elseif self.actionState == self.actionStates.copyEntryDestination then 
@@ -427,25 +429,25 @@ function CpCourseManagerFrame:onClickItem(layout,element)
 			local wasCopied = self.selectedEntry:copy(viewEntry)
 			if not wasCopied then 
 				self.showInfoDialog(
-					self.translations.entryExistAlreadyError,viewEntry)
+					self.translations.entryExistAlreadyError, viewEntry)
 			end
 		else
 			self.showInfoDialog(
-				self.translations.targetIsNoFolder,viewEntry)
+				self.translations.targetIsNoFolder, viewEntry)
 		end
 		self.selectedEntry = nil
 		self.actionState = self.actionStates.disabled
 	end
 	self:updateLists()
-	CpUtil.debugFormat(CpUtil.DBG_HUD,"actionState -> %d",self.actionState)
+	CpUtil.debugFormat(CpUtil.DBG_HUD, "actionState -> %d", self.actionState)
 end
 
 function CpCourseManagerFrame:onListSelectionChanged(list, section, index)
 	if list == self.leftList then 
 		self.rightList:reloadData()
---		CpUtil.debugFormat(CpUtil.DBG_HUD,"leftList -> onListSelectionChanged")
+--		CpUtil.debugFormat(CpUtil.DBG_HUD, "leftList -> onListSelectionChanged")
 	else
---		CpUtil.debugFormat(CpUtil.DBG_HUD,"rightList -> onListSelectionChanged")
+--		CpUtil.debugFormat(CpUtil.DBG_HUD, "rightList -> onListSelectionChanged")
 	end
 	self:updateMenuButtons()
 end
@@ -453,7 +455,7 @@ end
 --- Updates the button at the bottom, which depends on the current select mode.
 function CpCourseManagerFrame:updateMenuButtons()
 	local courseName = self.currentVehicle:getCurrentCpCourseName()
-	local title = string.format(g_i18n:getText(self.translations.title),self.currentVehicle:getName(),courseName)
+	local title = string.format(g_i18n:getText(self.translations.title), self.currentVehicle:getName(), courseName)
 	
 	self.header:setText(title)
 	self.menuButtonInfo = {
@@ -465,14 +467,14 @@ function CpCourseManagerFrame:updateMenuButtons()
 		self.menuButtonInfo[1].callback = function () self:onClickIterateBack() end
 	end
 	if self.activateButton.callbackDisabled == nil or not self.activateButton.callbackDisabled(self) then
-		table.insert(self.menuButtonInfo,self.activateButton)
+		table.insert(self.menuButtonInfo, self.activateButton)
 	end
 	if self.modeButton.callbackDisabled == nil or not self.modeButton.callbackDisabled(self) then
-		table.insert(self.menuButtonInfo,self.modeButton)
+		table.insert(self.menuButtonInfo, self.modeButton)
 	end
-	for i,data in pairs(self.modes[self.curMode]) do 
+	for i, data in pairs(self.modes[self.curMode]) do 
 		if data.callbackDisabled == nil or not data.callbackDisabled(self) then
-			table.insert(self.menuButtonInfo,data)
+			table.insert(self.menuButtonInfo, data)
 		end
 	end	
 	self:setMenuButtonInfoDirty()
@@ -498,7 +500,7 @@ function CpCourseManagerFrame:onClickChangeMode()
 	if self.curMode > self.maxMode then 
 		self.curMode = self.minMode
 	end
-	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickChangeMode")
+	CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickChangeMode")
 	self.actionState = self.actionStates.disabled
 	self.selectedEntry = nil
 	--- CpCourseManagerFrame.updateLists(self)
@@ -506,7 +508,7 @@ end
 
 --- Clears the current courses.
 function CpCourseManagerFrame:onClickClearCurrentCourse()
-	CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickClearCurrentCourse")
+	CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickClearCurrentCourse")
 	local hasCourse = self.currentVehicle:hasCpCourse()
 	if hasCourse then 
 		self.currentVehicle:resetCpCoursesFromGui()
@@ -515,53 +517,53 @@ function CpCourseManagerFrame:onClickClearCurrentCourse()
 end
 
 --- Saves the current vehicle courses with a given name.
-function CpCourseManagerFrame:onClickSaveEntryDialog(text,clickOk,viewEntry)
+function CpCourseManagerFrame:onClickSaveEntryDialog(text, clickOk, viewEntry)
 	if clickOk then 
-		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickSaveEntryDialog - > %s",text)
+		CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickSaveEntryDialog - > %s", text)
 
-		local file,fileCreated = viewEntry:addFile(text)
+		local file, fileCreated = viewEntry:addFile(text)
 		if not fileCreated then 
 			self.showInfoDialog(
-				self.translations.entryExistAlreadyError,viewEntry)
+				self.translations.entryExistAlreadyError, viewEntry)
 			return 
 		end
-		self.currentVehicle:saveCpCourses(file,text)
+		self.currentVehicle:saveCpCourses(file, text)
 	end
 end
 
 --- Creates a new directory with a given name.
-function CpCourseManagerFrame:onClickCreateDirectoryDialog(text,clickOk,viewEntry)
+function CpCourseManagerFrame:onClickCreateDirectoryDialog(text, clickOk, viewEntry)
 	if clickOk then 
-		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickCreateDirectoryDialog - > %s",text)
+		CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickCreateDirectoryDialog - > %s", text)
 		local wasAdded = self.courseStorage:createDirectory(text)
 		if not wasAdded then 
 			self.showInfoDialog(
-				self.translations.entryExistAlreadyError,viewEntry)
+				self.translations.entryExistAlreadyError, viewEntry)
 		end
 	end
 end
 
 --- Creates a new directory with a given name.
-function CpCourseManagerFrame:onClickDeleteEntryDialog(clickOk,viewEntry)
+function CpCourseManagerFrame:onClickDeleteEntryDialog(clickOk, viewEntry)
 	if clickOk then 
-		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickDeleteEntryDialog")
+		CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickDeleteEntryDialog")
 		self.courseStorage:validate(viewEntry)
 		local wasDeleted = viewEntry:delete()
 		if not wasDeleted then 
 			self.showInfoDialog(
-				self.translations.deleteError,viewEntry)
+				self.translations.deleteError, viewEntry)
 		end
 	end
 end
 
-function CpCourseManagerFrame:onClickRenameEntryDialog(text,clickOk,viewEntry)
+function CpCourseManagerFrame:onClickRenameEntryDialog(text, clickOk, viewEntry)
 	if clickOk then 
-		CpUtil.debugFormat(CpUtil.DBG_HUD,"onClickRenameEntryDialog - > %s",text)
+		CpUtil.debugFormat(CpUtil.DBG_HUD, "onClickRenameEntryDialog - > %s", text)
 		self.courseStorage:validate(viewEntry)
 		local wasRenamed = viewEntry:rename(text)
 		if not wasRenamed then 
 			self.showInfoDialog(
-				self.translations.entryExistAlreadyError,viewEntry)
+				self.translations.entryExistAlreadyError, viewEntry)
 		end
 	end
 end
@@ -570,7 +572,7 @@ function CpCourseManagerFrame:onClickActivate()
 	local layout = FocusManager:getFocusedElement()
 	if layout then  
 		local element = layout:getSelectedElement()
-		self:onClickItem(layout,element)
+		self:onClickItem(layout, element)
 	end
 end
 
@@ -588,7 +590,7 @@ function CpCourseManagerFrame:onClickOpenEditor()
 				self.translations.editWarning, viewEntry)
 		else 
 			self.showInfoDialog(
-				self.translations.targetIsNoCourse,viewEntry)
+				self.translations.targetIsNoCourse, viewEntry)
 		end
 	end
 end
@@ -598,17 +600,17 @@ end
 ---------------------------------------------------
 
 
-function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
+function CpCourseManagerFrame:showInputTextDialog(title, callbackFunc, viewEntry)
 	g_gui:showTextInputDialog({
 		disableFilter = true,
-		callback = function (self,text,clickOk,viewEntry)
+		callback = function (self, text, clickOk, viewEntry)
 			text = CpUtil.cleanFilePath(text)
-			callbackFunc(self,text,clickOk,viewEntry)
+			callbackFunc(self, text, clickOk, viewEntry)
 			self:updateLists()
 		end,
 		target = self,
 		defaultText = "",
-		dialogPrompt = string.format(g_i18n:getText(title),viewEntry and viewEntry:getName()),
+		dialogPrompt = string.format(g_i18n:getText(title), viewEntry and viewEntry:getName()),
 		imePrompt = g_i18n:getText(title),
 		maxCharacters = 50,
 		confirmText = g_i18n:getText("button_ok"),
@@ -616,11 +618,11 @@ function CpCourseManagerFrame:showInputTextDialog(title,callbackFunc,viewEntry)
 	})
 end
 
-function CpCourseManagerFrame:showYesNoDialog(title,callbackFunc,viewEntry)
+function CpCourseManagerFrame:showYesNoDialog(title, callbackFunc, viewEntry)
 	g_gui:showYesNoDialog({
-		text = string.format(g_i18n:getText(title),viewEntry:getName()),
-		callback = function (self,clickOk,viewEntry)
-			callbackFunc(self,clickOk,viewEntry)
+		text = string.format(g_i18n:getText(title), viewEntry:getName()),
+		callback = function (self, clickOk, viewEntry)
+			callbackFunc(self, clickOk, viewEntry)
 			self:updateLists()
 		end,
 		target = self,
@@ -628,9 +630,9 @@ function CpCourseManagerFrame:showYesNoDialog(title,callbackFunc,viewEntry)
 	})
 end
 
-function CpCourseManagerFrame.showInfoDialog(title,viewEntry)
+function CpCourseManagerFrame.showInfoDialog(title, viewEntry)
 	g_gui:showInfoDialog({
-		text = string.format(g_i18n:getText(title),viewEntry:getName())
+		text = string.format(g_i18n:getText(title), viewEntry:getName())
 	})
 end
 

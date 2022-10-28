@@ -481,6 +481,10 @@ function FileSystemEntityView:isRenameAllowed()
 	return true
 end
 
+function FileSystemEntityView.__eq(a, b)
+	return a.entity == b.entity
+end
+
 --- View of a regular file (XML with a saved course
 ---@class FileView : FileSystemEntityView
 FileView = CpObject(FileSystemEntityView)
