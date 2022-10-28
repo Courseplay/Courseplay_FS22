@@ -51,6 +51,10 @@ function CpHud.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, 'resetCpHud', CpHud.resetCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'closeCpHud', CpHud.closeCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'getCpHud', CpHud.getCpHud)
+
+    SpecializationUtil.registerFunction(vehicleType, 'showCpBunkerSiloWorkWidth', CpHud.showCpBunkerSiloWorkWidth)
+    SpecializationUtil.registerFunction(vehicleType, 'showCpCombineUnloaderWorkWidth', CpHud.showCpCombineUnloaderWorkWidth)
+    SpecializationUtil.registerFunction(vehicleType, 'showCpCourseWorkWidth', CpHud.showCpCourseWorkWidth)
 end
 
 function CpHud.registerOverwrittenFunctions(vehicleType)
@@ -230,12 +234,33 @@ function CpHud:onDraw()
     spec.hud:draw(spec.status)
 	if spec.hud:getIsOpen() then 
 		if spec.lastShownWorkWidthTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
-			WorkWidthUtil.showWorkWidth(self,
+            if spec.hud:isBunkerSiloLayoutActive() then 
+                CpHud.showCpBunkerSiloWorkWidth(self)
+            elseif spec.hud:isCombineUnloaderLayoutActive() then
+                CpHud.showCpCombineUnloaderWorkWidth(self)
+            else
+                CpHud.showCpCourseWorkWidth(self)
+            end
+		end
+	end
+end
+
+function CpHud:showCpBunkerSiloWorkWidth()
+	WorkWidthUtil.showWorkWidth(self, self:getCpSettings().bunkerSiloWorkWidth:getValue(), 0, 0)
+end
+
+function CpHud:showCpCombineUnloaderWorkWidth()
+	WorkWidthUtil.showWorkWidth(self,
 										self:getCourseGeneratorSettings().workWidth:getValue(),
 											self:getCpSettings().toolOffsetX:getValue(),
 											self:getCpSettings().toolOffsetZ:getValue())
-		end
-	end
+end
+
+function CpHud:showCpCourseWorkWidth()
+	WorkWidthUtil.showWorkWidth(self,
+										self:getCourseGeneratorSettings().workWidth:getValue(),
+											self:getCpSettings().toolOffsetX:getValue(),
+											0)
 end
 
 function CpHud:cpShowWorkWidth()

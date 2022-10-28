@@ -156,11 +156,10 @@ function CpBunkerSiloVehicleController:draw()
 end
 
 --- Is the end of the silo reached.
-function CpBunkerSiloVehicleController:isEndReached(node, margin, directionReverse)
+function CpBunkerSiloVehicleController:isEndReached(node, margin)
 	if self.drivingTarget then
-		local x, z = unpack(self.drivingTarget)
-		local _, _, dz = worldToLocal(node, x, 0, z)
-		margin = margin or 0
-		return math.abs(dz) < 1
+		local x, _, z = localToWorld(node, 0, 0, margin)
+		local dx, dz = unpack(self.drivingTarget)
+		return not self.silo:isPointInSilo(x, z) and MathUtil.vector2Length(x - dx, z - dz) < 5
 	end
 end

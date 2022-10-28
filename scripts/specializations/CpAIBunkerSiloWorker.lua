@@ -118,9 +118,13 @@ function CpAIBunkerSiloWorker:getCanStartCp(superFunc)
     return superFunc(self) or self:getCanStartCpBunkerSiloWorker()
 end
 
-function CpAIBunkerSiloWorker:getCpStartableJob(superFunc)
+function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIBunkerSiloWorker
-	return superFunc(self) or self:getCanStartCpBunkerSiloWorker() and spec.cpJob
+    local job = self:getCanStartCpBunkerSiloWorker() and spec.cpJob
+    if isStartedByHud then 
+        job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO and job
+    end
+	return superFunc(self) or job
 end
 
 function CpAIBunkerSiloWorker:getCpStartText(superFunc)

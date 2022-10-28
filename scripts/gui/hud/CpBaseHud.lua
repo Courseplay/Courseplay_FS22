@@ -241,7 +241,9 @@ function CpBaseHud:init(vehicle)
     self.onOffButton = CpHudButtonElement.new(onOffIndicatorOverlay, self.baseHud)
     local x, y = unpack(self.lines[6].right)
     self.onOffButton:setPosition(x, y)
-    self.onOffButton:setCallback("onClickPrimary", self.vehicle, self.vehicle.cpStartStopDriver)
+    self.onOffButton:setCallback("onClickPrimary", self.vehicle, function(vehicle)
+        vehicle:cpStartStopDriver(true)
+    end)
     
     --- Create start/stop field boarder record button
     local recordingBtnWidth, height = getNormalizedScreenValues(18, 18)
@@ -404,6 +406,15 @@ function CpBaseHud:getActiveHudPage(vehicle)
         return self.fieldworkLayout
     end
 end
+
+function CpBaseHud:isBunkerSiloLayoutActive()
+    return self.bunkerSiloWorkerLayout:getVisible()
+end
+
+function CpBaseHud:isCombineUnloaderLayoutActive()
+    return self.combineUnloaderLayout:getVisible()
+end
+
 
 ---@param status CpStatus
 function CpBaseHud:draw(status)

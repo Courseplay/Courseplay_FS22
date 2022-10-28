@@ -96,7 +96,7 @@ end
 
 function CpGamePadHudScreen:onClickOk()
 	if self.vehicle then
-		self.vehicle:cpStartStopDriver()
+		self.vehicle:cpStartStopDriver(true)
 
 		local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
 		if self.vehicle:getIsAIActive() then 
@@ -149,8 +149,12 @@ end
 
 function CpGamePadHudScreen:draw(...)
 	CpGamePadHudScreen:superClass().draw(self, ...)
-	CpGamePadHud.onDraw(self.vehicle)	
+	self:drawWorkWidth()
 	g_currentMission.hud:drawBlinkingWarning()
+end
+
+function CpGamePadHudScreen:drawWorkWidth()
+	-- Override
 end
 
 ---@class CpGamePadHudFieldWorkScreen : CpGamePadHudScreen
@@ -170,6 +174,9 @@ function CpGamePadHudFieldWorkScreen:update(dt, ...)
 	end
 end
 
+function CpGamePadHudFieldWorkScreen:drawWorkWidth()
+	self.vehicle:showCpCourseWorkWidth()
+end
 
 ---@class CpGamePadHudBaleLoaderScreen : CpGamePadHudScreen
 CpGamePadHudBaleLoaderScreen = {}
@@ -181,6 +188,10 @@ function CpGamePadHudBaleLoaderScreen.new(settings, target, custom_mt)
 	return self
 end
 
+function CpGamePadHudBaleLoaderScreen:drawWorkWidth()
+	self.vehicle:showCpCourseWorkWidth()
+end
+
 ---@class CpGamePadHudUnloaderScreen : CpGamePadHudScreen
 CpGamePadHudUnloaderScreen = {}
 local CpGamePadHudUnloaderScreen_mt = Class(CpGamePadHudUnloaderScreen, CpGamePadHudScreen)
@@ -189,6 +200,10 @@ function CpGamePadHudUnloaderScreen.new(settings, target, custom_mt)
 	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudUnloaderScreen_mt)
 
 	return self
+end
+
+function CpGamePadHudUnloaderScreen:drawWorkWidth()
+	self.vehicle:showCpCombineUnloaderWorkWidth()
 end
 
 ---@class CpGamePadHudBunkerSiloScreen : CpGamePadHudScreen
@@ -206,4 +221,8 @@ function CpGamePadHudBunkerSiloScreen:update(dt, ...)
 	if not self.vehicle:getCanStartCpBunkerSiloWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpJobParameters.START_AT_BUNKER_SILO then
 		self.vehicle:reopenCpGamePadHud()
 	end
+end
+
+function CpGamePadHudBunkerSiloScreen:drawWorkWidth()
+	self.vehicle:showCpBunkerSiloWorkWidth()
 end

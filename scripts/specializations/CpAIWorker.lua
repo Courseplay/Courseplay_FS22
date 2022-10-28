@@ -54,7 +54,7 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIWorker.getIsCpActive)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartableJob", CpAIWorker.getCpStartableJob)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartText", CpAIWorker.getCpStartText)
-    SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.startStopDriver)
+    SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.cpStartStopDriver)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
@@ -110,7 +110,7 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
                 end
             end
 
-            addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopDriver)
+            addActionEvent(self, InputAction.CP_START_STOP, CpAIWorker.startStopCpActionEvent)
             addActionEvent(self, InputAction.CP_CHANGE_STARTING_POINT, CpAIWorker.changeStartingPoint)
             addActionEvent(self, InputAction.CP_CLEAR_COURSE, CpAIWorker.clearCourse, 
                           g_i18n:getText("input_CP_CLEAR_COURSE"))
@@ -238,15 +238,19 @@ function CpAIWorker:changeCourseVisibility()
     self:getCpSettings().showCourse:setNextItem()
 end
 
+function CpAIWorker:startStopCpActionEvent()
+    self:cpStartStopDriver()
+end
+
 --- Directly starts a cp job or stops a currently active job.
-function CpAIWorker:startStopDriver()
+function CpAIWorker:cpStartStopDriver(isStartedByHud)
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Start/stop cp helper")
     if self:getIsAIActive() then
 		self:stopCurrentAIJob(AIMessageSuccessStoppedByUser.new())
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Stopped current helper.")
 	else
         self:updateAIFieldWorkerImplementData()
-		local job = self:getCpStartableJob()
+		local job = self:getCpStartableJob(isStartedByHud)
         if self:getCanStartCp() and job then
 
             job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, job:getCanGenerateFieldWorkCourse())
