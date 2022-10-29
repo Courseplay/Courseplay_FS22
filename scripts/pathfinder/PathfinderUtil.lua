@@ -644,13 +644,14 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
 end
 
 ---@param course Course
----@return Polygon outermost headland as a  polygon (x, y)
-local function getOutermostHeadland(course)
+---@param n number number of headland to get, 1 - number of headlands, 1 is the outermost
+---@return Polygon headland as a polygon (x, y)
+local function getHeadland(course, n)
     local headland = Polygon:new()
     for i = 1, course:getNumberOfWaypoints() do
         -- do not want to include the connecting track parts as those are overlap with the first part
         -- of the headland confusing the shortest path finding
-        if course:isOnOutermostHeadland(i) and not course:isOnConnectingTrack(i) then
+        if course:isOnHeadland(i, n) and not course:isOnConnectingTrack(i) then
             local x, y, z = course:getWaypointPosition(i)
             headland:add({ x = x, y = -z })
         end
@@ -663,9 +664,22 @@ end
 ---@param course Course
 ---@param turnRadius number
 ---@return State3D[]
-local function findShortestPathOnHeadland(start, goal, course, turnRadius)
+local function findShortestPathOnHeadland(start, goal, course, turnRadius, workingWidth, backMarkerDistance)
+    local headlandWidth = course:getNumberOfHeadlands() * workingWidth
+    -- distance of the vehicle's direction node from the end of the row. If the implement is on the front of the
+    -- vehicle (like a combine), we move the vehicle up to the end of the row so we'll later always end up with
+    -- a valid headland number (<= num of headlands)
+    local distanceFromRowEnd = backMarkerDistance < 0 and -backMarkerDistance or 0
+    -- this is what is in front of us, minus the turn radius as we'll need at least that space to stay on the field
+    -- during a turn
+    local usableHeadlandWidth = headlandWidth - (distanceFromRowEnd + turnRadius)
+    local closestHeadland = math.max(1, math.min(course:getNumberOfHeadlands() - 1,
+                    math.floor(usableHeadlandWidth / workingWidth) + 1))
+    CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
+            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d',
+            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland)
     -- to be able to use the existing getSectionBetweenPoints, we first create a Polyline[], then construct a State3D[]
-    local headland = getOutermostHeadland(course)
+    local headland = getHeadland(course, closestHeadland)
     headland:calculateData()
     local path = {}
     for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
@@ -703,10 +717,13 @@ end
 ---@param turnRadius number vehicle turning radius
 ---@param allowReverse boolean allow reverse driving
 ---@param courseWithHeadland Course fieldwork course, needed to find the headland
----@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection
+---@param workingWidth number working width of the vehicle
+---@param backMarkerDistance number back marker distance, this is approximately how far the end of the row is
+--- in front of the vehicle when it stops working on that row before the turn starts. Negative values mean the
+--- vehicle is towing the implements and is past the end of the row when the implement reaches the end of the row.
 ---@param turnOnField boolean is turn on field allowed?
 function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode, goalOffset, turnRadius, allowReverse,
-                                        courseWithHeadland, vehiclesToIgnore, turnOnField)
+                                        courseWithHeadland, workingWidth, backMarkerDistance, turnOnField)
     local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), 0, startOffset or 0)
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, 0, goalOffset or 0)
@@ -721,7 +738,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     local pathfinder
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
-        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius)
+        local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth, backMarkerDistance)
         -- is the first wp of the headland in front of us?
         local _, y, _ = getWorldTranslation(vehicle:getAIDirectionNode())
         local dx, _, dz = worldToLocal(vehicle:getAIDirectionNode(), headlandPath[1].x, y, -headlandPath[1].y)
@@ -736,9 +753,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
     end
 
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
-    local context = PathfinderUtil.Context(
-            vehicle,
-            vehiclesToIgnore)
+    local context = PathfinderUtil.Context(vehicle, {})
     local constraints = PathfinderConstraints(context, nil, turnOnField and 10 or nil, fieldNum)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
