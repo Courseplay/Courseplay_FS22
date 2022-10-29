@@ -169,7 +169,8 @@ end
 
 function CpGamePadHudFieldWorkScreen:update(dt, ...)
 	CpGamePadHudFieldWorkScreen:superClass().update(self, dt, ...)
-	if self.vehicle:getCanStartCpBunkerSiloWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO then
+	if self.vehicle:getCanStartCpBunkerSiloWorker() and self.vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO
+		and not AIUtil.hasChildVehicleWithSpecialization(self.vehicle, Leveler) then
 		self.vehicle:reopenCpGamePadHud()
 	end
 end

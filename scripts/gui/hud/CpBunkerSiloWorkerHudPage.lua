@@ -79,5 +79,5 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
 end
 
 function CpBunkerSiloWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return false
+    return AIUtil.hasAIImplementWithSpecialization(vehicle, Leveler)
 end

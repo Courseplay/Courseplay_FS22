@@ -489,6 +489,7 @@ function AIDriveStrategyBunkerSilo:onPathfindingDoneToCourseStart(path)
         ix = 1
         self.state = self.states.DRIVING_TO_SILO
         self:startCourse(course, ix)
+        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
     else
         self:debug('Pathfinding to silo failed, directly start.')
         self:startDrivingIntoSilo(course)

@@ -191,7 +191,8 @@ function CpGamePadHud:actionEventOpenCloseDisplay()
 		page = CpGamePadHud.UNLOADER_PAGE
 	elseif self:getCanStartCpBaleFinder() then 
 		page = CpGamePadHud.BALE_LOADER_PAGE
-	elseif self:getCanStartCpBunkerSiloWorker() and self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO  then 
+	elseif self:getCanStartCpBunkerSiloWorker() and self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO
+		or AIUtil.hasChildVehicleWithSpecialization(self.vehicle, Leveler) then 
 		page = CpGamePadHud.BUNKER_SILO_PAGE
 	else 
 		page = CpGamePadHud.FIELDWORK_PAGE

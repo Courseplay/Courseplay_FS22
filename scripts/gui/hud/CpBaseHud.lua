@@ -400,7 +400,8 @@ function CpBaseHud:getActiveHudPage(vehicle)
         return self.combineUnloaderLayout
     elseif vehicle:getCanStartCpBaleFinder() and not vehicle:hasCpCourse() then
         return self.baleFinderLayout
-    elseif vehicle:getCanStartCpBunkerSiloWorker() and vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO then
+    elseif vehicle:getCanStartCpBunkerSiloWorker() and vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO 
+        or AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler) then
         return self.bunkerSiloWorkerLayout
     else
         return self.fieldworkLayout
