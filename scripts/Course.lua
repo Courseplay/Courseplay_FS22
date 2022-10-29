@@ -80,6 +80,10 @@ function Course:setVehicle(vehicle)
 	self.vehicle = vehicle
 end
 
+function Course:getVehicle()
+	return self.vehicle
+end
+
 function Course:setFieldPolygon(polygon)
 	self.fieldPolygon = polygon
 end
