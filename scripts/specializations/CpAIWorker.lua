@@ -251,6 +251,10 @@ function CpAIWorker:cpStartStopDriver(isStartedByHud)
 	else
         self:updateAIFieldWorkerImplementData()
 		local job = self:getCpStartableJob(isStartedByHud)
+        if job == nil then 
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Could not find a CP job to start!")
+            return
+        end
         if self:getCanStartCp() and job then
 
             job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, job:getCanGenerateFieldWorkCourse())
@@ -266,7 +270,7 @@ function CpAIWorker:cpStartStopDriver(isStartedByHud)
                 end
             end
         else
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Could not start CP helper, it needs a course when not collecting bales.")
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Could not start CP helper!")
         end
 	end
 end

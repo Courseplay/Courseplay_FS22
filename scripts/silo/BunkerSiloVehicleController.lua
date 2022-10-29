@@ -124,14 +124,6 @@ function CpBunkerSiloVehicleController:setBunkerSiloInvalid()
 	self.driveStrategy:stopSiloWasDeleted()
 end
 
---- For now only stops the drive, when a unloader was found.
-function CpBunkerSiloVehicleController:getMaxSpeed()
-	if self.silo:hasNearbyUnloader() then 
-		return 0
-	end
-	return math.huge
-end
-
 function CpBunkerSiloVehicleController:hasNearbyUnloader()
 	return self.silo:hasNearbyUnloader()
 end
@@ -160,6 +152,8 @@ function CpBunkerSiloVehicleController:isEndReached(node, margin)
 	if self.drivingTarget then
 		local x, _, z = localToWorld(node, 0, 0, margin)
 		local dx, dz = unpack(self.drivingTarget)
-		return not self.silo:isPointInSilo(x, z) and MathUtil.vector2Length(x - dx, z - dz) < 5
+		local dist = MathUtil.vector2Length(x - dx, z - dz)
+		return not self.silo:isPointInSilo(x, z) and dist < 5, MathUtil.clamp(2 * dist, 5, math.huge)
 	end
+	return false, math.huge
 end

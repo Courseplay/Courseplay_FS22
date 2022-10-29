@@ -121,7 +121,7 @@ end
 function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIBunkerSiloWorker
     local job = self:getCanStartCpBunkerSiloWorker() and spec.cpJob
-    if isStartedByHud and AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
+    if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
         job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO and job
     end
 	return superFunc(self) or job
