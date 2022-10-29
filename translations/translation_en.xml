@@ -115,6 +115,10 @@
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Tool offset vertical"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the unloader's fill level is over this value, it won't wait for the combine"/>
+
+    <text name="CP_vehicle_setting_Thkatester_title" text="Follow combine until end of row"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the combine is empty unloader will keep following until end of row"/>
+
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetric lane change"/>

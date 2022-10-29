@@ -62,6 +62,10 @@
 				 onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" />
 		<!-- Full threshold -->
 		<Setting classType="AIParameterSettingList" name="fullThreshold" min="40" max="100" incremental="5" default="85" unit="4"/>
+
+		<!--test-->
+		<Setting classType="AIParameterBooleanSetting" name="Thkatester" defaultBool="false"/>
+
 		<!--Silage additives needed?-->
 		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
 	</SettingSubTitle>
