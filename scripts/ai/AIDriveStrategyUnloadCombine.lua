@@ -1248,10 +1248,14 @@ function AIDriveStrategyUnloadCombine:unloadMovingCombine()
             self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineToUnload)
             return
         else
-            self:debug('combine empty and moving forward')
-            self:releaseCombine()
-            self:startWaitingForSomethingToDo()
-            return
+            if self.settings.Thkatester:getValue() then 
+				return
+			else
+				self:debug('combine empty and moving forward')
+				self:startWaitingForSomethingToDo()
+				self:releaseCombine()
+				return
+			end
         end
     end
 
