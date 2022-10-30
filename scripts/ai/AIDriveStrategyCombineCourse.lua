@@ -96,7 +96,7 @@ function AIDriveStrategyCombineCourse.new(customMt)
     })
 
     -- TODO: move this to a setting
-    self.callUnloaderAtFillLevelPercentage = 80
+    self.callUnloaderAtFillLevelPercentage = self.settings.fullThreshold:getValue()
     return self
 end
 
