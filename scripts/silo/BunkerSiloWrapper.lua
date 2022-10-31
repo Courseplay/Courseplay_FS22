@@ -4,6 +4,13 @@ CpBunkerSilo = CpObject()
 
 CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 15
 CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 5
+CpBunkerSilo.DRAW_DEBUG = true
+CpBunkerSilo.SIDE_MODES = {
+	OPEN = 0,
+	ONE_SIDED = 1,
+	ONE_SIDED_INVERTED = 2
+}
+
 
 function CpBunkerSilo:init(silo)
 	self.silo = silo
@@ -12,7 +19,7 @@ function CpBunkerSilo:init(silo)
 	self.numControllers = 0
 	self.nearbyUnloaders = {}
 	self.numNearbyUnloaders = 0
-	self.isOneSidedSilo = false
+	self.siloMode = self.SIDE_MODES.OPEN
 	self.initialized = false
 
 	self.plot = BunkerSiloPlot()
@@ -63,20 +70,39 @@ end
 
 --- Checks if the silo has a back wall and sets the plot area afterwards. 
 function CpBunkerSilo:initialize()
-	local x, z = self.sx + self.dirXWidth * self.width/2, self.sz + self.dirZWidth * self.width/2
+	local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2 
 
 	raycastAll(x, y, z, self.dirXLength, 0, self.dirZLength, 'rayCastCallbackOneSidedSilo', self.length + 2, self)
 
+	local x, z = self.hx + self.dirXWidth * self.width/2 - self.dirXLength * 2, self.hz + self.dirZWidth * self.width/2 - self.dirZLength * 2
+	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2 
+
+	raycastAll(x, y, z, -self.dirXLength, 0, -self.dirZLength, 'rayCastCallbackOneSidedSiloInverted', self.length + 2, self)
+
+
 	self.plot:setAreas(self:getPlotAreas())
 end
 
-function CpBunkerSilo:rayCastCallbackOneSidedSilo(hitObjectId, x, y, z, distance)
+function CpBunkerSilo:rayCastCallbackOneSidedSilo(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
 	if hitObjectId then 
 		local object = g_currentMission:getNodeObject(hitObjectId)
 		if self:isTheSameSilo(object) then 
+
 			--- Back wall was found.
-			self.isOneSidedSilo = true
+			self.siloMode = self.SIDE_MODES.ONE_SIDED
+			return true
+		end
+	end
+end
+
+function CpBunkerSilo:rayCastCallbackOneSidedSiloInverted(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
+	if hitObjectId then 
+		local object = g_currentMission:getNodeObject(hitObjectId)
+		if self:isTheSameSilo(object) then 
+
+			--- Back wall was found.
+			self.siloMode = self.SIDE_MODES.ONE_SIDED_INVERTED
 			return true
 		end
 	end
@@ -93,8 +119,24 @@ function CpBunkerSilo:isTheSameSilo(object)
 	end
 end
 
---- Area in front of the silo, to manage possible unloaders there.
 function CpBunkerSilo:getFrontArea(length, sideOffset)
+	if self.siloMode == self.SIDE_MODES.ONE_SIDED_INVERTED then 
+		return self:getBackAreaInternal(length, sideOffset)
+	else 
+		return self:getFrontAreaInternal(length, sideOffset)
+	end
+end
+
+function CpBunkerSilo:getBackArea(length, sideOffset)
+	if self.siloMode == self.SIDE_MODES.ONE_SIDED_INVERTED then 
+		return self:getFrontAreaInternal(length, sideOffset)
+	else 
+		return self:getBackAreaInternal(length, sideOffset)
+	end
+end
+
+--- Area in front of the silo, to manage possible unloaders there.
+function CpBunkerSilo:getFrontAreaInternal(length, sideOffset)
 	length = length or CpBunkerSilo.UNLOADER_LENGTH_OFFSET
 	sideOffset = sideOffset or CpBunkerSilo.UNLOADER_WIDTH_OFFSET
 	local area = 	{
@@ -122,7 +164,7 @@ function CpBunkerSilo:getFrontArea(length, sideOffset)
 end
 
 --- Area in back of the silo, to manage possible unloaders there.
-function CpBunkerSilo:getBackArea(length, sideOffset)
+function CpBunkerSilo:getBackAreaInternal(length, sideOffset)
 	length = length or CpBunkerSilo.UNLOADER_LENGTH_OFFSET
 	sideOffset = sideOffset or CpBunkerSilo.UNLOADER_WIDTH_OFFSET
 	local area = 	{
@@ -193,9 +235,6 @@ function CpBunkerSilo:update(dt)
 		self:initialize()
 		self.initialized = true
 	end
-	--local x, z = self.sx + self.dirXWidth * self.width/2, self.sz + self.dirZWidth * self.width/2
-	--local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2
-	--DebugUtil.drawDebugLine(x, y, z, x + self.dirXLength * (self.length + 2), y, z + self.dirZLength * (self.length + 2))
 
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.
 	self:updateUnloaders(dt)
@@ -208,6 +247,22 @@ function CpBunkerSilo:draw()
 	if self.numControllers > 0 then 
 		--- Draw the unloader detection areas, for debugging for now.
 		self:drawUnloaderArea()
+	end
+
+	if CpBunkerSilo.DRAW_DEBUG then
+		self:drawUnloaderArea()
+		local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
+		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2
+		DebugUtil.drawDebugLine(x, y, z, x + self.dirXLength * (self.length + 2), y, z + self.dirZLength * self.length)
+
+		local x, z = self.hx + self.dirXWidth * self.width/2 - self.dirXLength * 2, self.hz + self.dirZWidth * self.width/2 - self.dirZLength * 2
+		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
+		DebugUtil.drawDebugLine(x, y, z, x - self.dirXLength * (self.length + 2), y, z - self.dirZLength * self.length)
+
+
+		DebugUtil.drawDebugNode(self.startNode, "Start Node: "..tostring(self.siloMode), false, 5)
+		DebugUtil.drawDebugNode(self.widthNode, "Width Node", false, 5)
+		DebugUtil.drawDebugNode(self.heightNode, "Height Node", false, 5)
 	end
 end
 
@@ -252,7 +307,7 @@ end
 
 
 function CpBunkerSilo:getPlotAreas()
-	if self.isOneSidedSilo then 
+	if self.siloMode == self.SIDE_MODES.ONE_SIDED then 
 		return {
 				{
 					x = self.sx, 
@@ -271,6 +326,25 @@ function CpBunkerSilo:getPlotAreas()
 					z = self.wz
 				},
 			}
+	elseif self.siloMode == self.SIDE_MODES.ONE_SIDED_INVERTED then 
+		return {
+			{
+				x = self.hx, 
+				z = self.hz
+			},
+			{
+				x = self.sx, 
+				z = self.sz
+			},
+			{
+				x = self.wx,
+				z = self.wz,
+			},
+			{
+				x = self.wx + self.dirXLength * self.length, 
+				z = self.wz + self.dirZLength * self.length
+			},
+		}
 	else
 		return {
 				{
@@ -376,12 +450,12 @@ end
 function CpBunkerSilo:isUnloaderInSilo(x, z)
 	return self:isPointInSilo(x, z) or 
 			self:isPointInArea(x, z, self:getFrontArea())
-			or not self.isOneSidedSilo and self:isPointInArea(x, z, self:getBackArea()) 
+			or self.siloMode == self.SIDE_MODES.OPEN and self:isPointInArea(x, z, self:getBackArea()) 
 end
 
 function CpBunkerSilo:drawUnloaderArea()
 	self:drawArea(self:getFrontArea())
-	if not self.isOneSidedSilo then
+	if self.siloMode == self.SIDE_MODES.OPEN then
 		self:drawArea(self:getBackArea())
 	end
 	self:drawArea(self:getArea())
