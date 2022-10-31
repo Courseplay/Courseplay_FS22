@@ -32,7 +32,7 @@ function AIReverseDriver:init(vehicle, ppc)
 	-- the main implement (towed) or trailer we are controlling
 	self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle)
 	if self.reversingImplement then
-		self.steeringLength = AIUtil.getTowBarLength(self.reversingImplement)
+		self.steeringLength = AIUtil.getTowBarLength(self.vehicle)
 		self:setReversingProperties(self.reversingImplement)
 	else
 		self:debug('No towed implement found.')
