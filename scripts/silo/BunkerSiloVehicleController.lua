@@ -55,6 +55,10 @@ function CpBunkerSiloVehicleController:getTarget(width)
 	return {x, z}, {dx, dz}	
 end
 
+function CpBunkerSiloVehicleController:getLastTarget()
+	return self.drivingTarget
+end
+
 function CpBunkerSiloVehicleController:getPositionsForLine(line, width, widthCount, unitWidth)
 	local x, z
 	if line == 1 then

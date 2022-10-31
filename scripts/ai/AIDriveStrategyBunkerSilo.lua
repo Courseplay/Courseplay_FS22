@@ -28,6 +28,7 @@ AIDriveStrategyBunkerSilo.myStates = {
     WAITING_FOR_PREPARING = {},
     DRIVING_INTO_SILO = {},
 	DRIVING_OUT_OF_SILO = {},
+    DRIVING_TURN = {},
     DRIVING_TEMPORARY_OUT_OF_SILO = {}
 }
 
@@ -52,7 +53,7 @@ function AIDriveStrategyBunkerSilo.new(customMt)
 	self.silo = nil
     self.siloController = nil
     self.drivingForwardsIntoSilo = true
-
+    self.turnNode = CpUtil.createNode("turnNode", 0, 0, 0)
     
 
     self.isStuckTimer = Timer.new(self.isStuckMs)
@@ -69,6 +70,11 @@ function AIDriveStrategyBunkerSilo:delete()
         CpUtil.destroyNode(self.parkNode)
         self.parkNode = nil
     end
+    if self.turnNode then 
+        CpUtil.destroyNode(self.turnNode)
+        self.turnNode = nil
+    end
+
     AIDriveStrategyBunkerSilo:superClass().delete(self)
 end
 
@@ -86,8 +92,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     end
 
     --- Proximity sensor to detect the silo end wall.
-    self.siloEndDetectionMarker = self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or
-                                                                     Markers.getFrontMarkerNode(self.vehicle)
+    self.siloEndDetectionMarker = self:getEndMarker()
 
     self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
                                                                         self.siloEndProximitySensorRange, 1)
@@ -157,8 +162,10 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
                 --- Only allow driving to park position here for now, as the silo interferes with the pathfinder.
                 self:startDrivingToParkPositionWithPathfinding()
             else 
-                self:startDrivingIntoSilo()
+                self:startTransitionToNextLane()
             end
+        elseif self.state == self.states.DRIVING_TURN then 
+
         elseif self.state == self.states.DRIVING_TO_SILO then
             local course = self:getRememberedCourseAndIx()
             self:startDrivingIntoSilo(course)
@@ -192,7 +199,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
     self:checkProximitySensors(moveForwards)
 
     if self:isTemporaryOutOfSiloDrivingAllowed() then
-        self.isStuckTimer:startIfNotRunning()
+        --self.isStuckTimer:startIfNotRunning()
     end
 
     if self.siloController:hasNearbyUnloader() then 
@@ -259,9 +266,7 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startDrivingOutOfSilo()
         end
 
-        local marker = self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or Markers.getFrontMarkerNode(self.vehicle)
-        
-        local isEndReached, maxSpeed = self.siloController:isEndReached(marker, self:getEndOffset())
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndOffset())
         if isEndReached then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
@@ -311,19 +316,64 @@ function AIDriveStrategyBunkerSilo:isDriveDirectionReverse()
 end
 
 function AIDriveStrategyBunkerSilo:getStartOffset()
-    local frontMarkerNode, backMarkerNode = Markers.getMarkerNodes(self.vehicle)
-    local x, _, z = getTranslation(frontMarkerNode)
-    local dx, _, dz =  getTranslation(backMarkerNode)
-    return MathUtil.vector2Length(x - dx, z - dz)
+    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance or self.frontMarkerDistance
+    return - offset
 end
 
 function AIDriveStrategyBunkerSilo:getEndOffset()
-    return 0
+    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance or self.frontMarkerDistance
+    return 2 * offset
+end
+
+function AIDriveStrategyBunkerSilo:getEndMarker()
+    return self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or
+            Markers.getFrontMarkerNode(self.vehicle)
 end
 
 --- Gets the work width.
 function AIDriveStrategyBunkerSilo:getWorkWidth()
     return self.settings.bunkerSiloWorkWidth:getValue()
+end
+
+function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
+    local course, firstWpIx = self:getDriveIntoSiloCourse()
+        
+    local x, y, z = course:getWaypointPosition(1)
+    local yRot = course:getWaypointYRotation(1)
+    setTranslation(self.turnNode, x, y, z)
+    setRotation(self.turnNode, 0, yRot, 0)
+
+    local path = PathfinderUtil.findAnalyticPath(self:getReedsSheppSolver(), self.vehicle:getAIDirectionNode(), 0, self.turnNode,
+    0, 0, self.turningRadius)
+    if not path or #path == 0 then
+        self:debug('Could not find ReedsShepp path, skipping turn!')
+        self:startDrivingIntoSilo(course)
+    else 
+        self:debug('Found ReedsShepp turn path and prepended it.')
+        local turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        turnCourse:append(course)
+        self:startDrivingIntoSilo(turnCourse)
+    end
+end
+
+function AIDriveStrategyBunkerSilo:getReedsSheppSolver()
+
+    local forwardToReversePathWords = {
+        ReedsShepp.PathWords.LfRbLb,
+        ReedsShepp.PathWords.RfLbRb,
+        ReedsShepp.PathWords.LfRfLb, 
+        ReedsShepp.PathWords.RfLfRb,
+    }
+    
+    local reverseToForwardPathWords = {
+        ReedsShepp.PathWords.LbRfLf,
+        ReedsShepp.PathWords.RbLfRf,
+        ReedsShepp.PathWords.LbRbLf,
+        ReedsShepp.PathWords.RbLbRf,
+    }
+    
+    local pathWords = self:isDriveDirectionReverse() and forwardToReversePathWords or reverseToForwardPathWords
+    return ReedsSheppSolver()
 end
 
 --- Starts driving into the silo.
@@ -376,7 +426,7 @@ function AIDriveStrategyBunkerSilo:getDriveIntoSiloCourse()
     local dx, dz = unpack(endPos)
 
     local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 0, 
-                                                -self:getStartOffset() + 3 , 0, 3, driveDirection)
+                                                self:getStartOffset(), 0, 3, driveDirection)
 
 	local firstWpIx = self:getNearestWaypoints(course, driveDirection)
 	return course, firstWpIx
@@ -393,13 +443,13 @@ function AIDriveStrategyBunkerSilo:getDriveOutOfSiloCourse(driveInCourse)
         x, _, z = driveInCourse:getWaypointPosition(driveInCourse:getNumberOfWaypoints())
         dx, _, dz = driveInCourse:getWaypointPosition(1)
     else 
-        local startPos, endPos = self.siloController:getTarget(self:getWorkWidth())
+        local startPos, endPos = self.siloController:getLastTarget()
         x, z = unpack(endPos)
         dx, dz = unpack(startPos)
     end
 
 	local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 0, -self:getEndOffset(), 
-    self:getStartOffset(), 3, not driveDirection)
+    self:getEndOffset(), 3, not driveDirection)
 	local firstWpIx = self:getNearestWaypoints(course, not driveDirection)
 	return course, firstWpIx
 end
