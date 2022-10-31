@@ -78,6 +78,15 @@ function CpBunkerSiloVehicleController:getPositionsForLine(line, width, widthCou
 	if self.isInverted then 
 		x, z, dx, dz = dx, dz, x, z
 	end
+
+	--- Slightly eases the angle at the outermost lanes, so the lane transition is not stuck at walls.
+	if line == 1 then
+		x = x + self.silo.dirXWidth * self.WALL_OFFSET * 2
+		z = z + self.silo.dirZWidth * self.WALL_OFFSET * 2
+	elseif line == widthCount then
+		x = x - self.silo.dirXWidth * self.WALL_OFFSET * 2
+		z = z - self.silo.dirZWidth * self.WALL_OFFSET * 2
+	end
 	return x, z, dx, dz
 end
 

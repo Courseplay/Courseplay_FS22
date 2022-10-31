@@ -93,9 +93,13 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
 
     --- Proximity sensor to detect the silo end wall.
     self.siloEndDetectionMarker = self:getEndMarker()
-
-    self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
+    if self.drivingForwardsIntoSilo then
+        self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
                                                                         self.siloEndProximitySensorRange, 1)
+    else
+        self.siloEndProximitySensor = SingleBackwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
+                                                                        self.siloEndProximitySensorRange, 1)
+    end
 
 
     --- Setup the silo controller, that handles the driving conditions and coordinations.
@@ -165,7 +169,8 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
                 self:startTransitionToNextLane()
             end
         elseif self.state == self.states.DRIVING_TURN then 
-
+            local course = self:getRememberedCourseAndIx()
+            self:startDrivingIntoSilo(course)
         elseif self.state == self.states.DRIVING_TO_SILO then
             local course = self:getRememberedCourseAndIx()
             self:startDrivingIntoSilo(course)
@@ -199,7 +204,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
     self:checkProximitySensors(moveForwards)
 
     if self:isTemporaryOutOfSiloDrivingAllowed() then
-        --self.isStuckTimer:startIfNotRunning()
+        self.isStuckTimer:startIfNotRunning()
     end
 
     if self.siloController:hasNearbyUnloader() then 
@@ -295,6 +300,8 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startCourseWithPathfinding( course, firstWpIx, self:isDriveDirectionReverse())
             self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
         end
+    elseif self.state == self.states.DRIVING_TURN then 
+        self:setMaxSpeed(self.settings.turnSpeed:getValue())
     end
 end
 
@@ -316,13 +323,13 @@ function AIDriveStrategyBunkerSilo:isDriveDirectionReverse()
 end
 
 function AIDriveStrategyBunkerSilo:getStartOffset()
-    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance or self.frontMarkerDistance
+    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 2 or self.frontMarkerDistance
     return - offset
 end
 
 function AIDriveStrategyBunkerSilo:getEndOffset()
-    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance or self.frontMarkerDistance
-    return 2 * offset
+    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 3 or self.frontMarkerDistance
+    return 3 * offset
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
@@ -342,6 +349,10 @@ function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
     local yRot = course:getWaypointYRotation(1)
     setTranslation(self.turnNode, x, y, z)
     setRotation(self.turnNode, 0, yRot, 0)
+    if self:isDriveDirectionReverse() then
+        --- Enables reverse path finding.
+        setRotation(self.turnNode, 0, yRot + math.pi, 0)
+    end
 
     local path = PathfinderUtil.findAnalyticPath(self:getReedsSheppSolver(), self.vehicle:getAIDirectionNode(), 0, self.turnNode,
     0, 0, self.turningRadius)
@@ -349,20 +360,26 @@ function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
         self:debug('Could not find ReedsShepp path, skipping turn!')
         self:startDrivingIntoSilo(course)
     else 
+        self:rememberCourse(course, 1)
         self:debug('Found ReedsShepp turn path and prepended it.')
         local turnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        turnCourse:append(course)
-        self:startDrivingIntoSilo(turnCourse)
+        self:startCourse(turnCourse, 1)
+        self.state = self.states.DRIVING_TURN
+        self:debug("Started driving turn to next lane.")
     end
 end
 
 function AIDriveStrategyBunkerSilo:getReedsSheppSolver()
 
     local forwardToReversePathWords = {
-        ReedsShepp.PathWords.LfRbLb,
-        ReedsShepp.PathWords.RfLbRb,
-        ReedsShepp.PathWords.LfRfLb, 
-        ReedsShepp.PathWords.RfLfRb,
+    --    ReedsShepp.PathWords.LfRbLb,
+    --    ReedsShepp.PathWords.RfLbRb,
+    --    ReedsShepp.PathWords.LfRfLb, 
+     --   ReedsShepp.PathWords.RfLfRb,
+        ReedsShepp.PathWords.LfRufLubRb,
+        --LbRubLufRf = {},
+        ReedsShepp.PathWords.RfLufRubLb,
+        --RbLubRufLf = {},
     }
     
     local reverseToForwardPathWords = {
@@ -372,7 +389,7 @@ function AIDriveStrategyBunkerSilo:getReedsSheppSolver()
         ReedsShepp.PathWords.RbLbRf,
     }
     
-    local pathWords = self:isDriveDirectionReverse() and forwardToReversePathWords or reverseToForwardPathWords
+    local pathWords = self:isDriveDirectionReverse() and forwardToReversePathWords or ReedsShepp.PathWords
     return ReedsSheppSolver()
 end
 
