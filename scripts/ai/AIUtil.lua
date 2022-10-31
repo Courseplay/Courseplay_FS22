@@ -244,16 +244,26 @@ end
 function AIUtil.getFirstReversingImplementWithWheels(vehicle)
 	-- since some weird things like Seed Bigbag are also vehicles, check this first
 	if not vehicle.getAttachedImplements then return nil end
+
 	-- Check all attached implements if we are a wheeled workTool behind the tractor
 	for _, imp in ipairs(vehicle:getAttachedImplements()) do
 		-- Check if the implement is behind the tractor
 		if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
 			if ImplementUtil.isWheeledImplement(imp.object) then
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Implement %s has wheels', CpUtil.getName(imp.object))
 				-- If the implement is a wheeled workTool, then return the object
 				return imp.object
 			else
+				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s has no wheels, check if anything attached to it',
+						CpUtil.getName(imp.object))
 				-- If the implement is not a wheeled workTool, then check if that implement have an attached wheeled workTool and return that.
-				return AIUtil.getFirstReversingImplementWithWheels(imp.object)
+				local nextAttachedImplement = AIUtil.getFirstReversingImplementWithWheels(imp.object)
+				if nextAttachedImplement then
+					return nextAttachedImplement
+				else
+					CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s has nothing attached, see what else is attached to %s',
+							CpUtil.getName(imp.object), CpUtil.getName(vehicle))
+				end
 			end
 		end
 	end
