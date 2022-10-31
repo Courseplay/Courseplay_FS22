@@ -174,6 +174,7 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
         elseif self.state == self.states.DRIVING_TO_SILO then
             local course = self:getRememberedCourseAndIx()
             self:startDrivingIntoSilo(course)
+            self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
         elseif self.state == self.states.DRIVING_TO_PARK_POSITION then
             self.state = self.states.WAITING_AT_PARK_POSITION
         elseif self.state == self.states.DRIVING_TEMPORARY_OUT_OF_SILO then
@@ -223,7 +224,7 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
 end
 
 function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
-    return self.state == self.states.DRIVING_INTO_SILO and 
+    return (self.state == self.states.DRIVING_INTO_SILO or self.state == self.states.DRIVING_TURN) and 
             AIUtil.isStopped(self.vehicle) 
             and not self.siloController:hasNearbyUnloader() 
             and not self.proximityController:isStopped()
@@ -322,11 +323,13 @@ function AIDriveStrategyBunkerSilo:isDriveDirectionReverse()
     return not self.drivingForwardsIntoSilo
 end
 
+--- Starts the straight silo lane earlier. (Driving into the silo)
 function AIDriveStrategyBunkerSilo:getStartOffset()
     local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 2 or self.frontMarkerDistance
     return - offset
 end
 
+--- Makes sure the straight silo lane stops later. (Driving out of the silo)
 function AIDriveStrategyBunkerSilo:getEndOffset()
     local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 3 or self.frontMarkerDistance
     return 3 * offset
@@ -561,7 +564,6 @@ function AIDriveStrategyBunkerSilo:onPathfindingDoneToCourseStart(path)
         ix = 1
         self.state = self.states.DRIVING_TO_SILO
         self:startCourse(course, ix)
-        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
     else
         self:debug('Pathfinding to silo failed, directly start.')
         self:startDrivingIntoSilo(course)
