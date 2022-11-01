@@ -13,13 +13,13 @@
     <text name="CP_automatic" text="auto"/>
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="ft"/>
-    <text name="CP_copy" text="Copy course: "/>
+    <text name="CP_copy" text="Útvonal másolása: "/>
     <text name="CP_infoText" text="Courseplay(%s): Ha segítségre van szükséged, hibajelentéseket vagy javításokat szeretnél benyújtani, látogass el a következő oldalra: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Először hozz létre egy útvonalat"/>
     <text name="CP_error_could_not_generate_course" text="Hiba az útvonaltervezéskor"/>
     <text name="CP_error_not_on_field" text="Csak szántóföldön lehet munkát végezni"/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Az ürítő jármű túl messze van a mezőtől."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="A kezdő pozíció túl messze van a mezőtől."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
@@ -60,7 +60,7 @@
     <!---->
     <text name="CP_job_fieldWork" text="CP: Terepmunka"/>
     <text name="CP_job_baleCollect" text="CP: Bálagyűjtés/csomagolás"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP: Kombájn ürítése"/>
     <text name="CP_ai_page_generate_course" text="CP: Útvonaltervezés"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Útvonaltervező megnyitása/zárása."/>
     <!---->
@@ -69,7 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="%s segítő váratlanul abbahagyta a munkát - az eszkőz megtelt!"/>
     <text name="CP_ai_messageError" text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI segítő %s váratlanul abbahagyta a munkát - útvonal nem található!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -252,7 +252,7 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Az összes aktív útvonal megjelenítése"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Az összes aktív útvonal megjelenítése a játéktérképen."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mutatja az útvonalakat a kistérképen"/>
     <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Infóablak megjelenítése"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Jármüvek állapota, értesítések megjelenítese egy infóablakban."/>
@@ -261,9 +261,9 @@
     <text name="CP_global_setting_preferCustomFields_title" text="Felhasználói szántóföld előnyben"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Válassza a felhasználói szántóföldet ha ugyanott egy beépített föld is van."/>
     <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Távolság egység (méter vagy láb)"/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Méter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Láb"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -273,7 +273,7 @@
     <text name="CP_courseManager_change_mode" text="Módváltás"/>
     <text name="CP_courseManager_load_courses" text="Útvonal betöltése"/>
     <text name="CP_courseManager_save_courses" text="Útvonal mentése"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Útvonal szerkesztő megnyitása"/>
     <text name="CP_courseManager_clear_current_courses" text="Jelenlegi útvonal törlése"/>
     <text name="CP_courseManager_create_directory" text="Hozzon létre új mappát"/>
     <text name="CP_courseManager_move_entry" text="Bejegyzés áthelyezése"/>
@@ -282,10 +282,10 @@
     <text name="CP_courseManager_copy_entry" text="Bejegyzés másolása"/>
     <text name="CP_courseManager_folder_dialog" text="Mappa neve:"/>
     <text name="CP_courseManager_course_dialog" text="Útvonal neve:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Biztosan törölni akarod (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Az útvonal szerkesztése problémákat okozhat a CP sofőröknek.
+Csak akkor használd ezt az eszközt, ha az útvonal generátor nem tud kellően jó útvonalat generálni.
+Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felülírja a kiválasztott útvonalat.
 "/>
     <text name="CP_courseManager_deleteError" text="A mappa nem üres (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="A fájl már létezik a célmappában (%s)!"/>
@@ -298,28 +298,28 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
+    <text name="CP_editor_course_title" text="Útvonal szerkesztő"/>
+    <text name="CP_editor_delete_title" text="Csomópontok törlése"/>
+    <text name="CP_editor_delete_primary_text" text="elsődleges"/>
+    <text name="CP_editor_delete_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_delete_err" text="Túl kevés csomópont maradt."/>
     <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_basic_move_title" text="Csomópont mozgatása"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_basic_insert_title" text="Csomópontok beillesztése"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="másodlagos"/>
     <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
     <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Csomópont jelölése fordulóként."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Forduló pontot ad hozzá vagy töröl. (A kiválasztott csomópont lesz a fordulás kezdete.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Túl közel van egy másik forduló ponthoz."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Több csomópont mozgatása"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="másodlagos"/>
     <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="másodlagos"/>
     <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
     <!---->
     <!--Info texts-->
@@ -332,13 +332,13 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_needsFilling" text="fel kell tölteni"/>
     <text name="CP_infoTexts_needsUnloading" text="üríteni kell"/>
     <text name="CP_infoTexts_workFinished" text="készen van"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Kombájnhoz vezetés"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
     <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Útvonal nem található"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -346,9 +346,9 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_confirm_delete" text="Törlöd a %s szántóföldet?"/>
     <text name="CP_customFieldManager_delete" text="Szántóföld törlés"/>
     <text name="CP_customFieldManager_rename" text="Szántóföld átnevezés"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Egyedi mező szerkesztése"/>
     <text name="CP_customFieldManager_draw" text="Szántóföld rajzolás"/>
-    <text name="CP_customFieldManager_draw_header" text="Jobbklikkel tudod a szántóföld határait megrajzolni"/>
+    <text name="CP_customFieldManager_draw_header" text="Jobb klikkel tudod a szántóföld határait megrajzolni"/>
     <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>
     <text name="CP_controllerGui_startRecording" text="Szántóföld-határ rögzítés indítása"/>
     <text name="CP_controllerGui_stopRecording" text="Szántóföld-határ rögzítés leállítása"/>
