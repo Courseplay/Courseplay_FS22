@@ -275,7 +275,7 @@ end
 local function addTrackToHeadlandPath(headlandPath, track, passNumber, from, step, addFullCircle, isConnectingTrack, justOneRound)
 	local i = from
 	local count = 0
-	while count <= #track do
+	while count <= #track + 1 do
 		table.insert(headlandPath, shallowCopy(track[ i ]))
 		headlandPath[#headlandPath].passNumber = passNumber
 		headlandPath[#headlandPath].isConnectingTrack = isConnectingTrack
