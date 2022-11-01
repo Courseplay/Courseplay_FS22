@@ -359,18 +359,18 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="General Information"/>
     <text name="CP_help_page_GeneralBase_text" text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+A Courseplay segítségével mező útvonalakat generálhatsz ráadás funkciókkal, például fordulósávokkal (headland).
+Szintén lehetővé teszi bálázók és rakodókocsik használatát, amiket a korábbi fűnyírókkal, vagy aratógépekkel azonos útvonalon küldhetsz végig.
+További nagy funkció a bálák összegyűjtése és becsomagolása a mezőn.
+Újdonság a jelenlegi iterációban a szőlő terepmunka.
+A mezőmunka útvonalak beállíthatók több gépes módban, ami megengedi akár 5 sofőr konvojban való használatát ugyanazon a mezőn.
+Ugyancsak lehetséges a kombájnokat úgy beállítani, hogy a mezőn, vagy annak közelében egy pótkocsiba önállóan kiürítsék a terményt.
+Egyedi mezőhatárok is beállíthatók a Courseplay-hez, például mezőkön, amiket a mod nem ismer fel hagyományos mezőként.
+Végül a CP-nek van egy Autodrive felülete, ami megengedi egy vetőgép újratöltését egy közeli silónál, vagy egy rakodókocsi kiürítését és így tovább.
 
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+További információért kérlek látogasd meg githug oldalunkat: https://github.com/Courseplay/Courseplay_FS22 .
+Ott segítséget kaphatsz, vagy jelenthetsz bármilyen hibát, amit tapasztaltál.
+Végül köszönjük minden fordítónak és a közösségünknek a hibák jelentését, hogy visszajelzést és új ötleteket adnak.
 
 What is the expert Mode:
 When the expert Mode is deactivated, you have only access to some settings.
