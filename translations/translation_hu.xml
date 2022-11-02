@@ -346,7 +346,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_customFieldManager_confirm_delete" text="Törlöd a %s szántóföldet?"/>
     <text name="CP_customFieldManager_delete" text="Szántóföld törlés"/>
     <text name="CP_customFieldManager_rename" text="Szántóföld átnevezés"/>
-    <text name="CP_customFieldManager_edit" text="Egyedi mező szerkesztése"/>
+    <text name="CP_customFieldManager_edit" text="Egyedi szántóföld szerkesztése"/>
     <text name="CP_customFieldManager_draw" text="Szántóföld rajzolás"/>
     <text name="CP_customFieldManager_draw_header" text="Jobb klikkel tudod a szántóföld határait megrajzolni"/>
     <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>
@@ -368,7 +368,7 @@ Ugyancsak lehetséges a kombájnokat úgy beállítani, hogy a mezőn, vagy anna
 Egyedi mezőhatárok is beállíthatók a Courseplay-hez, például mezőkön, amiket a mod nem ismer fel hagyományos mezőként.
 Végül a CP-nek van egy Autodrive felülete, ami megengedi egy vetőgép újratöltését egy közeli silónál, vagy egy rakodókocsi kiürítését és így tovább.
 
-További információért kérlek látogasd meg githug oldalunkat: https://github.com/Courseplay/Courseplay_FS22 .
+További információért kérlek látogasd meg GitHub oldalunkat: https://github.com/Courseplay/Courseplay_FS22 .
 Ott segítséget kaphatsz, vagy jelenthetsz bármilyen hibát, amit tapasztaltál.
 Végül köszönjük minden fordítónak és a közösségünknek a hibák jelentését, hogy visszajelzést és új ötleteket adnak.
 

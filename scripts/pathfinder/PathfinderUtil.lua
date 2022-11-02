@@ -644,7 +644,7 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
 end
 
 ---@param course Course
----@param n number number of headland to get, 1 - number of headlands, 1 is the outermost
+---@param n number number of headland to get, 1 -> number of headlands, 1 is the outermost
 ---@return Polygon headland as a polygon (x, y)
 local function getHeadland(course, n)
     local headland = Polygon:new()
@@ -655,6 +655,13 @@ local function getHeadland(course, n)
             local x, y, z = course:getWaypointPosition(i)
             headland:add({ x = x, y = -z })
         end
+    end
+    -- remove the first two waypoints if this is not the first headland as those are on the
+    -- short section connecting this headland with the previous one and may result in
+    -- the path taking some sharp turns, especially when the transition is near a corner
+    if n > 1 then
+        table.remove(headland, 1)
+        table.remove(headland, 1)
     end
     return headland
 end
