@@ -779,7 +779,7 @@ function reorderTracksForLandsFieldwork(parallelTracks, leftToRight, bottomToTop
 		counterclockwise = not counterclockwise
 	end
 	-- I know this could be generated but it is more readable and easy to visualize this way.
-	local rowOrderInLands = counterclockwise and
+	local rowOrderInLandsCounterclockwise =
 			{
 				{1},
 				{2, 1},
@@ -805,7 +805,8 @@ function reorderTracksForLandsFieldwork(parallelTracks, leftToRight, bottomToTop
 				{11, 12, 10, 13, 9, 14, 8, 15, 7, 16, 6, 17, 5, 18, 4, 19, 3, 20, 2, 21, 1, 22},
 				{12, 13, 11, 14, 10, 15, 9, 16, 8, 17, 7, 18, 6, 19, 5, 20, 4, 21, 3, 22, 2, 23, 1},
 				{12, 13, 11, 14, 10, 15, 9, 16, 8, 17, 7, 18, 6, 19, 5, 20, 4, 21, 3, 22, 2, 23, 1, 24}
-			} or
+			}
+	local rowOrderInLandsClockwise =
 			{
 				{1},
 				{1, 2},
@@ -833,9 +834,20 @@ function reorderTracksForLandsFieldwork(parallelTracks, leftToRight, bottomToTop
 				{13, 12, 14, 11, 15, 10, 16, 9, 17, 8, 18, 7, 19, 6, 20, 5, 21, 4, 22, 3, 23, 2, 24, 1}
 			}
 
+	-- if we have an even number of rows per land, then we'll finish the land on the same side where we
+	-- started it and can work on the subsequent land in the same order
+	local rowOrderInLands = counterclockwise and rowOrderInLandsCounterclockwise or rowOrderInLandsClockwise
+	-- if we have an odd number of rows per land, we'll end up on the other side and need to use an alternate
+	-- order to keep the pipe out of the fruit
+	local rowOrderInLandsAlternate = counterclockwise and rowOrderInLandsClockwise or rowOrderInLandsCounterclockwise
+
 	for i = 0, math.floor(#parallelTracks / nRowsInLands) - 1 do
 		for _, j in ipairs(rowOrderInLands[nRowsInLands]) do
 			table.insert(reorderedTracks, parallelTracks[i * nRowsInLands + j])
+		end
+		if nRowsInLands % 2 ~= 0 then
+			-- flip the pattern for the next block if we have an odd number of rows per land
+			rowOrderInLandsAlternate, rowOrderInLands = rowOrderInLands, rowOrderInLandsAlternate
 		end
 	end
 
