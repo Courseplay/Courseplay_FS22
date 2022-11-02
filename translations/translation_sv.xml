@@ -302,6 +302,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_editor_delete_title" text="Ta bort vägpunkt"/>
     <text name="CP_editor_delete_primary_text" text="primär"/>
     <text name="CP_editor_delete_secondary_text" text="sekundär"/>
+    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
     <text name="CP_editor_delete_err" text="Några få vägpunkter kvar."/>
     <text name="CP_editor_course_basic_title" text="Grundläggande"/>
     <text name="CP_editor_course_basic_move_title" text="Flytta en vägpunkt"/>
