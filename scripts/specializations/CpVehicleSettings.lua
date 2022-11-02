@@ -100,6 +100,7 @@ function CpVehicleSettings:onPostAttachImplement(object)
 
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
+    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.bunkerSiloWorkWidth, 'workingWidth')
     CpVehicleSettings.validateSettings(self)
 end
 

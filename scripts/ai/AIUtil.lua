@@ -577,14 +577,6 @@ function AIUtil.getVehicleAndImplementsTotalLength(vehicle)
 	return totalLength
 end
 
-function AIUtil.getShieldWorkWidth(object,logPrefix)
-	if object.spec_leveler then
-		local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, '%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
-		return width
-	end
-end
-
 function AIUtil.findLoweringDurationMs(vehicle)
 	local function getLoweringDurationMs(object)
 		if object.spec_animatedVehicle then

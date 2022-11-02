@@ -72,7 +72,10 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
 
     --- Work width levelers
     if not left then 
-        left, right = WorkWidthUtil.getShieldWorkWidth(object)
+        local width = WorkWidthUtil.getShieldWorkWidth(object)
+        if width then 
+            left, right = width / 2, -width / 2
+        end
     end
 
     if not left then
@@ -250,9 +253,9 @@ end
 ---@param object table
 function WorkWidthUtil.getShieldWorkWidth(object)
     if object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] then
-        local width = object.spec_leveler.nodes[1].maxDropWidth
-        WorkWidthUtil.debug(object, 'is a shield with work width: %.1f', width)
-        return width / 2, -width / 2
+        local width = object.spec_leveler.nodes[1].width
+        WorkWidthUtil.debug(object, 'is a shield with width: %.1f', width)
+        return width
     end
 end
 
@@ -260,7 +263,7 @@ end
 function WorkWidthUtil.getShovelWorkWidth(object)
     if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
-        WorkWidthUtil.debug(object, 'is a shovel with work width: %.1f', width)
+        WorkWidthUtil.debug(object, 'is a shovel with width: %.1f', width)
         return width
     end
 end
