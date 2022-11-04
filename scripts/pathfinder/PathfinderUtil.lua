@@ -648,12 +648,26 @@ end
 ---@return Polygon headland as a polygon (x, y)
 local function getHeadland(course, n)
     local headland = Polygon:new()
-    for i = 1, course:getNumberOfWaypoints() do
+    local first, last, step
+    if course:startsWithHeadland() then
+        first, last, step = 1, course:getNumberOfWaypoints(), 1
+    else
+        -- if the course ends with the headland, start at the end to avoid headlands around the
+        -- islands in the center of the field
+        first, last, step = course:getNumberOfWaypoints(), 1, -1
+    end
+    for i = first, last, step do
         -- do not want to include the connecting track parts as those are overlap with the first part
         -- of the headland confusing the shortest path finding
         if course:isOnHeadland(i, n) and not course:isOnConnectingTrack(i) then
             local x, y, z = course:getWaypointPosition(i)
             headland:add({ x = x, y = -z })
+        end
+        if not course:isOnHeadland(i) or (#headland > 0 and not course:isOnHeadland(i, n)) then
+            -- stop after we leave the headland around the field boundary or when we already found our headland
+            -- and now on a different one
+            -- as we don't want to include headlands around islands.
+            break
         end
     end
     -- remove the first two waypoints if this is not the first headland as those are on the
@@ -682,11 +696,11 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     local usableHeadlandWidth = headlandWidth - (distanceFromRowEnd + turnRadius)
     local closestHeadland = math.max(1, math.min(course:getNumberOfHeadlands() - 1,
                     math.floor(usableHeadlandWidth / workingWidth) + 1))
-    CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
-            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d',
-            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland)
     -- to be able to use the existing getSectionBetweenPoints, we first create a Polyline[], then construct a State3D[]
     local headland = getHeadland(course, closestHeadland)
+    CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
+            'headland width %.1f, distance from row end %.1f, usable headland width %.1f closest headland %d with %d points',
+            headlandWidth, distanceFromRowEnd, usableHeadlandWidth, closestHeadland, #headland)
     headland:calculateData()
     local path = {}
     for _, p in ipairs(headland:getSectionBetweenPoints(start, goal, 2)) do
