@@ -438,6 +438,10 @@ function Course:isOnOutermostHeadland(ix)
 	return self.waypoints[ix].lane and self.waypoints[ix].lane == -1
 end
 
+function Course:startsWithHeadland()
+	return self:isOnHeadland(1)
+end
+
 function Course:getTurnControls(ix)
 	return self.waypoints[ix].turnControls
 end
