@@ -663,9 +663,10 @@ local function getHeadland(course, n)
             local x, y, z = course:getWaypointPosition(i)
             headland:add({ x = x, y = -z })
         end
-        if not course:isOnHeadland(i) then
-            -- stop after we leave the headland around the field boundary as
-            -- we don't want to include headlands around islands.
+        if not course:isOnHeadland(i) or (#headland > 0 and not course:isOnHeadland(i, n)) then
+            -- stop after we leave the headland around the field boundary or when we already found our headland
+            -- and now on a different one
+            -- as we don't want to include headlands around islands.
             break
         end
     end
