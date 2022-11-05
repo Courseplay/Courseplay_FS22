@@ -169,7 +169,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Átfedés a fordulósávban"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="A fordulósáv nyomvonalak átfedése a munkaszélesség százalékában. 0 - 25%"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Táblaméret igazítása"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Negatív értékek beljebb húzzák a tábla határát (táblaméret csökken), pozitív értékek kijebbtolják (táblaméret nő) -2 - 5.8 m"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Pozitív értékek beljebb húzzák a tábla határát (táblaméret csökken), negatív értékek kijebbtolják (táblaméret nő) -2 - 5.8 m"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Kihagyandó sorok"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="A következő fel/le sorra váltáskor átugrandó sorok. 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Sorok blokkonként"/>
@@ -365,50 +365,50 @@ További nagy funkció a bálák összegyűjtése és becsomagolása a mezőn.
 Újdonság a jelenlegi iterációban a szőlő terepmunka.
 A mezőmunka útvonalak beállíthatók több gépes módban, ami megengedi akár 5 sofőr konvojban való használatát ugyanazon a mezőn.
 Ugyancsak lehetséges a kombájnokat úgy beállítani, hogy a mezőn, vagy annak közelében egy pótkocsiba önállóan kiürítsék a terményt.
-Egyedi mezőhatárok is beállíthatók a Courseplay-hez, például mezőkön, amiket a mod nem ismer fel hagyományos mezőként.
+Egyedi mezőhatárok is beállíthatók a Courseplay-hez, például füves mezőkön, amiket a mod nem ismer fel hagyományos mezőként.
 Végül a CP-nek van egy Autodrive felülete, ami megengedi egy vetőgép újratöltését egy közeli silónál, vagy egy rakodókocsi kiürítését és így tovább.
 
 További információért kérlek látogasd meg GitHub oldalunkat: https://github.com/Courseplay/Courseplay_FS22 .
 Ott segítséget kaphatsz, vagy jelenthetsz bármilyen hibát, amit tapasztaltál.
 Végül köszönjük minden fordítónak és a közösségünknek a hibák jelentését, hogy visszajelzést és új ötleteket adnak.
 
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+Mi az a szakértői mód:
+Ha a szakértői mód nincs aktiválva, csak néhány beállításhoz férsz hozzá.
+A többi beállítás rejtve marad és alapértelmezett értékekre lesz állítva, amik a legtöbb helyzetben működnek.
+Így próbálunk segíteni a felhasználóknak, hogy megismerjék a Courseplay-t anélkül, hogy túlterhelné őket az összes beállítás.
 "/>
-    <text name="CP_help_page_extendedJobMenu_title" text="Extended AI Menu"/>
+    <text name="CP_help_page_extendedJobMenu_title" text="Bővített AI menü"/>
     <text name="CP_help_page_startJobMenuBase_text" text="
-First you need to select a vehicle in the AI menu for generating a fieldwork course or gaining access to the vehicle settings and the course manager.
-The currently loaded course will be displayed on the map.
-The global settings are always visible.
-For generating a course and starting the courseplay jobs, you will need to create the job CP: Fieldwork or CP: wrap/collect bales, similar to the Giants helper.
+Először ki kell választanod egy járművet az AI menüben, hogy mezőmunka útvonalat generálhass, vagy hozzáférést nyerj a járműbeállításokhoz és az útvonal kezelőhöz.
+A jelenleg betöltött útvonal meg fog jelenni a térképen.
+A globális beállítások mindig láthatóak.
+Az útvonal generálásához és a CP munka elkezdéséhez létre kell hoznod a munkát (CP: mezőmunka, vagy CP: bála csomagolás/gyűjtés, hasonlóan a GIANTS segítőhöz).
 "/>
     <text name="CP_help_page_startJobMenuFunctions_text" text="
-To start off with your first CP job, you would have to select a vehicle and a possible valid implement which is supported for the job.
-Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect
-with a bale wrapper or bale collector attached.
+Hogy elkezdd az első CP munkát, ki kell választanod egy járművet és egy lehetséges, érvényes munkagépet, ami a munkához támogatott.
+Azután a munka létrehozására kattintva kiválaszthatod a CP: mezőmunka opciót mezőmunka gépekhez, vagy a CP: csomagol/gyűjt
+opciót egy csatolt bálacsomagolóval vagy felszedővel.
 "/>
     <text name="CP_help_page_readyJobMenuBase_text" text="
-With a CP job selected, you would need to place the field position on a field for generating the course or using the bale finder on it.
-The position also roughly controls the starting point of your course.
-If you want to use the Giants helper to drive to the field, then you also need to set the target position close to the starting point of the course.
-The lane offset setting is only used if you want to have multiple helpers working on the same field. For this please checkout the separate help menu page below.
+Ha kiválasztottál egy CP munkát, a mező pozíciót a kiválasztott mezőre kell helyezned, hogy útvonalat generálj, vagy bálakeresőt használj rajta.
+A pozíció nagyjából meghatározza az útvonal kezdőpontját is.
+Ha a GIANTS segítőt szeretnéd arra használni, hogy a mezőhöz vezessen, akkor egy célpozíciót is be kell állítanod közel az útvonal kezdőpontjához.
+A sáveltolás opciót csak akkor használd, ha több segítőt akarsz dolgoztatni ugyanazon a mezőn. Ehhez kérlek nézd meg az alábbi különálló segítő oldalt.
 "/>
     <text name="CP_help_page_readyJobMenuFunctions_text" text="
-When the field position is placed correctly on a field, you will see the field border drawn on the map.
-If you are creating a CP: Fieldwork job, you will gain access to the course generator settings. 
+Ha a mező pozíció helyesen lett beállítva, a mező határai kirajzolódnak a térképen.
+Ha egy  CP: mezőmunkát hozol létre, hozzáférést nyersz az útvonal generátor beállításaihoz. 
 "/>
     <text name="CP_help_page_JobMenuExtras_text" text="
-Now it's possible to start the driver directly from the menu. The Giants helper will drive to the target position and from there the CP job automatically takes over.
-Alternatively you can also start the driver from the HUD if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
+Mostmár lehetséges a sofőr indítása közvetlenül a menüből. A GIANTS segítő a célpozícióra fog vezetni és onnan a CP munka automatikusan átveszi az irányítást.
+Alternatív megoldásként a sofőrt a kijelzőről is indíthatod, ha a járművel közel vagy a mezőhöz, vagy AutoDrive modot használsz, hogy a CP munkát közel vidd a mezőhöz.
 "/>
-    <text name="CP_help_page_courseGenerator_title" text="Course generator"/>
+    <text name="CP_help_page_courseGenerator_title" text="Útvonal generátor"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
-Every fieldwork course is generated by the course generator. This is a mighty tool, which allows you to customize the generated course to your needs.
-If you are new to this, you should probably start by only changing the headland amount setting.
-After that you can always change the other values and hit generate course and have a look, what impact certain values have on the course.
-Experimenting with it and check what impact the different setting on different fields have is the best way to get used to it.
+Minden mezőmunka útvonalat az útvonal generátor hoz létre. Ez egy remek eszköz, ami megengedi a generált útvonalak igény szerinti testreszabását.
+Ha új vagy ebben, valószínűleg azzal kellene kezdened, hogy csak a fordulósávok számát módosítod.
+Ezt követően mindig változtathatsz más értékeket és generálhatsz útvonalat, hogy megnézd, egyes értékek milyen hatással vannak az útvonalra.
+A kísérletezés és különböző beállítások hatásainak megfigyelése különböző mezőkön a legjobb módja, hogy hozzá szokj ehhez.
 "/>
     <text name="CP_help_page_courseGeneratorBaseFunctions_text" text="
 Basics:
