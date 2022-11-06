@@ -35,6 +35,7 @@ AIDriveStrategyBunkerSilo.myStates = {
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
 AIDriveStrategyBunkerSilo.isStuckMs = 1000 *15
 AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
+AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 
 function AIDriveStrategyBunkerSilo.new(customMt)
     if customMt == nil then
@@ -57,6 +58,8 @@ function AIDriveStrategyBunkerSilo.new(customMt)
     
 
     self.isStuckTimer = Timer.new(self.isStuckMs)
+    self.driveIntoSiloAttempts = 0
+
     return self
 end
 
@@ -137,7 +140,12 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
     self.isStuckTimer:setFinishCallback(function ()
             self:debug("is stuck, trying to drive out of the silo.")
             if self:isTemporaryOutOfSiloDrivingAllowed() and not self.frozen then 
-                self:startDrivingTemporaryOutOfSilo()
+                if self.driveIntoSiloAttempts >= self.maxDriveIntoTheSiloAttempts then
+                    self:debug("Max attempts reached, trying a new approach.")
+                    self:startDrivingOutOfSilo()
+                else
+                    self:startDrivingTemporaryOutOfSilo()
+                end
             end
         end)
 
@@ -419,6 +427,7 @@ function AIDriveStrategyBunkerSilo:startDrivingOutOfSilo()
     self.state = self.states.DRIVING_OUT_OF_SILO
     self:raiseImplements()
     self:debug("Started driving out of the silo.")
+    self.driveIntoSiloAttempts = 0
 end
 
 function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
@@ -432,7 +441,8 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO
     self:raiseImplements()
-    self:debug("Started driving temporary out of the silo.")
+    self.driveIntoSiloAttempts = self.driveIntoSiloAttempts + 1
+    self:debug("Started driving temporary out of the silo. Attempts until now: %d", self.driveIntoSiloAttempts)
 end
 
 --- Create a straight course into the silo.
