@@ -224,6 +224,19 @@ function EditorCourseWrapper:deleteWaypointsBetween(firstIx, lastIx)
 	end
 end
 
+--- Deletes from waypoint to the last waypoint.
+function EditorCourseWrapper:deleteToLastWaypoint(firstIx)
+	if firstIx > 5 then
+		for ix=self.course:getNumberOfWaypoints(), firstIx, -1 do
+			local wp = self.course:getWaypoint(ix)
+			if wp then
+				table.remove(self.course.waypoints, ix)
+			end
+		end
+		return true
+	end
+end
+
 --- Changes the waypoint type between normal, turn start and turn end.
 function EditorCourseWrapper:changeWaypointTurnType(ix)
 	local wp = self.course:getWaypoint(ix)

@@ -1052,6 +1052,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Löscht Wegpunkte, über die die Maus gezogen wird.]]></Text>
 			<Text language="en"><![CDATA[Continues deletion of hovered waypoints.]]></Text>
 		</Translation>
+		<Translation name="CP_editor_delete_tertiary_text">
+			<Text language="de"><![CDATA[Löscht alle Wegpunkte bis zum letzen Wegpunkt.]]></Text>
+			<Text language="en"><![CDATA[Deletes all waypoints until the last waypoint.]]></Text>
+		</Translation>
+		<Translation name="CP_editor_delete_yesNo_deleteToLastWp_title">
+			<Text language="de"><![CDATA[Sollen wirklich alle Wegpunkte bis zu letzten gelöscht werden?]]></Text>
+			<Text language="en"><![CDATA[Are you sure, that all waypoint till the last one should be deleted?]]></Text>
+		</Translation>
 		<Translation name="CP_editor_delete_err">
 			<Text language="de"><![CDATA[Zu wenige Wegpunkte übrig.]]></Text>
 			<Text language="en"><![CDATA[Too few waypoints left.]]></Text>

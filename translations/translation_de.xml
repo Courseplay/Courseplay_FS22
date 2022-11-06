@@ -302,6 +302,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_editor_delete_title" text="Wegpunkte löschen"/>
     <text name="CP_editor_delete_primary_text" text="Löscht den ausgewählten Wegpunkt."/>
     <text name="CP_editor_delete_secondary_text" text="Löscht Wegpunkte, über die die Maus gezogen wird."/>
+    <text name="CP_editor_delete_tertiary_text" text="Löscht alle Wegpunkte bis zum letzen Wegpunkt."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Sollen wirklich alle Wegpunkte bis zu letzten gelöscht werden?"/>
     <text name="CP_editor_delete_err" text="Zu wenige Wegpunkte übrig."/>
     <text name="CP_editor_course_basic_title" text="Einfach"/>
     <text name="CP_editor_course_basic_move_title" text="Wegpunkt bewegen"/>
