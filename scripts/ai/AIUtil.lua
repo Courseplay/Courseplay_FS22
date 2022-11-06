@@ -331,6 +331,12 @@ function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 			if not suppressLog then
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s front distance %d', implement.object:getName(), d)
 			end
+			if implement.object.spec_leveler then 
+				local nodeData = ImplementUtil.getLevelerNode(implement.object)
+				if nodeData then 
+					_, _, d = localToLocal(nodeData.node, vehicle.rootNode, 0, 0, 0)
+				end
+			end
 			if d > maxDistance then
 				maxDistance = d
 				firstImplement = implement.object
@@ -353,6 +359,12 @@ function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 				- implement.object.size.length / 2 + implement.object.size.lengthOffset)
 			if not suppressLog then
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s back distance %d', implement.object:getName(), d)
+			end
+			if implement.object.spec_leveler then 
+				local nodeData = ImplementUtil.getLevelerNode(implement.object)
+				if nodeData then 
+					_, _, d = localToLocal(nodeData.node, vehicle.rootNode, 0, 0, 0)
+				end
 			end
 			if d < minDistance then
 				minDistance = d

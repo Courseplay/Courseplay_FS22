@@ -504,3 +504,7 @@ function ImplementUtil.stopMovingTool(implement, tool)
     implement:raiseDirtyFlags(tool.dirtyFlag)
     implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
 end
+
+function ImplementUtil.getLevelerNode(object)
+    return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] and object.spec_leveler.nodes[1]
+end

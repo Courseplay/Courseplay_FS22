@@ -33,7 +33,7 @@ AIDriveStrategyBunkerSilo.myStates = {
 }
 
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
-AIDriveStrategyBunkerSilo.isStuckMs = 1000 *15
+AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 30
 AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 
@@ -133,7 +133,11 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyBunkerSilo:setAllStaticParameters()
     AIDriveStrategyCourse.setAllStaticParameters(self)
-    self:setFrontAndBackMarkers()
+    Markers.setMarkerNodes(self.vehicle)
+    local _
+    _, self.frontMarkerDistance = Markers.getFrontMarkerNode(self.vehicle)
+    _, self.backMarkerDistance = Markers.getBackMarkerNode(self.vehicle)
+
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 
 
@@ -264,6 +268,9 @@ function AIDriveStrategyBunkerSilo:update(dt)
         if self.parkNode then 
             DebugUtil.drawDebugNode(self.parkNode, "ParkNode", true, 3)
         end
+        if self.leveler then 
+            DebugUtil.drawDebugNode(ImplementUtil.getLevelerNode(self.leveler).node, "LevelerNode", true, 3)
+        end
     end
 end
 
@@ -280,7 +287,7 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startDrivingOutOfSilo()
         end
 
-        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndOffset())
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), 5)
         if isEndReached then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
@@ -333,13 +340,13 @@ end
 
 --- Starts the straight silo lane earlier. (Driving into the silo)
 function AIDriveStrategyBunkerSilo:getStartOffset()
-    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 2 or self.frontMarkerDistance
-    return - 2 * offset
+    local offset = self:isDriveDirectionReverse() and - self.frontMarkerDistance or self.backMarkerDistance
+    return 2 * offset
 end
 
 --- Makes sure the straight silo lane stops later. (Driving out of the silo)
 function AIDriveStrategyBunkerSilo:getEndOffset()
-    local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 3 or self.frontMarkerDistance
+    local offset = self:isDriveDirectionReverse() and - self.backMarkerDistance or self.frontMarkerDistance
     return 5 * offset
 end
 
@@ -478,7 +485,7 @@ function AIDriveStrategyBunkerSilo:getDriveOutOfSiloCourse(driveInCourse)
         dx, dz = unpack(startPos)
     end
 
-	local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 0, -self:getEndOffset(), 
+	local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 0, 0, 
     self:getEndOffset(), 3, not driveDirection)
 	local firstWpIx = self:getNearestWaypoints(course, not driveDirection)
 	return course, firstWpIx

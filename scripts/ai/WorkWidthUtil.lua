@@ -199,7 +199,7 @@ function WorkWidthUtil.getAIMarkers(object, suppressLog)
         end
         aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object, suppressLog)
         if not aiLeftMarker or not aiRightMarker or not aiLeftMarker then
-            if g_vehicleConfigurations:get(object, 'useVehicleSizeForMarkers') then
+            if g_vehicleConfigurations:get(object, 'useVehicleSizeForMarkers') or object.spec_leveler then
                 if not suppressLog then
                     WorkWidthUtil.debug(object, 'has no work areas, configured to use front/back markers')
                 end
