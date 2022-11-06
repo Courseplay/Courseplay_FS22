@@ -5,7 +5,7 @@ CpBunkerSiloVehicleController.LAST_DIRECTIONS = {
 	LEFT = 0,
 	RIGHT = 1
 }
-CpBunkerSiloVehicleController.WALL_OFFSET = 0.5
+CpBunkerSiloVehicleController.WALL_OFFSET = 1.5
 function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, drivingForwardsIntoSilo)
 	self.silo = silo
 	self.vehicle = vehicle

@@ -2,8 +2,8 @@
 --- Wrapper for a bunker silo.
 CpBunkerSilo = CpObject()
 
-CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 15
-CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 5
+CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 25
+CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 15
 CpBunkerSilo.DRAW_DEBUG = true
 CpBunkerSilo.SIDE_MODES = {
 	OPEN = 0,

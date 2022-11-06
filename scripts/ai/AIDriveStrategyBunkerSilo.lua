@@ -34,7 +34,7 @@ AIDriveStrategyBunkerSilo.myStates = {
 
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
 AIDriveStrategyBunkerSilo.isStuckMs = 1000 *15
-AIDriveStrategyBunkerSilo.isStuckBackOffset = 5
+AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
 
 function AIDriveStrategyBunkerSilo.new(customMt)
     if customMt == nil then
@@ -326,13 +326,13 @@ end
 --- Starts the straight silo lane earlier. (Driving into the silo)
 function AIDriveStrategyBunkerSilo:getStartOffset()
     local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 2 or self.frontMarkerDistance
-    return - offset
+    return - 2 * offset
 end
 
 --- Makes sure the straight silo lane stops later. (Driving out of the silo)
 function AIDriveStrategyBunkerSilo:getEndOffset()
     local offset = self:isDriveDirectionReverse() and self.backMarkerDistance + 3 or self.frontMarkerDistance
-    return 3 * offset
+    return 5 * offset
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
