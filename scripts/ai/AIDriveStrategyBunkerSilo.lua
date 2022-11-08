@@ -36,6 +36,7 @@ AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
 AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 30
 AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
+AIDriveStrategyBunkerSilo.endReachedOffset = 3
 
 function AIDriveStrategyBunkerSilo.new(customMt)
     if customMt == nil then
@@ -287,7 +288,7 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startDrivingOutOfSilo()
         end
 
-        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), 5)
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self.endReachedOffset)
         if isEndReached then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
