@@ -29,8 +29,6 @@ end
 
 function CpAIBunkerSiloWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAIBunkerSiloWorker)
-    SpecializationUtil.registerEventListener(vehicleType, 'onPostAttachImplement', CpAIBunkerSiloWorker)
-    SpecializationUtil.registerEventListener(vehicleType, 'onPostDetachImplement', CpAIBunkerSiloWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onUpdate', CpAIBunkerSiloWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAIBunkerSiloWorker)
 end
@@ -72,16 +70,6 @@ function CpAIBunkerSiloWorker:onLoadFinished(savegame)
     if savegame ~= nil then 
         spec.cpJob:loadFromXMLFile(savegame.xmlFile, savegame.key.. CpAIBunkerSiloWorker.KEY..".cpJob")
     end
-end
-
-function CpAIBunkerSiloWorker:onPostAttachImplement()
-    local spec = self.spec_cpAIBunkerSiloWorker
-    spec.cpJob.cpJobParameters:validateSettings()
-end
-
-function CpAIBunkerSiloWorker:onPostDetachImplement()
-    local spec = self.spec_cpAIBunkerSiloWorker
-    spec.cpJob.cpJobParameters:validateSettings()
 end
 
 function CpAIBunkerSiloWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)

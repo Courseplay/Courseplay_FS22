@@ -4,7 +4,7 @@ CpBunkerSilo = CpObject()
 
 CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 25
 CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 15
-CpBunkerSilo.DRAW_DEBUG = true
+CpBunkerSilo.DRAW_DEBUG = false
 CpBunkerSilo.SIDE_MODES = {
 	OPEN = 0,
 	ONE_SIDED = 1,
