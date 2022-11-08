@@ -302,8 +302,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_editor_delete_title" text="Cancella punto di passaggio"/>
     <text name="CP_editor_delete_primary_text" text="primario"/>
     <text name="CP_editor_delete_secondary_text" text="secondario"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_tertiary_text" text="Elimina tutti i punti di passaggio fino all'ultimo punto di passaggio."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Sei sicuro che tutti i punti di passaggio, fino all'ultimo debbano essere cancellati?"/>
     <text name="CP_editor_delete_err" text="Pochi punti di passaggio rimasti."/>
     <text name="CP_editor_course_basic_title" text="Base"/>
     <text name="CP_editor_course_basic_move_title" text="muovi punto di passaggio"/>
