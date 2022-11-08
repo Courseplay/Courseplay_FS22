@@ -340,14 +340,13 @@ end
 
 --- Starts the straight silo lane earlier. (Driving into the silo)
 function AIDriveStrategyBunkerSilo:getStartOffset()
-    local offset = self:isDriveDirectionReverse() and - self.frontMarkerDistance or self.backMarkerDistance
-    return 2 * offset
+    return -4 * self:getEndOffset()
 end
 
 --- Makes sure the straight silo lane stops later. (Driving out of the silo)
 function AIDriveStrategyBunkerSilo:getEndOffset()
     local offset = self:isDriveDirectionReverse() and - self.backMarkerDistance or self.frontMarkerDistance
-    return 5 * offset
+    return offset
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
@@ -476,11 +475,16 @@ end
 function AIDriveStrategyBunkerSilo:getDriveOutOfSiloCourse(driveInCourse)
 	local driveDirection = self:isDriveDirectionReverse()
     local x, _, z, dx, dz
+    local startPos, endPos = self.siloController:getLastTarget()
     if driveInCourse then
         x, _, z = driveInCourse:getWaypointPosition(driveInCourse:getNumberOfWaypoints())
         dx, _, dz = driveInCourse:getWaypointPosition(1)
+        local dirX, dirZ, _ = CpMathUtil.getPointDirection({x = x, z = z}, {x = dx, z = dz}) 
+        local sx, sz = unpack(startPos)
+        local ex, ez = unpack(endPos)
+        local length = MathUtil.vector2Length(sx - ex, sz - ez)
+        dx, dz = x + length * dirX, z + length * dirZ
     else 
-        local startPos, endPos = self.siloController:getLastTarget()
         x, z = unpack(endPos)
         dx, dz = unpack(startPos)
     end

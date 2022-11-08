@@ -51,12 +51,12 @@ function CpBunkerSiloVehicleController:getTarget(width)
 	local x, z, dx, dz = self:getPositionsForLine(targetLine, width, widthCount, unitWidth)
 	self.lastLine = targetLine
 	self.lastDirection = targetDirection
-	self.drivingTarget = {dx, dz}
+	self.drivingTarget = {{x, z}, {dx, dz}}
 	return {x, z}, {dx, dz}	
 end
 
 function CpBunkerSiloVehicleController:getLastTarget()
-	return self.drivingTarget
+	return unpack(self.drivingTarget)
 end
 
 function CpBunkerSiloVehicleController:getPositionsForLine(line, width, widthCount, unitWidth)
@@ -155,7 +155,7 @@ end
 function CpBunkerSiloVehicleController:isEndReached(node, margin)
 	if self.drivingTarget then
 		local x, _, z = localToWorld(node, 0, 0, margin)
-		local dx, dz = unpack(self.drivingTarget)
+		local dx, dz = unpack(self.drivingTarget[2])
 		local dist = MathUtil.vector2Length(x - dx, z - dz)
 		return not self.silo:isPointInSilo(x, z) and dist < 5, MathUtil.clamp(2 * dist, 5, math.huge)
 	end
