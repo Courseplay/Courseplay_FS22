@@ -18,9 +18,9 @@
     <text name="CP_error_no_course" text="Générez ou chargez une course avant de démarrer la tâche"/>
     <text name="CP_error_could_not_generate_course" text="Impossible de générer la course. Plus d'informations dans le journal."/>
     <text name="CP_error_not_on_field" text="Le point de départ n'est pas dans un champ"/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Benne ou transbordeur trop éloigné(e) du champ."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
+    <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -52,9 +52,9 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Ouvrier IA pour le déchargement:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Utiliser un ouvrier IA pour le déchargement:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Station de déchargement:"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -69,7 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="L'ouvrier %s a interrompu son travail - la tremie est pleine!"/>
     <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="L'ouvrier AI %s s'est arrêté car il ne trouve pas de chemin !"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -80,7 +80,7 @@
     <text name="CP_vehicle_setting_subTitle_seeder" text="Paramètres semoir"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Paramètres outils multiples"/>
     <text name="CP_vehicle_setting_subTitle_speed" text="Vitesses"/>
-    <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de deboggage"/>
+    <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de debogage"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Afficher la course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Affiche la course actuelle du véhicule."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Points départ/arrivé uniquement"/>
@@ -113,8 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Décalage vertical de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Décalage vertical de l'outil."/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vider si supérieur à :"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Permet de tenir compte d'un seuil de remplissage plus faible pour considéder le contenant comme rempli."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Arrêt si additif d'ensilage vide"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Le conducteur s'arrêtera si la réserve d'additif d'ensilage est vide."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Changement de ligne symétrique"/>
@@ -129,8 +129,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Vitesse max lors des manoeuvres. Valeurs: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Marche arrière"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Vitesse max lors des marches arrières. Valeurs: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Deboggage du vehicule"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le deboggage du vehicule."/>
+    <text name="CP_vehicle_setting_debugActive_title" text="debogage du vehicule"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le debogage du vehicule."/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -260,10 +260,10 @@
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Active ou désactive la gestion du curseur pour les autres mods utilisant également le curseur pour les textes d'information en dehors des véhicules. Améliore la compatibilité avec les mods de type VehicleInfo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Détection prioritaire des champs perso."/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Sélectionne en priorité un champ personnalisé si celui-ci est à cheval sur un champ déjà existant."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Unité de distance"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Mètres ou Pieds"/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Mètre"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Pied"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -302,8 +302,8 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_editor_delete_title" text="Supprimer les points"/>
     <text name="CP_editor_delete_primary_text" text="principal"/>
     <text name="CP_editor_delete_secondary_text" text="secondaire"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_tertiary_text" text="Supprime tous les points jusqu'au dernier point."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Etes-vous sûr de vouloir supprimer tous les points jusqu'au dernier ?"/>
     <text name="CP_editor_delete_err" text="Trop peu de points restants."/>
     <text name="CP_editor_course_basic_title" text="Simple"/>
     <text name="CP_editor_course_basic_move_title" text="Déplacer un point"/>
@@ -334,13 +334,13 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_needsFilling" text="doit être réapprovisionné"/>
     <text name="CP_infoTexts_needsUnloading" text="doit être déchargé"/>
     <text name="CP_infoTexts_workFinished" text="a terminé son travail"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="en route vers la batteuse"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="en route vers la benne"/>
     <text name="CP_infoTexts_outOfMoney" text="Plus d'argent disponible"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -644,20 +644,20 @@ Dans la catégorie avancée :
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Sélection du prochain canal de deboggage."/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Sélection du précèdent canal de deboggage."/>
-    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Canal actif de deboggage."/>
-    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Affiche/masque les canaux de deboggage."/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Sélection du prochain canal de debogage."/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Sélection du précèdent canal de debogage."/>
+    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Canal actif de debogage."/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Affiche/masque les canaux de debogage."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Affiche mini ATH"/>
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Change le point de départ"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Efface la course actuellement sélectionnée"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Affiche la course actuelle du véhicule"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Curseur de la souris on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Affiche/masque l'ATH"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Ouvre les paramètres du véhicule"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Ouvre les paramètres globaux"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Ouvre le générateur de course/menu de la course"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Ouvre le gestionnaire de courses"/>
   </texts>
 </l10n>
