@@ -662,7 +662,7 @@ Para desmarcar os waypoints, clique com o botão direito do mouse.
 3) Um pincel para inserir uma curva de waypoints entre dois waypoints selecionados.
 Assim como mover mais waypoints, marque 2 waypoints, então segure o botão esquerdo do mouse e mova o mouse.
 Atenção: Assim que você soltar o botão do mouse, os waypoints serão definidos, isso não pode ser desfeito! (é claro que você pode excluir esses waypoints.)
- "/> 
+ "/>
     <!---->
     <!--Input bindings-->
     <!---->
