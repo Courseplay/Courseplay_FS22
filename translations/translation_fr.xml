@@ -60,7 +60,7 @@
     <!---->
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP:Déchargement moissonneuse"/>
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
