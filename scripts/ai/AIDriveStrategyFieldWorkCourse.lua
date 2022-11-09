@@ -64,6 +64,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
     self:updateFieldworkOffset(course)
     self.fieldWorkCourse = course
+    self.fieldWorkCourse:setCurrentWaypointIx(startIx)
     -- remember at which waypoint we started, especially for the convoy
     self.startWaypointIx = startIx
     self.vehiclesInConvoy = {}
@@ -612,7 +613,7 @@ end
 function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
     ---@type Course
     if self.fieldWorkCourse then
-        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
+        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints(), self.fieldWorkCourse)
     end
 end
 

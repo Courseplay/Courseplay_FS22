@@ -12,6 +12,10 @@ end
 
 function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
 	
+    --- Time remaining text
+    local x, y = unpack(lines[6].left)
+    self.timeRemainingText = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)
+    
 	--- Clear course button.
     local width, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
@@ -83,6 +87,7 @@ end
 
 function CpFieldWorkHudPageElement:updateContent(vehicle, status)
 
+    self.timeRemainingText:setTextDetails(status:getTimeRemainingText())
 
     self.courseNameBtn:setTextDetails(vehicle:getCurrentCpCourseName())
 
