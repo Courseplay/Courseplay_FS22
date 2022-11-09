@@ -302,8 +302,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_editor_delete_title" text="Excluir waypoints"/>
     <text name="CP_editor_delete_primary_text" text="primário"/>
     <text name="CP_editor_delete_secondary_text" text="secundário"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_tertiary_text" text="Excluir todos os waypoints até o último waypoint."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Tem certeza de que todos os waypoints até o último devem ser excluídos?"/>
     <text name="CP_editor_delete_err" text="Para poucos waypoints restantes."/>
     <text name="CP_editor_course_basic_title" text="Básico"/>
     <text name="CP_editor_course_basic_move_title" text="Mover um waypoint"/>
@@ -652,10 +652,17 @@ A exclusão de waypoints pode ser feita com o botão vermelho delete.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Na categoria avançada estão:
-1) Um pincel para mover vários waypoints entre os waypoints selecionados.
-2) Um pincel para inserir uma curva de waypoints entre os waypoints selecionados.
-3) Um pincel para definir o atributo de curva de um waypoint (apenas em uma rota e não um campo customizado).
-"/>
+1)Um pincel para definir o atributo de curva de um waypoint (somente com uma rota e não um campo customizado).
+Clicar várias vezes no waypoint alternará entre &quot;normal&quot; (laranja), &quot;início da curva&quot; (verde) e &quot;final da curva&quot; (vermelho).
+
+2) Um pincel para mover vários waypoints entre os waypoints selecionados.
+Para fazer isso, você marca 2 Waypoints com o botão esquerdo do mouse, então, segurando o botão esquerdo do mouse, você pode mover todos os waypoints entre eles, incluindo os marcados.
+Para desmarcar os waypoints, clique com o botão direito do mouse.
+
+3) Um pincel para inserir uma curva de waypoints entre dois waypoints selecionados.
+Assim como mover mais waypoints, marque 2 waypoints, então segure o botão esquerdo do mouse e mova o mouse.
+Atenção: Assim que você soltar o botão do mouse, os waypoints serão definidos, isso não pode ser desfeito! (é claro que você pode excluir esses waypoints.)
+ "/> 
     <!---->
     <!--Input bindings-->
     <!---->
