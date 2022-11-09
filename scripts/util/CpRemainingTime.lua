@@ -11,7 +11,7 @@
 CpRemainingTime = CpObject()
 CpRemainingTime.DISABLED_TEXT = ""
 CpRemainingTime.TURN_PENALTY = 60 -- Flat turn penalty
-CpRemainingTime.EXP_PENALTY_REDUCTION = 0.95 -- Reduces the impact of the exponential penalty.
+CpRemainingTime.EXP_PENALTY_REDUCTION = 0.7 -- Reduces the impact of the exponential penalty.
 
 function CpRemainingTime:init(vehicle)
 	self.vehicle = vehicle
@@ -35,7 +35,7 @@ end
 --- Get the max speed for the field work. Depending on the max work speed and the field work speed.
 function CpRemainingTime:getOptimalSpeed() -- in m/s
 	local fieldSettingSpeed = self.vehicle:getCpSettings().fieldWorkSpeed:getValue()
-	return MathUtil.kmhToMps(MathUtil.clamp(self.vehicle:getSpeedLimit(true), 0, fieldSettingSpeed))
+	return MathUtil.kmhToMps(MathUtil.clamp(self.vehicle:getSpeedLimit(), 0, fieldSettingSpeed))
 end 
 
 --- Estimate of the course time left with penalties increased.
