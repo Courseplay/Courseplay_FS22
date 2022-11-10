@@ -252,8 +252,8 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Permet d'assouplir les contraintes sur le pathfinding à chaque nouvelle tentative de création d'un trajet. Plus la valeur est grande, plus la vitesse de calcul sera rapide."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Afficher les courses actives"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Affiche les courses actives sur la carte."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Afficher les courses actives sur la minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Affiche les courses actives sur la mini-carte de l'ATH."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Afficher la fenêtre d'informations"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Affiche une fenêtre supplémentaire d'informations supplémentaires."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Utilisation du curseur étendue"/>
