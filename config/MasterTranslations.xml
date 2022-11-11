@@ -2105,6 +2105,34 @@ Just like moving more waypoints, mark 2 waypoints, then hold the left mouse butt
 Attention: As soon as you release the mouse button, the waypoints will be set, this can't be undone! (of course you can delete those waypoints.)
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_unloader_title">
+			<Text language="de"><![CDATA[Ernter Abfahrer]]></Text>
+			<Text language="en"><![CDATA[Harvester unloader]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_unloaderGeneral_text">
+			<Text language="de"><![CDATA[
+Abfahrer generelle Erklärung.
+]]></Text>
+			<Text language="en"><![CDATA[
+Unloader generel explanation.
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_unloaderTrailer_text">
+			<Text language="de"><![CDATA[
+Abfahrer Erklärung mit Trailer.
+]]></Text>
+			<Text language="en"><![CDATA[
+Unloader explanation with trailer.
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_unloaderAuger_text">
+			<Text language="de"><![CDATA[
+Abfahrer Erklärung mit Überladewagen.
+]]></Text>
+			<Text language="en"><![CDATA[
+Unloader explanation with auger.
+]]></Text>
+		</Translation>
 
 	</Category>
 	<Category name="Input bindings">	
