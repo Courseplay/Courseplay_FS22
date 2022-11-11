@@ -231,6 +231,22 @@ function TurnManeuver.setTurnControlForLastWaypoints(course, d, control, value, 
 			stopAtDirectionChange)
 end
 
+--- Get the distance between the direction node of the vehicle and the reverser node (if there is one). This
+--- is to make sure that when the course changes to reverse and there is a reverse node, the first reverse
+--- waypoint is behind the reverser node. Otherwise we'll just keep backing up until the emergency brake is triggered.
+function TurnManeuver:getReversingOffset()
+	if self.steeringLength == 0 then
+		local reverserNode, debugText = AIUtil.getReverserNode(self.vehicle)
+		if reverserNode then
+			local _, _, dz = localToLocal(reverserNode, self.vehicleDirectionNode, 0, 0, 0)
+			self:debug('Using the vehicle\'s steering length 0, use reverser node (%s) distance %.1f instead',
+					debugText, dz)
+			return math.abs(dz)
+		end
+	end
+	return self.steeringLength
+end
+
 --- Set implement lowering control for the end of the turn
 ---@param stopAtDirectionChange boolean if we reach a direction change, stop there, the last waypoint the function
 --- is called for is the one before the direction change
@@ -248,10 +264,11 @@ function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, e
 	-- move at least a bit meter
 	dBack = dBack < 2 and 2 or dBack
 	self:debug('moving course back: d=%.1f', dBack)
+	local reversingOffset = self:getReversingOffset()
 	-- generate a straight reverse section first (less than 1 m step should make sure we always end up with
 	-- at least two waypoints
-	local movedCourse = Course.createFromNode(self.vehicle, self.vehicleDirectionNode,
-		0, -self.steeringLength, -self.steeringLength - dBack, -0.9, true)
+	local movedCourse = Course.createFromNode(self.vehicle, self.vehicle:getAIDirectionNode(),
+		0, -reversingOffset, -reversingOffset - dBack, -0.9, true)
 	local dx, dz = movedCourse:getWaypointWorldDirections(1)
 	course:translate(dx * dBack, dz * dBack)
 	movedCourse:append(course)
@@ -276,7 +293,7 @@ function TurnManeuver:moveCourseBack(course, dBack, ixBeforeEndingTurnSection, e
 		TurnManeuver.setTurnControlForLastWaypoints(movedCourse, endingTurnLength,
 			TurnManeuver.CHANGE_DIRECTION_WHEN_ALIGNED, true, true)
 		local reverseAfterTurn = Course.createFromNode(self.vehicle, self.turnContext.workStartNode,
-			0, 0, self.turnContext.turnEndForwardOffset, -1, true)
+			0, -reversingOffset, -reversingOffset + self.turnContext.turnEndForwardOffset, -1, true)
 		movedCourse:append(reverseAfterTurn)
 	end
 	return movedCourse

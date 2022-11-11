@@ -57,6 +57,7 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpDrawHudMap", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
@@ -100,7 +101,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'getCpLastRememberedWaypointIx', CpCourseManager.getCpLastRememberedWaypointIx)
 
     SpecializationUtil.registerFunction(vehicleType, 'getCpAssignedCoursesID', CpCourseManager.getCpAssignedCoursesID)
-    SpecializationUtil.registerFunction(vehicleType, 'setCpAssignedCoursesID', CpCourseManager.setCpAssignedCourseID)
+    SpecializationUtil.registerFunction(vehicleType, 'setCpAssignedCoursesID', CpCourseManager.setCpAssignedCoursesID)
 
     SpecializationUtil.registerFunction(vehicleType, 'setCpCoursesFromNetworkEvent', CpCourseManager.setCoursesFromNetworkEvent)
 end
@@ -176,7 +177,7 @@ function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
     end
 end
 
-function CpCourseManager:setCpAssignedCourseID(id)
+function CpCourseManager:setCpAssignedCoursesID(id)
     local spec = self.spec_cpCourseManager 
     spec.assignedCoursesID = id
 end
@@ -218,6 +219,7 @@ function CpCourseManager:resetCourses()
     local spec = self.spec_cpCourseManager
     spec.offsetFieldWorkCourse = nil
     spec.courses = {}
+    spec.assignedCoursesID = nil
     SpecializationUtil.raiseEvent(self,"onCpCourseChange")
 end
 
@@ -310,10 +312,10 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
     end
 end
 
-function CpCourseManager:drawCpCoursePlot(map)
-    if CpCourseManager.hasCourse(self) then
+function CpCourseManager:drawCpCoursePlot(map, isHudMap)
+    if self:hasCpCourse() then
         local spec = self.spec_cpCourseManager
-        spec.coursePlot:draw(map)
+        spec.coursePlot:draw(map, isHudMap)
     end
 end
 
@@ -328,6 +330,13 @@ function CpCourseManager:onDraw()
             }
             CpDebug:drawVehicleDebugTable(self,{info})
         end
+    end
+end
+
+function CpCourseManager:onCpDrawHudMap(map)
+    if self:hasCpCourse() then
+        --- Draws the course onto the hud map.
+        self:drawCpCoursePlot(map, true)
     end
 end
 
@@ -471,5 +480,5 @@ end
 
 --- can only start recording when CP is not driving (actually, it would work, should later consider)
 function CpCourseManager:getCanStartCpCourseRecorder()
-    return not self:getIsCpActive()
+    return not self:getIsCpActive() and not self:hasCpCourse()
 end

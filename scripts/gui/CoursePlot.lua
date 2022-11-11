@@ -39,11 +39,11 @@ end
 
 function CoursePlot:delete()
 	if self.courseOverlayId ~= 0 then
-		delete(self.courseOverlayId);
-	end;
+		delete(self.courseOverlayId)
+	end
 	if self.startSignOverlayId ~= 0 then
-		delete(self.startSignOverlayId);
-	end;
+		delete(self.startSignOverlayId)
+	end
 end
 
 function CoursePlot:setVisible( isVisible )
@@ -79,11 +79,37 @@ function CoursePlot:setStopPosition( x, z )
 	self.stopPosition.x, self.stopPosition.z = x, z
 end
 
-function CoursePlot:worldToScreen(map, worldX, worldZ )
+function CoursePlot:worldToScreen(map, worldX, worldZ, isHudMap)
 	local objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * 0.5 + 0.25
 	local objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * 0.5 + 0.25
 	local x, y, _, _ = map.fullScreenLayout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
-	return x, y
+	local rot = 0
+	local visible = true
+	if isHudMap then 
+		--- The plot is displayed in the hud.
+		objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * map.mapExtensionScaleFactor + map.mapExtensionOffsetX
+		objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * map.mapExtensionScaleFactor + map.mapExtensionOffsetZ
+
+		x, y, rot, visible = map.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, false)
+		if map.state == IngameMap.STATE_MINIMAP_ROUND and map.layout.rotateWithMap then 
+			x, y, rot, visible = self:getMapObjectPositionCircleLayoutFix(map.layout, objectX, objectZ, 0, 0, 0, false)
+		end
+	end
+	return x, y, rot, visible
+end
+
+--- Giants was not so kind, as to allow getting the positions even, if the object is outside the map range ...
+--- This is a custom version for: IngameMapLayoutCircle:getMapObjectPosition(...)
+function CoursePlot:getMapObjectPositionCircleLayoutFix(layout, objectU, objectV, width, height, rot, persistent)
+	local mapWidth, mapHeight = layout:getMapSize()
+	local mapX, mapY = layout:getMapPosition()
+	local objectX = objectU * mapWidth + mapX
+	local objectY = (1 - objectV) * mapHeight + mapY
+	objectX, objectY, rot = layout:rotateWithMap(objectX, objectY, rot, persistent)
+	objectX = objectX - width * 0.5
+	objectY = objectY - height * 0.5
+
+	return objectX, objectY, rot, true
 end
 
 function CoursePlot:screenToWorld( x, y )
@@ -94,55 +120,63 @@ end
 
 -- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
-function CoursePlot:drawPoints(map)
+function CoursePlot:drawPoints(map, isHudMap)
+	local lineThickness = self.lineThickness
+	if isHudMap then 
+		lineThickness = lineThickness/2
+	end
+	local mapRotation = map.layout:getMapRotation()
 	if self.waypoints and #self.waypoints > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.
-		local wp, np, startX, startY, endX, endY, dx, dz, dx2D, dy2D, width, rotation, r, g, b
-
+		local wp, np, startX, startY, endX, endY, dx, dz, dx2D, dy2D, width, rotation, r, g, b, sv, ev
 		-- render a line between subsequent waypoints
 		for i = 1, #self.waypoints - 1 do
 			wp = self.waypoints[ i ]
 			np = self.waypoints[ i + 1 ]
 
-			startX, startY = self:worldToScreen(map, wp.x, wp.z )
-			endX, endY	   = self:worldToScreen(map, np.x, np.z )
+			startX, startY, _, sv = self:worldToScreen(map, wp.x, wp.z, isHudMap)
+			endX, endY, _, ev = self:worldToScreen(map, np.x, np.z, isHudMap)
+	
 			-- render only if it is on the plot area
 			if startX and startY and endX and endY then
-				dx2D = endX - startX;
-				dy2D = ( endY - startY ) / g_screenAspectRatio;
-				width = MathUtil.vector2Length(dx2D, dy2D);
+				dx2D = endX - startX
+				dy2D = ( endY - startY ) / g_screenAspectRatio
+				width = MathUtil.vector2Length(dx2D, dy2D)
 
-				dx = np.x - wp.x;
-				dz = np.z - wp.z;
-				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5;
+				dx = np.x - wp.x
+				dz = np.z - wp.z
+				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation
 				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress)
-
 				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
-				renderOverlay( self.courseOverlayId, startX, startY, width, self.lineThickness )
+				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
 			end
-		end;
+		end
 		setOverlayRotation( self.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
 	end
 end
 
 
-function CoursePlot:draw(map)
+function CoursePlot:draw(map, isHudMap)
 
 	if not self.isVisible then return end
 
-	self:drawPoints(map)
+	self:drawPoints(map, isHudMap)
 
 	-- render the start and stop signs
 
 	local signSizeMeters = 0.02
-	local zoom = map.fullScreenLayout:getIconZoom()
+	local zoom = isHudMap and map.layout:getIconZoom() or map.fullScreenLayout:getIconZoom()
+	if isHudMap and map.state == IngameMap.STATE_MAP then 
+		--- When the hud is completely open, then the signs need to be scaled down.
+		zoom = zoom * 0.5
+	end
 	local signWidth, signHeight = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom * g_screenAspectRatio
 
 	-- render a sign marking the end of the course
 	if self.stopPosition.x and self.stopPosition.z then
-		local x, y = self:worldToScreen( map,self.stopPosition.x, self.stopPosition.z )
+		local x, y, rotation = self:worldToScreen( map,self.stopPosition.x, self.stopPosition.z, isHudMap)
 		if x and y then
 			setOverlayColor( self.stopSignOverlayId, 1, 1, 1, 1 )
 			renderOverlay( self.stopSignOverlayId,
@@ -154,7 +188,7 @@ function CoursePlot:draw(map)
 
 	-- render a sign marking the current position used as a starting location for the course
 	if self.startPosition.x and self.startPosition.z then
-		local x, y = self:worldToScreen(map, self.startPosition.x, self.startPosition.z )
+		local x, y, rotation = self:worldToScreen(map, self.startPosition.x, self.startPosition.z, isHudMap)
 		if x and y then
 			setOverlayColor( self.startSignOverlayId, 1, 1, 1, 0.8 )
 			renderOverlay( self.startSignOverlayId,
@@ -164,4 +198,3 @@ function CoursePlot:draw(map)
 		end
 	end
 end
-

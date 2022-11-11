@@ -7,6 +7,7 @@ function CpGlobalSettings:init()
 	self:loadSettingsSetup()
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], self.onUnitChanged, self)
     g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], self.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.CP_DISTANCE_UNIT_CHANGED, self.onUnitChanged, self)
 end
 
 function CpGlobalSettings:registerXmlSchema(schema,baseKey)
@@ -15,6 +16,8 @@ end
 
 --- Loads settings setup form an xmlFile.
 function CpGlobalSettings:loadSettingsSetup()
+    MessageType.CP_DISTANCE_UNIT_CHANGED = nextMessageTypeId()
+
     local filePath = Utils.getFilename("config/GlobalSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(self,filePath)
 end
@@ -22,6 +25,7 @@ end
 function CpGlobalSettings:loadFromXMLFile(xmlFile, baseKey)
     CpSettingsUtil.loadFromXmlFile(self, xmlFile, 
     baseKey .. CpGlobalSettings.KEY, nil)
+    self:onDistanceUnitChanged()
 end
 
 function CpGlobalSettings:saveToXMLFile(xmlFile,baseKey)
@@ -83,6 +87,10 @@ function CpGlobalSettings:onActionEventTextVisibilityChanged()
         vehicle:requestActionEventUpdate()
     end
     CpDebug:updateActionEventTextVisibility()
+end
+
+function CpGlobalSettings:onDistanceUnitChanged()
+    g_messageCenter:publish(MessageType.CP_DISTANCE_UNIT_CHANGED)
 end
 
 function CpGlobalSettings:onUnitChanged()

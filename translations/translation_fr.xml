@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Générez ou chargez une course avant de démarrer la tâche"/>
     <text name="CP_error_could_not_generate_course" text="Impossible de générer la course. Plus d'informations dans le journal."/>
     <text name="CP_error_not_on_field" text="Le point de départ n'est pas dans un champ"/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
@@ -50,8 +52,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="L'ouvrier %s a interrompu son travail - la tremie est pleine!"/>
     <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Décalage vertical de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Décalage vertical de l'outil."/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Arrêt si additif d'ensilage vide"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Le conducteur s'arrêtera si la réserve d'additif d'ensilage est vide."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Changement de ligne symétrique"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Permet d'assouplir les contraintes sur le pathfinding à chaque nouvelle tentative de création d'un trajet. Plus la valeur est grande, plus la vitesse de calcul sera rapide."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Afficher les courses actives"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Affiche les courses actives sur la carte."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Afficher la fenêtre d'informations"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Affiche une fenêtre supplémentaire d'informations supplémentaires."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Utilisation du curseur étendue"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Active ou désactive la gestion du curseur pour les autres mods utilisant également le curseur pour les textes d'information en dehors des véhicules. Améliore la compatibilité avec les mods de type VehicleInfo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Détection prioritaire des champs perso."/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Sélectionne en priorité un champ personnalisé si celui-ci est à cheval sur un champ déjà existant."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -273,10 +282,10 @@
     <text name="CP_courseManager_copy_entry" text="Copier l'enregistrement"/>
     <text name="CP_courseManager_folder_dialog" text="Dossier:"/>
     <text name="CP_courseManager_course_dialog" text="Course:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="Etes-vous sûr de vouloir supprimer (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="L'éditeur de course peut créer des problèmes avec les ouvriers.
+Il est conseillé d'utiliser l'éditeur uniquement si le générateur automatique de courses ne vous donne pas satisfaction.
+La course est automatiquement sauvegardée à la fermeture de l'éditeur et remplace la course sélectionnée.
 "/>
     <text name="CP_courseManager_deleteError" text="Le dossier n'est pas vide (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="L'enregistrement existe déjà dans le dossier (%s)!"/>
@@ -289,29 +298,29 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="Editeur de course"/>
+    <text name="CP_editor_delete_title" text="Supprimer les points"/>
+    <text name="CP_editor_delete_primary_text" text="principal"/>
+    <text name="CP_editor_delete_secondary_text" text="secondaire"/>
+    <text name="CP_editor_delete_err" text="Trop peu de points restants."/>
+    <text name="CP_editor_course_basic_title" text="Simple"/>
+    <text name="CP_editor_course_basic_move_title" text="Déplacer un point"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="principal"/>
+    <text name="CP_editor_course_basic_insert_title" text="Insérer des points"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="principal"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="secondaire"/>
+    <text name="CP_editor_course_basic_insert_err" text="Impossible d'insérer avant un point de demi-tour."/>
+    <text name="CP_editor_course_advanced_title" text="Avancé"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Modifier le point en demi-tour."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Ajoute ou supprime un demi-tour. (Le point sélectionné sera le point de départ du demi-tour)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Trop près d'un autre point de demi-tour."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Déplacement de plusieurs points"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="principal"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondaire"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Insertion de points en tant que courbe"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="principal"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondaire"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="La sélection d'un point de demi-tour n'est pas autorisée."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -329,6 +338,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -336,7 +346,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_confirm_delete" text="Souhaitez-vous supprimer le champ personnalisé %s?"/>
     <text name="CP_customFieldManager_delete" text="Supprimer le champ personnalisé"/>
     <text name="CP_customFieldManager_rename" text="Renommer le champ personnalisé"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Editer le champ personnalisé"/>
     <text name="CP_customFieldManager_draw" text="Tracer un champ personnalisé"/>
     <text name="CP_customFieldManager_draw_header" text="Clic droit sur chaque point de contour du champ personnalisé."/>
     <text name="CP_customFieldManager_save" text="Sauvegarder le champ personnalisé"/>
@@ -604,30 +614,30 @@ Une course de pré-tailleuse  doit être générée depuis la sélection d'une v
     <text name="CP_help_page_vineWorkSprayer_text" text="
 Une course de sulfateuse doit être générée en mode côté gauche ou côté droit afin que le véhicule puisse longer les vignes. Vous pouvez également paramétrer la course pour ignorer un rang sur deux car les deux côtés de la rangée sont traités de toute façon.
 "/>
-    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editor_title" text="Editeur de course"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+L'éditeur de course permet de modifier des courses et des champs personnalisés.
+Les courses chargées seront automatiquement remplacées à la fermeture de l'éditeur.
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) L'édition d'un champ personnalisé s'effectue en le sélectionnant depuis la page de menu des ouvriers.
+2) L'édition d'une course s'effectue en la sélectionnant depuis la page du gestionnaire de courses. 
+   Assurez-vous de ne pas avoir de course active dans le véhicule lorsque vous lancez l'édition d'une course depuis le gestionnaire de courses.
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+L'édition d'une course est uniquement utile si le générateur automatique n'arrive pas à générer une course qui vous convienne.
+Une mauvaise édition peut bloquer vos ouvriers car les points de navigation ont des propriétés cachées.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+Dans la catégorie simple :
+1) Le curseur de déplacement permet de bouger le point sélectionné vers la nouvelle destination pointée par le curseur.
+2) Le curseur d'insertion permet l'insertion de point avant ou après le point sélectionné.
 
-Deleting of waypoints can be done with the red delete button.
+La suppression des points s'effectue avec le bouton rouge de suppression.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+Dans la catégorie avancée :
+1) Le curseur de déplacement multiple permet de bouger les points entre les deux points sélectionnés.
+2) Le cruseur d'insertion de courbe permet de créer des points qui forment une courbe entre deux points sélectionnés.
+3) Le curseur de propriétés du point permet de déclarer le point sélectionné comme un point de demi-tour (uniquement sur une course, pas dans un champ personnalisé).
 "/>
     <!---->
     <!--Input bindings-->
@@ -638,8 +648,12 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Affiche/masque les canaux de deboggage."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Affiche mini ATH"/>
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Curseur de la souris on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Affiche/masque l'ATH"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>

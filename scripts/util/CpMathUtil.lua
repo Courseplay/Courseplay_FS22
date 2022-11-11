@@ -37,9 +37,16 @@ function CpMathUtil.getNodeDirection(node)
 end
 
 --- Returns true if node1 is pointing approximately in node2's direction
----@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 10 degrees
+---@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 5 degrees
 function CpMathUtil.isSameDirection(node1, node2, thresholdDeg)
 	local lx, _, lz = localDirectionToLocal(node1, node2, 0, 0, 1)
+	return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
+end
+
+--- Returns true if node1 is pointing approximately in opposite of node2's direction
+---@param thresholdDeg number defines what 'approximately' means, by default if the difference is less than 5 degrees
+function CpMathUtil.isOppositeDirection(node1, node2, thresholdDeg)
+	local lx, _, lz = localDirectionToLocal(node1, node2, 0, 0, -1)
 	return math.abs(math.atan2(lx, lz)) < math.rad(thresholdDeg or 5)
 end
 
@@ -104,6 +111,15 @@ function CpMathUtil.isPointInPolygon(polygon, x, z)
 	end
 
 	return pointInPolygon ~= -1
+end
+
+function CpMathUtil.getClosestDistanceToPolygonEdge(polygon, x, z)
+    local closestDistance = math.huge
+    for _, p in ipairs(polygon) do
+        local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
+        closestDistance = d < closestDistance and d or closestDistance
+    end
+    return closestDistance
 end
 
 --- Get the area of polygon in square meters

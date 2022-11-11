@@ -47,6 +47,8 @@ function AIDriveStrategyCourse.new(customMt)
     ---@type ImplementController[]
     self.controllers = {}
     self.registeredInfoTexts = {}
+    --- To temporary hold a vehicle (will force speed to 0)
+    self.held = CpTemporaryObject()
     return self
 end
 
@@ -97,8 +99,6 @@ end
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     AIDriveStrategyCourse:superClass().setAIVehicle(self, vehicle)
     self:initializeImplementControllers(vehicle)
-    ---@type FillLevelManager
-    self.fillLevelManager = FillLevelManager(vehicle)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
     -- TODO_22 properly implement this in courseplaySpec
@@ -285,11 +285,6 @@ function AIDriveStrategyCourse:setAllStaticParameters()
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
 end
 
-function AIDriveStrategyCourse:getProximitySensorWidth()
-    -- a bit less as size.width always has plenty of buffer
-    return self.vehicle.size.width - 0.5
-end
-
 --- Find the foremost and rearmost AI marker
 function AIDriveStrategyCourse:setFrontAndBackMarkers()
     local markers= {}
@@ -370,9 +365,25 @@ function AIDriveStrategyCourse:getReverseDriveData()
     return gx, gz, maxSpeed
 end
 
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Proximity
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCourse:getProximitySensorWidth()
+    -- a bit less as size.width always has plenty of buffer
+    return self.vehicle.size.width - 0.5
+end
+
 function AIDriveStrategyCourse:checkProximitySensors(moveForwards)
     local _, _, _, maxSpeed = self.proximityController:getDriveData(self:getMaxSpeed(), moveForwards)
     self:setMaxSpeed(maxSpeed)
+end
+
+--- Is vehicle close to the front or rear proximity sensors?
+---@param vehicle table
+---@return boolean, number true if vehicle is in proximity, distance of vehicle
+function AIDriveStrategyCourse:isVehicleInProximity(vehicle)
+    return self.proximityController:isVehicleInRange(vehicle)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -384,7 +395,7 @@ end
 function AIDriveStrategyCourse:setMaxSpeed(speed)
     if self.maxSpeedUpdatedLoopIndex == nil or self.maxSpeedUpdatedLoopIndex ~= g_updateLoopIndex then
         -- new loop, reset max speed. Always 0 if frozen
-        self.maxSpeed = self.frozen and 0 or self.vehicle:getSpeedLimit(true)
+        self.maxSpeed = (self.frozen or self:isBeingHeld()) and 0 or self.vehicle:getSpeedLimit(true)
         self.maxSpeedUpdatedLoopIndex = g_updateLoopIndex
     end
     self.maxSpeed = math.min(self.maxSpeed, speed)
@@ -392,6 +403,29 @@ end
 
 function AIDriveStrategyCourse:getMaxSpeed()
     return self.maxSpeed or self.vehicle:getSpeedLimit(true)
+end
+
+--- Hold the vehicle (set speed to 0) temporary. This is meant to be used for other vehicles to coordinate movements,
+--- for instance tell a vehicle it should not move as the other vehicle is driving around it.
+---@param milliseconds number milliseconds to hold
+function AIDriveStrategyCourse:hold(milliseconds)
+    if not self.held:get() then
+        self:debug('Hold requested for %.1f seconds', milliseconds / 1000)
+    end
+    self.held:set(true, milliseconds)
+end
+
+--- Release a hold anytime, even before it is released automatically after the time given at hold()
+function AIDriveStrategyCourse:unhold()
+    if self.held:get() then
+        self:debug("Hold reset")
+    end
+    self.held:reset()
+end
+
+--- Are we currently being held?
+function AIDriveStrategyCourse:isBeingHeld()
+    return self.held:get()
 end
 
 --- Freeze (force speed to 0), but keep everything up and running otherwise, showing all debug

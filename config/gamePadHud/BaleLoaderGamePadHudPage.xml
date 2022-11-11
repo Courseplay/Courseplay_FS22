@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	Vehicle,course generator or job settings can be set here to be displayed in the mini hud.
+-->
+
+<Settings title="CP_vehicle_setting_display">
+	<Setting type="vehicleSettings" name = "showCourse" />
+	<Setting type="jobParameters" name = "startAt" />
+	<Setting type="baleFinderJobParameters" name = "baleWrapType" />
+	<Setting type="vehicleSettings" name = "toolOffsetX" />
+</Settings>

@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Erstelle zuerst einen Kurs vor dem Starten."/>
     <text name="CP_error_could_not_generate_course" text="Konnte keinen Kurs generieren. Das Logfile könnte weitere Informationen enthalten."/>
     <text name="CP_error_not_on_field" text="Ziel ist nicht auf einem Feld."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Abfahrer ist zu weit vom Feld entfernt."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Startposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants Ablader nicht möglich."/>
     <!---->
     <!--AI job parameters-->
@@ -50,8 +52,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Abtanken ab:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Abtanken ab:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants Ablader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Giants Ablader benutzen:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Abladestation:"/>
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Helfer %s hat die Arbeit gestoppt - Gerät ist voll!"/>
     <text name="CP_ai_messageError" text="Helfer %s hat die Arbeit gestoppt - Kurs verlassen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Geräteversatz horizontal"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Geräteversatz vertikal"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Entleeren wenn über:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Siliermittel überwachen."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrischer Bahnenwechsel"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zeige alle Kurse"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zeigt alle geladenen Kurse auf der Karte."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Zeige Kurse auf der Minikarte"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Ermöglicht die Anzeige des Kurses auf der kleinen Karte."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Helfer-Infofenster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Schaltet das Infofenster für die CP-Helfer an oder aus."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spielermaus"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiviert/Deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Bevorzuge erstellten Feldrand"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distanz Einheit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distanzeinheit Meter oder Fuß."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Fuß"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -329,6 +338,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_waitForRainToFinish" text="Warte auf besseres Wetter"/>
     <text name="CP_infoTexts_errorStopped" text="Hat den Kurs verlassen, gestoppt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Ballentyp nicht gefunden"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Keinen Weg gefunden"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -663,8 +673,12 @@ Achtung: Sobald du loslässt, werden die Wegpunkte abgesetzt, dies kann nicht r�
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Zeige Debugkanäle-Menü ja/nein."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Öffne Mini-GUI"/>
     <text name="input_CP_START_STOP" text="CP: Starte/Stoppe CP-Helfer"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Ändert den Startpunkt"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mauszeiger an/aus"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Öffne/Schließe HUD"/>
-    <text name="TEST_TRANSLATION" text="TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Öffnet Fahrzeugeinstellungen"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Öffnet globale Einstellungen"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Öffnet Kursgenerator/Jobmenü"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Öffnet Kursmanager"/>
   </texts>
 </l10n>

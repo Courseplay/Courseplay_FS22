@@ -98,3 +98,8 @@ end
 function BalerController:onStart()
     self.baler:setFoldDirection(-1)
 end
+
+function BalerController:onFinished()
+    -- TODO: not working, as this probably needs to be called, before the drive is released.
+    -- Baler.actionEventUnloading(self.implement)
+end

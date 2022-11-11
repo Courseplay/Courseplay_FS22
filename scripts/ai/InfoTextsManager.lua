@@ -28,7 +28,8 @@ CpInfoTextElement.aiMessageNameToClass = {
 	AIMessageErrorOutOfMoney = AIMessageErrorOutOfMoney,
 	AIMessageErrorBlockedByObject = AIMessageErrorBlockedByObject,
 	AIMessageCpError = AIMessageCpError,
-	AIMessageErrorWrongBaleWrapType = AIMessageErrorWrongBaleWrapType
+	AIMessageErrorWrongBaleWrapType = AIMessageErrorWrongBaleWrapType,
+	AIMessageCpErrorNoPathFound = AIMessageCpErrorNoPathFound
 }
 
 --- Info text 

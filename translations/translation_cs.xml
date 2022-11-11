@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="在开始任务之前创建或加载一个任务"/>
     <text name="CP_error_could_not_generate_course" text="无法创建任务"/>
     <text name="CP_error_not_on_field" text="不在田地中"/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
@@ -50,8 +52,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="工人%s 停止工作-储存箱已满!"/>
     <text name="CP_ai_messageError" text="AI 帮手 %s 意外停止工作 - 离开了路线！"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI 帮手 %s 已意外停止工作 - 未找到选定类型的草垛！"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="工具横向调整"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="工具纵向调整"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="工具纵向调整"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="检查青贮添加剂"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="工作中的车辆青贮添加剂存箱是空的会停止工作。"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="对称变道"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="允许在每次创建路径时放宽路径搜索的限制。值越高，计算速度越快。"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="显示所有活动任务 "/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="在地图上显示所有活动任务。 "/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="显示信息文本窗口 "/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="显示一个信息文本窗口。"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="车外鼠标交互"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="启用/禁用车辆外的鼠标交互。"/>
     <text name="CP_global_setting_preferCustomFields_title" text="首选自定义田地"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="使用自定义田地，即使有原始田地。"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -329,6 +338,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_waitForRainToFinish" text="等待雨停"/>
     <text name="CP_infoTexts_errorStopped" text="离开了路线，停止工作"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="错误的草垛类型"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -645,8 +655,12 @@ Under the advanced category are:
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: 打开迷你HUB"/>
     <text name="input_CP_START_STOP" text="CP: 启动/停止司机
 "/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: 鼠标光标开/关"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: 打开/关闭迷你HUB"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>

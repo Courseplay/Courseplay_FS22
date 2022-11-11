@@ -40,8 +40,8 @@ function CpAICombineUnloader.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpCombineUnloader", CpAICombineUnloader.getCanStartCpCombineUnloader)
     SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderJobParameters", CpAICombineUnloader.getCpCombineUnloaderJobParameters)
 
-    SpecializationUtil.registerFunction(vehicleType, "setCpCombineUnloaderFieldPosition", CpAICombineUnloader.setCpCombineUnloaderFieldPosition)
-    SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderFieldPosition", CpAICombineUnloader.getCpCombineUnloaderFieldPosition)
+    SpecializationUtil.registerFunction(vehicleType, "applyCpCombineUnloaderJobParameters", CpAICombineUnloader.applyCpCombineUnloaderJobParameters)
+    SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderJob", CpAICombineUnloader.getCpCombineUnloaderJob)
 end
 
 function CpAICombineUnloader.registerOverwrittenFunctions(vehicleType)
@@ -90,11 +90,11 @@ end
 
 --- If we have a trailer which can be emptied, we can unload a combine
 function CpAICombineUnloader:getCanStartCpCombineUnloader()
-	return AIUtil.hasImplementWithSpecialization(self, Trailer) and AIUtil.hasImplementWithSpecialization(self, Dischargeable)
+	return not self:getCanStartCpFieldWork() and AIUtil.getNumberOfChildVehiclesWithSpecialization(self, Trailer) == 1
 end
 
 function CpAICombineUnloader:getCanStartCp(superFunc)
-    return superFunc(self) or self:getCanStartCpCombineUnloader()
+    return superFunc(self) or self:getCanStartCpCombineUnloader() and not self:getIsCpCourseRecorderActive()
 end
 
 function CpAICombineUnloader:getCpStartableJob(superFunc)
@@ -128,7 +128,20 @@ end
 
 --- Starts the cp driver at the last driven waypoint.
 function CpAICombineUnloader:startCpAtLastWp(superFunc)
-    self:startCpAtFirstWp(superFunc)
+    if not superFunc(self) then 
+        if self:getCanStartCpCombineUnloader() then
+            local spec = self.spec_cpAICombineUnloader
+            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+            spec.cpJob:setValues()
+            local success = spec.cpJob:validate(false)
+            if success then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                return true
+            end
+        end
+    else 
+        return true
+    end
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
@@ -169,15 +182,20 @@ end
 
 --- Forces the driver to unload now.
 function CpAICombineUnloader:startCpCombineUnloaderUnloading()
-    print("Drive now!")
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Drive unload now requested')
+    local strategy = self:getCpDriveStrategy()
+    if strategy then 
+        strategy:requestDriveUnloadNow()
+    end
 end
 
-function CpAICombineUnloader:setCpCombineUnloaderFieldPosition(x, z)
+function CpAICombineUnloader:applyCpCombineUnloaderJobParameters(job)
     local spec = self.spec_cpAICombineUnloader
-    spec.cpJob:setFieldPositionTarget(x, z)
+    spec.cpJob:getCpJobParameters():validateSettings()
+    spec.cpJob:copyFrom(job)
 end
 
-function CpAICombineUnloader:getCpCombineUnloaderFieldPosition()
+function CpAICombineUnloader:getCpCombineUnloaderJob()
     local spec = self.spec_cpAICombineUnloader
-    return spec.cpJob:getFieldPositionTarget()
+    return spec.cpJob
 end

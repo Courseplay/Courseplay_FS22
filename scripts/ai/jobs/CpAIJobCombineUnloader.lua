@@ -4,7 +4,8 @@ CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
 	translations = {
 		jobName = "CP_job_combineUnload"
-	}
+	},
+	minStartDistanceToField = 20
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork)
 
@@ -70,8 +71,9 @@ function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDi
 			x, z = lastJob.fieldPositionParameter:getPosition()
 		end
 	end
+	self:copyFrom(vehicle:getCpCombineUnloaderJob())
 
-	x, z = vehicle:getCpCombineUnloaderFieldPosition()
+	x, z = self.fieldPositionParameter:getPosition()
 
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
@@ -106,6 +108,9 @@ end
 --- Sets static data for the giants unload. 
 function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 	self.dischargeNodeInfos = {}
+	if vehicle == nil then 
+		return
+	end
 	if vehicle.getAIDischargeNodes ~= nil then
 		for _, dischargeNode in ipairs(vehicle:getAIDischargeNodes()) do
 			local _, _, z = vehicle:getAIDischargeNodeZAlignedOffset(dischargeNode, vehicle)
@@ -147,14 +152,15 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 
 	end
 	local unloadingStation = self.cpJobParameters.unloadingStation:getUnloadingStation()
-	local x, z, dirX, dirZ, trigger = unloadingStation:getAITargetPositionAndDirection(FillType.UNKNOWN)
+	if unloadingStation ~= nil  then 
+		local x, z, dirX, dirZ, trigger = unloadingStation:getAITargetPositionAndDirection(FillType.UNKNOWN)
 
-	if trigger ~= nil then
-		self.driveToUnloadingTask:setTargetPosition(x, z)
-		self.driveToUnloadingTask:setTargetDirection(dirX, dirZ)
-		self.dischargeTask:setUnloadTrigger(trigger)
+		if trigger ~= nil then
+			self.driveToUnloadingTask:setTargetPosition(x, z)
+			self.driveToUnloadingTask:setTargetDirection(dirX, dirZ)
+			self.dischargeTask:setUnloadTrigger(trigger)
+		end
 	end
-
 end
 
 --- Called when parameters change, scan field
@@ -165,15 +171,37 @@ function CpAIJobCombineUnloader:validate(farmId)
 	end
 	local vehicle = self.vehicleParameter:getVehicle()
 	if vehicle then 
-		local x, z = self.fieldPositionParameter:getPosition()
-		vehicle:setCpCombineUnloaderFieldPosition(x, z)
+		vehicle:applyCpCombineUnloaderJobParameters(self)
 	end
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
+	if not isValid then 
+		return isValid, errorMessage
+	end
+	local useGiantsUnload = self.cpJobParameters.useGiantsUnload:getValue()
+	if isValid and self.isDirectStart then 
+		--- Checks the distance for starting with the hud, as a safety check.
+		--- Firstly check, if the vehicle is near the field.
+		local x, _, z = getWorldTranslation(vehicle.rootNode)
+		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		if not isValid and useGiantsUnload then 
+			--- Alternatively check, if the start marker is close to the field and giants unload is active.
+			local x, z = self.positionAngleParameter:getPosition()
+			isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+			if not isValid then
+				return false, g_i18n:getText("CP_error_start_position_to_far_away_from_field")
+			end 
+		end
+		if not isValid then
+			return false, g_i18n:getText("CP_error_unloader_to_far_away_from_field")
+		end
+	end
 
 	--- Giants unload 
-	if self.cpJobParameters.useGiantsUnload:getValue() then 
+	if useGiantsUnload then 
 		isValid, errorMessage = self.cpJobParameters.unloadingStation:validateUnloadingStation()
 		
 		if not isValid then
@@ -297,34 +325,24 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	if not self.cpJobParameters.useGiantsUnload:getValue() then 
 		return CpAIJobCombineUnloader:superClass().getStartTaskIndex(self)
 	end
-	--- Giants unload, find the best starting task.
-	local hasOneEmptyFillUnit = false
+	local vehicle = self:getVehicle()
+	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
 
-	for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
-		local vehicle = dischargeNodeInfo.vehicle
-		local fillUnitIndex = dischargeNodeInfo.dischargeNode.fillUnitIndex
-
-		if vehicle:getFillUnitFillLevel(fillUnitIndex) == 0 then
-			hasOneEmptyFillUnit = true
-
-			break
-		end
-	end
-
+	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
+	
 	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
 	local tx, tz = self.positionAngleParameter:getPosition()
 	local targetReached = math.abs(x - tx) < 1 and math.abs(z - tz) < 1
 
 	if targetReached then
-		if not hasOneEmptyFillUnit then
+		if readyToDriveUnloading then
 			self.combineUnloaderTask:skip()
 		end
-
 		return self.combineUnloaderTask.taskIndex
 	end
 
-	if not hasOneEmptyFillUnit then
+	if readyToDriveUnloading then
 		self.driveToTask:skip()
 		self.combineUnloaderTask:skip()
 	end
@@ -344,4 +362,20 @@ end
 
 function CpAIJobCombineUnloader:getIsLooping()
 	return true
+end
+
+function CpAIJobCombineUnloader:copyFrom(job)
+	self.cpJobParameters:copyFrom(job.cpJobParameters)
+	local x, z = job:getFieldPositionTarget()
+	if x ~=nil then
+		self.fieldPositionParameter:setValue(x, z)
+	end
+	local x, z = job.positionAngleParameter:getPosition()
+	if x ~= nil then
+		self.positionAngleParameter:setPosition(x, z)
+	end
+	local angle = job.positionAngleParameter:getAngle()
+	if angle ~= nil then
+		self.positionAngleParameter:setAngle(angle)
+	end
 end

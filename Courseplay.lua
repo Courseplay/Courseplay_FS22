@@ -145,6 +145,18 @@ function Courseplay:setupGui()
 			{256, 0, 128, 128}, pos + 1, predicateFunc)
 	self.infoTextsHud = CpHudInfoTexts()
 
+	g_currentMission.hud.ingameMap.drawFields = Utils.appendedFunction(g_currentMission.hud.ingameMap.drawFields, Courseplay.drawHudMap)
+
+end
+
+--- Enables drawing onto the hud map.
+function Courseplay.drawHudMap(map)
+	if g_Courseplay.globalSettings.drawOntoTheHudMap:getValue() then
+		local vehicle = g_currentMission.controlledVehicle
+		if vehicle and vehicle:getIsEntered() and not g_gui:getIsGuiVisible() and vehicle.spec_courseplaySpec then 
+			SpecializationUtil.raiseEvent(vehicle, "onCpDrawHudMap", map)
+		end
+	end
 end
 
 --- Adds cp help info to the in game help menu.

@@ -75,6 +75,18 @@ function ProximityController:checkBlockingVehicleBack()
     return self.backwardLookingProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
 end
 
+--- Is vehicle in range of the front or rear sensors?
+---@param vehicle table
+---@return boolean, number true if vehicle is in range, distance of vehicle
+function ProximityController:isVehicleInRange(vehicle)
+    for _, sensorPack in ipairs({self.forwardLookingProximitySensorPack, self.backwardLookingProximitySensorPack}) do
+        local d, otherVehicle = sensorPack:getClosestObjectDistanceAndRootVehicle()
+        if otherVehicle == vehicle then
+            return true, d
+        end
+    end
+end
+
 function ProximityController:disableLeftFront()
     self.forwardLookingProximitySensorPack:disableLeftSide()
 end
@@ -107,7 +119,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
         maxSpeed = 0
         self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
-        if vehicle == self.blockingVehicle:get() then
+        if vehicle ~= nil and vehicle == self.blockingVehicle:get() then
             -- have been blocked by this guy long enough, try to recover
             CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
                     '%s has been blocking us for a while at %.1f m', CpUtil.getName(vehicle), d)
@@ -116,7 +128,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         if not self.blockingVehicle:isPending() then
             -- first time we are being blocked, remember the time
             CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, '%s is blocking us (%.1fm)', CpUtil.getName(vehicle), d)
-            self.blockingVehicle:set(vehicle, nil, 10000)
+            self.blockingVehicle:set(vehicle, nil, 7000)
         end
 
     elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) then

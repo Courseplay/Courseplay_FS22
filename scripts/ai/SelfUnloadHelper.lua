@@ -39,16 +39,17 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
             local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(otherVehicle)
             local myFieldNum = CpFieldUtil.getFieldNumUnderVehicle(myVehicle)
             local x, _, z = getWorldTranslation(otherVehicle.rootNode)
-            local closestDistance = self:getClosestDistanceToFieldEdge(fieldPolygon, x, z)
+            local closestDistance = CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z)
             local lastSpeed = rootVehicle:getLastSpeed()
             local isCpActive = rootVehicle.getIsCpActive and rootVehicle:getIsCpActive()
             CpUtil.debugVehicle(self.debugChannel, myVehicle,
                     '%s is a trailer on field %d, closest distance to %d is %.1f, attached to %s, root vehicle is %s, last speed %.1f, CP active %s',
-                    otherVehicle:getName(), fieldNum, myFieldNum, closestDistance, attacherVehicle and attacherVehicle:getName() or 'none', 
-		            rootVehicle:getName(), lastSpeed, isCpActive)
+                    otherVehicle:getName(), fieldNum, myFieldNum, closestDistance, attacherVehicle and attacherVehicle:getName() or 'none',
+                    rootVehicle:getName(), lastSpeed, isCpActive)
             -- consider only trailer on my field or close to my field, not driven by CP and stopped
             if rootVehicle ~= myVehicle and not isCpActive and lastSpeed < 0.1 and
-                    (fieldNum == myFieldNum or myFieldNum == 0 or closestDistance < 20)  then
+                    (fieldNum == myFieldNum or myFieldNum == 0 or closestDistance < 20)
+                    and not self:isInvalidAutoDriveTarget(myVehicle, rootVehicle) then
                 local d = calcDistanceFrom(myVehicle:getAIDirectionNode(), otherVehicle.rootNode or otherVehicle.nodeId)
                 local canLoad, freeCapacity, fillUnitIndex = FillLevelManager.canLoadTrailer(otherVehicle, fillType)
                 if d < minDistance and canLoad then
@@ -63,8 +64,8 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
     local fillRootNode
     if bestTrailer then
         fillRootNode = bestTrailer:getFillUnitExactFillRootNode(bestFillUnitIndex)
-        CpUtil.debugVehicle(self.debugChannel, myVehicle, 
-                'Best trailer is %s at %.1f meters, free capacity %d, root node %s', 
+        CpUtil.debugVehicle(self.debugChannel, myVehicle,
+                'Best trailer is %s at %.1f meters, free capacity %d, root node %s',
                 bestTrailer:getName(), minDistance, maxCapacity, tostring(fillRootNode))
         local bestFillNode = self:findBestFillNode(myVehicle, fillRootNode, pipeOffsetX)
         return bestTrailer, bestFillNode
@@ -72,15 +73,6 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
         CpUtil.infoVehicle(myVehicle, 'Found no trailer to unload to.')
         return nil
     end
-end
-
-function SelfUnloadHelper:getClosestDistanceToFieldEdge(fieldPolygon, x, z)
-    local closestDistance = math.huge
-    for _, p in ipairs(fieldPolygon) do
-        local d = MathUtil.getPointPointDistance(x, z, p.x, p.z)
-        closestDistance = d < closestDistance and d or closestDistance
-    end
-    return closestDistance
 end
 
 function SelfUnloadHelper:findBestFillNode(myVehicle, fillRootNode, offset)
@@ -125,7 +117,7 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType,
     -- this should put the pipe's end 1.1 m from the trailer's edge towards the middle. We are not aiming for
     -- the centerline of the trailer to avoid bumping into very wide trailers, we don't want to get closer
     -- than what is absolutely necessary.
-    local offsetX = math.abs(objectWithPipeAttributes.pipeOffsetX) + trailerWidth / 2 - 1.1
+    local offsetX = math.abs(objectWithPipeAttributes.pipeOffsetX) + trailerWidth / 2 - 1.6
     offsetX = objectWithPipeAttributes.pipeOnLeftSide and -offsetX or offsetX
     -- arrive near the trailer alignLength meters behind the target, from there, continue straight a bit
     local _, steeringLength = AIUtil.getSteeringParameters(myVehicle)
@@ -134,4 +126,18 @@ function SelfUnloadHelper:getTargetParameters(fieldPolygon, myVehicle, fillType,
             'Trailer length: %.1f, width: %.1f, dZ: %.1f, align length %.1f, my length: %.1f, steering length %.1f, offsetX %.1f',
             trailerLength, trailerWidth, dZ, alignLength, myVehicle.size.length, steeringLength, offsetX)
     return targetNode, alignLength, offsetX
+end
+
+--- Check if this trailer is driven by AutoDrive and is really ready to be loaded. There may be
+--- more than one AD trailer waiting, but we want to make sure we unload into the first one only,
+--- the one which is ready to drive away.
+function SelfUnloadHelper:isInvalidAutoDriveTarget(myVehicle, otherVehicle)
+    if otherVehicle and otherVehicle.ad and otherVehicle.ad.stateModule and otherVehicle.ad.stateModule:isActive()
+            and not otherVehicle.ad.drivePathModule:isTargetReached() then
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, myVehicle,
+                '%s is an active AutoDrive vehicle but did not reach its target, ignoring', CpUtil.getName(otherVehicle))
+        return true
+    else
+        return false
+    end
 end

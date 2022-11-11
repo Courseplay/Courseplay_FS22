@@ -149,28 +149,21 @@ function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 end
 
 -- Find the node to use by the PPC when driving in reverse
-function AIUtil.getReverserNode(vehicle)
+function AIUtil.getReverserNode(vehicle, reversingImplement)
 	local reverserNode, debugText
 	-- if there's a reverser node on the tool, use that
-	local reverserDirectionNode = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle)
-	local reversingWheeledWorkTool = AIUtil.getFirstReversingImplementWithWheels(vehicle)
-	if reverserDirectionNode then
-		reverserNode = reverserDirectionNode
-		debugText = 'implement reverse (Giants)'
-	elseif reversingWheeledWorkTool and reversingWheeledWorkTool.steeringAxleNode then
-		reverserNode = reversingWheeledWorkTool.steeringAxleNode
-		debugText = 'implement reverse (Courseplay)'
-	elseif vehicle.spec_articulatedAxis ~= nil then
+	reversingImplement = reversingImplement and reversingImplement or AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	if reversingImplement and reversingImplement.steeringAxleNode then
+		reverserNode, debugText = reversingImplement.steeringAxleNode, 'implement steering axle node'
+	end
+	if not reverserNode then
+		reverserNode, debugText = AIVehicleUtil.getAIToolReverserDirectionNode(vehicle), 'AIToolReverserDirectionNode'
+	end
+	if not reverserNode then
+		reverserNode, debugText = vehicle:getAIReverserNode(), 'AIReverserNode'
+	end
+	if not reverserNode and vehicle.spec_articulatedAxis ~= nil then
 		reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
-	else
-		-- otherwise see if the vehicle has a reverser node
-		if vehicle.getAIVehicleReverserNode then
-			reverserDirectionNode = vehicle:getAIVehicleReverserNode()
-			if reverserDirectionNode then
-				reverserNode = reverserDirectionNode
-				debugText = 'vehicle reverse'
-			end
-		end
 	end
 	return reverserNode, debugText
 end
@@ -211,9 +204,18 @@ function AIUtil.getTurningRadius(vehicle)
 		end
 		if turnRadius == 0 then
 			if AIUtil.isImplementTowed(vehicle, implement.object) then
-				turnRadius = 6
-				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
+				if AIUtil.hasImplementWithSpecialization(vehicle, Trailer) and
+						AIUtil.hasImplementWithSpecialization(vehicle, Pipe) then
+					-- Auger wagons don't usually have a proper turn radius configured which causes problems when we
+					-- are calculating the path to a trailer when unloading. Use this as a minimum turn radius.
+					turnRadius = 10
+                    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, auger wagon, we use a default %.1f',
+                            implement.object:getName(), turnRadius)
+				else
+				    turnRadius = 6
+				    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
 						implement.object:getName(), turnRadius)
+				end
 			else
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
 					implement.object:getName())
@@ -404,18 +406,28 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 	end
 end
 
+--- Get number of child vehicles that have a certain specialization
+---@param vehicle Vehicle
+---@param specialization specialization to check for
+---@return integer number of found vehicles
+function AIUtil.getNumberOfChildVehiclesWithSpecialization(vehicle, specialization)
+	local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, nil)
+
+	return #vehicles
+end
+
 --- Gets all child vehicles with a given specialization. 
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
 ---@param vehicle Vehicle
----@param specialization table 
+---@param specialization table
 ---@param specializationReference string alternative for mod specializations, as their object is not accessible by us.
 ---@return table all found vehicles/implements
 ---@return boolean at least one vehicle/implement was found
 function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
 	local validVehicles = {}
-	for _, childVehicle in pairs(vehicle:getChildVehicles()) do 
-		if specializationReference and childVehicle[specializationReference] then 
+	for _, childVehicle in pairs(vehicle:getChildVehicles()) do
+		if specializationReference and childVehicle[specializationReference] then
 			table.insert(validVehicles, childVehicle)
 		end
 		if specialization and SpecializationUtil.hasSpecialization(specialization, childVehicle.specializations) then
@@ -510,30 +522,30 @@ end
 --- Is a sugarcane trailer attached ?
 ---@param vehicle table
 function AIUtil.hasSugarCaneTrailer(vehicle)
-	if vehicle.spec_shovel and vehicle.spec_trailer then 
+	if vehicle.spec_shovel and vehicle.spec_trailer then
 		return true
 	end
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		local object = implement.object
-		if object.spec_shovel and object.spec_trailer then 
+		if object.spec_shovel and object.spec_trailer then
 			return true
 		end
 	end
 end
 
 --- Are there any trailer under the pipe ?
----@param pipe table 
+---@param pipe table
 ---@param shouldTrailerBeStandingStill boolean
 function AIUtil.isTrailerUnderPipe(pipe, shouldTrailerBeStandingStill)
 	if not pipe then return end
 	for trailer, value in pairs(pipe.objectsInTriggers) do
 		if value > 0 then
-			if shouldTrailerBeStandingStill then 
+			if shouldTrailerBeStandingStill then
 				local rootVehicle = trailer:getRootVehicle()
-				if rootVehicle then 
-					if AIUtil.isStopped(rootVehicle) then 
+				if rootVehicle then
+					if AIUtil.isStopped(rootVehicle) then
 						return true
-					else 
+					else
 						return false
 					end
 				end
@@ -553,10 +565,10 @@ function AIUtil.getVehicleAndImplementsTotalLength(vehicle)
 		end
 	end
 	return totalLength
-end 
+end
 
 function AIUtil.getShieldWorkWidth(object,logPrefix)
-	if object.spec_leveler then 
+	if object.spec_leveler then
 		local width = object.spec_leveler.nodes[1].maxDropWidth * 2
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, '%s%s: Is a shield with work width: %.1f', logPrefix, nameNum(object), width)
 		return width
@@ -625,4 +637,11 @@ function AIUtil.canReverse(vehicle)
 	else
 		return true
 	end
+end
+
+--- Checks if a valid Universal autoload trailer is attached.
+--- FS22_UniversalAutoload from Loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
+function AIUtil.hasValidUniversalTrailerAttached(vehicle)
+    local implements, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, nil, "spec_universalAutoload")
+	return found and implements[1].spec_universalAutoload.isAutoloadEnabled
 end

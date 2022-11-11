@@ -183,7 +183,16 @@ function CpUtil.infoVehicle(vehicle, ...)
 		...)
 end
 
-
+function CpUtil.infoImplement(implement, ...)
+	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+	local timestamp = getDate( ":%S")
+	CpUtil.try(
+		function (...)
+			local rootVehicle = implement.rootVehicle or implement
+			print(string.format('%s [info lp%d] %s(%s): %s', timestamp, updateLoopIndex, CpUtil.getName(rootVehicle), CpUtil.getName(implement), string.format( ... )))
+		end,
+		...)
+end
 
 --- Create a node at x, z, direction according to yRotation.
 --- If rootNode is given, make that the parent node, otherwise the parent is the terrain root node

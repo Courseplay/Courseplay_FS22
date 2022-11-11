@@ -53,6 +53,9 @@ CpBaseHud.uvs = {
     copySymbol = {
         {127, 637, 128, 128}
     },
+    driveNowSymbol = {
+        {0, 768, 128, 128}
+    },
     goalSymbol = GuiUtils.getUVs({
         788,
 	30,
@@ -148,17 +151,20 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setDimension(self.width, self.height)
     self.baseHud:setCallback("onMove", self, self.moveToPosition)
 
-    self.fieldworkLayout = CpHudElement.new(nil, self.baseHud)
+    self.fieldworkLayout = CpFieldWorkHudPageElement.new(nil, self.baseHud)
     self.fieldworkLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.fieldworkLayout:setDimension(self.width, self.height)
+    self.fieldworkLayout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
 
-    self.baleFinderLayout = CpHudElement.new(nil, self.baseHud)
+    self.baleFinderLayout = CpBaleFinderHudPageElement.new(nil, self.baseHud)
     self.baleFinderLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.baleFinderLayout:setDimension(self.width, self.height)
+    self.baleFinderLayout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
 
-    self.combineUnloaderLayout = CpHudElement.new(nil, self.baseHud)
+    self.combineUnloaderLayout = CpCombineUnloaderHudPageElement.new(nil, self.baseHud)
     self.combineUnloaderLayout:setPosition(CpBaseHud.x, CpBaseHud.y)
     self.combineUnloaderLayout:setDimension(self.width, self.height)
+    self.combineUnloaderLayout:setupElements(self, vehicle, self.lines, self.wMargin, self.hMargin)
     --------------------------------------
     --- Header
     --------------------------------------
@@ -205,18 +211,12 @@ function CpBaseHud:init(vehicle)
                                 function()
                                     self:openVehicleSettingsGui(self.vehicle)
                                 end)
-
+    
     --- Starting point
     self.startingPointBtn = self:addLeftLineTextButton(self.baseHud, 5, self.defaultFontSize, 
         function (vehicle)
             vehicle:getCpStartingPointSetting():setNextItem()
         end, self.vehicle)
-
-     --- Course name
-    self.courseNameBtn = self:addLeftLineTextButton(self.baseHud, 4, self.defaultFontSize, 
-                                                        function()
-                                                            self:openCourseGeneratorGui(self.vehicle)
-                                                        end, self.vehicle)                                
 
     --------------------------------------
     --- Right side
@@ -268,103 +268,6 @@ function CpBaseHud:init(vehicle)
         end
     end)
     
-    --- Clear course button.
-    local width, height = getNormalizedScreenValues(18, 18)
-    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {imageFilename, GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol))}, 
-                                                self.OFF_COLOR,
-                                                self.alignments.bottomRight)
-    self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
-    local x, y = unpack(self.lines[6].right)
-    x = x - onOffBtnWidth - self.wMargin/2 - recordingBtnWidth - self.wMargin/4
-    self.clearCourseBtn:setPosition(x, y)
-    self.clearCourseBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        if vehicle:hasCpCourse() and not vehicle:getIsCpActive() then
-            vehicle:resetCpCoursesFromGui()
-        end
-    end)
-    
-    --- Toggle waypoint visibility.
-    local width, height = getNormalizedScreenValues(20, 20)
-    local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    local courseVisibilityOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.eye))}, 
-                                                        self.OFF_COLOR,
-                                                        self.alignments.bottomRight)
-    self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self.baseHud)
-    local _, y = unpack(self.lines[6].right)
-    y = y - self.hMargin/16
-    x = x - width - self.wMargin/4
-    self.courseVisibilityBtn:setPosition(x, y)
-    self.courseVisibilityBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        vehicle:getCpSettings().showCourse:setNextItem()
-    end)
-    
-    --- Lane offset
-    self.laneOffsetBtn = self:addRightLineTextButton(self.fieldworkLayout, 5, self.defaultFontSize, 
-        function (vehicle)
-            vehicle:getCpLaneOffsetSetting():setNextItem()
-        end, self.vehicle)
-    --- Waypoint progress
-    self.waypointProgressBtn = self:addRightLineTextButton(self.baseHud, 4, self.defaultFontSize, 
-                                                        function()
-                                                            self:openCourseManagerGui(self.vehicle)
-                                                        end, self.vehicle)
-
-    --------------------------------------
-    --- Complete line
-    --------------------------------------
-   
-    --- Work width
-    self.workWidthBtn = self:addLineTextButton(self.fieldworkLayout, 3, self.defaultFontSize, 
-                                                self.vehicle:getCourseGeneratorSettings().workWidth)
-
-    --- Bale finder fill type
-    local x, y = unpack(self.lines[3].left)
-    local xRight,_ = unpack(self.lines[3].right)
-    self.baleFinderFillTypeBtn = CpHudTextSettingElement.new(self.baleFinderLayout, x, y,
-                                     xRight, self.defaultFontSize)
-    local callback = {
-        callbackStr = "onClickPrimary",
-        class =  vehicle:getCpBaleFinderJobParameters().baleWrapType,
-        func =   vehicle:getCpBaleFinderJobParameters().baleWrapType.setNextItem,
-    }
-    self.baleFinderFillTypeBtn:setCallback(callback, callback)                                           
-
-
-    --- Tool offset x
-    self.toolOffsetXBtn = self:addLineTextButton(self.baseHud, 2, self.defaultFontSize, 
-                                                self.vehicle:getCpSettings().toolOffsetX)
-
-    --- Tool offset z
-    self.toolOffsetZBtn = self:addLineTextButton(self.combineUnloaderLayout, 1, self.defaultFontSize, 
-                                                self.vehicle:getCpSettings().toolOffsetZ)
-
-    --- Full threshold 
-    self.fullThresholdBtn = self:addLineTextButton(self.combineUnloaderLayout, 3, self.defaultFontSize, 
-                                                self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold)
-    --- Drive now button
-    self.driveNowBtn = self:addLeftLineTextButton(self.combineUnloaderLayout, 4, self.defaultFontSize, 
-                                                        function()
-                                                            self.vehicle:startCpCombineUnloaderUnloading()
-                                                        end, self.vehicle)                      
-
-    --- Goal button.
-    local width, height = getNormalizedScreenValues(37, 37)    
-    local goalOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {AITargetHotspot.FILENAME, self.uvs.goalSymbol}, 
-                                                self.OFF_COLOR,
-                                                self.alignments.bottomRight)
-    
-    self.goalBtn = CpHudButtonElement.new(goalOverlay, self.baseHud)
-    local x, y = unpack(self.lines[4].right)
-    self.goalBtn:setPosition(x, y + self.hMargin/2)
-    self.goalBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        self:openCourseGeneratorGui(vehicle)
-    end)
-    --- Copy course btn.                                          
-    self:addCopyCourseBtn(1)
 
     ---- Disables zoom, while mouse is over the cp hud. 
     local function disableCameraZoomOverHud(vehicle, superFunc, ...)
@@ -458,61 +361,6 @@ function CpBaseHud:addLineTextButton(parent, line, textSize, setting)
     return element
 end
 
---- Setup for the copy course btn.
-function CpBaseHud:addCopyCourseBtn(line)    
-    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
-    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    --- Copy course btn.                                          
-    self.copyCourseElements = {}
-    self.copyCourseIx = 1
-    self.courseVehicles = {}
-    local leftX, leftY = unpack(self.lines[line].left)
-    local rightX, rightY = unpack(self.lines[line].right)
-    local btnYOffset = self.hMargin*0.2
-
-    local width, height = getNormalizedScreenValues(22, 22)
-    
-    local copyOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.copySymbol))}, 
-                                                        self.OFF_COLOR,
-                                                        self.alignments.bottomRight)
-
-    local pasteOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(self.uvs.pasteSymbol))}, 
-                                                        self.OFF_COLOR,
-                                                        self.alignments.bottomRight)
-
-   
-    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename2, GuiUtils.getUVs(unpack(self.uvs.clearCourseSymbol))}, 
-                                                        self.OFF_COLOR,
-                                                        self.alignments.bottomRight)
-
-    self.copyButton = CpHudButtonElement.new(copyOverlay, self.baseHud)
-    self.copyButton:setPosition(rightX, rightY-btnYOffset)
-    self.copyButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        if not CpBaseHud.courseCache and self.vehicle:hasCpCourse() then 
-            CpBaseHud.courseCache = self.vehicle:getFieldWorkCourse()
-        end
-    end)
-
-    self.pasteButton = CpHudButtonElement.new(pasteOverlay, self.baseHud)
-    self.pasteButton:setPosition(rightX, rightY-btnYOffset)
-    self.pasteButton:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        if CpBaseHud.courseCache and not self.vehicle:hasCpCourse() then 
-            self.vehicle:cpCopyCourse(CpBaseHud.courseCache)
-        end
-    end)
-
-    self.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, self.baseHud)
-    self.clearCacheBtn:setPosition(rightX - width - self.wMargin/2, rightY - btnYOffset)
-    self.clearCacheBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
-        CpBaseHud.courseCache = nil
-    end)
-
-    self.copyCacheText = CpTextHudElement.new(self.baseHud, leftX, leftY,self.defaultFontSize)
-
-end
 
 function CpBaseHud:moveToPosition(element, x, y)
     CpBaseHud.x = x 
@@ -544,131 +392,59 @@ function CpBaseHud:isMouseOverArea(posX, posY)
     return self.baseHud:isMouseOverArea(posX, posY) 
 end
 
+function CpBaseHud:getActiveHudPage(vehicle)
+    if vehicle:getCanStartCpCombineUnloader() then
+        return self.combineUnloaderLayout
+    elseif vehicle:getCanStartCpBaleFinder() and not vehicle:hasCpCourse() then
+        return self.baleFinderLayout
+    else
+        return self.fieldworkLayout
+    end
+end
+
 ---@param status CpStatus
 function CpBaseHud:draw(status)
+    self:updateContent(self.vehicle, status)
+    self.baseHud:draw()
+end
 
-    self.fieldworkLayout:setVisible(not (self.vehicle:getCanStartCpBaleFinder() or self.vehicle:getCanStartCpCombineUnloader()))
-    self.fieldworkLayout:setDisabled(self.vehicle:getCanStartCpBaleFinder() or self.vehicle:getCanStartCpCombineUnloader())
-    self.baleFinderLayout:setVisible(self.vehicle:getCanStartCpBaleFinder())
-    self.baleFinderLayout:setDisabled(not self.vehicle:getCanStartCpBaleFinder())
-    self.combineUnloaderLayout:setVisible(self.vehicle:getCanStartCpCombineUnloader())
-    self.combineUnloaderLayout:setDisabled(not self.vehicle:getCanStartCpCombineUnloader())
+function CpBaseHud:updateContent(vehicle, status)
+    self.vehicleNameBtn:setTextDetails(vehicle:getName())
 
-    self.courseNameBtn:setTextDetails(self.vehicle:getCurrentCpCourseName())
-    local isCourseNameBtnDisabled = self.vehicle:getCanStartCpCombineUnloader() or self.vehicle:getCanStartCpBaleFinder() and not self.vehicle:hasCpCourse()
-    self.courseNameBtn:setDisabled(isCourseNameBtnDisabled)
-    self.courseNameBtn:setVisible(not isCourseNameBtnDisabled)
-
-    self.goalBtn:setDisabled(not self.fieldworkLayout:getIsDisabled())
-    self.goalBtn:setVisible(not self.fieldworkLayout:getVisible())
-
-    self.vehicleNameBtn:setTextDetails(self.vehicle:getName())
-    if self.vehicle:hasCpCourse() then 
-        self.startingPointBtn:setDisabled(false)
-        self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
-    elseif self.vehicle:getCanStartCpBaleFinder() or self.vehicle:getCanStartCpCombineUnloader() then 
+    if self.vehicle:getCanStartCpBaleFinder() or vehicle:getCanStartCpCombineUnloader() then 
         self.startingPointBtn:setDisabled(true)
-        self.startingPointBtn:setTextDetails(self.vehicle:getCpStartText())
+        self.startingPointBtn:setTextDetails(vehicle:getCpStartText())
     else 
         self.startingPointBtn:setDisabled(false)
-        self.startingPointBtn:setTextDetails(self.vehicle:getCpStartingPointSetting():getString())
+        self.startingPointBtn:setTextDetails(vehicle:getCpStartingPointSetting():getString())
     end
    
     if status:getIsActive() then
         self.onOffButton:setColor(unpack(CpBaseHud.ON_COLOR))
     else
         self.onOffButton:setColor(unpack(CpBaseHud.OFF_COLOR))
-        self.clearCourseBtn:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
     end
-    self.onOffButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
+    
+    self.onOffButton:setVisible((vehicle:getCanStartCp() or vehicle:getIsCpActive()) and not vehicle:getIsCpCourseRecorderActive())
 
     if self.vehicle:getIsCpCourseRecorderActive() then
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.RECORDER_ON_COLOR))
     else 
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
     end
-    self.startStopRecordingBtn:setVisible(self.vehicle:getCanStartCpCourseRecorder())
+    self.startStopRecordingBtn:setVisible(vehicle:getCanStartCpCourseRecorder())
 
-    self.waypointProgressBtn:setTextDetails(status:getWaypointText())
-    self.waypointProgressBtn:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
-    self.waypointProgressBtn:setVisible(not self.vehicle:getCanStartCpCombineUnloader())
+    self.fieldworkLayout:setVisible(false)
+    self.fieldworkLayout:setDisabled(true)
+    self.baleFinderLayout:setVisible(false)
+    self.baleFinderLayout:setDisabled(true)
+    self.combineUnloaderLayout:setVisible(false)
+    self.combineUnloaderLayout:setDisabled(true)
 
-    local laneOffset = self.vehicle:getCpLaneOffsetSetting()
-    self.laneOffsetBtn:setVisible(laneOffset:getCanBeChanged())
-    self.laneOffsetBtn:setTextDetails(laneOffset:getString())
-
-    local workWidth = self.vehicle:getCourseGeneratorSettings().workWidth
-    self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
-
-    self.workWidthBtn:setVisible(workWidth:getIsVisible())
-    
-
-    local toolOffsetX = self.vehicle:getCpSettings().toolOffsetX
-    local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
-    self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
-    self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
-
-    
-    local toolOffsetZ = self.vehicle:getCpSettings().toolOffsetZ
-    self.toolOffsetZBtn:setTextDetails(toolOffsetZ:getTitle(), toolOffsetZ:getString())
-    self.toolOffsetZBtn:setDisabled(toolOffsetZ:getIsDisabled())
-
-    local fullThreshold = self.vehicle:getCpCombineUnloaderJobParameters().fullThreshold
-    self.fullThresholdBtn:setTextDetails(fullThreshold:getTitle(), fullThreshold:getString())
-    self.fullThresholdBtn:setDisabled(fullThreshold:getIsDisabled())
-
-    local baleWrapType = self.vehicle:getCpBaleFinderJobParameters().baleWrapType
-    self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
-
-    self.baleFinderFillTypeBtn:setVisible(baleWrapType:getIsVisible())
-
-    if self.vehicle:hasCpCourse() then 
-        self.courseVisibilityBtn:setVisible(true)
-        local value = self.vehicle:getCpSettings().showCourse:getValue()
-        if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then 
-            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
-        elseif value == CpVehicleSettings.SHOW_COURSE_START_STOP then 
-            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))
-        else 
-            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.ON_COLOR))
-        end
-    else 
-        self.courseVisibilityBtn:setVisible(false)
-    end
-
-    self:updateCopyBtn(status)
-
-
-    self.baseHud:draw()
-end
-
-function CpBaseHud:updateCopyBtn(status)
-    if self.courseCache and not self.vehicle:getCanStartCpCombineUnloader() then 
-        local courseName =  CpCourseManager.getCourseName(self.courseCache)
-        self.copyCacheText:setTextDetails(self.copyText .. courseName)
-        self.clearCacheBtn:setVisible(true)
-        self.pasteButton:setVisible(true)
-        self.copyButton:setVisible(false)
-        if self.vehicle:hasCpCourse() then 
-            self.copyCacheText:setTextColorChannels(unpack(self.OFF_COLOR))
-            self.pasteButton:setColor(unpack(self.OFF_COLOR))
-        else 
-            self.copyCacheText:setTextColorChannels(unpack(self.WHITE_COLOR))
-            self.pasteButton:setColor(unpack(self.ON_COLOR))
-        end
-        self.copyButton:setDisabled(false)
-        self.pasteButton:setDisabled(false)
-        self.clearCacheBtn:setDisabled(false)
-    else
-        self.copyCacheText:setTextDetails("")
-        self.clearCacheBtn:setVisible(false)
-        self.pasteButton:setVisible(false)
-        self.copyButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getCanStartCpCombineUnloader())
-        self.copyButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
-        self.copyButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
-        self.pasteButton:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
-        self.clearCacheBtn:setDisabled(self.vehicle:getCanStartCpCombineUnloader())
-    end
+    local activeLayout = self:getActiveHudPage(vehicle)
+    activeLayout:setVisible(true)
+    activeLayout:setDisabled(false)
+    activeLayout:updateContent(vehicle, status)
 end
 
 function CpBaseHud:delete()
@@ -683,66 +459,20 @@ end
 --- Hud element callbacks
 --------------------------------------
 
-function CpBaseHud:preOpeningInGameMenu(vehicle)
-    local inGameMenu =  g_currentMission.inGameMenu
-    inGameMenu.pageAI.hudVehicle = self.vehicle
-    if g_gui.currentGuiName ~= "InGameMenu" then
-		g_gui:showGui("InGameMenu")
-	end
-    return inGameMenu
-end
-
 function CpBaseHud:openCourseManagerGui(vehicle)
-    local inGameMenu = self:preOpeningInGameMenu(vehicle)
-    local courseManagerPageIx = inGameMenu.pagingElement:getPageMappingIndexByElement(inGameMenu.pageCpCourseManager)
-    inGameMenu.pageSelector:setState(courseManagerPageIx, true)
+    CpGuiUtil.openCourseManagerGui(vehicle)
 end
 
 function CpBaseHud:openCourseGeneratorGui(vehicle)
-    local inGameMenu = self:preOpeningInGameMenu(vehicle)
-    local pageAI = inGameMenu.pageAI
-    --- Opens the ai inGame menu
-    inGameMenu:goToPage(pageAI)
-    local hotspot = self.vehicle:getMapHotspot()
-    pageAI:setMapSelectionItem(hotspot)
-    self:debug("opened ai inGame menu.")
-    if self.vehicle:getIsCpActive() or not g_currentMission:getHasPlayerPermission("hireAssistant") then 
-        return
-    end
-    self:debug("opened ai inGame job creation.")
-    self.vehicle:updateAIFieldWorkerImplementData()
-    pageAI:onCreateJob()
-    for _, job in pairs(pageAI.jobTypeInstances) do 
-        if job:isa(CpAIJobFieldWork) and job:getIsAvailableForVehicle(vehicle) then 
-            local jobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndex(job)
-            self:debug("opened ai inGame menu job %s.", job:getDescription())
-            pageAI.currentJob = nil
-            pageAI:setActiveJobTypeSelection(jobTypeIndex)
-            pageAI.currentJob:applyCurrentState(vehicle, g_currentMission, g_currentMission.player.farmId, false, pageAI.currentJob:getCanGenerateFieldWorkCourse())
-            pageAI:updateParameterValueTexts()
-            pageAI:validateParameters()
-            --- Fixes the job selection gui element.
-            local currentIndex = table.findListElementFirstIndex(pageAI.currentJobTypes, jobTypeIndex, 1)
-            pageAI.jobTypeElement:setState(currentIndex)
-            if not vehicle:hasCpCourse() then 
-                if pageAI.currentJob:getCanGenerateFieldWorkCourse() then 
-                    self:debug("opened ai inGame menu course generator.")
-                    pageAI:onClickOpenCloseCourseGenerator()
-                end
-            end
-            break
-        end
-    end
+    CpGuiUtil.openCourseGeneratorGui(vehicle)
 end
 
 function CpBaseHud:openVehicleSettingsGui(vehicle)
-    local inGameMenu = self:preOpeningInGameMenu(vehicle)
-    inGameMenu:goToPage(inGameMenu.pageCpVehicleSettings)
+    CpGuiUtil.openVehicleSettingsGui(vehicle)
 end
 
 function CpBaseHud:openGlobalSettingsGui(vehicle)
-    local inGameMenu = self:preOpeningInGameMenu(vehicle)
-    inGameMenu:goToPage(inGameMenu.pageCpGlobalSettings)
+    CpGuiUtil.openGlobalSettingsGui(vehicle)
 end
 
 --- Saves hud position.

@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Generera en kurs innan du startat ett arbete."/>
     <text name="CP_error_could_not_generate_course" text="Kunde inte generera kursen. Loggen kan ha mer information."/>
     <text name="CP_error_not_on_field" text="Målet är inte på ett fält."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
@@ -50,8 +52,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="AI-arbetaren %s har slutat arbeta oväntat - tanken är full!"/>
     <text name="CP_ai_messageError" text="AI-arbetaren %s har slutat arbeta oväntat - lämnade kursen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbetaren %s har slutat arbeta oväntat - inga balar av vald typ hittades!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Redskapsskjutning horisontellt"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Redskapsskjutning vertikalt"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskapsskjutning vertikalt"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Kontrollerar om där finns ensilage tillsatts."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Om aktivt och ensilage tillsattsen är tom, så stoppas föraren."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrisk linjebyte"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visa alla aktiva kurser"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Visa alla aktiva kurser på spelets map/pda"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Visa info-textfönster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Visar ett info-textfönster."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spelarens musevenemang"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverar/inaktiverar Spelarens musevenemang för info -textvisningen utanför ett fordon."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Föredra anpassade fält"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Föredra anpassat fält om det också finns ett vanligt fält vid den valda positionen."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -329,6 +338,7 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_infoTexts_waitForRainToFinish" text="Väntar på att det ska sluta regna för att kunna slutföra"/>
     <text name="CP_infoTexts_errorStopped" text="Lämnade kursen, stannade"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Fel baltyp"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -648,8 +658,12 @@ Under den avancerade kategorin finns:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Visa felsökningskanalsmeny Ja/Nej."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Öppna mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Starta/Stoppa förare"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Musmarkör På/Av"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Öppna/Stäng HUD"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>

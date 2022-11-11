@@ -18,7 +18,9 @@
     <text name="CP_error_no_course" text="Genera una ruta antes de comenzar el trabajo."/>
     <text name="CP_error_could_not_generate_course" text="No se ha podido generar una ruta. El Log puede contener más información."/>
     <text name="CP_error_not_on_field" text="El objetivo no está en un campo."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Descargador muy lejos del campo."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Posición inicial muy lejos del campo."/>
+    <text name="CP_error_giants_unloader_not_available" text="Descargador de Giants no disponible."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -50,17 +52,15 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Descargador de Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usar Descargador de Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estación de descarga:"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Trabajo de campo"/>
     <text name="CP_job_baleCollect" text="CP: Recoger/Envolver fardos"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP: Descargar Cosechadora"/>
     <text name="CP_ai_page_generate_course" text="CP: Crear ruta de trabajo de campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Abrir/Cerrar generador de rutas."/>
     <!---->
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡El tanque está lleno!"/>
     <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Abandonó el curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Ninguna Ruta encontrada!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Desp. Herramienta Izq/Der"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Desp. Herramienta Del/Tra"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Desp. Herramienta Del/Tra"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vaciar al estar al:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Comprobar Aditivo de Ensilaje."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Si está activo y el Aditivo de Ensilaje está vacío, el conductor se detendrá."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Cambio a carril simétrico"/>
@@ -167,7 +170,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Superposición de las pistas de cabecera como porcentaje del ancho de trabajo. Valor: 0 - 25"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Margen del Campo"/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Valores(+) reducen el tamaño del campo para agregar un búfer alrededor del área trabajada, los (-) aumentan el área trabajada más allá del límite del campo.  Valor: -2 - 5.8"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Filas a saltar"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Filas a omitir"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Filas a omitir al cambiar a la siguiente fila Arriba/Abajo. Valor: 0 - 6"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Filas por bloques"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Cuando el modo central es 'Circular', habrá esta cantidad de filas en cada bloque. Valor: 0 - 24"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Muestra todos las rutas activas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Muestra todos las rutas activas en el mapa del juego."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostrar los Cursos en el Minimapa."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Habilita/Desabilita el dibujado de los Cursos en el Minimapa"/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Ventana de Textos Informativos"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Muestra la Ventana de Textos Informativos."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Evento del mouse del jugador"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Habilita/Deshabilita el evento del mouse del jugador para la visualización de texto de información fuera de un vehículo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferencia de Campos Personalizados"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Preferir el campo personalizado si existe un campo normal en la posición seleccionada."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Unidades de distancia"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Unidades de distancia en Metros o Pies."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Metros"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Pies"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -323,12 +332,13 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_needsFilling" text="Necesita ser rellenado"/>
     <text name="CP_infoTexts_needsUnloading" text="Necesita ser descargado"/>
     <text name="CP_infoTexts_workFinished" text="Trabajo finalizado"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Conduciendo a la Cosechadora"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Conduciendo hacia el remolque"/>
     <text name="CP_infoTexts_outOfMoney" text="Sin dinero"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando que termine la lluvia"/>
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Ningún camino encontrado"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -650,8 +660,12 @@ En la categoría avanzada se encuentran:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Muestra el menú del canal de depuración Sí/No."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir/Cerrar GUI del vehículo."/>
     <text name="input_CP_START_STOP" text="CP: Iniciar/Detener conductor."/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Cambia el punto de inicio."/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mostrar/Ocultar cursor del ratón."/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Abrir/Cerrar Hud"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Abre ajustes del vehículo"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Abre ajustes globales"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abrir menú del Generador de Cursos/Trabajo"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abre Administrador de Curso"/>
   </texts>
 </l10n>

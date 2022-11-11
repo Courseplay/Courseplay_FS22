@@ -18,7 +18,9 @@
     <text name="CP_error_no_course" text="Genera il percorso prima di iniziare il lavoro sul campo!"/>
     <text name="CP_error_could_not_generate_course" text="Impossibile generare il percorso. Il registro potrebbe contenere più informazioni."/>
     <text name="CP_error_not_on_field" text="L'obiettivo non si trova su di un campo!"/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Scaricatore lontano dal campo."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
+    <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -50,17 +52,15 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore giants:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="Courseplay"/>
     <text name="CP_job_baleCollect" text="CP: Raccogli/Avvolgi balle"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_combineUnload" text="CP: scarica mietitrebbia"/>
     <text name="CP_ai_page_generate_course" text="[CP] Genera percorso di lavoro"/>
     <text name="CP_ai_page_open_course_generator" text="[CP] Apri/Chiudi menù"/>
     <!---->
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Il lavoratore IA %s ha feramto il lavoro - il cassone è pieno!"/>
     <text name="CP_ai_messageError" text="Il lavoratore IA %s ha feramto il lavoro - ha lasciato il percorso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'operatore CP %s ha interrotto il lavoro in modo imprevisto - non sono state trovate balle del tipo selezionato!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="L'operatore IA %s ha interrotto il lavoro in modo imprevisto - nessun percorso trovato!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Correzione oriz."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Correzione vert."/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Correzione vert."/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vuota quando è al:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Se il livello di riempimento dello scaricatore è superiore a questo valore, non attenderà la mietitrebbia"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Controllare l'additivo per insilato."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Se attivo, e l'additivo per insilato è vuoto, il conducente si fermerà."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Cambio di corsia simmetrico"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fattore di diminuzione della precisione di ricerca percorsi con iterazioni non riuscite. I valori più grandi sono più veloci"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visualizza percorsicorsi attivi"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostra tutti i percorsi attivi sulla mappa di gioco"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostra i corsi sulla minimappa"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Consente di visualizzare il percorso sulla minimappa."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Mostra la finestra dei testi informativi"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Visualizza una finestra di testo informativo."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Interazione mouse fuori veicolo"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Abilita/disabilita l'interazione del mouse all'esterno di un veicolo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Preferire il campo personalizzato"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Utilizzare il campo personalizzato, anche se è presente il campo originale."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Unità distanza"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Unità di distanza metri o piedi."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="metri"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="piedi"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -264,7 +273,7 @@
     <text name="CP_courseManager_change_mode" text="Cambia modalità"/>
     <text name="CP_courseManager_load_courses" text="Carica percorso"/>
     <text name="CP_courseManager_save_courses" text="Salva percorso"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Apri il course editor"/>
     <text name="CP_courseManager_clear_current_courses" text="Cancella percorso attuale"/>
     <text name="CP_courseManager_create_directory" text="Crea nuova cartella"/>
     <text name="CP_courseManager_move_entry" text="Sposta voce"/>
@@ -323,12 +332,13 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_needsFilling" text="Ha bisogno di essere caricato"/>
     <text name="CP_infoTexts_needsUnloading" text="Ha bisogno di essere scaricato"/>
     <text name="CP_infoTexts_workFinished" text="Ha finito il lavoro"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Guida verso combine"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Guida al rimorchio"/>
     <text name="CP_infoTexts_outOfMoney" text="Senza soldi"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="In attesa che finisca la pioggia"/>
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Nessun percorso trovato"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -336,7 +346,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_customFieldManager_confirm_delete" text="Vuoi eliminare il campo personalizzato %s?"/>
     <text name="CP_customFieldManager_delete" text="Cancella campo personalizzato"/>
     <text name="CP_customFieldManager_rename" text="Rinomina campo personalizzato"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_edit" text="Modifica campo personalizzato"/>
     <text name="CP_customFieldManager_draw" text="Disegna campo personalizzato"/>
     <text name="CP_customFieldManager_draw_header" text="Disegna linee campo personalizzato con il tasto destro del mouse."/>
     <text name="CP_customFieldManager_save" text="Salva campo personalizzato"/>
@@ -501,7 +511,7 @@ Dando un'occhiata al menu AI, vedrai il bordo del tuo campo registrato.
 Facendo clic sul Nome, avrai la possibilità di eliminarlo o rinominarlo.
 "/>
     <text name="CP_help_page_customFieldDraw_text" text="
-La seconda opzione è disegnarlo sulla mappa del menu dell'AI.
+La seconda opzione è disegnarlo sulla mappa del menu dell'IA.
 Non hai selezionato trattore o altro veicolo (fai clic con il pulsante sinistro del mouse da qualche parte sulla mappa), hai la possibilità di disegnare un campo personalizzato.
 All'avvio, verranno visualizzate le linee di campo personalizzate disegnate con il tasto destro del mouse.
 Utilizzare il tasto destro del mouse per fare clic su una posizione da cui si desidera iniziare.
@@ -650,8 +660,12 @@ Nella categoria avanzata ci sono:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostra il menù del canale di debug si/no"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Apri mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Avvia/Ferma autista"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Cambia punto di partenza"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Cursore Mouse on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Apri/Chiudi la hud"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Apre le impostazioni del veicolo"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Apre le impostazioni globali"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Apri il generatore di corsi/menu dei lavori"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Apre course manager"/>
   </texts>
 </l10n>

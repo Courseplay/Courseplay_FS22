@@ -215,6 +215,8 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, BalerController, Baler, {})
     self:addImplementController(vehicle, BaleWrapperController, BaleWrapper, defaultDisabledStates)
     self:addImplementController(vehicle, BaleLoaderController, BaleLoader, defaultDisabledStates)
+    self:addImplementController(vehicle, APalletAutoLoaderController, nil, {}, "spec_aPalletAutoLoader")
+    self:addImplementController(vehicle, UniversalAutoloadController, nil, {}, "spec_universalAutoload")
 
     self:addImplementController(vehicle, FertilizingSowingMachineController, FertilizingSowingMachine, defaultDisabledStates)
     self:addImplementController(vehicle, ForageWagonController, ForageWagon, defaultDisabledStates)

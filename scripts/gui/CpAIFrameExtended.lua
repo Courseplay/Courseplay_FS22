@@ -379,7 +379,9 @@ function CpInGameMenuAIFrameExtended:draw()
 	if CoursePlotAlwaysVisible then
 		local vehicles = g_assignedCoursesManager:getRegisteredVehicles()
 		for _, v in pairs(vehicles) do
-			v:drawCpCoursePlot(self)
+			if g_currentMission.accessHandler:canPlayerAccess(v) then
+				v:drawCpCoursePlot(self)
+			end
 		end
 	elseif vehicle and vehicle.drawCpCoursePlot  then 
 		vehicle:drawCpCoursePlot(self)
@@ -478,8 +480,8 @@ InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFr
 --- Enables clickable field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)
 	if hotspot then 
-		if hotspot:isa(FieldHotspot) then 
-			local pageAI = g_currentMission.inGameMenu.pageAI
+		local pageAI = g_currentMission.inGameMenu.pageAI
+		if hotspot:isa(FieldHotspot) and pageAI.mode == InGameMenuAIFrame.MODE_OVERVIEW then 
 			InGameMenuMapUtil.showContextBox(pageAI.contextBox, hotspot, hotspot:getAreaText())
 			self.currentHotspot = hotspot
 		end

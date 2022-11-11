@@ -19,6 +19,16 @@ CpGamePadHud.SETTING_TYPES = {
 	globalSettings = CpGlobalSettings
 }
 
+CpGamePadHud.FIELDWORK_PAGE = "cpFieldworkGamePadHudPage"
+CpGamePadHud.BALE_LOADER_PAGE = "cpBaleLoaderGamePadHudPage"
+CpGamePadHud.UNLOADER_PAGE = "cpUnloaderGamePadHudPage"
+
+CpGamePadHud.PAGE_FILES = {
+	[CpGamePadHud.FIELDWORK_PAGE ] = {"config/gamePadHud/FieldworkGamePadHudPage.xml", CpGamePadHudScreen},
+	[CpGamePadHud.BALE_LOADER_PAGE] = {"config/gamePadHud/BaleLoaderGamePadHudPage.xml", CpGamePadHudBaleLoaderScreen},
+	[CpGamePadHud.UNLOADER_PAGE] = {"config/gamePadHud/UnloaderGamePadHudPage.xml", CpGamePadHudUnloaderScreen}
+}
+
 function CpGamePadHud.initSpecialization()
 	CpGamePadHud.xmlSchema = XMLSchema.new("CpGamePadHudSchema")
 	local schema = CpGamePadHud.xmlSchema
@@ -38,12 +48,35 @@ function CpGamePadHud.register(typeManager,typeName,specializations)
 end
 
 --- Creates gui elements for the mini gui.
-function CpGamePadHud.loadFromXMLFile(filePath)
+function CpGamePadHud.loadFromXMLFile()
+	CpGamePadHud.pages = {}
+	for pageName, data in pairs(CpGamePadHud.PAGE_FILES) do 
+		CpUtil.debugFormat(CpDebug.DBG_HUD, "Loading game pad hud page %s from: %s", pageName, data[1])
+		CpGamePadHud.pages[pageName] = {}
+		CpGamePadHud.loadPageData(CpGamePadHud.pages[pageName], Utils.getFilename(data[1], Courseplay.BASE_DIRECTORY))
+		-- Setup of the mini gui.
+		CpGamePadHud.pages[pageName].screen = data[2].new(CpGamePadHud.pages[pageName].prefabSettingsData)
+		g_gui:loadGui(Utils.getFilename("config/gui/ControllerGuiScreen.xml", Courseplay.BASE_DIRECTORY), pageName, CpGamePadHud.pages[pageName].screen)
+	end
+	--- Enables a few background hud elements, while the vehicle setting display is visible.
+	local function getIsOverlayGuiVisible(gui,superFunc)
+		return CpGamePadHud.PAGE_FILES[gui.currentGuiName] ~= nil or superFunc(gui) 
+	end
+	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible,getIsOverlayGuiVisible)
+
+	local function isHudPopupMessageVisible(hud, superFunc, ...)
+		print(tostring(g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.isCpGamePadHudActive and g_currentMission.controlledVehicle:isCpGamePadHudActive()))
+		return superFunc(hud, ...) or g_currentMission.controlledVehicle and g_currentMission.controlledVehicle.isCpGamePadHudActive and g_currentMission.controlledVehicle:isCpGamePadHudActive()
+	end
+	g_currentMission.hud.popupMessage.getIsVisible = Utils.overwrittenFunction(g_currentMission.hud.popupMessage.getIsVisible, isHudPopupMessageVisible)
+end
+
+function CpGamePadHud.loadPageData(page, filePath)
 	local xmlFile = XMLFile.load("CpGamePadHudXml",filePath,CpGamePadHud.xmlSchema)
 	if xmlFile then 
-		CpGamePadHud.title = xmlFile:getValue(CpGamePadHud.XML_KEY_TITLE)
-		CpGamePadHud.settingsData = {}
-		CpGamePadHud.prefabSettingsData = {}
+		page.title = xmlFile:getValue(CpGamePadHud.XML_KEY_TITLE)
+		page.settingsData = {}
+		page.prefabSettingsData = {}
 		xmlFile:iterate(CpGamePadHud.XML_KEY, function (ix, key)
 			local settingName = xmlFile:getValue(key .. "#name")
 			local settingType = xmlFile:getValue(key .. "#type")
@@ -51,20 +84,14 @@ function CpGamePadHud.loadFromXMLFile(filePath)
 				settingName = settingName,
 				settingType = settingType
 			}
-			table.insert(CpGamePadHud.settingsData,settingData)
+			table.insert(page.settingsData,settingData)
 
 			local prefabSetting = CpGamePadHud.SETTING_TYPES[settingType][settingName]
 
-			table.insert(CpGamePadHud.prefabSettingsData,prefabSetting)
-        end)
-        xmlFile:delete()
+			table.insert(page.prefabSettingsData,prefabSetting)
+		end)
+		xmlFile:delete()
 	end
-	--- Enables a few background hud elements, while the vehicle setting display is visible.
-	local function getIsOverlayGuiVisible(gui,superFunc)
-		return gui.currentGuiName == CpGamePadHud.GUI_NAME or superFunc(gui) 
-	end
-	Gui.getIsOverlayGuiVisible = Utils.overwrittenFunction(Gui.getIsOverlayGuiVisible,getIsOverlayGuiVisible)
-
 end
 
 function CpGamePadHud.registerEventListeners(vehicleType)	
@@ -77,7 +104,8 @@ function CpGamePadHud.registerEventListeners(vehicleType)
 end
 
 function CpGamePadHud.registerFunctions(vehicleType)
- 
+	SpecializationUtil.registerFunction(vehicleType, "isCpGamePadHudActive", CpGamePadHud.isCpGamePadHudActive)
+	SpecializationUtil.registerFunction(vehicleType, "closeCpGamePadHud", CpGamePadHud.closeCpGamePadHud)
 end
 
 function CpGamePadHud.registerOverwrittenFunctions(vehicleType)
@@ -92,15 +120,12 @@ function CpGamePadHud:onLoad(savegame)
     local spec = self.spec_cpGamePadHud
 	spec.text = g_i18n:getText("input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY")
 	spec.hudText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
+	spec.isVisible = false
 end
 
 function CpGamePadHud:onLoadFinished()
 	if not CpGamePadHud.initialized then 
-		local filePath = Utils.getFilename('config/GamePadHud.xml', Courseplay.BASE_DIRECTORY)
-		CpGamePadHud.loadFromXMLFile(filePath)
-		--- Setup of the mini gui.
-		CpGamePadHud.screen = CpGamePadHudScreen.new(CpGamePadHud.prefabSettingsData)
-		g_gui:loadGui(Utils.getFilename("config/gui/ControllerGuiScreen.xml",Courseplay.BASE_DIRECTORY), CpGamePadHud.GUI_NAME, CpGamePadHud.screen)
+		CpGamePadHud.loadFromXMLFile()
 		CpGamePadHud.initialized = true
 	end
 	CpGamePadHud.linkSettings(self)
@@ -130,26 +155,52 @@ function CpGamePadHud:onRegisterActionEvents(isActiveForInput, isActiveForInputI
 end
 
 --- Gets called by the active mini gui, as vehicle:onDraw() is otherwise not displayed.
-function CpGamePadHud:onDraw()
-	local spec = self.spec_cpGamePadHud
-	WorkWidthUtil.showWorkWidth(self,spec.workWidth:getValue(),spec.toolOffsetX:getValue(),0)
+function CpGamePadHud.onDraw(vehicle)
+	if vehicle then
+		local settings = vehicle:getCpSettings()
+		local courseGeneratorSettings = vehicle:getCourseGeneratorSettings()
+		WorkWidthUtil.showWorkWidth(vehicle, courseGeneratorSettings.workWidth:getValue(), settings.toolOffsetX:getValue(), 0)
+	end
 end
 
 
 function CpGamePadHud:linkSettings()
 	local spec = self.spec_cpGamePadHud
-	spec.settings = {}
-	for ix,data in ipairs(CpGamePadHud.settingsData) do 
-		local func = CpGamePadHud.SETTING_TYPES[data.settingType].getSettings
-		local settings = func(self)
-		local setting = settings[data.settingName]
-		table.insert(spec.settings,setting)
-		spec[data.settingName] = setting
+	spec.pages = {}
+	for pageName, page in pairs(CpGamePadHud.pages) do 
+		spec.pages[pageName] = {}
+		spec.pages[pageName].settings = {}
+		for ix, data in ipairs(page.settingsData) do 
+			local func = CpGamePadHud.SETTING_TYPES[data.settingType].getSettings
+			local settings = func(self)
+			local setting = settings[data.settingName]
+			table.insert(spec.pages[pageName].settings,setting)
+		end
 	end
 end
 
 function CpGamePadHud:actionEventOpenCloseDisplay()
 	local spec = self.spec_cpGamePadHud
-	CpGamePadHud.screen:setData(self,spec.settings) 
-	g_gui:showGui(CpGamePadHud.GUI_NAME)
+	spec.isVisible = true
+	local page = ""
+	if self:getCanStartCpCombineUnloader() then 
+		page = CpGamePadHud.UNLOADER_PAGE
+	elseif self:getCanStartCpBaleFinder() then 
+		page = CpGamePadHud.BALE_LOADER_PAGE
+	else
+		page = CpGamePadHud.FIELDWORK_PAGE
+	end
+	CpGamePadHud.pages[page].screen:setData(self, spec.pages[page].settings) 
+	g_gui:showGui(page)
 end
+
+function CpGamePadHud:isCpGamePadHudActive()
+	local spec = self.spec_cpGamePadHud
+	return spec.isVisible
+end
+
+function CpGamePadHud:closeCpGamePadHud()
+	local spec = self.spec_cpGamePadHud
+	spec.isVisible = false
+end
+

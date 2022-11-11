@@ -18,7 +18,9 @@
     <text name="CP_error_no_course" text="Criar rota primeiro."/>
     <text name="CP_error_could_not_generate_course" text="Não foi possível criar a rota. O arquivo log pode ter mais informações."/>
     <text name="CP_error_not_on_field" text="Destino não é um campo."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Descarregador longe do campo."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Posição inicial longe do campo."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants descarregador indisponível."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -50,11 +52,9 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants descarregador:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants descarregador:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação de descarga:"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="motorista AI %s parou de trabalhar inesperadamente - o tanque está cheio!"/>
     <text name="CP_ai_messageError" text="O trabalhador A %s parou de trabalhar inesperadamente - deixou a rota!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador AI %s parou de funcionar inesperadamente - nenhum caminho encontrado!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Distancia horizontal do implemento"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Distancia vertical do implemento"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Distancia vertical do implemento"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Esvaziar quando acabar:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Verifique se há aditivo de silagem."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Se o aditivo ativo e de silagem estiver vazio, o motorista irá parar."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Mudança de fileira simétrica"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Mostrar todas as rotas ativas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostrar todas as rotas ativas no mapa."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostrar rotas no minimapa"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Permite o desenho de rotas no minimapa."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Mostrar janela de textos informativos"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Exibe uma janela de texto informativo."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Evento do mouse do jogador"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Ativa/desativa o evento do mouse do jogador para a exibição do texto informativo fora de um veículo."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Optar por campo customizado"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Optar por campo customizado mesmo sendo um campo regular na mesma posição."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Unidade de distândia"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Unidade de distância em metros ou Pés."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Metros"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Pés"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -323,12 +332,13 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_needsFilling" text="Precisa ser recarregado"/>
     <text name="CP_infoTexts_needsUnloading" text="Precisa ser descarregado"/>
     <text name="CP_infoTexts_workFinished" text="Trabalho feito"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Dirigir para a colheitadeira"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Dirigir para a carreta"/>
     <text name="CP_infoTexts_outOfMoney" text="Sem dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Esperando a chuva passar"/>
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Caminho não encontrado"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -653,8 +663,12 @@ Na categoria avançada estão:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Mostrar canal de debug sim/não."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Dirigir/stop motorista"/>
-    <text name="input_CP_TOGGLE_MOUSE" text="CP: Mouse cursor on/off"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Mudar ponto inicial"/>
+    <text name="input_CP_TOGGLE_MOUSE" text="CP: Cursor do mouse ligar/desligar"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Abrir/fechar hud"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Abrir configurações do veículo"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Abrir configurações globais"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abrir gerenciador de rotas/menu de trabalho"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abrir gerenciador de rotas"/>
   </texts>
 </l10n>

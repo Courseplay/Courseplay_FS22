@@ -15,6 +15,7 @@
 
 <InfoTexts prefix="CP_infoTexts_">
 	<InfoText name="ERROR_STOPPED"				text="errorStopped" class="AIMessageCpError"/>
+	<InfoText name="ERROR_NO_PATH_FOUND"		text="errorNoPathFound" class="AIMessageCpErrorNoPathFound"/>
 
 	<InfoText name="IS_STUCK"					text="isStuck"/>
 	<InfoText name="BLOCKED_BY_OBJECT"  		text="blockedByObject" class="AIMessageErrorBlockedByObject"/>

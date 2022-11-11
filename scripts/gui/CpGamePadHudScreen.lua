@@ -20,7 +20,7 @@ CpGamePadHudScreen.texts = {
 
 local CpGamePadHudScreen_mt = Class(CpGamePadHudScreen, ScreenElement)
 
-function CpGamePadHudScreen.new(settings,target, custom_mt)
+function CpGamePadHudScreen.new(settings, target, custom_mt)
 	local self = ScreenElement.new(target, custom_mt or CpGamePadHudScreen_mt)
 	self:registerControls(CpGamePadHudScreen.CONTROLS)
 	self.settings = settings
@@ -87,6 +87,7 @@ function CpGamePadHudScreen:onClose(element)
 		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings,self.layout)
 	end
 	g_inputBinding:removeActionEventsByTarget(self)
+	self.vehicle:closeCpGamePadHud()
 end
 
 function CpGamePadHudScreen:onClickBack()
@@ -106,8 +107,8 @@ function CpGamePadHudScreen:onClickOk()
 	end
 end
 
-function CpGamePadHudScreen:update(...)
-	CpGamePadHudScreen:superClass().update(self,...)
+function CpGamePadHudScreen:update(dt, ...)
+	CpGamePadHudScreen:superClass().update(self,dt, ...)
 	if not self.vehicle then
 		return
 	end
@@ -122,6 +123,8 @@ function CpGamePadHudScreen:update(...)
 	end
 	self.startButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
 	self.clearButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
+
+	g_currentMission.hud:updateBlinkingWarning(dt)
 end
 
 function CpGamePadHudScreen:onClickRecord()
@@ -147,4 +150,23 @@ end
 function CpGamePadHudScreen:draw(...)
 	CpGamePadHudScreen:superClass().draw(self,...)
 	CpGamePadHud.onDraw(self.vehicle)	
+	g_currentMission.hud:drawBlinkingWarning()
+end
+
+CpGamePadHudBaleLoaderScreen = {}
+local CpGamePadHudBaleLoaderScreen_mt = Class(CpGamePadHudBaleLoaderScreen, CpGamePadHudScreen)
+
+function CpGamePadHudBaleLoaderScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudBaleLoaderScreen_mt)
+
+	return self
+end
+
+CpGamePadHudUnloaderScreen = {}
+local CpGamePadHudUnloaderScreen_mt = Class(CpGamePadHudUnloaderScreen, CpGamePadHudScreen)
+
+function CpGamePadHudUnloaderScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudUnloaderScreen_mt)
+
+	return self
 end

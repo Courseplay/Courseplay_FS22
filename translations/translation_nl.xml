@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Genereer een koers voordat u aan de taak begint."/>
     <text name="CP_error_could_not_generate_course" text="Kan koers niet genereren. De log bevat mogelijk meer informatie."/>
     <text name="CP_error_not_on_field" text="Het doelwit bevindt zich niet op een veld."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
@@ -50,8 +52,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="AI-werker %s is onverwacht gestopt met werken - tank is vol!"/>
     <text name="CP_ai_messageError" text="AI worker %s has stopped work unexpectedly - left the course!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Werktuig horizontale offset"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Werktuig verticale offset"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Werktuig verticale offset"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrische rijstrookwisseling"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor om de nauwkeurigheid van de padvinder te verminderen bij mislukte iteraties, grotere waarden zijn sneller"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Toont alle actieve koersen"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Toont alle actieve koersen op de in-game kaart."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Show info texts window"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Displays an info text window."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Player mouse event"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Prefer custom fields"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Prefer custom field if there is also a regular field at the selected position."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -329,6 +338,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_waitForRainToFinish" text="Waiting for rain to finish"/>
     <text name="CP_infoTexts_errorStopped" text="Left the course, stopped"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Wrong bale type"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -650,8 +660,12 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Toont debug kanaalmenu ja/nee."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: mini GUI openen"/>
     <text name="input_CP_START_STOP" text="CP: Start/stop driver"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mouse cursor on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Open/close hud"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>

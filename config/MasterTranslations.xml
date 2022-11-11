@@ -51,6 +51,14 @@
 			<Text language="de"><![CDATA[Ziel ist nicht auf einem Feld.]]></Text>
 			<Text language="en"><![CDATA[Target is not on a field.]]></Text>
 		</Translation>
+		<Translation name="CP_error_unloader_to_far_away_from_field">
+			<Text language="de"><![CDATA[Abfahrer ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Unloader to far away from the field.]]></Text>
+		</Translation>
+		<Translation name="CP_error_start_position_to_far_away_from_field">
+			<Text language="de"><![CDATA[Startposition ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Starting position to far away from the field.]]></Text>
+		</Translation>
 		<Translation name="CP_error_giants_unloader_not_available">
 			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
@@ -149,14 +157,6 @@
 		</Translation>
 	</Category>
 	<Category name="AI combine unloader job parameters">
-		<Translation name="CP_combineUnloaderJobParameters_subTitle_fullThreshold">
-			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
-			<Text language="en"><![CDATA[Full threshold:]]></Text>
-		</Translation>
-		<Translation name="CP_combineUnloaderJobParameters_fullThreshold_title">
-			<Text language="de"><![CDATA[Abtanken ab:]]></Text>
-			<Text language="en"><![CDATA[Full threshold:]]></Text>
-		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">
 			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
 			<Text language="en"><![CDATA[Giants unloader:]]></Text>
@@ -205,6 +205,10 @@
 		<Translation name="CP_ai_messageErrorWrongBaleWrapType">
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no bales of selected type found!]]></Text>
+		</Translation>
+		<Translation name="CP_ai_messageErrorNoPathFound">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no Path found!]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
@@ -367,6 +371,14 @@
 		<Translation name="CP_vehicle_setting_toolOffsetZ_tooltip">
 			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fullThreshold_title">
+			<Text language="de"><![CDATA[Entleeren wenn über:]]></Text>
+			<Text language="en"><![CDATA[Empty when over:]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_fullThreshold_tooltip">
+			<Text language="de"><![CDATA[Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten.]]></Text>
+			<Text language="en"><![CDATA[If the unloader's fill level is over this value, it won't wait for the combine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_useAdditiveFillUnit_title">
 			<Text language="de"><![CDATA[Siliermittel überwachen.]]></Text>
@@ -866,6 +878,14 @@
 			<Text language="de"><![CDATA[Zeigt alle geladenen Kurse auf der Karte.]]></Text>
 			<Text language="en"><![CDATA[Shows all active courses on the in game map.]]></Text>
 		</Translation>
+		<Translation name="CP_global_setting_drawOntoTheHudMap_title">
+			<Text language="de"><![CDATA[Zeige Kurse auf der Minikarte]]></Text>
+			<Text language="en"><![CDATA[Shows courses on the minimap]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_drawOntoTheHudMap_tooltip">
+			<Text language="de"><![CDATA[Ermöglicht die Anzeige des Kurses auf der kleinen Karte.]]></Text>
+			<Text language="en"><![CDATA[Enables drawing of the course onto the mini map.]]></Text>
+		</Translation>
 		<Translation name="CP_global_setting_infoTextHudActive_title">
 			<Text language="de"><![CDATA[Helfer-Infofenster]]></Text>
 			<Text language="en"><![CDATA[Show info texts window]]></Text>
@@ -889,6 +909,22 @@
 		<Translation name="CP_global_setting_preferCustomFields_tooltip">
 			<Text language="de"><![CDATA[Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt.]]></Text>
 			<Text language="en"><![CDATA[Prefer custom field if there is also a regular field at the selected position.]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_title">
+			<Text language="de"><![CDATA[Distanz Einheit]]></Text>
+			<Text language="en"><![CDATA[Distance unit]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_tooltip">
+			<Text language="de"><![CDATA[Distanzeinheit Meter oder Fuß.]]></Text>
+			<Text language="en"><![CDATA[Distance unit meter or Foot.]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_meter">
+			<Text language="de"><![CDATA[Meter]]></Text>
+			<Text language="en"><![CDATA[Meter]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_distanceUnit_imperial">
+			<Text language="de"><![CDATA[Fuß]]></Text>
+			<Text language="en"><![CDATA[Foot]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Course manager">	
@@ -1208,6 +1244,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_wrongBaleWrapType">
 			<Text language="de"><![CDATA[Ballentyp nicht gefunden]]></Text>
 			<Text language="en"><![CDATA[Wrong bale type]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorNoPathFound">
+			<Text language="de"><![CDATA[Keinen Weg gefunden]]></Text>
+			<Text language="en"><![CDATA[No path found]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
@@ -2003,6 +2043,10 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 			<Text language="de"><![CDATA[CP: Starte/Stoppe CP-Helfer]]></Text>
 			<Text language="en"><![CDATA[CP: Start/stop driver]]></Text>
 		</Translation>
+		<Translation name="input_CP_CHANGE_STARTING_POINT">
+			<Text language="de"><![CDATA[CP: Ändert den Startpunkt]]></Text>
+			<Text language="en"><![CDATA[CP: Changes starting point]]></Text>
+		</Translation>
 		<Translation name="input_CP_TOGGLE_MOUSE">
 			<Text language="de"><![CDATA[CP: Mauszeiger an/aus]]></Text>
 			<Text language="en"><![CDATA[CP: Mouse cursor on/off]]></Text>
@@ -2011,9 +2055,21 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 			<Text language="de"><![CDATA[CP: Öffne/Schließe HUD]]></Text>
 			<Text language="en"><![CDATA[CP: Open/close hud]]></Text>
 		</Translation>
-		<Translation name="TEST_TRANSLATION">
-			<Text language="de"><![CDATA[TEST]]></Text>
-			<Text language="en"><![CDATA[_TEST]]></Text>
+		<Translation name="input_CP_OPEN_VEHICLE_SETTINGS">
+			<Text language="de"><![CDATA[CP: Öffnet Fahrzeugeinstellungen]]></Text>
+			<Text language="en"><![CDATA[CP: Opens vehicle settings]]></Text>
+		</Translation>
+		<Translation name="input_CP_OPEN_GLOBAL_SETTINGS">
+			<Text language="de"><![CDATA[CP: Öffnet globale Einstellungen]]></Text>
+			<Text language="en"><![CDATA[CP: Opens global settings]]></Text>
+		</Translation>
+		<Translation name="input_CP_OPEN_COURSEGENERATOR_SETTINGS">
+			<Text language="de"><![CDATA[CP: Öffnet Kursgenerator/Jobmenü]]></Text>
+			<Text language="en"><![CDATA[CP: Open course generator/job menu]]></Text>
+		</Translation>
+		<Translation name="input_CP_OPEN_COURSEMANAGER">
+			<Text language="de"><![CDATA[CP: Öffnet Kursmanager]]></Text>
+			<Text language="en"><![CDATA[CP: Opens course manager]]></Text>
 		</Translation>
 	</Category>
 </Translations>

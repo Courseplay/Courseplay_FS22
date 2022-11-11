@@ -18,6 +18,8 @@
     <text name="CP_error_no_course" text="Opret først en rute inden start."/>
     <text name="CP_error_could_not_generate_course" text="Kunne ikke oprette en rute. Logfilen kan indeholde yderligere informationer."/>
     <text name="CP_error_not_on_field" text="Målet er ikke på en mark."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <!---->
     <!--AI job parameters-->
@@ -50,8 +52,6 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_fullThreshold" text="Full threshold:"/>
-    <text name="CP_combineUnloaderJobParameters_fullThreshold_title" text="Full threshold:"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -69,6 +69,7 @@
     <text name="CP_ai_messageErrorIsFull" text="Hjælper (%s) har stoppet arbejdet - Enheden er fyldt!"/>
     <text name="CP_ai_messageError" text="AI-medarbejder %s har stoppet arbejdet uventet - forlod bane!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbejder %s har stoppet arbejdet uventet - ingen baller af valgt type fundet!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -112,6 +113,8 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Redskab forskudt vandret"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Redskab forskudt lodret"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskab Versatz vertikal"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Tjek for ensilagetilsætning."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Hvis aktiv og ensilageadditiv er tom, stopper føreren."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrisk baneskift"/>
@@ -249,12 +252,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor for at reducere pathfinder nøjagtighed ved mislykkede forsøg. Større værdier er hurtigere"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Vis alle ruter"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Vis kun indlæste ruter."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Vis info tekst vindue"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Viser info tekst vindue."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Mus begivenhed"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverer/deaktiverer afspillerens musehændelse for infotekstvisning uden for et køretøj."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Foretræk brugerdefinerede marker"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Foretræk brugerdefinerede marker hvis der også er et original mark på den valgte position."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -329,6 +338,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_waitForRainToFinish" text="Venter på at regnen stopper"/>
     <text name="CP_infoTexts_errorStopped" text="Forlod ruten, stoppet"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Forkerte balle type"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -645,8 +655,12 @@ Under the advanced category are:
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Vis debug channels menu ja/nej."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Åbne mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Start/stop CP hjælper"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Musemarkør on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Åben/luk Hud"/>
-    <text name="TEST_TRANSLATION" text="_TEST"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
   </texts>
 </l10n>

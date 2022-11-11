@@ -227,18 +227,7 @@ function PurePursuitController:switchControlledNode()
 		if not self.reversingImplement then
 			self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle)
 		end
-		if self.reversingImplement and self.reversingImplement.steeringAxleNode then
-			reverserNode, debugText = self.reversingImplement.steeringAxleNode, 'implement steering axle node'
-		end
-		if not reverserNode then
-			reverserNode, debugText = AIVehicleUtil.getAIToolReverserDirectionNode(self.vehicle), 'AIToolReverserDirectionNode'
-		end
-		if not reverserNode then
-			reverserNode, debugText = self.vehicle:getAIReverserNode(), 'AIReverserNode'
-		end
-		if not reverserNode and self.vehicle.spec_articulatedAxis ~= nil then
-			reverserNode, debugText = AIUtil.getArticulatedAxisVehicleReverserNode(self.vehicle)
-		end
+		reverserNode, debugText = AIUtil.getReverserNode(self.vehicle, self.reversingImplement)
 		if reverserNode then
 			self:setControlledNode(reverserNode)
 		else
