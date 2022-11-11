@@ -687,6 +687,16 @@ R: Удаляет скопированный курс из буфера обме
 Точно так же, как при перемещении нескольких путевых точек, отметьте 2 путевые точки, затем удерживайте левую кнопку мыши и переместите её.
 Внимание: как только вы отпустите кнопку мыши, будут установлены путевые точки, это не может быть отменено! (Конечно, вы можете удалить эти путевые точки.)
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

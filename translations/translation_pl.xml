@@ -681,6 +681,16 @@ W kategorii zaawansowanej znajdują się:
 2) Pędzel do wstawiania krzywej punktów trasy pomiędzy wybranymi punktami trasy.
 3) Pędzel do ustawienia atrybutu zawracania dla punktu trasy (tylko dla kurs, a nie własnych pól).
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

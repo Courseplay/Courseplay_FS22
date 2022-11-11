@@ -694,6 +694,16 @@ Um die Markierung aufzuheben, betätige einfach die rechte Maustaste.
 Wie auch beim Bewegen mehrerer Wegpunkte, markierst du zunächst 2 Wegpunkte, anschließend hältst du die linke Maustaste gedrückt und bewegst die Maus.
 Achtung: Sobald du loslässt, werden die Wegpunkte abgesetzt, dies kann nicht rückgängig gemacht werden! (Wegpunkte lassen sich natürlich löschen.)
 "/>
+    <text name="CP_help_page_unloader_title" text="Ernter Abfahrer"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Abfahrer generelle Erklärung.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Abfahrer Erklärung mit Trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Abfahrer Erklärung mit Überladewagen.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

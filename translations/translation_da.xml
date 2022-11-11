@@ -685,6 +685,16 @@ For at fjerne markeringen skal du blot klikke på højre museknap..
 Som med at flytte flere vejpunkter, skal du først markere 2 vejpunkter, derefter holde venstre museknap nede og flytte musen.
 OBS: Så snart du giver slip, vil vejpunkterne blive sat af, dette kan ikke fortrydes! (vejpunkter kan selvfølgelig slettes.)
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

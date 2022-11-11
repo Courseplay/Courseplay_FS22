@@ -679,6 +679,16 @@ Under den avancerade kategorin finns:
 2) En pensel för att infoga en kurva av waypoints mellan till valda waypoints.
 3) En pensel för att ställa in svängattributet för en waypoint (endast med en kurs och inte ett anpassat fält).
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

@@ -677,6 +677,16 @@ Under the advanced category are:
 2) A brush to insert a curve of waypoints between to selected waypoints.
 3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

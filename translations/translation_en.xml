@@ -691,6 +691,16 @@ To unmark the waypoints, click the right mouse button.
 Just like moving more waypoints, mark 2 waypoints, then hold the left mouse button and move the mouse.
 Attention: As soon as you release the mouse button, the waypoints will be set, this can't be undone! (of course you can delete those waypoints.)
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

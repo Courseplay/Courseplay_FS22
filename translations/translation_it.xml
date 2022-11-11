@@ -688,6 +688,16 @@ Per deselezionare i punti, fare clic con il pulsante destro del mouse.
 Proprio come per spostare più punti, contrassegna 2 punti, quindi tieni premuto il pulsante sinistro del mouse e muovi il mouse.
 Attenzione: non appena rilasci il pulsante del mouse, i punti verranno impostati, questo non può essere annullato! (ovviamente puoi eliminare quei punti.)
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

@@ -669,6 +669,16 @@ Dans la catégorie avancée :
 2) Le cruseur d'insertion de courbe permet de créer des points qui forment une courbe entre deux points sélectionnés.
 3) Le curseur de propriétés du point permet de déclarer le point sélectionné comme un point de demi-tour (uniquement sur une course, pas dans un champ personnalisé).
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

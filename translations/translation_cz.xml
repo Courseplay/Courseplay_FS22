@@ -679,6 +679,16 @@ Pod pokročilou kategorií jsou:
 2) Štětec pro vložení křivky trasových bodů mezi vybrané trasové body.
 3) Štětec pro nastavení atributu otočení trasového bodu (pouze s kurzem a ne vlastním polem).
 "/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Unloader generel explanation.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Unloader explanation with trailer.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Unloader explanation with auger.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->
