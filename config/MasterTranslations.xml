@@ -2111,7 +2111,14 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 		</Translation>
 		<Translation name="CP_help_page_unloaderGeneral_text">
 			<Text language="de"><![CDATA[
-Abfahrer generelle Erklärung.
+Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von CP gesteuert werden.
+Häcksler funktionieren nicht.
+Zum abtanken können normale Trailer oder Überladewagen verwendet werden.
+Zum entleeren von Trailern, kann entweder der Giants Helfer, oder AutoDrive verwendet werden.
+Um einen Abfahrer zu starten, gibt es ein paar Vorraussetzungen:
+- Es muss ein Überladewagen, oder maximal ein Trailer angekuppelt sein.
+- Mit dem Zielsymbol, muss das Feld gewählt werden, auf dem die Drescher oder Ernter fahren, die ihr abtanken lassen wollt.
+- Gestartet werden kann der Abfahrer dann, wenn er auf dem Feld, oder innerhalb von 20m um die Feldgrenze steht.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Unloader generel explanation.
@@ -2119,7 +2126,11 @@ Unloader generel explanation.
 		</Translation>
 		<Translation name="CP_help_page_unloaderTrailer_text">
 			<Text language="de"><![CDATA[
-Abfahrer Erklärung mit Trailer.
+Wird ein Trailer zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren.
+Die erste Variante ist der Giants Helfer.
+Gestartet wird dieser entweder über Job erstellen im AI Menü und aktivieren des Giants Helfers unten in der Liste, oder über das HUD, durch aktivieren des Lenkrad-Symbols.
+Dazu muss dann noch die passende Abladestelle gewählt werden, welche erst auftaucht, wenn das Lenkrad blau aufleuchtet.
+Alternativ kann auch AutoDrive verwendet werden, ähnlich wie auch Ladewagen, siehe dazu die AutoDrive Hilfe.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Unloader explanation with trailer.
@@ -2127,7 +2138,10 @@ Unloader explanation with trailer.
 		</Translation>
 		<Translation name="CP_help_page_unloaderAuger_text">
 			<Text language="de"><![CDATA[
-Abfahrer Erklärung mit Überladewagen.
+Überladewagen sind relativ simpel zu bedinen.
+Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
+Zum starten stellt man den Abfahrer auch auf das Feld oder innerhalb 20m um die Feldgrenze.
+Der Überladewagen sucht sich zum abladen ganz automatisch einen Trailer aus, der am Feldrand steht um da überzuladen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Unloader explanation with auger.
