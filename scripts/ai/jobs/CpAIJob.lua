@@ -174,10 +174,11 @@ function CpAIJob:setValues()
 
 	local angle = self.positionAngleParameter:getAngle()
 	local x, z = self.positionAngleParameter:getPosition()
-	local dirX, dirZ = MathUtil.getDirectionFromYRotation(angle)
-
-	self.driveToTask:setTargetDirection(dirX, dirZ)
-	self.driveToTask:setTargetPosition(x, z)
+	if angle ~= nil and x ~= nil then
+		local dirX, dirZ = MathUtil.getDirectionFromYRotation(angle)
+		self.driveToTask:setTargetDirection(dirX, dirZ)
+		self.driveToTask:setTargetPosition(x, z)
+	end
 end
 
 --- Is the job valid?
