@@ -273,7 +273,7 @@
     <text name="CP_courseManager_change_mode" text="Changer le mode"/>
     <text name="CP_courseManager_load_courses" text="Charger une course"/>
     <text name="CP_courseManager_save_courses" text="Sauvegarder une course"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Ouvrir éditeur de course"/>
     <text name="CP_courseManager_clear_current_courses" text="Réinitialiser la course active"/>
     <text name="CP_courseManager_create_directory" text="Créer nouveau dossier"/>
     <text name="CP_courseManager_move_entry" text="Déplacer l'enregistrement"/>
