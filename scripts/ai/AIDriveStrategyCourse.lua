@@ -354,7 +354,7 @@ function AIDriveStrategyCourse:isActiveCpCombine(vehicle)
         return false
     end
     local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-    return driveStrategy.callUnloader ~= nil
+    return driveStrategy and driveStrategy.callUnloader ~= nil
 end
 
 function AIDriveStrategyCourse:update()
