@@ -261,6 +261,13 @@ function PipeController:moveDependedPipePart(tool, dt)
 end
 
 function PipeController:movePipeUp(tool, childToolNode, dt)
+
+    if self:isDischarging() then 
+        --- Stops this moving tool, while discharging.
+        ImplementUtil.stopMovingTool(self.implement, tool)
+        return
+    end
+
     local toolNode = tool.node   
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
 
