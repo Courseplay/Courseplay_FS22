@@ -31,7 +31,7 @@
     <text name="CP_jobParameters_startAt_nearest" text="Point le plus proche"/>
     <text name="CP_jobParameters_startAt_first" text="Premier point"/>
     <text name="CP_jobParameters_startAt_last" text="Dernier point"/>
-    <text name="CP_jobParameters_startAt_unload" text="Déchargement de la batteuse/ensileuse"/>
+    <text name="CP_jobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
     <text name="CP_jobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
     <text name="CP_jobParameters_laneOffset_title" text="Position dans la rangée"/>
@@ -60,7 +60,7 @@
     <!---->
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
-    <text name="CP_job_combineUnload" text="CP:Déchargement moissonneuse"/>
+    <text name="CP_job_combineUnload" text="CP:Déchargement récolteuse"/>
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
@@ -273,7 +273,7 @@
     <text name="CP_courseManager_change_mode" text="Changer le mode"/>
     <text name="CP_courseManager_load_courses" text="Charger une course"/>
     <text name="CP_courseManager_save_courses" text="Sauvegarder une course"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="Ouvrir éditeur de course"/>
     <text name="CP_courseManager_clear_current_courses" text="Réinitialiser la course active"/>
     <text name="CP_courseManager_create_directory" text="Créer nouveau dossier"/>
     <text name="CP_courseManager_move_entry" text="Déplacer l'enregistrement"/>
