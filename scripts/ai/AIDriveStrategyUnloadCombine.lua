@@ -93,8 +93,8 @@ AIDriveStrategyUnloadCombine.myStates = {
     DRIVING_TO_SELF_UNLOAD = { collisionAvoidanceEnabled = true },
     WAITING_FOR_AUGER_PIPE_TO_OPEN = {},
     UNLOADING_AUGER_WAGON = {},
-    MOVING_TO_NEXT_FILL_NODE = {},
-    MOVING_AWAY_FROM_UNLOAD_TRAILER = {}
+    MOVING_TO_NEXT_FILL_NODE = { moveablePipeDisabled = true },
+    MOVING_AWAY_FROM_UNLOAD_TRAILER = { moveablePipeDisabled = true }
 }
 
 function AIDriveStrategyUnloadCombine.new(customMt)
@@ -480,6 +480,10 @@ end
 
 function AIDriveStrategyUnloadCombine:isCoverOpeningAllowed()
     return self.state.properties.openCoverAllowed
+end
+
+function AIDriveStrategyUnloadCombine:isMoveablePipeDisabled()
+    return self.state.properties.moveablePipeDisabled
 end
 
 ------------------------------------------------------------------------------------------------------------------------
