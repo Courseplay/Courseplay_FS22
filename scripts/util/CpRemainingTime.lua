@@ -10,8 +10,8 @@
 ---@class CpRemainingTime
 CpRemainingTime = CpObject()
 CpRemainingTime.DISABLED_TEXT = ""
-CpRemainingTime.TURN_PENALTY = 60 -- Flat turn penalty
-CpRemainingTime.EXP_PENALTY_REDUCTION = 0.7 -- Reduces the impact of the exponential penalty.
+CpRemainingTime.TURN_PENALTY = 20 -- Flat turn penalty
+CpRemainingTime.EXP_PENALTY_REDUCTION = 0.3 -- Reduces the impact of the exponential penalty.
 
 function CpRemainingTime:init(vehicle)
 	self.vehicle = vehicle
