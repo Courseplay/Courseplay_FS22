@@ -493,3 +493,14 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
 		implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
 	end
 end
+
+--- Force stops the moving tool.
+---@param implement table
+---@param tool table moving tool
+function ImplementUtil.stopMovingTool(implement, tool)
+    tool.move = 0
+    Cylindered.setDirty(implement, tool)
+    local spec = implement.spec_cylindered
+    implement:raiseDirtyFlags(tool.dirtyFlag)
+    implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
+end

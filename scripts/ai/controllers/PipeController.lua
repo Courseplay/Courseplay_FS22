@@ -208,6 +208,12 @@ end
 
 
 function PipeController:moveDependedPipePart(tool, dt)
+
+    if self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
+        ImplementUtil.stopMovingTool(self.implement, tool)
+        return
+    end
+
     local toolNode = tool.node   
     local dischargeNode = self.dischargeNode.node
     local toolDischargeDist = calcDistanceFrom(toolNode, dischargeNode)
@@ -261,6 +267,13 @@ function PipeController:moveDependedPipePart(tool, dt)
 end
 
 function PipeController:movePipeUp(tool, childToolNode, dt)
+
+    if self:isDischarging() or self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
+        --- Stops this moving tool, while discharging.
+        ImplementUtil.stopMovingTool(self.implement, tool)
+        return
+    end
+
     local toolNode = tool.node   
     local toolChildToolDist = calcDistanceFrom(toolNode, childToolNode)
 
