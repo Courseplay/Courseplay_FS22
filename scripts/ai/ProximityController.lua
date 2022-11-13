@@ -87,12 +87,19 @@ function ProximityController:isVehicleInRange(vehicle)
     end
 end
 
-function ProximityController:disableLeftFront()
+function ProximityController:disableLeftSide()
     self.forwardLookingProximitySensorPack:disableLeftSide()
+    self.backwardLookingProximitySensorPack:disableRightSide()
 end
 
-function ProximityController:enableLeftFront()
-    self.forwardLookingProximitySensorPack:enableLeftSide()
+function ProximityController:disableRightSide()
+    self.forwardLookingProximitySensorPack:disableRightSide()
+    self.backwardLookingProximitySensorPack:disableLeftSide()
+end
+
+function ProximityController:enableBothSides()
+    self.forwardLookingProximitySensorPack:enable()
+    self.backwardLookingProximitySensorPack:enable()
 end
 
 ---@param maxSpeed number current maximum allowed speed for vehicle

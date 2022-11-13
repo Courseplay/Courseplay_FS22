@@ -1607,7 +1607,11 @@ function AIDriveStrategyUnloadCombine:driveToSelfUnload()
     if self.course:isCloseToLastWaypoint(25) then
         -- disable one side of the proximity sensors to avoid being blocked by the trailer or its tractor
         -- TODO: make it work with pipe on the right side
-        self.proximityController:disableLeftFront()
+        if self.pipeController:isPipeOnTheLeftSide() then
+            self.proximityController:disableLeftSide()
+        else
+            self.proximityController:disableRightSide()
+        end
     end
     -- slow down towards the end of course
     if self.course:isCloseToLastWaypoint(5) then
@@ -1730,7 +1734,7 @@ function AIDriveStrategyUnloadCombine:moveAwayFromUnloadTrailer()
 end
 
 function AIDriveStrategyUnloadCombine:onMovedAwayFromUnloadTrailer()
-    self.proximityController:enableLeftFront()
+    self.proximityController:enableBothSides()
     if self.attemptToUnloadAgainAfterMovedAway then
         self:debug('Moved away from trailer so the pathfinder will work, look for another trailer')
         self:startUnloadingTrailers()
