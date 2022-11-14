@@ -16,7 +16,7 @@
 ---@class CpRemainingTime
 CpRemainingTime = CpObject()
 CpRemainingTime.DISABLED_TEXT = ""
-CpRemainingTime.TURN_PENALTY = 20 -- Flat turn penalty in seconds.
+CpRemainingTime.TURN_PENALTY = 30 -- Flat turn penalty in seconds.
 CpRemainingTime.EXP_PENALTY_REDUCTION = 0.2 -- Reduces the impact of the exponential penalty.
 CpRemainingTime.DEBUG_ACTIVE = true
 
