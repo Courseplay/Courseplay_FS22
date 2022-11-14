@@ -56,8 +56,8 @@ end
 function CpRemainingTime:getRemainingCourseTime(course, ix) -- in seconds 
 	local dist, numTurns = course:getRemainingDistanceAndTurnsFrom(ix)
 	local speed = self:getOptimalSpeed()
-	local correctionFactor = math.max(math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION, 1)
-	return math.max(0, correctionFactor * dist / speed + numTurns * self.TURN_PENALTY)
+	local correctionFactor = math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION
+	return math.max(0, (1 + correctionFactor) * dist / speed + numTurns * self.TURN_PENALTY)
 end
 
 --- Optimal course time, where no additional turn times are included.
