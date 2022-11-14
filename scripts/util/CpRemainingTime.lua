@@ -18,6 +18,7 @@ CpRemainingTime = CpObject()
 CpRemainingTime.DISABLED_TEXT = ""
 CpRemainingTime.TURN_PENALTY = 20 -- Flat turn penalty in seconds.
 CpRemainingTime.EXP_PENALTY_REDUCTION = 0.2 -- Reduces the impact of the exponential penalty.
+CpRemainingTime.DEBUG_ACTIVE = true
 
 function CpRemainingTime:init(vehicle)
 	self.vehicle = vehicle
@@ -31,6 +32,8 @@ function CpRemainingTime:reset()
 	self:debug("The driver stopped after: %s", CpGuiUtil.getFormatTimeText((g_time - self.startTimeMs)/1000))
 	self.time = 0
 	self:setText(self.DISABLED_TEXT)
+	self.course = nil 
+	self.lastIx = nil
 end
 
 function CpRemainingTime:start()
@@ -38,10 +41,20 @@ function CpRemainingTime:start()
 end
 
 function CpRemainingTime:update(dt)
-
+	if g_currentMission.controlledVehicle == self.vehicle and self.DEBUG_ACTIVE and CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+		DebugUtil.renderTable(0.4, 0.4, 0.018, {
+			{name = "time", value = CpGuiUtil.getFormatTimeText(self.time)},
+			{name = "optimal speed", value = MathUtil.mpsToKmh(self:getOptimalSpeed())},
+			{name = "optimal time", value = CpGuiUtil.getFormatTimeText(self:getOptimalCourseTime(self.course, self.lastIx))},
+			{name = "correction factor", value = self:getCorrectionFactor(self.course, self.lastIx)},
+			{name = "turn offset", value = CpGuiUtil.getFormatTimeText(self:getTurnPenalty(self.course, self.lastIx))}
+		}, 0)
+	end
 end
 
 function CpRemainingTime:calculate(course, ix)
+	self.course = course 
+	self.lastIx = ix
 	local time = self:getRemainingCourseTime(course, ix)
 	self:applyTime(time)
 end
@@ -49,23 +62,38 @@ end
 --- Get the max speed for the field work. Depending on the max work speed and the field work speed.
 function CpRemainingTime:getOptimalSpeed() -- in m/s
 	local fieldSettingSpeed = self.vehicle:getCpSettings().fieldWorkSpeed:getValue()
-	return MathUtil.kmhToMps(MathUtil.clamp(self.vehicle:getSpeedLimit(), 0, fieldSettingSpeed))
+	local speedLimit = self.vehicle:getSpeedLimit(true)
+	if speedLimit == 0 or speedLimit == math.huge then 
+		speedLimit = self.vehicle:getSpeedLimit()
+	end
+	return MathUtil.kmhToMps(MathUtil.clamp(speedLimit, 0, fieldSettingSpeed))
 end 
 
 --- Estimate of the course time left with penalties increased.
 function CpRemainingTime:getRemainingCourseTime(course, ix) -- in seconds 
-	local dist, numTurns = course:getRemainingDistanceAndTurnsFrom(ix)
-	local speed = self:getOptimalSpeed()
-	local correctionFactor = math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION
-	return math.max(0, (1 + correctionFactor) * dist / speed + numTurns * self.TURN_PENALTY)
+	return math.max(0, self:getCorrectionFactor(course, ix) * self:getOptimalCourseTime(course, ix) + self:getTurnPenalty(course, ix))
+end
+
+function CpRemainingTime:getCorrectionFactor(course, ix)
+	return course and ix and math.max(math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION, 1) or 0
 end
 
 --- Optimal course time, where no additional turn times are included.
 function CpRemainingTime:getOptimalCourseTime(course, ix)
+	if course == nil or ix == nil then 
+		return 0
+	end
+	local dist = course:getRemainingDistanceAndTurnsFrom(ix)
 	local speed = self:getOptimalSpeed()
-	local length = course:getLength()
-    local dx = course:getProgress(ix)
-	return ((1-dx) * length) / speed
+	return dist / speed
+end
+
+function CpRemainingTime:getTurnPenalty(course, ix)
+	if course == nil or ix == nil then 
+		return 0
+	end
+	local dist, numTurns = course:getRemainingDistanceAndTurnsFrom(ix)
+	return numTurns * self.TURN_PENALTY
 end
 
 function CpRemainingTime:getText()
