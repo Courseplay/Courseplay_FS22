@@ -23,17 +23,24 @@ CpRemainingTime.DEBUG_ACTIVE = true
 function CpRemainingTime:init(vehicle)
 	self.vehicle = vehicle
 	self.debugChannel = CpDebug.DBG_FIELDWORK
+	self.timeActiveMs = 0
 	self.startTimeMs = 0
 	self.time = 0
 	self:setText(self.DISABLED_TEXT)
 end
 
 function CpRemainingTime:reset()
-	self:debug("The driver stopped after: %s", CpGuiUtil.getFormatTimeText((g_time - self.startTimeMs)/1000))
+	self:debug("The driver stopped after: %s, time without standing still: %s, first prediction was: %s",
+		CpGuiUtil.getFormatTimeText((g_time - self.startTimeMs)/1000),
+		CpGuiUtil.getFormatTimeText(self.timeActiveMs/1000),
+		CpGuiUtil.getFormatTimeText(self.firstTimePrediction or 0))
 	self.time = 0
+	self.timeActiveMs = 0
+	self.startTimeMs = 0
 	self:setText(self.DISABLED_TEXT)
 	self.course = nil 
 	self.lastIx = nil
+	self.firstTimePrediction = nil
 end
 
 function CpRemainingTime:start()
@@ -47,8 +54,14 @@ function CpRemainingTime:update(dt)
 			{name = "optimal speed", value = MathUtil.mpsToKmh(self:getOptimalSpeed())},
 			{name = "optimal time", value = CpGuiUtil.getFormatTimeText(self:getOptimalCourseTime(self.course, self.lastIx))},
 			{name = "correction factor", value = self:getCorrectionFactor(self.course, self.lastIx)},
-			{name = "turn offset", value = CpGuiUtil.getFormatTimeText(self:getTurnPenalty(self.course, self.lastIx))}
+			{name = "turn offset", value = CpGuiUtil.getFormatTimeText(self:getTurnPenalty(self.course, self.lastIx))},
+			{name = "first time prediction", value = CpGuiUtil.getFormatTimeText(self.firstTimePrediction and self.firstTimePrediction or 0)},
+			{name = "time without standing still", value = CpGuiUtil.getFormatTimeText(self.timeActiveMs/1000)}
+			
 		}, 0)
+	end
+	if not AIUtil.isStopped(self.vehicle) then 
+		self.timeActiveMs = self.timeActiveMs + dt
 	end
 end
 
@@ -110,6 +123,9 @@ end
 function CpRemainingTime:applyTime(time)
 	if self:getOptimalSpeed() == 0 then 
 		return 
+	end
+	if self.time == 0 and not self.firstTimePrediction then 
+		self.firstTimePrediction = time
 	end
 	self.text = CpGuiUtil.getFormatTimeText(time or 0)
 	self.time = time
