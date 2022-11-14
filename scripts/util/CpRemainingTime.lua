@@ -30,7 +30,7 @@ function CpRemainingTime:init(vehicle)
 end
 
 function CpRemainingTime:reset()
-	self:debug("The driver stopped after: %s, time without standing still: %s, first prediction was: %s",
+	self:info("The driver stopped after: %s, time passed without standing still: %s, first prediction was: %s",
 		CpGuiUtil.getFormatTimeText((g_time - self.startTimeMs)/1000),
 		CpGuiUtil.getFormatTimeText(self.timeActiveMs/1000),
 		CpGuiUtil.getFormatTimeText(self.firstTimePrediction or 0))
@@ -48,7 +48,7 @@ function CpRemainingTime:start()
 end
 
 function CpRemainingTime:update(dt)
-	if g_currentMission.controlledVehicle == self.vehicle and self.DEBUG_ACTIVE and CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+	if g_currentMission.controlledVehicle == self.vehicle and self.DEBUG_ACTIVE and CpDebug:isChannelActive(self.debugChannel, self.vehicle) then
 		DebugUtil.renderTable(0.4, 0.4, 0.018, {
 			{name = "time", value = CpGuiUtil.getFormatTimeText(self.time)},
 			{name = "optimal speed", value = MathUtil.mpsToKmh(self:getOptimalSpeed())},
@@ -133,4 +133,9 @@ end
 
 function CpRemainingTime:debug(...)
 	CpUtil.debugVehicle(self.debugChannel, self.vehicle, ...)
+end
+
+
+function CpRemainingTime:info(...)
+	CpUtil.infoVehicle(self.vehicle, ...)
 end
