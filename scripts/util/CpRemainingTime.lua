@@ -16,17 +16,25 @@
 ---@class CpRemainingTime
 CpRemainingTime = CpObject()
 CpRemainingTime.DISABLED_TEXT = ""
-CpRemainingTime.TURN_PENALTY = 20 -- Flat turn penalty
+CpRemainingTime.TURN_PENALTY = 20 -- Flat turn penalty in seconds.
 CpRemainingTime.EXP_PENALTY_REDUCTION = 0.2 -- Reduces the impact of the exponential penalty.
 
 function CpRemainingTime:init(vehicle)
 	self.vehicle = vehicle
-	self:reset()
+	self.debugChannel = CpDebug.DBG_FIELDWORK
+	self.startTimeMs = 0
+	self.time = 0
+	self:setText(self.DISABLED_TEXT)
 end
 
 function CpRemainingTime:reset()
-	self:setText(self.DISABLED_TEXT)
+	self:debug("The driver stopped after: %s", CpGuiUtil.getFormatTimeText((g_time - self.startTimeMs)/1000))
 	self.time = 0
+	self:setText(self.DISABLED_TEXT)
+end
+
+function CpRemainingTime:start()
+	self.startTimeMs = g_time or 0
 end
 
 function CpRemainingTime:update(dt)
@@ -46,11 +54,10 @@ end
 
 --- Estimate of the course time left with penalties increased.
 function CpRemainingTime:getRemainingCourseTime(course, ix) -- in seconds 
-
-	local optimalTime = self:getOptimalCourseTime(course, ix)
-
-    return optimalTime * math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION
-		   + course.totalTurns * self.TURN_PENALTY * math.log(course:getProgress(ix) * 2 + 1)
+	local dist, numTurns = course:getRemainingDistanceAndTurnsFrom(ix)
+	local speed = self:getOptimalSpeed()
+	local correctionFactor = math.max(math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION, 1)
+	return math.max(0, correctionFactor * dist / speed + numTurns * self.TURN_PENALTY)
 end
 
 --- Optimal course time, where no additional turn times are included.
@@ -75,4 +82,8 @@ function CpRemainingTime:applyTime(time)
 	end
 	self.text = CpGuiUtil.getFormatTimeText(time or 0)
 	self.time = time
+end
+
+function CpRemainingTime:debug(...)
+	CpUtil.debugVehicle(self.debugChannel, self.vehicle, ...)
 end

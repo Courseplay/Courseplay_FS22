@@ -22,12 +22,18 @@ function CpStatus:reset()
     self.remainingTime:reset()
 end
 
+function CpStatus:start()
+    self.remainingTime:start()
+end
+
 function CpStatus:setActive(active)
     if self.isActive ~= active then 
         self.isActive = active
         self:raiseDirtyFlag()
         if not active then 
             self:reset()
+        else 
+            self:start()
         end
     end
 end
