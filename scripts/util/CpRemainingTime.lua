@@ -63,8 +63,8 @@ end
 function CpRemainingTime:getOptimalSpeed() -- in m/s
 	local fieldSettingSpeed = self.vehicle:getCpSettings().fieldWorkSpeed:getValue()
 	local speedLimit = self.vehicle:getSpeedLimit(true)
-	if speedLimit == 0 or speedLimit == math.huge then 
-		speedLimit = self.vehicle:getSpeedLimit()
+	if speedLimit == math.huge then -- Giants ..., happens when for example the work tool is raised ..
+		return 0
 	end
 	return MathUtil.kmhToMps(MathUtil.clamp(speedLimit, 0, fieldSettingSpeed))
 end 
@@ -85,6 +85,9 @@ function CpRemainingTime:getOptimalCourseTime(course, ix)
 	end
 	local dist = course:getRemainingDistanceAndTurnsFrom(ix)
 	local speed = self:getOptimalSpeed()
+	if speed == 0 then 
+		return 0
+	end
 	return dist / speed
 end
 
