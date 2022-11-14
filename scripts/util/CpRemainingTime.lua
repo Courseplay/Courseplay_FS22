@@ -75,7 +75,7 @@ function CpRemainingTime:getRemainingCourseTime(course, ix) -- in seconds
 end
 
 function CpRemainingTime:getCorrectionFactor(course, ix)
-	return course and ix and math.max(math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION, 1) or 0
+	return course ~= nil and ix ~=nil and math.min(math.exp(1-course:getProgress(ix)) * self.EXP_PENALTY_REDUCTION, 1) or 0
 end
 
 --- Optimal course time, where no additional turn times are included.
