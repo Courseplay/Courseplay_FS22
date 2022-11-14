@@ -19,6 +19,8 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, drivin
 	self.lastLine = 1
 	self.currentTarget = nil
 	self.lastDirection = self.LAST_DIRECTIONS.LEFT
+
+	self.debugChannel = CpDebug.DBG_SILO
 end
 
 function CpBunkerSiloVehicleController:delete()
@@ -120,7 +122,7 @@ function CpBunkerSiloVehicleController:setupMap(width, unitWidth, widthCount)
 end
 
 function CpBunkerSiloVehicleController:debug(...)
-	CpUtil.debugVehicle(CpUtil.DBG_SILO, self.vehicle,  ...)	
+	CpUtil.debugVehicle(self.debugChannel, self.vehicle,  ...)	
 end
 
 --- Tells the driver, that the bunker silo was deleted.
@@ -141,14 +143,19 @@ function CpBunkerSiloVehicleController:isWaitingAtParkPosition()
 end
 
 function CpBunkerSiloVehicleController:draw()
-	if self.map then
+	if self.map and self:isDebugEnabled() then
 		for _, line in pairs(self.map) do 
 			local x, z, dx, dz = unpack(line)
 			local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
 			local dy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, dx, 0, dz)
 			drawDebugLine(x, y + 2, z, 1, 0, 1, dx, dy + 2, dz, 0, 1, 1)
 		end
+		self.silo:drawUnloaderArea()
 	end
+end
+
+function CpBunkerSiloVehicleController:isDebugEnabled()
+	return CpDebug:isChannelActive(self.debugChannel, self.vehicle)
 end
 
 --- Is the end of the silo reached.

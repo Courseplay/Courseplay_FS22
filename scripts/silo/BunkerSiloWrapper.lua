@@ -244,11 +244,6 @@ function CpBunkerSilo:draw()
 	for i, controller in pairs(self.controllers) do 
 		controller:draw()
 	end
-	if self.numControllers > 0 then 
-		--- Draw the unloader detection areas, for debugging for now.
-		self:drawUnloaderArea()
-	end
-
 	if CpBunkerSilo.DRAW_DEBUG then
 		self:drawUnloaderArea()
 		local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
