@@ -14,27 +14,27 @@
     <text name="CP_unit_meter" text="м"/>
     <text name="CP_unit_foot" text="ft"/>
     <text name="CP_copy" text="Копировать курс: "/>
-    <text name="CP_infoText" text="Courseplay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22."/>
+    <text name="CP_infoText" text="CoursePlay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Создайте курс до начала работы."/>
     <text name="CP_error_could_not_generate_course" text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация."/>
     <text name="CP_error_not_on_field" text="Цель не на поле."/>
     <text name="CP_error_unloader_to_far_away_from_field" text="Разгружающий далеко от поля."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Начальная позиция далеко от поля."/>
     <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Положение на поле:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Положение перед ямой:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Начать с:"/>
     <text name="CP_jobParameters_startAt_title" text="Начать с:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="С какого момента начать работу."/>
     <text name="CP_jobParameters_startAt_nearest" text="ближайшей точки"/>
     <text name="CP_jobParameters_startAt_first" text="начальной точки"/>
     <text name="CP_jobParameters_startAt_last" text="последней путевой точки"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="разгрузки комбайна уборочного/силосного"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="работы в силосной яме"/>
+    <text name="CP_jobParameters_startAt_unload" text="разгрузки уборочного/силосного комбайна"/>
     <text name="CP_jobParameters_startAt_bales" text="сбора/обмотки тюков"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Смещение проходов:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Смещение проходов:"/>
@@ -61,21 +61,21 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Направление в силосной яме:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Направление в силосной яме:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="прямое"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="обратное"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Ожидать разгружающего:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Ожидать разгружающего:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="в яме"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="на парковке"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Работа в поле"/>
     <text name="CP_job_baleCollect" text="CP: Сбор/обмотка тюков"/>
     <text name="CP_job_combineUnload" text="CP: Разгрузка комбайна"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_job_bunkerSilo" text="CP: Работа в силосной яме"/>
     <text name="CP_ai_page_generate_course" text="CP: Сгенерировать курс"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Откр/закр. генератор курсов"/>
     <!---->
@@ -141,9 +141,9 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Настройки работника в силосной яме"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Рабочая ширина"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Рабочая ширина. Значение: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -155,8 +155,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Максимальная скорость при поворотах. Значение: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Задний ход"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Максимальная скорость при движении задним ходом. Значение: 2 - 25"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Силосная яма"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Максимальная скорость во время проезда по силосной яме. Значение: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -189,17 +189,17 @@
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="метод движения"/>
     <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="расширенные"/>
     <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Рабочая ширина"/>
-    <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Рабочая ширина орудия. Значение: 0 - 50"/>
+    <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Рабочая ширина орудия. Значение: 0 - 50."/>
     <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Количество поворотных полос"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="Количество поворотных полос. Значение: 0 - 40"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="Количество поворотных полос. Значение: 0 - 40."/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Перекрытие поворотных полос"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Перекрытие проходов поворотных полос в процентах от рабочей ширины. Значение: 0 - 25"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Перекрытие проходов поворотных полос в процентах от рабочей ширины. Значение: 0 - 25."/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Сдвиг границ поля"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны, отрицательные - увеличивают рабочее пространство за пределы поля. Значение: -2 - 5.8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны, отрицательные - увеличивают рабочее пространство за пределы поля. Значение: -2 - 5.8."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Пропускать проходов"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Проходов в загоне"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке. Значение: 0 - 24"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="При выборе метода движения 'загонами', указывается к-во проходов к каждой загонке. Значение: 0 - 24."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Направление поворотной полосы"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Транспортное средство должно двигаться по часовой стрелке или против часовой стрелки на разворотной полосе."/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="по часовой стрелке"/>
@@ -221,7 +221,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="длинная сторона"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="вручную"/>
     <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Угол челночных проходов"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Угол проходов в челночном режиме при указании направления вручную (0 = север). Значение: 0 - 175 с шагом: 5"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Угол проходов в челночном режиме при указании направления вручную (0 = север). Значение: 0 - 175 с шагом: 5."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Обход островков"/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Как курс должен обходить островки на поле."/>
     <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="без обхода"/>
@@ -236,7 +236,7 @@
     <!---->
     <!--Vine course generator settings-->
     <!---->
-    <text name="CP_vehicle_vineCourseGeneratorSetting_title" text="Генератор винного курса"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_title" text="Генератор курса для виноградника"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic" text="Основные настройки"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title" text="Положение курса"/>
     <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip" text="Курс должен быть проложен над или рядом с виноградной лозой. Это зависит от инструмента. Больше информации в меню помощи."/>
@@ -314,10 +314,10 @@
 Курс автоматически сохраняется при закрытии редактора и переопределяет выбранный курс.
 "/>
     <text name="CP_courseManager_deleteError" text="Папка не пуста (%s)!"/>
-    <text name="CP_courseManager_entryExistAlreadyError" text="Файл уже существует в целевой папке (%s)!"/>
+    <text name="CP_courseManager_entryExistAlreadyError" text="Файл (%s) уже существует в целевой папке!"/>
     <text name="CP_courseManager_noAccessError" text="Нет доступа к папке (%s)!"/>
-    <text name="CP_courseManager_targetIsNoFolderError" text="Выбранный пункт не является папкой (%s)!"/>
-    <text name="CP_courseManager_targetIsNoCourseError" text="Выбранный пункт - это не курс (%s)!"/>
+    <text name="CP_courseManager_targetIsNoFolderError" text="Выбранный пункт (%s) не является папкой!"/>
+    <text name="CP_courseManager_targetIsNoCourseError" text="Выбранный пункт (%s) не является курсом!"/>
     <text name="CP_courseManager_basicSettings" text="Управление курсами"/>
     <text name="CP_courseManager_advancedSettings" text="Управление файлами"/>
     <text name="CP_courseManager_activate" text="Активировать"/>
@@ -354,7 +354,7 @@
     <!---->
     <text name="CP_infoTexts_isStuck" text="Помощник застрял"/>
     <text name="CP_infoTexts_blockedByObject" text="Заблокирован"/>
-    <text name="CP_infoTexts_shouldRefuel" text="Должен быть заправлен"/>
+    <text name="CP_infoTexts_shouldRefuel" text="Нужно заправить топливо"/>
     <text name="CP_infoTexts_needsFuel" text="Нуждается в топливе"/>
     <text name="CP_infoTexts_needsRepair" text="Нуждается в ремонте"/>
     <text name="CP_infoTexts_needsFilling" text="Нуждается в заправке"/>
@@ -364,7 +364,7 @@
     <text name="CP_infoTexts_drivingToSelfUnload" text="Двигается к прицепу"/>
     <text name="CP_infoTexts_outOfMoney" text="Закончились деньги"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Ожидает пока закончится дождь"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_waitForUnloader" text="В ожидании разгружающего"/>
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Не найдено путь"/>
@@ -384,7 +384,7 @@
     <!---->
     <!--Help menu-->
     <!---->
-    <text name="CP_help_title" text="Courseplay"/>
+    <text name="CP_help_title" text="CoursePlay"/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Общая информация"/>
     <text name="CP_help_page_GeneralBase_text" text="
@@ -404,7 +404,7 @@ CoursePlay позволяет вам генерировать полевые к�
 Что такое экспертный режим:
 Когда экспертный режим отключён, у вас есть доступ только к некоторым настройкам.
 Другие настройки скрыты и установлены на значения по умолчанию, которые работают в большинстве ситуаций.
-Таким образом, мы стараемся помочь пользователям облегчить Courseplay, не перегружая его лишними настройками.
+Таким образом, мы стараемся помочь пользователям облегчить CoursePlay, не перегружая его лишними настройками.
 "/>
     <text name="CP_help_page_extendedJobMenu_title" text="Расширенное меню работника"/>
     <text name="CP_help_page_startJobMenuBase_text" text="
@@ -579,7 +579,7 @@ R: Удаляет скопированный курс из буфера обме
 "/>
     <text name="CP_help_page_wrapFunction_text" text="
 При использовании курса помощник ездит с предустановленным смещением, поэтому захват обмотчика находится по середине курса.
-Если без курса, тогда Courseplay сканирует поле на наличие не обёрнутых тюков и использует Pathfinder,
+Если без курса, тогда CoursePlay сканирует поле на наличие не обёрнутых тюков и использует Pathfinder,
 чтобы найти лучший путь чтобы подъехать к ближайшему тюку для обертывания.
 Водитель автоматически сдаёт задним ходом, если тюк находится перед транспортным средством или если мы находимся слишком близко к границе поля, что предотвращает несчастные случаи.
 "/>
@@ -689,20 +689,20 @@ R: Удаляет скопированный курс из буфера обме
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Выбрать следующий канал отладки."/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Выбрать предыдущий канал отладки."/>
-    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Изменить текущий канал отладки."/>
-    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Показать меню отладки канала да/нет."/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Следующий канал отладки"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Предыдущий канал отладки"/>
+    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Изменить текущий канал отладки"/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Показать/Скрыть каналы отладки"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Открыть mini GUI"/>
-    <text name="input_CP_START_STOP" text="CP: Отправить/становить водителя"/>
+    <text name="input_CP_START_STOP" text="CP: Отправить/Остановить водителя"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Изменить точку отправки"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Очистить текущий загруженный курс"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Показать текущий курс на технике"/>
-    <text name="input_CP_TOGGLE_MOUSE" text="CP: Курсор вкл/выкл"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Показать текущий курс на технике"/>
+    <text name="input_CP_TOGGLE_MOUSE" text="CP: Курсор"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Откр/закр HUD"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Открыть настройки автомобиля"/>
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Открыть глобальные настройки"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Открыть генератор курсов/меню работ"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Генератор курсов/меню работ"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Открыть управление курсами"/>
   </texts>
 </l10n>
