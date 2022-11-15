@@ -24,8 +24,8 @@ local AIDriveStrategyBunkerSilo_mt = Class(AIDriveStrategyBunkerSilo, AIDriveStr
 AIDriveStrategyBunkerSilo.myStates = {
     DRIVING_TO_SILO = {},
     DRIVING_TO_PARK_POSITION = {},
-    WAITING_AT_PARK_POSITION = {},
-    WAITING_FOR_PREPARING = {},
+    WAITING_AT_PARK_POSITION = {fuelSaveAllowed = true},
+    WAITING_FOR_PREPARING = {fuelSaveAllowed = true},
     DRIVING_INTO_SILO = {},
 	DRIVING_OUT_OF_SILO = {},
     DRIVING_TURN = {},
@@ -127,6 +127,12 @@ end
 function AIDriveStrategyBunkerSilo:initializeImplementControllers(vehicle)
     self.leveler = self:addImplementController(vehicle, LevelerController, Leveler, {})
     self:addImplementController(vehicle, BunkerSiloCompacterController, BunkerSiloCompacter, {})
+    self:addImplementController(vehicle, MotorController, Motorized, {})
+    self:addImplementController(vehicle, WearableController, Wearable, {})
+end
+
+function AIDriveStrategyBunkerSilo:isFuelSaveAllowed()
+    return self.state.properties.fuelSaveAllowed
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -191,8 +197,8 @@ function AIDriveStrategyBunkerSilo:onWaypointPassed(ix, course)
         elseif self.state == self.states.DRIVING_TO_PARK_POSITION then
             self.state = self.states.WAITING_AT_PARK_POSITION
         elseif self.state == self.states.DRIVING_TEMPORARY_OUT_OF_SILO then
-            self:startDrivingIntoSilo(self.lastCourse)
-            self.lastCourse = nil
+            local course = self:getRememberedCourseAndIx()
+            self:startDrivingIntoSilo(course)
         end
     end
 end
@@ -438,7 +444,7 @@ function AIDriveStrategyBunkerSilo:startDrivingOutOfSilo()
 end
 
 function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
-    self.lastCourse = self.course
+    self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
     if driveDirection then
 		self.course = Course.createStraightForwardCourse(self.vehicle, self.isStuckBackOffset, 0)
