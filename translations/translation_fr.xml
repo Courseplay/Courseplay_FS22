@@ -21,10 +21,6 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Benne ou transbordeur trop éloigné(e) du champ."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
-	<text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
@@ -37,8 +33,8 @@
     <text name="CP_jobParameters_startAt_nearest" text="Point le plus proche"/>
     <text name="CP_jobParameters_startAt_first" text="Premier point"/>
     <text name="CP_jobParameters_startAt_last" text="Dernier point"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
-	<text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
     <text name="CP_jobParameters_laneOffset_title" text="Position dans la rangée"/>
@@ -79,8 +75,7 @@
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
     <text name="CP_job_combineUnload" text="CP:Déchargement récolteuse"/>
-	<text name="CP_job_bunkerSilo" text="CP: Silo work"/>
-
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
@@ -99,7 +94,6 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Paramètres moissonneuse-batteuse"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Paramètres semoir"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Paramètres outils multiples"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Vitesses"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de deboggage"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Afficher la course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Affiche la course actuelle du véhicule."/>
