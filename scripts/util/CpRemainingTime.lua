@@ -20,13 +20,16 @@ CpRemainingTime.TURN_PENALTY = 30 -- Flat turn penalty in seconds.
 CpRemainingTime.EXP_PENALTY_REDUCTION = 0.2 -- Reduces the impact of the exponential penalty.
 CpRemainingTime.DEBUG_ACTIVE = true
 
-function CpRemainingTime:init(vehicle)
+function CpRemainingTime:init(vehicle, course, startIx)
 	self.vehicle = vehicle
 	self.debugChannel = CpDebug.DBG_FIELDWORK
+	self.course = course
+	self.startIx = startIx
 	self.timeActiveMs = 0
 	self.startTimeMs = 0
 	self.time = 0
 	self:setText(self.DISABLED_TEXT)
+	self:start()
 end
 
 function CpRemainingTime:reset()
@@ -44,7 +47,7 @@ function CpRemainingTime:reset()
 end
 
 function CpRemainingTime:start()
-	self.startTimeMs = g_time or 0
+	self.startTimeMs = g_time
 end
 
 function CpRemainingTime:update(dt)
@@ -62,13 +65,12 @@ function CpRemainingTime:update(dt)
 	end
 	if not AIUtil.isStopped(self.vehicle) then 
 		self.timeActiveMs = self.timeActiveMs + dt
+		self:calculate()
 	end
 end
 
-function CpRemainingTime:calculate(course, ix)
-	self.course = course 
-	self.lastIx = ix
-	local time = self:getRemainingCourseTime(course, ix)
+function CpRemainingTime:calculate()
+	local time = self:getRemainingCourseTime(self.course, self.course:getCurrentWaypointIx())
 	self:applyTime(time)
 end
 

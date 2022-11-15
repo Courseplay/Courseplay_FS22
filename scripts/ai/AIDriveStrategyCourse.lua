@@ -586,7 +586,7 @@ function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
 end
 
---- Event raised when the drive is finished.
+--- Event raised when the driver has finished.
 --- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
 function AIDriveStrategyCourse:onFinished()
     self:raiseControllerEvent(self.onFinishedEvent)

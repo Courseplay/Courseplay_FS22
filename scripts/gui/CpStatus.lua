@@ -5,7 +5,6 @@ CpStatus = CpObject()
 function CpStatus:init(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
     self:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
     self.dirtyFlag = self.vehicle:getNextDirtyFlag()
-    self.remainingTime = CpRemainingTime(self.vehicle)
 end
 
 function CpStatus:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
@@ -19,11 +18,11 @@ function CpStatus:reset()
     self.isActive = false
     self.currentWaypointIx = nil
     self.numberOfWaypoints = nil
-    self.remainingTime:reset()
+    self.remainingTimeText = ""
 end
 
 function CpStatus:start()
-    self.remainingTime:start()
+    
 end
 
 function CpStatus:setActive(active)
@@ -42,18 +41,17 @@ function CpStatus:update(dt, isActive, strategy)
     if isActive then 
         if strategy then
             strategy:updateCpStatus(self)
-            self.remainingTime:update(dt)
         end
     end 
     self:setActive(isActive)
 end
 
-function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, course)
+function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainingTimeText)
     if self.currentWaypointIx ~= currentWaypointIx then 
         self.currentWaypointIx = currentWaypointIx
         self.numberOfWaypoints = numberOfWaypoints
+        self.remainingTimeText = remainingTimeText
         self:raiseDirtyFlag()
-        self.remainingTime:calculate(course, currentWaypointIx)
     end
 end
 
@@ -65,7 +63,7 @@ function CpStatus:getWaypointText()
 end
 
 function CpStatus:getTimeRemainingText()
-    return self.remainingTime:getText()
+    return self.remainingTimeText
 end
 
 function CpStatus:getIsActive()
@@ -81,7 +79,7 @@ function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
 		streamWriteInt32(streamId, self.numberOfWaypoints or 0)
         streamWriteInt32(streamId, self.currentWaypointIx or 0)
         streamWriteBool(streamId, self.isActive or false)
-        streamWriteString(streamId, self.remainingTime:getText() or "")
+        streamWriteString(streamId, self.remainingTimeText)
 	end
 end
 
@@ -90,6 +88,6 @@ function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
         self.numberOfWaypoints = streamReadInt32(streamId)
         self.currentWaypointIx = streamReadInt32(streamId)
         self.isActive = streamReadBool(streamId)
-        self.remainingTime:setText(streamReadString(streamId))
+        self.remainingTimeText = streamReadString(streamId)
 	end
 end
