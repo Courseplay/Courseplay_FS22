@@ -64,6 +64,8 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     self:showAllInfo('Starting field work at waypoint %d', startIx)
     self:updateFieldworkOffset(course)
     self.fieldWorkCourse = course
+    self.fieldWorkCourse:setCurrentWaypointIx(startIx)
+    self.remainingTime = CpRemainingTime(self.vehicle, course, startIx)
     -- remember at which waypoint we started, especially for the convoy
     self.startWaypointIx = startIx
     self.vehiclesInConvoy = {}
@@ -93,6 +95,12 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
     end
 end
 
+--- Event raised when the driver has finished.
+function AIDriveStrategyFieldWorkCourse:onFinished()
+    AIDriveStrategyFieldWorkCourse:superClass().onFinished(self)
+    self.remainingTime:reset()
+end
+
 function AIDriveStrategyFieldWorkCourse:update(dt)
     AIDriveStrategyFieldWorkCourse:superClass().update(self, dt)
     if CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
@@ -120,6 +128,7 @@ function AIDriveStrategyFieldWorkCourse:update(dt)
         self.fieldWorkerProximityController:draw()
     end
     self:updateImplementControllers(dt)
+    self.remainingTime:update(dt)
 end
 
 --- This is the interface to the Giant's AIFieldWorker specialization, telling it the direction and speed
@@ -612,7 +621,7 @@ end
 function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
     ---@type Course
     if self.fieldWorkCourse then
-        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints())
+        status:setWaypointData(self.fieldWorkCourse:getCurrentWaypointIx(), self.fieldWorkCourse:getNumberOfWaypoints(), self.remainingTime:getText())
     end
 end
 

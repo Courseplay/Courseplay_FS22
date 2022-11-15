@@ -120,6 +120,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/Course.lua"/>
 		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
 		<sourceFile filename="scripts/util/MovingAverage.lua"/>
+		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>

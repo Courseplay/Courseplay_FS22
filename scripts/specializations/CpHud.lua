@@ -34,7 +34,7 @@ function CpHud.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpHud)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpHud)
-    SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpHud)
@@ -215,18 +215,10 @@ function CpHud:onLeaveVehicle(wasEntered)
 end
 
 --- Enriches the status data for the hud here.
-function CpHud:onUpdateTick()
+function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
-    local strategy
-    if self:getIsCpActive() then 
-        strategy = self:getCpDriveStrategy()
-        if strategy then
-            strategy:updateCpStatus(spec.status)
-        end
-        spec.status:setActive(true)
-    else 
-        spec.status:reset()
-    end
+    local strategy = self:getCpDriveStrategy()
+    spec.status:update(dt, self:getIsCpActive(), strategy)
 end
 
 function CpHud:onDraw()
