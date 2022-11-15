@@ -70,6 +70,14 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         end
     end
 
+    --- Work width levelers
+    if not left then 
+        local width = WorkWidthUtil.getShieldWorkWidth(object)
+        if width then 
+            left, right = width / 2, -width / 2
+        end
+    end
+
     if not left then
         -- no manual config, check AI markers
         _, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
@@ -191,7 +199,7 @@ function WorkWidthUtil.getAIMarkers(object, suppressLog)
         end
         aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkersFromWorkAreas(object, suppressLog)
         if not aiLeftMarker or not aiRightMarker or not aiLeftMarker then
-            if g_vehicleConfigurations:get(object, 'useVehicleSizeForMarkers') then
+            if g_vehicleConfigurations:get(object, 'useVehicleSizeForMarkers') or object.spec_leveler then
                 if not suppressLog then
                     WorkWidthUtil.debug(object, 'has no work areas, configured to use front/back markers')
                 end
@@ -244,9 +252,9 @@ end
 
 ---@param object table
 function WorkWidthUtil.getShieldWorkWidth(object)
-    if object.spec_leveler then
-        local width = object.spec_leveler.nodes[1].maxDropWidth * 2
-        WorkWidthUtil.debug(object, 'is a shield with work width: %.1f', width)
+    if object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] then
+        local width = object.spec_leveler.nodes[1].width
+        WorkWidthUtil.debug(object, 'is a shield with width: %.1f', width)
         return width
     end
 end
@@ -255,7 +263,7 @@ end
 function WorkWidthUtil.getShovelWorkWidth(object)
     if object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1] then
         local width = object.spec_shovel.shovelNodes[1].width
-        WorkWidthUtil.debug(object, 'is a shovel with work width: %.1f', width)
+        WorkWidthUtil.debug(object, 'is a shovel with width: %.1f', width)
         return width
     end
 end

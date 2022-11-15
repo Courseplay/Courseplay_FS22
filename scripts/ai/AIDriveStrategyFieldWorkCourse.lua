@@ -94,7 +94,7 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
 end
 
 function AIDriveStrategyFieldWorkCourse:update(dt)
-    AIDriveStrategyFieldWorkCourse:superClass().update(self)
+    AIDriveStrategyFieldWorkCourse:superClass().update(self, dt)
     if CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
         if self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
             if self.turnContext then
@@ -240,19 +240,12 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 end
 
 function AIDriveStrategyFieldWorkCourse:lowerImplements()    
-    --- Lowers all implements, that are available for the giants field worker.
-    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
-        implement.object:aiImplementStartLine()
-    end
-    self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
-
+    AIDriveStrategyFieldWorkCourse:superClass().lowerImplements(self)
     if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) or self.ppc:isReversing() then
         -- sowing machines want to stop while the implement is being lowered
         -- also, when reversing, we assume that we'll switch to forward, so stop while lowering, then start forward
         self.state = self.states.WAITING_FOR_LOWER_DELAYED
     end
-    --- Lowers implements, that are not covered by giants.
-    self:raiseControllerEvent(self.onLoweringEvent)
 end
 
 function AIDriveStrategyFieldWorkCourse:shouldRaiseImplements(turnStartNode)

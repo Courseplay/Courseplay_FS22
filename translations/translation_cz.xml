@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Odvozce je příliš daleko od pole."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Startovní pozice příliš daleko od pole."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants odvozce není k dispozici."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Umístění pole:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Začátek trasy:"/>
     <text name="CP_jobParameters_startAt_title" text="Začátek trasy:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Kde začít polní práce"/>
     <text name="CP_jobParameters_startAt_nearest" text="Na nejbližším bodě"/>
     <text name="CP_jobParameters_startAt_first" text="Na prvním bodě"/>
     <text name="CP_jobParameters_startAt_last" text="Na posledním bodě"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Vykládání"/>
     <text name="CP_jobParameters_startAt_bales" text="Ovíjení/sběr balíků"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Odsazení jízdního pruhu:"/>
@@ -56,11 +59,23 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Použít Giants odvozce:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Místo vykládky:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Polní práce"/>
     <text name="CP_job_baleCollect" text="CP: Ovíjení/sběr balíků"/>
     <text name="CP_job_combineUnload" text="CP: Vykládka kombajnu"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP: Vypočítat polní práce"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Zapnout/vypnout generátor tras"/>
     <!---->
@@ -121,6 +136,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symetrická změna jízdního pruhu."/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Rozestup konvoje"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Vzdálenost mezi vozidly. Hodnota: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Ladění vozidla"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Aktivovat/deaktivovat ladění tohoto vozidla."/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Polní práce"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximální rychlost při práci na poli. Hodnota: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Jízda na poli"/>
@@ -129,8 +155,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximální rychlost při zatáčení. Hodnota: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Couvání"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximální rychlost při couvání. Hodnota: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Ladění vozidla"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Aktivovat/deaktivovat ladění tohoto vozidla."/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -339,6 +365,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_infoTexts_drivingToSelfUnload" text="Jede k odvozci"/>
     <text name="CP_infoTexts_outOfMoney" text="Došly peníze"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Čekání na konec deště"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Opustil trasu, zastavil"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nenalezena trasa"/>

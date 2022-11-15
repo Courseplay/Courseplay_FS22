@@ -381,7 +381,7 @@ function CpGuiUtil.openCourseGeneratorGui(vehicle)
     vehicle:updateAIFieldWorkerImplementData()
     pageAI:onCreateJob()
     for _, job in pairs(pageAI.jobTypeInstances) do 
-        if job:isa(CpAIJobFieldWork) and job:getIsAvailableForVehicle(vehicle) then 
+        if job:isa(CpAIJob) and job:getIsAvailableForVehicle(vehicle) then 
             local jobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndex(job)
             CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu job %s.", job:getDescription())
             pageAI.currentJob = nil

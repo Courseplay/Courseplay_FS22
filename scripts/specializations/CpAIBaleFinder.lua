@@ -60,8 +60,9 @@ function CpAIBaleFinder:onLoad(savegame)
     local spec = self.spec_cpAIBaleFinder
     --- This job is for starting the driving with a key bind or the mini gui.
     spec.cpJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
-    spec.cpJob:setVehicle(self)
+    spec.cpJob:setVehicle(self, true)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.BALE_FINDER_CP)
+    spec.cpJobStartAtLastWp:setVehicle(self, true)
 end
 
 function CpAIBaleFinder:onLoadFinished(savegame)

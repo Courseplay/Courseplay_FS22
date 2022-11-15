@@ -44,7 +44,7 @@ end
 ---@param map table
 function FieldPlot:draw(map)
 	if not self.isVisible then return end
-	self:drawPoints(map)
+	self:drawPoints(map, self.waypoints, false)
 
 	local lastWp = self.waypoints and  #self.waypoints>0 and self.waypoints[#self.waypoints]
 	if self.drawLastWp and lastWp then 

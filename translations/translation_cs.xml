@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="田地位置："/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="选择起始点:"/>
     <text name="CP_jobParameters_startAt_title" text="选择起始点:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="该任务的起始点"/>
     <text name="CP_jobParameters_startAt_nearest" text="最近的点"/>
     <text name="CP_jobParameters_startAt_first" text="第一个点"/>
     <text name="CP_jobParameters_startAt_last" text="最后的点"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="开始卸货 联合收割机/青贮饲料收割机"/>
     <text name="CP_jobParameters_startAt_bales" text="扎捆/收集草垛"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="车道位置设置"/>
@@ -56,11 +59,23 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: 田地工作"/>
     <text name="CP_job_baleCollect" text="CP: 扎捆/收集草垛"/>
     <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP: 生成田地工作路线"/>
     <text name="CP_ai_page_open_course_generator" text="CP: 打开/关闭 创建工作路线界面"/>
     <!---->
@@ -121,6 +136,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="对称变道"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="车辆距离"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="车辆之间的距离。 数值范围: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="车辆调试"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="启用/禁用此车辆的调试。"/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="工作速度"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="在田间工作时的最高速度。 数值范围: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="车辆速度"/>
@@ -129,8 +155,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="转向时的最大速度。 数值范围: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="倒车"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="倒车时最大速度。 数值范围: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="车辆调试"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="启用/禁用此车辆的调试。"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +364,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
     <text name="CP_infoTexts_outOfMoney" text="资金不足"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="等待雨停"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="离开了路线，停止工作"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="错误的草垛类型"/>
     <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>

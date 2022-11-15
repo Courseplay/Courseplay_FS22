@@ -353,6 +353,12 @@ function LeftTurnReedsSheppSolver:solve(start, goal, turnRadius)
 	return ReedsSheppSolver.solve(self, start, goal, turnRadius, {ReedsShepp.PathWords.LfRbLf})
 end
 
+---@class LeftTurnReverseReedsSheppSolver : ReedsSheppSolver
+LeftTurnReverseReedsSheppSolver = CpObject(ReedsSheppSolver)
+function LeftTurnReverseReedsSheppSolver:solve(start, goal, turnRadius)
+	return ReedsSheppSolver.solve(self, start, goal, turnRadius, {ReedsShepp.PathWords.LbSbLb})
+end
+
 ---@class RightTurnReedsSheppSolver : ReedsSheppSolver
 RightTurnReedsSheppSolver = CpObject(ReedsSheppSolver)
 function RightTurnReedsSheppSolver:solve(start, goal, turnRadius)

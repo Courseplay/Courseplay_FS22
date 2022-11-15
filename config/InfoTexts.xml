@@ -28,6 +28,7 @@
 	<InfoText name="NEEDS_UNLOADING"  			text="needsUnloading" hasFinished="true" event="onCpFull" class="AIMessageErrorIsFull"/>
 	<InfoText name="FUEL_IS_LOW"				text="shouldRefuel"/>
 	<InfoText name="WAITING_FOR_RAIN_TO_FINISH" text="waitForRainToFinish"/>
+	<InfoText name="WAITING_FOR_UNLOADER" 		text="waitForUnloader"/>
 	<InfoText name="WORK_FINISHED"				text="workFinished"   hasFinished="true" event="onCpFinished" class="AIMessageSuccessFinishedJob"/>
 	<InfoText name="DRIVING_TO_COMBINE"			text="drivingToCombine"/>
 	<InfoText name="DRIVING_TO_SELF_UNLOAD"		text="drivingToSelfUnload"/>

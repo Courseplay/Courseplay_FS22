@@ -127,7 +127,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
         -- some strategies do not need a recorded or generated course to work, they
         -- will create the courses on the fly.
         self:debug('Vehicle has no course, start work without it.')
-        self:startWithoutCourse()
+        self:startWithoutCourse(jobParameters)
     end
     self:raiseControllerEvent(self.onStartEvent)
 end
@@ -185,7 +185,7 @@ function AIDriveStrategyCourse:start(course, startIx, jobParameters)
     self.state = self.states.INITIAL
 end
 
-function AIDriveStrategyCourse:startWithoutCourse()
+function AIDriveStrategyCourse:startWithoutCourse(jobParameters)
 end
 
 function AIDriveStrategyCourse:updateCpStatus(status)
@@ -274,6 +274,16 @@ function AIDriveStrategyCourse:raiseImplements()
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_END_LINE)
     --- Raises implements, that are not covered by giants.
     self:raiseControllerEvent(self.onRaisingEvent)
+end
+
+function AIDriveStrategyCourse:lowerImplements()    
+    --- Lowers all implements, that are available for the giants field worker.
+    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
+        implement.object:aiImplementStartLine()
+    end
+    self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
+    --- Lowers implements, that are not covered by giants.
+    self:raiseControllerEvent(self.onLoweringEvent)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

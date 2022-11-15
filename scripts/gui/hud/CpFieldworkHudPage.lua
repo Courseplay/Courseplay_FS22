@@ -119,3 +119,11 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
 
     CpGuiUtil.updateCopyBtn(self, vehicle, status)
 end
+
+function CpFieldWorkHudPageElement:isStartingPointBtnDisabled(vehicle)
+    return false
+end
+
+function CpFieldWorkHudPageElement:getStartingPointBtnText(vehicle)
+    return vehicle:getCpStartingPointSetting():getString()
+end

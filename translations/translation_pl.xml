@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Pomocnik SI rozładowujący za daleko pola."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Pozycja startowa zbyt daleko pola."/>
     <text name="CP_error_giants_unloader_not_available" text="Pomocnik SI Giantsa rozładowujący niedostępny."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Pozycja na polu:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Rozpocznij od:"/>
     <text name="CP_jobParameters_startAt_title" text="Rozpocznij od:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Ustala gdzie zacząć pracę polową."/>
     <text name="CP_jobParameters_startAt_nearest" text="Najbliższego punkt trasy"/>
     <text name="CP_jobParameters_startAt_first" text="Pierwszego punkt trasy"/>
     <text name="CP_jobParameters_startAt_last" text="Ostatni punkt trasy"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Rozładunku kombajnu/sieczkarni"/>
     <text name="CP_jobParameters_startAt_bales" text="Zbierania/Owijania bel"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Przesunięcie linii:"/>
@@ -56,11 +59,23 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Użyj pomocnika SI Giantsa rozładowującego:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Miejsce rozładunku:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Prace polowe"/>
     <text name="CP_job_baleCollect" text="CP: Zbieranie/Owijanie bel"/>
     <text name="CP_job_combineUnload" text="CP: Rozładunek kombajnu"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP: Wygeneruj kurs pracy polowej"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Otwórz/Zamknij generator kursu"/>
     <!---->
@@ -121,6 +136,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symetryczna zmiana ścieżki."/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Dystans konwoju"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Dystans pomiędzy pojazdami w konwoju. Zakres: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Debugowanie pojazdu"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Włącz/wyłącz debugowanie dla tego pojazdu pojazdu."/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Prace polowe"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maksymalna prędkość podczas prac polowych. Zakres: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Jazda przez pole"/>
@@ -129,8 +155,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maksymalna prędkość podczas zawracania. Zakres: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Cofanie"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maksymalna prędkość podczas cofania. Zakres: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Debugowanie pojazdu"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Włącz/wyłącz debugowanie dla tego pojazdu pojazdu."/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +364,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_drivingToSelfUnload" text="Przejazd do przyczepy"/>
     <text name="CP_infoTexts_outOfMoney" text="Brak pieniędzy"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Oczekuje na koniec opadów"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Opuścił kurs, zatrzymał się"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
