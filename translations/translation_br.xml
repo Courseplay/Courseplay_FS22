@@ -94,7 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Configuração da Colheitadeira"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Configuração Semeadeira "/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Configuração Multi implementos"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Velocidades"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Configuração do debug"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Mostrar rotas"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mostrar rota atual do veículo"/>

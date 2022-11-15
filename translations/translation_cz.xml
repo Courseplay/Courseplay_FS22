@@ -94,7 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Nastavení kombajnu"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Nastavení secího stroje"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Nastavení pro více strojů"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Rychlosti"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Nastavení ladění"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Ukázat trasu"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Ukázat aktuální trasu vozidla"/>

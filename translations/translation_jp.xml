@@ -94,7 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="コンバイン（収穫機）設定"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="シーダー（播種）設定"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="共通設定"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="走行速度設定"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="デバッグ設定"/>
     <text name="CP_vehicle_setting_showCourse_title" text="コース表示"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="現在車両に設定されているコースを表示します"/>

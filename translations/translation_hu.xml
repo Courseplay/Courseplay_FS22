@@ -94,7 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Kombájn beállításai"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Vetőgép beállításai"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Összesített együttműködési beállítások"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Sebesség"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Hibakeresési beállítások"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Útvonal megjelenítése"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mutassa a jármű aktuális útvonalát"/>
