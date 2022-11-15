@@ -66,6 +66,8 @@ function ProximityController:onBlockingVehicle(vehicle, isBack)
 end
 
 --- Registers a function to ignore a object or vehicle.
+--- Currently used for ignoring the bunker silo walls in the bunker silo strategy.
+--- TODO: Consider consolidating this with the other ignore logic for vehicles.
 function ProximityController:registerIgnoreObjectCallback(object, callback)
     self.ignoreObjectCallback = callback
     self.ignoreObjectCallbackObject = object
