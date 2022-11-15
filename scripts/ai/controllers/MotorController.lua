@@ -2,7 +2,7 @@
 --- Also shuts the driver down, once the fuel level is lower than the threshold.
 ---@class MotorController : ImplementController
 MotorController = CpObject(ImplementController)
-MotorController.delayMs = 10 * 1000 -- 30sec
+MotorController.delayMs = 10 * 1000 -- 10sec
 MotorController.speedThreshold = 0.1
 function MotorController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
