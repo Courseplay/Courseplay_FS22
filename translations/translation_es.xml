@@ -94,6 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Configuración de Cosechadoras"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Configuración de Sembradoras"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Configuración Multi-Herramientas"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Ajustes de Depuración"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Mostrar ruta"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Muestra la ruta actual del vehículo"/>

@@ -94,6 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="Ustawienia kombajnu"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Ustawienia siewników"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Ustawienia wielu narzędzi"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="Ustawienia debugowania"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Pokaż kurs"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Pokazuje obecny kurs pojazdu."/>

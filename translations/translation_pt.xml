@@ -94,6 +94,7 @@
     <text name="CP_vehicle_setting_subTitle_combine" text="configurações da ceifeira"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Configurações do semeador"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Configurações de multiferramentas"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
     <text name="CP_vehicle_setting_subTitle_debug" text="definições Debug"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Mostrar curso"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mostrar o curso atual do veículo"/>
