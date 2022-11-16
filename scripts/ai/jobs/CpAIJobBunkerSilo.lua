@@ -160,16 +160,18 @@ end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)
 	if streamReadBool(streamId) then
-		local node = NetworkUtil.readNodeObject(streamId)
+		local node = streamReadInt32(streamId)
+		CpUtil.info("Silo trigger: %d, wrapper found: %s", node, tostring(g_bunkerSiloManager:getSiloWrapperByNode(node)))
 		self.bunkerSiloTask:setSilo(g_bunkerSiloManager:getSiloWrapperByNode(node))
 	end
 	CpAIJobBunkerSilo:superClass().readStream(self, streamId, connection)
 end
 
 function CpAIJobBunkerSilo:writeStream(streamId, connection)
-	if self.bunkerSilo then
+	if self.bunkerSilo ~= nil then
 		streamWriteBool(streamId, true)
-		NetworkUtil.writeNodeObject(streamId, self.bunkerSilo:getNode())
+		streamWriteInt32(streamId, self.bunkerSilo:getNode())
+		CpUtil.info("Silo trigger: %d", self.bunkerSilo:getNode())
 	else
 		streamWriteBool(streamId, false)
 	end
