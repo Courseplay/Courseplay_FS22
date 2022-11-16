@@ -7,10 +7,10 @@ CpAIJobBunkerSilo = {
 		fieldPositionParameter = "CP_jobParameters_bunkerSiloPosition_title"
 	}
 }
-local AIJobFieldWorkCp_mt = Class(CpAIJobBunkerSilo, CpAIJobFieldWork)
+local CpAIJobBunkerSilo_mt = Class(CpAIJobBunkerSilo, CpAIJobFieldWork)
 
 function CpAIJobBunkerSilo.new(isServer, customMt)
-	local self = CpAIJobFieldWork.new(isServer, customMt or AIJobFieldWorkCp_mt)
+	local self = CpAIJobFieldWork.new(isServer, customMt or CpAIJobBunkerSilo_mt)
 	
 	self.hasValidPosition = nil 
 	self.bunkerSilo = nil
@@ -40,6 +40,14 @@ end
 --- Disables course generation.
 function CpAIJobBunkerSilo:isCourseGenerationAllowed()
 	return false
+end
+
+function CpAIJobBunkerSilo:getIsAvailableForVehicle(vehicle)
+	return vehicle.getCanStartCpBunkerSiloWorker and vehicle:getCanStartCpBunkerSiloWorker()
+end
+
+function CpAIJobBunkerSilo:getCanStartJob()
+	return self.hasValidPosition
 end
 
 function CpAIJobBunkerSilo:applyCurrentState(vehicle, mission, farmId, isDirectStart)
@@ -97,7 +105,7 @@ end
 
 function CpAIJobBunkerSilo:setValues()
 	CpAIJob.setValues(self)
-	local vehicle = self:getVehicle()
+	local vehicle = self.vehicleParameter:getVehicle()
 	self.bunkerSiloTask:setVehicle(vehicle)
 end
 
@@ -107,7 +115,7 @@ function CpAIJobBunkerSilo:validate(farmId)
 	if not isValid then
 		return isValid, errorMessage
 	end
-	local vehicle = self:getVehicle()
+	local vehicle = self.vehicleParameter:getVehicle()
 	if vehicle then 
 		vehicle:applyCpBunkerSiloWorkerJobParameters(self)
 	end
@@ -120,14 +128,6 @@ end
 
 function CpAIJobBunkerSilo:drawSilos(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
-end
-
-function CpAIJobBunkerSilo:getCanStartJob()
-	return self.hasValidPosition
-end
-
-function CpAIJobBunkerSilo:getIsAvailableForVehicle(vehicle)
-	return vehicle.getCanStartCpBunkerSiloWorker and vehicle:getCanStartCpBunkerSiloWorker()
 end
 
 function CpAIJobBunkerSilo:copyFrom(job)
@@ -159,21 +159,14 @@ function CpAIJobBunkerSilo:loadFromXMLFile(xmlFile, key)
 end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)
-	if streamReadBool(streamId) then
-		local node = streamReadInt32(streamId)
-		CpUtil.info("Silo trigger: %d, wrapper found: %s", node, tostring(g_bunkerSiloManager:getSiloWrapperByNode(node)))
-		self.bunkerSiloTask:setSilo(g_bunkerSiloManager:getSiloWrapperByNode(node))
-	end
 	CpAIJobBunkerSilo:superClass().readStream(self, streamId, connection)
+	self.fieldPositionParameter:readStream(streamId, connection)
+	local x, z = self.fieldPositionParameter:getPosition()
+	self.hasValidPosition, self.bunkerSilo =  g_bunkerSiloManager:getBunkerSiloAtPosition(x, z)
+	self.bunkerSiloTask:setSilo(self.bunkerSilo)
 end
 
 function CpAIJobBunkerSilo:writeStream(streamId, connection)
-	if self.bunkerSilo ~= nil then
-		streamWriteBool(streamId, true)
-		streamWriteInt32(streamId, self.bunkerSilo:getNode())
-		CpUtil.info("Silo trigger: %d", self.bunkerSilo:getNode())
-	else
-		streamWriteBool(streamId, false)
-	end
 	CpAIJobBunkerSilo:superClass().writeStream(self, streamId, connection)
+	self.fieldPositionParameter:writeStream(streamId, connection)
 end

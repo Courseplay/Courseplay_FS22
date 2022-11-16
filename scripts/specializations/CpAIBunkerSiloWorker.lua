@@ -156,8 +156,11 @@ function CpAIBunkerSiloWorker:startCpAtFirstWp(superFunc, ...)
             local spec = self.spec_cpAIBunkerSiloWorker
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
-            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
-            return true
+            local success = spec.cpJob:validate(false)
+            if success then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                return true
+            end
         end
     else 
         return true
