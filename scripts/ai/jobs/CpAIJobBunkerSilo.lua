@@ -160,8 +160,8 @@ end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)
 	if streamReadBool(streamId) then
-		local silo = NetworkUtil.readNodeObject(streamId)
-		self.bunkerSiloTask:setSilo(g_bunkerSiloManager:getSiloWrapperBySilo(silo))
+		local node = NetworkUtil.readNodeObject(streamId)
+		self.bunkerSiloTask:setSilo(g_bunkerSiloManager:getSiloWrapperByNode(node))
 	end
 	CpAIJobBunkerSilo:superClass().readStream(self, streamId, connection)
 end
@@ -169,7 +169,7 @@ end
 function CpAIJobBunkerSilo:writeStream(streamId, connection)
 	if self.bunkerSilo then
 		streamWriteBool(streamId, true)
-		NetworkUtil.writeNodeObject(streamId, self.bunkerSilo:getSilo())
+		NetworkUtil.writeNodeObject(streamId, self.bunkerSilo:getNode())
 	else
 		streamWriteBool(streamId, false)
 	end
