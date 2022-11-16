@@ -38,6 +38,11 @@ function BunkerSiloManager:getBunkerSiloAtPosition(tx, tz)
 	return false, nil
 end
 
+function BunkerSiloManager:getSiloWrapperBySilo(silo)
+	local triggerNode = silo.interactionTriggerNode
+	return self.silos[triggerNode]
+end
+
 function BunkerSiloManager:update(dt)
 	for _, silo in pairs(self.silos) do 
 		silo:update(dt)

@@ -99,7 +99,6 @@ function CpAIJobBunkerSilo:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self:getVehicle()
 	self.bunkerSiloTask:setVehicle(vehicle)
-	self.bunkerSiloTask:setSilo(self.bunkerSilo)
 end
 
 --- Called when parameters change, scan field
@@ -160,9 +159,19 @@ function CpAIJobBunkerSilo:loadFromXMLFile(xmlFile, key)
 end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)
-	CpAIJobBunkerSilo:superClass().readStream(self, streamId, connection)
-	local vehicle = self:getVehicle()
-	if vehicle then 
-		vehicle:applyCpBunkerSiloWorkerJobParameters(self)
+	if streamReadBool(streamId) then
+		local silo = NetworkUtil.readNodeObject(streamId)
+		self.bunkerSiloTask:setSilo(g_bunkerSiloManager:getSiloWrapperBySilo(silo))
 	end
+	CpAIJobBunkerSilo:superClass().readStream(self, streamId, connection)
+end
+
+function CpAIJobBunkerSilo:writeStream(streamId, connection)
+	if self.bunkerSilo then
+		streamWriteBool(streamId, true)
+		NetworkUtil.writeNodeObject(streamId, self.bunkerSilo:getSilo())
+	else
+		streamWriteBool(streamId, false)
+	end
+	CpAIJobBunkerSilo:superClass().writeStream(self, streamId, connection)
 end
