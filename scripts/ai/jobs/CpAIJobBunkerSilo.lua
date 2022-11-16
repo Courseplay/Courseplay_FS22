@@ -92,7 +92,7 @@ function CpAIJobBunkerSilo:validateBunkerSiloSetup(isValid, errorMessage)
 	local dirX, dirZ = self.positionAngleParameter:getDirection()
 	self.bunkerSiloTask:setParkPosition(x, z, angle, dirX, dirZ)
 
-	if not self.hasValidPosition then 
+	if not self.hasValidPosition or self.bunkerSilo == nil then 
 		return false, g_i18n:getText("CP_error_no_bunkerSilo_found")
 	end
 	return true, ''

@@ -85,6 +85,11 @@ end
 function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     self:info('Starting bunker silo mode.')
 
+    if self.silo == nil then 
+        self:info("Bunker silo is nil!")
+        self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
+    end
+
     self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
 
     if self.leveler then 
