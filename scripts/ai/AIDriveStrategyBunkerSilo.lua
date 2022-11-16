@@ -88,6 +88,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     if self.silo == nil then 
         self:info("Bunker silo is nil!")
         self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
+        return
     end
 
     self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
@@ -271,8 +272,9 @@ function AIDriveStrategyBunkerSilo:update(dt)
                 self.ppc:getCourse():draw()
             end
         end
-        DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
-
+        if self.siloEndDetectionMarker ~= nil then
+            DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
+        end
         local frontMarkerNode, backMarkerNode = Markers.getMarkerNodes(self.vehicle)
         DebugUtil.drawDebugNode(frontMarkerNode, "FrontMarker", false, 1)
         DebugUtil.drawDebugNode(backMarkerNode, "BackMarker", false, 1)
