@@ -65,7 +65,9 @@ function CpRemainingTime:update(dt)
 	end
 	if not AIUtil.isStopped(self.vehicle) then 
 		self.timeActiveMs = self.timeActiveMs + dt
-		self:calculate()
+		if self.course ~= nil then
+			self:calculate()
+		end
 	end
 end
 
