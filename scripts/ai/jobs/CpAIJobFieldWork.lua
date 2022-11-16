@@ -4,7 +4,8 @@ CpAIJobFieldWork = {
     name = "FIELDWORK_CP",
     translations = {
         jobName = "CP_job_fieldWork",
-        GenerateButton = "FIELDWORK_BUTTON"
+        GenerateButton = "FIELDWORK_BUTTON",
+        fieldPositionParameter = "CP_jobParameters_fieldPosition_title"
     }
 }
 local AIJobFieldWorkCp_mt = Class(CpAIJobFieldWork, CpAIJob)
@@ -42,7 +43,7 @@ function CpAIJobFieldWork:setupJobParameters()
     self.fieldPositionParameter.isCpFieldPositionTarget = true
 
     self:addNamedParameter("fieldPosition", self.fieldPositionParameter)
-    local positionGroup = AIParameterGroup.new(g_i18n:getText("CP_jobParameters_fieldPosition_title"))
+    local positionGroup = AIParameterGroup.new(g_i18n:getText(self.translations.fieldPositionParameter))
     positionGroup:addParameter(self.fieldPositionParameter)
     table.insert(self.groupedParameters, positionGroup)
 

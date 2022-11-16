@@ -379,6 +379,9 @@ function CpBunkerSilo:isValidUnloader(vehicle)
 		if vehicle.getIsControlled and vehicle:getIsControlled() then 
 			return true
 		end
+		if vehicle.ad and vehicle.ad.stateModule and vehicle.ad.stateModule:isActive() then
+			return true
+		end
 	end
 end
 
@@ -412,7 +415,7 @@ end
 
 function CpBunkerSilo:updateUnloaders(dt)
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.
-	if self.numControllers > 0 and g_updateLoopIndex % 10 == 0 then 
+	if self.numControllers > 0 and g_updateLoopIndex % 7 == 0 then 
 		for i, vehicle in pairs(g_currentMission.vehicles) do 
 			local isValid = false
 			if self:isValidUnloader(vehicle) then 
