@@ -248,7 +248,7 @@ end
 
 --- Updates changes between waypoints.
 function SimpleCourseDisplay:updateChangesBetween(firstIx, secondIx)
-	for i = #self.signs, self.course:getNumberOfWaypoints() + 1, -1 do 
+	for i = #self.signs, self.course:getNumberOfWaypoints() + 1, -1 do
 		self.signs[i]:delete()
 		table.remove(self.signs, i)
 	end
@@ -259,15 +259,29 @@ function SimpleCourseDisplay:updateChangesBetween(firstIx, secondIx)
 end
 
 --- Changes the visibility of the course.
-function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible)
+function SimpleCourseDisplay:updateVisibility(visibilityData)
 	if self.course then
 		local numWp = self.course:getNumberOfWaypoints()
 		for j = 1, numWp do
-			if self.signs[j] then 
+			if self.signs[j] then
+				local visible = false
+				local onlyStartStopVisible = false
+				if visibilityData.visiblityMode == CpVehicleSettings.SHOW_COURSE_ALL then
+					visible = visibilityData.isControlled ~= nil and visibilityData.isControlled or visibilityData.isControlled == nil
+				elseif visibilityData.visiblityMode == CpVehicleSettings.SHOW_COURSE_START_STOP then
+					onlyStartStopVisible = visibilityData.isControlled ~= nil and visibilityData.isControlled or visibilityData.isControlled == nil
+
+				-- Only show a couple waypoints around the last waypoint
+				elseif visibilityData.visiblityMode == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
+					local lastWaypoint = visibilityData.lastWaypoint
+
+					--TODO: make those values more configurable
+					visible = lastWaypoint - 5 <= j and j <= lastWaypoint + 150
+				end
 				self.signs[j]:setVisible(visible)
-				if not self.signs[j]:isNormalSign() or j == numWp - 1 then 
+				if not self.signs[j]:isNormalSign() or j == numWp - 1 then
 					self.signs[j]:setVisible(visible or onlyStartStopVisible)
-				end	
+				end
 			end
 		end
 	end
