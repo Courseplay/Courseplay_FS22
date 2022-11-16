@@ -96,9 +96,11 @@ function CpVehicleSettings:onPostAttachImplement(object)
     end
 
     CpVehicleSettings.setAutomaticWorkWidthAndOffset(self)
+    CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self)
 
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
+    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.bunkerSiloWorkWidth, 'workingWidth')
     CpVehicleSettings.validateSettings(self)
 end
 
@@ -110,7 +112,8 @@ function CpVehicleSettings:onPreDetachImplement(implement)
     end
 
     CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, implement.object)
-
+    CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self, implement.object)
+    
     CpVehicleSettings.resetToDefault(self, implement.object, spec.raiseImplementLate, 'raiseLate', false)
     CpVehicleSettings.resetToDefault(self, implement.object, spec.lowerImplementEarly, 'lowerEarly', false)
     CpVehicleSettings.validateSettings(self)
@@ -348,6 +351,16 @@ end
 
 function CpVehicleSettings:areCourseSettingsVisible()
     return not self:getCanStartCpCombineUnloader()
+end
+
+function CpVehicleSettings:areBunkerSiloSettingsVisible()
+    return self:getCanStartCpBunkerSiloWorker()
+end
+
+function CpVehicleSettings:setAutomaticBunkerSiloWorkWidth(ignoreObject)
+    local spec = self.spec_cpVehicleSettings
+    local width = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self, nil, ignoreObject)
+    spec.bunkerSiloWorkWidth:setFloatValue(width)
 end
 
 --- Saves the user value changed on the server.

@@ -407,7 +407,7 @@ function CpCourseManagerFrame:onClickItem(layout, element)
 		if viewEntry:isRenameAllowed() then
 			self.showInputTextDialog(
 						self, self.translations.renameEntry,
-						self.onClickRenameEntryDialog, viewEntry)
+						self.onClickRenameEntryDialog, viewEntry, viewEntry:getName())
 		else 
 			self.showInfoDialog(
 				self.translations.noAccessError, viewEntry)
@@ -600,7 +600,7 @@ end
 ---------------------------------------------------
 
 
-function CpCourseManagerFrame:showInputTextDialog(title, callbackFunc, viewEntry)
+function CpCourseManagerFrame:showInputTextDialog(title, callbackFunc, viewEntry, defaultText)
 	g_gui:showTextInputDialog({
 		disableFilter = true,
 		callback = function (self, text, clickOk, viewEntry)
@@ -609,7 +609,7 @@ function CpCourseManagerFrame:showInputTextDialog(title, callbackFunc, viewEntry
 			self:updateLists()
 		end,
 		target = self,
-		defaultText = "",
+		defaultText = defaultText or "",
 		dialogPrompt = string.format(g_i18n:getText(title), viewEntry and viewEntry:getName()),
 		imePrompt = g_i18n:getText(title),
 		maxCharacters = 50,

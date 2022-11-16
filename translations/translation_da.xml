@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Aflæsser for langt væk fra marken."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="startpunkt for langt væk fra marken."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants aflæsser er ikke tilgæængelig."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Mark position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Start ved:"/>
     <text name="CP_jobParameters_startAt_title" text="Start ved:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Hvor bliver arbejdet startet."/>
     <text name="CP_jobParameters_startAt_nearest" text="Nærmeste vejpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Første vejpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Sidste vejpunkt"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Aflad mejetærsker/snitter"/>
     <text name="CP_jobParameters_startAt_bales" text="Saml/Wrap Baller"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bane offset:"/>
@@ -56,11 +59,23 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Brug giants aflæsser:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Aflæsningsstation:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Markarbejde"/>
     <text name="CP_job_baleCollect" text="CP: Indsamle/wrappe baller"/>
     <text name="CP_job_combineUnload" text="CP: aflæs mejetærsker"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP: Genere markrute."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Åbne/Lukke rutegenerator."/>
     <!---->
@@ -121,6 +136,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetrisk baneskift"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Konvoj afstand"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Afstand mellem kørtøjer. Værdi: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="køretøj debug"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Debuginformationer for køretøj tænd/sluk. Visuel og logindtastninger"/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Markarbejde"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximale hastighed ved markarbejde. Værdi: 5 - 50"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Mark"/>
@@ -129,8 +155,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximale hastighed ved vendemanøvre. Værdi: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Baglæns"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximale hastighed ved færsel baglæns. Værdi: 2 - 25"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="køretøj debug"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Debuginformationer for køretøj tænd/sluk. Visuel og logindtastninger"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +364,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_infoTexts_drivingToSelfUnload" text="køre til anhænger"/>
     <text name="CP_infoTexts_outOfMoney" text="Ikke nok penge"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Venter på at regnen stopper"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="Forlod ruten, stoppet"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Forkerte balle type"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ingen rute fundet"/>

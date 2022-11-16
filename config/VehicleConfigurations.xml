@@ -115,6 +115,11 @@ You can define the following custom settings:
 
     <!-- Implements -->
 
+    <!--\vehicles\holaras-->
+    <Vehicle name="stego485Pro.xml"
+             workingWidth = "4.8"
+    />
+
     <!--\vehicles\johndeer-->
     <Vehicle name="planter1775NT.xml"
              turnRadius = "12"

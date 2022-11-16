@@ -5,8 +5,8 @@
 -->
 
 <Settings title="CP_vehicle_setting_display">
-	<Setting type="vehicleSettings" name = "showCourse" />
 	<Setting type="jobParameters" name = "startAt" />
+	<Setting type="vehicleSettings" name = "showCourse" />
 	<Setting type="jobParameters" name = "laneOffset" />
 	<Setting type="courseGeneratorSettings" name = "workWidth" />
 	<Setting type="vehicleSettings" name = "toolOffsetX" />

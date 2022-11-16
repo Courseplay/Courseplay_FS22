@@ -38,7 +38,7 @@ end
 function CustomFieldManager:load()
     self.fields = {}
     self.fileSystem:refresh()
-    local entries = self.rootDir:getEntries(false,true)
+    local entries = self.rootDir:getEntries(false, true)
     for i, entry in pairs(entries) do
         table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
@@ -52,7 +52,7 @@ function CustomFieldManager:getNewFieldNumber()
         if name:startsWith("CP-") then 
             local n = entry:getFieldNumber()
             if n then 
-                table.insert(numbers,entry)
+                table.insert(numbers, entry)
             end
         end
     end
@@ -92,12 +92,12 @@ function CustomFieldManager:deleteField(fieldToDelete)
     })
 end
 
-function CustomFieldManager:renameField(field,hotspot)
+function CustomFieldManager:renameField(field, hotspot)
     g_gui:showTextInputDialog({
 		disableFilter = true,
 		callback = CustomFieldManager.onClickRenameDialog,
 		target = self,
-		defaultText = "",
+		defaultText = field:getName() or "",
 		dialogPrompt = g_i18n:getText("CP_customFieldManager_rename"),
 		maxCharacters = 30,
 		confirmText = g_i18n:getText("button_ok"),
@@ -168,15 +168,15 @@ function CustomFieldManager:onClickDeleteDialog(clickOk, fieldToDelete)
     end
 end
 
-function CustomFieldManager:onClickRenameDialog(newName,clickOk,fieldToRename)
+function CustomFieldManager:onClickRenameDialog(newName, clickOk, fieldToRename)
     newName = CpUtil.cleanFilePath(newName)
     if clickOk then
-        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Trying to rename custom field from %s to %s.', fieldToRename:getName(),newName)
+        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Trying to rename custom field from %s to %s.', fieldToRename:getName(), newName)
         for i, field in pairs(self.fields) do
             if field == fieldToRename then
                 local file = self.currentView:getEntryByName(fieldToRename.name)
                 if file then 
-                    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(),newName)
+                    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(), newName)
                     if file:rename(newName) then 
                         fieldToRename:setName(newName)
                         self.fileSystem:refresh()
@@ -204,7 +204,7 @@ function CustomFieldManager:draw(map)
 end
 
 function CustomFieldManager:delete()
-    for _,field in pairs(self.fields) do 
+    for _, field in pairs(self.fields) do 
         field:delete()
     end
 end
@@ -213,7 +213,7 @@ end
 --- Gets refresh on opening of the ai page in the in game menu.
 function CustomFieldManager:refresh()
     self.fileSystem:refresh()
-    local entries = self.rootDir:getEntries(false,true)
+    local entries = self.rootDir:getEntries(false, true)
     for i = #self.fields, 1, -1 do 
         local foundIx = nil
         for j = #entries, 1, -1 do 
@@ -223,15 +223,15 @@ function CustomFieldManager:refresh()
             end
         end
         if foundIx then 
-            table.remove(entries,foundIx)
+            table.remove(entries, foundIx)
         else 
-            CpUtil.debugFormat(CpDebug.DBG_COURSES,"Removed not saved hotspot %s.", self.fields[i]:getName())
+            CpUtil.debugFormat(CpDebug.DBG_COURSES, "Removed not saved hotspot %s.", self.fields[i]:getName())
             self.fields[i]:delete()
-            table.remove(self.fields,i)
+            table.remove(self.fields, i)
         end
     end
     for i, entry in pairs(entries) do
-        CpUtil.debugFormat(CpDebug.DBG_COURSES,"Added new hotspot %s from filesystem.", entry:getName())
+        CpUtil.debugFormat(CpDebug.DBG_COURSES, "Added new hotspot %s from filesystem.", entry:getName())
         table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
 end

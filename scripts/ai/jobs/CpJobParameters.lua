@@ -34,7 +34,7 @@ function CpJobParameters:init(job)
 end
 
 function CpJobParameters.registerXmlSchema(schema, baseKey)
-    CpSettingsUtil.registerXmlSchema(schema, baseKey..CpJobParameters.xmlKey.."(?)")
+    CpSettingsUtil.registerXmlSchema(schema, baseKey .. CpJobParameters.xmlKey.."(?)")
 end
 
 function CpJobParameters.getSettings(vehicle)
@@ -98,6 +98,20 @@ end
 
 function CpJobParameters:lessThanThreeMultiTools()
     return self:getMultiTools() < 4
+end
+
+function CpJobParameters:isAIMenuJob()
+    return not self.job:getIsHudJob()
+end
+
+function CpJobParameters:isBunkerSiloHudModeDisabled()
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        if not vehicle:getCanStartCpBunkerSiloWorker() then 
+            return true
+        end
+    end
+    return self:isAIMenuJob()
 end
 
 --- AI parameters for the bale finder job.
@@ -168,4 +182,29 @@ end
 
 function CpCombineUnloaderJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAICombineUnloader.cpJob:getCpJobParameters()
+end
+--- AI parameters for the bunker silo job.
+---@class CpBunkerSiloJobParameters
+CpBunkerSiloJobParameters = CpObject(CpJobParameters)
+
+function CpBunkerSiloJobParameters:init(job)
+    if not CpBunkerSiloJobParameters.settings then
+        local filePath = Utils.getFilename(self.baseFilePath .."BunkerSiloJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        -- initialize the class members first so the class can be used to access constants, etc.
+        CpSettingsUtil.loadSettingsFromSetup(CpBunkerSiloJobParameters, filePath)
+    end
+    CpSettingsUtil.cloneSettingsTable(self, CpBunkerSiloJobParameters.settings, nil, self)
+    self.job = job
+end
+
+function CpBunkerSiloJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAIBunkerSiloWorker.cpJob:getCpJobParameters()
+end
+
+function CpBunkerSiloJobParameters:isDrivingForwardsIntoSiloSettingVisible()
+    local vehicle = self.job:getVehicle()
+    if vehicle then
+        return not AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler)
+    end
+    return true
 end

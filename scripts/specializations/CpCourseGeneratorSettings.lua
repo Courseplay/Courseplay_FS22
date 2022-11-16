@@ -210,7 +210,7 @@ end
 
 --- Only show the work width, if the bale finder can't be started.
 function CpCourseGeneratorSettings:isWorkWidthSettingVisible()
-    return not self:getCanStartCpBaleFinder()
+    return not self:getCanStartCpBaleFinder() and not self:getCanStartCpBunkerSiloWorker()
 end
 
 --- Updates the layout on change, as gui elements might change their visibility.

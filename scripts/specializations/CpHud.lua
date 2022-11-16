@@ -34,7 +34,7 @@ function CpHud.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpHud)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpHud)
-    SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpHud)
@@ -51,6 +51,10 @@ function CpHud.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, 'resetCpHud', CpHud.resetCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'closeCpHud', CpHud.closeCpHud)
 	SpecializationUtil.registerFunction(vehicleType, 'getCpHud', CpHud.getCpHud)
+
+    SpecializationUtil.registerFunction(vehicleType, 'showCpBunkerSiloWorkWidth', CpHud.showCpBunkerSiloWorkWidth)
+    SpecializationUtil.registerFunction(vehicleType, 'showCpCombineUnloaderWorkWidth', CpHud.showCpCombineUnloaderWorkWidth)
+    SpecializationUtil.registerFunction(vehicleType, 'showCpCourseWorkWidth', CpHud.showCpCourseWorkWidth)
 end
 
 function CpHud.registerOverwrittenFunctions(vehicleType)
@@ -211,18 +215,10 @@ function CpHud:onLeaveVehicle(wasEntered)
 end
 
 --- Enriches the status data for the hud here.
-function CpHud:onUpdateTick()
+function CpHud:onUpdate(dt)
     local spec = self.spec_cpHud
-    local strategy
-    if self:getIsCpActive() then 
-        strategy = self:getCpDriveStrategy()
-        if strategy then
-            strategy:updateCpStatus(spec.status)
-        end
-        spec.status:setActive(true)
-    else 
-        spec.status:reset()
-    end
+    local strategy = self:getCpDriveStrategy()
+    spec.status:update(dt, self:getIsCpActive(), strategy)
 end
 
 function CpHud:onDraw()
@@ -230,12 +226,33 @@ function CpHud:onDraw()
     spec.hud:draw(spec.status)
 	if spec.hud:getIsOpen() then 
 		if spec.lastShownWorkWidthTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
-			WorkWidthUtil.showWorkWidth(self,
+            if spec.hud:isBunkerSiloLayoutActive() then 
+                CpHud.showCpBunkerSiloWorkWidth(self)
+            elseif spec.hud:isCombineUnloaderLayoutActive() then
+                CpHud.showCpCombineUnloaderWorkWidth(self)
+            else
+                CpHud.showCpCourseWorkWidth(self)
+            end
+		end
+	end
+end
+
+function CpHud:showCpBunkerSiloWorkWidth()
+	WorkWidthUtil.showWorkWidth(self, self:getCpSettings().bunkerSiloWorkWidth:getValue(), 0, 0)
+end
+
+function CpHud:showCpCombineUnloaderWorkWidth()
+	WorkWidthUtil.showWorkWidth(self,
 										self:getCourseGeneratorSettings().workWidth:getValue(),
 											self:getCpSettings().toolOffsetX:getValue(),
 											self:getCpSettings().toolOffsetZ:getValue())
-		end
-	end
+end
+
+function CpHud:showCpCourseWorkWidth()
+	WorkWidthUtil.showWorkWidth(self,
+										self:getCourseGeneratorSettings().workWidth:getValue(),
+											self:getCpSettings().toolOffsetX:getValue(),
+											0)
 end
 
 function CpHud:cpShowWorkWidth()

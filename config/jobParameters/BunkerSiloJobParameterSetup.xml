@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	Bale finder ai parameters.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_bunkerSiloJobParameters_">
+	<SettingSubTitle title="drivingForwardsIntoSilo">
+		<Setting classType="AIParameterBooleanSetting" name="drivingForwardsIntoSilo" defaultBool="true" isVisible="isDrivingForwardsIntoSiloSettingVisible">
+			<Texts>
+				<Text>reverse</Text>
+				<Text>forwards</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+	<SettingSubTitle title="waitAtParkPosition">
+		<Setting classType="AIParameterBooleanSetting" name="waitAtParkPosition" defaultBool="false">
+			<Texts>
+				<Text>silo</Text>
+				<Text>parkPosition</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+</Settings>

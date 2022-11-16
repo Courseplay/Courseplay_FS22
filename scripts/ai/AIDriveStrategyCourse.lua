@@ -127,7 +127,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
         -- some strategies do not need a recorded or generated course to work, they
         -- will create the courses on the fly.
         self:debug('Vehicle has no course, start work without it.')
-        self:startWithoutCourse()
+        self:startWithoutCourse(jobParameters)
     end
     self:raiseControllerEvent(self.onStartEvent)
 end
@@ -185,7 +185,7 @@ function AIDriveStrategyCourse:start(course, startIx, jobParameters)
     self.state = self.states.INITIAL
 end
 
-function AIDriveStrategyCourse:startWithoutCourse()
+function AIDriveStrategyCourse:startWithoutCourse(jobParameters)
 end
 
 function AIDriveStrategyCourse:updateCpStatus(status)
@@ -276,6 +276,16 @@ function AIDriveStrategyCourse:raiseImplements()
     self:raiseControllerEvent(self.onRaisingEvent)
 end
 
+function AIDriveStrategyCourse:lowerImplements()    
+    --- Lowers all implements, that are available for the giants field worker.
+    for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
+        implement.object:aiImplementStartLine()
+    end
+    self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
+    --- Lowers implements, that are not covered by giants.
+    self:raiseControllerEvent(self.onLoweringEvent)
+end
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
@@ -354,7 +364,7 @@ function AIDriveStrategyCourse:isActiveCpCombine(vehicle)
         return false
     end
     local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-    return driveStrategy.callUnloader ~= nil
+    return driveStrategy and driveStrategy.callUnloader ~= nil
 end
 
 function AIDriveStrategyCourse:update()
@@ -576,7 +586,7 @@ function AIDriveStrategyCourse:isCloseToCourseStart(distance)
     return self.course:getDistanceFromFirstWaypoint(self.ppc:getCurrentWaypointIx()) < distance
 end
 
---- Event raised when the drive is finished.
+--- Event raised when the driver has finished.
 --- This gets called in the :stopCurrentAIJob(), as the giants code might stop the driver and not the active strategy.
 function AIDriveStrategyCourse:onFinished()
     self:raiseControllerEvent(self.onFinishedEvent)

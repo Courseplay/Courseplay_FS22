@@ -21,16 +21,19 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Az ürítő jármű túl messze van a mezőtől."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="A kezdő pozíció túl messze van a mezőtől."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Szántóföld:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Útvonal kezdete:"/>
     <text name="CP_jobParameters_startAt_title" text="Útvonal kezdete:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Melyik útvonalpontnál kezdje a munkát"/>
     <text name="CP_jobParameters_startAt_nearest" text="legközelebbi pont"/>
     <text name="CP_jobParameters_startAt_first" text="első pont"/>
     <text name="CP_jobParameters_startAt_last" text="utoljára használt pont"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
     <text name="CP_jobParameters_startAt_unload" text="kirakodó kombájn/aprító"/>
     <text name="CP_jobParameters_startAt_bales" text="bálák összegyűjtése/csomagolása"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Konvoj pozíció:"/>
@@ -56,11 +59,23 @@
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
     <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Terepmunka"/>
     <text name="CP_job_baleCollect" text="CP: Bálagyűjtés/csomagolás"/>
     <text name="CP_job_combineUnload" text="CP: Kombájn ürítése"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
     <text name="CP_ai_page_generate_course" text="CP: Útvonaltervezés"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Útvonaltervező megnyitása/zárása."/>
     <!---->
@@ -121,6 +136,17 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Szimmetrikus sávváltás"/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Követési távolság"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Követési távolság ha több gép dolgozik ugyanazon a táblán. 40 - 400 m"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Jármű hibakeresés"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Engedélyezi/letiltja a hibakeresést ennél a járműnél."/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
     <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Terepmunka"/>
     <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximális sebesség terepen végzett munka közben. 5 - 50 km/ó"/>
     <text name="CP_vehicle_setting_fieldSpeed_title" text="Terület"/>
@@ -129,8 +155,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximális sebesség forduló közben. 2 - 25 km/ó"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Tolatás"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximális sebesség tolatás közben. 2 - 25 km/ó"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Jármű hibakeresés"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Engedélyezi/letiltja a hibakeresést ennél a járműnél."/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -338,6 +364,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
     <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Útvonal nem található"/>

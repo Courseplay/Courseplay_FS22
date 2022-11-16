@@ -7,35 +7,52 @@ function CpStatus:init(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
     self.dirtyFlag = self.vehicle:getNextDirtyFlag()
 end
 
-function CpStatus:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints, timeRemaining)
+function CpStatus:set(isActive, vehicle, currentWaypointIx, numberOfWaypoints)
     self.isActive = isActive
     self.vehicle = vehicle
     self.currentWaypointIx = currentWaypointIx
     self.numberOfWaypoints = numberOfWaypoints
-    self.timeRemaining = timeRemaining
 end
 
 function CpStatus:reset()
     self.isActive = false
     self.currentWaypointIx = nil
     self.numberOfWaypoints = nil
-    self.timeRemaining = 0
+    self.remainingTimeText = ""
+end
+
+function CpStatus:start()
+    
 end
 
 function CpStatus:setActive(active)
     if self.isActive ~= active then 
         self.isActive = active
         self:raiseDirtyFlag()
+        if not active then 
+            self:reset()
+        else 
+            self:start()
+        end
     end
 end
 
-function CpStatus:setWaypointData(currentWaypointIx,numberOfWaypoints,timeRemaining)
+function CpStatus:update(dt, isActive, strategy)
+    if isActive then 
+        if strategy then
+            strategy:updateCpStatus(self)
+        end
+    end 
+    self:setActive(isActive)
+end
+
+function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainingTimeText)
     if self.currentWaypointIx ~= currentWaypointIx then 
         self.currentWaypointIx = currentWaypointIx
         self.numberOfWaypoints = numberOfWaypoints
+        self.remainingTimeText = remainingTimeText
         self:raiseDirtyFlag()
     end
-    self.timeRemaining = timeRemaining
 end
 
 function CpStatus:getWaypointText()
@@ -46,10 +63,7 @@ function CpStatus:getWaypointText()
 end
 
 function CpStatus:getTimeRemainingText()
-    if self.isActive and self.timeRemaining then
-        return self.timeRemaining and CpGuiUtil.getFormatTimeText(self.timeRemaining) or "WIP"
-    end 
-    return '--/--'
+    return self.remainingTimeText
 end
 
 function CpStatus:getIsActive()
@@ -62,16 +76,18 @@ end
 
 function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
 	if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, self.dirtyFlag) ~= 0) then
-		streamWriteInt32(streamId,self.numberOfWaypoints or 0)
-        streamWriteInt32(streamId,self.currentWaypointIx or 0)
-        streamWriteBool(streamId,self.isActive or false)
+		streamWriteInt32(streamId, self.numberOfWaypoints or 0)
+        streamWriteInt32(streamId, self.currentWaypointIx or 0)
+        streamWriteBool(streamId, self.isActive or false)
+        streamWriteString(streamId, self.remainingTimeText)
 	end
 end
 
 function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
 	if connection:getIsServer() and streamReadBool(streamId) then
-        self.numberOfWaypoints = streamReadInt32(streamId,self.numberOfWaypoints)
-        self.currentWaypointIx = streamReadInt32(streamId,self.currentWaypointIx)
-        self.isActive = streamReadBool(streamId,self.currentWaypointIx)
+        self.numberOfWaypoints = streamReadInt32(streamId)
+        self.currentWaypointIx = streamReadInt32(streamId)
+        self.isActive = streamReadBool(streamId)
+        self.remainingTimeText = streamReadString(streamId)
 	end
 end

@@ -120,20 +120,20 @@ end
 
 -- Draw the waypoints in the screen area defined in new(), the bottom left corner
 -- is at worldX/worldZ coordinates, the size shown is worldWidth wide (and high)
-function CoursePlot:drawPoints(map, isHudMap)
+function CoursePlot:drawPoints(map, points, isHudMap)
 	local lineThickness = self.lineThickness
 	if isHudMap then 
 		lineThickness = lineThickness/2
 	end
 	local mapRotation = map.layout:getMapRotation()
-	if self.waypoints and #self.waypoints > 1 then
+	if points and #points > 1 then
 		-- I know this is in helpers.lua already but that code has too many dependencies
 		-- on global variables and vehicle.cp.
 		local wp, np, startX, startY, endX, endY, dx, dz, dx2D, dy2D, width, rotation, r, g, b, sv, ev
 		-- render a line between subsequent waypoints
-		for i = 1, #self.waypoints - 1 do
-			wp = self.waypoints[ i ]
-			np = self.waypoints[ i + 1 ]
+		for i = 1, #points - 1 do
+			wp = points[ i ]
+			np = points[ i + 1 ]
 
 			startX, startY, _, sv = self:worldToScreen(map, wp.x, wp.z, isHudMap)
 			endX, endY, _, ev = self:worldToScreen(map, np.x, np.z, isHudMap)
@@ -147,7 +147,7 @@ function CoursePlot:drawPoints(map, isHudMap)
 				dx = np.x - wp.x
 				dz = np.z - wp.z
 				rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5 + mapRotation
-				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress)
+				r, g, b = MathUtil.vector3ArrayLerp(self.lightColor, self.darkColor, wp.progress or 1)
 				setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
 				setOverlayRotation( self.courseOverlayId, rotation, 0, 0 )
 				renderOverlay( self.courseOverlayId, startX, startY, width, lineThickness )
@@ -162,7 +162,7 @@ function CoursePlot:draw(map, isHudMap)
 
 	if not self.isVisible then return end
 
-	self:drawPoints(map, isHudMap)
+	self:drawPoints(map, self.waypoints, isHudMap)
 
 	-- render the start and stop signs
 

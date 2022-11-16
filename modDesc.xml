@@ -120,11 +120,15 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/Course.lua"/>
 		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
 		<sourceFile filename="scripts/util/MovingAverage.lua"/>
+		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
 		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
 		<sourceFile filename="scripts/field/CustomField.lua"/>
 		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
 		<sourceFile filename="scripts/field/FieldScanner.lua"/>
 		<sourceFile filename="scripts/field/VineScanner.lua"/>
+		<sourceFile filename="scripts/silo/BunkerSiloVehicleController.lua"/>
+		<sourceFile filename="scripts/silo/BunkerSiloWrapper.lua"/>
+		<sourceFile filename="scripts/silo/BunkerSiloManager.lua"/>
 		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
 		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
 		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
@@ -152,6 +156,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyUnloadCombine.lua"/>
 		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/AIMessages.lua"/>
 		<sourceFile filename="scripts/ai/Markers.lua"/>
 		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
@@ -178,6 +183,8 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/controllers/SoilSamplerController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/PipeController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/CoverController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/LevelerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BunkerSiloCompacterController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
@@ -194,16 +201,19 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/jobs/CpAIJobFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobBaleFinder.lua"/>
 		<sourceFile filename="scripts/ai/jobs/CpAIJobCombineUnloader.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobBunkerSilo.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskCombineUnloader.lua"/>
 		<sourceFile filename="scripts/ai/tasks/CpAITaskDriveTo.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskBunkerSilo.lua"/>
 		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
 		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
 		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
 		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
 		<sourceFile filename="scripts/gui/FieldPlot.lua"/>
+		<sourceFile filename="scripts/gui/BunkerSiloPlot.lua"/>
 		<sourceFile filename="scripts/gui/CpStatus.lua"/>
 		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>
 		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>
@@ -218,6 +228,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/gui/hud/CpFieldworkHudPage.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpBaleFinderHudPage.lua"/>
 		<sourceFile filename="scripts/gui/hud/CpCombineUnloaderHudPage.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpBunkerSiloWorkerHudPage.lua"/>
 		<sourceFile filename="scripts/editor/brushes/BaseBrush.lua"/>
 		<sourceFile filename="scripts/editor/brushes/basic/InsertWaypoint.lua"/>
 		<sourceFile filename="scripts/editor/brushes/basic/MoveWaypoint.lua"/>
@@ -247,6 +258,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
 		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
 		<specialization name="cpAICombineUnloader" className="CpAICombineUnloader" filename="scripts/specializations/CpAICombineUnloader.lua"/>
+		<specialization name="cpAIBunkerSiloWorker" className="CpAIBunkerSiloWorker" filename="scripts/specializations/CpAIBunkerSiloWorker.lua"/>
 		<specialization name="cpGamePadHud" className="CpGamePadHud" filename="scripts/specializations/CpGamePadHud.lua"/>
 		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
 		<specialization name="cpInfoTexts" className="CpInfoTexts" filename="scripts/specializations/CpInfoTexts.lua"/>
