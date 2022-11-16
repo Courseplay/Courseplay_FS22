@@ -328,6 +328,13 @@ You can define the following custom settings:
     />
 
     <!--Implements-->
+    <!--Mod: Kinze Wagon Pack-->
+    <Vehicle name="wagon851.xml"
+             turnRadius="12"
+    />
+    <Vehicle name="wagon1051.xml"
+             turnRadius="15"
+    />
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
              toolOffsetX="2.1"

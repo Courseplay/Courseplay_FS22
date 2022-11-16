@@ -283,6 +283,7 @@ function CpBaseHud:init(vehicle)
     self.baseHud:setVisible(false)
 
     self.baseHud:setScale(self.uiScale, self.uiScale)
+    self.driveNowBtn:setTextDetails("DriveNow WIP")
 end
 
 function CpBaseHud:addLeftLineTextButton(parent, line, textSize, callbackFunc, callbackClass)
