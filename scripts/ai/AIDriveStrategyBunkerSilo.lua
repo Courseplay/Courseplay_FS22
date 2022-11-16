@@ -94,7 +94,9 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
 
     if self.leveler then 
-        if AIUtil.isObjectAttachedOnTheBack(self.vehicle, self.leveler) then 
+        local directionNode = self.vehicle:getAIDirectionNode()
+        local _, _, dz = localToLocal(self.leveler.rootNode, directionNode, 0, 0, 0)
+        if dz < 0 then
             self.drivingForwardsIntoSilo = false
         end
     else 
