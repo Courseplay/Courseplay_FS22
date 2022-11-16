@@ -134,21 +134,24 @@ end
 function CpAIWorker:updateActionEvents()
     local spec = self.spec_cpAIWorker
     local giantsSpec = self.spec_aiJobVehicle
-	if self.isActiveForInputIgnoreSelectionIgnoreAI and giantsSpec.supportsAIJobs then
+    if self.isActiveForInputIgnoreSelectionIgnoreAI and giantsSpec.supportsAIJobs then
         local actionEvent = spec.actionEvents[InputAction.CP_START_STOP]
-
+        if not actionEvent then
+            --- No action events registered.
+            return
+        end
         if self:getShowAIToggleActionEvent() then
             if self:getIsAIActive() then
                 g_inputBinding:setActionEventText(actionEvent.actionEventId, "CP: "..giantsSpec.texts.dismissEmployee)
             else
                 local text = string.format("CP: %s\n(%s)", giantsSpec.texts.hireEmployee, self:getCpStartText())
-			    g_inputBinding:setActionEventText(actionEvent.actionEventId, text)
+                g_inputBinding:setActionEventText(actionEvent.actionEventId, text)
             end
 
-			g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
-		else
-			g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
-		end
+            g_inputBinding:setActionEventActive(actionEvent.actionEventId, true)
+        else
+            g_inputBinding:setActionEventActive(actionEvent.actionEventId, false)
+        end
         actionEvent = spec.actionEvents[InputAction.CP_CHANGE_STARTING_POINT]
         local startingPointSetting = self:getCpStartingPointSetting()
         g_inputBinding:setActionEventText(actionEvent.actionEventId, string.format("CP: %s %s", startingPointSetting:getTitle(), startingPointSetting:getString()))
