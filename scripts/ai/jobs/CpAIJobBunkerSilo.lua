@@ -158,3 +158,11 @@ function CpAIJobBunkerSilo:loadFromXMLFile(xmlFile, key)
 	CpAIJobBunkerSilo:superClass().loadFromXMLFile(self, xmlFile, key)
 	self.cpJobParameters:loadFromXMLFile(xmlFile, key)
 end
+
+function CpAIJobBunkerSilo:readStream(streamId, connection)
+	CpAIJobBunkerSilo:superClass().readStream(self, streamId, connection)
+	local vehicle = self:getVehicle()
+	if vehicle then 
+		vehicle:applyCpBunkerSiloWorkerJobParameters(self)
+	end
+end
