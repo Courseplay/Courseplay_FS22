@@ -166,10 +166,9 @@ function AIDriveStrategyBunkerSilo:setSilo(silo)
 	self.silo = silo	
 end
 
-function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition)
-    self.parkPosition = parkPosition    
-    if self.parkPosition.x ~= nil and self.parkPosition.z ~= nil and self.parkPosition.angle ~= nil then
-        self.parkNode = CpUtil.createNode("parkNode", self.parkPosition.x, self.parkPosition.z, self.parkPosition.angle)
+function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition) 
+    if parkPosition ~= nil and parkPosition.x ~= nil and parkPosition.z ~= nil and parkPosition.angle ~= nil then
+        self.parkNode = CpUtil.createNode("parkNode", parkPosition.x, parkPosition.z, parkPosition.angle)
     end
 end
 
