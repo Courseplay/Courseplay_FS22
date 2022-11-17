@@ -164,9 +164,14 @@ function CpAIJobBunkerSilo:readStream(streamId, connection)
 	local x, z = self.fieldPositionParameter:getPosition()
 	self.hasValidPosition, self.bunkerSilo =  g_bunkerSiloManager:getBunkerSiloAtPosition(x, z)
 	self.bunkerSiloTask:setSilo(self.bunkerSilo)
+	local x, z = self.positionAngleParameter:getPosition()
+	local angle = self.positionAngleParameter:getAngle()
+	local dirX, dirZ = self.positionAngleParameter:getDirection()
+	self.bunkerSiloTask:setParkPosition(x, z, angle, dirX, dirZ)
 end
 
 function CpAIJobBunkerSilo:writeStream(streamId, connection)
 	CpAIJobBunkerSilo:superClass().writeStream(self, streamId, connection)
 	self.fieldPositionParameter:writeStream(streamId, connection)
+	self.positionAngleParameter:writeStream(streamId, connection)
 end

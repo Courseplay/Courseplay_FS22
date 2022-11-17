@@ -92,7 +92,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     end
 
     self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
-
+    self:debug("Wait at park position: %s", tostring(jobParameters.waitAtParkPosition:getValue()))
     if self.leveler then 
         local directionNode = self.vehicle:getAIDirectionNode()
         local _, _, dz = localToLocal(self.leveler.rootNode, directionNode, 0, 0, 0)
@@ -100,6 +100,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
             self.drivingForwardsIntoSilo = false
         end
     else 
+        self:debug("Should drive forwards into the silo: %s", tostring(jobParameters.drivingForwardsIntoSilo:getValue()))
         self.drivingForwardsIntoSilo = jobParameters.drivingForwardsIntoSilo:getValue()
     end
 
@@ -177,6 +178,7 @@ end
 function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition) 
     if parkPosition ~= nil and parkPosition.x ~= nil and parkPosition.z ~= nil and parkPosition.angle ~= nil then
         self.parkNode = CpUtil.createNode("parkNode", parkPosition.x, parkPosition.z, parkPosition.angle)
+        self:debug("Valid park position set.")
     end
 end
 
