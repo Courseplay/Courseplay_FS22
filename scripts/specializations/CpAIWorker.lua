@@ -60,6 +60,8 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
     SpecializationUtil.registerFunction(vehicleType, "freezeCp", CpAIWorker.freezeCp)
     SpecializationUtil.registerFunction(vehicleType, "unfreezeCp", CpAIWorker.unfreezeCp)
+
+    SpecializationUtil.registerFunction(vehicleType, "cpHold", CpAIWorker.cpHold)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -362,6 +364,14 @@ end
 --- Unfreeze, continue work normally.
 function CpAIWorker:unfreezeCp()
     self:getCpDriveStrategy():unfreeze()
+end
+
+--- Holds the driver for a given amount of milliseconds.
+function CpAIWorker:cpHold(ms)
+    local strategy = self:getCpDriveStrategy()
+    if strategy then
+        return strategy:hold(ms)
+    end
 end
 
 function CpAIWorker:stopFieldWorker(superFunc, ...)

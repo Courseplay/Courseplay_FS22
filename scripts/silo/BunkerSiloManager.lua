@@ -30,6 +30,9 @@ end
 ---@return boolean bunker silo was found ?
 ---@return BunkerSilo
 function BunkerSiloManager:getBunkerSiloAtPosition(tx, tz)
+	if tx == nil or tz == nil then 
+		return false, nil
+	end
 	for _, silo in pairs(self.silos) do 
 		if silo:isPointInSilo(tx, tz) then 
 			return true, silo
