@@ -2,9 +2,7 @@
 ---@class CpAIJobCombineUnloader : CpAIJobFieldWork
 CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
-	translations = {
-		jobName = "CP_job_combineUnload"
-	},
+	jobName = "CP_job_combineUnload",
 	minStartDistanceToField = 20
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork)
@@ -12,7 +10,6 @@ local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork
 
 function CpAIJobCombineUnloader.new(isServer, customMt)
 	local self = CpAIJobFieldWork.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
-
 	--- Giants unload
 	self.dischargeNodeInfos = {}
 	return self

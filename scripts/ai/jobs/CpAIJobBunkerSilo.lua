@@ -2,10 +2,9 @@
 ---@class CpAIJobBunkerSilo : CpAIJobFieldWork
 CpAIJobBunkerSilo = {
 	name = "BUNKER_SILO_CP",
-	translations = {
-		jobName = "CP_job_bunkerSilo",
-		fieldPositionParameter = "CP_jobParameters_bunkerSiloPosition_title"
-	}
+	jobName = "CP_job_bunkerSilo",
+	fieldPositionParameterText = "CP_jobParameters_bunkerSiloPosition_title",
+	targetPositionParameterText = "CP_jobParameters_parkPosition_title",
 }
 local CpAIJobBunkerSilo_mt = Class(CpAIJobBunkerSilo, CpAIJobFieldWork)
 

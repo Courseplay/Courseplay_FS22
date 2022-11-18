@@ -82,7 +82,17 @@ function CpBunkerSilo:initialize()
 
 
 	self.plot:setAreas(self:getPlotAreas())
+	self.initialized = true
 end
+
+
+function CpBunkerSilo.readStreamSilo(silo, ...)
+	local wrapper = g_bunkerSiloManager:getSiloWrapperByNode(silo.interactionTriggerNode)
+	if wrapper then 
+		wrapper:initialize()
+	end
+end
+BunkerSilo.readStream = Utils.appendedFunction(BunkerSilo.readStream, CpBunkerSilo.readStreamSilo)
 
 function CpBunkerSilo:rayCastCallbackOneSidedSilo(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
 	if hitObjectId then 
@@ -233,7 +243,6 @@ end
 function CpBunkerSilo:update(dt)
 	if not self.initialized then 
 		self:initialize()
-		self.initialized = true
 	end
 
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.

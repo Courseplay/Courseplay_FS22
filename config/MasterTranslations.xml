@@ -77,6 +77,10 @@
 			<Text language="de"><![CDATA[Silo Position:]]></Text>
 			<Text language="en"><![CDATA[Silo position:]]></Text>
 		</Translation>
+		<Translation name="CP_jobParameters_parkPosition_title">
+			<Text language="de"><![CDATA[Park Position:]]></Text>
+			<Text language="en"><![CDATA[Park position:]]></Text>
+		</Translation>
 		<Translation name="CP_jobParameters_subTitle_startAt">
 			<Text language="de"><![CDATA[Start am:]]></Text>
 			<Text language="en"><![CDATA[Start at:]]></Text>

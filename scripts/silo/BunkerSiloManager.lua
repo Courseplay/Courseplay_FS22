@@ -42,7 +42,7 @@ function BunkerSiloManager:getBunkerSiloAtPosition(tx, tz)
 end
 
 function BunkerSiloManager:getSiloWrapperByNode(node)
-	return self.silos[node]
+	return node and self.silos[node]
 end
 
 function BunkerSiloManager:update(dt)
