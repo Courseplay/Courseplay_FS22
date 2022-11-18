@@ -447,6 +447,11 @@ end
 ---@return table all found vehicles/implements
 ---@return boolean at least one vehicle/implement was found
 function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
+	if vehicle == nil then
+		printCallstack() 
+		CpUtil.info("Vehicle is nil!")
+		return {}, false
+	end
 	local validVehicles = {}
 	for _, childVehicle in pairs(vehicle:getChildVehicles()) do
 		if specializationReference and childVehicle[specializationReference] then
