@@ -19,15 +19,15 @@
     <text name="CP_error_could_not_generate_course" text="Impossibile generare il percorso. Il registro potrebbe contenere più informazioni."/>
     <text name="CP_error_not_on_field" text="L'obiettivo non si trova su di un campo!"/>
     <text name="CP_error_unloader_to_far_away_from_field" text="Scaricatore lontano dal campo."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Posizione di partenza troppo lontana dal campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Posizione del campo:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posizione silos:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Posizione parcheggio:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Iniziare da:"/>
     <text name="CP_jobParameters_startAt_title" text="Iniziare da:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Da dove iniziare il lavoro sul campo"/>
@@ -62,14 +62,14 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direzione nel silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direzione nel silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="In avanti"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Inversione"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="In attesa scarico:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="In attesa scarico:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="nel silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="in posizione di parcheggio"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -142,9 +142,9 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Impostazioni del lavoratore del silos"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Larghezza di lavoro"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Larghezza di lavoro. Valore: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -157,7 +157,7 @@
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Retromarcia"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Velocità massima in retromarcia. Intervallo: 2 - 25"/>
     <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silo. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -670,16 +670,16 @@ Una modifica errata potrebbe causare problemi al driver cp, poiché i waypoint h
 "/>
     <text name="CP_help_page_editorBasic_text" text="
 Sotto la categoria base ci sono:
-1) Il movimento pennello sposta un waypoint sospeso nella posizione del pennello.
-2) Il pennello di inserimento può inserire waypoint davanti o dietro a un waypoint selezionato.
+1) Il movimento pennello sposta un punto di passaggio sospeso nella posizione del pennello.
+2) Il pennello di inserimento può inserire punto di passaggio davanti o dietro a un punto di passaggio selezionato.
 
-L'eliminazione dei waypoint può essere eseguita con il pulsante rosso di eliminazione.
+L'eliminazione dei punto di passaggio può essere eseguita con il pulsante rosso di eliminazione.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Nella categoria avanzata ci sono:
-1) Un pennello per spostare più waypoint tra i waypoint selezionati.
-2) Un pennello per inserire una curva di waypoint tra i waypoint selezionati.
-3) Un pennello per impostare l'attributo virata di un waypoint (solo con una rotta e non un campo personalizzato).
+1) Un pennello per spostare più punto di passaggio tra i punto di passaggio selezionati.
+2) Un pennello per inserire una curva di punto di passaggio tra i punto di passaggio selezionati.
+3) Un pennello per impostare l'attributo virata di un punto di passaggio (solo con una rotta e non un campo personalizzato).
 "/>
     <!---->
     <!--Input bindings-->
