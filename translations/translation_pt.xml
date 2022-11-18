@@ -27,6 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Posição de campo:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Começa hás:"/>
     <text name="CP_jobParameters_startAt_title" text="Começa hás:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Por onde começar o trabalho de campo"/>

@@ -27,6 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="フィールドポジション（開始地点）"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="開始地点:"/>
     <text name="CP_jobParameters_startAt_title" text="開始地点:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="野外作業の開始地点"/>
