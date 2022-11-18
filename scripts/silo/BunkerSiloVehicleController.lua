@@ -134,6 +134,10 @@ function CpBunkerSiloVehicleController:hasNearbyUnloader()
 	return self.silo:hasNearbyUnloader()
 end
 
+function CpBunkerSiloVehicleController:isWaiting()
+	return self:isWaitingAtParkPosition() or self:isWaitingForUnloaders()
+end
+
 function CpBunkerSiloVehicleController:isWaitingForUnloaders()
 	return self.driveStrategy:isWaitingForUnloaders()
 end
