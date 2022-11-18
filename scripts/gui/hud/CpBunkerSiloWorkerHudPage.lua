@@ -66,10 +66,12 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
 	local driveDirection = vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo
     self.driveDirectionBtn:setTextDetails(driveDirection:getTitle(), driveDirection:getString())
     self.driveDirectionBtn:setVisible(driveDirection:getIsVisible())
+    self.driveDirectionBtn:setDisabled(driveDirection:getIsDisabled())
 
     local waitAt = vehicle:getCpBunkerSiloWorkerJobParameters().waitAtParkPosition
     self.waitAtBtn:setTextDetails(waitAt:getTitle(), waitAt:getString())
     self.waitAtBtn:setVisible(waitAt:getIsVisible())
+    self.waitAtBtn:setDisabled(waitAt:getIsDisabled())
 
 	local workWidth = vehicle:getCpSettings().bunkerSiloWorkWidth
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
