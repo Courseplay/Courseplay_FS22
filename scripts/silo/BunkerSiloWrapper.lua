@@ -401,7 +401,7 @@ end
 function CpBunkerSilo:shouldUnloadersWaitForSiloWorker()
 	local needsWaiting = false
 	for i, controller in pairs(self.controllers) do 
-		needsWaiting = needsWaiting or not controller:isWaiting() 
+		needsWaiting = needsWaiting or controller:isWaitingAtParkPosition() 
 	end
 	return needsWaiting
 end
