@@ -445,10 +445,8 @@ function CpBunkerSilo:updateUnloaders(dt)
 	if self:shouldUnloadersWaitForSiloWorker() then
 		--- Makes sure the AD driver wait for the silo worker. 
 		for i, unloader in pairs(self.nearbyUnloaders) do
-			local autodriveSpec = unloader.spec_autodrive 
-			if autodriveSpec.HoldDriving then
-				 
-				autodriveSpec:HoldDriving()
+			if unloader.spec_autodrive and unloader.spec_autodrive.HoldDriving then 
+				unloader.spec_autodrive.HoldDriving()
 			end
 		end
 	end
