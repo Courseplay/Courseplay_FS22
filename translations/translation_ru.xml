@@ -27,7 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Положение на поле:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Положение перед ямой:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Положение парковки:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Начать с:"/>
     <text name="CP_jobParameters_startAt_title" text="Начать с:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="С какого момента начать работу."/>
