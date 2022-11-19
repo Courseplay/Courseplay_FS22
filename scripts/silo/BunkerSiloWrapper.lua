@@ -2,8 +2,8 @@
 --- Wrapper for a bunker silo.
 CpBunkerSilo = CpObject()
 
-CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 25
-CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 15
+CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 30
+CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 20
 CpBunkerSilo.DRAW_DEBUG = false
 CpBunkerSilo.SIDE_MODES = {
 	OPEN = 0,
@@ -400,7 +400,7 @@ end
 
 function CpBunkerSilo:shouldUnloadersWaitForSiloWorker()
 	local needsWaiting = false
-	for i, controller in pairs(self.controllers) do 
+	for _, controller in pairs(self.controllers) do 
 		needsWaiting = needsWaiting or not controller:isWaitingAtParkPosition() 
 	end
 	return needsWaiting
@@ -422,13 +422,17 @@ function CpBunkerSilo:removeNearbyUnloader(vehicle)
 	end
 end
 
+function CpBunkerSilo:getNearbyUnloaders()
+	return self.nearbyUnloaders
+end
+
 function CpBunkerSilo:updateUnloaders(dt)
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.
 	if self.numControllers > 0 and g_updateLoopIndex % 7 == 0 then 
-		for i, vehicle in pairs(g_currentMission.vehicles) do 
+		for _, vehicle in pairs(g_currentMission.vehicles) do 
 			local isValid = false
 			if self:isValidUnloader(vehicle) then 
-				for i, v in pairs(vehicle:getChildVehicles()) do 
+				for _, v in pairs(vehicle:getChildVehicles()) do 
 					local x, _, z = getWorldTranslation(v.rootNode)
 					if self:isUnloaderInSilo(x, z) then
 						isValid = true
@@ -444,7 +448,7 @@ function CpBunkerSilo:updateUnloaders(dt)
 	end
 	if self:shouldUnloadersWaitForSiloWorker() then
 		--- Makes sure the AD driver wait for the silo worker. 
-		for i, unloader in pairs(self.nearbyUnloaders) do
+		for _, unloader in pairs(self.nearbyUnloaders) do
 			if unloader.spec_autodrive and unloader.spec_autodrive.HoldDriving then 
 				unloader.spec_autodrive.HoldDriving()
 			end
@@ -466,4 +470,22 @@ function CpBunkerSilo:drawUnloaderArea()
 		self:drawArea(self:getBackArea())
 	end
 	self:drawArea(self:getArea())
+end
+
+function CpBunkerSilo:getDebugData()
+	local data = {}
+	for _, unloader in pairs(self.nearbyUnloaders) do 
+		if unloader.ad and unloader.ad.stateModule and unloader.ad.stateModule:isActive() then
+			table.insert(data, {
+				name = "nearby unloader", 
+				value = CpUtil.getName(unloader)
+			})
+		else 
+			table.insert(data, {
+				name = "nearby unloader", 
+				value = "AD: ".. CpUtil.getName(unloader)
+			})
+		end
+	end
+	return data
 end

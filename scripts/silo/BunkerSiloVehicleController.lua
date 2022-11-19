@@ -143,14 +143,24 @@ function CpBunkerSiloVehicleController:isWaitingAtParkPosition()
 end
 
 function CpBunkerSiloVehicleController:draw()
-	if self.map and self:isDebugEnabled() then
-		for _, line in pairs(self.map) do 
-			local x, z, dx, dz = unpack(line)
-			local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
-			local dy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, dx, 0, dz)
-			drawDebugLine(x, y + 2, z, 1, 0, 1, dx, dy + 2, dz, 0, 1, 1)
+	if self:isDebugEnabled() then
+		if self.map then
+			for _, line in pairs(self.map) do 
+				local x, z, dx, dz = unpack(line)
+				local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
+				local dy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, dx, 0, dz)
+				drawDebugLine(x, y + 2, z, 1, 0, 1, dx, dy + 2, dz, 0, 1, 1)
+			end
 		end
 		self.silo:drawUnloaderArea()
+
+		if g_currentMission.controlledVehicle == self.vehicle then
+			local debugData = self.silo:getDebugData()
+			table.insert(debugData, 1, {
+				name = "is waiting", value = self:isWaitingAtParkPosition()
+			})
+			DebugUtil.renderTable(0.4, 0.4, 0.018, debugData, 0)
+		end
 	end
 end
 
