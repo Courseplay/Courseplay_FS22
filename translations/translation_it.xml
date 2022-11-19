@@ -21,7 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Scaricatore lontano dal campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posizione di partenza troppo lontana dal campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Nessun silos trovato."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -34,9 +34,9 @@
     <text name="CP_jobParameters_startAt_nearest" text="Dal punto più vicino"/>
     <text name="CP_jobParameters_startAt_first" text="Dal primo punto - inizio"/>
     <text name="CP_jobParameters_startAt_last" text="Dall'ultimo punto lavorato"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="scarico mietitrebbia/trincia"/>
-    <text name="CP_jobParameters_startAt_bales" text="raccogliere/avvolgere balle"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Modalità bunker silos"/>
+    <text name="CP_jobParameters_startAt_unload" text="Scarico mietitrebbia/trincia"/>
+    <text name="CP_jobParameters_startAt_bales" text="Raccogliere/avvolgere balle"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Calibrazione corsia:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Calibrazione corsia:"/>
     <text name="CP_jobParameters_laneOffset_tooltip" text="Calibrazione corsia"/>
@@ -76,7 +76,7 @@
     <text name="CP_job_fieldWork" text="Courseplay"/>
     <text name="CP_job_baleCollect" text="CP: Raccogli/Avvolgi balle"/>
     <text name="CP_job_combineUnload" text="CP: scarica mietitrebbia"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_job_bunkerSilo" text="CP: Lavoro in silos"/>
     <text name="CP_ai_page_generate_course" text="[CP] Genera percorso di lavoro"/>
     <text name="CP_ai_page_open_course_generator" text="[CP] Apri/Chiudi menù"/>
     <!---->
@@ -156,8 +156,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Velocità massima durante le manovre di svolta. Intervallo: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Retromarcia"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Velocità massima in retromarcia. Intervallo: 2 - 25"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silos"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Velocità massima durante la guida in un silos. Value: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -365,7 +365,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_drivingToSelfUnload" text="Guida al rimorchio"/>
     <text name="CP_infoTexts_outOfMoney" text="Senza soldi"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="In attesa che finisca la pioggia"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Aspettando lo scaricatore"/>
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nessun percorso trovato"/>
@@ -407,9 +407,9 @@ Quando la Modalità Esperto è disattivata, hai accesso solo ad alcune impostazi
 Le altre impostazioni sono nascoste e impostate sui valori predefiniti, il che funziona nella maggior parte delle situazioni.
 In questo modo, cerchiamo di aiutare gli utenti a entrare più facilmente in Courseplay senza essere sopraffatti da tutte le impostazioni.
 "/>
-    <text name="CP_help_page_extendedJobMenu_title" text="Menu AI esteso"/>
+    <text name="CP_help_page_extendedJobMenu_title" text="Menu IA esteso"/>
     <text name="CP_help_page_startJobMenuBase_text" text="
-Innanzitutto è necessario selezionare un veicolo nel menu AI per generare un percorso sul campo o accedere alle impostazioni del veicolo e al gestore del percorso.
+Innanzitutto è necessario selezionare un veicolo nel menu IA per generare un percorso sul campo o accedere alle impostazioni del veicolo e al gestore del percorso.
 Il percorso attualmente caricato verrà visualizzato sulla mappa.
 Le impostazioni globali sono sempre visibili.
 Per generare un percorso e avviare i lavori del percorso, dovrai creare il lavoro CP: Lavoro sul campo o CP: avvolgere/raccogliere balle, simile all'assistente Giants.
@@ -461,7 +461,7 @@ Ottieni opzioni su dove iniziare, impostazioni degli angoli, direzione e sovrapp
 Le capezzagne sono altamente consigliate per evitare che gli utensili lascino il campo durante la svolta.
 "/>
     <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Inizio lavoro: come menzionato nel menu AI esteso, la posizione sul campo viene utilizzata per impostare la posizione di inizio o fine per il percorso di lavoro sul campo.
+- Inizio lavoro: come menzionato nel menu IA esteso, la posizione sul campo viene utilizzata per impostare la posizione di inizio o fine per il percorso di lavoro sul campo.
 Quando è impostato per iniziare a fine campo, indica dove dovrebbe essere l'inizio. Quando viene modificato per iniziare su righe, dirà dove terminare il lavoro.
 - Angoli a fine campo: morbido avrà una semplice levigatura sugli angoli, questo funziona con tutti gli strumenti, ma porterà a minuscole macchie non lavorate negli angoli.
 Possono essere ridotti con la sovrapposizione, ma non scompaiono mai. Netti genererà una virata in base all'angolo dell'angolo del bordo del campo.
@@ -537,7 +537,7 @@ Avvia il record e registra il confine del tuo campo.
 Una volta terminato, premi nuovamente il pulsante e ti verrà chiesto se desideri salvarlo.
 "/>
     <text name="CP_help_page_customFieldDone_text" text="
-Dando un'occhiata al menu AI, vedrai il bordo del tuo campo registrato.
+Dando un'occhiata al menu IA, vedrai il bordo del tuo campo registrato.
 Facendo clic sul Nome, avrai la possibilità di eliminarlo o rinominarlo.
 "/>
     <text name="CP_help_page_customFieldDraw_text" text="
@@ -573,11 +573,11 @@ L'avvolgimento e la raccolta delle balle possono essere eseguiti in due modi div
 Il primo consiste nel caricare lo stesso percorso utilizzato per la pressa per balle e lasciare che l'avvolgitore o il raccoglitore eseguano quel percorso.
 Tuttavia questo può essere complicato, poiché alcune balle amano rotolare o volare fuori dal percorso.
 A questo punto, il nostro tipo di lavoro Avvolgiture e raccolta può aiutare in quanto non necessita di un percorso.
-Rimani sul campo e avvia l'autista dall'HUD con avvolgi/raccogli le balle o usa la mappa AI per mandarlo in un campo per iniziare il lavoro.
+Rimani sul campo e avvia l'autista dall'HUD con avvolgi/raccogli le balle o usa la mappa IA per mandarlo in un campo per iniziare il lavoro.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="
 Avvolgere le balle è molto semplice. Carica un percorso della tua pressa e inizia come qualsiasi altro lavoro sul campo, o senza un percorso,
-inizia con l'avvolgimento/raccolta delle balle dall'HUD o dal menu AI.
+inizia con l'avvolgimento/raccolta delle balle dall'HUD o dal menu IA.
 "/>
     <text name="CP_help_page_wrapFunction_text" text="
 Quando si utilizza un percorso, l'assistente guida con un offset preimpostato in modo che il ritiro delle balle da avvolgere si trovino nel mezzo del percorso.
@@ -661,25 +661,32 @@ Poiché l'irroratrice può lavorare contemporaneamente sulla vite sinistra e des
 L'editor del percorso può essere utilizzato per modificare percorsi e campi personalizzati.
 I percorsi caricati verranno salvati/sovrascritti automaticamente, alla chiusura dell'editor.
 
-1) La modifica di un campo personalizzato può essere eseguita con un campo selezionato nella pagina del menu ai.
-2) La modifica di un percorso può essere eseguita nel gestore del percorso.
-    Lì puoi modificare un percorso salvato, ma assicurati di aver cancellato il percorso attualmente caricato dal veicolo.
+1) È possibile modificare un campo personalizzato selezionandone uno nella pagina del menu e facendo clic su 'modifica campo personalizzato'.
+2) La modifica di un percorso può essere effettuata nel editor percorsi selezionandolo e facendo clic su apri editor percorso.
+    Funziona solo con i percorsi salvati. Assicurarsi che nel veicolo non sia caricata alcuna rotta.
 
 La modifica del percorso dovrebbe essere eseguita solo quando il generatore di percorsi non è in grado di produrre un percorso sufficientemente buono.
-Una modifica errata potrebbe causare problemi al driver cp, poiché i waypoint hanno attributi nascosti.
+Una modifica errata potrebbe causare problemi al driver Cp, poiché i punti hanno attributi nascosti.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
 Sotto la categoria base ci sono:
-1) Il movimento pennello sposta un punto di passaggio sospeso nella posizione del pennello.
-2) Il pennello di inserimento può inserire punto di passaggio davanti o dietro a un punto di passaggio selezionato.
+1) Spostamento di un punto di passaggio selezionato.
+2) Inserimento di punto avanti o indietro rispetto al punto su cui si fa clic.
 
-L'eliminazione dei punto di passaggio può essere eseguita con il pulsante rosso di eliminazione.
+L'eliminazione dei punti di passaggio può essere eseguita con il pulsante rosso di eliminazione.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 Nella categoria avanzata ci sono:
-1) Un pennello per spostare più punto di passaggio tra i punto di passaggio selezionati.
-2) Un pennello per inserire una curva di punto di passaggio tra i punto di passaggio selezionati.
-3) Un pennello per impostare l'attributo virata di un punto di passaggio (solo con una rotta e non un campo personalizzato).
+1) Un metodo per impostare l'attributo di svolta di un punto (solo con una rotta e non un campo personalizzato).
+Facendo clic più volte sul punto si passerà da &quot;normale&quot; (arancione), &quot;inizio svolta&quot; (verde) e &quot;fine svolta&quot; (rosso).
+
+2) Un metodo per spostare più punti tra i punti selezionati.
+Per fare ciò, contrassegna 2 punti con il pulsante sinistro del mouse, quindi tenendo premuto il pulsante sinistro del mouse, puoi spostare tutti i punti compresi quelli contrassegnati.
+Per deselezionare i punti, fare clic con il pulsante destro del mouse.
+
+3) Un metodo per inserire una curva di punti tra due punti selezionati.
+Proprio come per spostare più punti, contrassegna 2 punti, quindi tieni premuto il pulsante sinistro del mouse e muovi il mouse.
+Attenzione: non appena rilasci il pulsante del mouse, i punti verranno impostati, questo non può essere annullato! (ovviamente puoi eliminare quei punti.)
 "/>
     <!---->
     <!--Input bindings-->
@@ -698,6 +705,6 @@ Nella categoria avanzata ci sono:
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Apre le impostazioni del veicolo"/>
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Apre le impostazioni globali"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Apri il generatore di corsi/menu dei lavori"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Apre course manager"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Apre gestore percorsi"/>
   </texts>
 </l10n>
