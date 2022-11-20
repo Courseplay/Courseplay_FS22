@@ -27,14 +27,14 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Mark position:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Parkerings position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Start ved:"/>
     <text name="CP_jobParameters_startAt_title" text="Start ved:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Hvor bliver arbejdet startet."/>
     <text name="CP_jobParameters_startAt_nearest" text="Nærmeste vejpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Første vejpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Sidste vejpunkt"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="kørersilo tilstand"/>
     <text name="CP_jobParameters_startAt_unload" text="Aflad mejetærsker/snitter"/>
     <text name="CP_jobParameters_startAt_bales" text="Saml/Wrap Baller"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bane offset:"/>
@@ -62,14 +62,14 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Retning ind i silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Retning ind i silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forlæns"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Baglæns"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Venter på aflæsser:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Venter på aflæsser:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="I silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="Parkerings position"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -142,9 +142,9 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloarbejder indstilling"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Arbejdsbredde"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Arbejdsbredde. Værdi: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -329,8 +329,8 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_editor_delete_title" text="Slet vejpunkter"/>
     <text name="CP_editor_delete_primary_text" text="primær"/>
     <text name="CP_editor_delete_secondary_text" text="sekundær"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_tertiary_text" text="Sletter alle waypoints indtil det sidste waypoint."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Er du sikker på, at alle waypoint indtil det sidste skal slettes?"/>
     <text name="CP_editor_delete_err" text="For få vejpunkter tilbage."/>
     <text name="CP_editor_course_basic_title" text="grundlæggende"/>
     <text name="CP_editor_course_basic_move_title" text="Flyt et vejpunkt"/>
