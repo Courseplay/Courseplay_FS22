@@ -366,6 +366,10 @@ function AIDriveStrategyBunkerSilo:getEndOffset()
     return offset
 end
 
+function AIDriveStrategyBunkerSilo:getTemporaryBackCourseLength()
+    return self.isStuckBackOffset + math.abs(self.frontMarkerDistance) + math.abs(self.backMarkerDistance)
+end
+
 function AIDriveStrategyBunkerSilo:getEndMarker()
     return self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or
             Markers.getFrontMarkerNode(self.vehicle)
@@ -457,9 +461,9 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
     if driveDirection then
-		self.course = Course.createStraightForwardCourse(self.vehicle, self.isStuckBackOffset + self.frontMarkerDistance + self.backMarkerDistance, 0)
+		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self.isStuckBackOffset + self.frontMarkerDistance + self.backMarkerDistance, 0)
+        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	end
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO
