@@ -33,8 +33,8 @@ AIDriveStrategyBunkerSilo.myStates = {
 }
 
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
-AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 30
-AIDriveStrategyBunkerSilo.isStuckBackOffset = 15
+AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 15
+AIDriveStrategyBunkerSilo.isStuckBackOffset = 12
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 AIDriveStrategyBunkerSilo.endReachedOffset = 3
 
