@@ -2,7 +2,7 @@
 --- Wrapper for a bunker silo.
 CpBunkerSilo = CpObject()
 
-CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 30
+CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 50
 CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 20
 CpBunkerSilo.DRAW_DEBUG = false
 CpBunkerSilo.SIDE_MODES = {
@@ -392,6 +392,7 @@ function CpBunkerSilo:isValidUnloader(vehicle)
 			return true
 		end
 	end
+	return false
 end
 
 function CpBunkerSilo:hasNearbyUnloader()
@@ -401,7 +402,7 @@ end
 function CpBunkerSilo:shouldUnloadersWaitForSiloWorker()
 	local needsWaiting = false
 	for _, controller in pairs(self.controllers) do 
-		needsWaiting = needsWaiting or not controller:isWaitingAtParkPosition() 
+		needsWaiting = needsWaiting or not controller:isWaitingForUnloaders() 
 	end
 	return needsWaiting
 end
@@ -450,7 +451,7 @@ function CpBunkerSilo:updateUnloaders(dt)
 		--- Makes sure the AD driver wait for the silo worker. 
 		for _, unloader in pairs(self.nearbyUnloaders) do
 			if unloader.spec_autodrive and unloader.spec_autodrive.HoldDriving then 
-				unloader.spec_autodrive.HoldDriving()
+				unloader.spec_autodrive:HoldDriving(unloader)
 			end
 		end
 	end
@@ -473,17 +474,22 @@ function CpBunkerSilo:drawUnloaderArea()
 end
 
 function CpBunkerSilo:getDebugData()
-	local data = {}
+	local data = {
+		{
+			name = "unloaders should wait: ",
+			value = self:shouldUnloadersWaitForSiloWorker()
+		}
+	}
 	for _, unloader in pairs(self.nearbyUnloaders) do 
 		if unloader.ad and unloader.ad.stateModule and unloader.ad.stateModule:isActive() then
 			table.insert(data, {
 				name = "nearby unloader", 
-				value = CpUtil.getName(unloader)
+				value = "AD: ".. CpUtil.getName(unloader)
 			})
 		else 
 			table.insert(data, {
 				name = "nearby unloader", 
-				value = "AD: ".. CpUtil.getName(unloader)
+				value = CpUtil.getName(unloader)
 			})
 		end
 	end

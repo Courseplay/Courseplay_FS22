@@ -343,7 +343,7 @@ function AIDriveStrategyBunkerSilo:isWaitingAtParkPosition()
 end
 
 function AIDriveStrategyBunkerSilo:isWaitingForUnloaders()
-    return self:isDrivingToParkPositionAllowed() and self.state == self.states.WAITING_AT_PARK_POSITION or self.siloController:hasNearbyUnloader()
+    return self.state == self.states.WAITING_AT_PARK_POSITION or not self:isDrivingToParkPositionAllowed() and self.siloController:hasNearbyUnloader()
 end
 
 function AIDriveStrategyBunkerSilo:isDrivingToParkPositionAllowed()
