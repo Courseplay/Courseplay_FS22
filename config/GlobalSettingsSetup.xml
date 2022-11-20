@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the global settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_global_setting_">
+	<SettingSubTitle prefix="true" title="general">
+		<Setting classType="AIParameterSettingList" name="wageModifier" default="100" unit="4">
+			<Values>
+				<Value>0</Value>
+				<Value>50</Value>
+				<Value>100</Value>
+				<Value>250</Value>
+				<Value>500</Value>
+			</Values>
+		</Setting>
+		<Setting classType="AIParameterSettingList" name="autoRepair" default="70">
+			<Values>
+				<Value name="AUTO_REPAIR_DISABLED" >0</Value>
+				<Value>25</Value>
+				<Value>70</Value>
+				<Value>99</Value>
+			</Values>
+			<Texts>
+				<Text>off</Text>
+				<Text>less_than_25</Text>
+				<Text>less_than_70</Text>
+				<Text>always</Text>
+			</Texts>
+		</Setting>
+		<Setting classType="AIParameterSettingList" name="fuelThreshold" min="0" max="100" incremental="5" default="5" unit="4"/>
+		<Setting classType="AIParameterSettingList" name="brokenThreshold" min="0" max="100" incremental="5" default="100" unit="4"/>
+	</SettingSubTitle>
+	<SettingSubTitle prefix="true" title="userSettings">
+		<!-- When enabled, then a few settings are invisible and return their default values. -->
+		<Setting classType="AIParameterBooleanSetting" name="expertModeActive" isUserSetting="true" defaultBool="false" onChangeCallback="onExpertModeChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="controllerHudSelected" isUserSetting="true" defaultBool="false" onChangeCallback="onHudSelectionChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="showsAllActiveCourses" isUserSetting="true" defaultBool="false" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="drawOntoTheHudMap" isUserSetting="true" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="showActionEventHelp" isUserSetting="true" defaultBool="false" onChangeCallback="onActionEventTextVisibilityChanged"/>
+		<Setting classType="AIParameterBooleanSetting" name="infoTextHudActive" isUserSetting="true" defaultBool="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="infoTextHudPlayerMouseActive" isUserSetting="true" defaultBool="true" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterBooleanSetting" name="preferCustomFields" isUserSetting="true"/>
+		<Setting classType="AIParameterSettingList" name="distanceUnit" isUserSetting="true" default="0" onChangeCallback="onDistanceUnitChanged">
+			<Values>
+				<Value name="METRIC_UNIT" >0</Value>
+				<Value name="IMPERIAL_UNIT" >1</Value>
+			</Values>
+			<Texts>
+				<Text>meter</Text>
+				<Text>imperial</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+	<SettingSubTitle prefix="true" title="pathfinder" isExpertModeOnly="true">
+		<Setting classType="AIParameterSettingList" name="maxDeltaAngleAtGoalDeg" min="5" max="90" incremental="5" default="45" isExpertModeOnly="true"/>
+		<Setting classType="AIParameterSettingList" name="deltaAngleRelaxFactorDeg" min="10" max="100" incremental="10" default="10" isExpertModeOnly="true"/>
+	</SettingSubTitle>
+</Settings>

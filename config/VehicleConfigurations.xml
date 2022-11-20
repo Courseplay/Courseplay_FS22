@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!--
+
+This file is used to customize Courseplay for specific vehicles and implements.
+
+Typically you'd include a vehicle/implement here if it needs some special treatment
+to work correctly with Courseplay. For instance, some implements are offset to the
+left or right side (like bale loaders), so when doing fieldwork, you want do drive
+on the left or right of the actual course so the bale loader's pickup is aligned
+with the course.
+
+This file is the global configuration coming with your copy of Courseplay. If you
+want your own vehicle config, you can create a file called
+vehicleConfigurations.xml in your modSettings/FS22_Courseplay folder. Settings defined
+in that file will override the settings defined here.
+
+You can use the cpReadVehicleConfigurations console command to reload these files
+in-game.
+
+Custom settings are listed per vehicle, the vehicle is identified by its XML file
+name (you can find this in the game's folder under data/vehicles/<make>/<model>/
+
+A vehicle may have multiple implements attached. If multiple implements have the
+same attribute defined here, Courseplay just uses the first value it finds, which
+can be any of the multiple values.
+
+You can define the following custom settings:
+
+- toolOffsetX: number
+    Offset of the tool's centerline relative to the course, left +, right -.
+    For example, if your tool is 2 meters right use "-2.0" here.
+
+- noReverse: boolean
+    This implement can't be reversed. Will not use any turn maneuvers which needs
+    reversing.
+
+- turnRadius: number
+    Override the turn radius configured by the vehicle author or calculated by
+    Courseplay and use this value instead, in meters.
+
+- workingWidth: number
+	Working width (in meters) to use instead of the width calculated from the vehicle/implement
+	data. Courseplay uses the AI markers, or if the do not exist, the work areas to determine the
+	working width. Some tools, especially folding plows also fold their markers and work areas,
+	preventing us from getting the correct length.
+
+- balerUnloadDistance: number
+    Able to set the distance to the waiting point when it needs to unload. Used by bale loaders.
+    Distance from trailer's turning point to the rear unloading point in meters.
+
+- directionNodeOffsetZ:	number
+	If set, then the Direction Node will be offset by this value in meters. (Only usable for Enterables)
+
+- implementWheelAlwaysOnGround:	boolean
+    Implements that have the topReferenceNode set, but still have the wheels on the ground all the time.
+    In general, set this to true for implements which have a wheel and looked like any towed implement
+    but are attached to the tractor with the 3 point hitch (and not the tow hitch).
+
+- ignoreCollisionBoxesWhenFolded: boolean
+	This is for the case where the collision boxes of the vehicle are very wide, for example
+    a sprayer's box is as wide as the extended sprayer arms. This works on the field but will cause conflict when
+    the vehicle drives with folded sprayer for instance on an unload course.
+	For this scenario the collision box is useless when folded, so when ignoreCollisionBoxesOnStreet is true,
+    Courseplay will not detect collisions for this vehicle when it is folded.
+
+- baleCollectorOffset: number
+	Offset in meters to use in bale collector mode (Mode 7). This is the distance between the tractor's centerline
+	and the edge of the bale when the bale grabber is right where it should be to pick up the bale.
+	Courseplay will adjust this offset according to the bale's dimensions but you may want to add a little buffer.
+
+- raiseLate: boolean
+    The default behavior is to raise the implement when the front of the work area reaches the end of the row or
+    the field edge. This works great for rectangular shaped work areas but with other shapes (like a plow) it may
+    lead to unworked patches. With this setting true, Courseplay will wait until the end of the work area reaches
+    the field edge or row end before raising the implements.
+
+- lowerEarly: boolean
+    Similar to the above, the default behavior when starting to work is lower the implement when the back of the
+    work area reaches to row start/field edge. Setting this to true will make Courseplay lower the implement as
+    soon as the the front reaches the row start/field edge, avoiding unworked patches with irregular implement
+    work areas such as a plow.
+
+- useVehicleSizeForMarkers: boolean
+    Some vehicles and implements, mostly used for grape harvest have no AI markers and not even a work area.
+    In order for these to perform turn maneuvers correctly we still need a front and back marker, which usually
+    are derived from the AI markers or from the work areas. If useVehicleSizeForMarkers is true, we simply place
+    the front marker on the front of the vehicle, the back marker on the back if there is no AI marker or work area.
+
+- modName: Name of the .zip file (without '.zip')
+    In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
+    add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
+    Note: Only 2 of the same .xml files can be added.
+
+-->
+<VehicleConfigurations>
+    <!--[GIANTS]-->
+
+    <!-- Harvesters -->
+
+    <!--vehicles\newHolland-->
+    <Vehicle name="braud9070L.xml"
+             turnRadius="5"
+             useVehicleSizeForMarkers="true"
+    />
+    <Vehicle name="braud9090X.xml"
+             turnRadius="5"
+             useVehicleSizeForMarkers="true"
+    />
+    
+    <!--\vehicles\grimme-->
+    <Vehicle name="ventor4150.xml"
+             raiseLate = "true"
+             lowerEarly = "true"
+    />
+
+    <!-- Implements -->
+
+    <!--\vehicles\holaras-->
+    <Vehicle name="stego485Pro.xml"
+             workingWidth = "4.8"
+    />
+
+    <!--\vehicles\johndeer-->
+    <Vehicle name="planter1775NT.xml"
+             turnRadius = "12"
+    />
+
+    <!--\vehicles\kinze-->
+    <Vehicle name="planter4900.xml"
+             turnRadius = "12"
+    />
+
+    <!--\vehicles\agromasz-->
+    <Vehicle name="pov5xl.xml"
+             raiseLate="true"
+             lowerEarly="true"
+    />
+    <!--\vehicles\andersonGroup-->
+    <Vehicle name="rbm2000.xml"
+             toolOffsetX="-2.7"
+             turnRadius="15"
+    />
+    <!--\vehicles\amazone-->
+    <Vehicle name="citan15001C.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
+    <!--\vehicles\arcusin-->
+    <Vehicle name="fsx6372.xml"
+             toolOffsetX="-2.4"
+             balerUnloadDistance="-3.8"
+             turnRadius="12"
+    />
+    <!--\vehicles\grimme-->
+    <Vehicle name="rootster604.xml"
+             noReverse="true"
+    />
+    <Vehicle name="SE260.xml"
+             toolOffsetX="-1.8"
+             noReverse="true"
+    />
+    <!--\vehicles\ropa-->
+    <Vehicle name="keiler2.xml"
+             toolOffsetX="-2.0"
+             noReverse="true"
+    />
+    <!--\vehicles\kuhn-->
+    <Vehicle name="sw4014.xml"
+             toolOffsetX="-2.5"
+             noReverse="true"
+    />
+    <Vehicle name="kuhnDeltis1302.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+    <Vehicle name="kuhnMetris4102.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+	<!--\vehicles\poettinger-->
+	<Vehicle name="poettingerNovaCatX8.xml"
+			workingWidth = "8.4"
+	/>
+    <!--\vehicles\hardi-->
+    <Vehicle name="navigator6000.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+    <!--\vehicles\salford-->
+    <Vehicle name="salford4204.xml" 
+             turnRadius = "3"
+    />
+    <Vehicle name="salford8312.xml"
+             noReverse="true"
+             turnRadius = "9"
+    />
+    <!--\vehicles\lemken-->
+    <Vehicle name="titan11.xml"
+             noReverse="true"
+             turnRadius = "7.5"
+             implementWheelAlwaysOnGround = "true"
+	/>
+    <Vehicle name="titan18.xml"
+             noReverse="true"
+             turnRadius = "9"
+             implementWheelAlwaysOnGround = "true"
+             raiseLate = "true"
+             lowerEarly = "true"
+	/>
+    <Vehicle name="karat12.xml"
+             implementWheelAlwaysOnGround = "true"
+             lowerEarly = "true"
+    />
+    <Vehicle name="koralin9840.xml"
+             implementWheelAlwaysOnGround = "true"
+    />
+    <!--\vehicles\lizard-->
+    <Vehicle name="SWT7.xml"
+             toolOffsetX="-2.2"
+             noReverse="false"
+             turnRadius = "9"
+    />
+    <!--vehicles\seedHawk-->
+    <Vehicle name="980AirCart.xml"
+             noReverse="true"
+    />
+    <Vehicle name="xlAirDrill84.xml"
+             noReverse="true"
+             turnRadius = "10"
+    />
+    <!--\vehicles\hatzenbichler-->
+    <Vehicle name="terminator18.xml"
+             noReverse="true"
+    />
+    <Vehicle name="th1400.xml"
+             noReverse="true"
+    />
+    <!--\vehicles\flexicoil-->
+    <Vehicle name="st820.xml"
+             turnRadius = "7"
+    />
+    <!--\vehicles\agrisem-->
+    <Vehicle name="agrisemCultiplowPlatinum8m.xml"
+             turnRadius = "7"
+    />
+    <!--\vehicles\proviti-->
+    <Vehicle name="mp122Ocea.xml"
+             toolOffsetX="-1.2"
+             turnRadius="5"
+             useVehicleSizeForMarkers="true"
+    />
+
+    <!--\vehicles\samsonAgro-->
+    <Vehicle name="us235.xml"
+             workingWidth="24"
+    />
+
+    <!--\vehicles\samasz-->
+    <Vehicle name="z2840.xml"
+             workingWidth="8.4"
+    />
+
+    <!--Tractors-->
+    
+    <!--\vehicles\stara-->
+    <Vehicle name="imperador3.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+    <!--\vehicles\hardi-->
+    <Vehicle name="rubicon9000.xml"
+			 ignoreCollisionBoxesWhenFolded="true"
+	/>
+
+    <!--[DLC]-->
+
+    <!--Harvester-->
+
+    <!--Implements-->
+    <!--Vermeer-->
+    <Vehicle name="tm1410.xml"
+             offset="-4"
+    />
+    <!--Anderson-->
+    <Vehicle name="RB580.xml"
+             baleCollectorOffset="1.4"
+    />
+    <!--Kverneland-->
+    <Vehicle name="iXterB18.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+    <Vehicle name="iXtrackT4.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+    <Vehicle name="wrapper7850C.xml"
+             baleCollectorOffset="1.3"
+    />
+    <Vehicle name="pw10012.xml"
+             noReverse="true"
+             implementWheelAlwaysOnGround = "true"
+             turnRadius="14"
+             raiseLate="true"
+             lowerEarly="true"
+    />
+    <Vehicle name="ecomat.xml"
+             raiseLate = "true"
+             lowerEarly = "true"
+    />
+    <!--Bourgault-->
+    <Vehicle name="series3320.xml"
+             noReverse="true"
+    />
+    <Vehicle name="series7950b.xml"
+             noReverse="true"
+    />
+    <Vehicle name="series3420.xml"
+             noReverse="true"
+    />
+    <Vehicle name="series71300.xml"
+             noReverse="true"
+    />
+    <!--Claas-->
+    <Vehicle name="optiJect8.xml"
+             workingWidth = "6"
+    />
+	
+    <!--[MODS]-->
+
+    <!--Harvester-->
+    <!--Mod: ClaasCougar1500-->
+    <Vehicle name="ClaasCougar1500.xml"
+             workingWidth = "15"
+    />
+    <!--Mod: Jacto NPK 5030-->
+    <Vehicle name="Jacto_NPK_5030.xml"
+             workingWidth="49.8"
+             turnRadius="22"
+    />
+
+    <!--Implements-->
+    <!--Mod: Gregoire Besson SPSL9 -->
+    <Vehicle name="spsl9.xml"
+             toolOffsetX="2.1"
+             turnRadius = "7.5"
+             implementWheelAlwaysOnGround = "true"
+			 workingWidth = "10.5"
+    />
+    <!--Mod: KOECKERLING Vector 460-->
+	<Vehicle name="vector460.xml"
+			 implementWheelAlwaysOnGround = "true"
+	/>
+	<!--Mod: KOECKERLING Vector 620-->
+	<Vehicle name="vector620.xml"
+			 implementWheelAlwaysOnGround = "true"
+	/>
+    <!--Mod: Ursus T-127 (Bale Collector)-->
+    <Vehicle name="ursusT127.xml"
+             toolOffsetX="-2.4"
+             noReverse="true"
+             balerUnloadDistance="-1.8"
+    />
+    <!--Mod: Ursus Z586 (Bale Wrapper)-->
+    <Vehicle name="z586.xml"
+             toolOffsetX="-2.5"
+             noReverse="true"
+			 baleCollectorOffset="1.3"
+    />
+	<!--Mod: Claas crop sensor-->
+	<Vehicle name="claasCropSensor.xml"
+			 workingWidth="18"			 
+	/>
+    <!--Tractors and Others-->
+
+    <!--Mod: Big Bud 747-->
+    <Vehicle name="bigBud747.xml"
+             turnRadius = "9"
+    />
+    <!--Mod: JCB 435S-->
+    <Vehicle name="jcb435s.xml"
+             directionNodeOffsetZ="-0.705"
+    />
+    <!--Mod: Horsch Pack-->
+    <Vehicle name="leebPT350.xml"
+             ignoreCollisionBoxesWhenFolded="true"
+    />
+    <!--Mod: Claas Krone Baler Pack With Lizard R90-->
+    <Vehicle name="quadrant5300.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
+    />
+    <Vehicle name="bigPack1290HDPVC.xml"
+             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
+             workingWidth="10.3"
+    />
+    <!--Mod: Great Plains YP-2425A-->
+    <Vehicle name="yp2425A.xml"
+             implementWheelAlwaysOnGround="true"
+    />
+
+</VehicleConfigurations>

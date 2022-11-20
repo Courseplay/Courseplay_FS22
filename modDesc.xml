@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="67">
+    <version>7.1.2.3</version>
+	<author><![CDATA[Courseplay.devTeam]]></author>
+	<title>
+		<en>CoursePlay</en>
+		<cs>自动作业</cs>
+		<ct>自動作業</ct>
+		<hu>CoursePlay - A Vezetősegéd</hu>
+		<jp>コースプレイ</jp>
+		<kr>코스 플레이</kr>
+	</title>
+
+    <description>
+        <en>
+			<![CDATA[Courseplay FS22
+Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
+- use headlands
+- work on irregularly shaped fields, not just rectangles
+- work around islands in the field (like power lines)
+- save auto-generated courses to use a forage wagon to collect what a mower or harvester cut before
+- find and collect or wrap all bales on a field
+- work on vines
+- let up to 5 helpers work on the same field in a group
+- combines find a trailer to self-unload when full
+- set up your own fields wherever you like
+- works great together with AutoDrive, let Courseplay do the fieldwork and AutoDrive to refill a sower or unload a forage wagon
+- customize the automatically created fieldwork courses to your liking with the course editor
+
+For more information, help, and report issues please visit <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
+
+Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
+
+Changelog 7.1.0.3:
+- Updated mod description
+- Added missing translation files, so every language supported by the game can be edited now.
+- Added new course editor for fieldwork courses and custom field borders (more information in the help menu).
+- Improved the interface for the auto load mod: FS22_aPalletAutoLoader.
+- Arcusin Multipack F14 now unloads the compacted bales on the field.
+- Some more fixes and enhancements.
+- Vermeer DLC compatibility.
+
+Changelog 7.1.0.0:
+- initial ModHub Release 7.1.0.0
+- Added vine fieldwork
+- The hud is easier to use and a separate gamepad hud was added.
+- Ingame help menu extended with Courseplay topics
+- Complete new course manager integrated into the ingame menu.
+- Works now great with AutoDrive, let Courseplay take care of the field work and use AutoDrive to transport your harvest.
+
+For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
+]]>
+		</en>
+        <de>
+			<![CDATA[Courseplay FS22
+Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge intelligenter:
+- Modbeschreibung aktualisiert
+- Nutze Vorgewende
+- Arbeite auf nicht rechteckigen Feldern
+- Arbeite um Feldinseln(z.b. Strommasten) umher
+- Speicher die generierten Kurse von z.b. einem Drescher ab, um diese zum Aufsammeln mit einem Ladewagen oder einer Ballenpresse zu nutzen.
+- Sammel/wickel Ballen automatisch auf einem Feld.
+- Arbeite auf und zwischen den Weinreben
+- Lasse bis zu 5 Helfer auf dem gleichen Feld in einer Gruppe zusammenarbeiten
+- Lasse dein Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
+- Erstelle deine eigenen Felder, wo immer du möchtest
+- Arbeitet super mit Autodrive zusammen, lasse Courseplay die Feldarbeit erledigen und 
+  Autodrive erledigt das abtanken eines Ladewagen oder auffüllen einer Sähmaschine.
+- Verändere die generierten Kurse mit dem Kurseditor 
+
+Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
+
+Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
+
+Changelog 7.1.0.3:
+- Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
+- Neuen Kurseditor für Feldarbeitskurse und eigene Feldrandkurse hinzugefügt (mehr Informationen dazu im Ingame Hilfe Menü)
+- Interface zum Mod FS22_aPalletAutoLoader verbessert.
+- Arcusin Multipack F14 entlädt die gepackten Ballen jetzt auf dem Feld.
+- Weitere bug fixes und Verbesserungen.
+- Vermeer DLC Kompatibilität.
+
+Changelog 7.1.0.0:
+- Initiale ModHub Version 7.1.0.0
+- Reben Helfer hinzugefügt
+- Das HUD ist einfacher zu benutzen und ein separates Gamepad HUD wurde hinzugefügt.
+- Ingame Hilfemenü wurde durch Courseplay Einträge erweitert.
+- Komplett neuer Kurse Manager in das Ingame Menu integriert.
+- Funktioniert jetzt gut mit AutoDrive zusammen, Courseplay übernimmt die Arbeit auf dem Feld und AutoDrive transportiert deine Ernte.
+
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
+]]>
+		</de>
+    </description>
+
+	<iconFilename>icon_courseplay.dds</iconFilename>
+	<l10n filenamePrefix="translations/translation" />
+    <multiplayer supported="true" />
+	
+	<extraSourceFiles>
+		<sourceFile filename="scripts/CpObject.lua"/>
+		<sourceFile filename="Courseplay.lua"/>
+		<sourceFile filename="scripts/CpUtil.lua"/>
+		<sourceFile filename="scripts/debug/CpDebug.lua"/>
+		<sourceFile filename="scripts/debug/CourseRecorder.lua"/>
+		<sourceFile filename="scripts/dev/ConsoleCommands.lua"/>
+		<sourceFile filename="scripts/dev/DevHelper.lua"/>
+		<sourceFile filename="scripts/courseManager/FileSystem.lua"/>
+		<sourceFile filename="scripts/courseManager/AssignedCoursesManager.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CourseGenerator.lua"/>
+		<sourceFile filename="scripts/courseGenerator/CourseGeneratorInterface.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Genetic.lua"/>
+		<sourceFile filename="scripts/courseGenerator/center.lua"/>
+		<sourceFile filename="scripts/courseGenerator/headland.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Island.lua"/>
+		<sourceFile filename="scripts/courseGenerator/track.lua"/>
+		<sourceFile filename="scripts/courseGenerator/geo.lua"/>
+		<sourceFile filename="scripts/courseGenerator/Vector.lua"/>
+		<sourceFile filename="scripts/Waypoint.lua"/>
+		<sourceFile filename="scripts/Course.lua"/>
+		<sourceFile filename="scripts/util/CpMathUtil.lua"/>
+		<sourceFile filename="scripts/util/MovingAverage.lua"/>
+		<sourceFile filename="scripts/util/CpRemainingTime.lua"/>
+		<sourceFile filename="scripts/field/CpFieldUtil.lua"/>
+		<sourceFile filename="scripts/field/CustomField.lua"/>
+		<sourceFile filename="scripts/field/CustomFieldManager.lua"/>
+		<sourceFile filename="scripts/field/FieldScanner.lua"/>
+		<sourceFile filename="scripts/field/VineScanner.lua"/>
+		<sourceFile filename="scripts/silo/BunkerSiloVehicleController.lua"/>
+		<sourceFile filename="scripts/silo/BunkerSiloWrapper.lua"/>
+		<sourceFile filename="scripts/silo/BunkerSiloManager.lua"/>
+		<sourceFile filename="scripts/pathfinder/BinaryHeap.lua"/>
+		<sourceFile filename="scripts/pathfinder/State3D.lua"/>
+		<sourceFile filename="scripts/pathfinder/AnalyticSolution.lua"/>
+		<sourceFile filename="scripts/pathfinder/Dubins.lua"/>
+		<sourceFile filename="scripts/pathfinder/ReedsShepp.lua"/>
+		<sourceFile filename="scripts/pathfinder/ReedsSheppSolver.lua"/>
+		<sourceFile filename="scripts/pathfinder/HybridAStar.lua"/>
+		<sourceFile filename="scripts/pathfinder/PathfinderUtil.lua"/>
+		<sourceFile filename="scripts/ai/AIUtil.lua"/>
+		<sourceFile filename="scripts/ai/ImplementUtil.lua"/>
+		<sourceFile filename="scripts/ai/ProximityController.lua"/>
+		<sourceFile filename="scripts/ai/FieldWorkerProximityController.lua"/>
+		<sourceFile filename="scripts/ai/CollisionAvoidanceController.lua"/>
+		<sourceFile filename="scripts/ai/turns/AITurn.lua"/>
+		<sourceFile filename="scripts/ai/turns/Corner.lua"/>
+		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
+		<sourceFile filename="scripts/ai/turns/TurnManeuver.lua"/>
+		<sourceFile filename="scripts/ai/turns/TurnContext.lua"/>
+		<sourceFile filename="scripts/ai/AIReverseDriver.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyDriveToFieldWorkStart.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyFieldWorkCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyCombineCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyPlowCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyFindBales.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyUnloadCombine.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyVineFieldWorkCourse.lua"/>
+		<sourceFile filename="scripts/ai/AIDriveStrategyBunkerSilo.lua"/>
+		<sourceFile filename="scripts/ai/AIMessages.lua"/>
+		<sourceFile filename="scripts/ai/Markers.lua"/>
+		<sourceFile filename="scripts/ai/ProximitySensor.lua"/>
+		<sourceFile filename="scripts/ai/controllers/ImplementController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BalerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BaleWrapperController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BaleLoaderController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/APalletAutoLoaderController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/UniversalAutoloadController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/FertilizingCultivatorController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/FertilizingSowingMachineController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SowingMachineController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/ForageWagonController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/MowerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/RidgeMarkerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/PickupController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CutterController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SprayerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/StonePickerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CombineController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/MotorController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/VineCutterController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/WearableController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/SoilSamplerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/PipeController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/CoverController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/LevelerController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/BunkerSiloCompacterController.lua"/>
+		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
+		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
+		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>
+		<sourceFile filename="scripts/ai/PurePursuitController.lua"/>
+		<sourceFile filename="scripts/ai/SelfUnloadHelper.lua"/>
+		<sourceFile filename="scripts/ai/VehicleScanner.lua"/>
+		<sourceFile filename="scripts/ai/WorkWidthUtil.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterSettingList.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterBooleanSetting.lua"/>
+		<sourceFile filename="scripts/ai/parameters/AIParameterSpeedSetting.lua"/>
+		<sourceFile filename="scripts/ai/parameters/CpAIParameterUnloadingStation.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpJobParameters.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJob.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobFieldWork.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobCombineUnloader.lua"/>
+		<sourceFile filename="scripts/ai/jobs/CpAIJobBunkerSilo.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskFieldWork.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskBaleFinder.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskCombineUnloader.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskDriveTo.lua"/>
+		<sourceFile filename="scripts/ai/tasks/CpAITaskBunkerSilo.lua"/>
+		<sourceFile filename="scripts/CpSettingsUtil.lua"/>
+		<sourceFile filename="scripts/CpGlobalSettings.lua"/>
+		<sourceFile filename="scripts/config/VehicleConfigurations.lua"/>
+		<sourceFile filename="scripts/gui/CpGuiUtil.lua"/>
+		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
+		<sourceFile filename="scripts/gui/FieldPlot.lua"/>
+		<sourceFile filename="scripts/gui/BunkerSiloPlot.lua"/>
+		<sourceFile filename="scripts/gui/CpStatus.lua"/>
+		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>
+		<sourceFile filename="scripts/gui/CpVehicleSettingsFrame.lua"/>
+		<sourceFile filename="scripts/gui/CpGlobalSettingsFrame.lua"/>
+		<sourceFile filename="scripts/gui/CpCourseManagerFrame.lua"/>
+		<sourceFile filename="scripts/gui/CourseDisplay.lua"/>
+		<sourceFile filename="scripts/gui/CpAIHotspots.lua"/>
+		<sourceFile filename="scripts/gui/CpGamePadHudScreen.lua"/>
+		<sourceFile filename="scripts/gui/hud/HudElements.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpBaseHud.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpHudInfoTexts.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpFieldworkHudPage.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpBaleFinderHudPage.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpCombineUnloaderHudPage.lua"/>
+		<sourceFile filename="scripts/gui/hud/CpBunkerSiloWorkerHudPage.lua"/>
+		<sourceFile filename="scripts/editor/brushes/BaseBrush.lua"/>
+		<sourceFile filename="scripts/editor/brushes/basic/InsertWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/basic/MoveWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/basic/DeleteWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeTurnWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeHeadlandWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeRowNumberWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/changeAttributes/ChangeConnectingTrackWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/advanced/MoveWaypoint.lua"/>
+		<sourceFile filename="scripts/editor/brushes/advanced/CurveWaypoints.lua"/>
+		<sourceFile filename="scripts/editor/EditorCourseWrapper.lua"/>
+		<sourceFile filename="scripts/editor/CourseEditor.lua"/>
+		<sourceFile filename="scripts/events/CoursesEvent.lua"/>
+		<sourceFile filename="scripts/events/CpJoinEvent.lua"/>
+		<sourceFile filename="scripts/events/GlobalSettingsEvent.lua"/>
+		<sourceFile filename="scripts/events/VehicleSettingsEvent.lua"/>
+		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
+		<sourceFile filename="scripts/events/CpJobStartAtLastWpSyncEvent.lua"/>
+	</extraSourceFiles>
+
+	<specializations>
+        <specialization name="courseplaySpec" className="CourseplaySpec" filename="scripts/specializations/CourseplaySpec.lua" />
+		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
+		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
+		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>
+		<specialization name="cpAIWorker" className="CpAIWorker" filename="scripts/specializations/CpAIWorker.lua"/>
+		<specialization name="cpAIFieldWorker" className="CpAIFieldWorker" filename="scripts/specializations/CpAIFieldWorker.lua"/>
+		<specialization name="cpAIBaleFinder" className="CpAIBaleFinder" filename="scripts/specializations/CpAIBaleFinder.lua"/>
+		<specialization name="cpAICombineUnloader" className="CpAICombineUnloader" filename="scripts/specializations/CpAICombineUnloader.lua"/>
+		<specialization name="cpAIBunkerSiloWorker" className="CpAIBunkerSiloWorker" filename="scripts/specializations/CpAIBunkerSiloWorker.lua"/>
+		<specialization name="cpGamePadHud" className="CpGamePadHud" filename="scripts/specializations/CpGamePadHud.lua"/>
+		<specialization name="cpHud" className="CpHud" filename="scripts/specializations/CpHud.lua"/>
+		<specialization name="cpInfoTexts" className="CpInfoTexts" filename="scripts/specializations/CpInfoTexts.lua"/>
+	</specializations>
+
+	<inputBinding>
+		<actionBinding action="CP_DBG_CHANNEL_SELECT_PREVIOUS">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_1" />
+		</actionBinding>
+		<actionBinding action="CP_DBG_CHANNEL_SELECT_NEXT">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_3" />
+		</actionBinding>
+		<actionBinding action="CP_DBG_CHANNEL_TOGGLE_CURRENT">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_2" />
+		</actionBinding>
+		<actionBinding action="CP_DBG_CHANNEL_MENU_VISIBILITY">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_4" />
+		</actionBinding>
+
+		<actionBinding action="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_delete" />
+		</actionBinding>
+
+		<actionBinding action="CP_START_STOP">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lctrl KEY_h" />
+		</actionBinding>
+
+		<actionBinding action="CP_CHANGE_STARTING_POINT">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_CLEAR_COURSE">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_CHANGE_COURSE_VISIBILITY">
+			<binding device="" input="" />
+		</actionBinding>
+
+		<actionBinding action="CP_OPEN_VEHICLE_SETTINGS">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_OPEN_GLOBAL_SETTINGS">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_OPEN_COURSEGENERATOR_SETTINGS">
+			<binding device="" input="" />
+		</actionBinding>
+		<actionBinding action="CP_OPEN_COURSEMANAGER">
+			<binding device="" input="" />
+		</actionBinding>
+
+		<actionBinding action="CP_TOGGLE_MOUSE">
+			<binding device="KB_MOUSE_DEFAULT" input="MOUSE_BUTTON_RIGHT" />
+		</actionBinding>
+    </inputBinding>
+
+	<actions>
+		<action name="CP_DBG_CHANNEL_SELECT_PREVIOUS" />
+		<action name="CP_DBG_CHANNEL_SELECT_NEXT" />
+		<action name="CP_DBG_CHANNEL_TOGGLE_CURRENT" />
+		<action name="CP_DBG_CHANNEL_MENU_VISIBILITY" />
+
+		<action name="CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" />
+		<action name="CP_START_STOP" />
+
+		<action name="CP_CHANGE_STARTING_POINT"/>
+		<action name="CP_CLEAR_COURSE"/>
+		<action name="CP_CHANGE_COURSE_VISIBILITY"/>
+
+		<action name="CP_OPEN_VEHICLE_SETTINGS"/>
+		<action name="CP_OPEN_GLOBAL_SETTINGS"/>
+		<action name="CP_OPEN_COURSEGENERATOR_SETTINGS"/>
+		<action name="CP_OPEN_COURSEMANAGER"/>		
+
+		<action name="CP_TOGGLE_MOUSE" />
+	</actions>
+</modDesc>

@@ -1,0 +1,703 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<l10n>
+  <texts>
+    <!--Hungarian translation-->
+    <!---->
+    <!--These translations are automatically reformated on a github push.-->
+    <!---->
+    <!---->
+    <!--basic-->
+    <!---->
+    <text name="CP_activated" text="aktív"/>
+    <text name="CP_deactivated" text="inaktív"/>
+    <text name="CP_automatic" text="auto"/>
+    <text name="CP_unit_meter" text="m"/>
+    <text name="CP_unit_foot" text="ft"/>
+    <text name="CP_copy" text="Útvonal másolása: "/>
+    <text name="CP_infoText" text="Courseplay(%s): Ha segítségre van szükséged, hibajelentéseket vagy javításokat szeretnél benyújtani, látogass el a következő oldalra: https://github.com/Courseplay/Courseplay_FS22."/>
+    <text name="CP_error_no_course" text="Először hozz létre egy útvonalat"/>
+    <text name="CP_error_could_not_generate_course" text="Hiba az útvonaltervezéskor"/>
+    <text name="CP_error_not_on_field" text="Csak szántóföldön lehet munkát végezni"/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Az ürítő jármű túl messze van a mezőtől."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="A kezdő pozíció túl messze van a mezőtől."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <!---->
+    <!--AI job parameters-->
+    <!---->
+    <text name="CP_jobParameters_fieldPosition_title" text="Szántóföld:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_subTitle_startAt" text="Útvonal kezdete:"/>
+    <text name="CP_jobParameters_startAt_title" text="Útvonal kezdete:"/>
+    <text name="CP_jobParameters_startAt_tooltip" text="Melyik útvonalpontnál kezdje a munkát"/>
+    <text name="CP_jobParameters_startAt_nearest" text="legközelebbi pont"/>
+    <text name="CP_jobParameters_startAt_first" text="első pont"/>
+    <text name="CP_jobParameters_startAt_last" text="utoljára használt pont"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_unload" text="kirakodó kombájn/aprító"/>
+    <text name="CP_jobParameters_startAt_bales" text="bálák összegyűjtése/csomagolása"/>
+    <text name="CP_jobParameters_subTitle_laneOffset" text="Konvoj pozíció:"/>
+    <text name="CP_jobParameters_laneOffset_title" text="Konvoj pozíció:"/>
+    <text name="CP_jobParameters_laneOffset_tooltip" text="Konvoj pozíció"/>
+    <text name="CP_jobParameters_laneOffset_center" text="középen"/>
+    <text name="CP_jobParameters_laneOffset_left" text="bal (belső)"/>
+    <text name="CP_jobParameters_laneOffset_right" text="jobb (belső)"/>
+    <text name="CP_jobParameters_laneOffset_left_2" text="bal (külső)"/>
+    <text name="CP_jobParameters_laneOffset_right_2" text="jobb (külsó)"/>
+    <!---->
+    <!--AI bale finder job parameters-->
+    <!---->
+    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Bálatípus:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Bálatípus:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="összes"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="csak a csomagoltak"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="csak a nem csomagoltak"/>
+    <!---->
+    <!--AI combine unloader job parameters-->
+    <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <!---->
+    <!--AI bunker silo worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <!---->
+    <!--AI jobs-->
+    <!---->
+    <text name="CP_job_fieldWork" text="CP: Terepmunka"/>
+    <text name="CP_job_baleCollect" text="CP: Bálagyűjtés/csomagolás"/>
+    <text name="CP_job_combineUnload" text="CP: Kombájn ürítése"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_ai_page_generate_course" text="CP: Útvonaltervezés"/>
+    <text name="CP_ai_page_open_course_generator" text="CP: Útvonaltervező megnyitása/zárása."/>
+    <!---->
+    <!--AI error messages-->
+    <!---->
+    <text name="CP_ai_messageErrorIsFull" text="%s segítő váratlanul abbahagyta a munkát - az eszkőz megtelt!"/>
+    <text name="CP_ai_messageError" text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI segítő %s váratlanul abbahagyta a munkát - útvonal nem található!"/>
+    <!---->
+    <!--Vehicle settings-->
+    <!---->
+    <text name="CP_vehicle_setting_title" text="CoursePlay jármű beállítások"/>
+    <text name="CP_vehicle_setting_subTitle_basic" text="Alapbeállítások"/>
+    <text name="CP_vehicle_setting_subTitle_implement" text="Eszközök beállításai"/>
+    <text name="CP_vehicle_setting_subTitle_combine" text="Kombájn beállításai"/>
+    <text name="CP_vehicle_setting_subTitle_seeder" text="Vetőgép beállításai"/>
+    <text name="CP_vehicle_setting_subTitle_multitool" text="Összesített együttműködési beállítások"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Sebesség"/>
+    <text name="CP_vehicle_setting_subTitle_debug" text="Hibakeresési beállítások"/>
+    <text name="CP_vehicle_setting_showCourse_title" text="Útvonal megjelenítése"/>
+    <text name="CP_vehicle_setting_showCourse_tooltip" text="Mutassa a jármű aktuális útvonalát"/>
+    <text name="CP_vehicle_setting_showCourse_startStop" text="csak start/stop"/>
+    <text name="CP_vehicle_setting_showCourse_all" text="minden útpont"/>
+    <text name="CP_vehicle_setting_openHudWithMouse_title" text="HUD nyitása egérrel"/>
+    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Ha nem aktív, a HUD-ot csak a billentyűkombinációval lehet megnyitni."/>
+    <text name="CP_vehicle_setting_fuelSave_title" text="Űzemanyagtakarékos mód"/>
+    <text name="CP_vehicle_setting_fuelSave_tooltip" text="Leállítja a motort amíg a jármű várakozik"/>
+    <text name="CP_vehicle_setting_stopAtEnd_title" text="Álljon meg a végén"/>
+    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Álljon meg az útvonal végén"/>
+    <text name="CP_vehicle_setting_allowReversePathfinding_title" text="Útkeresés hátramenettel"/>
+    <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="Adott esetben engedje meg az útkeresőnek, hogy hátrameneti szakaszokat generáljon"/>
+    <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Útkeresés fordulókban"/>
+    <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Engedélyezi az útkereső használatát fordulókban, pl. akadályok ill. termény kikerüléséhez"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Hajtsa össze a munkagépet a munka végén"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Engedélyezi/letiltja a munkagépek automatikus összecsukását a munka végén."/>
+    <text name="CP_vehicle_setting_raiseImplementLate_title" text="Szerszám emelés"/>
+    <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Korán vagy késésel emelje fel a szerszámot a forduló kezdetén."/>
+    <text name="CP_vehicle_setting_raiseImplementLate_early" text="korán"/>
+    <text name="CP_vehicle_setting_raiseImplementLate_late" text="késéssel"/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_title" text="Szerszám süllyesztés"/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_tooltip" text="Korán vagy későn engedje le a szerszámot a forduló végén."/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_early" text="korán"/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_late" text="késéssel"/>
+    <text name="CP_vehicle_setting_turnOnField_title" text="Forduljon a szántóföldön belül"/>
+    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Maradjon a szántóföldön a táblavégi fodulóban. Nem minden eszközzel elérhető."/>
+    <text name="CP_vehicle_setting_avoidFruit_title" text="Kerülje a terményt"/>
+    <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Az AI megpróbálja elkerülni, hogy a terménybe hajtson"/>
+    <text name="CP_vehicle_setting_toolOffsetX_title" text="Szerszámeltolás oldalra"/>
+    <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Szerszámeltolás balra/jobbra"/>
+    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Szerszámeltolás hosszirányban"/>
+    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Szerszámeltolás előre/hátra"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Szilázsadalék ellenőrzés"/>
+    <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Álljon meg ha a szilázsadalék-tartály üres"/>
+    <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Szimmetrikus sávváltás"/>
+    <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Szimmetrikus sávváltás"/>
+    <text name="CP_vehicle_setting_convoyDistance_title" text="Követési távolság"/>
+    <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Követési távolság ha több gép dolgozik ugyanazon a táblán. 40 - 400 m"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Jármű hibakeresés"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Engedélyezi/letiltja a hibakeresést ennél a járműnél."/>
+    <!---->
+    <!--Vehicle bunker silo settings-->
+    <!---->
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <!---->
+    <!--Vehicle settings speed-->
+    <!---->
+    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Terepmunka"/>
+    <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximális sebesség terepen végzett munka közben. 5 - 50 km/ó"/>
+    <text name="CP_vehicle_setting_fieldSpeed_title" text="Terület"/>
+    <text name="CP_vehicle_setting_fieldSpeed_tooltip" text="Maximális sebesség terepen történő vezetés közben. 5 - 50 km/ó"/>
+    <text name="CP_vehicle_setting_turnSpeed_title" text="Forduláskor"/>
+    <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximális sebesség forduló közben. 2 - 25 km/ó"/>
+    <text name="CP_vehicle_setting_reverseSpeed_title" text="Tolatás"/>
+    <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximális sebesség tolatás közben. 2 - 25 km/ó"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <!---->
+    <!--Vehicle settings sowing-->
+    <!---->
+    <text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" text="Barázdajelző"/>
+    <text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" text="Barázdajelző automatika be/ki."/>
+    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="A vetőgépek műtrágyát használnak"/>
+    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="Engedélyezi/letiltja a vetőgépek műtrágya használatát."/>
+    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" text="Vetőgép engedélyezés"/>
+    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Engedélyezi az opcionális vetőgép funkciót"/>
+    <!---->
+    <!--Vehicle settings combine-->
+    <!---->
+    <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Mindig hajtsa ki a csövet"/>
+    <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Mindig hajtsa ki a csövet, amikor a kombájn megtelt és a kirakodóra vár."/>
+    <text name="CP_vehicle_setting_stopForUnload_title" text="Ürítés csak álló helyzetben"/>
+    <text name="CP_vehicle_setting_stopForUnload_tooltip" text="Ürítés csak álló helyzetben"/>
+    <text name="CP_vehicle_setting_selfUnload_title" text="Önkirakodó betakarítógép"/>
+    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Ha a kombájn a megtelt, a táblán vagy annak közelében álló pótkocsihoz megy kirakodás céljából. Konvoj módban nem használható."/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Kirakodás az első fordulóban"/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="A kombájn az első fordulóban hívja a kirakodót."/>
+    <text name="CP_vehicle_setting_strawSwath_title" text="Szalma rendrakás"/>
+    <text name="CP_vehicle_setting_strawSwath_tooltip" text="Engedélyezi/letiltja a szalma rendet, vagy csak a táblavégeken tiltja le."/>
+    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Ki a fordulónál"/>
+    <!---->
+    <!--Course generator settings-->
+    <!---->
+    <text name="CP_vehicle_courseGeneratorSetting_title" text="Az útvonaltervező beállításai (%s)"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Általános"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Fordulósáv"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="Sorok"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="Egyéb"/>
+    <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Munkaszélesség"/>
+    <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Munkaszélesség. 0 - 50 m"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Fordulósáv szélessége"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="Fordulósáv szélessége a munkaszélesség többszöröse: 0 - 40"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Átfedés a fordulósávban"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="A fordulósáv nyomvonalak átfedése a munkaszélesség százalékában. 0 - 25%"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Táblaméret igazítása"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Pozitív értékek beljebb húzzák a tábla határát (táblaméret csökken), negatív értékek kijebbtolják (táblaméret nő) -2 - 5.8 m"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Kihagyandó sorok"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="A következő fel/le sorra váltáskor átugrandó sorok. 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Sorok blokkonként"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Amikor a középső mód a „blokk”, ennyi sor van minden blokkban. 0 - 24"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Körbejárás iránya"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Milyen irányban haladjon körbe a fordulósávon"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="óramutató járásával megegyező"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="óramutató járásával ellentétes irányban"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Minta"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Milyen mintában művelje a tábla középső részét"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="fel/le"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spirál"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="versenypálya"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="blokk"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Sarkok a fordulósávban"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Milyen nyomvonalat kövessen a fordulósáv a tábla sarkaiban"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="simított"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="éles"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="kerek"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Sorkezdési irány"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Sorkezdési irány"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="automatikus"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="leghosszabb él"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="kézi"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Sorok iránya"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="A sorok iránya (0° az észak), ha az irány kézi. 0° - 175°, 5°-os lépésekben"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Sziget kikerülő mód"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Hogyan kerülje az útvonal a szigeteket a táblán"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="nincs kikerűlés"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="egyszerű"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="körbe"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Hol kezdje a munkát"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Betakarításnál kívül (a fordulósávon), egyébként középről"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="kívűl"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="középen"/>
+    <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Munkagépek száma"/>
+    <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Hány munkagép dolgozik egyszerre ugyanazon a táblán. Részletek a súgóban."/>
+    <!---->
+    <!--Vine course generator settings-->
+    <!---->
+    <text name="CP_vehicle_vineCourseGeneratorSetting_title" text="Útvonaltervező szőlészethez"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic" text="Alapbeállítások"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title" text="Nyomvonal helyzete"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip" text="Az nyomvonal helyzete a tőkékhez képest. Részletek a súgóban."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left" text="a tőkék bal oldalán"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center" text="a tőkék felett"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right" text="a tőkék jobb oldalán"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title" text="Munkagépek száma"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip" text="Hány munkagép dolgozik egyszerre ugyanazon a táblán. Részletek a súgóban."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title" text="Kihagyandó sorok"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip" text="Csak akkor hagyj ki sorokat, ha a szerszám a sor mindkét oldalán dolgozik."/>
+    <!---->
+    <!--Global settings-->
+    <!---->
+    <text name="CP_global_setting_title" text="Általános beállítások"/>
+    <text name="CP_global_setting_subTitle_general" text="Alapbeállítások"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Haladó mód"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Haladó beállítások engedélyezése."/>
+    <text name="CP_global_setting_wageModifier_title" text="CP segítő bére"/>
+    <text name="CP_global_setting_wageModifier_tooltip" text="CP segítő bére a normál segítői bér százalékában"/>
+    <text name="CP_global_setting_autoRepair_title" text="Automatikus javítás"/>
+    <text name="CP_global_setting_autoRepair_tooltip" text="Automatikus javítás, vezetés közben."/>
+    <text name="CP_global_setting_autoRepair_off" text="Ne javítsa"/>
+    <text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%"/>
+    <text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%"/>
+    <text name="CP_global_setting_autoRepair_always" text="Javítsa"/>
+    <text name="CP_global_setting_fuelThreshold_title" text="Minimum üzemanagszint"/>
+    <text name="CP_global_setting_fuelThreshold_tooltip" text="A segítő abbahagyja a munkát, ha az üzemanyagszint ez alá csökken."/>
+    <text name="CP_global_setting_brokenThreshold_title" text="Maximum meghibásodás"/>
+    <text name="CP_global_setting_brokenThreshold_tooltip" text="A segítő abbahagyja a munkát, ha a jármű/szerszám ennél jobban meghibásodik. 100% soha nem hagyja abba."/>
+    <text name="CP_global_setting_subTitle_userSettings" text="Felhasználói beállítások"/>
+    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepaddal használható HUD"/>
+    <text name="CP_global_setting_controllerHudSelected_tooltip" text="Használja a gamepaddal is vezérelhető HUD-ot"/>
+    <text name="CP_global_setting_showActionEventHelp_title" text="Súgó a műveletekhez"/>
+    <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mutassa a súgót a különböző műveletekhez."/>
+    <text name="CP_global_setting_subTitle_pathfinder" text="útkereső beállításai"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Célszög különbség"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Simítási szög tényező"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
+    <text name="CP_global_setting_showsAllActiveCourses_title" text="Az összes aktív útvonal megjelenítése"/>
+    <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Az összes aktív útvonal megjelenítése a játéktérképen."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mutatja az útvonalakat a kistérképen"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Engedélyezi az útvonal kirajzolását a kis térképre."/>
+    <text name="CP_global_setting_infoTextHudActive_title" text="Infóablak megjelenítése"/>
+    <text name="CP_global_setting_infoTextHudActive_tooltip" text="Jármüvek állapota, értesítések megjelenítese egy infóablakban."/>
+    <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Kattintás az infóablakban"/>
+    <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Engedélyezi a jármüválasztást az infóablakból."/>
+    <text name="CP_global_setting_preferCustomFields_title" text="Felhasználói szántóföld előnyben"/>
+    <text name="CP_global_setting_preferCustomFields_tooltip" text="Válassza a felhasználói szántóföldet ha ugyanott egy beépített föld is van."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Távolság egység"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Távolság egység (méter vagy láb)"/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Méter"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Láb"/>
+    <!---->
+    <!--Course manager-->
+    <!---->
+    <text name="CP_courseManager_title" text="Útvonalkezelő (%s) %s"/>
+    <text name="CP_courseManager_no_current_course" text="nincs útvonal"/>
+    <text name="CP_courseManager_temporary_course" text="ideiglenes útvonal"/>
+    <text name="CP_courseManager_change_mode" text="Módváltás"/>
+    <text name="CP_courseManager_load_courses" text="Útvonal betöltése"/>
+    <text name="CP_courseManager_save_courses" text="Útvonal mentése"/>
+    <text name="CP_courseManager_edit_course" text="Útvonal szerkesztő megnyitása"/>
+    <text name="CP_courseManager_clear_current_courses" text="Jelenlegi útvonal törlése"/>
+    <text name="CP_courseManager_create_directory" text="Hozzon létre új mappát"/>
+    <text name="CP_courseManager_move_entry" text="Bejegyzés áthelyezése"/>
+    <text name="CP_courseManager_delete_entry" text="Bejegyzés törlése"/>
+    <text name="CP_courseManager_rename_entry" text="Bejegyzés átnevezése"/>
+    <text name="CP_courseManager_copy_entry" text="Bejegyzés másolása"/>
+    <text name="CP_courseManager_folder_dialog" text="Mappa neve:"/>
+    <text name="CP_courseManager_course_dialog" text="Útvonal neve:"/>
+    <text name="CP_courseManager_deleteWarning" text="Biztosan törölni akarod (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Az útvonal szerkesztése problémákat okozhat a CP sofőröknek.
+Csak akkor használd ezt az eszközt, ha az útvonal generátor nem tud kellően jó útvonalat generálni.
+Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felülírja a kiválasztott útvonalat.
+"/>
+    <text name="CP_courseManager_deleteError" text="A mappa nem üres (%s)!"/>
+    <text name="CP_courseManager_entryExistAlreadyError" text="A fájl már létezik a célmappában (%s)!"/>
+    <text name="CP_courseManager_noAccessError" text="Nincs hozzáférés a mappához (%s)!"/>
+    <text name="CP_courseManager_targetIsNoFolderError" text="A célhely nem mappa (%s)!"/>
+    <text name="CP_courseManager_targetIsNoCourseError" text="A célhely nem tanfolyam (%s)!"/>
+    <text name="CP_courseManager_basicSettings" text="Útvonal kezelés"/>
+    <text name="CP_courseManager_advancedSettings" text="Fájlok szerkesztése"/>
+    <text name="CP_courseManager_activate" text="Aktiválás"/>
+    <!---->
+    <!--Course editor-->
+    <!---->
+    <text name="CP_editor_course_title" text="Útvonal szerkesztő"/>
+    <text name="CP_editor_delete_title" text="Csomópontok törlése"/>
+    <text name="CP_editor_delete_primary_text" text="elsődleges"/>
+    <text name="CP_editor_delete_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_delete_tertiary_text" text="Csomópontok törlése a kijelölt ponttól az utolsóig."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Biztosan törölni akarsz minden csomópontot a kijelölt ponttól az utolsóig?"/>
+    <text name="CP_editor_delete_err" text="Túl kevés csomópont maradt."/>
+    <text name="CP_editor_course_basic_title" text="Basic"/>
+    <text name="CP_editor_course_basic_move_title" text="Csomópont mozgatása"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_basic_insert_title" text="Csomópontok beillesztése"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
+    <text name="CP_editor_course_advanced_title" text="Haladó"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Csomópont jelölése fordulóként."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Forduló pontot ad hozzá vagy töröl. (A kiválasztott csomópont lesz a fordulás kezdete.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Túl közel van egy másik forduló ponthoz."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Több csomópont mozgatása"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="elsődleges"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="másodlagos"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Forduló pont kiválasztása nem megengedett."/>
+    <!---->
+    <!--Info texts-->
+    <!---->
+    <text name="CP_infoTexts_isStuck" text="elakadt"/>
+    <text name="CP_infoTexts_blockedByObject" text="valamiben elakadt"/>
+    <text name="CP_infoTexts_shouldRefuel" text="hamarosan tankolni kell"/>
+    <text name="CP_infoTexts_needsFuel" text="tankolni kell"/>
+    <text name="CP_infoTexts_needsRepair" text="javítani kell"/>
+    <text name="CP_infoTexts_needsFilling" text="fel kell tölteni"/>
+    <text name="CP_infoTexts_needsUnloading" text="üríteni kell"/>
+    <text name="CP_infoTexts_workFinished" text="készen van"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Kombájnhoz vezetés"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Pótkocsihoz vezetés"/>
+    <text name="CP_infoTexts_outOfMoney" text="elfogyott a pénz"/>
+    <text name="CP_infoTexts_waitForRainToFinish" text="Várja hogy elálljon az eső"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
+    <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Útvonal nem található"/>
+    <!---->
+    <!--Custom field manager-->
+    <!---->
+    <text name="CP_customFieldManager_confirm_save" text="El akarod menteni az útvonalat szántóföldként %s néven?"/>
+    <text name="CP_customFieldManager_confirm_delete" text="Törlöd a %s szántóföldet?"/>
+    <text name="CP_customFieldManager_delete" text="Szántóföld törlés"/>
+    <text name="CP_customFieldManager_rename" text="Szántóföld átnevezés"/>
+    <text name="CP_customFieldManager_edit" text="Egyedi szántóföld szerkesztése"/>
+    <text name="CP_customFieldManager_draw" text="Szántóföld rajzolás"/>
+    <text name="CP_customFieldManager_draw_header" text="Jobb klikkel tudod a szántóföld határait megrajzolni"/>
+    <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>
+    <text name="CP_controllerGui_startRecording" text="Szántóföld-határ rögzítés indítása"/>
+    <text name="CP_controllerGui_stopRecording" text="Szántóföld-határ rögzítés leállítása"/>
+    <!---->
+    <!--Help menu-->
+    <!---->
+    <text name="CP_help_title" text="Courseplay"/>
+    <text name="CP_help_page_blank" text=""/>
+    <text name="CP_help_page_General_title" text="General Information"/>
+    <text name="CP_help_page_GeneralBase_text" text="
+A Courseplay segítségével mező útvonalakat generálhatsz ráadás funkciókkal, például fordulósávokkal (headland).
+Szintén lehetővé teszi bálázók és rakodókocsik használatát, amiket a korábbi fűnyírókkal, vagy aratógépekkel azonos útvonalon küldhetsz végig.
+További nagy funkció a bálák összegyűjtése és becsomagolása a mezőn.
+Újdonság a jelenlegi iterációban a szőlő terepmunka.
+A mezőmunka útvonalak beállíthatók több gépes módban, ami megengedi akár 5 sofőr konvojban való használatát ugyanazon a mezőn.
+Ugyancsak lehetséges a kombájnokat úgy beállítani, hogy a mezőn, vagy annak közelében egy pótkocsiba önállóan kiürítsék a terményt.
+Egyedi mezőhatárok is beállíthatók a Courseplay-hez, például füves mezőkön, amiket a mod nem ismer fel hagyományos szántóföldként.
+Végül a CP-nek van egy Autodrive felülete, ami megengedi egy vetőgép újratöltését egy közeli silónál, vagy egy rakodókocsi kiürítését és így tovább.
+
+További információért kérlek látogasd meg GitHub oldalunkat: https://github.com/Courseplay/Courseplay_FS22 .
+Ott segítséget kaphatsz, vagy jelenthetsz bármilyen hibát, amit tapasztaltál.
+Végül köszönjük minden fordítónak és a közösségünknek a hibák jelentését, hogy visszajelzést és új ötleteket adnak.
+
+Mi az a haladó mód:
+Ha a haladó mód nincs aktiválva, csak néhány beállításhoz férsz hozzá.
+A többi beállítás rejtve marad és alapértelmezett értékekre lesz állítva, amik a legtöbb helyzetben működnek.
+Így próbálunk segíteni a felhasználóknak, hogy megismerjék a Courseplay-t anélkül, hogy túlterhelné őket az összes beállítás.
+"/>
+    <text name="CP_help_page_extendedJobMenu_title" text="Bővített AI menü"/>
+    <text name="CP_help_page_startJobMenuBase_text" text="
+Először ki kell választanod egy járművet az AI menüben, hogy mezőmunka útvonalat generálhass, vagy hozzáférést nyerj a járműbeállításokhoz és az útvonal kezelőhöz.
+A jelenleg betöltött útvonal meg fog jelenni a térképen.
+A globális beállítások mindig láthatóak.
+Az útvonal generálásához és a CP munka elkezdéséhez létre kell hoznod a munkát (CP: mezőmunka, vagy CP: bála csomagolás/gyűjtés, hasonlóan a GIANTS segítőhöz).
+"/>
+    <text name="CP_help_page_startJobMenuFunctions_text" text="
+Hogy elkezdd az első CP munkát, ki kell választanod egy járművet és egy lehetséges, érvényes munkagépet, ami a munkához támogatott.
+Azután a munka létrehozására kattintva kiválaszthatod a CP: mezőmunka opciót mezőmunka gépekhez, vagy a CP: csomagol/gyűjt opciót egy 
+csatolt bálacsomagolóval vagy felszedővel.
+"/>
+    <text name="CP_help_page_readyJobMenuBase_text" text="
+Ha kiválasztottál egy CP munkát, a mező pozíciót a kiválasztott táblára kell helyezned, hogy útvonalat generálj, vagy bálakeresőt használj rajta.
+A pozíció nagyjából meghatározza az útvonal kezdőpontját is.
+Ha a GIANTS segítőt szeretnéd arra használni, hogy a mezőhöz vezessen, akkor egy célpozíciót is be kell állítanod közel az útvonal kezdőpontjához.
+A sáveltolás opciót csak akkor használd, ha több segítőt akarsz dolgoztatni ugyanazon a mezőn. Ehhez kérlek nézd meg az alábbi különálló segítő oldalt.
+"/>
+    <text name="CP_help_page_readyJobMenuFunctions_text" text="
+Ha a mező pozíció helyesen lett beállítva, a mező határai kirajzolódnak a térképen.
+Ha egy  CP: mezőmunkát hozol létre, hozzáférést nyersz az útvonal generátor beállításaihoz.
+"/>
+    <text name="CP_help_page_JobMenuExtras_text" text="
+Mostmár lehetséges a sofőr indítása közvetlenül a menüből. A GIANTS segítő a célpozícióra fog vezetni és onnan a CP munka automatikusan átveszi az irányítást.
+Alternatív megoldásként a sofőrt a kijelzőről is indíthatod, ha a járművel közel vagy a mezőhöz, vagy AutoDrive modot használsz, hogy a CP munkát közel vidd a táblához.
+"/>
+    <text name="CP_help_page_courseGenerator_title" text="Útvonal generátor"/>
+    <text name="CP_help_page_courseGeneratorBase_text" text="
+Minden mezőmunka útvonalat az útvonal generátor hoz létre. Ez egy remek eszköz, ami megengedi a generált útvonalak igény szerinti testreszabását.
+Ha még nem csináltál ilyet, kezdd azzal, hogy csak a fordulósávok számát módosítod.
+Ezt követően mindig változtathatsz más értékekkel és generálhatsz útvonalat, hogy megnézd, egyes értékek milyen hatással vannak az útvonalra.
+A kísérletezés és különböző beállítások hatásainak megfigyelése különböző mezőkön a legjobb módja, hogy hozzászokj ehhez.
+"/>
+    <text name="CP_help_page_courseGeneratorBaseFunctions_text" text="
+Basics:
+The first few values you see here, are real basic stuff.
+- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
+- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
+- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
+The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
+Center options:
+- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
+Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
+- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
+- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
+- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
+- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+"/>
+    <text name="CP_help_page_courseGeneratorHeadland_text" text="
+Headland settings will only show up, when you have set at least 1 at Number of headlands.
+You gain options for where to start on, corner settings, direction and overlap.
+Headlands are highly suggested to prevent tools leaving the field when turning.
+"/>
+    <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
+- Start work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
+When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
+- Headland corners: Smooth will have a simple smoothing over the corners, This works for all tools, but will lead to tiny unworked patches in the corners.
+They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
+Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
+- Headland direction: clockwise or counter-clockwise. This can be important for combines and harvesters, depending on wich side the pipe or conveyor belt is.
+- Headland overlap: How much % overlap all headlands should have. The first one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
+"/>
+    <text name="CP_help_page_courseGeneratorExtras_text" text="
+Field Margin explanation:
+Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
+Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
+"/>
+    <text name="CP_help_page_courseManager_title" text="Course manager"/>
+    <text name="CP_help_page_courseManagerBase_text" text="
+The course manager allows you to save courses and enables you to load the saved course later again.
+This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
+This feature also allows you to pickup the swath left behind by a combine or a windrower with a forage wagon or a baler.
+
+The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
+The course manager works differently from what you are used to in FS19.
+Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
+Folders can simply created by the button at the bottom of the screen and entering a name.
+Courses are only saved localy for now.
+"/>
+    <text name="CP_help_page_courseManagerBaseFunctions_text" text="
+When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
+The name and location can be changed later.
+To remove the course from your vehicle, click on 'Clear current course' button.
+For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
+Clicking on change mode activates the edit mode of the course manager.
+"/>
+    <text name="CP_help_page_courseManagerEdit_text" text="
+With the edit mode is active you have these options:
+- Moving a course into another directory.
+- Deleting courses or directories.
+- Renaming courses or directories.
+"/>
+    <text name="CP_help_page_courseManagerEditFunctions_text" text="
+For moving a course: 
+  1) Click on the move button at the bottom of the screen.
+  2) Click on the course you want to move.
+  3) Click on the directory where you want the course moved to.
+For renaming you simply have to click the rename button and after that the directory or course. Then just type in the new name.
+For deleting a course or directory click on the delete button and after that the folder or course you want to delete.
+Directories must be empty if you want to delete them.
+"/>
+    <text name="CP_help_page_minihud_title" text="Mini HUD"/>
+    <text name="CP_help_page_minihud_text" text="
+A: Clicking on the vehicle name opens the vehicle configurations page.
+B: Toggle where to start the course with one click.
+C: Clicking on the coursename you will open the AI Menu with the course generator open.
+D: Start the Courseplay helper.
+E: Shows current waypoint / total waypoints. Click to open the course manager.
+F: Clicking on the icon opens the general settings page.
+G: Closes the HUD.
+H: Decrease and increase the working width. A red line on your vehicle shows the current setting.
+I: Value for horizontal offset, + left, - right.
+J: Copy and paste a course to a different vehicle.
+     Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
+K and L: Clicking on the text will reset your changes to the auto values.
+M: Shows the copied course.
+N: This area shows the lane offset if you have a multitool course loaded. Clicking on the text toggles the positions.
+O: Start/stop recording a custom field course.
+P: Removes course from vehicle
+Q: Changes the course visibility between: on, off and start/stop only.
+R: Removes the copied course from the clipboard.
+"/>
+    <text name="CP_help_page_customField_title" text="Custom Fields"/>
+    <text name="CP_help_page_customFieldRecord_text" text="
+There are two ways to create a custom field.
+The first one is to use the record function of the HUD.
+Start the record and record your field border.
+Once done, press the button again and you will be asked if you want to save it.
+"/>
+    <text name="CP_help_page_customFieldDone_text" text="
+Having a look on the AI Menu, you will see your recorded field border.
+By clicking on the Name, you will get the option to either delete it or rename it.
+"/>
+    <text name="CP_help_page_customFieldDraw_text" text="
+The second option is to draw it on the AI Menu Map.
+Have no tractor or other vehicle selected (left click somewhere on the map), you get the option to draw a custom field.
+When started, the text draw custom field lines with right click will be displayed.
+Use the right mouse button to click on a position on where you want to start.
+The next right click will draw a line from your startpoint to your second position, wich will be the start point for the next line.
+"/>
+    <text name="CP_help_page_multiConvoy_title" text="Multitool and Convoy"/>
+    <text name="CP_help_page_multitoolBasic_text" text="
+It is possible to have up to 5 vehicles working together on the same field in a convoy (also called multi tools course).
+"/>
+    <text name="CP_help_page_multitoolFunction_text" text="
+Once a multi tool course is loaded you will need to select the lane for the driver.
+Those lanes are always named the same:
+left(2), left(1), center, right(1), right(2).
+2 vehicles will have left(1) and right(1), 4 will have left(2) and right(2).
+With 3 or 5 vehicles you will also gain the center option.
+"/>
+    <text name="CP_help_page_convoyBasic_text" text="
+The convoy only works if the vehicles have the same multi tool course with the same name loaded.
+They will automatically keep a small distance towards the vehicle in front of.
+Additionally the convoy feature also gets applied when for example a baler is driving behind a combine on the same course.
+"/>
+    <text name="CP_help_page_convoyFunction_text" text="
+The convoy distance vehicle setting changes the distance between the vehicles.
+The distance of all vehicles with the same course name will be automatically set to the highest value of all vehicles in the convoy.
+"/>
+    <text name="CP_help_page_wrapCollect_title" text="Bale wrapping and collecting"/>
+    <text name="CP_help_page_wrapCollectBasic_text" text="
+Wrapping and collecting bales can be done in two different ways.
+The first one is to load the same course you used for your baler and let the wrapper or collector run that course.
+However this can be tricky, as some bales love to roll or fly off the path.
+At this point, our wrap and collect job type can help as it doesn't need a course.
+Stay on the field and just start the driver from the HUD with wrap/collect bales or use the AI Map to send him to a field to start the job.
+"/>
+    <text name="CP_help_page_wrapBasic_text" text="
+Wrapping bales is very simple. Load a course of your baler and start like any other Fieldwork Job, or without a course,
+start it with bale wrapping/collecting from the HUD or the AI Menu.
+  "/>
+    <text name="CP_help_page_wrapFunction_text" text="
+When using a course, the helper drives with a preset offset so the wrappers pickup is in the middle of the course.
+Without a course, the Courseplay scans the field for unwrapped bales and uses the pathfinder to find a way to
+the best closest bale to wrap.
+Automatic backing up if a bale is in front of the vehicle or if we are too close to the field border should prevent accidents.
+"/>
+    <text name="CP_help_page_collectBasic_text" text="
+Collecting bales works kinda the same, with or without a course.
+When the collector is full, it will stop the work and tells the user it needs to be unloaded. If you have AutoDrive
+installed you can use it to run an unload the bale collector automatically.
+"/>
+    <text name="CP_help_page_symetricLaneChange_title" text="Symetric lange change"/>
+    <text name="CP_help_page_symetricLaneChangeBasic_text" text="
+Symmetric lane change is used in multitool courses and tells the driver in which lane he has to drive after the turn.
+This is a bit hard to understand so let's have a look at two examples.
+"/>
+    <text name="CP_help_page_symetricLaneChangeExampleOff_text" text="
+When the symmetric lane change is turned off, the vehicle stays on it's offset lane.
+That means he always drives left or right from the course.
+This ensures, that the helpers are not driving alongside each other.
+There won't be a risk of on conflict with another driver.
+"/>
+    <text name="CP_help_page_symetricLaneChangeExampleOn_text" text="
+If symmetric lane change is turned on, left and right will be exchanged (but not shown in the HUD).
+Vehicles can conflict with each other, when they drive towards each other.
+What is the advantage of symmetric lange change then ?
+If you have a look at the order of the lanes, from left to right, it will be clear:
+Without symetric change: left, right, left, right - it is almost like skipping a lane.
+With symetric change: left, right, right, left - from left to right, one lane after the other.
+In the example with the Combine it means, no Combine will have fruit left and right of its lane.
+"/>
+    <text name="CP_help_page_infoPanel_title" text="Info panel"/>
+    <text name="CP_help_page_infoPanelBasic_text" text="
+This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
+Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
+While hovering the status message, the name of the vehicle will be displayed.
+By clicking on it, you can jump directly into the vehicle.
+"/>
+    <text name="CP_help_page_infoPanelMsg_text" text="
+The Informations are the following:
+- Helper is stuck
+- Blocked by an object
+- Should be refueled
+- Needs to be refueled
+- Needs to be repaired
+- Needs to be refilled
+- Needs to be unloaded
+- Finished work
+- Ouf of money
+- Waiting for rain to finish
+"/>
+    <text name="CP_help_page_vineWork_title" text="Vine work"/>
+    <text name="CP_help_page_vineWorkConditions_text" text="
+Working on vines is a bit more complex then working on a normal field.
+To have the best result, the vines should all be next to each other within the default grid.
+The end and start of each vine, should also be approximately the same length.
+If the vines are on an existing field, you can open the generator the direct way like normal.
+If they are not on a field, you have to go over the AI Menu and place the field marker on the vines.
+  "/>
+    <text name="CP_help_page_vineWorkGenerator_text" text="
+The generator for vines has less options.
+Depending on the tool, you have to choose to work on the vines or beside the vines.
+E.g. the default harvester needs to drive and work on the vine.
+     The pre-pruner needs to drive left from the vines but works on the vine, so you have to choose to work on the vine, but drive with an offset.
+     Sprayers need to drive next to the vines and need to skip one row, since it sprays to the left and the right.
+"/>
+    <text name="CP_help_page_vineWorkHarvester_text" text="
+A vine course should be generated on the vines, as it got to drive and work on the vines.
+"/>
+    <text name="CP_help_page_vineWorkPruner_text" text="
+The pre-pruner works on the vines, so the course have to be generated on the vines.
+The Tools comes with an offset for the tractor, so the tractor drives between the vines.
+"/>
+    <text name="CP_help_page_vineWorkSprayer_text" text="
+The sprayer works next to the vines so it has to drive either left or right from the vines.
+Since the sprayer can work on the left and right vines at the same time, we can skip a row.
+"/>
+    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editorGeneral_text" text="
+The course editor can be used to edit courses and custom fields.
+The loaded courses will be saved/overritten automatically, when the editor is closed.
+
+1) Editing a custom field can be done with a selected field on the ai menu page.
+2) Editing a course can be done in the course manager. 
+   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+
+Editing of course should only be done, when the course generator can't produce a good enough course.
+Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+"/>
+    <text name="CP_help_page_editorBasic_text" text="
+Under the basic category are:
+1) The move brush moves a hovered waypoint to the brush position.
+2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+
+Deleting of waypoints can be done with the red delete button.
+"/>
+    <text name="CP_help_page_editorAdvanced_text" text="
+Under the advanced category are:
+1) A brush to move multiple waypoints in between to selected waypoints.
+2) A brush to insert a curve of waypoints between to selected waypoints.
+3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+"/>
+    <!---->
+    <!--Input bindings-->
+    <!---->
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Válassza ki a következő hibakeresési csatornát."/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Válassza ki az előző hibakeresési csatornát."/>
+    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Az aktuális hibakeresési csatorna módosítása."/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Megjeleníti a hibakeresés menüjét igen/nem."/>
+    <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Nyissa meg a mini GUI-t"/>
+    <text name="input_CP_START_STOP" text="CP: Segítő indítás/leállítás"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_TOGGLE_MOUSE" text="CP: Egérkurzor ki/be"/>
+    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: HUD ki/be"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+  </texts>
+</l10n>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	All the vehicle settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_vehicle_setting_">
+	<SettingSubTitle title="basic">
+		<!-- Show waypoints -->
+		<Setting classType="AIParameterSettingList" name="showCourse" onChangeCallback="cpUpdateWaypointVisibility" default="1" isUserSetting="true">
+			<Values>
+				<Value name="SHOW_COURSE_DEACTIVATED">0</Value>
+				<Value name="SHOW_COURSE_START_STOP">1</Value>
+				<Value name="SHOW_COURSE_ALL">2</Value>
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text>startStop</Text>
+				<Text>all</Text>
+			</Texts>
+		</Setting>
+		<!--Open hud with mouse-->
+		<Setting classType="AIParameterBooleanSetting" name="openHudWithMouse" defaultBool="true" onChangeCallback="cpUpdateMouseAction"/>
+
+		<!--Open hud with mouse-->
+		<Setting classType="AIParameterBooleanSetting" name="fuelSave" defaultBool="true" isExpertModeOnly="true"/>
+		<!--Stop At End-->
+		<!--<Setting classType="AIParameterBooleanSetting" name="stopAtEnd" defaultBool="true" isExpertModeOnly="true"/> turn this setting off for now, as it is not active right now.-->
+		<!--Turn on Field-->
+		<Setting classType="AIParameterBooleanSetting" name="turnOnField" defaultBool="true" isVisible="areCourseSettingsVisible"/>
+		<!--Avoid Fruit-->
+		<Setting classType="AIParameterBooleanSetting" name="avoidFruit" defaultBool="true" isExpertModeOnly="true"/>
+		<!--Pathfinder Reverse-->
+		<Setting classType="AIParameterBooleanSetting" name="allowReversePathfinding" defaultBool="true" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
+		<Setting classType="AIParameterBooleanSetting" name="allowPathfinderTurns" defaultBool="false" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="implement">
+		<!--Fold at End-->
+		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
+		<!--Raise Implement-->
+		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate" isVisible="areCourseSettingsVisible">
+			<Texts>
+				<Text>early</Text>
+				<Text>late</Text>
+			</Texts>
+		</Setting>
+		<!--Lower Implement-->
+		<Setting classType="AIParameterBooleanSetting" name="lowerImplementEarly" vehicleConfiguration="lowerEarly" isVisible="areCourseSettingsVisible">
+			<Texts>
+				<Text>late</Text>
+				<Text>early</Text>
+			</Texts>
+		</Setting>
+		<!--Tool Offset X-->
+		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"
+				 onChangeCallback="cpShowWorkWidth" setDefault="setAutomaticWorkWidthAndOffset"
+				 isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
+		<!--Tool Offset Z-->
+		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"
+				 onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" />
+		<!-- Full threshold -->
+		<Setting classType="AIParameterSettingList" name="fullThreshold" min="40" max="100" incremental="5" default="85" unit="4"/>
+		<!--Silage additives needed?-->
+		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="bunkerSilo" isVisible="areBunkerSiloSettingsVisible">
+		<Setting classType="AIParameterSettingList" name="bunkerSiloWorkWidth" min="3" max="50" incremental="0.1" unit="2" setDefault="setAutomaticBunkerSiloWorkWidth" onChangeCallback="cpShowWorkWidth"/>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
+		<!--Stop for unload-->
+		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
+		<!--Selfunload-->
+		<Setting classType="AIParameterBooleanSetting" name="selfUnload"/>
+		<!--Unload on first Headland-->
+		<Setting classType="AIParameterBooleanSetting" name="unloadOnFirstHeadland" defaultBool="true" isExpertModeOnly="true"/>
+		<!--Strawswath-->
+		<Setting classType="AIParameterSettingList" name="strawSwath" default="2">
+			<Values>
+				<Value name="STRAW_SWATH_OFF">1</Value>
+				<Value name="STRAW_SWATH_ON">2</Value>
+				<Value name="STRAW_SWATH_ONLY_CENTER">3</Value>
+			</Values>
+			<Texts>
+				<Text prefix="false">CP_deactivated</Text>
+				<Text prefix="false">CP_activated</Text>
+				<Text>onlyCenter</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">
+		<!--Ridgemarker-->	
+		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" defaultBool="false" isVisible="isRidgeMarkerSettingVisible" isExpertModeOnly="true"/>
+		<!--Fertilizer-->
+		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true" isVisible="isSowingMachineFertilizerSettingVisible"/>
+		<!--Optional sowing machine-->
+		<Setting classType="AIParameterBooleanSetting" name="optionalSowingMachineEnabled" defaultBool="false" isVisible="isOptionalSowingMachineSettingVisible"/>
+	</SettingSubTitle>
+	
+	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">
+		<!--Symmetric Lane Change-->
+		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
+		<!--Convoy Distance-->
+		<Setting classType="AIParameterSettingList" name="convoyDistance" min="40" max="400" default ="75" unit="2" isExpertModeOnly="true"/>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="speed" isExpertModeOnly="true">
+		<!--Fieldwork Speed-->
+		<Setting classType="AIParameterSpeedSetting" name="fieldWorkSpeed" min="5" max="50" default="25" unit="1" isExpertModeOnly="true"/>
+		<!--Field Speed-->
+		<Setting classType="AIParameterSpeedSetting" name="fieldSpeed" min="5" max="50" default="20" unit="1" isExpertModeOnly="true"/>
+		<!--Turn Speed-->
+		<Setting classType="AIParameterSpeedSetting" name="turnSpeed" min="2" max="25" default="8" unit="1" isExpertModeOnly="true"/>
+		<!--Reverse Speed-->
+		<Setting classType="AIParameterSpeedSetting" name="reverseSpeed" min="2" max="25" default="5" unit="1" isExpertModeOnly="true"/>
+		<!--Bunker silo speed-->
+		<Setting classType="AIParameterSpeedSetting" name="bunkerSiloSpeed" min="2" max="25" default="15" unit="1" isExpertModeOnly="true"/>
+	</SettingSubTitle>
+
+	<SettingSubTitle title="debug">
+		<!--Debug active -->
+		<Setting classType="AIParameterBooleanSetting" name="debugActive"/>
+	</SettingSubTitle>
+</Settings>

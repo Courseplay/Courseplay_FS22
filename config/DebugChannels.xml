@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!--
+	This is the debug setup file.
+	All debug channel setup can be changed here.
+	active : can be changed to enable it on startup.
+	name : corresponds to the call name, for example courseplay.DBG_MODE_1.
+	text : is the tooltip shown in the hud.
+-->
+<DebugChannels>
+	<DebugChannel active="true"  name="DBG_FIELDWORK" text="field work"/>
+	<DebugChannel active="true"  name="DBG_FIND_BALES" text="bale collector"/>
+	<DebugChannel active="true"  name="DBG_UNLOAD_COMBINE" text="unload combine"/>
+	<DebugChannel active="false" name="DBG_MODE_8" text="mode 8 - field supply"/>
+	<DebugChannel active="false" name="DBG_MODE_9" text="mode 9 - shovel fill/empty"/>
+	<DebugChannel active="true" name="DBG_PATHFINDER" text="pathfinder"/>
+	<DebugChannel active="true" name="DBG_SILO" text="bunker silo"/>
+	<DebugChannel active="false" name="DBG_TRIGGERS" text="triggers"/>
+	<DebugChannel active="true"  name="DBG_REVERSE" text="reverse driving"/>
+	<DebugChannel active="true"  name="DBG_TURN" text="turns"/>
+	<DebugChannel active="true"  name="DBG_PPC" text="pure pursuit controller"/>
+	<DebugChannel active="true"  name="DBG_TRAFFIC" text="traffic collision/proximity"/>
+	<DebugChannel active="true"  name="DBG_COURSES" text="course save/load/generation"/>
+	<DebugChannel active="false" name="DBG_HUD" text="hud action"/>
+	<DebugChannel active="false" name="DBG_MULTIPLAYER" text="multiplayer"/>
+	<DebugChannel active="true"  name="DBG_IMPLEMENTS" text="implements"/>
+	<DebugChannel active="false" name="DBG_UNCATEGORIZED" text="other"/>
+	<DebugChannel active="false" name="DBG_AI_DRIVER" text="AIDriver common"/>
+	<!-- this is to prevent spamming the log if not necessary (e.g. raycasts)-->
+	<DebugChannel active="false" name="DBG_CYCLIC" text="activate cyclic prints"/>
+</DebugChannels>

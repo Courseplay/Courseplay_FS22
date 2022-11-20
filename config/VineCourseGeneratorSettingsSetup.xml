@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- 
+	All the course generator settings can be setup here.
+	For documentation look up the CpSettingUtil.lua.
+-->
+
+<Settings prefixText="CP_vehicle_vineCourseGeneratorSetting_" autoUpdateGui="true">
+    <SettingSubTitle title="basic">
+        <Setting classType="AIParameterSettingList" name="vineCenterOffset" default = "0">
+            <Values>
+                <Value name="VINE_CENTER_OFFSET_LEFT">-1</Value>
+                <Value name="VINE_CENTER_OFFSET_CENTER">0</Value>
+                <Value name="VINE_CENTER_OFFSET_RIGHT">1</Value>
+            </Values>
+            <Texts>
+                <Text>left</Text>
+                <Text>center</Text>
+                <Text>right</Text>
+            </Texts>
+        </Setting>
+        <Setting classType="AIParameterSettingList" name="vineMultiTools" min="1" max="5" default="1"/>
+        <Setting classType="AIParameterSettingList" name="vineRowsToSkip" min="0" max="2" default="0"/>
+    </SettingSubTitle>
+</Settings>

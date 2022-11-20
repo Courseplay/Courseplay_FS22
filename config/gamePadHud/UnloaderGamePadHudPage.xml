@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	Vehicle,course generator or job settings can be set here to be displayed in the mini hud.
+-->
+
+<Settings title="CP_vehicle_setting_display">
+	<Setting type="combineUnloaderJobParameters" name = "useGiantsUnload" />
+	<Setting type="combineUnloaderJobParameters" name = "unloadingStation" />
+	<Setting type="vehicleSettings" name = "fullThreshold" />
+	<Setting type="vehicleSettings" name = "toolOffsetX" />
+	<Setting type="vehicleSettings" name = "toolOffsetZ" />
+</Settings>
