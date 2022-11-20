@@ -143,9 +143,11 @@ end
 --- Overrides the player shield controls, while a cp driver is driving.
 function LevelerController.actionEventAttacherJointControl(object, superFunc, ...)
 	local rootVehicle = object:getRootVehicle()
-	local job = rootVehicle:getJob()
-	if job and job:isa(CpAIJobBunkerSilo) then 
-		return
+	if rootVehicle and rootVehicle.getJob then
+		local job = rootVehicle:getJob()
+		if job and job:isa(CpAIJobBunkerSilo) then 
+			return
+		end
 	end
 	superFunc(object, ...)
 end

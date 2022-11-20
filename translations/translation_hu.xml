@@ -27,6 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Szántóföld:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Útvonal kezdete:"/>
     <text name="CP_jobParameters_startAt_title" text="Útvonal kezdete:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Melyik útvonalpontnál kezdje a munkát"/>

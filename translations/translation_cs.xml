@@ -27,6 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="田地位置："/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="选择起始点:"/>
     <text name="CP_jobParameters_startAt_title" text="选择起始点:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="该任务的起始点"/>

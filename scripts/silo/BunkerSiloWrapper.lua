@@ -2,8 +2,8 @@
 --- Wrapper for a bunker silo.
 CpBunkerSilo = CpObject()
 
-CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 25
-CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 15
+CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 50
+CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 20
 CpBunkerSilo.DRAW_DEBUG = false
 CpBunkerSilo.SIDE_MODES = {
 	OPEN = 0,
@@ -82,7 +82,17 @@ function CpBunkerSilo:initialize()
 
 
 	self.plot:setAreas(self:getPlotAreas())
+	self.initialized = true
 end
+
+
+function CpBunkerSilo.readStreamSilo(silo, ...)
+	local wrapper = g_bunkerSiloManager:getSiloWrapperByNode(silo.interactionTriggerNode)
+	if wrapper then 
+		wrapper:initialize()
+	end
+end
+BunkerSilo.readStream = Utils.appendedFunction(BunkerSilo.readStream, CpBunkerSilo.readStreamSilo)
 
 function CpBunkerSilo:rayCastCallbackOneSidedSilo(hitObjectId, x, y, z, distance, nx, ny, nz, subShapeIndex, shapeId, isLast)
 	if hitObjectId then 
@@ -233,7 +243,6 @@ end
 function CpBunkerSilo:update(dt)
 	if not self.initialized then 
 		self:initialize()
-		self.initialized = true
 	end
 
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.
@@ -379,7 +388,11 @@ function CpBunkerSilo:isValidUnloader(vehicle)
 		if vehicle.getIsControlled and vehicle:getIsControlled() then 
 			return true
 		end
+		if vehicle.ad and vehicle.ad.stateModule and vehicle.ad.stateModule:isActive() then
+			return true
+		end
 	end
+	return false
 end
 
 function CpBunkerSilo:hasNearbyUnloader()
@@ -388,8 +401,8 @@ end
 
 function CpBunkerSilo:shouldUnloadersWaitForSiloWorker()
 	local needsWaiting = false
-	for i, controller in pairs(self.controllers) do 
-		needsWaiting = needsWaiting or controller:isWaitingAtParkPosition() 
+	for _, controller in pairs(self.controllers) do 
+		needsWaiting = needsWaiting or not controller:isWaitingForUnloaders() 
 	end
 	return needsWaiting
 end
@@ -410,13 +423,17 @@ function CpBunkerSilo:removeNearbyUnloader(vehicle)
 	end
 end
 
+function CpBunkerSilo:getNearbyUnloaders()
+	return self.nearbyUnloaders
+end
+
 function CpBunkerSilo:updateUnloaders(dt)
 	--- Searches for new unloaders in the unloader area and remove unloaders, that left.
-	if self.numControllers > 0 and g_updateLoopIndex % 10 == 0 then 
-		for i, vehicle in pairs(g_currentMission.vehicles) do 
+	if self.numControllers > 0 and g_updateLoopIndex % 7 == 0 then 
+		for _, vehicle in pairs(g_currentMission.vehicles) do 
 			local isValid = false
 			if self:isValidUnloader(vehicle) then 
-				for i, v in pairs(vehicle:getChildVehicles()) do 
+				for _, v in pairs(vehicle:getChildVehicles()) do 
 					local x, _, z = getWorldTranslation(v.rootNode)
 					if self:isUnloaderInSilo(x, z) then
 						isValid = true
@@ -432,9 +449,9 @@ function CpBunkerSilo:updateUnloaders(dt)
 	end
 	if self:shouldUnloadersWaitForSiloWorker() then
 		--- Makes sure the AD driver wait for the silo worker. 
-		for i, unloader in pairs(self.nearbyUnloaders) do
-			if unloader.HoldDriving then 
-				unloader:HoldDriving()
+		for _, unloader in pairs(self.nearbyUnloaders) do
+			if unloader.spec_autodrive and unloader.spec_autodrive.HoldDriving then 
+				unloader.spec_autodrive:HoldDriving(unloader)
 			end
 		end
 	end
@@ -454,4 +471,27 @@ function CpBunkerSilo:drawUnloaderArea()
 		self:drawArea(self:getBackArea())
 	end
 	self:drawArea(self:getArea())
+end
+
+function CpBunkerSilo:getDebugData()
+	local data = {
+		{
+			name = "unloaders should wait: ",
+			value = self:shouldUnloadersWaitForSiloWorker()
+		}
+	}
+	for _, unloader in pairs(self.nearbyUnloaders) do 
+		if unloader.ad and unloader.ad.stateModule and unloader.ad.stateModule:isActive() then
+			table.insert(data, {
+				name = "nearby unloader", 
+				value = "AD: ".. CpUtil.getName(unloader)
+			})
+		else 
+			table.insert(data, {
+				name = "nearby unloader", 
+				value = CpUtil.getName(unloader)
+			})
+		end
+	end
+	return data
 end

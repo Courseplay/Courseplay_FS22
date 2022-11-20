@@ -156,8 +156,11 @@ function CpAIBunkerSiloWorker:startCpAtFirstWp(superFunc, ...)
             local spec = self.spec_cpAIBunkerSiloWorker
             spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
             spec.cpJob:setValues()
-            g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
-            return true
+            local success = spec.cpJob:validate(false)
+            if success then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                return true
+            end
         end
     else 
         return true
@@ -166,10 +169,20 @@ end
 
 --- Starts the cp driver at the last driven waypoint.
 function CpAIBunkerSiloWorker:startCpAtLastWp(superFunc, ...)
-    if not superFunc(self, ...) and self:getCanStartCpBunkerSiloWorker() then 
-        return self:startCpAtFirstWp()
+    if not superFunc(self, ...) then 
+        if self:getCanStartCpBunkerSiloWorker() then 
+            local spec = self.spec_cpAIBunkerSiloWorker
+            spec.cpJob:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true)
+            spec.cpJob:setValues()
+            local success = spec.cpJob:validate(false)
+            if success then
+                g_client:getServerConnection():sendEvent(AIJobStartRequestEvent.new(spec.cpJob, self:getOwnerFarmId()))
+                return true
+            end
+        end
+    else 
+        return true
     end
-    return false
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()

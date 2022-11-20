@@ -2,16 +2,13 @@
 ---@class CpAIJobBaleFinder : CpAIJobFieldWork
 CpAIJobBaleFinder = {
 	name = "BALE_FINDER_CP",
-	translations = {
-		jobName = "CP_job_baleCollect"
-	}
+	jobName = "CP_job_baleCollect"
 }
 local AIJobBaleFinderCp_mt = Class(CpAIJobBaleFinder, CpAIJobFieldWork)
 
 
 function CpAIJobBaleFinder.new(isServer, customMt)
 	local self = CpAIJobFieldWork.new(isServer, customMt or AIJobBaleFinderCp_mt)
-	
 	return self
 end
 

@@ -33,8 +33,8 @@ AIDriveStrategyBunkerSilo.myStates = {
 }
 
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
-AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 30
-AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
+AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 15
+AIDriveStrategyBunkerSilo.isStuckBackOffset = 12
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 AIDriveStrategyBunkerSilo.endReachedOffset = 3
 
@@ -85,13 +85,22 @@ end
 function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     self:info('Starting bunker silo mode.')
 
-    self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
+    if self.silo == nil then 
+        self:info("Bunker silo is nil!")
+        self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
+        return
+    end
 
+    self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
+    self:debug("Wait at park position: %s", tostring(jobParameters.waitAtParkPosition:getValue()))
     if self.leveler then 
-        if AIUtil.isObjectAttachedOnTheBack(self.vehicle, self.leveler) then 
+        local directionNode = self.vehicle:getAIDirectionNode()
+        local _, _, dz = localToLocal(self.leveler.rootNode, directionNode, 0, 0, 0)
+        if dz < 0 then
             self.drivingForwardsIntoSilo = false
         end
     else 
+        self:debug("Should drive forwards into the silo: %s", tostring(jobParameters.drivingForwardsIntoSilo:getValue()))
         self.drivingForwardsIntoSilo = jobParameters.drivingForwardsIntoSilo:getValue()
     end
 
@@ -166,10 +175,10 @@ function AIDriveStrategyBunkerSilo:setSilo(silo)
 	self.silo = silo	
 end
 
-function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition)
-    self.parkPosition = parkPosition    
-    if self.parkPosition.x ~= nil and self.parkPosition.z ~= nil and self.parkPosition.angle ~= nil then
-        self.parkNode = CpUtil.createNode("parkNode", self.parkPosition.x, self.parkPosition.z, self.parkPosition.angle)
+function AIDriveStrategyBunkerSilo:setParkPosition(parkPosition) 
+    if parkPosition ~= nil and parkPosition.x ~= nil and parkPosition.z ~= nil and parkPosition.angle ~= nil then
+        self.parkNode = CpUtil.createNode("parkNode", parkPosition.x, parkPosition.z, parkPosition.angle)
+        self:debug("Valid park position set.")
     end
 end
 
@@ -267,8 +276,9 @@ function AIDriveStrategyBunkerSilo:update(dt)
                 self.ppc:getCourse():draw()
             end
         end
-        DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
-
+        if self.siloEndDetectionMarker ~= nil then
+            DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
+        end
         local frontMarkerNode, backMarkerNode = Markers.getMarkerNodes(self.vehicle)
         DebugUtil.drawDebugNode(frontMarkerNode, "FrontMarker", false, 1)
         DebugUtil.drawDebugNode(backMarkerNode, "BackMarker", false, 1)
@@ -333,7 +343,7 @@ function AIDriveStrategyBunkerSilo:isWaitingAtParkPosition()
 end
 
 function AIDriveStrategyBunkerSilo:isWaitingForUnloaders()
-    return self:isDrivingToParkPositionAllowed() and self.state == self.states.WAITING_AT_PARK_POSITION or self.siloController:hasNearbyUnloader()
+    return self.state == self.states.WAITING_AT_PARK_POSITION or not self:isDrivingToParkPositionAllowed() and self.siloController:hasNearbyUnloader()
 end
 
 function AIDriveStrategyBunkerSilo:isDrivingToParkPositionAllowed()
@@ -354,6 +364,10 @@ end
 function AIDriveStrategyBunkerSilo:getEndOffset()
     local offset = self:isDriveDirectionReverse() and - self.backMarkerDistance or self.frontMarkerDistance
     return offset
+end
+
+function AIDriveStrategyBunkerSilo:getTemporaryBackCourseLength()
+    return self.isStuckBackOffset + math.abs(self.frontMarkerDistance) + math.abs(self.backMarkerDistance)
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
@@ -447,9 +461,9 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
     if driveDirection then
-		self.course = Course.createStraightForwardCourse(self.vehicle, self.isStuckBackOffset, 0)
+		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self.isStuckBackOffset, 0)
+        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	end
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO

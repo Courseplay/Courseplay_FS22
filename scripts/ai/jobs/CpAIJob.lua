@@ -3,9 +3,8 @@
 ---@class CpAIJob : AIJob
 CpAIJob = {
 	name = "",
-	translations = {
-		jobName = ""
-	}
+	jobName = "",
+	targetPositionParameterText = "ai_parameterGroupTitlePosition"
 }
 local AIJobCp_mt = Class(CpAIJob, AIJob)
 
@@ -16,7 +15,7 @@ function CpAIJob.new(isServer, customMt)
 	
 	--- Small translation fix, needs to be removed once giants fixes it.
 	local ai = g_currentMission.aiJobTypeManager
-	ai:getJobTypeByIndex(ai:getJobTypeIndexByName(self.name)).title = g_i18n:getText(self.translations.jobName)
+	ai:getJobTypeByIndex(ai:getJobTypeIndexByName(self.name)).title = g_i18n:getText(self.jobName)
 
 	self:setupJobParameters()
 
@@ -42,7 +41,7 @@ function CpAIJob:setupJobParameters()
 
 	vehicleGroup:addParameter(self.vehicleParameter)
 
-	local positionGroup = AIParameterGroup.new(g_i18n:getText("ai_parameterGroupTitlePosition"))
+	local positionGroup = AIParameterGroup.new(g_i18n:getText(self.targetPositionParameterText))
 
 	positionGroup:addParameter(self.positionAngleParameter)
 	table.insert(self.groupedParameters, vehicleGroup)
@@ -327,10 +326,10 @@ AIJobTypeManager.getJobTypeIndex = Utils.overwrittenFunction(AIJobTypeManager.ge
 
 --- Registers additional jobs.
 function CpAIJob.registerJob(AIJobTypeManager)
-	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.translations.jobName, CpAIJobFieldWork)
-	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.translations.jobName, CpAIJobBaleFinder)
-	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.translations.jobName, CpAIJobCombineUnloader)
-	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.translations.jobName, CpAIJobBunkerSilo)
+	AIJobTypeManager:registerJobType(CpAIJobFieldWork.name, CpAIJobFieldWork.jobName, CpAIJobFieldWork)
+	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.jobName, CpAIJobBaleFinder)
+	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.jobName, CpAIJobCombineUnloader)
+	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.jobName, CpAIJobBunkerSilo)
 end
 
 

@@ -21,12 +21,13 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Odvozce je příliš daleko od pole."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Startovní pozice příliš daleko od pole."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants odvozce není k dispozici."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Silážní jáma nenalezena."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Umístění pole:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Začátek trasy:"/>
     <text name="CP_jobParameters_startAt_title" text="Začátek trasy:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Kde začít polní práce"/>
@@ -61,14 +62,14 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Směr do silážní jámy:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Směr do silážní jámy:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Vpřed"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Vzad"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Čekání na vykladač:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Čekání na vykladač:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="v silážní jámě"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="na parkovací pozici"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -141,9 +142,9 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Nastavení pracovníka v jámě"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Pracovní šířka"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Pracovní šířka. Hodnota: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -155,8 +156,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximální rychlost při zatáčení. Hodnota: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Couvání"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximální rychlost při couvání. Hodnota: 2 - 25"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silážní jáma"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximální rychlost při jízdě v silážní jámě. Hodnota: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -364,8 +365,8 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_infoTexts_drivingToCombine" text="Jede ke kombajnu"/>
     <text name="CP_infoTexts_drivingToSelfUnload" text="Jede k odvozci"/>
     <text name="CP_infoTexts_outOfMoney" text="Došly peníze"/>
-    <text name="CP_infoTexts_waitForRainToFinish" text="Čekání na konec deště"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_waitForRainToFinish" text="Čeká na konec deště"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Čeká na vykladač"/>
     <text name="CP_infoTexts_errorStopped" text="Opustil trasu, zastavil"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nenalezena trasa"/>

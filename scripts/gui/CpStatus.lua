@@ -79,7 +79,7 @@ function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
 		streamWriteInt32(streamId, self.numberOfWaypoints or 0)
         streamWriteInt32(streamId, self.currentWaypointIx or 0)
         streamWriteBool(streamId, self.isActive or false)
-        streamWriteString(streamId, self.remainingTimeText)
+        streamWriteString(streamId, self.remainingTimeText or "")
 	end
 end
 

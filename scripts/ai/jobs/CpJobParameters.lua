@@ -208,3 +208,7 @@ function CpBunkerSiloJobParameters:isDrivingForwardsIntoSiloSettingVisible()
     end
     return true
 end
+
+function CpBunkerSiloJobParameters:isCpActive()
+    return self.job:getVehicle() and self.job:getVehicle():getIsCpActive()
+end

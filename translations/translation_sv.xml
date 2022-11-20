@@ -27,6 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Fältposition: (Start markör)"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Starta på:"/>
     <text name="CP_jobParameters_startAt_title" text="Starta på:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Vart ska fältarbetet börja"/>

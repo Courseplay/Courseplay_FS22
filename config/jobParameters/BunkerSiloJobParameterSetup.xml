@@ -7,7 +7,7 @@
 
 <Settings prefixText="CP_bunkerSiloJobParameters_">
 	<SettingSubTitle title="drivingForwardsIntoSilo">
-		<Setting classType="AIParameterBooleanSetting" name="drivingForwardsIntoSilo" defaultBool="true" isVisible="isDrivingForwardsIntoSiloSettingVisible">
+		<Setting classType="AIParameterBooleanSetting" name="drivingForwardsIntoSilo" defaultBool="true" isVisible="isDrivingForwardsIntoSiloSettingVisible" isDisabled="isCpActive">
 			<Texts>
 				<Text>reverse</Text>
 				<Text>forwards</Text>
@@ -15,7 +15,7 @@
 		</Setting>
 	</SettingSubTitle>
 	<SettingSubTitle title="waitAtParkPosition">
-		<Setting classType="AIParameterBooleanSetting" name="waitAtParkPosition" defaultBool="false">
+		<Setting classType="AIParameterBooleanSetting" name="waitAtParkPosition" defaultBool="false" isDisabled="isCpActive">
 			<Texts>
 				<Text>silo</Text>
 				<Text>parkPosition</Text>

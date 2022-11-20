@@ -1391,9 +1391,9 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             self:setNewState(self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE)
             self.state.properties.vehicle = blockingVehicle
             self.state.properties.dx = nil
-            if blockingVehicle.getCpDriveStrategy then
+            if blockingVehicle.cpHold then
                 -- ask the other vehicle for hold until we drive around
-                blockingVehicle:getCpDriveStrategy():hold(20000)
+                blockingVehicle:cpHold(20000)
             end
         end
         self:startCourse(course, 1)

@@ -77,7 +77,7 @@ function ProximityController:ignoreObject(object, vehicle)
     if self.ignoreObjectCallback then
         return self.ignoreObjectCallback(self.ignoreObjectCallbackObject, object, vehicle)
     else
-        return true
+        return false
     end
 end
 
