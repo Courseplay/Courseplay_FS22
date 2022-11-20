@@ -149,10 +149,10 @@ function AIUtil.getArticulatedAxisVehicleReverserNode(vehicle)
 end
 
 -- Find the node to use by the PPC when driving in reverse
-function AIUtil.getReverserNode(vehicle, reversingImplement)
+function AIUtil.getReverserNode(vehicle, reversingImplement, suppressLog)
 	local reverserNode, debugText
 	-- if there's a reverser node on the tool, use that
-	reversingImplement = reversingImplement and reversingImplement or AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	reversingImplement = reversingImplement and reversingImplement or AIUtil.getFirstReversingImplementWithWheels(vehicle, suppressLog)
 	if reversingImplement and reversingImplement.steeringAxleNode then
 		reverserNode, debugText = reversingImplement.steeringAxleNode, 'implement steering axle node'
 	end
@@ -241,7 +241,7 @@ function AIUtil.isImplementTowed(vehicle, implementObject)
 end
 
 ---@return table implement object
-function AIUtil.getFirstReversingImplementWithWheels(vehicle)
+function AIUtil.getFirstReversingImplementWithWheels(vehicle, suppressLog)
 	-- since some weird things like Seed Bigbag are also vehicles, check this first
 	if not vehicle.getAttachedImplements then return nil end
 
@@ -250,17 +250,21 @@ function AIUtil.getFirstReversingImplementWithWheels(vehicle)
 		-- Check if the implement is behind the tractor
 		if AIUtil.isObjectAttachedOnTheBack(vehicle, imp.object) then
 			if ImplementUtil.isWheeledImplement(imp.object) then
-				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Implement %s has wheels', CpUtil.getName(imp.object))
+				if not suppressLog then
+					CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Implement %s has wheels', CpUtil.getName(imp.object))
+				end
 				-- If the implement is a wheeled workTool, then return the object
 				return imp.object
 			else
-				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s has no wheels, check if anything attached to it',
-						CpUtil.getName(imp.object))
+				if not suppressLog then
+					CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s has no wheels, check if anything attached to it',
+							CpUtil.getName(imp.object))
+				end
 				-- If the implement is not a wheeled workTool, then check if that implement have an attached wheeled workTool and return that.
 				local nextAttachedImplement = AIUtil.getFirstReversingImplementWithWheels(imp.object)
 				if nextAttachedImplement then
 					return nextAttachedImplement
-				else
+				elseif not suppressLog then
 					CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '%s has nothing attached, see what else is attached to %s',
 							CpUtil.getName(imp.object), CpUtil.getName(vehicle))
 				end

@@ -225,9 +225,9 @@ function PurePursuitController:switchControlledNode()
 	local reverserNode
 	if self:isReversing() then
 		if not self.reversingImplement then
-			self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle)
+			self.reversingImplement = AIUtil.getFirstReversingImplementWithWheels(self.vehicle, true)
 		end
-		reverserNode, debugText = AIUtil.getReverserNode(self.vehicle, self.reversingImplement)
+		reverserNode, debugText = AIUtil.getReverserNode(self.vehicle, self.reversingImplement, true)
 		if reverserNode then
 			self:setControlledNode(reverserNode)
 		else

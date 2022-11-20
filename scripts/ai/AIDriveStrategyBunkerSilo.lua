@@ -33,8 +33,8 @@ AIDriveStrategyBunkerSilo.myStates = {
 }
 
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
-AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 30
-AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
+AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 15
+AIDriveStrategyBunkerSilo.isStuckBackOffset = 12
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 AIDriveStrategyBunkerSilo.endReachedOffset = 3
 
@@ -343,7 +343,7 @@ function AIDriveStrategyBunkerSilo:isWaitingAtParkPosition()
 end
 
 function AIDriveStrategyBunkerSilo:isWaitingForUnloaders()
-    return self:isDrivingToParkPositionAllowed() and self.state == self.states.WAITING_AT_PARK_POSITION or self.siloController:hasNearbyUnloader()
+    return self.state == self.states.WAITING_AT_PARK_POSITION or not self:isDrivingToParkPositionAllowed() and self.siloController:hasNearbyUnloader()
 end
 
 function AIDriveStrategyBunkerSilo:isDrivingToParkPositionAllowed()
@@ -364,6 +364,10 @@ end
 function AIDriveStrategyBunkerSilo:getEndOffset()
     local offset = self:isDriveDirectionReverse() and - self.backMarkerDistance or self.frontMarkerDistance
     return offset
+end
+
+function AIDriveStrategyBunkerSilo:getTemporaryBackCourseLength()
+    return self.isStuckBackOffset + math.abs(self.frontMarkerDistance) + math.abs(self.backMarkerDistance)
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
@@ -457,9 +461,9 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
     if driveDirection then
-		self.course = Course.createStraightForwardCourse(self.vehicle, self.isStuckBackOffset, 0)
+		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self.isStuckBackOffset, 0)
+        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	end
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO
