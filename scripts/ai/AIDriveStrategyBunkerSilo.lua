@@ -34,7 +34,7 @@ AIDriveStrategyBunkerSilo.myStates = {
 
 AIDriveStrategyBunkerSilo.siloEndProximitySensorRange = 4
 AIDriveStrategyBunkerSilo.isStuckMs = 1000 * 30
-AIDriveStrategyBunkerSilo.isStuckBackOffset = 8
+AIDriveStrategyBunkerSilo.isStuckBackOffset = 15
 AIDriveStrategyBunkerSilo.maxDriveIntoTheSiloAttempts = 2
 AIDriveStrategyBunkerSilo.endReachedOffset = 3
 
@@ -457,9 +457,9 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
     if driveDirection then
-		self.course = Course.createStraightForwardCourse(self.vehicle, self.isStuckBackOffset, 0)
+		self.course = Course.createStraightForwardCourse(self.vehicle, self.isStuckBackOffset + self.frontMarkerDistance + self.backMarkerDistance, 0)
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self.isStuckBackOffset, 0)
+        self.course = Course.createStraightReverseCourse(self.vehicle, self.isStuckBackOffset + self.frontMarkerDistance + self.backMarkerDistance, 0)
 	end
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO
