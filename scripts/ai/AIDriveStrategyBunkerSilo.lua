@@ -371,8 +371,8 @@ function AIDriveStrategyBunkerSilo:getTemporaryBackCourseLength()
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
-    return self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or
-            Markers.getFrontMarkerNode(self.vehicle)
+    local frontMarker, backMarker = Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
+    return self:isDriveDirectionReverse() and backMarker or frontMarker
 end
 
 --- Gets the work width.
