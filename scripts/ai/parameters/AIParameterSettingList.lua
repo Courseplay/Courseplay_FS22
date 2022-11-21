@@ -67,6 +67,7 @@ function AIParameterSettingList.new(data, vehicle, class, customMt)
 	self.isVisible = true
 
 	self.setupDone = true
+	self.isSynchronized = false
 
 	return self
 end
@@ -171,7 +172,7 @@ function AIParameterSettingList:onChange()
 			self:getCallback("updateGui")
 		end
 		--- The client user settings are automatically saved on change.
-		if g_server == nil and self:getIsUserSetting() then 
+		if g_server == nil and self:getIsUserSetting() and self.isSynchronized then 
 			self:raiseCallback("onCpUserSettingChanged")
 		end
 	end
@@ -267,12 +268,14 @@ function AIParameterSettingList:readStream(streamId, connection)
 	if not self:getIsUserSetting() then
 		self:readStreamInternal(streamId, connection)
 	else 
-		if streamReadBool(streamId) then 
+		if streamReadBool(streamId) then
+			self:debug("Trying to read user setting.") 
 			self:readStreamInternal(streamId, connection)
 		else 
 			self:debug("is user setting, skip stream.")
 		end
 	end
+	self.isSynchronized = true
 end
 
 function AIParameterSettingList:writeStreamInternal(streamId, connection)
@@ -288,7 +291,7 @@ function AIParameterSettingList:writeStream(streamId, connection)
 		if userSettingValue ~= nil then 
 			streamWriteBool(streamId, true)
 			streamWriteInt32(streamId, userSettingValue)
-			self:debug("send %s to stream.", tostring(self:getString()))
+			self:debug("send user setting value %s to stream.", tostring(self:getString()))
 		else
 			streamWriteBool(streamId, false)
 			self:debug("is user setting, skip stream.")
@@ -301,6 +304,11 @@ end
 ---@return number
 function AIParameterSettingList:getClosestIxFromSetup(ix)
 	local value = self.data.values[ix]
+	if value == nil then 
+		self:debug("Setting value bugged, ix: %s", tostring(ix))
+		printCallstack()
+		return 1
+	end
 	-- find the value requested
 	local closestIx = 1
 	local closestDifference = math.huge
