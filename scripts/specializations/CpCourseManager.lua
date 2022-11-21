@@ -399,6 +399,7 @@ function CpCourseManager:saveCourses(file,text)
     CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
     --- Updates the course name, so multi tool courses are working correctly.
     CourseSaveNameEvent.sendEvent(self, text)
+    self:setCpCourseName(text)
 end
 
 function CpCourseManager:setCpCourseName(name)
@@ -406,6 +407,7 @@ function CpCourseManager:setCpCourseName(name)
     local course = spec.courses[1]
     if course then 
         course:setName(name)
+        course.temporary = false
     end
 end
 
