@@ -463,7 +463,7 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     if driveDirection then
 		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
+        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle.rootNode)
 	end
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO
