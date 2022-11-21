@@ -304,7 +304,7 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startDrivingOutOfSilo()
         end
 
-        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self.endReachedOffset)
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndMarkerOffset())
         if isEndReached then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
@@ -373,6 +373,11 @@ end
 function AIDriveStrategyBunkerSilo:getEndMarker()
     local frontMarker, backMarker = Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
     return self:isDriveDirectionReverse() and backMarker or frontMarker
+end
+
+function AIDriveStrategyBunkerSilo:getEndMarkerOffset()
+    --- While reverse driven, then the offset needs to be inverted, as end marker is rotated wrong.
+    return AIUtil.isReverseDriving(self.vehicle) and -self.endReachedOffset or self.endReachedOffset
 end
 
 --- Gets the work width.
