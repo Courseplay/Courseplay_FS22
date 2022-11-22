@@ -483,15 +483,17 @@ function ImplementUtil.moveMovingToolToRotation(implement, tool, dt, rotTarget)
 		rotSpeed=rotSpeed*(-1)
 	end
 	if math.abs(diff) < 0.03 or rotSpeed == 0 then
-		tool.move = 0
-		return 
+		ImplementUtil.stopMovingTool(implement, tool)
+		return false
 	end
 	if Cylindered.setToolRotation(implement, tool, rotSpeed, dt, diff) then
 		Cylindered.setDirty(implement, tool)
 
 		implement:raiseDirtyFlags(tool.dirtyFlag)
 		implement:raiseDirtyFlags(spec.cylinderedDirtyFlag)
+        return true
 	end
+    return false
 end
 
 --- Force stops the moving tool.
