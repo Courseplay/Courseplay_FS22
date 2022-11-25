@@ -2153,7 +2153,10 @@ Unloader explanation with auger.
 		</Translation>
 		<Translation name="CP_help_page_bunkerGeneral_text">
 			<Text language="de"><![CDATA[
-Übersicht Bunker Silo Arbeiter.
+Courseplay ist in der Lage, Häckselgut in einem Bunker verdichten, verteilen, oder in einem Keilsilo auf zu schieben.
+Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht, oder nur dem Fahrzeug.
+Zum verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO).
+Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Silo zu schieben.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Overview Bunker silo worker.
@@ -2161,7 +2164,12 @@ Overview Bunker silo worker.
 		</Translation>
 		<Translation name="CP_help_page_bunkerBasic_text">
 			<Text language="de"><![CDATA[
-Wie es funktioniert.
+Ohne Arbeitsgerät, mit einem Gewicht oder mit einer Walze, wird durch das durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
+Für einen Verteiler oder Schild gibt es nur den Bunker Silo Modus.
+In dem Modus gibt es neben der Arbeitsbreite noch die Richtung in die der Fahrer in das Silo fahren soll.
+Die Ausnahme bildet ein Schild, dort wird die Fahrtrichtung automatisch bestimmt.
+Mit dem Ziel Icon im HUD, wird auf der AI Karte der Bunker ausgewählt. Er wird mit blauen Strichen dar gestellt und leuchtet weis auf, wenn er ausgewählt wurde.
+Die Parkposition wird mit dem Marker "Parkposition" gewählt, welcher auch benutzt werden kann, damit Giants zu diesem Punkt fährt, bevor mit der Arbeit begonnen wird.
 ]]></Text>
 			<Text language="en"><![CDATA[
 How does it work.
