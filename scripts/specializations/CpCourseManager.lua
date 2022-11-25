@@ -44,10 +44,10 @@ function CpCourseManager.initSpecialization()
 end
 
 function CpCourseManager.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations)
 end
 
-function CpCourseManager.registerEventListeners(vehicleType)	
+function CpCourseManager.registerEventListeners(vehicleType)
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpCourseManager)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CpCourseManager)
@@ -76,8 +76,9 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
+    SpecializationUtil.registerFunction(vehicleType, "calculateCourseVisibility", CpCourseManager.calculateCourseVisibility)
     SpecializationUtil.registerFunction(vehicleType, 'cpCopyCourse', CpCourseManager.cpCopyCourse)
-    
+
     SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
     SpecializationUtil.registerFunction(vehicleType, 'saveCpCourses', CpCourseManager.saveCourses)
     SpecializationUtil.registerFunction(vehicleType, 'resetCpCourses', CpCourseManager.resetCourses)
@@ -86,7 +87,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setCpCourseName', CpCourseManager.setCpCourseName)
 
     SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
-    
+
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
 
@@ -107,15 +108,15 @@ function CpCourseManager.registerFunctions(vehicleType)
 end
 
 function CpCourseManager:onLoad(savegame)
-	--- Register the spec: spec_cpCourseManager 
+	--- Register the spec: spec_cpCourseManager
     local specName = CpCourseManager.MOD_NAME .. ".cpCourseManager"
     self.spec_cpCourseManager  = self["spec_" .. specName]
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     spec.coursePlot = CoursePlot(g_currentMission.inGameMenu.ingameMap)
 
     spec.courses = {}
 
-    spec.courseDisplay = BufferedCourseDisplay() 
+    spec.courseDisplay = BufferedCourseDisplay()
     spec.courseRecorder = CourseRecorder(spec.courseDisplay)
     g_assignedCoursesManager:registerVehicle(self, self.id)
 
@@ -133,17 +134,17 @@ function CpCourseManager:onPostLoad(savegame)
 end
 
 function CpCourseManager:loadAssignedCourses(xmlFile, baseKey, noEventSend, name)
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     local courses = {}
     xmlFile:iterate(baseKey,function (i,key)
         CpUtil.debugVehicle(CpDebug.DBG_COURSES,self,"Loading assigned course: %s",key)
         local course = Course.createFromXml(self,xmlFile,key)
         course:setVehicle(self)
         table.insert(courses,course)
-    end)    
+    end)
     if courses ~= nil and next(courses) then
         spec.courses = courses
-        if name then 
+        if name then
             spec.courses[1]:setName(name)
         end
 
@@ -163,13 +164,13 @@ function CpCourseManager:saveToXMLFile(xmlFile, baseKey, usedModNames)
 end
 
 function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     local courses = spec.courses
     if courses ~=nil and next(courses) then
-        for i=1,#courses do 
+        for i=1,#courses do
             local key = string.format("%s(%d)",baseKey,i-1)
             local course = courses[i]
-            if name then 
+            if name then
                 course:setName(name)
             end
             course:saveToXml(xmlFile, key)
@@ -178,12 +179,12 @@ function CpCourseManager:saveAssignedCourses(xmlFile, baseKey,name)
 end
 
 function CpCourseManager:setCpAssignedCoursesID(id)
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     spec.assignedCoursesID = id
 end
 
 function CpCourseManager:getCpAssignedCoursesID()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     return spec.assignedCoursesID
 end
 
@@ -198,12 +199,12 @@ end
 function CpCourseManager:cpCopyCourse(course)
     if course then
         self:setFieldWorkCourse(course:copy())
-    end    
+    end
 end
 
 function CpCourseManager:setCoursesFromNetworkEvent(courses)
     CpCourseManager.resetCourses(self)
-    CpCourseManager.addCourse(self,courses[1],true)   
+    CpCourseManager.addCourse(self,courses[1],true)
 end
 
 function CpCourseManager:addCourse(course,noEventSend)
@@ -225,12 +226,12 @@ end
 
 function CpCourseManager:resetCpCoursesFromGui()
     CpCourseManager.resetCourses(self)
-    CoursesEvent.sendEvent(self)   
+    CoursesEvent.sendEvent(self)
 end
 
 ---@return Course
 function CpCourseManager:getFieldWorkCourse()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     --- TODO: For now only returns the first course.
     return spec.courses[1]
 end
@@ -257,57 +258,79 @@ function CpCourseManager:getOffsetFieldWorkCourse()
 end
 
 function CpCourseManager:getCourses()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     return spec.courses
 end
 
 function CpCourseManager:hasCourse()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     return next(spec.courses) ~= nil
 end
 
+function CpCourseManager:calculateCourseVisibility()
+    local spec = self.spec_cpCourseManager
+    local course = self:getFieldWorkCourse()
+
+    if course then
+        local visible = false
+        local onlyStartStopVisible = false
+        local currentWaypoint = nil
+        local visibilityMode = self:getCpSettings().showCourse:getValue()
+
+        if visibilityMode == CpVehicleSettings.SHOW_COURSE_ALL then
+            visible = self:getIsControlled()
+        elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP then
+            onlyStartStopVisible = self:getIsControlled()
+        elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
+            currentWaypoint = course:getCurrentWaypointIx()
+        end
+
+        spec.courseDisplay:updateVisibility(visible, onlyStartStopVisible, currentWaypoint)
+    end
+end
+
 function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     if spec then
-        spec.courseDisplay:updateVisibility(showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+        spec.courseDisplay:updateVisibility(showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_ALL,
                                             showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
     end
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
     if isControlling then
-        local spec = self.spec_cpCourseManager 
-        spec.courseDisplay:updateVisibility(self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+        local spec = self.spec_cpCourseManager
+        spec.courseDisplay:updateVisibility(self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL,
                                             self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
     end
 end
 
 function CpCourseManager:onLeaveVehicle(wasEntered)
     if wasEntered then
-        local spec = self.spec_cpCourseManager 
+        local spec = self.spec_cpCourseManager
         spec.courseDisplay:updateVisibility(false, false)
     end
 end
 
 function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
     local spec = self.spec_cpCourseManager
-    if newCourse then 
+    if newCourse then
         -- we have course, show the course plot on the AI helper screen
         spec.coursePlot:setWaypoints(newCourse.waypoints)
         spec.coursePlot:setVisible(true)
-        if noEventSend == nil or noEventSend == false then 
-            CoursesEvent.sendEvent(self,spec.courses)   
+        if noEventSend == nil or noEventSend == false then
+            CoursesEvent.sendEvent(self,spec.courses)
         end
         if g_client then
-            local spec = self.spec_cpCourseManager 
+            local spec = self.spec_cpCourseManager
             spec.courseDisplay:setCourse(self:getFieldWorkCourse())
-            spec.courseDisplay:updateVisibility(self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL, 
+            spec.courseDisplay:updateVisibility(self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL,
                                                 self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
         end
-    else 
+    else
         spec.coursePlot:setVisible(false)
         self:rememberCpLastWaypointIx()
-        local spec = self.spec_cpCourseManager 
+        local spec = self.spec_cpCourseManager
         spec.courseDisplay:clearCourse()
     end
 end
@@ -322,7 +345,7 @@ end
 function CpCourseManager:onDraw()
     --- Draw debug information of the generated fieldwork course.
     local course = self:getFieldWorkCourse()
-    if course then 
+    if course then
         if CpDebug:isChannelActive(CpDebug.DBG_COURSES, self) then
             local info = {
                 title = self:getCurrentCpCourseName(),
@@ -342,7 +365,7 @@ end
 
 function CpCourseManager:onReadStream(streamId,connection)
     local numCourses = streamReadUInt8(streamId)
-    for i=1,numCourses do 
+    for i=1,numCourses do
         CpCourseManager.addCourse(self,Course.createFromStream(self, streamId, connection),true)
     end
 end
@@ -350,7 +373,7 @@ end
 function CpCourseManager:onWriteStream(streamId,connection)
 	local spec = self.spec_cpCourseManager
     streamWriteUInt8(streamId,#spec.courses)
-    for i,course in ipairs(spec.courses) do 
+    for i,course in ipairs(spec.courses) do
         course:writeStream(self, streamId, connection)
     end
 end
@@ -358,7 +381,7 @@ end
 function CpCourseManager:onPreDelete()
     g_assignedCoursesManager:unregisterVehicle(self,self.id)
     CpCourseManager.resetCourses(self)
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
     spec.courseDisplay:delete()
 end
 
@@ -367,12 +390,12 @@ end
 ------------------------------------------------------------------------
 
 function CpCourseManager:getCurrentCourseName()
-    if CpCourseManager.hasCourse(self) then 
+    if CpCourseManager.hasCourse(self) then
         local courses = CpCourseManager.getCourses(self)
         local name =  CpCourseManager.getCourseName(courses[1])
-        for i = 2,#courses do 
+        for i = 2,#courses do
             name = string.format("%s + %s",name,CpCourseManager.getCourseName(courses[i]))
-        end  
+        end
       --  name = string.format("%s (%d)",name,#courses)
         return name
     end
@@ -390,7 +413,7 @@ end
 function CpCourseManager:appendLoadedCourse(file)
     --- For now clear the previous courses.
     CpCourseManager.resetCourses(self)
-    file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager, 
+    file:load(CpCourseManager.xmlSchema, CpCourseManager.xmlKeyFileManager,
     CpCourseManager.loadAssignedCourses, self, false)
 end
 
@@ -404,7 +427,7 @@ end
 function CpCourseManager:setCpCourseName(name)
     local spec = self.spec_cpCourseManager
     local course = spec.courses[1]
-    if course then 
+    if course then
         course:setName(name)
     end
 end
@@ -437,7 +460,7 @@ end
 --- Update all the legacy (as usual global) data structures related to a vehicle's loaded course
 -- TODO: once someone has the time and motivation, refactor those legacy structures
 function CpCourseManager:updateLegacyWaypoints()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
 	spec.legacyWaypoints = {}
 	local n = 1
 	for _, course in ipairs(CpCourseManager.getCourses(self)) do
@@ -449,7 +472,7 @@ function CpCourseManager:updateLegacyWaypoints()
 end
 
 function CpCourseManager:getLegacyWaypoints()
-    local spec = self.spec_cpCourseManager 
+    local spec = self.spec_cpCourseManager
 	return spec and spec.legacyWaypoints
 end
 
