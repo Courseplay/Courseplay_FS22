@@ -679,6 +679,13 @@ Unloader explanation with trailer.
     <text name="CP_help_page_unloaderAuger_text" text="
 Unloader explanation with auger.
 "/>
+    <text name="CP_help_page_nunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunkerGeneral_text" text="
+Overview Bunker silo worker.
+"/>
+    <text name="CP_help_page_bunkerBasic_text" text="
+How does it work.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

@@ -718,6 +718,13 @@ Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder E
 Zum starten stellt man den Abfahrer auch auf das Feld oder innerhalb 20m um die Feldgrenze.
 Der Überladewagen sucht sich zum abladen ganz automatisch einen Trailer aus, der am Feldrand steht um da überzuladen.
 "/>
+    <text name="CP_help_page_nunker_title" text="Bunker Silo Arbeiter"/>
+    <text name="CP_help_page_bunkerGeneral_text" text="
+Übersicht Bunker Silo Arbeiter.
+"/>
+    <text name="CP_help_page_bunkerBasic_text" text="
+Wie es funktioniert.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->
