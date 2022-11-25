@@ -2147,6 +2147,25 @@ Der Überladewagen sucht sich zum abladen ganz automatisch einen Trailer aus, de
 Unloader explanation with auger.
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_nunker_title">
+			<Text language="de"><![CDATA[Bunker Silo Arbeiter]]></Text>
+			<Text language="en"><![CDATA[Bunker silo worker]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_bunkerGeneral_text">
+			<Text language="de"><![CDATA[
+Übersicht Bunker Silo Arbeiter.
+]]></Text>
+			<Text language="en"><![CDATA[
+Overview Bunker silo worker.
+]]></Text>
+<Translation name="CP_help_page_bunkerBasic_text">
+			<Text language="de"><![CDATA[
+Wie es funktioniert.
+]]></Text>
+			<Text language="en"><![CDATA[
+How does it work.
+]]></Text>
+
 
 	</Category>
 	<Category name="Input bindings">	
