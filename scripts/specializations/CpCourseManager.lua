@@ -292,16 +292,13 @@ end
 function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
     local spec = self.spec_cpCourseManager
     if spec then
-        spec.courseDisplay:updateVisibility(showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_ALL,
-                                            showCourseSetting:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
+        self:calculateCourseVisibility()
     end
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
     if isControlling then
         local spec = self.spec_cpCourseManager
-        spec.courseDisplay:updateVisibility(self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL,
-                                            self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
     end
 end
 
@@ -324,8 +321,7 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
         if g_client then
             local spec = self.spec_cpCourseManager
             spec.courseDisplay:setCourse(self:getFieldWorkCourse())
-            spec.courseDisplay:updateVisibility(self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_ALL,
-                                                self:getIsControlled() and self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_START_STOP)
+            self:calculateCourseVisibility()
         end
     else
         spec.coursePlot:setVisible(false)
