@@ -11,16 +11,16 @@ function CpFieldWorkHudPageElement.new(overlay, parentHudElement, customMt)
 end
 
 function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
-	
+
     --- Time remaining text
     local x, y = unpack(lines[6].left)
     self.timeRemainingText = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)
-    
+
 	--- Clear course button.
     local width, height = getNormalizedScreenValues(18, 18)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
-                                                {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
+                                                {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))},
                                                 CpBaseHud.OFF_COLOR,
                                                 CpBaseHud.alignments.bottomRight)
     self.clearCourseBtn = CpHudButtonElement.new(clearCourseOverlay, self)
@@ -32,12 +32,12 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
             vehicle:resetCpCoursesFromGui()
         end
     end)
-    
+
     --- Toggle waypoint visibility.
     local width, height = getNormalizedScreenValues(20, 20)
     local imageFilename = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
     local courseVisibilityOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.eye))}, 
+                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.eye))},
                                                         CpBaseHud.OFF_COLOR,
                                                         CpBaseHud.alignments.bottomRight)
     self.courseVisibilityBtn = CpHudButtonElement.new(courseVisibilityOverlay, self)
@@ -49,35 +49,35 @@ function CpFieldWorkHudPageElement:setupElements(baseHud, vehicle, lines, wMargi
         vehicle:getCpSettings().showCourse:setNextItem()
     end)
 
-	
+
     --- Work width
-    self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+    self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize,
                                                 vehicle:getCourseGeneratorSettings().workWidth)
 
 	--- Tool offset x
-	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize,
 												vehicle:getCpSettings().toolOffsetX)
 
 	--- Lane offset
-    self.laneOffsetBtn = baseHud:addRightLineTextButton(self, 5, CpBaseHud.defaultFontSize, 
+    self.laneOffsetBtn = baseHud:addRightLineTextButton(self, 5, CpBaseHud.defaultFontSize,
 	function (vehicle)
 		vehicle:getCpLaneOffsetSetting():setNextItem()
 	end, vehicle)
 
 
      --- Course name
-    self.courseNameBtn = baseHud:addLeftLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
+    self.courseNameBtn = baseHud:addLeftLineTextButton(self, 4, CpBaseHud.defaultFontSize,
                                                         function(vehicle)
                                                             baseHud:openCourseGeneratorGui(vehicle)
-                                                        end, vehicle)              
+                                                        end, vehicle)
 
 	--- Waypoint progress
-	self.waypointProgressBtn = baseHud:addRightLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
+	self.waypointProgressBtn = baseHud:addRightLineTextButton(self, 4, CpBaseHud.defaultFontSize,
 														function(vehicle)
 															baseHud:openCourseManagerGui(vehicle)
 														end, vehicle)
-                                                        
-    CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)    												
+
+    CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)
 end
 
 function CpFieldWorkHudPageElement:update(dt)
@@ -108,17 +108,19 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
     self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())
 
-	if vehicle:hasCpCourse() then 
+	if vehicle:hasCpCourse() then
         self.courseVisibilityBtn:setVisible(true)
         local value = vehicle:getCpSettings().showCourse:getValue()
-        if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then 
+        if value == CpVehicleSettings.SHOW_COURSE_DEACTIVATED then
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
-        elseif value == CpVehicleSettings.SHOW_COURSE_START_STOP then 
+        elseif value == CpVehicleSettings.SHOW_COURSE_START_STOP then
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))
-        else 
+        elseif value == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.HEADER_COLOR))
+        else
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.ON_COLOR))
         end
-    else 
+    else
         self.courseVisibilityBtn:setVisible(false)
     end
 

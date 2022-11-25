@@ -248,7 +248,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
 
 end
 
-function AIDriveStrategyFieldWorkCourse:lowerImplements()    
+function AIDriveStrategyFieldWorkCourse:lowerImplements()
     AIDriveStrategyFieldWorkCourse:superClass().lowerImplements(self)
     if AIUtil.hasAIImplementWithSpecialization(self.vehicle, SowingMachine) or self.ppc:isReversing() then
         -- sowing machines want to stop while the implement is being lowered
@@ -418,7 +418,12 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
             self:raiseImplements()
             self.state = self.states.ON_CONNECTING_TRACK
         end
-            self:checkTransitionFromConnectingTrack(ix, course)
+        self:checkTransitionFromConnectingTrack(ix, course)
+        --update lastWaypoint variable to keep moving the course when passing a new waypoint.
+        --only needs to be done when in show current waypoints mode to save performance
+        if self.vehicle:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
+            SpecializationUtil.raiseEvent(self.vehicle, "cpUpdateWaypointVisibility")
+        end
     elseif self.state == self.states.ON_CONNECTING_TRACK then
         self:checkTransitionFromConnectingTrack(ix, course)
     end
@@ -454,7 +459,7 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
 end
 
 function AIDriveStrategyFieldWorkCourse:isTurning()
-    return self.state == self.states.TURNING    
+    return self.state == self.states.TURNING
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -649,7 +654,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 local function emptyFunction(object, superFunc,...)
     local rootVehicle = object.rootVehicle
-    if rootVehicle.getJob then 
+    if rootVehicle.getJob then
         if rootVehicle:getIsCpActive() then
             return
         end

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
 	All the vehicle settings can be setup here.
 	For documentation look up the CpSettingUtil.lua.
 -->
@@ -12,11 +12,13 @@
 			<Values>
 				<Value name="SHOW_COURSE_DEACTIVATED">0</Value>
 				<Value name="SHOW_COURSE_START_STOP">1</Value>
-				<Value name="SHOW_COURSE_ALL">2</Value>
+				<Value name="SHOW_COURSE_CURRENT_WPS">2</Value>
+				<Value name="SHOW_COURSE_ALL">3</Value>
 			</Values>
 			<Texts>
 				<Text prefix="false">CP_deactivated</Text>
 				<Text>startStop</Text>
+				<Text>currentWaypoint</Text>
 				<Text>all</Text>
 			</Texts>
 		</Setting>
@@ -93,14 +95,14 @@
 	</SettingSubTitle>
 
 	<SettingSubTitle title="seeder" isVisible="areSowingMachineSettingsVisible">
-		<!--Ridgemarker-->	
+		<!--Ridgemarker-->
 		<Setting classType="AIParameterBooleanSetting" name="ridgeMarkersAutomatic" defaultBool="false" isVisible="isRidgeMarkerSettingVisible" isExpertModeOnly="true"/>
 		<!--Fertilizer-->
 		<Setting classType="AIParameterBooleanSetting" name="sowingMachineFertilizerEnabled" defaultBool="true" isVisible="isSowingMachineFertilizerSettingVisible"/>
 		<!--Optional sowing machine-->
 		<Setting classType="AIParameterBooleanSetting" name="optionalSowingMachineEnabled" defaultBool="false" isVisible="isOptionalSowingMachineSettingVisible"/>
 	</SettingSubTitle>
-	
+
 	<SettingSubTitle title="multitool" isVisible="hasMultiToolCourse">
 		<!--Symmetric Lane Change-->
 		<Setting classType="AIParameterBooleanSetting" name="symmetricLaneChange"/>
