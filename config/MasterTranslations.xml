@@ -2158,14 +2158,15 @@ Unloader explanation with auger.
 			<Text language="en"><![CDATA[
 Overview Bunker silo worker.
 ]]></Text>
-<Translation name="CP_help_page_bunkerBasic_text">
+		</Translation>
+		<Translation name="CP_help_page_bunkerBasic_text">
 			<Text language="de"><![CDATA[
 Wie es funktioniert.
 ]]></Text>
 			<Text language="en"><![CDATA[
 How does it work.
 ]]></Text>
-
+		</Translation>
 
 	</Category>
 	<Category name="Input bindings">	
