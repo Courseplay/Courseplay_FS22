@@ -100,7 +100,6 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Show course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Show the current course of the vehicle"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Start/stop only"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current Waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="All waypoints"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Open Hud with mouse"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="When deactivated, Hud can only be opened with the Keybind."/>
@@ -428,7 +427,7 @@ The lane offset setting is only used if you want to have multiple helpers workin
 "/>
     <text name="CP_help_page_readyJobMenuFunctions_text" text="
 When the field position is placed correctly on a field, you will see the field border drawn on the map.
-If you are creating a CP: Fieldwork job, you will gain access to the course generator settings.
+If you are creating a CP: Fieldwork job, you will gain access to the course generator settings. 
 "/>
     <text name="CP_help_page_JobMenuExtras_text" text="
 Now it's possible to start the driver directly from the menu. The Giants helper will drive to the target position and from there the CP job automatically takes over.
@@ -483,7 +482,7 @@ This feature also allows you to pickup the swath left behind by a combine or a w
 
 The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
 The course manager works differently from what you are used to in FS19.
-Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into.
+Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
 Folders can simply created by the button at the bottom of the screen and entering a name.
 Courses are only saved localy for now.
 "/>
@@ -501,7 +500,7 @@ With the edit mode is active you have these options:
 - Renaming courses or directories.
 "/>
     <text name="CP_help_page_courseManagerEditFunctions_text" text="
-For moving a course:
+For moving a course: 
   1) Click on the move button at the bottom of the screen.
   2) Click on the course you want to move.
   3) Click on the directory where you want the course moved to.
@@ -525,7 +524,7 @@ J: Copy and paste a course to a different vehicle.
      Once the copy button was pressed, then the course can be pasted into a vehicle without a course when the icon turns green.
 K and L: Clicking on the text will reset your changes to the default values.
 M: Shows the copied course.
-N: This area shows the lane offset if you have a multi tool course loaded for convoy.
+N: This area shows the lane offset if you have a multi tool course loaded for convoy. 
      Clicking on the text toggles the positions.
 O: Start/stop the recording of custom fields.
 P: Removes the course from the vehicle.
@@ -666,7 +665,7 @@ The course editor can be used to edit courses and custom fields.
 The loaded courses will be saved/overritten automatically, when the editor is closed.
 
 1) Editing a custom field can be done by selecting one on the ai menu page and clicking on edit custom field.
-2) Editing a course can be done in the course manager by selecting it and clicking on open course editor.
+2) Editing a course can be done in the course manager by selecting it and clicking on open course editor. 
    This only works with saved courses. Make sure no course is loaded in the vehicle.
 
 Editing of courses should only be done, when the course generator couldn't produce a good enough course.
