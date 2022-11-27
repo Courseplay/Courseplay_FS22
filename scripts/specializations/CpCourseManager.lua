@@ -76,7 +76,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'addCpCourse', CpCourseManager.addCourse)
     SpecializationUtil.registerFunction(vehicleType, 'getCpCourses', CpCourseManager.getCourses)
     SpecializationUtil.registerFunction(vehicleType, 'hasCpCourse', CpCourseManager.hasCourse)
-    SpecializationUtil.registerFunction(vehicleType, "calculateCourseVisibility", CpCourseManager.calculateCourseVisibility)
+    SpecializationUtil.registerFunction(vehicleType, "cpCalculateCourseVisibility", CpCourseManager.cpCalculateCourseVisibility)
     SpecializationUtil.registerFunction(vehicleType, 'cpCopyCourse', CpCourseManager.cpCopyCourse)
 
     SpecializationUtil.registerFunction(vehicleType, 'appendLoadedCpCourse', CpCourseManager.appendLoadedCourse)
@@ -267,7 +267,7 @@ function CpCourseManager:hasCourse()
     return next(spec.courses) ~= nil
 end
 
-function CpCourseManager:calculateCourseVisibility()
+function CpCourseManager:cpCalculateCourseVisibility()
     local spec = self.spec_cpCourseManager
     local course = self:getFieldWorkCourse()
 
