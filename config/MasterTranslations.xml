@@ -106,7 +106,7 @@
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bunkerSilo">
-			<Text language="de"><![CDATA[Bunker silo mode]]></Text>
+			<Text language="de"><![CDATA[Bunkersilo Modus]]></Text>
 			<Text language="en"><![CDATA[Bunker silo mode]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload">
