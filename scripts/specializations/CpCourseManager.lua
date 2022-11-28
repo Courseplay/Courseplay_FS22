@@ -282,7 +282,6 @@ function CpCourseManager:cpCalculateCourseVisibility()
         elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP then
             onlyStartStopVisible = self:getIsControlled()
         elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
-            visible = self:getIsControlled()
             currentWaypoint = course:getCurrentWaypointIx()
         end
 
@@ -298,8 +297,9 @@ function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
+    local spec = self.spec_cpCourseManager
+    spec.courseDisplay:setCourse(self:getFieldWorkCourse())
     if isControlling then
-        local spec = self.spec_cpCourseManager
 
         if spec then
             self:cpCalculateCourseVisibility()
@@ -311,6 +311,7 @@ function CpCourseManager:onLeaveVehicle(wasEntered)
     if wasEntered then
         local spec = self.spec_cpCourseManager
         spec.courseDisplay:updateVisibility(false, false)
+        spec.courseDisplay:setCourse(nil)
     end
 end
 
@@ -323,7 +324,7 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
         if noEventSend == nil or noEventSend == false then
             CoursesEvent.sendEvent(self,spec.courses)
         end
-        if g_client then
+        if g_client and self:getIsControlled() then
             local spec = self.spec_cpCourseManager
             spec.courseDisplay:setCourse(self:getFieldWorkCourse())
             self:cpCalculateCourseVisibility()

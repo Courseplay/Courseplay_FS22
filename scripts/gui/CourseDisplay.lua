@@ -215,15 +215,16 @@ end
 --- Sets a new course for the display.
 function SimpleCourseDisplay:setCourse(course)
 	self.course = course
-	--- Removes signs that are not needed.
-	for i = #self.signs, course:getNumberOfWaypoints() + 1, -1 do
-		self.signs[i]:delete()
-		table.remove(self.signs, i)
+	if course ~= nil then
+		--- Removes signs that are not needed.
+		for i = #self.signs, course:getNumberOfWaypoints() + 1, -1 do
+			self.signs[i]:delete()
+			table.remove(self.signs, i)
+		end
+		for i = 1, course:getNumberOfWaypoints() do
+			self:updateWaypoint(i)
+		end
 	end
-	for i = 1, course:getNumberOfWaypoints() do
-		self:updateWaypoint(i)
-	end
-
 end
 
 function SimpleCourseDisplay:clearCourse()
