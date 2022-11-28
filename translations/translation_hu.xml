@@ -100,6 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Útvonal megjelenítése"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mutassa a jármű aktuális útvonalát"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="csak start/stop"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="minden útpont"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="HUD nyitása egérrel"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Ha nem aktív, a HUD-ot csak a billentyűkombinációval lehet megnyitni."/>

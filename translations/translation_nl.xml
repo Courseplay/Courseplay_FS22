@@ -100,6 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Koers tonen"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Toon de huidige koers van het voertuig"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Alleen starten/stoppen"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Alle tussenpunten"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Open Hud met huis"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Wanneer gedeactiveerd, kan Hud alleen worden geopend met de Keybind."/>

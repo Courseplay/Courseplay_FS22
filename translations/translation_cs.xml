@@ -100,6 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="显示路线"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="显示当前车辆的工作路线。"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="仅限起始点/终点"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="所有点"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="用鼠标打开Hud"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="右键打开HUD。 如果关闭，则仅使用键盘快捷键打开 HUD。"/>

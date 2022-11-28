@@ -100,6 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Mostrar rotas"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Mostrar rota atual do veículo"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Iniciar / parar somente"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Todos os waypoints"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Abrir o Hud com mouse"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Quando desativado, o Hud só poderá ser aberto com o teclado."/>
