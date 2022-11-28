@@ -264,9 +264,7 @@ function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible, cur
 		local numWp = self.course:getNumberOfWaypoints()
 		for j = 1, numWp do
 			if self.signs[j] then
-				self.signs[j]:setVisible(visible)
-				if not self.signs[j]:isNormalSign() or j == numWp - 1 then
-					local showWaypoint = false
+				local showWaypoint = false
 
 					-- this variable should only be not nil if the visibility mode "SHOW_COURSE_CURRENT_WPS" is active
 					if currentWaypoint ~= nil then
@@ -277,6 +275,8 @@ function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible, cur
 						local upperBound = currentWaypoint + 20
 						showWaypoint = lowerBound <= j and j <= upperBound
 					end
+				self.signs[j]:setVisible(visible or showWaypoint)
+				if not self.signs[j]:isNormalSign() or j == numWp - 1 then
 					self.signs[j]:setVisible(visible or onlyStartStopVisible or showWaypoint)
 				end
 			end

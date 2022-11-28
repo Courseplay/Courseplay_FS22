@@ -292,7 +292,7 @@ end
 function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
     local spec = self.spec_cpCourseManager
     if spec then
-        self:calculateCourseVisibility()
+        self:cpCalculateCourseVisibility()
     end
 end
 
@@ -321,7 +321,7 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
         if g_client then
             local spec = self.spec_cpCourseManager
             spec.courseDisplay:setCourse(self:getFieldWorkCourse())
-            self:calculateCourseVisibility()
+            self:cpCalculateCourseVisibility()
         end
     else
         spec.coursePlot:setVisible(false)
