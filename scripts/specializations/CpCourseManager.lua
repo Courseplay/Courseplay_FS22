@@ -282,6 +282,7 @@ function CpCourseManager:cpCalculateCourseVisibility()
         elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP then
             onlyStartStopVisible = self:getIsControlled()
         elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
+            visible = self:getIsControlled()
             currentWaypoint = course:getCurrentWaypointIx()
         end
 

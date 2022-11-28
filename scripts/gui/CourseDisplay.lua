@@ -267,7 +267,7 @@ function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible, cur
 				local showWaypoint = false
 
 					-- this variable should only be not nil if the visibility mode "SHOW_COURSE_CURRENT_WPS" is active
-					if currentWaypoint ~= nil then
+					if currentWaypoint ~= nil and visible then
 						-- The lower and upper bound are used to determine whether the waypoint j is in the range of
 						-- 5 behind or 20 infront of the current waypoint. So only show the waypoint if 'currentWaypoint - 5 <= j <= currentWaypoint + 20' is true
 						--TODO: make values of waypoint bounds more configurable and move them to a global variable
