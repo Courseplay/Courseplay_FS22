@@ -299,6 +299,10 @@ end
 function CpCourseManager:onEnterVehicle(isControlling)
     if isControlling then
         local spec = self.spec_cpCourseManager
+
+        if spec then
+            self:cpCalculateCourseVisibility()
+        end
     end
 end
 
