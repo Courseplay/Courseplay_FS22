@@ -210,7 +210,7 @@ function State3D:__tostring()
     end
     local gear = self.gear == Gear.Forward and 'Forward' or 'Backward'
     local tTrailer = self.tTrailer and string.format(' (%d)', math.deg(self.tTrailer)) or ''
-    result = string.format('x: %.2f y:%.2f t:%.0f%s gear:%s steer:%s g:%.4f h:%.4f c:%.4f closed:%s open:%s',
+    result = string.format('x: %.2f y:%.2f t:%d%s gear:%s steer:%s g:%.4f h:%.4f c:%.4f closed:%s open:%s',
             self.x, self.y, math.deg(self.t), tTrailer, gear, steer,
             self.g, self.h, self.cost, tostring(self.closed), tostring(self.onOpenList))
     return result

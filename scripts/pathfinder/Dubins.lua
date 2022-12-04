@@ -93,7 +93,7 @@ function dubins_path_length(path)
     length = length + path.param[2]
     length = length + path.param[3]
     length = length * path.rho
-    return length, path.param[1] * path.rho, path.param[2] * path.rho, path.param[3] * path.rho
+    return length
 end
 
 function dubins_segment_length(path, i)
@@ -287,15 +287,7 @@ DubinsSolver.PathTypeFunctions = {
     dubins_LRL
 }
 
-DubinsSolver.SameDirPathTypeFunctions = {
-    dubins_LSL,
-    dubins_RSR,
-}
-
-
----@param same_dir_only boolean only solve for LSL or RSR
----@return DubinsSolution
-function DubinsSolver:solve(q0, q1, rho, same_dir_only)
+function DubinsSolver:solve(q0, q1, rho)
     local path = {}
     local ir = {}
     local params = {}
@@ -316,7 +308,7 @@ function DubinsSolver:solve(q0, q1, rho, same_dir_only)
 
     local pathType
 
-    for _, dubins_path_type_function in pairs(same_dir_only and DubinsSolver.SameDirPathTypeFunctions or DubinsSolver.PathTypeFunctions) do
+    for _, dubins_path_type_function in pairs(DubinsSolver.PathTypeFunctions) do
         params[1], params[2], params[3], pathType = dubins_path_type_function(ir, params)
         if params[1] then
             cost = params[1] + params[2] + params[3]
