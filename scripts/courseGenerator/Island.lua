@@ -466,7 +466,7 @@ function Island:bypass(course, doCircle)
 				self:insertWaypoint( course, ix + 2, intersections[ 2 ].point, course[ ix ])
 			end
 			local startIx = ix + 1
-			ix = self: bypassOnHeadland(course, startIx, intersections[ 1 ].fromIx, intersections[ 1 ].toIx, doCircle)
+			ix = self:bypassOnHeadland(course, startIx, intersections[ 1 ].fromIx, intersections[ 1 ].toIx, doCircle)
 		end
 		ix = ix + 1
 	end
