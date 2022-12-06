@@ -390,10 +390,11 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
     object.pipe = implementWithPipe.spec_pipe
     object.objectWithPipe = implementWithPipe
     if object.pipe then
+        local referenceVehicle = implementWithPipe.rootVehicle
         -- check the pipe length:
         -- unfold everything, open the pipe, check the side offset, then close pipe, fold everything back (if it was folded)
         local wasFolded, wasClosed
-        wasFolded = ImplementUtil.unfoldForGettingWidth(implementWithPipe)
+        wasFolded = ImplementUtil.unfoldForGettingWidth(referenceVehicle)
         if object.pipe.currentState == PipeController.PIPE_STATE_CLOSED then
             wasClosed = true
             if object.pipe.animation.name then
@@ -412,7 +413,6 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
         -- (and thus, does not depend on the angle between the tractor and the harvester)
         object.pipeOffsetX, _, _ = localToLocal(dischargeNode.node,
                 (implementWithPipe.getAIDirectionNode and implementWithPipe:getAIDirectionNode()) or implementWithPipe.rootNode, 0, 0, 0)
-        local referenceVehicle = implementWithPipe.rootVehicle
         -- for the Z offset, we want the root vehicle, the offset for auger wagons and towed harvesters
         -- should be relative to the tractor
         _, _, object.pipeOffsetZ = localToLocal(dischargeNode.node,
@@ -430,12 +430,14 @@ function ImplementUtil.setPipeAttributes(object, implementWithPipe)
                 object.objectWithPipe:updatePipeNodes(999999, nil)
             end
         end
-        if wasFolded and referenceVehicle.spec_foldable then
+        if wasFolded then
             ImplementUtil.foldAfterGettingWidth(referenceVehicle)
             -- fold and unfold quickly, if we don't do that, the implement start event won't unfold the combine pipe
             -- zero idea why, it worked before https://github.com/Courseplay/Courseplay_FS22/pull/453
-            Foldable.actionControllerFoldEvent(referenceVehicle, -1)
-            Foldable.actionControllerFoldEvent(referenceVehicle, 1)
+            -- As of 2022-12-06 this does not seem to be needed anymore, in fact, it leaves the vehicle in
+            -- an unfolded state, so comment it out for now.
+            -- Foldable.actionControllerFoldEvent(referenceVehicle, -1)
+            -- Foldable.actionControllerFoldEvent(referenceVehicle, 1)
         end
     else
         -- make sure pipe offset has a value until CombineUnloadManager as cleaned up as it calls getPipeOffset()
@@ -461,6 +463,7 @@ end
 
 function ImplementUtil.foldAfterGettingWidth(object)
     if object.spec_foldable then
+        CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, "Folding after getting width.")
         Foldable.setAnimTime(object.spec_foldable, object.spec_foldable.startAnimTime == 1 and 1 or 0, true)
     end
 end
