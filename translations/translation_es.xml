@@ -27,7 +27,7 @@
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Posición en campo:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posición en Silo:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Posición de estacionamiento:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Pos. Estac."/>
     <text name="CP_jobParameters_subTitle_startAt" text="Comience en:"/>
     <text name="CP_jobParameters_startAt_title" text="Comience en:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Dónde comenzar el trabajo de campo"/>
