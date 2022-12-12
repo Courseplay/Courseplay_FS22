@@ -34,7 +34,7 @@
     <text name="CP_jobParameters_startAt_nearest" text="Nahester Wegpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Erster Wegpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Letzter Wegpunkt"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunkersilo Modus"/>
     <text name="CP_jobParameters_startAt_unload" text="Entlade Drescher"/>
     <text name="CP_jobParameters_startAt_bales" text="Sammel/Wickel Ballen"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bahn:"/>
@@ -696,31 +696,39 @@ Achtung: Sobald du loslässt, werden die Wegpunkte abgesetzt, dies kann nicht r�
 "/>
     <text name="CP_help_page_unloader_title" text="Ernter Abfahrer"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von CP gesteuert werden.
+Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von Courseplay gesteuert werden.
 Häcksler funktionieren nicht.
 Zum abtanken können normale Trailer oder Überladewagen verwendet werden.
 Zum entleeren von Trailern, kann entweder der Giants Helfer, oder AutoDrive verwendet werden.
-Um einen Abfahrer zu starten, gibt es ein paar Vorraussetzungen:
+Um einen Abfahrer zu starten, gibt es ein paar Voraussetzungen:
 - Es muss ein Überladewagen, oder maximal ein Trailer angekuppelt sein.
-- Mit dem Zielsymbol, muss das Feld gewählt werden, auf dem die Drescher oder Ernter fahren, die ihr abtanken lassen wollt.
+- Mit dem Zielsymbol im HUD, muss das Feld gewählt werden, auf dem die Drescher oder Ernter fahren, die ihr abtanken lassen wollt.
 - Gestartet werden kann der Abfahrer dann, wenn er auf dem Feld, oder innerhalb von 20m um die Feldgrenze steht.
+
+Um irgendwelche Werte muss sich nicht groß gekümmert werden.
+Einzig ab wann ein Trailer oder Überladewagen als voll gilt, kann im HUD eingestellt werden.
+Überladewagen z.B. haben weitere Werte hinterlegt, die ihren Ablauf von alleine regulieren.
+
+Fährt ein Abfahrer nicht genau unter das Rohr des Dreschers, kann mit hilfe des vertikalen und horizontalen Offsets der Abstand angepasst werden.
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Wird ein Trailer zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren.
 Die erste Variante ist der Giants Helfer.
-Gestartet wird dieser entweder über Job erstellen im AI Menü und aktivieren des Giants Helfers unten in der Liste, oder über das HUD, durch aktivieren des Lenkrad-Symbols.
+Gestartet wird dieser entweder über Job erstellen im AI Menü und aktivieren des Giants Helfers und auswählen des Zielpunkts unten in der Liste, oder über das HUD durch aktivieren des Lenkrad-Symbols.
 Dazu muss dann noch die passende Abladestelle gewählt werden, welche erst auftaucht, wenn das Lenkrad blau aufleuchtet.
-Alternativ kann auch AutoDrive verwendet werden, ähnlich wie auch Ladewagen, siehe dazu die AutoDrive Hilfe.
+Alternativ kann auch AutoDrive verwendet werden, ähnlich wie auch Ladewagen, schaue dir dazu AutoDrive Tutorials an.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Überladewagen sind relativ simpel zu bedinen.
 Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
 Zum starten stellt man den Abfahrer auch auf das Feld oder innerhalb 20m um die Feldgrenze.
 Der Überladewagen sucht sich zum abladen ganz automatisch einen Trailer aus, der am Feldrand steht um da überzuladen.
+Sollte der Trailer voll sein und sich noch zu viel Ladegut im Überladewagen befinden, wird sich ein weiterer Trailer gesucht.
+Ist kein Trailer verfügbar, wird der Drescher weiter abgetankt.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker Silo Arbeiter"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay ist in der Lage, Häckselgut in einem Bunker verdichten, verteilen, oder in einem Keilsilo auf zu schieben.
+Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo auf zu schieben.
 Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht, oder nur dem Fahrzeug.
 Zum verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO).
 Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Silo zu schieben.
