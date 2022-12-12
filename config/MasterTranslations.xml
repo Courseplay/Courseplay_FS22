@@ -6,7 +6,6 @@
 	- The category names will be added as a comment in the translation files.
 	
 	<![CDATA[ ]]> is only needed for texts with a new line feed.
-
 -->
 <Translations>
 	<Category name="These translations are automatically reformated on a github push."/>
