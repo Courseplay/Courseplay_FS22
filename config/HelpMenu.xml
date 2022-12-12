@@ -186,5 +186,26 @@
 				<text text="$l10n_CP_help_page_editorAdvanced_text"/>
 			</paragraph>
 		</page>
+		<!--Courseplay Unloader-->
+		<page title="$l10n_CP_help_page_unloader_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_unloaderGeneral_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_unloaderTrailer_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_unloaderAuger_text"/>
+			</paragraph>
+		</page>
+		<!--Courseplay Bunker Silo Driver-->
+		<page title="$l10n_CP_help_page_bunker_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_bunkerGeneral_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_bunkerBasic_text"/>
+			</paragraph>
+		</page>
 	</category>
 </helpLines>
