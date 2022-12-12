@@ -854,9 +854,8 @@ function Polyline:tuck( iterator, s, minSmoothAngle, maxSmoothAngle )
 			-- vector from current point to mid point
 			local mx, my = midPNx - cp.x, midPNy - cp.y
 			-- move current point towards (or away from) the midpoint by the factor s
-			self[ i ] = { x=cp.x + mx * s, y=cp.y + my * s }
-		else
-			self[ i ] = cp
+			self[ i ].x = cp.x + mx * s
+			self[ i ].y = cp.y + my * s
 		end
 	end
 	self:calculateData()
