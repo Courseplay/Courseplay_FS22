@@ -702,23 +702,23 @@ Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
 Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
 Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
 - Es muss ein Überladewagen oder maximal ein Anhänger angekuppelt sein.
-- Durch den Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay Drescher auf dem Feld werden dann abgeladen.
+- Mit dem Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay Drescher auf dem Feld werden dann abgetankt.
 - Gestartet werden kann der Abfahrer wenn er direkt auf dem Feld ist oder sehr nahe zur Feldgrenze steht.
 
 Es gibt nur wenige Einstellungen zur Feineinstellung:
 - Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
-- Offsets im HUD, falls das Rohr des Deschers den Abfahrer nicht trifft zum Überladen.
+- Offsets im HUD, falls das Rohr des Deschers den Abfahrer zum überladen nicht trifft.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
 - Giants Helfer:
-  1) Starten über das AI Menü mit der aktiven Option Giants Helfers nutzen order im Hud starten mit aktivem Lenkrad Knopf.
-  2) Die gewünschte Abladestellen auswällen. Im Hud ist diese Option nur mit aktiven Lenkrad sichtbar.
+  1) Starten über das AI Menü mit der aktiven Option Giants Helfer nutzen oder im HUD starten mit aktivem Lenkrad Knopf.
+  2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktiven Lenkrad sichtbar.
 - AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Überladewagen sind relativ einfach zu bedinen.
+Überladewagen sind relativ einfach zu bedienen.
 Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
 Zum Starten stellt man den Abfahrer auf das Feld oder nahe der Feldgrenze.
 Der Überladewagen sucht sich zum Abladen ganz automatisch einen Abfahrer am Feldrand aus zum Überladen.
@@ -735,10 +735,11 @@ Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Sil
     <text name="CP_help_page_bunkerBasic_text" text="
 Für einen Verteiler oder Schild gibt es nur den Bunker Silo Modus.
 Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
- - Ebenfalls muss die Fahrtrichtung, mit welcher in den Silo gefahren wird, angeben werden.
-Mit dem Ziel Icon im HUD, wird auf der AI Karte der Bunker ausgewählt. 
+ - Ebenfalls muss die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
+Mit dem Zielknopf im HUD, wird auf der AI Karte der Bunker ausgewählt. 
 Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
-Die Parkposition wird angefahren, wenn sich Ablader nahe des Silos befinden.
+Die Parkposition wird mit dem Marker &quot;Parkposition&quot; gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
+Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
 "/>
     <!---->
     <!--Input bindings-->
