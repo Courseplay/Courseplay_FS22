@@ -2113,18 +2113,17 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 			<Text language="de"><![CDATA[
 Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von Courseplay gesteuert werden.
 Häcksler funktionieren nicht.
-Zum abtanken können normale Trailer oder Überladewagen verwendet werden.
-Zum entleeren von Trailern, kann entweder der Giants Helfer, oder AutoDrive verwendet werden.
-Um einen Abfahrer zu starten, gibt es ein paar Voraussetzungen:
-- Es muss ein Überladewagen, oder maximal ein Trailer angekuppelt sein.
-- Mit dem Zielsymbol im HUD, muss das Feld gewählt werden, auf dem die Drescher oder Ernter fahren, die ihr abtanken lassen wollt.
-- Gestartet werden kann der Abfahrer dann, wenn er auf dem Feld, oder innerhalb von 20m um die Feldgrenze steht.
+Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
+Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
+Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
+- Es muss ein Überladewagen oder maximal ein Anhänger angekuppelt sein.
+- Durch den Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay Drescher auf dem Feld werden dann abgeladen.
+- Gestartet werden kann der Abfahrer wenn er direkt auf dem Feld ist oder sehr nahe zur Feldgrenze steht.
 
-Um irgendwelche Werte muss sich nicht groß gekümmert werden.
-Einzig ab wann ein Trailer oder Überladewagen als voll gilt, kann im HUD eingestellt werden.
-Überladewagen z.B. haben weitere Werte hinterlegt, die ihren Ablauf von alleine regulieren.
+Es gibt nur wenige Einstellungen zur Feineinstellung:
+- Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
+- Offsets im HUD, falls das Rohr des Deschers den Abfahrer nicht trifft zum Überladen.
 
-Fährt ein Abfahrer nicht genau unter das Rohr des Dreschers, kann mit hilfe des vertikalen und horizontalen Offsets der Abstand angepasst werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
@@ -2145,11 +2144,11 @@ is to avoid waiting for a combine to call with a trailer almost full.
 		</Translation>
 		<Translation name="CP_help_page_unloaderTrailer_text">
 			<Text language="de"><![CDATA[
-Wird ein Trailer zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren.
-Die erste Variante ist der Giants Helfer.
-Gestartet wird dieser entweder über Job erstellen im AI Menü und aktivieren des Giants Helfers und auswählen des Zielpunkts unten in der Liste, oder über das HUD durch aktivieren des Lenkrad-Symbols.
-Dazu muss dann noch die passende Abladestelle gewählt werden, welche erst auftaucht, wenn das Lenkrad blau aufleuchtet.
-Alternativ kann auch AutoDrive verwendet werden, ähnlich wie auch Ladewagen, schaue dir dazu AutoDrive Tutorials an.
+Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
+- Giants Helfer:
+  1) Starten über das AI Menü mit der aktiven Option Giants Helfers nutzen order im Hud starten mit aktivem Lenkrad Knopf.
+  2) Die gewünschte Abladestellen auswällen. Im Hud ist diese Option nur mit aktiven Lenkrad sichtbar.
+- AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
 ]]></Text>
 			<Text language="en"><![CDATA[
 If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
@@ -2163,12 +2162,12 @@ Emptying a trailer with AutoDrive works the same as using a loading wagon, check
 		</Translation>
 		<Translation name="CP_help_page_unloaderAuger_text">
 			<Text language="de"><![CDATA[
-Überladewagen sind relativ simpel zu bedinen.
+Überladewagen sind relativ einfach zu bedinen.
 Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
-Zum starten stellt man den Abfahrer auch auf das Feld oder innerhalb 20m um die Feldgrenze.
-Der Überladewagen sucht sich zum abladen ganz automatisch einen Trailer aus, der am Feldrand steht um da überzuladen.
-Sollte der Trailer voll sein und sich noch zu viel Ladegut im Überladewagen befinden, wird sich ein weiterer Trailer gesucht.
-Ist kein Trailer verfügbar, wird der Drescher weiter abgetankt.
+Zum Starten stellt man den Abfahrer auf das Feld oder nahe der Feldgrenze.
+Der Überladewagen sucht sich zum Abladen ganz automatisch einen Abfahrer am Feldrand aus zum Überladen.
+Wenn beim Abladen der Anhänger voll wird, dann wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
+Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überladewagen voll ist.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Auger wagons are very simple to use.
@@ -2185,9 +2184,9 @@ Is no trailer available, it will continue to unload the combine.
 		</Translation>
 		<Translation name="CP_help_page_bunkerGeneral_text">
 			<Text language="de"><![CDATA[
-Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo auf zu schieben.
+Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo bis zum Ende zu schieben.
 Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht, oder nur dem Fahrzeug.
-Zum verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO).
+Zum Verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO aus dem Modhub).
 Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Silo zu schieben.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2199,12 +2198,12 @@ For wedge silos, a shield is used to push the chaff to the back of the silo.
 		</Translation>
 		<Translation name="CP_help_page_bunkerBasic_text">
 			<Text language="de"><![CDATA[
-Ohne Arbeitsgerät, mit einem Gewicht oder mit einer Walze, wird durch das durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
 Für einen Verteiler oder Schild gibt es nur den Bunker Silo Modus.
-In dem Modus gibt es neben der Arbeitsbreite noch die Richtung in die der Fahrer in das Silo fahren soll.
-Die Ausnahme bildet ein Schild, dort wird die Fahrtrichtung automatisch bestimmt.
-Mit dem Ziel Icon im HUD, wird auf der AI Karte der Bunker ausgewählt. Er wird mit blauen Strichen dar gestellt und leuchtet weis auf, wenn er ausgewählt wurde.
-Die Parkposition wird mit dem Marker "Parkposition" gewählt, welcher auch benutzt werden kann, damit Giants zu diesem Punkt fährt, bevor mit der Arbeit begonnen wird.
+Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
+ - Ebenfalls muss die Fahrtrichtung, mit welcher in den Silo gefahren wird, angeben werden.
+Mit dem Ziel Icon im HUD, wird auf der AI Karte der Bunker ausgewählt. 
+Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
+Die Parkposition wird angefahren, wenn sich Ablader nahe des Silos befinden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
