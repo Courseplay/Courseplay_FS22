@@ -681,55 +681,57 @@ En la categoría avanzada se encuentran:
 2) Un pincel para insertar una curva de Puntos de Ruta entre los Puntos de Ruta seleccionados.
 3) Un pincel para establecer el atributo de giro de un Punto de Ruta (solo con un Curso y no con un Campo Personalizado).
 "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="Descargador de Cosechadoras"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+El modo de descarga de Courseplay funciona con Cosechadoras, Combinadas y Cosechadoras remolcadas conducidas por Courseplay.
+Esto no funciona con Cosechadoras de Forraje.
+Puedes usar un remolque normal o un vagón con sinfín para descargar una cosechadora.
+Para vaciar los remolques, puede usar el Ayudante de Giants o AutoDrive.
+Arrancar el descargador requiere algunas cosas:
+- Debe tener un solo remolque o vagón con sinfín adjunto. No se admiten varios remolques.
+- Use el icono de destino en el HUD para seleccionar el campo que se está cosechando. El descargador descargará
+todas las Cosechadoras conducidas por Courseplay que estén trabajando en ese campo.
+- Debe estar en el campo o dentro de los 20 metros del borde fuera del campo para iniciar el descargador.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+Los descargadores solo tienen unas pocas configuraciones que puedes modificar:
+- Puedes establecer el nivel de llenado en el que el descargador se considerará lleno. Este
+es evitar que una cosechadora llame a un descargador con un remolque casi lleno.
+- Puede usar las compensaciones en el HUD para ajustar la posición del descargador debajo del tubo de la cosechadora.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Si utiliza un remolque para descargar, hay dos formas de transportar su cosecha a un silo o a un punto de venta: El Ayudante de Gigants
+o AutoDrive.
+Puede usar el menú AI y crear un trabajo, luego activando la función del Ayudante de Giants y descargando el objetivo en él
+al final de la lista, o mediante la activación del icono de la rueda en el HUD.
+En este último caso, debe elegir la estación de descarga después de que el ícono de la rueda se vuelva azul.
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+Vaciar un remolque con AutoDrive funciona igual que usar un vagón de carga, consulte los tutoriales de AutoDrive en Internet.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+Los vagones con sinfín son muy fáciles de usar.
+Al igual que con los remolques, utilice el icono de objetivo para elegir el campo donde desea descargar una Combinada o Cosechadora.
+Para iniciar el Descargador,  colóquelo nuevamente en el campo o dentro de los 20 metros del borde fuera del campo.
+Si el vagón con sinfín está lleno, automáticamente buscará un remolque en el campo o cerca de él para sobrecargarlo.
+En caso de que el tráiler esté lleno y el vagón del sinfín aún no esté vacío, buscará otro remolque para descargarlo.
+Si no hay un remolque disponible, continuará descargando la cosechadora.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="Trabajador de Silos Búnker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay puede compactar o distribuir material picado en un silo tipo búnker o empujarlo en un silo de cuña.
+La compactación es posible sin ninguna herramienta especial, con rodillo, peso, o solo el vehículo.
+Para la distribución, hay herramientas especiales. (por ejemplo, el Fliegel DUO).
+Para los silos de cuña, se usa un escudo para empujar la paja hacia la parte posterior del silo.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Si el vehículo tiene instalado un distribuidor o escudo, el modo Silo será preseleccionado. Con solo un peso o un rodillo 
+adjunto se alterna entre el punto de inicio hasta que aparece el modo.
+Además del ancho de trabajo, también puede seleccionar la dirección en la que el conductor debe entrar en el silo. 
+Con un escudo adjunto, la dirección se selecciona automáticamente.
+Utilice el icono de destino en el HUD para seleccionar el silo en el mapa AI. Se mostrará con líneas azules y se iluminará 
+en blanco si está seleccionado.
+La posición de estacionamiento se establece con el marcador(posición de estacionamiento) que también se puede usar 
+para conducir allí con el Ayudante de Gigants antes de comenzar el trabajo real.
 "/>
     <!---->
     <!--Input bindings-->
