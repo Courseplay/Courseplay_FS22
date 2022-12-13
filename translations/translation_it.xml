@@ -57,7 +57,7 @@
     <!--AI combine unloader job parameters-->
     <!---->
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
@@ -325,7 +325,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
+    <text name="CP_editor_course_title" text="Editor percorsi"/>
     <text name="CP_editor_delete_title" text="Cancella punto di passaggio"/>
     <text name="CP_editor_delete_primary_text" text="primario"/>
     <text name="CP_editor_delete_secondary_text" text="secondario"/>
@@ -688,55 +688,52 @@ Per deselezionare i punti, fare clic con il pulsante destro del mouse.
 Proprio come per spostare più punti, contrassegna 2 punti, quindi tieni premuto il pulsante sinistro del mouse e muovi il mouse.
 Attenzione: non appena rilasci il pulsante del mouse, i punti verranno impostati, questo non può essere annullato! (ovviamente puoi eliminare quei punti.)
 "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="Scaricatore della mietitrebbia"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+La modalità scaricatore di Courseplay funziona con mietitrebbie, mietitrici e mietitrebbie trainate, guidate da Courseplay.
+Non funziona con i trinciatori.
+Puoi utilizzare un normale rimorchio o un carro a coclea per scaricare una mietitrebbia.
+Per svuotare i rimorchi, puoi utilizzare Giants Helper o AutoDrive.
+L'avvio dello scaricatore richiede alcune cose:
+- È necessario disporre di un singolo rimorchio o di un carro a coclea collegato. Più trailer non sono supportati.
+- Usa l'icona del bersaglio sull'HUD per selezionare il campo da raccogliere. Lo scaricatore scaricherà tutte le mietitrebbie guidate Courseplay che lavorano su quel campo.
+- Devi essere sul campo o entro 20 metri dal campo per avviare lo scaricatore.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+Gli scaricatori hanno solo poche impostazioni che puoi modificare:
+- È possibile impostare il livello di riempimento al quale lo scaricatore si considererà pieno. Questo per evitare di aspettare che una mietitrebbia chiami con un rimorchio quasi pieno.
+- È possibile utilizzare gli offset nell'HUD per regolare la posizione dello scaricatore sotto il tubo della mietitrice.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Se usi un rimorchio per scaricare, ci sono due modi per trasportare il raccolto in un silo o in un punto vendita: l'aiutante Giants
+o Guida automatica.
+Puoi utilizzare il menu IA e creare un lavoro, quindi attivando la funzione di aiuto della Giants e scaricando il tasto in fondo all'elenco o attivando l'icona della ruota sull'HUD.
+In quest'ultimo caso, devi scegliere la stazione di scarico dopo che l'icona della ruota diventa blu.
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+Lo svuotamento di un rimorchio con AutoDrive funziona allo stesso modo dell'utilizzo di un carro autocaricante, dai un'occhiata ai Tutorial di AutoDrive su Internet.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+I carri a coclea sono molto semplici da usare.
+Proprio come con i rimorchi, puoi utilizzare l'icona del bersaglio per scegliere il campo in cui vuoi scaricare una mietitrebbia o una mietitrice.
+Per avviare lo scaricatore, posizionarlo nuovamente sul campo o entro 20 metri dal campo.
+Se il carro a coclea è pieno, cerca automaticamente un rimorchio sopra o vicino al campo per sovraccaricarlo.
+Nel caso in cui il rimorchio sia pieno e il carro a coclea non sia ancora vuoto, cercherà un altro rimorchio su cui scaricare.
+Se non è disponibile un rimorchio, continuerà a scaricare la mietitrebbia.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="Lavoratore del silos bunker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay è in grado di compattare o distribuire la pula in un silo bunker o spingere la pula in un silo a cuneo.
+La compattazione è possibile senza alcun attrezzo speciale, con un rullo, un peso o solo il veicolo.
+Per la distribuzione, ci sono strumenti speciali. (ad es. der Fliegel DUO).
+Per i silos a cuneo, viene utilizzato uno scudo per spingere la pula sul retro del silo.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Se il veicolo ha un distributore o uno scudo collegato, la modalità Silo è preselezionata. Con solo un peso o un rullo attaccato
+si passa dal punto di partenza finché non viene visualizzata la modalità.
+Oltre alla larghezza di lavoro, è possibile selezionare anche la direzione in cui il conducente deve entrare nel silo. Con uno scudo attaccato, la direzione viene selezionata automaticamente.
+Usa l'icona del bersaglio sull'HUD per selezionare il silo sulla mappa AI. Se verrà mostrato con linee blu e si illuminerà di bianco se è selezionato.
+La posizione di parcheggio viene impostata con l'indicatore &quot;posizione di parcheggio&quot; che può essere utilizzato anche per guidare lì con l'aiutante della Giants
+prima di iniziare il lavoro vero e proprio.
 "/>
     <!---->
     <!--Input bindings-->
