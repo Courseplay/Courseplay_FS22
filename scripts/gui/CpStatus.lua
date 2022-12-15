@@ -94,5 +94,6 @@ function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
         self.currentWaypointIx = streamReadInt32(streamId)
         self.isActive = streamReadBool(streamId)
         self.remainingTimeText = streamReadString(streamId)
+        self:updateWaypointVisibility()
 	end
 end
