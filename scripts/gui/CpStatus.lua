@@ -57,9 +57,7 @@ function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainin
 end
 
 function CpStatus:updateWaypointVisibility()
-    if not g_server then
-        SpecializationUtil.raiseEvent(self.vehicle, "onCpFieldworkWaypointChanged", self.currentWaypointIx)
-    end
+    SpecializationUtil.raiseEvent(self.vehicle, "onCpFieldworkWaypointChanged", self.currentWaypointIx)
 end
 
 function CpStatus:getWaypointText()
