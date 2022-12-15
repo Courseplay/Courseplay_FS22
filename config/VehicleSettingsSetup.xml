@@ -18,6 +18,7 @@
 			<Texts>
 				<Text prefix="false">CP_deactivated</Text>
 				<Text>startStop</Text>
+				<Text>currentWaypoint</Text>
 				<Text>all</Text>
 			</Texts>
 		</Setting>
