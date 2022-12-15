@@ -285,6 +285,9 @@ function CpCourseManager:onCpFieldworkWaypointChanged(wpIx)
     local course = self:getFieldWorkCourse()
     if course then 
         course:setCurrentWaypointIx(wpIx)
+        if self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_AROUND_CURRENT_WP then 
+            self:updateCpCourseDisplayVisibility()
+        end
     end
 end
 
