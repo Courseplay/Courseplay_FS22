@@ -153,6 +153,8 @@ SimpleCourseDisplay.COLORS = {
 }
 
 SimpleCourseDisplay.HEIGHT_OFFSET = 4.5
+SimpleCourseDisplay.WAYPOINT_LOWER_LIMIT = 5 -- waypoints in front of the current
+SimpleCourseDisplay.WAYPOINT_UPPER_LIMIT = 20 -- waypoints after the current
 
 function SimpleCourseDisplay:init()
 	self.protoTypes = g_signPrototypes:getPrototypes()
@@ -203,12 +205,12 @@ function SimpleCourseDisplay:updateWaypoint(i)
 	end
 	self.signs[i]:translate(wp.x, wp.z)
 	--- Changes the sign colors.
-	if self.course:isTurnStartAtIx(i) then 
-		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_START)
-	elseif self.course:isTurnEndAtIx(i) then 
-		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_END)
+	if self.course:isTurnStartAtIx(i) then
+		self.signs[i]:setColor(self.COLORS.TURN_START)
+	elseif self.course:isTurnEndAtIx(i) then
+		self.signs[i]:setColor(self.COLORS.TURN_END)
 	else
-		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.NORMAL)
+		self.signs[i]:setColor(self.COLORS.NORMAL)
 	end
 end
 
@@ -259,15 +261,23 @@ function SimpleCourseDisplay:updateChangesBetween(firstIx, secondIx)
 end
 
 --- Changes the visibility of the course.
-function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible)
+function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible, onlyAroundCurrentWaypointVisible)
 	if self.course then
 		local numWp = self.course:getNumberOfWaypoints()
+		local currentWaypointIx = self.course:getCurrentWaypointIx()
 		for j = 1, numWp do
-			if self.signs[j] then 
-				self.signs[j]:setVisible(visible)
-				if not self.signs[j]:isNormalSign() or j == numWp - 1 then 
-					self.signs[j]:setVisible(visible or onlyStartStopVisible)
-				end	
+			if self.signs[j] then
+				local showWaypoint = false
+					if onlyAroundCurrentWaypointVisible then
+						--- Shows a few waypoints in front or after the last passed waypoint in between the lower and upper limit.
+						local lowerBound = currentWaypointIx - self.WAYPOINT_LOWER_LIMIT
+						local upperBound = currentWaypointIx + self.WAYPOINT_UPPER_LIMIT
+						showWaypoint = lowerBound <= j and j <= upperBound
+					end
+				self.signs[j]:setVisible(visible or showWaypoint)
+				if not self.signs[j]:isNormalSign() or j == numWp - 1 then
+					self.signs[j]:setVisible(visible or onlyStartStopVisible or showWaypoint)
+				end
 			end
 		end
 	end

@@ -52,6 +52,13 @@ function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainin
         self.numberOfWaypoints = numberOfWaypoints
         self.remainingTimeText = remainingTimeText
         self:raiseDirtyFlag()
+        self:updateWaypointVisibility()
+    end
+end
+
+function CpStatus:updateWaypointVisibility()
+    if not g_server then
+        SpecializationUtil.raiseEvent(self.vehicle, "onCpFieldworkWaypointChanged", self.currentWaypointIx)
     end
 end
 
