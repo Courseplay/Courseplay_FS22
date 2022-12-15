@@ -100,6 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Ukázat trasu"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Ukázat aktuální trasu vozidla"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Pouze start/stop"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Všechny průjezdní body."/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Otevřete nabídku (Hud) pomocí myši"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Když je nabídka (Hud) deaktivována, lze jej otevřít pouze pomocí klávesové zkratky."/>
