@@ -272,13 +272,9 @@ end
 function CpCourseManager:updateCpCourseDisplayVisibility()
     local spec = self.spec_cpCourseManager
     local visibilityMode = self:getCpSettings().showCourse:getValue()
-    if self:getIsControlled() then 
-        spec.courseDisplay:updateVisibility(visibilityMode == CpVehicleSettings.SHOW_COURSE_ALL, 
-                                            visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP, 
-                                            visibilityMode == CpVehicleSettings.SHOW_COURSE_AROUND_CURRENT_WP)
-    else 
-        spec.courseDisplay:updateVisibility(false, false, false)
-    end
+    spec.courseDisplay:updateVisibility(visibilityMode == CpVehicleSettings.SHOW_COURSE_ALL, 
+                                        visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP, 
+                                        visibilityMode == CpVehicleSettings.SHOW_COURSE_AROUND_CURRENT_WP)
 end
 
 function CpCourseManager:onCpFieldworkWaypointChanged(wpIx)
@@ -300,13 +296,16 @@ end
 
 function CpCourseManager:onEnterVehicle(isControlling)
     if isControlling then
+        local spec = self.spec_cpCourseManager
+        spec.courseDisplay:setVisibility(true)
         self:updateCpCourseDisplayVisibility()
     end
 end
 
 function CpCourseManager:onLeaveVehicle(wasEntered)
     if wasEntered then
-        self:updateCpCourseDisplayVisibility()
+        local spec = self.spec_cpCourseManager
+        spec.courseDisplay:setVisibility(false)
     end
 end
 

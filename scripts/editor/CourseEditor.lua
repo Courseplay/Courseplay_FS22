@@ -18,8 +18,6 @@ function CourseEditor.new(customMt)
 	self.isActive = false
 	self.categories = {}
 	self.categoriesByName = {}
-	--- Simple course display for the selected course.
-	self.courseDisplay = EditorCourseDisplay(self)
 	return self
 end
 
@@ -160,6 +158,8 @@ function CourseEditor:getCategories()
 end
 
 function CourseEditor:load()
+	--- Simple course display for the selected course.
+	self.courseDisplay = EditorCourseDisplay(self)
 	self.categoriesByName, self.categories = self:loadFromXml(CourseEditor.CATEGORIES_FILE_NAME)
 end
 
