@@ -470,8 +470,9 @@ function TurnContext:getTurnEndNodeAndOffsets(steeringLength)
             -- a function of the radius, the starting angle and probably the tow bar length.
             goalOffset = - self.turnEndForwardOffset
         else
-            -- no towed implement (mounted on vehicle), no need to align, place the implement exactly at the work start
-            goalOffset = self.turnEndForwardOffset
+            -- no towed implement (mounted on vehicle), no need to align, place the vehicle exactly at the work start
+            -- as also with 3 point mounted implements, the tractor needs some time to align with the row direction
+            goalOffset = self.frontMarkerDistance + self.turnEndForwardOffset
         end
     end
     return turnEndNode, startOffset, goalOffset
