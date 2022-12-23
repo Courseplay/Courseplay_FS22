@@ -56,16 +56,18 @@ function CpCourseManager.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onCpCourseChange", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpCourseManager)
-    SpecializationUtil.registerEventListener(vehicleType, "cpUpdateWaypointVisibility", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onCpDrawHudMap", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onEnterVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpCourseManager)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpShowCourseSettingChanged', CpCourseManager)
+    SpecializationUtil.registerEventListener(vehicleType, 'onCpFieldworkWaypointChanged', CpCourseManager)
 end
 
 function CpCourseManager.registerEvents(vehicleType)
-    SpecializationUtil.registerEvent(vehicleType, 'cpUpdateWaypointVisibility')
     SpecializationUtil.registerEvent(vehicleType, 'onCpCourseChange')
+    SpecializationUtil.registerEvent(vehicleType, 'onCpFieldworkWaypointChanged')
+    SpecializationUtil.registerEvent(vehicleType, 'onCpShowCourseSettingChanged')
 end
 
 function CpCourseManager.registerFunctions(vehicleType)
@@ -87,6 +89,7 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'setCpCourseName', CpCourseManager.setCpCourseName)
 
     SpecializationUtil.registerFunction(vehicleType, 'drawCpCoursePlot', CpCourseManager.drawCpCoursePlot)
+    SpecializationUtil.registerFunction(vehicleType, 'updateCpCourseDisplayVisibility', CpCourseManager.updateCpCourseDisplayVisibility)
 
     SpecializationUtil.registerFunction(vehicleType, 'loadAssignedCpCourses', CpCourseManager.loadAssignedCourses)
     SpecializationUtil.registerFunction(vehicleType, 'saveAssignedCpCourses', CpCourseManager.saveAssignedCourses)
@@ -267,51 +270,43 @@ function CpCourseManager:hasCourse()
     return next(spec.courses) ~= nil
 end
 
-function CpCourseManager:cpCalculateCourseVisibility()
+function CpCourseManager:updateCpCourseDisplayVisibility()
     local spec = self.spec_cpCourseManager
+    local visibilityMode = self:getCpSettings().showCourse:getValue()
+    spec.courseDisplay:updateVisibility(visibilityMode == CpVehicleSettings.SHOW_COURSE_ALL, 
+                                        visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP, 
+                                        visibilityMode == CpVehicleSettings.SHOW_COURSE_AROUND_CURRENT_WP)
+end
+
+function CpCourseManager:onCpFieldworkWaypointChanged(wpIx)
     local course = self:getFieldWorkCourse()
-
-    if course then
-        local visible = false
-        local onlyStartStopVisible = false
-        local currentWaypoint = nil
-        local visibilityMode = self:getCpSettings().showCourse:getValue()
-
-        if visibilityMode == CpVehicleSettings.SHOW_COURSE_ALL then
-            visible = self:getIsControlled()
-        elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_START_STOP then
-            onlyStartStopVisible = self:getIsControlled()
-        elseif visibilityMode == CpVehicleSettings.SHOW_COURSE_CURRENT_WPS then
-            currentWaypoint = course:getCurrentWaypointIx()
+    if course then 
+        course:setCurrentWaypointIx(wpIx)
+        if self:getCpSettings().showCourse:getValue() == CpVehicleSettings.SHOW_COURSE_AROUND_CURRENT_WP then 
+            self:updateCpCourseDisplayVisibility()
         end
-
-        spec.courseDisplay:updateVisibility(visible, onlyStartStopVisible, currentWaypoint)
     end
 end
 
-function CpCourseManager:cpUpdateWaypointVisibility(showCourseSetting)
+function CpCourseManager:onCpShowCourseSettingChanged(showCourseSetting)
     local spec = self.spec_cpCourseManager
     if spec then
-        self:cpCalculateCourseVisibility()
+        self:updateCpCourseDisplayVisibility()
     end
 end
 
 function CpCourseManager:onEnterVehicle(isControlling)
-    local spec = self.spec_cpCourseManager
-    spec.courseDisplay:setCourse(self:getFieldWorkCourse())
     if isControlling then
-
-        if spec then
-            self:cpCalculateCourseVisibility()
-        end
+        local spec = self.spec_cpCourseManager
+        spec.courseDisplay:setVisibility(true)
+        self:updateCpCourseDisplayVisibility()
     end
 end
 
 function CpCourseManager:onLeaveVehicle(wasEntered)
     if wasEntered then
         local spec = self.spec_cpCourseManager
-        spec.courseDisplay:updateVisibility(false, false)
-        spec.courseDisplay:setCourse(nil)
+        spec.courseDisplay:setVisibility(false)
     end
 end
 
@@ -327,12 +322,13 @@ function CpCourseManager:onCpCourseChange(newCourse,noEventSend)
         if g_client and self:getIsControlled() then
             local spec = self.spec_cpCourseManager
             spec.courseDisplay:setCourse(self:getFieldWorkCourse())
-            self:cpCalculateCourseVisibility()
+            self:updateCpCourseDisplayVisibility()
         end
     else
         spec.coursePlot:setVisible(false)
         self:rememberCpLastWaypointIx()
         local spec = self.spec_cpCourseManager
+        self:updateCpCourseDisplayVisibility()
         spec.courseDisplay:clearCourse()
     end
 end
@@ -424,6 +420,7 @@ function CpCourseManager:saveCourses(file,text)
     CpCourseManager.xmlKeyFileManager,CpCourseManager.saveAssignedCourses,self,text)
     --- Updates the course name, so multi tool courses are working correctly.
     CourseSaveNameEvent.sendEvent(self, text)
+    self:setCpCourseName(text)
 end
 
 function CpCourseManager:setCpCourseName(name)
@@ -431,6 +428,7 @@ function CpCourseManager:setCpCourseName(name)
     local course = spec.courses[1]
     if course then
         course:setName(name)
+        course.temporary = false
     end
 end
 

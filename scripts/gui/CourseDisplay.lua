@@ -67,6 +67,11 @@ function SimpleSign:clone(heightOffset)
 	return SimpleSign(self.type, newNode, heightOffset or self.heightOffset)
 end
 
+function SimpleSign:setParent(newParent)
+	unlink(self.node)
+	link(newParent, self.node)
+end
+
 function SimpleSign:delete()
 	CpUtil.destroyNode(self.node)
 end
@@ -153,14 +158,24 @@ SimpleCourseDisplay.COLORS = {
 }
 
 SimpleCourseDisplay.HEIGHT_OFFSET = 4.5
+SimpleCourseDisplay.WAYPOINT_LOWER_LIMIT = 5 -- waypoints in front of the current
+SimpleCourseDisplay.WAYPOINT_UPPER_LIMIT = 20 -- waypoints after the current
 
 function SimpleCourseDisplay:init()
 	self.protoTypes = g_signPrototypes:getPrototypes()
 	self.signs = {}
+	self.rootNode = CpUtil.createNode("SimpleCourseDisplay rootNode", 0, 0, 0, getRootNode())
+	self:setVisibility(false)
+end
+
+function SimpleCourseDisplay:setVisibility(visible)
+	setVisibility(self.rootNode, visible)
 end
 
 function SimpleCourseDisplay:cloneSign(protoType)
-	return protoType:clone(self.HEIGHT_OFFSET)
+	local sign = protoType:clone(self.HEIGHT_OFFSET)
+	sign:setParent(self.rootNode)
+	return sign
 end
 
 function SimpleCourseDisplay:setNormalSign(i)
@@ -204,11 +219,11 @@ function SimpleCourseDisplay:updateWaypoint(i)
 	self.signs[i]:translate(wp.x, wp.z)
 	--- Changes the sign colors.
 	if self.course:isTurnStartAtIx(i) then
-		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_START)
+		self.signs[i]:setColor(self.COLORS.TURN_START)
 	elseif self.course:isTurnEndAtIx(i) then
-		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_END)
+		self.signs[i]:setColor(self.COLORS.TURN_END)
 	else
-		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.NORMAL)
+		self.signs[i]:setColor(self.COLORS.NORMAL)
 	end
 end
 
@@ -260,20 +275,17 @@ function SimpleCourseDisplay:updateChangesBetween(firstIx, secondIx)
 end
 
 --- Changes the visibility of the course.
-function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible, currentWaypoint)
+function SimpleCourseDisplay:updateVisibility(visible, onlyStartStopVisible, onlyAroundCurrentWaypointVisible)
 	if self.course then
 		local numWp = self.course:getNumberOfWaypoints()
+		local currentWaypointIx = self.course:getCurrentWaypointIx()
 		for j = 1, numWp do
 			if self.signs[j] then
 				local showWaypoint = false
-
-					-- this variable should only be not nil if the visibility mode "SHOW_COURSE_CURRENT_WPS" is active
-					if currentWaypoint ~= nil and visible then
-						-- The lower and upper bound are used to determine whether the waypoint j is in the range of
-						-- 5 behind or 20 infront of the current waypoint. So only show the waypoint if 'currentWaypoint - 5 <= j <= currentWaypoint + 20' is true
-						--TODO: make values of waypoint bounds more configurable and move them to a global variable
-						local lowerBound = currentWaypoint - 5
-						local upperBound = currentWaypoint + 20
+					if onlyAroundCurrentWaypointVisible then
+						--- Shows a few waypoints in front or after the last passed waypoint in between the lower and upper limit.
+						local lowerBound = currentWaypointIx - self.WAYPOINT_LOWER_LIMIT
+						local upperBound = currentWaypointIx + self.WAYPOINT_UPPER_LIMIT
 						showWaypoint = lowerBound <= j and j <= upperBound
 					end
 				self.signs[j]:setVisible(visible or showWaypoint)
@@ -298,6 +310,7 @@ end
 
 function SimpleCourseDisplay:delete()
 	self:deleteSigns()
+	CpUtil.destroyNode(self.rootNode)
 end
 
 --- 3D course display with buffer
@@ -313,6 +326,7 @@ function BufferedCourseDisplay:setNormalSign(i)
 			sign = BufferedCourseDisplay.buffer[1]
 			table.remove(BufferedCourseDisplay.buffer, 1)
 			sign:setVisible(true)
+			sign:setParent(self.rootNode)
 		else
 			sign = self:cloneSign(self.protoTypes.NORMAL)
 		end
@@ -329,6 +343,7 @@ end
 function BufferedCourseDisplay:deleteSign(sign)
 	if sign:isNormalSign() and #BufferedCourseDisplay.buffer < self.bufferMax then
 		sign:setVisible(false)
+		sign:setParent(getRootNode())
 		table.insert(BufferedCourseDisplay.buffer, sign)
 	else
 		sign:delete()
@@ -357,6 +372,7 @@ EditorCourseDisplay.HEIGHT_OFFSET = 4.5
 function EditorCourseDisplay:init(editor)
 	SimpleCourseDisplay.init(self)
 	self.editor = editor
+	self:setVisibility(true)
 end
 
 function EditorCourseDisplay:setCourse(courseWrapper)

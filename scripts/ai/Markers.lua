@@ -99,3 +99,13 @@ end
 function Markers.getMarkerNodes(vehicle)
     return Markers.getFrontMarkerNode(vehicle), Markers.getBackMarkerNode(vehicle)
 end
+
+--- Gets the front/back marker relative to the ai direction.
+function Markers.getMarkerNodesRelativeToDirectionNode(vehicle)
+    local _, _, z = localToLocal(Markers.getBackMarkerNode(vehicle), vehicle:getAIDirectionNode(), 0, 0, 0)
+    if z > 0 then 
+        --- Inverted
+        return Markers.getBackMarkerNode(vehicle), Markers.getFrontMarkerNode(vehicle)
+    end
+    return Markers.getMarkerNodes(vehicle)
+end

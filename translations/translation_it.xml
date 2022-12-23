@@ -57,7 +57,7 @@
     <!--AI combine unloader job parameters-->
     <!---->
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
@@ -326,7 +326,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
+    <text name="CP_editor_course_title" text="Editor percorsi"/>
     <text name="CP_editor_delete_title" text="Cancella punto di passaggio"/>
     <text name="CP_editor_delete_primary_text" text="primario"/>
     <text name="CP_editor_delete_secondary_text" text="secondario"/>
@@ -688,6 +688,53 @@ Per deselezionare i punti, fare clic con il pulsante destro del mouse.
 3) Un metodo per inserire una curva di punti tra due punti selezionati.
 Proprio come per spostare più punti, contrassegna 2 punti, quindi tieni premuto il pulsante sinistro del mouse e muovi il mouse.
 Attenzione: non appena rilasci il pulsante del mouse, i punti verranno impostati, questo non può essere annullato! (ovviamente puoi eliminare quei punti.)
+"/>
+    <text name="CP_help_page_unloader_title" text="Scaricatore della mietitrebbia"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+La modalità scaricatore di Courseplay funziona con mietitrebbie, mietitrici e mietitrebbie trainate, guidate da Courseplay.
+Non funziona con i trinciatori.
+Puoi utilizzare un normale rimorchio o un carro a coclea per scaricare una mietitrebbia.
+Per svuotare i rimorchi, puoi utilizzare Giants Helper o AutoDrive.
+L'avvio dello scaricatore richiede alcune cose:
+- È necessario disporre di un singolo rimorchio o di un carro a coclea collegato. Più trailer non sono supportati.
+- Usa l'icona del bersaglio sull'HUD per selezionare il campo da raccogliere. Lo scaricatore scaricherà tutte le mietitrebbie guidate Courseplay che lavorano su quel campo.
+- Devi essere sul campo o entro 20 metri dal campo per avviare lo scaricatore.
+
+Gli scaricatori hanno solo poche impostazioni che puoi modificare:
+- È possibile impostare il livello di riempimento al quale lo scaricatore si considererà pieno. Questo per evitare di aspettare che una mietitrebbia chiami con un rimorchio quasi pieno.
+- È possibile utilizzare gli offset nell'HUD per regolare la posizione dello scaricatore sotto il tubo della mietitrice.
+
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Se usi un rimorchio per scaricare, ci sono due modi per trasportare il raccolto in un silo o in un punto vendita: l'aiutante Giants
+o Guida automatica.
+Puoi utilizzare il menu IA e creare un lavoro, quindi attivando la funzione di aiuto della Giants e scaricando il tasto in fondo all'elenco o attivando l'icona della ruota sull'HUD.
+In quest'ultimo caso, devi scegliere la stazione di scarico dopo che l'icona della ruota diventa blu.
+
+Lo svuotamento di un rimorchio con AutoDrive funziona allo stesso modo dell'utilizzo di un carro autocaricante, dai un'occhiata ai Tutorial di AutoDrive su Internet.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+I carri a coclea sono molto semplici da usare.
+Proprio come con i rimorchi, puoi utilizzare l'icona del bersaglio per scegliere il campo in cui vuoi scaricare una mietitrebbia o una mietitrice.
+Per avviare lo scaricatore, posizionarlo nuovamente sul campo o entro 20 metri dal campo.
+Se il carro a coclea è pieno, cerca automaticamente un rimorchio sopra o vicino al campo per sovraccaricarlo.
+Nel caso in cui il rimorchio sia pieno e il carro a coclea non sia ancora vuoto, cercherà un altro rimorchio su cui scaricare.
+Se non è disponibile un rimorchio, continuerà a scaricare la mietitrebbia.
+"/>
+    <text name="CP_help_page_bunker_title" text="Lavoratore del silos bunker"/>
+    <text name="CP_help_page_bunkerGeneral_text" text="
+Courseplay è in grado di compattare o distribuire la pula in un silo bunker o spingere la pula in un silo a cuneo.
+La compattazione è possibile senza alcun attrezzo speciale, con un rullo, un peso o solo il veicolo.
+Per la distribuzione, ci sono strumenti speciali. (ad es. der Fliegel DUO).
+Per i silos a cuneo, viene utilizzato uno scudo per spingere la pula sul retro del silo.
+"/>
+    <text name="CP_help_page_bunkerBasic_text" text="
+Se il veicolo ha un distributore o uno scudo collegato, la modalità Silo è preselezionata. Con solo un peso o un rullo attaccato
+si passa dal punto di partenza finché non viene visualizzata la modalità.
+Oltre alla larghezza di lavoro, è possibile selezionare anche la direzione in cui il conducente deve entrare nel silo. Con uno scudo attaccato, la direzione viene selezionata automaticamente.
+Usa l'icona del bersaglio sull'HUD per selezionare il silo sulla mappa AI. Se verrà mostrato con linee blu e si illuminerà di bianco se è selezionato.
+La posizione di parcheggio viene impostata con l'indicatore &quot;posizione di parcheggio&quot; che può essere utilizzato anche per guidare lì con l'aiutante della Giants
+prima di iniziare il lavoro vero e proprio.
 "/>
     <!---->
     <!--Input bindings-->

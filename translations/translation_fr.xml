@@ -21,20 +21,20 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Benne ou transbordeur trop éloigné(e) du champ."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Point de départ dans le champ"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Position du silo"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Position d'attente"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Démarrage"/>
     <text name="CP_jobParameters_startAt_title" text="Démarrage"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Point de départ du travail dans le champ"/>
     <text name="CP_jobParameters_startAt_nearest" text="Point le plus proche"/>
     <text name="CP_jobParameters_startAt_first" text="Premier point"/>
     <text name="CP_jobParameters_startAt_last" text="Dernier point"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Mode Silo Bunker"/>
     <text name="CP_jobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
     <text name="CP_jobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
@@ -62,21 +62,21 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Sens du travail dans le silo:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Sens de travail:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="En avant"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="En arrière"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Attente d'un déchargement:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Attente d'un déchargement:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="Dans le silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="Sur l'emplacement d'attente"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
     <text name="CP_job_combineUnload" text="CP:Déchargement récolteuse"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_job_bunkerSilo" text="CP:Tassage silo"/>
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
@@ -96,7 +96,7 @@
     <text name="CP_vehicle_setting_subTitle_seeder" text="Paramètres semoir"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Paramètres outils multiples"/>
     <text name="CP_vehicle_setting_subTitle_speed" text="Vitesses"/>
-    <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de deboggage"/>
+    <text name="CP_vehicle_setting_subTitle_debug" text="Paramètres de debogage"/>
     <text name="CP_vehicle_setting_showCourse_title" text="Afficher la course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Affiche la course actuelle du véhicule."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Points départ/arrivé uniquement"/>
@@ -130,7 +130,7 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Décalage vertical de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Décalage vertical de l'outil."/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Vider si supérieur à :"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vider si supérieur à"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Permet de tenir compte d'un seuil de remplissage plus faible pour considéder le contenant comme rempli."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Arrêt si additif d'ensilage vide"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Le conducteur s'arrêtera si la réserve d'additif d'ensilage est vide."/>
@@ -138,14 +138,14 @@
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Changement de ligne symétrique."/>
     <text name="CP_vehicle_setting_convoyDistance_title" text="Distance entre les véhicules"/>
     <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance entre les véhicules d'un même convoi (avec la même course). Valeurs: 40 - 400"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Deboggage du vehicule"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le deboggage du vehicule."/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Debogage du vehicule"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Active/Desactive le debogage du vehicule."/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Travail dans les silos"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largeur de travail"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largeur de travail de la lame ou du rouleau. Valeur: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -158,7 +158,7 @@
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Marche arrière"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Vitesse max lors des marches arrières. Valeurs: 2 - 25"/>
     <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Vitesse max dans un silo. Valeurs: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -366,7 +366,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_drivingToSelfUnload" text="en route vers la benne"/>
     <text name="CP_infoTexts_outOfMoney" text="Plus d'argent disponible"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Attend que la pluie s'arrête pour continuer"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Attend d'être déchargé"/>
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>
@@ -669,6 +669,56 @@ Dans la catégorie avancée :
 1) Le curseur de déplacement multiple permet de bouger les points entre les deux points sélectionnés.
 2) Le cruseur d'insertion de courbe permet de créer des points qui forment une courbe entre deux points sélectionnés.
 3) Le curseur de propriétés du point permet de déclarer le point sélectionné comme un point de demi-tour (uniquement sur une course, pas dans un champ personnalisé).
+"/>
+    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
+It does not work with choppers.
+You can either use a regular trailer or an auger wagon to unload a combine.
+To empty trailers, you can use the Giants Helper or AutoDrive.
+Starting the unloader requires a few things:
+- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
+- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
+- You must be on the field or within 20 meters of the field to start the unloader.
+
+Unloaders have only a few settings you can tweak:
+- You can set the fill level at which the unloader will consider itself full. This
+is to avoid waiting for a combine to call with a trailer almost full.
+- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
+or AutoDrive.
+You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
+bottom of the list, or by activation of the wheel icon on the HUD.
+In the latter case, you have to choose the unload station after the wheel icon turns blue.
+
+Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Auger wagons are very simple to use.
+Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
+To start the unloader, place it again on the field or within 20 meters of the field.
+If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
+In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
+Is no trailer available, it will continue to unload the combine.
+"/>
+    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunkerGeneral_text" text="
+Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
+Compacting is possible without any special tool, with a roller, weight or just the vehicle.
+For distribution, there are special tools. (e.g. der Fliegel DUO).
+For wedge silos, a shield is used to push the chaff to the back of the silo.
+"/>
+    <text name="CP_help_page_bunkerBasic_text" text="
+If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
+you toggle through the starting point until the mode appears.
+Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
+the direction is selected automatically.
+Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
+The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
+before starting the actual work.
 "/>
     <!---->
     <!--Input bindings-->

@@ -86,6 +86,14 @@ You can define the following custom settings:
     are derived from the AI markers or from the work areas. If useVehicleSizeForMarkers is true, we simply place
     the front marker on the front of the vehicle, the back marker on the back if there is no AI marker or work area.
 
+- armMovingToolIx: number
+	Overrides the automatic selection of a moving tool for example for the shield controller of a snowcat.
+	Used to control the target height.
+
+- movingToolIx: number
+	Overrides the automatic selection of a moving tool for example for the shield controller of a snowcat.
+	Used to control the target tilt.
+
 - modName: Name of the .zip file (without '.zip')
     In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
     add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
@@ -319,6 +327,13 @@ You can define the following custom settings:
              workingWidth = "6"
     />
 	
+	<!--Others-->
+	<Vehicle name="leitwolf.xml"
+			 armMovingToolIx = "1"
+			 movingToolIx = "2"
+			 turnRadius = "6"
+	/>
+
     <!--[MODS]-->
 
     <!--Harvester-->

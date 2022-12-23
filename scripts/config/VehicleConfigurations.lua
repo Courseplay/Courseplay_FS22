@@ -44,6 +44,8 @@ VehicleConfigurations.attributes = {
     raiseLate = XMLValueType.BOOL,
     lowerEarly = XMLValueType.BOOL,
     useVehicleSizeForMarkers = XMLValueType.BOOL,
+    armMovingToolIx = XMLValueType.INT,
+    movingToolIx = XMLValueType.INT,
 }
 
 
