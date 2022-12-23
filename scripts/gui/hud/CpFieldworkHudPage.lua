@@ -115,7 +115,9 @@ function CpFieldWorkHudPageElement:updateContent(vehicle, status)
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
         elseif value == CpVehicleSettings.SHOW_COURSE_START_STOP then 
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.SEMI_ON_COLOR))
-        else 
+        elseif value == CpVehicleSettings.SHOW_COURSE_AROUND_CURRENT_WP then 
+            self.courseVisibilityBtn:setColor(unpack(CpBaseHud.HEADER_COLOR))
+        else
             self.courseVisibilityBtn:setColor(unpack(CpBaseHud.ON_COLOR))
         end
     else 

@@ -309,6 +309,10 @@
 			<Text language="de"><![CDATA[Nur Start/Ende]]></Text>
 			<Text language="en"><![CDATA[Start/stop only]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_showCourse_currentWaypoint">
+			<Text language="de"><![CDATA[Aktuelle Wegpunkte]]></Text>
+			<Text language="en"><![CDATA[Current waypoints]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_showCourse_all">
 			<Text language="de"><![CDATA[Alle Wegpunkte]]></Text>
 			<Text language="en"><![CDATA[All waypoints]]></Text>

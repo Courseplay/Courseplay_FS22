@@ -52,7 +52,12 @@ function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainin
         self.numberOfWaypoints = numberOfWaypoints
         self.remainingTimeText = remainingTimeText
         self:raiseDirtyFlag()
+        self:updateWaypointVisibility()
     end
+end
+
+function CpStatus:updateWaypointVisibility()
+    SpecializationUtil.raiseEvent(self.vehicle, "onCpFieldworkWaypointChanged", self.currentWaypointIx)
 end
 
 function CpStatus:getWaypointText()
@@ -89,5 +94,6 @@ function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
         self.currentWaypointIx = streamReadInt32(streamId)
         self.isActive = streamReadBool(streamId)
         self.remainingTimeText = streamReadString(streamId)
+        self:updateWaypointVisibility()
 	end
 end
