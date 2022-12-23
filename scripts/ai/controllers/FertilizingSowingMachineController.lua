@@ -16,7 +16,7 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	local specSpray = sowingMachine.spec_sprayer
 	local sprayerParams = specSpray.workAreaParameters
 	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
-	local capacity = 1
+	local capacity = 0
 	local sprayFillUnit = sowingMachine:getSprayerFillUnitIndex()
 	for fillType, _ in pairs(sowingMachine:getFillUnitSupportedFillTypes(sprayFillUnit)) do
 		local _, capacityOfFillType = FillLevelManager.getTotalFillLevelAndCapacityForFillType(rootVehicle, fillType)
