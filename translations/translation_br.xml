@@ -693,53 +693,53 @@ Atenção: Assim que você soltar o botão do mouse, os waypoints serão definid
  "/>
     <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+O modo de descarregar do Courseplay funciona com praticamente todas as colheitadeiras e as com reboques.
+Não funciona com choppers.
+Você pode usar uma carreta comum ou uma bazuca (aquela com cano) para descarregar uma colheitadeira.
+Para descarregar uma carreta, você pode usar o Giants Helper ou o AutoDrive.
+Iniciar o descarregador requer algumas coisas:
+- Você precisa ter uma única carreta ou bazuca. várias carretas não são suportadas.
+- Use o ícone de alvo no HUD para selecionar o campo que está sendo colhido. A carreta descarregará todos as colheitadeiras nquele campo.
+- Você deve estar no campo ou a 20 metros do campo para iniciar a carreta.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+As carretas têm algumas configurações que você pode ajustar:
+- Você pode definir o nível de enchimento no qual a carreta se considerará cheio. 
+evitar esperar a chamada de uma colheitadeira com a carreta quase cheia.
+- Você pode usar os deslocamentos no HUD para ajustar a posição da carreta sob o tubo da colheitadeira.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Se você usar uma carreta para descarregar, existem duas maneiras de transportar sua colheita para um silo ou para um ponto de venda: o ajudante da Giants
+ou AutoDrive.
+Você pode usar o menu AI e criar um trabalho, ativando a função de ajudante do Giants e descarregando no alvo 
+na parte inferior da lista ou pela ativação do ícone de roda no HUD.
+Neste último caso, você deve escolher a estação de descarga depois que o ícone da roda ficar azul.
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+Esvaziar uma carreta com o AutoDrive funciona da mesma forma que usar uma carreta autocarregável, confira os Tutoriais do AutoDrive na Internet.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+Bazuca (carreta com cano para descarregar numa carreta comun) é muito simples de usar.
+Assim como nas carretas, você usa o ícone de alvo para escolher o campo onde deseja descarregar uma colheitadeira.
+Para iniciar a bazuca, coloque-o novamente no campo ou a 20 metros do campo.
+Se a bazuca estiver cheia, ela procurará automaticamente uma carreta comum no campo ou próximo a ele para descarregar.
+Caso a carreta esteja cheia e a bazuca ainda não esteja vazia, ela irá procurar outra carreta para descarregar.
+Se não houver carreta disponível, ela continuará a descarregar a colheitadeira até ficar cheia.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay é capaz de compactar ou distribuir palha em um silo ou silo bunker e empurrar a palha.
+A compactação é possível sem qualquer ferramenta especial, com rolo, peso ou apenas o veículo.
+Para distribuição ou nivelar, existem ferramentas especiais. (por exemplo, Fliegel DUO).
+Para silos bunker, uma pá niveladora é usada para empurrar o naterial para a parte de trás do silo.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Se o veículo tiver um distribuidor ou pá niveladora acoplado, o modo Silo é pré-selecionado. Com apenas um peso ou um rolo preso
+você alterna entre o ponto inicial até que o modo apareça.
+Além da largura de trabalho, você também pode selecionar a direção em que o motorista deve entrar no silo. Com uma pá niveladora,
+a direção é selecionada automaticamente.
+Use o ícone de alvo no HUD para selecionar o silo no AI Map. Será mostrado com linhas azuis e ficará branco se for selecionado.
+A posição de estacionamento é definida com o marcador &quot; posição de estacionamento&quot; que também pode ser usado para dirigir até lá com o ajudante do Giants
+antes de iniciar o trabalho real.
 "/>
     <!---->
     <!--Input bindings-->
