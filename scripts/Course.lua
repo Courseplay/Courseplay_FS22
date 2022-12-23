@@ -1000,9 +1000,10 @@ end
 ---@param vehicle table the course will start at the root node of the vehicle
 ---@param length number optional length of the course in meters, default is 100 meters
 ---@param xOffset number optional side offset for the course
-function Course.createStraightForwardCourse(vehicle, length, xOffset)
+---@param lastNode number optional force direction node
+function Course.createStraightForwardCourse(vehicle, length, xOffset, directionNode)
 	local l = length or 100
-	return Course.createFromNode(vehicle, vehicle.rootNode, xOffset or 0, 0, l, 5, false)
+	return Course.createFromNode(vehicle, directionNode or vehicle.rootNode, xOffset or 0, 0, l, 5, false)
 end
 
 --- Create a straight, reverse course for the vehicle.
@@ -1010,10 +1011,11 @@ end
 --- at the vehicle's root node if there are not implements attached.
 ---@param length number optional length of the course in meters, default is 100 meters
 ---@param xOffset number optional side offset for the course
-function Course.createStraightReverseCourse(vehicle, length, xOffset)
+---@param lastNode number optional force last node
+function Course.createStraightReverseCourse(vehicle, length, xOffset, lastNode)
 	local lastTrailer = AIUtil.getLastAttachedImplement(vehicle)
 	local l = length or 100
-	return Course.createFromNode(vehicle, lastTrailer.rootNode or vehicle.rootNode, xOffset or 0, 0, -l, -5, true)
+	return Course.createFromNode(vehicle, lastNode or lastTrailer.rootNode or vehicle.rootNode, xOffset or 0, 0, -l, -5, true)
 end
 
 --- Move a course by dx/dz world coordinates

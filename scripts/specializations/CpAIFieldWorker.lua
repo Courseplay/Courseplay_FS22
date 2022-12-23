@@ -88,11 +88,8 @@ function CpAIFieldWorker:onLoad(savegame)
     --- Theses jobs are used for external mod, for example AutoDrive.
     spec.cpJobStartAtFirstWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtFirstWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_FIRST_POINT)
-    spec.cpJobStartAtFirstWp:setVehicle(self, true)
     spec.cpJobStartAtLastWp = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK_CP)
     spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
-    spec.cpJobStartAtLastWp:setVehicle(self, true)
-    
 end
 
 function CpAIFieldWorker:onLoadFinished(savegame)
@@ -236,14 +233,12 @@ end
 function CpAIFieldWorker:onCpADStartedByPlayer()
     local spec = self.spec_cpAIFieldWorker
     --- Applies the lane offset set in the hud, so ad can start with the correct one.
-    spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:refresh()
     spec.cpJobStartAtLastWp:getCpJobParameters().laneOffset:setValue(self:getCpLaneOffsetSetting():getValue())
-    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
 end
 
 function CpAIFieldWorker:onCpADRestarted()
     local spec = self.spec_cpAIFieldWorker
-    spec.cpJobStartAtLastWp:getCpJobParameters().startAt:setValue(CpJobParameters.START_AT_LAST_POINT)
+ 
 end
 
 --- Event listener called, when an implement is full.

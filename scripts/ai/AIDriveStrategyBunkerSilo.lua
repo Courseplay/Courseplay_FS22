@@ -304,7 +304,7 @@ function AIDriveStrategyBunkerSilo:drive()
             self:startDrivingOutOfSilo()
         end
 
-        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self.endReachedOffset)
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndMarkerOffset())
         if isEndReached then 
             self:debug("End is reached.")
             self:startDrivingOutOfSilo()
@@ -371,8 +371,13 @@ function AIDriveStrategyBunkerSilo:getTemporaryBackCourseLength()
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
-    return self:isDriveDirectionReverse() and Markers.getBackMarkerNode(self.vehicle) or
-            Markers.getFrontMarkerNode(self.vehicle)
+    local frontMarker, backMarker = Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
+    return self:isDriveDirectionReverse() and backMarker or frontMarker
+end
+
+function AIDriveStrategyBunkerSilo:getEndMarkerOffset()
+    --- While reverse driven, then the offset needs to be inverted, as end marker is rotated wrong.
+    return AIUtil.isReverseDriving(self.vehicle) and -self.endReachedOffset or self.endReachedOffset
 end
 
 --- Gets the work width.
@@ -461,9 +466,9 @@ function AIDriveStrategyBunkerSilo:startDrivingTemporaryOutOfSilo()
     self:rememberCourse(self.course, 1)
     local driveDirection = self:isDriveDirectionReverse()
     if driveDirection then
-		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
+		self.course = Course.createStraightForwardCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle:getAIDirectionNode())
 	else 
-        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0)
+        self.course = Course.createStraightReverseCourse(self.vehicle, self:getTemporaryBackCourseLength(), 0, self.vehicle:getAIDirectionNode())
 	end
     self:startCourse(self.course, 1)
     self.state = self.states.DRIVING_TEMPORARY_OUT_OF_SILO

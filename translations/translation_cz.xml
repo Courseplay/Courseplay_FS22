@@ -26,15 +26,15 @@
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Umístění pole:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Umístění jámy:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Parkovací pozice:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Začátek trasy:"/>
     <text name="CP_jobParameters_startAt_title" text="Začátek trasy:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Kde začít polní práce"/>
     <text name="CP_jobParameters_startAt_nearest" text="Na nejbližším bodě"/>
     <text name="CP_jobParameters_startAt_first" text="Na prvním bodě"/>
     <text name="CP_jobParameters_startAt_last" text="Na posledním bodě"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Mód pro silážní jámy"/>
     <text name="CP_jobParameters_startAt_unload" text="Vykládání"/>
     <text name="CP_jobParameters_startAt_bales" text="Ovíjení/sběr balíků"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Odsazení jízdního pruhu:"/>
@@ -68,15 +68,15 @@
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Vzad"/>
     <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Čekání na vykladač:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Čekání na vykladač:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="v silážní jámě"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="na parkovací pozici"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="V silážní jámě"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="Na parkovací pozici"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Polní práce"/>
     <text name="CP_job_baleCollect" text="CP: Ovíjení/sběr balíků"/>
     <text name="CP_job_combineUnload" text="CP: Vykládka kombajnu"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_job_bunkerSilo" text="CP: Práce v silážní jámě"/>
     <text name="CP_ai_page_generate_course" text="CP: Vypočítat polní práce"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Zapnout/vypnout generátor tras"/>
     <!---->
@@ -328,28 +328,28 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <!---->
     <text name="CP_editor_course_title" text="Editor tras"/>
     <text name="CP_editor_delete_title" text="Vymazat body"/>
-    <text name="CP_editor_delete_primary_text" text="primární"/>
-    <text name="CP_editor_delete_secondary_text" text="sekundární"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_primary_text" text="Primární"/>
+    <text name="CP_editor_delete_secondary_text" text="Sekundární"/>
+    <text name="CP_editor_delete_tertiary_text" text="Smaže všechny trasové body až do posledního trasového bodu."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Jste si jisti, že všechny body až do posledního by měly být smazány?"/>
     <text name="CP_editor_delete_err" text="Příliš málo bodů na trase"/>
     <text name="CP_editor_course_basic_title" text="Základní"/>
     <text name="CP_editor_course_basic_move_title" text="Posunout bod"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primární"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="Primární"/>
     <text name="CP_editor_course_basic_insert_title" text="Vložit bod"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primární"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="sekundární"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="Primární"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="Sekundární"/>
     <text name="CP_editor_course_basic_insert_err" text="Vkládání mezi bod otáčení není povoleno."/>
     <text name="CP_editor_course_advanced_title" text="Pokročilé"/>
     <text name="CP_editor_course_advanced_changeTurn_title" text="Označí trasový bod jako obrátku."/>
     <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Přidat nebo odstranit bod obratu. (Vybraný trasový bod bude začátek obrátky.)"/>
     <text name="CP_editor_course_advanced_changeTurn_err" text="Příliš blízko k dalšímu bodu obratu."/>
     <text name="CP_editor_course_advanced_moveExtended_title" text="Přesunout více trasových bodů"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primární"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="sekundární"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Primární"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Sekundární"/>
     <text name="CP_editor_course_advanced_curveInsert_title" text="Vložit trasové body jako křivku"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primární"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="sekundární"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Primární"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Sekundární"/>
     <text name="CP_editor_course_advanced_curveInsert_err" text="Výběr bodu obrat není povolen."/>
     <!---->
     <!--Info texts-->
@@ -658,11 +658,9 @@ Vzhledem k tomu, že postřikovač může pracovat na levé i pravé révě sou�
     <text name="CP_help_page_editorGeneral_text" text="
 Editor tras lze použít k úpravě tras a vlastních polí.
 Po zavření editoru budou načtené trasy automaticky uloženy/přepsány.
-
 1) Úpravu vlastního pole lze provést pomocí vybraného pole na stránce nabídky ai.
 2) Editaci trasy lze provést ve správci trasy.
     Zde můžete upravit uložený kurz, ale ujistěte se, že jste vymazali aktuálně načtený kurz z vozidla.
-
 Úpravy by samozřejmě měly být prováděny pouze tehdy, když generátor tras nemůže vytvořit dostatečně dobrý kurz.
 Nesprávná úprava může způsobit problémy ovladači cp, protože trasové body mají skryté atributy.
 "/>
@@ -670,7 +668,6 @@ Nesprávná úprava může způsobit problémy ovladači cp, protože trasové b
 V základní kategorii jsou:
 1) Pohyblivý štětec přesune visící navigační bod do polohy štětce.
 2) Vkládací štětec může vkládat trasové body před nebo za vybraný trasový bod.
-
 Mazání trasových bodů lze provést červeným tlačítkem mazání.
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
@@ -678,6 +675,53 @@ Pod pokročilou kategorií jsou:
 1) Štětec pro přesun více trasových bodů mezi vybrané trasové body.
 2) Štětec pro vložení křivky trasových bodů mezi vybrané trasové body.
 3) Štětec pro nastavení atributu otočení trasového bodu (pouze s kurzem a ne vlastním polem).
+"/>
+    <text name="CP_help_page_unloader_title" text="Odvoz od kombajnu"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Režim vykládky Courseplay funguje s kombajny a taženými kombajny řízenými Courseplay.
+Nefunguje se řezačkami.
+K vyložení kombajnu můžete použít buď běžný přívěs, nebo překládací vůz.
+K vyprázdnění přívěsů můžete použít Giants Helper nebo AutoDrive.
+Spuštění odvozce vyžaduje několik věcí:
+- Musíte mít připojený jeden přívěs nebo překládací vůz. Více vleček není podporováno.
+- Pomocí ikony cíle na HUD vyberte pole, které se sklízí. Odvozce vyloží všechny harvestory řízené Courseplay pracující na daném poli.
+- Abyste mohli spustit odvozce, musíte být na poli nebo do 20 metrů od pole.
+Odvozci mají pouze několik nastavení, která můžete vyladit:
+- Můžete nastavit úroveň naplnění, při které se odvozce bude považovat za plný. Tímto 
+se vyhnete čekání na zavolání kombajnu s téměř plným přívěsem.
+- Pomocí offsetů v HUD můžete upravit polohu vykladače pod výsypovou rourou harvestoru.
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Pokud k vykládce používáte přívěs, existují dva způsoby, jak dopravit sklizeň do sila nebo do prodejního místa: pomocník Giants
+nebo AutoDrive.
+Můžete buď použít nabídku AI a vytvořit úlohu, poté aktivací funkce Giants helper a uvolnit cíl na
+v dolní části seznamu nebo aktivací ikony kolečka na HUD.
+V druhém případě musíte vybrat vykládací stanici poté, co se ikona kolečka změní na modrou.
+Vyprázdnění přívěsu pomocí AutoDrive funguje stejně jako použití nakládacího vozu, podívejte se na AutoDrive Tutorials na internetu.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Použití šnekových vozů je velmi jednoduché.
+Stejně jako u přívěsů si pomocí ikony cíle vyberete pole, na kterém chcete vyložit kombajn nebo kombajn.
+Chcete-li spustit vykladač, umístěte jej znovu na pole nebo do 20 metrů od pole.
+Pokud je šnekový vůz plný, automaticky hledá přívěs na poli nebo v jeho blízkosti, aby se do něj vyložil.
+V případě, že je přívěs plný a šnekový vůz stále není prázdný, bude hledat jiný přívěs k vyložení.
+Není k dispozici žádný přívěs, bude pokračovat ve vykládání kombajnu.
+"/>
+    <text name="CP_help_page_bunker_title" text="Pacovník v silážní jámě"/>
+    <text name="CP_help_page_bunkerGeneral_text" text="
+Courseplay je schopen dusat nebo nahrnovat řezanku v silážní jámě.
+Zhutňování je možné bez speciálního nářadí, s válcem, závažím nebo jen vozidlem.
+Pro tyto práce existují speciální nástroje. (např. der Fliegl DUO).
+V uzavřených silážních jámách se používá radlice k nahrnování řezanky na zadní stranu sila.
+"/>
+    <text name="CP_help_page_bunkerBasic_text" text="
+Pokud má vozidlo připevněnu radlici, je předvolen režim Silo. S připojeným závažím nebo váleci
+přepínáte počáteční bod, dokud se neobjeví režim.
+Kromě pracovní šířky můžete také zvolit směr, kterým má řidič zajíždět do sila. S připevněnou radlicí,
+se směr volí automaticky.
+Pomocí ikony cíle na HUD vyberte silo na mapě AI. Pokud se zobrazí s modrými čarami a rozsvítí se bíle, je vybráno.
+Parkovací poloha se nastavuje pomocí značky "parkovací poloha"; se kterou lze také jezdit s pomocníkem Giants
+před zahájením skutečné práce.
 "/>
     <!---->
     <!--Input bindings-->

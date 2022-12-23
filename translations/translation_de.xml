@@ -34,7 +34,7 @@
     <text name="CP_jobParameters_startAt_nearest" text="Nahester Wegpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Erster Wegpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Letzter Wegpunkt"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunkersilo Modus"/>
     <text name="CP_jobParameters_startAt_unload" text="Entlade Drescher"/>
     <text name="CP_jobParameters_startAt_bales" text="Sammel/Wickel Ballen"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bahn:"/>
@@ -693,6 +693,53 @@ Um die Markierung aufzuheben, betätige einfach die rechte Maustaste.
 3) Ein Pinsel um eine Kurve von Wegpunkten einzufügen.
 Wie auch beim Bewegen mehrerer Wegpunkte, markierst du zunächst 2 Wegpunkte, anschließend hältst du die linke Maustaste gedrückt und bewegst die Maus.
 Achtung: Sobald du loslässt, werden die Wegpunkte abgesetzt, dies kann nicht rückgängig gemacht werden! (Wegpunkte lassen sich natürlich löschen.)
+"/>
+    <text name="CP_help_page_unloader_title" text="Ernter Abfahrer"/>
+    <text name="CP_help_page_unloaderGeneral_text" text="
+Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von Courseplay gesteuert werden.
+Häcksler funktionieren nicht.
+Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
+Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
+Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
+- Es muss ein Überladewagen oder maximal ein Anhänger angekuppelt sein.
+- Mit dem Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay Drescher auf dem Feld werden dann abgetankt.
+- Gestartet werden kann der Abfahrer wenn er direkt auf dem Feld ist oder sehr nahe zur Feldgrenze steht.
+
+Es gibt nur wenige Einstellungen zur Feineinstellung:
+- Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
+- Offsets im HUD, falls das Rohr des Deschers den Abfahrer zum überladen nicht trifft.
+
+"/>
+    <text name="CP_help_page_unloaderTrailer_text" text="
+Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
+- Giants Helfer:
+  1) Starten über das AI Menü mit der aktiven Option Giants Helfer nutzen oder im HUD starten mit aktivem Lenkrad Knopf.
+  2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktiven Lenkrad sichtbar.
+- AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
+"/>
+    <text name="CP_help_page_unloaderAuger_text" text="
+Überladewagen sind relativ einfach zu bedienen.
+Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
+Zum Starten stellt man den Abfahrer auf das Feld oder nahe der Feldgrenze.
+Der Überladewagen sucht sich zum Abladen ganz automatisch einen Abfahrer am Feldrand aus zum Überladen.
+Wenn beim Abladen der Anhänger voll wird, dann wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
+Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überladewagen voll ist.
+"/>
+    <text name="CP_help_page_bunker_title" text="Bunker Silo Arbeiter"/>
+    <text name="CP_help_page_bunkerGeneral_text" text="
+Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo bis zum Ende zu schieben.
+Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht, oder nur dem Fahrzeug.
+Zum Verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO aus dem Modhub).
+Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Silo zu schieben.
+"/>
+    <text name="CP_help_page_bunkerBasic_text" text="
+Für einen Verteiler oder Schild gibt es nur den Bunker Silo Modus.
+Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
+ - Ebenfalls muss die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
+Mit dem Zielknopf im HUD, wird auf der AI Karte der Bunker ausgewählt. 
+Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
+Die Parkposition wird mit dem Marker &quot;Parkposition&quot; gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
+Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
 "/>
     <!---->
     <!--Input bindings-->

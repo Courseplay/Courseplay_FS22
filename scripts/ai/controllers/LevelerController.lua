@@ -23,11 +23,20 @@ LevelerController = CpObject(ImplementController)
 function LevelerController:init(vehicle, leveler)
     ImplementController.init(self, vehicle, leveler)
     self.levelerSpec = leveler.spec_leveler
+	self.levelerNode = ImplementUtil.getLevelerNode(leveler).node
+	self.attacherJointControlSpec = leveler.spec_attacherJointControl
 	self.shieldHeightOffset = 0
+	if self.attacherJointControlSpec == nil or self.attacherJointControlSpec.jointDesc == nil then 
+		self:setupCylinderedHeight()
+	end
 end
 
 function LevelerController:update(dt)
-	self:updateHeight(dt)	
+	if self.attacherJointControlSpec and self.attacherJointControlSpec.jointDesc ~= nil then 
+		self:updateHeight(dt)	
+	else 
+		self:updateCylinderedHeight(dt)
+	end
 end
 
 function LevelerController:getDriveData()
@@ -35,15 +44,111 @@ function LevelerController:getDriveData()
     return nil, nil, nil, maxSpeed
 end
 
+--- Used when a wheel loader or a snowcat is used.
+--- Finds the correct cylindered axis.
+function LevelerController:setupCylinderedHeight()
+	self.levelerToolIx = nil
+	self.armToolIx = nil
+	self.levelerTool = nil
+	self.armTool = nil
+	self.levelerToolVehicle = nil
+	self.armToolVehicle = nil
+	for _, vehicle in ipairs(self.vehicle:getChildVehicles()) do
+		if vehicle.spec_cylindered then
+			local armMovingToolIx = g_vehicleConfigurations:get(vehicle, 'armMovingToolIx')
+			local movingToolIx = g_vehicleConfigurations:get(vehicle, 'movingToolIx')
+			if armMovingToolIx ~= nil and movingToolIx ~= nil then 
+				self:debug("Selected moving tools form the vehicle configurations.")
+				self.armToolIx = armMovingToolIx
+				self.armTool = vehicle.spec_cylindered.movingTools[armMovingToolIx]
+				self.armToolVehicle = vehicle
+				self.levelerToolIx = movingToolIx
+				self.levelerTool = vehicle.spec_cylindered.movingTools[movingToolIx]
+				self.levelerToolVehicle = vehicle
+				return
+			end
+			for i, tool in pairs(vehicle.spec_cylindered.movingTools) do
+				if tool.controlGroupIndex ~= nil then 
+					if tool.axis == "AXIS_FRONTLOADER_ARM" then 
+						self.armToolIx = i
+						self.armTool = tool
+						self.armToolVehicle = vehicle
+					elseif tool.axis == "AXIS_FRONTLOADER_TOOL" then 
+						self.levelerToolIx = i
+						self.levelerTool = tool
+						self.levelerToolVehicle = vehicle
+					end
+				end
+			end
+		end
+	end
+end
+
+--- Used when a wheel loader or a snowcat is used.
+function LevelerController:updateCylinderedHeight(dt)
+	local x, y, z = getWorldTranslation(self.levelerNode)
+	local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, y, z)
+	local nx, ny, nz = localToWorld(self.levelerNode, 0, 0, 1)
+	local nTerrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, nx, ny, nz)
+	local targetHeight = self:getTargetShieldHeight()
+
+	if self.driveStrategy:isLevelerLoweringAllowed() then 
+		self:updateShieldHeightOffset()
+		self:setCylinderedLevelerRotation(dt, 30 * self.shieldHeightOffset)
+		self:setCylinderedArmHeight(y, terrainHeight, targetHeight, targetHeight + 0.1)
+	else 
+		self:setCylinderedLevelerRotation(dt, 45)
+		self:setCylinderedArmHeight(y, terrainHeight, 3, 4)
+	end
+end
+
+
+--- Tilts the shield relative to a given angle.
+function LevelerController:setCylinderedLevelerRotation(dt, offsetDeg)
+	local curRot = {}
+	curRot[1], curRot[2], curRot[3] = getRotation(self.levelerTool.node)
+	local angle = curRot[self.levelerTool.rotationAxis]
+	local dist = calcDistanceFrom(self.levelerTool.node, self.levelerNode)
+	local _, dy, _ = localToWorld(self.levelerTool.node, 0, 0, 0)
+	local dx, _, dz = localToWorld(self.levelerNode, 0, 0, 0)
+	local _, ny, _ = worldToLocal(self.levelerTool.node, dx, dy, dz)
+	self:debug("dist: %.2f, ny: %.2f", dist, ny)
+	local targetRot = math.asin(ny/dist) + math.rad(offsetDeg)
+	if ny > 0 then 
+		targetRot = -math.asin(-ny/dist) + math.rad(offsetDeg)
+	end
+	self:debug("curRot: %.2f, targetRot: %.2f, offset: %.2f, rotMin: %.2f, rotMax: %.2f", 
+				angle, targetRot, math.rad(offsetDeg), self.levelerTool.rotMin, self.levelerTool.rotMax)
+
+	return ImplementUtil.moveMovingToolToRotation(self.levelerToolVehicle, self.levelerTool, dt,
+										 MathUtil.clamp(angle - targetRot, self.levelerTool.rotMin, self.levelerTool.rotMax))
+
+end
+
+--- Moves the arm position to achieve a given height from the ground.
+function LevelerController:setCylinderedArmHeight(currentHeight, terrainHeight, min, max)
+	local dir = -MathUtil.sign(currentHeight-terrainHeight - min)
+	local diff = math.abs(currentHeight-terrainHeight - min)
+	local isDirty = false
+	if max and currentHeight-terrainHeight > max then 
+		isDirty = true
+	elseif min and currentHeight-terrainHeight < min then
+		isDirty = true
+	else 
+		Cylindered.actionEventInput(self.armToolVehicle, "", 0, self.armToolIx, true)
+	end
+	if isDirty then 
+		Cylindered.actionEventInput(self.armToolVehicle, "", dir * diff, self.armToolIx, true)
+	end
+	return isDirty
+end
+
 --- Updates leveler height and rotation.
 function LevelerController:updateHeight(dt)
-	local shield = self.implement
-	local spec = shield.spec_attacherJointControl
+	local spec = self.attacherJointControlSpec
 	local jointDesc = spec.jointDesc
-	local objectAttacherJoint = shield.spec_attachable.attacherJoint
 	if self.driveStrategy:isLevelerLoweringAllowed() then 
-		local levelerNode = shield.spec_leveler.nodes[1].node
-		local x, y, z = getWorldTranslation(levelerNode)
+		local x, y, z = getWorldTranslation(self.levelerNode)
 		local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, y, z)
 		---target height of leveling, fill up is 0 by default
 		local targetHeight = self:getTargetShieldHeight()
@@ -119,8 +224,8 @@ end
 function LevelerController:updateShieldHeightOffset()
 	--- A small reduction to the offset, as the shield should be lifted after a only a bit silage.
 	local smallOffsetReduction = 0.3
-	local fillLevelPercentage = self:getShieldFillLevelPercentage()
-	self.shieldHeightOffset = MathUtil.clamp(fillLevelPercentage-smallOffsetReduction, 0, 1)
+
+	self.shieldHeightOffset = MathUtil.clamp(-self.levelerSpec.lastForce/self.levelerSpec.maxForce - smallOffsetReduction, 0, 1)
 end
 
 --- Is the shield full ?
