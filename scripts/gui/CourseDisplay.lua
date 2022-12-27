@@ -219,11 +219,11 @@ function SimpleCourseDisplay:updateWaypoint(i)
 	self.signs[i]:translate(wp.x, wp.z)
 	--- Changes the sign colors.
 	if self.course:isTurnStartAtIx(i) then
-		self.signs[i]:setColor(self.COLORS.TURN_START)
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_START)
 	elseif self.course:isTurnEndAtIx(i) then
-		self.signs[i]:setColor(self.COLORS.TURN_END)
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.TURN_END)
 	else
-		self.signs[i]:setColor(self.COLORS.NORMAL)
+		self.signs[i]:setColor(SimpleCourseDisplay.COLORS.NORMAL)
 	end
 end
 
