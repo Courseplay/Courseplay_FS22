@@ -42,6 +42,8 @@ function CustomFieldManager:load()
     for i, entry in pairs(entries) do
         table.insert(self.fields, CustomField.createFromXmlFile(entry))
     end
+    --- Adds reference to the custom fields, for extern mod support.
+	g_fieldManager.cpCustomFields = self.fields
 end
 
 --- New fields are created with a prefix and the next available number.

@@ -246,8 +246,6 @@ function Courseplay:load()
 	self.customFieldDir = self.baseDir .. "CustomFields"
 	createFolder(self.customFieldDir)
 	g_customFieldManager = CustomFieldManager(FileSystem(self.customFieldDir, g_currentMission.missionInfo.mapId))
-	--- Adds reference to the custom fields, for extern mod support.
-	g_fieldManager.cpCustomFields = g_customFieldManager.fields
 	g_vehicleConfigurations:loadFromXml()
 	g_assignedCoursesManager:registerXmlSchema()
 
