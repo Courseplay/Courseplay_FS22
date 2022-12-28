@@ -873,14 +873,17 @@ function CombinePocketHeadlandTurn:generatePocketHeadlandTurn(turnContext)
 	local offset = math.min(self.turningRadius + turnContext.frontMarkerDistance, self.workWidth)
 	local corner = turnContext:createCorner(self.vehicle, self.turningRadius)
 	local d = -self.workWidth / 2 + turnContext.frontMarkerDistance
-	local wp = corner:getPointAtDistanceFromCornerStart(d + 2)
-	table.insert(cornerWaypoints, wp)
-	-- drive forward up to the field edge
-	wp = corner:getPointAtDistanceFromCornerStart(d)
-	table.insert(cornerWaypoints, wp)
-	-- drive back to prepare for making a pocket
-	-- reverse back to set up for the headland after the corner
 	local reverseDistance = 2 * offset
+	local wp
+	if reverseDistance / 2 > d + 2 then
+		-- drive forward only if we aren't there yet
+		wp = corner:getPointAtDistanceFromCornerStart(d + 2)
+		table.insert(cornerWaypoints, wp)
+		-- drive forward up to the field edge
+		wp = corner:getPointAtDistanceFromCornerStart(d)
+		table.insert(cornerWaypoints, wp)
+	end
+	-- drive back to prepare for making a pocket
 	wp = corner:getPointAtDistanceFromCornerStart(reverseDistance / 2)
 	wp.rev = true
 	table.insert(cornerWaypoints, wp)
