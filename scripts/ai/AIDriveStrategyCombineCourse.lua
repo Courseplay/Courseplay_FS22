@@ -1342,7 +1342,7 @@ function AIDriveStrategyCombineCourse:handleChopperPipe()
     local trailer = self.pipeController:getClosestObject()
     local dischargeNode = self.pipeController:getDischargeNode()
     local targetObject = self.pipeController:getDischargeObject()
-    self:debug('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
+    self:debugSparse('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
     if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
         self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
                 tostring(dischargeNode), tostring(targetObject), tostring(trailer))
