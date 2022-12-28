@@ -105,7 +105,7 @@ local allowedJointTypes = {}
 ---@param implement table implement object
 function ImplementUtil.isWheeledImplement(implement)
     if #allowedJointTypes == 0 then
-        local jointTypeList = { "implement", "trailer", "trailerLow", "semitrailer" }
+        local jointTypeList = { "implement", "trailer", "trailerLow", "semitrailer", "trailerSaddled" }
         for _, jointType in ipairs(jointTypeList) do
             local index = AttacherJoints.jointTypeNameToInt[jointType]
             if index then
