@@ -661,7 +661,7 @@ Editor tras lze použít k úpravě tras a vlastních polí.
 Po zavření editoru budou načtené trasy automaticky uloženy/přepsány.
 1) Úpravu vlastního pole lze provést pomocí vybraného pole na stránce nabídky ai.
 2) Editaci trasy lze provést ve správci trasy.
-    Zde můžete upravit uložený kurz, ale ujistěte se, že jste vymazali aktuálně načtený kurz z vozidla.
+Zde můžete upravit uložený kurz, ale ujistěte se, že jste vymazali aktuálně načtený kurz z vozidla.
 Úpravy by samozřejmě měly být prováděny pouze tehdy, když generátor tras nemůže vytvořit dostatečně dobrý kurz.
 Nesprávná úprava může způsobit problémy ovladači cp, protože trasové body mají skryté atributy.
 "/>
@@ -721,7 +721,7 @@ přepínáte počáteční bod, dokud se neobjeví režim.
 Kromě pracovní šířky můžete také zvolit směr, kterým má řidič zajíždět do sila. S připevněnou radlicí,
 se směr volí automaticky.
 Pomocí ikony cíle na HUD vyberte silo na mapě AI. Pokud se zobrazí s modrými čarami a rozsvítí se bíle, je vybráno.
-Parkovací poloha se nastavuje pomocí značky "parkovací poloha"; se kterou lze také jezdit s pomocníkem Giants
+Parkovací poloha se nastavuje pomocí značky &quot;parkovací poloha&quot;; se kterou lze také jezdit s pomocníkem Giants
 před zahájením skutečné práce.
 "/>
     <!---->
