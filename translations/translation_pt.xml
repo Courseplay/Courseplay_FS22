@@ -274,10 +274,10 @@
     <text name="CP_global_setting_showActionEventHelp_title" text="Alerta de eventos"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mostra o texto de ajuda com um alerta."/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Configurações do encontrar caminhos"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_title" text="Ângulo diferente para o objectivo"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoal_tooltip" text="Diferença máxima autorizada do ângulo até ao objectivo, valores mais altos indica que vai mais rápido, mas com menos exacto"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_title" text="Factor de tolerância"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactor_tooltip" text="Factor para diminuir a precisão de encontrar o caminho com iterações mal sucedidas, valores maiores são mais rápidos"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ângulo diferente para o objectivo"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferença máxima autorizada do ângulo até ao objectivo, valores mais altos indica que vai mais rápido, mas com menos exacto"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Factor de tolerância"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor para diminuir a precisão de encontrar o caminho com iterações mal sucedidas, valores maiores são mais rápidos"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Mostrar todas as rotas activas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostra todos as rotas activas no menu do mapa do jogo."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostra as rotas no minimapa"/>
