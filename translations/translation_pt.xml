@@ -330,7 +330,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_editor_delete_title" text="Apagar pontos"/>
     <text name="CP_editor_delete_primary_text" text="primário"/>
     <text name="CP_editor_delete_secondary_text" text="secundário"/>
-	<text name="CP_editor_delete_tertiary_text" text="Apaga os pontos até ao último."/>
+    <text name="CP_editor_delete_tertiary_text" text="Apaga os pontos até ao último."/>
     <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Tem a certeza, que todos os pontos até ao último podem ser apagados?"/>
     <text name="CP_editor_delete_err" text="Sobram poucos pontos."/>
     <text name="CP_editor_course_basic_title" text="Geral"/>
@@ -366,7 +366,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_infoTexts_drivingToSelfUnload" text="A dirigir para o reboque"/>
     <text name="CP_infoTexts_outOfMoney" text="Acabou-se o dinheiro"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="À espera que acabe de chover"/>
-	<text name="CP_infoTexts_waitForUnloader" text="À espea para descarregar"/>
+    <text name="CP_infoTexts_waitForUnloader" text="À espea para descarregar"/>
     <text name="CP_infoTexts_errorStopped" text="Está parado, saiu da rota"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Não encontra a rota"/>
@@ -737,7 +737,7 @@ before starting the actual work.
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Abrir mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Iniciar/parar Condutor"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Altera Ponto de Ínicio"/>
-	<text name="input_CP_CLEAR_COURSE" text="CP: Limpa actual rotas"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Limpa actual rotas"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Mostra as rotas actuais do veículo"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Ativar/desativar o cursor do rato"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Abrir/fechar hud"/>
