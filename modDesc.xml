@@ -31,6 +31,18 @@ For more information, help, and report issues please visit <a href="https://gith
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
+Changelog 7.2.0.0
+- bunker silo mode and combine unloader mode added.
+- remaining time is now displayed on the HUD for fieldwork.
+- support for <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a>.
+- option to show the course on the mini map.
+- user setting to change between feet and meters.
+- simple collision avoidance for unloaders to not crash into the combine.
+- option (keybind) for course editor to delete all waypoints until the end.
+- new course visibility option (blue eye icon) to show the 5 last and 20 next waypoints.
+- help menu sections for unloading combine and compacting/pushing.
+- countless fixes and improvements.
+
 Changelog 7.1.0.3:
 - Updated mod description
 - Added missing translation files, so every language supported by the game can be edited now.
@@ -71,6 +83,18 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge in
 Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
+
+Changelog 7.2.0.0
+- Bunker Silo Modus und Drescher Abfahrer Modus hinzugefügt
+- Verbleibende Zeit für Feldarbeit wird jetzt im Hud angezeigt
+- Unterstützung für <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a> hinzugefügt.
+- Option den Kurs auf der minimap an zu zeigen hinzugefügt.
+- Benutzer Einstellung um zwischen Meter und Fuss zu wechseln hinzugefügt.
+- Einfache kolisions Vermeidung für Abfahrer um nicht im den Drescher zu fahren.
+- option (keybind) for course editor to delete all waypoints until the end
+- new course visibility option (blue eye icon) to show the 5 last and 20 next waypoints
+- help menu sections for unloading combine and compacting/pushing
+- countless fixes and improvements
 
 Changelog 7.1.0.3:
 - Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
