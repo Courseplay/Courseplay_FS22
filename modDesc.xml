@@ -32,15 +32,16 @@ For more information, help, and report issues please visit <a href="https://gith
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.2.0.0
-- bunker silo mode and combine unloader mode added.
-- remaining time is now displayed on the HUD for fieldwork.
+- added bunker silo mode and combine unloader mode.
+- the remaining time for fieldwork is now displayed on the HUD.
 - support for <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a>.
-- option to show the course on the mini map.
+- option to show the current course on the mini map.
 - user setting to change between feet and meters.
 - simple collision avoidance for unloaders to not crash into the combine.
-- option (keybind) for course editor to delete all waypoints until the end.
-- new course visibility option (blue eye icon) to show the 5 last and 20 next waypoints.
-- help menu sections for unloading combine and compacting/pushing.
+- option (keybinding) for course editor to delete all waypoints until the end.
+- new course visibility option (blue eye icon) to show everything 
+  between the leading 20 and last 5 passed waypoints.
+- help menu sections for unloading combines and compacting/pushing in a bunker silo.
 - countless fixes and improvements.
 
 Changelog 7.1.0.3:
@@ -88,13 +89,13 @@ Changelog 7.2.0.0
 - Bunker Silo Modus und Drescher Abfahrer Modus hinzugefügt
 - Verbleibende Zeit für Feldarbeit wird jetzt im Hud angezeigt
 - Unterstützung für <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a> hinzugefügt.
-- Option den Kurs auf der minimap an zu zeigen hinzugefügt.
+- Option um den Kurs auf der minimap an zu zeigen hinzugefügt.
 - Benutzer Einstellung um zwischen Meter und Fuss zu wechseln hinzugefügt.
-- Einfache kolisions Vermeidung für Abfahrer um nicht im den Drescher zu fahren.
+- Einfache Kolisions Vermeidung für Abfahrer hinzugefügt um nicht im den Drescher zu fahren.
 - Option (Tastenbelegung) für den Kurseditor um alle Wegpunkte bis zum Ende zu entfernen.
 - Neue Kursanzeige (Augen im HUD blau) um die letzten 5 und die nächsten 20 Wegpunkte an zu zeigen.
 - Hilfemenü um Drescher Abfahrer und Silo Bunker Fahrer erweitert.
-- Weitere diverse bugfixes und Verbesserungen.
+- Weitere diverse Fehler behoben und Verbesserungen hinzugefügt.
 
 Changelog 7.1.0.3:
 - Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
