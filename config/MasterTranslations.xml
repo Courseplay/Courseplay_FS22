@@ -2284,4 +2284,10 @@ before starting the actual work.
 			<Text language="en"><![CDATA[CP: Opens course manager]]></Text>
 		</Translation>
 	</Category>
+	<Category name="test">
+		<Translation name="test">
+			<Text language="de">test</Text>
+			<Text language="en">test</Text>
+		</Translation>
+	</Category>
 </Translations>
