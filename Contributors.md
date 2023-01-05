@@ -2,7 +2,6 @@
 ### Developers
 * [Tensuko](https://github.com/Tensuko)
 * [pvaiko](https://github.com/pvaiko)
-* [schwiti6190](https://github.com/schwiti6190)
 
 ### Translators
 * Chinese Simplified: [kgdtuu](https://github.com/kgdtuu)
