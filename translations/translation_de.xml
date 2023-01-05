@@ -760,5 +760,9 @@ Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker z
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Öffnet globale Einstellungen"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Öffnet Kursgenerator/Jobmenü"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Öffnet Kursmanager"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>

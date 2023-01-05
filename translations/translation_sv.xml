@@ -748,5 +748,9 @@ before starting the actual work.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>

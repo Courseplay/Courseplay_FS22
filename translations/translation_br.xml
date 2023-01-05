@@ -760,5 +760,9 @@ antes de iniciar o trabalho real.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Abrir configurações globais"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abrir gerenciador de rotas/menu de trabalho"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abrir gerenciador de rotas"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>

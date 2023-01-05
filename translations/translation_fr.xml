@@ -738,5 +738,9 @@ before starting the actual work.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Ouvre les paramètres globaux"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Ouvre le générateur de course/menu de la course"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Ouvre le gestionnaire de courses"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>

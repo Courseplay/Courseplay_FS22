@@ -752,5 +752,9 @@ para conducir allí con el Ayudante de Gigants antes de comenzar el trabajo real
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Abre ajustes globales"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abrir menú del Generador de Cursos/Trabajo"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abre Administrador de Curso"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>

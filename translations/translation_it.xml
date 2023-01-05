@@ -754,5 +754,9 @@ prima di iniziare il lavoro vero e proprio.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Apre le impostazioni globali"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Apri il generatore di corsi/menu dei lavori"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Apre gestore percorsi"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>

@@ -754,5 +754,9 @@ before starting the actual work.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Åbner globale indstillinger"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Åbner rutegenerator/job menu"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Åbner rute manager"/>
+    <!---->
+    <!--test-->
+    <!---->
+    <text name="test" text="test"/>
   </texts>
 </l10n>
