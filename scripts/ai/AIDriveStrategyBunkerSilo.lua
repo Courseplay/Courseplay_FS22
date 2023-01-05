@@ -166,6 +166,9 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
                 else
                     self:startDrivingTemporaryOutOfSilo()
                 end
+            elseif self.siloController:hasNearbyUnloader() then
+                self:startDrivingOutOfSilo()
+                end
             end
         end)
 
@@ -254,6 +257,7 @@ end
 function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
     return (self.state == self.states.DRIVING_INTO_SILO or self.state == self.states.DRIVING_TURN) and 
             AIUtil.isStopped(self.vehicle) 
+            and not self.siloController:hasNearbyUnloader()
             and not self.proximityController:isStopped()
 end
 
