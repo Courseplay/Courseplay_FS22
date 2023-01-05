@@ -50,9 +50,9 @@ jobs:
                   ref: ${{ github.event.pull_request.head.ref }}
                   fetch-depth: 0
             - name: Setup node
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3
               with:
-                  node-version: "14"
+                node-version: 16
             - name: Get changed files
               id: changedFiles
               uses: tj-actions/changed-files@v35
@@ -65,6 +65,7 @@ jobs:
                   for file in ${{ steps.changedFiles.outputs.all_changed_files }}; do
                       echo "$file was changed"
                   done
+              
     
     update_contributors:
         name: Update contributors
@@ -83,7 +84,7 @@ jobs:
           - name: Create local changes
             run: |
                 cd .github/scripts/update-contributors
-                node index.js ${{ github.actor }} ${{ needs.get_all_files.outputs.files }}
+                node index.js ${{ github.actor }} ${{ needs.update_translations.outputs.files }}
           - name: Commit files
             uses: stefanzweifel/git-auto-commit-action@v4
             with:
