@@ -763,6 +763,6 @@ antes de iniciar o trabalho real.
     <!---->
     <!--test-->
     <!---->
-    <text name="test" text="test1"    />
+    <text name="test" text="test1"/>
   </texts>
 </l10n>
