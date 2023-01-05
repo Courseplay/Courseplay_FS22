@@ -159,16 +159,18 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
 
     self.isStuckTimer:setFinishCallback(function ()
             self:debug("is stuck, trying to drive out of the silo.")
-            if self:isTemporaryOutOfSiloDrivingAllowed() and not self.frozen then 
+            if self.frozen then 
+                return
+            end
+            if self:isTemporaryOutOfSiloDrivingAllowed() then 
                 if self.driveIntoSiloAttempts >= self.maxDriveIntoTheSiloAttempts then
                     self:debug("Max attempts reached, trying a new approach.")
                     self:startDrivingOutOfSilo()
                 else
                     self:startDrivingTemporaryOutOfSilo()
                 end
-            elseif self.siloController:hasNearbyUnloader() then
+            elseif self.siloController:hasNearbyUnloader() and self:isDrivingToParkPositionAllowed() then
                 self:startDrivingOutOfSilo()
-                end
             end
         end)
 
