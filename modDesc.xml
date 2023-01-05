@@ -91,10 +91,10 @@ Changelog 7.2.0.0
 - Option den Kurs auf der minimap an zu zeigen hinzugefügt.
 - Benutzer Einstellung um zwischen Meter und Fuss zu wechseln hinzugefügt.
 - Einfache kolisions Vermeidung für Abfahrer um nicht im den Drescher zu fahren.
-- option (keybind) for course editor to delete all waypoints until the end
-- new course visibility option (blue eye icon) to show the 5 last and 20 next waypoints
-- help menu sections for unloading combine and compacting/pushing
-- countless fixes and improvements
+- Option (Tastenbelegung) für den Kurseditor um alle Wegpunkte bis zum Ende zu entfernen.
+- Neue Kursanzeige (Augen im HUD blau) um die letzten 5 und die nächsten 20 Wegpunkte an zu zeigen.
+- Hilfemenü um Drescher Abfahrer und Silo Bunker Fahrer erweitert.
+- Weitere diverse bugfixes und Verbesserungen.
 
 Changelog 7.1.0.3:
 - Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
