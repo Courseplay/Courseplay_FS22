@@ -55,7 +55,11 @@ jobs:
                   node-version: "14"
             - name: Get changed files
               id: changedFiles
-              uses: tj-actions/changed-files@v23
+              uses: tj-actions/changed-files@v35
+              with:
+                files: |
+                  translations/**
+                  config/MasterTranslations.xml
             - name: List all changed files
               run: |
                   for file in ${{ steps.changedFiles.outputs.all_changed_files }}; do
