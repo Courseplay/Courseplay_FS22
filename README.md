@@ -5,24 +5,30 @@
 
 **[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22/releases/latest)** (the file FS22_Courseplay.zip).
 
-## Multiplayer support with Version 7.0.1.0 or higher!
-
 ## What Works
+* **Multiplayer support**
+* Fieldwork and vine work with courses from the course generator.
+* Course manager for saving/loading/renaming/moving and deleting of courses. 
+* Wrapping and collecting of bales with or without a course.
+* Unloading of combines with unloaders.
+* Compacting of a bunker silo or pushing the chaff into the back of a silo.
+* Let the combine unload into nearby trailers (combine self unload).
+* Field work with up to 5 vehicles on the same course (multi tool course).
+* Creating custom fields by recording a course or drawing on the AI Map.
+* Course editor to edit fieldwork courses or custom field borders.
+* Mod support with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive):
+	- Sending the fieldwork driver to refill seeds/fertilizers and so on.
+	- Sending the fieldworker/ bale collector to unload collected straw and so on.
+	- Sending the fieldwork driver to refuel or repair.
+* Bale collector mod support for:
+	- [Pallet Autoload Specialization](https://www.farming-simulator.com/mod.php?lang=en&country=gb&mod_id=228819)
+	- [Universal Autoload](https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022)
 
-* Course generation
-* Field work with generated courses
-* Vine fields with generated courses
-* Refill or unload with [AutoDrive](https://github.com/Stephan-S/FS22_AutoDrive)
-* Combine self unload
-* Wrap and collect bales with or without a course
-* Save/load/rename/move courses
-* Create custom fields with recording or drawing on the AI Map
-* Vehicle convoy
-* Combine unloader
 
 ## Usage
 
-Courseplay functions are now documented in the in-game help:
+Courseplay functions are now documented in the in-game help menu:
+
 ![image](https://user-images.githubusercontent.com/2379521/195123670-20773556-48d4-4292-ba06-28443a2f9c69.png)
 
 If you prefer videos, YouTube has many great [tutorials](https://www.youtube.com/results?search_query=courseplay+fs22)
@@ -30,7 +36,7 @@ If you prefer videos, YouTube has many great [tutorials](https://www.youtube.com
 ## Turning on Debug Channels
 
 When there's an issue, you can turn on debug logging on the Courseplay vehicle settings page for each vehicle. This will
-enable loggin debug information for that vehicle only. Devs need those logs when troubleshooting and fixing bugs.
+enable logging of debug information for only this vehicle. **Devs need those logs for troubleshooting and fixing bugs.**
  
 What information is logged when you activated the debug logging for the vehicle depends on the active debug channels. This
 are similar to those we had in CP 19, but the way to turn them on/off is different: you can bring up the debug channel menu 
