@@ -254,7 +254,6 @@ end
 function AIDriveStrategyBunkerSilo:isTemporaryOutOfSiloDrivingAllowed()
     return (self.state == self.states.DRIVING_INTO_SILO or self.state == self.states.DRIVING_TURN) and 
             AIUtil.isStopped(self.vehicle) 
-            and not self.siloController:hasNearbyUnloader() 
             and not self.proximityController:isStopped()
 end
 
