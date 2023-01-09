@@ -100,7 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Pokaż kurs"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Pokazuje obecny kurs pojazdu."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Tylko początek i koniec"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Aktualne punkty trasy"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Wszystkie punkty trasy"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Otwieranie HUDa myszką"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Gdy wyłączone, HUD może być otwarty tylko za pomocą skrótu klawiszowego."/>
@@ -682,55 +682,53 @@ W kategorii zaawansowanej znajdują się:
 2) Pędzel do wstawiania krzywej punktów trasy pomiędzy wybranymi punktami trasy.
 3) Pędzel do ustawienia atrybutu zawracania dla punktu trasy (tylko dla kurs, a nie własnych pól).
 "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="Rozładunek kombajnu"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+Tryb rozładunku w Courseplay działa z kombajnami i kombajnami ciąganymi sterowanymi przez pracownika Courseplay.
+Nie działa z sieczkarniami.
+Możesz użyć pojedynczej przyczepy lub wozu przeładunkowego, aby rozładować kombajn.
+Aby opróżnić przyczepy, możesz użyć Pomocnika SI z gry lub AutoDrive.
+Uruchomienie rozładunku wymaga kilku rzeczy:
+- Musisz mieć podłączoną jedną przyczepę lub wóz przeładunkowy. Zestaw przyczep nie jest obsługiwany.
+- Użyj ikony 'celu' na HUD, aby wybrać koszone pole. Rozładowane zostaną wszystkie kombajny sterowane przez pracownika Courseplay pracujące na tym polu.
+- Musisz być na polu lub w odległości 20 metrów od niego by móc aktywować rozładunek.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
-
+Dostępnych jest tylko kilka ustawień, które możesz zmienić:
+- Możesz ustawić poziom napełnienia, przy którym pracownik będzie uważał podłączoną przyczepę za pełną. Ma to na celu
+  uniknięcie czekania na kombajn z prawie pełną przyczepą.
+- Możesz użyć przesunięć w HUD, aby dostosować pozycję pomocnika rozładowującego pod rurą kombajnu.
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pracownik SI z gry lub AutoDrive.
+Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na
+na dole listy lub aktywując ikonę koła na HUD.
+W tym drugim przypadku musisz wybrać stację rozładunkową po tym, jak ikona koła zmieni kolor na niebieski.
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+Opróżnianie przyczepy za pomocą AutoDrive działa tak samo, jak korzystanie z przyczepy samozbierającej, sprawdź samouczki AutoDrive w Internecie.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+Wozy przeładunkowe są bardzo proste w użyciu.
+Podobnie jak w przypadku przyczep, za pomocą ikony celu wybierasz pole, na którym chcesz rozładować kombajn.
+Aby aktywować rozładunek, umieść zestaw ponownie na polu lub w odległości 20 metrów od pola.
+Jeśli wóz przeładunkowy jest pełen, automatycznie szuka przyczepy na polu lub w jego pobliżu, aby się do niego przeładować.
+W przypadku, gdy przyczepa jest pełna, a wóz przeładunkowy nadal nie jest pusty, szuka innej przyczepy do rozładunku.
+Jeśli nie ma w pobliżu żadnej wolnej przyczepy, będzie ona nadal rozładowywać kombajn.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="Pracownik silosu bunkrowego"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay jest w stanie zagęszczać lub wyrównywać sieczkę w silosie bunkrowym lub wpychać ją do silosu klinowego.
+Zagęszczanie jest możliwe bez specjalnego narzędzia, za pomocą walca, obciążnika lub samego pojazdu.
+Do wyrównywania służą specjalne narzędzia (np. Fliegl Duo).
+W przypadku silosów klinowych stosuje się lemiesz, który popycha sieczkę na tył silosu.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Jeśli pojazd ma zamocowany roztrząsacz lub lemiesz, wstępnie wybrany jest tryb Silos. Tylko z obciążnikiem lub wałem
+przechodzisz przez punkt początkowy, aż pojawi się tryb.
+Oprócz szerokości roboczej można również wybrać kierunek, w którym pracownik powinien wjechać do silosu. Z założonym lemieszem,
+kierunek jest wybierany automatycznie.
+Użyj ikony 'celu' na HUD, aby wybrać silos na mapie AI. Jeśli zostanie zaznaczone, zostanie pokazane z niebieskimi liniami i podświetli się na biało.
+Pozycję parkowania ustawia się za pomocą znacznika &quot;pozycja parkowania&quot; którego można również użyć, aby pojechać tam z pracownikiem SI
+przed rozpoczęciem właściwej pracy.
 "/>
     <!---->
     <!--Input bindings-->
