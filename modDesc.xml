@@ -23,13 +23,28 @@ Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
 - work on vines
 - let up to 5 helpers work on the same field in a group
 - combines find a trailer to self-unload when full
+- unload combines with trailer or auger wagon
 - set up your own fields wherever you like
 - works great together with AutoDrive, let Courseplay do the fieldwork and AutoDrive to refill a sower or unload a forage wagon
 - customize the automatically created fieldwork courses to your liking with the course editor
+- work in bunker silo to push and compact
 
 For more information, help, and report issues please visit <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
+
+Changelog 7.2.0.0
+- added bunker silo mode and combine unloader mode.
+- the remaining time for fieldwork is now displayed on the HUD.
+- support for <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a>.
+- option to show the current course on the mini map.
+- user setting to change between feet and meters.
+- simple collision avoidance for unloaders to not crash into the combine.
+- option (keybinding) for course editor to delete all waypoints until the end.
+- new course visibility option (blue eye icon) to show everything 
+  between the leading 20 and last 5 passed waypoints.
+- help menu sections for unloading combines and compacting/pushing in a bunker silo.
+- countless fixes and improvements.
 
 Changelog 7.1.0.3:
 - Updated mod description
@@ -63,14 +78,28 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge in
 - Arbeite auf und zwischen den Weinreben
 - Lasse bis zu 5 Helfer auf dem gleichen Feld in einer Gruppe zusammenarbeiten
 - Lasse dein Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
+- Drescher abtanken mit Trailer oder Überladewagen.
 - Erstelle deine eigenen Felder, wo immer du möchtest
 - Arbeitet super mit Autodrive zusammen, lasse Courseplay die Feldarbeit erledigen und 
   Autodrive erledigt das abtanken eines Ladewagen oder auffüllen einer Sähmaschine.
-- Verändere die generierten Kurse mit dem Kurseditor 
+- Verändere die generierten Kurse mit dem Kurseditor .
+- Im Bunker silo schieben und verdichten.
 
 Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
+
+Changelog 7.2.0.0
+- Bunker Silo Modus und Drescher Abfahrer Modus hinzugefügt
+- Verbleibende Zeit für Feldarbeit wird jetzt im Hud angezeigt
+- Unterstützung für <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a> hinzugefügt.
+- Option um den Kurs auf der minimap an zu zeigen hinzugefügt.
+- Benutzer Einstellung um zwischen Meter und Fuss zu wechseln hinzugefügt.
+- Einfache Kolisions Vermeidung für Abfahrer hinzugefügt um nicht im den Drescher zu fahren.
+- Option (Tastenbelegung) für den Kurseditor um alle Wegpunkte bis zum Ende zu entfernen.
+- Neue Kursanzeige (Augen im HUD blau) um die letzten 5 und die nächsten 20 Wegpunkte an zu zeigen.
+- Hilfemenü um Drescher Abfahrer und Silo Bunker Fahrer erweitert.
+- Weitere diverse Fehler behoben und Verbesserungen hinzugefügt.
 
 Changelog 7.1.0.3:
 - Fehlende Übersetzungen hinzugefügt, jetzt können alle Übersetzungen, die vom Spiel unterstützt werden angepasst werden.
