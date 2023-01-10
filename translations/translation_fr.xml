@@ -100,7 +100,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Afficher la course"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Affiche la course actuelle du véhicule."/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Points départ/arrivé uniquement"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Les points à proximité"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Tous les points"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Ouvrir l'ATH à la souris"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Un clic droit ouvre l'ATH. Si désactivé, ouverture de l'ATH uniquement avec un raccourci clavier."/>
@@ -670,55 +670,50 @@ Dans la catégorie avancée :
 2) Le cruseur d'insertion de courbe permet de créer des points qui forment une courbe entre deux points sélectionnés.
 3) Le curseur de propriétés du point permet de déclarer le point sélectionné comme un point de demi-tour (uniquement sur une course, pas dans un champ personnalisé).
 "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="Déchargement d'une récolteuse"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+Le mode déchargement du Courseplay fonctionne avec les moissonneuses, les récolteuses ainsi que les récolteuses tractées qui sont conduites par un ouvrier Courseplay.
+Cela ne fonctionne pas avec les ensileuses.
+Vous pouvez soit utiliser une benne classique ou un transbordeur pour aller vider une moissonneuse.
+Pour ensuite aller vider les bennes, vous pouvez utiliser soit les ouvriers Giants ou l'AutoDrive.
+Pour démarrer le processus de déchargement, il a quelques conditions :
+- Vous devez avoir attelé une seule remorque ou transbordeur. L'ouvrier CP ne gère pas plusieurs remorques attachées à la suite.
+- Utilisez l'icone de la cible depuis l'ATH pour sélectionner le champ à surveiller et qui est en cours de récolte. L'ouvrier CP ira s'occuper de décharger toutes les récolteuses conduites par le CP travaillant dans ce champ.
+- Vous devez être sur le champ ou à moins de 20 mètres de distance pour démarrer la course de déchargement.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+Vous pouvez adapter quelques paramètres concernant le processus de déchargement :
+- Fixer le seuil de remplissage au-delà duquel la benne ou le transbordeur sera considéré comme plein. Très pratique pour éviter qu'une moissonneuse appelle une benne qui serait déjà presque pleine.
+- Utiliser l'ATH pour faire varier le décalage du placement de la benne ou du transbordeur sous la goulotte de la moissonneuse.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Si vous utilisez une benne pour effectuer le déchargement, il existe deux possibilité de transporter la récolte vers un silo ou un point de vente : l'ouvrier Giants 
+ou l'AutoDrive. 
+Vous pouvez soit utiliser la création de tâche du menu des ouvriers pour créer une tâche de déchargement et choisir le point de livraison dans la liste, soit en cliquant sur l'icône de la roue visible sur l'ATH.
+Dans ce dernier cas, vous devrez choisir le point de livraison après que l'icône soit devenue bleue.
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+Pour utiliser AutoDrive, utilisez le mode charger puis livrer. Il existe des tutos sur Internet.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+Les transbordeurs sont simples à utiliser.
+Tout comme les bennes, utilisez la cible pour sélectionner le champ à surveiller dans lequel travaillent une ou des récolteuses.
+Pour démarrer la course de déchargement, attendez d'être sur le champ ou à moins de 20 mètres de celui-ci.
+Lorsque le transbordeur sera plein, il cherchera automatiquement une benne ou remorque à proximité ou sur le champ pour s'y diriger et démarrer sa vidange.
+Dans le cas où la remorque ou benne serait pleine, le transbordeur en cherchera une autre sur ou à proximité du champ.
+Si aucune benne ou remorque n'est disponible, le transbordeur continuera à décharger la récolteuse.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="Nivelage et tassage de silos"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay est capable de compacter et niveler de l'ensilage dans les silos bunker et couloir.
+La compaction peut s'effectuer sans outil dédié, avec un rouleau, une masse ou tout simplement le véhicule lui-même.
+Pour le nivelage, il convient d'utiliser des lames ou des répartisseurs(comme par exemple les Fliegel DUO).
+Pour les silos bunker, la lame permet également de ramener l'ensilage au fond du silo.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Si une lame ou un distributeur est attelé au véhicule, le mode Silo sera présélectionné. Avec uniquement une masse ou un rouleau attaché, vous devez sélectionner le mode tassage.
+En plus de la largeur de travail, vous pouvez également choisir dans quel sens doit conduire l'ouvrier CP dans le silo. Le sens est automatiquement sélectionné si le véhicule dispose d'une lame.
+Utilisez la cible depuis l'ATH pour sélectionner le silo depuis la carte du menu des tâches des ouvriers. Il sera visible avec des contours bleus et deviendra blanc lorsqu'il sera sélectionné avec succès.
+La position de stationnement ou d'attente est définie à l'aide du marqueur &quot;Stationnement&quot; qui peut également être utilisé comme destination par un ouvrier Giants avant de laisser la main au CP pour le travail dans le silo.
 "/>
     <!---->
     <!--Input bindings-->
