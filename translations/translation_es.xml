@@ -280,8 +280,8 @@
     <text name="CP_global_setting_subTitle_userSettings" text="Ajustes de usuario"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatible con gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud."/>
-    <text name="CP_global_setting_showActionEventHelp_title" text="Ayuda de eventos de acción"/>
-    <text name="CP_global_setting_showActionEventHelp_tooltip" text="Muestra textos de ayuda de eventos de acción."/>
+    <text name="CP_global_setting_showActionEventHelp_title" text="Mostrar teclas en la ventana de F1"/>
+    <text name="CP_global_setting_showActionEventHelp_tooltip" text="Muestra la asignación de teclas o botones en la ventana al presionar F1"/>
     <text name="CP_global_setting_subTitle_pathfinder" text="Ajustes del generador de rutas"/>
     <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ángulo máximo a usar"/>
     <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
