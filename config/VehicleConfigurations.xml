@@ -393,15 +393,6 @@ You can define the following custom settings:
     <Vehicle name="leebPT350.xml"
              ignoreCollisionBoxesWhenFolded="true"
     />
-    <!--Mod: Claas Krone Baler Pack With Lizard R90-->
-    <Vehicle name="quadrant5300.xml"
-             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
-             workingWidth="10.3"
-    />
-    <Vehicle name="bigPack1290HDPVC.xml"
-             modName="FS22_Claas_Krone_Baler_Pack_With_Lizard_R90"
-             workingWidth="10.3"
-    />
     <!--Mod: Great Plains YP-2425A-->
     <Vehicle name="yp2425A.xml"
              implementWheelAlwaysOnGround="true"
