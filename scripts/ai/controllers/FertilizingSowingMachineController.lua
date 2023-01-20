@@ -8,10 +8,14 @@ function FertilizingSowingMachineController:init(vehicle, sowingMachine)
     ImplementController.init(self, vehicle, self.sowingMachine)
 end
 
-local function processSowingMachineArea(sowingMachine,superFunc,...)
+local function onStartWorkAreaProcessing(sowingMachine, superFunc, ...)
+	superFunc(sowingMachine, ...)
+	if not sowingMachine.spec_fertilizingSowingMachine then 
+		return
+	end	
 	local rootVehicle = sowingMachine.rootVehicle
 	if not rootVehicle.getIsCpActive or not rootVehicle:getIsCpActive() then
-		return superFunc(sowingMachine, ...)
+		return
 	end
 	local specSpray = sowingMachine.spec_sprayer
 	local sprayerParams = specSpray.workAreaParameters
@@ -25,12 +29,10 @@ local function processSowingMachineArea(sowingMachine,superFunc,...)
 	if not fertilizingEnabled then
 		sprayerParams.sprayFillLevel = 0
 	elseif capacity > 0 and sprayerParams.sprayFillLevel <= 0 then
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,sowingMachine,"Stopped Cp, as the fertilizer is empty.")
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,sowingMachine, "Stopped Cp, as the fertilizer is empty.")
 		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 	end
-	return superFunc(sowingMachine, ...)
 end
-
-FertilizingSowingMachine.processSowingMachineArea = Utils.overwrittenFunction(FertilizingSowingMachine.processSowingMachineArea, processSowingMachineArea)
+Sprayer.onStartWorkAreaProcessing = Utils.overwrittenFunction(Sprayer.onStartWorkAreaProcessing, onStartWorkAreaProcessing)
 
 
