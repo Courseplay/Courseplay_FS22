@@ -8,20 +8,20 @@
     <!---->
     <!--basic-->
     <!---->
-    <text name="CP_activated" text="activated"/>
-    <text name="CP_deactivated" text="deactivated"/>
-    <text name="CP_automatic" text="auto"/>
+    <text name="CP_activated" text="Açık"/>
+    <text name="CP_deactivated" text="Kapalı"/>
+    <text name="CP_automatic" text="Auto"/>
     <text name="CP_unit_meter" text="m"/>
     <text name="CP_unit_foot" text="ft"/>
-    <text name="CP_copy" text="Copy course: "/>
-    <text name="CP_infoText" text="Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22."/>
-    <text name="CP_error_no_course" text="Generate a course before starting the job."/>
-    <text name="CP_error_could_not_generate_course" text="Could not generate course. The log may have more information."/>
-    <text name="CP_error_not_on_field" text="Target is not on a field."/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_copy" text="Kursu kopyala: "/>
+    <text name="CP_infoText" text="Courseplay(%s): Yardım, hata raporları veya yama notları için lütfen şu adresi ziyaret edin: https://github.com/Courseplay/Courseplay_FS22."/>
+    <text name="CP_error_no_course" text="İşe başlamadan önce bir kurs oluşturun."/>
+    <text name="CP_error_could_not_generate_course" text="Kurs oluşturulamadı. Günlükte daha fazla bilgi bulunabilir."/>
+    <text name="CP_error_not_on_field" text="Hedef bir alanda değil."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Boşaltıcıyı alandan uzağa kaldır."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Başlangıç konumu alandan çok uzakta."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants boşaltıcı kullanılamıyor."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Silo bulunamadı."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -34,364 +34,364 @@
     <text name="CP_bunkerSiloJobParameters_title" text=""/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_tooltip" text=""/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_tooltip" text=""/>
-    <text name="CP_jobParameters_fieldPosition_title" text="Field position:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
-    <text name="CP_jobParameters_subTitle_startAt" text="Start at:"/>
-    <text name="CP_jobParameters_startAt_title" text="Start at:"/>
-    <text name="CP_jobParameters_startAt_tooltip" text="Where to start field work"/>
-    <text name="CP_jobParameters_startAt_nearest" text="nearest waypoint"/>
-    <text name="CP_jobParameters_startAt_first" text="first waypoint"/>
-    <text name="CP_jobParameters_startAt_last" text="last waypoint"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_unload" text="unloading combine/chopper"/>
-    <text name="CP_jobParameters_startAt_bales" text="collecting/wrapping bales"/>
-    <text name="CP_jobParameters_subTitle_laneOffset" text="Lane offset:"/>
-    <text name="CP_jobParameters_laneOffset_title" text="Lane offset:"/>
-    <text name="CP_jobParameters_laneOffset_tooltip" text="Lane offset"/>
-    <text name="CP_jobParameters_laneOffset_center" text="center"/>
-    <text name="CP_jobParameters_laneOffset_left" text="left(1)"/>
-    <text name="CP_jobParameters_laneOffset_right" text="right(1)"/>
-    <text name="CP_jobParameters_laneOffset_left_2" text="left(2)"/>
-    <text name="CP_jobParameters_laneOffset_right_2" text="right(2)"/>
+    <text name="CP_jobParameters_fieldPosition_title" text="Alan konumu:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo konumu:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Park konumu:"/>
+    <text name="CP_jobParameters_subTitle_startAt" text="Başlangıç:"/>
+    <text name="CP_jobParameters_startAt_title" text="Başlangıç:"/>
+    <text name="CP_jobParameters_startAt_tooltip" text="Saha çalışmasına nereden başlanır"/>
+    <text name="CP_jobParameters_startAt_nearest" text="en yakın yol noktası"/>
+    <text name="CP_jobParameters_startAt_first" text="ilk yol noktası"/>
+    <text name="CP_jobParameters_startAt_last" text="son yol noktası"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo modu"/>
+    <text name="CP_jobParameters_startAt_unload" text="boşaltma biçerdöver/kıyıcı"/>
+    <text name="CP_jobParameters_startAt_bales" text="balya toplama/sarma"/>
+    <text name="CP_jobParameters_subTitle_laneOffset" text="Şerit ofseti:"/>
+    <text name="CP_jobParameters_laneOffset_title" text="Şerit ofseti:"/>
+    <text name="CP_jobParameters_laneOffset_tooltip" text="Şerit ofseti"/>
+    <text name="CP_jobParameters_laneOffset_center" text="merkez"/>
+    <text name="CP_jobParameters_laneOffset_left" text="sol(1)"/>
+    <text name="CP_jobParameters_laneOffset_right" text="sağ(1)"/>
+    <text name="CP_jobParameters_laneOffset_left_2" text="sol(2)"/>
+    <text name="CP_jobParameters_laneOffset_right_2" text="sağ(2)"/>
     <!---->
     <!--AI bale finder job parameters-->
     <!---->
-    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Baletype:"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="all bales"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="only wrapped"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="only not wrapped"/>
+    <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Balya türü:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Balya türü:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="Tüm balyalar"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Sadece sarılmış"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Sadece sarılmamışlar"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Devler boşaltıcı:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Dev boşaltıcıyı kullan:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Boşaltma istasyonu:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Siloya yön:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Siloya yön:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="İleri"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Ters"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Boşaltıcıyı bekliyorum:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Boşaltıcıyı bekliyorum:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="siloda"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="park konumunda"/>
     <!---->
     <!--AI jobs-->
     <!---->
-    <text name="CP_job_fieldWork" text="CP: Fieldwork"/>
-    <text name="CP_job_baleCollect" text="CP: Bale collect/wrap"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
-    <text name="CP_ai_page_generate_course" text="CP: Generate fieldwork course."/>
-    <text name="CP_ai_page_open_course_generator" text="CP: Open/close course generator."/>
+    <text name="CP_job_fieldWork" text="CP: Saha Çalışması"/>
+    <text name="CP_job_baleCollect" text="CP: Balya toplama/sarma"/>
+    <text name="CP_job_combineUnload" text="CP: Boşaltma Birleştirmek"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo çalışması"/>
+    <text name="CP_ai_page_generate_course" text="CP: Saha çalışması kursu oluşturma."/>
+    <text name="CP_ai_page_open_course_generator" text="CP: Rota oluşturucuyu aç/kapat."/>
     <!---->
     <!--AI error messages-->
     <!---->
-    <text name="CP_ai_messageErrorIsFull" text="AI worker %s has stopped work unexpectedly - tank is full!"/>
-    <text name="CP_ai_messageError" text="AI worker %s has stopped work unexpectedly - left the course!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI worker %s has stopped work unexpectedly - no bales of selected type found!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
+    <text name="CP_ai_messageErrorIsFull" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - tank dolu!"/>
+    <text name="CP_ai_messageError" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - rotadan ayrıldı!"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - seçili türde balya bulunamadı!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - Yol bulunamadı!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
-    <text name="CP_vehicle_setting_title" text="Vehicle settings for (%s)"/>
-    <text name="CP_vehicle_setting_subTitle_basic" text="Basic settings"/>
-    <text name="CP_vehicle_setting_subTitle_implement" text="Tools settings"/>
-    <text name="CP_vehicle_setting_subTitle_combine" text="Combine settings"/>
-    <text name="CP_vehicle_setting_subTitle_seeder" text="Seeder settings"/>
-    <text name="CP_vehicle_setting_subTitle_multitool" text="Multitool settings"/>
-    <text name="CP_vehicle_setting_subTitle_speed" text="Speeds"/>
-    <text name="CP_vehicle_setting_subTitle_debug" text="Debug settings"/>
-    <text name="CP_vehicle_setting_showCourse_title" text="Show course"/>
-    <text name="CP_vehicle_setting_showCourse_tooltip" text="Show the current course of the vehicle"/>
-    <text name="CP_vehicle_setting_showCourse_startStop" text="Start/stop only"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
-    <text name="CP_vehicle_setting_showCourse_all" text="All waypoints"/>
-    <text name="CP_vehicle_setting_openHudWithMouse_title" text="Open Hud with mouse"/>
-    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="When deactivated, Hud can only be opened with the Keybind."/>
-    <text name="CP_vehicle_setting_fuelSave_title" text="Fuel save"/>
-    <text name="CP_vehicle_setting_fuelSave_tooltip" text="Turns off the vehicle, while waiting."/>
-    <text name="CP_vehicle_setting_stopAtEnd_title" text="Stop at end"/>
-    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Stop at end"/>
-    <text name="CP_vehicle_setting_allowReversePathfinding_title" text="Allow reverse for pathfinding"/>
-    <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="When applicable, allow the pathfinder to generate courses containing reverse driving"/>
-    <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Allow using the pathfinder in turns"/>
-    <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Enables using the pathfinder in turns, for example to avoid obstacles and fruit"/>
-    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Fold tools at course end"/>
-    <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Enables/disables automatic folding of implements at the end of the course."/>
-    <text name="CP_vehicle_setting_raiseImplementLate_title" text="Raise tools"/>
-    <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Raise tools early or late at the start of a turn."/>
-    <text name="CP_vehicle_setting_raiseImplementLate_early" text="early"/>
-    <text name="CP_vehicle_setting_raiseImplementLate_late" text="late"/>
-    <text name="CP_vehicle_setting_lowerImplementEarly_title" text="Lower tools"/>
-    <text name="CP_vehicle_setting_lowerImplementEarly_tooltip" text="Lower tools early or late at the end of a turn."/>
-    <text name="CP_vehicle_setting_lowerImplementEarly_early" text="early"/>
-    <text name="CP_vehicle_setting_lowerImplementEarly_late" text="late"/>
-    <text name="CP_vehicle_setting_turnOnField_title" text="Only turning on the field"/>
-    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Only turning on the field. Not possible with all tools."/>
-    <text name="CP_vehicle_setting_avoidFruit_title" text="Avoid driving in fruit"/>
-    <text name="CP_vehicle_setting_avoidFruit_tooltip" text="The AI will try to avoid driving in the fruit"/>
-    <text name="CP_vehicle_setting_toolOffsetX_title" text="Tool offset horizontal"/>
-    <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Tool offset horizontal"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Tool offset vertical"/>
-    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Tool offset vertical"/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
-    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive."/>
-    <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
-    <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetric lane change"/>
-    <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetric lane change"/>
-    <text name="CP_vehicle_setting_convoyDistance_title" text="Convoy Distance"/>
-    <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Distance between vehicles. Value: 40 - 400"/>
-    <text name="CP_vehicle_setting_debugActive_title" text="Vehicle debug"/>
-    <text name="CP_vehicle_setting_debugActive_tooltip" text="Enables/disables debug for this vehicle."/>
+    <text name="CP_vehicle_setting_title" text="Araç ayarları (%s)"/>
+    <text name="CP_vehicle_setting_subTitle_basic" text="Temel ayarlar"/>
+    <text name="CP_vehicle_setting_subTitle_implement" text="Araçlar ayarları"/>
+    <text name="CP_vehicle_setting_subTitle_combine" text="Ayarları birleştir"/>
+    <text name="CP_vehicle_setting_subTitle_seeder" text="Ekme makinesi ayarları"/>
+    <text name="CP_vehicle_setting_subTitle_multitool" text="Çoklu araç ayarları"/>
+    <text name="CP_vehicle_setting_subTitle_speed" text="Hızlar"/>
+    <text name="CP_vehicle_setting_subTitle_debug" text="Hata ayıklama ayarları"/>
+    <text name="CP_vehicle_setting_showCourse_title" text="Kurs çizgilerini göster"/>
+    <text name="CP_vehicle_setting_showCourse_tooltip" text="Aracın mevcut rotasını gösterir."/>
+    <text name="CP_vehicle_setting_showCourse_startStop" text="Yalnızca Başlangıç/Bitiş"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Yakındaki yol noktaları"/>
+    <text name="CP_vehicle_setting_showCourse_all" text="Tüm yol noktaları"/>
+    <text name="CP_vehicle_setting_openHudWithMouse_title" text="Hub'ı fare ile açın"/>
+    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Devre dışı bırakıldığında, Hud sadece Tuş Takımı ile açılabilir."/>
+    <text name="CP_vehicle_setting_fuelSave_title" text="Yakıt tasarrufu"/>
+    <text name="CP_vehicle_setting_fuelSave_tooltip" text="Beklerken aracı kapatır."/>
+    <text name="CP_vehicle_setting_stopAtEnd_title" text="Sonunda dur"/>
+    <text name="CP_vehicle_setting_stopAtEnd_tooltip" text="Sonunda dur"/>
+    <text name="CP_vehicle_setting_allowReversePathfinding_title" text="Yol bulma için tersine izin ver"/>
+    <text name="CP_vehicle_setting_allowReversePathfinding_tooltip" text="Uygun olduğunda, yol bulucunun geri sürüş içeren kurslar oluşturmasına izin verin"/>
+    <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="Yol bulucuyu sırayla kullanmaya izin ver"/>
+    <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Örneğin engellerden ve meyvelerden kaçınmak için yol bulucuyu sırayla kullanmanıza olanak tanır"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Kurs sonunda araçları katlayın"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Kurs sonunda aletlerin otomatik katlanmasını etkinleştirir/devre dışı bırakır."/>
+    <text name="CP_vehicle_setting_raiseImplementLate_title" text="Tarla Başlangıcı"/>
+    <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Tarla başlangıcında aletleri erken veya geç indirin."/>
+    <text name="CP_vehicle_setting_raiseImplementLate_early" text="Erken"/>
+    <text name="CP_vehicle_setting_raiseImplementLate_late" text="Geç"/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_title" text="Tarla sonu"/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_tooltip" text="Tarla sonunda aletleri erken veya geç kaldırın."/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_early" text="Erken"/>
+    <text name="CP_vehicle_setting_lowerImplementEarly_late" text="Geç"/>
+    <text name="CP_vehicle_setting_turnOnField_title" text="Araç dönüşleri"/>
+    <text name="CP_vehicle_setting_turnOnField_tooltip" text="Tarla içinden/dışından dönüş (Tüm aletlerle mümkün değil.)"/>
+    <text name="CP_vehicle_setting_avoidFruit_title" text="Meyve kullanmaktan kaçının"/>
+    <text name="CP_vehicle_setting_avoidFruit_tooltip" text="AI meyve sürüş önlemek için çalışacağız."/>
+    <text name="CP_vehicle_setting_toolOffsetX_title" text="Takım ofseti yatay"/>
+    <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Takım ofseti yatay"/>
+    <text name="CP_vehicle_setting_toolOffsetZ_title" text="Takım ofseti dikey"/>
+    <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Takım ofseti dikey"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Bittiğinde boş:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="YAPILACAKLAR"/>
+    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Silaj katkısı olup olmadığını kontrol edin."/>
+    <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Aktif ve silaj katkısı emtpy ise, sürücü duracaktır."/>
+    <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Simetrik şerit değişimi"/>
+    <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Simetrik şerit değişimi"/>
+    <text name="CP_vehicle_setting_convoyDistance_title" text="Konvoy Mesafesi"/>
+    <text name="CP_vehicle_setting_convoyDistance_tooltip" text="Araçlar arasındaki mesafe. Değer: 40 - 400"/>
+    <text name="CP_vehicle_setting_debugActive_title" text="Araç hata ayıklama"/>
+    <text name="CP_vehicle_setting_debugActive_tooltip" text="Bu araç için hata ayıklamayı etkinleştirir/devre dışı bırakır."/>
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Silo işçi ayarları"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="İle çalışmak"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Birlikte çalışın. Değer: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
-    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Fieldwork"/>
-    <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Maximum speed while working on the field. Value: 5 - 50"/>
-    <text name="CP_vehicle_setting_fieldSpeed_title" text="Field"/>
-    <text name="CP_vehicle_setting_fieldSpeed_tooltip" text="Maximum speed while driving on field. Value: 5 - 50"/>
+    <text name="CP_vehicle_setting_fieldWorkSpeed_title" text="Saha Çalışması"/>
+    <text name="CP_vehicle_setting_fieldWorkSpeed_tooltip" text="Sahada çalışırken maksimum hız. Değer: 5 - 50"/>
+    <text name="CP_vehicle_setting_fieldSpeed_title" text="Alan"/>
+    <text name="CP_vehicle_setting_fieldSpeed_tooltip" text="Sahada sürüş sırasında maksimum hız. Değer: 5 - 50"/>
     <text name="CP_vehicle_setting_turnSpeed_title" text="Turn"/>
-    <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Maximum speed during turn maneuvers. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_turnSpeed_tooltip" text="Dönüş manevraları sırasında maksimum hız. Değer: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Reverse"/>
-    <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximum speed while reversing. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Geri giderken maksimum hız. Değer: 2 - 25"/>
     <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Bir siloda sürüş sırasında maksimum hız. Değer: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
-    <text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" text="Ridge markers"/>
-    <text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" text="Ridge markers on/off."/>
-    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="Sowing machines use fertilizer"/>
-    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="Enables/disables fertilizer usage of sowing machines."/>
-    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" text="Sowing option"/>
-    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Turns on or off the additional sowing function of the machine"/>
+    <text name="CP_vehicle_setting_ridgeMarkersAutomatic_title" text="Sırt işaretleri"/>
+    <text name="CP_vehicle_setting_ridgeMarkersAutomatic_tooltip" text="Sırt işaretleri açık / kapalı."/>
+    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="Ekim makineleri gübre kullanır"/>
+    <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="Ekim makinelerinin gübre kullanımını etkinleştirir/devre dışı bırakır."/>
+    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" text="Ekim seçeneği"/>
+    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Makinenin ek gösterme işlevini açar veya kapatır"/>
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Always unfold the pipe"/>
-    <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Always unfold the pipe when combine is full and waiting for unloader."/>
-    <text name="CP_vehicle_setting_stopForUnload_title" text="Stop while unloading"/>
-    <text name="CP_vehicle_setting_stopForUnload_tooltip" text="Always stops driving, while unloading."/>
-    <text name="CP_vehicle_setting_selfUnload_title" text="Combine self unload"/>
-    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Combine drives to trailer on or near the field to unload. Not supported in multitools or convoy mode."/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Unload on first headland"/>
-    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Combine will call the unloader on the first headland."/>
-    <text name="CP_vehicle_setting_strawSwath_title" text="Straw swath"/>
-    <text name="CP_vehicle_setting_strawSwath_tooltip" text="Enables/disables straw swath or only disables it on headlands."/>
-    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Headlands disabled"/>
+    <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Boruyu her zaman açın"/>
+    <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Birleştirme dolduğunda ve boşaltıcıyı beklerken daima boruyu açın."/>
+    <text name="CP_vehicle_setting_stopForUnload_title" text="Boşaltma sırasında dur"/>
+    <text name="CP_vehicle_setting_stopForUnload_tooltip" text="Boşaltma sırasında daima sürüşü durdurur."/>
+    <text name="CP_vehicle_setting_selfUnload_title" text="Kendini boşaltmayı birleştir"/>
+    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Boşaltmak için sürücüleri sahada veya yakınında römorkla birleştirin. Çoklu araçlar veya konvoy modunda desteklenmez."/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="İlk burun üzerinde boşaltma"/>
+    <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Biçerdöver, boşaltıcıyı ilk burun üzerinde arayacaktır."/>
+    <text name="CP_vehicle_setting_strawSwath_title" text="Saman şeridi"/>
+    <text name="CP_vehicle_setting_strawSwath_tooltip" text="Saman şeridini etkinleştirir / devre dışı bırakır veya yalnızca burunlarda devre dışı bırakır."/>
+    <text name="CP_vehicle_setting_strawSwath_onlyCenter" text="Burunlar devre dışı"/>
     <!---->
     <!--Course generator settings-->
     <!---->
-    <text name="CP_vehicle_courseGeneratorSetting_title" text="Course generator settings of (%s)"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="basic"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="headland"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="center"/>
-    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="advanced"/>
-    <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="Work width"/>
-    <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Work width. Value: 0 - 50"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Number of headlands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="Number of headlands. Value: 0 - 40"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Headland overlap"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Overlap headland tracks as percent of working width. Value: 0 - 25"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Field margin"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Positive values reduce field size, negative increase the field size. Value: -2 - 5.8"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Rows to skip"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Rows to skip when changing to the next up/down row. Value: 0 - 6"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Rows per land"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="When the center mode is 'lands', this many rows are in each block. Value: 0 - 24"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Headland direction"/>
+    <text name="CP_vehicle_courseGeneratorSetting_title" text="Kurs oluşturucu ayarları (%s)"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_basic" text="Temel"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_headland" text="Sürülmemiş toprak"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_center" text="merkez"/>
+    <text name="CP_vehicle_courseGeneratorSetting_subTitle_advanced" text="gelişmiş"/>
+    <text name="CP_vehicle_courseGeneratorSetting_workWidth_title" text="İle çalışmak"/>
+    <text name="CP_vehicle_courseGeneratorSetting_workWidth_tooltip" text="Birlikte çalışın. Değer: 0 - 50"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_title" text="Burun sayısı"/>
+    <text name="CP_vehicle_courseGeneratorSetting_numberOfHeadlands_tooltip" text="Burun sayısı. Değer: 0 - 40"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Burun örtüşmesi"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Çalışma yüzdesi olarak burun izlerini üst üste getirin. Değer: 0 - 25"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Alan marjı"/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Pozitif değerler alan boyutunu küçültür, negatif alan boyutunu artırır. Değer: -2 - 5.8"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Atlanacak satırlar"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Bir sonraki yukarı / aşağı satıra geçerken atlanacak satırlar. Değer: 0 - 6"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Arazi başına satırlar"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_tooltip" text="Merkez modu 'yer' olduğunda, her blokta bu kadar çok sıra vardır. Değer: 0 - 24"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_title" text="Sürülmemiş yön"/>
     <text name="CP_vehicle_courseGeneratorSetting_isClockwise_tooltip" text="Should the vehicle drive clockwise or counterclockwise on the headland"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="clockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="counterclockwise"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Field center"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Field center"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_clockwise" text="saat yönünde"/>
+    <text name="CP_vehicle_courseGeneratorSetting_isClockwise_counterclockwise" text="saat yönünün tersine"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_title" text="Saha merkezi"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_tooltip" text="Saha merkezi"/>
     <text name="CP_vehicle_courseGeneratorSetting_centerMode_up_down" text="up/down"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="spiral"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="racetrack"/>
-    <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="lands"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Headland corners"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="smooth"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="sharp"/>
-    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="round"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Up/down row direction"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Direction of the rows in the center of the field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="automatic"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="longest edge"/>
-    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="manual"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Up/down row angle"/>
-    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Angle of up/down rows (0° is North) when manual. Value: 0 - 175 Steps: 5"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Island bypass mode"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="How the course should bypass islands in the field"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="no bypass"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="simple"/>
-    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="circle"/>
-    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Start work on"/>
-    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Start working on the headland (harvest) or center of the field (other works)"/>
-    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="headland"/>
-    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="center"/>
-    <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Multiple tools"/>
-    <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Number of vehicles on the same course."/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_spiral" text="sarmal"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_circular" text="yarış pisti"/>
+    <text name="CP_vehicle_courseGeneratorSetting_centerMode_lands" text="topraklar"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_title" text="Burun köşeleri"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_tooltip" text="Burun köşeleri"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_smooth" text="pürüzsüz"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_sharp" text="keskin"/>
+    <text name="CP_vehicle_courseGeneratorSetting_headlandCornerType_round" text="yuvarlak"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_title" text="Yukarı / aşağı satır yönü"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_tooltip" text="Alanın ortasındaki satırların yönü"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_automatic" text="otomatik"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_longest_edge" text="en uzun kenar"/>
+    <text name="CP_vehicle_courseGeneratorSetting_rowDirection_manual" text="manuel"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_title" text="Yukarı / aşağı sıra açısı"/>
+    <text name="CP_vehicle_courseGeneratorSetting_manualRowAngleDeg_tooltip" text="Manuel olduğunda yukarı / aşağı sıraların açısı (0 ° Kuzeydir). Değer: 0 - 175 Adım: 5"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_title" text="Ada baypas modu"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_tooltip" text="Kurs sahadaki adaları nasıl atlamalı"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_none" text="baypas yok"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_simple" text="basit"/>
+    <text name="CP_vehicle_courseGeneratorSetting_islandBypassMode_circle" text="daire"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_title" text="Üzerinde çalışmaya başlayın"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_tooltip" text="Burun (hasat) veya tarla merkezi üzerinde çalışmaya başlayın (diğer işler)"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_on_headland" text="burun"/>
+    <text name="CP_vehicle_courseGeneratorSetting_startOnHeadland_up_down_rows" text="merkez"/>
+    <text name="CP_vehicle_courseGeneratorSetting_multiTools_title" text="Çoklu araçlar"/>
+    <text name="CP_vehicle_courseGeneratorSetting_multiTools_tooltip" text="Aynı rotadaki araç sayısı."/>
     <!---->
     <!--Vine course generator settings-->
     <!---->
-    <text name="CP_vehicle_vineCourseGeneratorSetting_title" text="Vine course generator"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic" text="Basic Settings"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title" text="Position of the course"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip" text="Should the course be driven on or beside the vine. This depends on the Tool. More Information in the help Menu."/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left" text="Left side of the vine"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center" text="On the vine"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right" text="Right side of the vine"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title" text="Tools per course."/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip" text="How many Tools can work together. More Information in the help Menu."/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title" text="Vines to skip"/>
-    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip" text="Skip vines should only be used, when the tool works on both vines (left and right)."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_title" text="Asma kursu üreteci"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_subTitle_basic" text="Temel Ayarlar"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_title" text="Dersin konumu"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_tooltip" text="Kursun asma üzerinde veya yanında sürülmesi gerekir. Bu Araca bağlıdır. Yardım Menüsünde Daha Fazla bilgi."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_left" text="Asmanın sol tarafı"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_center" text="Asma üzerinde"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineCenterOffset_right" text="Asmanın sağ tarafı"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_title" text="Kurs başına araçlar."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineMultiTools_tooltip" text="Kaç Araç birlikte çalışabilir. Yardım Menüsünde Daha Fazla bilgi."/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_title" text="Atlamak için sarmaşıklar"/>
+    <text name="CP_vehicle_vineCourseGeneratorSetting_vineRowsToSkip_tooltip" text="Atlama sarmaşıkları yalnızca alet her iki sarmaşıkta da (sol ve sağ) çalıştığında kullanılmalıdır."/>
     <!---->
     <!--Global settings-->
     <!---->
-    <text name="CP_global_setting_title" text="Global settings"/>
-    <text name="CP_global_setting_subTitle_general" text="Basic settings"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
-    <text name="CP_global_setting_wageModifier_title" text="Cp driver wages"/>
-    <text name="CP_global_setting_wageModifier_tooltip" text="Cp driver wages as percentage of normal worker's wages"/>
-    <text name="CP_global_setting_autoRepair_title" text="Automatic repair"/>
-    <text name="CP_global_setting_autoRepair_tooltip" text="Cp driver automatically repair, while driving."/>
-    <text name="CP_global_setting_autoRepair_off" text="Don't repair"/>
+    <text name="CP_global_setting_title" text="Genel Ayarlar"/>
+    <text name="CP_global_setting_subTitle_general" text="Temel ayarlar"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Uzman Modu "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Ek özelliklerle uzman modunu etkinleştirir/devre dışı bırakır."/>
+    <text name="CP_global_setting_wageModifier_title" text="Cp sürücü ücretleri"/>
+    <text name="CP_global_setting_wageModifier_tooltip" text="Normal işçi ücretlerinin yüzdesi olarak Cp sürücü ücretleri."/>
+    <text name="CP_global_setting_autoRepair_title" text="Otomatik onarım"/>
+    <text name="CP_global_setting_autoRepair_tooltip" text="Sürüş sırasında Cp sürücüsü otomatik olarak onarır."/>
+    <text name="CP_global_setting_autoRepair_off" text="Tamir etme"/>
     <text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%"/>
     <text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%"/>
-    <text name="CP_global_setting_autoRepair_always" text="Keep it healthy"/>
-    <text name="CP_global_setting_fuelThreshold_title" text="Fuel threshold"/>
-    <text name="CP_global_setting_fuelThreshold_tooltip" text="Driver will be released, if the fuel percentage is less."/>
-    <text name="CP_global_setting_brokenThreshold_title" text="Broken threshold"/>
-    <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
-    <text name="CP_global_setting_subTitle_userSettings" text="User settings"/>
-    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad friendly Hud"/>
-    <text name="CP_global_setting_controllerHudSelected_tooltip" text="Use the Hud, wich can be controlled with a Gamepad."/>
-    <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
-    <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder settings"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Angle difference at goal"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta angle relax factor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
-    <text name="CP_global_setting_showsAllActiveCourses_title" text="Shows all active courses"/>
-    <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Shows all active courses on the in game map."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
-    <text name="CP_global_setting_infoTextHudActive_title" text="Show info texts window"/>
-    <text name="CP_global_setting_infoTextHudActive_tooltip" text="Displays an info text window."/>
-    <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Player mouse event"/>
+    <text name="CP_global_setting_autoRepair_always" text="Sağlıklı tutun"/>
+    <text name="CP_global_setting_fuelThreshold_title" text="Yakıt eşiği"/>
+    <text name="CP_global_setting_fuelThreshold_tooltip" text="Yakıt yüzdesi daha az ise sürücü serbest bırakılacaktır."/>
+    <text name="CP_global_setting_brokenThreshold_title" text="Kırık eşik"/>
+    <text name="CP_global_setting_brokenThreshold_tooltip" text="Araç veya bir ekipman daha fazla bozulursa sürücü serbest bırakılır. %100 kapalı."/>
+    <text name="CP_global_setting_subTitle_userSettings" text="Kullanıcı ayarları"/>
+    <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad dostu Hud"/>
+    <text name="CP_global_setting_controllerHudSelected_tooltip" text="Gamepad ile kontrol edilebilen Hud'u kullanın."/>
+    <text name="CP_global_setting_showActionEventHelp_title" text="Eylem olayı yardımı"/>
+    <text name="CP_global_setting_showActionEventHelp_tooltip" text="Eylem olayı yardım metinlerini gösterir."/>
+    <text name="CP_global_setting_subTitle_pathfinder" text="Yol Bulucu ayarları"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Hedefte açı farkı"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Hedefe izin verilen maksimum açı farkı, daha büyük değerler daha hızlı ancak daha az doğrudur."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta açısı gevşeme faktörü"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Başarısız yinelemelerde yol bulucu doğruluğunu azaltan faktör, daha büyük değerler daha hızlıdır."/>
+    <text name="CP_global_setting_showsAllActiveCourses_title" text="Tüm etkin kursları gösterir"/>
+    <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Oyun haritasındaki tüm aktif kursları gösterir."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Kursları mini haritada gösterir"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Parkurun mini harita üzerine çizilmesini sağlar."/>
+    <text name="CP_global_setting_infoTextHudActive_title" text="Bilgi metinleri penceresini göster"/>
+    <text name="CP_global_setting_infoTextHudActive_tooltip" text="Bir bilgi metni penceresi görüntüler."/>
+    <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Oyuncu fare olayı"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Enables/disables the player mouse event for the info text display outside of a vehicle."/>
-    <text name="CP_global_setting_preferCustomFields_title" text="Prefer custom fields"/>
-    <text name="CP_global_setting_preferCustomFields_tooltip" text="Prefer custom field if there is also a regular field at the selected position."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_preferCustomFields_title" text="Özel alanları tercih et"/>
+    <text name="CP_global_setting_preferCustomFields_tooltip" text="Seçilen konumda normal bir alan da varsa özel alanı tercih edin."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Mesafe birimi"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Mesafe birimi metre veya Ayak."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="Metre"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="Ayak"/>
     <!---->
     <!--Course manager-->
     <!---->
-    <text name="CP_courseManager_title" text="CourseManager(%s) %s"/>
-    <text name="CP_courseManager_no_current_course" text="no course"/>
+    <text name="CP_courseManager_title" text="Kurs Yöneticisi(%s) %s"/>
+    <text name="CP_courseManager_no_current_course" text="kurs yok"/>
     <text name="CP_courseManager_temporary_course" text="temporary course"/>
-    <text name="CP_courseManager_change_mode" text="Change mode"/>
-    <text name="CP_courseManager_load_courses" text="Load course"/>
-    <text name="CP_courseManager_save_courses" text="Save course"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
-    <text name="CP_courseManager_clear_current_courses" text="Clear current course"/>
-    <text name="CP_courseManager_create_directory" text="Create new folder"/>
-    <text name="CP_courseManager_move_entry" text="Move entry"/>
-    <text name="CP_courseManager_delete_entry" text="Delete entry"/>
-    <text name="CP_courseManager_rename_entry" text="Rename entry"/>
-    <text name="CP_courseManager_copy_entry" text="Copy entry"/>
+    <text name="CP_courseManager_change_mode" text="Modu değiştir"/>
+    <text name="CP_courseManager_load_courses" text="Kursu yükle"/>
+    <text name="CP_courseManager_save_courses" text="Kursu kaydet"/>
+    <text name="CP_courseManager_edit_course" text="Kurs düzenleyicisini aç"/>
+    <text name="CP_courseManager_clear_current_courses" text="Geçerli rotayı temizle"/>
+    <text name="CP_courseManager_create_directory" text="Yeni klasör oluştur"/>
+    <text name="CP_courseManager_move_entry" text="Girişi taşı"/>
+    <text name="CP_courseManager_delete_entry" text="Girişi sil"/>
+    <text name="CP_courseManager_rename_entry" text="Girişi yeniden adlandır"/>
+    <text name="CP_courseManager_copy_entry" text="Girişi kopyala"/>
     <text name="CP_courseManager_folder_dialog" text="Folder name:"/>
-    <text name="CP_courseManager_course_dialog" text="Course name:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_course_dialog" text="Kurs adı:"/>
+    <text name="CP_courseManager_deleteWarning" text="Silmek istediğinizden emin misiniz (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="Kurs düzenleme, kurs sürücüleri için sorun yaratabilir.
+Bu aracı yalnızca kurs oluşturucu yeterince iyi bir kurs oluşturamadığında kullanmalısınız.
+Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu geçersiz kılar.
 "/>
-    <text name="CP_courseManager_deleteError" text="Folder is not empty (%s)!"/>
-    <text name="CP_courseManager_entryExistAlreadyError" text="File already exist in target folder (%s)!"/>
-    <text name="CP_courseManager_noAccessError" text="No access to the folder (%s)!"/>
-    <text name="CP_courseManager_targetIsNoFolderError" text="Target location is not a folder (%s)!"/>
-    <text name="CP_courseManager_targetIsNoCourseError" text="Target location is not a course (%s)!"/>
-    <text name="CP_courseManager_basicSettings" text="Course interaction."/>
-    <text name="CP_courseManager_advancedSettings" text="Edit files."/>
-    <text name="CP_courseManager_activate" text="Activate"/>
+    <text name="CP_courseManager_deleteError" text="Klasör boş değil (%s)!"/>
+    <text name="CP_courseManager_entryExistAlreadyError" text="Hedef klasörde (%s) dosya zaten var!"/>
+    <text name="CP_courseManager_noAccessError" text="Klasöre (%s) erişim yok!"/>
+    <text name="CP_courseManager_targetIsNoFolderError" text="Hedef konum bir klasör (%s) değil!"/>
+    <text name="CP_courseManager_targetIsNoCourseError" text="Hedef konum bir rota (%s) değildir!"/>
+    <text name="CP_courseManager_basicSettings" text="Kurs etkileşimi."/>
+    <text name="CP_courseManager_advancedSettings" text="Dosyaları düzenleyin."/>
+    <text name="CP_courseManager_activate" text="Etkinleştirmek"/>
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="Kurs editörü"/>
+    <text name="CP_editor_delete_title" text="Yol noktalarını sil"/>
+    <text name="CP_editor_delete_primary_text" text="birincil"/>
+    <text name="CP_editor_delete_secondary_text" text="ikincil"/>
+    <text name="CP_editor_delete_tertiary_text" text="Son yol noktasına kadar tüm yol noktalarını siler."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Sonuncuya kadar olan tüm yol noktalarının silinmesi gerektiğinden emin misin?"/>
+    <text name="CP_editor_delete_err" text="Birkaç yol noktası kaldı."/>
+    <text name="CP_editor_course_basic_title" text="Temel"/>
+    <text name="CP_editor_course_basic_move_title" text="Bir yol noktasını taşıma"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="birincil"/>
+    <text name="CP_editor_course_basic_insert_title" text="Yol noktaları ekle"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="birincil"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="ikincil"/>
+    <text name="CP_editor_course_basic_insert_err" text="Bir dönüş noktası arasına sokmaya izin verilmez."/>
+    <text name="CP_editor_course_advanced_title" text="Gelişmiş"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="Bir ara noktayı dönüş olarak işaretler."/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Bir dönüm noktası ekler veya siler. (Seçilen yol noktası dönüş başlangıcı olacaktır.)"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Başka bir dönüm noktasına yaklaşmak."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="Birden çok yol noktasını taşır"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="birincil"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="ikincil"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="Yol noktalarını eğri olarak ekler"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="birincil"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="ikincil"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="Bir dönüm noktası seçilmesine izin verilmez."/>
     <!---->
     <!--Info texts-->
     <!---->
-    <text name="CP_infoTexts_isStuck" text="Helper is stuck"/>
-    <text name="CP_infoTexts_blockedByObject" text="Blocked by an object"/>
-    <text name="CP_infoTexts_shouldRefuel" text="Should be refueled"/>
-    <text name="CP_infoTexts_needsFuel" text="Needs to be refueled"/>
-    <text name="CP_infoTexts_needsRepair" text="Needs to be repaired"/>
-    <text name="CP_infoTexts_needsFilling" text="Needs to be refilled"/>
-    <text name="CP_infoTexts_needsUnloading" text="Needs to be unloaded"/>
-    <text name="CP_infoTexts_workFinished" text="Finished work"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
-    <text name="CP_infoTexts_outOfMoney" text="Out of money"/>
-    <text name="CP_infoTexts_waitForRainToFinish" text="Waiting for rain to finish"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
-    <text name="CP_infoTexts_errorStopped" text="Left the course, stopped"/>
-    <text name="CP_infoTexts_wrongBaleWrapType" text="Wrong bale type"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
+    <text name="CP_infoTexts_isStuck" text="Yardımcı sıkışmış"/>
+    <text name="CP_infoTexts_blockedByObject" text="Bir nesne tarafından engellendi"/>
+    <text name="CP_infoTexts_shouldRefuel" text="Yakıt ikmali yapılmalıdır"/>
+    <text name="CP_infoTexts_needsFuel" text="Yakıt ikmali gerekiyor"/>
+    <text name="CP_infoTexts_needsRepair" text="Onarılması gerekiyor"/>
+    <text name="CP_infoTexts_needsFilling" text="Yeniden doldurulması gerekiyor"/>
+    <text name="CP_infoTexts_needsUnloading" text="Boşaltılması gerekiyor"/>
+    <text name="CP_infoTexts_workFinished" text="Bitmiş iş"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Birleştirmek için sürüş"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Römorka sürüş"/>
+    <text name="CP_infoTexts_outOfMoney" text="Parasız"/>
+    <text name="CP_infoTexts_waitForRainToFinish" text="Yağmurun bitmesini bekliyorum"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Boşaltıcı bekleniyor"/>
+    <text name="CP_infoTexts_errorStopped" text="Kurstan ayrıldı, durdu"/>
+    <text name="CP_infoTexts_wrongBaleWrapType" text="Yanlış balya tipi"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Yol bulunamadı"/>
     <!---->
     <!--Custom field manager-->
     <!---->
-    <text name="CP_customFieldManager_confirm_save" text="Do you want to save the recorded course as custom field %s?"/>
-    <text name="CP_customFieldManager_confirm_delete" text="Do you want to delete the custom field %s?"/>
-    <text name="CP_customFieldManager_delete" text="Delete custom field"/>
-    <text name="CP_customFieldManager_rename" text="Rename custom field"/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
-    <text name="CP_customFieldManager_draw" text="Draw custom field"/>
-    <text name="CP_customFieldManager_draw_header" text="Draw custom field lines with right click."/>
-    <text name="CP_customFieldManager_save" text="Save custom field"/>
-    <text name="CP_controllerGui_startRecording" text="Start custom field recording."/>
-    <text name="CP_controllerGui_stopRecording" text="Stop custom field recording."/>
+    <text name="CP_customFieldManager_confirm_save" text="Kaydedilen kursu %s özel alanı olarak kaydetmek ister misiniz?"/>
+    <text name="CP_customFieldManager_confirm_delete" text="%S özel alanını silmek istiyor musunuz?"/>
+    <text name="CP_customFieldManager_delete" text="Özel alanı sil"/>
+    <text name="CP_customFieldManager_rename" text="Özel alanı yeniden adlandır"/>
+    <text name="CP_customFieldManager_edit" text="Özel alanı düzenle"/>
+    <text name="CP_customFieldManager_draw" text="Özel alan çiz"/>
+    <text name="CP_customFieldManager_draw_header" text="Sağ tıklama ile özel alan çizgileri çizin."/>
+    <text name="CP_customFieldManager_save" text="Özel alanı kaydet"/>
+    <text name="CP_controllerGui_startRecording" text="Özel alan kaydını başlatın."/>
+    <text name="CP_controllerGui_stopRecording" text="Özel alan kaydını durdurun."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -399,109 +399,106 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="General Information"/>
     <text name="CP_help_page_GeneralBase_text" text="
-Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
-New with this iteration of CP is the vine fieldwork.
-Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
-It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
-
-For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
-There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
-
-What is the expert Mode:
-When the expert Mode is deactivated, you have only access to some settings.
-The other settings are hidden and set to default values, which works in most situations.
-That way, we try to help Users to get easier into Courseplay without being overwhelmed from all the settings.
+Courseplay, ek özelliklere sahip saha kursları oluşturmanıza olanak tanır, örneğin: headlands.
+Ayrıca, daha önce bir biçme makinesi veya biçerdöver olarak aynı rotada gönderilebilen balya makinelerinin ve yem vagonlarının kullanılmasını sağlar.
+Bir diğer büyük özellik ise tarladaki balyaların toplanması veya sarılmasıdır.
+CP'nin bu yinelemesinde yeni olan asma saha çalışmasıdır.
+Saha çalışması kursları, aynı alanda bir konvoyda çalışan 5 sürücüye kadar kullanılmasına izin veren çok amaçlı modda kurulabilir.
+Biçerdöverin saha üzerinde/yakınında otomatik olarak bir römorkta boşaltılması da mümkündür.
+Kurs oynamanın kullanması için özel alan kenarlıkları atanabilir, örneğin: normal alan olarak tanınmayan bir çayır durumunda.
+Son olarak cp, Autodrive için yakındaki bir siloda bir ekme makinesinin yeniden doldurulmasına veya bir yem vagonunun boşaltılmasına vb. İzin veren bir arayüze sahiptir.
+Daha fazla bilgi için lütfen github'ımızı ziyaret edin: https://github.com/Courseplay/Courseplay_FS22.
+Buradan yardım alabilir veya yaşadığınız herhangi bir sorunu bildirebilirsiniz.
+Son olarak, hataları bildirdiği, geri bildirim ve yeni fikirler verdiği için her çevirmenimize ve topluluğumuza teşekkür ederiz.
+Uzman Modu nedir:
+Uzman Modu devre dışı bırakıldığında, yalnızca bazı ayarlara erişebilirsiniz.
+Diğer ayarlar gizlidir ve çoğu durumda çalışan varsayılan değerlere ayarlanır.
+Bu şekilde, Kullanıcıların tüm ayarlardan bunalmadan Courseplay'e daha kolay girmelerine yardımcı olmaya çalışıyoruz.
 "/>
-    <text name="CP_help_page_extendedJobMenu_title" text="Extended AI Menu"/>
+    <text name="CP_help_page_extendedJobMenu_title" text="Genişletilmiş AI Menüsü"/>
     <text name="CP_help_page_startJobMenuBase_text" text="
-First you need to select a vehicle in the AI menu for generating a fieldwork course or gaining access to the vehicle settings and the course manager.
-The currently loaded course will be displayed on the map.
-The global settings are always visible.
-For generating a course and starting the courseplay jobs, you will need to create the job CP: Fieldwork or CP: wrap/collect bales, similar to the Giants helper.
+Öncelikle, bir saha çalışması kursu oluşturmak veya araç ayarlarına ve kurs yöneticisine erişmek için AI menüsünden bir araç seçmeniz gerekir.
+Şu anda yüklü olan rota haritada görüntülenecektir.
+Genel ayarlar her zaman görünürdür.
+Bir kurs oluşturmak ve kurs işlerini başlatmak için, Devler yardımcısına benzer şekilde CP: Fieldwork veya CP: sarma / toplama balyalarını oluşturmanız gerekir.
 "/>
     <text name="CP_help_page_startJobMenuFunctions_text" text="
-To start off with your first CP job, you would have to select a vehicle and a possible valid implement which is supported for the job.
-Then, by clicking on create job, you can select CP: Fieldwork for fieldwork tools or CP: wrap/collect
-with a bale wrapper or bale collector attached.
+İlk CP işinize başlamak için, iş için desteklenen bir araç ve olası geçerli bir ekipman seçmeniz gerekir.
+Ardından, iş oluştur'a tıklayarak, saha çalışması araçları için CP: Saha çalışması veya CP: sarma/toplama seçeneğini belirleyebilirsiniz.
+bir balya sarıcı veya balya toplayıcı takılıyken.
 "/>
     <text name="CP_help_page_readyJobMenuBase_text" text="
-With a CP job selected, you would need to place the field position on a field for generating the course or using the bale finder on it.
-The position also roughly controls the starting point of your course.
-If you want to use the Giants helper to drive to the field, then you also need to set the target position close to the starting point of the course.
-The lane offset setting is only used if you want to have multiple helpers working on the same field. For this please checkout the separate help menu page below.
+Bir CP işi seçiliyken, kursu oluşturmak veya üzerindeki balya bulucuyu kullanmak için alan konumunu bir alana yerleştirmeniz gerekir.
+Pozisyon aynı zamanda kursunuzun başlangıç noktasını da kabaca kontrol eder.
+Sahaya gitmek için Devler yardımcısını kullanmak istiyorsanız, hedef konumu kursun başlangıç noktasına yakın bir yere de ayarlamanız gerekir.
+Şerit ofseti ayarı yalnızca aynı alanda çalışan birden fazla yardımcınız olmasını istiyorsanız kullanılır. Bunun için lütfen aşağıdaki ayrı yardım menüsü sayfasına göz atın.
 "/>
     <text name="CP_help_page_readyJobMenuFunctions_text" text="
-When the field position is placed correctly on a field, you will see the field border drawn on the map.
-If you are creating a CP: Fieldwork job, you will gain access to the course generator settings. 
+Alan konumu bir alana doğru yerleştirildiğinde, haritada çizilen alan kenarlığını görürsünüz.
+CP: Saha çalışması işi oluşturuyorsanız kurs oluşturucu ayarlarına erişim kazanırsınız. 
 "/>
     <text name="CP_help_page_JobMenuExtras_text" text="
-Now it's possible to start the driver directly from the menu. The Giants helper will drive to the target position and from there the CP job automatically takes over.
-Alternatively you can also start the driver from the HUD if you are close to the field with the vehicle or using the AutoDrive mod to deliver the CP job close to the field.
+Artık sürücüyü doğrudan menüden başlatmak mümkün. Devler yardımcısı hedef pozisyona gider ve oradan CP işi otomatik olarak devralır.
+Alternatif olarak, araçla alana yakınsanız veya CP işini alana yakın bir yere teslim etmek için AutoDrive modunu kullanıyorsanız, sürücüyü HUD'den de başlatabilirsiniz.
 "/>
     <text name="CP_help_page_courseGenerator_title" text="Course generator"/>
     <text name="CP_help_page_courseGeneratorBase_text" text="
-Every fieldwork course is generated by the course generator. This is a mighty tool, which allows you to customize the generated course to your needs.
-If you are new to this, you should probably start by only changing the headland amount setting.
-After that you can always change the other values and hit generate course and have a look, what impact certain values have on the course.
-Experimenting with it and check what impact the different setting on different fields have is the best way to get used to it.
+Her saha çalışması kursu, kurs oluşturucu tarafından oluşturulur. Bu, oluşturulan kursu ihtiyaçlarınıza göre özelleştirmenizi sağlayan güçlü bir araçtır.
+Bu konuda yeniyseniz, muhtemelen yalnızca arazi miktarı ayarını değiştirerek başlamalısınız.
+Bundan sonra her zaman diğer değerleri değiştirebilir ve kurs oluştur'a basabilir ve belirli değerlerin kurs üzerinde ne gibi bir etkisi olduğuna bir göz atabilirsiniz.
+Onunla denemeler yapmak ve farklı alanlardaki farklı ayarların ne gibi bir etkisi olduğunu kontrol etmek, buna alışmanın en iyi yoludur.
 "/>
     <text name="CP_help_page_courseGeneratorBaseFunctions_text" text="
-Basics:
-The first few values you see here, are real basic stuff.
-- Work width: Most tools get the exact work width detected and you won't have to care about this setting at all. Adjusting it, will have an impact on your overall course.
-- Multiple Tools: This setting is used when you want more then just one vehicle to work on your course. As this gets a bit more complicated, there is a separate help topic for it.
-- Number of Headlands: The best way to keep your vehicles on the field while turning at the end of each row is to add headlands.
-The Number of the Headlands multiplied by the work width should be at least the total length of your vehicle plus the attached tool.
-Center options:
-- Field center: There are different modes on how your field center pattern should look like. The classic and most used one is up/down.
-Spiral, Racetrack and Lands have their own specific advantages over the others. Lands for example will have the combine's pipe point out of the fruit most of the time to easier unload them.
-- Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
-- Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
-- Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+Temel:
+Burada gördüğünüz ilk birkaç değer, gerçek temel şeylerdir.
+- Çalışma genişliği: Çoğu araç tam çalışma genişliğini algılar ve bu ayarı hiç umursamanıza gerek kalmaz. Bunu ayarlamak, genel kursunuz üzerinde bir etkiye sahip olacaktır.
+- Birden Çok Araç: Bu ayar, kursunuzda birden fazla aracın çalışmasını istediğinizde kullanılır. Bu biraz daha karmaşıklaştıkça, bunun için ayrı bir yardım konusu var.
+- Headlands Sayısı: Her sıranın sonunda dönerken araçlarınızı sahada tutmanın en iyi yolu headlands eklemektir.
+Çalışma genişliği ile çarpılan Headlands Sayısı, en azından aracınızın toplam uzunluğu ve ekli alet olmalıdır.
+Merkezi seçenekleri:
+- Alan merkezi: Alan merkezi deseninizin nasıl görünmesi gerektiği konusunda farklı modlar vardır. Klasik ve en çok kullanılanı yukarı / aşağıdır.
+Spiral, Yarış Pisti ve Arazilerin diğerlerine göre kendine özgü avantajları vardır. Örneğin, araziler, daha kolay boşaltmak için çoğu zaman kombinenin borusunun meyveden dışarı işaret etmesini sağlayacaktır.
+- Yukarı / Aşağı satır yönü: otomatik çoğunlukla en iyi yönü bulur, ancak bazen en uzun kenar daha iyi oturur. Her ikisinden de memnun değilseniz, manuel seçin ve yönü manuel olarak ayarlayın.
+- Atlanacak satırlar: Bu, çalışmanızı hızlandırmak için çok yararlı bir seçenektir, çünkü araçlar bir sonraki satıra geçmek için yedeklemek zorunda kalmaz.
+- Arazi başına sıralar: Bu yalnızca saha merkezi araziye ayarlandığında etkilidir ve jeneratöre her arazinin kaç sıraya sahip olması gerektiğini söyleyecektir. Ne kadar çok sıra olursa, o kadar az toprak üretilecektir.
+- Yukarı/aşağı satır açısı: Yukarı/Aşağı satır yönü manuel olarak ayarlandığında, bu ayar oluşturma yönünü söyleyecektir.
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_text" text="
-Headland settings will only show up, when you have set at least 1 at Number of headlands.
-You gain options for where to start on, corner settings, direction and overlap.
-Headlands are highly suggested to prevent tools leaving the field when turning.
+Headland ayarları yalnızca Headlands sayısı'nda en az 1 ayarladığınızda görünür.
+Nereden başlayacağınız, köşe ayarları, yön ve örtüşme seçenekleri kazanırsınız.
+Araziler, dönüş sırasında aletlerin tarladan çıkmasını önlemek için şiddetle tavsiye edilir.
 "/>
     <text name="CP_help_page_courseGeneratorHeadlandFunctions_text" text="
-- Start work on: As mentioned in the extended AI Menu, the field position is used to set the start or end position for the field work course.
-When set to start on headland, it tells where the start should be. When changed to start on rows, it will tell where to end the work.
-- Headland corners: Smooth will have a simple smoothing over the corners, This works for all tools, but will lead to tiny unworked patches in the corners.
-They can be reduced with overlap, but never disappear. Sharp will generate a turn based on the angle of the field border angle.
-Round will take the current selected vehicles turn radius into account to have the best round corner for that tool.
-- Headland direction: clockwise or counter-clockwise. This can be important for combines and harvesters, depending on wich side the pipe or conveyor belt is.
-- Headland overlap: How much % overlap all headlands should have. The first one will have no overlap with the field border, but the inner ones will overlap with their neighbour.
+- Üzerinde çalışmaya başla: Genişletilmiş AI Menüsünde belirtildiği gibi, saha konumu saha çalışması kursunun başlangıç veya bitiş konumunu ayarlamak için kullanılır.
+Arazide başlamak üzere ayarlandığında, başlangıcın nerede olması gerektiğini söyler. Satırlarda başlayacak şekilde değiştirildiğinde, çalışmanın nerede biteceğini söyleyecektir.
+- Headland köşeleri: Pürüzsüz, köşeler üzerinde basit bir pürüzsüzleştirmeye sahip olacak, Bu tüm araçlar için işe yarayacak, ancak köşelerde küçük çalışılmamış yamalara yol açacaktır.
+Üst üste binme ile azaltılabilirler, ancak asla kaybolmazlar. Sharp, alan kenarlığı açısının açısına bağlı olarak bir dönüş oluşturur.
+Tur, mevcut seçilen araçların o araç için en iyi yuvarlak köşeye sahip olmak için yarıçapı çevirmesini alacaktır.
+- Burun yönü: saat yönünde veya saat yönünün tersine. Bu, borunun veya konveyör bandının hangi tarafta olduğuna bağlı olarak biçerdöverler ve biçerdöverler için önemli olabilir.
+- Headland çakışması: Tüm burçların % ne kadar örtüşmesi gerektiği. İlki alan sınırıyla örtüşmeyecek, ancak iç kısımlar komşularıyla örtüşecektir.
 "/>
     <text name="CP_help_page_courseGeneratorExtras_text" text="
-Field Margin explanation:
-Positive values reduce field size to add a buffer around the worked area in case you have obstacles near the field border.
-Negative values enlarge worked area beyond the field boundary to cover up field borders that are not perfectly detected.
+Alan Marjı açıklaması:
+Pozitif değerler, alan sınırının yakınında engeller olması durumunda çalışılan alanın etrafına bir arabellek eklemek için alan boyutunu küçültür.
+Negatif değerler, mükemmel algılanmayan alan sınırlarını örtmek için çalışma alanını alan sınırının ötesine genişletir.
 "/>
-    <text name="CP_help_page_courseManager_title" text="Course manager"/>
+    <text name="CP_help_page_courseManager_title" text="Kurs yöneticisi"/>
     <text name="CP_help_page_courseManagerBase_text" text="
-The course manager allows you to save courses and enables you to load the saved course later again.
-This is really important, when you want to have multiple workers driving the same course for convoy (multi tools).
-This feature also allows you to pickup the swath left behind by a combine or a windrower with a forage wagon or a baler.
-
-The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
-The course manager works differently from what you are used to in FS19.
-Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
-Folders can simply created by the button at the bottom of the screen and entering a name.
-Courses are only saved localy for now.
+Kurs yöneticisi, dersleri kaydetmenize ve kaydedilen dersi daha sonra tekrar yüklemenize olanak tanır.
+Konvoy (çoklu araçlar) için aynı rotayı kullanan birden fazla işçiye sahip olmak istediğinizde bu gerçekten önemlidir.
+Bu özellik aynı zamanda bir biçerdöver veya bir rüzgar kürek makinesinin geride bıraktığı biçme alanını bir yem vagonu veya balya makinesi ile almanızı sağlar.
+Kurs dosyalarının kaydetme konumu şudur: .. \My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (veya vanilya için örneğin MapUS).
+Kurs yöneticisi, FS19'da alışkın olduğunuzdan farklı çalışır.
+Kurslar, solda görüntülenecek klasörlere kaydedilir. Bu, kursları kaydetmeye başlamak için en az bir klasöre ihtiyacınız olacağı anlamına gelir. 
+Klasörler, ekranın altındaki düğmeyle kolayca oluşturulabilir ve bir ad girebilir.
+Kurslar şimdilik yalnızca yerel olarak kaydedilmiştir.
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
-When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
-The name and location can be changed later.
-To remove the course from your vehicle, click on 'Clear current course' button.
-For loading a course you would have to select the folder first, click on the load course button and then simply clicking on the course you want to load.
-Clicking on change mode activates the edit mode of the course manager.
+Yüklü bir dersiniz olduğunda, dersi kaydet düğmesine ve ardından klasöre tıklayarak bu dersi kaydedebilirsiniz. Ardından, kursunuzun adını girebileceğiniz bir açılır pencere görünecektir.
+Ad ve konum daha sonra değiştirilebilir.
+Rotayı aracınızdan kaldırmak için 'Geçerli rotayı temizle' düğmesine tıklayın.
+Bir dersi yüklemek için önce klasörü seçmeniz, dersi yükle düğmesine tıklamanız ve ardından yüklemek istediğiniz dersi tıklamanız yeterlidir.
+Modu değiştir'e tıklandığında kurs yöneticisinin düzenleme modu etkinleştirilir.
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
 With the edit mode is active you have these options:
