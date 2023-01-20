@@ -17,6 +17,7 @@
 * Russian: [Gonimy-Vetrom](https://github.com/Gonimy-Vetrom)
 * Spanish: [KCHARRO](https://github.com/KCHARRO), [aorek](https://github.com/aorek)
 * Swedish: [piplarsson](https://github.com/piplarsson)
+* Turkish: [HakanGorkem](http://github.com/HakanGorkem)
 
 Logo Design by Finals Farming
 
