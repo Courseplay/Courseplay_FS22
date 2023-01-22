@@ -11,6 +11,10 @@ function CoverController:init(vehicle, implement)
 	self.coverState = self.COVER_STATE_UNKNOWN
 end
 
+function CoverController:isValid()
+	return self.coverSpec.hasCovers
+end
+
 --- Gets the fill units for opening or closing of the trailer.
 function CoverController:getFillUnits()
 	if self.implement.getPipeDischargeNodeIndex then 
@@ -37,6 +41,9 @@ function CoverController:onFinished()
 end
 
 function CoverController:openCover()
+	if not self:isValid() then 
+		return
+	end
 	self:debug("Opening covers")
 	for _, fillUnitIndex in pairs(self:getFillUnits()) do 
 		self.implement:aiPrepareLoading(fillUnitIndex)
@@ -45,6 +52,9 @@ function CoverController:openCover()
 end
 
 function CoverController:closeCover()
+	if not self:isValid() then 
+		return
+	end
 	self:debug("Closing covers")
 	for _, fillUnitIndex in pairs(self:getFillUnits()) do 
 		self.implement:aiFinishLoading(fillUnitIndex)
@@ -53,6 +63,9 @@ function CoverController:closeCover()
 end
 
 function CoverController:update(dt)
+	if not self:isValid() then 
+		return
+	end
 	--- Opens the cover, when the drive strategy allows it, otherwise keep the cover closed.
 	if self.driveStrategy.isCoverOpeningAllowed then 
 		if self.driveStrategy:isCoverOpeningAllowed() then 
