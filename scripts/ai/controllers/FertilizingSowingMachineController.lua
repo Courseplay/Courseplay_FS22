@@ -28,7 +28,7 @@ local function onStartWorkAreaProcessing(sowingMachine, superFunc, ...)
 	end
 	if not fertilizingEnabled then
 		sprayerParams.sprayFillLevel = 0
-	elseif capacity > 0 and sprayerParams.sprayFillLevel <= 0 then
+	elseif capacity > 0 and sprayerParams.sprayFillLevel <= 0 and not sowingMachine:getIsSprayerExternallyFilled() then
 		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS,sowingMachine, "Stopped Cp, as the fertilizer is empty.")
 		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 	end
