@@ -158,10 +158,10 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
 
 
     self.isStuckTimer:setFinishCallback(function ()
-            self:debug("is stuck, trying to drive out of the silo.")
             if self.frozen then 
                 return
             end
+            self:debug("is stuck, trying to drive out of the silo.")
             if self:isTemporaryOutOfSiloDrivingAllowed() then 
                 if self.driveIntoSiloAttempts >= self.maxDriveIntoTheSiloAttempts then
                     self:debug("Max attempts reached, trying a new approach.")
@@ -170,6 +170,7 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
                     self:startDrivingTemporaryOutOfSilo()
                 end
             elseif self.siloController:hasNearbyUnloader() and self:isDrivingToParkPositionAllowed() then
+                self:debug("Found an unloader nearby and is stuck, so immediately leave the silo.")
                 self:startDrivingOutOfSilo()
             end
         end)
@@ -304,14 +305,9 @@ function AIDriveStrategyBunkerSilo:drive()
     if self.state == self.states.DRIVING_INTO_SILO then
 
         local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
-        if self.silo:isTheSameSilo(closestObject) then
-            self:debug("End wall detected.")
-            self:startDrivingOutOfSilo()
-        end
-
         local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndMarkerOffset())
-        if isEndReached then 
-            self:debug("End is reached.")
+        if self.silo:isTheSameSilo(closestObject) or isEndReached then
+            self:debug("End wall detected or bunker silo end is reached.")
             self:startDrivingOutOfSilo()
         end
         self:setMaxSpeed(maxSpeed)
