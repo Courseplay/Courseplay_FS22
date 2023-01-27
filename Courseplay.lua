@@ -127,7 +127,9 @@ function Courseplay:setupGui()
 	g_gui:loadGui(Utils.getFilename("config/gui/CourseManagerFrame.xml", Courseplay.BASE_DIRECTORY),
 				 "CpCourseManagerFrame", courseManagerFrame, true)
 	local function predicateFunc()
-		return CpInGameMenuAIFrameExtended.getVehicle() ~= nil
+		-- Only allow the vehicle bound pages, when a vehicle with cp functionality is chosen/entered.
+		local vehicle = CpInGameMenuAIFrameExtended.getVehicle()
+		return vehicle ~= nil and vehicle.spec_cpAIWorker ~= nil
 	end
 	
 	--- As precision farming decided to be moved in between the normal map and the ai map,
