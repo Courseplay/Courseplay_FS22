@@ -1533,7 +1533,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
         self:startCourse(returnCourse, 1)
         return true
     else
-        self:debug('No path found to return to fieldwork after self unload',
+        self:debug('No path found to return to fieldwork after self unload (%d ms)',
                 g_currentMission.time - (self.pathfindingStartedAt or 0))
         local course, ix = self:getRememberedCourseAndIx()
         local returnCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(),
