@@ -42,7 +42,7 @@
 		<!--Fold at End-->
 		<Setting classType="AIParameterBooleanSetting" name="foldImplementAtEnd" defaultBool="true" isExpertModeOnly="true" isVisible="areCourseSettingsVisible"/>
 		<!--Return to Start-->
-		<Setting classType"AIParameterBooleanSetting" name="returnToStart" defaultBool="false" isExpertModeOnly="true" isVisible="areCourseSettingsVisable"/>
+		<Setting classType="AIParameterBooleanSetting" name="returnToStart" defaultBool="false" isExpertModeOnly="true" isVisible="areCourseSettingsVisable"/>
 		<!--Raise Implement-->
 		<Setting classType="AIParameterBooleanSetting" name="raiseImplementLate" vehicleConfiguration="raiseLate" isVisible="areCourseSettingsVisible">
 			<Texts>
