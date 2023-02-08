@@ -271,7 +271,7 @@ function CpBunkerSilo:draw()
 end
 
 function CpBunkerSilo:drawArea(area)
-	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, area[1].x, 0, area[1].z) + 2
+	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.sx, 0, self.sz) + 2
 	DebugUtil.drawDebugAreaRectangle(area[1].x, y, area[1].z, area[2].x, y, area[2].z, area[4].x, y, area[4].z, false, 1, 0, 0)
 end
 

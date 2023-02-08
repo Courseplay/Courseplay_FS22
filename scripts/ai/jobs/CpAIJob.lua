@@ -268,6 +268,20 @@ function CpAIJob:getPricePerMs()
 	return CpAIJob:superClass().getPricePerMs(self) * modifier
 end
 
+--- Fix for precision farming ...
+function CpAIJob.getPricePerMs_FixPrecisionFarming(vehicle, superFunc, ...)
+	if vehicle then 
+		return superFunc(vehicle, ...)
+	end
+	--- Only if the vehicle/self of AIJobFieldWork:getPricePerMs() us nil,
+	--- then the call was from precision farming and needs to be fixed ...
+	--- Sadly the call on their end is not dynamic ...
+	local modifier = g_Courseplay.globalSettings:getSettings().wageModifier:getValue()/100
+	return superFunc(vehicle, ...) * modifier
+end
+
+AIJobFieldWork.getPricePerMs = Utils.overwrittenFunction(AIJobFieldWork.getPricePerMs, CpAIJob.getPricePerMs_FixPrecisionFarming)
+
 --- Resets the position parameters, if the menu was opened by the hud.
 function CpAIJob:resetStartPositionAngle(vehicle)
 	local x, _, z = getWorldTranslation(vehicle.rootNode) 

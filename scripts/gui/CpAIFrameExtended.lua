@@ -13,6 +13,22 @@ CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
 CpInGameMenuAIFrameExtended.curDrawPositions={}
 CpInGameMenuAIFrameExtended.drawDelay = g_updateLoopIndex
 CpInGameMenuAIFrameExtended.DELAY = 1 
+CpInGameMenuAIFrameExtended.hotspotFilterState = {}
+CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots = {
+	--- Hotspots visible, while drawing a custom field border.
+	MapHotspot.CATEGORY_FIELD,
+--	MapHotspot.CATEGORY_UNLOADING,
+--	MapHotspot.CATEGORY_LOADING,
+--	MapHotspot.CATEGORY_PRODUCTION,
+	MapHotspot.CATEGORY_AI,
+	MapHotspot.CATEGORY_COMBINE,
+	MapHotspot.CATEGORY_STEERABLE,
+	MapHotspot.CATEGORY_PLAYER,
+--	MapHotspot.CATEGORY_SHOP,
+--	MapHotspot.CATEGORY_OTHER
+	CustomFieldHotspot.CATEGORY
+}
+
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 
 	CpInGameMenuAIFrameExtended.setupButtons(self)		
@@ -520,10 +536,25 @@ function InGameMenuAIFrame:onClickCreateFieldBorder()
 		self.drawingCustomFieldHeader:setVisible(false)
 		g_customFieldManager:addField(CpInGameMenuAIFrameExtended.curDrawPositions)
 		CpInGameMenuAIFrameExtended.curDrawPositions = {}
+		--- Restore hotspot filters here:
+		for k, v in pairs(self.ingameMapBase.filter) do
+			self.ingameMapBase:setHotspotFilter(k, CpInGameMenuAIFrameExtended.hotspotFilterState[k])
+		end
+
 	else
 		CpInGameMenuAIFrameExtended.curDrawPositions = {}
 		self.drawingCustomFieldHeader:setVisible(true)
 		self.mode = CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER 
+		CpInGameMenuAIFrameExtended.hotspotFilterState = {}
+		--- Change the hotspot filter here:
+		for k, v in pairs(self.ingameMapBase.filter) do
+			CpInGameMenuAIFrameExtended.hotspotFilterState[k] = v
+
+			self.ingameMapBase:setHotspotFilter(k, false)
+		end
+		for _,v in ipairs(CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots) do
+			self.ingameMapBase:setHotspotFilter(v, true)
+		end
 	end
 end
 

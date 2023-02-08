@@ -107,6 +107,11 @@ function CpHud:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSe
 end
 
 function CpHud:actionEventMouse(isMouseEvent)
+    if self ~= g_currentMission.controlledVehicle then 
+        ---Player has entered a child vehicle, so don't open the hud.
+        return
+    end
+
     --- Disables closing of the hud with the mouse button, while auto drive is in editor mode.
     if isMouseEvent and g_Courseplay.autoDrive and g_Courseplay.autoDrive.isEditorModeEnabled() then 
         return
@@ -199,7 +204,7 @@ end
 
 function CpHud:onEnterVehicle(isControlling)
     -- if the mouse cursor is shown when we enter the vehicle, disable camera rotations
-    if isControlling then
+    if isControlling and self == g_currentMission.controlledVehicle then
         CpGuiUtil.setCameraRotation(self, not g_inputBinding:getShowMouseCursor(),
                 self.spec_cpHud.savedCameraRotatableInfo)
         local spec = self.spec_cpHud
