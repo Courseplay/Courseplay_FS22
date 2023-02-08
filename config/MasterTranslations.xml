@@ -401,6 +401,14 @@
 			<Text language="de"><![CDATA[Geräte am Ende des Kurses einklappen oder nicht.]]></Text>
 			<Text language="en"><![CDATA[Enables/disables automatic folding of implements at the end of the course.]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_returnToStart_title">
+			<Text language="de"><![CDATA[Zum Startpunkt zurück fahren]]></Text>
+			<Text language="en"><![CDATA[Return to starting point]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_returnToStart_tooltip">
+			<Text language="de"><![CDATA[Fährt nach erledigter Arbeit zum Startpunkt zurück.]]></Text>
+			<Text language="en"><![CDATA[Return to starting point after finished fieldwork.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_raiseImplementLate_title">
 			<Text language="de"><![CDATA[Gerät anheben]]></Text>
 			<Text language="en"><![CDATA[Raise tools]]></Text>
