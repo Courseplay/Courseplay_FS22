@@ -220,12 +220,13 @@ function LevelerController:controlShieldTilt(dt, jointDesc, maxTiltAngle, target
 	jointDesc.lowerRotationOffset = jointDesc.lowerRotationOffsetBackup - newAngle
 end
 
+--- TODO: Disabled for now!
 --- If the driver is slower than 2 km/h, then move the shield slowly up (increase self.shieldHeightOffset)
 function LevelerController:updateShieldHeightOffset()
 	--- A small reduction to the offset, as the shield should be lifted after a only a bit silage.
 	local smallOffsetReduction = 0.3
 
-	self.shieldHeightOffset = MathUtil.clamp(-self.levelerSpec.lastForce/self.levelerSpec.maxForce - smallOffsetReduction, 0, 1)
+	--self.shieldHeightOffset = MathUtil.clamp(-self.levelerSpec.lastForce/self.levelerSpec.maxForce - smallOffsetReduction, 0, 1)
 end
 
 --- Is the shield full ?
