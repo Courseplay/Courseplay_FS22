@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Se necessário, autoriza o encontrar caminho gerar rotas com desvios, como por exemplo para evitar obstáculos e culturas"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Dobra a alfaia quando acaba o serviço"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Activa/desactiva dobrar automaticamente a alfaia no fim do serviço."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Levanta alfaia"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Levanta a alfaia cedo ou tarde no inicio da volta."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="cedo"/>

@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Aktiver Pathfinder for vendemanøvre, f.eks. for at undvige objekter eller afgrøde."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Sammenklap redskab"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Sammenklap redskab ved afslutning ja/nej."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Hæv redskab"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Hæv redskab tidligt eller sent."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Tidligt"/>

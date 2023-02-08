@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Permite usar rotas em curvas, para evitar obstáculos e plantações"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Dobrar implemento no final da rota"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Ativar / desativar dobrar o implemento no final da rota."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Levantar implemento"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Levantar o implemento no início ou no final da curva."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="início"/>

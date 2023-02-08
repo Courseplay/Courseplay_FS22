@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="如果有必要，允许路径查找生成带有弯道的路径，例如规避障碍或作物。"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="工作结束时收起工具"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="开启/关闭 工作结束时工具的自动收起。"/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="升起工具"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="在转向开始时提前或晚些升起工具。"/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="提前"/>
