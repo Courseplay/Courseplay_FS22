@@ -478,7 +478,7 @@ end
 function AIDriveStrategyFieldWorkCourse:finishFieldWork()
     if self.settings.returnToStart:getValue() and self.fieldWorkCourse:startsWithHeadland() then
         self:debug('Fieldwork ended, returning to first waypoint.')
-        self:prepareForAIDriving()
+        self.vehicle:prepareForAIDriving()
         self:returnToStartAfterDone()
     else
         self:debug('Fieldwork ended, stopping job.')
