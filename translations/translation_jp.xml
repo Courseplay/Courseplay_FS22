@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="障害物や作物の回避など、旋回時の経路探索を使用することができます"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="作業機の格納"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="有効にするとコースの終点で作業機を格納（折りたたみ）します"/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="作業機を上げる"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="ターンの最初に作業機を上げるタイミングを設定します"/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="速い"/>

@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Czy zezwolić na używanie znajdywania ścieżki przy zawracaniu, aby np. omijać przeszkody i rośliny."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Złóż narzędzie po zakończeniu kursu"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Ustala czy pomocnik ma złożyć narzędzie po zakończeniu kursu."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Podnoszenie narzędzi"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Podnoszenie narzędzia wcześniej lub później na początku zawracania."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Wcześniej"/>

@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Umožňuje používat generování trasy v zatáčkách, například k vyhýbání se překážkám a plodinám."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Složit nářadí na konci trasy"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Zapnout/vypnout složení nářadí do transportní pozice po ukončení práce."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Zvednutí nástroje"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Nastaví, kdy dojde ke zvednutí nástroje na souvrati."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Brzy"/>

@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Aktiverar att använda pathfinder i vändning, till exempel för att undvika hinder och grödor"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Fäll ihop redskap i slutet av kursen"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Aktiverar/inaktiverar automatisk hopfällning av redskap i slutet av kursen."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Redskapshöjning"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Redskapshöjning tidig eller sent i början av en sväng/vändteg."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Tidig"/>

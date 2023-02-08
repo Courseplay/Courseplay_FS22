@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Consente di ricalcolare il percorso ad ogni corsia, ad esempio per evitare ostacoli e raccolto"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Ripiega a fine percorso"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Abilita/disabilita il ripiegamento automatico degli attrezzi a fine percorso"/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Solleva attrezzo"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Solleva gli attrezzi in anticipo o in ritardo all'inizio di ogni corsia"/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Anticipa"/>
