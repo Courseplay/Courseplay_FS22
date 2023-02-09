@@ -518,13 +518,13 @@ A turn maneuver following a course (waypoints created by turn.lua)
 
 ---@class CourseTurn : AITurn
 CourseTurn = CpObject(AITurn)
----@param fieldworkCourse Course needed only when generating a pathfinder turn, this is where it gets the headland
-function CourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, name)
+---@param fieldWorkCourse Course needed only when generating a pathfinder turn, this is where it gets the headland
+function CourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, name)
 	AITurn.init(self, vehicle, driveStrategy, ppc, turnContext, workWidth, name or 'CourseTurn')
 
 	self.forceTightTurnOffset = false
 	self.enableTightTurnOffset = false
-	self.fieldworkCourse = fieldworkCourse
+	self.fieldWorkCourse = fieldWorkCourse
 end
 
 function CourseTurn:getForwardSpeed()
@@ -789,7 +789,7 @@ function CourseTurn:generatePathfinderTurn(useHeadland)
 			useHeadland, startOffset, goalOffset)
 	self.driveStrategy.pathfinder, done, path = PathfinderUtil.findPathForTurn(self.vehicle, startOffset, turnEndNode, goalOffset,
 			self.turningRadius, self.driveStrategy:getAllowReversePathfinding(),
-			useHeadland and self.fieldworkCourse or nil,
+			useHeadland and self.fieldWorkCourse or nil,
 			self.driveStrategy:getWorkWidth(), backMarkerDistance,
 			self.driveStrategy:isTurnOnFieldActive())
 	if done then
@@ -837,8 +837,8 @@ end
 CombineCourseTurn = CpObject(CourseTurn)
 
 ---@param turnContext TurnContext
-function CombineCourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth, name)
-	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse,workWidth, name or 'CombineCourseTurn')
+function CombineCourseTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth, name)
+	CourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse,workWidth, name or 'CombineCourseTurn')
 end
 
 -- in a combine headland turn we want to raise the header after it reached the field edge (or headland edge on an inner
@@ -860,8 +860,8 @@ CombinePocketHeadlandTurn = CpObject(CombineCourseTurn)
 
 ---@param driveStrategy AIDriveStrategyCombineCourse
 ---@param turnContext TurnContext
-function CombinePocketHeadlandTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldworkCourse, workWidth)
-	CombineCourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldworkCourse,
+function CombinePocketHeadlandTurn:init(vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse, workWidth)
+	CombineCourseTurn.init(self, vehicle, driveStrategy, ppc, turnContext, fieldWorkCourse,
 			workWidth, 'CombinePocketHeadlandTurn')
 end
 

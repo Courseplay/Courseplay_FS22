@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Maakt het mogelijk om de padvinder in bochten te gebruiken, bijvoorbeeld om obstakels en fruit te vermijden"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Klap werktuigen aan het einde van de koers in"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Schakelt automatisch inklappen van werktuigen aan het einde van de koers in/uit."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Werktuig heffen"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Werktuig vroeg of laat heffen aan het begin van een draai."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="vroeg"/>

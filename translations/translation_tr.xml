@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Örneğin engellerden ve meyvelerden kaçınmak için yol bulucuyu sırayla kullanmanıza olanak tanır"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Kurs sonunda araçları katlayın"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Kurs sonunda aletlerin otomatik katlanmasını etkinleştirir/devre dışı bırakır."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Tarla Başlangıcı"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Tarla başlangıcında aletleri erken veya geç indirin."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Erken"/>

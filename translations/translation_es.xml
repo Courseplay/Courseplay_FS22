@@ -123,6 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Permite usar el buscador de caminos en giros, por ejemplo, para evitar obstáculos y frutas."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Plegar Herramientas al final de la ruta"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Habilita/Deshabilita el plegado automático de herramientas al final de la ruta."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Elevar Herramientas"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Elevar Herramientas antes o después del siguiente giro."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Antes"/>
