@@ -123,8 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Позволить использовать путеискатель при поворотах, например, чтобы избежать препятствий и культур."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Сложить инструмент в конце курса"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Включает/отключает автоматическое складывание орудий в конце курса."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
-    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Возврат на точку старта"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Возврат на точку старта после завершения работы в поле."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Поднимать инструмент"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Поднять инструмент на разворотной полосе заранее или с опозданием."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="заранее"/>
