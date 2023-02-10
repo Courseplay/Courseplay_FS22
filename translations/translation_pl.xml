@@ -123,8 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Czy zezwolić na używanie znajdywania ścieżki przy zawracaniu, aby np. omijać przeszkody i rośliny."/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Złóż narzędzie po zakończeniu kursu"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Ustala czy pomocnik ma złożyć narzędzie po zakończeniu kursu."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
-    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Powrót do punktu startu"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Ustala czy pomocnik ma wrócić do punktu początkowego po zakończeniu pracy."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Podnoszenie narzędzi"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Podnoszenie narzędzia wcześniej lub później na początku zawracania."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Wcześniej"/>
@@ -142,7 +142,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Przes. pionowe dla narzędzi"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Przesunięcie wertykalne (pionowe) dla narzędzi."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Opróżnij, gdy ponad:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Ustala po osiągnięciu jakiego pozomu wypełnienia pomocnik ma rozładować przyczepę."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Sprawdź dodatek do kiszenia"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Jeśli aktywne i dodatek do zakiszania jest pusty, kierowca się zatrzyma."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symetryczna zmiana ścieżki"/>
