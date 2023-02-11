@@ -713,7 +713,7 @@ function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
     -- If close to the end of the row and the pipe would be in the fruit after the turn, and our fill level is high,
     -- we always wait here for an unloader, regardless of having a rendezvous or not (unless we have our pipe in fruit here)
     if nextRowStartIx and closeToTurn and
-            self.course:isPipeInFruitAt(nextRowStartIx) and
+            self:isPipeInFruitAt(nextRowStartIx) and
             self:isFull(AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold) then
         self:checkFruit()
         if not self:isPipeInFruit() then
@@ -952,7 +952,7 @@ function AIDriveStrategyCombineCourse:getTurnArea()
 end
 
 function AIDriveStrategyCombineCourse:canUnloadWhileMovingAtWaypoint(ix)
-    if self.course:isPipeInFruitAt(ix) then
+    if self:isPipeInFruitAt(ix) then
         self:debug('pipe would be in fruit at the planned rendezvous waypoint %d', ix)
         return false
     end
@@ -978,6 +978,16 @@ function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix)
     local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeController:getPipeOffsetX())
     self:debugSparse('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
     return hasFruit, fruitValue
+end
+
+function AIDriveStrategyCombineCourse:isPipeInFruitAt(ix)
+    if self.course:getMultiTools() > 1 then
+        -- we don't have a reliable pipe in fruit map for multitools, so just check
+        -- if there is fruit at the waypoint now, to be on the safe side
+        return self:isPipeInFruitAtWaypointNow(self.course, ix)
+    else
+        return self.course:isPipeInFruitAt(ix)
+    end
 end
 
 --- Find the best waypoint to unload.
@@ -1014,7 +1024,7 @@ end
 function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnUpDownRows(ix, isPipeInFruitAllowed)
     local dToNextTurn = self.course:getDistanceToNextTurn(ix) or math.huge
     local lRow, ixAtRowStart = self.course:getRowLength(ix)
-    local pipeInFruit = self.course:isPipeInFruitAt(ix)
+    local pipeInFruit = self:isPipeInFruitAt(ix)
     local currentIx = self.course:getCurrentWaypointIx()
     local newWpIx = ix
     self:debug('Looking for a waypoint to unload around %d on up/down row, pipe in fruit %s, dToNextTurn: %d m, lRow = %d m',
@@ -1025,7 +1035,7 @@ function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnUpDownRows(ix, i
             if ixAtRowStart > currentIx then
                 -- have not started the previous row yet
                 self:debug('Pipe would be in fruit at waypoint %d. Check previous row', ix)
-                pipeInFruit, _ = self.course:isPipeInFruitAt(ixAtRowStart - 2) -- wp before the turn start
+                pipeInFruit, _ = self:isPipeInFruitAt(ixAtRowStart - 2) -- wp before the turn start
                 if not pipeInFruit then
                     local lPreviousRow, ixAtPreviousRowStart = self.course:getRowLength(ixAtRowStart - 1)
                     self:debug('pipe not in fruit in the previous row (%d m, ending at wp %d), rendezvous at %d',

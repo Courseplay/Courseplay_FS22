@@ -177,7 +177,7 @@ function Course:getWaypoint(ix)
 end
 
 function Course:getMultiTools()
-	return self.multiTools
+	return self.multiTools or 1
 end
 
 --- Is this a temporary course? Can be used to differentiate between recorded and dynamically generated courses
