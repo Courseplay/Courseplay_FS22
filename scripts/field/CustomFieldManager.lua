@@ -210,6 +210,7 @@ function CustomFieldManager:delete()
         field:delete()
     end
 end
+FieldManager.unloadMapData = Utils.appendedFunction(FieldManager.unloadMapData, CustomFieldManager.delete)
 
 --- Makes sure all custom fields are valid and in the filesystem.
 --- Gets refresh on opening of the ai page in the in game menu.
