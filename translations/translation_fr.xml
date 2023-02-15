@@ -123,8 +123,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Si nécessaire, autorise le pathfinding à générer des trajets avec des détours, par exemple pour éviter des obstacles ou des cultures"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Replier l'outil à la fin de la course"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Active/Désactive le repli automatique de l'outil à la fin de la course."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
-    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Retourner au point de départ"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Retourne au point de départ après avoir terminé la course."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Relevage de l'outil"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Détermine si l'outil doit être relevé tôt ou tard en bout de ligne."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="tôt"/>
