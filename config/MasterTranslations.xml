@@ -1404,6 +1404,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Randkurs umbenennen]]></Text>
 			<Text language="en"><![CDATA[Rename custom field]]></Text>
 		</Translation>
+		<Translation name="CP_customFieldManager_rename_error">
+			<Text language="de"><![CDATA[Randkursname %s existiert bereits.]]></Text>
+			<Text language="en"><![CDATA[Custom field name %s already in use.]]></Text>
+		</Translation>
 		<Translation name="CP_customFieldManager_edit">
 			<Text language="de"><![CDATA[Randkurs bearbeiten]]></Text>
 			<Text language="en"><![CDATA[Edit custom field]]></Text>

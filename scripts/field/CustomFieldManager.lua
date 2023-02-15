@@ -178,12 +178,18 @@ function CustomFieldManager:onClickRenameDialog(newName, clickOk, fieldToRename)
             if field == fieldToRename then
                 local file = self.currentView:getEntryByName(fieldToRename.name)
                 if file then 
-                    CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(), newName)
                     if file:rename(newName) then 
+                        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Renamed custom field from %s to %s.', fieldToRename:getName(), newName)
                         fieldToRename:setName(newName)
                         self.fileSystem:refresh()
-                        return
+                    else 
+                        CpUtil.debugFormat(CpDebug.DBG_COURSES, 'Could not rename custom field from %s to %s.', fieldToRename:getName(), newName)
+                        --- New field name already in use.
+                        g_gui:showInfoDialog({
+                            text = string.format(g_i18n:getText("CP_customFieldManager_rename_error"), newName)
+                        })
                     end
+                    return
                 end
             end
         end
