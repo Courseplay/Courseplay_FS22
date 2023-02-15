@@ -388,6 +388,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_confirm_delete" text="Möchtest du den Randkurs %s löschen?"/>
     <text name="CP_customFieldManager_delete" text="Randkurs löschen"/>
     <text name="CP_customFieldManager_rename" text="Randkurs umbenennen"/>
+    <text name="CP_customFieldManager_rename_error" text="Randkursname %s existiert bereits."/>
     <text name="CP_customFieldManager_edit" text="Randkurs bearbeiten"/>
     <text name="CP_customFieldManager_draw" text="Randkurs zeichnen"/>
     <text name="CP_customFieldManager_draw_header" text="Zeichne Linien mit Rechtsklick."/>

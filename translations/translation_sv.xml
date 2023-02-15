@@ -388,6 +388,7 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_customFieldManager_confirm_delete" text="Vill du radera det anpassade fältet %s?"/>
     <text name="CP_customFieldManager_delete" text="Ta bort anpassat fält"/>
     <text name="CP_customFieldManager_rename" text="Byt namn på anpassat fält"/>
+    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
     <text name="CP_customFieldManager_edit" text="Redigera anpassat fält"/>
     <text name="CP_customFieldManager_draw" text="Rita anpassat fält"/>
     <text name="CP_customFieldManager_draw_header" text="Rita anpassade fältlinjer med högerklicka."/>
