@@ -388,7 +388,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_customFieldManager_confirm_delete" text="¿Quieres eliminar el campo personalizado %s?"/>
     <text name="CP_customFieldManager_delete" text="Borrar Campo Personalizado"/>
     <text name="CP_customFieldManager_rename" text="Renombrar Campo Personalizado"/>
-    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
+    <text name="CP_customFieldManager_rename_error" text="Nombre de Campo Personalizado %s ya está en uso."/>
     <text name="CP_customFieldManager_edit" text="Editar Campo Personalizado"/>
     <text name="CP_customFieldManager_draw" text="Dibujar Campo Personalizado"/>
     <text name="CP_customFieldManager_draw_header" text="Dibujar las líneas del Campo con el Botón Derecho del Mouse."/>
