@@ -388,7 +388,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_customFieldManager_confirm_delete" text="Deseja excluir o campo customizado %s?"/>
     <text name="CP_customFieldManager_delete" text="Excluir campo customizado"/>
     <text name="CP_customFieldManager_rename" text="Renomear campo customizado"/>
-    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
+    <text name="CP_customFieldManager_rename_error" text="Nome do campo customizado %s já está em uso."/>
     <text name="CP_customFieldManager_edit" text="Editar campo customizado"/>
     <text name="CP_customFieldManager_draw" text="Desenhar campo customizado"/>
     <text name="CP_customFieldManager_draw_header" text="Clique no botão direito do mouse para desenhar linhas no campo customizado."/>
