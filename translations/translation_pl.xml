@@ -388,7 +388,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_customFieldManager_confirm_delete" text="Czy chcesz usunąć nowe pole %s?"/>
     <text name="CP_customFieldManager_delete" text="Usuń nowe pole"/>
     <text name="CP_customFieldManager_rename" text="Zmień nazwę nowego pola"/>
-    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
+    <text name="CP_customFieldManager_rename_error" text="Nazwa %s dla własnego pla jest już używana."/>
     <text name="CP_customFieldManager_edit" text="Edytuj własne pole"/>
     <text name="CP_customFieldManager_draw" text="Narysuj nowe pole"/>
     <text name="CP_customFieldManager_draw_header" text="Narysuj linie nowego pola z prawym kliknięciem."/>
