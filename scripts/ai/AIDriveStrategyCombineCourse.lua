@@ -232,6 +232,16 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
     return AIDriveStrategyCombineCourse.superClass().getDriveData(self, dt, vX, vY, vZ)
 end
 
+function AIDriveStrategyCombineCourse:updateFieldworkOffset(course)
+    if self.state == self.states.UNLOADING_ON_FIELD and self:isUnloadStateOneOf(self.selfUnloadStates) then
+        -- do not apply fieldwork offset when not doing fieldwork
+        course:setOffset((self.aiOffsetX or 0) + (self.tightTurnOffset or 0), (self.aiOffsetZ or 0))
+    else
+        course:setOffset(self.settings.toolOffsetX:getValue() + (self.aiOffsetX or 0) + (self.tightTurnOffset or 0),
+                (self.aiOffsetZ or 0))
+    end
+end
+
 function AIDriveStrategyCombineCourse:checkDistanceToOtherFieldWorkers()
     -- do not slow down/stop for convoy while unloading
     if self.state ~= self.states.UNLOADING_ON_FIELD then
