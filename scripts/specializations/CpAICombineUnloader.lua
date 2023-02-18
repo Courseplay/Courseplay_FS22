@@ -95,14 +95,10 @@ function CpAICombineUnloader:isOnlyOneTrailerAttached()
             numTrailers = numTrailers + 1
         end
     end
-    if numTrailers > 1 then 
-        return false
-    end
-    if numTrailers == 1 then
-        return true
-    end
-    --- Checks if the vehicle has a valid trailer unit.
-    return SpecializationUtil.hasSpecialization(Trailer, self.specializations) and self.spec_trailer.tipSideCount > 0
+    return numTrailers == 1
+
+    ---TODO: Checks if the vehicle has a valid trailer unit.
+    -- return SpecializationUtil.hasSpecialization(Trailer, self.specializations) and self.spec_trailer.tipSideCount > 0
 end
 
 --- If we have a trailer which can be emptied, we can unload a combine
