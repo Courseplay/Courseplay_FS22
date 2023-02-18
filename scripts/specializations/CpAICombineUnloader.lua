@@ -85,9 +85,29 @@ function CpAICombineUnloader:getCpDriveStrategy(superFunc)
     return superFunc(self) or self.spec_cpAICombineUnloader.driveStrategy
 end
 
+function CpAICombineUnloader:isOnlyOneTrailerAttached()
+    --- Checks if at least one fill unit to unload into is there
+    --- and only max one trailer attached.
+    local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(self, Trailer, nil)
+    local numTrailers = 0
+    for _,v in pairs(vehicles) do 
+        if v ~= self then
+            numTrailers = numTrailers + 1
+        end
+    end
+    if numTrailers > 1 then 
+        return false
+    end
+    if numTrailers == 1 then
+        return true
+    end
+    --- Checks if the vehicle has a valid trailer unit.
+    return SpecializationUtil.hasSpecialization(Trailer, self.specializations) and self.spec_trailer.tipSideCount > 0
+end
+
 --- If we have a trailer which can be emptied, we can unload a combine
 function CpAICombineUnloader:getCanStartCpCombineUnloader()
-	return not self:getCanStartCpFieldWork() and AIUtil.getNumberOfChildVehiclesWithSpecialization(self, Trailer) == 1
+	return not self:getCanStartCpFieldWork() and CpAICombineUnloader.isOnlyOneTrailerAttached(self)
 end
 
 function CpAICombineUnloader:getCanStartCp(superFunc)
