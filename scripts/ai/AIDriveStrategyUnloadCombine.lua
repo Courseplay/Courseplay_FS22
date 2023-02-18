@@ -1597,7 +1597,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
         self.retryingSelfUnloadPathfinding = true
         self:info('No path found to self unload in %d ms, retrying once with fruit avoidance disabled',
                 g_currentMission.time - (self.pathfindingStartedAt or 0))
-
+        self:startSelfUnload(true)
     else
         self.retryingSelfUnloadPathfinding = false
         self:debug('No path found to self unload in %d ms', g_currentMission.time - (self.pathfindingStartedAt or 0))
