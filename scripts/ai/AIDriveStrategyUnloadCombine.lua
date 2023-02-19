@@ -1538,11 +1538,11 @@ function AIDriveStrategyUnloadCombine:getSelfUnloadTargetParameters()
 end
 
 --- Find a path to the best trailer to unload
-function AIDriveStrategyUnloadCombine:startSelfUnload()
+---@param ignoreFruit boolean if true, do not attempt to avoid fruit
+function AIDriveStrategyUnloadCombine:startSelfUnload(ignoreFruit)
 
     if not self.pathfinder or not self.pathfinder:isActive() then
         self.pathfindingStartedAt = g_currentMission.time
-
         local alignLength, offsetX, unloadTrailer
         self.selfUnloadTargetNode, alignLength, offsetX, unloadTrailer = self:getSelfUnloadTargetParameters()
         if not self.selfUnloadTargetNode then
@@ -1568,7 +1568,7 @@ function AIDriveStrategyUnloadCombine:startSelfUnload()
                 self.vehicle, self.selfUnloadTargetNode, offsetX, -alignLength,
                 self:getAllowReversePathfinding(),
         -- use a low field penalty to encourage the pathfinder to bridge that gap between the field and the trailer
-                fieldNum, {}, nil, 0.1, nil, true)
+                fieldNum, {}, ignoreFruit and math.huge or nil, 0.1, nil, true)
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
         else
@@ -1582,6 +1582,7 @@ end
 
 function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
     if path and #path > 2 then
+        self.retryingSelfUnloadPathfinding = false
         self:debug('Pathfinding to self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         local selfUnloadCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
@@ -1592,7 +1593,13 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeSelfUnload(path)
         self:setNewState(self.states.DRIVING_TO_SELF_UNLOAD)
         self:startCourse(selfUnloadCourse, 1)
         return true
+    elseif not self.retryingSelfUnloadPathfinding then
+        self.retryingSelfUnloadPathfinding = true
+        self:info('No path found to self unload in %d ms, retrying once with fruit avoidance disabled',
+                g_currentMission.time - (self.pathfindingStartedAt or 0))
+        self:startSelfUnload(true)
     else
+        self.retryingSelfUnloadPathfinding = false
         self:debug('No path found to self unload in %d ms', g_currentMission.time - (self.pathfindingStartedAt or 0))
         self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         return false
