@@ -74,6 +74,7 @@ InfoTextManager = CpObject()
 
 InfoTextManager.xmlKey = "InfoTexts.InfoText"
 InfoTextManager.baseXmlKey = "InfoTexts"
+InfoTextManager.NUM_BITS = 32 -- Max num of info texts allowed for MP Sync.
 
 function InfoTextManager:init()
 	self:registerXmlSchema()
@@ -102,11 +103,14 @@ function InfoTextManager:loadFromXml()
 		local name, text, id, aiMessageClass, event, hasFinished
 		local prefix = xmlFile:getValue(self.baseXmlKey.."#prefix", "")
         xmlFile:iterate(self.xmlKey, function (ix, key)
-            name = xmlFile:getValue(key .. "#name")
+			name = xmlFile:getValue(key .. "#name")
 			text = xmlFile:getValue(key .. "#text")
 			text = g_i18n:getText(prefix..text)
 			id = bitShiftLeft(1, ix-1)
-
+			if ix > self.NUM_BITS then 
+				CpUtil.info("Max number of info texts for MP Sync is reached with %s!", name)
+				return
+			end    
 			hasFinished = xmlFile:getValue(key .. "#hasFinished", false)
 			event = xmlFile:getValue(key .. "#event")
 			aiMessageClass = xmlFile:getValue(key .. "#class")

@@ -2,7 +2,6 @@
 --- Handles the activation/deactivation of info texts for the vehicle.
 ---@class CpInfoTexts
 CpInfoTexts = {}
-
 CpInfoTexts.MOD_NAME = g_currentModName
 CpInfoTexts.NAME = ".cpInfoTexts"
 CpInfoTexts.SPEC_NAME = CpInfoTexts.MOD_NAME .. CpInfoTexts.NAME
@@ -58,22 +57,22 @@ end
 function CpInfoTexts:onWriteUpdateStream(streamId, connection, dirtyMask)
 	local spec = self.spec_cpInfoTexts
     if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, spec.dirtyFlag) ~= 0) then
-		streamWriteInt32(streamId, CpInfoTexts.getBitMask(self))
+		streamWriteUIntN(streamId, CpInfoTexts.getBitMask(self), InfoTextManager.NUM_BITS )
 	end
 end
 
 function CpInfoTexts:onReadUpdateStream(streamId, timestamp, connection)
 	if connection:getIsServer() and streamReadBool(streamId) then
-		CpInfoTexts.setFromBitMask(self, streamReadInt32(streamId))
+		CpInfoTexts.setFromBitMask(self, streamReadUIntN(streamId, InfoTextManager.NUM_BITS ))
 	end
 end
 
 function CpInfoTexts:onReadStream(streamId)
-	CpInfoTexts.setFromBitMask(self, streamReadInt32(streamId))
+	CpInfoTexts.setFromBitMask(self, streamReadUIntN(streamId, InfoTextManager.NUM_BITS ))
 end
 
 function CpInfoTexts:onWriteStream(streamId)
-	streamWriteInt32(streamId, CpInfoTexts.getBitMask(self))
+	streamWriteUIntN(streamId, CpInfoTexts.getBitMask(self), InfoTextManager.NUM_BITS )
 end
 
 function CpInfoTexts:onEnterVehicle(isControlling)
