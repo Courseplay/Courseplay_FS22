@@ -54,7 +54,7 @@ end
 
 function CombineController:updateThreshingDuringRain()
     local maxSpeed = nil 
-    if self.implement:getIsThreshingDuringRain() then 
+    if self.implement:getIsThreshingDuringRain() and g_Courseplay.globalSettings.stopThreshingDuringRain:getValue() then 
         maxSpeed = 0
         self:setInfoText(InfoTextManager.WAITING_FOR_RAIN_TO_FINISH)
     else 

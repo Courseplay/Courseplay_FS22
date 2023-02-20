@@ -32,6 +32,7 @@
 		</Setting>
 		<Setting classType="AIParameterSettingList" name="fuelThreshold" min="0" max="100" incremental="5" default="5" unit="4"/>
 		<Setting classType="AIParameterSettingList" name="brokenThreshold" min="0" max="100" incremental="5" default="100" unit="4"/>
+		<Setting classType="AIParameterBooleanSetting" name="stopThreshingDuringRain" defaultBool="true"/>
 	</SettingSubTitle>
 	<SettingSubTitle prefix="true" title="userSettings">
 		<!-- When enabled, then a few settings are invisible and return their default values. -->
