@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Driver will be released, if the fuel percentage is less."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Broken threshold"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Gebruikersinstellingen"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad vriendelijke Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Gebruik de Hud, die kan worden bestuurd met een Gamepad."/>

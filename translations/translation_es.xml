@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="El conductor será liberado, si el porcentaje de combustible es menor."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Límite de ruptura"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. Si es 100% se desactiva."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Ajustes de usuario"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatible con gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud."/>

@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Föraren kommer att stanna om bränslegränsen är mindre."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Skade Gräns"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Föraren kommer att stoppas om fordonet eller ett redskap är mer skadat. 100% är avstängd."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Användarinställningar"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Handkontrolls vänlig Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Använd HUD, som kan styras med en handkontroll."/>
