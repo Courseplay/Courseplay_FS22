@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="O motorista irá parar, se a percentagem de combustível for menor."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Limite de danos"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="O trabalhador irá parar, se o veículo ou a alfaia tiverem mais dano. Os 100% indica que não aciona este opção."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Configurações do Utilizador"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Ecrã secundário de opções acionado pelo controlador de jogo"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Usa e navega no ecrã secundário de opções com o controlador de jogo."/>

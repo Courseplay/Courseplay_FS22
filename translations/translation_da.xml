@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Føreren fyres, hvis brændstofprocenten er mindre end."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Vedligholdestærskel"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Føreren fyres, hvis køretøjet eller et redskab er mere ødelagt. 100% er funktionen deaktiveret."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Brugerindstillinger"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Controller venling Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Benyt Hud, som kan betjenes via controlleren."/>

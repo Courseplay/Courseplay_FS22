@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Fahrer wird entlassen, wenn Kraftstoff unter diesem Wert liegt."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Minimum Zustand"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stoppt Drescher während Regen"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange bis der Regen aufhört."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Benutzereinstellungen"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepadfreundliches HUD"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Benutze das HUD, welches sich über ein Gamepad bedienen lässt."/>

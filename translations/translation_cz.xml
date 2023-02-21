@@ -280,6 +280,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Řidič bude uvolněn, pokud je procento paliva nižší."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Hodnota opotřebení"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Uživatelské nastavení"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud nastavený pro Gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Použijte Hud, který lze ovládat pomocí Gamepadu."/>

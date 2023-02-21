@@ -955,6 +955,14 @@
 			<Text language="de"><![CDATA[Fahrer wird entlassen, wenn der Schaden des Fahrzeugs oder Arbeitsgeräts über diesem Wert liegt. 100% ist aus.]]></Text>
 			<Text language="en"><![CDATA[Driver will be released, if the vehicle or an implement is more broken. 100% is off.]]></Text>
 		</Translation>
+		<Translation name="CP_global_setting_stopThreshingDuringRain_title">
+			<Text language="de"><![CDATA[Stoppt Drescher während Regen]]></Text>
+			<Text language="en"><![CDATA[Stops harvester, while it's raining]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_stopThreshingDuringRain_tooltip">
+			<Text language="de"><![CDATA[Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange bis der Regen aufhört.]]></Text>
+			<Text language="en"><![CDATA[If the setting is active, then all harvester wait for the raining to stop.]]></Text>
+		</Translation>
 		<Translation name="CP_global_setting_subTitle_userSettings">
 			<Text language="de"><![CDATA[Benutzereinstellungen]]></Text>
 			<Text language="en"><![CDATA[User settings]]></Text>

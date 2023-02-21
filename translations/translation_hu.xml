@@ -279,6 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="A segítő abbahagyja a munkát, ha az üzemanyagszint ez alá csökken."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Maximum meghibásodás"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="A segítő abbahagyja a munkát, ha a jármű/szerszám ennél jobban meghibásodik. 100% soha nem hagyja abba."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Felhasználói beállítások"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepaddal használható HUD"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Használja a gamepaddal is vezérelhető HUD-ot"/>
