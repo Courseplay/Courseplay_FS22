@@ -279,8 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Motorista será liberado, se a porcentagem de combustível for menor."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Limite de danos"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Motorista será liberado, se o veículo ou implemento estiver 100% danificado."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Parar a colheitadeira, enquanto estiver chovendo"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Se a configuração estiver ativa, todas as colheitadeiras aguardam a chuva passar."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Configurações do usuário"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatível com gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Use o Hud, que pode ser controlado com um Gamepad."/>
