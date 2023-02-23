@@ -279,8 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Il conducente verrà fermato, se il livello del carburante è basso."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Livello riparazione"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Il conducente verrà feramto se il veicolo od un attrezzo ha un livello di riparazione basso. Al 100% è spento."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Ferma la mietitrebbia quando piove."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Se l'impostazione è attiva, tutti i mietitori aspettano che smetta di piovere."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Impostazioni utente"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatibile con il gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="La Hud, può essere controllata con un Gamepad."/>
