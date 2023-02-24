@@ -279,8 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli poziom paliwa spadnie poniżej ustawionego progu procentowego."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Próg zużycia"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli pojazd lub maszyna/narzędzie jest uszkodzona w ustalonym progu procentowym. 100% oznacza wyłączone."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zatrzymaj młucenie podczas deszczu"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Gdy to ustawienie jest aktywne, wszystkie kombajny zostaną zatrzymane i będą czekały na zakończenie opadów."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Ustawienia użytkownika"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="HUD przyjazny kontrolerom"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Używa HUDa, który może być ustawiany przez kontrolery gier."/>
