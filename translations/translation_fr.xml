@@ -279,8 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="L'ouvrier CP s'arrêtera si la jauge de carburant descend sous ce seuil."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Seuil de maintenance"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="L'ouvrier CP s'arrêtera si le véhicule ou un outil est abimé avec un état d'entretien sous ce seuil. 100% = éteint."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Pas de récolte pendant la pluie"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Arrête toutes les moissonneuses ou récolteuses en cas de pluie. Reprise automatique lorsque la pluie s'arrête."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Paramètres utilisateur"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="ATH compatible manette"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="L'ATH (interface du CP en jeu) est utilisable avec une manette."/>
