@@ -265,6 +265,9 @@ function dubins_LRL(ir)
     end
 end
 
+---@class DubinsSolver : AnalyticSolver
+DubinsSolver = CpObject(AnalyticSolver)
+
 DubinsSolver.PathTypeFunctions = {
     dubins_LSL,
     dubins_LSR,
@@ -273,8 +276,6 @@ DubinsSolver.PathTypeFunctions = {
     dubins_RLR,
     dubins_LRL
 }
----@class DubinsSolver : AnalyticSolver
-DubinsSolver = CpObject(AnalyticSolver)
 
 -- Dubins words (path types, Left/Straight/Right
 DubinsSolver.PathType = {}
