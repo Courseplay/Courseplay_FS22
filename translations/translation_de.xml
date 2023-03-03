@@ -68,6 +68,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants Ablader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Giants Ablader benutzen:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Abladestation:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants Ablader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Abladen auf dem Feld benutzen:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Abladeposition:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Anhänger Abladeseite:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
