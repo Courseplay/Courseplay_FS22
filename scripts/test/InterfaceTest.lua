@@ -8,6 +8,6 @@ function InterfaceTests.compareToInterface(dynamicInterface, dynamicClass)
 	local interface_metaTable = getmetatable(dynamicInterface)
 	local class_metaTable = getmetatable(dynamicClass)
 	for funcName, func in pairs(interface_metaTable) do 
-		lu.assertIsTrue(class_metaTable[funcName] ~= nil)
+		lu.assertIsTrue(class_metaTable[funcName] ~= nil, funcName)
 	end
 end

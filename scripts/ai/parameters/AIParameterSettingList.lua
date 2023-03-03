@@ -1,25 +1,17 @@
 --- Selection list with values and texts.
----@class AIParameterSettingList : AIParameter
-AIParameterSettingList = {}
-local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
+---@class AIParameterSettingList : AIParameterSetting
+AIParameterSettingList = CpObject(AIParameterSetting)
 
-function AIParameterSettingList.new(data, vehicle, class, customMt)
-	---@type AIParameterSettingList
-	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
-
+function AIParameterSettingList:init(data, vehicle, class)
+	AIParameterSetting.init(self)
 	if data == nil then 
 		CpUtil.error("Data is nil for AIParameterSettingList!")
-		return self
+		return
 	end
+	self:initFromData(data, vehicle, class)
 
-	self.type = AIParameterType.SELECTOR
-	self.vehicle = vehicle
-	self.klass = class
-	self.name = data.name
-	--- We keep the config data, as we might need to fall back to it.
-	--- For example to reenable specific values after they were deactivated in self:refresh().  
-	self.data = data
-	self.textInputAllowed = data.textInputAllowed
+	self.guiParameterType = AIParameterType.SELECTOR
+	
 	if next(data.values) ~=nil then
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
@@ -33,14 +25,11 @@ function AIParameterSettingList.new(data, vehicle, class, customMt)
 		end
 		data.textInputAllowed = true
 	elseif data.generateValuesFunction then
-		self.data.values, self.data.texts = self.klass[data.generateValuesFunction](self.vehicle or self.klass, self)
+		self.data.values, self.data.texts = self.class[data.generateValuesFunction](self.vehicle or self.class, self)
 		self.values = table.copy(self.data.values)
 		self.texts = table.copy(self.data.texts)
 	end
 	self.textInputAllowed = data.textInputAllowed
---	self:debug("textInputAllowed: %s", tostring(self.textInputAllowed))
-	self.title = data.title
-	self.tooltip = data.tooltip
 
 	-- index of the current value/text
 	self.current =  1
@@ -69,13 +58,9 @@ function AIParameterSettingList.new(data, vehicle, class, customMt)
 
 	self.guiElement = nil
 
-	self.isDisabled = false
-	self.isVisible = true
-
 	self.setupDone = true
 	self.isSynchronized = false
 
-	return self
 end
 
 function AIParameterSettingList.getSpeedText(value)
@@ -147,7 +132,7 @@ end
 
 -- Get the current text key (for the logs, for example)
 function AIParameterSettingList:__tostring()
-	return self.texts[self.current]
+	return string.format("AIParameterSettingList(name=%s, value=%s, text=%s)", self.name, tostring(self:getValue()), self:getString())
 end
 
 -- private function to set to the value at ix
@@ -198,7 +183,7 @@ end
 --- Excludes deactivated values from the current values and texts tables.
 function AIParameterSettingList:refresh()
 	if self.data.generateValuesFunction then 
-		self.values, self.texts = self.klass[self.data.generateValuesFunction](self.vehicle or self.klass, self)
+		self.values, self.texts = self.class[self.data.generateValuesFunction](self.vehicle or self.class, self)
 		self:validateCurrentValue()
 		return
 	end
@@ -236,11 +221,6 @@ function AIParameterSettingList:validateTexts()
 		end
 		self.texts = fixedTexts
 	end
-end
-
-function AIParameterSettingList:getDebugString()
-	-- replace % as this string goes through multiple formats (%% does not seem to work and I have no time to figure it out
-	return string.format('%s: %s', self.name, string.gsub(self.texts[self.current], '%%', 'percent'))
 end
 
 function AIParameterSettingList:saveToXMLFile(xmlFile, key, usedModNames)
@@ -448,7 +428,7 @@ end
 --- Gets a specific value.
 function AIParameterSettingList:getValue()
 	--- In the simple mode, the default value will be returned, but only in singleplayer.
-	if not g_currentMission.missionDynamicInfo.isMultiplayer and self.data.isExpertModeOnly 
+	if not g_currentMission.missionDynamicInfo.isMultiplayer and self:getIsExpertModeSetting()
 		and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
 		
 		if self.data.default then 
@@ -485,7 +465,7 @@ function AIParameterSettingList:setPreviousItem()
 end
 
 function AIParameterSettingList:clone(...)
-	return AIParameterSettingList.new(self.data, ...)
+	return AIParameterSettingList(self.data, ...)
 end
 
 --- Copy the value to another setting.
@@ -497,13 +477,6 @@ function AIParameterSettingList:copy(setting)
 	end
 end
 
-function AIParameterSettingList:getTitle()
-	return self.title	
-end
-
-function AIParameterSettingList:getTooltip()
-	return self.tooltip	
-end
 
 function AIParameterSettingList:setGenericGuiElementValues(guiElement)
 	if guiElement.labelElement and guiElement.labelElement.setText then
@@ -664,92 +637,10 @@ function AIParameterSettingList:resetGuiElement()
 	self.guiElement = nil
 end
 
-function AIParameterSettingList:getName()
-	return self.name	
-end
-
-function AIParameterSettingList:getIsDisabled()
-	if self:hasCallback(self.data.isDisabledFunc) then 
-		return self:getCallback(self.data.isDisabledFunc)
-	end
-	return self.isDisabled
-end
-
-function AIParameterSettingList:getCanBeChanged()
-	return not self:getIsDisabled()
-end
-
-function AIParameterSettingList:getIsVisible()
-	if self.data.isExpertModeOnly and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
-		return false
-	end
-	if self:hasCallback(self.data.isVisibleFunc) then 
-		return self:getCallback(self.data.isVisibleFunc)
-	end
-	return self.isVisible
-end
-
-function AIParameterSettingList:getIsUserSetting()
-	return self.data.isUserSetting	
-end
-
-
 function AIParameterSettingList:onClick(state)
 	local new = self:checkAndSetValidValue(state)
 	self:setToIx(new)
 	if new ~= self.previous then
 		self:raiseDirtyFlag()
-	end
-end
-
---- Raises an event and sends the callback string to the Settings controller class.
-function AIParameterSettingList:raiseCallback(callbackStr, ...)
-	if self.klass ~= nil and self.klass.raiseCallback and callbackStr then
-		self:debug("raised Callback %s", callbackStr)
-		--- If the setting is bound to a setting, then call the specialization function with self as vehicle.
-		if self.vehicle ~= nil then 
-			self.klass.raiseCallback(self.vehicle, callbackStr, self, ...)
-		else
-			self.klass:raiseCallback(callbackStr, self, ...)
-		end
-	end
-end
-
-function AIParameterSettingList:hasCallback(callbackStr)
-	if self.klass ~= nil and callbackStr then
-		if self.klass[callbackStr] ~= nil then 
-			return true
-		end
-	end
-end
-
-function AIParameterSettingList:getCallback(callbackStr, ...)
-	if self:hasCallback(callbackStr) then
-		if self.vehicle ~= nil then 
-			return self.klass[callbackStr](self.vehicle, self, ...)
-		else
-			return self.klass[callbackStr](self.klass, self, ...)
-		end
-	end
-end
-
-function AIParameterSettingList:raiseDirtyFlag()
-	if not self:getIsUserSetting() then
-		if self.klass and self.klass.raiseDirtyFlag then
-			if self.vehicle ~= nil then 
-				self.klass.raiseDirtyFlag(self.vehicle, self)
-			else
-				self.klass:raiseDirtyFlag(self)
-			end
-		end
-	end
-end
-
-function AIParameterSettingList:debug(str, ...)
-	local name = string.format("%s: ", self.name)
-	if self.vehicle == nil then
-		CpUtil.debugFormat(CpUtil.DBG_HUD, name..str, ...)
-	else 
-		CpUtil.debugVehicle(CpUtil.DBG_HUD, self.vehicle, name..str, ...)
 	end
 end

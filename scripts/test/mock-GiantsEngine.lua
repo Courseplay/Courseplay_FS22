@@ -10,6 +10,10 @@ function getDate(formatString)
     return os.date('%H%M%S')
 end
 
+function unpack(...)
+    return table.unpack(...)
+end
+
 g_currentMission = {}
 g_currentMission.mock = true
 g_currentMission.missionInfo = {}
@@ -108,4 +112,3 @@ end
 function printCallstack()
     
 end
-

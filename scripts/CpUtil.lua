@@ -207,7 +207,7 @@ function CpUtil.error(...)
 	printCallstack()
 	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
 	local timestamp = getDate( ":%S")
-	if not printError then 
+	if printError == nil then 
 		printError = print
 	end
 	CpUtil.internalPrint(printError, string.format('%s [error lp%d]', timestamp, updateLoopIndex), ...)

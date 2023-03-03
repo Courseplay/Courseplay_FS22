@@ -1,10 +1,11 @@
 --- Speed setting, currently no extra functionality over AIParameterSettingList, but may add in the future.
 ---@class AIParameterSpeedSetting : AIParameterSettingList
-AIParameterSpeedSetting = {}
+AIParameterSpeedSetting = CpObject(AIParameterSettingList)
 
-local AIParameterSpeedSetting_mt = Class(AIParameterSpeedSetting, AIParameterSettingList)
+function AIParameterSpeedSetting:init(data,vehicle,class)
+	AIParameterSettingList.init(self, data,vehicle,class)
+end
 
-function AIParameterSpeedSetting.new(data,vehicle,class,customMt)
-	local self = AIParameterSettingList.new(data,vehicle,class,customMt or AIParameterSpeedSetting_mt)
-	return self
+function AIParameterSpeedSetting:clone(...)
+	return AIParameterSpeedSetting(self.data, ...)
 end

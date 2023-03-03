@@ -10,4 +10,5 @@ require('AIParameterSettingList')
 require('AIParameterBooleanSetting')
 require('CpAIParameterPositionAngle')
 
-InterfaceTests.compareToInterface(AIParameterSettingInterface(), AIParameterSettingList)
+InterfaceTests.compareToInterface(AIParameterSettingInterface(), CpAIParameterPositionAngle.new())
+InterfaceTests.compareToInterface(AIParameterSettingInterface(), AIParameterBooleanSetting.new())

@@ -125,7 +125,11 @@ function CpSettingsUtil.getSettingFromParameters(parameters, ...)
 		CpUtil.info("Setting class %s not found!!", parameters.classType)
 		return
 	end
-    return classObject.new(parameters, ...)
+	if classObject.new then 
+		return classObject.new(parameters, ...)
+	else 
+		return classObject(parameters, ...)
+	end
 end
 
 function CpSettingsUtil.loadSettingsFromSetup(class, filePath)

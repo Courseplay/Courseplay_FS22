@@ -77,6 +77,9 @@ function AIParameterSettingInterface:getIsUserSetting()
 	
 end
 
+function AIParameterSettingInterface:getIsExpertModeSetting()
+	
+end
 
 -- Is the current value same as the param?
 function AIParameterSettingInterface:is(value)
@@ -97,10 +100,6 @@ end
 --- Called form extern to update the setting value and validate it.
 function AIParameterSettingInterface:refresh()
 	
-end
-
-function AIParameterSettingInterface:getDebugString()
-		
 end
 
 --- Sets a float value relative to the incremental.
@@ -149,62 +148,25 @@ end
 
 --- Raises an event and sends the callback string to the Settings controller class.
 function AIParameterSettingInterface:raiseCallback(callbackStr, ...)
-	--[[
-	if self.klass ~= nil and self.klass.raiseCallback and callbackStr then
-		self:debug("raised Callback %s", callbackStr)
-		--- If the setting is bound to a setting, then call the specialization function with self as vehicle.
-		if self.vehicle ~= nil then 
-			self.klass.raiseCallback(self.vehicle, callbackStr, self, ...)
-		else
-			self.klass:raiseCallback(callbackStr, self, ...)
-		end
-	end
-	]]--
+	
 end
 
 function AIParameterSettingInterface:hasCallback(callbackStr)
-	--[[
-	if self.klass ~= nil and callbackStr then
-		if self.klass[callbackStr] ~= nil then 
-			return true
-		end
-	end
-	]]--
+	
 end
 
 function AIParameterSettingInterface:getCallback(callbackStr, ...)
-	--[[
-	if self:hasCallback(callbackStr) then
-		if self.vehicle ~= nil then 
-			return self.klass[callbackStr](self.vehicle, self, ...)
-		else
-			return self.klass[callbackStr](self.klass, self, ...)
-		end
-	end
-	]]--
+	
 end
 
 function AIParameterSettingInterface:raiseDirtyFlag()
-	--[[
-	if not self:getIsUserSetting() then
-		if self.klass and self.klass.raiseDirtyFlag then
-			if self.vehicle ~= nil then 
-				self.klass.raiseDirtyFlag(self.vehicle, self)
-			else
-				self.klass:raiseDirtyFlag(self)
-			end
-		end
-	end
-	]]--
+	
 end
 
 function AIParameterSettingInterface:debug(str, ...)
-	--[[
-	local name = string.format("%s: ", self.name)
-	if self.vehicle == nil then
-		CpUtil.debugFormat(CpUtil.DBG_HUD, name..str, ...)
-	else 
-		CpUtil.debugVehicle(CpUtil.DBG_HUD, self.vehicle, name..str, ...)
-	end
-	]]--
+	
+end
+
+function AIParameterSettingInterface:getDebugString()
+	
 end

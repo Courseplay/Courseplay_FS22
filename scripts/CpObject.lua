@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Class implementation stolen from http://lua-users.org/wiki/SimpleLuaClasses
 
+---@class CpObject
 function CpObject(base, init)
 	local c = {}    -- a new class instance
 	if not init and type(base) == 'function' then
