@@ -1,13 +1,5 @@
 CpSettingsUtil = {}
 
---- Class reference name to Class.
-CpSettingsUtil.classTypes = {
-	["AIParameterSettingList"] = AIParameterSettingList.new,
-	["AIParameterBooleanSetting"] = AIParameterBooleanSetting.new,
-	["AIParameterSpeedSetting"] = AIParameterSpeedSetting.new,
-	["CpAIParameterUnloadingStation"] = CpAIParameterUnloadingStation.new
-}
-
 --[[
 	All the settings configurations.
 	They are divided by sub titles in the gui.
@@ -55,6 +47,8 @@ CpSettingsUtil.classTypes = {
 				- isDisabled (string): function called by the setting from the parent container, to disable the setting.
 				- isVisible (string): function called by the setting from the parent container, to change the setting visibility.
 				- setDefault (string): function called by the setting from the parent container, to set a default value, for example work width.
+
+				- positionParameterType(string): Position type for the CpAIParameterPositionAngle/CpAIParameterPosition
 
 				- Values : 
 					- Value(?) :
@@ -109,6 +103,8 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.STRING, key.."#isVisible", "Callback function, if the settings is visible.") -- optional
 	schema:register(XMLValueType.STRING, key.."#setDefault", "Callback function, to set the default value.") -- optional
 
+	schema:register(XMLValueType.STRING, key .. "#positionParameterType", "Position parameter type for CpAIParameterPositionAngle/CpAIParameterPosition") -- optional
+
 	key = "Settings.SettingSubTitle(?).Setting(?).Values.Value(?)"
 	schema:register(XMLValueType.INT, key, "Setting value", nil)
 	schema:register(XMLValueType.STRING, key.."#name", "Setting value name", nil)
@@ -121,7 +117,15 @@ end
 CpSettingsUtil.init()
 
 function CpSettingsUtil.getSettingFromParameters(parameters, ...)
-    return CpSettingsUtil.classTypes[parameters.classType](parameters, ...)
+	local valid, classObject = CpUtil.try(
+		CpUtil.getClassObject,
+		parameters.classType
+	)
+	if not valid then 
+		CpUtil.info("Setting class %s not found!!", parameters.classType)
+		return
+	end
+    return classObject.new(parameters, ...)
 end
 
 function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
@@ -197,6 +201,8 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.isDisabledFunc = xmlFile:getValue(baseKey.."#isDisabled")
 			settingParameters.isVisibleFunc = xmlFile:getValue(baseKey.."#isVisible")
 			settingParameters.setDefaultFunc = xmlFile:getValue(baseKey.."#setDefault")
+
+			settingParameters.positionParameterType = xmlFile:getValue(baseKey .. "#positionParameterType")
 
 			settingParameters.values = {}
 			settingParameters.disabledValuesFuncs = {}
@@ -303,7 +309,7 @@ function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsByS
 	local i = 1
 	local j = 1
 	for ix, element in ipairs(layout.elements) do 
-		if element:isa(MultiTextOptionElement) then 
+		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) then 
 			if valid then
 				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s", settings[i]:getName())
 				if not settingsBySubTitle then
@@ -352,7 +358,7 @@ end
 function CpSettingsUtil.unlinkGuiElementsAndSettings(settings, layout)
 	local i = 1
 	for _, element in ipairs(layout.elements) do 
-		if element:isa(MultiTextOptionElement) then 
+		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) then 
 			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s", settings[i]:getName())
 			settings[i]:resetGuiElement()
 			i = i + 1

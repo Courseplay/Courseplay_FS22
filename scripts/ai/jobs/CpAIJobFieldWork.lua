@@ -32,20 +32,7 @@ end
 
 function CpAIJobFieldWork:setupJobParameters()
     CpAIJobFieldWork:superClass().setupJobParameters(self)
-
-    -- Adds field position parameter
-    self.fieldPositionParameter = AIParameterPosition.new()
-    self.fieldPositionParameter.setValue = function(self, x, z)
-        self:setPosition(x, z)
-    end
-    self.fieldPositionParameter.isCpFieldPositionTarget = true
-
-    self:addNamedParameter("fieldPosition", self.fieldPositionParameter)
-    local positionGroup = AIParameterGroup.new(g_i18n:getText(self.fieldPositionParameterText))
-    positionGroup:addParameter(self.fieldPositionParameter)
-    table.insert(self.groupedParameters, positionGroup)
-
-    self:setupCpJobParameters(nil)
+    self:setupCpJobParameters()
 end
 
 ---@param vehicle Vehicle
@@ -62,17 +49,24 @@ function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectSt
         local lastJob = vehicle:getLastJob()
 
         if not isDirectStart and lastJob ~= nil and lastJob.cpJobParameters then
-            x, z = lastJob.fieldPositionParameter:getPosition()
+            x, z = lastJob.cpJobParameters.fieldPosition:getPosition()
         end
     end
     if x == nil or z == nil then
         x, _, z = getWorldTranslation(vehicle.rootNode)
     end
 
-    self.fieldPositionParameter:setPosition(x, z)
+    self.cpJobParameters.fieldPosition:setPosition(x, z)
 
     if isStartPositionInvalid then
-        self:resetStartPositionAngle(vehicle)
+        local x, _, z = getWorldTranslation(vehicle.rootNode) 
+        local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
+        local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        
+        self.cpJobParameters.startPosition:setPosition(x, z)
+        self.cpJobParameters.startPosition:setAngle(angle)
+
+        self.cpJobParameters.fieldPosition:setPosition(x, z)
     end
 end
 
@@ -86,7 +80,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     local vehicle = self.vehicleParameter:getVehicle()
 
     -- everything else is valid, now find the field
-    local tx, tz = self.fieldPositionParameter:getPosition()
+    local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     self.hasValidPosition = false
     self.foundVines = nil
     local isCustomField
@@ -152,11 +146,11 @@ function CpAIJobFieldWork:drawSelectedField(map)
 end
 
 function CpAIJobFieldWork:getFieldPositionTarget()
-    return self.fieldPositionParameter:getPosition()
+    return self.cpJobParameters.fieldPosition:getPosition()
 end
 
 function CpAIJobFieldWork:setFieldPositionTarget(x, z)
-    self.fieldPositionParameter:setPosition(x, z)
+    self.cpJobParameters.fieldPosition:setPosition(x, z)
 end
 
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
@@ -191,7 +185,7 @@ end
 function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     local vehicle = self.vehicleParameter:getVehicle()
     local settings = vehicle:getCourseGeneratorSettings()
-    local tx, tz = self.fieldPositionParameter:getPosition()
+    local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     local ok, course
     if self.foundVines then
         local vineSettings = vehicle:getCpVineSettings()
@@ -259,7 +253,7 @@ end
 function CpAIJobFieldWork:resetStartPositionAngle(vehicle)
     CpAIJobFieldWork:superClass().resetStartPositionAngle(self, vehicle)
     local x, _, z = getWorldTranslation(vehicle.rootNode)
-    self.fieldPositionParameter:setPosition(x, z)
+    self.cpJobParameters.fieldPosition:setPosition(x, z)
 end
 
 --- Ugly hack to fix a mp problem from giants, where the helper is not always reset correctly on the client side.

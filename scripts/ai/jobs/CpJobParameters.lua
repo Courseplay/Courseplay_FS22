@@ -74,6 +74,16 @@ function CpJobParameters:copyFrom(jobParameters)
     end
 end
 
+function CpJobParameters:getAiTargetMapHotspotParameters()
+    local parameters = {}
+    for i, setting in ipairs(self.settings) do
+        if setting:isa(CpAIParameterPositionAngle) then
+            table.insert(parameters, setting)
+        end
+    end
+    return parameters
+end
+
 function CpJobParameters:getMultiTools()
     local vehicle = self.job:getVehicle()
     if vehicle then 
@@ -178,6 +188,25 @@ function CpCombineUnloaderJobParameters:generateUnloadingStations(setting)
         table.insert(texts, "---")
     end
     return unloadingStationIds, texts
+end
+
+function CpCombineUnloaderJobParameters:generateTipSides(setting)
+    local tipSideIds = {}
+    local texts = {}
+    if self.job and self.job:getVehicle() then
+        local trailer = AIUtil.getImplementWithSpecialization(self.job:getVehicle(), Trailer)
+        if trailer then 
+            for i, tipSide in pairs(trailer.spec_trailer.tipSides) do 
+                table.insert(tipSideIds, tipSide.index)
+                table.insert(texts, tipSide.name)
+            end
+        end
+    end
+    if #tipSideIds <=0 then 
+        table.insert(tipSideIds, -1)
+        table.insert(texts, "---")
+    end
+    return tipSideIds, texts
 end
 
 function CpCombineUnloaderJobParameters.getSettings(vehicle)

@@ -116,10 +116,11 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 	self.ingameMapBase.drawHotspotsOnly = Utils.appendedFunction(self.ingameMapBase.drawHotspotsOnly , CpInGameMenuAIFrameExtended.draw)
 
 	--- Adds a second map hotspot for field position.
-	self.secondAiTargetMapHotspot = AITargetHotspot.new()
-	self.secondAiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
-	self.createPositionTemplate.onClickCallback = Utils.prependedFunction(self.createPositionTemplate.onClickCallback,
-															CpInGameMenuAIFrameExtended.onClickPositionParameter)
+	self.fieldSiloAiTargetMapHotspot = AITargetHotspot.new()
+	self.fieldSiloAiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs) --- Without angle
+	
+	self.unloadAiTargetMapHotspot = AITargetHotspot.new()
+
 	self.ingameMap.onClickHotspotCallback = Utils.appendedFunction(self.ingameMap.onClickHotspotCallback,
 			CpInGameMenuAIFrameExtended.onClickHotspot)
 	
@@ -314,11 +315,11 @@ function CpInGameMenuAIFrameExtended:unbindCourseGeneratorSettings()
 	self.courseGeneratorLayoutElements:setDisabled(true)
 end
 
-
 --- Updates the visibility of the vehicle settings on select/unselect of a vehicle in the ai menu page.
 --- Also updates the field position map hotspot.
 function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
-	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
 	if hotspot ~= nil then
 		local vehicle = InGameMenuMapUtil.getHotspotVehicle(hotspot)
 		self.lastVehicle = vehicle
@@ -327,13 +328,25 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 			if vehicle.getJob ~= nil then
 				local job = vehicle:getJob()
 
-				if job ~= nil and job.getFieldPositionTarget ~= nil then
-					local x, z = job:getFieldPositionTarget()
+				if job ~= nil then
+					if job.getCpJobParameters ~= nil then
+						local parameters = job:getCpJobParameters():getAiTargetMapHotspotParameters()
+						for i, param in pairs(parameters) do 
+							if param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
+								param:applyToMapHotspot(self.aiTargetMapHotspot)
+								g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+								param:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot)
+								g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+								param:applyToMapHotspot(self.unloadAiTargetMapHotspot)
+								g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+							end
+						end
+					end
 
-					self.secondAiTargetMapHotspot:setWorldPosition(x, z)
-
-					g_currentMission:addMapHotspot(self.secondAiTargetMapHotspot)
 				end
+
 			end
 		end
 	end
@@ -364,7 +377,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.courseGeneratorLayout:setVisible(false)
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
-	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 	g_currentMission.inGameMenu:updatePages()
 end
@@ -426,76 +439,100 @@ function CpInGameMenuAIFrameExtended:draw()
 end
 
 function CpInGameMenuAIFrameExtended:delete()
-	if self.secondAiTargetMapHotspot ~= nil then
-		self.secondAiTargetMapHotspot:delete()
+	if self.fieldSiloAiTargetMapHotspot ~= nil then
+		self.fieldSiloAiTargetMapHotspot:delete()
 
-		self.secondAiTargetMapHotspot = nil
+		self.fieldSiloAiTargetMapHotspot = nil
+	end
+
+	if self.unloadAiTargetMapHotspot ~= nil then
+		self.unloadAiTargetMapHotspot:delete()
+
+		self.unloadAiTargetMapHotspot = nil
 	end
 end
 InGameMenuAIFrame.delete = Utils.appendedFunction(InGameMenuAIFrame.delete,CpInGameMenuAIFrameExtended.delete)
 
 --- Ugly hack to swap the main AI hotspot with the field position hotspot,
 --- as only the main hotspot can be moved by the player.
-function CpInGameMenuAIFrameExtended:onClickPositionParameter(element,...)
-	local parameter = element.aiParameter
-	if parameter and parameter.isCpFieldPositionTarget then 
-		local x, z = self.aiTargetMapHotspot:getWorldPosition()
-		local rot = self.aiTargetMapHotspot:getWorldRotation()
-		local dx, dz = self.secondAiTargetMapHotspot:getWorldPosition()
-		self.aiTargetMapHotspot:setWorldPosition(dx, dz)
-		self.aiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
-		self.secondAiTargetMapHotspot:setWorldPosition(x, z)
-		self.secondAiTargetMapHotspot:setWorldRotation(rot)
-		self.secondAiTargetMapHotspot.icon:setUVs(AITargetHotspot.UVS)
+function CpInGameMenuAIFrameExtended:startPickingPosition(superFunc, parameter, callback, ...)
+	if parameter and parameter.getPositionType then
+		if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+			local mapHotspot = self.aiTargetMapHotspot
+			self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
+			self.fieldSiloAiTargetMapHotspot = mapHotspot
+			self.currentPickingMapHotspotType = CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO
+		elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+			local mapHotspot = self.aiTargetMapHotspot
+			self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
+			self.unloadAiTargetMapHotspot = mapHotspot
+			self.currentPickingMapHotspotType = CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD
+		end
 	end
+	callback = Utils.appendedFunction(callback,function (finished, x, z)
+		if self.currentPickingMapHotspotType == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+			local mapHotspot = self.aiTargetMapHotspot
+			self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
+			self.fieldSiloAiTargetMapHotspot = mapHotspot
+			self.currentPickingMapHotspotType = nil
+		elseif self.currentPickingMapHotspotType == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+			local mapHotspot = self.aiTargetMapHotspot
+			self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
+			self.unloadAiTargetMapHotspot = mapHotspot
+			self.currentPickingMapHotspotType = nil
+		end
+	end)
+
+	superFunc(self, parameter, callback, ...)
 end
+InGameMenuAIFrame.startPickPosition = Utils.overwrittenFunction(InGameMenuAIFrame.startPickPosition,CpInGameMenuAIFrameExtended.startPickingPosition)
+InGameMenuAIFrame.startPickPositionAndRotation = Utils.overwrittenFunction(InGameMenuAIFrame.startPickPositionAndRotation,CpInGameMenuAIFrameExtended.startPickingPosition)
+
 
 --- Added support for the cp field target position.
 function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 	if self.currentJobElements == nil then 
 		return
 	end
+	if self.currentJob and self.currentJob.getCpJobParameters then 
+		self.currentJob:getCpJobParameters():validateSettings()
+	end
 	superFunc(self, ...)
 	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
-	g_currentMission:removeMapHotspot(self.secondAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
 	for _, element in ipairs(self.currentJobElements) do
 		local parameter = element.aiParameter
 		local parameterType = parameter:getType()
-		if parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
-			element:setText(parameter:getString())
-			if parameter.isCpFieldPositionTarget then
-				g_currentMission:addMapHotspot(self.secondAiTargetMapHotspot)
-				local x, z = parameter:getPosition()
-
-				self.secondAiTargetMapHotspot:setWorldPosition(x, z)
-				self.secondAiTargetMapHotspot.icon:setUVs(CpInGameMenuAIFrameExtended.positionUvs)
-			else
+		if parameter:isa(CpAIParameterPositionAngle) or parameter:isa(CpAIParameterPosition) then 
+			if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
+				parameter:applyToMapHotspot(self.aiTargetMapHotspot)
 				g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+				parameter:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot)
+				g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+				parameter:applyToMapHotspot(self.unloadAiTargetMapHotspot)
+				g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+			end
+		elseif parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
+			element:setText(parameter:getString())
+			g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
 
-				local x, z = parameter:getPosition()
+			local x, z = parameter:getPosition()
 
-				self.aiTargetMapHotspot:setWorldPosition(x, z)
-				self.aiTargetMapHotspot.icon:setUVs(AITargetHotspot.UVS)
-				if parameterType == AIParameterType.POSITION_ANGLE then
-					local angle = parameter:getAngle() + math.pi
+			self.aiTargetMapHotspot:setWorldPosition(x, z)
+			self.aiTargetMapHotspot.icon:setUVs(AITargetHotspot.UVS)
+			if parameterType == AIParameterType.POSITION_ANGLE then
+				local angle = parameter:getAngle() + math.pi
 
-					self.aiTargetMapHotspot:setWorldRotation(angle)
-				end
+				self.aiTargetMapHotspot:setWorldRotation(angle)
 			end
 		end
 	end
 end
 InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,
 															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
-
---- After the position of the hotspot is set, makes sure the positions of the hot spots are correct.
-function CpInGameMenuAIFrameExtended:executePickingCallback(...)
-	if not self:getIsPicking() then
-		self:updateParameterValueTexts()
-	end
-end
-InGameMenuAIFrame.executePickingCallback = Utils.appendedFunction(InGameMenuAIFrame.executePickingCallback,
-															CpInGameMenuAIFrameExtended.executePickingCallback)
 
 --- Enables clickable field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)

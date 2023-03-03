@@ -221,6 +221,22 @@
 			<Text language="de"><![CDATA[Abladestation:]]></Text>
 			<Text language="en"><![CDATA[Unloading station:]]></Text>
 		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_fieldUnload">
+			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
+			<Text language="en"><![CDATA[Giants unloader:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_useFieldUnload_title">
+			<Text language="de"><![CDATA[Abladen auf dem Feld benutzen:]]></Text>
+			<Text language="en"><![CDATA[Use unload on field:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title">
+			<Text language="de"><![CDATA[Abladeposition:]]></Text>
+			<Text language="en"><![CDATA[Field unloading position:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadingTipSide_title">
+			<Text language="de"><![CDATA[Anhänger Abladeseite:]]></Text>
+			<Text language="en"><![CDATA[Trailer tip side:]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI bunker silo worker job parameters">
 		<Translation name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo">

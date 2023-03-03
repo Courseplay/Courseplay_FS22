@@ -58,18 +58,25 @@ end
 ---@param isDirectStart boolean disables the drive to by giants
 ---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
 function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
-	CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+	CpAIJob.applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 
 	self:copyFrom(vehicle:getCpCombineUnloaderJob())
 
-	local x, z = self.fieldPositionParameter:getPosition()
+	local x, z = self.cpJobParameters.fieldPosition:getPosition()
 
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
+		self.cpJobParameters.fieldPosition:setPosition(x, z)
 	end
 
-	self.fieldPositionParameter:setPosition(x, z)
+	local x, z = self.cpJobParameters.fieldUnloadPosition:getPosition()
+
+	-- no field position from the previous job, use the vehicle's current position
+	if x == nil or z == nil then
+		x, _, z = getWorldTranslation(vehicle.rootNode)
+		self.cpJobParameters.fieldUnloadPosition:setPosition(x, z)
+	end
 end
 
 --- Gets the giants unload station.
@@ -177,7 +184,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
 		if not isValid and useGiantsUnload then 
 			--- Alternatively check, if the start marker is close to the field and giants unload is active.
-			local x, z = self.positionAngleParameter:getPosition()
+			local x, z = self.cpJobParameters.startPosition:getPosition()
 			isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
 				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
 			if not isValid then
@@ -321,7 +328,7 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	
 	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	local tx, tz = self.positionAngleParameter:getPosition()
+	local tx, tz = self.cpJobParameters.startPosition:getPosition()
 	local targetReached = math.abs(x - tx) < 1 and math.abs(z - tz) < 1
 
 	if targetReached then
@@ -355,16 +362,4 @@ end
 
 function CpAIJobCombineUnloader:copyFrom(job)
 	self.cpJobParameters:copyFrom(job.cpJobParameters)
-	local x, z = job:getFieldPositionTarget()
-	if x ~=nil then
-		self.fieldPositionParameter:setValue(x, z)
-	end
-	local x, z = job.positionAngleParameter:getPosition()
-	if x ~= nil then
-		self.positionAngleParameter:setPosition(x, z)
-	end
-	local angle = job.positionAngleParameter:getAngle()
-	if angle ~= nil then
-		self.positionAngleParameter:setAngle(angle)
-	end
 end

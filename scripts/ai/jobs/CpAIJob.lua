@@ -32,20 +32,10 @@ end
 --- For now every job has these parameters in common.
 function CpAIJob:setupJobParameters()
 	self.vehicleParameter = AIParameterVehicle.new()
-	self.positionAngleParameter = AIParameterPositionAngle.new(math.rad(0))
-
 	self:addNamedParameter("vehicle", self.vehicleParameter)
-	self:addNamedParameter("positionAngle", self.positionAngleParameter)
-
 	local vehicleGroup = AIParameterGroup.new(g_i18n:getText("ai_parameterGroupTitleVehicle"))
-
 	vehicleGroup:addParameter(self.vehicleParameter)
-
-	local positionGroup = AIParameterGroup.new(g_i18n:getText(self.targetPositionParameterText))
-
-	positionGroup:addParameter(self.positionAngleParameter)
 	table.insert(self.groupedParameters, vehicleGroup)
-	table.insert(self.groupedParameters, positionGroup)
 end
 
 --- Optional to create custom cp job parameters.
@@ -53,7 +43,6 @@ function CpAIJob:setupCpJobParameters()
 	self.cpJobParameters = CpJobParameters(self)
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	self.cpJobParameters:validateSettings()
-
 end
 
 --- Gets the first task to start with.
@@ -68,9 +57,12 @@ end
 
 --- Should the giants path finder job be skipped?
 function CpAIJob:isTargetReached()
+	if not self.cpJobParameters or not self.cpJobParameters.startPosition then 
+		return true
+	end
 	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	local tx, tz = self.positionAngleParameter:getPosition()
+	local tx, tz = self.cpJobParameters.startPosition:getPosition()
 	local targetReached = MathUtil.vector2Length(x - tx, z - tz) < 3
 
 	return targetReached
@@ -102,15 +94,17 @@ end
 function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	CpAIJob:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 	self.vehicleParameter:setVehicle(vehicle)
-
+	if not self.cpJobParameters or not self.cpJobParameters.startPosition then 
+		return
+	end
 	local x, z, angle, _ = nil
 
 	if vehicle.getLastJob ~= nil then
 		local lastJob = vehicle:getLastJob()
 
 		if not isDirectStart and lastJob ~= nil and lastJob:isa(CpAIJob) then
-			x, z = lastJob.positionAngleParameter:getPosition()
-			angle = lastJob.positionAngleParameter:getAngle()
+			x, z = lastJob.cpJobParameters.startPosition:getPosition()
+			angle = lastJob.cpJobParameters.startPosition:getAngle()
 		end
 	end
 
@@ -118,7 +112,7 @@ function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	local terrainAngle = math.pi / math.max(g_currentMission.fieldGroundSystem:getGroundAngleMaxValue() + 1, 4)
 	snappingAngle = math.max(snappingAngle, terrainAngle)
 
-	self.positionAngleParameter:setSnappingAngle(snappingAngle)
+	self.cpJobParameters.startPosition:setSnappingAngle(snappingAngle)
 
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
@@ -128,11 +122,11 @@ function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 		local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
 		angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	end
-	local dx, dz = self.positionAngleParameter:getPosition()
-	local dAngle = self.positionAngleParameter:getAngle()
+	local dx, dz = self.cpJobParameters.startPosition:getPosition()
+	local dAngle = self.cpJobParameters.startPosition:getAngle()
 	if dx == nil or dAngle == nil then
-		self.positionAngleParameter:setPosition(x, z)
-		self.positionAngleParameter:setAngle(angle)
+		self.cpJobParameters.startPosition:setPosition(x, z)
+		self.cpJobParameters.startPosition:setAngle(angle)
 	end
 end
 
@@ -170,8 +164,8 @@ function CpAIJob:setValues()
 
 	self.driveToTask:setVehicle(vehicle)
 
-	local angle = self.positionAngleParameter:getAngle()
-	local x, z = self.positionAngleParameter:getPosition()
+	local angle = self.cpJobParameters.startPosition:getAngle()
+	local x, z = self.cpJobParameters.startPosition:getPosition()
 	if angle ~= nil and x ~= nil then
 		local dirX, dirZ = MathUtil.getDirectionFromYRotation(angle)
 		self.driveToTask:setTargetDirection(dirX, dirZ)
@@ -281,16 +275,6 @@ function CpAIJob.getPricePerMs_FixPrecisionFarming(vehicle, superFunc, ...)
 end
 
 AIJobFieldWork.getPricePerMs = Utils.overwrittenFunction(AIJobFieldWork.getPricePerMs, CpAIJob.getPricePerMs_FixPrecisionFarming)
-
---- Resets the position parameters, if the menu was opened by the hud.
-function CpAIJob:resetStartPositionAngle(vehicle)
-	local x, _, z = getWorldTranslation(vehicle.rootNode) 
-	local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
-
-	self.positionAngleParameter:setPosition(x, z)
-	local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
-	self.positionAngleParameter:setAngle(angle)
-end
 
 function CpAIJob:getVehicle()
 	return self.vehicleParameter:getVehicle() or self.vehicle
