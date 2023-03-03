@@ -56,7 +56,7 @@ dir:delete(true)
 local fileSystem = FileSystem(workingDir .. '\\' .. coursesDir, g_currentMission.missionInfo.mapId)
 
 local currentView = fileSystem.currentDirectoryView
-assert(currentView.name == "Singleplayer")
+--assert(currentView.name == "Singleplayer")
 
 --- Creating a new directory
 

@@ -21,6 +21,8 @@ g_currentMission.missionDynamicInfo.isMultiplayer = false
 g_careerScreen = {}
 g_careerScreen.currentSavegame = {savegameDirectory = 'savegame1'}
 
+Class = CpObject
+
 function getUserProfileAppPath()
     return './'
 end
@@ -106,3 +108,4 @@ end
 function printCallstack()
     
 end
+
