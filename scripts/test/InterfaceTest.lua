@@ -1,4 +1,5 @@
-
+lu = require("luaunit")
+package.path = package.path .. ";../?.lua;../util/?.lua"
 InterfaceTests = {}
 
 --- Simple interface test, 
@@ -7,6 +8,6 @@ function InterfaceTests.compareToInterface(dynamicInterface, dynamicClass)
 	local interface_metaTable = getmetatable(dynamicInterface)
 	local class_metaTable = getmetatable(dynamicClass)
 	for funcName, func in pairs(interface_metaTable) do 
-		assert(class_metaTable[funcName] ~= nil)
+		lu.assertIsTrue(class_metaTable[funcName] ~= nil)
 	end
 end

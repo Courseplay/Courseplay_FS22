@@ -1,5 +1,6 @@
 lu = require("luaunit")
 package.path = package.path .. ";../?.lua;../ai/parameters/?.lua"
+require('InterfaceTest')
 require('mock-GiantsEngine')
 require('mock-Courseplay')
 require('CpObject')
