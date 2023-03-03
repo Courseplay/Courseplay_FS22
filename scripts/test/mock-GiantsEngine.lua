@@ -102,3 +102,7 @@ function XMLFile:delete()
         self.file:close()
     end
 end
+
+function printCallstack()
+    
+end

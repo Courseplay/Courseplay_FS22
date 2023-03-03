@@ -74,6 +74,8 @@ function CpJobParameters:copyFrom(jobParameters)
     end
 end
 
+--- Crawls through the parameters and collects all CpAIParameterPositionAngle settings.
+---@return table settings all CpAIParameterPositionAngle and CpAIParameterPosition settings found.
 function CpJobParameters:getAiTargetMapHotspotParameters()
     local parameters = {}
     for i, setting in ipairs(self.settings) do
@@ -190,6 +192,10 @@ function CpCombineUnloaderJobParameters:generateUnloadingStations(setting)
     return unloadingStationIds, texts
 end
 
+--- Adds all tipSides of the attached trailer into setting for selection.
+---@param setting table
+---@return table tipSideIds all tip side by their id.
+---@return table texts all tip side translations.
 function CpCombineUnloaderJobParameters:generateTipSides(setting)
     local tipSideIds = {}
     local texts = {}

@@ -18,7 +18,7 @@
 		<Setting classType="CpAIParameterUnloadingStation" name="unloadingStation" isDisabled ="hasPipe" generateValuesFunction="generateUnloadingStations"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="fieldUnload">
-		<!-- Is the giants ai unloader wanted for unloading? -->
+		<!-- Is unloading onto the field allowed? -->
 		<Setting classType="AIParameterBooleanSetting" name="useFieldUnload" defaultBool="false" isDisabled ="hasPipe"/>
 		<Setting classType="CpAIParameterPositionAngle" name="fieldUnloadPosition" positionParameterType="UNLOAD" isDisabled ="hasPipe"/>
 		<Setting classType="AIParameterSettingList" name="unloadingTipSide" isDisabled ="hasPipe" generateValuesFunction="generateTipSides"/>

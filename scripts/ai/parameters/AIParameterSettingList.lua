@@ -6,6 +6,12 @@ local AIParameterSettingList_mt = Class(AIParameterSettingList, AIParameter)
 function AIParameterSettingList.new(data, vehicle, class, customMt)
 	---@type AIParameterSettingList
 	local self = AIParameter.new(customMt or AIParameterSettingList_mt)
+
+	if data == nil then 
+		CpUtil.error("Data is nil for AIParameterSettingList!")
+		return self
+	end
+
 	self.type = AIParameterType.SELECTOR
 	self.vehicle = vehicle
 	self.klass = class

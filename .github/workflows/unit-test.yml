@@ -30,3 +30,4 @@ jobs:
           lua CpMathUtilTest.lua
           lua MovingAverageTest.lua
           lua PolygonTest.lua
+          lua AIParameterSettingsTest.lua
