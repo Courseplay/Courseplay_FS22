@@ -2,7 +2,7 @@
 ---@class AIParameterSpeedSetting : AIParameterSettingList
 AIParameterSpeedSetting = CpObject(AIParameterSettingList)
 
-function AIParameterSpeedSetting:init(data,vehicle,class)
+function AIParameterSpeedSetting:init(data, vehicle, class)
 	AIParameterSettingList.init(self, data,vehicle,class)
 end
 

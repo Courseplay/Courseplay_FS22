@@ -10,26 +10,34 @@ function AIParameterSettingList:init(data, vehicle, class)
 	end
 	self:initFromData(data, vehicle, class)
 
-	self.guiParameterType = AIParameterType.SELECTOR
+	self.guiParameterType = AIParameterType.SELECTOR --- For the giants gui element.
 	
 	if next(data.values) ~=nil then
+		--- The setting has values defined in the data, so we copy these here.
+		--- This saves the unmodified values in the data table.
 		self.values = table.copy(data.values)
 		self.texts = table.copy(data.texts)
 	elseif data.min ~= nil and data.max ~=nil then
+		--- The setting has a min and max value,
+		--- so we generate a series of float values and texts here.
 		self.data.values = {}
 		self.data.texts = {}
 		AIParameterSettingList.generateValues(self, self.data.values, self.data.texts, data.min, data.max, data.incremental, data.unit)
+		--- Same as above, make sure the values are copied.
 		self.values = table.copy(self.data.values)
 		if self.data.texts ~= nil then
 			self.texts = table.copy(self.data.texts)
 		end
 		data.textInputAllowed = true
 	elseif data.generateValuesFunction then
+		--- A generation function by the parent class is used
+		--- to enrich/create the setting values/texts.
 		self.data.values, self.data.texts = self.class[data.generateValuesFunction](self.vehicle or self.class, self)
 		self.values = table.copy(self.data.values)
 		self.texts = table.copy(self.data.texts)
 	end
-	self.textInputAllowed = data.textInputAllowed
+	--- Text input is only allowed, when the settings values are numeric.
+	self.textInputAllowed = data.textInputAllowed 
 
 	-- index of the current value/text
 	self.current =  1
@@ -37,11 +45,12 @@ function AIParameterSettingList:init(data, vehicle, class)
 	self.previous = 1
 
 	if self.texts == nil or next(self.texts) == nil then
+		--- Fallback text generation based on the numeric values and a optional given unit.
 		self.data.texts = {}
 		AIParameterSettingList.enrichTexts(self, self.data.texts, data.unit)
 		self.texts = table.copy(self.data.texts)
 	end
-
+	--- Lastly apply the default values here.
 	if data.default ~=nil then
 		AIParameterSettingList.setFloatValue(self, data.default)
 		self:debug("set to default %s", data.default)

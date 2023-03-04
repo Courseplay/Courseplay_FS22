@@ -79,7 +79,7 @@ end
 function CpJobParameters:getAiTargetMapHotspotParameters()
     local parameters = {}
     for i, setting in ipairs(self.settings) do
-        if setting:isa(CpAIParameterPositionAngle) then
+        if setting:is_a(CpAIParameterPositionAngle) then
             table.insert(parameters, setting)
         end
     end

@@ -116,6 +116,7 @@ function CpSettingsUtil.init()
 end
 CpSettingsUtil.init()
 
+--- Generates a setting from the string class type.
 function CpSettingsUtil.getSettingFromParameters(parameters, ...)
 	local valid, classObject = CpUtil.try(
 		CpUtil.getClassObject,
@@ -132,6 +133,9 @@ function CpSettingsUtil.getSettingFromParameters(parameters, ...)
 	end
 end
 
+--- Loads the settings setup config file.
+---@param class table class to save the data
+---@param filePath string
 function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
     local xmlFile = XMLFile.load("settingSetupXml", filePath, CpSettingsUtil.setupXmlSchema)
     class.settings = {}
@@ -306,8 +310,10 @@ end
 
 
 --- Links the gui elements to the correct settings.
----@param settings any
----@param layout any
+---@param settings table settings table that get's linked.
+---@param layout table layout with elements to link to.
+---@param settingsBySubTitle table reference for sub title elements between the settings.
+---@param vehicle table optional vehicle reference
 function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsBySubTitle, vehicle)
 	local valid = true
 	local i = 1
@@ -357,8 +363,8 @@ function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsByS
 end
 
 --- Unlinks the gui elements to the correct settings.
----@param settings any
----@param layout any
+---@param settings table
+---@param layout table
 function CpSettingsUtil.unlinkGuiElementsAndSettings(settings, layout)
 	local i = 1
 	for _, element in ipairs(layout.elements) do 

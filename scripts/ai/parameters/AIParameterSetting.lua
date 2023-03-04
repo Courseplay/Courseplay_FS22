@@ -35,10 +35,6 @@ function AIParameterSetting:initFromData(data, vehicle, class)
 	self.tooltip = data.tooltip
 end
 
-function AIParameterSetting:isa(...)
-	return self:is_a(...)
-end
-
 function AIParameterSetting:getName()
 	return self.name
 end
@@ -78,6 +74,8 @@ function AIParameterSetting:getCanBeChanged()
 	return not self:getIsDisabled()
 end
 
+--- Is the setting visible based on the expert mode setting if necessary and
+--- checks if any callbacks are correct.
 function AIParameterSetting:getIsVisible()
 	if self:getIsExpertModeSetting() and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
 		return false
@@ -111,6 +109,7 @@ function AIParameterSetting:raiseCallback(callbackStr, ...)
 	end
 end
 
+--- If the class has a given callback to call.
 function AIParameterSetting:hasCallback(callbackStr)
 	if self.class ~= nil and callbackStr then
 		if self.class[callbackStr] ~= nil then 
@@ -119,6 +118,7 @@ function AIParameterSetting:hasCallback(callbackStr)
 	end
 end
 
+--- Gets the result from a class callback.
 function AIParameterSetting:getCallback(callbackStr, ...)
 	if self:hasCallback(callbackStr) then
 		if self.vehicle ~= nil then 
@@ -129,6 +129,7 @@ function AIParameterSetting:getCallback(callbackStr, ...)
 	end
 end
 
+--- Make sure the setting value gets synchronized by the class.
 function AIParameterSetting:raiseDirtyFlag()
 	if not self:getIsUserSetting() then
 		if self.class and self.class.raiseDirtyFlag then

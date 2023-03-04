@@ -1,3 +1,4 @@
+--- Position in the AI Menu.
 ---@class CpAIParameterPosition : AIParameterSetting
 CpAIParameterPosition = CpObject(AIParameterSetting)
 ---@param data table
@@ -97,6 +98,7 @@ function CpAIParameterPosition:getPositionType()
 	return self.positionType
 end
 
+--- Position with angle in the AI Menu.
 ---@class CpAIParameterPositionAngle : CpAIParameterPosition
 CpAIParameterPositionAngle = CpObject(CpAIParameterPosition)
 	--- These are the different ai map hotspots, that can be set in the ai menu.

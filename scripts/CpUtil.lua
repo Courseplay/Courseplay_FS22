@@ -297,6 +297,9 @@ function CpUtil.getXmlVectorString(data)
 	return table.concat(values, " ")
 end
 
+--- Gets a class from a global class name.
+---@param className string
+---@return table classObject that was found.
 function CpUtil.getClassObject(className)
 	local parts = string.split(className, ".")
 	local currentTable = _G[parts[1]]

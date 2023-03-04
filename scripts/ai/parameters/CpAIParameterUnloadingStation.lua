@@ -1,4 +1,4 @@
-
+--- Parameter to selected an unloading station.
 ---@class CpAIParameterUnloadingStation : AIParameterSettingList
 CpAIParameterUnloadingStation = CpObject(AIParameterSettingList)
 
