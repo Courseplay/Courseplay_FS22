@@ -504,7 +504,7 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 	for _, element in ipairs(self.currentJobElements) do
 		local parameter = element.aiParameter
 		local parameterType = parameter:getType()
-		if parameter:isa(CpAIParameterPositionAngle) or parameter:isa(CpAIParameterPosition) then 
+		if parameter.is_a and (parameter:is_a(CpAIParameterPositionAngle) or parameter:is_a(CpAIParameterPosition)) then 
 			if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
 				parameter:applyToMapHotspot(self.aiTargetMapHotspot)
 				g_currentMission:addMapHotspot(self.aiTargetMapHotspot)

@@ -142,6 +142,13 @@ function AIDriveStrategyUnloadCombine:setFieldPolygon(fieldPolygon)
     self.fieldPolygon = fieldPolygon
 end
 
+function AIDriveStrategyUnloadCombine:setFieldUnloadPositionAndTipSide(fieldUnloadPosition, unloadTipSideID)
+    if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
+        self.fieldUnloadPosition = CpUtil.createNode("fieldUnloadPosition", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
+        self.unloadTipSideID = unloadTipSideID
+    end
+end
+
 function AIDriveStrategyUnloadCombine:getGeneratedCourse(jobParameters)
     return nil
 end
@@ -632,6 +639,9 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
             self:debug('No trailer for self unload found, keep waiting')
             self:startWaitingForSomethingToDo()
         end
+    elseif self.fieldUnloadPosition then
+        self:debug('Starting unloading on the field.')
+
     else
         self:debug('Full and have no auger wagon, stop, so eventually AD can take over.')
         --- The job instance decides if the job has to quit.

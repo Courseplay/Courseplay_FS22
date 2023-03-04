@@ -172,6 +172,9 @@ function CpAIJobCombineUnloader:validate(farmId)
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
 	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
+	if self.cpJobParameters.useFieldUnload then
+		self.combineUnloaderTask:setFieldUnloadPositionAndTipSide(self.cpJobParameters.fieldUnloadPosition, self.cpJobParameters.unloadingTipSide)
+	end
 	if not isValid then 
 		return isValid, errorMessage
 	end
@@ -218,6 +221,9 @@ function CpAIJobCombineUnloader:readStream(streamId, connection)
 		self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
 	end
 	CpAIJobCombineUnloader:superClass().readStream(self, streamId, connection)
+	if self.cpJobParameters.useFieldUnload then
+		self.combineUnloaderTask:setFieldUnloadPositionAndTipSide(self.cpJobParameters.fieldUnloadPosition, self.cpJobParameters.unloadingTipSide)
+	end
 end
 
 function CpAIJobCombineUnloader:writeStream(streamId, connection)
