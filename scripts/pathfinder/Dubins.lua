@@ -49,19 +49,6 @@ function DubinsSolution:getWaypoints(start, turnRadius)
     return dubins_path_sample_many(self.pathDescriptor, 1)
 end
 
-
----@class DubinsSolver : AnalyticSolver
-DubinsSolver = CpObject(AnalyticSolver)
-
--- Dubins words (path types, Left/Straight/Right
-DubinsSolver.PathType = {}
-DubinsSolver.PathType.LSL = 0
-DubinsSolver.PathType.LSR = 1
-DubinsSolver.PathType.RSL = 2
-DubinsSolver.PathType.RSR = 3
-DubinsSolver.PathType.RLR = 4
-DubinsSolver.PathType.LRL = 5
-
 local twoPi = 2 * math.pi
 
 local function mod2pi( theta )
@@ -278,6 +265,9 @@ function dubins_LRL(ir)
     end
 end
 
+---@class DubinsSolver : AnalyticSolver
+DubinsSolver = CpObject(AnalyticSolver)
+
 DubinsSolver.PathTypeFunctions = {
     dubins_LSL,
     dubins_LSR,
@@ -287,6 +277,33 @@ DubinsSolver.PathTypeFunctions = {
     dubins_LRL
 }
 
+-- Dubins words (path types, Left/Straight/Right
+DubinsSolver.PathType = {}
+DubinsSolver.PathType.LSL = 1
+DubinsSolver.PathType.LSR = 2
+DubinsSolver.PathType.RSL = 3
+DubinsSolver.PathType.RSR = 4
+DubinsSolver.PathType.RLR = 5
+DubinsSolver.PathType.LRL = 6
+
+---@param enabledPathTypes number[] list of DubinsSolver.PathTypes we want to restrict the solution to
+function DubinsSolver:init(enabledPathTypes)
+    if enabledPathTypes then
+        self.enabledPathTypeFunctions = {}
+        for _, type in pairs(enabledPathTypes) do
+            if DubinsSolver.PathTypeFunctions[type] then
+                table.insert(self.enabledPathTypeFunctions, DubinsSolver.PathTypeFunctions[type])
+            end
+        end
+    else
+        -- try all types if not restricted
+        self.enabledPathTypeFunctions = DubinsSolver.PathTypeFunctions
+    end
+end
+
+---@param q0 State3D start
+---@param q1 State3D goal
+---@param rho number turning radius
 function DubinsSolver:solve(q0, q1, rho)
     local path = {}
     local ir = {}
@@ -308,7 +325,8 @@ function DubinsSolver:solve(q0, q1, rho)
 
     local pathType
 
-    for _, dubins_path_type_function in pairs(DubinsSolver.PathTypeFunctions) do
+    for _, dubins_path_type_function in pairs(self.enabledPathTypeFunctions) do
+        print(dubins_path_type_function)
         params[1], params[2], params[3], pathType = dubins_path_type_function(ir, params)
         if params[1] then
             cost = params[1] + params[2] + params[3]
