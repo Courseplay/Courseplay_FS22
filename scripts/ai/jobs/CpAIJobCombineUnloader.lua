@@ -59,6 +59,8 @@ end
 ---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
 function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
 	CpAIJob.applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
+	
+	self.cpJobParameters:validateSettings()
 
 	self:copyFrom(vehicle:getCpCombineUnloaderJob())
 

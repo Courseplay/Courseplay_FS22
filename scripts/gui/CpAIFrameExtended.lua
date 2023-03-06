@@ -494,9 +494,6 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 	if self.currentJobElements == nil then 
 		return
 	end
-	if self.currentJob and self.currentJob.getCpJobParameters then 
-		self.currentJob:getCpJobParameters():validateSettings()
-	end
 	superFunc(self, ...)
 	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
@@ -529,6 +526,7 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 				self.aiTargetMapHotspot:setWorldRotation(angle)
 			end
 		end
+		element:setDisabled(not parameter:getCanBeChanged())
 	end
 end
 InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,

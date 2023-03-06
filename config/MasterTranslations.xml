@@ -222,8 +222,8 @@
 			<Text language="en"><![CDATA[Unloading station:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_fieldUnload">
-			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
-			<Text language="en"><![CDATA[Giants unloader:]]></Text>
+			<Text language="de"><![CDATA[Abladen auf dem Feld:]]></Text>
+			<Text language="en"><![CDATA[Unloading on the field:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_useFieldUnload_title">
 			<Text language="de"><![CDATA[Abladen auf dem Feld benutzen:]]></Text>

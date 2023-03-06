@@ -167,6 +167,14 @@ function CpCombineUnloaderJobParameters:init(job)
     CpSettingsUtil.cloneSettingsTable(self, CpCombineUnloaderJobParameters.settings, nil, self)
 end
 
+function CpCombineUnloaderJobParameters:isGiantsUnloadDisabled()
+    return self:hasPipe() or self.useFieldUnload:getValue()
+end
+
+function CpCombineUnloaderJobParameters:isFieldUnloadDisabled()
+    return self:hasPipe() or self.useGiantsUnload:getValue()
+end
+
 function CpCombineUnloaderJobParameters:hasPipe()
     local vehicle = self.job:getVehicle()
     if vehicle then

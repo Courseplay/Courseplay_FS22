@@ -192,8 +192,10 @@ end
 --- Excludes deactivated values from the current values and texts tables.
 function AIParameterSettingList:refresh()
 	if self.data.generateValuesFunction then 
+		local lastValue = self.values[self.current]
 		self.values, self.texts = self.class[self.data.generateValuesFunction](self.vehicle or self.class, self)
-		self:validateCurrentValue()
+		self:setValue(lastValue)
+		self:debug("Refreshed from %s to %s", tostring(lastValue), tostring(self.values[self.current]))
 		return
 	end
 	self.values = {}
