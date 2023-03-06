@@ -326,7 +326,6 @@ function DubinsSolver:solve(q0, q1, rho)
     local pathType
 
     for _, dubins_path_type_function in pairs(self.enabledPathTypeFunctions) do
-        print(dubins_path_type_function)
         params[1], params[2], params[3], pathType = dubins_path_type_function(ir, params)
         if params[1] then
             cost = params[1] + params[2] + params[3]
