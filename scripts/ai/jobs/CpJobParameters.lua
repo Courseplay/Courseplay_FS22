@@ -172,8 +172,13 @@ function CpCombineUnloaderJobParameters:isGiantsUnloadDisabled()
 end
 
 function CpCombineUnloaderJobParameters:isFieldUnloadDisabled()
-    return self:hasPipe() or self.useGiantsUnload:getValue()
+    return self.useGiantsUnload:getValue()
 end
+
+function CpCombineUnloaderJobParameters:isFieldUnloadTipSideDisabled()
+    return self:isFieldUnloadDisabled() or self:hasPipe()
+end
+
 
 function CpCombineUnloaderJobParameters:hasPipe()
     local vehicle = self.job:getVehicle()

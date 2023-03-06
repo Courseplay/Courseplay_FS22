@@ -20,6 +20,23 @@ function PipeController:init(vehicle, implement)
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
     CpUtil.try(ImplementUtil.setPipeAttributes, self, self.implement)
+
+    self.isDischargingTimer = CpTemporaryObject(false)
+end
+
+function PipeController:getDriveData()
+    local maxSpeed
+    if not self.implement:getAIHasFinishedDischarge() then 
+        if self.isDischargingTimer:get() or self:isEmpty() then 
+            --- Waiting until the discharging stopped or 
+            --- the trailer is empty and the folding animation is playing.
+            maxSpeed = 0
+        end
+    end
+    if self:isDischarging() then 
+        self.isDischargingTimer:set(true, 1000)
+    end
+    return nil, nil, nil, maxSpeed
 end
 
 function PipeController:update(dt)
@@ -137,6 +154,62 @@ function PipeController:handleChopperPipe()
     end
 end
 
+--- Gets the dischargeNode and offset from a selected tip side.
+---@param tipSideID number
+---@return table dischargeNodeIndex
+---@return table dischargeNode
+---@return number xOffset 
+function PipeController:getDischargeNodeAndOffsetForTipSide(tipSideID)
+    local dischargeNode = self:getDischargeNode()
+    return self.implement:getPipeDischargeNodeIndex(), dischargeNode, self:getDischargeXOffset(dischargeNode)
+end
+
+--- Gets the x offset of the discharge node relative to the implement root.
+function PipeController:getDischargeXOffset(dischargeNode)
+    local node = dischargeNode.node
+    local xOffset, _ ,_ = localToLocal(node, self.implement.rootNode, 0, 0, 0)
+    return xOffset
+end
+
+function PipeController:startDischargeToGround(dischargeNode)
+    if not dischargeNode.canDischargeToGround then 
+        return false
+    end
+    --- TODO: Check why this one is not working for every discharge node?
+    ---       Maybe a raycast call is missing
+    --if not self.implement:getCanDischargeToGround(dischargeNode) then 
+    --    return false
+    --end
+    --- Custom implementation of: AIDischargeable:startAIDischarge(dischargeNode, task)
+    local spec = self.implement.spec_aiDischargeable
+    spec.currentDischargeNode = dischargeNode
+    spec.task = self
+    spec.isAIDischargeRunning = true
+    self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+end
+
+function PipeController:prepareForUnload()
+    self:openPipe()    
+    return self:isPipeOpen()
+end
+
+--- Callback for the drive strategy, when the unloading finished.
+function PipeController:setFinishDischargeCallback(finishDischargeCallback)
+    self.finishDischargeCallback = finishDischargeCallback
+end
+
+--- Callback for ai discharge.
+function PipeController:finishedDischarge()
+    self:debug("Finished unloading.")
+    if self.finishDischargeCallback then 
+        self.finishDischargeCallback(self.driveStrategy, self)
+    end
+end
+
+function PipeController:isEmpty()
+    local dischargeNode = self:getDischargeNode()
+    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0.01
+end
 
 --------------------------------------------------------------------
 --- Moveable pipe

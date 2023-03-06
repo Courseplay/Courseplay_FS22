@@ -50,10 +50,8 @@ function TrailerController:getDischargeNodeAndOffsetForTipSide(tipSideID, isTipp
     return dischargeNodeIndex, dischargeNode, self:getDischargeXOffset(dischargeNode)
 end
 
+--- Gets the x offset of the discharge node relative to the implement root.
 function TrailerController:getDischargeXOffset(dischargeNode)
-    if dischargeNode == nil then
-        dischargeNode = self.implement:getCurrentDischargeNode()
-    end
     local node = dischargeNode.node
     local xOffset, _ ,_ = localToLocal(node, self.implement.rootNode, 0, 0, 0)
     return xOffset
@@ -103,6 +101,10 @@ function TrailerController:finishedDischarge()
     if self.finishDischargeCallback then 
         self.finishDischargeCallback(self.driveStrategy, self)
     end
+end
+
+function TrailerController:prepareForUnload()
+    return true
 end
 
 function TrailerController:onFinished()
