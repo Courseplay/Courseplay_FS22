@@ -3,7 +3,8 @@
 CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
 	jobName = "CP_job_combineUnload",
-	minStartDistanceToField = 20
+	minStartDistanceToField = 20,
+	minFieldUnloadDistanceToField = 20
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJobFieldWork)
 
@@ -213,6 +214,20 @@ function CpAIJobCombineUnloader:validate(farmId)
 			return false, g_i18n:getText("CP_error_giants_unloader_not_available")
 		end
 	end
+	if not isValid then
+		return isValid, errorMessage
+	end
+	--- Field unload
+	if self.cpJobParameters.useFieldUnload:getValue() then 
+		
+		local x, z = self.cpJobParameters.fieldUnloadPosition:getPosition()
+		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
+		if not isValid then
+			return false, g_i18n:getText("CP_error_fieldUnloadPosition_to_far_away_from_field")
+		end
+	end
+
 	return isValid, errorMessage
 
 end

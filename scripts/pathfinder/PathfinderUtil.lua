@@ -358,7 +358,7 @@ end
 --- @class PathfinderUtil.Area
 PathfinderUtil.Area = CpObject()
 
---- A rectangular area around a point.
+--- A square area around a point.
 ---@param x number area center x
 ---@param z number area center z
 ---@param size number size of the rectangle

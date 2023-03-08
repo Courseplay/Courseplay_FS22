@@ -1,3 +1,119 @@
+--- Heap Bunker Silo
+--- Simulates a Giants BunkerSilo object
+---@class CpHeapBunkerSilo
+CpHeapBunkerSilo = CpObject()
+
+---@param sx number
+---@param sz number
+---@param wx number
+---@param wz number
+---@param hx number
+---@param hz number
+function CpHeapBunkerSilo:init(sx, sz, wx, wz, hx, hz)
+
+	self.bunkerSiloArea = {
+		sx = sx,
+		sy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz),
+		sz = sz,
+		wx = wx,
+		wy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wx, 0, wz),
+		wz = wz,
+		hx = hx,
+		hy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, hx, 0, hz),
+		hz = hz,
+	}
+	self.bunkerSiloArea.inner = {
+		sx = sx,
+		sy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz),
+		sz = sz,
+		wx = wx,
+		wy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wx, 0, wz),
+		wz = wz,
+		hx = hx,
+		hy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, hx, 0, hz),
+		hz = hz,
+	}
+	self.bunkerSiloArea.dhx = self.bunkerSiloArea.hx - self.bunkerSiloArea.sx
+	self.bunkerSiloArea.dhy = self.bunkerSiloArea.hy - self.bunkerSiloArea.sy
+	self.bunkerSiloArea.dhz = self.bunkerSiloArea.hz - self.bunkerSiloArea.sz
+	self.bunkerSiloArea.dhx_norm, self.bunkerSiloArea.dhy_norm, self.bunkerSiloArea.dhz_norm = MathUtil.vector3Normalize(self.bunkerSiloArea.dhx, self.bunkerSiloArea.dhy, self.bunkerSiloArea.dhz)
+	self.bunkerSiloArea.dwx = self.bunkerSiloArea.wx - self.bunkerSiloArea.sx
+	self.bunkerSiloArea.dwy = self.bunkerSiloArea.wy - self.bunkerSiloArea.sy
+	self.bunkerSiloArea.dwz = self.bunkerSiloArea.wz - self.bunkerSiloArea.sz
+	self.bunkerSiloArea.dwx_norm, self.bunkerSiloArea.dwy_norm, self.bunkerSiloArea.dwz_norm = MathUtil.vector3Normalize(self.bunkerSiloArea.dwx, self.bunkerSiloArea.dwy, self.bunkerSiloArea.dwz)
+	
+	local area = self.bunkerSiloArea
+	local dirX, dirZ, length = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
+		{x = area.hx, z = area.hz})
+	self.area = 	{
+		{
+			x = area.sx, 
+			z = area.sz
+		},
+		{
+			x = area.wx, 
+			z = area.wz
+		},
+		{
+			x = area.wx + dirX * length, 
+			z = area.wz + dirZ * length,
+		},
+		{
+			x = area.hx, 
+			z = area.hz
+		},
+		{
+			x = area.sx, 
+			z = area.sz
+		} }
+	self.sx = area.sx
+	self.sy = area.sy
+	self.sz = area.sz
+	self.wx = area.wx
+	self.wy = area.wy
+	self.wz = area.wz
+	self.hx = area.hx
+	self.hy = area.hy
+	self.hz = area.hz
+end
+
+--- Gets the area of the heap.
+function CpHeapBunkerSilo:getArea()
+	return self.area
+end
+
+--- Gets the length from {sx, sz} to {hx, hz}.
+function CpHeapBunkerSilo:getLength()
+	return MathUtil.vector2Length(self.sx - self.hx, self.sz - self.hz)
+end
+
+function CpHeapBunkerSilo:getWidth()
+	return MathUtil.vector2Length(self.sx - self.wx, self.sz - self.wz)
+end
+
+function CpHeapBunkerSilo:drawDebug()
+	DebugUtil.drawDebugAreaRectangle(self.sx, self.sy + 2, self.sz, self.wx, self.wy + 2, self.wz, self.hx, self.hy + 2, self.sz,
+		 false, 0.5, 0.5, 0.5)
+end
+
+
+--- Is the point directly in the silo area.
+function CpHeapBunkerSilo:isPointInSilo(x, z)
+	return self:isPointInArea(x, z, self.area)
+end
+
+function CpHeapBunkerSilo:isNodeInSilo(node)
+	local x, _, z = getWorldTranslation(node)
+	return self:isPointInArea(x, z, self.area)
+end
+
+function CpHeapBunkerSilo:isVehicleInSilo(vehicle)
+	return self:isNodeInSilo(vehicle.rootNode)
+end
+
+function CpHeapBunkerSilo:isPointInArea(x, z, area)
+	return CpMathUtil.isPointInPolygon(area, x, z)	
+end
 
 --- Wrapper for a bunker silo.
 CpBunkerSilo = CpObject()
@@ -263,10 +379,11 @@ function CpBunkerSilo:draw()
 		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
 		DebugUtil.drawDebugLine(x, y, z, x - self.dirXLength * (self.length + 2), y, z - self.dirZLength * self.length)
 
-
-		DebugUtil.drawDebugNode(self.startNode, "Start Node: "..tostring(self.siloMode), false, 5)
-		DebugUtil.drawDebugNode(self.widthNode, "Width Node", false, 5)
-		DebugUtil.drawDebugNode(self.heightNode, "Height Node", false, 5)
+		if self.startNode then
+			DebugUtil.drawDebugNode(self.startNode, "Start Node: "..tostring(self.siloMode), false, 5)
+			DebugUtil.drawDebugNode(self.widthNode, "Width Node", false, 5)
+			DebugUtil.drawDebugNode(self.heightNode, "Height Node", false, 5)
+		end
 	end
 end
 
