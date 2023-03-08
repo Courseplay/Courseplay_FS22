@@ -7,12 +7,14 @@ end
 
 function BunkerSiloManager:addBunkerSilo(silo)
 	local triggerNode = silo.interactionTriggerNode
-	self.silos[triggerNode] = CpBunkerSilo(silo)
+	if triggerNode then
+		self.silos[triggerNode] = CpBunkerSilo(silo)
+	end
 end
 
 function BunkerSiloManager:removeBunkerSilo(silo)
 	local triggerNode = silo.interactionTriggerNode
-	if self.silos[triggerNode] then
+	if triggerNode and self.silos[triggerNode] then
 		self.silos[triggerNode]:delete()
 		self.silos[triggerNode] = nil
 	end
