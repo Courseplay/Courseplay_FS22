@@ -77,6 +77,13 @@ AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 -- reaches the last waypoint, and the logic in unloadAugerWagon() will move the rig to the exact position anyway.
 AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
+
+--- Field unload constants
+AIDriveStrategyUnloadCombine.reverseFieldUnloadXOffset = -3
+AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
+AIDriveStrategyUnloadCombine.straightOutCourseLengthFieldUnload = 10
+AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
+
 --- Allowing of fuel save and open cover state can be set for each state below as property.
 AIDriveStrategyUnloadCombine.myStates = {
     IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
@@ -1846,10 +1853,11 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller)
 
     if found then 
         self.fieldUnloadData.heapSilo = heapSilo
-        self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -5, -5, heapSilo:getWidth() + 10, heapSilo:getLength() + 10)
+        self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
+             -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
         self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
         if self.fieldUnloadData.isReverseUnloading then 
-            self.fieldUnloadData.xOffset = -3
+            self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
         end
         self:debug("Found a heap for field unloading, reverseUnloading: %s", self.fieldUnloadData.isReverseUnloading)
     end
@@ -1881,7 +1889,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
             length + 5 , -self.fieldUnloadData.xOffset, self.fieldUnloadPositionNode)
        
         local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-        local alignLength =  math.max(self.vehicle.size.length / 2, steeringLength) * 3
+        local alignLength =  math.max(self.vehicle.size.length / 2, steeringLength) * 2
 
         local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, length + 5 + alignLength)
         local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) +3
@@ -1903,6 +1911,10 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
         else 
             local alignmentTurnSegmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
             alignmentCourse:append(alignmentTurnSegmentCourse)
+
+            --- Add a small straight segment at the end 
+            --- to straighten the trailer out.
+            alignmentCourse:append(Course.createStraightForwardCourse(self.vehicle, self.straightOutCourseLengthFieldUnload, 0, self.fieldUnloadTurnEndNode))
 
             self:setNewState(self.states.DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION)
             self:startCourse(alignmentCourse, 1)
@@ -1926,14 +1938,14 @@ end
 function AIDriveStrategyUnloadCombine:onReverseFieldUnloadPositionReached()
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local length = self.fieldUnloadData.heapSilo:getLength()
-    local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, length)
-    local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) +3
-    local _, yRot, _ = getRotation(self.fieldUnloadPositionNode)
-    setTranslation(self.fieldUnloadTurnEndNode, x, y, z)
-    setRotation(self.fieldUnloadTurnEndNode, 0, yRot, 0)
+  --  local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, length)
+  --  local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
+  --  local _, yRot, _ = getRotation(self.fieldUnloadPositionNode)
+  --  setTranslation(self.fieldUnloadTurnEndNode, x, y, z)
+  --  setRotation(self.fieldUnloadTurnEndNode, 0, yRot, 0)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.fieldUnloadTurnEndNode, 0,
-        5, fieldNum, nil, 
+    self:startPathfinding(self.fieldUnloadPositionNode, 0,
+        -length + 5, fieldNum, nil, 
         self.onPathfindingDoneBeforeDrivingToReverseFieldUnloadHeap, 
         self.fieldUnloadData.areaToIgnore, true
     )
@@ -1964,10 +1976,9 @@ function AIDriveStrategyUnloadCombine:prepareForFieldUnload()
         end
         
         --- For now we create a simple straight forward course to unload.
-        local length = 200 -- TODO what are good limits ?
-        local unloadCourse = Course.createStraightForwardCourse(self.vehicle, 200, self.fieldUnloadData.xOffset, self.fieldUnloadPositionNode)
+        local unloadCourse = Course.createStraightForwardCourse(self.vehicle, self.unloadCourseLengthFieldUnload, -self.fieldUnloadData.xOffset, self.fieldUnloadPositionNode)
         self:startCourse(unloadCourse, 1)
-        self:debug("Started unload course with a length of %d and offset of %.2f", length, self.fieldUnloadData.xOffset)
+        self:debug("Started unload course with a length of %d and offset of %.2f", self.unloadCourseLengthFieldUnload, self.fieldUnloadData.xOffset)
     end
 end
 
