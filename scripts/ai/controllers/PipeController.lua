@@ -22,18 +22,19 @@ function PipeController:init(vehicle, implement)
     CpUtil.try(ImplementUtil.setPipeAttributes, self, self.implement)
 
     self.isDischargingTimer = CpTemporaryObject(false)
+    self.isDischargingToGround = false
 end
 
 function PipeController:getDriveData()
     local maxSpeed
-    if not self.implement:getAIHasFinishedDischarge() then 
-        if self.isDischargingTimer:get() or self:isEmpty() then 
+    if self.isDischargingToGround then 
+        if self.isDischargingTimer:get() then 
             --- Waiting until the discharging stopped or 
             --- the trailer is empty and the folding animation is playing.
             maxSpeed = 0
         end
     end
-    if self:isDischarging() then 
+    if self:isDischarging() and self.implement:getCanDischargeToGround(self:getDischargeNode()) then 
         self.isDischargingTimer:set(true, 1000)
     end
     return nil, nil, nil, maxSpeed
@@ -161,7 +162,7 @@ end
 ---@return number xOffset 
 function PipeController:getDischargeNodeAndOffsetForTipSide(tipSideID)
     local dischargeNode = self:getDischargeNode()
-    return self.implement:getPipeDischargeNodeIndex(), dischargeNode, self:getDischargeXOffset(dischargeNode)
+    return self.implement:getPipeDischargeNodeIndex(), dischargeNode, self:getPipeOffsetX()
 end
 
 --- Gets the x offset of the discharge node relative to the implement root.
@@ -172,7 +173,8 @@ function PipeController:getDischargeXOffset(dischargeNode)
 end
 
 function PipeController:startDischargeToGround(dischargeNode)
-    if not dischargeNode.canDischargeToGround then 
+    if not dischargeNode.canDischargeToGround and not dischargeNode.canDischargeToGroundAnywhere then 
+        self:debug("Implement doesn't support unload to the ground!")
         return false
     end
     --- TODO: Check why this one is not working for every discharge node?
@@ -186,6 +188,8 @@ function PipeController:startDischargeToGround(dischargeNode)
     spec.task = self
     spec.isAIDischargeRunning = true
     self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+    self.isDischargingToGround = true
+    return true
 end
 
 function PipeController:prepareForUnload()
@@ -204,6 +208,7 @@ function PipeController:finishedDischarge()
     if self.finishDischargeCallback then 
         self.finishDischargeCallback(self.driveStrategy, self)
     end
+    self.isDischargingToGround = false
 end
 
 function PipeController:isEmpty()

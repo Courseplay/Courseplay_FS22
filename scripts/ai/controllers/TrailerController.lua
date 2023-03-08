@@ -17,7 +17,7 @@ function TrailerController:getDriveData()
             maxSpeed = 0
         end
     end
-    if self:isDischarging() then 
+    if self:isDischarging() and self.implement:getCanDischargeToGround(self.implement:getCurrentDischargeNode())  then 
         self.isDischargingTimer:set(true, 1000)
     end
 	

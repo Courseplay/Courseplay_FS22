@@ -683,10 +683,10 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
     if self.fieldUnloadPositionNode then
         if self.augerWagon then
             self:debug('Starting unloading on the field with an auger wagon.')
-            self:startUnloadingOnField(self.pipeController)
+            self:startUnloadingOnField(self.pipeController, false)
         else
             self:debug('Starting unloading on the field with a trailer.')
-            self:startUnloadingOnField(self.trailerController)
+            self:startUnloadingOnField(self.trailerController, true)
         end
         return
     end
@@ -1824,7 +1824,7 @@ end
 -- Unloading on the field
 ------------------------------------------------------------------------------------------------------------------------
 
-function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller)
+function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowReverseUnloading)
     --- Create unload course based on tip side setting(discharge node offset)
     local dischargeNodeIndex, dischargeNode, xOffset = controller:getDischargeNodeAndOffsetForTipSide(self.unloadTipSideID, true)
     if not xOffset then 
@@ -1855,9 +1855,11 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller)
         self.fieldUnloadData.heapSilo = heapSilo
         self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
              -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
-        self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
-        if self.fieldUnloadData.isReverseUnloading then 
-            self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
+        if allowReverseUnloading then
+            self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
+            if self.fieldUnloadData.isReverseUnloading then 
+                self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
+            end
         end
         self:debug("Found a heap for field unloading, reverseUnloading: %s", self.fieldUnloadData.isReverseUnloading)
     end
