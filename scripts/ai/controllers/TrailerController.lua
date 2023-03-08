@@ -57,7 +57,9 @@ function TrailerController:getDischargeXOffset(dischargeNode)
     return xOffset
 end
 
-
+--- Starts AI Discharge to an object/trailer.
+---@param dischargeNode table discharge node to use.
+---@return boolean success
 function TrailerController:startDischarge(dischargeNode)
     if self.implement:getAICanStartDischarge(dischargeNode) then        
 		self.implement:startAIDischarge(dischargeNode, self)

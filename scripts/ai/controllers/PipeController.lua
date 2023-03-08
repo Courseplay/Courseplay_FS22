@@ -34,7 +34,7 @@ function PipeController:getDriveData()
             maxSpeed = 0
         end
     end
-    if self:isDischarging() and self.implement:getCanDischargeToGround(self:getDischargeNode()) then 
+    if self.isDischargingToGround and self:isDischarging() and self.implement:getCanDischargeToGround(self:getDischargeNode()) then 
         self.isDischargingTimer:set(true, 1000)
     end
     return nil, nil, nil, maxSpeed

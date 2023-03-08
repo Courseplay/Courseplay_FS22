@@ -649,6 +649,19 @@ function AIUtil.getWidth(vehicle)
 	end
 end
 
+function AIUtil.getLength(vehicle)
+	if vehicle.getAIAgentSize then
+		vehicle:updateAIAgentAttachments()
+		local width, length, lengthOffset, frontOffset, height = vehicle:getAIAgentSize()
+		for _, attachment in ipairs(vehicle.spec_aiDrivable.attachments) do 
+			length = length + attachment.length
+		end
+		return length
+	else
+		return vehicle.size.length
+	end
+end
+
 --- Can we reverse with whatever is attached to the vehicle?
 function AIUtil.canReverse(vehicle)
 	if AIVehicleUtil.getAttachedImplementsBlockTurnBackward(vehicle) then
