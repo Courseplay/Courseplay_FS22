@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Az ürítő jármű túl messze van a mezőtől."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="A kezdő pozíció túl messze van a mezőtől."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="%s segítő váratlanul abbahagyta a munkát - letért az útvonalról!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI segítő %s váratlanul abbahagyta a munkát - útvonal nem található!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_errorStopped" text="letért az útvonalról, megállt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Útvonal nem található"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->

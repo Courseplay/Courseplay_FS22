@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Разгружающий далеко от поля."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Начальная позиция далеко от поля."/>
     <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="ИИ-работник %s неожиданно прекратил работу - оставил курс!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="ИИ-работник %s неожиданно прекратил работу - не найдено выбранного типа тюков!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="ИИ-работник %s неожиданно прекратил работу - не найдено пути!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Не найдено путь"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->

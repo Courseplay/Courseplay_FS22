@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Pomocnik SI rozładowujący za daleko pola."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Pozycja startowa zbyt daleko pola."/>
     <text name="CP_error_giants_unloader_not_available" text="Pomocnik SI Giantsa rozładowujący niedostępny."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nie znaleziono silosu."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="Pomocnik SI %s niespodziewanie przerwał pracę - opuścił kurs!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono ścieżki!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_errorStopped" text="Opuścił kurs, zatrzymał się"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->

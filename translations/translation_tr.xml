@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Boşaltıcıyı alandan uzağa kaldır."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Başlangıç konumu alandan çok uzakta."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants boşaltıcı kullanılamıyor."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Silo bulunamadı."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - rotadan ayrıldı!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - seçili türde balya bulunamadı!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - Yol bulunamadı!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_infoTexts_errorStopped" text="Kurstan ayrıldı, durdu"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Yanlış balya tipi"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Yol bulunamadı"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->

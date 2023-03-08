@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Benne ou transbordeur trop éloigné(e) du champ."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="L'ouvrier AI %s s'est arrêté car il ne trouve pas de chemin !"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->

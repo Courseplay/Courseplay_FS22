@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Abfahrer ist zu weit vom Feld entfernt."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Startposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants Ablader nicht möglich."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Feld Abladeposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_no_bunkerSilo_found" text="Keinen Silo gefunden."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="Helfer %s hat die Arbeit gestoppt - Kurs verlassen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_errorStopped" text="Hat den Kurs verlassen, gestoppt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Ballentyp nicht gefunden"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Keinen Weg gefunden"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Abladen zum Boden nicht möglich"/>
     <!---->
     <!--Custom field manager-->
     <!---->

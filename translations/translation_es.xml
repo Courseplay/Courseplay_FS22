@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Descargador muy lejos del campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posición inicial muy lejos del campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Descargador de Giants no disponible."/>
+    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Ningún Silo encontrado."/>
     <!---->
     <!--AI job parameters-->
@@ -99,6 +100,7 @@
     <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Abandonó el curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Ninguna Ruta encontrada!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -387,6 +389,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ningún camino encontrado"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
