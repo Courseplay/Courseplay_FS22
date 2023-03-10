@@ -1840,7 +1840,6 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         dischargeNodeIndex = dischargeNodeIndex,
         dischargeNode = dischargeNode,
         xOffset = xOffset,
-        trailer = self.trailer,
         controller = controller,
         heapSilo = nil,
         areaToIgnore = nil,
@@ -1997,15 +1996,20 @@ function AIDriveStrategyUnloadCombine:prepareForFieldUnload()
         
         --- For now we create a simple straight forward course to unload.
         local xOffset = self.fieldUnloadData.isReverseUnloading and 0 or -self.fieldUnloadData.xOffset
-        local unloadCourse = Course.createStraightForwardCourse(self.vehicle, self.unloadCourseLengthFieldUnload, xOffset, self.fieldUnloadPositionNode)
+        local length = self.unloadCourseLengthFieldUnload
+        if self.fieldUnloadData.heapSilo and not self.fieldUnloadData.isReverseUnloading then 
+            length = length + self.fieldUnloadData.heapSilo:getLength()
+        end
+        local unloadCourse = Course.createStraightForwardCourse(self.vehicle, length, xOffset, self.fieldUnloadPositionNode)
         self:startCourse(unloadCourse, 1)
-        self:debug("Started unload course with a length of %d and offset of %.2f", self.unloadCourseLengthFieldUnload, self.fieldUnloadData.xOffset)
+        self:debug("Started unload course with a length of %d and offset of %.2f", length, xOffset)
     end
 end
 
 function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     self:debug("Field unload finished.")
     self:startWaitingForSomethingToDo()
+    self.fieldUnloadData = nil
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -2025,18 +2029,20 @@ function AIDriveStrategyUnloadCombine:update(dt)
         if self.selfUnloadTargetNode then
             DebugUtil.drawDebugNode(self.selfUnloadTargetNode, 'Target')
         end
-
-        if self.fieldUnloadPositionNode then 
-            DebugUtil.drawDebugNode(self.fieldUnloadPositionNode, getName(self.fieldUnloadPositionNode))
-        end
-        if self.fieldUnloadTurnEndNode then 
-            DebugUtil.drawDebugNode(self.fieldUnloadTurnEndNode, getName(self.fieldUnloadTurnEndNode))
-        end
-        if self.fieldUnloadTurnStartNode then 
-            DebugUtil.drawDebugNode(self.fieldUnloadTurnStartNode, getName(self.fieldUnloadTurnStartNode))
-        end
-        if self.fieldUnloadData and self.fieldUnloadData.heapSilo then 
-            self.fieldUnloadData.heapSilo:drawDebug()
+        if self.fieldUnloadData then
+            --- Only draw the field unload data, when the field unload is active.
+            if self.fieldUnloadPositionNode then 
+                DebugUtil.drawDebugNode(self.fieldUnloadPositionNode, getName(self.fieldUnloadPositionNode))
+            end
+            if self.fieldUnloadTurnEndNode then 
+                DebugUtil.drawDebugNode(self.fieldUnloadTurnEndNode, getName(self.fieldUnloadTurnEndNode))
+            end
+            if self.fieldUnloadTurnStartNode then 
+                DebugUtil.drawDebugNode(self.fieldUnloadTurnStartNode, getName(self.fieldUnloadTurnStartNode))
+            end
+            if self.fieldUnloadData.heapSilo then 
+                self.fieldUnloadData.heapSilo:drawDebug()
+            end
         end
     end
     self:updateImplementControllers(dt)

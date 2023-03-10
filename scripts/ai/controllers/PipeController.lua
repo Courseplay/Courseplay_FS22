@@ -19,7 +19,7 @@ function PipeController:init(vehicle, implement)
 
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
-    CpUtil.try(ImplementUtil.setPipeAttributes, self, self.implement)
+    self:measurePipeProperties()
 
     self.isDischargingTimer = CpTemporaryObject(false)
     self.isDischargingToGround = false
@@ -41,7 +41,7 @@ function PipeController:getDriveData()
 end
 
 function PipeController:update(dt)
-    self:updateMoveablePipe(dt)
+   -- self:updateMoveablePipe(dt)
 end
 
 function PipeController:needToOpenPipe()
@@ -50,7 +50,7 @@ function PipeController:needToOpenPipe()
 end
 
 function PipeController:openPipe()
-    if self:needToOpenPipe() and
+    if self:needToOpenPipe() and self.implement:getIsPipeStateChangeAllowed(PipeController.PIPE_STATE_OPEN) and
             self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
             self.pipeSpec.currentState ~= PipeController.PIPE_STATE_OPEN then
         self:debug('Opening pipe')
@@ -62,7 +62,7 @@ end
 ---                                        only close if there aren't any
 function PipeController:closePipe(checkForObjectsUnderPipe)
     local okToClose = self.pipeSpec.numObjectsInTriggers <= 0 or not checkForObjectsUnderPipe
-    if self:needToOpenPipe() and okToClose and -- only close when there are nothing under the pipe
+    if self:needToOpenPipe() and okToClose and self.implement:getIsPipeStateChangeAllowed(PipeController.PIPE_STATE_CLOSED) and -- only close when there are nothing under the pipe
             self.pipeSpec.currentState ~= PipeController.PIPE_STATE_MOVING and
             self.pipeSpec.currentState ~= PipeController.PIPE_STATE_CLOSED then
         self:debug('Closing pipe')
@@ -71,7 +71,12 @@ function PipeController:closePipe(checkForObjectsUnderPipe)
 end
 
 function PipeController:isPipeMoving()
-    return self:needToOpenPipe() and self.pipeSpec.currentState == PipeController.PIPE_STATE_MOVING
+    if not self:needToOpenPipe() then 
+        return false
+    end
+    return self.pipeSpec.currentState == PipeController.PIPE_STATE_MOVING 
+        --- Pipe unfolding before opening needs to be counted as pipe is moving.
+        or Foldable.getIsAIPreparingToDrive(self.implement, function () return false end)
 end
 
 function PipeController:isPipeOpen()
@@ -194,7 +199,7 @@ end
 
 function PipeController:prepareForUnload()
     self:openPipe()    
-    return self:isPipeOpen()
+    return self:isPipeOpen() and not self.vehicle:getIsAIPreparingToDrive()
 end
 
 --- Callback for the drive strategy, when the unloading finished.
@@ -215,6 +220,70 @@ function PipeController:isEmpty()
     local dischargeNode = self:getDischargeNode()
     return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0.01
 end
+
+function PipeController:measurePipeProperties()
+    --- Old fold and pipe states.
+    local foldAnimTime = self.implement.spec_foldable.foldAnimTime
+    local foldState = -self.implement:getToggledFoldDirection()
+    local pipeAnimTime = self.implement:getAnimationTime(self.pipeSpec.animation.name)
+    local pipeState = self.pipeSpec.targetState
+    local pipeAnimCurrentSpeed = pipeState == PipeController.PIPE_STATE_CLOSED and -self.pipeSpec.animation.speedScale 
+        or self.pipeSpec.animation.speedScale
+    self:debug("Measuring pipe properties return values => pipeState: %s, foldAnimTime: %s, pipeAnimTime: %s, pipeAnimCurrentSpeed: %s",
+        tostring(pipeState), tostring(foldAnimTime), tostring(pipeAnimTime), tostring(pipeAnimCurrentSpeed))
+    
+    self:instantUnfold()
+
+    local dischargeNode, _ = self:getDischargeNode()
+    local refNode = self.implement.getAIDirectionNode and self.implement:getAIDirectionNode() or self.implement.rootNode
+    self.pipeOffsetX, _, _ = localToLocal(dischargeNode.node,
+        refNode, 0, 0, 0)
+    -- for the Z offset, we want the root vehicle, the offset for auger wagons and towed harvesters
+    -- should be relative to the tractor
+    _, _, self.pipeOffsetZ = localToLocal(dischargeNode.node,
+        refNode, 0, 0, 0)
+    self.pipeOnLeftSide = self.pipeOffsetX >= 0
+    self:debug("Measuring pipe properties => pipeOffsetX: %.2f, pipeOffsetZ: %.2f, pipeOnLeftSide: %s", 
+        self.pipeOffsetX, self.pipeOffsetZ, tostring(self.pipeOnLeftSide))
+
+    --- Restoring old states.
+    self:resetFold(foldState, foldAnimTime, 
+        pipeState, pipeAnimTime, pipeAnimCurrentSpeed)
+end
+
+function PipeController:instantUnfold()
+    Foldable.setAnimTime(self.implement, 0, false)
+    if self.pipeSpec.hasMovablePipe then
+        self.implement:playAnimation(self.pipeSpec.animation.name, 1, 0, true, false)
+        AnimatedVehicle.updateAnimationByName(self.implement, self.pipeSpec.animation.name, 
+            9999999, true)
+    end
+end
+
+function PipeController:resetFold(foldState, foldAnimTime, pipeState, pipeAnimTime, pipeAnimCurrentSpeed)
+    Foldable.setAnimTime(self.implement, foldAnimTime, false)
+    self.implement:setFoldDirection(-foldState, true)
+    self.implement:setFoldDirection(foldState, true)
+    if self.pipeSpec.hasMovablePipe then
+        self.pipeSpec.targetState = 0
+        self.implement:setPipeState(pipeState, true)
+        --self.implement:updatePipeNodes(999999, nil)
+    end
+end
+
+function PipeController:onFinished()
+    self.implement:setFoldDirection(1)
+end
+
+function PipeController.PipeFoldFix(implement, direction)
+    if implement.spec_pipe then 
+        if direction == 1 then 
+            implement.spec_pipe.targetState = PipeController.PIPE_STATE_CLOSED
+		    implement.spec_pipe.currentState = PipeController.PIPE_STATE_CLOSED
+        end
+    end
+end
+Foldable.setFoldState = Utils.appendedFunction(Foldable.setFoldState, PipeController.PipeFoldFix)
 
 --------------------------------------------------------------------
 --- Moveable pipe
@@ -264,7 +333,7 @@ function PipeController:setupMoveablePipe()
 end
 
 function PipeController:updateMoveablePipe(dt)
-    if self.hasPipeMovingTools then
+    if self.hasPipeMovingTools and not self:isPipeMoving() then
         if self.pipeSpec.unloadingStates[self.pipeSpec.currentState] == true then
             if self.baseMovingTool and self.baseMovingToolChild then 
                 self:movePipeUp( self.baseMovingTool, self.baseMovingToolChild.node, dt)
