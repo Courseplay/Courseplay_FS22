@@ -147,7 +147,6 @@ function PipeController:getClosestExactFillRootNode()
     end
 end
 
-
 function PipeController:getClosestObject()
     local id = self.pipeSpec.nearestObjectInTriggers.objectId
     return id and NetworkUtil.getObject(id)
@@ -221,6 +220,7 @@ function PipeController:isEmpty()
     return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0.01
 end
 
+--- Measures pipe properties: xOffset, zOffset, pipeOnLeftSide
 function PipeController:measurePipeProperties()
     --- Old fold and pipe states.
     local foldAnimTime = self.implement.spec_foldable.foldAnimTime
@@ -248,34 +248,43 @@ function PipeController:measurePipeProperties()
 
     --- Restoring old states.
     self:resetFold(foldState, foldAnimTime, 
-        pipeState, pipeAnimTime, pipeAnimCurrentSpeed)
+        pipeState)
 end
 
+--- Unfolds the pipe completely to measure the pipe properties.
 function PipeController:instantUnfold()
     Foldable.setAnimTime(self.implement, 0, false)
     if self.pipeSpec.hasMovablePipe then
-        self.implement:playAnimation(self.pipeSpec.animation.name, 1, 0, true, false)
-        AnimatedVehicle.updateAnimationByName(self.implement, self.pipeSpec.animation.name, 
-            9999999, true)
+        self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
+        self.implement:updatePipeNodes(999999, nil)
+        self.implement:setAnimationTime(self.pipeSpec.animation.name, 1, true, false)
     end
 end
 
-function PipeController:resetFold(foldState, foldAnimTime, pipeState, pipeAnimTime, pipeAnimCurrentSpeed)
-    Foldable.setAnimTime(self.implement, foldAnimTime, false)
-    self.implement:setFoldDirection(-foldState, true)
-    self.implement:setFoldDirection(foldState, true)
+--- Restores the folding and pipe states/positions.
+---@param foldState number
+---@param foldAnimTime number
+---@param pipeState number
+function PipeController:resetFold(foldState, foldAnimTime, pipeState)
     if self.pipeSpec.hasMovablePipe then
-        self.pipeSpec.targetState = 0
-        self.implement:setPipeState(pipeState, true)
-        --self.implement:updatePipeNodes(999999, nil)
+        if pipeState == PipeController.PIPE_STATE_CLOSED then
+            --- Restoring the fold state
+            Foldable.setAnimTime(self.implement, foldAnimTime, false)
+            self.implement:setFoldDirection(-foldState, true)
+            self.implement:setFoldDirection(foldState, true)
+            self:debug("Closing the pipe instant")
+            --- Restoring the pipe position
+            self.implement:setPipeState(pipeState, true)
+            self.implement:updatePipeNodes(999999, nil)
+            self.implement:setAnimationTime(self.pipeSpec.animation.name, 0, true, false)
+        end
     end
-end
-
-function PipeController:onFinished()
-    self.implement:setFoldDirection(1)
 end
 
 function PipeController.PipeFoldFix(implement, direction)
+    --- Fixes the pipe position,
+    --- when the pipe is being folded 
+    --- without closing the pipe before that.
     if implement.spec_pipe then 
         if direction == 1 then 
             implement.spec_pipe.targetState = PipeController.PIPE_STATE_CLOSED
@@ -481,6 +490,21 @@ end
 function PipeController:delete()
     CpUtil.destroyNode(self.tempBaseNode)
     CpUtil.destroyNode(self.tempDependedNode)
+end
+
+--------------------------------------------------------------------
+--- Debug functions
+--------------------------------------------------------------------
+
+function PipeController:printPipeStats()
+    self:info("Current pipe state: %s, Target pipe state: %s, numStates: %s", 
+        tostring(self.pipeSpec.currentState), tostring(self.pipeSpec.targetState), tostring(self.pipeSpec.numStates))   
+    self:info("Is pipe state change allowed: %s", self.implement:getIsPipeStateChangeAllowed())
+    self:info("Fold => minTime: %s, maxTime : %s, minState: %s, maxState: %s",
+        tostring(self.pipeSpec.foldMinTime), tostring(self.pipeSpec.foldMaxTime), 
+        tostring(self.pipeSpec.foldMinState), tostring(self.pipeSpec.foldMaxState))
+    self:info("aiFoldedPipeUsesTrailerSpace: %s", tostring(self.pipeSpec.aiFoldedPipeUsesTrailerSpace))
+
 end
 
 function PipeController:printMoveablePipeDebug()
