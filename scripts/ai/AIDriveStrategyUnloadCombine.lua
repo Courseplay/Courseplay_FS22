@@ -81,7 +81,6 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 --- Field unload constants
 AIDriveStrategyUnloadCombine.reverseFieldUnloadXOffset = -6
 AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
-AIDriveStrategyUnloadCombine.straightOutCourseLengthFieldUnload = 10
 AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
 
 --- Allowing of fuel save and open cover state can be set for each state below as property.
@@ -1904,7 +1903,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
             length , -self.fieldUnloadData.xOffset, self.fieldUnloadPositionNode)
        
         local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-        local alignLength =  math.max(self.vehicle.size.length / 2, steeringLength) * 2
+        local alignLength =  math.max(self.vehicle.size.length / 2, steeringLength) * 3
 
 
         local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, length + alignLength)
