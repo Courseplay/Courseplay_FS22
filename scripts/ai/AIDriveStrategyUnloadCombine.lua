@@ -1944,14 +1944,21 @@ end
 
 --- Driver is in front of the heap and ready to drive backwards to the heap end now.
 function AIDriveStrategyUnloadCombine:onReverseFieldUnloadPositionReached()
-    self:setNewState(self.states.WAITING_FOR_PATHFINDER)
+   -- self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local length = self.fieldUnloadData.heapSilo:getLength()
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+    local course = Course.createFromNodeToNode(self.vehicle, 
+        self.vehicle:getAIDirectionNode(), self.fieldUnloadPositionNode,
+        0, 0, 5, 3, true)
+    self:setNewState(self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP)
+    self:startCourse(course, 1)
+--[[
     self:startPathfinding(self.fieldUnloadPositionNode, 0,
         -length + 5, fieldNum, nil, 
         self.onPathfindingDoneBeforeDrivingToReverseFieldUnloadHeap, 
         self.fieldUnloadData.areaToIgnore, true
     )
+    ]]--
 end
 
 --- Reverse path to the heap was found.
