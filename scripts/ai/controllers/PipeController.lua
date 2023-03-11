@@ -33,6 +33,10 @@ function PipeController:getDriveData()
             --- the trailer is empty and the folding animation is playing.
             maxSpeed = 0
         end
+        if self.implement:getIsAIPreparingToDrive() or self:isPipeMoving() then 
+            --- Pipe is unfolding/moving.
+            maxSpeed = 0
+        end
     end
     if self.isDischargingToGround and self:isDischarging() and self.implement:getCanDischargeToGround(self:getDischargeNode()) then 
         self.isDischargingTimer:set(true, 1000)
@@ -75,8 +79,6 @@ function PipeController:isPipeMoving()
         return false
     end
     return self.pipeSpec.currentState == PipeController.PIPE_STATE_MOVING 
-        --- Pipe unfolding before opening needs to be counted as pipe is moving.
-        or Foldable.getIsAIPreparingToDrive(self.implement, function () return false end)
 end
 
 function PipeController:isPipeOpen()
@@ -196,9 +198,18 @@ function PipeController:startDischargeToGround(dischargeNode)
     return true
 end
 
-function PipeController:prepareForUnload()
+--- Unfolds the pipe and makes sure that everything is ready for unload.
+---@param tipToGround boolean
+---@return boolean unfolded pipe
+function PipeController:prepareForUnload(tipToGround)
     self:openPipe()  
-    return self:isPipeOpen() and not self.vehicle:getIsAIPreparingToDrive()
+    if not self:isPipeOpen() then 
+        return false
+    end
+    if self.implement:getIsAIPreparingToDrive() then 
+        return false
+    end
+    return true
 end
 
 --- Callback for the drive strategy, when the unloading finished.

@@ -1984,7 +1984,8 @@ end
 --- Waits for the pipe of the auger wagon to unfold.
 --- After that unload and use a straight forward course.
 function AIDriveStrategyUnloadCombine:prepareForFieldUnload()
-    if self.fieldUnloadData.controller:prepareForUnload() then 
+    self:setMaxSpeed(0)
+    if self.fieldUnloadData.controller:prepareForUnload(true) then 
         self:debug("Finished preparing for unloading.")
         self:setNewState(self.states.UNLOADING_ON_THE_FIELD)
 
