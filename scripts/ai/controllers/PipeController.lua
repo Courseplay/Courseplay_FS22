@@ -41,7 +41,7 @@ function PipeController:getDriveData()
 end
 
 function PipeController:update(dt)
-   -- self:updateMoveablePipe(dt)
+    self:updateMoveablePipe(dt)
 end
 
 function PipeController:needToOpenPipe()
@@ -266,18 +266,23 @@ end
 ---@param foldAnimTime number
 ---@param pipeState number
 function PipeController:resetFold(foldState, foldAnimTime, pipeState)
-    if self.pipeSpec.hasMovablePipe then
-        if pipeState == PipeController.PIPE_STATE_CLOSED then
-            --- Restoring the fold state
-            Foldable.setAnimTime(self.implement, foldAnimTime, false)
-            self.implement:setFoldDirection(-foldState, true)
-            self.implement:setFoldDirection(foldState, true)
-            self:debug("Closing the pipe instant")
-            --- Restoring the pipe position
-            self.implement:setPipeState(pipeState, true)
-            self.implement:updatePipeNodes(999999, nil)
-            self.implement:setAnimationTime(self.pipeSpec.animation.name, 0, true, false)
-        end
+    if not self.pipeSpec.hasMovablePipe then
+        --- Restoring the fold state
+        Foldable.setAnimTime(self.implement, foldAnimTime, false)
+        self.implement:setFoldDirection(-foldState, true)
+        self.implement:setFoldDirection(foldState, true)
+        return
+    end
+    if pipeState == PipeController.PIPE_STATE_CLOSED then
+        --- Restoring the fold state
+        Foldable.setAnimTime(self.implement, foldAnimTime, false)
+        self.implement:setFoldDirection(-foldState, true)
+        self.implement:setFoldDirection(foldState, true)
+        --- Restoring the pipe position
+        self.implement:setPipeState(pipeState, true)
+        self.implement:updatePipeNodes(999999, nil)
+        self.implement:setAnimationTime(self.pipeSpec.animation.name, 0, true, false)
+
     end
 end
 

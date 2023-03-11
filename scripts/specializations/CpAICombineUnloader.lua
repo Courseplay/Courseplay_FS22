@@ -15,6 +15,27 @@ function CpAICombineUnloader.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     local key = "vehicles.vehicle(?)" .. CpAICombineUnloader.KEY
     CpJobParameters.registerXmlSchema(schema, key..".cpJob")
+
+    --- Registers pipe controller measurement test function
+    g_devHelper.consoleCommands:registerConsoleCommand("cpMeasurePipe", 
+        "Measures the pipe properties while unfolded.", "consoleCommandMeasurePipeProperties", CpAICombineUnloader)
+end
+
+--- Helper command to test the pipe measurement.
+function CpAICombineUnloader:consoleCommandMeasurePipeProperties()
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle then 
+        local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
+        if pipeObject then 
+            local controller = PipeController(vehicle, pipeObject)
+            controller:printPipeStats()
+            controller:delete()
+        else 
+            CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
+        end
+    else 
+        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
+    end
 end
 
 function CpAICombineUnloader.prerequisitesPresent(specializations)
