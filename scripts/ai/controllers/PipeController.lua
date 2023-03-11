@@ -197,7 +197,7 @@ function PipeController:startDischargeToGround(dischargeNode)
 end
 
 function PipeController:prepareForUnload()
-    self:openPipe()    
+    self:openPipe()  
     return self:isPipeOpen() and not self.vehicle:getIsAIPreparingToDrive()
 end
 

@@ -79,7 +79,7 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
 
 --- Field unload constants
-AIDriveStrategyUnloadCombine.reverseFieldUnloadXOffset = -3
+AIDriveStrategyUnloadCombine.reverseFieldUnloadXOffset = -6
 AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
 AIDriveStrategyUnloadCombine.straightOutCourseLengthFieldUnload = 10
 AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
