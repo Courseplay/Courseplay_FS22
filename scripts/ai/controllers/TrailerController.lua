@@ -25,7 +25,12 @@ function TrailerController:getDriveData()
             --- Trailer not yet ready to unload.
             maxSpeed = 0
         end
+        if self:isEmpty() then  
+            --- Waiting for the trailer animation to finish.
+            maxSpeed = 0
+        end
     end
+    
 	
 	return nil, nil, nil, maxSpeed
 end
