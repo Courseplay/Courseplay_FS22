@@ -106,7 +106,8 @@ AIDriveStrategyUnloadCombine.myStates = {
     PREPARE_FOR_FIELD_UNLOAD = {},
     DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION = {},
     REVERSING_TO_THE_FIELD_UNLOAD_HEAP = {},
-    UNLOADING_ON_THE_FIELD = {}
+    UNLOADING_ON_THE_FIELD = {},
+    DRIVE_TO_FIELD_UNLOAD_PARK_POSITION = {},   
 }
 
 function AIDriveStrategyUnloadCombine.new(customMt)
@@ -166,8 +167,8 @@ end
 function AIDriveStrategyUnloadCombine:setFieldUnloadPositionAndTipSide(fieldUnloadPosition, unloadTipSideID)
     if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
         self.fieldUnloadPositionNode = CpUtil.createNode("Field unload position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
-        self.fieldUnloadTurnStartNode = CpUtil.createNode("Reverse field unload turn start position", 0, 0, 0, nil)
-        self.fieldUnloadTurnEndNode = CpUtil.createNode("Reverse field unload turn end position", 0, 0, 0, nil)
+        self.fieldUnloadTurnStartNode = CpUtil.createNode("Reverse field unload turn start position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
+        self.fieldUnloadTurnEndNode = CpUtil.createNode("Reverse field unload turn end position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
         self.unloadTipSideID = unloadTipSideID:getValue()
     end
 end
@@ -336,6 +337,8 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self:getFieldSpeed())
     elseif self.state == self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP then
         self:driveToReverseFieldUnloadHeap()
+    elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION then 
+        self:setMaxSpeed(self:getFieldSpeed())
     end
 
 
@@ -411,6 +414,10 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startMovingAwayFromUnloadTrailer()
     elseif self.state == self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER then
         self:onMovedAwayFromUnloadTrailer()
+    
+    ---------------------------------------------
+    --- Unloading on the field
+    ---------------------------------------------
     elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_POSITION then 
         self:onFieldUnloadPositionReached()
     elseif self.state == self.states.UNLOADING_ON_THE_FIELD then
@@ -419,6 +426,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:onReverseFieldUnloadPositionReached()
     elseif self.state == self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP then 
         self:onReverseFieldUnloadHeapReached()
+    elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION then 
+        self:onFieldUnloadParkPositionReached()
     end
 end
 
@@ -1022,7 +1031,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startPathfinding(
         target, xOffset, zOffset, fieldNum, vehiclesToIgnore,
-        pathfindingCallbackFunc, areaToAvoid, allowReverse)
+        pathfindingCallbackFunc, areaToAvoid)
     if not self.pathfinder or not self.pathfinder:isActive() then
 
         if self:isFruitAt(target, xOffset, zOffset) then
@@ -1054,7 +1063,7 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
                     maxFruitPercent, self.offFieldPenalty, areaToAvoid)
         else
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                    self.vehicle, target, xOffset or 0, zOffset or 0, allowReverse or false,
+                    self.vehicle, target, xOffset or 0, zOffset or 0, false,
                     fieldNum, vehiclesToIgnore, maxFruitPercent,
                     self.offFieldPenalty, areaToAvoid)
         end
@@ -1861,9 +1870,33 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
             if self.fieldUnloadData.isReverseUnloading then 
                 self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
+            else 
+                --- Need to make sure the xOffset is big enough to not hit the silo
+                local dirX, dirZ = heapSilo:getDirection()
+                setDirection(self.fieldUnloadPositionNode, dirX, 0, dirZ)
+
+                local sx, sz = heapSilo:getStartPosition()
+                local wx, wz = heapSilo:getWidthPosition()
+                local hx, hz = heapSilo:getHeightPosition()
+
+                local vehicleWidth = AIUtil.getWidth(self.vehicle)
+
+                local x, _, z = 0, 0, 0 
+                local delta = 0
+                for i = 0, 3, 0.1 do 
+                    delta = i
+                    x, _ ,z = localToWorld(self.fieldUnloadPositionNode, - (xOffset + MathUtil.sign(xOffset) * i), 0, 0)
+                    if MathUtil.hasRectangleLineIntersection2D(sx, sz, wx-sx, wz-sz, hx-sx, hz-sz,
+                    x - dirX * 5, z - dirZ * 5, dirX , dirZ) then
+                        break
+                    end
+                end
+                self.fieldUnloadData.xOffset = xOffset + MathUtil.sign(xOffset) * (delta + vehicleWidth/2)
+                
             end
         end
-        self:debug("Found a heap for field unloading, reverseUnloading: %s", self.fieldUnloadData.isReverseUnloading)
+        self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
+            self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
     end
 
 
@@ -1871,7 +1904,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     self:startPathfinding(self.fieldUnloadPositionNode, -self.fieldUnloadData.xOffset,
-        -AIUtil.getLength(self.vehicle), fieldNum, nil, 
+        -AIUtil.getLength(self.vehicle) * 1.3, fieldNum, nil, 
         self.onPathfindingDoneBeforeUnloadingOnField, self.fieldUnloadData.areaToIgnore)
 end
 
@@ -1889,6 +1922,9 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeUnloadingOnField(pa
         course:append(Course.createFromNode(self.vehicle, self.fieldUnloadPositionNode, 
             -self.fieldUnloadData.xOffset, dz, 0, 1, false))
         self:startCourse(course, 1)
+    else 
+        self:info("Could not find a path to the field unload position!")
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     end
 end
 
@@ -1944,32 +1980,11 @@ end
 
 --- Driver is in front of the heap and ready to drive backwards to the heap end now.
 function AIDriveStrategyUnloadCombine:onReverseFieldUnloadPositionReached()
-   -- self:setNewState(self.states.WAITING_FOR_PATHFINDER)
-    local length = self.fieldUnloadData.heapSilo:getLength()
-    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     local course = Course.createFromNodeToNode(self.vehicle, 
         self.vehicle:getAIDirectionNode(), self.fieldUnloadPositionNode,
         0, 0, 5, 3, true)
     self:setNewState(self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP)
     self:startCourse(course, 1)
---[[
-    self:startPathfinding(self.fieldUnloadPositionNode, 0,
-        -length + 5, fieldNum, nil, 
-        self.onPathfindingDoneBeforeDrivingToReverseFieldUnloadHeap, 
-        self.fieldUnloadData.areaToIgnore, true
-    )
-    ]]--
-end
-
---- Reverse path to the heap was found.
----@param path table
----@param goalNodeInvalid boolean
-function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeDrivingToReverseFieldUnloadHeap(path, goalNodeInvalid)
-    if self:isPathFound(path, goalNodeInvalid, "Field unload position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
-        self:setNewState(self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP)
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(course, 1)
-    end
 end
 
 --- Reverse driving to the heap.
@@ -2013,8 +2028,42 @@ function AIDriveStrategyUnloadCombine:prepareForFieldUnload()
     end
 end
 
+--- Finished unloading and search for a park course that is on the opposite xOffset from the heap.
 function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
-    self:debug("Field unload finished.")
+    local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 0)
+    setTranslation(self.fieldUnloadTurnEndNode, x, 0, z)
+    local _, rotY, _ = getRotation(self.fieldUnloadPositionNode, 0, 0, 0)
+    setRotation(self.fieldUnloadTurnEndNode, 0, rotY + math.pi, 0)
+
+    self:setNewState(self.states.WAITING_FOR_PATHFINDER)
+    local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+    self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset * 2,
+        -AIUtil.getLength(self.vehicle), fieldNum, nil, 
+        self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition, self.fieldUnloadData.areaToIgnore)
+end
+
+--- Course to the park position found.
+function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition(path, goalNodeInvalid)
+    if self:isPathFound(path, goalNodeInvalid, "Field unload position park position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
+        self:setNewState(self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION)
+        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+
+        --- Append straight alignment segment
+        local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
+        local _, _, dz = worldToLocal(self.fieldUnloadTurnEndNode, x, 0, z)
+        course:append(Course.createFromNode(self.vehicle, self.fieldUnloadTurnEndNode, 
+        -self.fieldUnloadData.xOffset * 2, dz, 0, 1, false))
+        self:startCourse(course, 1)
+    else
+        self:debug("No path to the field unload park position found!")
+        self:startWaitingForSomethingToDo()
+        self.fieldUnloadData = nil
+        return false
+    end
+end
+
+function AIDriveStrategyUnloadCombine:onFieldUnloadParkPositionReached()
+    self:debug("Field unload finished and park position reached.")
     self:startWaitingForSomethingToDo()
     self.fieldUnloadData = nil
 end
@@ -2039,13 +2088,13 @@ function AIDriveStrategyUnloadCombine:update(dt)
         if self.fieldUnloadData then
             --- Only draw the field unload data, when the field unload is active.
             if self.fieldUnloadPositionNode then 
-                DebugUtil.drawDebugNode(self.fieldUnloadPositionNode, getName(self.fieldUnloadPositionNode))
+                DebugUtil.drawDebugNode(self.fieldUnloadPositionNode, getName(self.fieldUnloadPositionNode), false, 1)
             end
             if self.fieldUnloadTurnEndNode then 
-                DebugUtil.drawDebugNode(self.fieldUnloadTurnEndNode, getName(self.fieldUnloadTurnEndNode))
+                DebugUtil.drawDebugNode(self.fieldUnloadTurnEndNode, getName(self.fieldUnloadTurnEndNode), false, 1)
             end
             if self.fieldUnloadTurnStartNode then 
-                DebugUtil.drawDebugNode(self.fieldUnloadTurnStartNode, getName(self.fieldUnloadTurnStartNode))
+                DebugUtil.drawDebugNode(self.fieldUnloadTurnStartNode, getName(self.fieldUnloadTurnStartNode), false, 1)
             end
             if self.fieldUnloadData.heapSilo then 
                 self.fieldUnloadData.heapSilo:drawDebug()

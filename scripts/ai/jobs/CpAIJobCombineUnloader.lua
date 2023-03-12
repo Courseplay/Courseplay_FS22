@@ -13,7 +13,16 @@ function CpAIJobCombineUnloader.new(isServer, customMt)
 	local self = CpAIJobFieldWork.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 	--- Giants unload
 	self.dischargeNodeInfos = {}
+
+	self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
+    self.heapPlot:setVisible(false)
+	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
 	return self
+end
+
+function CpAIJobCombineUnloader:delete()
+	CpAICombineUnloader:superClass().delete(self)
+	CpUtil.destroyNode(self.heapNode)
 end
 
 function CpAIJobCombineUnloader:setupTasks(isServer)
@@ -164,6 +173,7 @@ end
 
 --- Called when parameters change, scan field
 function CpAIJobCombineUnloader:validate(farmId)
+	self.heapPlot:setVisible(false)
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
@@ -225,6 +235,15 @@ function CpAIJobCombineUnloader:validate(farmId)
 				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
 		if not isValid then
 			return false, g_i18n:getText("CP_error_fieldUnloadPosition_to_far_away_from_field")
+		end
+		--- Draws the silo
+		local angle = self.cpJobParameters.fieldUnloadPosition:getAngle()
+		setTranslation(self.heapNode, x, 0, z)
+		setRotation(self.heapNode, 0, angle, 0)
+		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.heapNode, 0, 50, -5)
+		if found then	
+			self.heapPlot:setArea(heapSilo:getArea())
+			self.heapPlot:setVisible(true)
 		end
 	end
 
@@ -385,4 +404,11 @@ end
 
 function CpAIJobCombineUnloader:copyFrom(job)
 	self.cpJobParameters:copyFrom(job.cpJobParameters)
+end
+
+function CpAIJobCombineUnloader:drawSelectedField(map)
+	CpAIJobCombineUnloader:superClass().drawSelectedField(self, map)
+    if self.heapPlot then
+        self.heapPlot:draw(map)
+    end
 end

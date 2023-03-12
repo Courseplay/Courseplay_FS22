@@ -45,6 +45,8 @@ function CpHeapBunkerSilo:init(sx, sz, wx, wz, hx, hz)
 	local area = self.bunkerSiloArea
 	local dirX, dirZ, length = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
 		{x = area.hx, z = area.hz})
+	self.dirX = dirX
+	self.dirZ = dirZ
 	self.area = 	{
 		{
 			x = area.sx, 
@@ -91,9 +93,35 @@ function CpHeapBunkerSilo:getWidth()
 	return MathUtil.vector2Length(self.sx - self.wx, self.sz - self.wz)
 end
 
+--- Front left corner
+function CpHeapBunkerSilo:getStartPosition()
+	return self.sx, self.sz
+end
+
+--- Back left corner
+function CpHeapBunkerSilo:getHeightPosition()
+	return self.sx, self.sz
+end
+
+--- Front right corner
+function CpHeapBunkerSilo:getWidthPosition()
+	return self.sx, self.sz
+end
+
+function CpHeapBunkerSilo:getDirection()
+	return self.dirX, self.dirZ
+end
+
 function CpHeapBunkerSilo:drawDebug()
-	DebugUtil.drawDebugAreaRectangle(self.sx, self.sy + 2, self.sz, self.wx, self.wy + 2, self.wz, self.hx, self.hy + 2, self.sz,
+	DebugUtil.drawDebugAreaRectangle(self.sx, self.sy + 2, self.sz, self.wx, self.wy + 2, self.wz, self.hx, self.hy + 2, self.hz,
 		 false, 0.5, 0.5, 0.5)
+
+	DebugUtil.drawDebugGizmoAtWorldPos(self.sx, self.sy + 3, self.sz, self.dirX, 0, self.dirZ, 
+		0, 1, 0, "StartPoint", false)
+	DebugUtil.drawDebugGizmoAtWorldPos(self.wx, self.wy + 3, self.wz, self.dirX, 0, self.dirZ, 
+		0, 1, 0, "WidthPoint", false)
+	DebugUtil.drawDebugGizmoAtWorldPos(self.hx, self.hy + 3, self.hz, self.dirX, 0, self.dirZ, 
+		0, 1, 0, "HeightPoint", false)
 end
 
 
@@ -114,6 +142,7 @@ end
 function CpHeapBunkerSilo:isPointInArea(x, z, area)
 	return CpMathUtil.isPointInPolygon(area, x, z)	
 end
+
 
 --- Wrapper for a bunker silo.
 CpBunkerSilo = CpObject()

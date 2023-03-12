@@ -269,6 +269,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/gui/CoursePlot.lua"/>
 		<sourceFile filename="scripts/gui/FieldPlot.lua"/>
 		<sourceFile filename="scripts/gui/BunkerSiloPlot.lua"/>
+		<sourceFile filename="scripts/gui/HeapPlot.lua"/>
 		<sourceFile filename="scripts/gui/CpStatus.lua"/>
 		<sourceFile filename="scripts/gui/CpAIHotspots.lua"/>
 		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>

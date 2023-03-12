@@ -23,28 +23,42 @@ function PipeController:init(vehicle, implement)
 
     self.isDischargingTimer = CpTemporaryObject(false)
     self.isDischargingToGround = false
+    self.dischargeData = {}
 end
 
 function PipeController:getDriveData()
     local maxSpeed
-    if self.isDischargingToGround then 
-        if self.isDischargingTimer:get() then 
+    if self.isDischargingToGround then
+        if self.isDischargingTimer:get() then
             --- Waiting until the discharging stopped or 
             --- the trailer is empty and the folding animation is playing.
             maxSpeed = 0
+        else 
+            --- Small unload speed
+            maxSpeed = 5
         end
-        if self.implement:getIsAIPreparingToDrive() or self:isPipeMoving() then 
+        if self.implement:getIsAIPreparingToDrive() or self:isPipeMoving() then
             --- Pipe is unfolding/moving.
             maxSpeed = 0
         end
-    end
-    if self.isDischargingToGround and self:isDischarging() and self.implement:getCanDischargeToGround(self:getDischargeNode()) then 
-        self.isDischargingTimer:set(true, 1000)
     end
     return nil, nil, nil, maxSpeed
 end
 
 function PipeController:update(dt)
+    if self.isDischargingToGround then
+        if self:isEmpty() and self.implement:getAIHasFinishedDischarge(self.dischargeData.dischargeNode) then 
+            self:finishedDischarge()
+            return
+        end
+        if self.implement:getCanDischargeToGround(self.dischargeData.dischargeNode) then 
+            --- Update discharge timer
+            self.isDischargingTimer:set(true, 500)
+            if not self:isDischarging() then 
+                self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+            end
+        end
+    end
     self:updateMoveablePipe(dt)
 end
 
@@ -183,18 +197,13 @@ function PipeController:startDischargeToGround(dischargeNode)
         self:debug("Implement doesn't support unload to the ground!")
         return false
     end
-    --- TODO: Check why this one is not working for every discharge node?
-    ---       Maybe a raycast call is missing
-    --if not self.implement:getCanDischargeToGround(dischargeNode) then 
+     --if not self.implement:getCanDischargeToGround(dischargeNode) then 
     --    return false
     --end
-    --- Custom implementation of: AIDischargeable:startAIDischarge(dischargeNode, task)
-    local spec = self.implement.spec_aiDischargeable
-    spec.currentDischargeNode = dischargeNode
-    spec.task = self
-    spec.isAIDischargeRunning = true
-    self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
     self.isDischargingToGround = true
+    self.dischargeData = {
+        dischargeNode = dischargeNode,
+    }
     return true
 end
 
@@ -224,11 +233,12 @@ function PipeController:finishedDischarge()
         self.finishDischargeCallback(self.driveStrategy, self)
     end
     self.isDischargingToGround = false
+    self.dischargeData = {}
 end
 
 function PipeController:isEmpty()
     local dischargeNode = self:getDischargeNode()
-    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0.01
+    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0
 end
 
 --- Measures pipe properties: xOffset, zOffset, pipeOnLeftSide
@@ -529,6 +539,21 @@ function PipeController:printMoveablePipeDebug()
     self:printMovingToolDebug(self.baseMovingTool)
     CpUtil.infoImplement(self.implement, "Base moving tool child")
     self:printMovingToolDebug(self.baseMovingToolChild)
+end
+
+function PipeController:printDischargeableDebug()
+    local dischargeNode = self:getDischargeNode()
+    CpUtil.infoImplement(self.implement, "Discharge node fill unit index: %d, emptySpeed: %s", 
+        dischargeNode.fillUnitIndex, self.implement:getDischargeNodeEmptyFactor(dischargeNode))
+    CpUtil.infoImplement(self.implement, "canDischargeToGround %s, canDischargeToObject: %s",
+        dischargeNode.canDischargeToGround, dischargeNode.canDischargeToObject)
+    CpUtil.infoImplement(self.implement, "canStartDischargeAutomatically %s, canStartGroundDischargeAutomatically: %s",
+        dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
+    CpUtil.infoImplement(self.implement, "stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
+        dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
+    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround: %s",
+        self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
+
 end
 
 function PipeController:printMovingToolDebug(tool)

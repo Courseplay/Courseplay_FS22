@@ -6,22 +6,49 @@ function TrailerController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.trailerSpec = self.implement.spec_trailer
     self.isDischargingTimer = CpTemporaryObject(false)
+    self.isDischargingToGround = false
+    self.dischargeData = {}
 end
 
 function TrailerController:getDriveData()
 	local maxSpeed
-    if not self.implement:getAIHasFinishedDischarge() then 
-        if self.isDischargingTimer:get() or self:isEmpty() then 
+    if self.isDischargingToGround then
+        if self.isDischargingTimer:get() then
             --- Waiting until the discharging stopped or 
             --- the trailer is empty and the folding animation is playing.
             maxSpeed = 0
+        else 
+            --- Small unload speed
+            maxSpeed = 5
         end
-    end
-    if self:isDischarging() and self.implement:getCanDischargeToGround(self.implement:getCurrentDischargeNode())  then 
-        self.isDischargingTimer:set(true, 1000)
+        if self.trailerSpec.tipState == Trailer.TIPSTATE_OPENING then 
+            --- Trailer not yet ready to unload.
+            maxSpeed = 0
+        end
     end
 	
 	return nil, nil, nil, maxSpeed
+end
+
+function TrailerController:update(dt)
+    if self.isDischargingToGround then
+        if self:isEmpty() then 
+            if self:isDischarging() then
+                self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
+            end
+            if self.implement:getAIHasFinishedDischarge(self.dischargeData.dischargeNode) then 
+                self:finishedDischarge()
+            end
+            return
+        end
+        if self.implement:getCanDischargeToGround(self.dischargeData.dischargeNode) then 
+            --- Update discharge timer
+            self.isDischargingTimer:set(true, 500)
+            if not self:isDischarging() then 
+                self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
+            end
+        end
+    end
 end
 
 --- Gets the dischargeNode and offset from a selected tip side.
@@ -73,22 +100,14 @@ function TrailerController:startDischargeToGround(dischargeNode)
     if not dischargeNode.canDischargeToGround then 
         return false
     end
-    --- TODO: Check why this one is not working for every discharge node?
-    ---       Maybe a raycast call is missing
-    --if not self.implement:getCanDischargeToGround(dischargeNode) then 
-    --    return false
-    --end
-    --- Custom implementation of: AIDischargeable:startAIDischarge(dischargeNode, task)
-    local spec = self.implement.spec_aiDischargeable
-    spec.currentDischargeNode = dischargeNode
-    spec.task = self
-    spec.isAIDischargeRunning = true
-
+    self.isDischargingToGround = true
+    self.dischargeData = {
+        dischargeNode = dischargeNode,
+    }
 	local tipSide = self.trailerSpec.dischargeNodeIndexToTipSide[dischargeNode.index]
 	if tipSide ~= nil then
 		self.implement:setPreferedTipSide(tipSide.index)
 	end
-    self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
     return true
 end
 
@@ -119,5 +138,23 @@ end
 
 function TrailerController:isEmpty()
     local dischargeNode = self.implement:getCurrentDischargeNode()
-    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0.01    
+    return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0    
+end
+
+
+---------------------------------------------
+--- Debug
+---------------------------------------------
+function TrailerController:printDischargeableDebug()
+    local dischargeNode = self.implement:getCurrentDischargeNode()
+    CpUtil.infoImplement(self.implement, "Discharge node fill unit index: %d, emptySpeed: %s", 
+        dischargeNode.fillUnitIndex, self.implement:getDischargeNodeEmptyFactor(dischargeNode))
+    CpUtil.infoImplement(self.implement, "canDischargeToGround %s, canDischargeToObject: %s",
+        dischargeNode.canDischargeToGround, dischargeNode.canDischargeToObject)
+    CpUtil.infoImplement(self.implement, "canStartDischargeAutomatically %s, canStartGroundDischargeAutomatically: %s",
+        dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
+    CpUtil.infoImplement(self.implement, "stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
+        dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
+    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround: %s",
+        self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
 end
