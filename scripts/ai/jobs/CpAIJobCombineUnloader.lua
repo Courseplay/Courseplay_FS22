@@ -41,6 +41,7 @@ function CpAIJobCombineUnloader:setupCpJobParameters()
 	self.cpJobParameters = CpCombineUnloaderJobParameters(self)
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle, self, self.cpJobParameters)
 	self.cpJobParameters:validateSettings()
+	self.cpJobParameters.fieldUnloadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
 end
 
 --- Disables course generation.
