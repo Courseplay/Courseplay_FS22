@@ -241,6 +241,11 @@ function PipeController:isEmpty()
     return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0
 end
 
+function PipeController:getUnloadOffsetZ(dischargeNode)
+    local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), self.implement, self.implement.rootNode)
+    return dist + self.pipeOffsetZ
+end
+
 --- Measures pipe properties: xOffset, zOffset, pipeOnLeftSide
 function PipeController:measurePipeProperties()
     --- Old fold and pipe states.
@@ -553,7 +558,7 @@ function PipeController:printDischargeableDebug()
         dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
     CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround: %s",
         self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
-
+    CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
 end
 
 function PipeController:printMovingToolDebug(tool)

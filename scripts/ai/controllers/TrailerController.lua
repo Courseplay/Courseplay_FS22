@@ -148,6 +148,12 @@ function TrailerController:isEmpty()
     return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0    
 end
 
+function TrailerController:getUnloadOffsetZ(dischargeNode)
+    local node = dischargeNode.node
+    local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), self.implement, node)
+    return dist
+end
+
 
 ---------------------------------------------
 --- Debug
@@ -164,4 +170,5 @@ function TrailerController:printDischargeableDebug()
         dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
     CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround: %s",
         self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
+    CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
 end

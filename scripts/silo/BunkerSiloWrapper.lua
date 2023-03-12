@@ -100,12 +100,12 @@ end
 
 --- Back left corner
 function CpHeapBunkerSilo:getHeightPosition()
-	return self.sx, self.sz
+	return self.hx, self.hz
 end
 
 --- Front right corner
 function CpHeapBunkerSilo:getWidthPosition()
-	return self.sx, self.sz
+	return self.wx, self.wz
 end
 
 function CpHeapBunkerSilo:getDirection()

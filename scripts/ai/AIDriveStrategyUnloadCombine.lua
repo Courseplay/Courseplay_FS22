@@ -1866,32 +1866,30 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         self.fieldUnloadData.heapSilo = heapSilo
         self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
              -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
+        
+        --- Set the unloading node in the center between heap sx/sz and wx/wz.
+        local sx, sz = heapSilo:getStartPosition()
+        local wx, wz = heapSilo:getWidthPosition()
+        local dirX, dirZ, length = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
+        local cx, cz = sx + dirX * length/2, sz + dirZ * length/2
+        setTranslation(self.fieldUnloadPositionNode, cx, 0, cz)
+        local dirX, dirZ = heapSilo:getDirection()
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        setWorldRotation(self.fieldUnloadPositionNode, 0, yRot, 0)
+        --- Move the position a little bit inwards.
+        local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 3)
+        local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
+        setTranslation(self.fieldUnloadPositionNode, x, y, z)
+
         if allowReverseUnloading then
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
             if self.fieldUnloadData.isReverseUnloading then 
                 self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
             else 
-                --- Need to make sure the xOffset is big enough to not hit the silo
-                local dirX, dirZ = heapSilo:getDirection()
-                setDirection(self.fieldUnloadPositionNode, dirX, 0, dirZ)
-
-                local sx, sz = heapSilo:getStartPosition()
-                local wx, wz = heapSilo:getWidthPosition()
-                local hx, hz = heapSilo:getHeightPosition()
 
                 local vehicleWidth = AIUtil.getWidth(self.vehicle)
-
-                local x, _, z = 0, 0, 0 
-                local delta = 0
-                for i = 0, 3, 0.1 do 
-                    delta = i
-                    x, _ ,z = localToWorld(self.fieldUnloadPositionNode, - (xOffset + MathUtil.sign(xOffset) * i), 0, 0)
-                    if MathUtil.hasRectangleLineIntersection2D(sx, sz, wx-sx, wz-sz, hx-sx, hz-sz,
-                    x - dirX * 5, z - dirZ * 5, dirX , dirZ) then
-                        break
-                    end
-                end
-                self.fieldUnloadData.xOffset = xOffset + MathUtil.sign(xOffset) * (delta + vehicleWidth/2)
+                
+                self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), length/2 + 2 * vehicleWidth/3)
                 
             end
         end
@@ -1907,7 +1905,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         -AIUtil.getLength(self.vehicle) * 1.3, fieldNum, nil, 
         self.onPathfindingDoneBeforeUnloadingOnField, self.fieldUnloadData.areaToIgnore)
 end
-
+ 
 --- Path to the field unloading position was found.
 ---@param path table
 ---@param goalNodeInvalid boolean
@@ -1919,8 +1917,13 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeUnloadingOnField(pa
         --- Append straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local _, _, dz = worldToLocal(self.fieldUnloadPositionNode, x, 0, z)
+        local zOffset = 0
+        if not self.fieldUnloadData.isReverseUnloading then 
+            --- For Side unloading make sure the discharge node is aligned correctly with the field unload node.
+            zOffset = -self.fieldUnloadData.controller:getUnloadOffsetZ(self.fieldUnloadData.dischargeNode)
+        end
         course:append(Course.createFromNode(self.vehicle, self.fieldUnloadPositionNode, 
-            -self.fieldUnloadData.xOffset, dz, 0, 1, false))
+            -self.fieldUnloadData.xOffset, dz, zOffset, 3, false))
         self:startCourse(course, 1)
     else 
         self:info("Could not find a path to the field unload position!")
