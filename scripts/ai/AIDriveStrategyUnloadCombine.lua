@@ -102,11 +102,11 @@ AIDriveStrategyUnloadCombine.myStates = {
     MOVING_TO_NEXT_FILL_NODE = { moveablePipeDisabled = true },
     MOVING_AWAY_FROM_UNLOAD_TRAILER = { moveablePipeDisabled = true },
     --- Field unload states
-    DRIVE_TO_FIELD_UNLOAD_POSITION = {},
+    DRIVE_TO_FIELD_UNLOAD_POSITION = { collisionAvoidanceEnabled = true },
     PREPARE_FOR_FIELD_UNLOAD = {},
     DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION = {},
     REVERSING_TO_THE_FIELD_UNLOAD_HEAP = {},
-    UNLOADING_ON_THE_FIELD = {},
+    UNLOADING_ON_THE_FIELD = { proximityControllerDisabled = true},
     DRIVE_TO_FIELD_UNLOAD_PARK_POSITION = {},   
 }
 
@@ -212,6 +212,10 @@ end
 
 function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
     return true
+end
+
+function AIDriveStrategyUnloadCombine:isProximityControllerDisabled()
+    return self.state.properties.proximityControllerDisabled
 end
 
 function AIDriveStrategyUnloadCombine:checkCollisionWarning()
@@ -341,8 +345,9 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self:getFieldSpeed())
     end
 
-
-    self:checkProximitySensors(moveForwards)
+    if not self:isProximityControllerDisabled() then 
+        self:checkProximitySensors(moveForwards)
+    end
 
     self:checkCollisionWarning()
 
@@ -1870,8 +1875,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         --- Set the unloading node in the center between heap sx/sz and wx/wz.
         local sx, sz = heapSilo:getStartPosition()
         local wx, wz = heapSilo:getWidthPosition()
-        local dirX, dirZ, length = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
-        local cx, cz = sx + dirX * length/2, sz + dirZ * length/2
+        local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
+        local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
         setTranslation(self.fieldUnloadPositionNode, cx, 0, cz)
         local dirX, dirZ = heapSilo:getDirection()
         local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
@@ -1885,14 +1890,14 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
             if self.fieldUnloadData.isReverseUnloading then 
                 self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
-            else 
-
-                local vehicleWidth = AIUtil.getWidth(self.vehicle)
-                
-                self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), length/2 + 2 * vehicleWidth/3)
-                
             end
         end
+        if not self.fieldUnloadData.isReverseUnloading then  
+            local vehicleWidth = AIUtil.getWidth(self.vehicle)
+            self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
+            self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+        end
+
         self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
             self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
     end

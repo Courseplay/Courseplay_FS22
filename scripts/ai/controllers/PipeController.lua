@@ -33,13 +33,12 @@ function PipeController:getDriveData()
             --- Waiting until the discharging stopped or 
             --- the trailer is empty and the folding animation is playing.
             maxSpeed = 0
-        else 
-            --- Small unload speed
-            maxSpeed = 5
+            self:debugSparse("Waiting for unloading!")
         end
         if self.implement:getIsAIPreparingToDrive() or self:isPipeMoving() then
             --- Pipe is unfolding/moving.
             maxSpeed = 0
+            self:debugSparse("Waiting for pipe unfolding!")
         end
     end
     return nil, nil, nil, maxSpeed
@@ -234,6 +233,7 @@ function PipeController:finishedDischarge()
     end
     self.isDischargingToGround = false
     self.dischargeData = {}
+    self:closePipe(false)
 end
 
 function PipeController:isEmpty()
@@ -556,7 +556,7 @@ function PipeController:printDischargeableDebug()
         dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
     CpUtil.infoImplement(self.implement, "stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
         dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
-    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround: %s",
+    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
         self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
     CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
 end

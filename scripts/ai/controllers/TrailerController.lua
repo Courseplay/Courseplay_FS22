@@ -17,17 +17,17 @@ function TrailerController:getDriveData()
             --- Waiting until the discharging stopped or 
             --- the trailer is empty and the folding animation is playing.
             maxSpeed = 0
-        else 
-            --- Small unload speed
-            maxSpeed = 5
+            self:debugSparse("Waiting for unloading!")
         end
         if self.trailerSpec.tipState == Trailer.TIPSTATE_OPENING then 
             --- Trailer not yet ready to unload.
             maxSpeed = 0
+            self:debugSparse("Waiting for trailer animation opening!")
         end
         if self:isEmpty() then  
             --- Waiting for the trailer animation to finish.
             maxSpeed = 0
+            self:debugSparse("Waiting for trailer animation closing!")
         end
     end
     
@@ -168,7 +168,7 @@ function TrailerController:printDischargeableDebug()
         dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
     CpUtil.infoImplement(self.implement, "stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
         dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
-    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround: %s",
+    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
         self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
     CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
 end
