@@ -122,6 +122,8 @@ function TrailerController:finishedDischarge()
     if self.finishDischargeCallback then 
         self.finishDischargeCallback(self.driveStrategy, self)
     end
+    self.isDischargingToGround = false
+    self.dischargeData = {}
 end
 
 function TrailerController:prepareForUnload()
