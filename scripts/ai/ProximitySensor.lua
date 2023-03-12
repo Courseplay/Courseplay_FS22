@@ -101,6 +101,7 @@ function ProximitySensor:update()
     local nx, _, nz = localDirectionToWorld(self.node, self.lx, 0, self.lz)
     self.distanceOfClosestObject = math.huge
     self.objectId = nil
+    self.hitTerrain = false
     if self.enabled then
         local raycastMask = CollisionFlag.STATIC_OBJECTS + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
         raycastClosest(x, y1 + self.height, z, nx, ny, nz, 'raycastCallback', self.range, self, raycastMask)
@@ -123,6 +124,7 @@ function ProximitySensor:raycastCallback(objectId, x, y, z, distance)
     end
     self.distanceOfClosestObject = distance
     self.objectId = objectId
+    self.hitTerrain = objectId == g_currentMission.terrainRootNode
     self.closestObjectX, self.closestObjectY, self.closestObjectZ = x, y, z
 end
 
@@ -133,6 +135,10 @@ end
 
 function ProximitySensor:getClosestObject()
     return g_currentMission:getNodeObject(self.objectId)
+end
+
+function ProximitySensor:hasHitTerrain()
+    return self.hitTerrain
 end
 
 function ProximitySensor:getClosestRootVehicle()
@@ -272,7 +278,7 @@ function ProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
     -- make sure we have the latest info, the sensors will make sure they only raycast once per loop
     self:update()
     local closestDistance = math.huge
-    local closestRootVehicle, closestObject
+    local closestRootVehicle, closestObject, hitTerrain
     -- weighted average over the different direction, weight depends on how close the closest object is
     local totalWeight, totalDegs, totalDistance = 0, 0, 0
     for _, sensor in ipairs(self.sensors) do
@@ -289,12 +295,13 @@ function ProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
             closestDistance = d
             closestRootVehicle = sensor:getClosestRootVehicle()
             closestObject = sensor:getClosestObject()
+            hitTerrain = sensor:hasHitTerrain()
         end
     end
     if closestRootVehicle == self.vehicle then
         self:adjustForwardPosition()
     end
-    return closestDistance, closestRootVehicle, closestObject, totalDegs / totalWeight, totalDistance / totalWeight
+    return closestDistance, closestRootVehicle, closestObject, hitTerrain, totalDegs / totalWeight, totalDistance / totalWeight
 end
 
 function ProximitySensorPack:disableRightSide()

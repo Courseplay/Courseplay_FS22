@@ -56,6 +56,8 @@ function PipeController:update(dt)
             if not self:isDischarging() then 
                 self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_GROUND)
             end
+        else 
+            self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
         end
     end
     self:updateMoveablePipe(dt)

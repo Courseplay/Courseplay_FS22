@@ -77,7 +77,12 @@ function ProximityController:registerIgnoreObjectCallback(object, callback)
     self.ignoreObjectCallbackRegistrations[object][callback] = true
 end
 
-function ProximityController:ignoreObject(object, vehicle, moveForwards)
+---@param object table
+---@param vehicle table
+---@param moveForwards boolean
+---@param hitTerrain boolean
+---@return boolean ignore object
+function ProximityController:ignoreObject(object, vehicle, moveForwards, hitTerrain)
     for callbackObject, registeredCallbacks in pairs(self.ignoreObjectCallbackRegistrations) do
         for callbackFunction, _ in pairs(registeredCallbacks) do
             if callbackFunction(callbackObject, object, vehicle, moveForwards) then
@@ -86,7 +91,6 @@ function ProximityController:ignoreObject(object, vehicle, moveForwards)
             end
         end
     end
-    -- none of the registered callbacks (or no callbacks registered): do not ignore
     return false
 end
 
@@ -138,13 +142,13 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
     --- Resets the traffic info text.
     self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
 
-    local d, vehicle, object, range, deg, dAvg = math.huge, nil, nil, 10, 0
+    local d, vehicle, object, range, deg, dAvg, hitTerrain = math.huge, nil, nil, 10, 0, 0, false
     local pack = moveForwards and self.forwardLookingProximitySensorPack or self.backwardLookingProximitySensorPack
     if pack then
-        d, vehicle, object, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
+        d, vehicle, object, hitTerrain, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
         range = pack:getRange()
     end
-    if self:ignoreObject(object, vehicle, moveForwards) then
+    if self:ignoreObject(object, vehicle, moveForwards, hitTerrain) then
         self:setState(self.states.NO_OBSTACLE, 'No obstacle')
         return nil, nil, nil, maxSpeed
     end

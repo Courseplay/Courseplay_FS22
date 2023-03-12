@@ -188,6 +188,7 @@ function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
     self.proximityController:registerIsSlowdownEnabledCallback(self, AIDriveStrategyUnloadCombine.isProximitySpeedControlEnabled)
     self.proximityController:registerBlockingVehicleListener(self, AIDriveStrategyUnloadCombine.onBlockingVehicle)
+    self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyUnloadCombine.ignoreProximityObject)
     -- remove any course already loaded (for instance to not to interfere with the fieldworker proximity controller)
     vehicle:resetCpCourses()
     self:resetPathfinder()
@@ -214,8 +215,8 @@ function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
     return true
 end
 
-function AIDriveStrategyUnloadCombine:isProximityControllerDisabled()
-    return self.state.properties.proximityControllerDisabled
+function AIDriveStrategyUnloadCombine:ignoreProximityObject(object, vehicle, hitTerrain)
+    return self.state == self.states.UNLOADING_ON_THE_FIELD and hitTerrain
 end
 
 function AIDriveStrategyUnloadCombine:checkCollisionWarning()
@@ -348,9 +349,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(self:getFieldSpeed())
     end
 
-    if not self:isProximityControllerDisabled() then 
-        self:checkProximitySensors(moveForwards)
-    end
+    self:checkProximitySensors(moveForwards)
 
     self:checkCollisionWarning()
     return gx, gz, moveForwards, self.maxSpeed, 100
