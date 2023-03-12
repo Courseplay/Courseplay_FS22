@@ -21,7 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Aflæsser for langt væk fra marken."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="startpunkt for langt væk fra marken."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants aflæsser er ikke tilgæængelig."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Ingen silo fundet."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -178,7 +178,7 @@
     <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_title" text="Gødningsfunktion på såmaskine"/>
     <text name="CP_vehicle_setting_sowingMachineFertilizerEnabled_tooltip" text="Gødningsfunktion på såmaskine til/fra."/>
     <text name="CP_vehicle_setting_optionalSowingMachineEnabled_title" text="Så option"/>
-    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Tænder eller slukker for maskinens ekstra såfunktion"/>
+    <text name="CP_vehicle_setting_optionalSowingMachineEnabled_tooltip" text="Tænde eller slukke for maskinens ekstra såfunktion"/>
     <!---->
     <!--Vehicle settings combine-->
     <!---->
@@ -279,8 +279,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Føreren fyres, hvis brændstofprocenten er mindre end."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Vedligholdestærskel"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Føreren fyres, hvis køretøjet eller et redskab er mere ødelagt. 100% er funktionen deaktiveret."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stopper mejetærskere, imens det regner"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Hvis indstillingen er aktiv, vil alle mejetærskere holde stille til regnen er stoppet"/>
     <text name="CP_global_setting_subTitle_userSettings" text="Brugerindstillinger"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Controller venling Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Benyt Hud, som kan betjenes via controlleren."/>
@@ -293,8 +293,8 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor for at reducere pathfinder nøjagtighed ved mislykkede forsøg. Større værdier er hurtigere"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Vis alle ruter"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Vis kun indlæste ruter."/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Viser ruter på minimappet"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Muliggør tegning af ruten på minimappet."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Vis info tekst vindue"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Viser info tekst vindue."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Mus begivenhed"/>
@@ -642,7 +642,7 @@ Informationerne er følgende:
 "/>
     <text name="CP_help_page_vineWork_title" text="Vin arbejde"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
-At arbejde på vinstokke er lidt mere komplekst end at arbejde på en normal mark.
+At arbejde med vinstokke er lidt mere komplekst end at arbejde på en normal mark.
 For at få det bedste resultat skal vinstokkene alle være ved siden af hinanden inden for standardgitteret.
 Slutningen og starten af hver vinstok skal også have nogenlunde samme længde.
 Hvis vinstokkene er på en eksisterende mark, kan du åbne generatoren direkte som normalt.
@@ -702,53 +702,53 @@ OBS: Så snart du giver slip, vil vejpunkterne blive sat af, dette kan ikke fort
 "/>
     <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+Aflæssertilstanden i Courseplay fungerer med mejetærskere, mejetærskere og bugserede mejetærskere som køres af Courseplay.
+Det virker dog ikke med en snitter.
+Du kan enten bruge en almindelig trailer eller en sneglevogn til at læsse en mejetærsker af.
+For at tømme trailere, kan du enten benytte Giants Hjælper eller AutoDrive.
+At starte aflasteren kræver et par ting:
+- Du skal have en enkelt trailer eller sneglevogn tilknyttet. Flere trailere understøttes ikke.
+- Brug målikonet på HUD'en til at vælge den mark, der skal høstes. Aflæsseren aflæsser alle Courseplay-drevne mejetærskere, der arbejder på den mark.
+- Du skal være på marken eller inden for 20 meter fra marken for at starte aflæsseren.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+Aflæsere har kun nogle få indstillinger, du kan justere:
+- Du kan indstille fyldnings niveauet til, hvor aflæsseren vil betragte sig selv som fyld. For at undgå, at en mejetærsker kalder på en næsten fuld anhænger.
+- Du kan bruge forskydningerne i HUD'en til at justere positionen af aflæsseren under mejetærskerens rør.
+
 
 "/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Hvis du bruger en trailer til at aflæsse med, er der to måder at transportere din høst til en silo eller til et salgssted på: Giants hjælperen
+eller AutoDrive.
+Du kan enten bruge AI-menuen og oprette et job, derefter ved at aktivere Giants-hjælpefunktionen og aflæse ved målet
+nederst på listen, eller ved at aktivere hjulikonet på HUD'en.
+I sidstnævnte tilfælde skal du vælge aflæsningsstationen, efter at hjulikonet bliver blåt.	
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+At tømme en trailer med AutoDrive fungerer på samme måde som at bruge en læssevogn, tjek AutoDrive Tutorials på internettet.
 "/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+Sneglevogne er meget enkle at bruge.
+Ligesom med trailere bruger du målikonet til at vælge den mark, hvor du vil aflæsse en mejetærsker eller mejetærsker.
+For at starte aflæsseren skal du placere den igen på marken eller inden for 20 meter fra marken.
+Hvis sneglevognen er fyld, leder den automatisk efter en trailer på eller i nærheden af marken for at overlæsse ind i den.
+Hvis traileren er fuld, og sneglevognen stadig ikke er tom, vil den lede efter en anden trailer at tømme af i.
+Er der ingen trailer tilgængelig, fortsætter den med at tømme mejetærskeren.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay er i stand til at komprimere eller fordele det snittede i en bunkersilo eller skubbe det snittede i en køresilo.
+Komprimering er mulig uden specialværktøj, med rulle, vægt eller kun køretøjet.
+Til distribution er der specialværktøj. (f.eks. der Fliegel DUO).
+Til køresiloer bruges et skjold til at skubbe det snittede ind til bagsiden af siloen.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Hvis køretøjet har en fordeler eller skjold påsat, er Silo-tilstanden forvalgt. Med kun en vægt eller en rulle påsat
+du skifter gennem startpunktet, indtil tilstanden vises.
+Udover arbejdsbredden kan du også vælge den retning chaufføren skal køre ind i siloen. Med et skjold påsat,
+retningen vælges automatisk.
+Brug målikonet på HUD'en til at vælge siloen på AI-kortet. dette vil blive vist med blå linjer og lyser hvidt, hvis det er valgt.
+Parkeringspositionen indstilles med markøren &quot;parkeringsposition&quot; som også kan bruges til at køre dertil med Giants hjælperen
+før det egentlige arbejde påbegyndes.
 "/>
     <!---->
     <!--Input bindings-->
