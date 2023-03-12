@@ -195,14 +195,19 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         if driveStrategy then
             -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
             local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
-            if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 and
-            message:isa(AIMessageErrorBlockedByObject) and maxSpeed and maxSpeed < 1 then
-                -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
-                -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
-                -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
-                -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
-                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer.')
-                return
+            if message:isa(AIMessageErrorBlockedByObject) then 
+                if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 then 
+                    if maxSpeed and maxSpeed < 1 then
+                        -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
+                        -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
+                        -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
+                        -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
+                        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer, with speed: %.2f', maxSpeed)
+                        return
+                    else 
+                        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Giants did not move timer triggered, with speed: %.2f!', maxSpeed)
+                    end
+                end
             end
             driveStrategy:onFinished()
         end

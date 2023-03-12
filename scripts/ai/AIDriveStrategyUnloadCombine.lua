@@ -337,6 +337,9 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self:prepareForFieldUnload()
     elseif self.state == self.states.UNLOADING_ON_THE_FIELD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+        --- For some reason this is a problem ?
+        local spec = self.vehicle.spec_aiFieldWorker
+        spec.didNotMoveTimer = spec.didNotMoveTimeout
     elseif self.state == self.states.DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION then
         self:setMaxSpeed(self:getFieldSpeed())
     elseif self.state == self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP then
@@ -350,7 +353,6 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     end
 
     self:checkCollisionWarning()
-
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
@@ -1864,7 +1866,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     --- for reverse unloading or to make sure the pathfinding
     --- is not crossing the heap area.
     local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
-        self.fieldUnloadPositionNode, self.fieldUnloadData.xOffset, 50, -10)
+        self.fieldUnloadPositionNode, 0, 50, -10)
 
     if found then 
         --- Heap was found
