@@ -1877,13 +1877,15 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         if allowReverseUnloading then
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
         end
-        if self.fieldUnloadData.isReverseUnloading then 
-            self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
-        end
         local vehicleWidth = AIUtil.getWidth(self.vehicle)
         local siloWidth = heapSilo:getWidth()
         self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
-        self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) * math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+        if self.fieldUnloadData.isReverseUnloading then 
+            self.fieldUnloadData.xOffset = siloWidth/2 + 2 * vehicleWidth/3
+        else 
+            self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) * 
+                math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+        end
 
         self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
             self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
@@ -2057,17 +2059,23 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     
         if found then 
             self:updateFieldPositionByHeapSilo(heapSilo)
-            local xOffset = self.fieldUnloadData.xOffset
             local vehicleWidth = AIUtil.getWidth(self.vehicle)
             local siloWidth = heapSilo:getWidth()
             self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
-            self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+            if self.fieldUnloadData.xOffset == 0 then 
+                --- First time park position for reverse unload offset always on the left of the heap.
+                self.fieldUnloadData.xOffset = siloWidth/2 + 2 * vehicleWidth/3
+            else 
+                self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) * 
+                    math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+            end
+            self:debug("Found a heap for field unloading park position xOffset: %.2f",  self.fieldUnloadData.xOffset)
         end
     end
 
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset * 2,
+    self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset,
         -AIUtil.getLength(self.vehicle), fieldNum, nil, 
         self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition, self.fieldUnloadData.areaToIgnore)
 end
@@ -2082,7 +2090,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeDrivingToFieldUnloa
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local _, _, dz = worldToLocal(self.fieldUnloadTurnEndNode, x, 0, z)
         course:append(Course.createFromNode(self.vehicle, self.fieldUnloadTurnEndNode, 
-        -self.fieldUnloadData.xOffset * 2, dz, 0, 1, false))
+        -self.fieldUnloadData.xOffset, dz, 0, 1, false))
         self:startCourse(course, 1)
     else
         self:debug("No path to the field unload park position found!")
