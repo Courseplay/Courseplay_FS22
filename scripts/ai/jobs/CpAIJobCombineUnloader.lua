@@ -185,7 +185,8 @@ function CpAIJobCombineUnloader:validate(farmId)
 	end
 
 	isValid, errorMessage = self:validateFieldSetup(isValid, errorMessage)	
-	self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
+	local x, z = self.cpJobParameters.fieldPosition:getPosition()
+	self.combineUnloaderTask:setFieldPosition(x,z)
 	if self.cpJobParameters.useFieldUnload then
 		self.combineUnloaderTask:setFieldUnloadPositionAndTipSide(self.cpJobParameters.fieldUnloadPosition, self.cpJobParameters.unloadingTipSide)
 	end
@@ -253,23 +254,15 @@ function CpAIJobCombineUnloader:validate(farmId)
 end
 
 function CpAIJobCombineUnloader:readStream(streamId, connection)
-	if streamReadBool(streamId) then
-		self.fieldPolygon = CustomField.readStreamVertices(streamId, connection)
-		self.combineUnloaderTask:setFieldPolygon(self.fieldPolygon)
-	end
 	CpAIJobCombineUnloader:superClass().readStream(self, streamId, connection)
 	if self.cpJobParameters.useFieldUnload then
 		self.combineUnloaderTask:setFieldUnloadPositionAndTipSide(self.cpJobParameters.fieldUnloadPosition, self.cpJobParameters.unloadingTipSide)
 	end
+	local x, z = self.cpJobParameters.fieldPosition:getPosition()
+	self.combineUnloaderTask:setFieldPosition(x,z)
 end
 
 function CpAIJobCombineUnloader:writeStream(streamId, connection)
-	if self.fieldPolygon then
-		streamWriteBool(streamId, true)
-		CustomField.writeStreamVertices(self.fieldPolygon, streamId, connection)
-	else
-		streamWriteBool(streamId, false)
-	end
 	CpAIJobCombineUnloader:superClass().writeStream(self, streamId, connection)
 end
 

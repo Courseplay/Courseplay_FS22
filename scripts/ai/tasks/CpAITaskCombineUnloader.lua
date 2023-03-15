@@ -25,8 +25,8 @@ function CpAITaskCombineUnloader:setVehicle(vehicle)
 	self.vehicle = vehicle
 end
 
-function CpAITaskCombineUnloader:setFieldPolygon(fieldPolygon)
-	self.fieldPolygon = fieldPolygon
+function CpAITaskCombineUnloader:setFieldPosition(x, z)
+	self.fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
 end
 
 function CpAITaskCombineUnloader:setFieldUnloadPositionAndTipSide(position, tipSideID)
