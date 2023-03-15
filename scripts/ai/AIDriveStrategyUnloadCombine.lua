@@ -1870,32 +1870,20 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         self.fieldUnloadData.heapSilo = heapSilo
         self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
              -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
-        
-        --- Set the unloading node in the center between heap sx/sz and wx/wz.
-        local sx, sz = heapSilo:getStartPosition()
-        local wx, wz = heapSilo:getWidthPosition()
-        local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
-        local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
-        setTranslation(self.fieldUnloadPositionNode, cx, 0, cz)
-        local dirX, dirZ = heapSilo:getDirection()
-        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-        setWorldRotation(self.fieldUnloadPositionNode, 0, yRot, 0)
-        --- Move the position a little bit inwards.
-        local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 3)
-        local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
-        setTranslation(self.fieldUnloadPositionNode, x, y, z)
 
+        --- Set the unloading node in the center between heap sx/sz and wx/wz.
+        self:updateFieldPositionByHeapSilo(heapSilo)
+       
         if allowReverseUnloading then
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
-            if self.fieldUnloadData.isReverseUnloading then 
-                self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
-            end
         end
-        if not self.fieldUnloadData.isReverseUnloading then  
-            local vehicleWidth = AIUtil.getWidth(self.vehicle)
-            self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
-            self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+        if self.fieldUnloadData.isReverseUnloading then 
+            self.fieldUnloadData.xOffset = self.reverseFieldUnloadXOffset
         end
+        local vehicleWidth = AIUtil.getWidth(self.vehicle)
+        local siloWidth = heapSilo:getWidth()
+        self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
+        self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), siloWidth/2 + 2 * vehicleWidth/3)
 
         self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
             self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
@@ -1912,6 +1900,22 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         self.onPathfindingDoneBeforeUnloadingOnField, self.fieldUnloadData.areaToIgnore)
 end
  
+--- Moves the field unload position to the center front of the heap.
+function AIDriveStrategyUnloadCombine:updateFieldPositionByHeapSilo(heapSilo)
+    local sx, sz = heapSilo:getStartPosition()
+    local wx, wz = heapSilo:getWidthPosition()
+    local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
+    local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
+    setTranslation(self.fieldUnloadPositionNode, cx, 0, cz)
+    local dirX, dirZ = heapSilo:getDirection()
+    local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+    setWorldRotation(self.fieldUnloadPositionNode, 0, yRot, 0)
+    --- Move the position a little bit inwards.
+    local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 3)
+    local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
+    setTranslation(self.fieldUnloadPositionNode, x, y, z)
+end
+
 --- Path to the field unloading position was found.
 ---@param path table
 ---@param goalNodeInvalid boolean
@@ -2043,6 +2047,23 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     setTranslation(self.fieldUnloadTurnEndNode, x, 0, z)
     local _, rotY, _ = getRotation(self.fieldUnloadPositionNode, 0, 0, 0)
     setRotation(self.fieldUnloadTurnEndNode, 0, rotY + math.pi, 0)
+
+    if not self.fieldUnloadData.heapSilo then
+        --- Set the valid heap, when trying to drive to the park position 
+        --- after creating the heap for the first time.
+        --- This makes sure that the park position doesn't cross the heap. 
+        local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
+            self.fieldUnloadPositionNode, 0, 50, -10)
+    
+        if found then 
+            self:updateFieldPositionByHeapSilo(heapSilo)
+            local xOffset = self.fieldUnloadData.xOffset
+            local vehicleWidth = AIUtil.getWidth(self.vehicle)
+            local siloWidth = heapSilo:getWidth()
+            self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
+            self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+        end
+    end
 
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
