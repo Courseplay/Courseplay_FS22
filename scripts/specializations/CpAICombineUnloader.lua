@@ -190,7 +190,7 @@ end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse to take care of
 -- field work.
-function CpAICombineUnloader:replaceDriveStrategies(fieldPolygon, jobParameters, fieldUnloadPosition, unloadTipSideID)
+function CpAICombineUnloader:replaceDriveStrategies(jobParameters)
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP combine unload job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -202,9 +202,7 @@ function CpAICombineUnloader:replaceDriveStrategies(fieldPolygon, jobParameters,
     end
 	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Combine unload job, install CP drive strategy for it')
     local cpDriveStrategy = AIDriveStrategyUnloadCombine.new()
-    cpDriveStrategy:setFieldPolygon(fieldPolygon)
     cpDriveStrategy:setJobParameterValues(jobParameters)
-    cpDriveStrategy:setFieldUnloadPositionAndTipSide(fieldUnloadPosition, unloadTipSideID)
     CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
     --- TODO: Correctly implement this strategy.

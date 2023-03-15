@@ -160,25 +160,23 @@ function AIDriveStrategyUnloadCombine:startWithoutCourse()
     end
 end
 
-function AIDriveStrategyUnloadCombine:setFieldPolygon(fieldPolygon)
-    self.fieldPolygon = fieldPolygon
-end
-
-function AIDriveStrategyUnloadCombine:setFieldUnloadPositionAndTipSide(fieldUnloadPosition, unloadTipSideID)
-    if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
-        self.fieldUnloadPositionNode = CpUtil.createNode("Field unload position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
-        self.fieldUnloadTurnStartNode = CpUtil.createNode("Reverse field unload turn start position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
-        self.fieldUnloadTurnEndNode = CpUtil.createNode("Reverse field unload turn end position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
-        self.unloadTipSideID = unloadTipSideID:getValue()
-    end
-end
-
 function AIDriveStrategyUnloadCombine:getGeneratedCourse(jobParameters)
     return nil
 end
 
 function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
-
+    self.jobParameters = jobParameters
+    local x, z = jobParameters.fieldPosition:getPosition()
+    self.fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
+    if jobParameters.useFieldUnload:getValue() then 
+        local fieldUnloadPosition = jobParameters.fieldUnloadPosition
+        if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
+            self.fieldUnloadPositionNode = CpUtil.createNode("Field unload position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
+            self.fieldUnloadTurnStartNode = CpUtil.createNode("Reverse field unload turn start position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
+            self.fieldUnloadTurnEndNode = CpUtil.createNode("Reverse field unload turn end position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
+            self.unloadTipSideID = jobParameters.unloadingTipSide:getValue()
+        end
+    end
 end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
@@ -1901,6 +1899,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
 
         self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
             self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
+    else 
+        self:debug("No heap found around the unloading position.")
     end
 
 

@@ -243,6 +243,7 @@ end
 function CpAIJob:readStream(streamId, connection)
 	CpAIJob:superClass().readStream(self, streamId, connection)
 	if self.cpJobParameters then
+		self.cpJobParameters:validateSettings()
 		self.cpJobParameters:readStream(streamId, connection)
 	end
 end

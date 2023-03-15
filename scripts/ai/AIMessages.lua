@@ -60,8 +60,9 @@ function AIMessageErrorWrongBaleWrapType:getMessage()
 end
 
 AIMessageErrorGroundUnloadNotSupported = {
-	name = "CP_ERROR_WRONG_WRAP_TYPE"
+	name = "CP_ERROR_GROUND_UNLOAD_NOT_SUPPORTED"
 }
+
 local AIMessageErrorGroundUnloadNotSupported_mt = Class(AIMessageErrorGroundUnloadNotSupported, AIMessage)
 
 function AIMessageErrorGroundUnloadNotSupported.new(customMt)

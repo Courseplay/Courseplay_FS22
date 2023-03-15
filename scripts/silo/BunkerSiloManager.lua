@@ -99,7 +99,7 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 	local p2x, p2y, p2z = localToWorld(node, xOffset, 0, length)
 	local heapFillType = DensityMapHeightUtil.getFillTypeAtLine(p1x, p1y, p1z, p2x, p2y, p2z, 5)
 	if heapFillType == nil or heapFillType == FillType.UNKNOWN then 
-		BunkerSiloManagerUtil.debug("Heap not found!")
+		BunkerSiloManagerUtil.debug("Heap could not be found!")
 		return false, nil
 	end
 	length = length - zOffset
