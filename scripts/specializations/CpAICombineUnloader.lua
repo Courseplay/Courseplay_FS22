@@ -51,6 +51,8 @@ end
 function CpAICombineUnloader.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAICombineUnloader)
+    SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAICombineUnloader)
+    SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAICombineUnloader)
 end
 
 function CpAICombineUnloader.registerFunctions(vehicleType)
@@ -94,7 +96,16 @@ end
 function CpAICombineUnloader:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAICombineUnloader
     spec.cpJob:saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+end
 
+function CpAICombineUnloader:onReadStream(streamId, connection)
+    local spec = self.spec_cpAICombineUnloader
+    spec.cpJob:readStream(streamId, connection)
+end
+
+function CpAICombineUnloader:onWriteStream(streamId, connection)
+    local spec = self.spec_cpAICombineUnloader
+    spec.cpJob:writeStream(streamId, connection)
 end
 
 function CpAICombineUnloader:getCpCombineUnloaderJobParameters()
