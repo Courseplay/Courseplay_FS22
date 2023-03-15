@@ -1883,7 +1883,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         local vehicleWidth = AIUtil.getWidth(self.vehicle)
         local siloWidth = heapSilo:getWidth()
         self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
-        self.fieldUnloadData.xOffset = MathUtil.sign(xOffset) * math.max(math.abs(xOffset), siloWidth/2 + 2 * vehicleWidth/3)
+        self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) * math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth/2 + 2 * vehicleWidth/3)
 
         self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
             self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
