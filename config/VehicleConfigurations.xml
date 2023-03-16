@@ -351,9 +351,10 @@ You can define the following custom settings:
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
              toolOffsetX="2.1"
-             turnRadius = "7.5"
+             turnRadius = "12"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
+             noReverse="true"
     />
     <!--Mod: KOECKERLING Vector 460-->
 	<Vehicle name="vector460.xml"
