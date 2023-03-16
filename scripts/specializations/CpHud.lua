@@ -227,6 +227,9 @@ function CpHud:onUpdate(dt)
 end
 
 function CpHud:onDraw()
+    if not self:getIsEntered() then 
+        return
+    end
     local spec = self.spec_cpHud
     spec.hud:draw(spec.status)
 	if spec.hud:getIsOpen() then 

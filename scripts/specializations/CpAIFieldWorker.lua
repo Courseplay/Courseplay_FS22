@@ -259,6 +259,10 @@ end
 function CpAIFieldWorker:getCanStartCpFieldWork()
     self:updateAIFieldWorkerImplementData()
     -- built in helper can't handle it, but we may be able to ...
+    if AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_pdlc_goeweilPack.balerStationary") then 
+        --- Make sure stationary balers are ignored!
+        return false
+    end
     if AIUtil.hasChildVehicleWithSpecialization(self, Baler) or
             AIUtil.hasChildVehicleWithSpecialization(self, StonePicker) or
             AIUtil.hasImplementWithSpecialization(self, BaleWrapper) or

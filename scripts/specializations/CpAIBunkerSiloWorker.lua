@@ -111,7 +111,8 @@ end
 
 --- Is the bunker silo allowed?
 function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
-	return not self:getCanStartCpFieldWork() and not self:getCanStartCpBaleFinder() and not self:hasCpCourse() and not self:getCanStartCpCombineUnloader()
+	return not self:getCanStartCpFieldWork() and not self:getCanStartCpBaleFinder() 
+        and not self:hasCpCourse() and not self:getCanStartCpCombineUnloader()
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)
