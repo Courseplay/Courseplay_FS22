@@ -403,4 +403,14 @@ You can define the following custom settings:
              implementWheelAlwaysOnGround="true"
     />
 
+    <!--Mod: BalePusher-->
+    <Vehicle name="balePusher.xml"
+            ignoreBaleCollisionForward = "true"
+    />
+
+    <!--Mod: LizardBalePusher-->
+    <Vehicle name="EYM_balePusher.xml"
+            ignoreBaleCollisionForward = "true"
+    />
+
 </VehicleConfigurations>
