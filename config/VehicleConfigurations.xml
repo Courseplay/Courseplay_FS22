@@ -99,6 +99,10 @@ You can define the following custom settings:
     add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
     Note: Only 2 of the same .xml files can be added.
 
+- ignoreBaleCollisionForward: boolean
+    Ignore bales detected by the forward-looking proximity controller if any implement has this set to true.
+    This can be set for bale pushers to prevent the Courseplay driver stopping when a bale is blocking the way.
+
 -->
 <VehicleConfigurations>
     <!--[GIANTS]-->

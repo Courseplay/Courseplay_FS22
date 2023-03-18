@@ -19,6 +19,7 @@ function ProximityController:init(vehicle, width)
     -- if anything closer than this, we stop
     self.stopThreshold = CpTemporaryObject(self.stopThresholdNormal)
     self.blockingVehicle = CpTemporaryObject(nil)
+    self.ignoreObjectCallbackRegistrations = {}
     self:setState(self.states.NO_OBSTACLE, 'proximity controller initialized')
     self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
             self.vehicle, Markers.getFrontMarkerNode(self.vehicle), self.sensorRange, 1, width)
@@ -66,19 +67,27 @@ function ProximityController:onBlockingVehicle(vehicle, isBack)
 end
 
 --- Registers a function to ignore a object or vehicle.
---- Currently used for ignoring the bunker silo walls in the bunker silo strategy.
+--- Multiple objects can register multiple callbacks.
+--- An object/vehicle is ignored when any of the callbacks ignores it (OR)
 --- TODO: Consider consolidating this with the other ignore logic for vehicles.
 function ProximityController:registerIgnoreObjectCallback(object, callback)
-    self.ignoreObjectCallback = callback
-    self.ignoreObjectCallbackObject = object
+    if not self.ignoreObjectCallbackRegistrations[object] then
+        self.ignoreObjectCallbackRegistrations[object] = {}
+    end
+    self.ignoreObjectCallbackRegistrations[object][callback] = true
 end
 
-function ProximityController:ignoreObject(object, vehicle)
-    if self.ignoreObjectCallback then
-        return self.ignoreObjectCallback(self.ignoreObjectCallbackObject, object, vehicle)
-    else
-        return false
+function ProximityController:ignoreObject(object, vehicle, moveForwards)
+    for callbackObject, registeredCallbacks in pairs(self.ignoreObjectCallbackRegistrations) do
+        for _, callbackFunction in pairs(registeredCallbacks) do
+            if callbackFunction(callbackObject, object, vehicle, moveForwards) then
+                -- one of the registered callback wants to ignore, then ignore
+                return true
+            end
+        end
     end
+    -- none of the registered callbacks (or no callbacks registered): do not ignore
+    return false
 end
 
 ---@return number, table distance of vehicle and vehicle if there is one in range
@@ -129,13 +138,13 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
     --- Resets the traffic info text.
     self.vehicle:resetCpActiveInfoText(InfoTextManager.BLOCKED_BY_OBJECT)
 
-    local d, vehicle, range, deg, dAvg = math.huge, nil, 10, 0
+    local d, vehicle, object, range, deg, dAvg = math.huge, nil, nil, 10, 0
     local pack = moveForwards and self.forwardLookingProximitySensorPack or self.backwardLookingProximitySensorPack
     if pack then
         d, vehicle, object, deg, dAvg = pack:getClosestObjectDistanceAndRootVehicle()
         range = pack:getRange()
     end
-    if self:ignoreObject(object, vehicle) then 
+    if self:ignoreObject(object, vehicle, moveForwards) then
         self:setState(self.states.NO_OBSTACLE, 'No obstacle')
         return nil, nil, nil, maxSpeed
     end

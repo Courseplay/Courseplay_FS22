@@ -293,6 +293,7 @@ function AIDriveStrategyCourse:setAllStaticParameters()
     self.workWidth = self.vehicle:getCourseGeneratorSettings().workWidth:getValue()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
+    self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 end
 
 --- Find the foremost and rearmost AI marker
@@ -408,6 +409,16 @@ end
 ---@return boolean, number true if vehicle is in proximity, distance of vehicle
 function AIDriveStrategyCourse:isVehicleInProximity(vehicle)
     return self.proximityController:isVehicleInRange(vehicle)
+end
+
+function AIDriveStrategyCourse:ignoreProximityObject(object, vehicle, moveForwards)
+    if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
+        if moveForwards and g_vehicleConfigurations:getRecursively(self.vehicle, 'ignoreBaleCollisionForward') then
+            self:debugSparse('ignoring forward collision with bale')
+            return true
+        end
+    end
+    return false
 end
 
 -----------------------------------------------------------------------------------------------------------------------
