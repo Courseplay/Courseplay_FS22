@@ -411,11 +411,26 @@ function AIDriveStrategyCourse:isVehicleInProximity(vehicle)
     return self.proximityController:isVehicleInRange(vehicle)
 end
 
+--- Ignoring bales in front when configured, bales back when not yet dropped from the baler
 function AIDriveStrategyCourse:ignoreProximityObject(object, vehicle, moveForwards)
     if object and object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
-        if moveForwards and g_vehicleConfigurations:getRecursively(self.vehicle, 'ignoreBaleCollisionForward') then
-            self:debugSparse('ignoring forward collision with bale')
-            return true
+        -- this is a bale
+        if moveForwards then
+            -- when configured, ignore bales in front, for instance using a bale pusher
+            if g_vehicleConfigurations:getRecursively(self.vehicle, 'ignoreBaleCollisionForward') then
+                self:debugSparse('ignoring forward collision with bale')
+                return true
+            end
+        else
+            local bale = object
+            -- moving back, check for bales just finished but still hanging on the baler, not
+            -- reached the ground yet, we don't want to block because of those
+            local x, y, z = getWorldTranslation(bale.nodeId)
+            local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
+            local height = bale.isRoundBale and bale.diameter or bale.height
+            if y > terrainHeight + height / 2 + 0.2 then
+                self:debugSparse('ignoring undropped bale in the back')
+            end
         end
     end
     return false
