@@ -412,7 +412,7 @@ function AIDriveStrategyCourse:isVehicleInProximity(vehicle)
 end
 
 function AIDriveStrategyCourse:ignoreProximityObject(object, vehicle, moveForwards)
-    if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
+    if object and object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
         if moveForwards and g_vehicleConfigurations:getRecursively(self.vehicle, 'ignoreBaleCollisionForward') then
             self:debugSparse('ignoring forward collision with bale')
             return true
