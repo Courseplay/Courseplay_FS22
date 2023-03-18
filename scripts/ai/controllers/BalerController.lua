@@ -26,6 +26,7 @@ function BalerController:init(vehicle, baler)
     self.slowDownStartSpeed = 20
     self.balerSpec = self.baler.spec_baler
     self.baleWrapperSpec = self.baler.spec_baleWrapper
+    self.lastDroppedBale = CpTemporaryObject()
     self:debug('Baler controller initialized')
 end
 
@@ -106,6 +107,17 @@ end
 
 function BalerController:isThisMyBale(baleObject)
     if self.balerSpec.bales then
+        if self.lastDroppedBale:get() == baleObject then
+            return true
+        end
+        -- we assume that the baler always drops bale #1. So if #1 changes, remember the one which was
+        -- the first previously, as that must be the one being dropped
+        if self.previousFirstBale ~= self.balerSpec.bales[1].baleObject then
+            -- the last dropped bale is removed from the baler approximately when it is halfway down the
+            -- ramp, but then we still want to ignore it, so try to remember it for a while
+            self.lastDroppedBale:set(self.previousFirstBale, 30000)
+            self.previousFirstBale = self.balerSpec.bales[1].baleObject
+        end
         for i = 1, #self.balerSpec.bales do
             if self.balerSpec.bales[i].baleObject == baleObject then
                 return true
