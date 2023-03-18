@@ -80,6 +80,11 @@ function ImplementController:onRaising()
     
 end
 
+--- Any object this controller wants us to ignore, can register here a callback at the proximity controller
+function ImplementController:registerIgnoreProximityObjectCallback(proximityController)
+
+end
+
 function ImplementController:setInfoText(infoText)
     self.driveStrategy:setInfoText(infoText)
 end

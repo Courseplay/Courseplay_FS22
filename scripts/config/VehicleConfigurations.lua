@@ -46,6 +46,7 @@ VehicleConfigurations.attributes = {
     useVehicleSizeForMarkers = XMLValueType.BOOL,
     armMovingToolIx = XMLValueType.INT,
     movingToolIx = XMLValueType.INT,
+    ignoreBaleCollisionForward = XMLValueType.BOOL,
 }
 
 
