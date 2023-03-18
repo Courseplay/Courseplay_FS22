@@ -48,7 +48,7 @@ end
 function AIDriveStrategyPlowCourse:setAIVehicle(vehicle, jobParameters)
     -- need to set the plow before calling the parent's setAIVehicle so if it calls any
     -- overwritten functions, we have the plow set up already
-    self.plow = AIUtil.getAIImplementWithSpecialization(vehicle, Plow)
+    self.plow = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Plow)[1]
     AIDriveStrategyPlowCourse:superClass().setAIVehicle(self, vehicle, jobParameters)
     if self:hasRotatablePlow() then
         self:debug('has rotatable plow.')
