@@ -58,7 +58,7 @@ function AIDriveStrategyCourse:initStates(states)
         self.states = {}
     end
     for key, state in pairs(states) do
-        self.states[key] = {name = tostring(key), properties = state}
+        self.states[key] = { name = tostring(key), properties = state }
     end
 end
 
@@ -118,7 +118,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     local course = self:getGeneratedCourse(jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
-        if course:wasEditedByCourseEditor() then 
+        if course:wasEditedByCourseEditor() then
             self:info('The fieldwork course was edited by the course editor.')
         end
         local startIx = self:getStartingPointWaypointIx(course, jobParameters.startAt:getValue())
@@ -165,7 +165,7 @@ function AIDriveStrategyCourse:getGeneratedCourse(jobParameters)
 end
 
 function AIDriveStrategyCourse:getStartingPointWaypointIx(course, startAt)
-    if startAt == CpJobParameters.START_AT_NEAREST_POINT then 
+    if startAt == CpJobParameters.START_AT_NEAREST_POINT then
         local _, _, ixClosestRightDirection, _ = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
         self:debug('Starting course at the closest waypoint in the right direction %d', ixClosestRightDirection)
         return ixClosestRightDirection
@@ -206,7 +206,7 @@ end
 function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, states, specReference)
     --- If multiple implements have this spec, then add a controller for each implement.
     local lastImplement, lastController
-    for _,childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec, specReference)) do
+    for _, childVehicle in pairs(AIUtil.getAllChildVehiclesWithSpecialization(vehicle, spec, specReference)) do
         local controller = class(vehicle, childVehicle)
         controller:setDisabledStates(states)
         controller:setDriveStrategy(self)
@@ -217,7 +217,7 @@ function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, stat
 end
 
 --- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.
-function AIDriveStrategyCourse:isFuelSaveAllowed()  
+function AIDriveStrategyCourse:isFuelSaveAllowed()
     --[[ TODO: implement this, when fuel save is implemented for every vehicle combo and not only harvesters.
          for _, controller in pairs(self.controllers) do
             ---@type ImplementController
@@ -227,7 +227,7 @@ function AIDriveStrategyCourse:isFuelSaveAllowed()
                 end
             end
         end
-    ]]  
+    ]]
     return false
 end
 
@@ -259,7 +259,7 @@ function AIDriveStrategyCourse:raiseControllerEvent(eventName, ...)
     for _, controller in pairs(self.controllers) do
         ---@type ImplementController
         if controller:isEnabled() then
-            if controller[eventName] then 
+            if controller[eventName] then
                 controller[eventName](controller, ...)
             end
         end
@@ -276,7 +276,7 @@ function AIDriveStrategyCourse:raiseImplements()
     self:raiseControllerEvent(self.onRaisingEvent)
 end
 
-function AIDriveStrategyCourse:lowerImplements()    
+function AIDriveStrategyCourse:lowerImplements()
     --- Lowers all implements, that are available for the giants field worker.
     for _, implement in pairs(self.vehicle:getAttachedAIImplements()) do
         implement.object:aiImplementStartLine()
@@ -293,12 +293,16 @@ function AIDriveStrategyCourse:setAllStaticParameters()
     self.workWidth = self.vehicle:getCourseGeneratorSettings().workWidth:getValue()
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getProximitySensorWidth())
-    self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
+    self.proximityController:registerIgnoreObjectCallback(self, self.ignoreBaleInFrontWithBalePusher)
+    -- let all controllers register an ignore object callback if they want
+    for _, controller in pairs(self.controllers) do
+        controller:registerIgnoreProximityObjectCallback(self.proximityController)
+    end
 end
 
 --- Find the foremost and rearmost AI marker
 function AIDriveStrategyCourse:setFrontAndBackMarkers()
-    local markers= {}
+    local markers = {}
     local addMarkers = function(object, referenceNode)
         self:debug('Finding AI markers of %s', CpUtil.getName(object))
         local aiLeftMarker, aiRightMarker, aiBackMarker = WorkWidthUtil.getAIMarkers(object)
@@ -318,7 +322,7 @@ function AIDriveStrategyCourse:setFrontAndBackMarkers()
     -- work areas of the vehicle itself
     addMarkers(self.vehicle, referenceNode)
     -- and then the work areas of all the implements
-    for _, implement in pairs( AIUtil.getAllAIImplements(self.vehicle)) do
+    for _, implement in pairs(AIUtil.getAllAIImplements(self.vehicle)) do
         addMarkers(implement.object, referenceNode)
     end
 
@@ -390,7 +394,6 @@ function AIDriveStrategyCourse:getReverseDriveData()
     return gx, gz, maxSpeed
 end
 
-
 -----------------------------------------------------------------------------------------------------------------------
 --- Proximity
 -----------------------------------------------------------------------------------------------------------------------
@@ -412,25 +415,16 @@ function AIDriveStrategyCourse:isVehicleInProximity(vehicle)
 end
 
 --- Ignoring bales in front when configured, bales back when not yet dropped from the baler
-function AIDriveStrategyCourse:ignoreProximityObject(object, vehicle, moveForwards)
-    if object and object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
+function AIDriveStrategyCourse:ignoreBaleInFrontWithBalePusher(object, vehicle, moveForwards)
+    if not object then
+        return
+    end
+    if object.isa and object:isa(Bale) and object.nodeId and entityExists(object.nodeId) then
         -- this is a bale
-        if moveForwards then
+        if moveForwards and g_vehicleConfigurations:getRecursively(self.vehicle, 'ignoreBaleCollisionForward') then
             -- when configured, ignore bales in front, for instance using a bale pusher
-            if g_vehicleConfigurations:getRecursively(self.vehicle, 'ignoreBaleCollisionForward') then
-                self:debugSparse('ignoring forward collision with bale')
-                return true
-            end
-        else
-            local bale = object
-            -- moving back, check for bales just finished but still hanging on the baler, not
-            -- reached the ground yet, we don't want to block because of those
-            local x, y, z = getWorldTranslation(bale.nodeId)
-            local terrainHeight = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
-            local height = bale.isRoundBale and bale.diameter or bale.height
-            if y > terrainHeight + height / 2 + 0.2 then
-                self:debugSparse('ignoring undropped bale in the back')
-            end
+            self:debugSparse('ignoring forward collision with bale')
+            return true
         end
     end
     return false
@@ -633,17 +627,17 @@ end
 ---@param infoText CpInfoTextElement
 ---@param states table
 function AIDriveStrategyCourse:registerInfoTextForStates(infoText, states)
-    if self.registeredInfoTexts[infoText] == nil then 
+    if self.registeredInfoTexts[infoText] == nil then
         self.registeredInfoTexts[infoText] = states
     end
 end
 
 --- Enables/disables based on the state.
 function AIDriveStrategyCourse:updateInfoTexts()
-    for infoText, states in pairs(self.registeredInfoTexts) do 
-        if states[self.state] then 
+    for infoText, states in pairs(self.registeredInfoTexts) do
+        if states[self.state] then
             self:setInfoText(infoText)
-        else 
+        else
             self:clearInfoText(infoText)
         end
     end

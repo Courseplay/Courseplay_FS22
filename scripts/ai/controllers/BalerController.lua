@@ -35,9 +35,9 @@ function BalerController:getDriveData()
 end
 
 function BalerController:handleBaler()
-    if self.driveStrategy:isTurning() then 
+    if self.driveStrategy:isTurning() then
         --- Waits for the bale wrapping and unload at the start of a turn.
-        if self:isWrappingBale() then 
+        if self:isWrappingBale() then
             return 0
         end
         if self.balerSpec.unloadingState ~= Baler.UNLOADING_CLOSED then
@@ -48,9 +48,9 @@ function BalerController:handleBaler()
             return self.balerSpec.platformAIDropSpeed
         end
         --- Makes sure the slowdown is not applied, while turning.
-        return 
+        return
     end
-    local maxSpeed    
+    local maxSpeed
     if not self.balerSpec.nonStopBaling and self.balerSpec.hasUnloadingAnimation then
         local fillLevel = self.baler:getFillUnitFillLevel(self.balerSpec.fillUnitIndex)
         local capacity = self.baler:getFillUnitCapacity(self.balerSpec.fillUnitIndex)
@@ -102,4 +102,31 @@ end
 function BalerController:onFinished()
     -- TODO: not working, as this probably needs to be called, before the drive is released.
     -- Baler.actionEventUnloading(self.implement)
+end
+
+function BalerController:isThisMyBale(baleObject)
+    if self.balerSpec.bales then
+        for i = 1, #self.balerSpec.bales do
+            if self.balerSpec.bales[i].baleObject == baleObject then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+--- Ignore bales not dropped yet when moving backwards
+function BalerController:ignoreProximityObject(object, vehicle, moveForwards)
+    if object and not moveForwards and object.isa and object:isa(Bale) then
+        if self:isThisMyBale(object) then
+            self:debugSparse('ignoring undropped bale in the back')
+            return true
+        end
+    end
+end
+
+--- Ask the proximity controller to check with us if an object is blocking, we don't want to block
+--- on bales ready but not dropped yet when moving backwards
+function BalerController:registerIgnoreProximityObjectCallback(proximityController)
+    proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 end
