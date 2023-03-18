@@ -187,42 +187,42 @@ function AIUtil.getTurningRadius(vehicle)
 
 	local maxToolRadius = 0
 
-	for _, implement in pairs(vehicle:getAttachedImplements()) do
+	for _, implement in pairs(vehicle:getChildVehicles()) do
 		local turnRadius = 0
-		if g_vehicleConfigurations:get(implement.object, 'turnRadius') then
-			turnRadius = g_vehicleConfigurations:get(implement.object, 'turnRadius')
+		if g_vehicleConfigurations:get(implement, 'turnRadius') then
+			turnRadius = g_vehicleConfigurations:get(implement, 'turnRadius')
 			CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the configured turn radius %.1f',
-				implement.object:getName(), turnRadius)
-		elseif vehicle.isServer and SpecializationUtil.hasSpecialization(AIImplement, implement.object.specializations) then
+				implement:getName(), turnRadius)
+		elseif vehicle.isServer and SpecializationUtil.hasSpecialization(AIImplement, implement.specializations) then
 			--- Make sure this function only gets called on the server, as otherwise error might appear.
 			-- only call this for AIImplements, others may throw an error as the Giants code assumes AIImplement
-			turnRadius = AIVehicleUtil.getMaxToolRadius(implement)
+			turnRadius = AIVehicleUtil.getMaxToolRadius({object = implement}) -- Giants should fix their code and take the implement object as the parameter
 			if turnRadius > 0 then
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: using the Giants turn radius %.1f',
-					implement.object:getName(), turnRadius)
+					implement:getName(), turnRadius)
 			end
 		end
 		if turnRadius == 0 then
-			if AIUtil.isImplementTowed(vehicle, implement.object) then
+			if AIUtil.isImplementTowed(vehicle, implement) then
 				if AIUtil.hasImplementWithSpecialization(vehicle, Trailer) and
 						AIUtil.hasImplementWithSpecialization(vehicle, Pipe) then
 					-- Auger wagons don't usually have a proper turn radius configured which causes problems when we
 					-- are calculating the path to a trailer when unloading. Use this as a minimum turn radius.
 					turnRadius = 10
                     CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, auger wagon, we use a default %.1f',
-                            implement.object:getName(), turnRadius)
+                            implement:getName(), turnRadius)
 				else
 				    turnRadius = 6
 				    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, towed implement, we use a default %.1f',
-						implement.object:getName(), turnRadius)
+						implement:getName(), turnRadius)
 				end
 			else
 				CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: no Giants turn radius, not towed, do not use turn radius',
-					implement.object:getName())
+					implement:getName())
 			end
 		end
 		maxToolRadius = math.max(maxToolRadius, turnRadius)
-		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement.object:getName(), maxToolRadius)
+		CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, '  %s: max tool radius now is %.1f', implement:getName(), maxToolRadius)
 	end
 	radius = math.max(radius, maxToolRadius)
 	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'getTurningRadius: %.1f m', radius)
