@@ -41,6 +41,7 @@ Changelog 7.2.0.5
 - Add option for Fieldwork to send driver back to start waypoint, when done with work.
 - Tweak for mods that have a built-in capacity.
 - Added a global setting to enable/disable harvesting while raining.
+- 
 
 Changelog 7.2.0.0
 - added bunker silo mode and combine unloader mode.
@@ -100,7 +101,7 @@ Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports
 
 Changelog 7.2.0.5
 - Göweil Pack bugfix wenn das CP HUD im Fahrzeug aktiv ist.
-- UI bugfix für Fahrzeuge und Geräte, die nicht mit CP gesteuert werden können (z.B. mobieler Holzkran)
+- UI bugfix für Fahrzeuge und Geräte, die nicht mit CP gesteuert werden können (z.B. mobiler Holzkran)
 - Hotspots auf der Karte werden ausgeblendet, wenn man einen Feldrandkurs zeichnet.
 - Das anheben des Schildes im Bunker Modus vorerst deaktiviert.
 - Option hinzugefügt, der Feldarbeiter zurück zum Startpunkt fahren zu lassen.
