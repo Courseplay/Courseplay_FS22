@@ -373,10 +373,15 @@ function CpVehicleSettings:onCpUserSettingChanged(setting)
 end
 
 --- Generates speed setting values up to the max possible speed.
+---@param setting AIParameterSettingList
+---@param lastValue any
+---@return table values
+---@return table texts
+---@return any correct current value after max speed adjustment
 function CpVehicleSettings:generateSpeedSettingValuesAndTexts(setting, lastValue)
-    local maxSpeed = self.getCruiseControlMaxSpeed and self:getCruiseControlMaxSpeed() or 50
+    local maxSpeed = self.getCruiseControlMaxSpeed and self:getCruiseControlMaxSpeed() or setting.data.max
     local values, texts = {}, {}
-    for i = 1, maxSpeed do 
+    for i = setting.data.min, setting.data.incremental do 
         table.insert(values, i)
         table.insert(texts, i)
     end
