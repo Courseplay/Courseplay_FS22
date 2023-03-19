@@ -310,7 +310,7 @@ end
 
 --- Disables tool offset, as the plow drive strategy automatically handles the tool offset.
 function CpVehicleSettings:isToolOffsetDisabled()
-    return AIUtil.getImplementOrVehicleWithSpecialization(self, Plow)
+    return AIUtil.hasChildVehicleWithSpecialization(self, Plow)
 end
 
 --- Only shows the setting if a valid tool with ridge markers is attached.

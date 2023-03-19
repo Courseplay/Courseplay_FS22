@@ -332,7 +332,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
     if startPosition and g_vineScanner:hasVineNodesCloseBy(startPosition.x, startPosition.z) then 
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a vine course, install CP vine fieldwork drive strategy for it')
         cpDriveStrategy = AIDriveStrategyVineFieldWorkCourse.new()
-    elseif AIUtil.hasImplementWithSpecialization(self, Plow) then 
+    elseif AIUtil.hasChildVehicleWithSpecialization(self, Plow) then
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a plow, install CP plow drive strategy for it')
         cpDriveStrategy = AIDriveStrategyPlowCourse.new()
     else
