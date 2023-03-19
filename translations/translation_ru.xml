@@ -404,6 +404,8 @@
     <text name="CP_customFieldManager_save" text="Сохранить пользовательское поле"/>
     <text name="CP_controllerGui_startRecording" text="Начать запись пользовательского поля."/>
     <text name="CP_controllerGui_stopRecording" text="Завершить запись пользовательского поля."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

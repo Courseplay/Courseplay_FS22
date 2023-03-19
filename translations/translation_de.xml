@@ -404,6 +404,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_save" text="Randkurs speichern"/>
     <text name="CP_controllerGui_startRecording" text="Starte Feldrandaufnahme."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppe Feldrandaufnahme."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausiert die Feldrandaufnahme."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Fortsetzten der Feldrandaufnahme."/>
     <!---->
     <!--Help menu-->
     <!---->

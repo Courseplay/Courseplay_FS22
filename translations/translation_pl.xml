@@ -404,6 +404,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_customFieldManager_save" text="Zapisz nowe pole"/>
     <text name="CP_controllerGui_startRecording" text="Rozpocznij nagrywanie nowego pola."/>
     <text name="CP_controllerGui_stopRecording" text="Zakończ nagrywanie nowego pola."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

@@ -404,6 +404,8 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_customFieldManager_save" text="Özel alanı kaydet"/>
     <text name="CP_controllerGui_startRecording" text="Özel alan kaydını başlatın."/>
     <text name="CP_controllerGui_stopRecording" text="Özel alan kaydını durdurun."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

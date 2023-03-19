@@ -405,6 +405,8 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_customFieldManager_save" text="Uložit vlastní pole"/>
     <text name="CP_controllerGui_startRecording" text="Spustit nahrávání vlastního pole"/>
     <text name="CP_controllerGui_stopRecording" text="Ukončit nahrávání vlastního pole"/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

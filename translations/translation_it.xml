@@ -404,6 +404,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_customFieldManager_save" text="Salva campo personalizzato"/>
     <text name="CP_controllerGui_startRecording" text="Avvia registrazione campo personalizzato."/>
     <text name="CP_controllerGui_stopRecording" text="Ferma registrazione campo personalizzato."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

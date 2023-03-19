@@ -404,6 +404,8 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_save" text="Save custom field"/>
     <text name="CP_controllerGui_startRecording" text="Start aangepaste veldopname."/>
     <text name="CP_controllerGui_stopRecording" text="Stop aangepaste veldopname."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

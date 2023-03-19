@@ -404,6 +404,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_customFieldManager_save" text="Salvar campo customizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar gravação de campo customizado."/>
     <text name="CP_controllerGui_stopRecording" text="Parar gravação de campo customizado."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

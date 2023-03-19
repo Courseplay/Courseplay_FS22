@@ -404,6 +404,8 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_customFieldManager_save" text="Szántóföld mentés"/>
     <text name="CP_controllerGui_startRecording" text="Szántóföld-határ rögzítés indítása"/>
     <text name="CP_controllerGui_stopRecording" text="Szántóföld-határ rögzítés leállítása"/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

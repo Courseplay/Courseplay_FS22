@@ -404,6 +404,8 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_customFieldManager_save" text="Gem brugerdefineret mark"/>
     <text name="CP_controllerGui_startRecording" text="Start brugerdefineret markoptegnelse."/>
     <text name="CP_controllerGui_stopRecording" text="Stop brugerdefineret markoptegnelse."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

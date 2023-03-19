@@ -404,6 +404,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_customFieldManager_save" text="Spara anpassat fält"/>
     <text name="CP_controllerGui_startRecording" text="Starta anpassad fältinspelning."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppa anpassad fältinspelning."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

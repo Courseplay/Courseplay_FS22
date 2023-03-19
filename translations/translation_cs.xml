@@ -404,6 +404,8 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_save" text="保存自定义田地"/>
     <text name="CP_controllerGui_startRecording" text="开始自定义田地记录。"/>
     <text name="CP_controllerGui_stopRecording" text="停止自定义田地记录。"/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->

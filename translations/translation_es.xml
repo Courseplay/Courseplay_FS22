@@ -404,6 +404,8 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_customFieldManager_save" text="Guardar Campo Personalizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar grabación de ruta personalizada."/>
     <text name="CP_controllerGui_stopRecording" text="Parar grabación de ruta personalizada."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
