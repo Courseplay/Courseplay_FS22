@@ -272,8 +272,13 @@ function ProximitySensorPack:setIgnoredVehicle(vehicle, ttlMs)
     self:callForAllSensors(ProximitySensor.setIgnoredVehicle, vehicle, ttlMs)
 end
 
---- @return number, table, number distance of closest object in meters, root vehicle of the closest object,
---- the closest object, average direction of the obstacle in degrees, > 0 right, < 0 left
+--- Gets the closest hit of a proximity sensor.
+---@return number distance of closest hit in meters
+---@return table|nil closest root vehicle
+---@return table|nil closest object
+---@return boolean terrain was hit
+---@return number average direction of the obstacle in degrees, > 0 right, < 0 left
+---@return number 
 function ProximitySensorPack:getClosestObjectDistanceAndRootVehicle()
     -- make sure we have the latest info, the sensors will make sure they only raycast once per loop
     self:update()

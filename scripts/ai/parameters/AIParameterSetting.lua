@@ -18,17 +18,13 @@ function AIParameterSetting:init(name)
 end
 
 --- Initialize the setting from config data supplied in CpSettingsUtil
----@param data any
----@param vehicle any
----@param class any
+---@param data table
+---@param vehicle table
+---@param class table
 function AIParameterSetting:initFromData(data, vehicle, class)
 	self.data = data
 	self.vehicle = vehicle
 	self.class = class
-
-	self.name = data.name
-	self.title = data.title
-	self.tooltip = data.tooltip
 
 	self.name = data.name
 	self.title = data.title

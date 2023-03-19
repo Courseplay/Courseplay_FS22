@@ -28,7 +28,7 @@ function CpAICombineUnloader:consoleCommandMeasurePipeProperties()
         local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
         if pipeObject then 
             local controller = PipeController(vehicle, pipeObject)
-            controller:printPipeStats()
+            controller:printPipeDebug()
             controller:delete()
         else 
             CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")

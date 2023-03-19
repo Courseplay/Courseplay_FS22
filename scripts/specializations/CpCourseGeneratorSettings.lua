@@ -22,6 +22,7 @@ function CpCourseGeneratorSettings.initSpecialization()
     --- Vine course generator settings.
     CpSettingsUtil.registerXmlSchema(schema, 
         "vehicles.vehicle(?)"..CpCourseGeneratorSettings.KEY..CpCourseGeneratorSettings.VINE_SETTINGS_KEY.."(?)")
+    CpCourseGeneratorSettings.loadSettingsSetup()
 end
 
 
@@ -111,6 +112,7 @@ VariableWorkWidth.updateSections = Utils.appendedFunction(VariableWorkWidth.upda
 function CpCourseGeneratorSettings:setAutomaticWorkWidthAndOffset()
     local spec = self.spec_cpCourseGeneratorSettings
     local width, offset, _, _ = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
+    spec.workWidth:refresh()
     spec.workWidth:setFloatValue(width)
     self:getCpSettings().toolOffsetX:setFloatValue(offset)
 end
@@ -123,7 +125,6 @@ function CpCourseGeneratorSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/VineCourseGeneratorSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpCourseGeneratorSettings.vineSettings,filePath)
 end
-CpCourseGeneratorSettings.loadSettingsSetup()
 
 function CpCourseGeneratorSettings.getSettingSetup(vehicle)
     return CpCourseGeneratorSettings.settingsBySubTitle, 
@@ -218,4 +219,16 @@ function CpCourseGeneratorSettings:updateGui()
     local spec = self.spec_cpCourseGeneratorSettings
     CpInGameMenuAIFrameExtended.updateCourseGeneratorSettings(spec.gui, true)
     CpCourseGeneratorSettings.onCpUnitChanged(self)
+end
+
+--- Generates speed setting values up to the max possible speed.
+function CpCourseGeneratorSettings:generateWorkWidthSettingValuesAndTexts(setting) 
+    local workWidth = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
+    local maxWorkWidth = math.max(setting.data.max, workWidth + 5)
+    local values, texts = {}, {}
+    for i = setting.data.min, maxWorkWidth, setting.data.incremental do 
+        table.insert(values, i)
+        table.insert(texts, i)
+    end
+    return values, texts
 end

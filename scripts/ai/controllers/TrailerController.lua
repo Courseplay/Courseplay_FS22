@@ -148,9 +148,11 @@ function TrailerController:isEmpty()
     return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0    
 end
 
+--- Gets the discharge node z offset relative to the root vehicle direction node.
 function TrailerController:getUnloadOffsetZ(dischargeNode)
     local node = dischargeNode.node
-    local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), self.implement, node)
+    local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), 
+        self.implement, node)
     return dist
 end
 

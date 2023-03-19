@@ -32,9 +32,10 @@ function AIParameterSettingList:init(data, vehicle, class)
 	elseif data.generateValuesFunction then
 		--- A generation function by the parent class is used
 		--- to enrich/create the setting values/texts.
-		self.data.values, self.data.texts = self.class[data.generateValuesFunction](self.vehicle or self.class, self)
+		self.data.values, self.data.texts = self:getCallback(data.generateValuesFunction)
 		self.values = table.copy(self.data.values)
 		self.texts = table.copy(self.data.texts)
+		self:validateTexts()
 	end
 	--- Text input is only allowed, when the settings values are numeric.
 	self.textInputAllowed = data.textInputAllowed 
@@ -193,9 +194,15 @@ end
 function AIParameterSettingList:refresh()
 	if self.data.generateValuesFunction then 
 		local lastValue = self.values[self.current]
-		self.values, self.texts = self.class[self.data.generateValuesFunction](self.vehicle or self.class, self)
-		self:setValue(lastValue)
+		local newValue
+		self.values, self.texts, newValue = self:getCallback(self.data.generateValuesFunction, lastValue)
+		if newValue ~= nil then 
+			self:setValue(newValue)
+		else
+			self:setValue(lastValue)
+		end
 		self:debug("Refreshed from %s to %s", tostring(lastValue), tostring(self.values[self.current]))
+		self:validateTexts()
 		return
 	end
 	self.values = {}
@@ -439,7 +446,7 @@ end
 --- Gets a specific value.
 function AIParameterSettingList:getValue()
 	--- In the simple mode, the default value will be returned, but only in singleplayer.
-	if not g_currentMission.missionDynamicInfo.isMultiplayer and self:getIsExpertModeSetting()
+	if g_currentMission and not g_currentMission.missionDynamicInfo.isMultiplayer and self:getIsExpertModeSetting()
 		and not g_Courseplay.globalSettings.expertModeActive:getValue() then 
 		
 		if self.data.default then 

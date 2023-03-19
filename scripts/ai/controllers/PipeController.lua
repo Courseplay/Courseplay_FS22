@@ -198,9 +198,6 @@ function PipeController:startDischargeToGround(dischargeNode)
         self:debug("Implement doesn't support unload to the ground!")
         return false
     end
-     --if not self.implement:getCanDischargeToGround(dischargeNode) then 
-    --    return false
-    --end
     self.isDischargingToGround = true
     self.dischargeData = {
         dischargeNode = dischargeNode,
@@ -243,6 +240,7 @@ function PipeController:isEmpty()
     return self.implement:getFillUnitFillLevelPercentage(dischargeNode.fillUnitIndex) <= 0
 end
 
+--- Gets the pipe z offset relative to the root vehicles direction node.
 function PipeController:getUnloadOffsetZ(dischargeNode)
     local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), self.implement, self.implement.rootNode)
     return dist + self.pipeOffsetZ
@@ -264,11 +262,7 @@ function PipeController:measurePipeProperties()
 
     local dischargeNode, _ = self:getDischargeNode()
     local refNode = self.implement.getAIDirectionNode and self.implement:getAIDirectionNode() or self.implement.rootNode
-    self.pipeOffsetX, _, _ = localToLocal(dischargeNode.node,
-        refNode, 0, 0, 0)
-    -- for the Z offset, we want the root vehicle, the offset for auger wagons and towed harvesters
-    -- should be relative to the tractor
-    _, _, self.pipeOffsetZ = localToLocal(dischargeNode.node,
+    self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node,
         refNode, 0, 0, 0)
     self.pipeOnLeftSide = self.pipeOffsetX >= 0
     self:debug("Measuring pipe properties => pipeOffsetX: %.2f, pipeOffsetZ: %.2f, pipeOnLeftSide: %s", 
@@ -529,7 +523,7 @@ end
 --- Debug functions
 --------------------------------------------------------------------
 
-function PipeController:printPipeStats()
+function PipeController:printPipeDebug()
     self:info("Current pipe state: %s, Target pipe state: %s, numStates: %s", 
         tostring(self.pipeSpec.currentState), tostring(self.pipeSpec.targetState), tostring(self.pipeSpec.numStates))   
     self:info("Is pipe state change allowed: %s", self.implement:getIsPipeStateChangeAllowed())
@@ -560,7 +554,8 @@ function PipeController:printDischargeableDebug()
         dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
     CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
         self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
-    CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
+    CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", 
+        self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
 end
 
 function PipeController:printMovingToolDebug(tool)
