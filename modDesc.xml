@@ -33,6 +33,15 @@ For more information, help, and report issues please visit <a href="https://gith
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
+Changelog 7.2.0.5
+- Goeweil pack fix when CP HUD is active on vehicle.
+- Gui fix for non valid cp vehicles and disables the hud, while sitting in an attached vehicle (e.g. mobile Wood Crane).
+- Disables a few hotspots, while drawing a field border.
+- Disables shield raising while driving into the silo for now.
+- Add option for Fieldwork to send driver back to start waypoint, when done with work.
+- Tweak for mods that have a built-in capacity.
+- Added a global setting to enable/disable harvesting while raining.
+
 Changelog 7.2.0.0
 - added bunker silo mode and combine unloader mode.
 - the remaining time for fieldwork is now displayed on the HUD.
@@ -88,6 +97,15 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge in
 Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
+
+Changelog 7.2.0.5
+- Göweil Pack bugfix wenn das CP HUD im Fahrzeug aktiv ist.
+- UI bugfix für Fahrzeuge und Geräte, die nicht mit CP gesteuert werden können (z.B. mobieler Holzkran)
+- Hotspots auf der Karte werden ausgeblendet, wenn man einen Feldrandkurs zeichnet.
+- Das anheben des Schildes im Bunker Modus vorerst deaktiviert.
+- Option hinzugefügt, der Feldarbeiter zurück zum Startpunkt fahren zu lassen.
+- Kleine Verbesserung für Modfahrzeuge, die eine eingebaute Kapazität besitzen.
+- Globale Option hinzugefügt, ob Drescher bei Regen anhalten sollen oder weiter arbeiten sollen.
 
 Changelog 7.2.0.0
 - Bunker Silo Modus und Drescher Abfahrer Modus hinzugefügt
