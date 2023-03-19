@@ -189,6 +189,7 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     -- Set the offset to 0, we'll take care of getting the grabber to the right place
     self.settings.toolOffsetX:setFloatValue(0)
     self.pathfinderFailureCount = 0
+    self.reverser = AIReverseDriver(self.vehicle, self.ppc)
 end
 
 function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
@@ -428,6 +429,11 @@ function AIDriveStrategyFindBales:onWaypointPassed(ix, course)
             self:debug('backed up after pathfinder failed, trying again')
             self.state = self.states.SEARCHING_FOR_NEXT_BALE
         end
+    elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
+        if not self:isObstacleAhead() then
+            self:debug('backed up after pathfinder failed, no more obstacle ahead, trying again')
+            self.state = self.states.SEARCHING_FOR_NEXT_BALE
+        end
     end
 end
 
@@ -458,7 +464,18 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.REVERSING_AFTER_PATHFINDER_FAILURE then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     end
-    return AIDriveStrategyFindBales.superClass().getDriveData(self, dt, vX, vY, vZ)
+
+    local moveForwards = not self.ppc:isReversing()
+    local gx, gz
+    if not moveForwards then
+        local maxSpeed
+        gx, gz, maxSpeed = self:getReverseDriveData()
+        self:setMaxSpeed(maxSpeed)
+    else
+        gx, _, gz = self.ppc:getGoalPointPosition()
+    end
+
+    return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
 function AIDriveStrategyFindBales:approachBale()
