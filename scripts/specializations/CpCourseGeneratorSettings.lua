@@ -223,6 +223,7 @@ end
 
 --- Generates speed setting values up to the max possible speed.
 function CpCourseGeneratorSettings:generateWorkWidthSettingValuesAndTexts(setting) 
+    --- Disabled for now!!
     local workWidth = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self)
     local maxWorkWidth = math.max(setting.data.max, workWidth + 5)
     local values, texts = {}, {}

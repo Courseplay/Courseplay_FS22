@@ -1468,6 +1468,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Stoppe Feldrandaufnahme.]]></Text>
 			<Text language="en"><![CDATA[Stop custom field recording.]]></Text>
 		</Translation>
+		<Translation name="CP_controllerGui_pauseRecording">
+			<Text language="de"><![CDATA[Pausiert die Feldrandaufnahme.]]></Text>
+			<Text language="en"><![CDATA[Pause custom field recording.]]></Text>
+		</Translation>
+		<Translation name="CP_controllerGui_unpauseRecording">
+			<Text language="de"><![CDATA[Fortsetzten der Feldrandaufnahme.]]></Text>
+			<Text language="en"><![CDATA[Unpause custom field recording.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Help menu">	
 		<Translation name="CP_help_title">

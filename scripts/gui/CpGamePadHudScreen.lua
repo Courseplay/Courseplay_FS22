@@ -15,7 +15,9 @@ CpGamePadHudScreen = {
 }
 CpGamePadHudScreen.texts = {
 	startRecording = g_i18n:getText("CP_controllerGui_startRecording"),
-	stopRecording = g_i18n:getText("CP_controllerGui_stopRecording")
+	stopRecording = g_i18n:getText("CP_controllerGui_stopRecording"),
+	pauseRecording = g_i18n:getText("CP_controllerGui_pauseRecording"),
+	unpauseRecording = g_i18n:getText("CP_controllerGui_unpauseRecording")
 }
 
 local CpGamePadHudScreen_mt = Class(CpGamePadHudScreen, ScreenElement)
@@ -77,7 +79,15 @@ function CpGamePadHudScreen:onOpen(element)
 	if self.vehicle:getIsAIActive() then 
 		text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
 	end
-	self.startButton:setText(text)
+	if self.vehicle:getIsCpCourseRecorderActive() then
+		if self.vehicle:getIsCpCourseRecorderPaused() then 
+			self.startButton:setText(self.texts.unpauseRecording)
+		else
+			self.startButton:setText(self.texts.pauseRecording)
+		end
+	else
+		self.startButton:setText(text)
+	end
 	local _, eventId = g_inputBinding:registerActionEvent(InputAction.CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY, self, self.onClickBack, false, true, false, true)
 end
 
@@ -96,14 +106,11 @@ end
 
 function CpGamePadHudScreen:onClickOk()
 	if self.vehicle then
-		self.vehicle:cpStartStopDriver(true)
-
-		local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
-		if self.vehicle:getIsAIActive() then 
-			text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
+		if self.vehicle:getIsCpCourseRecorderActive() then 
+			self.vehicle:toggleCpCourseRecorderPause()
+		else
+			self.vehicle:cpStartStopDriver(true)
 		end
-
-		self.startButton:setText(text)
 	end
 end
 
@@ -121,8 +128,23 @@ function CpGamePadHudScreen:update(dt, ...)
 	else 
 		self.recordButton:setVisible(false)
 	end
-	self.startButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive())
+	self.startButton:setVisible(self.vehicle:getCanStartCp() or self.vehicle:getIsCpActive() or self.vehicle:getIsCpCourseRecorderActive())
 	self.clearButton:setVisible(self.vehicle:hasCpCourse() and not self.vehicle:getIsCpActive())
+
+	local text = self.vehicle.spec_aiJobVehicle.texts.hireEmployee
+	if self.vehicle:getIsAIActive() then 
+		text = self.vehicle.spec_aiJobVehicle.texts.dismissEmployee
+	end
+
+	if self.vehicle:getIsCpCourseRecorderActive() then
+		if self.vehicle:getIsCpCourseRecorderPaused() then 
+			self.startButton:setText(self.texts.unpauseRecording)
+		else
+			self.startButton:setText(self.texts.pauseRecording)
+		end
+	else
+		self.startButton:setText(text)
+	end
 
 	g_currentMission.hud:updateBlinkingWarning(dt)
 end

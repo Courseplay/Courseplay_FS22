@@ -69,6 +69,9 @@ CpBaseHud.uvs = {
     circleSymbol = {
         {0, 366, 28, 28}, {256, 512}
     },
+    pauseSymbol = {
+        {40, 328, 32, 32}, {256, 512}
+    },
     clearCourseSymbol = {
         {40, 256, 32, 32}, {256, 512}
     },
@@ -264,6 +267,20 @@ function CpBaseHud:init(vehicle)
         end
     end)
     
+    --- Create start/stop field boarder record button
+    local circleOverlay = CpGuiUtil.createOverlay({recordingBtnWidth, height},
+                                                {imageFilename, GuiUtils.getUVs(unpack(self.uvs.pauseSymbol))}, 
+                                                self.OFF_COLOR,
+                                                self.alignments.bottomRight)
+    self.pauseRecordingBtn = CpHudButtonElement.new(circleOverlay, self.baseHud)
+    local x, y = unpack(self.lines[6].right)
+    self.pauseRecordingBtn:setPosition(x, y)
+    self.pauseRecordingBtn:setCallback("onClickPrimary", self.vehicle, function (vehicle)
+        if vehicle:getIsCpCourseRecorderActive() then 
+            vehicle:toggleCpCourseRecorderPause()
+        end
+    end)
+
 
     ---- Disables zoom, while mouse is over the cp hud. 
     local function disableCameraZoomOverHud(vehicle, superFunc, ...)
@@ -436,8 +453,15 @@ function CpBaseHud:updateContent(vehicle, status)
 
     if self.vehicle:getIsCpCourseRecorderActive() then
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.RECORDER_ON_COLOR))
+        self.pauseRecordingBtn:setVisible(true)
+        if self.vehicle:getIsCpCourseRecorderPaused() then
+            self.pauseRecordingBtn:setColor(unpack(CpBaseHud.RECORDER_ON_COLOR))
+        else 
+            self.pauseRecordingBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
+        end
     else 
         self.startStopRecordingBtn:setColor(unpack(CpBaseHud.OFF_COLOR))
+        self.pauseRecordingBtn:setVisible(false)
     end
     self.startStopRecordingBtn:setVisible(vehicle:getCanStartCpCourseRecorder())
 

@@ -381,7 +381,7 @@ end
 function CpVehicleSettings:generateSpeedSettingValuesAndTexts(setting, lastValue)
     local maxSpeed = self.getCruiseControlMaxSpeed and self:getCruiseControlMaxSpeed() or setting.data.max
     local values, texts = {}, {}
-    for i = setting.data.min, setting.data.incremental do 
+    for i = setting.data.min, maxSpeed, setting.data.incremental or 1 do 
         table.insert(values, i)
         table.insert(texts, i)
     end

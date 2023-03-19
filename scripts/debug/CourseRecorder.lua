@@ -3,6 +3,7 @@ CourseRecorder = CpObject()
 
 function CourseRecorder:init(courseDisplay)
     self.recording = false
+    self.paused = false
     self.courseDisplay = courseDisplay
 end
 
@@ -11,7 +12,7 @@ function CourseRecorder:debug(...)
 end
 
 function CourseRecorder:update()
-    if not self.recording then return end
+    if not self.recording or self.paused then return end
     local waypoint = self:getVehiclePositionAsWaypoint()
     local previousWaypoint = self.course:getWaypoint(self.course:getNumberOfWaypoints())
     local dist = previousWaypoint:getDistanceFromVehicle(self.vehicle)
@@ -24,6 +25,7 @@ end
 
 function CourseRecorder:start(vehicle)
     self.recording = true
+    self.paused = false
     self.vehicle = vehicle
     self:debug('Course recording started')
     self.course = Course(vehicle, {})
@@ -33,8 +35,23 @@ end
 
 function CourseRecorder:stop()
     self.recording = false
+    self.paused = false
     self:debug('Course recording stopped, recorded %d waypoints', self.course:getNumberOfWaypoints())
     self.courseDisplay:clearCourse()
+end
+
+function CourseRecorder:pause()
+    self.paused = true
+    self:debug("Paused the course recording.")
+end
+
+function CourseRecorder:unpause()
+    self.paused = false
+    self:debug("Unpaused the course recording.")
+end
+
+function CourseRecorder:isPaused()
+    return self.paused
 end
 
 function CourseRecorder:isRecording()
