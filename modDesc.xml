@@ -34,14 +34,13 @@ For more information, help, and report issues please visit <a href="https://gith
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.2.0.5
-- Goeweil pack fix when CP HUD is active on vehicle.
+- Goeweil pack bug fix for the stationary baler with the cp hud.
 - Gui fix for non valid cp vehicles and disables the hud, while sitting in an attached vehicle (e.g. mobile Wood Crane).
 - Disables a few hotspots, while drawing a field border.
 - Disables shield raising while driving into the silo for now.
-- Add option for Fieldwork to send driver back to start waypoint, when done with work.
-- Tweak for mods that have a built-in capacity.
-- Added a global setting to enable/disable harvesting while raining.
-- 
+- Add option for Fieldwork to send the driver back to the first waypoint after the work is finished.
+- Bug fix for mods with invalid capacities.
+- Added a global setting to enable/disable harvesting while it's raining.
 
 Changelog 7.2.0.0
 - added bunker silo mode and combine unloader mode.
