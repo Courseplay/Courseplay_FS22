@@ -45,6 +45,7 @@ function CpAIWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIWorker)
     --- Autodrive events
     SpecializationUtil.registerEventListener(vehicleType, "onStopAutoDrive", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onStartAutoDrive", CpAIWorker)
@@ -91,6 +92,13 @@ end
 function CpAIWorker:onPostAttachImplement(object)
     local spec = self.spec_cpAIWorker
 
+end
+
+
+function CpAIWorker:onLeaveVehicle(wasEntered)
+    if wasEntered then 
+        CpJobSyncOnLeaveEvent.sendEvent(self)
+    end
 end
 
 --- Registers the start stop action event.
