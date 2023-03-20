@@ -34,13 +34,15 @@ For more information, help, and report issues please visit <a href="https://gith
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.2.0.5
-- Goeweil pack bug fix for the stationary baler with the cp hud.
-- Gui fix for non valid cp vehicles and disables the hud, while sitting in an attached vehicle (e.g. mobile Wood Crane).
+- Goeweil pack bug fix for the stationary baler with the Courseplay hud.
+- Gui fix for non valid Courseplay vehicles and disables the hud, while sitting in an attached vehicle (e.g. mobile Wood Crane).
 - Disables a few hotspots, while drawing a field border.
 - Disables shield raising while driving into the silo for now.
 - Add option for Fieldwork to send the driver back to the first waypoint after the work is finished.
 - Bug fix for mods with invalid capacities.
 - Added a global setting to enable/disable harvesting while it's raining.
+- Bug fixes and improvements for plows and balers.
+- Some more small fixes and improvements.
 
 Changelog 7.2.0.0
 - added bunker silo mode and combine unloader mode.
@@ -99,13 +101,15 @@ Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="h
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
 
 Changelog 7.2.0.5
-- Göweil Pack bugfix wenn das CP HUD im Fahrzeug aktiv ist.
-- UI bugfix für Fahrzeuge und Geräte, die nicht mit CP gesteuert werden können (z.B. mobiler Holzkran)
+- Göweil Pack Fehler behoben, wenn das Courseplay HUD im Fahrzeug aktiv ist.
+- Fehler im UI behoben für Fahrzeuge und Geräte, die nicht mit Courseplay gesteuert werden können (z.B. mobiler Holzkran)
 - Hotspots auf der Karte werden ausgeblendet, wenn man einen Feldrandkurs zeichnet.
 - Das anheben des Schildes im Bunker Modus vorerst deaktiviert.
 - Option hinzugefügt, der Feldarbeiter zurück zum Startpunkt fahren zu lassen.
 - Kleine Verbesserung für Modfahrzeuge, die eine eingebaute Kapazität besitzen.
 - Globale Option hinzugefügt, ob Drescher bei Regen anhalten sollen oder weiter arbeiten sollen.
+- Fehler behoben und Verbesserungen für Pflüge und Ballenpressen.
+- Weitere kleine bug fixes und Verbesserungen.
 
 Changelog 7.2.0.0
 - Bunker Silo Modus und Drescher Abfahrer Modus hinzugefügt
