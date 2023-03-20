@@ -4,7 +4,7 @@ CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER = 11
 --- Adds the course generate button in the ai menu page.
 
 CpInGameMenuAIFrameExtended.positionUvs = GuiUtils.getUVs({
-	768,
+	760,
 	4,
 	100,
 	100
