@@ -118,11 +118,11 @@
 		<!--Field Speed-->
 		<Setting classType="AIParameterSettingList" name="fieldSpeed" min="5" max="50" default="20" unit="1" isExpertModeOnly="true" generateValuesFunction="generateSpeedSettingValuesAndTexts"/>
 		<!--Turn Speed-->
-		<Setting classType="AIParameterSettingList" name="turnSpeed" min="2" max="25" default="8" unit="1" isExpertModeOnly="true" generateValuesFunction="generateSpeedSettingValuesAndTexts"/>
+		<Setting classType="AIParameterSettingList" name="turnSpeed" min="2" max="25" default="8" unit="1" isExpertModeOnly="true"/>
 		<!--Reverse Speed-->
-		<Setting classType="AIParameterSettingList" name="reverseSpeed" min="2" max="25" default="5" unit="1" isExpertModeOnly="true" generateValuesFunction="generateSpeedSettingValuesAndTexts"/>
+		<Setting classType="AIParameterSettingList" name="reverseSpeed" min="2" max="25" default="5" unit="1" isExpertModeOnly="true"/>
 		<!--Bunker silo speed-->
-		<Setting classType="AIParameterSettingList" name="bunkerSiloSpeed" min="2" max="25" default="15" unit="1" isExpertModeOnly="true" generateValuesFunction="generateSpeedSettingValuesAndTexts"/>
+		<Setting classType="AIParameterSettingList" name="bunkerSiloSpeed" min="2" max="25" default="15" unit="1" isExpertModeOnly="true"/>
 	</SettingSubTitle>
 
 	<SettingSubTitle title="debug">

@@ -85,7 +85,7 @@ end
 function ProximityController:ignoreObject(object, vehicle, moveForwards, hitTerrain)
     for callbackObject, registeredCallbacks in pairs(self.ignoreObjectCallbackRegistrations) do
         for callbackFunction, _ in pairs(registeredCallbacks) do
-            if callbackFunction(callbackObject, object, vehicle, moveForwards) then
+            if callbackFunction(callbackObject, object, vehicle, moveForwards, hitTerrain) then
                 -- one of the registered callback wants to ignore, then ignore
                 return true
             end

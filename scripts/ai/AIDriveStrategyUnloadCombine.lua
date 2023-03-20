@@ -213,7 +213,7 @@ function AIDriveStrategyUnloadCombine:isProximitySpeedControlEnabled()
     return true
 end
 
-function AIDriveStrategyUnloadCombine:ignoreProximityObject(object, vehicle, hitTerrain)
+function AIDriveStrategyUnloadCombine:ignoreProximityObject(object, vehicle, moveForwards, hitTerrain)
     return self.state == self.states.UNLOADING_ON_THE_FIELD and hitTerrain
 end
 
