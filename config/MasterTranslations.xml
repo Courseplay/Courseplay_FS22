@@ -2238,6 +2238,10 @@ is to avoid waiting for a combine to call with a trailer almost full.
 
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_unloaderTrailer_title">
+			<Text language="de"><![CDATA[Anhänger benutzen]]></Text>
+			<Text language="en"><![CDATA[Using trailers]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_unloaderTrailer_text">
 			<Text language="de"><![CDATA[
 Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
@@ -2256,6 +2260,10 @@ In the latter case, you have to choose the unload station after the wheel icon t
 Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_unloaderAuger_title">
+			<Text language="de"><![CDATA[Überladewagen benutzen]]></Text>
+			<Text language="en"><![CDATA[Using auger wagons]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_unloaderAuger_text">
 			<Text language="de"><![CDATA[
 Überladewagen sind relativ einfach zu bedienen.
@@ -2273,6 +2281,10 @@ If the auger wagon is full, it automatically looks for a trailer on or near the 
 In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
 Is no trailer available, it will continue to unload the combine.
 ]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_unloaderFieldUnload_title">
+			<Text language="de"><![CDATA[Abladen auf dem Feld]]></Text>
+			<Text language="en"><![CDATA[Unload on the field]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_unloaderFieldUnload_text">
 			<Text language="de"><![CDATA[
