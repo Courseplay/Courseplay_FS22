@@ -734,6 +734,7 @@ Es gibt nur wenige Einstellungen zur Feineinstellung:
 - Offsets im HUD, falls das Rohr des Deschers den Abfahrer zum überladen nicht trifft.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Anhänger benutzen"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
 - Giants Helfer:
@@ -741,6 +742,7 @@ Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu en
   2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktiven Lenkrad sichtbar.
 - AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Überladewagen benutzen"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Überladewagen sind relativ einfach zu bedienen.
 Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
@@ -749,6 +751,7 @@ Der Überladewagen sucht sich zum Abladen ganz automatisch einen Abfahrer am Fel
 Wenn beim Abladen der Anhänger voll wird, dann wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
 Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überladewagen voll ist.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Abladen auf dem Feld"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
 Die Position muss auf dem gleichen Feld oder am Feldrand sein.

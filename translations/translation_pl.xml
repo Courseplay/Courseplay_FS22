@@ -721,6 +721,7 @@ Dostępnych jest tylko kilka ustawień, które możesz zmienić:
   uniknięcie czekania na kombajn z prawie pełną przyczepą.
 - Możesz użyć przesunięć w HUD, aby dostosować pozycję pomocnika rozładowującego pod rurą kombajnu.
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pracownik SI z gry lub AutoDrive.
 Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na
@@ -729,6 +730,7 @@ W tym drugim przypadku musisz wybrać stację rozładunkową po tym, jak ikona k
 
 Opróżnianie przyczepy za pomocą AutoDrive działa tak samo, jak korzystanie z przyczepy samozbierającej, sprawdź samouczki AutoDrive w Internecie.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Wozy przeładunkowe są bardzo proste w użyciu.
 Podobnie jak w przypadku przyczep, za pomocą ikony celu wybierasz pole, na którym chcesz rozładować kombajn.
@@ -737,6 +739,7 @@ Jeśli wóz przeładunkowy jest pełen, automatycznie szuka przyczepy na polu lu
 W przypadku, gdy przyczepa jest pełna, a wóz przeładunkowy nadal nie jest pusty, szuka innej przyczepy do rozładunku.
 Jeśli nie ma w pobliżu żadnej wolnej przyczepy, będzie ona nadal rozładowywać kombajn.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 The unloading position can be selected with the unload marker.
 The position needs to be on the same field or near the field edge.

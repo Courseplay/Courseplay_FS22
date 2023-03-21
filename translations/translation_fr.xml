@@ -709,6 +709,7 @@ Vous pouvez adapter quelques paramètres concernant le processus de déchargemen
 - Utiliser l'ATH pour faire varier le décalage du placement de la benne ou du transbordeur sous la goulotte de la moissonneuse.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Si vous utilisez une benne pour effectuer le déchargement, il existe deux possibilité de transporter la récolte vers un silo ou un point de vente : l'ouvrier Giants 
 ou l'AutoDrive. 
@@ -717,6 +718,7 @@ Dans ce dernier cas, vous devrez choisir le point de livraison après que l'icô
 
 Pour utiliser AutoDrive, utilisez le mode charger puis livrer. Il existe des tutos sur Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Les transbordeurs sont simples à utiliser.
 Tout comme les bennes, utilisez la cible pour sélectionner le champ à surveiller dans lequel travaillent une ou des récolteuses.
@@ -725,6 +727,7 @@ Lorsque le transbordeur sera plein, il cherchera automatiquement une benne ou re
 Dans le cas où la remorque ou benne serait pleine, le transbordeur en cherchera une autre sur ou à proximité du champ.
 Si aucune benne ou remorque n'est disponible, le transbordeur continuera à décharger la récolteuse.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 The unloading position can be selected with the unload marker.
 The position needs to be on the same field or near the field edge.

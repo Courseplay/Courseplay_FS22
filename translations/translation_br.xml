@@ -732,6 +732,7 @@ evitar esperar a chamada de uma colheitadeira com a carreta quase cheia.
 - Você pode usar os deslocamentos no HUD para ajustar a posição da carreta sob o tubo da colheitadeira.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Se você usar uma carreta para descarregar, existem duas maneiras de transportar sua colheita para um silo ou para um ponto de venda: o ajudante da Giants
 ou AutoDrive.
@@ -741,6 +742,7 @@ Neste último caso, você deve escolher a estação de descarga depois que o íc
 
 Esvaziar uma carreta com o AutoDrive funciona da mesma forma que usar uma carreta autocarregável, confira os Tutoriais do AutoDrive na Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Bazuca (carreta com cano para descarregar numa carreta comun) é muito simples de usar.
 Assim como nas carretas, você usa o ícone de alvo para escolher o campo onde deseja descarregar uma colheitadeira.
@@ -749,6 +751,7 @@ Se a bazuca estiver cheia, ela procurará automaticamente uma carreta comum no c
 Caso a carreta esteja cheia e a bazuca ainda não esteja vazia, ela irá procurar outra carreta para descarregar.
 Se não houver carreta disponível, ela continuará a descarregar a colheitadeira até ficar cheia.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 The unloading position can be selected with the unload marker.
 The position needs to be on the same field or near the field edge.

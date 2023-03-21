@@ -715,6 +715,7 @@ Odvozci mají pouze několik nastavení, která můžete vyladit:
 se vyhnete čekání na zavolání kombajnu s téměř plným přívěsem.
 - Pomocí offsetů v HUD můžete upravit polohu vykladače pod výsypovou rourou harvestoru.
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Pokud k vykládce používáte přívěs, existují dva způsoby, jak dopravit sklizeň do sila nebo do prodejního místa: pomocník Giants
 nebo AutoDrive.
@@ -723,6 +724,7 @@ v dolní části seznamu nebo aktivací ikony kolečka na HUD.
 V druhém případě musíte vybrat vykládací stanici poté, co se ikona kolečka změní na modrou.
 Vyprázdnění přívěsu pomocí AutoDrive funguje stejně jako použití nakládacího vozu, podívejte se na AutoDrive Tutorials na internetu.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Použití šnekových vozů je velmi jednoduché.
 Stejně jako u přívěsů si pomocí ikony cíle vyberete pole, na kterém chcete vyložit kombajn nebo kombajn.
@@ -731,6 +733,7 @@ Pokud je šnekový vůz plný, automaticky hledá přívěs na poli nebo v jeho 
 V případě, že je přívěs plný a šnekový vůz stále není prázdný, bude hledat jiný přívěs k vyložení.
 Není k dispozici žádný přívěs, bude pokračovat ve vykládání kombajnu.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 The unloading position can be selected with the unload marker.
 The position needs to be on the same field or near the field edge.

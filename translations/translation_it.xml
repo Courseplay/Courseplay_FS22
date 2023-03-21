@@ -728,6 +728,7 @@ Gli scaricatori hanno solo poche impostazioni che puoi modificare:
 - È possibile utilizzare gli offset nell'HUD per regolare la posizione dello scaricatore sotto il tubo della mietitrice.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Se usi un rimorchio per scaricare, ci sono due modi per trasportare il raccolto in un silo o in un punto vendita: l'aiutante Giants
 o Guida automatica.
@@ -736,6 +737,7 @@ In quest'ultimo caso, devi scegliere la stazione di scarico dopo che l'icona del
 
 Lo svuotamento di un rimorchio con AutoDrive funziona allo stesso modo dell'utilizzo di un carro autocaricante, dai un'occhiata ai Tutorial di AutoDrive su Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 I carri a coclea sono molto semplici da usare.
 Proprio come con i rimorchi, puoi utilizzare l'icona del bersaglio per scegliere il campo in cui vuoi scaricare una mietitrebbia o una mietitrice.
@@ -744,6 +746,7 @@ Se il carro a coclea è pieno, cerca automaticamente un rimorchio sopra o vicino
 Nel caso in cui il rimorchio sia pieno e il carro a coclea non sia ancora vuoto, cercherà un altro rimorchio su cui scaricare.
 Se non è disponibile un rimorchio, continuerà a scaricare la mietitrebbia.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 The unloading position can be selected with the unload marker.
 The position needs to be on the same field or near the field edge.

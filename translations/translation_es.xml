@@ -723,6 +723,7 @@ es evitar que una cosechadora llame a un descargador con un remolque casi lleno.
 - Puede usar las compensaciones en el HUD para ajustar la posición del descargador debajo del tubo de la cosechadora.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Si utiliza un remolque para descargar, hay dos formas de transportar su cosecha a un silo o a un punto de venta: El Ayudante de Gigants
 o AutoDrive.
@@ -732,6 +733,7 @@ En este último caso, debe elegir la estación de descarga después de que el í
 
 Vaciar un remolque con AutoDrive funciona igual que usar un vagón de carga, consulte los tutoriales de AutoDrive en Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Los vagones con sinfín son muy fáciles de usar.
 Al igual que con los remolques, utilice el icono de objetivo para elegir el campo donde desea descargar una Combinada o Cosechadora.
@@ -740,6 +742,7 @@ Si el vagón con sinfín está lleno, automáticamente buscará un remolque en e
 En caso de que el tráiler esté lleno y el vagón del sinfín aún no esté vacío, buscará otro remolque para descargarlo.
 Si no hay un remolque disponible, continuará descargando la cosechadora.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 The unloading position can be selected with the unload marker.
 The position needs to be on the same field or near the field edge.
