@@ -725,6 +725,14 @@ Lorsque le transbordeur sera plein, il cherchera automatiquement une benne ou re
 Dans le cas où la remorque ou benne serait pleine, le transbordeur en cherchera une autre sur ou à proximité du champ.
 Si aucune benne ou remorque n'est disponible, le transbordeur continuera à décharger la récolteuse.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+"/>
     <text name="CP_help_page_bunker_title" text="Nivelage et tassage de silos"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay est capable de compacter et niveler de l'ensilage dans les silos bunker et couloir.

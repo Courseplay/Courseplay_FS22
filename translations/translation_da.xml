@@ -743,6 +743,14 @@ Hvis sneglevognen er fyld, leder den automatisk efter en trailer på eller i næ
 Hvis traileren er fuld, og sneglevognen stadig ikke er tom, vil den lede efter en anden trailer at tømme af i.
 Er der ingen trailer tilgængelig, fortsætter den med at tømme mejetærskeren.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+"/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay er i stand til at komprimere eller fordele det snittede i en bunkersilo eller skubbe det snittede i en køresilo.

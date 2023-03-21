@@ -742,6 +742,14 @@ R: Удаляет скопированный курс из буфера обме
 В случае, если  тот прицеп заполнен, а прицеп-перегрузчик по-прежнему не пуст, он будет искать другой прицеп для разгрузки.
 Если нет больше доступных прицепов, он будет продолжать разгрузить комбайн.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+"/>
     <text name="CP_help_page_bunker_title" text="Работник в силосной яме"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay способен прессовать или распределять сечку в сквозной или тупиковой силосной яме.

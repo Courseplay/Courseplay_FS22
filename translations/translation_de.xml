@@ -749,6 +749,14 @@ Der Überladewagen sucht sich zum Abladen ganz automatisch einen Abfahrer am Fel
 Wenn beim Abladen der Anhänger voll wird, dann wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
 Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überladewagen voll ist.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
+Die Position muss auf dem gleichen Feld oder am Feldrand sein.
+Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
+dann wird dieser genutzet um dort weiterhin abzuladen.
+Die Richtung des Markers entspricht der Ablade Richtung.
+Zusätzlich muss für Anhänger die Abladeseite ausgewählt werden.
+"/>
     <text name="CP_help_page_bunker_title" text="Bunker Silo Arbeiter"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo bis zum Ende zu schieben.

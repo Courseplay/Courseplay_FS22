@@ -731,6 +731,14 @@ Pokud je šnekový vůz plný, automaticky hledá přívěs na poli nebo v jeho 
 V případě, že je přívěs plný a šnekový vůz stále není prázdný, bude hledat jiný přívěs k vyložení.
 Není k dispozici žádný přívěs, bude pokračovat ve vykládání kombajnu.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+"/>
     <text name="CP_help_page_bunker_title" text="Pacovník v silážní jámě"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay je schopen dusat nebo nahrnovat řezanku v silážní jámě.

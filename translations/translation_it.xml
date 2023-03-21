@@ -744,6 +744,14 @@ Se il carro a coclea è pieno, cerca automaticamente un rimorchio sopra o vicino
 Nel caso in cui il rimorchio sia pieno e il carro a coclea non sia ancora vuoto, cercherà un altro rimorchio su cui scaricare.
 Se non è disponibile un rimorchio, continuerà a scaricare la mietitrebbia.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+"/>
     <text name="CP_help_page_bunker_title" text="Lavoratore del silos bunker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay è in grado di compattare o distribuire la pula in un silo bunker o spingere la pula in un silo a cuneo.

@@ -740,6 +740,14 @@ Si el vagón con sinfín está lleno, automáticamente buscará un remolque en e
 En caso de que el tráiler esté lleno y el vagón del sinfín aún no esté vacío, buscará otro remolque para descargarlo.
 Si no hay un remolque disponible, continuará descargando la cosechadora.
 "/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+"/>
     <text name="CP_help_page_bunker_title" text="Trabajador de Silos Búnker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay puede compactar o distribuir material picado en un silo tipo búnker o empujarlo en un silo de cuña.
