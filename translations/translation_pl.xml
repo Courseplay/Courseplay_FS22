@@ -142,7 +142,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Przes. pionowe dla narzędzi"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Przesunięcie wertykalne (pionowe) dla narzędzi."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Opróżnij, gdy ponad:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Ustala po osiągnięciu jakiego pozomu wypełnienia pomocnik ma rozładować przyczepę."/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Ustala po osiągnięciu jakiego poziomu wypełnienia pomocnik ma rozładować przyczepę."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Sprawdź dodatek do kiszenia"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Jeśli aktywne i dodatek do zakiszania jest pusty, kierowca się zatrzyma."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symetryczna zmiana ścieżki"/>
@@ -279,7 +279,7 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli poziom paliwa spadnie poniżej ustawionego progu procentowego."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Próg zużycia"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli pojazd lub maszyna/narzędzie jest uszkodzona w ustalonym progu procentowym. 100% oznacza wyłączone."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zatrzymaj młucenie podczas deszczu"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zatrzymaj młócenie podczas deszczu"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Gdy to ustawienie jest aktywne, wszystkie kombajny zostaną zatrzymane i będą czekały na zakończenie opadów."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Ustawienia użytkownika"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="HUD przyjazny kontrolerom"/>
@@ -390,7 +390,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_customFieldManager_confirm_delete" text="Czy chcesz usunąć nowe pole %s?"/>
     <text name="CP_customFieldManager_delete" text="Usuń nowe pole"/>
     <text name="CP_customFieldManager_rename" text="Zmień nazwę nowego pola"/>
-    <text name="CP_customFieldManager_rename_error" text="Nazwa %s dla własnego pla jest już używana."/>
+    <text name="CP_customFieldManager_rename_error" text="Nazwa %s dla własnego pola jest już używana."/>
     <text name="CP_customFieldManager_edit" text="Edytuj własne pole"/>
     <text name="CP_customFieldManager_draw" text="Narysuj nowe pole"/>
     <text name="CP_customFieldManager_draw_header" text="Narysuj linie nowego pola z prawym kliknięciem."/>
