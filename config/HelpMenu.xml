@@ -197,6 +197,9 @@
 			<paragraph>
 				<text text="$l10n_CP_help_page_unloaderAuger_text"/>
 			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_unloaderFieldUnload_text"/>
+			</paragraph>
 		</page>
 		<!--Courseplay Bunker Silo Driver-->
 		<page title="$l10n_CP_help_page_bunker_title">

@@ -2274,6 +2274,24 @@ In case the trailer is full and the auger wagon still not empty, it will look fo
 Is no trailer available, it will continue to unload the combine.
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_unloaderFieldUnload_text">
+			<Text language="de"><![CDATA[
+Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
+Die Position muss auf dem gleichen Feld oder am Feldrand sein.
+Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
+dann wird dieser genutzet um dort weiterhin abzuladen.
+Die Richtung des Markers entspricht der Ablade Richtung.
+Zusätzlich muss für Anhänger die Abladeseite ausgewählt werden.
+]]></Text>
+			<Text language="en"><![CDATA[
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
+]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_bunker_title">
 			<Text language="de"><![CDATA[Bunker Silo Arbeiter]]></Text>
 			<Text language="en"><![CDATA[Bunker silo worker]]></Text>
