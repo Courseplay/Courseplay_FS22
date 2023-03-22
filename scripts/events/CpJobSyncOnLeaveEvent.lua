@@ -21,9 +21,9 @@ end
 function CpJobSyncOnLeaveEvent:readStream(streamId, connection)
 	self.vehicle = NetworkUtil.readNodeObject(streamId)
 
-	self.vehicle.spec_cpAIBunkerSiloWorker:readStream(streamId, connection)
-	self.vehicle.spec_cpAICombineUnloader:readStream(streamId, connection)
-
+	CpAIBunkerSiloWorker.onReadStream(self.vehicle, streamId, connection)
+	CpAICombineUnloader.onReadStream(self.vehicle, streamId, connection)
+	
 
 	self:run(connection)
 end
@@ -32,8 +32,8 @@ function CpJobSyncOnLeaveEvent:writeStream(streamId, connection)
 	NetworkUtil.writeNodeObject(streamId, self.vehicle)
 
 
-	self.vehicle.spec_cpAIBunkerSiloWorker:writeStream(streamId, connection)
-	self.vehicle.spec_cpAICombineUnloader:writeStream(streamId, connection)
+	CpAIBunkerSiloWorker.onWriteStream(self.vehicle, streamId, connection)
+	CpAICombineUnloader.onWriteStream(self.vehicle, streamId, connection)
 
 end
 
