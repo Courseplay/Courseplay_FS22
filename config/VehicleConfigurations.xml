@@ -413,4 +413,12 @@ You can define the following custom settings:
             ignoreBaleCollisionForward = "true"
     />
 
+    <!--Mod: FS22_McCormack_Cotton_Trailer_Pack-->
+    <Vehicle name="cottonTagTrailer3000.xml"
+             baleCollectorOffset = "2.7"
+    />
+    <Vehicle name="cottonTagTrailer5000.xml"
+             baleCollectorOffset = "2.7"
+    />
+
 </VehicleConfigurations>

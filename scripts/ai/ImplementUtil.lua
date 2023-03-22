@@ -109,13 +109,12 @@ function ImplementUtil.isWheeledImplement(implement)
         for _, jointType in ipairs(jointTypeList) do
             local index = AttacherJoints.jointTypeNameToInt[jointType]
             if index then
-                table.insert(allowedJointTypes, index, true)
+                allowedJointTypes[index] = true
             end
         end
     end
 
     local activeInputAttacherJoint = implement:getActiveInputAttacherJoint()
-
     if activeInputAttacherJoint and allowedJointTypes[activeInputAttacherJoint.jointType] and
             implement.spec_wheels and implement.spec_wheels.wheels and #implement.spec_wheels.wheels > 0 then
         -- Attempt to find the pivot node.
