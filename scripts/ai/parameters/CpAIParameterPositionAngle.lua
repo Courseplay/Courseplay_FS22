@@ -12,8 +12,6 @@ function CpAIParameterPosition:init(data, vehicle, class)
 	end
 	self:initFromData(data, vehicle, class)
 	self.guiParameterType = AIParameterType.POSITION
-	self.x = 0
-	self.z = 0
 	self.positionType = CpAIParameterPositionAngle.POSITION_TYPES[data.positionParameterType]
 end
 
@@ -55,7 +53,7 @@ function CpAIParameterPosition:getPosition()
 end
 
 function CpAIParameterPosition:getString()
-	return string.format("< %.1f , %.1f >", self.x, self.z)
+	return string.format("< %.1f , %.1f >", self.x or 0, self.z or 0)
 end
 
 function CpAIParameterPosition:validate()
@@ -91,7 +89,11 @@ end
 --- Applies the current position to the map hotspot.
 function CpAIParameterPosition:applyToMapHotspot(mapHotspot)
 	local x, z = self:getPosition()
-	mapHotspot:setWorldPosition(x, z)
+	if x ~= nil then
+		mapHotspot:setWorldPosition(x, z)
+		return true
+	end
+	return false
 end
 
 function CpAIParameterPosition:getPositionType()
@@ -113,7 +115,6 @@ CpAIParameterPositionAngle.POSITION_TYPES = {
 function CpAIParameterPositionAngle:init(data, vehicle, class)
 	CpAIParameterPosition.init(self, data, vehicle, class)
 	self.guiParameterType = AIParameterType.POSITION_ANGLE
-	self.angle = 0
 	self.snappingAngle = math.rad(0)
 end
 
@@ -195,9 +196,11 @@ end
 
 --- Applies the current position and angle to the map hotspot.
 function CpAIParameterPositionAngle:applyToMapHotspot(mapHotspot)
-	CpAIParameterPosition.applyToMapHotspot(self, mapHotspot)
-	local angle = self:getAngle() + math.pi
-	mapHotspot:setWorldRotation(angle)
+	if self.angle ~=nil and CpAIParameterPosition.applyToMapHotspot(self, mapHotspot) then
+		mapHotspot:setWorldRotation(self.angle + math.pi)
+		return true
+	end
+	return false
 end
 
 function CpAIParameterPositionAngle:setValue(x, z, angle)
@@ -212,7 +215,7 @@ function CpAIParameterPositionAngle:getValue()
 end
 
 function CpAIParameterPositionAngle:getString()
-	return string.format("< %.1f , %.1f | %d° >", self.x, self.z, math.deg(self.angle))
+	return string.format("< %.1f , %.1f | %d° >", self.x or 0, self.z or 0, math.deg(self.angle or 0))
 end
 
 function CpAIParameterPositionAngle:validate()

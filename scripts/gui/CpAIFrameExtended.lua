@@ -320,6 +320,7 @@ end
 function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
 	if hotspot ~= nil then
 		local vehicle = InGameMenuMapUtil.getHotspotVehicle(hotspot)
 		self.lastVehicle = vehicle
@@ -333,18 +334,31 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 						local parameters = job:getCpJobParameters():getAiTargetMapHotspotParameters()
 						for i, param in pairs(parameters) do 
 							if param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
-								param:applyToMapHotspot(self.aiTargetMapHotspot)
-								g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+								if param:applyToMapHotspot(self.aiTargetMapHotspot) then 
+									g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+								end
 							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
-								param:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot)
-								g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+								if param:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot) then
+									g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+								end
 							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
-								param:applyToMapHotspot(self.unloadAiTargetMapHotspot)
-								g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+								if param:applyToMapHotspot(self.unloadAiTargetMapHotspot) then
+									g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+								end
 							end
 						end
 					end
+					if job.getTarget ~= nil then
+						local x, z, rot = job:getTarget()
 
+						self.aiTargetMapHotspot:setWorldPosition(x, z)
+
+						if rot ~= nil then
+							self.aiTargetMapHotspot:setWorldRotation(rot + math.pi)
+						end
+
+						g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+					end
 				end
 
 			end
@@ -378,6 +392,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameClose()
 	self.contextBox:setVisible(true)
 	self.lastHotspot = self.currentHotspot
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
 	CpInGameMenuAIFrameExtended.unbindCourseGeneratorSettings(self)
 	g_currentMission.inGameMenu:updatePages()
 end
@@ -403,9 +418,9 @@ InGameMenuAIFrame.onStartGoToJob = Utils.appendedFunction(InGameMenuAIFrame.onSt
 
 -- this is appended to ingameMapBase.drawHotspotsOnly so self is the ingameMapBase!
 function CpInGameMenuAIFrameExtended:draw()	
-	local CoursePlotAlwaysVisible = g_Courseplay.globalSettings:getSettings().showsAllActiveCourses:getValue()
+	local areCursePlotsAlwaysVisible = g_Courseplay.globalSettings:getSettings().showsAllActiveCourses:getValue()
 	local vehicle = InGameMenuMapUtil.getHotspotVehicle(self.selectedHotspot)
-	if CoursePlotAlwaysVisible then
+	if areCursePlotsAlwaysVisible then
 		local vehicles = g_assignedCoursesManager:getRegisteredVehicles()
 		for _, v in pairs(vehicles) do
 			if g_currentMission.accessHandler:canPlayerAccess(v) then
@@ -494,38 +509,88 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 	if self.currentJobElements == nil then 
 		return
 	end
-	superFunc(self, ...)
 	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
+	g_currentMission:removeMapHotspot(self.aiLoadingMarkerHotspot)
+	g_currentMission:removeMapHotspot(self.aiUnloadingMarkerHotspot)
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
 	for _, element in ipairs(self.currentJobElements) do
 		local parameter = element.aiParameter
 		local parameterType = parameter:getType()
-		if parameter.is_a and (parameter:is_a(CpAIParameterPositionAngle) or parameter:is_a(CpAIParameterPosition)) then 
+
+		if parameterType == AIParameterType.TEXT then
+			local title = element:getDescendantByName("title")
+
+			title:setText(parameter:getString())
+		elseif parameter.is_a and parameter:is_a(CpAIParameterPosition) then 
+			element:setText(parameter:getString())
 			if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
-				parameter:applyToMapHotspot(self.aiTargetMapHotspot)
-				g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+				if parameter:applyToMapHotspot(self.aiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+				end
 			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
-				parameter:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot)
-				g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+				if parameter:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+				end
 			elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
-				parameter:applyToMapHotspot(self.unloadAiTargetMapHotspot)
-				g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+				if parameter:applyToMapHotspot(self.unloadAiTargetMapHotspot) then
+					g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+				end
 			end
 		elseif parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
 			element:setText(parameter:getString())
+
 			g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
 
 			local x, z = parameter:getPosition()
 
 			self.aiTargetMapHotspot:setWorldPosition(x, z)
-			self.aiTargetMapHotspot.icon:setUVs(AITargetHotspot.UVS)
+
 			if parameterType == AIParameterType.POSITION_ANGLE then
 				local angle = parameter:getAngle() + math.pi
 
 				self.aiTargetMapHotspot:setWorldRotation(angle)
 			end
+		else
+			element:updateTitle()
+
+			if parameterType == AIParameterType.UNLOADING_STATION then
+				local unloadingStation = parameter:getUnloadingStation()
+
+				if unloadingStation ~= nil then
+					local placeable = unloadingStation.owningPlaceable
+
+					if placeable ~= nil and placeable.getHotspot ~= nil then
+						local hotspot = placeable:getHotspot(1)
+
+						if hotspot ~= nil then
+							local x, z = hotspot:getWorldPosition()
+
+							self.aiUnloadingMarkerHotspot:setWorldPosition(x, z)
+							g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
+						end
+					end
+				end
+			elseif parameterType == AIParameterType.LOADING_STATION then
+				local loadingStation = parameter:getLoadingStation()
+
+				if loadingStation ~= nil then
+					local placeable = loadingStation.owningPlaceable
+
+					if placeable ~= nil and placeable.getHotspot ~= nil then
+						local hotspot = placeable:getHotspot(1)
+
+						if hotspot ~= nil then
+							local x, z = hotspot:getWorldPosition()
+
+							self.aiLoadingMarkerHotspot:setWorldPosition(x, z)
+							g_currentMission:addMapHotspot(self.aiLoadingMarkerHotspot)
+						end
+					end
+				end
+			end
 		end
+
 		element:setDisabled(not parameter:getCanBeChanged())
 	end
 end

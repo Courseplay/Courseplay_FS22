@@ -39,8 +39,9 @@ function CpAIJob:setupJobParameters()
 end
 
 --- Optional to create custom cp job parameters.
-function CpAIJob:setupCpJobParameters()
-	self.cpJobParameters = CpJobParameters(self)
+---@param jobParameters CpJobParameters
+function CpAIJob:setupCpJobParameters(jobParameters)
+	self.cpJobParameters = jobParameters
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
 	self.cpJobParameters:validateSettings()
 end
@@ -97,16 +98,9 @@ function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 	if not self.cpJobParameters or not self.cpJobParameters.startPosition then 
 		return
 	end
-	local x, z, angle, _ = nil
 
-	if vehicle.getLastJob ~= nil then
-		local lastJob = vehicle:getLastJob()
-
-		if not isDirectStart and lastJob ~= nil and lastJob:isa(CpAIJob) then
-			x, z = lastJob.cpJobParameters.startPosition:getPosition()
-			angle = lastJob.cpJobParameters.startPosition:getAngle()
-		end
-	end
+	local x, z, _ = self.cpJobParameters.startPosition:getPosition()
+	local angle = self.cpJobParameters.startPosition:getAngle()
 
 	local snappingAngle = vehicle:getDirectionSnapAngle()
 	local terrainAngle = math.pi / math.max(g_currentMission.fieldGroundSystem:getGroundAngleMaxValue() + 1, 4)
@@ -122,28 +116,15 @@ function CpAIJob:applyCurrentState(vehicle, mission, farmId, isDirectStart)
 		local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
 		angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 	end
-	local dx, dz = self.cpJobParameters.startPosition:getPosition()
-	local dAngle = self.cpJobParameters.startPosition:getAngle()
-	if dx == nil or dAngle == nil then
-		self.cpJobParameters.startPosition:setPosition(x, z)
-		self.cpJobParameters.startPosition:setAngle(angle)
-	end
+	
+	self.cpJobParameters.startPosition:setPosition(x, z)
+	self.cpJobParameters.startPosition:setAngle(angle)
+
 end
 
 --- Can the vehicle be used for this job?
 function CpAIJob:getIsAvailableForVehicle(vehicle)
 	return true
-end
-
---- Target for the giants drive task.
-function CpAIJob:getTarget()
-	local angle = 0
-
-	if self.driveToTask.dirX ~= nil then
-		angle = MathUtil.getYRotationFromDirection(self.driveToTask.dirX, self.driveToTask.dirZ)
-	end
-
-	return self.driveToTask.x, self.driveToTask.z, angle
 end
 
 function CpAIJob:getTitle()
@@ -248,6 +229,22 @@ function CpAIJob:readStream(streamId, connection)
 	end
 end
 
+function CpAIJob:saveToXMLFile(xmlFile, key, usedModNames)
+	CpAIJob:superClass().saveToXMLFile(self, xmlFile, key, usedModNames)
+	if self.cpJobParameters then
+		self.cpJobParameters:saveToXMLFile(xmlFile, key)
+	end
+	return true
+end
+
+function CpAIJob:loadFromXMLFile(xmlFile, key)
+	CpAIJob:superClass().loadFromXMLFile(self, xmlFile, key)
+	if self.cpJobParameters then
+		self.cpJobParameters:validateSettings()
+		self.cpJobParameters:loadFromXMLFile(xmlFile, key)
+	end
+end
+
 function CpAIJob:getCpJobParameters()
 	return self.cpJobParameters
 end
@@ -255,6 +252,10 @@ end
 --- Can the job be started?
 function CpAIJob:getCanStartJob()
 	return true
+end
+
+function CpAIJob:copyFrom(job)
+	self.cpJobParameters:copyFrom(job.cpJobParameters)
 end
 
 --- Applies the global wage modifier. 

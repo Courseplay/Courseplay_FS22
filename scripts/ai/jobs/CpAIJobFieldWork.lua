@@ -11,7 +11,6 @@ local AIJobFieldWorkCp_mt = Class(CpAIJobFieldWork, CpAIJob)
 function CpAIJobFieldWork.new(isServer, customMt)
     local self = CpAIJob.new(isServer, customMt or AIJobFieldWorkCp_mt)
 
-    self.lastPositionX, self.lastPositionZ = math.huge, math.huge
     self.hasValidPosition = false
     self.foundVines = nil
     self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
@@ -31,8 +30,8 @@ function CpAIJobFieldWork:setupTasks(isServer)
 end
 
 function CpAIJobFieldWork:setupJobParameters()
-    CpAIJobFieldWork:superClass().setupJobParameters(self)
-    self:setupCpJobParameters()
+    CpAIJob.setupJobParameters(self)
+    self:setupCpJobParameters(CpJobParameters(self))
 end
 
 ---@param vehicle Vehicle
@@ -43,15 +42,9 @@ end
 function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
     CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 
-    local x, z = nil
+    local _
+    local x, z = self.cpJobParameters.fieldPosition:getPosition()
 
-    if vehicle.getLastJob ~= nil then
-        local lastJob = vehicle:getLastJob()
-
-        if not isDirectStart and lastJob ~= nil and lastJob.cpJobParameters then
-            x, z = lastJob.cpJobParameters.fieldPosition:getPosition()
-        end
-    end
     if x == nil or z == nil then
         x, _, z = getWorldTranslation(vehicle.rootNode)
     end
@@ -143,14 +136,6 @@ function CpAIJobFieldWork:drawSelectedField(map)
     if self.selectedFieldPlot then
         self.selectedFieldPlot:draw(map)
     end
-end
-
-function CpAIJobFieldWork:getFieldPositionTarget()
-    return self.cpJobParameters.fieldPosition:getPosition()
-end
-
-function CpAIJobFieldWork:setFieldPositionTarget(x, z)
-    self.cpJobParameters.fieldPosition:setPosition(x, z)
 end
 
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()

@@ -1,15 +1,15 @@
 --- AI job for the silo driver.
----@class CpAIJobBunkerSilo : CpAIJobFieldWork
+---@class CpAIJobBunkerSilo : CpAIJob
 CpAIJobBunkerSilo = {
 	name = "BUNKER_SILO_CP",
 	jobName = "CP_job_bunkerSilo",
 	fieldPositionParameterText = "CP_jobParameters_bunkerSiloPosition_title",
 	targetPositionParameterText = "CP_jobParameters_parkPosition_title",
 }
-local CpAIJobBunkerSilo_mt = Class(CpAIJobBunkerSilo, CpAIJobFieldWork)
+local CpAIJobBunkerSilo_mt = Class(CpAIJobBunkerSilo, CpAIJob)
 
 function CpAIJobBunkerSilo.new(isServer, customMt)
-	local self = CpAIJobFieldWork.new(isServer, customMt or CpAIJobBunkerSilo_mt)
+	local self = CpAIJob.new(isServer, customMt or CpAIJobBunkerSilo_mt)
 	
 	self.hasValidPosition = nil 
 	self.bunkerSilo = nil
@@ -25,20 +25,9 @@ function CpAIJobBunkerSilo:setupTasks(isServer)
 	self:addTask(self.bunkerSiloTask)
 end
 
-function CpAIJobBunkerSilo:setupCpJobParameters()
-	self.cpJobParameters = CpBunkerSiloJobParameters(self)
-	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
-	self.cpJobParameters:validateSettings()
-end
-
---- Disables course generation.
-function CpAIJobBunkerSilo:getCanGenerateFieldWorkCourse()
-	return false
-end
-
---- Disables course generation.
-function CpAIJobBunkerSilo:isCourseGenerationAllowed()
-	return false
+function CpAIJobBunkerSilo:setupJobParameters()
+	CpAIJob.setupJobParameters(self)
+    self:setupCpJobParameters(CpBunkerSiloJobParameters(self))
 end
 
 function CpAIJobBunkerSilo:getIsAvailableForVehicle(vehicle)
@@ -56,7 +45,7 @@ function CpAIJobBunkerSilo:applyCurrentState(vehicle, mission, farmId, isDirectS
 
 	local x, z = self.cpJobParameters.siloPosition:getPosition()
 
-	-- no field position from the previous job, use the vehicle's current position
+	-- no silo position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 		self.cpJobParameters.siloPosition:setPosition(x, z)
@@ -127,21 +116,6 @@ end
 
 function CpAIJobBunkerSilo:drawSilos(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo)
-end
-
-function CpAIJobBunkerSilo:copyFrom(job)
-	self.cpJobParameters:copyFrom(job.cpJobParameters)
-end
-
-function CpAIJobBunkerSilo:saveToXMLFile(xmlFile, key, usedModNames)
-	CpAIJobBunkerSilo:superClass().saveToXMLFile(self, xmlFile, key)
-	self.cpJobParameters:saveToXMLFile(xmlFile, key)
-	return true
-end
-
-function CpAIJobBunkerSilo:loadFromXMLFile(xmlFile, key)
-	CpAIJobBunkerSilo:superClass().loadFromXMLFile(self, xmlFile, key)
-	self.cpJobParameters:loadFromXMLFile(xmlFile, key)
 end
 
 function CpAIJobBunkerSilo:readStream(streamId, connection)

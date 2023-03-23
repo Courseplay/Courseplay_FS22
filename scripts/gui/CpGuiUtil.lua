@@ -374,7 +374,8 @@ function CpGuiUtil.openCourseGeneratorGui(vehicle)
     pageAI:setMapSelectionItem(hotspot)
     CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame menu.")
     if vehicle:getIsCpActive() or not g_currentMission:getHasPlayerPermission("hireAssistant") then 
-        return
+        pageAI:updateParameterValueTexts()
+		return
     end
 	CpUtil.debugVehicle(CpDebug.DBG_HUD, vehicle, "opened ai inGame job creation.")
     vehicle:updateAIFieldWorkerImplementData()
