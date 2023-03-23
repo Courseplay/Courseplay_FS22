@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Pomocnik SI rozładowujący za daleko pola."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Pozycja startowa zbyt daleko pola."/>
     <text name="CP_error_giants_unloader_not_available" text="Pomocnik SI Giantsa rozładowujący niedostępny."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nie znaleziono silosu."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Pomocnik SI Giantsa rozładowujący:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Użyj pomocnika SI Giantsa rozładowującego:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Miejsce rozładunku:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="Pomocnik SI %s niespodziewanie przerwał pracę - opuścił kurs!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono ścieżki!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_errorStopped" text="Opuścił kurs, zatrzymał się"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_customFieldManager_save" text="Zapisz nowe pole"/>
     <text name="CP_controllerGui_startRecording" text="Rozpocznij nagrywanie nowego pola."/>
     <text name="CP_controllerGui_stopRecording" text="Zakończ nagrywanie nowego pola."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -712,6 +721,7 @@ Dostępnych jest tylko kilka ustawień, które możesz zmienić:
   uniknięcie czekania na kombajn z prawie pełną przyczepą.
 - Możesz użyć przesunięć w HUD, aby dostosować pozycję pomocnika rozładowującego pod rurą kombajnu.
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pracownik SI z gry lub AutoDrive.
 Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na
@@ -720,6 +730,7 @@ W tym drugim przypadku musisz wybrać stację rozładunkową po tym, jak ikona k
 
 Opróżnianie przyczepy za pomocą AutoDrive działa tak samo, jak korzystanie z przyczepy samozbierającej, sprawdź samouczki AutoDrive w Internecie.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Wozy przeładunkowe są bardzo proste w użyciu.
 Podobnie jak w przypadku przyczep, za pomocą ikony celu wybierasz pole, na którym chcesz rozładować kombajn.
@@ -727,6 +738,15 @@ Aby aktywować rozładunek, umieść zestaw ponownie na polu lub w odległości 
 Jeśli wóz przeładunkowy jest pełen, automatycznie szuka przyczepy na polu lub w jego pobliżu, aby się do niego przeładować.
 W przypadku, gdy przyczepa jest pełna, a wóz przeładunkowy nadal nie jest pusty, szuka innej przyczepy do rozładunku.
 Jeśli nie ma w pobliżu żadnej wolnej przyczepy, będzie ona nadal rozładowywać kombajn.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 "/>
     <text name="CP_help_page_bunker_title" text="Pracownik silosu bunkrowego"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

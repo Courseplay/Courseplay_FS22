@@ -1,16 +1,15 @@
-
+--- Parameter to selected an unloading station.
 ---@class CpAIParameterUnloadingStation : AIParameterSettingList
-CpAIParameterUnloadingStation = {}
-local CpAIParameterUnloadingStation_mt = Class(CpAIParameterUnloadingStation, AIParameterSettingList)
+CpAIParameterUnloadingStation = CpObject(AIParameterSettingList)
 
-function CpAIParameterUnloadingStation.new(data, vehicle, class, customMt)
-	local self = AIParameterSettingList.new(data, vehicle, class, customMt or CpAIParameterUnloadingStation_mt)
+function CpAIParameterUnloadingStation:init(data, vehicle, class)
+	AIParameterSettingList.init(self, data, vehicle, class)
 	self.type = AIParameterType.UNLOADING_STATION
 	return self
 end
 
 function CpAIParameterUnloadingStation:clone(...)
-	return CpAIParameterUnloadingStation.new(self.data,...)
+	return CpAIParameterUnloadingStation(self.data,...)
 end
 
 --- Gets the current selected unloading station.
@@ -37,7 +36,9 @@ function CpAIParameterUnloadingStation:validateUnloadingStation(fillTypeIndex, f
 			return false, g_i18n:getText("ai_validationErrorUnloadingStationIsFull")
 		end
 	end
-
 	return true, nil
-	
+end
+
+function CpAIParameterUnloadingStation:__tostring()
+	return string.format("CpAIParameterUnloadingStation(name=%s, value=%s, text=%s)", self.name, tostring(self:getValue()), self:getString())
 end

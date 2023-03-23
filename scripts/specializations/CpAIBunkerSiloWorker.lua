@@ -31,6 +31,8 @@ function CpAIBunkerSiloWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAIBunkerSiloWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onUpdate', CpAIBunkerSiloWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAIBunkerSiloWorker)
+    SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAIBunkerSiloWorker)
+    SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAIBunkerSiloWorker)
 end
 
 function CpAIBunkerSiloWorker.registerFunctions(vehicleType)
@@ -75,6 +77,16 @@ end
 function CpAIBunkerSiloWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAIBunkerSiloWorker
     spec.cpJob:saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+end
+
+function CpAIBunkerSiloWorker:onReadStream(streamId, connection)
+    local spec = self.spec_cpAIBunkerSiloWorker
+    spec.cpJob:readStream(streamId, connection)
+end
+
+function CpAIBunkerSiloWorker:onWriteStream(streamId, connection)
+    local spec = self.spec_cpAIBunkerSiloWorker
+    spec.cpJob:writeStream(streamId, connection)
 end
 
 function CpAIBunkerSiloWorker:onUpdate(dt)

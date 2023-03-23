@@ -1,24 +1,20 @@
 --- Boolean setting
 ---@class AIParameterBooleanSetting : AIParameterSettingList
-AIParameterBooleanSetting = {}
+AIParameterBooleanSetting = CpObject(AIParameterSettingList)
 AIParameterBooleanSetting.DEFAULT_ACTIVATED_TEXT = "CP_activated"
 AIParameterBooleanSetting.DEFAULT_DEACTIVATED_TEXT = "CP_deactivated"
 
-local AIParameterBooleanSetting_mt = Class(AIParameterBooleanSetting, AIParameterSettingList)
-
-function AIParameterBooleanSetting.new(data,vehicle,class,customMt)
+function AIParameterBooleanSetting:init(data, vehicle, class)
 	data.values = {false,true}
 	data.texts = next(data.texts) ~= nil and data.texts or {
 		g_i18n:getText(AIParameterBooleanSetting.DEFAULT_DEACTIVATED_TEXT),
 		g_i18n:getText(AIParameterBooleanSetting.DEFAULT_ACTIVATED_TEXT),
 	}
-	local self = AIParameterSettingList.new(data,vehicle,class,customMt or AIParameterBooleanSetting_mt)
-
-	return self
+	AIParameterSettingList.init(self, data, vehicle, class)
 end
 
 function AIParameterBooleanSetting:clone(...)
-	return AIParameterBooleanSetting.new(self.data,...)
+	return AIParameterBooleanSetting(self.data, ...)
 end
 
 --- Gets the closest ix relative to the setup ix.
@@ -41,4 +37,8 @@ function AIParameterBooleanSetting:loadFromXMLFile(xmlFile, key)
 	else 
 		self:loadFromXMLFileLegacy(xmlFile, key)
 	end
+end
+
+function AIParameterBooleanSetting:__tostring()
+	return string.format("AIParameterBooleanSetting(name=%s, value=%s, text=%s)", self.name, tostring(self:getValue()), self:getString())
 end

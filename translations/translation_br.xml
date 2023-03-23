@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Descarregador longe do campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posição inicial longe do campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants descarregador indisponível."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nenhum silo foi encontrado."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants descarregador:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants descarregador:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação de descarga:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="O trabalhador A %s parou de trabalhar inesperadamente - deixou a rota!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador AI %s parou de funcionar inesperadamente - nenhum caminho encontrado!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Caminho não encontrado"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_customFieldManager_save" text="Salvar campo customizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar gravação de campo customizado."/>
     <text name="CP_controllerGui_stopRecording" text="Parar gravação de campo customizado."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -723,6 +732,7 @@ evitar esperar a chamada de uma colheitadeira com a carreta quase cheia.
 - Você pode usar os deslocamentos no HUD para ajustar a posição da carreta sob o tubo da colheitadeira.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Se você usar uma carreta para descarregar, existem duas maneiras de transportar sua colheita para um silo ou para um ponto de venda: o ajudante da Giants
 ou AutoDrive.
@@ -732,6 +742,7 @@ Neste último caso, você deve escolher a estação de descarga depois que o íc
 
 Esvaziar uma carreta com o AutoDrive funciona da mesma forma que usar uma carreta autocarregável, confira os Tutoriais do AutoDrive na Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Bazuca (carreta com cano para descarregar numa carreta comun) é muito simples de usar.
 Assim como nas carretas, você usa o ícone de alvo para escolher o campo onde deseja descarregar uma colheitadeira.
@@ -739,6 +750,15 @@ Para iniciar a bazuca, coloque-o novamente no campo ou a 20 metros do campo.
 Se a bazuca estiver cheia, ela procurará automaticamente uma carreta comum no campo ou próximo a ele para descarregar.
 Caso a carreta esteja cheia e a bazuca ainda não esteja vazia, ela irá procurar outra carreta para descarregar.
 Se não houver carreta disponível, ela continuará a descarregar a colheitadeira até ficar cheia.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Разгружающий далеко от поля."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Начальная позиция далеко от поля."/>
     <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="ИИ-работник %s неожиданно прекратил работу - оставил курс!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="ИИ-работник %s неожиданно прекратил работу - не найдено выбранного типа тюков!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="ИИ-работник %s неожиданно прекратил работу - не найдено пути!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@
     <text name="CP_infoTexts_errorStopped" text="Покинул курс, остановился"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Не найдено путь"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@
     <text name="CP_customFieldManager_save" text="Сохранить пользовательское поле"/>
     <text name="CP_controllerGui_startRecording" text="Начать запись пользовательского поля."/>
     <text name="CP_controllerGui_stopRecording" text="Завершить запись пользовательского поля."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -718,6 +727,7 @@ R: Удаляет скопированный курс из буфера обме
 Это предотвращает ожидание вызова от комбайна, при почти полном прицепе.
 - В HUD вы можете изменять смещение, чтобы отрегулировать положение разгрузчика под выгрузной трубой комбайна.
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Когда вы используете прицеп для разгрузки, существует два способа перевозить свой урожай в бункеры или к точкам продажи: помощник Giants или AutoDrive.
 Вы можете использовать меню ИИ и создать задание, затем активируя функцию помощника Giants и указать точку разгрузки в нижней части списка или активируя значком колёсика в HUD.
@@ -725,6 +735,7 @@ R: Удаляет скопированный курс из буфера обме
 
 Разгрузка прицепа с помощью AutoDrive работает так же, как и с использованием прицепа-перегрузчика; для работы с ними ознакомьтесь с руководством к AutoDrive в Интернете.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Прицепы-перегрузчики очень просты в использовании.
 Как и в случае с обычными прицепами, вы используете значок цели, чтобы выбрать поле, где вы хотите разгружать комбайны.
@@ -732,6 +743,15 @@ R: Удаляет скопированный курс из буфера обме
 Если прицеп-перегрузчик заполнен, он автоматически ищет прицеп на или рядом с полем для перегрузки в него.
 В случае, если  тот прицеп заполнен, а прицеп-перегрузчик по-прежнему не пуст, он будет искать другой прицеп для разгрузки.
 Если нет больше доступных прицепов, он будет продолжать разгрузить комбайн.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 "/>
     <text name="CP_help_page_bunker_title" text="Работник в силосной яме"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

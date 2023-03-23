@@ -95,18 +95,22 @@ function CpInfoTexts:onStartAutoDrive()
 end
 
 function CpInfoTexts:raiseDirtyFlag()
-	local spec = self.spec_cpInfoTexts
-	self:raiseDirtyFlags(spec.dirtyFlag)
+	if self.isServer then
+		local spec = self.spec_cpInfoTexts
+		self:raiseDirtyFlags(spec.dirtyFlag)
+	end
 end
 
 --- Activates a given info text.
 ---@param infoText CpInfoTextElement
 function CpInfoTexts:setCpInfoTextActive(infoText)
-	if infoText and infoText.id then 
-		local spec = self.spec_cpInfoTexts
-		if spec.activeInfoTexts[infoText.id] == nil then 
-			spec.activeInfoTexts[infoText.id] = infoText
-			CpInfoTexts.raiseDirtyFlag(self)
+	if self.isServer then
+		if infoText and infoText.id then 
+			local spec = self.spec_cpInfoTexts
+			if spec.activeInfoTexts[infoText.id] == nil then 
+				spec.activeInfoTexts[infoText.id] = infoText
+				CpInfoTexts.raiseDirtyFlag(self)
+			end
 		end
 	end
 end
@@ -114,21 +118,25 @@ end
 --- Resets a given info text.
 ---@param infoText CpInfoTextElement
 function CpInfoTexts:resetCpActiveInfoText(infoText)
-	if infoText and infoText.id then 
-		local spec = self.spec_cpInfoTexts
-		if spec.activeInfoTexts[infoText.id] then 
-			spec.activeInfoTexts[infoText.id] = nil
-			CpInfoTexts.raiseDirtyFlag(self)
+	if self.isServer then
+		if infoText and infoText.id then 
+			local spec = self.spec_cpInfoTexts
+			if spec.activeInfoTexts[infoText.id] then 
+				spec.activeInfoTexts[infoText.id] = nil
+				CpInfoTexts.raiseDirtyFlag(self)
+			end
 		end
 	end
 end
 
 --- Clears all active info texts.
 function CpInfoTexts:resetCpAllActiveInfoTexts()
-	local spec = self.spec_cpInfoTexts
-	spec.activeInfoTexts = {}
-	CpInfoTexts.raiseDirtyFlag(self)
-	CpUtil.debugVehicle(CpDebug.DBG_HUD, self, "All info texts were cleared.")
+	if self.isServer then
+		local spec = self.spec_cpInfoTexts
+		spec.activeInfoTexts = {}
+		CpInfoTexts.raiseDirtyFlag(self)
+		CpUtil.debugVehicle(CpDebug.DBG_HUD, self, "All info texts were cleared.")
+	end
 end
 
 function CpInfoTexts:getCpActiveInfoTexts()
@@ -166,5 +174,28 @@ function CpInfoTexts:setFromBitMask(bitMask)
 		if bit == 1 then
 			spec.activeInfoTexts[id] = g_infoTextManager:getInfoTextById(id)
 		end
+	end
+end
+
+--- Debug test function
+---@param ix number|nil optional bit mask to set.
+function CpInfoTexts.debug(ix)
+	local vehicle = g_currentMission.controlledVehicle
+	if vehicle and vehicle.spec_cpInfoTexts then 
+		local spec = vehicle.spec_cpInfoTexts
+		CpUtil.infoVehicle(vehicle, "Current bit mask: %s", CpInfoTexts.getBitMask(vehicle))
+		for i, activeInfoText in pairs(spec.activeInfoTexts) do 
+			CpUtil.infoVehicle(vehicle, "%s", tostring(activeInfoText))
+		end
+		if ix and tonumber(ix) ~= nil then 
+			CpUtil.infoVehicle(vehicle, "-----------------------------------------------------------------------------------------")
+			CpUtil.infoVehicle(vehicle, "Set to bit mask: %s", ix)
+			CpInfoTexts.setFromBitMask(vehicle, ix)
+			for i, activeInfoText in pairs(spec.activeInfoTexts) do 
+				CpUtil.infoVehicle(vehicle, "%s", tostring(activeInfoText))
+			end
+		end
+	else 
+		CpUtil.info("No valid vehicle is entered!")
 	end
 end

@@ -192,10 +192,16 @@
 				<text text="$l10n_CP_help_page_unloaderGeneral_text"/>
 			</paragraph>
 			<paragraph>
+				<title text="$l10n_CP_help_page_unloaderTrailer_title" />
 				<text text="$l10n_CP_help_page_unloaderTrailer_text"/>
 			</paragraph>
 			<paragraph>
+				<title text="$l10n_CP_help_page_unloaderAuger_title" />
 				<text text="$l10n_CP_help_page_unloaderAuger_text"/>
+			</paragraph>
+			<paragraph>
+				<title text="$l10n_CP_help_page_unloaderFieldUnload_title" />
+				<text text="$l10n_CP_help_page_unloaderFieldUnload_text"/>
 			</paragraph>
 		</page>
 		<!--Courseplay Bunker Silo Driver-->

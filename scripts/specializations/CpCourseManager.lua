@@ -99,6 +99,8 @@ function CpCourseManager.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, 'cpStopCourseRecorder', CpCourseManager.cpStopCourseRecorder)
     SpecializationUtil.registerFunction(vehicleType, 'getIsCpCourseRecorderActive', CpCourseManager.getIsCpCourseRecorderActive)
     SpecializationUtil.registerFunction(vehicleType, 'getCanStartCpCourseRecorder', CpCourseManager.getCanStartCpCourseRecorder)
+    SpecializationUtil.registerFunction(vehicleType, 'getIsCpCourseRecorderPaused', CpCourseManager.getIsCpCourseRecorderPaused)
+    SpecializationUtil.registerFunction(vehicleType, 'toggleCpCourseRecorderPause', CpCourseManager.toggleCpCourseRecorderPause)
 
     SpecializationUtil.registerFunction(vehicleType, 'rememberCpLastWaypointIx', CpCourseManager.rememberCpLastWaypointIx)
     SpecializationUtil.registerFunction(vehicleType, 'getCpLastRememberedWaypointIx', CpCourseManager.getCpLastRememberedWaypointIx)
@@ -497,8 +499,25 @@ end
 
 function CpCourseManager:getIsCpCourseRecorderActive()
     local spec = self.spec_cpCourseManager
-    return spec.courseRecorder and spec.courseRecorder:isRecording()
+    return spec.courseRecorder:isRecording()
 end
+
+function CpCourseManager:getIsCpCourseRecorderPaused()
+    local spec = self.spec_cpCourseManager
+    return self:getIsCpCourseRecorderActive() and spec.courseRecorder:isPaused()
+end
+
+function CpCourseManager:toggleCpCourseRecorderPause()
+    local spec = self.spec_cpCourseManager
+    if self:getIsCpCourseRecorderActive() then 
+        if self:getIsCpCourseRecorderPaused() then 
+            spec.courseRecorder:unpause()
+        else 
+            spec.courseRecorder:pause()
+        end
+    end
+end
+
 
 --- can only start recording when CP is not driving (actually, it would work, should later consider)
 function CpCourseManager:getCanStartCpCourseRecorder()

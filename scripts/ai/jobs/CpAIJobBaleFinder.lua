@@ -18,10 +18,9 @@ function CpAIJobBaleFinder:setupTasks(isServer)
 	self:addTask(self.baleFinderTask)
 end
 
-function CpAIJobBaleFinder:setupCpJobParameters()
-	self.cpJobParameters = CpBaleFinderJobParameters(self)
-	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)
-	self.cpJobParameters:validateSettings()
+function CpAIJobBaleFinder:setupJobParameters()
+	CpAIJob.setupJobParameters(self)
+    self:setupCpJobParameters(CpBaleFinderJobParameters(self))
 end
 
 --- Disables course generation.

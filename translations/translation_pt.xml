@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Descarregador muito longe do campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posição de ínicio muito longe do campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Descarregador da Giants não é acessível."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Não à silo á vista."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Descarregador da Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa Descarregador da giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação de descarregar:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="Trabalhador %s parou o serviço de repente - saiu da rota!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabalhador %s parou o serviço de repente - não encontra fardos do tipo pretendido!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador %s parou o serviço de repente - não encontra o caminho!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_infoTexts_errorStopped" text="Está parado, saiu da rota"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Não encontra a rota"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_customFieldManager_save" text="Guarda campo personalizado"/>
     <text name="CP_controllerGui_startRecording" text="Início gravação de campo personalizado."/>
     <text name="CP_controllerGui_stopRecording" text="Pára a gravação de campo personalizado."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -708,6 +717,7 @@ is to avoid waiting for a combine to call with a trailer almost full.
 - You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
 or AutoDrive.
@@ -717,6 +727,7 @@ In the latter case, you have to choose the unload station after the wheel icon t
 
 Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Auger wagons are very simple to use.
 Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
@@ -724,6 +735,15 @@ To start the unloader, place it again on the field or within 20 meters of the fi
 If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
 In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
 Is no trailer available, it will continue to unload the combine.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

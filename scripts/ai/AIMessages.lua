@@ -59,11 +59,29 @@ function AIMessageErrorWrongBaleWrapType:getMessage()
 	return g_i18n:getText("CP_ai_messageErrorWrongBaleWrapType")
 end
 
+AIMessageErrorGroundUnloadNotSupported = {
+	name = "CP_ERROR_GROUND_UNLOAD_NOT_SUPPORTED"
+}
+
+local AIMessageErrorGroundUnloadNotSupported_mt = Class(AIMessageErrorGroundUnloadNotSupported, AIMessage)
+
+function AIMessageErrorGroundUnloadNotSupported.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorGroundUnloadNotSupported_mt)
+
+	return self
+end
+
+function AIMessageErrorGroundUnloadNotSupported:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorGroundUnloadNotSupported")
+end
+
+
 function AIMessageErrorIsFull.register()
 	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorIsFull.name, AIMessageErrorIsFull)
 	g_currentMission.aiMessageManager:registerMessage(AIMessageCpError.name, AIMessageCpError)
 	g_currentMission.aiMessageManager:registerMessage(AIMessageCpErrorNoPathFound.name, AIMessageCpErrorNoPathFound)
 	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorWrongBaleWrapType.name, AIMessageErrorWrongBaleWrapType)
+	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorGroundUnloadNotSupported.name, AIMessageErrorGroundUnloadNotSupported)
 end
 
 --- Another ugly hack, as the giants code to get the message index in mp isn't working ..

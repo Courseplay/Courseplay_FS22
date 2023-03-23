@@ -11,7 +11,6 @@ local AIJobFieldWorkCp_mt = Class(CpAIJobFieldWork, CpAIJob)
 function CpAIJobFieldWork.new(isServer, customMt)
     local self = CpAIJob.new(isServer, customMt or AIJobFieldWorkCp_mt)
 
-    self.lastPositionX, self.lastPositionZ = math.huge, math.huge
     self.hasValidPosition = false
     self.foundVines = nil
     self.selectedFieldPlot = FieldPlot(g_currentMission.inGameMenu.ingameMap)
@@ -31,21 +30,8 @@ function CpAIJobFieldWork:setupTasks(isServer)
 end
 
 function CpAIJobFieldWork:setupJobParameters()
-    CpAIJobFieldWork:superClass().setupJobParameters(self)
-
-    -- Adds field position parameter
-    self.fieldPositionParameter = AIParameterPosition.new()
-    self.fieldPositionParameter.setValue = function(self, x, z)
-        self:setPosition(x, z)
-    end
-    self.fieldPositionParameter.isCpFieldPositionTarget = true
-
-    self:addNamedParameter("fieldPosition", self.fieldPositionParameter)
-    local positionGroup = AIParameterGroup.new(g_i18n:getText(self.fieldPositionParameterText))
-    positionGroup:addParameter(self.fieldPositionParameter)
-    table.insert(self.groupedParameters, positionGroup)
-
-    self:setupCpJobParameters(nil)
+    CpAIJob.setupJobParameters(self)
+    self:setupCpJobParameters(CpJobParameters(self))
 end
 
 ---@param vehicle Vehicle
@@ -56,23 +42,24 @@ end
 function CpAIJobFieldWork:applyCurrentState(vehicle, mission, farmId, isDirectStart, isStartPositionInvalid)
     CpAIJobFieldWork:superClass().applyCurrentState(self, vehicle, mission, farmId, isDirectStart)
 
-    local x, z = nil
+    local _
+    local x, z = self.cpJobParameters.fieldPosition:getPosition()
 
-    if vehicle.getLastJob ~= nil then
-        local lastJob = vehicle:getLastJob()
-
-        if not isDirectStart and lastJob ~= nil and lastJob.cpJobParameters then
-            x, z = lastJob.fieldPositionParameter:getPosition()
-        end
-    end
     if x == nil or z == nil then
         x, _, z = getWorldTranslation(vehicle.rootNode)
     end
 
-    self.fieldPositionParameter:setPosition(x, z)
+    self.cpJobParameters.fieldPosition:setPosition(x, z)
 
     if isStartPositionInvalid then
-        self:resetStartPositionAngle(vehicle)
+        local x, _, z = getWorldTranslation(vehicle.rootNode) 
+        local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
+        local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        
+        self.cpJobParameters.startPosition:setPosition(x, z)
+        self.cpJobParameters.startPosition:setAngle(angle)
+
+        self.cpJobParameters.fieldPosition:setPosition(x, z)
     end
 end
 
@@ -86,7 +73,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
     local vehicle = self.vehicleParameter:getVehicle()
 
     -- everything else is valid, now find the field
-    local tx, tz = self.fieldPositionParameter:getPosition()
+    local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     self.hasValidPosition = false
     self.foundVines = nil
     local isCustomField
@@ -151,14 +138,6 @@ function CpAIJobFieldWork:drawSelectedField(map)
     end
 end
 
-function CpAIJobFieldWork:getFieldPositionTarget()
-    return self.fieldPositionParameter:getPosition()
-end
-
-function CpAIJobFieldWork:setFieldPositionTarget(x, z)
-    self.fieldPositionParameter:setPosition(x, z)
-end
-
 function CpAIJobFieldWork:getCanGenerateFieldWorkCourse()
     return self.hasValidPosition
 end
@@ -191,7 +170,7 @@ end
 function CpAIJobFieldWork:onClickGenerateFieldWorkCourse()
     local vehicle = self.vehicleParameter:getVehicle()
     local settings = vehicle:getCourseGeneratorSettings()
-    local tx, tz = self.fieldPositionParameter:getPosition()
+    local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
     local ok, course
     if self.foundVines then
         local vineSettings = vehicle:getCpVineSettings()
@@ -244,9 +223,11 @@ end
 function CpAIJobFieldWork:isPipeOnLeftSide(vehicle)
     local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
     if pipeObject and SpecializationUtil.hasSpecialization(Combine, pipeObject.specializations) then
-        local pipeAttributes = {}
-        ImplementUtil.setPipeAttributes(pipeAttributes, pipeObject)
-        return pipeAttributes.pipeOnLeftSide
+        --- The controller measures the pipe attributes on creation.
+        local controller = PipeController(vehicle, pipeObject)
+        local isPipeOnLeftSide = controller:isPipeOnTheLeftSide()
+        controller:delete()
+        return isPipeOnLeftSide
     else
         return true
     end
@@ -259,7 +240,7 @@ end
 function CpAIJobFieldWork:resetStartPositionAngle(vehicle)
     CpAIJobFieldWork:superClass().resetStartPositionAngle(self, vehicle)
     local x, _, z = getWorldTranslation(vehicle.rootNode)
-    self.fieldPositionParameter:setPosition(x, z)
+    self.cpJobParameters.fieldPosition:setPosition(x, z)
 end
 
 --- Ugly hack to fix a mp problem from giants, where the helper is not always reset correctly on the client side.

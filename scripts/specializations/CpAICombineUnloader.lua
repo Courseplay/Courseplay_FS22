@@ -15,6 +15,27 @@ function CpAICombineUnloader.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     local key = "vehicles.vehicle(?)" .. CpAICombineUnloader.KEY
     CpJobParameters.registerXmlSchema(schema, key..".cpJob")
+
+    --- Registers pipe controller measurement test function
+    g_devHelper.consoleCommands:registerConsoleCommand("cpMeasurePipe", 
+        "Measures the pipe properties while unfolded.", "consoleCommandMeasurePipeProperties", CpAICombineUnloader)
+end
+
+--- Helper command to test the pipe measurement.
+function CpAICombineUnloader:consoleCommandMeasurePipeProperties()
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle then 
+        local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
+        if pipeObject then 
+            local controller = PipeController(vehicle, pipeObject)
+            controller:printPipeDebug()
+            controller:delete()
+        else 
+            CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
+        end
+    else 
+        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
+    end
 end
 
 function CpAICombineUnloader.prerequisitesPresent(specializations)
@@ -30,6 +51,8 @@ end
 function CpAICombineUnloader.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAICombineUnloader)
+    SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAICombineUnloader)
+    SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAICombineUnloader)
 end
 
 function CpAICombineUnloader.registerFunctions(vehicleType)
@@ -73,7 +96,16 @@ end
 function CpAICombineUnloader:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAICombineUnloader
     spec.cpJob:saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+end
 
+function CpAICombineUnloader:onReadStream(streamId, connection)
+    local spec = self.spec_cpAICombineUnloader
+    spec.cpJob:readStream(streamId, connection)
+end
+
+function CpAICombineUnloader:onWriteStream(streamId, connection)
+    local spec = self.spec_cpAICombineUnloader
+    spec.cpJob:writeStream(streamId, connection)
 end
 
 function CpAICombineUnloader:getCpCombineUnloaderJobParameters()
@@ -158,18 +190,18 @@ function CpAICombineUnloader:startCpAtLastWp(superFunc)
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAICombineUnloader:startCpCombineUnloader(fieldPolygon, jobParameters)
+function CpAICombineUnloader:startCpCombineUnloader(...)
     --- Calls the giants startFieldWorker function.
     self:startFieldWorker()
     if self.isServer then 
         --- Replaces drive strategies.
-        CpAICombineUnloader.replaceDriveStrategies(self, fieldPolygon, jobParameters)
+        CpAICombineUnloader.replaceDriveStrategies(self, ...)
     end
 end
 
 -- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse to take care of
 -- field work.
-function CpAICombineUnloader:replaceDriveStrategies(fieldPolygon, jobParameters)
+function CpAICombineUnloader:replaceDriveStrategies(jobParameters)
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP combine unload job, start the CP AI driver, setting up drive strategies...')
     local spec = self.spec_aiFieldWorker
     if spec.driveStrategies ~= nil then
@@ -181,7 +213,6 @@ function CpAICombineUnloader:replaceDriveStrategies(fieldPolygon, jobParameters)
     end
 	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Combine unload job, install CP drive strategy for it')
     local cpDriveStrategy = AIDriveStrategyUnloadCombine.new()
-    cpDriveStrategy:setFieldPolygon(fieldPolygon)
     cpDriveStrategy:setJobParameterValues(jobParameters)
     CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self)
     self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy

@@ -74,6 +74,18 @@ function CpJobParameters:copyFrom(jobParameters)
     end
 end
 
+--- Crawls through the parameters and collects all CpAIParameterPositionAngle settings.
+---@return table settings all CpAIParameterPositionAngle and CpAIParameterPosition settings found.
+function CpJobParameters:getAiTargetMapHotspotParameters()
+    local parameters = {}
+    for i, setting in ipairs(self.settings) do
+        if setting:is_a(CpAIParameterPosition) then
+            table.insert(parameters, setting)
+        end
+    end
+    return parameters
+end
+
 function CpJobParameters:getMultiTools()
     local vehicle = self.job:getVehicle()
     if vehicle then 
@@ -155,6 +167,19 @@ function CpCombineUnloaderJobParameters:init(job)
     CpSettingsUtil.cloneSettingsTable(self, CpCombineUnloaderJobParameters.settings, nil, self)
 end
 
+function CpCombineUnloaderJobParameters:isGiantsUnloadDisabled()
+    return self:hasPipe() or self.useFieldUnload:getValue()
+end
+
+function CpCombineUnloaderJobParameters:isFieldUnloadDisabled()
+    return self.useGiantsUnload:getValue()
+end
+
+function CpCombineUnloaderJobParameters:isFieldUnloadTipSideDisabled()
+    return self:isFieldUnloadDisabled() or self:hasPipe()
+end
+
+
 function CpCombineUnloaderJobParameters:hasPipe()
     local vehicle = self.job:getVehicle()
     if vehicle then
@@ -178,6 +203,35 @@ function CpCombineUnloaderJobParameters:generateUnloadingStations(setting)
         table.insert(texts, "---")
     end
     return unloadingStationIds, texts
+end
+
+--- Adds all tipSides of the attached trailer into setting for selection.
+---@param setting table
+---@return table tipSideIds all tip side by their id.
+---@return table texts all tip side translations.
+function CpCombineUnloaderJobParameters:generateTipSides(setting)
+    local tipSideIds = {}
+    local texts = {}
+    if self.job and self.job:getVehicle() then
+        local trailer = AIUtil.getImplementWithSpecialization(self.job:getVehicle(), Trailer)
+        if trailer then 
+            for i, tipSide in pairs(trailer.spec_trailer.tipSides) do 
+                --- TODO: Side unloading disabled for now!!
+                local dischargeNodeIndex = tipSide.dischargeNodeIndex
+                local dischargeNode = trailer:getDischargeNodeByIndex(dischargeNodeIndex)
+                local xOffset, _ ,_ = localToLocal(dischargeNode.node, trailer.rootNode, 0, 0, 0)
+                if math.abs(xOffset) <= 1 then
+                    table.insert(tipSideIds, tipSide.index)
+                    table.insert(texts, tipSide.name)
+                end
+            end
+        end
+    end
+    if #tipSideIds <=0 then 
+        table.insert(tipSideIds, -1)
+        table.insert(texts, "---")
+    end
+    return tipSideIds, texts
 end
 
 function CpCombineUnloaderJobParameters.getSettings(vehicle)

@@ -79,3 +79,100 @@ end
 
 BunkerSilo.delete = Utils.prependedFunction(BunkerSilo.delete, removeBunkerSilo)
 
+---@class BunkerSiloManagerUtil
+BunkerSiloManagerUtil = {}
+BunkerSiloManagerUtil.debugChannel = CpDebug.DBG_SILO
+
+function BunkerSiloManagerUtil.debug(...)
+	CpUtil.debugFormat(BunkerSiloManagerUtil.debugChannel, ...)	
+end
+
+---Checks for heaps between two points
+---@param node number StartPoint
+---@param xOffset number 
+---@param length number SearchLength
+---@param zOffset number StartOffset
+---@return boolean found heap?
+---@return CpHeapBunkerSilo
+function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffset)
+	local p1x, p1y, p1z = localToWorld(node, xOffset, 0, zOffset)
+	local p2x, p2y, p2z = localToWorld(node, xOffset, 0, length)
+	local heapFillType = DensityMapHeightUtil.getFillTypeAtLine(p1x, p1y, p1z, p2x, p2y, p2z, 5)
+	if heapFillType == nil or heapFillType == FillType.UNKNOWN then 
+		BunkerSiloManagerUtil.debug("Heap could not be found!")
+		return false, nil
+	end
+	length = length - zOffset
+	local _, yRot, _ = getRotation(node)
+
+	--create temp node 
+	local point = CpUtil.createNode("cpTempHeapFindingPoint", p1x, p1z, yRot, nil)
+	
+	-- move the line to find out the size of the heap
+	
+	--find maxX 
+	local stepSize = 0.1
+	local searchWidth = 0.1
+	local maxX = 0
+	local tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ = 0, 0, 0, 0, 0, 0
+	for i=stepSize, 250, stepSize do
+		tempStartX, tempStartY, tempStartZ = localToWorld(point, i, 0, 0)
+		tempHeightX, tempHeightY, tempHeightZ= localToWorld(point, i, 0, length*2)
+		local fillType = DensityMapHeightUtil.getFillTypeAtLine(tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ, searchWidth)
+		--print(string.format("fillType:%s distance: %.1f", tostring(fillType), i))	
+		if fillType ~= heapFillType then
+			maxX = i-stepSize
+			BunkerSiloManagerUtil.debug("maxX = %.2f", maxX)
+			break
+		end
+	end
+	
+	--find minX 
+	local minX = 0
+	local tempStartX, tempStartZ, tempHeightX, tempHeightZ = 0, 0, 0, 0;
+	for i=stepSize, 250, stepSize do
+		tempStartX, tempStartY, tempStartZ = localToWorld(point, -i, 0, 0)
+		tempHeightX, tempHeightY, tempHeightZ= localToWorld(point, -i, 0, length*2)
+		local fillType = DensityMapHeightUtil.getFillTypeAtLine(tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ, searchWidth)
+		--print(string.format("fillType:%s distance: %.1f", tostring(fillType), i))	
+		if fillType ~= heapFillType then
+			minX = i-stepSize
+			BunkerSiloManagerUtil.debug("minX = %.2f", minX)
+			break
+		end
+	end
+	
+	--find minZ and maxZ
+	local foundHeap = false
+	local minZ, maxZ = 0, 0
+	for i=0, 250, stepSize do
+		tempStartX, tempStartY, tempStartZ = localToWorld(point, maxX, 0, i)
+		tempHeightX, tempHeightY, tempHeightZ= localToWorld(point, -minX, 0, i)
+		local fillType = DensityMapHeightUtil.getFillTypeAtLine(tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ, searchWidth)
+		if not foundHeap then
+			if fillType == heapFillType then
+				foundHeap = true
+				minZ = i-stepSize
+				BunkerSiloManagerUtil.debug("minZ = %.2f", minZ)
+			end
+		else
+			if fillType ~= heapFillType then
+				maxZ = i-stepSize+1
+				BunkerSiloManagerUtil.debug("maxZ = %.2f", maxZ)
+				break
+			end
+		end	
+	end
+	
+	--set found values into bunker table and return it
+	local sx, _, sz = localToWorld(point, maxX, 0, minZ)
+	local wx, _, wz = localToWorld(point, -minX, 0, minZ)
+	local hx, _, hz = localToWorld(point, maxX, 0, maxZ)
+	local bunker = CpHeapBunkerSilo(sx, sz, wx, wz, hx, hz)
+	local fillLevel = DensityMapHeightUtil.getFillLevelAtArea(heapFillType, sx, sz, wx, wz, hx, hz)
+	BunkerSiloManagerUtil.debug("Heap found with %s(%d) and fillLevel: %.2f", g_fillTypeManager:getFillTypeByIndex(heapFillType).title, heapFillType, fillLevel)
+
+	CpUtil.destroyNode(point)
+
+	return true, bunker
+end

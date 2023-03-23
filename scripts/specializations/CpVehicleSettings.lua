@@ -24,6 +24,8 @@ function CpVehicleSettings.initSpecialization()
     schema:register(XMLValueType.STRING,"vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)#userId", "User id")
     CpSettingsUtil.registerXmlSchema(schema, 
         "vehicles.vehicle(?)" .. CpVehicleSettings.KEY .. CpVehicleSettings.USER_KEY .. "(?)")
+
+    CpVehicleSettings.loadSettingsSetup()
 end
 
 
@@ -76,7 +78,7 @@ function CpVehicleSettings:onLoad(savegame)
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
     CpSettingsUtil.cloneSettingsTable(spec, CpVehicleSettings.settings, self, CpVehicleSettings)
-    
+    CpVehicleSettings.validateSettings(self)
     spec.userSettings = {}
     CpVehicleSettings.loadSettings(self, savegame)
 end
@@ -138,6 +140,7 @@ end
 function CpVehicleSettings:setAutomaticWorkWidthAndOffset(ignoreObject)
     local spec = self.spec_cpVehicleSettings
     local width, offset = WorkWidthUtil.getAutomaticWorkWidthAndOffset(self, nil, ignoreObject)
+    self:getCourseGeneratorSettings().workWidth:refresh()
     self:getCourseGeneratorSettings().workWidth:setFloatValue(width)
     spec.toolOffsetX:setFloatValue(offset)
 end
@@ -176,7 +179,6 @@ function CpVehicleSettings.loadSettingsSetup()
     local filePath = Utils.getFilename("config/VehicleSettingsSetup.xml", g_Courseplay.BASE_DIRECTORY)
     CpSettingsUtil.loadSettingsFromSetup(CpVehicleSettings, filePath)
 end
-CpVehicleSettings.loadSettingsSetup()
 
 function CpVehicleSettings.getSettingSetup()
     return CpVehicleSettings.settingsBySubTitle, CpVehicleSettings.pageTitle
@@ -368,4 +370,20 @@ function CpVehicleSettings:onCpUserSettingChanged(setting)
     if not self.isServer then 
         VehicleUserSettingsEvent.sendEvent(self, setting)
     end
+end
+
+--- Generates speed setting values up to the max possible speed.
+---@param setting AIParameterSettingList
+---@param lastValue any
+---@return table values
+---@return table texts
+---@return any correct current value after max speed adjustment
+function CpVehicleSettings:generateSpeedSettingValuesAndTexts(setting, lastValue)
+    local maxSpeed = self.getCruiseControlMaxSpeed and self:getCruiseControlMaxSpeed() or setting.data.max
+    local values, texts = {}, {}
+    for i = setting.data.min, maxSpeed, setting.data.incremental or 1 do 
+        table.insert(values, i)
+        table.insert(texts, i)
+    end
+    return values, texts, math.min(lastValue, maxSpeed)
 end

@@ -6,6 +6,12 @@
 -->
 
 <Settings prefixText="CP_bunkerSiloJobParameters_">
+	<SettingSubTitle title="ai_parameterGroupTitlePosition" prefix="false">
+		<Setting classType="CpAIParameterPositionAngle" name="startPosition" positionParameterType="DRIVE_TO"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="CP_jobParameters_bunkerSiloPosition_title" prefix="false">
+		<Setting classType="CpAIParameterPosition" name="siloPosition" positionParameterType="FIELD_OR_SILO"/>
+	</SettingSubTitle>
 	<SettingSubTitle title="drivingForwardsIntoSilo">
 		<Setting classType="AIParameterBooleanSetting" name="drivingForwardsIntoSilo" defaultBool="true" isVisible="isDrivingForwardsIntoSiloSettingVisible" isDisabled="isCpActive">
 			<Texts>

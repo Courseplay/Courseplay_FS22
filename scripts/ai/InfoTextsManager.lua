@@ -51,8 +51,8 @@ function CpInfoTextElement:init(name, text, id, hasFinished, event, aiMessageCla
 end
 
 function CpInfoTextElement:__tostring()
-	return string.format("name: %s, text: %s, hasFinished: %s, event: %s, hasClass: %s",
-									 self.name, self.text, tostring(self.hasFinished), tostring(self.event), tostring(self.aiMessageClass))
+	return string.format("name: %s, id: %d, text: %s \n  => hasFinished: %s, event: %s, hasClass: %s",
+									 self.name, self.id, self.text, tostring(self.hasFinished), tostring(self.event), tostring(self.aiMessageClass))
 end
 
 --- Checks if the given message is assigned to this info text.
@@ -74,7 +74,7 @@ InfoTextManager = CpObject()
 
 InfoTextManager.xmlKey = "InfoTexts.InfoText"
 InfoTextManager.baseXmlKey = "InfoTexts"
-InfoTextManager.NUM_BITS = 32 -- Max num of info texts allowed for MP Sync.
+InfoTextManager.NUM_BITS = 31 -- Max num of info texts allowed for MP Sync.
 
 function InfoTextManager:init()
 	self:registerXmlSchema()
@@ -82,6 +82,14 @@ function InfoTextManager:init()
 	self.infoTextsById = {}
 	self.vehicles = {}
 	self:loadFromXml()
+end
+
+function InfoTextManager:__tostring()
+	local str = ""
+	for i, infoText in ipairs(self.infoTexts) do 
+		str = str .. tostring(infoText) .. "\n"
+	end
+	return str
 end
 
 function InfoTextManager:registerXmlSchema()

@@ -10,6 +10,10 @@ function getDate(formatString)
     return os.date('%H%M%S')
 end
 
+function unpack(...)
+    return table.unpack(...)
+end
+
 g_currentMission = {}
 g_currentMission.mock = true
 g_currentMission.missionInfo = {}
@@ -20,6 +24,8 @@ g_currentMission.missionDynamicInfo.isMultiplayer = false
 
 g_careerScreen = {}
 g_careerScreen.currentSavegame = {savegameDirectory = 'savegame1'}
+
+Class = CpObject
 
 function getUserProfileAppPath()
     return './'
@@ -101,4 +107,8 @@ function XMLFile:delete()
     if self.file then
         self.file:close()
     end
+end
+
+function printCallstack()
+    
 end

@@ -6,9 +6,21 @@
 -->
 
 <Settings prefixText="CP_combineUnloaderJobParameters_">
+	<SettingSubTitle title="ai_parameterGroupTitlePosition" prefix="false">
+		<Setting classType="CpAIParameterPositionAngle" name="startPosition" positionParameterType="DRIVE_TO"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="CP_jobParameters_fieldPosition_title" prefix="false">
+		<Setting classType="CpAIParameterPosition" name="fieldPosition" positionParameterType="FIELD_OR_SILO"/>
+	</SettingSubTitle>
 	<SettingSubTitle title="giantsUnloader">
 		<!-- Is the giants ai unloader wanted for unloading? -->
-		<Setting classType="AIParameterBooleanSetting" name="useGiantsUnload" defaultBool="false" isDisabled ="hasPipe"/>
-		<Setting classType="CpAIParameterUnloadingStation" name="unloadingStation" isDisabled ="hasPipe" generateValuesFunction="generateUnloadingStations"/>
+		<Setting classType="AIParameterBooleanSetting" name="useGiantsUnload" defaultBool="false" isDisabled ="isGiantsUnloadDisabled"/>
+		<Setting classType="CpAIParameterUnloadingStation" name="unloadingStation" isDisabled ="isGiantsUnloadDisabled" generateValuesFunction="generateUnloadingStations"/>
+	</SettingSubTitle>
+	<SettingSubTitle title="fieldUnload">
+		<!-- Is unloading onto the field allowed? -->
+		<Setting classType="AIParameterBooleanSetting" name="useFieldUnload" defaultBool="false" isDisabled ="isFieldUnloadDisabled"/>
+		<Setting classType="CpAIParameterPositionAngle" name="fieldUnloadPosition" positionParameterType="UNLOAD" isDisabled ="isFieldUnloadDisabled"/>
+		<Setting classType="AIParameterSettingList" name="unloadingTipSide" isDisabled ="isFieldUnloadTipSideDisabled" generateValuesFunction="generateTipSides"/>
 	</SettingSubTitle>
 </Settings>

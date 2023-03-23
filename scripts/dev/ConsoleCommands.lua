@@ -26,6 +26,7 @@ CpConsoleCommands.commands = {
 function CpConsoleCommands:init(devHelper)
     self.devHelper = devHelper
     self:registerConsoleCommands()
+	self.additionalCommands = {}
 end
 
 function CpConsoleCommands:delete()
@@ -44,9 +45,23 @@ function CpConsoleCommands:unregisterConsoleCommands()
         local name = unpack(commandData)
         removeConsoleCommand( name)
     end
+	for _, commandData in ipairs(self.additionalCommands) do 
+        local name = unpack(commandData)
+        removeConsoleCommand( name)
+    end
 end
 
-
+--- Registers an command
+---@param name string
+---@param desc string
+---@param funcName string
+---@param callbackClass table
+function CpConsoleCommands:registerConsoleCommand(name, desc, funcName, callbackClass)
+	table.insert(self.additionalCommands, {
+		name, desc, funcName
+	})
+	addConsoleCommand( name, desc, funcName, callbackClass)
+end
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Console commands
@@ -227,7 +242,7 @@ end
 
 function CpConsoleCommands:cpStopAll()
 	for _, vehicle in pairs(g_currentMission.vehicles) do
-		if vehicle.getIsAIActive and vehicle:getIsAIActive() and vehicle.getJob and vehicle:getJob() and vehicle:getJob():isa(CpAIJob) then 
+		if vehicle.getIsAIActive and vehicle:getIsAIActive() then 
 			vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
 		end
 	end

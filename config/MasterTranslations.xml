@@ -63,6 +63,10 @@
 			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
 		</Translation>
+		<Translation name="CP_error_fieldUnloadPosition_too_far_away_from_field">
+			<Text language="de"><![CDATA[Feld Abladeposition ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Field unload position is too far away from the field.]]></Text>
+		</Translation>
 		<Translation name="CP_error_no_bunkerSilo_found">
 			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
 			<Text language="en"><![CDATA[No silo found.]]></Text>
@@ -221,6 +225,22 @@
 			<Text language="de"><![CDATA[Abladestation:]]></Text>
 			<Text language="en"><![CDATA[Unloading station:]]></Text>
 		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_fieldUnload">
+			<Text language="de"><![CDATA[Abladen auf dem Feld:]]></Text>
+			<Text language="en"><![CDATA[Unloading on the field:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_useFieldUnload_title">
+			<Text language="de"><![CDATA[Abladen auf dem Feld benutzen:]]></Text>
+			<Text language="en"><![CDATA[Use unload on field:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title">
+			<Text language="de"><![CDATA[Abladeposition:]]></Text>
+			<Text language="en"><![CDATA[Field unloading position:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadingTipSide_title">
+			<Text language="de"><![CDATA[Anhänger Abladeseite:]]></Text>
+			<Text language="en"><![CDATA[Trailer tip side:]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI bunker silo worker job parameters">
 		<Translation name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo">
@@ -298,6 +318,10 @@
 		<Translation name="CP_ai_messageErrorNoPathFound">
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - no Path found!]]></Text>
+		</Translation>
+		<Translation name="CP_ai_messageErrorGroundUnloadNotSupported">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - unloading on the field not possible!]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
@@ -1394,6 +1418,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Keinen Weg gefunden]]></Text>
 			<Text language="en"><![CDATA[No path found]]></Text>
 		</Translation>
+		<Translation name="CP_infoTexts_errorGroundUnloadNotSupported">
+			<Text language="de"><![CDATA[Abladen zum Boden nicht möglich]]></Text>
+			<Text language="en"><![CDATA[Tipping to ground not possible]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
 		<Translation name="CP_customFieldManager_confirm_save">
@@ -1439,6 +1467,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_controllerGui_stopRecording">
 			<Text language="de"><![CDATA[Stoppe Feldrandaufnahme.]]></Text>
 			<Text language="en"><![CDATA[Stop custom field recording.]]></Text>
+		</Translation>
+		<Translation name="CP_controllerGui_pauseRecording">
+			<Text language="de"><![CDATA[Pausiert die Feldrandaufnahme.]]></Text>
+			<Text language="en"><![CDATA[Pause custom field recording.]]></Text>
+		</Translation>
+		<Translation name="CP_controllerGui_unpauseRecording">
+			<Text language="de"><![CDATA[Fortsetzten der Feldrandaufnahme.]]></Text>
+			<Text language="en"><![CDATA[Unpause custom field recording.]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Help menu">	
@@ -2202,6 +2238,10 @@ is to avoid waiting for a combine to call with a trailer almost full.
 
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_unloaderTrailer_title">
+			<Text language="de"><![CDATA[Anhänger benutzen]]></Text>
+			<Text language="en"><![CDATA[Using trailers]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_unloaderTrailer_text">
 			<Text language="de"><![CDATA[
 Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
@@ -2220,6 +2260,10 @@ In the latter case, you have to choose the unload station after the wheel icon t
 Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_unloaderAuger_title">
+			<Text language="de"><![CDATA[Überladewagen benutzen]]></Text>
+			<Text language="en"><![CDATA[Using auger wagons]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_unloaderAuger_text">
 			<Text language="de"><![CDATA[
 Überladewagen sind relativ einfach zu bedienen.
@@ -2236,6 +2280,28 @@ To start the unloader, place it again on the field or within 20 meters of the fi
 If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
 In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
 Is no trailer available, it will continue to unload the combine.
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_unloaderFieldUnload_title">
+			<Text language="de"><![CDATA[Abladen auf dem Feld]]></Text>
+			<Text language="en"><![CDATA[Unload on the field]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_unloaderFieldUnload_text">
+			<Text language="de"><![CDATA[
+Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
+Die Position muss auf dem gleichen Feld oder am Feldrand sein.
+Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
+dann wird dieser genutzet um dort weiterhin abzuladen.
+Die Richtung des Markers entspricht der Ablade Richtung.
+Zusätzlich muss für Anhänger die Abladeseite ausgewählt werden.
+]]></Text>
+			<Text language="en"><![CDATA[
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_bunker_title">

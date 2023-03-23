@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Benne ou transbordeur trop éloigné(e) du champ."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Ouvrier IA pour le déchargement:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Utiliser un ouvrier IA pour le déchargement:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Station de déchargement:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="L'ouvrier AI %s s'est arrêté car il ne trouve pas de chemin !"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_errorStopped" text="A quitté la course, arrêté"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_customFieldManager_save" text="Sauvegarder le champ personnalisé"/>
     <text name="CP_controllerGui_startRecording" text="Démarrer l'enregistrement du champ personnalisé"/>
     <text name="CP_controllerGui_stopRecording" text="Arrêter l'enregistrement du champ personnalisé"/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -700,6 +709,7 @@ Vous pouvez adapter quelques paramètres concernant le processus de déchargemen
 - Utiliser l'ATH pour faire varier le décalage du placement de la benne ou du transbordeur sous la goulotte de la moissonneuse.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Si vous utilisez une benne pour effectuer le déchargement, il existe deux possibilité de transporter la récolte vers un silo ou un point de vente : l'ouvrier Giants 
 ou l'AutoDrive. 
@@ -708,6 +718,7 @@ Dans ce dernier cas, vous devrez choisir le point de livraison après que l'icô
 
 Pour utiliser AutoDrive, utilisez le mode charger puis livrer. Il existe des tutos sur Internet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Les transbordeurs sont simples à utiliser.
 Tout comme les bennes, utilisez la cible pour sélectionner le champ à surveiller dans lequel travaillent une ou des récolteuses.
@@ -715,6 +726,15 @@ Pour démarrer la course de déchargement, attendez d'être sur le champ ou à m
 Lorsque le transbordeur sera plein, il cherchera automatiquement une benne ou remorque à proximité ou sur le champ pour s'y diriger et démarrer sa vidange.
 Dans le cas où la remorque ou benne serait pleine, le transbordeur en cherchera une autre sur ou à proximité du champ.
 Si aucune benne ou remorque n'est disponible, le transbordeur continuera à décharger la récolteuse.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 "/>
     <text name="CP_help_page_bunker_title" text="Nivelage et tassage de silos"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

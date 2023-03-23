@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Aflæsser for langt væk fra marken."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="startpunkt for langt væk fra marken."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants aflæsser er ikke tilgæængelig."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Ingen silo fundet."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants aflæsser:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Brug giants aflæsser:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Aflæsningsstation:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="AI-medarbejder %s har stoppet arbejdet uventet - forlod bane!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbejder %s har stoppet arbejdet uventet - ingen baller af valgt type fundet!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI hjælper %s har stoppet arbejdet uventet - ingen sti fundet!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_infoTexts_errorStopped" text="Forlod ruten, stoppet"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Forkerte balle type"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ingen rute fundet"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_customFieldManager_save" text="Gem brugerdefineret mark"/>
     <text name="CP_controllerGui_startRecording" text="Start brugerdefineret markoptegnelse."/>
     <text name="CP_controllerGui_stopRecording" text="Stop brugerdefineret markoptegnelse."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -717,6 +726,7 @@ Aflæsere har kun nogle få indstillinger, du kan justere:
 
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Hvis du bruger en trailer til at aflæsse med, er der to måder at transportere din høst til en silo eller til et salgssted på: Giants hjælperen
 eller AutoDrive.
@@ -726,6 +736,7 @@ I sidstnævnte tilfælde skal du vælge aflæsningsstationen, efter at hjulikone
 
 At tømme en trailer med AutoDrive fungerer på samme måde som at bruge en læssevogn, tjek AutoDrive Tutorials på internettet.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Sneglevogne er meget enkle at bruge.
 Ligesom med trailere bruger du målikonet til at vælge den mark, hvor du vil aflæsse en mejetærsker eller mejetærsker.
@@ -733,6 +744,15 @@ For at starte aflæsseren skal du placere den igen på marken eller inden for 20
 Hvis sneglevognen er fyld, leder den automatisk efter en trailer på eller i nærheden af marken for at overlæsse ind i den.
 Hvis traileren er fuld, og sneglevognen stadig ikke er tom, vil den lede efter en anden trailer at tømme af i.
 Er der ingen trailer tilgængelig, fortsætter den med at tømme mejetærskeren.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+The unloading position can be selected with the unload marker.
+The position needs to be on the same field or near the field edge.
+If the marker points to an already existing heap, 
+then this heap is used to unload to.
+The direction of the marker is used for the unload direction.
+Additionally for trailers a tipside needs to be selected.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

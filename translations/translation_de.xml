@@ -21,6 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Abfahrer ist zu weit vom Feld entfernt."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Startposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants Ablader nicht möglich."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Feld Abladeposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_no_bunkerSilo_found" text="Keinen Silo gefunden."/>
     <!---->
     <!--AI job parameters-->
@@ -68,6 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants Ablader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Giants Ablader benutzen:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Abladestation:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Abladen auf dem Feld:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Abladen auf dem Feld benutzen:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Abladeposition:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Anhänger Abladeseite:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -95,6 +100,7 @@
     <text name="CP_ai_messageError" text="Helfer %s hat die Arbeit gestoppt - Kurs verlassen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -383,6 +389,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_errorStopped" text="Hat den Kurs verlassen, gestoppt"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Ballentyp nicht gefunden"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Keinen Weg gefunden"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Abladen zum Boden nicht möglich"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -397,6 +404,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_save" text="Randkurs speichern"/>
     <text name="CP_controllerGui_startRecording" text="Starte Feldrandaufnahme."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppe Feldrandaufnahme."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausiert die Feldrandaufnahme."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Fortsetzten der Feldrandaufnahme."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -725,6 +734,7 @@ Es gibt nur wenige Einstellungen zur Feineinstellung:
 - Offsets im HUD, falls das Rohr des Deschers den Abfahrer zum überladen nicht trifft.
 
 "/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Anhänger benutzen"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
 - Giants Helfer:
@@ -732,6 +742,7 @@ Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu en
   2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktiven Lenkrad sichtbar.
 - AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
 "/>
+    <text name="CP_help_page_unloaderAuger_title" text="Überladewagen benutzen"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Überladewagen sind relativ einfach zu bedienen.
 Auch hier wird das Feld mit dem Zielmarker gewählt auf dem eure Drescher oder Ernter fahren.
@@ -739,6 +750,15 @@ Zum Starten stellt man den Abfahrer auf das Feld oder nahe der Feldgrenze.
 Der Überladewagen sucht sich zum Abladen ganz automatisch einen Abfahrer am Feldrand aus zum Überladen.
 Wenn beim Abladen der Anhänger voll wird, dann wird für den Rest im Überladewagen ein neuer Anhänger gesucht.
 Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überladewagen voll ist.
+"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Abladen auf dem Feld"/>
+    <text name="CP_help_page_unloaderFieldUnload_text" text="
+Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
+Die Position muss auf dem gleichen Feld oder am Feldrand sein.
+Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
+dann wird dieser genutzet um dort weiterhin abzuladen.
+Die Richtung des Markers entspricht der Ablade Richtung.
+Zusätzlich muss für Anhänger die Abladeseite ausgewählt werden.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker Silo Arbeiter"/>
     <text name="CP_help_page_bunkerGeneral_text" text="

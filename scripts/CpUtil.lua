@@ -109,6 +109,14 @@ function CpUtil.getVariable(variableName)
 	return f and f() or nil
 end
 
+function CpUtil.internalPrint(printFunc, infoString, ...)
+	CpUtil.try(
+		function (...)
+			printFunc(string.format('%s %s', infoString, string.format(...)))
+		end,
+		...)
+end
+
 -- convenience debug function that expects string.format() arguments,
 -- CpUtil.debugVehicle( CpDebug.DBG_TURN, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
@@ -194,6 +202,17 @@ function CpUtil.infoImplement(implement, ...)
 		...)
 end
 
+--- The same as CpUtil.info(), but also uses printCallstack()
+function CpUtil.error(...)
+	printCallstack()
+	local updateLoopIndex = g_updateLoopIndex and g_updateLoopIndex or 0
+	local timestamp = getDate( ":%S")
+	if printError == nil then 
+		printError = print
+	end
+	CpUtil.internalPrint(printError, string.format('%s [error lp%d]', timestamp, updateLoopIndex), ...)
+end
+
 --- Create a node at x, z, direction according to yRotation.
 --- If rootNode is given, make that the parent node, otherwise the parent is the terrain root node
 ---@param name string
@@ -224,7 +243,7 @@ end
 ---@param func function function to be executed.
 ---@param ... any parameters for the function, for class function the first parameter needs to be self.
 ---@return boolean was the code execution successfully and no error appeared.
----@return any if the code was successfully run, then all return values will be normally returned, else only a error message is returned.
+---@return any returnValues if the code was successfully run, then all return values will be normally returned, else only a error message is returned.
 function CpUtil.try(func, ...)
 	local data = {xpcall(func, function(err) printCallstack(); return err end, ...)}
 	local status = data[1]
@@ -278,6 +297,9 @@ function CpUtil.getXmlVectorString(data)
 	return table.concat(values, " ")
 end
 
+--- Gets a class from a global class name.
+---@param className string
+---@return table classObject that was found.
 function CpUtil.getClassObject(className)
 	local parts = string.split(className, ".")
 	local currentTable = _G[parts[1]]
