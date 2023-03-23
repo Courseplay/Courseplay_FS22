@@ -121,7 +121,7 @@ function PipeController:isFillableTrailerUnderPipe()
 end
 
 function PipeController:getPipeOffset()
-    return self.pipeOffsetX, self.pipeOffsetZ    
+    return self.pipeOffsetX, self.pipeOffsetZ
 end
 
 function PipeController:getPipeOffsetX()
@@ -129,7 +129,7 @@ function PipeController:getPipeOffsetX()
 end
 
 function PipeController:getPipeOffsetZ()
-    return self.pipeOffsetZ    
+    return self.pipeOffsetZ
 end
 
 function PipeController:isPipeOnTheLeftSide()
@@ -242,8 +242,7 @@ end
 
 --- Gets the pipe z offset relative to the root vehicles direction node.
 function PipeController:getUnloadOffsetZ(dischargeNode)
-    local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(), self.implement, self.implement.rootNode)
-    return dist + self.pipeOffsetZ
+    return self.pipeOffsetZ
 end
 
 --- Measures pipe properties: xOffset, zOffset, pipeOnLeftSide
@@ -260,10 +259,22 @@ function PipeController:measurePipeProperties()
     
     self:instantUnfold()
 
-    local dischargeNode, _ = self:getDischargeNode()
-    local refNode = self.implement.getAIDirectionNode and self.implement:getAIDirectionNode() or self.implement.rootNode
-    self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node,
-        refNode, 0, 0, 0)
+    local _
+    local dischargeNode = self:getDischargeNode()
+    if self.implement.getAIDirectionNode then 
+        self:debug(("The pipe is installed at the root vehicle."))
+        self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, 
+            self.implement:getAIDirectionNode(), 0, 0, 0)
+    else 
+        --- Pipe is installed on an implement.
+        self:debug(("The pipe is installed on an implement."))
+        local pipeOffsetZ
+        self.pipeOffsetX, _, pipeOffsetZ = localToLocal(dischargeNode.node, 
+            self.implement.rootNode, 0, 0, 0)
+        local dist = ImplementUtil.getDistanceToImplementNode(self.vehicle:getAIDirectionNode(),
+            self.implement, self.implement.rootNode)
+        self.pipeOffsetZ = pipeOffsetZ + dist
+    end
     self.pipeOnLeftSide = self.pipeOffsetX >= 0
     self:debug("Measuring pipe properties => pipeOffsetX: %.2f, pipeOffsetZ: %.2f, pipeOnLeftSide: %s", 
         self.pipeOffsetX, self.pipeOffsetZ, tostring(self.pipeOnLeftSide))
