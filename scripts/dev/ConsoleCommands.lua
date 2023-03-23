@@ -242,7 +242,7 @@ end
 
 function CpConsoleCommands:cpStopAll()
 	for _, vehicle in pairs(g_currentMission.vehicles) do
-		if vehicle.getIsCpActive and vehicle:getIsCpActive() then 
+		if vehicle.getIsAIActive and vehicle:getIsAIActive() then 
 			vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
 		end
 	end
