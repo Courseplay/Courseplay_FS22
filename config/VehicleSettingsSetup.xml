@@ -63,9 +63,9 @@
 				 isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
 		<!--Tool Offset Z-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"
-				 onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" />
+				 onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" isVisible="areCombineUnloaderSettingsVisible" />
 		<!-- Full threshold -->
-		<Setting classType="AIParameterSettingList" name="fullThreshold" min="40" max="100" incremental="5" default="85" unit="4"/>
+		<Setting classType="AIParameterSettingList" name="fullThreshold" min="40" max="100" incremental="5" default="85" unit="4" isVisible="areCombineUnloaderSettingsVisible"/>
 		<!--Silage additives needed?-->
 		<Setting classType="AIParameterBooleanSetting" name="useAdditiveFillUnit" defaultBool="false" isVisible="isAdditiveFillUnitSettingVisible" isExpertModeOnly="true"/>
 	</SettingSubTitle>

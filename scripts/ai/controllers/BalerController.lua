@@ -35,6 +35,18 @@ function BalerController:getDriveData()
     return nil, nil, nil, maxSpeed
 end
 
+function BalerController:update()
+	if self.settings.useAdditiveFillUnit:getValue() then 
+		--- If the silage additive is empty, then stop the driver.
+        if self.balerSpec.additives.available then 
+            if self.implement:getFillUnitFillLevelPercentage(self.balerSpec.additives.fillUnitIndex) <= 0 then 
+                self:debug("Stopped Cp, as the additive fill unit is empty.")
+                self.vehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
+            end
+        end
+    end
+end
+
 function BalerController:handleBaler()
     if self.driveStrategy:isTurning() then
         --- Waits for the bale wrapping and unload at the start of a turn.
