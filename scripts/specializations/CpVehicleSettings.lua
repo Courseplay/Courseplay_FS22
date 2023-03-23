@@ -339,12 +339,16 @@ end
 function CpVehicleSettings:isAdditiveFillUnitSettingVisible()
     local combines, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, Combine)
     local forageWagons, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, ForageWagon)
+    local balers, _ = AIUtil.getAllChildVehiclesWithSpecialization(self, Baler)
     local hasAdditiveTank
     if #combines > 0 then 
         hasAdditiveTank = combines[1].spec_combine.additives.available
     end
     if #forageWagons > 0 then 
         hasAdditiveTank = hasAdditiveTank or forageWagons[1].spec_forageWagon.additives.available
+    end
+    if #balers > 0 then 
+        hasAdditiveTank = hasAdditiveTank or balers[1].spec_baler.additives.available
     end
     return hasAdditiveTank
 end
@@ -355,6 +359,10 @@ end
 
 function CpVehicleSettings:areBunkerSiloSettingsVisible()
     return self:getCanStartCpBunkerSiloWorker()
+end
+
+function CpVehicleSettings:areCombineUnloaderSettingsVisible()
+    return self:getCanStartCpCombineUnloader()
 end
 
 function CpVehicleSettings:setAutomaticBunkerSiloWorkWidth(ignoreObject)
