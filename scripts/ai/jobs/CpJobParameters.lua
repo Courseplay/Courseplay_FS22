@@ -216,8 +216,14 @@ function CpCombineUnloaderJobParameters:generateTipSides(setting)
         local trailer = AIUtil.getImplementWithSpecialization(self.job:getVehicle(), Trailer)
         if trailer then 
             for i, tipSide in pairs(trailer.spec_trailer.tipSides) do 
-                table.insert(tipSideIds, tipSide.index)
-                table.insert(texts, tipSide.name)
+                --- TODO: Side unloading disabled for now!!
+                local dischargeNodeIndex = tipSide.dischargeNodeIndex
+                local dischargeNode = trailer:getDischargeNodeByIndex(dischargeNodeIndex)
+                local xOffset, _ ,_ = localToLocal(dischargeNode.node, trailer.rootNode, 0, 0, 0)
+                if math.abs(xOffset) <= 1 then
+                    table.insert(tipSideIds, tipSide.index)
+                    table.insert(texts, tipSide.name)
+                end
             end
         end
     end
