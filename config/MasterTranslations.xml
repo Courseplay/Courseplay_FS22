@@ -63,9 +63,9 @@
 			<Text language="de"><![CDATA[Giants Ablader nicht möglich.]]></Text>
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
 		</Translation>
-		<Translation name="CP_error_fieldUnloadPosition_to_far_away_from_field">
+		<Translation name="CP_error_fieldUnloadPosition_too_far_away_from_field">
 			<Text language="de"><![CDATA[Feld Abladeposition ist zu weit vom Feld entfernt.]]></Text>
-			<Text language="en"><![CDATA[Field unload position is to far away from the field.]]></Text>
+			<Text language="en"><![CDATA[Field unload position is too far away from the field.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_bunkerSilo_found">
 			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>

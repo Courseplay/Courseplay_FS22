@@ -195,7 +195,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
 				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minFieldUnloadDistanceToField
 		if not isValid then
-			return false, g_i18n:getText("CP_error_fieldUnloadPosition_to_far_away_from_field")
+			return false, g_i18n:getText("CP_error_fieldUnloadPosition_too_far_away_from_field")
 		end
 		--- Draws the silo
 		local angle = self.cpJobParameters.fieldUnloadPosition:getAngle()

@@ -79,7 +79,6 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
 
 --- Field unload constants
-AIDriveStrategyUnloadCombine.reverseFieldUnloadXOffset = -6
 AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
 AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
 
@@ -1837,6 +1836,9 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 --- Starts the unloading on a field with an auger wagon or a trailer.
+--- Drives to the heap/ field unload position: 
+---     For reverse unloading an offset is applied only if an already existing heap was found.
+---     For side unloading the x offset of the discharge node is applied. 
 ---@param controller ImplementController either a PipeController or TrailerController
 ---@param allowReverseUnloading boolean is unloading at the back allowed?
 function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowReverseUnloading)
@@ -1868,6 +1870,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     if found then 
         --- Heap was found
         self.fieldUnloadData.heapSilo = heapSilo
+        --- Ignore the area of the heap for the path finder.
         self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
              -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
 
@@ -1875,25 +1878,29 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         self:updateFieldPositionByHeapSilo(heapSilo)
        
         if allowReverseUnloading then
+            --- Reverse unloading is allowed, then check if the tip side xOffset is for reverse unloading <= 1 m.
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
         end
         local vehicleWidth = AIUtil.getWidth(self.vehicle)
         local siloWidth = heapSilo:getWidth()
         self:debug("Vehicle width: %.2f, silo width: %.2f", vehicleWidth, siloWidth)
         if self.fieldUnloadData.isReverseUnloading then 
+            --- For reverse unloading the unloader needs to drive parallel to the heap.
             self.fieldUnloadData.xOffset = siloWidth/2 + 2 * vehicleWidth/3
         else 
+            --- Makes sure the x offset for unloading to the side is big enough 
+            --- to make sure the unloader doesn't touch the heap. 
             self.fieldUnloadData.xOffset = MathUtil.sign(self.fieldUnloadData.xOffset) * 
                 math.max(math.abs(self.fieldUnloadData.xOffset), siloWidth/2 + 2 * vehicleWidth/3)
         end
 
-        self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f", 
-            self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset)
+        self:debug("Found a heap for field unloading, reverseUnloading: %s, xOffset: %.2f, silo width: %.2f, vehicle width: %.2f", 
+            self.fieldUnloadData.isReverseUnloading, self.fieldUnloadData.xOffset, siloWidth, vehicleWidth)
     else 
         self:debug("No heap found around the unloading position.")
     end
 
-
+    --- Callback when the unloading has finished.
     self.fieldUnloadData.controller:setFinishDischargeCallback(self.onFieldUnloadingFinished)
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)

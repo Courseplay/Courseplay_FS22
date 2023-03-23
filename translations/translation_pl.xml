@@ -21,7 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Pomocnik SI rozładowujący za daleko pola."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Pozycja startowa zbyt daleko pola."/>
     <text name="CP_error_giants_unloader_not_available" text="Pomocnik SI Giantsa rozładowujący niedostępny."/>
-    <text name="CP_error_fieldUnloadPosition_to_far_away_from_field" text="Field unload position is to far away from the field."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nie znaleziono silosu."/>
     <!---->
     <!--AI job parameters-->
