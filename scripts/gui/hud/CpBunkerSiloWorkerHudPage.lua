@@ -1,5 +1,5 @@
 --- Bunker silo worker Hud page
----@class CpHudPageElement : CpHudElement
+---@class CpBunkerSiloWorkerHudPageElement : CpHudElement
 CpBunkerSiloWorkerHudPageElement = {}
 local CpBunkerSiloWorkerHudPageElement_mt = Class(CpBunkerSiloWorkerHudPageElement, CpHudPageElement)
 
@@ -53,7 +53,7 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
         baseHud:openCourseGeneratorGui(vehicle)
     end)
 
-    CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)    												
+    CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)
 end
 
 function CpBunkerSiloWorkerHudPageElement:update(dt)

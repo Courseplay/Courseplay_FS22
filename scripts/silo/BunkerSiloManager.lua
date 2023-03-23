@@ -164,13 +164,24 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 		end	
 	end
 	
+
+
 	--set found values into bunker table and return it
 	local sx, _, sz = localToWorld(point, maxX, 0, minZ)
 	local wx, _, wz = localToWorld(point, -minX, 0, minZ)
 	local hx, _, hz = localToWorld(point, maxX, 0, maxZ)
-	local bunker = CpHeapBunkerSilo(sx, sz, wx, wz, hx, hz)
+
 	local fillLevel = DensityMapHeightUtil.getFillLevelAtArea(heapFillType, sx, sz, wx, wz, hx, hz)
-	BunkerSiloManagerUtil.debug("Heap found with %s(%d) and fillLevel: %.2f", g_fillTypeManager:getFillTypeByIndex(heapFillType).title, heapFillType, fillLevel)
+
+	if fillLevel < 200 then 
+		BunkerSiloManagerUtil.debug("Heap is to small with %s(%d) and fillLevel: %.2f.",
+			g_fillTypeManager:getFillTypeByIndex(heapFillType).title, heapFillType, fillLevel)
+		return false, nil
+	end
+
+	local bunker = CpHeapBunkerSilo(sx, sz, wx, wz, hx, hz)
+	BunkerSiloManagerUtil.debug("Heap found with %s(%d) and fillLevel: %.2f", 
+		g_fillTypeManager:getFillTypeByIndex(heapFillType).title, heapFillType, fillLevel)
 
 	CpUtil.destroyNode(point)
 

@@ -831,12 +831,10 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
 end
 
 function AIDriveStrategyCombineCourse:isActiveCpUnloader(vehicle)
-    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
-        -- not driven by CP
-        return false
+    if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
+        return vehicle:getCpDriveStrategy():getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE
     end
-    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-    return driveStrategy and driveStrategy.isServingPosition ~= nil
+    return false
 end
 
 --- Find an unloader to drive to the target, which may either be the combine itself (when stopped and waiting for unload)

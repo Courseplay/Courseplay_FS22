@@ -47,6 +47,11 @@ function CpHeapBunkerSilo:init(sx, sz, wx, wz, hx, hz)
 		{x = area.hx, z = area.hz})
 	self.dirX = dirX
 	self.dirZ = dirZ
+	local dirWX, dirWZ, width = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
+		{x = area.wx, z = area.wz})
+	self.dirWX = dirWX
+	self.dirWZ = dirWZ
+
 	self.area = 	{
 		{
 			x = area.sx, 
@@ -110,6 +115,17 @@ end
 
 function CpHeapBunkerSilo:getDirection()
 	return self.dirX, self.dirZ
+end
+
+function CpHeapBunkerSilo:getFrontCenter()
+	local width = self:getWidth()
+	return self.sx + self.dirWX * width/2, self.sz + self.dirWZ * width/2
+end
+
+function CpHeapBunkerSilo:getBackCenter()
+	local length = self:getLength()
+	local fcx, fcz = self:getFrontCenter()
+	return fcx + self.dirX * length/2, fcz + self.dirZ * length/2
 end
 
 function CpHeapBunkerSilo:drawDebug()
@@ -349,6 +365,15 @@ end
 
 function CpBunkerSilo:getArea()
 	return self.area	
+end
+
+function CpBunkerSilo:getFrontCenter()
+	return self.sx + self.dirWX * self.width/2, self.sz + self.dirWZ * self.width/2
+end
+
+function CpBunkerSilo:getBackCenter()
+	local fcx, fcz = self:getFrontCenter()
+	return fcx + self.dirX * self.length/2, fcz + self.dirZ * self.length/2
 end
 
 function CpBunkerSilo:getSilo()

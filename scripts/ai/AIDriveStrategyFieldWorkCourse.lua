@@ -100,7 +100,9 @@ end
 --- Event raised when the driver has finished.
 function AIDriveStrategyFieldWorkCourse:onFinished()
     AIDriveStrategyFieldWorkCourse:superClass().onFinished(self)
-    self.remainingTime:reset()
+    if self.remainingTime then
+        self.remainingTime:reset()
+    end
 end
 
 function AIDriveStrategyFieldWorkCourse:update(dt)
@@ -628,6 +630,9 @@ function AIDriveStrategyFieldWorkCourse:getImplementLowerEarly()
 end
 
 function AIDriveStrategyFieldWorkCourse:rememberWaypointToContinueFieldWork()
+    if not self.fieldWorkCourse then 
+        return
+    end
     local ix = self:getBestWaypointToContinueFieldWork()
     self.vehicle:rememberCpLastWaypointIx(ix)
 end

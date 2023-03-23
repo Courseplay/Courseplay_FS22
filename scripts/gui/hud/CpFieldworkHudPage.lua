@@ -1,6 +1,6 @@
 
 --- Fieldwork Hud page
----@class CpHudPageElement : CpHudElement
+---@class CpFieldWorkHudPageElement : CpHudElement
 ---@field private parent CpBaseHud
 CpFieldWorkHudPageElement = {}
 local CpFieldWorkHudPageElement_mt = Class(CpFieldWorkHudPageElement, CpHudPageElement)

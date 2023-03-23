@@ -71,6 +71,10 @@
 			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
 			<Text language="en"><![CDATA[No silo found.]]></Text>
 		</Translation>
+		<Translation name="CP_error_no_heap_found">
+			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
+			<Text language="en"><![CDATA[No silo found.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_title">
@@ -149,9 +153,17 @@
 			<Text language="de"><![CDATA[Bunkersilo Modus]]></Text>
 			<Text language="en"><![CDATA[Bunker silo mode]]></Text>
 		</Translation>
+		<Translation name="CP_jobParameters_startAt_siloLoader">
+			<Text language="de"><![CDATA[Silo laden Modus]]></Text>
+			<Text language="en"><![CDATA[Silo load mode]]></Text>
+		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload">
 			<Text language="de"><![CDATA[Entlade Drescher]]></Text>
 			<Text language="en"><![CDATA[unload combine]]></Text>
+		</Translation>
+		<Translation name="CP_jobParameters_startAt_unload_siloLoader">
+			<Text language="de"><![CDATA[Entlade Silo lader]]></Text>
+			<Text language="en"><![CDATA[Unload Silo loader]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bales">
 			<Text language="de"><![CDATA[Sammel/Wickel Ballen]]></Text>
@@ -213,6 +225,22 @@
 		</Translation>
 	</Category>
 	<Category name="AI combine unloader job parameters">
+		<Translation name="CP_combineUnloaderJobParameters_subTitle_unloadTarget">
+			<Text language="de"><![CDATA[Entlade:]]></Text>
+			<Text language="en"><![CDATA[Unload: ]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadTarget_title">
+			<Text language="de"><![CDATA[Entlade:]]></Text>
+			<Text language="en"><![CDATA[Unload:]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadTarget_combine">
+			<Text language="de"><![CDATA[Drescher]]></Text>
+			<Text language="en"><![CDATA[Combine]]></Text>
+		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader">
+			<Text language="de"><![CDATA[Lader]]></Text>
+			<Text language="en"><![CDATA[Loader]]></Text>
+		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">
 			<Text language="de"><![CDATA[Giants Ablader:]]></Text>
 			<Text language="en"><![CDATA[Giants unloader:]]></Text>
@@ -276,6 +304,16 @@
 			<Text language="en"><![CDATA[at park position]]></Text>
 		</Translation>
 	</Category>
+	<Category name="AI silo lader worker job parameters">
+		<Translation name="CP_bunkerSiloJobParameters_subTitle_loadPosition">
+			<Text language="de"><![CDATA[Ladeposition]]></Text>
+			<Text language="en"><![CDATA[Loading position]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_loadPosition_title">
+			<Text language="de"><![CDATA[Ladeposition]]></Text>
+			<Text language="en"><![CDATA[Loading position]]></Text>
+		</Translation>
+	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
 			<Text language="de"><![CDATA[CP: Feldarbeit]]></Text>
@@ -292,6 +330,10 @@
 		<Translation name="CP_job_bunkerSilo">
 			<Text language="de"><![CDATA[CP: Siloarbeit]]></Text>
 			<Text language="en"><![CDATA[CP: Silo work]]></Text>
+		</Translation>
+		<Translation name="CP_job_siloLoader">
+			<Text language="de"><![CDATA[CP: Silo laden]]></Text>
+			<Text language="en"><![CDATA[CP: Silo loading]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_generate_course">
 			<Text language="de"><![CDATA[CP: Generiere Feldkurs.]]></Text>

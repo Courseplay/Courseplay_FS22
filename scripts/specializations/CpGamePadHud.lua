@@ -17,6 +17,7 @@ CpGamePadHud.SETTING_TYPES = {
 	baleFinderJobParameters = CpBaleFinderJobParameters,
 	combineUnloaderJobParameters = CpCombineUnloaderJobParameters,
 	bunkerSiloJobParameters = CpBunkerSiloJobParameters,
+	siloLoaderJobParameters = CpSiloLoaderJobParameters,
 	globalSettings = CpGlobalSettings
 }
 
@@ -24,12 +25,14 @@ CpGamePadHud.FIELDWORK_PAGE = "cpFieldworkGamePadHudPage"
 CpGamePadHud.BALE_LOADER_PAGE = "cpBaleLoaderGamePadHudPage"
 CpGamePadHud.UNLOADER_PAGE = "cpUnloaderGamePadHudPage"
 CpGamePadHud.BUNKER_SILO_PAGE = "cpBunkerSiloGamePadHudPage"
+CpGamePadHud.SILO_LOADER_PAGE = "cpSiloLoaderGamePadHudPage"
 
 CpGamePadHud.PAGE_FILES = {
 	[CpGamePadHud.FIELDWORK_PAGE ] = {"config/gamePadHud/FieldworkGamePadHudPage.xml", CpGamePadHudFieldWorkScreen},
 	[CpGamePadHud.BALE_LOADER_PAGE] = {"config/gamePadHud/BaleLoaderGamePadHudPage.xml", CpGamePadHudBaleLoaderScreen},
 	[CpGamePadHud.UNLOADER_PAGE] = {"config/gamePadHud/UnloaderGamePadHudPage.xml", CpGamePadHudUnloaderScreen},
-	[CpGamePadHud.BUNKER_SILO_PAGE] = {"config/gamePadHud/BunkerSiloGamePadHudPage.xml", CpGamePadHudBunkerSiloScreen}
+	[CpGamePadHud.BUNKER_SILO_PAGE] = {"config/gamePadHud/BunkerSiloGamePadHudPage.xml", CpGamePadHudBunkerSiloScreen},
+	[CpGamePadHud.SILO_LOADER_PAGE] = {"config/gamePadHud/SiloLoaderGamePadHudPage.xml", CpGamePadHudSiloLoaderScreen}
 }
 
 function CpGamePadHud.initSpecialization()
@@ -194,7 +197,9 @@ function CpGamePadHud:actionEventOpenCloseDisplay()
 	elseif self:getCanStartCpBunkerSiloWorker() and self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO
 		or AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
 		page = CpGamePadHud.BUNKER_SILO_PAGE
-	else 
+	elseif self:getCanStartCpSiloLoaderWorker() then
+		page = CpGamePadHud.SILO_LOADER_PAGE
+	else
 		page = CpGamePadHud.FIELDWORK_PAGE
 	end
 	CpGamePadHud.pages[page].screen:setData(self, spec.pages[page].settings) 

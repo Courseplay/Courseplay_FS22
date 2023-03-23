@@ -12,6 +12,18 @@
 	<SettingSubTitle title="CP_jobParameters_fieldPosition_title" prefix="false">
 		<Setting classType="CpAIParameterPosition" name="fieldPosition" positionParameterType="FIELD_OR_SILO"/>
 	</SettingSubTitle>
+	<SettingSubTitle title="unloadTarget">
+		<Setting classType="AIParameterSettingList" name="unloadTarget">
+			<Values>
+				<Value name="UNLOAD_COMBINE">1</Value>
+				<Value name="UNLOAD_SILO_LOADER">2</Value>
+			</Values>
+			<Texts>
+				<Text>combine</Text>
+				<Text>siloLoader</Text>
+			</Texts>
+		</Setting>
+	</SettingSubTitle>
 	<SettingSubTitle title="giantsUnloader">
 		<!-- Is the giants ai unloader wanted for unloading? -->
 		<Setting classType="AIParameterBooleanSetting" name="useGiantsUnload" defaultBool="false" isDisabled ="isGiantsUnloadDisabled"/>

@@ -238,7 +238,7 @@ function CpCombineUnloaderJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAICombineUnloader.cpJob:getCpJobParameters()
 end
 --- AI parameters for the bunker silo job.
----@class CpBunkerSiloJobParameters
+---@class CpBunkerSiloJobParameters : CpJobParameters
 CpBunkerSiloJobParameters = CpObject(CpJobParameters)
 
 function CpBunkerSiloJobParameters:init(job)
@@ -265,4 +265,23 @@ end
 
 function CpBunkerSiloJobParameters:isCpActive()
     return self.job:getVehicle() and self.job:getVehicle():getIsCpActive()
+end
+
+
+--- AI parameters for the bunker silo job.
+---@class CpSiloLoaderJobParameters : CpJobParameters
+CpSiloLoaderJobParameters = CpObject(CpJobParameters)
+
+function CpSiloLoaderJobParameters:init(job)
+    if not CpSiloLoaderJobParameters.settings then
+        local filePath = Utils.getFilename(self.baseFilePath .."SiloLoaderJobParameterSetup.xml", g_Courseplay.BASE_DIRECTORY)
+        -- initialize the class members first so the class can be used to access constants, etc.
+        CpSettingsUtil.loadSettingsFromSetup(CpSiloLoaderJobParameters, filePath)
+    end
+    CpSettingsUtil.cloneSettingsTable(self, CpSiloLoaderJobParameters.settings, nil, self)
+    self.job = job
+end
+
+function CpSiloLoaderJobParameters.getSettings(vehicle)
+    return vehicle.spec_cpAISiloLoaderWorker.cpJob:getCpJobParameters()
 end
