@@ -34,7 +34,7 @@ end
 ---@param tx number
 ---@param tz number
 ---@return boolean bunker silo was found ?
----@return BunkerSilo
+---@return BunkerSilo|nil
 function BunkerSiloManager:getBunkerSiloAtPosition(tx, tz)
 	if tx == nil or tz == nil then 
 		return false, nil
@@ -47,6 +47,7 @@ function BunkerSiloManager:getBunkerSiloAtPosition(tx, tz)
 	return false, nil
 end
 
+---@return CpBunkerSilo|nil
 function BunkerSiloManager:getSiloWrapperByNode(node)
 	return node and self.silos[node]
 end

@@ -1,12 +1,9 @@
 --- Controls a driver in the bunker silo. 
 ---@class CpBunkerSiloVehicleController
 CpBunkerSiloVehicleController = CpObject()
-CpBunkerSiloVehicleController.LAST_DIRECTIONS = {
-	LEFT = 0,
-	RIGHT = 1
-}
 CpBunkerSiloVehicleController.WALL_OFFSET = 0.5
-function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, drivingForwardsIntoSilo)
+function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy)
+	---@type CpBunkerSilo
 	self.silo = silo
 	self.vehicle = vehicle
 	self.driveStrategy = driveStrategy
@@ -16,9 +13,6 @@ function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, drivin
 	if calcDistanceFrom(self.silo.startNode, vehicleNode) > calcDistanceFrom(self.silo.heightNode, vehicleNode) then
 		self.isInverted = true
 	end
-	self.lastLine = 1
-	self.currentTarget = nil
-	self.lastDirection = self.LAST_DIRECTIONS.LEFT
 
 	self.debugChannel = CpDebug.DBG_SILO
 end
@@ -27,8 +21,11 @@ function CpBunkerSiloVehicleController:delete()
 	
 end
 
+--- Gets the direction into the silo
+--- Automatically adjust for the vehicle start position,
+--- as a silo might be inverted depending on the vehicle starting point.
 function CpBunkerSiloVehicleController:getDriveIntoDirection()
-	local dirX, dirZ = self.silo.dirXLength, self.silo.dirZLength
+	local dirX, dirZ = self.silo:getLengthDirection()
 	if self.isInverted then 
 		dirX, dirZ = -dirX, -dirZ
 	end
@@ -41,41 +38,55 @@ end
 ---@return {dx : number, dz : number} end position 
 function CpBunkerSiloVehicleController:getTarget(width)
 	
-	local widthCount = 0
-	widthCount = math.ceil(self.silo.width/width)
-	local unitWidth = self.silo.width/widthCount
-	self:debug('Bunker width: %.1f, working width: %.1f (passed in), unit width: %.1f', self.silo.width, width, unitWidth)
+	local widthCount, siloWidth = 0, self.silo:getWidth()
+	widthCount = math.ceil(siloWidth/width)
+	local unitWidth = siloWidth/widthCount
+	self:debug('Bunker width: %.1f, working width: %.1f (passed in), unit width: %.1f', siloWidth, width, unitWidth)
 	self:setupMap(width, unitWidth, widthCount)
 
-	local targetLine, targetDirection = self:getNextLine(widthCount)
+	local targetLine = self:getNextLine(widthCount)
 	self:debug("target line: %d", targetLine)
 
 	local x, z, dx, dz = self:getPositionsForLine(targetLine, width, widthCount, unitWidth)
 	self.lastLine = targetLine
-	self.lastDirection = targetDirection
 	self.drivingTarget = {{x, z}, {dx, dz}}
 	return {x, z}, {dx, dz}	
 end
 
+--- Gets the last generated target.
 function CpBunkerSiloVehicleController:getLastTarget()
 	return unpack(self.drivingTarget)
 end
 
+--- Gets a lane to drive into the silo from.
+---@param line number target line in the bunker silo
+---@param width number correct width of a single line
+---@param widthCount number total number of lines
+---@param unitWidth number 
+---@return number x start point
+---@return number z start point
+---@return number dx end point
+---@return number dz end point
 function CpBunkerSiloVehicleController:getPositionsForLine(line, width, widthCount, unitWidth)
 	local x, z
+	local sx, sz = self.silo:getStartPosition()
+	local dirXWidth, dirZWidth = self.silo:getWidthDirection()
+	local dirXLength, dirZLength = self.silo:getLengthDirection()
+	local siloWidth = self.silo:getWidth()
+	local siloLength = self.silo:getLength()
 	if line == 1 then
-		x = self.silo.sx + self.silo.dirXWidth * (width/2 + self.WALL_OFFSET)
-		z = self.silo.sz + self.silo.dirZWidth * (width/2 + self.WALL_OFFSET)
+		x = sx + dirXWidth * (width/2 + self.WALL_OFFSET)
+		z = sz + dirZWidth * (width/2 + self.WALL_OFFSET)
 	elseif line == widthCount then 
-		x = self.silo.sx + self.silo.dirXWidth * (self.silo.width - width/2 - self.WALL_OFFSET)
-		z = self.silo.sz + self.silo.dirZWidth * (self.silo.width - width/2 - self.WALL_OFFSET)
+		x = sx + dirXWidth * (siloWidth - width/2 - self.WALL_OFFSET)
+		z = sz + dirZWidth * (siloWidth - width/2 - self.WALL_OFFSET)
 	else
-		x = self.silo.sx + self.silo.dirXWidth * (line * unitWidth - unitWidth/2)
-		z = self.silo.sz + self.silo.dirZWidth * (line * unitWidth - unitWidth/2)
+		x = sx + dirXWidth * (line * unitWidth - unitWidth/2)
+		z = sz + dirZWidth * (line * unitWidth - unitWidth/2)
 	end
 
-	local dx = x + self.silo.dirXLength * self.silo.length
-	local dz = z + self.silo.dirZLength * self.silo.length
+	local dx = x + dirXLength * siloLength
+	local dz = z + dirZLength * siloLength
 
 	if self.isInverted then 
 		x, z, dx, dz = dx, dz, x, z
@@ -85,27 +96,7 @@ end
 
 --- Gets the next line to drive.
 function CpBunkerSiloVehicleController:getNextLine(numLines)
-	local nextLine, nextDirection
-	if self.lastDirection == self.LAST_DIRECTIONS.LEFT then 
-		--- 4-3-2-1
-		if self.lastLine <= 1 then
-			nextLine = math.min(self.lastLine + 1, numLines)
-			nextDirection = self.LAST_DIRECTIONS.RIGHT
-		else 
-			nextLine = self.lastLine - 1
-			nextDirection = self.LAST_DIRECTIONS.LEFT
-		end
-	else
-		--- 2-3-4-5
-		if self.lastLine >= numLines then
-			nextLine = math.max(self.lastLine - 1, 1)
-			nextDirection = self.LAST_DIRECTIONS.LEFT
-		else 
-			nextLine = self.lastLine + 1
-			nextDirection = self.LAST_DIRECTIONS.RIGHT
-		end
-	end
-	return nextLine, nextDirection
+	return 1
 end
 
 --- Setups a map with all lanes mostly for debugging for now.
@@ -128,18 +119,6 @@ end
 --- Tells the driver, that the bunker silo was deleted.
 function CpBunkerSiloVehicleController:setBunkerSiloInvalid()
 	self.driveStrategy:stopSiloWasDeleted()
-end
-
-function CpBunkerSiloVehicleController:hasNearbyUnloader()
-	return self.silo:hasNearbyUnloader()
-end
-
-function CpBunkerSiloVehicleController:isWaitingForUnloaders()
-	return self.driveStrategy:isWaitingForUnloaders()
-end
-
-function CpBunkerSiloVehicleController:isWaitingAtParkPosition()
-	return self.driveStrategy:isWaitingAtParkPosition()
 end
 
 function CpBunkerSiloVehicleController:draw()
@@ -177,4 +156,74 @@ function CpBunkerSiloVehicleController:isEndReached(node, margin)
 		return not self.silo:isPointInSilo(x, z) and dist < 5, MathUtil.clamp(2 * dist, 5, math.huge)
 	end
 	return false, math.huge
+end
+
+--- Silo controller for a Bunker silo leveler driver.
+--- Handles the bunker silo lines and the automatic 
+--- selection of the next line for a new approach.
+---@class CpBunkerSiloLevelerController : CpBunkerSiloVehicleController
+CpBunkerSiloLevelerController = CpObject(CpBunkerSiloVehicleController)
+CpBunkerSiloLevelerController.LAST_DIRECTIONS = {
+	LEFT = 0,
+	RIGHT = 1
+}
+function CpBunkerSiloLevelerController:init(silo, vehicle, driveStrategy)
+	CpBunkerSiloLevelerController.init(self, silo, vehicle, driveStrategy)
+	self.lastLine = 1
+	self.currentTarget = nil
+	self.lastDirection = self.LAST_DIRECTIONS.LEFT
+end
+
+
+function CpBunkerSiloLevelerController:hasNearbyUnloader()
+	return self.silo:hasNearbyUnloader()
+end
+
+function CpBunkerSiloLevelerController:isWaitingForUnloaders()
+	return self.driveStrategy:isWaitingForUnloaders()
+end
+
+function CpBunkerSiloLevelerController:isWaitingAtParkPosition()
+	return self.driveStrategy:isWaitingAtParkPosition()
+end
+
+--- Gets the next line to drive.
+function CpBunkerSiloLevelerController:getNextLine(numLines)
+	local nextLine, nextDirection
+	if self.lastDirection == self.LAST_DIRECTIONS.LEFT then 
+		--- 4-3-2-1
+		if self.lastLine <= 1 then
+			nextLine = math.min(self.lastLine + 1, numLines)
+			nextDirection = self.LAST_DIRECTIONS.RIGHT
+		else 
+			nextLine = self.lastLine - 1
+			nextDirection = self.LAST_DIRECTIONS.LEFT
+		end
+	else
+		--- 2-3-4-5
+		if self.lastLine >= numLines then
+			nextLine = math.max(self.lastLine - 1, 1)
+			nextDirection = self.LAST_DIRECTIONS.LEFT
+		else 
+			nextLine = self.lastLine + 1
+			nextDirection = self.LAST_DIRECTIONS.RIGHT
+		end
+	end
+	self.lastDirection = nextDirection
+	return nextLine
+end
+
+--- Controls the driving lines into the silo,
+--- based on the fill level in the lines.
+---@class CpBunkerSiloLoaderController : CpBunkerSiloVehicleController
+CpBunkerSiloLoaderController = CpObject(CpBunkerSiloVehicleController)
+
+function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
+	CpBunkerSiloVehicleController.init(self, silo, vehicle, driveStrategy)
+end
+
+function CpBunkerSiloLoaderController:getNextLine(numLines)
+	--- TODO: Select the next line by the max fill level
+	--- 	  or which lane has more to the front of the silo.
+	return 1
 end

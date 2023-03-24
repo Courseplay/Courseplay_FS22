@@ -116,7 +116,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
 
 
     --- Setup the silo controller, that handles the driving conditions and coordinations.
-	self.siloController = self.silo:setupTarget(self.vehicle, self, self.drivingForwardsIntoSilo)
+	self.siloController = self.silo:setupLevelerTarget(self.vehicle, self, self.drivingForwardsIntoSilo)
 
     if self.silo:isVehicleInSilo(self.vehicle) then 
         self:startDrivingIntoSilo()

@@ -38,7 +38,10 @@ end
 
 function AIDriveStrategySiloLoader:delete()
     AIDriveStrategySiloLoader:superClass().delete(self)
-
+    if self.bunkerSiloController then 
+        self.bunkerSiloController:delete()
+        self.bunkerSiloController = nil
+    end
 end
 
 function AIDriveStrategySiloLoader:getGeneratedCourse(jobParameters)
@@ -46,32 +49,42 @@ function AIDriveStrategySiloLoader:getGeneratedCourse(jobParameters)
 end
 
 function AIDriveStrategySiloLoader:setSiloAndHeap(bunkerSilo, heapSilo)
-    if bunkerSilo ~= nil then 
-        self:debug("Bunker silo was found.")
-        self.silo = bunkerSilo
-        --- TODO: apply offset, if the silo is not filled equally to both sides.
-    else 
-        self:debug("Heap was found.")
-        self.silo = heapSilo
-    end
+    self.bunkerSilo = bunkerSilo
+    self.heapSilo = heapSilo
 end
 
 function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     -- to always have a valid course (for the traffic conflict detector mainly)
     self.jobParameters = jobParameters
 
-    local x, z = self.silo:getFrontCenter()
-    local dx, dz = self.silo:getBackCenter()
-    local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
+    local x, z, dx, dz
+    if self.bunkerSilo ~= nil then 
+        self:debug("Bunker silo was found.")
+        self.silo = self.bunkerSilo
+        --- Only used to calculate the correct path into the silo.
+        self.bunkerSiloController = CpBunkerSiloLoaderController(self.silo, self.vehicle, self)
+        local startPos, endPos = self.bunkerSiloController:getTarget(self:getWorkWidth())
+        x, z = unpack(startPos)
+        dx, dz = unpack(endPos)
+        --- TODO: apply offset, if the silo is not filled equally to both sides.
+    else 
+        self:debug("Heap was found.")
+        self.silo = self.heapSilo
+        x, z = self.silo:getFrontCenter()
+        dx, dz = self.silo:getBackCenter()
+    end
+
+    self.siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
         0, 0, 3, 3, false)
 
-    local distance = course:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
+
+    local distance = self.siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
 
     if distance > 2 * self.turningRadius then
         --- Alignment needed
-        self:startPathfindingToStart(course)
+        self:startPathfindingToStart(self.siloCourse)
     else
-        self:startCourse(course, 1)
+        self:startCourse(self.siloCourse, 1)
     end
 
 end
@@ -85,6 +98,8 @@ function AIDriveStrategySiloLoader:initializeImplementControllers(vehicle)
     local _
     _, self.conveyorController = self:addImplementController(vehicle, ConveyorController, ConveyorBelt, {}, nil)
     _, self.shovelController = self:addImplementController(vehicle, ShovelController, Shovel, {}, nil)
+
+    self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.shovelController:getShovelNode(), 5, 1)
 end
 
 --- Fuel save only allowed when no trailer is there to unload into.
@@ -96,6 +111,7 @@ end
 --- Static parameters (won't change while driving)
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategySiloLoader:setAllStaticParameters()
+    AIDriveStrategySiloLoader:superClass().setAllStaticParameters(self)
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
     self.proximityController = ProximityController(self.vehicle, self:getWorkWidth())
 
@@ -171,7 +187,15 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
             self:setMaxSpeed(0)
         end
         self:callUnloaderWhenNeeded()
-    
+        if self.bunkerSiloController then
+            local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
+            local isEndReached, maxSpeed = self.bunkerSiloController:isEndReached(self.shovelController:getShovelNode(), 0)
+            if self.silo:isTheSameSilo(closestObject) or isEndReached then
+                self:debug("End wall detected or bunker silo end is reached.")
+                self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+            end
+        end
+
     end
     self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100
@@ -259,7 +283,7 @@ end
 ---@param driver AIDriveStrategyUnloadCombine
 ---@return boolean Is valid unloader?
 function AIDriveStrategySiloLoader:registerUnloader(driver)
-    if driver:getUnloadTargetType() == CpCombineUnloaderJobParameters.UNLOAD_LOADER then 
+    if driver:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER then 
         self.unloader:set(driver, 1000)
         return true
     end
@@ -289,7 +313,7 @@ end
 
 function AIDriveStrategySiloLoader:isActiveCpUnloader(vehicle)
     if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
-        return vehicle:getCpDriveStrategy():getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER
+        return true
     end
     return false
 end
@@ -324,24 +348,30 @@ function AIDriveStrategySiloLoader:findUnloader()
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z) then
-                local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
-                if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
-                    local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
-            
-                    local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
-                    self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
-                            CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
-                    if score > bestScore then
-                        bestUnloader = vehicle
-                        bestScore = score
-                        bestEte = unloaderEte
+
+            if driveStrategy:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER then
+
+                if driveStrategy:isServingPosition(x, z) then
+                    local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
+                    if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
+                        local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
+                
+                        local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
+                        self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
+                                CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
+                        if score > bestScore then
+                            bestUnloader = vehicle
+                            bestScore = score
+                            bestEte = unloaderEte
+                        end
+                    else
+                        self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
                     end
                 else
-                    self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
+                    self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
                 end
-            else
-                self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
+            else 
+                self:debug('findUnloader: %s is assigned to unload silo loaders', CpUtil.getName(vehicle))
             end
         end
     end

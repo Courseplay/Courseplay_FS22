@@ -185,10 +185,12 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
         end
     end
     --- Setup the unload target mode.
-    if jobParameters.unloadTarget == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
+    if jobParameters.unloadTarget:getValue() == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
         self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
+        self:debug("Unload target is a combine.")
     else
         self.unloadTargetType = self.UNLOAD_TYPES.SILO_LOADER
+        self:debug("Unload target is a silo loader.")
     end
 end
 
@@ -265,7 +267,6 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
         if not self.combineToUnload:getCpDriveStrategy():registerUnloader(self) then 
             --- Resets the unload target, when the unload target type changed.
-            self.combineJustUnloaded:deregisterUnloader(self)
             self:releaseCombine()
         end
     end

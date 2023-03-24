@@ -1610,7 +1610,7 @@ end
 ---@param driver AIDriveStrategyUnloadCombine
 ---@return boolean Is valid unloader registered?
 function AIDriveStrategyCombineCourse:registerUnloader(driver)
-    if self.unloader:getUnloadTargetType() == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
+    if driver:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE then
         self.unloader:set(driver, 1000)
         return true
     end

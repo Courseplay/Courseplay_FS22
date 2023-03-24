@@ -20,6 +20,7 @@ Base class for all Courseplay drive strategies
 ]]
 
 ---@class AIDriveStrategyCourse : AIDriveStrategy
+---@field vehicle table
 AIDriveStrategyCourse = {}
 local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 

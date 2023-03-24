@@ -1,6 +1,32 @@
 ---@class CpSilo
 CpSilo = CpObject()
 
+--[[
+
+						B <:= Back center
+
+heightNode -->	O-------B--------	
+(hx,_,hz)		| X X X X X X X |  	---
+				| X X X X X X X | 	 |
+				| X X X X X X X | 	 |
+				| X X X X X X X | 	 |
+				| X X X X X X X | 	 |	 length
+				| X X X X X X X | 	 |
+				| X X X X X X X | 	 |   ^
+				| X X X X X X X | 	 |   | (dirXLength, dirZLength)
+				| X X X X X X X | 	 |    
+				| X X X X X X X |  	---
+startNode -->	O X	X X F X X X O	<-- widthNode
+(sx, _, sz)								(wx, _, wz)
+						F <:= Front center
+				|---------------|
+				   	  width
+			 		---->
+				 (dirXWidth, dirZWidth)
+		
+]]--
+
+
 function CpSilo:init(sx, sz, wx, wz, hx, hz)
 	self.sx = sx
 	self.sy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz)
@@ -376,10 +402,19 @@ end
 --- Creates a controller for the vehicle.
 ---@param vehicle Vehicle
 ---@param driveStrategy AIDriveStrategyBunkerSilo
----@param drivingForwardsIntoSilo boolean
----@return CpBunkerSiloVehicleController
-function CpBunkerSilo:setupTarget(vehicle, driveStrategy, drivingForwardsIntoSilo)
-	self.controllers[vehicle.rootNode] = CpBunkerSiloVehicleController(self, vehicle, driveStrategy, drivingForwardsIntoSilo)
+---@return CpBunkerSiloLevelerController
+function CpBunkerSilo:setupLevelerTarget(vehicle, driveStrategy)
+	self.controllers[vehicle.rootNode] = CpBunkerSiloLevelerController(self, vehicle, driveStrategy)
+	self.numControllers = self.numControllers + 1 
+	return self.controllers[vehicle.rootNode]
+end
+
+--- Creates a controller for the vehicle.
+---@param vehicle Vehicle
+---@param driveStrategy AIDriveStrategySiloLoader
+---@return CpBunkerSiloLoaderController
+function CpBunkerSilo:setupLoaderTarget(vehicle, driveStrategy)
+	self.controllers[vehicle.rootNode] = CpBunkerSiloLoaderController(self, vehicle, driveStrategy)
 	self.numControllers = self.numControllers + 1 
 	return self.controllers[vehicle.rootNode]
 end

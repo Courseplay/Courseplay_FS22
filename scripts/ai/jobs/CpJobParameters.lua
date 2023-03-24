@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --- Parameters of a Courseplay job
 ---@class CpJobParameters
+---@field settings AIParameterSetting[]
 CpJobParameters = CpObject()
 CpJobParameters.xmlKey = ".cpJobParameters"
 CpJobParameters.baseFilePath = "config/jobParameters/"
@@ -136,6 +137,12 @@ function CpJobParameters:raiseCallback(callbackStr, setting, ...)
     end
 end
 
+
+function CpJobParameters:__tostring()
+    for i, setting in ipairs(self.settings) do 
+        CpUtil.info("%s", tostring(setting))
+    end
+end
 
 --- AI parameters for the bale finder job.
 ---@class CpBaleFinderJobParameters : CpJobParameters
