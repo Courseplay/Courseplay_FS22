@@ -305,7 +305,9 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING_STOPPED_COMBINE then
 
         self:unloadStoppedCombine()
-
+        --- For some reason this is a problem ?
+        local spec = self.vehicle.spec_aiFieldWorker
+        spec.didNotMoveTimer = spec.didNotMoveTimeout
     elseif self.state == self.states.WAITING_FOR_MANEUVERING_COMBINE then
 
         self:waitForManeuveringCombine()
