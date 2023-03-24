@@ -39,7 +39,6 @@ function CpAIJob:setupJobParameters()
 end
 
 --- Optional to create custom cp job parameters.
----@param jobParameters CpJobParameters
 function CpAIJob:setupCpJobParameters(jobParameters)
 	self.cpJobParameters = jobParameters
 	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle,self,self.cpJobParameters)

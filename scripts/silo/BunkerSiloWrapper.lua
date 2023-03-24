@@ -1,7 +1,129 @@
+---@class CpSilo
+CpSilo = CpObject()
+
+function CpSilo:init(sx, sz, wx, wz, hx, hz)
+	self.sx = sx
+	self.sy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz)
+	self.sz = sz
+	self.wx = wx
+	self.wy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wx, 0, wz)
+	self.wz = wz
+	self.hx = hx
+	self.hy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, hx, 0, hz)
+	self.hz = hz
+
+	self.dirXLength, self.dirZLength, self.length = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = hx, z = hz})
+	self.dirXWidth, self.dirZWidth, self.width = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
+
+	self.area = 	{
+		{
+			x = sx, 
+			z = sz
+		},
+		{
+			x = wx, 
+			z = wz
+		},
+		{
+			x = wx + self.dirXLength * self.length, 
+			z = wz + self.dirZLength * self.length,
+		},
+		{
+			x = hx, 
+			z = hz
+		},
+		{
+			x = sx, 
+			z = sz
+		} }
+
+end
+
+function CpSilo:getStartPosition()
+	return self.sx, self.sz	
+end
+
+function CpSilo:getWidthPosition()
+	return self.wx, self.wz	
+end
+
+function CpSilo:getHeightPosition()
+	return self.hx, self.hz	
+end
+
+function CpSilo:getWidth()
+	return self.width	
+end
+
+function CpSilo:getLength()
+	return self.length
+end
+
+function CpSilo:getLengthDirection()
+	return self.dirXLength, self.dirZLength
+end
+
+function CpSilo:getWidthDirection()
+	return self.dirXWidth, self.dirZWidth
+end
+
+function CpSilo:getFrontCenter()
+	local width = self:getWidth()
+	return self.sx + self.dirXWidth * width/2, self.sz + self.dirZWidth * width/2
+end
+
+function CpSilo:getBackCenter()
+	local length = self:getLength()
+	local fcx, fcz = self:getFrontCenter()
+	return fcx + self.dirXLength * length/2, fcz + self.dirZLength * length/2
+end
+
+--- Is the point directly in the silo area.
+function CpSilo:isPointInSilo(x, z)
+	return self:isPointInArea(x, z, self.area)
+end
+
+function CpSilo:isNodeInSilo(node)
+	local x, _, z = getWorldTranslation(node)
+	return self:isPointInArea(x, z, self.area)
+end
+
+function CpSilo:isVehicleInSilo(vehicle)
+	return self:isNodeInSilo(vehicle.rootNode)
+end
+
+function CpSilo:isPointInArea(x, z, area)
+	return CpMathUtil.isPointInPolygon(area, x, z)	
+end
+
+function CpSilo:getArea()
+	return self.area
+end
+
+function CpSilo:drawDebug()
+	self:drawArea(self.area)
+
+	DebugUtil.drawDebugGizmoAtWorldPos(self.sx, self.sy + 3, self.sz, self.dirXLength, 0, self.dirZLength, 
+		0, 1, 0, "StartPoint", false)
+	DebugUtil.drawDebugGizmoAtWorldPos(self.wx, self.wy + 3, self.wz, self.dirXLength, 0, self.dirZLength, 
+		0, 1, 0, "WidthPoint", false)
+	DebugUtil.drawDebugGizmoAtWorldPos(self.hx, self.hy + 3, self.hz, self.dirXLength, 0, self.dirZLength, 
+		0, 1, 0, "HeightPoint", false)
+end
+
+function CpSilo:debug(...)
+	CpUtil.debugFormat(CpUtil.DBG_SILO, ...)	
+end
+
+function CpSilo:drawArea(area)
+	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, area[1].x, 0, area[1].z) + 2
+	DebugUtil.drawDebugAreaRectangle(area[1].x, y, area[1].z, area[2].x, y, area[2].z, area[4].x, y, area[4].z, false, 1, 0, 0)
+end
+
 --- Heap Bunker Silo
---- Simulates a Giants BunkerSilo object
----@class CpHeapBunkerSilo
-CpHeapBunkerSilo = CpObject()
+--- Wrapper for a heap.
+---@class CpHeapBunkerSilo :CpSilo
+CpHeapBunkerSilo = CpObject(CpSilo)
 
 ---@param sx number
 ---@param sz number
@@ -10,158 +132,36 @@ CpHeapBunkerSilo = CpObject()
 ---@param hx number
 ---@param hz number
 function CpHeapBunkerSilo:init(sx, sz, wx, wz, hx, hz)
+	CpSilo.init(self, sx, sz, wx, wz, hx, hz)
 
 	self.bunkerSiloArea = {
-		sx = sx,
-		sy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz),
-		sz = sz,
-		wx = wx,
-		wy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wx, 0, wz),
-		wz = wz,
-		hx = hx,
-		hy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, hx, 0, hz),
-		hz = hz,
+		sx = self.sx,
+		sy = self.sy,
+		sz = self.sz,
+		wx = self.wx,
+		wy = self.wy,
+		wz = self.wz,
+		hx = self.hx,
+		hy = self.hy,
+		hz = self.hz,
 	}
-	self.bunkerSiloArea.inner = {
-		sx = sx,
-		sy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, sx, 0, sz),
-		sz = sz,
-		wx = wx,
-		wy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, wx, 0, wz),
-		wz = wz,
-		hx = hx,
-		hy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, hx, 0, hz),
-		hz = hz,
-	}
-	self.bunkerSiloArea.dhx = self.bunkerSiloArea.hx - self.bunkerSiloArea.sx
-	self.bunkerSiloArea.dhy = self.bunkerSiloArea.hy - self.bunkerSiloArea.sy
-	self.bunkerSiloArea.dhz = self.bunkerSiloArea.hz - self.bunkerSiloArea.sz
-	self.bunkerSiloArea.dhx_norm, self.bunkerSiloArea.dhy_norm, self.bunkerSiloArea.dhz_norm = MathUtil.vector3Normalize(self.bunkerSiloArea.dhx, self.bunkerSiloArea.dhy, self.bunkerSiloArea.dhz)
+	self.bunkerSiloArea.inner = self.bunkerSiloArea
+
+	self.bunkerSiloArea.dhx = self.hx - self.bunkerSiloArea.sx
+	self.bunkerSiloArea.dhy = self.hy - self.bunkerSiloArea.sy
+	self.bunkerSiloArea.dhz = self.hz - self.bunkerSiloArea.sz
+	self.bunkerSiloArea.dhx_norm, self.bunkerSiloArea.dhy_norm, self.bunkerSiloArea.dhz_norm = 
+		MathUtil.vector3Normalize(self.bunkerSiloArea.dhx, self.bunkerSiloArea.dhy, self.bunkerSiloArea.dhz)
 	self.bunkerSiloArea.dwx = self.bunkerSiloArea.wx - self.bunkerSiloArea.sx
 	self.bunkerSiloArea.dwy = self.bunkerSiloArea.wy - self.bunkerSiloArea.sy
 	self.bunkerSiloArea.dwz = self.bunkerSiloArea.wz - self.bunkerSiloArea.sz
-	self.bunkerSiloArea.dwx_norm, self.bunkerSiloArea.dwy_norm, self.bunkerSiloArea.dwz_norm = MathUtil.vector3Normalize(self.bunkerSiloArea.dwx, self.bunkerSiloArea.dwy, self.bunkerSiloArea.dwz)
-	
-	local area = self.bunkerSiloArea
-	local dirX, dirZ, length = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
-		{x = area.hx, z = area.hz})
-	self.dirX = dirX
-	self.dirZ = dirZ
-	local dirWX, dirWZ, width = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
-		{x = area.wx, z = area.wz})
-	self.dirWX = dirWX
-	self.dirWZ = dirWZ
-
-	self.area = 	{
-		{
-			x = area.sx, 
-			z = area.sz
-		},
-		{
-			x = area.wx, 
-			z = area.wz
-		},
-		{
-			x = area.wx + dirX * length, 
-			z = area.wz + dirZ * length,
-		},
-		{
-			x = area.hx, 
-			z = area.hz
-		},
-		{
-			x = area.sx, 
-			z = area.sz
-		} }
-	self.sx = area.sx
-	self.sy = area.sy
-	self.sz = area.sz
-	self.wx = area.wx
-	self.wy = area.wy
-	self.wz = area.wz
-	self.hx = area.hx
-	self.hy = area.hy
-	self.hz = area.hz
+	self.bunkerSiloArea.dwx_norm, self.bunkerSiloArea.dwy_norm, self.bunkerSiloArea.dwz_norm = 
+		MathUtil.vector3Normalize(self.bunkerSiloArea.dwx, self.bunkerSiloArea.dwy, self.bunkerSiloArea.dwz)
 end
-
---- Gets the area of the heap.
-function CpHeapBunkerSilo:getArea()
-	return self.area
-end
-
---- Gets the length from {sx, sz} to {hx, hz}.
-function CpHeapBunkerSilo:getLength()
-	return MathUtil.vector2Length(self.sx - self.hx, self.sz - self.hz)
-end
-
-function CpHeapBunkerSilo:getWidth()
-	return MathUtil.vector2Length(self.sx - self.wx, self.sz - self.wz)
-end
-
---- Front left corner
-function CpHeapBunkerSilo:getStartPosition()
-	return self.sx, self.sz
-end
-
---- Back left corner
-function CpHeapBunkerSilo:getHeightPosition()
-	return self.hx, self.hz
-end
-
---- Front right corner
-function CpHeapBunkerSilo:getWidthPosition()
-	return self.wx, self.wz
-end
-
-function CpHeapBunkerSilo:getDirection()
-	return self.dirX, self.dirZ
-end
-
-function CpHeapBunkerSilo:getFrontCenter()
-	local width = self:getWidth()
-	return self.sx + self.dirWX * width/2, self.sz + self.dirWZ * width/2
-end
-
-function CpHeapBunkerSilo:getBackCenter()
-	local length = self:getLength()
-	local fcx, fcz = self:getFrontCenter()
-	return fcx + self.dirX * length/2, fcz + self.dirZ * length/2
-end
-
-function CpHeapBunkerSilo:drawDebug()
-	DebugUtil.drawDebugAreaRectangle(self.sx, self.sy + 2, self.sz, self.wx, self.wy + 2, self.wz, self.hx, self.hy + 2, self.hz,
-		 false, 0.5, 0.5, 0.5)
-
-	DebugUtil.drawDebugGizmoAtWorldPos(self.sx, self.sy + 3, self.sz, self.dirX, 0, self.dirZ, 
-		0, 1, 0, "StartPoint", false)
-	DebugUtil.drawDebugGizmoAtWorldPos(self.wx, self.wy + 3, self.wz, self.dirX, 0, self.dirZ, 
-		0, 1, 0, "WidthPoint", false)
-	DebugUtil.drawDebugGizmoAtWorldPos(self.hx, self.hy + 3, self.hz, self.dirX, 0, self.dirZ, 
-		0, 1, 0, "HeightPoint", false)
-end
-
-
---- Is the point directly in the silo area.
-function CpHeapBunkerSilo:isPointInSilo(x, z)
-	return self:isPointInArea(x, z, self.area)
-end
-
-function CpHeapBunkerSilo:isNodeInSilo(node)
-	local x, _, z = getWorldTranslation(node)
-	return self:isPointInArea(x, z, self.area)
-end
-
-function CpHeapBunkerSilo:isVehicleInSilo(vehicle)
-	return self:isNodeInSilo(vehicle.rootNode)
-end
-
-function CpHeapBunkerSilo:isPointInArea(x, z, area)
-	return CpMathUtil.isPointInPolygon(area, x, z)	
-end
-
 
 --- Wrapper for a bunker silo.
-CpBunkerSilo = CpObject()
+---@class CpBunkerSilo : CpSilo
+CpBunkerSilo = CpObject(CpSilo)
 
 CpBunkerSilo.UNLOADER_LENGTH_OFFSET = 50
 CpBunkerSilo.UNLOADER_WIDTH_OFFSET = 20
@@ -174,8 +174,13 @@ CpBunkerSilo.SIDE_MODES = {
 
 
 function CpBunkerSilo:init(silo)
+	local area = silo.bunkerSiloArea.inner
+	self.startNode = area.start
+	self.widthNode = area.width
+	self.heightNode = area.height
+	CpSilo.init(self, area.sx, area.sz, area.wx, area.wz, area.hx, area.hz)
+	
 	self.silo = silo
-	self:setupArea()
 	self.controllers = {}
 	self.numControllers = 0
 	self.nearbyUnloaders = {}
@@ -184,49 +189,6 @@ function CpBunkerSilo:init(silo)
 	self.initialized = false
 
 	self.plot = BunkerSiloPlot()
-end
-
---- Setup the bunker silo area and direction data.
-function CpBunkerSilo:setupArea()
-	local area = self.silo.bunkerSiloArea.inner
-	local dirX, dirZ, length = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
-															 {x = area.hx, z = area.hz})
-	self.area = 	{
-		{
-			x = area.sx, 
-			z = area.sz
-		},
-		{
-			x = area.wx, 
-			z = area.wz
-		},
-		{
-			x = area.wx + dirX * length, 
-			z = area.wz + dirZ * length,
-		},
-		{
-			x = area.hx, 
-			z = area.hz
-		},
-		{
-			x = area.sx, 
-			z = area.sz
-		} }
-	self.length = length
-	self.dirXLength, self.dirZLength = dirX, dirZ
-	self.dirXWidth, self.dirZWidth, self.width = CpMathUtil.getPointDirection({x = area.sx, z = area.sz},
-															 {x = area.wx, z = area.wz})
-		
-	self.sx = area.sx
-	self.sz = area.sz
-	self.wx = area.wx
-	self.wz = area.wz
-	self.hx = area.hx
-	self.hz = area.hz
-
-	self.startNode = area.start
-	self.widthNode = area.width
-	self.heightNode = area.height
 end
 
 --- Checks if the silo has a back wall and sets the plot area afterwards. 
@@ -362,20 +324,7 @@ function CpBunkerSilo:getBackAreaInternal(length, sideOffset)
 	return area
 end
 
-
-function CpBunkerSilo:getArea()
-	return self.area	
-end
-
-function CpBunkerSilo:getFrontCenter()
-	return self.sx + self.dirWX * self.width/2, self.sz + self.dirWZ * self.width/2
-end
-
-function CpBunkerSilo:getBackCenter()
-	local fcx, fcz = self:getFrontCenter()
-	return fcx + self.dirX * self.length/2, fcz + self.dirZ * self.length/2
-end
-
+--- Gets the giants bunker silo
 function CpBunkerSilo:getSilo()
 	return self.silo	
 end
@@ -390,24 +339,6 @@ function CpBunkerSilo:delete()
 		controller:delete()
 	end
 	self.plot:delete()
-end
-
---- Is the point directly in the silo area.
-function CpBunkerSilo:isPointInSilo(x, z)
-	return self:isPointInArea(x, z, self.area)
-end
-
-function CpBunkerSilo:isVehicleInSilo(vehicle)
-	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	return self:isPointInArea(x, z, self.area)
-end
-
-function CpBunkerSilo:isPointInArea(x, z, area)
-	return CpMathUtil.isPointInPolygon(area, x, z)	
-end
-
-function CpBunkerSilo:debug(...)
-	CpUtil.debugFormat(CpUtil.DBG_SILO, ...)	
 end
 
 function CpBunkerSilo:update(dt)
@@ -425,6 +356,8 @@ function CpBunkerSilo:draw()
 	end
 	if CpBunkerSilo.DRAW_DEBUG then
 		self:drawUnloaderArea()
+		self:drawDebug()
+
 		local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
 		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2
 		DebugUtil.drawDebugLine(x, y, z, x + self.dirXLength * (self.length + 2), y, z + self.dirZLength * self.length)
@@ -432,18 +365,7 @@ function CpBunkerSilo:draw()
 		local x, z = self.hx + self.dirXWidth * self.width/2 - self.dirXLength * 2, self.hz + self.dirZWidth * self.width/2 - self.dirZLength * 2
 		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
 		DebugUtil.drawDebugLine(x, y, z, x - self.dirXLength * (self.length + 2), y, z - self.dirZLength * self.length)
-
-		if self.startNode then
-			DebugUtil.drawDebugNode(self.startNode, "Start Node: "..tostring(self.siloMode), false, 5)
-			DebugUtil.drawDebugNode(self.widthNode, "Width Node", false, 5)
-			DebugUtil.drawDebugNode(self.heightNode, "Height Node", false, 5)
-		end
 	end
-end
-
-function CpBunkerSilo:drawArea(area)
-	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.sx, 0, self.sz) + 2
-	DebugUtil.drawDebugAreaRectangle(area[1].x, y, area[1].z, area[2].x, y, area[2].z, area[4].x, y, area[4].z, false, 1, 0, 0)
 end
 
 
@@ -641,7 +563,6 @@ function CpBunkerSilo:drawUnloaderArea()
 	if self.siloMode == self.SIDE_MODES.OPEN then
 		self:drawArea(self:getBackArea())
 	end
-	self:drawArea(self:getArea())
 end
 
 function CpBunkerSilo:getDebugData()

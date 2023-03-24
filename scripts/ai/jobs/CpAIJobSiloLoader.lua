@@ -1,19 +1,22 @@
 --- Combine unloader job.
 ---@class CpAIJobSiloLoader : CpAIJobFieldWork
+---@field heapPlot HeapPlot
+---@field heapNode number
 CpAIJobSiloLoader = {
 	name = "SILO_LOADER_CP",
 	jobName = "CP_job_siloLoader",
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobSiloLoader, CpAIJob)
 
-
 function CpAIJobSiloLoader.new(isServer, customMt)
 	local self = CpAIJob.new(isServer, customMt or AIJobCombineUnloaderCp_mt)
 
 	self.heapPlot = HeapPlot(g_currentMission.inGameMenu.ingameMap)
     self.heapPlot:setVisible(false)
+
 	self.heapNode = CpUtil.createNode("siloNode", 0, 0, 0, nil)
 	self.heap = nil
+	self.hasValidPosition = false
 	return self
 end
 
@@ -30,24 +33,8 @@ end
 
 function CpAIJobSiloLoader:setupJobParameters()
 	CpAIJobSiloLoader:superClass().setupJobParameters(self)
-	self:setupCpJobParameters()
-end
-
-function CpAIJobSiloLoader:setupCpJobParameters()
-	self.cpJobParameters = CpSiloLoaderJobParameters(self)
-	CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(self.cpJobParameters.settingsBySubTitle, self, self.cpJobParameters)
-	self.cpJobParameters:validateSettings()
+	self:setupCpJobParameters(CpSiloLoaderJobParameters(self))
 	self.cpJobParameters.loadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
-end
-
---- Disables course generation.
-function CpAIJobSiloLoader:getCanGenerateFieldWorkCourse()
-	return false
-end
-
---- Disables course generation.
-function CpAIJobSiloLoader:isCourseGenerationAllowed()
-	return false
 end
 
 function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle)
@@ -55,9 +42,8 @@ function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle)
 end
 
 function CpAIJobSiloLoader:getCanStartJob()
-	return self.heap ~= nil
+	return self.hasValidPosition
 end
-
 
 ---@param vehicle Vehicle
 ---@param mission Mission
@@ -85,7 +71,7 @@ function CpAIJobSiloLoader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.siloLoaderTask:setVehicle(vehicle)
-	self.siloLoaderTask:setSilo(self.heap)
+	self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
 end
 
 
@@ -93,6 +79,8 @@ end
 function CpAIJobSiloLoader:validate(farmId)
 	self.heapPlot:setVisible(false)
 	self.heap = nil
+	self.bunkerSilo = nil
+	self.hasValidPosition = false
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
@@ -102,24 +90,18 @@ function CpAIJobSiloLoader:validate(farmId)
 		vehicle:applyCpSiloLoaderWorkerJobParameters(self)
 	end
 	
-	--- Updates the heap
-	local x, z = self.cpJobParameters.loadPosition:getPosition()
-	local angle = self.cpJobParameters.loadPosition:getAngle()
-	if x == nil or angle == nil then
-		return false, g_i18n:getText("CP_error_no_heap_found")
-	end
-
-	setTranslation(self.heapNode, x, 0, z)
-	setRotation(self.heapNode, 0, angle, 0)
-
-	--- TODO: Handle bunker silo ?
-
-	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.heapNode, 0, 50, -10)
-	if found then	
-		self.heapPlot:setArea(heapSilo:getArea())
-		self.heapPlot:setVisible(true)
-		self.heap = heapSilo
-		self.siloLoaderTask:setSilo(self.heap)
+	--- First we search for bunker silos:
+	local found, bunkerSilo, heapSilo = self:getBunkerSiloOrHeap(self.cpJobParameters.loadPosition, self.heapNode)
+	if found then 
+		self.hasValidPosition = true
+		if bunkerSilo then 
+			self.bunkerSilo = bunkerSilo
+		elseif heapSilo then
+			self.heapPlot:setArea(heapSilo:getArea())
+			self.heapPlot:setVisible(true)
+			self.heap = heapSilo
+		end
+		self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
 	else 
 		return false, g_i18n:getText("CP_error_no_heap_found")
 	end
@@ -127,21 +109,41 @@ function CpAIJobSiloLoader:validate(farmId)
 	return isValid, errorMessage
 end
 
+--- Gets the bunker silo or heap at the loading position in that order.
+---@param loadPosition CpAIParameterPositionAngle
+---@param node number
+---@return boolean found?
+---@return CpBunkerSilo|nil
+---@return CpHeapBunkerSilo|nil
+function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
+	local x, z = loadPosition:getPosition()
+	local angle = loadPosition:getAngle()
+	if x == nil or angle == nil then
+		return false
+	end
+	setTranslation(self.heapNode, x, 0, z)
+	setRotation(self.heapNode, 0, angle, 0)
+	local found, bunkerSilo = BunkerSiloManagerUtil.getBunkerSiloBetween(node, 0, 25, -5)
+	if found then 
+		return true, bunkerSilo
+	end
+	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(node, 0, 50, -10)
+	return found, nil, heapSilo
+end
+
 function CpAIJobSiloLoader:readStream(streamId, connection)
 	CpAIJobSiloLoader:superClass().readStream(self, streamId, connection)
 
-	local x, z = self.cpJobParameters.loadPosition:getPosition()
-	local angle = self.cpJobParameters.loadPosition:getAngle()
-	if x ~= nil and angle ~= nil then
-		setTranslation(self.heapNode, x, 0, z)
-		setRotation(self.heapNode, 0, angle, 0)
-		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.heapNode, 0, 50, -10)
-		if found then	
+	local found, bunkerSilo, heapSilo = self:getBunkerSiloOrHeap(self.cpJobParameters.loadPosition, self.heapNode)
+	if found then 
+		if bunkerSilo then 
+			self.bunkerSilo = bunkerSilo
+		elseif heapSilo then
 			self.heapPlot:setArea(heapSilo:getArea())
 			self.heapPlot:setVisible(true)
 			self.heap = heapSilo
-			self.siloLoaderTask:setSilo(self.heap)
 		end
+		self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
 	end
 end
 
@@ -149,24 +151,7 @@ function CpAIJobSiloLoader:writeStream(streamId, connection)
 	CpAIJobSiloLoader:superClass().writeStream(self, streamId, connection)
 end
 
-function CpAIJobSiloLoader:saveToXMLFile(xmlFile, key, usedModNames)
-	CpAIJobSiloLoader:superClass().saveToXMLFile(self, xmlFile, key)
-	self.cpJobParameters:saveToXMLFile(xmlFile, key)
-
-	return true
-end
-
-function CpAIJobSiloLoader:loadFromXMLFile(xmlFile, key)
-	CpAIJobSiloLoader:superClass().loadFromXMLFile(self, xmlFile, key)
-	self.cpJobParameters:loadFromXMLFile(xmlFile, key)
-end
-
-function CpAIJobSiloLoader:copyFrom(job)
-	self.cpJobParameters:copyFrom(job.cpJobParameters)
-end
-
 function CpAIJobSiloLoader:drawSilos(map)
-    if self.heapPlot then
-        self.heapPlot:draw(map)
-    end
+    self.heapPlot:draw(map)
+	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
 end

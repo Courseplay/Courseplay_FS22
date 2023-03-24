@@ -184,12 +184,12 @@ function CpAISiloLoaderWorker:startCpAtLastWp(superFunc, ...)
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()
-function CpAISiloLoaderWorker:startCpSiloLoaderWorker(silo, jobParameters)
+function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap)
     local spec = self.spec_cpAISiloLoaderWorker
     if self.isServer then 
         spec.siloLoaderStrategy = AIDriveStrategySiloLoader.new()
-        spec.siloLoaderStrategy:setSilo(silo)
         -- this also starts the strategy
+        spec.siloLoaderStrategy:setSiloAndHeap(bunkerSilo, heap)
         spec.siloLoaderStrategy:setAIVehicle(self, jobParameters)
     end
 end

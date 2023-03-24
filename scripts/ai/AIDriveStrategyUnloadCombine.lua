@@ -1890,7 +1890,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
         self.fieldUnloadPositionNode, 0, 50, -10)
 
-    if found then 
+    if found and heapSilo then 
         --- Heap was found
         self.fieldUnloadData.heapSilo = heapSilo
         --- Ignore the area of the heap for the path finder.
@@ -2087,7 +2087,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
         local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
             self.fieldUnloadPositionNode, 0, 50, -10)
     
-        if found then 
+        if found and heapSilo then 
             self:updateFieldPositionByHeapSilo(heapSilo)
             local vehicleWidth = AIUtil.getWidth(self.vehicle)
             local siloWidth = heapSilo:getWidth()

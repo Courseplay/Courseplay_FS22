@@ -1,4 +1,5 @@
 --- Links all placed bunker silos to the silo wrappers.
+---@class BunkerSiloManager
 BunkerSiloManager = CpObject()
 
 function BunkerSiloManager:init()
@@ -20,6 +21,9 @@ function BunkerSiloManager:removeBunkerSilo(silo)
 	end
 end
 
+--- Draws all bunker silos onto the ai map.
+---@param map table map to draw to.
+---@param selectedBunkerSilo CpBunkerSilo silo that gets highlighted.
 function BunkerSiloManager:drawSilos(map, selectedBunkerSilo)
 	for _, silo in pairs(self.silos) do 
 		silo:drawPlot(map, selectedBunkerSilo)
@@ -61,6 +65,11 @@ function BunkerSiloManager:draw(dt)
 	end
 end
 
+---@return CpBunkerSilo[]
+function BunkerSiloManager:getSilos()
+	return self.silos
+end
+
 
 g_bunkerSiloManager = BunkerSiloManager()
 
@@ -87,13 +96,37 @@ function BunkerSiloManagerUtil.debug(...)
 	CpUtil.debugFormat(BunkerSiloManagerUtil.debugChannel, ...)	
 end
 
+--- Checks fo a silo between the to points.
+---@param node number StartPoint
+---@param xOffset number 
+---@param length number SearchLength
+---@param zOffset number StartOffset
+---@return boolean silo found?
+---@return CpBunkerSilo|nil 
+function BunkerSiloManagerUtil.getBunkerSiloBetween(node, xOffset, length, zOffset)
+	local x, _, z = localToWorld(node, xOffset, 0, zOffset)
+	local tx, _, tz = localToWorld(node, xOffset, 0, length)
+	for _, bunker in pairs(g_bunkerSiloManager:getSilos()) do
+		local x1, z1 = bunker:getStartPosition()
+		local x2, z2 = bunker:getWidthPosition()
+		local x3, z3 = bunker:getHeightPosition()
+		if MathUtil.hasRectangleLineIntersection2D(x1,z1, x2-x1, z2-z1,
+			x3-x1, z3-z1, x, z, tx-x, tz-z) then
+			BunkerSiloManagerUtil.debug("Bunker silo was found: %s", CpUtil.getName(bunker:getSilo()))
+			return true, bunker
+		end
+	end
+	BunkerSiloManagerUtil.debug("Bunker silo could not be found!")
+	return false, nil
+end
+
 ---Checks for heaps between two points
 ---@param node number StartPoint
 ---@param xOffset number 
 ---@param length number SearchLength
 ---@param zOffset number StartOffset
 ---@return boolean found heap?
----@return CpHeapBunkerSilo
+---@return CpHeapBunkerSilo|nil
 function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffset)
 	local p1x, p1y, p1z = localToWorld(node, xOffset, 0, zOffset)
 	local p2x, p2y, p2z = localToWorld(node, xOffset, 0, length)

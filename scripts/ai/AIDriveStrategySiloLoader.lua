@@ -45,8 +45,15 @@ function AIDriveStrategySiloLoader:getGeneratedCourse(jobParameters)
     return nil
 end
 
-function AIDriveStrategySiloLoader:setSilo(silo)
-    self.silo = silo
+function AIDriveStrategySiloLoader:setSiloAndHeap(bunkerSilo, heapSilo)
+    if bunkerSilo ~= nil then 
+        self:debug("Bunker silo was found.")
+        self.silo = bunkerSilo
+        --- TODO: apply offset, if the silo is not filled equally to both sides.
+    else 
+        self:debug("Heap was found.")
+        self.silo = heapSilo
+    end
 end
 
 function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
@@ -224,6 +231,9 @@ function AIDriveStrategySiloLoader:update(dt)
             self.course:draw()
         elseif self.ppc:getCourse():isTemporary() then
             self.ppc:getCourse():draw()
+        end
+        if self.silo then 
+            self.silo:drawDebug()
         end
     end
 end
