@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 ---@class AIDriveStrategySiloLoader : AIDriveStrategyCourse
+---@field heapNode number
 AIDriveStrategySiloLoader = {}
 local AIDriveStrategySiloLoader_mt = Class(AIDriveStrategySiloLoader, AIDriveStrategyCourse)
 
@@ -34,6 +35,7 @@ function AIDriveStrategySiloLoader.new(customMt)
     local self = AIDriveStrategyCourse.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategySiloLoader.myStates)
     self.state = self.states.WAITING_FOR_PREPARING
+    self.heapNode = CpUtil.createNode("heapNode", 0, 0, 0, nil)
     return self
 end
 
@@ -42,6 +44,9 @@ function AIDriveStrategySiloLoader:delete()
     if self.bunkerSiloController then 
         self.bunkerSiloController:delete()
         self.bunkerSiloController = nil
+    end
+    if self.heapNode then
+        CpUtil.destroyNode(self.heapNode)
     end
 end
 
@@ -71,8 +76,9 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     else 
         self:debug("Heap was found.")
         self.silo = self.heapSilo
-        x, z = self.silo:getFrontCenter()
-        dx, dz = self.silo:getBackCenter()
+        self:updateLoadPositionByHeapSilo()
+        x, z = localToWorld(self.heapNode, 0, 0, 0)
+        dx, dz = localToWorld(self.heapNode, 0, 0, self.silo:getLength())
     end
 
     self.siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
@@ -88,6 +94,23 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
         self:startCourse(self.siloCourse, 1)
     end
 
+end
+
+ 
+--- Moves the field unload position to the center front of the heap.
+function AIDriveStrategySiloLoader:updateLoadPositionByHeapSilo()
+    local sx, sz = self.silo:getStartPosition()
+    local wx, wz = self.silo:getWidthPosition()
+    local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
+    local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
+    setTranslation(self.heapNode, cx, 0, cz)
+    local dirX, dirZ = self.silo:getLengthDirection()
+    local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+    setWorldRotation(self.heapNode, 0, yRot, 0)
+    --- Move the position a little bit inwards.
+    local x, _, z = localToWorld(self.heapNode, 0, 0, 3)
+    local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
+    setTranslation(self.heapNode, x, y, z)
 end
 
 -----------------------------------------------------------------------------------------------------------------------

@@ -1945,7 +1945,7 @@ function AIDriveStrategyUnloadCombine:updateFieldPositionByHeapSilo(heapSilo)
     local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
     local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
     setTranslation(self.fieldUnloadPositionNode, cx, 0, cz)
-    local dirX, dirZ = heapSilo:getDirection()
+    local dirX, dirZ = heapSilo:getLengthDirection()
     local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
     setWorldRotation(self.fieldUnloadPositionNode, 0, yRot, 0)
     --- Move the position a little bit inwards.
