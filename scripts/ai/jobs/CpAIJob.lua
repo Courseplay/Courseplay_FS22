@@ -330,6 +330,7 @@ function CpAIJob.registerJob(AIJobTypeManager)
 	AIJobTypeManager:registerJobType(CpAIJobBaleFinder.name, CpAIJobBaleFinder.jobName, CpAIJobBaleFinder)
 	AIJobTypeManager:registerJobType(CpAIJobCombineUnloader.name, CpAIJobCombineUnloader.jobName, CpAIJobCombineUnloader)
 	AIJobTypeManager:registerJobType(CpAIJobBunkerSilo.name, CpAIJobBunkerSilo.jobName, CpAIJobBunkerSilo)
+	AIJobTypeManager:registerJobType(CpAIJobSiloLoader.name, CpAIJobSiloLoader.jobName, CpAIJobSiloLoader)
 end
 
 
@@ -354,6 +355,11 @@ if g_currentMission then
 	if myJobTypeIndex then
 		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
 		myJobType.classObject = CpAIJobBunkerSilo
+	end
+	local myJobTypeIndex = g_currentMission.aiJobTypeManager:getJobTypeIndexByName(CpAIJobSiloLoader.name)
+	if myJobTypeIndex then
+		local myJobType = g_currentMission.aiJobTypeManager:getJobTypeByIndex(myJobTypeIndex)
+		myJobType.classObject = CpAIJobSiloLoader
 	end
 end
 

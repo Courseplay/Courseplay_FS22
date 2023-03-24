@@ -64,6 +64,8 @@ function CpAICombineUnloader.registerFunctions(vehicleType)
 
     SpecializationUtil.registerFunction(vehicleType, "applyCpCombineUnloaderJobParameters", CpAICombineUnloader.applyCpCombineUnloaderJobParameters)
     SpecializationUtil.registerFunction(vehicleType, "getCpCombineUnloaderJob", CpAICombineUnloader.getCpCombineUnloaderJob)
+
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpCombineUnloaderActive", CpAICombineUnloader.getIsCpCombineUnloaderActive)
 end
 
 function CpAICombineUnloader.registerOverwrittenFunctions(vehicleType)
@@ -149,7 +151,7 @@ end
 
 function CpAICombineUnloader:getCpStartText(superFunc)
 	local text = superFunc and superFunc(self)
-	return text~="" and text or self:getCanStartCpCombineUnloader() and CpAICombineUnloader.startText
+	return text~="" and text or self:getCanStartCpCombineUnloader() and self:getCpCombineUnloaderJobParameters().unloadTarget:getString()
 end
 
 
@@ -242,4 +244,8 @@ end
 function CpAICombineUnloader:getCpCombineUnloaderJob()
     local spec = self.spec_cpAICombineUnloader
     return spec.cpJob
+end
+
+function CpAICombineUnloader:getIsCpCombineUnloaderActive()
+    return self:getIsAIActive() and self:getJob() and self:getJob():isa(CpAIJobCombineUnloader)
 end

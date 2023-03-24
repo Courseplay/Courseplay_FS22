@@ -23,6 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Giants descarregador indisponível."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nenhum silo foi encontrado."/>
+    <text name="CP_error_no_heap_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,7 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="primeiro waypoint"/>
     <text name="CP_jobParameters_startAt_last" text="último waypoint"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="modo silo bunker"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
     <text name="CP_jobParameters_startAt_unload" text="descarregando colheitadeira"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="fardos coletar/embalar"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Distância da fileira:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Distância da fileira:"/>
@@ -74,6 +77,10 @@
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Descarregar no campo:"/>
     <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Posição no campo para descarregar:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Lado da carreta para descarregar:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -86,12 +93,18 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="no silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="posição para estacionar"/>
     <!---->
+    <!--AI silo lader worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_loadPosition" text="Loading position"/>
+    <text name="CP_bunkerSiloJobParameters_loadPosition_title" text="Loading position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Trabalho no campo"/>
     <text name="CP_job_baleCollect" text="CP: Fardo coletar/embalar"/>
     <text name="CP_job_combineUnload" text="CP: Descarregar colheitadeira"/>
     <text name="CP_job_bunkerSilo" text="CP: Trabalho no silo"/>
+    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
     <text name="CP_ai_page_generate_course" text="CP: Gerar rotas no campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Abrir / fechar gerador de rotas."/>
     <!---->

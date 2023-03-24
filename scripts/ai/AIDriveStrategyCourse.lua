@@ -347,6 +347,9 @@ function AIDriveStrategyCourse:setFrontAndBackMarkers()
     self:debug('front marker: %.1f, back marker: %.1f', frontMarkerDistance, backMarkerDistance)
 end
 
+--- Gets the front and back marker offset
+---@return number front marker distance
+---@return number back marker distance
 function AIDriveStrategyCourse:getFrontAndBackMarkers()
     if not self.frontMarkerDistance then
         self:setFrontAndBackMarkers()

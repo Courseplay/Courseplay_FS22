@@ -82,6 +82,11 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
 AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
 
+AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
+    COMBINE = 1,
+    SILO_LOADER = 2
+}
+
 --- Allowing of fuel save and open cover state can be set for each state below as property.
 AIDriveStrategyUnloadCombine.myStates = {
     IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
@@ -131,6 +136,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.movingAwayDelay = CpTemporaryObject(false)
     self.checkForTrailerToUnloadTo = CpTemporaryObject(true)
     self:resetPathfinder()
+    self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
     return self
 end
 
@@ -176,6 +182,16 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
             self.unloadTipSideID = jobParameters.unloadingTipSide:getValue()
         end
     end
+    if jobParameters.unloadTarget == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
+        self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
+    else
+        self.unloadTargetType = self.UNLOAD_TYPES.SILO_LOADER
+    end
+end
+
+--- Gets the unload target drive strategy target.
+function AIDriveStrategyUnloadCombine:getUnloadTargetType()
+    return self.unloadTargetType
 end
 
 function AIDriveStrategyUnloadCombine:setAIVehicle(vehicle, jobParameters)
@@ -243,12 +259,12 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     end
 
     -- make sure if we have a combine we stay registered
-    if self.combineToUnload then
+    if self.combineToUnload and self.combineToUnload:getIsCpActive() then
         self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
     end
 
     -- safety check: combine has active AI driver
-    if self.combineToUnload and not self.combineToUnload:getIsCpFieldWorkActive() then
+    if self.combineToUnload and not self.combineToUnload:getIsCpActive() then
         self:setMaxSpeed(0)
     elseif self.state == self.states.IDLE then
         -- nothing to do right now, wait for one of the following:

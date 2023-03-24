@@ -99,6 +99,9 @@ end
 
 --- Clean up all nodes we might have created and the caller have cached
 function TurnContext.deleteNodes(turnNodes)
+    if not turnNodes then 
+        return        
+    end
     for _, node in pairs(turnNodes) do
         -- we create WaypointNodes or just plain nodes, need to delete them differently
         local nodeToDelete = type(node) == 'number' and node or node.node

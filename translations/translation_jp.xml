@@ -23,6 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_heap_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,7 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="最初のウェイポイント"/>
     <text name="CP_jobParameters_startAt_last" text="最後のウェイポイント"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
     <text name="CP_jobParameters_startAt_unload" text="コンバインの荷下ろし/チョッパー"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="ベール回収、ベールラッピング"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="レーンオフセット:"/>
     <text name="CP_jobParameters_laneOffset_title" text="レーンオフセット:"/>
@@ -67,6 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -86,12 +93,18 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
     <!---->
+    <!--AI silo lader worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_loadPosition" text="Loading position"/>
+    <text name="CP_bunkerSiloJobParameters_loadPosition_title" text="Loading position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="コースプレイ:野外作業"/>
     <text name="CP_job_baleCollect" text="コースプレイ:ベール収集/ラップ"/>
     <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
     <text name="CP_ai_page_generate_course" text="野外作業コースを生成する"/>
     <text name="CP_ai_page_open_course_generator" text="コースプレイ：コース生成を開く/閉じる"/>
     <!---->

@@ -125,6 +125,7 @@ end
 function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
 	return not self:getCanStartCpFieldWork() and not self:getCanStartCpBaleFinder() 
         and not self:hasCpCourse() and not self:getCanStartCpCombineUnloader()
+        and not self:getCanStartCpSiloLoaderWorker()
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)

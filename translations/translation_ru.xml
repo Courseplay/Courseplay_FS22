@@ -23,6 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Положение выгрузки слишком далеко от поля."/>
     <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
+    <text name="CP_error_no_heap_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,7 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="начальной точки"/>
     <text name="CP_jobParameters_startAt_last" text="последней путевой точки"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="работы в силосной яме"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
     <text name="CP_jobParameters_startAt_unload" text="разгрузки комбайна"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="сбора/обмотки тюков"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Смещение проходов:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Смещение проходов:"/>
@@ -67,6 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>
@@ -86,12 +93,18 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="в яме"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="на парковке"/>
     <!---->
+    <!--AI silo lader worker job parameters-->
+    <!---->
+    <text name="CP_bunkerSiloJobParameters_subTitle_loadPosition" text="Loading position"/>
+    <text name="CP_bunkerSiloJobParameters_loadPosition_title" text="Loading position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Работа в поле"/>
     <text name="CP_job_baleCollect" text="CP: Сбор/обмотка тюков"/>
     <text name="CP_job_combineUnload" text="CP: Разгрузка комбайна"/>
     <text name="CP_job_bunkerSilo" text="CP: Работа в силосной яме"/>
+    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
     <text name="CP_ai_page_generate_course" text="CP: Сгенерировать курс"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Откр/закр. генератор курсов"/>
     <!---->

@@ -162,6 +162,8 @@ function CpBaseHud:init(vehicle)
    
     self.bunkerSiloWorkerLayout = self:addHudPage(CpBunkerSiloWorkerHudPageElement, vehicle)
 
+    self.siloLoaderWorkerLayout = self:addHudPage(CpSiloLoaderWorkerHudPageElement, vehicle)
+
     --------------------------------------
     --- Header
     --------------------------------------
@@ -211,9 +213,9 @@ function CpBaseHud:init(vehicle)
     
     --- Starting point
     self.startingPointBtn = self:addLeftLineTextButton(self.baseHud, 5, self.defaultFontSize, 
-        function (vehicle)
-            vehicle:getCpStartingPointSetting():setNextItem()
-        end, self.vehicle)
+                            function (vehicle)
+                                self:executeStartingPointBtnCallback(vehicle)
+                            end,self.vehicle)
 
     --------------------------------------
     --- Right side
@@ -420,6 +422,8 @@ function CpBaseHud:getActiveHudPage(vehicle)
     elseif vehicle:getCanStartCpBunkerSiloWorker() and vehicle:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO 
         or AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler) then
         return self.bunkerSiloWorkerLayout
+    elseif vehicle:getCanStartCpSiloLoaderWorker() then 
+        return self.siloLoaderWorkerLayout
     else
         return self.fieldworkLayout
     end
@@ -427,6 +431,10 @@ end
 
 function CpBaseHud:isBunkerSiloLayoutActive()
     return self.bunkerSiloWorkerLayout:getVisible()
+end
+
+function CpBaseHud:isSiloLoaderLayoutActive()
+    return self.siloLoaderWorkerLayout:getVisible()
 end
 
 function CpBaseHud:isCombineUnloaderLayoutActive()
@@ -473,6 +481,8 @@ function CpBaseHud:updateContent(vehicle, status)
     self.combineUnloaderLayout:setDisabled(true)
     self.bunkerSiloWorkerLayout:setVisible(false)
     self.bunkerSiloWorkerLayout:setDisabled(true)
+    self.siloLoaderWorkerLayout:setVisible(false)
+    self.siloLoaderWorkerLayout:setDisabled(true)
 
     local activeLayout = self:getActiveHudPage(vehicle)
     activeLayout:setVisible(true)
@@ -515,6 +525,15 @@ end
 
 function CpBaseHud:openGlobalSettingsGui(vehicle)
     CpGuiUtil.openGlobalSettingsGui(vehicle)
+end
+
+function CpBaseHud:executeStartingPointBtnCallback(vehicle)
+    local activeLayout = self:getActiveHudPage(vehicle)
+    if activeLayout and activeLayout.executeStartingPointBtnCallback then 
+        activeLayout:executeStartingPointBtnCallback(vehicle)
+    else
+        vehicle:getCpStartingPointSetting():setNextItem()   
+    end
 end
 
 --- Saves hud position.

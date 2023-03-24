@@ -1,5 +1,5 @@
 --- Bale finder Hud page
----@class CpHudPageElement : CpHudElement
+---@class CpBaleFinderHudPageElement : CpHudElement
 CpBaleFinderHudPageElement = {}
 local CpBaleFinderHudPageElement_mt = Class(CpBaleFinderHudPageElement, CpHudPageElement)
 
