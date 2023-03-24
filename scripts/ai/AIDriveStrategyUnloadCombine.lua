@@ -82,6 +82,7 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
 AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
 
+--- Unload modes
 AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
     COMBINE = 1,
     SILO_LOADER = 2
@@ -176,12 +177,14 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     if jobParameters.useFieldUnload:getValue() then 
         local fieldUnloadPosition = jobParameters.fieldUnloadPosition
         if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
+            --- Valid field unload position found and allowed.
             self.fieldUnloadPositionNode = CpUtil.createNode("Field unload position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
             self.fieldUnloadTurnStartNode = CpUtil.createNode("Reverse field unload turn start position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
             self.fieldUnloadTurnEndNode = CpUtil.createNode("Reverse field unload turn end position", fieldUnloadPosition.x, fieldUnloadPosition.z, fieldUnloadPosition.angle, nil)
             self.unloadTipSideID = jobParameters.unloadingTipSide:getValue()
         end
     end
+    --- Setup the unload target mode.
     if jobParameters.unloadTarget == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
         self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
     else
@@ -260,7 +263,11 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     -- make sure if we have a combine we stay registered
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
-        self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
+        if not self.combineToUnload:getCpDriveStrategy():registerUnloader(self) then 
+            --- Resets the unload target, when the unload target type changed.
+            self.combineJustUnloaded:deregisterUnloader(self)
+            self:releaseCombine()
+        end
     end
 
     -- safety check: combine has active AI driver

@@ -228,13 +228,13 @@ function AIDriveStrategySiloLoader:update(dt)
     end
 end
 
-function AIDriveStrategySiloLoader:isPipeOnLeft()
-    return self.conveyorController:isPipeOnTheLeftSide()
-end
-
 ---------------------------------------------
 --- Combine unloader interface functions
 ---------------------------------------------
+
+function AIDriveStrategySiloLoader:isPipeOnLeft()
+    return self.conveyorController:isPipeOnTheLeftSide()
+end
 
 --- Let unloaders register for events. This is different from the CombineUnloadManager registration, these
 --- events are for the low level coordination between the combine and its unloader(s). CombineUnloadManager
@@ -247,8 +247,13 @@ end
 --- Register a combine unload AI driver for notification about combine events
 --- Unloaders can renew their registration as often as they want to make sure they remain registered.
 ---@param driver AIDriveStrategyUnloadCombine
+---@return boolean Is valid unloader?
 function AIDriveStrategySiloLoader:registerUnloader(driver)
-    self.unloader:set(driver, 1000)
+    if driver:getUnloadTargetType() == CpCombineUnloaderJobParameters.UNLOAD_LOADER then 
+        self.unloader:set(driver, 1000)
+        return true
+    end
+    return false
 end
 
 --- Deregister a combine unload AI driver from notifications

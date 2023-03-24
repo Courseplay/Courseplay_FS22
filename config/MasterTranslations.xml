@@ -309,11 +309,11 @@
 		</Translation>
 	</Category>
 	<Category name="AI silo lader worker job parameters">
-		<Translation name="CP_bunkerSiloJobParameters_subTitle_loadPosition">
+		<Translation name="CP_siloLoaderJobParameters_subTitle_loadPosition">
 			<Text language="de"><![CDATA[Ladeposition]]></Text>
 			<Text language="en"><![CDATA[Loading position]]></Text>
 		</Translation>
-		<Translation name="CP_bunkerSiloJobParameters_loadPosition_title">
+		<Translation name="CP_siloLoaderJobParameters_loadPosition_title">
 			<Text language="de"><![CDATA[Ladeposition]]></Text>
 			<Text language="en"><![CDATA[Loading position]]></Text>
 		</Translation>
