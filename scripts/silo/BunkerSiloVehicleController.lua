@@ -148,6 +148,10 @@ function CpBunkerSiloVehicleController:isDebugEnabled()
 end
 
 --- Is the end of the silo reached.
+---@param node number
+---@param margin number
+---@return boolean end reached?
+---@return number distance to the end 
 function CpBunkerSiloVehicleController:isEndReached(node, margin)
 	if self.drivingTarget then
 		local x, _, z = localToWorld(node, 0, 0, margin)
@@ -168,7 +172,7 @@ CpBunkerSiloLevelerController.LAST_DIRECTIONS = {
 	RIGHT = 1
 }
 function CpBunkerSiloLevelerController:init(silo, vehicle, driveStrategy)
-	CpBunkerSiloLevelerController.init(self, silo, vehicle, driveStrategy)
+	CpBunkerSiloVehicleController.init(self, silo, vehicle, driveStrategy)
 	self.lastLine = 1
 	self.currentTarget = nil
 	self.lastDirection = self.LAST_DIRECTIONS.LEFT
@@ -188,6 +192,8 @@ function CpBunkerSiloLevelerController:isWaitingAtParkPosition()
 end
 
 --- Gets the next line to drive.
+---@param numLines number
+---@return number new line to drive on
 function CpBunkerSiloLevelerController:getNextLine(numLines)
 	local nextLine, nextDirection
 	if self.lastDirection == self.LAST_DIRECTIONS.LEFT then 
