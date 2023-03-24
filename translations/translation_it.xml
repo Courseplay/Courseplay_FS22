@@ -21,7 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Scaricatore lontano dal campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posizione di partenza troppo lontana dal campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posizione di scarico del campo è troppo lontano dal campo."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nessun silos trovato."/>
     <!---->
     <!--AI job parameters-->
@@ -69,10 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Scaricatore Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Utilizzo scarico in campo:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Posizione di scarico del campo:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Lato ribaltabile rimorchio:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -100,7 +100,7 @@
     <text name="CP_ai_messageError" text="Il lavoratore IA %s ha feramto il lavoro - ha lasciato il percorso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'operatore CP %s ha interrotto il lavoro in modo imprevisto - non sono state trovate balle del tipo selezionato!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="L'operatore IA %s ha interrotto il lavoro in modo imprevisto - nessun percorso trovato!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Il lavoratore IA %s ha interrotto il lavoro in modo imprevisto - lo scarico sul campo non è possibile!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -389,7 +389,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_errorStopped" text="Ha lasciato il percorso, si è fermato"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nessun percorso trovato"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Scarico a terra non supportato"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -404,8 +404,8 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_customFieldManager_save" text="Salva campo personalizzato"/>
     <text name="CP_controllerGui_startRecording" text="Avvia registrazione campo personalizzato."/>
     <text name="CP_controllerGui_stopRecording" text="Ferma registrazione campo personalizzato."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="Sospendi la registrazione del campo personalizzato."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Riattiva la registrazione del campo personalizzato."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -420,7 +420,7 @@ Nuovo con questa iterazione di CP è il lavoro sul campo della vite.
 I percorsi sul campo possono essere impostati in modalità multiattrezzi, che consente l'utilizzo di un massimo di 5 conducenti che lavorano in un convoglio sullo stesso campo.
 È anche possibile far scaricare automaticamente la mietitrebbia in un rimorchio su/vicino al campo.
 È possibile assegnare bordi di campo personalizzati da utilizzare, ad esempio: nel caso di un prato, che non è riconosciuto come campo normale.
-Infine cp ha un'interfaccia per Autodrive, che consente il riempimento di una seminatrice in un silo vicino o lo scarico di un carro e così via.
+Infine CP ha un'interfaccia per Autodrive, che consente il riempimento di una seminatrice in un silo vicino o lo scarico di un carro e così via.
 
 Per ulteriori informazioni, visita il nostro github: https://github.com/Courseplay/Courseplay_FS22 .
 Lì puoi ottenere aiuto o segnalare qualsiasi problema che hai riscontrato.
@@ -504,7 +504,7 @@ Il gestore del percorso consente di salvare i corsi e di caricare nuovamente il 
 Questo è davvero importante, quando vuoi avere più lavoratori che guidano lo stesso percorso per convoglio (multi strumenti).
 Questa funzione consente inoltre di raccogliere l'andana lasciata da una mietitrebbia o da un andanatore con un carro per il foraggio o una pressa per balle.
 
-La posizione di salvataggio per i file del corso è: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (o per vanilla es. MapUS).
+La posizione di salvataggio per i file dei percorsi è: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (o per vanilla es. MapUS).
 Il gestore del percorso funziona in modo diverso da quello a cui sei abituato in FS19.
 I percorsi vengono salvati in cartelle, che verranno visualizzate sulla sinistra. Ciò significa che avresti bisogno di almeno una cartella in cui iniziare a salvare i percorsi.
 Le cartelle possono essere create semplicemente premendo il pulsante nella parte inferiore dello schermo e inserendo un nome.
@@ -519,18 +519,18 @@ Cliccando su cambia modalità si attiva la modalità di modifica del gestore del
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
 Con la modalità di modifica attiva hai queste opzioni:
-- Spostamento di un percorso in un'altra directory.
-- Eliminazione di percorsi o directory.
-- Rinominare percorsi o directory.
+- Spostamento di un percorso in un'altra cartella.
+- Eliminazione percorsi o cartella.
+- Rinominare percorsi o cartella.
 "/>
     <text name="CP_help_page_courseManagerEditFunctions_text" text="
 Per spostare un percorso:
    1) Fare clic sul pulsante di spostamento nella parte inferiore dello schermo.
    2) Fare clic sul percorso che si desidera spostare.
-   3) Fare clic sulla directory in cui si desidera spostare il percorso.
-Per rinominare devi semplicemente fare clic sul pulsante rinomina e successivamente sulla directory o sul percorso. Quindi digita semplicemente il nuovo nome.
-Per eliminare un percorso o una directory, fare clic sul pulsante Elimina e quindi sulla cartella o sul percorso che si desidera eliminare.
-Le directory devono essere vuote se si desidera eliminarle.
+   3) Fare clic sulla cartella in cui si desidera spostare il percorso.
+Per rinominare devi semplicemente fare clic sul pulsante rinomina e successivamente sulla cartella o sul percorso. Quindi digita semplicemente il nuovo nome.
+Per eliminare un percorso o una cartella, fare clic sul pulsante Elimina e quindi sulla cartella o sul percorso che si desidera eliminare.
+Le cartelle devono essere vuote se si desidera eliminarle.
 "/>
     <text name="CP_help_page_minihud_title" text="Mini HUD"/>
     <text name="CP_help_page_minihud_text" text="
@@ -538,7 +538,7 @@ A: Cliccando sul nome del veicolo si apre la pagina delle configurazioni del vei
 B: Seleziona da dove iniziare il percorso con un clic.
 C: Cliccando sul nome del percorso si aprirà il Menu IA con il generatore di percorsi aperto.
 D: Avvia il lavoratore del Courseplay.
-E: Mostra il punto corrente/i punti totali. Click to open the course manager.
+E: Mostra il punto corrente/i punti totali. Fare clic per aprire il gestore percorsi.
 F: Cliccando sull'icona si apre la pagina delle impostazioni generali.
 G: Chiude la HUD.
 H: Diminuire e aumentare la larghezza di lavoro. Una linea rossa sul tuo veicolo mostra l'impostazione corrente.
@@ -728,16 +728,16 @@ Gli scaricatori hanno solo poche impostazioni che puoi modificare:
 - È possibile utilizzare gli offset nell'HUD per regolare la posizione dello scaricatore sotto il tubo della mietitrice.
 
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Usando i rimorchi"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Se usi un rimorchio per scaricare, ci sono due modi per trasportare il raccolto in un silo o in un punto vendita: l'aiutante Giants
-o Guida automatica.
+o AutoDrive.
 Puoi utilizzare il menu IA e creare un lavoro, quindi attivando la funzione di aiuto della Giants e scaricando il tasto in fondo all'elenco o attivando l'icona della ruota sull'HUD.
 In quest'ultimo caso, devi scegliere la stazione di scarico dopo che l'icona della ruota diventa blu.
 
 Lo svuotamento di un rimorchio con AutoDrive funziona allo stesso modo dell'utilizzo di un carro autocaricante, dai un'occhiata ai Tutorial di AutoDrive su Internet.
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="Utilizzo di carri a coclea"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 I carri a coclea sono molto semplici da usare.
 Proprio come con i rimorchi, puoi utilizzare l'icona del bersaglio per scegliere il campo in cui vuoi scaricare una mietitrebbia o una mietitrice.
@@ -746,14 +746,14 @@ Se il carro a coclea è pieno, cerca automaticamente un rimorchio sopra o vicino
 Nel caso in cui il rimorchio sia pieno e il carro a coclea non sia ancora vuoto, cercherà un altro rimorchio su cui scaricare.
 Se non è disponibile un rimorchio, continuerà a scaricare la mietitrebbia.
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Scarica sul campo"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+La posizione di scarico può essere selezionata con l'indicatore di scarico.
+La posizione deve essere sullo stesso campo o vicino al bordo del campo.
+Se il marcatore punta a un mucchio già esistente,
+quindi questo mucchio viene utilizzato per scaricare.
+La direzione del contrassegno viene utilizzata per la direzione di scarico.
+Inoltre, per i rimorchi è necessario selezionare un lato ribaltabile.
 "/>
     <text name="CP_help_page_bunker_title" text="Lavoratore del silos bunker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
