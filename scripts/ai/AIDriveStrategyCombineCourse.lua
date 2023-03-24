@@ -874,7 +874,7 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z) then
+            if driveStrategy:isServingPosition(x, z, 0) then
                 local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                 if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte

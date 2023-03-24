@@ -895,8 +895,13 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToCombine(path, goalNodeI
 end
 
 --- Is this position in the area I'm assigned to work?
-function AIDriveStrategyUnloadCombine:isServingPosition(x, z)
-    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
+---@param x number
+---@param z number
+---@param outwardsOffset number
+---@return boolean
+function AIDriveStrategyUnloadCombine:isServingPosition(x, z, outwardsOffset)
+    local closestDistance = CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z)
+    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or closestDistance < outwardsOffset
 end
 
 --- Am I ready to be assigned to a combine in need?

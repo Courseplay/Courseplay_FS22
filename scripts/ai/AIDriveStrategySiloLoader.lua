@@ -25,6 +25,7 @@ AIDriveStrategySiloLoader.myStates = {
     WAITING_FOR_PREPARING = {},
     WORKING = {}
 }
+AIDriveStrategySiloLoader.distanceOverFieldEdgeAllowed = 25
 
 function AIDriveStrategySiloLoader.new(customMt)
     if customMt == nil then
@@ -351,7 +352,7 @@ function AIDriveStrategySiloLoader:findUnloader()
 
             if driveStrategy:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER then
 
-                if driveStrategy:isServingPosition(x, z) then
+                if driveStrategy:isServingPosition(x, z, self.distanceOverFieldEdgeAllowed) then
                     local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                     if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                         local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
