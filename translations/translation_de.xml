@@ -95,8 +95,8 @@
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_loadPosition" text="Ladeposition"/>
-    <text name="CP_bunkerSiloJobParameters_loadPosition_title" text="Ladeposition"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Ladeposition"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Ladeposition"/>
     <!---->
     <!--AI jobs-->
     <!---->
