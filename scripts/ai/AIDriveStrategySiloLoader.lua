@@ -76,9 +76,11 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     else 
         self:debug("Heap was found.")
         self.silo = self.heapSilo
-        self:updateLoadPositionByHeapSilo()
-        x, z = localToWorld(self.heapNode, 0, 0, 0)
-        dx, dz = localToWorld(self.heapNode, 0, 0, self.silo:getLength())
+        --self:updateLoadPositionByHeapSilo()
+        x, z = self.silo:getFrontCenter()
+        dx, dz = self.silo:getBackCenter()
+  --      x, z = localToWorld(self.heapNode, 0, 0, 0)
+   --     dx, dz = localToWorld(self.heapNode, 0, 0, self.silo:getLength())
     end
 
     self.siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
