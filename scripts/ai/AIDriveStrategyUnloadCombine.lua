@@ -1992,8 +1992,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
             length , -self.fieldUnloadData.xOffset, self.fieldUnloadPositionNode)
        
         local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
-        local alignLength =  math.max(self.vehicle.size.length / 2, steeringLength) * 3
-
+        local alignLength =  math.max(self.vehicle.size.length / 2, steeringLength, self.turningRadius/2) * 3
 
         local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, length + alignLength)
         local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
@@ -2007,6 +2006,8 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
         setTranslation(self.fieldUnloadTurnStartNode, x, y, z)
         setRotation(self.fieldUnloadTurnStartNode, 0, yRot, 0)
         
+        self:debug("Starting pathfinding to the reverse unload turn end node with align length: %.2f and steering length: %.2f, turn radius: %.2f",
+             alignLength, steeringLength, self.turningRadius)
         local path = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.fieldUnloadTurnStartNode, 
             0, self.fieldUnloadTurnEndNode, 0, 3, self.turningRadius)
         if not path or #path == 0 then
@@ -2018,7 +2019,8 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
 
             --- Add a small straight segment at the end 
             --- to straighten the trailer out.
-            alignmentCourse:append(Course.createStraightForwardCourse(self.vehicle, AIUtil.getLength(self.vehicle), 0, self.fieldUnloadTurnEndNode))
+            alignmentCourse:append(Course.createStraightForwardCourse(self.vehicle, 
+                AIUtil.getLength(self.vehicle), 0, self.fieldUnloadTurnEndNode))
 
             self:setNewState(self.states.DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION)
             self:startCourse(alignmentCourse, 1)
