@@ -2,12 +2,26 @@
 --- Also disables the cutter, while it's waiting for unloading.
 ---@class ConveyorController : ImplementController
 ConveyorController = CpObject(ImplementController)
+ConveyorController.LEFT_SIDE = 0
+ConveyorController.RIGHT_SIDE = 1
 
 function ConveyorController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.conveyorSpec = self.implement.spec_conveyor
-
+	self.cylinderedSpec = self.implement.spec_cylindered
 	self.isDischargeEnabled = false
+
+	self.armProjection = CpUtil.createNode("armProjection", 0, 0, 0)
+	self.pipeProjection = CpUtil.createNode("pipeProjection", 0, 0, 0)
+
+	self.pipeSide = self.LEFT_SIDE
+
+	self:setupMoveablePipe()
+end
+
+function ConveyorController:delete()
+	CpUtil.destroyNode(self.armProjection)
+	CpUtil.destroyNode(self.pipeProjection)
 end
 
 function ConveyorController:getDriveData()
@@ -30,6 +44,10 @@ function ConveyorController:getDriveData()
 		end
 	end
 	return nil, nil, nil, maxSpeed
+end
+
+function ConveyorController:update(dt)
+--	self:updateMoveablePipe(dt)
 end
 
 function ConveyorController:isDischarging()
@@ -87,4 +105,117 @@ end
 
 function ConveyorController:isPipeMoving()
 	return not self.implement:getCanAIImplementContinueWork()
+end
+
+
+function ConveyorController:setupMoveablePipe()
+	local armMovingToolIx = g_vehicleConfigurations:get(self.implement, 'armMovingToolIx') -- 2
+	local movingToolIx = g_vehicleConfigurations:get(self.implement, 'movingToolIx') -- 1
+	if movingToolIx and armMovingToolIx then
+		self:debug("Setting up moving tools.")
+		self.hasValidMovingTools = true
+		self.pipeRotationTool = self.cylinderedSpec.movingTools[armMovingToolIx]
+		self.armRotationTool = self.cylinderedSpec.movingTools[movingToolIx]
+	end
+end
+
+function ConveyorController:updateMoveablePipe(dt)
+	--- WIP code
+	if self.hasValidMovingTools and not self:isPipeMoving() then 
+		local dischargeNode = self.implement:getCurrentDischargeNode()
+		local bx, _, bz = getWorldTranslation(dischargeNode.node)
+		local px, _, pz = getWorldTranslation(self.pipeProjection)
+		if MathUtil.vector2Length(px - bx, pz - bz) < 1 then 
+			ImplementUtil.stopMovingTool(self.implement, self.armRotationTool)
+			ImplementUtil.stopMovingTool(self.implement, self.pipeRotationTool)
+			return
+		end
+
+
+		local r1 = calcDistanceFrom(self.pipeRotationTool.node, self.armRotationTool.node)
+		DebugUtil.drawDebugCircleAtNode(self.armRotationTool.node, r1, 30, nil)
+
+		local r2 = calcDistanceFrom(self.pipeRotationTool.node, dischargeNode.node)
+		DebugUtil.drawDebugCircleAtNode(self.pipeRotationTool.node, r2, 30, nil)
+
+		--- Arm target
+		local ax, ay, dz = localToLocal(self.armRotationTool.node, self.implement.rootNode, 0, 0, 0)
+
+		local px, _, pz = localToWorld(self.implement.rootNode, 0, 0, -r1 + dz)
+
+		local ax, ay, az = getWorldTranslation(self.armRotationTool.node)
+
+		local tx, ty, tz = getWorldTranslation(self.pipeRotationTool.node)
+
+		setWorldTranslation(self.armProjection, px, ay, pz)
+
+
+		local dirX, _, dirZ = localDirectionToWorld(self.implement.rootNode, 0, 0, 0)
+		local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+		setWorldRotation(self.armProjection, 0, yRot, 0)
+
+		DebugUtil.drawDebugLine(px, ay, pz, ax, ay, az)
+		DebugUtil.drawDebugLine(px, ay, pz, tx, ty, tz)
+		
+		local curRot = {}
+		curRot[1], curRot[2], curRot[3] = getRotation(self.armRotationTool.node)
+		local oldRot = curRot[self.armRotationTool.rotationAxis]
+
+		local yRot = math.atan2(MathUtil.vector3Length(px - tx, ay - ty, pz - tz),
+		MathUtil.vector3Length(px - ax, ay - ay, pz - az))
+
+		local dyRot = 0
+
+		local dx, _, _ = localToLocal(self.pipeRotationTool.node, self.implement.rootNode, 0, 0, 0)
+
+		if dx < 0 then 
+			dyRot = -yRot
+		else 
+			dyRot = yRot
+		end
+		self:debug("Arm: yRot: %.2f, dyRot: %.2f, oldRot: %.2f, dx: %.2f", math.deg(yRot), math.deg(dyRot), math.deg(oldRot), dx)
+		ImplementUtil.moveMovingToolToRotation(self.implement, self.armRotationTool, dt, 
+			MathUtil.clamp(oldRot + dyRot, self.armRotationTool.rotMin, self.armRotationTool.rotMax))  
+		local _, _, dz = localToLocal(self.pipeRotationTool.node, self.implement.rootNode, 0, 0, 0)
+		local px, py, pz
+		if self.pipeSide == self.LEFT_SIDE then 
+			px, py, pz = localToWorld(self.implement.rootNode, -r2, 0, dz)
+		else 
+			px, py, pz = localToWorld(self.implement.rootNode, r2, 0, dz)
+		end
+		setWorldTranslation(self.pipeProjection, px, ay, pz)
+		local ax, ay, az = getWorldTranslation(self.pipeRotationTool.node)
+
+		local tx, ty, tz = getWorldTranslation(dischargeNode.node)
+		DebugUtil.drawDebugLine(px, ay, pz, ax, ty, az)
+		DebugUtil.drawDebugLine(px, ty, pz, tx, ay, tz)
+
+		local curRot = {}
+		curRot[1], curRot[2], curRot[3] = getRotation(self.pipeRotationTool.node)
+		local oldRot = curRot[self.pipeRotationTool.rotationAxis]
+
+		local yRot = math.atan2(MathUtil.vector2Length(px - tx, pz - tz),
+		MathUtil.vector2Length(px - ax, pz - az))
+
+		local dyRot = 0
+
+		local dx, _, dz2 = localToLocal(dischargeNode.node, self.implement.rootNode, 0, 0, 0)
+
+
+		if dx > 0 then 
+			dyRot = -yRot
+		else 
+			dyRot = yRot
+		end
+		if dz2 > dz then 
+			dyRot = -dyRot
+		end
+		local bx, _, bz = getWorldTranslation(dischargeNode.node)
+		if MathUtil.vector2Length(px - bx, pz - bz) > 1 then 
+			ImplementUtil.moveMovingToolToRotation(self.implement, self.pipeRotationTool, dt, 
+				MathUtil.clamp(MathUtil.normalizeRotationForShortestPath(dyRot, oldRot), self.pipeRotationTool.rotMin, self.pipeRotationTool.rotMax))
+			self:debug("Pipe: yRot: %.2f, dyRot: %.2f, oldRot: %.2f, dx: %.2f, dz: %.2f, dz2: %.2f",
+				math.deg(yRot), math.deg(dyRot), math.deg(oldRot), dx, dz, dz2)
+		end
+	end
 end

@@ -175,6 +175,16 @@ You can define the following custom settings:
              toolOffsetX="-2.0"
              noReverse="true"
     />
+	<!--\vehicles\ropa-->
+    <Vehicle name="nawaRoMaus.xml"
+             armMovingToolIx="2"
+             movingToolIx="1"
+    />
+	<Vehicle name="maus5.xml"
+             armMovingToolIx="2"
+             movingToolIx="1"
+    />
+	
     <!--\vehicles\kuhn-->
     <Vehicle name="sw4014.xml"
              toolOffsetX="-2.5"
@@ -419,6 +429,12 @@ You can define the following custom settings:
     />
     <Vehicle name="cottonTagTrailer5000.xml"
              baleCollectorOffset = "2.7"
+    />
+	
+	<!--Mod: FS22_terraFelis3Evo-->
+	<Vehicle name="terraFelis3Evo.xml"
+             armMovingToolIx="2"
+             movingToolIx="1"
     />
 
 </VehicleConfigurations>

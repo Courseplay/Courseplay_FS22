@@ -27,6 +27,7 @@ AIDriveStrategySiloLoader.myStates = {
     WORKING = {}
 }
 AIDriveStrategySiloLoader.distanceOverFieldEdgeAllowed = 25
+AIDriveStrategySiloLoader.siloAreaOffsetFieldUnload = 10
 
 function AIDriveStrategySiloLoader.new(customMt)
     if customMt == nil then
@@ -481,7 +482,8 @@ function AIDriveStrategySiloLoader:isOnHeadland()
 end
 
 function AIDriveStrategySiloLoader:getAreaToAvoid()
-    return nil
+    return PathfinderUtil.NodeArea(self.vehicle:getAIDirectionNode(), -self.siloAreaOffsetFieldUnload,
+        0, self.silo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, self.silo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
 end
 
 function AIDriveStrategySiloLoader:isReversing()
