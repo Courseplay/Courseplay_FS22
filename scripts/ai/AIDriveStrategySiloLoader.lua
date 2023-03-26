@@ -208,10 +208,10 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WAITING_FOR_PATHFINDER then 
         self:setMaxSpeed(0)
     elseif self.state == self.states.WORKING then 
-        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        if not self.shovelController:isReadyToLoad()then 
-            self:setMaxSpeed(0)
-        end
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue() * (1 - self.shovelController:getFillLevelPercentage()/100))
+      --  if not self.shovelController:isReadyToLoad()then 
+      --      self:setMaxSpeed(0)
+      --  end
         self:callUnloaderWhenNeeded()
         if self.bunkerSiloController then
             local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
@@ -325,8 +325,7 @@ end
 
 
 function AIDriveStrategySiloLoader:getMeasuredBackDistance()
-    local fm, bm = self:getFrontAndBackMarkers()
-    return bm
+    return math.abs(self.conveyorController:getPipeOffsetZ())
 end
 
 --- Hold the harvester for a period of periodMs milliseconds
