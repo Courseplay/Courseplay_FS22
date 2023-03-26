@@ -35,8 +35,6 @@ function CpGamePadHudScreen:onGuiSetupFinished()
 
 	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(self.settings, self.layout,
 	self.settingTitle, self.settingElement)
-
-
 	self.startButton:unlinkElement()
 	FocusManager:removeElement(self.startButton)
 	self.layout:addElement(self.startButton)
@@ -64,7 +62,7 @@ end
 function CpGamePadHudScreen:setData(vehicle, settings) 
 	self.vehicle = vehicle
 	self.settings = settings
-	CpSettingsUtil.linkGuiElementsAndSettings(settings, self.layout)
+	CpSettingsUtil.linkGuiElementsAndSettings(settings, self.layout, nil, nil, true)
 end
 
 function CpGamePadHudScreen:onOpen(element)
@@ -94,7 +92,7 @@ end
 function CpGamePadHudScreen:onClose(element)
 	CpGamePadHudScreen:superClass().onClose(self)
 	if self.settings then
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings, self.layout)
+		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings, self.layout, true)
 	end
 	g_inputBinding:removeActionEventsByTarget(self)
 	self.vehicle:closeCpGamePadHud()

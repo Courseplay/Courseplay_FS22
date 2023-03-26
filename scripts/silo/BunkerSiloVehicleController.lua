@@ -44,7 +44,7 @@ function CpBunkerSiloVehicleController:getTarget(width)
 	self:debug('Bunker width: %.1f, working width: %.1f (passed in), unit width: %.1f', siloWidth, width, unitWidth)
 	self:setupMap(width, unitWidth, widthCount)
 
-	local targetLine = self:getNextLine(widthCount)
+	local targetLine = self:getNextLine(widthCount, width)
 	self:debug("target line: %d", targetLine)
 
 	local x, z, dx, dz = self:getPositionsForLine(targetLine, width, widthCount, unitWidth)
@@ -95,7 +95,7 @@ function CpBunkerSiloVehicleController:getPositionsForLine(line, width, widthCou
 end
 
 --- Gets the next line to drive.
-function CpBunkerSiloVehicleController:getNextLine(numLines)
+function CpBunkerSiloVehicleController:getNextLine(numLines, width)
 	return 1
 end
 
@@ -228,8 +228,25 @@ function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
 	CpBunkerSiloVehicleController.init(self, silo, vehicle, driveStrategy)
 end
 
-function CpBunkerSiloLoaderController:getNextLine(numLines)
-	--- TODO: Select the next line by the max fill level
-	--- 	  or which lane has more to the front of the silo.
-	return 1
+function CpBunkerSiloLoaderController:getNextLine(numLines, width)
+	local dirXWidth, dirZWidth = self.silo:getWidthDirection()
+	local bestLane, mostFillLevel, fillType = 1, 0
+	for i, line in ipairs(self.map) do 
+
+		local sx, sz = line[1] + dirXWidth * - width/2, line[2] + dirZWidth * - width/2
+		local wx, wz = line[1] + dirXWidth * width/2, line[2] + dirZWidth * width/2
+		local hx, hz = line[3] + dirXWidth * - width/2 , line[4] + dirZWidth * - width/2
+
+		local fillType = DensityMapHeightUtil.getFillTypeAtArea(sx, sz, wx, wz, hx, hz)
+		if fillType and fillType ~= 0 then 
+			local fillLevel DensityMapHeightUtil.getFillLevelAtArea(fillType, sx, sz, wx, wz, hx, hz)
+			if fillLevel > mostFillLevel then 
+				self:debug("Lane(%d) has %.2f of %s", i, fillLevel, g_fillTypeManager:getFillTypeByIndex(fillType).title)
+				mostFillLevel = fillLevel
+				bestLane = i
+				fillType = fillType
+			end
+		end
+	end
+	return bestLane
 end
