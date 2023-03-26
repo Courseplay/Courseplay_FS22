@@ -22,7 +22,6 @@ function ConveyorController:getDriveData()
 			if self:isDischarging() then 
 				self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_OFF)
 			end
-			maxSpeed = 0
 		end
 		if self:isDischarging() and self:canDischargeToObject() then 
 			self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)

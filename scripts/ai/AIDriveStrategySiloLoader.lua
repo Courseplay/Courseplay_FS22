@@ -209,9 +209,6 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
     elseif self.state == self.states.WORKING then 
         self:setMaxSpeed(self.settings.reverseSpeed:getValue() * (1 - self.shovelController:getFillLevelPercentage()/100))
-      --  if not self.shovelController:isReadyToLoad()then 
-      --      self:setMaxSpeed(0)
-      --  end
         self:callUnloaderWhenNeeded()
         if self.bunkerSiloController then
             local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
