@@ -239,8 +239,8 @@ function CpBunkerSiloLoaderController:getNextLine(numLines, width)
 
 		local fillType = DensityMapHeightUtil.getFillTypeAtArea(sx, sz, wx, wz, hx, hz)
 		if fillType and fillType ~= 0 then 
-			local fillLevel DensityMapHeightUtil.getFillLevelAtArea(fillType, sx, sz, wx, wz, hx, hz)
-			if fillLevel > mostFillLevel then 
+			local fillLevel = DensityMapHeightUtil.getFillLevelAtArea(fillType, sx, sz, wx, wz, hx, hz)
+			if fillLevel and fillLevel > mostFillLevel then 
 				self:debug("Lane(%d) has %.2f of %s", i, fillLevel, g_fillTypeManager:getFillTypeByIndex(fillType).title)
 				mostFillLevel = fillLevel
 				bestLane = i
