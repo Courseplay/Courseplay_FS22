@@ -1996,8 +1996,10 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
 
         local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, length + alignLength)
         local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
-        local _, yRot, _ = getRotation(self.fieldUnloadPositionNode)
+        
+        local dirX, _, dirZ = localDirectionToWorld(self.fieldUnloadPositionNode, 0, 0, 1)
         setTranslation(self.fieldUnloadTurnEndNode, x, y, z)
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
         setRotation(self.fieldUnloadTurnEndNode, 0, yRot, 0)
 
 
