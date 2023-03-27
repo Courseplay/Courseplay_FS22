@@ -1907,8 +1907,8 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
        
         --- Ignore the area of the heap for the path finder.
         -- xOffset, zOffset, width, length
-        self.fieldUnloadData.areaToAvoid = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, - self.siloAreaOffsetFieldUnload - heapSilo:getWidth()/2,
-             -2 * self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + self.siloAreaOffsetFieldUnload)
+       -- self.fieldUnloadData.areaToAvoid = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, - self.siloAreaOffsetFieldUnload - heapSilo:getWidth()/2,
+         --    -2 * self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + self.siloAreaOffsetFieldUnload)
 
         if allowReverseUnloading then
             --- Reverse unloading is allowed, then check if the tip side xOffset is for reverse unloading <= 1 m.

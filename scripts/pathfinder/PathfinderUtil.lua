@@ -279,16 +279,31 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
             CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
         end
     end
-    if not getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
-        local text = ''
-        for key, classId in pairs(ClassIds) do
-            if getHasClassId(transformId, classId) then
-                text = text .. ' ' .. key
-            end
+    if getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
+        
+        local x, y, z = unpack(self.currentOverlapBoxPosition.pos)
+        local dirX, dirZ = unpack(self.currentOverlapBoxPosition.direction)
+        local size = self.currentOverlapBoxPosition.size
+        --- Roughly checks the overlap box for any dropped fill type to the ground.
+        --- TODO: DensityMapHeightUtil.getFillTypeAtArea() would be better.
+        local fillType = DensityMapHeightUtil.getFillTypeAtLine(x, y, z, x + dirX * size, y, z + dirZ * size, size)
+        if fillType and fillType ~= FillType.UNKNOWN then 
+            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision with terrain and fillType: %s.', 
+                g_fillTypeManager:getFillTypeByIndex(fillType).title)
+        else 
+            --- Ignore terrain hits, if no fillType is dropped to the ground was detected.
+            return
         end
-        self.collidingShapesText = text
-        self.collidingShapes = self.collidingShapes + 1
     end
+
+    local text = ''
+    for key, classId in pairs(ClassIds) do
+        if getHasClassId(transformId, classId) then
+            text = text .. ' ' .. key
+        end
+    end
+    self.collidingShapesText = text
+    self.collidingShapes = self.collidingShapes + 1
 end
 
 function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData, vehiclesToIgnore, objectsToIgnore, log)
@@ -305,13 +320,20 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 
     local xRot, yRot, zRot = getWorldRotation(node)
     local x, y, z = localToWorld(node, xOffset, 1, zOffset)
-
+    local dirX, dirZ = MathUtil.getDirectionFromYRotation(yRot)
+    --- Save these for the overlap box callback.
+    self.currentOverlapBoxPosition = {
+        pos = {x, y, z},
+        direction = {dirX, dirZ},
+        size = math.max(width, length)
+    }
     self.collidingShapes = 0
     self.collidingShapesText = 'unknown'
 
-    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE
+    local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA
 
     overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, collisionMask, true, true, true)
+    
     if true and self.collidingShapes > 0 then
         table.insert(PathfinderUtil.overlapBoxes,
                 { x = x, y = y + 0.2, z = z, xRot = xRot, yRot = yRot, zRot = zRot, width = width, length = length })
