@@ -2125,7 +2125,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
 
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset,
+    self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset * 1.5,
         -AIUtil.getLength(self.vehicle), fieldNum, nil, 
         self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition)
 end
