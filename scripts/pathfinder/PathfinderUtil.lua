@@ -405,6 +405,11 @@ function PathfinderUtil.NodeArea:contains(x, z)
     end
 end
 
+function PathfinderUtil.NodeArea:drawDebug()
+    DebugUtil.drawDebugRectangle(self.node, self.xOffset, self.xOffset + self.width, 
+        self.zOffset, self.zOffset + self.length, 5, 1, 1, 0, 1, false)
+end
+
 --[[
 Pathfinding is controlled by the constraints (validity and penalty) below. The pathfinder will call these functions
 for each node to determine their validity and penalty.

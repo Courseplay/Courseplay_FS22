@@ -79,7 +79,7 @@ AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
 
 --- Field unload constants
-AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 5
+AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 2
 AIDriveStrategyUnloadCombine.unloadCourseLengthFieldUnload = 50
 
 --- Unload modes
@@ -1086,7 +1086,7 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
         local done, path, goalNodeInvalid
         self.pathfindingStartedAt = g_time
 
-        local areaToAvoid = areaToAvoid or self.combineToUnload and self.combineToUnload:getCpDriveStrategy():getAreaToAvoid()
+        local areaToAvoid = areaToAvoid ~= nil and areaToAvoid or self.combineToUnload and self.combineToUnload:getCpDriveStrategy():getAreaToAvoid()
         if type(target) ~= 'number' then
             -- TODO: clarify this xOffset thing, it looks like the course interprets the xOffset differently (left < 0) than
             -- the Giants coordinate system and the waypoint uses the course's conventions. This is confusing, should use
@@ -1887,7 +1887,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         xOffset = xOffset,
         controller = controller,
         heapSilo = nil,
-        areaToIgnore = nil,
+        areaToAvoid = nil,
         isReverseUnloading = false
 
     }
@@ -1906,8 +1906,9 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         self:updateFieldPositionByHeapSilo(heapSilo)
        
         --- Ignore the area of the heap for the path finder.
-        self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
-             -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
+        -- xOffset, zOffset, width, length
+        self.fieldUnloadData.areaToAvoid = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, - self.siloAreaOffsetFieldUnload - heapSilo:getWidth()/2,
+             -2 * self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + self.siloAreaOffsetFieldUnload)
 
         if allowReverseUnloading then
             --- Reverse unloading is allowed, then check if the tip side xOffset is for reverse unloading <= 1 m.
@@ -1938,7 +1939,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     self:startPathfinding(self.fieldUnloadPositionNode, -self.fieldUnloadData.xOffset,
         -AIUtil.getLength(self.vehicle) * 1.3, fieldNum, nil, 
-        self.onPathfindingDoneBeforeUnloadingOnField, self.fieldUnloadData.areaToIgnore)
+        self.onPathfindingDoneBeforeUnloadingOnField, self.fieldUnloadData.areaToAvoid)
 end
  
 --- Moves the field unload position to the center front of the heap.
@@ -2120,7 +2121,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset,
         -AIUtil.getLength(self.vehicle), fieldNum, nil, 
-        self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition, self.fieldUnloadData.areaToIgnore)
+        self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition, self.fieldUnloadData.areaToAvoid)
 end
 
 --- Course to the park position found.
@@ -2179,6 +2180,9 @@ function AIDriveStrategyUnloadCombine:update(dt)
             end
             if self.fieldUnloadData.heapSilo then 
                 self.fieldUnloadData.heapSilo:drawDebug()
+            end
+            if self.fieldUnloadData.areaToAvoid then 
+                self.fieldUnloadData.areaToAvoid:drawDebug()
             end
         end
     end
