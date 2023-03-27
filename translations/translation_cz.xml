@@ -21,7 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Odvozce je příliš daleko od pole."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Startovní pozice příliš daleko od pole."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants odvozce není k dispozici."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Pozice vyložení je příliš daleko od pole."/>
     <text name="CP_error_no_bunkerSilo_found" text="Silážní jáma nenalezena."/>
     <!---->
     <!--AI job parameters-->
@@ -69,10 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants odvozce:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Použít Giants odvozce:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Místo vykládky:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants odvozce:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Vykládka na poli:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Místo vykládky na poli:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Vysýpací strana návěsu:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -100,7 +100,7 @@
     <text name="CP_ai_messageError" text="Pracovník %s přestal neočekávaně pracovat - opustil kurz!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pracovník %s přestal neočekávaně pracovat – nebyl nalezen zvolený typ balíků!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pracovník AI %s neočekávaně ukončil práci - nebyla nalezena žádná cesta!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI pracovník %s neočekávaně přestal pracovat - vykládání na poli není možné!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -115,7 +115,7 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Ukázat trasu"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Ukázat aktuální trasu vozidla"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Pouze start/stop"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Aktuální průjezdní body"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Všechny průjezdní body."/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Otevřete nabídku (Hud) pomocí myši"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Když je nabídka (Hud) deaktivována, lze jej otevřít pouze pomocí klávesové zkratky."/>
@@ -286,8 +286,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Řidič bude uvolněn, pokud je procento paliva nižší."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Hodnota opotřebení"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zastavit kombajn, když prší"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Pokud je nastavení aktivní, pak všechny sklízeče čekají, až přestane pršet."/>
     <text name="CP_global_setting_subTitle_userSettings" text="Uživatelské nastavení"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud nastavený pro Gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Použijte Hud, který lze ovládat pomocí Gamepadu."/>
@@ -315,7 +315,7 @@
     <!---->
     <!--Course manager-->
     <!---->
-    <text name="CP_courseManager_title" text="Správce Tras(%s) %s"/>
+    <text name="CP_courseManager_title" text="Správce tras(%s) %s"/>
     <text name="CP_courseManager_no_current_course" text="Žádná trasa"/>
     <text name="CP_courseManager_temporary_course" text="Dočasná trasa"/>
     <text name="CP_courseManager_change_mode" text="Změnit režim"/>
@@ -390,7 +390,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_infoTexts_errorStopped" text="Opustil trasu, zastavil"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nenalezena trasa"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Vysypání na zem není možné"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -405,8 +405,8 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybraný kurz.
     <text name="CP_customFieldManager_save" text="Uložit vlastní pole"/>
     <text name="CP_controllerGui_startRecording" text="Spustit nahrávání vlastního pole"/>
     <text name="CP_controllerGui_stopRecording" text="Ukončit nahrávání vlastního pole"/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pozastavit nahrávání vlastního pole."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Znovu spustit nahrávání vlastního pole."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -419,7 +419,7 @@ Umožňuje také použití lisů a sběracích vozů, které lze poslat na stejn
 Další funkcí je sbírání nebo balení balíků na poli.
 Novinkou této iterace CP je práce s révou.
 Kurzy polních prací lze nastavit v režimu více nástrojů, který umožňuje použití až 5 řidičů pracujících v konvoji na stejném poli.
-Je také možné nechat sklízecí mlátičku automaticky vyložit v přívěsu na poli/v blízkosti pole.
+Je také možné nechat sklízecí mlátičku automaticky vyložit do vleku na poli/v blízkosti pole.
 Pro hru lze přiřadit vlastní ohraničení pole, která se použijí například: v případě louky, která není rozpoznána jako normální pole.
 Konečně CP má rozhraní pro Autodrive, které umožňuje doplnění secího stroje v nedalekém sile nebo vyložení secího vozu a tak dále.
 Pro více informací navštivte náš github: https://github.com/Courseplay/Courseplay_FS22.
@@ -704,43 +704,43 @@ Pod pokročilou kategorií jsou:
     <text name="CP_help_page_unloaderGeneral_text" text="
 Režim vykládky Courseplay funguje s kombajny a taženými kombajny řízenými Courseplay.
 Nefunguje se řezačkami.
-K vyložení kombajnu můžete použít buď běžný přívěs, nebo překládací vůz.
-K vyprázdnění přívěsů můžete použít Giants Helper nebo AutoDrive.
+K vyložení kombajnu můžete použít buď běžný vlek, nebo překládací vůz.
+K vyprázdnění vleků můžete použít Giants Helper nebo AutoDrive.
 Spuštění odvozce vyžaduje několik věcí:
-- Musíte mít připojený jeden přívěs nebo překládací vůz. Více vleček není podporováno.
+- Musíte mít připojený jeden vlek nebo překládací vůz. Více vleček není podporováno.
 - Pomocí ikony cíle na HUD vyberte pole, které se sklízí. Odvozce vyloží všechny harvestory řízené Courseplay pracující na daném poli.
 - Abyste mohli spustit odvozce, musíte být na poli nebo do 20 metrů od pole.
 Odvozci mají pouze několik nastavení, která můžete vyladit:
 - Můžete nastavit úroveň naplnění, při které se odvozce bude považovat za plný. Tímto 
-se vyhnete čekání na zavolání kombajnu s téměř plným přívěsem.
+se vyhnete čekání na zavolání kombajnu s téměř plným vlekem.
 - Pomocí offsetů v HUD můžete upravit polohu vykladače pod výsypovou rourou harvestoru.
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Použití vleků"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-Pokud k vykládce používáte přívěs, existují dva způsoby, jak dopravit sklizeň do sila nebo do prodejního místa: pomocník Giants
+Pokud k vykládce používáte vlek, existují dva způsoby, jak dopravit sklizeň do sila nebo do prodejního místa: pomocník Giants
 nebo AutoDrive.
 Můžete buď použít nabídku AI a vytvořit úlohu, poté aktivací funkce Giants helper a uvolnit cíl na
 v dolní části seznamu nebo aktivací ikony kolečka na HUD.
 V druhém případě musíte vybrat vykládací stanici poté, co se ikona kolečka změní na modrou.
-Vyprázdnění přívěsu pomocí AutoDrive funguje stejně jako použití nakládacího vozu, podívejte se na AutoDrive Tutorials na internetu.
+Vyprázdnění vleku pomocí AutoDrive funguje stejně jako použití nakládacího vozu, podívejte se na AutoDrive Tutorials na internetu.
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="Použití překládacích vozů"/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Použití šnekových vozů je velmi jednoduché.
-Stejně jako u přívěsů si pomocí ikony cíle vyberete pole, na kterém chcete vyložit kombajn nebo kombajn.
+Použití překládacích vozů je velmi jednoduché.
+Stejně jako u vleků si pomocí ikony cíle vyberete pole, na kterém chcete vyložit kombajn nebo sklízeč.
 Chcete-li spustit vykladač, umístěte jej znovu na pole nebo do 20 metrů od pole.
-Pokud je šnekový vůz plný, automaticky hledá přívěs na poli nebo v jeho blízkosti, aby se do něj vyložil.
-V případě, že je přívěs plný a šnekový vůz stále není prázdný, bude hledat jiný přívěs k vyložení.
-Není k dispozici žádný přívěs, bude pokračovat ve vykládání kombajnu.
+Pokud je překládací vůz plný, automaticky hledá vlek na poli nebo v jeho blízkosti, aby se do něj vyložil.
+V případě, že je vlek plný a překládací vůz stále není prázdný, bude hledat jiný vlek k vyložení.
+Není-li k dispozici žádný vlek, bude pokračovat ve vykládání kombajnu.
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Vykládání na poli"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+Polohu vykládky lze zvolit pomocí značky vyložení.
+Pozice musí být na stejném poli nebo blízko okraje pole.
+Pokud značka ukazuje na již existující hromadu,
+pak se tato hromada používá k vyložení.
+Směr značky se používá pro směr vykládky.
+Navíc pro vleky je třeba zvolit vykládací starnu.
 "/>
     <text name="CP_help_page_bunker_title" text="Pacovník v silážní jámě"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
