@@ -12,8 +12,8 @@
 	</title>
 
     <description>
-        <en>
-			<![CDATA[Courseplay FS22
+<en>
+<![CDATA[Courseplay FS22
 Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
 - use headlands
 - work on irregularly shaped fields, not just rectangles
@@ -33,7 +33,7 @@ For more information, help, and report issues please visit <a href="https://gith
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
-Changelog 7.2.0.5
+Changelog 7.2.0.5:
 - Goeweil pack bug fix for the stationary baler with the Courseplay hud.
 - Gui fix for non valid Courseplay vehicles and disables the hud, while sitting in an attached vehicle (e.g. mobile Wood Crane).
 - Disables a few hotspots, while drawing a field border.
@@ -44,7 +44,7 @@ Changelog 7.2.0.5
 - Bug fixes and improvements for plows and balers.
 - Some more small fixes and improvements.
 
-Changelog 7.2.0.0
+Changelog 7.2.0.0:
 - added bunker silo mode and combine unloader mode.
 - the remaining time for fieldwork is now displayed on the HUD.
 - support for <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a>.
@@ -52,8 +52,8 @@ Changelog 7.2.0.0
 - user setting to change between feet and meters.
 - simple collision avoidance for unloaders to not crash into the combine.
 - option (keybinding) for course editor to delete all waypoints until the end.
-- new course visibility option (blue eye icon) to show everything 
-  between the leading 20 and last 5 passed waypoints.
+- new course visibility option (blue eye icon) to show everything
+between the leading 20 and last 5 passed waypoints.
 - help menu sections for unloading combines and compacting/pushing in a bunker silo.
 - countless fixes and improvements.
 
@@ -76,10 +76,10 @@ Changelog 7.1.0.0:
 
 For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 ]]>
-		</en>
-        <de>
-			<![CDATA[Courseplay FS22
-Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge intelligenter:
+</en>
+<de>
+<![CDATA[Courseplay FS22
+Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen Sie intelligenter:
 - Modbeschreibung aktualisiert
 - Nutze Vorgewende
 - Arbeite auf nicht rechteckigen Feldern
@@ -91,27 +91,27 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Sähe, Ernten und Plüge in
 - Lasse dein Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
 - Drescher abtanken mit Trailer oder Überladewagen.
 - Erstelle deine eigenen Felder, wo immer du möchtest
-- Arbeitet super mit Autodrive zusammen, lasse Courseplay die Feldarbeit erledigen und 
-  Autodrive erledigt das abtanken eines Ladewagen oder auffüllen einer Sähmaschine.
+- Arbeitet super mit Autodrive zusammen, lasse Courseplay die Feldarbeit erledigen und
+Autodrive erledigt das abtanken eines Ladewagen oder auffüllen einer Sähmaschine.
 - Verändere die generierten Kurse mit dem Kurseditor .
-- Im Bunker silo schieben und verdichten.
+- Im Bunker-Silo schieben und verdichten.
 
 Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
-Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung. 
+Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung.
 
-Changelog 7.2.0.5
-- Göweil Pack Fehler behoben, wenn das Courseplay HUD im Fahrzeug aktiv ist.
-- Fehler im UI behoben für Fahrzeuge und Geräte, die nicht mit Courseplay gesteuert werden können (z.B. mobiler Holzkran)
+Changelog 7.2.0.5:
+- Göweil Pack Fehler gefixt, wenn das Courseplay HUD im Fahrzeug aktiv ist.
+- Fehler im Gui gefixt für Fahrzeuge und Geräte, die nicht mit Courseplay gesteuert werden können (z.B. mobiler Holzkran)
 - Hotspots auf der Karte werden ausgeblendet, wenn man einen Feldrandkurs zeichnet.
 - Das anheben des Schildes im Bunker Modus vorerst deaktiviert.
-- Option hinzugefügt, der Feldarbeiter zurück zum Startpunkt fahren zu lassen.
+- Option hinzugefügt, der Feldhelfer zurück zum Startpunkt fahren lässt.
 - Kleine Verbesserung für Modfahrzeuge, die eine eingebaute Kapazität besitzen.
 - Globale Option hinzugefügt, ob Drescher bei Regen anhalten sollen oder weiter arbeiten sollen.
-- Fehler behoben und Verbesserungen für Pflüge und Ballenpressen.
-- Weitere kleine bug fixes und Verbesserungen.
+- Fehler gefixt und Verbesserungen für Pflüge und Ballenpressen.
+- Weitere kleine Bug Fixes und Verbesserungen.
 
-Changelog 7.2.0.0
+Changelog 7.2.0.0:
 - Bunker Silo Modus und Drescher Abfahrer Modus hinzugefügt
 - Verbleibende Zeit für Feldarbeit wird jetzt im Hud angezeigt
 - Unterstützung für <a href="https://farming-simulator.com/mod.php?lang=en&country=us&mod_id=237080&title=fs2022">Universal Autoload</a> hinzugefügt.
@@ -141,8 +141,8 @@ Changelog 7.1.0.0:
 
 Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 ]]>
-		</de>
-    </description>
+</de>
+</description> 
 
 	<iconFilename>icon_courseplay.dds</iconFilename>
 	<l10n filenamePrefix="translations/translation" />
