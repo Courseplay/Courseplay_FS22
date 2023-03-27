@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
+
+--- Controls an stationary loader for loading of a heap or in a bunker silo.
+--- The driver only drives to the silo/heap start and 
+--- then start working it's way to the end of the line and finishes the job.
 ---@class AIDriveStrategySiloLoader : AIDriveStrategyCourse
 ---@field heapNode number
 AIDriveStrategySiloLoader = {}
@@ -485,8 +489,7 @@ function AIDriveStrategySiloLoader:isOnHeadland()
 end
 
 function AIDriveStrategySiloLoader:getAreaToAvoid()
-    return PathfinderUtil.NodeArea(self.vehicle:getAIDirectionNode(), -self.siloAreaOffsetFieldUnload,
-        0, self.silo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, self.silo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
+    return nil
 end
 
 function AIDriveStrategySiloLoader:isReversing()

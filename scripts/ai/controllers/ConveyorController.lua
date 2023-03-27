@@ -1,5 +1,4 @@
---- Raises/lowers the additional cutters, like the straw/grass pickup for harvesters.
---- Also disables the cutter, while it's waiting for unloading.
+--- Controls the unloading with a conveyor.
 ---@class ConveyorController : ImplementController
 ConveyorController = CpObject(ImplementController)
 ConveyorController.LEFT_SIDE = 0
@@ -11,17 +10,16 @@ function ConveyorController:init(vehicle, implement)
 	self.cylinderedSpec = self.implement.spec_cylindered
 	self.isDischargeEnabled = false
 
-	self.armProjection = CpUtil.createNode("armProjection", 0, 0, 0)
-	self.pipeProjection = CpUtil.createNode("pipeProjection", 0, 0, 0)
-
-	self.pipeSide = self.LEFT_SIDE
-
-	self:setupMoveablePipe()
+	---self:setupMoveablePipe()
 end
 
 function ConveyorController:delete()
-	CpUtil.destroyNode(self.armProjection)
-	CpUtil.destroyNode(self.pipeProjection)
+	if self.armProjection then
+		CpUtil.destroyNode(self.armProjection)
+	end
+	if self.pipeProjection then
+		CpUtil.destroyNode(self.pipeProjection)
+	end
 end
 
 function ConveyorController:getDriveData()
@@ -54,10 +52,12 @@ function ConveyorController:isDischarging()
 	return self.implement:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
 end
 
+--- Allows the conveyor to automatically start unloading with a valid unload target.
 function ConveyorController:enableDischargeToObject()
 	self.isDischargeEnabled = true
 end
 
+--- Stops the unloading and disables automatic restart.
 function ConveyorController:disableDischarge()
 	self.isDischargeEnabled = false
 	self:clearInfoText(InfoTextManager.WAITING_FOR_UNLOADER)
@@ -77,6 +77,7 @@ function ConveyorController:onRaising()
 	self.implement:aiImplementEndLine()
 end
 
+--- Is discharging possible?
 function ConveyorController:canDischargeToObject()
 	return self.implement:getCanDischargeToObject(self.implement:getCurrentDischargeNode())
 end
@@ -107,8 +108,12 @@ function ConveyorController:isPipeMoving()
 	return not self.implement:getCanAIImplementContinueWork()
 end
 
-
+--- WIP code might be implemented later!
 function ConveyorController:setupMoveablePipe()
+	self.armProjection = CpUtil.createNode("armProjection", 0, 0, 0)
+	self.pipeProjection = CpUtil.createNode("pipeProjection", 0, 0, 0)
+	self.pipeSide = self.LEFT_SIDE
+
 	local armMovingToolIx = g_vehicleConfigurations:get(self.implement, 'armMovingToolIx') -- 2
 	local movingToolIx = g_vehicleConfigurations:get(self.implement, 'movingToolIx') -- 1
 	if movingToolIx and armMovingToolIx then
@@ -119,8 +124,8 @@ function ConveyorController:setupMoveablePipe()
 	end
 end
 
+--- WIP code might be implemented later!
 function ConveyorController:updateMoveablePipe(dt)
-	--- WIP code
 	if self.hasValidMovingTools and not self:isPipeMoving() then 
 		local dischargeNode = self.implement:getCurrentDischargeNode()
 		local bx, _, bz = getWorldTranslation(dischargeNode.node)

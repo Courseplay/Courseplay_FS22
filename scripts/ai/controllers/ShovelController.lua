@@ -1,4 +1,3 @@
---- Controls the shovel positions.
 ---@class ShovelController : ImplementController
 ShovelController = CpObject(ImplementController)
 
@@ -36,6 +35,7 @@ function ShovelController:isUnloading()
     return self:isTiltedForUnloading() and self.implement:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF
 end
 
+--- Gets current loading fill type.
 function ShovelController:getShovelFillType()
     return self.shovelSpec.loadingFillType
 end

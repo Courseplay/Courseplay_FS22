@@ -51,8 +51,19 @@ expect the combine to know best when it is going to perform some maneuvers.
 This is currently screwed up...
 
 
+---------------------------------------------
+--- Unload possibilities
+---------------------------------------------
+
+1. Auger wagon can unload to nearby trailers
+
+2. Trailer can be sent to unload either with Autodrive or Giants unloader setup.
+
+3. Unloading on the field to a existing heap or with the creation of new heap is possible.
+
 ]]--
 
+--- Strategy to unload combines or stationary silo loaders.
 ---@class AIDriveStrategyUnloadCombine : AIDriveStrategyCourse
 AIDriveStrategyUnloadCombine = {}
 local AIDriveStrategyUnloadCombine_mt = Class(AIDriveStrategyUnloadCombine, AIDriveStrategyCourse)
@@ -1887,7 +1898,6 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
         xOffset = xOffset,
         controller = controller,
         heapSilo = nil,
-        areaToAvoid = nil,
         isReverseUnloading = false
 
     }
@@ -1904,11 +1914,6 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     
         --- Set the unloading node in the center between heap sx/sz and wx/wz.
         self:updateFieldPositionByHeapSilo(heapSilo)
-       
-        --- Ignore the area of the heap for the path finder.
-        -- xOffset, zOffset, width, length
-       -- self.fieldUnloadData.areaToAvoid = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, - self.siloAreaOffsetFieldUnload - heapSilo:getWidth()/2,
-         --    -2 * self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + self.siloAreaOffsetFieldUnload)
 
         if allowReverseUnloading then
             --- Reverse unloading is allowed, then check if the tip side xOffset is for reverse unloading <= 1 m.
@@ -1939,7 +1944,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     self:startPathfinding(self.fieldUnloadPositionNode, -self.fieldUnloadData.xOffset,
         -AIUtil.getLength(self.vehicle) * 1.3, fieldNum, nil, 
-        self.onPathfindingDoneBeforeUnloadingOnField, self.fieldUnloadData.areaToAvoid)
+        self.onPathfindingDoneBeforeUnloadingOnField)
 end
  
 --- Moves the field unload position to the center front of the heap.
@@ -2091,7 +2096,8 @@ end
 function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 0)
     setTranslation(self.fieldUnloadTurnEndNode, x, 0, z)
-    local _, rotY, _ = getRotation(self.fieldUnloadPositionNode, 0, 0, 0)
+    local dirX, _, dirZ = localDirectionToWorld(self.fieldUnloadPositionNode, 0, 0, 1)
+    local rotY = MathUtil.getYRotationFromDirection(dirX, dirZ)
     setRotation(self.fieldUnloadTurnEndNode, 0, rotY + math.pi, 0)
 
     if not self.fieldUnloadData.heapSilo then
@@ -2099,7 +2105,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
         --- after creating the heap for the first time.
         --- This makes sure that the park position doesn't cross the heap. 
         local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
-            self.fieldUnloadPositionNode, 0, 50, -10)
+            self.fieldUnloadPositionNode, 0, 50, -2)
     
         if found and heapSilo then 
             self:updateFieldPositionByHeapSilo(heapSilo)
@@ -2121,7 +2127,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
     self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset,
         -AIUtil.getLength(self.vehicle), fieldNum, nil, 
-        self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition, self.fieldUnloadData.areaToAvoid)
+        self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition)
 end
 
 --- Course to the park position found.
@@ -2180,9 +2186,6 @@ function AIDriveStrategyUnloadCombine:update(dt)
             end
             if self.fieldUnloadData.heapSilo then 
                 self.fieldUnloadData.heapSilo:drawDebug()
-            end
-            if self.fieldUnloadData.areaToAvoid then 
-                self.fieldUnloadData.areaToAvoid:drawDebug()
             end
         end
     end

@@ -233,6 +233,10 @@ function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
 	CpBunkerSiloVehicleController.init(self, silo, vehicle, driveStrategy)
 end
 
+--- Gets the next line with the most fill level.
+---@param numLines number
+---@param width number
+---@return number next lane to take.
 function CpBunkerSiloLoaderController:getNextLine(numLines, width)
 	local dirXWidth, dirZWidth = self.silo:getWidthDirection()
 	local bestLane, mostFillLevel, fillType = 1, 0

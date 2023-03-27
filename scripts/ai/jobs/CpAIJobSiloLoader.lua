@@ -1,4 +1,4 @@
---- Combine unloader job.
+--- Job for stationary loader.
 ---@class CpAIJobSiloLoader : CpAIJobFieldWork
 ---@field heapPlot HeapPlot
 ---@field heapNode number
