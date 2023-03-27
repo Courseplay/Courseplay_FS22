@@ -891,7 +891,11 @@ function AIDriveStrategyUnloadCombine:startPathfindingToCombine(onPathfindingDon
                 CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload), {}, onPathfindingDoneFunc)
     else
         self:debug('Can\'t start pathfinding, too close?')
-        self:startWaitingForSomethingToDo()
+        if self:isOkToStartUnloadingCombine() then
+            self:startUnloadingCombine()
+        else
+            self:startWaitingForSomethingToDo()
+        end
     end
 end
 
