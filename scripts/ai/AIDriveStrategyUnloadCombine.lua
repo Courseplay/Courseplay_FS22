@@ -1949,14 +1949,11 @@ end
  
 --- Moves the field unload position to the center front of the heap.
 function AIDriveStrategyUnloadCombine:updateFieldPositionByHeapSilo(heapSilo)
-    local sx, sz = heapSilo:getStartPosition()
-    local wx, wz = heapSilo:getWidthPosition()
-    local dirX, dirZ, siloWidth = CpMathUtil.getPointDirection({x = sx, z = sz}, {x = wx, z = wz})
-    local cx, cz = sx + dirX * siloWidth/2, sz + dirZ * siloWidth/2
+    local cx, cz = heapSilo:getFrontCenter()
     setTranslation(self.fieldUnloadPositionNode, cx, 0, cz)
     local dirX, dirZ = heapSilo:getLengthDirection()
     local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-    setWorldRotation(self.fieldUnloadPositionNode, 0, yRot, 0)
+    setRotation(self.fieldUnloadPositionNode, 0, yRot, 0)
     --- Move the position a little bit inwards.
     local x, _, z = localToWorld(self.fieldUnloadPositionNode, 0, 0, 3)
     local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 3
@@ -2140,7 +2137,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeDrivingToFieldUnloa
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local _, _, dz = worldToLocal(self.fieldUnloadTurnEndNode, x, 0, z)
         course:append(Course.createFromNode(self.vehicle, self.fieldUnloadTurnEndNode, 
-        -self.fieldUnloadData.xOffset, dz, 0, 1, false))
+        -self.fieldUnloadData.xOffset * 1.5, dz, 0, 1, false))
         self:startCourse(course, 1)
     else
         self:debug("No path to the field unload park position found!")
@@ -2176,13 +2173,13 @@ function AIDriveStrategyUnloadCombine:update(dt)
         if self.fieldUnloadData then
             --- Only draw the field unload data, when the field unload is active.
             if self.fieldUnloadPositionNode then 
-                DebugUtil.drawDebugNode(self.fieldUnloadPositionNode, getName(self.fieldUnloadPositionNode), false, 1)
+                CpUtil.drawDebugNode(self.fieldUnloadPositionNode,false, 3)
             end
             if self.fieldUnloadTurnEndNode then 
-                DebugUtil.drawDebugNode(self.fieldUnloadTurnEndNode, getName(self.fieldUnloadTurnEndNode), false, 1)
+                CpUtil.drawDebugNode(self.fieldUnloadTurnEndNode, false, 1)
             end
             if self.fieldUnloadTurnStartNode then 
-                DebugUtil.drawDebugNode(self.fieldUnloadTurnStartNode, getName(self.fieldUnloadTurnStartNode), false, 1)
+                CpUtil.drawDebugNode(self.fieldUnloadTurnStartNode, false, 1)
             end
             if self.fieldUnloadData.heapSilo then 
                 self.fieldUnloadData.heapSilo:drawDebug()
