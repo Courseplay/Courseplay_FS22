@@ -213,5 +213,14 @@
 				<text text="$l10n_CP_help_page_bunkerBasic_text"/>
 			</paragraph>
 		</page>
+		<!--Courseplay Silo Loader Driver-->
+		<page title="$l10n_CP_help_page_siloLoader_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_siloLoaderGeneral_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_siloLoaderBasic_text"/>
+			</paragraph>
+		</page>
 	</category>
 </helpLines>

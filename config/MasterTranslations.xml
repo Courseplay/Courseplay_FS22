@@ -2388,6 +2388,34 @@ The parking position is set with the marker "parking position" wich can also be 
 before starting the actual work.
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_siloLoader_title">
+			<Text language="de"><![CDATA[Silo laden]]></Text>
+			<Text language="en"><![CDATA[Silo loading]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_siloLoaderGeneral_text">
+			<Text language="de"><![CDATA[
+Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
+Ebenfalls ist es möglich damit Silos zu entleeren.
+Der Lader kann durch einen Courseplay Abfahrer entladen werden.
+]]></Text>
+			<Text language="en"><![CDATA[
+With this job it's possible to load from heaps on or near the field.
+Additionally it's possible to load from a bunker silo.
+The loader can be unloaded with an Courseplay unloader.
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_siloLoaderBasic_text">
+			<Text language="de"><![CDATA[
+Als erstes muss auf der AI Menü Karte der Lade-Marker gesetzt werden.
+Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
+Anschließend kann der Helfer gestartet werden.
+]]></Text>
+			<Text language="en"><![CDATA[
+To start the loading-marker on the AI menu needs to be set.
+The marker detects heaps or silos and highlights them on the map.
+Now it's possible to start the helper.
+]]></Text>
+		</Translation>
 
 	</Category>
 	<Category name="Input bindings">	
