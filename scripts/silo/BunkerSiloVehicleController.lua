@@ -131,15 +131,6 @@ function CpBunkerSiloVehicleController:draw()
 				drawDebugLine(x, y + 2, z, 1, 0, 1, dx, dy + 2, dz, 0, 1, 1)
 			end
 		end
-		self.silo:drawUnloaderArea()
-
-		if g_currentMission.controlledVehicle == self.vehicle then
-			local debugData = self.silo:getDebugData()
-			table.insert(debugData, 1, {
-				name = "is waiting", value = self:isWaitingAtParkPosition()
-			})
-			DebugUtil.renderTable(0.4, 0.4, 0.018, debugData, 0)
-		end
 	end
 end
 
@@ -219,6 +210,20 @@ function CpBunkerSiloLevelerController:getNextLine(numLines)
 	return nextLine
 end
 
+function CpBunkerSiloLevelerController:draw()
+	CpBunkerSiloVehicleController.draw(self)
+	if self:isDebugEnabled() then
+		self.silo:drawUnloaderArea()
+		if g_currentMission.controlledVehicle == self.vehicle then
+			local debugData = self.silo:getDebugData()
+			table.insert(debugData, 1, {
+				name = "is waiting", value = self:isWaitingAtParkPosition()
+			})
+			DebugUtil.renderTable(0.4, 0.4, 0.018, debugData, 0)
+		end
+	end
+end
+
 --- Controls the driving lines into the silo,
 --- based on the fill level in the lines.
 ---@class CpBunkerSiloLoaderController : CpBunkerSiloVehicleController
@@ -240,8 +245,8 @@ function CpBunkerSiloLoaderController:getNextLine(numLines, width)
 		local fillType = DensityMapHeightUtil.getFillTypeAtArea(sx, sz, wx, wz, hx, hz)
 		if fillType and fillType ~= 0 then 
 			local fillLevel = DensityMapHeightUtil.getFillLevelAtArea(fillType, sx, sz, wx, wz, hx, hz)
-			if fillLevel and fillLevel > mostFillLevel then 
-				self:debug("Lane(%d) has %.2f of %s", i, fillLevel, g_fillTypeManager:getFillTypeByIndex(fillType).title)
+			self:debug("Lane(%d) has %.2f of %s", i, fillLevel, g_fillTypeManager:getFillTypeByIndex(fillType).title)
+			if fillLevel > mostFillLevel then 
 				mostFillLevel = fillLevel
 				bestLane = i
 				fillType = fillType

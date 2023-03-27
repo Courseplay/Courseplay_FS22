@@ -288,6 +288,9 @@ function AIDriveStrategySiloLoader:update(dt)
         if self.silo then 
             self.silo:drawDebug()
         end
+        if self.bunkerSiloController then 
+            self.bunkerSiloController:draw()
+        end
     end
 end
 
