@@ -772,6 +772,17 @@ Pomocí ikony cíle na HUD vyberte silo na mapě AI. Pokud se zobrazí s modrým
 Parkovací poloha se nastavuje pomocí značky &quot;parkovací poloha&quot;; se kterou lze také jezdit s pomocníkem Giants
 před zahájením skutečné práce.
 "/>
+    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+With this job it's possible to load from heaps on or near the field.
+Additionally it's possible to load from a bunker silo.
+The loader can be unloaded with an Courseplay unloader.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+To start the loading-marker on the AI menu needs to be set.
+The marker detects heaps or silos and highlights them on the map.
+Now it's possible to start the helper.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

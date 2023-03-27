@@ -790,6 +790,17 @@ Use the target icon on the HUD to select the silo on the AI Map. If will be show
 The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
 before starting the actual work.
 "/>
+    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+With this job it's possible to load from heaps on or near the field.
+Additionally it's possible to load from a bunker silo.
+The loader can be unloaded with an Courseplay unloader.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+To start the loading-marker on the AI menu needs to be set.
+The marker detects heaps or silos and highlights them on the map.
+Now it's possible to start the helper.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

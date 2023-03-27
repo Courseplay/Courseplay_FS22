@@ -790,6 +790,17 @@ Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
 Die Parkposition wird mit dem Marker &quot;Parkposition&quot; gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
 Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
 "/>
+    <text name="CP_help_page_siloLoader_title" text="Silo laden"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
+Ebenfalls ist es möglich damit Silos zu entleeren.
+Der Lader kann durch einen Courseplay Abfahrer entladen werden.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+Als erstes muss auf der AI Menü Karte der Lade-Marker gesetzt werden.
+Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
+Anschließend kann der Helfer gestartet werden.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

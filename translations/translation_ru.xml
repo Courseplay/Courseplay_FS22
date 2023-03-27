@@ -783,6 +783,17 @@ Courseplay способен прессовать или распределять
 Позиция для парковке устанавливается маркером &quot;позиция парковки&quot; которую также можно использовать для движения туда помощником Giants, 
 прежде чем начать реальную работу.
 "/>
+    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+With this job it's possible to load from heaps on or near the field.
+Additionally it's possible to load from a bunker silo.
+The loader can be unloaded with an Courseplay unloader.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+To start the loading-marker on the AI menu needs to be set.
+The marker detects heaps or silos and highlights them on the map.
+Now it's possible to start the helper.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->
