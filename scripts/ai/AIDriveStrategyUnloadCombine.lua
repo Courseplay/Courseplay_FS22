@@ -99,7 +99,21 @@ AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
     SILO_LOADER = 2
 }
 
---- Allowing of fuel save and open cover state can be set for each state below as property.
+---------------------------------------------
+--- State properties
+---------------------------------------------
+--[[
+    fuelSaveAllowed : boolean              
+    collisionAvoidanceEnabled : boolean
+    proximityControllerDisabled : boolean
+    openCoverAllowed : boolean
+    moveablePipeDisabled : boolean
+    vehicle : table|nil
+]]
+
+---------------------------------------------
+--- States
+---------------------------------------------
 AIDriveStrategyUnloadCombine.myStates = {
     IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
@@ -117,7 +131,9 @@ AIDriveStrategyUnloadCombine.myStates = {
     UNLOADING_AUGER_WAGON = {},
     MOVING_TO_NEXT_FILL_NODE = { moveablePipeDisabled = true },
     MOVING_AWAY_FROM_UNLOAD_TRAILER = { moveablePipeDisabled = true },
+    ---------------------------------------------
     --- Field unload states
+    ---------------------------------------------
     DRIVE_TO_FIELD_UNLOAD_POSITION = { collisionAvoidanceEnabled = true },
     PREPARE_FOR_FIELD_UNLOAD = {},
     DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION = {},
@@ -2126,6 +2142,8 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
 
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
+    self:debug("Disabling off-field penalty for driving to the park position.")
+    self.offFieldPenalty = 0
     self:startPathfinding(self.fieldUnloadTurnEndNode, -self.fieldUnloadData.xOffset * 1.5,
         -AIUtil.getLength(self.vehicle), fieldNum, nil, 
         self.onPathfindingDoneBeforeDrivingToFieldUnloadParkPosition)
