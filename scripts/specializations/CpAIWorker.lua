@@ -275,7 +275,7 @@ function CpAIWorker:cpStartStopDriver(isStartedByHud)
         end
         if self:getCanStartCp() and job then
 
-            job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, job:getCanGenerateFieldWorkCourse())
+            job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, true)
             job:setValues()
             local success, message = job:validate(false)
             if success then
