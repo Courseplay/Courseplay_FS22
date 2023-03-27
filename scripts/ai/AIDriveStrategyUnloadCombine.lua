@@ -1901,13 +1901,14 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     if found and heapSilo then 
         --- Heap was found
         self.fieldUnloadData.heapSilo = heapSilo
+    
+        --- Set the unloading node in the center between heap sx/sz and wx/wz.
+        self:updateFieldPositionByHeapSilo(heapSilo)
+       
         --- Ignore the area of the heap for the path finder.
         self.fieldUnloadData.areaToIgnore = PathfinderUtil.NodeArea(self.fieldUnloadPositionNode, -self.siloAreaOffsetFieldUnload,
              -self.siloAreaOffsetFieldUnload, heapSilo:getWidth() + 2 * self.siloAreaOffsetFieldUnload, heapSilo:getLength() + 2 * self.siloAreaOffsetFieldUnload)
 
-        --- Set the unloading node in the center between heap sx/sz and wx/wz.
-        self:updateFieldPositionByHeapSilo(heapSilo)
-       
         if allowReverseUnloading then
             --- Reverse unloading is allowed, then check if the tip side xOffset is for reverse unloading <= 1 m.
             self.fieldUnloadData.isReverseUnloading = math.abs(self.fieldUnloadData.xOffset)-1 <= 0
