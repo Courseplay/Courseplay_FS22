@@ -123,9 +123,11 @@ end
 
 --- Is the bunker silo allowed?
 function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
-	return not self:getCanStartCpFieldWork() and not self:getCanStartCpBaleFinder() 
-        and not self:hasCpCourse() and not self:getCanStartCpCombineUnloader()
+	return not self:getCanStartCpFieldWork() 
+        and not self:getCanStartCpBaleFinder() 
+        and not self:getCanStartCpCombineUnloader()
         and not self:getCanStartCpSiloLoaderWorker()
+        and (not self:hasCpCourse() or AIUtil.hasChildVehicleWithSpecialization(self, Leveler, nil))
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)
@@ -203,6 +205,7 @@ end
 function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(silo, jobParameters, parkPosition)
     local spec = self.spec_cpAIBunkerSiloWorker
     if self.isServer then 
+        self:resetCpCoursesFromGui()
         spec.bunkerSiloStrategy = AIDriveStrategyBunkerSilo.new()
         spec.bunkerSiloStrategy:setSilo(silo)
         spec.bunkerSiloStrategy:setParkPosition(parkPosition)
