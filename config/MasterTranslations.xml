@@ -211,6 +211,10 @@
 			<Text language="de"><![CDATA[Nur ungewickelte]]></Text>
 			<Text language="en"><![CDATA[only not wrapped]]></Text>
 		</Translation>
+		<Translation name="CP_baleFinder_balesLeftover">
+			<Text language="de"><![CDATA[Ballen übrig: ]]></Text>
+			<Text language="en"><![CDATA[Bales leftover: ]]></Text>
+		</Translation>		
 	</Category>
 	<Category name="AI combine unloader job parameters">
 		<Translation name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader">

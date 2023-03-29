@@ -192,7 +192,6 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.pathfinderFailureCount = 0
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
 
-    self.numBalesWorked = 0
     self.numBalesLeftOver = 0
 end
 
@@ -218,7 +217,7 @@ end
 ---@return BaleToCollect[] list of bales found
 function AIDriveStrategyFindBales:findBales()
     local balesFound, baleWithWrongWrapType = {}, false
-    for _, object in pairs(g_currentMission.nodeToObject) do
+    for _, object in pairs(BaleToCollect.getAllBales()) do
         local isValid, wrongWrapType = BaleToCollect.isValidBale(object, 
                 self.baleWrapper, self.baleLoader, self.baleWrapType)
         if isValid then
@@ -488,6 +487,7 @@ function AIDriveStrategyFindBales:approachBale()
         if not self:isReadyToLoadNextBale() then
             self:debug('Start picking up bale')
             self.state = self.states.WORKING_ON_BALE
+            self:findBales() --- Refreshes for bale counter
         end
     end
     if self.baleWrapper then
@@ -495,6 +495,7 @@ function AIDriveStrategyFindBales:approachBale()
         if self.baleWrapperController:isWorking() then
             self:debug('Start wrapping bale')
             self.state = self.states.WORKING_ON_BALE
+            self:findBales() --- Refreshes for bale counter
         end
     end
 end
@@ -504,7 +505,6 @@ function AIDriveStrategyFindBales:workOnBale()
         if self:isReadyToLoadNextBale() then
             self:debug('Bale picked up, moving on to the next')
             self:collectNextBale()
-            self.numBalesWorked = self.numBalesWorked + 1
         end
     end
     if self.baleWrapper then
@@ -513,7 +513,6 @@ function AIDriveStrategyFindBales:workOnBale()
             self.lastBale = self.baleWrapperController:getLastDroppedBale()
             self:debug('Bale wrapped, moving on to the next, last dropped bale %s', self.lastBale)
             self:collectNextBale()
-            self.numBalesWorked = self.numBalesWorked + 1
         end
     end
 end
@@ -550,5 +549,7 @@ end
 
 ---@param status CpStatus
 function AIDriveStrategyFindBales:updateCpStatus(status)
-    status:setBaleData(self.numBalesWorked, self.numBalesLeftOver)
+    if self.baleWrapper then 
+        status:setBaleData(self.numBalesLeftOver)
+    end
 end

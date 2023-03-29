@@ -126,6 +126,17 @@ function CpJobParameters:isBunkerSiloHudModeDisabled()
     return self:isAIMenuJob()
 end
 
+--- Callback raised by a setting and executed as an vehicle event.
+---@param callbackStr string event to be raised
+---@param setting AIParameterSettingList setting that raised the callback.
+function CpJobParameters:raiseCallback(callbackStr, setting, ...)
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        SpecializationUtil.raiseEvent(vehicle, callbackStr, setting, ...)
+    end
+end
+
+
 --- AI parameters for the bale finder job.
 ---@class CpBaleFinderJobParameters : CpJobParameters
 CpBaleFinderJobParameters = CpObject(CpJobParameters)

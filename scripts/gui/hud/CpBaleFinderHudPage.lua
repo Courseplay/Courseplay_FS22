@@ -46,7 +46,12 @@ function CpBaleFinderHudPageElement:setupElements(baseHud, vehicle, lines, wMarg
         function(vehicle)
             baseHud:openCourseManagerGui(vehicle)
         end, vehicle)
-
+    
+    --- Bale progress of how much bales have bin worked on, similar to waypoint progress.
+    local x, y = unpack(lines[4].left)
+    self.balesProgressLabel = CpTextHudElement.new(self, x, y, CpBaseHud.defaultFontSize)
+    self.balesProgressLabel:setTextDetails(g_i18n:getText("CP_baleFinder_balesLeftover"))
+    
     CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)    												
 end
 

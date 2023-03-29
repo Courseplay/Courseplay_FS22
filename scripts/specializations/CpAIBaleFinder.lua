@@ -31,6 +31,7 @@ end
 function CpAIBaleFinder.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAIBaleFinder)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAIBaleFinder)
+    SpecializationUtil.registerEventListener(vehicleType, "onCpWrapTypeSettingChanged", CpAIBaleFinder)
 
     SpecializationUtil.registerEventListener(vehicleType, 'onCpADStartedByPlayer', CpAIBaleFinder)
     SpecializationUtil.registerEventListener(vehicleType, 'onCpADRestarted', CpAIBaleFinder)
@@ -51,6 +52,11 @@ function CpAIBaleFinder.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAIBaleFinder.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAIBaleFinder.startCpAtLastWp)
 end
+
+function CpAIBaleFinder.registerEvents(vehicleType)
+    SpecializationUtil.registerEvent(vehicleType, "onCpWrapTypeSettingChanged")   
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 ---------------------------------------------------------------------------------------------------------------------------
@@ -161,6 +167,15 @@ end
 
 function CpAIBaleFinder:onCpADRestarted()
     
+end
+
+function CpAIBaleFinder:onCpWrapTypeSettingChanged()
+    local strategy = self:getCpDriveStrategy()
+    if strategy and strategy.findBales then 
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Refreshed bales requested by setting.")
+        strategy:findBales()
+    end
+   
 end
 
 --- Custom version of AIFieldWorker:startFieldWorker()

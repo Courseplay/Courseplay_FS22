@@ -61,9 +61,11 @@ function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainin
     end
 end
 
-function CpStatus:setBaleData(numBalesWorked, numBalesLeftOver)
-    self.numBalesWorked = numBalesWorked
-    self.numBalesLeftOver = numBalesLeftOver
+function CpStatus:setBaleData(numBalesLeftOver)
+    if self.numBalesLeftOver ~= numBalesLeftOver then
+        self.numBalesLeftOver = numBalesLeftOver
+        self:raiseDirtyFlag()
+    end
 end
 
 function CpStatus:updateWaypointVisibility()
@@ -78,8 +80,8 @@ function CpStatus:getWaypointText()
 end
 
 function CpStatus:getBalesText()
-    if self.isActive and self.numBalesWorked and self.numBalesLeftOver then 
-        return string.format('%d/%d', self.numBalesWorked, self.numBalesWorked + self.numBalesLeftOver)
+    if self.isActive and self.numBalesLeftOver ~=nil then 
+        return string.format('%d', self.numBalesLeftOver)
     end 
     return '--/--'
 end
@@ -104,8 +106,7 @@ function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
         streamWriteInt32(streamId, self.currentWaypointIx or 0)
         streamWriteString(streamId, self.remainingTimeText or "")
         --- Bale finder
-        streamWriteInt32(streamId, self.numberOfWaypoints or 0)
-        streamWriteInt32(streamId, self.currentWaypointIx or 0)
+        streamWriteInt32(streamId, self.numBalesLeftOver or 0)
 	end
 end
 
@@ -117,7 +118,6 @@ function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
         self.currentWaypointIx = streamReadInt32(streamId)
         self.remainingTimeText = streamReadString(streamId)
         --- Bale finder
-        self.numBalesWorked = streamReadInt32(streamId)
         self.numBalesLeftOver = streamReadInt32(streamId)
 
         self:updateWaypointVisibility()
