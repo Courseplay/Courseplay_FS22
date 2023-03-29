@@ -83,7 +83,7 @@ function CpStatus:getBalesText()
     if self.isActive and self.numBalesLeftOver ~=nil then 
         return string.format('%d', self.numBalesLeftOver)
     end 
-    return '--/--'
+    return '--'
 end
 
 function CpStatus:getTimeRemainingText()
