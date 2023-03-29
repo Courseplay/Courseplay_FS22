@@ -21,7 +21,6 @@ function CpStatus:reset()
     self.numberOfWaypoints = nil
     self.remainingTimeText = ""
     --- Bale finder
-    self.numBalesWorked = nil
     self.numBalesLeftOver = nil
 
 end

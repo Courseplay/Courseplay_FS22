@@ -243,6 +243,7 @@ function AIDriveStrategyFindBales:findBales()
         table.insert(bales, bale)
     end
     self:debug('Found %d bales.', #bales)
+    --- Saves the number of bales found for the cp status.
     self.numBalesLeftOver = #bales
     return bales, baleWithWrongWrapType
 end
