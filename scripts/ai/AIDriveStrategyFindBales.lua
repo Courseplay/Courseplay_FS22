@@ -549,7 +549,5 @@ end
 
 ---@param status CpStatus
 function AIDriveStrategyFindBales:updateCpStatus(status)
-    if self.baleWrapper then 
-        status:setBaleData(self.numBalesLeftOver)
-    end
+    status:setBaleData(self.numBalesLeftOver)
 end
