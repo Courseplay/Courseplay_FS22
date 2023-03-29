@@ -248,7 +248,7 @@ You can define the following custom settings:
              turnRadius = "7"
     />
     <!--\vehicles\agrisem-->
-    <Vehicle name="agrisemCultiplowPlatinum8m.xml"
+    <Vehicle name="cultiplowPlatinum8m.xml"
              turnRadius = "7"
     />
     <!--\vehicles\proviti-->
