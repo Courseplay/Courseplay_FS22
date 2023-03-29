@@ -16,9 +16,14 @@ end
 
 function CpStatus:reset()
     self.isActive = false
+    --- Fieldwork
     self.currentWaypointIx = nil
     self.numberOfWaypoints = nil
     self.remainingTimeText = ""
+    --- Bale finder
+    self.numBalesWorked = nil
+    self.numBalesLeftOver = nil
+
 end
 
 function CpStatus:start()
@@ -56,6 +61,11 @@ function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainin
     end
 end
 
+function CpStatus:setBaleData(numBalesWorked, numBalesLeftOver)
+    self.numBalesWorked = numBalesWorked
+    self.numBalesLeftOver = numBalesLeftOver
+end
+
 function CpStatus:updateWaypointVisibility()
     SpecializationUtil.raiseEvent(self.vehicle, "onCpFieldworkWaypointChanged", self.currentWaypointIx)
 end
@@ -63,6 +73,13 @@ end
 function CpStatus:getWaypointText()
     if self.isActive and self.currentWaypointIx and self.numberOfWaypoints then 
         return string.format('%d/%d', self.currentWaypointIx, self.numberOfWaypoints)
+    end 
+    return '--/--'
+end
+
+function CpStatus:getBalesText()
+    if self.isActive and self.numBalesWorked and self.numBalesLeftOver then 
+        return string.format('%d/%d', self.numBalesWorked, self.numBalesWorked + self.numBalesLeftOver)
     end 
     return '--/--'
 end
@@ -81,19 +98,28 @@ end
 
 function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
 	if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, self.dirtyFlag) ~= 0) then
+        streamWriteBool(streamId, self.isActive or false)
+        --- Fieldwork
 		streamWriteInt32(streamId, self.numberOfWaypoints or 0)
         streamWriteInt32(streamId, self.currentWaypointIx or 0)
-        streamWriteBool(streamId, self.isActive or false)
         streamWriteString(streamId, self.remainingTimeText or "")
+        --- Bale finder
+        streamWriteInt32(streamId, self.numberOfWaypoints or 0)
+        streamWriteInt32(streamId, self.currentWaypointIx or 0)
 	end
 end
 
 function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
 	if connection:getIsServer() and streamReadBool(streamId) then
+        self.isActive = streamReadBool(streamId)
+        --- Fieldwork
         self.numberOfWaypoints = streamReadInt32(streamId)
         self.currentWaypointIx = streamReadInt32(streamId)
-        self.isActive = streamReadBool(streamId)
         self.remainingTimeText = streamReadString(streamId)
+        --- Bale finder
+        self.numBalesWorked = streamReadInt32(streamId)
+        self.numBalesLeftOver = streamReadInt32(streamId)
+
         self:updateWaypointVisibility()
 	end
 end

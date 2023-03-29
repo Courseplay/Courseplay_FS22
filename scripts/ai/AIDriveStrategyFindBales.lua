@@ -48,6 +48,7 @@ function AIDriveStrategyFindBales.new(customMt)
     ---@type ImplementController[]
     self.controllers = {}
     self.bales = {}
+
     return self
 end
 
@@ -190,6 +191,9 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.settings.toolOffsetX:setFloatValue(0)
     self.pathfinderFailureCount = 0
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
+
+    self.numBalesWorked = 0
+    self.numBalesLeftOver = 0
 end
 
 function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
@@ -240,6 +244,7 @@ function AIDriveStrategyFindBales:findBales()
         table.insert(bales, bale)
     end
     self:debug('Found %d bales.', #bales)
+    self.numBalesLeftOver = #bales
     return bales, baleWithWrongWrapType
 end
 
@@ -499,6 +504,7 @@ function AIDriveStrategyFindBales:workOnBale()
         if self:isReadyToLoadNextBale() then
             self:debug('Bale picked up, moving on to the next')
             self:collectNextBale()
+            self.numBalesWorked = self.numBalesWorked + 1
         end
     end
     if self.baleWrapper then
@@ -507,6 +513,7 @@ function AIDriveStrategyFindBales:workOnBale()
             self.lastBale = self.baleWrapperController:getLastDroppedBale()
             self:debug('Bale wrapped, moving on to the next, last dropped bale %s', self.lastBale)
             self:collectNextBale()
+            self.numBalesWorked = self.numBalesWorked + 1
         end
     end
 end
@@ -539,4 +546,9 @@ function AIDriveStrategyFindBales:update(dt)
         self:info('Bale loader is full, stopping job.')
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     end
+end
+
+---@param status CpStatus
+function AIDriveStrategyFindBales:updateCpStatus(status)
+    status:setBaleData(self.numBalesWorked, self.numBalesLeftOver)
 end

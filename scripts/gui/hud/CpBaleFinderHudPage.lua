@@ -41,6 +41,12 @@ function CpBaleFinderHudPageElement:setupElements(baseHud, vehicle, lines, wMarg
         baseHud:openCourseGeneratorGui(vehicle)
     end)
 
+    --- Bale progress of how much bales have bin worked on, similar to waypoint progress.
+	self.balesProgressBtn = baseHud:addRightLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
+        function(vehicle)
+            baseHud:openCourseManagerGui(vehicle)
+        end, vehicle)
+
     CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)    												
 end
 
@@ -60,6 +66,8 @@ function CpBaleFinderHudPageElement:updateContent(vehicle, status)
     self.baleFinderFillTypeBtn:setTextDetails(baleWrapType:getTitle(), baleWrapType:getString())
 
     self.baleFinderFillTypeBtn:setVisible(baleWrapType:getIsVisible())
+
+    self.balesProgressBtn:setTextDetails(status:getBalesText())
 
     CpGuiUtil.updateCopyBtn(self, vehicle, status)
 end
