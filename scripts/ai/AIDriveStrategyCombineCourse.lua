@@ -814,19 +814,42 @@ function AIDriveStrategyCombineCourse:callUnloaderWhenNeeded()
             local myEte = dToUnloadWaypoint / (self.vehicle:getSpeedLimit(true) / 3.6)
             self:debug('callUnloaderWhenNeeded: best unloader ETE at waypoint %d %.1fs, my ETE %.1fs',
                     tentativeRendezvousWaypointIx, bestEte, myEte)
-            if bestEte + 5 > myEte then
+            if bestEte - 5 > myEte then
+                -- I'll be at the rendezvous a lot earlier than the unloader which will almost certainly result in the
+                -- cancellation of the rendezvous.
+                -- So, set something up further away, with better chances,
+                -- using the unloader's ETE, knowing that 1) that ETE is for the current rendezvous point, 2) there
+                -- may be another unloader selected for that waypoint
+                local dToTentativeRendezvousWaypoint = bestEte * (self.vehicle:getSpeedLimit(true) / 3.6)
+                self:debug('callUnloaderWhenNeeded: too close to rendezvous waypoint, trying move it %.1fm',
+                        dToTentativeRendezvousWaypoint)
+                tentativeRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
+                        self.course:getCurrentWaypointIx(), dToTentativeRendezvousWaypoint)
+                if tentativeRendezvousWaypointIx then
+                    bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(tentativeRendezvousWaypointIx))
+                    if bestUnloader then
+                        self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+                    end
+                else
+                    self:debug('callUnloaderWhenNeeded: still can\'t find a good waypoint to meet the unloader')
+                end
+            elseif bestEte + 5 > myEte then
                 -- do not call too early (like minutes before we get there), only when it needs at least as
                 -- much time to get there as the combine (-5 seconds)
-                if bestUnloader:getCpDriveStrategy():call(self.vehicle,
-                        self.course:getWaypoint(tentativeRendezvousWaypointIx)) then
-                    self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
-                    self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
-                    self:debug('callUnloaderWhenNeeded: harvesting, unloader accepted rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
-                else
-                    self:debug('callUnloaderWhenNeeded: harvesting, unloader rejected rendezvous at waypoint %d', tentativeRendezvousWaypointIx)
-                end
+                self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
             end
         end
+    end
+end
+
+function AIDriveStrategyCombineCourse:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+    if bestUnloader:getCpDriveStrategy():call(self.vehicle,
+            self.course:getWaypoint(tentativeRendezvousWaypointIx)) then
+        self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
+        self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
+        self:debug('callUnloaderWhenNeeded: harvesting, unloader accepted rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
+    else
+        self:debug('callUnloaderWhenNeeded: harvesting, unloader rejected rendezvous at waypoint %d', tentativeRendezvousWaypointIx)
     end
 end
 
@@ -886,14 +909,6 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
         return bestUnloader, bestEte
     else
         self:debug('findUnloader: no idle unloader found')
-    end
-end
-
-function AIDriveStrategyCombineCourse:callUnloader(unloader)
-    if self:isWaitingForUnload() then
-    else
-        self:debug('callUnloader: still going, call unloader to the spot where we reach fill level %d',
-                self.callUnloaderAtFillLevelPercentage)
     end
 end
 
