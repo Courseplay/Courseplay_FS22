@@ -63,6 +63,7 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="todos os fardos"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="somente embalado"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não embalado"/>
+    <text name="CP_baleFinder_balesLeftover" text="Bales leftover: "/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->

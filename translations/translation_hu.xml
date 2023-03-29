@@ -63,6 +63,7 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="összes"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="csak a csomagoltak"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="csak a nem csomagoltak"/>
+    <text name="CP_baleFinder_balesLeftover" text="Bales leftover: "/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
