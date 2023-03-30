@@ -63,7 +63,7 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="alla balar"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="bara plastade"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="bara oplastade"/>
-    <text name="CP_baleFinder_balesLeftover" text="Bales leftover: "/>
+    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
