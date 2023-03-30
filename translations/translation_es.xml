@@ -21,7 +21,7 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Descargador muy lejos del campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posición inicial muy lejos del campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Descargador de Giants no disponible."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posición de descarga del campo está demasiado lejos del campo."/>
     <text name="CP_error_no_bunkerSilo_found" text="Ningún Silo encontrado."/>
     <!---->
     <!--AI job parameters-->
@@ -69,10 +69,10 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Descargador de Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usar Descargador de Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estación de descarga:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Descargador de Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Usar descargar en campo:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Posición de descarga en campo:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Lado de descarga del remolque:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -389,7 +389,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_errorStopped" text="Dejó el curso, se detuvo"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ningún camino encontrado"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="No es posible volcar al suelo"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -402,10 +402,10 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_customFieldManager_draw" text="Dibujar Campo Personalizado"/>
     <text name="CP_customFieldManager_draw_header" text="Dibujar las líneas del Campo con el Botón Derecho del Mouse."/>
     <text name="CP_customFieldManager_save" text="Guardar Campo Personalizado"/>
-    <text name="CP_controllerGui_startRecording" text="Iniciar grabación de ruta personalizada."/>
-    <text name="CP_controllerGui_stopRecording" text="Parar grabación de ruta personalizada."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_startRecording" text="Iniciar grabación del campo personalizado."/>
+    <text name="CP_controllerGui_stopRecording" text="Parar grabación del campo personalizado."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausar grabación del campo."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Continuar grbación del campo."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -723,7 +723,7 @@ es evitar que una cosechadora llame a un descargador con un remolque casi lleno.
 - Puede usar las compensaciones en el HUD para ajustar la posición del descargador debajo del tubo de la cosechadora.
 
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Uso de remolques"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Si utiliza un remolque para descargar, hay dos formas de transportar su cosecha a un silo o a un punto de venta: El Ayudante de Gigants
 o AutoDrive.
@@ -733,7 +733,7 @@ En este último caso, debe elegir la estación de descarga después de que el í
 
 Vaciar un remolque con AutoDrive funciona igual que usar un vagón de carga, consulte los tutoriales de AutoDrive en Internet.
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="Uso de vagones con sinfín"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Los vagones con sinfín son muy fáciles de usar.
 Al igual que con los remolques, utilice el icono de objetivo para elegir el campo donde desea descargar una Combinada o Cosechadora.
@@ -742,14 +742,14 @@ Si el vagón con sinfín está lleno, automáticamente buscará un remolque en e
 En caso de que el tráiler esté lleno y el vagón del sinfín aún no esté vacío, buscará otro remolque para descargarlo.
 Si no hay un remolque disponible, continuará descargando la cosechadora.
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Descargar en el campo."/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+La posición de descarga se puede seleccionar con el marcador de descarga.
+La posición debe estar en el mismo campo o cerca del borde del campo.
+Si el marcador apunta a un montón ya existente,
+entonces este montón se usa para descargar.
+La dirección del marcador se utiliza para la dirección de descarga.
+Además, para los remolques, se debe seleccionar un lado de descarga.
 "/>
     <text name="CP_help_page_bunker_title" text="Trabajador de Silos Búnker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
