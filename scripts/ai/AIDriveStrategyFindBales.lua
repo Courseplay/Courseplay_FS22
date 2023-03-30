@@ -488,7 +488,7 @@ function AIDriveStrategyFindBales:approachBale()
         if not self:isReadyToLoadNextBale() then
             self:debug('Start picking up bale')
             self.state = self.states.WORKING_ON_BALE
-            self:findBales() --- Refreshes for bale counter
+            self.numBalesLeftOver = math.max(self.numBalesLeftOver-1, 0)
         end
     end
     if self.baleWrapper then
@@ -496,7 +496,7 @@ function AIDriveStrategyFindBales:approachBale()
         if self.baleWrapperController:isWorking() then
             self:debug('Start wrapping bale')
             self.state = self.states.WORKING_ON_BALE
-            self:findBales() --- Refreshes for bale counter
+            self.numBalesLeftOver = math.max(self.numBalesLeftOver-1, 0)
         end
     end
 end
