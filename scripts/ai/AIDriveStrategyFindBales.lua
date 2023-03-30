@@ -48,6 +48,7 @@ function AIDriveStrategyFindBales.new(customMt)
     ---@type ImplementController[]
     self.controllers = {}
     self.bales = {}
+
     return self
 end
 
@@ -190,6 +191,8 @@ function AIDriveStrategyFindBales:setAllStaticParameters()
     self.settings.toolOffsetX:setFloatValue(0)
     self.pathfinderFailureCount = 0
     self.reverser = AIReverseDriver(self.vehicle, self.ppc)
+
+    self.numBalesLeftOver = 0
 end
 
 function AIDriveStrategyFindBales:setFieldPolygon(fieldPolygon)
@@ -214,7 +217,7 @@ end
 ---@return BaleToCollect[] list of bales found
 function AIDriveStrategyFindBales:findBales()
     local balesFound, baleWithWrongWrapType = {}, false
-    for _, object in pairs(g_currentMission.nodeToObject) do
+    for _, object in pairs(BaleToCollect.getAllBales()) do
         local isValid, wrongWrapType = BaleToCollect.isValidBale(object, 
                 self.baleWrapper, self.baleLoader, self.baleWrapType)
         if isValid then
@@ -240,6 +243,8 @@ function AIDriveStrategyFindBales:findBales()
         table.insert(bales, bale)
     end
     self:debug('Found %d bales.', #bales)
+    --- Saves the number of bales found for the cp status.
+    self.numBalesLeftOver = #bales
     return bales, baleWithWrongWrapType
 end
 
@@ -483,6 +488,7 @@ function AIDriveStrategyFindBales:approachBale()
         if not self:isReadyToLoadNextBale() then
             self:debug('Start picking up bale')
             self.state = self.states.WORKING_ON_BALE
+            self.numBalesLeftOver = math.max(self.numBalesLeftOver-1, 0)
         end
     end
     if self.baleWrapper then
@@ -490,6 +496,7 @@ function AIDriveStrategyFindBales:approachBale()
         if self.baleWrapperController:isWorking() then
             self:debug('Start wrapping bale')
             self.state = self.states.WORKING_ON_BALE
+            self.numBalesLeftOver = math.max(self.numBalesLeftOver-1, 0)
         end
     end
 end
@@ -539,4 +546,9 @@ function AIDriveStrategyFindBales:update(dt)
         self:info('Bale loader is full, stopping job.')
         self.vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
     end
+end
+
+---@param status CpStatus
+function AIDriveStrategyFindBales:updateCpStatus(status)
+    status:setBaleData(self.numBalesLeftOver)
 end

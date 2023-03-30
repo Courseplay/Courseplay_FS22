@@ -63,6 +63,7 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="Tüm balyalar"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Sadece sarılmış"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Sadece sarılmamışlar"/>
+    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->

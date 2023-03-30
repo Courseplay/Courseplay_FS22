@@ -135,3 +135,7 @@ function BaleToCollect:getSafeDistance()
 	-- thinking about the math...
 	return math.sqrt(length * length + self.bale.width * self.bale.width) / 2 + 0.2
 end
+
+function BaleToCollect.getAllBales()
+	return g_currentMission.slotSystem.objectLimits[SlotSystem.LIMITED_OBJECT_BALE].objects
+end

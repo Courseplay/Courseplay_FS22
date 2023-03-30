@@ -13,7 +13,7 @@
 		<Setting classType="CpAIParameterPosition" name="fieldPosition" positionParameterType="FIELD_OR_SILO"/>
 	</SettingSubTitle>
 	<SettingSubTitle title="baleWrapType">
-		<Setting classType="AIParameterSettingList" name="baleWrapType" isVisible="isBaleWrapSettingVisible">
+		<Setting classType="AIParameterSettingList" name="baleWrapType" isVisible="isBaleWrapSettingVisible" onChangeCallback="onCpWrapTypeSettingChanged">
 			<Values>
 				<Value name="ALL_BALES">1</Value>
 				<Value name="ONLY_WRAPPED_BALES">2</Value>

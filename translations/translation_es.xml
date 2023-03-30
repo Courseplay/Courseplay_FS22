@@ -63,6 +63,7 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="Todas las pacas"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="Solo envueltas"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="Solo no envueltas"/>
+    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->

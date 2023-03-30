@@ -63,6 +63,7 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="所有草垛"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="仅铝箔包装的草垛"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="仅没有铝箔包装的草垛"/>
+    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
