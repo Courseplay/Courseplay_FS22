@@ -213,7 +213,7 @@
 		</Translation>
 		<Translation name="CP_baleFinder_balesLeftover">
 			<Text language="de"><![CDATA[Ballen übrig: ]]></Text>
-			<Text language="en"><![CDATA[Bales leftover: ]]></Text>
+			<Text language="en"><![CDATA[Bales left:]]></Text>
 		</Translation>		
 	</Category>
 	<Category name="AI combine unloader job parameters">
