@@ -70,6 +70,16 @@ end
 --	-1	point is outside of polygon
 --	 0	point is directly on polygon
 function CpMathUtil.isPointInPolygon(polygon, x, z)
+	if x == nil or z == nil then 
+		CpUtil.error("CpMathUtil.isPointInPolygon(): x or z are nil!")
+		return false
+	end
+	if polygon == nil or #polygon <= 2 then 
+		CpUtil.error("CpMathUtil.isPointInPolygon(): polygon is to small or nil!")
+		return false
+	end
+
+
 	local function crossProductQuery(a, b, c)
 		-- returns:
 		--	-1	vector from A to right intersects BC (except at the bottom end point)
