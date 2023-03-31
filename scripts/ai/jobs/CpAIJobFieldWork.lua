@@ -110,6 +110,7 @@ function CpAIJobFieldWork:setValues()
     self.driveToFieldWorkStartTask:reset()
     self.driveToFieldWorkStartTask:setVehicle(vehicle)
     self.fieldWorkTask:setVehicle(vehicle)
+    self:validateFieldSetup()
 end
 
 --- Called when parameters change, scan field

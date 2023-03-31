@@ -71,7 +71,18 @@ function CpAIJobSiloLoader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.siloLoaderTask:setVehicle(vehicle)
-	self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
+
+	local found, bunkerSilo, heapSilo = self:getBunkerSiloOrHeap(self.cpJobParameters.loadPosition, self.heapNode)
+	if found then 
+		if bunkerSilo then 
+			self.bunkerSilo = bunkerSilo
+		elseif heapSilo then
+			self.heapPlot:setArea(heapSilo:getArea())
+			self.heapPlot:setVisible(true)
+			self.heap = heapSilo
+		end
+		self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
+	end
 end
 
 
@@ -129,26 +140,6 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 	end
 	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(node, 0, 50, -10)
 	return found, nil, heapSilo
-end
-
-function CpAIJobSiloLoader:readStream(streamId, connection)
-	CpAIJobSiloLoader:superClass().readStream(self, streamId, connection)
-
-	local found, bunkerSilo, heapSilo = self:getBunkerSiloOrHeap(self.cpJobParameters.loadPosition, self.heapNode)
-	if found then 
-		if bunkerSilo then 
-			self.bunkerSilo = bunkerSilo
-		elseif heapSilo then
-			self.heapPlot:setArea(heapSilo:getArea())
-			self.heapPlot:setVisible(true)
-			self.heap = heapSilo
-		end
-		self.siloLoaderTask:setSiloAndHeap(self.bunkerSilo, self.heap)
-	end
-end
-
-function CpAIJobSiloLoader:writeStream(streamId, connection)
-	CpAIJobSiloLoader:superClass().writeStream(self, streamId, connection)
 end
 
 function CpAIJobSiloLoader:drawSilos(map)

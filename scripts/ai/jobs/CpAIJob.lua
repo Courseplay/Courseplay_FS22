@@ -225,6 +225,7 @@ function CpAIJob:readStream(streamId, connection)
 	if self.cpJobParameters then
 		self.cpJobParameters:validateSettings()
 		self.cpJobParameters:readStream(streamId, connection)
+		self:setValues()
 	end
 end
 

@@ -108,6 +108,7 @@ function CpAIJobCombineUnloader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.combineUnloaderTask:setVehicle(vehicle)
+	self:validateFieldPosition()
 	self:setupGiantsUnloaderData(vehicle)
 end
 
@@ -217,12 +218,6 @@ end
 function CpAIJobCombineUnloader:drawSelectedField(map)
 	self.selectedFieldPlot:draw(map)
     self.heapPlot:draw(map)
-end
-
-function CpAIJobCombineUnloader:readStream(streamId, connection)
-	CpAIJob.readStream(self, streamId, connection)
-	--- Update the field position plot
-	self:validateFieldPosition()
 end
 
 ------------------------------------
