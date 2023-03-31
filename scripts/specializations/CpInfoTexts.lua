@@ -46,7 +46,7 @@ function CpInfoTexts:onLoad(savegame)
 	self.spec_cpInfoTexts = self["spec_" .. CpInfoTexts.SPEC_NAME]
     local spec = self.spec_cpInfoTexts
 	spec.activeInfoTexts = {}
-	g_infoTextManager:registerVehicle(self,self.id)
+	g_infoTextManager:registerVehicle(self, self.id)
 	spec.dirtyFlag = self:getNextDirtyFlag()
 end
 
@@ -57,22 +57,24 @@ end
 function CpInfoTexts:onWriteUpdateStream(streamId, connection, dirtyMask)
 	local spec = self.spec_cpInfoTexts
     if not connection:getIsServer() and streamWriteBool(streamId, bitAND(dirtyMask, spec.dirtyFlag) ~= 0) then
-		streamWriteUIntN(streamId, CpInfoTexts.getBitMask(self), InfoTextManager.NUM_BITS )
+		CpInfoTexts.onWriteStream(self, streamId, connection)
 	end
 end
 
 function CpInfoTexts:onReadUpdateStream(streamId, timestamp, connection)
 	if connection:getIsServer() and streamReadBool(streamId) then
-		CpInfoTexts.setFromBitMask(self, streamReadUIntN(streamId, InfoTextManager.NUM_BITS ))
+		CpInfoTexts.onReadStream(self, streamId, connection)
 	end
 end
 
-function CpInfoTexts:onReadStream(streamId)
-	CpInfoTexts.setFromBitMask(self, streamReadUIntN(streamId, InfoTextManager.NUM_BITS ))
+function CpInfoTexts:onReadStream(streamId, connection)
+	local mask = streamReadUIntN(streamId, InfoTextManager.NUM_BITS + 1)
+	CpInfoTexts.setFromBitMask(self, mask)
 end
 
-function CpInfoTexts:onWriteStream(streamId)
-	streamWriteUIntN(streamId, CpInfoTexts.getBitMask(self), InfoTextManager.NUM_BITS )
+function CpInfoTexts:onWriteStream(streamId, connection)
+	local mask = CpInfoTexts.getBitMask(self)
+	streamWriteUIntN(streamId, mask, InfoTextManager.NUM_BITS + 1)
 end
 
 function CpInfoTexts:onEnterVehicle(isControlling)

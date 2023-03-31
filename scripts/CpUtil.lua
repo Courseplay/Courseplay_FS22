@@ -239,7 +239,9 @@ function CpUtil.destroyNode(node)
 end
 
 function CpUtil.drawDebugNode(node, alignToGround, yOffset)
-	DebugUtil.drawDebugNode(node, getName(node), alignToGround, yOffset)
+	if node and entityExists(node) then
+		DebugUtil.drawDebugNode(node, getName(node), alignToGround, yOffset)
+	end
 end
 
 --- Executes a function and throws a callstack, when an error appeared.

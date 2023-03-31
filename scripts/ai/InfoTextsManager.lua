@@ -85,7 +85,7 @@ function InfoTextManager:init()
 end
 
 function InfoTextManager:__tostring()
-	local str = ""
+	local str = "\n"
 	for i, infoText in ipairs(self.infoTexts) do 
 		str = str .. tostring(infoText) .. "\n"
 	end

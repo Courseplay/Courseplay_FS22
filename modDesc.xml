@@ -309,6 +309,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/events/DebugChannelEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJobStartAtLastWpSyncEvent.lua"/>
 		<sourceFile filename="scripts/events/CpJobSyncOnLeaveEvent.lua"/>
+		<sourceFile filename="scripts/events/DriveNowRequestEvent.lua"/>
 	</extraSourceFiles>
 
 	<specializations>
