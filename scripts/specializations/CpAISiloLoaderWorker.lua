@@ -31,6 +31,8 @@ function CpAISiloLoaderWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoad', CpAISiloLoaderWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onUpdate', CpAISiloLoaderWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAISiloLoaderWorker)
+    SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAISiloLoaderWorker)
+    SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAISiloLoaderWorker)
 end
 
 function CpAISiloLoaderWorker.registerFunctions(vehicleType)
@@ -75,6 +77,16 @@ end
 function CpAISiloLoaderWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
     local spec = self.spec_cpAISiloLoaderWorker
     spec.cpJob:saveToXMLFile(xmlFile, baseKey.. ".cpJob")
+end
+
+function CpAISiloLoaderWorker:onReadStream(streamId, connection)
+    local spec = self.spec_cpAISiloLoaderWorker
+    spec.cpJob:readStream(streamId, connection)
+end
+
+function CpAISiloLoaderWorker:onWriteStream(streamId, connection)
+    local spec = self.spec_cpAISiloLoaderWorker
+    spec.cpJob:writeStream(streamId, connection)
 end
 
 function CpAISiloLoaderWorker:onUpdate(dt)
