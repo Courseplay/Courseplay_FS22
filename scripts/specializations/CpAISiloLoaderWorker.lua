@@ -50,7 +50,6 @@ function CpAISiloLoaderWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAISiloLoaderWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAISiloLoaderWorker.getCpStartableJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAISiloLoaderWorker.getCpStartText)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, "getCpDriveStrategy", CpAISiloLoaderWorker.getCpDriveStrategy)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAISiloLoaderWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAISiloLoaderWorker.startCpAtLastWp)
 end
@@ -91,34 +90,6 @@ end
 
 function CpAISiloLoaderWorker:onUpdate(dt)
     local spec = self.spec_cpAISiloLoaderWorker
-    if spec.siloLoaderStrategy and self.isServer then
-        spec.siloLoaderStrategy:update(dt)
-        if g_updateLoopIndex % 4 == 0 then
-            local tX, tZ, moveForwards, maxSpeed =  spec.siloLoaderStrategy:getDriveData(dt)
-
-            -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
-            local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
-            local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
-
-            if not moveForwards and self.spec_articulatedAxis ~= nil and
-                    self.spec_articulatedAxis.aiRevereserNode ~= nil then
-                pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
-            end
-
-            if not moveForwards and self:getAIReverserNode() ~= nil then
-                pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
-            end
-
-            local acceleration = 1
-            local isAllowedToDrive = maxSpeed ~= 0
-
-            AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
-        end
-    end
-end
-
-function CpAISiloLoaderWorker:getCpDriveStrategy(superFunc)
-    return superFunc(self) or self.spec_cpAISiloLoaderWorker.siloLoaderStrategy
 end
 
 --- Is the bunker silo allowed?
@@ -195,21 +166,17 @@ function CpAISiloLoaderWorker:startCpAtLastWp(superFunc, ...)
     end
 end
 
---- Custom version of AIFieldWorker:startFieldWorker()
 function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap)
-    local spec = self.spec_cpAISiloLoaderWorker
     if self.isServer then 
-        spec.siloLoaderStrategy = AIDriveStrategySiloLoader.new()
+        local strategy = AIDriveStrategySiloLoader.new()
         -- this also starts the strategy
-        spec.siloLoaderStrategy:setSiloAndHeap(bunkerSilo, heap)
-        spec.siloLoaderStrategy:setAIVehicle(self, jobParameters)
+        strategy:setSiloAndHeap(bunkerSilo, heap)
+        strategy:setAIVehicle(self, jobParameters)
+        CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting silo worker job.")
+        self:startCpWithStrategy(strategy)
     end
 end
 
 function CpAISiloLoaderWorker:stopCpSiloLoaderWorker()
-    local spec = self.spec_cpAISiloLoaderWorker
-    if spec.siloLoaderStrategy then 
-        spec.siloLoaderStrategy:delete()
-        spec.siloLoaderStrategy = nil
-    end
+    self:stopCpDriver()
 end

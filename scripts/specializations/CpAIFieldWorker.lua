@@ -63,7 +63,6 @@ function CpAIFieldWorker.registerFunctions(vehicleType)
 
     SpecializationUtil.registerFunction(vehicleType, "startCpAtFirstWp", CpAIFieldWorker.startCpAtFirstWp)
     SpecializationUtil.registerFunction(vehicleType, "startCpAtLastWp", CpAIFieldWorker.startCpAtLastWp)
-    SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIFieldWorker.getCpDriveStrategy)
     SpecializationUtil.registerFunction(vehicleType, "getCpStartingPointSetting", CpAIFieldWorker.getCpStartingPointSetting)
     SpecializationUtil.registerFunction(vehicleType, "getCpLaneOffsetSetting", CpAIFieldWorker.getCpLaneOffsetSetting)
 end
@@ -72,6 +71,7 @@ function CpAIFieldWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIFieldWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIFieldWorker.getCpStartableJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAIFieldWorker.getCpStartText)
+    SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpDriveStrategy', CpAIFieldWorker.getCpDriveStrategy)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -149,8 +149,8 @@ function CpAIFieldWorker:getCpFieldWorkProgress()
 end
 
 --- Gets the current field work drive strategy.
-function CpAIFieldWorker:getCpDriveStrategy()
-    return self.spec_cpAIFieldWorker.driveStrategy
+function CpAIFieldWorker:getCpDriveStrategy(superFunc)
+    return superFunc(self) or self.spec_cpAIFieldWorker.driveStrategy
 end
 
 --- To find out if a harvester is waiting to be unloaded, either because it is full or ended the fieldwork course

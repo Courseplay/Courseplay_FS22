@@ -22,13 +22,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --- then start working it's way to the end of the line and finishes the job.
 ---@class AIDriveStrategySiloLoader : AIDriveStrategyCourse
 ---@field heapNode number
+---@field shovelController ShovelController
+---@field conveyorController ConveyorController
 AIDriveStrategySiloLoader = {}
 local AIDriveStrategySiloLoader_mt = Class(AIDriveStrategySiloLoader, AIDriveStrategyCourse)
 
 AIDriveStrategySiloLoader.myStates = {
     DRIVING_ALIGNMENT_COURSE = {},
     WAITING_FOR_PREPARING = {},
-    WORKING = {}
+    WORKING = {},
+    FINISHED = {}
 }
 AIDriveStrategySiloLoader.distanceOverFieldEdgeAllowed = 25
 AIDriveStrategySiloLoader.siloAreaOffsetFieldUnload = 10
@@ -182,8 +185,7 @@ function AIDriveStrategySiloLoader:onWaypointPassed(ix, course)
             self:startCourse(course, 1)
             self.state = self.states.WAITING_FOR_PREPARING
         elseif self.state == self.states.WORKING then
-            self.conveyorController:disableDischarge()
-            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+            self.state = self.states.FINISHED
         end
     end
 end
@@ -225,10 +227,17 @@ function AIDriveStrategySiloLoader:getDriveData(dt, vX, vY, vZ)
             local isEndReached, maxSpeed = self.bunkerSiloController:isEndReached(self.shovelController:getShovelNode(), 0)
             if self.silo:isTheSameSilo(closestObject) or isEndReached then
                 self:debug("End wall detected or bunker silo end is reached.")
-                self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+                self.state = self.states.FINISHED
             end
         end
 
+    elseif self.state == self.states.FINISHED then 
+        self:setMaxSpeed(0)
+        self:debugSparse("Waiting until the conveyor is empty.")
+        if self.shovelController:isEmpty() then
+            self.conveyorController:disableDischarge()
+            self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+        end
     end
     self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100

@@ -117,7 +117,7 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
 end
 
 function CpCombineUnloaderHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return false
+    return vehicle:getIsCpActive()
 end
 
 function CpCombineUnloaderHudPageElement:getStartingPointBtnText(vehicle)
