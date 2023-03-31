@@ -855,7 +855,13 @@ end
 
 function AIDriveStrategyCombineCourse:isActiveCpUnloader(vehicle)
     if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
-        return vehicle:getCpDriveStrategy():getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE
+        local strategy = vehicle:getCpDriveStrategy()
+        if strategy then 
+            local unloadTargetType = strategy:getUnloadTargetType()
+            if unloadTargetType ~= nil then 
+                return unloadTargetType == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE
+            end
+        end
     end
     return false
 end

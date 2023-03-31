@@ -348,7 +348,13 @@ end
 
 function AIDriveStrategySiloLoader:isActiveCpUnloader(vehicle)
     if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
-        return true
+        local strategy = vehicle:getCpDriveStrategy()
+        if strategy then 
+            local unloadTargetType = strategy:getUnloadTargetType()
+            if unloadTargetType ~= nil then 
+                return unloadTargetType == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER
+            end
+        end    
     end
     return false
 end
