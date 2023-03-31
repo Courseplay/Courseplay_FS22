@@ -93,8 +93,17 @@ function AIDriveStrategyCourse:error(...)
     CpUtil.infoVehicle(self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
+--- Sets an info text
+---@param text CpInfoTextElement
 function AIDriveStrategyCourse:setInfoText(text)
     self.vehicle:setCpInfoTextActive(text)
+end
+
+--- @param text CpInfoTextElement
+function AIDriveStrategyCourse:clearInfoText(text)
+    if text then
+        self.vehicle:resetCpActiveInfoText(text)
+    end
 end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
@@ -512,13 +521,6 @@ function AIDriveStrategyCourse:startCourse(course, ix)
     self.course = course
     self.ppc:setCourse(self.course)
     self.ppc:initialize(ix)
-end
-
---- @param msgReference string as defined in globalInfoText.msgReference
-function AIDriveStrategyCourse:clearInfoText(msgReference)
-    if msgReference then
-        self.vehicle:resetCpActiveInfoText(msgReference)
-    end
 end
 
 function AIDriveStrategyCourse:getFillLevelInfoText()

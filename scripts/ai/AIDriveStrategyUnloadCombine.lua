@@ -138,7 +138,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     PREPARE_FOR_FIELD_UNLOAD = {},
     DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION = {},
     REVERSING_TO_THE_FIELD_UNLOAD_HEAP = {},
-    UNLOADING_ON_THE_FIELD = { proximityControllerDisabled = true},
+    UNLOADING_ON_THE_FIELD = { proximityControllerDisabled = true },
     DRIVE_TO_FIELD_UNLOAD_PARK_POSITION = {},   
 }
 
@@ -1244,8 +1244,6 @@ function AIDriveStrategyUnloadCombine:driveToCombine()
 
     self:checkForCombineProximity()
 
-    self:setInfoText(self.vehicle, InfoTextManager.DRIVING_TO_COMBINE);
-
     self:setFieldSpeed()
 
     self.combineToUnload:getCpDriveStrategy():reconfirmRendezvous()
@@ -1262,7 +1260,6 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
 
     self:checkForCombineProximity()
 
-    --self:setInfoText(InfoTextManager.DRIVING_TO_MOVING_COMBINE);
 
     self:setFieldSpeed()
 
@@ -1751,7 +1748,6 @@ end
 -- Driving to a trailer to unload an auger wagon
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:driveToSelfUnload()
-    self:setInfoText(self.vehicle, InfoTextManager.DRIVING_TO_SELF_UNLOAD)
     if self.course:isCloseToLastWaypoint(25) then
         -- disable one side of the proximity sensors to avoid being blocked by the trailer or its tractor
         -- TODO: make it work with pipe on the right side
