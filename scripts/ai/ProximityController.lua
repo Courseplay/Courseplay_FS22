@@ -13,7 +13,7 @@ ProximityController.sensorRange = 10
 ProximityController.minLimitedSpeed = 2
 -- will stop under this threshold
 ProximityController.stopThresholdNormal = 1.5
-ProximityController.messageThreshold = 5 * 1000 -- 5sec
+ProximityController.messageThreshold = 3 * 1000 -- 3sec
 function ProximityController:init(vehicle, width)
     self.vehicle = vehicle
     -- if anything closer than this, we stop
