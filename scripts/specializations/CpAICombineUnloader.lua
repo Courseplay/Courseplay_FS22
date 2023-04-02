@@ -235,7 +235,7 @@ function CpAICombineUnloader:startCpCombineUnloaderUnloading()
             strategy:requestDriveUnloadNow()
         end
     else 
-        DriveNowRequestEvent.new(self)
+        DriveNowRequestEvent.sendEvent(self)
     end
 end
 
