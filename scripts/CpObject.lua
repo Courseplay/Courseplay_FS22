@@ -87,7 +87,7 @@ end
 
 --- Keeps the expiring timer going and doesn't update the start time.
 function CpTemporaryObject:setAndProlong(value, expiryMs, startMs)
-	if self:isStarted() then 
+	if not self:isExpired() then 
 		self.expiryTime = math.max(self.startTime, g_time) + expiryMs
 	else 
 		self:set(value, expiryMs, startMs)
@@ -111,8 +111,8 @@ function CpTemporaryObject:isPending()
 	return g_time < self.startTime
 end
 
-function CpTemporaryObject:isStarted()
-	return g_time < self.startTime or g_time < self.expiryTime
+function CpTemporaryObject:isExpired()
+	return g_time > self.expiryTime
 end
 
 --- Resets the object.

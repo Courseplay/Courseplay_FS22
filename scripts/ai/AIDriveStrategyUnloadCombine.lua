@@ -50,16 +50,23 @@ expect the combine to know best when it is going to perform some maneuvers.
 
 This is currently screwed up...
 
+---------------------------------------------
+--- Unload target possibilities
+---------------------------------------------
+
+1. Combines working on an field(no chopper!)
+
+2. Silo loader picking up fill types dropped to the ground(heap) on the field or near the field.
 
 ---------------------------------------------
---- Unload possibilities
+--- Unload the loaded fill volume possibilities
 ---------------------------------------------
 
 1. Auger wagon can unload to nearby trailers
 
-2. Trailer can be sent to unload either with Autodrive or Giants unloader setup.
+2. Trailer can be sent to unload either with Autodrive or Giants unloader.
 
-3. Unloading on the field to a existing heap or with the creation of new heap is possible.
+3. Unloading on the field, which means dropping it on the ground to create an heap.
 
 ]]--
 
@@ -174,6 +181,7 @@ function AIDriveStrategyUnloadCombine:delete()
         CpUtil.destroyNode(self.fieldUnloadTurnStartNode)
         CpUtil.destroyNode(self.fieldUnloadTurnEndNode)
     end
+    self:releaseCombine()
     AIDriveStrategyUnloadCombine:superClass().delete(self)
 end
 
@@ -292,10 +300,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     -- make sure if we have a combine we stay registered
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
-        if not self.combineToUnload:getCpDriveStrategy():registerUnloader(self) then 
-            --- Resets the unload target, when the unload target type changed.
-            self:releaseCombine()
-        end
+        self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
     end
 
     -- safety check: combine has active AI driver
@@ -934,7 +939,7 @@ end
 ---@return boolean
 function AIDriveStrategyUnloadCombine:isServingPosition(x, z, outwardsOffset)
     local closestDistance = CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z)
-    return CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or closestDistance < outwardsOffset
+    return closestDistance < outwardsOffset or CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
 end
 
 --- Am I ready to be assigned to a combine in need?

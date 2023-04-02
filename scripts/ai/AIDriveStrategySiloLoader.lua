@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/courseplay)
-Copyright (C) 2022 Peter Vaiko
+Copyright (C) 2022 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -326,13 +326,8 @@ end
 --- Register a combine unload AI driver for notification about combine events
 --- Unloaders can renew their registration as often as they want to make sure they remain registered.
 ---@param driver AIDriveStrategyUnloadCombine
----@return boolean Is valid unloader?
 function AIDriveStrategySiloLoader:registerUnloader(driver)
-    if driver:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER then 
-        self.unloader:set(driver, 1000)
-        return true
-    end
-    return false
+    self.unloader:set(driver, 1000)
 end
 
 --- Deregister a combine unload AI driver from notifications
@@ -398,30 +393,24 @@ function AIDriveStrategySiloLoader:findUnloader()
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-
-            if driveStrategy:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER then
-
-                if driveStrategy:isServingPosition(x, z, self.distanceOverFieldEdgeAllowed) then
-                    local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
-                    if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
-                        local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
-                
-                        local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
-                        self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
-                                CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
-                        if score > bestScore then
-                            bestUnloader = vehicle
-                            bestScore = score
-                            bestEte = unloaderEte
-                        end
-                    else
-                        self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
+            if driveStrategy:isServingPosition(x, z, self.distanceOverFieldEdgeAllowed) then
+                local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
+                if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
+                    local unloaderDistance, unloaderEte = driveStrategy:getDistanceAndEteToVehicle(self.vehicle)
+            
+                    local score = unloaderFillLevelPercentage - 0.1 * unloaderDistance
+                    self:debug('findUnloader: %s idle on my field, fill level %.1f, distance %.1f, ETE %.1f, score %.1f)',
+                            CpUtil.getName(vehicle), unloaderFillLevelPercentage, unloaderDistance, unloaderEte, score)
+                    if score > bestScore then
+                        bestUnloader = vehicle
+                        bestScore = score
+                        bestEte = unloaderEte
                     end
                 else
-                    self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
+                    self:debug('findUnloader: %s serving my field but already busy', CpUtil.getName(vehicle))
                 end
-            else 
-                self:debug('findUnloader: %s is assigned to unload silo loaders', CpUtil.getName(vehicle))
+            else
+                self:debug('findUnloader: %s is not serving my field', CpUtil.getName(vehicle))
             end
         end
     end

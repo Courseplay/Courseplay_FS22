@@ -1614,13 +1614,8 @@ end
 --- Register a combine unload AI driver for notification about combine events
 --- Unloaders can renew their registration as often as they want to make sure they remain registered.
 ---@param driver AIDriveStrategyUnloadCombine
----@return boolean Is valid unloader registered?
 function AIDriveStrategyCombineCourse:registerUnloader(driver)
-    if driver:getUnloadTargetType() == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE then
-        self.unloader:set(driver, 1000)
-        return true
-    end
-    return false
+    self.unloader:set(driver, 1000)
 end
 
 --- Deregister a combine unload AI driver from notifications
