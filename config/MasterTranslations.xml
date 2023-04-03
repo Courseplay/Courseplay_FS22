@@ -1547,6 +1547,7 @@ Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich 
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
+Ab Version 7.2.1.0 ist es auch Möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand ab zu legen, oder Ballen die mit dem Ballensammler Modus geladen wurden am Feldrand zu stapeln.
 
 Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
@@ -1587,13 +1588,13 @@ Durch Auswählen eines Fahrzeugs im Helfermenü werden die Fahrzeugeinstellungen
 Der aktuell geladene Kurs wird auf der Karte angezeigt.
 Die globalen Einstellungen sind dauerhaft sichtbar.
 Um einen Feldkurs generieren zu können, muss ein gültiges Fahrzeug für Feldarbeit auf der Helferkarte ausgewählt sein.
-Um einen Kurs zu generieren, musst du einen Job erstellen und dort "CP: Feldarbeit" oder "CP: Ballen sammeln/wickeln" auswählen, ähnlich wie beim Giants-Helfer.
+Um einen Kurs zu generieren, musst du einen Job erstellen und dort "CP: Feldarbeit", "CP: Ballen sammeln/wickeln", "CP: Lader" oder "CP: Bunkersilo" auswählen, ähnlich wie beim Giants-Helfer.
 ]]></Text>
 			<Text language="en"><![CDATA[
 First you need to select a vehicle in the AI menu for generating a fieldwork course or gaining access to the vehicle settings and the course manager.
 The currently loaded course will be displayed on the map.
 The global settings are always visible.
-For generating a course and starting the courseplay jobs, you will need to create the job CP: Fieldwork or CP: wrap/collect bales, similar to the Giants helper.
+For generating a course and starting the courseplay jobs, you will need to create the job CP: Fieldwork, CP: wrap/collect bales, CP: Loader or CP: Bunker silo similar to the Giants helper.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_startJobMenuFunctions_text">
@@ -1887,11 +1888,11 @@ Once your finished, simply press the button again and you will be asked if you w
 		<Translation name="CP_help_page_customFieldDone_text">
 			<Text language="de"><![CDATA[
 Im Helfermenü kannst du deinen Randkurs mit Namen sehen.
-Wenn du auf den Namen klickst, kannst du den Kurs löschen oder umbenennen.
+Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen, oder mit dem Editor bearbeiten.
 ]]></Text>
 			<Text language="en"><![CDATA[
 The custom field borders will be displayed in the AI menu.
-By clicking on the name you will get the option to either delete or rename it.
+By clicking on the name you will get the option to either delete, rename or edit it with the Editor.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_customFieldDraw_text">
@@ -1967,11 +1968,12 @@ The distance of all vehicles with the same course name will be automatically set
 		</Translation>
 		<Translation name="CP_help_page_wrapCollectBasic_text">
 			<Text language="de"><![CDATA[
-Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten gemacht werden.
+Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten erledigt werden.
 Die erste Möglichkeit wäre, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer fährt den Kurs ab.
 Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davonrollen.
 Hier sorgt der Job "CP: Ballen sammeln/wickeln" für Abhilfe, dieser braucht keinen Kurs.
 Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit "Sammel/Wickel Ballen", oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
+Der Zähler im HUD zeigt die noch auf dem Feld verbleibenden Ballen seit dem letzten Scan an. Das Scannen nach Ballen findet nur zu bestimmten Zeitpunkten statt, bei denen es nötig ist nach Ballen zu suchen, um die Performance zu schonen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Wrapping and collecting bales can be done in two different ways.
@@ -1979,6 +1981,7 @@ The first one is to load the same course you used for your baler and let the wra
 However this can be tricky, as some bales love to roll or fly off the path.
 At this point, our wrap and collect job type can help as it doesn't need a course.
 Stay on the field and just start the driver from the HUD with wrap/collect bales or use the AI Map to send him to a field to start the job.
+The counter on the HUD shows the left over bales on the field since the last scan. CP will only scan the field for bales when it rly have to, to keep better performance.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_wrapBasic_text">
@@ -2264,7 +2267,7 @@ Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
 
 Es gibt nur wenige Einstellungen zur Feineinstellung:
 - Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
-- Offsets im HUD, falls das Rohr des Deschers den Abfahrer zum überladen nicht trifft.
+- Offsets im HUD, falls das Rohr des Dreschers den Abfahrer zum überladen nicht trifft.
 
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2335,19 +2338,21 @@ Is no trailer available, it will continue to unload the combine.
 		<Translation name="CP_help_page_unloaderFieldUnload_text">
 			<Text language="de"><![CDATA[
 Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
+Das Abladen auf dem Feld muss aktiviert werden.
 Die Position muss auf dem gleichen Feld oder am Feldrand sein.
 Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
 dann wird dieser genutzet um dort weiterhin abzuladen.
-Die Richtung des Markers entspricht der Ablade Richtung.
-Zusätzlich muss für Anhänger die Abladeseite ausgewählt werden.
+Die Richtung des Markers entspricht der Abladerichtung.
+Bei einigen Anhängern kann die Abladeseite zwischen Hinten und Kornschieber gewählt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 The unloading position can be selected with the unload marker.
+Unloading on the field must be activated.
 The position needs to be on the same field or near the field edge.
 If the marker points to an already existing heap, 
 then this heap is used to unload to.
 The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+A few trailers can choose their tipside between back and grain pusher.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_bunker_title">
@@ -2397,11 +2402,17 @@ before starting the actual work.
 Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
 Ebenfalls ist es möglich damit Silos zu entleeren.
 Der Lader kann durch einen Courseplay Abfahrer entladen werden.
+Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer Standart Position aus und lädt den Haufen auf.
+Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position des Arms wie gewohnt einstellen und den Fahrer wieder starten.
+Bedenkt dabei, dass das automatische abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 With this job it's possible to load from heaps on or near the field.
 Additionally it's possible to load from a bunker silo.
 The loader can be unloaded with an Courseplay unloader.
+If you let courseplay drive directly to the heap, it unfolds in a default position to load the heap.
+In case this position doesn't fit for your environment, you can stop the driver, change the position of the arm like normal and start the driver again.
+Keep in mind that the automatic unloading with CP goes in the same direction as the loader. Keep some space for the Unloader to bypass the Loader at the side.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_siloLoaderBasic_text">
