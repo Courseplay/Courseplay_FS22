@@ -415,7 +415,8 @@ function CombineHeadlandTurn:init(vehicle, driveStrategy, ppc, turnContext)
 	self:addState('REVERSE_ARC')
 	self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
 	self.cornerAngleToTurn = turnContext:getCornerAngleToTurn()
-	self.angleToTurnInReverse = math.abs(self.cornerAngleToTurn / 2)
+	-- half the turn angle but not less than 45
+	self.angleToTurnInReverse = math.max(math.pi / 4, math.abs(self.cornerAngleToTurn / 2))
 	self.dxToStartReverseTurn = self.turningRadius - math.abs(self.turningRadius - self.turningRadius * math.cos(self.cornerAngleToTurn))
 	self.blocked = CpTemporaryObject(false)
 	self.blocked:set(false, 1)
@@ -856,7 +857,7 @@ end
   4. forward to the turn start to continue on headland
 ]]
 ---@class CombinePocketHeadlandTurn : CombineCourseTurn
-CombinePocketHeadlandTurn = CpObject(CombineCourseTurn)
+	CombinePocketHeadlandTurn = CpObject(CombineCourseTurn)
 
 ---@param driveStrategy AIDriveStrategyCombineCourse
 ---@param turnContext TurnContext
