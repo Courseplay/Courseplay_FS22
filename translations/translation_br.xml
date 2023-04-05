@@ -61,19 +61,19 @@
     <text name="CP_baleFinderJobParameters_subTitle_baleWrapType" text="Tipo de fardo:"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_title" text="Tipo de fardo:"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="todos os fardos"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="somente embalado"/>
-    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não embalado"/>
-    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="somente embalados"/>
+    <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não embalados"/>
+    <text name="CP_baleFinder_balesLeftover" text="Fardo(s) restante(s):"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants descarregador:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants descarregador:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação de descarga:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants descarrega:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants para descarregar:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação para descarregar:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants descarrega:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Descarregar no campo:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Posição no campo para descarregar:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Lado da carreta para descarregar:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -101,7 +101,7 @@
     <text name="CP_ai_messageError" text="O trabalhador A %s parou de trabalhar inesperadamente - deixou a rota!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador AI %s parou de funcionar inesperadamente - nenhum caminho encontrado!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - não é possível descarregar no campo!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -390,7 +390,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_errorStopped" text="Deixou a rota, parou"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Caminho não encontrado"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Inclinação para o solo não é possível"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -405,8 +405,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_customFieldManager_save" text="Salvar campo customizado"/>
     <text name="CP_controllerGui_startRecording" text="Iniciar gravação de campo customizado."/>
     <text name="CP_controllerGui_stopRecording" text="Parar gravação de campo customizado."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausar gravação do campo customizado."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Continuar a gravação do campo customizado."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -716,7 +716,7 @@ Para desmarcar os waypoints, clique com o botão direito do mouse.
 Assim como mover mais waypoints, marque 2 waypoints, então segure o botão esquerdo do mouse e mova o mouse.
 Atenção: Assim que você soltar o botão do mouse, os waypoints serão definidos, isso não pode ser desfeito! (é claro que você pode excluir esses waypoints.)
  "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="Colheitadeira descarrega"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
 O modo de descarregar do Courseplay funciona com praticamente todas as colheitadeiras e as com reboques.
 Não funciona com choppers.
@@ -733,7 +733,7 @@ evitar esperar a chamada de uma colheitadeira com a carreta quase cheia.
 - Você pode usar os deslocamentos no HUD para ajustar a posição da carreta sob o tubo da colheitadeira.
 
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Usando Carretas"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Se você usar uma carreta para descarregar, existem duas maneiras de transportar sua colheita para um silo ou para um ponto de venda: o ajudante da Giants
 ou AutoDrive.
@@ -743,7 +743,7 @@ Neste último caso, você deve escolher a estação de descarga depois que o íc
 
 Esvaziar uma carreta com o AutoDrive funciona da mesma forma que usar uma carreta autocarregável, confira os Tutoriais do AutoDrive na Internet.
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="Usando Bazuca"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Bazuca (carreta com cano para descarregar numa carreta comun) é muito simples de usar.
 Assim como nas carretas, você usa o ícone de alvo para escolher o campo onde deseja descarregar uma colheitadeira.
@@ -752,16 +752,16 @@ Se a bazuca estiver cheia, ela procurará automaticamente uma carreta comum no c
 Caso a carreta esteja cheia e a bazuca ainda não esteja vazia, ela irá procurar outra carreta para descarregar.
 Se não houver carreta disponível, ela continuará a descarregar a colheitadeira até ficar cheia.
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Decarregar no campo"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+A posição de descarrgar pode ser selecionada com o marcador de descarregar.
+A posição precisa estar no mesmo campo ou perto da borda do campo.
+Se o marcador apontar para um monte já existente,
+então este monte é usado para descarregar.
+A direção do marcador é usada para a direção de descarregar.
+Além disso, para carretas, um lado de tombamento precisa ser selecionado.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="Trabalhar no silo bunker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay é capaz de compactar ou distribuir palha em um silo ou silo bunker e empurrar a palha.
 A compactação é possível sem qualquer ferramenta especial, com rolo, peso ou apenas o veículo.
