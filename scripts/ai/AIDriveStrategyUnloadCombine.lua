@@ -72,6 +72,9 @@ This is currently screwed up...
 
 --- Strategy to unload combines or stationary silo loaders.
 ---@class AIDriveStrategyUnloadCombine : AIDriveStrategyCourse
+---@field combineUnloadStates table
+---@field trailerUnloadStates table
+---@field fieldUnloadStates table
 AIDriveStrategyUnloadCombine = {}
 local AIDriveStrategyUnloadCombine_mt = Class(AIDriveStrategyUnloadCombine, AIDriveStrategyCourse)
 
@@ -119,11 +122,17 @@ AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
 ]]
 
 ---------------------------------------------
---- States
+--- Shared states
 ---------------------------------------------
 AIDriveStrategyUnloadCombine.myStates = {
     IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
+}
+
+---------------------------------------------
+--- Unloading of a combine or silo loader states
+---------------------------------------------
+AIDriveStrategyUnloadCombine.myCombineUnloadStates = {
     DRIVING_TO_COMBINE = { collisionAvoidanceEnabled = true },
     DRIVING_TO_MOVING_COMBINE = { collisionAvoidanceEnabled = true },
     UNLOADING_MOVING_COMBINE = { openCoverAllowed = true },
@@ -133,14 +142,23 @@ AIDriveStrategyUnloadCombine.myStates = {
     BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
     MOVING_AWAY_FROM_BLOCKING_VEHICLE = { vehicle = nil }, -- reversing until we have enough space between us and the combine
     WAITING_FOR_MANEUVERING_COMBINE = {},
+}
+
+---------------------------------------------
+--- Unloading into trailer states
+---------------------------------------------
+AIDriveStrategyUnloadCombine.myTrailerUnloadStates = {
     DRIVING_TO_SELF_UNLOAD = { collisionAvoidanceEnabled = true },
     WAITING_FOR_AUGER_PIPE_TO_OPEN = {},
     UNLOADING_AUGER_WAGON = {},
     MOVING_TO_NEXT_FILL_NODE = { moveablePipeDisabled = true },
     MOVING_AWAY_FROM_UNLOAD_TRAILER = { moveablePipeDisabled = true },
-    ---------------------------------------------
-    --- Field unload states
-    ---------------------------------------------
+}
+
+---------------------------------------------
+--- Field unload states states
+---------------------------------------------
+AIDriveStrategyUnloadCombine.myFieldUnloadStates = {
     DRIVE_TO_FIELD_UNLOAD_POSITION = { collisionAvoidanceEnabled = true },
     PREPARE_FOR_FIELD_UNLOAD = {},
     DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION = {},
@@ -149,12 +167,23 @@ AIDriveStrategyUnloadCombine.myStates = {
     DRIVE_TO_FIELD_UNLOAD_PARK_POSITION = {},   
 }
 
+
 function AIDriveStrategyUnloadCombine.new(customMt)
     if customMt == nil then
         customMt = AIDriveStrategyUnloadCombine_mt
     end
     local self = AIDriveStrategyCourse.new(customMt)
-    AIDriveStrategyCourse.initStates(self, AIDriveStrategyUnloadCombine.myStates)
+
+    self.combineUnloadStates = CpUtil.initStates(self.combineUnloadStates, AIDriveStrategyUnloadCombine.myCombineUnloadStates)
+    self.trailerUnloadStates = CpUtil.initStates(self.trailerUnloadStates, AIDriveStrategyUnloadCombine.myTrailerUnloadStates)
+    self.fieldUnloadStates   = CpUtil.initStates(self.fieldUnloadStates,   AIDriveStrategyUnloadCombine.myFieldUnloadStates)
+
+    self.states = CpUtil.initStates(self.states, AIDriveStrategyUnloadCombine.myStates)
+    --- Copies all references to the self.states table
+    self.states = CpUtil.copyStates(self.states, self.combineUnloadStates)
+    self.states = CpUtil.copyStates(self.states, self.trailerUnloadStates)
+    self.states = CpUtil.copyStates(self.states, self.fieldUnloadStates)
+
     self.state = self.states.IDLE
     self.debugChannel = CpDebug.DBG_UNLOAD_COMBINE
     ---@type ImplementController[]
@@ -303,9 +332,21 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
     end
 
-    -- safety check: combine has active AI driver
-    if self.combineToUnload and not self.combineToUnload:getIsCpActive() then
+    if self.combineToUnload == nil or not self.combineToUnload:getIsCpActive() then 
+        if CpUtil.isStateOneOf(self.state, self.combineUnloadStates) then 
+
+        end
+    end
+
+    if self:hasToWaitForAssignedCombine() then
+        --- Safety check to make sure a combine is assigned, when needed.
         self:setMaxSpeed(0)
+        self:debugSparse("Combine to unload lost during unload, waiting for something todo.")
+        if self:isDriveUnloadNowRequested() then
+            self:debug('Drive unload now requested')
+            self:startUnloadingTrailers()
+        end
+
     elseif self.state == self.states.IDLE then
         -- nothing to do right now, wait for one of the following:
         -- - combine calls
@@ -408,6 +449,13 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     self:checkCollisionWarning()
     return gx, gz, moveForwards, self.maxSpeed, 100
+end
+
+function AIDriveStrategyUnloadCombine:hasToWaitForAssignedCombine()
+    if CpUtil.isStateOneOf(self.state, self.combineUnloadStates) then 
+        return self.combineToUnload == nil or not self.combineToUnload:getIsCpActive() or self.combineToUnload:getCpDriveStrategy() == nil
+    end
+    return false
 end
 
 function AIDriveStrategyUnloadCombine:startWaitingForSomethingToDo()
@@ -587,10 +635,11 @@ function AIDriveStrategyUnloadCombine:requestDriveUnloadNow()
 end
 
 function AIDriveStrategyUnloadCombine:releaseCombine()
-    if self.combineToUnload then
+    self.combineJustUnloaded = nil
+    if self.combineToUnload and self.combineToUnload:getIsCpActive() then
         self.combineToUnload:getCpDriveStrategy():deregisterUnloader(self)
+        self.combineJustUnloaded = self.combineToUnload
     end
-    self.combineJustUnloaded = self.combineToUnload
     self.combineToUnload = nil
 end
 

@@ -54,13 +54,8 @@ function AIDriveStrategyCourse.new(customMt)
 end
 
 --- Aggregation of states from this and all descendant classes
-function AIDriveStrategyCourse:initStates(states)
-    if self.states == nil then
-        self.states = {}
-    end
-    for key, state in pairs(states) do
-        self.states[key] = { name = tostring(key), properties = state }
-    end
+function AIDriveStrategyCourse:initStates(newStates)
+    self.states = CpUtil.initStates(self.states, newStates)
 end
 
 function AIDriveStrategyCourse:getStateAsString()

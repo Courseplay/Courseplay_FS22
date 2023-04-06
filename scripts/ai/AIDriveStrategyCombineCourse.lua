@@ -1700,12 +1700,7 @@ function AIDriveStrategyCombineCourse:initUnloadStates()
 end
 
 function AIDriveStrategyCombineCourse:isStateOneOf(myState, states)
-    for _, state in ipairs(states) do
-        if myState == state then
-            return true
-        end
-    end
-    return false
+    return CpUtil.isStateOneOf(myState, states)
 end
 
 function AIDriveStrategyCombineCourse:isUnloadStateOneOf(states)
