@@ -761,7 +761,7 @@ La position de stationnement ou d'attente est définie à l'aide du marqueur &qu
     <text name="input_CP_START_STOP" text="CP: Ouvrier Courseplay"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Change le point de départ"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: Efface la course actuellement sélectionnée"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Affiche la course actuelle du véhicule"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Affiche la course actuelle du véhicule"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Curseur de la souris on/off"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Affiche/masque l'ATH"/>
     <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Ouvre les paramètres du véhicule"/>
