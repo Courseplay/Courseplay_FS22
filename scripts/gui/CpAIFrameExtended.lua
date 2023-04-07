@@ -110,6 +110,7 @@ function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
 			pageAI:onClickCreateFieldBorder()
 			return
 		end
+		CpInGameMenuAIFrameExtended.resetHotspots(self)
 		return superFunc(pageAI)
 	end 
 	self.buttonBack.onClickCallback = Utils.overwrittenFunction(self.buttonBack.onClickCallback,onClickBack)
@@ -471,7 +472,9 @@ InGameMenuAIFrame.delete = Utils.appendedFunction(InGameMenuAIFrame.delete,CpInG
 --- Ugly hack to swap the main AI hotspot with the field position hotspot,
 --- as only the main hotspot can be moved by the player.
 function CpInGameMenuAIFrameExtended:startPickingPosition(superFunc, parameter, callback, ...)
+	
 	if parameter and parameter.getPositionType then
+		CpInGameMenuAIFrameExtended.resetHotspots(self)
 		if parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
 			local mapHotspot = self.aiTargetMapHotspot
 			self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
@@ -485,23 +488,27 @@ function CpInGameMenuAIFrameExtended:startPickingPosition(superFunc, parameter, 
 		end
 	end
 	callback = Utils.appendedFunction(callback,function (finished, x, z)
-		if self.currentPickingMapHotspotType == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
-			local mapHotspot = self.aiTargetMapHotspot
-			self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
-			self.fieldSiloAiTargetMapHotspot = mapHotspot
-			self.currentPickingMapHotspotType = nil
-		elseif self.currentPickingMapHotspotType == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
-			local mapHotspot = self.aiTargetMapHotspot
-			self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
-			self.unloadAiTargetMapHotspot = mapHotspot
-			self.currentPickingMapHotspotType = nil
-		end
+		CpInGameMenuAIFrameExtended.resetHotspots(self)
 	end)
 
 	superFunc(self, parameter, callback, ...)
 end
 InGameMenuAIFrame.startPickPosition = Utils.overwrittenFunction(InGameMenuAIFrame.startPickPosition,CpInGameMenuAIFrameExtended.startPickingPosition)
 InGameMenuAIFrame.startPickPositionAndRotation = Utils.overwrittenFunction(InGameMenuAIFrame.startPickPositionAndRotation,CpInGameMenuAIFrameExtended.startPickingPosition)
+
+function CpInGameMenuAIFrameExtended:resetHotspots()
+	if self.currentPickingMapHotspotType == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+		local mapHotspot = self.aiTargetMapHotspot
+		self.aiTargetMapHotspot = self.fieldSiloAiTargetMapHotspot
+		self.fieldSiloAiTargetMapHotspot = mapHotspot
+		self.currentPickingMapHotspotType = nil
+	elseif self.currentPickingMapHotspotType == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+		local mapHotspot = self.aiTargetMapHotspot
+		self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
+		self.unloadAiTargetMapHotspot = mapHotspot
+		self.currentPickingMapHotspotType = nil
+	end
+end
 
 
 --- Added support for the cp field target position.

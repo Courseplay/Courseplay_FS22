@@ -74,6 +74,9 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
 
     -- everything else is valid, now find the field
     local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
+    if tx == nil or tz == nil then 
+        return false, g_i18n:getText("CP_error_not_on_field")
+    end
     self.hasValidPosition = false
     self.foundVines = nil
     local isCustomField
@@ -107,6 +110,7 @@ function CpAIJobFieldWork:setValues()
     self.driveToFieldWorkStartTask:reset()
     self.driveToFieldWorkStartTask:setVehicle(vehicle)
     self.fieldWorkTask:setVehicle(vehicle)
+    self:validateFieldSetup()
 end
 
 --- Called when parameters change, scan field

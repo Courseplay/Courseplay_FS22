@@ -238,6 +238,12 @@ function CpUtil.destroyNode(node)
 	end
 end
 
+function CpUtil.drawDebugNode(node, alignToGround, yOffset)
+	if node and entityExists(node) then
+		DebugUtil.drawDebugNode(node, getName(node), alignToGround, yOffset)
+	end
+end
+
 --- Executes a function and throws a callstack, when an error appeared.
 --- Additionally the first return value is a status, if the function was executed correctly.
 ---@param func function function to be executed.
@@ -331,4 +337,45 @@ function CpUtil.cleanFilePath(name)
 	name = string.gsub(name, '?', "_")
 	name = string.gsub(name, "*", "_")
 	return name
+end
+
+--- Adds new states.
+---@param states table|nil current states
+---@param newStates table new states to be added
+---@return table combined states
+function CpUtil.initStates(states, newStates)
+    if states == nil then
+        states = {}
+    end
+    for key, state in pairs(newStates) do
+        states[key] = { name = tostring(key), properties = state }
+    end
+	return states
+end
+
+--- Copies the states.
+---@param states table current states
+---@param newStates table new states to add
+---@return table combined states
+function CpUtil.copyStates(states, newStates)
+	if states == nil then
+        states = {}
+    end
+	for key, state in pairs(newStates) do
+        states[key] = state
+    end
+	return states
+end
+
+--- Is the state part of the given states?
+---@param myState table current state
+---@param states table states table
+---@return boolean
+function CpUtil.isStateOneOf(myState, states)
+    for _, state in pairs(states) do
+        if myState == state then
+            return true
+        end
+    end
+    return false
 end

@@ -312,14 +312,15 @@ end
 --- Links the gui elements to the correct settings.
 ---@param settings table settings table that get's linked.
 ---@param layout table layout with elements to link to.
----@param settingsBySubTitle table reference for sub title elements between the settings.
----@param vehicle table optional vehicle reference
-function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsBySubTitle, vehicle)
+---@param settingsBySubTitle table|nil reference for sub title elements between the settings.
+---@param vehicle table|nil optional vehicle reference
+---@param ignoreNormalButtons boolean|nil 
+function CpSettingsUtil.linkGuiElementsAndSettings(settings, layout, settingsBySubTitle, vehicle, ignoreNormalButtons)
 	local valid = true
 	local i = 1
 	local j = 1
 	for ix, element in ipairs(layout.elements) do 
-		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) then 
+		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) and not ignoreNormalButtons then 
 			if valid then
 				CpUtil.debugFormat( CpUtil.DBG_HUD, "Link gui element with setting: %s", settings[i]:getName())
 				if not settingsBySubTitle then
@@ -365,10 +366,11 @@ end
 --- Unlinks the gui elements to the correct settings.
 ---@param settings table
 ---@param layout table
-function CpSettingsUtil.unlinkGuiElementsAndSettings(settings, layout)
+---@param ignoreNormalButtons boolean|nil 
+function CpSettingsUtil.unlinkGuiElementsAndSettings(settings, layout, ignoreNormalButtons)
 	local i = 1
 	for _, element in ipairs(layout.elements) do 
-		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) then 
+		if element:isa(MultiTextOptionElement) or element:isa(ButtonElement) and not ignoreNormalButtons then 
 			CpUtil.debugFormat( CpUtil.DBG_HUD, "Unlink gui element with setting: %s", settings[i]:getName())
 			settings[i]:resetGuiElement()
 			i = i + 1

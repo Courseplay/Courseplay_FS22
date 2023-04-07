@@ -1,5 +1,5 @@
 --- CombineUnloader Hud page
----@class CpHudPageElement : CpHudElement
+---@class CpCombineUnloaderHudPageElement : CpHudElement
 CpCombineUnloaderHudPageElement = {}
 local CpCombineUnloaderHudPageElement_mt = Class(CpCombineUnloaderHudPageElement, CpHudPageElement)
 
@@ -114,4 +114,16 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     end
     self.driveNowBtn:setDisabled(not vehicle:getIsCpActive())
     self.driveNowBtn:setVisible(vehicle:getIsCpActive())   
+end
+
+function CpCombineUnloaderHudPageElement:isStartingPointBtnDisabled(vehicle)
+    return vehicle:getIsCpActive()
+end
+
+function CpCombineUnloaderHudPageElement:getStartingPointBtnText(vehicle)
+    return vehicle:getCpCombineUnloaderJobParameters().unloadTarget:getString()
+end
+
+function CpCombineUnloaderHudPageElement:executeStartingPointBtnCallback(vehicle)
+    vehicle:getCpCombineUnloaderJobParameters().unloadTarget:setNextItem()
 end

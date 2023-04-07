@@ -111,12 +111,12 @@ You can define the following custom settings:
 
     <!--vehicles\newHolland-->
     <Vehicle name="braud9070L.xml"
-             turnRadius="5"
-             useVehicleSizeForMarkers="true"
+             turnRadius = "5"
+             useVehicleSizeForMarkers = "true"
     />
     <Vehicle name="braud9090X.xml"
-             turnRadius="5"
-             useVehicleSizeForMarkers="true"
+             turnRadius = "5"
+             useVehicleSizeForMarkers = "true"
     />
     
     <!--\vehicles\grimme-->
@@ -144,13 +144,13 @@ You can define the following custom settings:
 
     <!--\vehicles\agromasz-->
     <Vehicle name="pov5xl.xml"
-             raiseLate="true"
-             lowerEarly="true"
+             raiseLate = "true"
+             lowerEarly = "true"
     />
     <!--\vehicles\andersonGroup-->
     <Vehicle name="rbm2000.xml"
-             toolOffsetX="-2.7"
-             turnRadius="15"
+             toolOffsetX = "-2.7"
+             turnRadius = "15"
     />
     <!--\vehicles\amazone-->
     <Vehicle name="citan15001C.xml"
@@ -158,33 +158,45 @@ You can define the following custom settings:
     />
     <!--\vehicles\arcusin-->
     <Vehicle name="fsx6372.xml"
-             toolOffsetX="-2.4"
-             balerUnloadDistance="-3.8"
-             turnRadius="12"
+             toolOffsetX = "-2.4"
+             balerUnloadDistance = "-3.8"
+             turnRadius = "12"
     />
     <!--\vehicles\grimme-->
     <Vehicle name="rootster604.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <Vehicle name="SE260.xml"
-             toolOffsetX="-1.8"
-             noReverse="true"
+             toolOffsetX = "-1.8"
+             noReverse = "true"
     />
     <!--\vehicles\ropa-->
     <Vehicle name="keiler2.xml"
-             toolOffsetX="-2.0"
-             noReverse="true"
+             toolOffsetX = "-2.0"
+             noReverse = "true"
     />
+	<!--\vehicles\ropa-->
+    <Vehicle name="nawaRoMaus.xml"
+             armMovingToolIx = "2"
+             movingToolIx = "1"
+             workingWidth = "8.0"
+    />
+	<Vehicle name="maus5.xml"
+             armMovingToolIx = "2"
+             movingToolIx = "1"
+             workingWidth ="10.2"
+    />
+	
     <!--\vehicles\kuhn-->
     <Vehicle name="sw4014.xml"
-             toolOffsetX="-2.5"
-             noReverse="true"
+             toolOffsetX = "-2.5"
+             noReverse = "true"
     />
     <Vehicle name="kuhnDeltis1302.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
     <Vehicle name="kuhnMetris4102.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
 	<!--\vehicles\poettinger-->
 	<Vehicle name="poettingerNovaCatX8.xml"
@@ -192,19 +204,19 @@ You can define the following custom settings:
 	/>
     <!--\vehicles\hardi-->
     <Vehicle name="navigator6000.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
     <!--\vehicles\salford-->
     <Vehicle name="salford4204.xml" 
              turnRadius = "3"
     />
     <Vehicle name="salford8312.xml"
-             noReverse="true"
+             noReverse = "true"
              turnRadius = "9"
     />
     <!--\vehicles\lemken-->
     <Vehicle name="titan11.xml"
-             noReverse="true"
+             noReverse = "true"
              turnRadius = "7.5"
              implementWheelAlwaysOnGround = "true"
 	/>
@@ -224,24 +236,24 @@ You can define the following custom settings:
     />
     <!--\vehicles\lizard-->
     <Vehicle name="SWT7.xml"
-             toolOffsetX="-2.2"
-             noReverse="false"
+             toolOffsetX = "-2.2"
+             noReverse = "false"
              turnRadius = "9"
     />
     <!--vehicles\seedHawk-->
     <Vehicle name="980AirCart.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <Vehicle name="xlAirDrill84.xml"
-             noReverse="true"
+             noReverse = "true"
              turnRadius = "10"
     />
     <!--\vehicles\hatzenbichler-->
     <Vehicle name="terminator18.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <Vehicle name="th1400.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <!--\vehicles\flexicoil-->
     <Vehicle name="st820.xml"
@@ -253,30 +265,30 @@ You can define the following custom settings:
     />
     <!--\vehicles\proviti-->
     <Vehicle name="mp122Ocea.xml"
-             toolOffsetX="-1.2"
-             turnRadius="5"
-             useVehicleSizeForMarkers="true"
+             toolOffsetX = "-1.2"
+             turnRadius = "5"
+             useVehicleSizeForMarkers = "true"
     />
 
     <!--\vehicles\samsonAgro-->
     <Vehicle name="us235.xml"
-             workingWidth="24"
+             workingWidth = "24"
     />
 
     <!--\vehicles\samasz-->
     <Vehicle name="z2840.xml"
-             workingWidth="8.4"
+             workingWidth = "8.4"
     />
 
     <!--Tractors-->
     
     <!--\vehicles\stara-->
     <Vehicle name="imperador3.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
     <!--\vehicles\hardi-->
     <Vehicle name="rubicon9000.xml"
-			 ignoreCollisionBoxesWhenFolded="true"
+			 ignoreCollisionBoxesWhenFolded = "true"
 	/>
 
     <!--[DLC]-->
@@ -286,28 +298,28 @@ You can define the following custom settings:
     <!--Implements-->
     <!--Vermeer-->
     <Vehicle name="tm1410.xml"
-             offset="-4"
+             offset = "-4"
     />
     <!--Anderson-->
     <Vehicle name="RB580.xml"
-             baleCollectorOffset="1.4"
+             baleCollectorOffset = "1.4"
     />
     <!--Kverneland-->
     <Vehicle name="iXterB18.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
     <Vehicle name="iXtrackT4.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
     <Vehicle name="wrapper7850C.xml"
-             baleCollectorOffset="1.3"
+             baleCollectorOffset = "1.3"
     />
     <Vehicle name="pw10012.xml"
-             noReverse="true"
+             noReverse = "true"
              implementWheelAlwaysOnGround = "true"
-             turnRadius="14"
-             raiseLate="true"
-             lowerEarly="true"
+             turnRadius = "14"
+             raiseLate = "true"
+             lowerEarly = "true"
     />
     <Vehicle name="ecomat.xml"
              raiseLate = "true"
@@ -315,16 +327,16 @@ You can define the following custom settings:
     />
     <!--Bourgault-->
     <Vehicle name="series3320.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <Vehicle name="series7950b.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <Vehicle name="series3420.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <Vehicle name="series71300.xml"
-             noReverse="true"
+             noReverse = "true"
     />
     <!--Claas-->
     <Vehicle name="optiJect8.xml"
@@ -347,18 +359,18 @@ You can define the following custom settings:
     />
     <!--Mod: Jacto NPK 5030-->
     <Vehicle name="Jacto_NPK_5030.xml"
-             workingWidth="49.8"
-             turnRadius="22"
+             workingWidth = "49.8"
+             turnRadius = "22"
     />
 
     <!--Implements-->
     <!--Mod: Gregoire Besson SPSL9 -->
     <Vehicle name="spsl9.xml"
-             toolOffsetX="2.1"
+             toolOffsetX = "2.1"
              turnRadius = "12"
              implementWheelAlwaysOnGround = "true"
 			 workingWidth = "10.5"
-             noReverse="true"
+             noReverse = "true"
     />
     <!--Mod: KOECKERLING Vector 460-->
 	<Vehicle name="vector460.xml"
@@ -370,19 +382,19 @@ You can define the following custom settings:
 	/>
     <!--Mod: Ursus T-127 (Bale Collector)-->
     <Vehicle name="ursusT127.xml"
-             toolOffsetX="-2.4"
-             noReverse="true"
-             balerUnloadDistance="-1.8"
+             toolOffsetX = "-2.4"
+             noReverse = "true"
+             balerUnloadDistance = "-1.8"
     />
     <!--Mod: Ursus Z586 (Bale Wrapper)-->
     <Vehicle name="z586.xml"
-             toolOffsetX="-2.5"
-             noReverse="true"
-			 baleCollectorOffset="1.3"
+             toolOffsetX = "-2.5"
+             noReverse = "true"
+			 baleCollectorOffset = "1.3"
     />
 	<!--Mod: Claas crop sensor-->
 	<Vehicle name="claasCropSensor.xml"
-			 workingWidth="18"			 
+			 workingWidth = "18"			 
 	/>
     <!--Tractors and Others-->
 
@@ -392,15 +404,15 @@ You can define the following custom settings:
     />
     <!--Mod: JCB 435S-->
     <Vehicle name="jcb435s.xml"
-             directionNodeOffsetZ="-0.705"
+             directionNodeOffsetZ = "-0.705"
     />
     <!--Mod: Horsch Pack-->
     <Vehicle name="leebPT350.xml"
-             ignoreCollisionBoxesWhenFolded="true"
+             ignoreCollisionBoxesWhenFolded = "true"
     />
     <!--Mod: Great Plains YP-2425A-->
     <Vehicle name="yp2425A.xml"
-             implementWheelAlwaysOnGround="true"
+             implementWheelAlwaysOnGround = "true"
     />
 
     <!--Mod: BalePusher-->
@@ -419,6 +431,13 @@ You can define the following custom settings:
     />
     <Vehicle name="cottonTagTrailer5000.xml"
              baleCollectorOffset = "2.7"
+    />
+	
+	<!--Mod: FS22_terraFelis3Evo-->
+	<Vehicle name="terraFelis3Evo.xml"
+             armMovingToolIx = "2"
+             movingToolIx = "1"
+             workingWidth = "9.7m"
     />
 
 </VehicleConfigurations>

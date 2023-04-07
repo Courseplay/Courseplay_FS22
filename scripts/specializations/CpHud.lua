@@ -234,7 +234,7 @@ function CpHud:onDraw()
     spec.hud:draw(spec.status)
 	if spec.hud:getIsOpen() then 
 		if spec.lastShownWorkWidthTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
-            if spec.hud:isBunkerSiloLayoutActive() then 
+            if spec.hud:isBunkerSiloLayoutActive() or spec.hud:isSiloLoaderLayoutActive() then 
                 CpHud.showCpBunkerSiloWorkWidth(self)
             elseif spec.hud:isCombineUnloaderLayoutActive() then
                 CpHud.showCpCombineUnloaderWorkWidth(self)

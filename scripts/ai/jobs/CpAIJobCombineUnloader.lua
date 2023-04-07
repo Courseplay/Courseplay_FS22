@@ -108,11 +108,15 @@ function CpAIJobCombineUnloader:setValues()
 	CpAIJob.setValues(self)
 	local vehicle = self.vehicleParameter:getVehicle()
 	self.combineUnloaderTask:setVehicle(vehicle)
+	self:validateFieldPosition()
 	self:setupGiantsUnloaderData(vehicle)
 end
 
 function CpAIJobCombineUnloader:validateFieldPosition(isValid, errorMessage)
 	local tx, tz = self.cpJobParameters.fieldPosition:getPosition()
+	if tx == nil or tz == nil then 
+		return false, g_i18n:getText("CP_error_not_on_field")
+	end
 	local _
 	self.fieldPolygon, _ = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
 	self.hasValidPosition = self.fieldPolygon ~= nil
@@ -214,12 +218,6 @@ end
 function CpAIJobCombineUnloader:drawSelectedField(map)
 	self.selectedFieldPlot:draw(map)
     self.heapPlot:draw(map)
-end
-
-function CpAIJobCombineUnloader:readStream(streamId, connection)
-	CpAIJob.readStream(self, streamId, connection)
-	--- Update the field position plot
-	self:validateFieldPosition()
 end
 
 ------------------------------------

@@ -35,8 +35,6 @@ function CpGamePadHudScreen:onGuiSetupFinished()
 
 	CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(self.settings, self.layout,
 	self.settingTitle, self.settingElement)
-
-
 	self.startButton:unlinkElement()
 	FocusManager:removeElement(self.startButton)
 	self.layout:addElement(self.startButton)
@@ -64,7 +62,7 @@ end
 function CpGamePadHudScreen:setData(vehicle, settings) 
 	self.vehicle = vehicle
 	self.settings = settings
-	CpSettingsUtil.linkGuiElementsAndSettings(settings, self.layout)
+	CpSettingsUtil.linkGuiElementsAndSettings(settings, self.layout, nil, nil, true)
 end
 
 function CpGamePadHudScreen:onOpen(element)
@@ -94,7 +92,7 @@ end
 function CpGamePadHudScreen:onClose(element)
 	CpGamePadHudScreen:superClass().onClose(self)
 	if self.settings then
-		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings, self.layout)
+		CpSettingsUtil.unlinkGuiElementsAndSettings(self.settings, self.layout, true)
 	end
 	g_inputBinding:removeActionEventsByTarget(self)
 	self.vehicle:closeCpGamePadHud()
@@ -247,5 +245,24 @@ function CpGamePadHudBunkerSiloScreen:update(dt, ...)
 end
 
 function CpGamePadHudBunkerSiloScreen:drawWorkWidth()
+	self.vehicle:showCpBunkerSiloWorkWidth()
+end
+
+---@class CpGamePadHudSiloLoaderScreen : CpGamePadHudScreen
+CpGamePadHudSiloLoaderScreen = {}
+local CpGamePadHudSiloLoaderScreen_mt = Class(CpGamePadHudSiloLoaderScreen, CpGamePadHudScreen)
+
+function CpGamePadHudSiloLoaderScreen.new(settings, target, custom_mt)
+	local self = CpGamePadHudScreen.new(settings, target, custom_mt or CpGamePadHudSiloLoaderScreen_mt)
+
+	return self
+end
+
+function CpGamePadHudSiloLoaderScreen:update(dt, ...)
+	CpGamePadHudSiloLoaderScreen:superClass().update(self, dt, ...)
+
+end
+
+function CpGamePadHudSiloLoaderScreen:drawWorkWidth()
 	self.vehicle:showCpBunkerSiloWorkWidth()
 end

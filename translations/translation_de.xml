@@ -23,6 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Giants Ablader nicht möglich."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Feld Abladeposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_no_bunkerSilo_found" text="Keinen Silo gefunden."/>
+    <text name="CP_error_no_heap_found" text="Keinen Silo gefunden."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,7 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="Erster Wegpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Letzter Wegpunkt"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunkersilo Modus"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo laden Modus"/>
     <text name="CP_jobParameters_startAt_unload" text="Entlade Drescher"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Entlade Silo lader"/>
     <text name="CP_jobParameters_startAt_bales" text="Sammel/Wickel Ballen"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bahn:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Bahn:"/>
@@ -67,6 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Entlade:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Entlade:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Drescher"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Lader"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants Ablader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Giants Ablader benutzen:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Abladestation:"/>
@@ -86,12 +93,18 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="im Silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="bei Parkposition"/>
     <!---->
+    <!--AI silo lader worker job parameters-->
+    <!---->
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Ladeposition"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Ladeposition"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Feldarbeit"/>
     <text name="CP_job_baleCollect" text="CP: Ballen sammeln/wickeln"/>
     <text name="CP_job_combineUnload" text="CP: Entlade Drescher"/>
     <text name="CP_job_bunkerSilo" text="CP: Siloarbeit"/>
+    <text name="CP_job_siloLoader" text="CP: Silo laden"/>
     <text name="CP_ai_page_generate_course" text="CP: Generiere Feldkurs."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Öffne/Schließe Kursgenerator."/>
     <!---->
@@ -423,6 +436,7 @@ Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich 
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
+Ab Version 7.2.1.0 ist es auch Möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand ab zu legen.
 
 Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
@@ -439,7 +453,7 @@ Durch Auswählen eines Fahrzeugs im Helfermenü werden die Fahrzeugeinstellungen
 Der aktuell geladene Kurs wird auf der Karte angezeigt.
 Die globalen Einstellungen sind dauerhaft sichtbar.
 Um einen Feldkurs generieren zu können, muss ein gültiges Fahrzeug für Feldarbeit auf der Helferkarte ausgewählt sein.
-Um einen Kurs zu generieren, musst du einen Job erstellen und dort &quot;CP: Feldarbeit&quot; oder &quot;CP: Ballen sammeln/wickeln&quot; auswählen, ähnlich wie beim Giants-Helfer.
+Um einen Kurs zu generieren, musst du einen Job erstellen und dort &quot;CP: Feldarbeit&quot;, &quot;CP: Ballen sammeln/wickeln&quot;, &quot;CP: Lader&quot; oder &quot;CP: Bunkersilo&quot; auswählen, ähnlich wie beim Giants-Helfer.
 "/>
     <text name="CP_help_page_startJobMenuFunctions_text" text="
 Um deinen ersten Job zu starten, musst du ein Fahrzeug mit einem für die Arbeit gültigem Arbeitsgerät auswählen.
@@ -569,7 +583,7 @@ Bist du wieder am Startpunkt angekommen, drücke den &quot;Aufzeichnen&quot;-But
 "/>
     <text name="CP_help_page_customFieldDone_text" text="
 Im Helfermenü kannst du deinen Randkurs mit Namen sehen.
-Wenn du auf den Namen klickst, kannst du den Kurs löschen oder umbenennen.
+Wenn du auf den Namen klickst, kannst du den Kurs löschen, umbenennen, oder mit dem Editor bearbeiten.
 "/>
     <text name="CP_help_page_customFieldDraw_text" text="
 Die zweite Option ist das Zeichnen im Helfermenü.
@@ -600,11 +614,12 @@ Die Einstellung von allen Fahrzeugen mit dem gleichen Kursnamen wird auf den hö
 "/>
     <text name="CP_help_page_wrapCollect_title" text="Ballen wickeln und sammeln"/>
     <text name="CP_help_page_wrapCollectBasic_text" text="
-Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten gemacht werden.
+Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten erledigt werden.
 Die erste Möglichkeit wäre, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer fährt den Kurs ab.
 Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davonrollen.
 Hier sorgt der Job &quot;CP: Ballen sammeln/wickeln&quot; für Abhilfe, dieser braucht keinen Kurs.
 Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit &quot;Sammel/Wickel Ballen&quot;, oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
+Der Zähler im HUD zeigt die noch auf dem Feld verbleibenden Ballen seit dem letzten Scan an. Das Scannen nach Ballen findet nur zu bestimmten Zeitpunkten statt, bei denen es nötig ist nach Ballen zu suchen, um die Performance zu schonen.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="
 Ballen wickeln ist sehr einfach. Lade den Kurs von deiner Ballenpresse und starte wie jeden anderen Feldarbeit-Job.
@@ -732,7 +747,7 @@ Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
 
 Es gibt nur wenige Einstellungen zur Feineinstellung:
 - Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
-- Offsets im HUD, falls das Rohr des Deschers den Abfahrer zum überladen nicht trifft.
+- Offsets im HUD, falls das Rohr des Dreschers den Abfahrer zum überladen nicht trifft.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_title" text="Anhänger benutzen"/>
@@ -755,11 +770,12 @@ Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überl
     <text name="CP_help_page_unloaderFieldUnload_title" text="Abladen auf dem Feld"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
 Über den Ablademarker kann eine Stelle zum Abladen ausgewählt werden.
+Das Abladen auf dem Feld muss aktiviert werden.
 Die Position muss auf dem gleichen Feld oder am Feldrand sein.
 Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
-dann wird dieser genutzet um dort weiterhin abzuladen.
-Die Richtung des Markers entspricht der Ablade Richtung.
-Zusätzlich muss für Anhänger die Abladeseite ausgewählt werden.
+dann wird dieser genutzt, um dort weiterhin abzuladen.
+Die Richtung des Markers entspricht der Abladerichtung.
+Bei einigen Anhängern kann die Abladeseite zwischen Hinten und Kornschieber gewählt werden.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker Silo Arbeiter"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
@@ -776,6 +792,20 @@ Mit dem Zielknopf im HUD, wird auf der AI Karte der Bunker ausgewählt.
 Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
 Die Parkposition wird mit dem Marker &quot;Parkposition&quot; gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
 Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
+"/>
+    <text name="CP_help_page_siloLoader_title" text="Silo laden"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
+Ebenfalls ist es möglich damit Silos zu entleeren.
+Der Lader kann durch einen Courseplay Abfahrer entladen werden.
+Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer standard Position aus und lädt den Haufen auf.
+Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position des Arms wie gewohnt einstellen und den Fahrer wieder starten.
+Bedenkt dabei, dass das automatische abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+Als erstes muss auf der AI Menü Karte der Lade-Marker gesetzt werden.
+Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
+Anschließend kann der Helfer gestartet werden.
 "/>
     <!---->
     <!--Input bindings-->

@@ -20,6 +20,7 @@ Base class for all Courseplay drive strategies
 ]]
 
 ---@class AIDriveStrategyCourse : AIDriveStrategy
+---@field vehicle table
 AIDriveStrategyCourse = {}
 local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 
@@ -53,13 +54,8 @@ function AIDriveStrategyCourse.new(customMt)
 end
 
 --- Aggregation of states from this and all descendant classes
-function AIDriveStrategyCourse:initStates(states)
-    if self.states == nil then
-        self.states = {}
-    end
-    for key, state in pairs(states) do
-        self.states[key] = { name = tostring(key), properties = state }
-    end
+function AIDriveStrategyCourse:initStates(newStates)
+    self.states = CpUtil.initStates(self.states, newStates)
 end
 
 function AIDriveStrategyCourse:getStateAsString()
@@ -92,8 +88,17 @@ function AIDriveStrategyCourse:error(...)
     CpUtil.infoVehicle(self.vehicle, self:getStateAsString() .. ': ' .. string.format(...))
 end
 
+--- Sets an info text
+---@param text CpInfoTextElement
 function AIDriveStrategyCourse:setInfoText(text)
     self.vehicle:setCpInfoTextActive(text)
+end
+
+--- @param text CpInfoTextElement
+function AIDriveStrategyCourse:clearInfoText(text)
+    if text then
+        self.vehicle:resetCpActiveInfoText(text)
+    end
 end
 
 function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
@@ -347,6 +352,9 @@ function AIDriveStrategyCourse:setFrontAndBackMarkers()
     self:debug('front marker: %.1f, back marker: %.1f', frontMarkerDistance, backMarkerDistance)
 end
 
+--- Gets the front and back marker offset
+---@return number front marker distance
+---@return number back marker distance
 function AIDriveStrategyCourse:getFrontAndBackMarkers()
     if not self.frontMarkerDistance then
         self:setFrontAndBackMarkers()
@@ -508,13 +516,6 @@ function AIDriveStrategyCourse:startCourse(course, ix)
     self.course = course
     self.ppc:setCourse(self.course)
     self.ppc:initialize(ix)
-end
-
---- @param msgReference string as defined in globalInfoText.msgReference
-function AIDriveStrategyCourse:clearInfoText(msgReference)
-    if msgReference then
-        self.vehicle:resetCpActiveInfoText(msgReference)
-    end
 end
 
 function AIDriveStrategyCourse:getFillLevelInfoText()

@@ -23,6 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
+    <text name="CP_error_no_heap_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,7 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="eerste tussenpunt"/>
     <text name="CP_jobParameters_startAt_last" text="laatste tussenpunt"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
     <text name="CP_jobParameters_startAt_unload" text="maaidorser/hakselaar lossen"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="balen verzamelen/verpakken"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Baan afwijking:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Baan afwijking:"/>
@@ -67,6 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
@@ -86,12 +93,18 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
     <!---->
+    <!--AI silo lader worker job parameters-->
+    <!---->
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Veldwerk"/>
     <text name="CP_job_baleCollect" text="CP: Baal verzamelen/wikkelen"/>
     <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
     <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
+    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
     <text name="CP_ai_page_generate_course" text="CP: Veldwerk baan genereren."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Koersgenerator openen/sluiten."/>
     <!---->
@@ -766,6 +779,17 @@ the direction is selected automatically.
 Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
 The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
 before starting the actual work.
+"/>
+    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+With this job it's possible to load from heaps on or near the field.
+Additionally it's possible to load from a bunker silo.
+The loader can be unloaded with an Courseplay unloader.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+To start the loading-marker on the AI menu needs to be set.
+The marker detects heaps or silos and highlights them on the map.
+Now it's possible to start the helper.
 "/>
     <!---->
     <!--Input bindings-->

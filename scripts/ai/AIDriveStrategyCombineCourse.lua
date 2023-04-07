@@ -854,12 +854,16 @@ function AIDriveStrategyCombineCourse:callUnloader(bestUnloader, tentativeRendez
 end
 
 function AIDriveStrategyCombineCourse:isActiveCpUnloader(vehicle)
-    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
-        -- not driven by CP
-        return false
+    if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
+        local strategy = vehicle:getCpDriveStrategy()
+        if strategy then 
+            local unloadTargetType = strategy:getUnloadTargetType()
+            if unloadTargetType ~= nil then 
+                return unloadTargetType == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE
+            end
+        end
     end
-    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-    return driveStrategy and driveStrategy.isServingPosition ~= nil
+    return false
 end
 
 --- Find an unloader to drive to the target, which may either be the combine itself (when stopped and waiting for unload)
@@ -876,7 +880,7 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z) then
+            if driveStrategy:isServingPosition(x, z, 0) then
                 local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                 if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte
@@ -1696,12 +1700,7 @@ function AIDriveStrategyCombineCourse:initUnloadStates()
 end
 
 function AIDriveStrategyCombineCourse:isStateOneOf(myState, states)
-    for _, state in ipairs(states) do
-        if myState == state then
-            return true
-        end
-    end
-    return false
+    return CpUtil.isStateOneOf(myState, states)
 end
 
 function AIDriveStrategyCombineCourse:isUnloadStateOneOf(states)

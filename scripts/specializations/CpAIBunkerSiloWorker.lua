@@ -50,7 +50,6 @@ function CpAIBunkerSiloWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanStartCp', CpAIBunkerSiloWorker.getCanStartCp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartableJob', CpAIBunkerSiloWorker.getCpStartableJob)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCpStartText', CpAIBunkerSiloWorker.getCpStartText)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, "getCpDriveStrategy", CpAIBunkerSiloWorker.getCpDriveStrategy)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtFirstWp', CpAIBunkerSiloWorker.startCpAtFirstWp)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'startCpAtLastWp', CpAIBunkerSiloWorker.startCpAtLastWp)
 end
@@ -91,40 +90,16 @@ end
 
 function CpAIBunkerSiloWorker:onUpdate(dt)
     local spec = self.spec_cpAIBunkerSiloWorker
-    if spec.bunkerSiloStrategy and self.isServer then
-        spec.bunkerSiloStrategy:update(dt)
-        if g_updateLoopIndex % 4 == 0 then
-            local tX, tZ, moveForwards, maxSpeed =  spec.bunkerSiloStrategy:getDriveData(dt)
 
-            -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
-            local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
-            local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
-
-            if not moveForwards and self.spec_articulatedAxis ~= nil and
-                    self.spec_articulatedAxis.aiRevereserNode ~= nil then
-                pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
-            end
-
-            if not moveForwards and self:getAIReverserNode() ~= nil then
-                pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
-            end
-
-            local acceleration = 1
-            local isAllowedToDrive = maxSpeed ~= 0
-
-            AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
-        end
-    end
-end
-
-function CpAIBunkerSiloWorker:getCpDriveStrategy(superFunc)
-    return superFunc(self) or self.spec_cpAIBunkerSiloWorker.bunkerSiloStrategy
 end
 
 --- Is the bunker silo allowed?
 function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
-	return not self:getCanStartCpFieldWork() and not self:getCanStartCpBaleFinder() 
-        and not self:hasCpCourse() and not self:getCanStartCpCombineUnloader()
+	return not self:getCanStartCpFieldWork() 
+        and not self:getCanStartCpBaleFinder() 
+        and not self:getCanStartCpCombineUnloader()
+        and not self:getCanStartCpSiloLoaderWorker()
+        and (not self:hasCpCourse() or AIUtil.hasChildVehicleWithSpecialization(self, Leveler, nil))
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)
@@ -198,22 +173,20 @@ function CpAIBunkerSiloWorker:startCpAtLastWp(superFunc, ...)
     end
 end
 
---- Custom version of AIFieldWorker:startFieldWorker()
 function CpAIBunkerSiloWorker:startCpBunkerSiloWorker(silo, jobParameters, parkPosition)
-    local spec = self.spec_cpAIBunkerSiloWorker
     if self.isServer then 
-        spec.bunkerSiloStrategy = AIDriveStrategyBunkerSilo.new()
-        spec.bunkerSiloStrategy:setSilo(silo)
-        spec.bunkerSiloStrategy:setParkPosition(parkPosition)
+        self:resetCpCoursesFromGui()
+        
+        local strategy =  AIDriveStrategyBunkerSilo.new()
+        strategy:setSilo(silo)
+        strategy:setParkPosition(parkPosition)
         -- this also starts the strategy
-        spec.bunkerSiloStrategy:setAIVehicle(self, jobParameters)
+        strategy:setAIVehicle(self, jobParameters)
+        CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting with bunker silo strategy.")
+        self:startCpWithStrategy(strategy)
     end
 end
 
 function CpAIBunkerSiloWorker:stopCpBunkerSiloWorker()
-    local spec = self.spec_cpAIBunkerSiloWorker
-    if spec.bunkerSiloStrategy then 
-        spec.bunkerSiloStrategy:delete()
-        spec.bunkerSiloStrategy = nil
-    end
+    self:stopCpDriver()
 end

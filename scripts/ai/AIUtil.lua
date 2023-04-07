@@ -447,7 +447,7 @@ end
 --- that are not directly attached to the rootVehicle.
 ---@param vehicle Vehicle
 ---@param specialization table
----@param specializationReference string alternative for mod specializations, as their object is not accessible by us.
+---@param specializationReference string|nil alternative for mod specializations, as their object is not accessible by us.
 ---@return table all found vehicles/implements
 ---@return boolean at least one vehicle/implement was found
 function AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)
@@ -473,6 +473,7 @@ end
 --- that are not directly attached to the rootVehicle.
 ---@param vehicle Vehicle
 ---@param specialization table
+---@param specializationReference string|nil
 ---@return boolean
 function AIUtil.hasChildVehicleWithSpecialization(vehicle, specialization, specializationReference)
 	local _, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, specializationReference)

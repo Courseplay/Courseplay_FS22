@@ -23,6 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Descargador de Giants no disponible."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posición de descarga del campo está demasiado lejos del campo."/>
     <text name="CP_error_no_bunkerSilo_found" text="Ningún Silo encontrado."/>
+    <text name="CP_error_no_heap_found" text="No silo found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,7 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="Primer punto"/>
     <text name="CP_jobParameters_startAt_last" text="Último punto"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Modo Trabajo en Silo"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Descargando Cosechadora/Picadora"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
     <text name="CP_jobParameters_startAt_bales" text="Recogiendo/Envolviendo fardos"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Desplazamiento de carril:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Desplazamiento de carril:"/>
@@ -67,6 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Descargador de Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usar Descargador de Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estación de descarga:"/>
@@ -86,12 +93,18 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="en Silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="en posición de estacionamiento"/>
     <!---->
+    <!--AI silo lader worker job parameters-->
+    <!---->
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
+    <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Trabajo de campo"/>
     <text name="CP_job_baleCollect" text="CP: Recoger/Envolver fardos"/>
     <text name="CP_job_combineUnload" text="CP: Descargar Cosechadora"/>
     <text name="CP_job_bunkerSilo" text="CP: Trabajo en Silo"/>
+    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
     <text name="CP_ai_page_generate_course" text="CP: Crear ruta de trabajo de campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Abrir/Cerrar generador de rutas."/>
     <!---->
@@ -768,6 +781,17 @@ Utilice el icono de destino en el HUD para seleccionar el silo en el mapa AI. Se
 en blanco si está seleccionado.
 La posición de estacionamiento se establece con el marcador(posición de estacionamiento) que también se puede usar 
 para conducir allí con el Ayudante de Gigants antes de comenzar el trabajo real.
+"/>
+    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoaderGeneral_text" text="
+With this job it's possible to load from heaps on or near the field.
+Additionally it's possible to load from a bunker silo.
+The loader can be unloaded with an Courseplay unloader.
+"/>
+    <text name="CP_help_page_siloLoaderBasic_text" text="
+To start the loading-marker on the AI menu needs to be set.
+The marker detects heaps or silos and highlights them on the map.
+Now it's possible to start the helper.
 "/>
     <!---->
     <!--Input bindings-->

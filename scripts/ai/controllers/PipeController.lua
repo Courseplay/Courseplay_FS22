@@ -262,12 +262,12 @@ function PipeController:measurePipeProperties()
     local _
     local dischargeNode = self:getDischargeNode()
     if self.implement.getAIDirectionNode then 
-        self:debug(("The pipe is installed at the root vehicle."))
+        self:debug("The pipe is installed at the root vehicle.")
         self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, 
             self.implement:getAIDirectionNode(), 0, 0, 0)
     else 
         --- Pipe is installed on an implement.
-        self:debug(("The pipe is installed on an implement."))
+        self:debug("The pipe is installed on an implement.")
         local pipeOffsetZ
         self.pipeOffsetX, _, pipeOffsetZ = localToLocal(dischargeNode.node, 
             self.implement.rootNode, 0, 0, 0)
@@ -286,7 +286,7 @@ end
 
 --- Unfolds the pipe completely to measure the pipe properties.
 function PipeController:instantUnfold()
-    Foldable.setAnimTime(self.implement, 0, false)
+    Foldable.setAnimTime(self.implement, 0, true)
     if self.pipeSpec.hasMovablePipe then
         self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
         self.implement:updatePipeNodes(999999, nil)
@@ -301,14 +301,14 @@ end
 function PipeController:resetFold(foldState, foldAnimTime, pipeState)
     if not self.pipeSpec.hasMovablePipe then
         --- Restoring the fold state
-        Foldable.setAnimTime(self.implement, foldAnimTime, false)
+        Foldable.setAnimTime(self.implement, foldAnimTime, true)
         self.implement:setFoldDirection(-foldState, true)
         self.implement:setFoldDirection(foldState, true)
         return
     end
     if pipeState == PipeController.PIPE_STATE_CLOSED then
         --- Restoring the fold state
-        Foldable.setAnimTime(self.implement, foldAnimTime, false)
+        Foldable.setAnimTime(self.implement, foldAnimTime, true)
         self.implement:setFoldDirection(-foldState, true)
         self.implement:setFoldDirection(foldState, true)
         --- Restoring the pipe position
@@ -542,6 +542,7 @@ function PipeController:printPipeDebug()
         tostring(self.pipeSpec.foldMinTime), tostring(self.pipeSpec.foldMaxTime), 
         tostring(self.pipeSpec.foldMinState), tostring(self.pipeSpec.foldMaxState))
     self:info("aiFoldedPipeUsesTrailerSpace: %s", tostring(self.pipeSpec.aiFoldedPipeUsesTrailerSpace))
+    self:info("Pipe offset x: %.2f, offset z: %.2f", self.pipeOffsetX, self.pipeOffsetZ)
 
 end
 

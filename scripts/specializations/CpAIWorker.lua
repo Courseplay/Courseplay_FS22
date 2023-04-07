@@ -61,8 +61,10 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
     SpecializationUtil.registerFunction(vehicleType, "freezeCp", CpAIWorker.freezeCp)
     SpecializationUtil.registerFunction(vehicleType, "unfreezeCp", CpAIWorker.unfreezeCp)
-
+    SpecializationUtil.registerFunction(vehicleType, "startCpWithStrategy", CpAIWorker.startCpWithStrategy)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpDriver", CpAIWorker.stopCpDriver)
     SpecializationUtil.registerFunction(vehicleType, "cpHold", CpAIWorker.cpHold)
+    SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIWorker.getCpDriveStrategy)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -79,6 +81,7 @@ function CpAIWorker:onLoad(savegame)
     local spec = self.spec_cpAIWorker
     --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
     spec.motorDisabled = false
+    spec.driveStrategy = nil
 end
 
 function CpAIWorker:onLoadFinished()
@@ -275,7 +278,7 @@ function CpAIWorker:cpStartStopDriver(isStartedByHud)
         end
         if self:getCanStartCp() and job then
 
-            job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, job:getCanGenerateFieldWorkCourse())
+            job:applyCurrentState(self, g_currentMission, g_currentMission.player.farmId, true, true)
             job:setValues()
             local success, message = job:validate(false)
             if success then
@@ -337,6 +340,7 @@ function CpAIWorker:stopCpDriveTo()
 end
 
 function CpAIWorker:onUpdate(dt)
+    --- TODO: Refactor this!
     if self.driveToFieldWorkStartStrategy and self.isServer then
         if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
@@ -366,6 +370,36 @@ function CpAIWorker:onUpdate(dt)
             end
         end
     end
+    local spec = self.spec_cpAIWorker
+    if spec.driveStrategy then 
+        --- Should drive all CP modes, except fieldwork here.
+        spec.driveStrategy:update(dt)
+        if not spec.driveStrategy then 
+            return
+        end
+        if g_updateLoopIndex % 4 == 0 then
+            local tX, tZ, moveForwards, maxSpeed =  spec.driveStrategy:getDriveData(dt)
+
+            -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
+            local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
+            local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
+
+            if not moveForwards and self.spec_articulatedAxis ~= nil and
+                    self.spec_articulatedAxis.aiRevereserNode ~= nil then
+                pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
+            end
+
+            if not moveForwards and self:getAIReverserNode() ~= nil then
+                pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
+            end
+
+            local acceleration = 1
+            local isAllowedToDrive = maxSpeed ~= 0
+
+            AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
+        end
+    end
+
 end
 
 --- Freeze (set speed to 0) of the CP driver, but keep everything up and running, showing all debug
@@ -385,6 +419,41 @@ function CpAIWorker:cpHold(ms)
     if strategy then
         return strategy:hold(ms)
     end
+end
+
+function CpAIWorker:startCpWithStrategy(strategy)
+    local spec = self.spec_cpAIWorker
+    spec.driveStrategy = strategy
+end
+
+--- Called to stop the driver after stopping of a vehicle.
+function CpAIWorker:stopCpDriver()
+    --- Reset the flag.
+    local spec = self.spec_cpAIWorker
+    spec.motorDisabled = false
+
+    if spec.driveStrategy then 
+        spec.driveStrategy:delete()
+        spec.driveStrategy = nil
+    end
+
+    self:brake(1)
+	self:stopVehicle()
+	self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true)
+
+    local actionController = self.rootVehicle.actionController
+
+	if actionController ~= nil then
+		actionController:resetCurrentState()
+	end
+
+	self:raiseAIEvent("onAIFieldWorkerEnd", "onAIImplementEnd")
+
+end
+
+function CpAIWorker:getCpDriveStrategy()
+    local spec = self.spec_cpAIWorker
+    return spec.driveStrategy
 end
 
 function CpAIWorker:stopFieldWorker(superFunc, ...)

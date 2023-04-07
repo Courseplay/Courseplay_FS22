@@ -13,7 +13,7 @@ ProximityController.sensorRange = 10
 ProximityController.minLimitedSpeed = 2
 -- will stop under this threshold
 ProximityController.stopThresholdNormal = 1.5
-
+ProximityController.messageThreshold = 3 * 1000 -- 3sec
 function ProximityController:init(vehicle, width)
     self.vehicle = vehicle
     -- if anything closer than this, we stop
@@ -25,6 +25,8 @@ function ProximityController:init(vehicle, width)
             self.vehicle, Markers.getFrontMarkerNode(self.vehicle), self.sensorRange, 1, width)
     self.backwardLookingProximitySensorPack = WideBackwardLookingProximitySensorPack(
             self.vehicle, Markers.getBackMarkerNode(self.vehicle), self.sensorRange, 1, self.vehicle.size.width)
+
+    self.showBlockedByObjectMessageTimer = CpTemporaryObject(false)
 end
 
 function ProximityController:setState(state, debugString)
@@ -158,7 +160,7 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         self:setState(self.states.STOP,
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
         maxSpeed = 0
-        self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
+        self.showBlockedByObjectMessageTimer:setAndProlong(true, self.messageThreshold, self.messageThreshold)
         if vehicle ~= nil and vehicle == self.blockingVehicle:get() then
             -- have been blocked by this guy long enough, try to recover
             CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
@@ -181,6 +183,10 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         self:setState(self.states.NO_OBSTACLE, string.format('No obstacle, d = %.1f, deg = %.1f.', d, deg))
         self.blockingVehicle:reset()
     end
+    if self.showBlockedByObjectMessageTimer:get() then 
+        self.vehicle:setCpInfoTextActive(InfoTextManager.BLOCKED_BY_OBJECT)
+    end
+
     return nil, nil, nil, maxSpeed
 end
 
