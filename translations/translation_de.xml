@@ -436,7 +436,7 @@ Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich 
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
-Ab Version 7.2.1.0 ist es auch Möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand ab zu legen, oder Ballen die mit dem Ballensammler Modus geladen wurden am Feldrand zu stapeln.
+Ab Version 7.2.1.0 ist es auch Möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand ab zu legen.
 
 Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
