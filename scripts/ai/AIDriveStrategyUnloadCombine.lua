@@ -127,21 +127,25 @@ AIDriveStrategyUnloadCombine.UNLOAD_TYPES = {
 AIDriveStrategyUnloadCombine.myStates = {
     IDLE = { fuelSaveAllowed = true }, --- Only allow fuel save, if the unloader is waiting for a combine.
     WAITING_FOR_PATHFINDER = {},
-}
 
----------------------------------------------
---- Unloading of a combine or silo loader states
----------------------------------------------
-AIDriveStrategyUnloadCombine.myCombineUnloadStates = {
-    DRIVING_TO_COMBINE = { collisionAvoidanceEnabled = true },
-    DRIVING_TO_MOVING_COMBINE = { collisionAvoidanceEnabled = true },
-    UNLOADING_MOVING_COMBINE = { openCoverAllowed = true },
-    UNLOADING_STOPPED_COMBINE = { openCoverAllowed = true },
+    --- States to maneuver away from combines and so on.
+    --- No need to be assigned to a combine!
     MOVING_BACK = { vehicle = nil },
     MOVING_BACK_WITH_TRAILER_FULL = { vehicle = nil }, -- moving back from a combine we just unloaded (not assigned anymore)
     BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
     MOVING_AWAY_FROM_BLOCKING_VEHICLE = { vehicle = nil }, -- reversing until we have enough space between us and the combine
     WAITING_FOR_MANEUVERING_COMBINE = {},
+}
+
+-------------------------------------------------
+--- Unloading of a combine or silo loader states
+--- Needs an assigned vehicle to work!
+-------------------------------------------------
+AIDriveStrategyUnloadCombine.myCombineUnloadStates = {
+    DRIVING_TO_COMBINE = { collisionAvoidanceEnabled = true },
+    DRIVING_TO_MOVING_COMBINE = { collisionAvoidanceEnabled = true },
+    UNLOADING_MOVING_COMBINE = { openCoverAllowed = true },
+    UNLOADING_STOPPED_COMBINE = { openCoverAllowed = true },
 }
 
 ---------------------------------------------
