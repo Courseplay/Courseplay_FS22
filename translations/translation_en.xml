@@ -428,17 +428,17 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_help_page_General_title" text="General Information"/>
     <text name="CP_help_page_GeneralBase_text" text="
 Courseplay allows you to generate field courses with additional features, for example: headlands.
-It also enables the usage of balers and foragewagons, that can be send on the same course, as a mower or harvester from before.
-Another big feature is the collecting or wraping of bales on the field.
+It also enables the usage of balers and forage wagons, that can be send on the same course, as a mower or harvester from before.
+Another big feature is the collecting or wrapping of bales on the field.
 New with this iteration of CP is the vine fieldwork.
 Fieldwork courses can be setup in multitool mode, which allows the use of up to 5 driver working in a convoy on the same field.
 It's also possible to have the combine unload in a trailer on/near the field automatically.
-Custom fieldborders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
-Lastly cp has a interface for Autodrive, which allows for refilling of a seeder at a nearby silo or unloading a foragewagon and so on.
+Custom field borders can be assigned for courseplay to use, for example: in case of a meadow, which isn't recognised as a normal field.
+Lastly cp has a interface for AutoDrive, which allows for refilling of a seeder at a nearby silo or unloading a forage wagon and so on.
 
 For more information please visit our github: https://github.com/Courseplay/Courseplay_FS22 .
 There you can get help or report any issue you've experienced.
-Finally we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
+Finally, we thank every translator and our community for reporting bugs, giving use feedback and new ideas.
 
 What is the expert Mode:
 When the expert Mode is deactivated, you have only access to some settings.
@@ -491,7 +491,7 @@ Spiral, Racetrack and Lands have their own specific advantages over the others. 
 - Up/Down row direction: automatic mostly finds the best direction, but sometimes the longest edge fits better. If you are not happy with either one, choose manual and set the direction manually.
 - Rows to skip: This is a very helpful option to accelerate your work, as tools won't have to back up to turn into the next row.
 - Rows per Land: This has only impact when the field center is set to lands and will tell the generator how many rows each land should have. The more rows, the fewer lands will be generated.
-- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generate the direction.
+- Up/down row angle: When the Up/Down row direction is set to manual, this setting will tell the generator the direction.
 "/>
     <text name="CP_help_page_courseGeneratorHeadland_text" text="
 Headland settings will only show up, when you have set at least 1 at Number of headlands.
@@ -521,8 +521,8 @@ This feature also allows you to pickup the swath left behind by a combine or a w
 The save location for the course files is: ..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (or for vanilla e.g. MapUS).
 The course manager works differently from what you are used to in FS19.
 Courses are saved into folders, which will be displayed on the left. This means you would need at least one folder to start saving courses into. 
-Folders can simply created by the button at the bottom of the screen and entering a name.
-Courses are only saved localy for now.
+Folders can simply be created by the button at the bottom of the screen and entering a name.
+Courses are only saved locally for now.
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
 When you have a course loaded, you can save it by clicking on the save course button and then on the folder. Then a pop up window will appear where you can enter the name of your course.
@@ -602,7 +602,7 @@ With 3 or 5 vehicles you will also gain the center option.
     <text name="CP_help_page_convoyBasic_text" text="
 The convoy only works if the vehicles have the same multi tool course with the same name loaded.
 They will automatically keep a small distance towards the vehicle in front of.
-Additionally the convoy feature also gets applied when for example a baler is driving behind a combine on the same course.
+Additionally, the convoy feature also gets applied when for example a baler is driving behind a combine on the same course.
 "/>
     <text name="CP_help_page_convoyFunction_text" text="
 The convoy distance vehicle setting changes the distance between the vehicles.
@@ -615,7 +615,7 @@ The first one is to load the same course you used for your baler and let the wra
 However this can be tricky, as some bales love to roll or fly off the path.
 At this point, our wrap and collect job type can help as it doesn't need a course.
 Stay on the field and just start the driver from the HUD with wrap/collect bales or use the AI Map to send him to a field to start the job.
-The counter on the HUD shows the left over bales on the field since the last scan. CP will only scan the field for bales when it rly have to, to keep better performance.
+The counter on the HUD shows the remaining bales on the field since the last scan. CP will only scan the field for bales when it really has to for performance reasons.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="
 Wrapping bales is very simple. Load a course of your baler and start like any other Fieldwork Job, or without a course,
@@ -630,7 +630,7 @@ Automatic backing up if a bale is in front of the vehicle or if we are too close
     <text name="CP_help_page_collectBasic_text" text="
 Collecting bales works kinda the same, with or without a course.
 When the collector is full, it will stop the work and tells the user it needs to be unloaded. If you have AutoDrive
-installed you can use it to run an unload the bale collector automatically.
+installed you can use it to run and unload the bale collector automatically.
 "/>
     <text name="CP_help_page_symetricLaneChange_title" text="Symetric lange change"/>
     <text name="CP_help_page_symetricLaneChangeBasic_text" text="
@@ -648,14 +648,14 @@ If symmetric lane change is turned on, left and right will be exchanged (but not
 Vehicles can conflict with each other, when they drive towards each other.
 What is the advantage of symmetric lange change then ?
 If you have a look at the order of the lanes, from left to right, it will be clear:
-Without symetric change: left, right, left, right - it is almost like skipping a lane.
-With symetric change: left, right, right, left - from left to right, one lane after the other.
+Without symmetric change: left, right, left, right - it is almost like skipping a lane.
+With symmetric change: left, right, right, left - from left to right, one lane after the other.
 In the example with the Combine it means, no Combine will have fruit left and right of its lane.
 "/>
     <text name="CP_help_page_infoPanel_title" text="Info panel"/>
     <text name="CP_help_page_infoPanelBasic_text" text="
-This is our Info Panel, it can be moved arround with the mouse courser, just like our Mini HUD.
-Beside the name and the version of our Mod, it also shows status inforamtions about the cp drivers.
+This is our Info Panel, it can be moved around with the mouse courser, just like our Mini HUD.
+Beside the name and the version of our mod, it also shows status information about the Courseplay drivers.
 While hovering the status message, the name of the vehicle will be displayed.
 By clicking on it, you can jump directly into the vehicle.
 "/>
@@ -674,14 +674,14 @@ The Informations are the following:
 "/>
     <text name="CP_help_page_vineWork_title" text="Vine work"/>
     <text name="CP_help_page_vineWorkConditions_text" text="
-Working on vines is a bit more complex then working on a normal field.
+Working on vines is a bit more complex than working on a normal field.
 To have the best result, the vines should all be next to each other within the default grid.
 The end and start of each vine, should also be approximately the same length.
 If the vines are on an existing field, you can open the generator the direct way like normal.
 If they are not on a field, you have to go over the AI Menu and place the field marker on the vines.
 "/>
     <text name="CP_help_page_vineWorkGenerator_text" text="
-The generator for vines has less options.
+The generator for vines has fewer options.
 Depending on the tool, you have to choose to work on the vines or beside the vines.
 E.g. the default harvester needs to drive and work on the vine.
      The pre-pruner needs to drive left from the vines but works on the vine, so you have to choose to work on the vine, but drive with an offset.
@@ -695,20 +695,20 @@ The pre-pruner works on the vines, so the course have to be generated on the vin
 The Tools comes with an offset for the tractor, so the tractor drives between the vines.
 "/>
     <text name="CP_help_page_vineWorkSprayer_text" text="
-The sprayer works next to the vines so it has to drive either left or right from the vines.
+The sprayer works next to the vines, so it has to drive either left or right from the vines.
 Since the sprayer can work on the left and right vines at the same time, we can skip a row.
 "/>
     <text name="CP_help_page_editor_title" text="Course editor"/>
     <text name="CP_help_page_editorGeneral_text" text="
 The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+The loaded courses will be saved/overwritten automatically, when the editor is closed.
 
 1) Editing a custom field can be done by selecting one on the ai menu page and clicking on edit custom field.
 2) Editing a course can be done in the course manager by selecting it and clicking on open course editor. 
    This only works with saved courses. Make sure no course is loaded in the vehicle.
 
 Editing of courses should only be done, when the course generator couldn't produce a good enough course.
-Incorrect editing might couse problems for the driver, as the waypoints have hidden attributes.
+Incorrect editing might cause problems for the driver, as the waypoints have hidden attributes.
 "/>
     <text name="CP_help_page_editorBasic_text" text="
 Under the basic category are:
@@ -764,7 +764,7 @@ Just like with trailers, you use the target icon to choose the field where you w
 To start the unloader, place it again on the field or within 20 meters of the field.
 If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
 In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+If no trailer is available, it will continue to unload the combine.
 "/>
     <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
@@ -774,7 +774,7 @@ The position needs to be on the same field or near the field edge.
 If the marker points to an already existing heap, 
 then this heap is used to unload to.
 The direction of the marker is used for the unload direction.
-A few trailers can choose their tipside between back and grain pusher.
+With some trailers the tip side can be switched between the back and the grain door.
 "/>
     <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
@@ -788,18 +788,18 @@ If the vehicle has a distributor or shield attached, the Silo mode is preselecte
 you toggle through the starting point until the mode appears.
 Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
 the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
+Use the target icon on the HUD to select the silo on the AI Map. It will be shown with blue lines and lights up white if it is selected.
 The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
 before starting the actual work.
 "/>
     <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
+Zou can use this job with a Ropa Maus or similar to pick up heaps on or near the field and unload into a Courseplay unloader.
 Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
-If you let courseplay drive directly to the heap, it unfolds in a default position to load the heap.
+
+If you let Courseplay drive directly to the heap, it unfolds in a default position to load the heap.
 In case this position doesn't fit for your environment, you can stop the driver, change the position of the arm like normal and start the driver again.
-Keep in mind that the automatic unloading with CP goes in the same direction as the loader. Keep some space for the Unloader to bypass the Loader at the side.
+Keep in mind that the automatic unloading with CP goes in the same direction as the loader. Keep some space for the unloader to bypass the loader at the side.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
 To start the loading-marker on the AI menu needs to be set.

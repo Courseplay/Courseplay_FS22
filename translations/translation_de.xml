@@ -773,7 +773,7 @@ Ist kein Anhänger verfügbar, wird der Drescher weiter abgetankt bis der Überl
 Das Abladen auf dem Feld muss aktiviert werden.
 Die Position muss auf dem gleichen Feld oder am Feldrand sein.
 Sollte an der Stelle, wo der Marker hinzeigt ein Haufen liegen,
-dann wird dieser genutzet um dort weiterhin abzuladen.
+dann wird dieser genutzt, um dort weiterhin abzuladen.
 Die Richtung des Markers entspricht der Abladerichtung.
 Bei einigen Anhängern kann die Abladeseite zwischen Hinten und Kornschieber gewählt werden.
 "/>
@@ -798,7 +798,7 @@ Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker z
 Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
 Ebenfalls ist es möglich damit Silos zu entleeren.
 Der Lader kann durch einen Courseplay Abfahrer entladen werden.
-Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer Standart Position aus und lädt den Haufen auf.
+Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer standard Position aus und lädt den Haufen auf.
 Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position des Arms wie gewohnt einstellen und den Fahrer wieder starten.
 Bedenkt dabei, dass das automatische abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
 "/>
