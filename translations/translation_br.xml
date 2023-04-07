@@ -70,6 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants descarrega:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants para descarregar:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação para descarregar:"/>
@@ -77,10 +81,6 @@
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Descarregar no campo:"/>
     <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Posição no campo para descarregar:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Lado da carreta para descarregar:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
