@@ -9,4 +9,5 @@
 	<Setting type="vehicleSettings" name="bunkerSiloWorkWidth"/>
 	<Setting type="bunkerSiloJobParameters" name = "drivingForwardsIntoSilo" />
 	<Setting type="bunkerSiloJobParameters" name = "waitAtParkPosition" />
+	<Setting type="bunkerSiloJobParameters" name = "stopWithCompactedSilo" />
 </Settings>

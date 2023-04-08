@@ -22,13 +22,15 @@ function CpStatus:reset()
     self.remainingTimeText = ""
     --- Bale finder
     self.numBalesLeftOver = nil
-
+    --- Bunker silo level driver
+    self.compactionPercentage = nil
 end
 
 function CpStatus:start()
     
 end
 
+---@param active boolean
 function CpStatus:setActive(active)
     if self.isActive ~= active then 
         self.isActive = active
@@ -41,6 +43,10 @@ function CpStatus:setActive(active)
     end
 end
 
+
+---@param dt number
+---@param isActive boolean
+---@param strategy AIDriveStrategyCourse
 function CpStatus:update(dt, isActive, strategy)
     if isActive then 
         if strategy then
@@ -50,6 +56,9 @@ function CpStatus:update(dt, isActive, strategy)
     self:setActive(isActive)
 end
 
+---@param currentWaypointIx number
+---@param numberOfWaypoints number
+---@param remainingTimeText string
 function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainingTimeText)
     if self.currentWaypointIx ~= currentWaypointIx then 
         self.currentWaypointIx = currentWaypointIx
@@ -60,9 +69,19 @@ function CpStatus:setWaypointData(currentWaypointIx, numberOfWaypoints, remainin
     end
 end
 
+---@param numBalesLeftOver number 
 function CpStatus:setBaleData(numBalesLeftOver)
     if self.numBalesLeftOver ~= numBalesLeftOver then
         self.numBalesLeftOver = numBalesLeftOver
+        self:raiseDirtyFlag()
+    end
+end
+
+---@param compactionPercentage number 
+function CpStatus:setLevelSiloStatus(compactionPercentage)
+    local roundedCompactionPercentage = MathUtil.round(compactionPercentage)
+    if self.compactionPercentage ~= roundedCompactionPercentage then
+        self.compactionPercentage = roundedCompactionPercentage
         self:raiseDirtyFlag()
     end
 end
@@ -81,6 +100,18 @@ end
 function CpStatus:getBalesText()
     if self.isActive and self.numBalesLeftOver ~=nil then 
         return string.format('%d', self.numBalesLeftOver)
+    end 
+    return '--'
+end
+
+---@param withoutPercentageSymbol boolean|nil
+---@return string
+function CpStatus:getCompactionText(withoutPercentageSymbol)
+    if self.isActive and self.compactionPercentage ~=nil then 
+        if withoutPercentageSymbol then 
+            return tostring(self.compactionPercentage)
+        end
+        return string.format('%d%%', self.compactionPercentage)
     end 
     return '--'
 end
@@ -106,6 +137,8 @@ function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
         streamWriteString(streamId, self.remainingTimeText or "")
         --- Bale finder
         streamWriteInt32(streamId, self.numBalesLeftOver or 0)
+        --- Bunker silo level driver
+        streamWriteInt32(streamId, self.compactionPercentage or 0)
 	end
 end
 
@@ -118,6 +151,8 @@ function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
         self.remainingTimeText = streamReadString(streamId)
         --- Bale finder
         self.numBalesLeftOver = streamReadInt32(streamId)
+        --- Bunker silo level driver
+        self.compactionPercentage = streamReadInt32(streamId)
 
         self:updateWaypointVisibility()
 	end

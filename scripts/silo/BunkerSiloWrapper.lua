@@ -394,6 +394,21 @@ function CpBunkerSilo:draw()
 	end
 end
 
+--- Gets the compaction percentage in 0-100
+---@return number
+function CpBunkerSilo:getCompactionPercentage()
+	return self.silo.compactedPercent
+end
+
+---@return boolean
+function CpBunkerSilo:canBeFilled()
+	return self.silo.state == BunkerSilo.STATE_FILL
+end
+
+---@return boolean
+function CpBunkerSilo:canBeEmptied()
+	return self.silo.state == BunkerSilo.STATE_DRAIN
+end
 
 --------------------------------------------------
 --- Vehicle controllers.

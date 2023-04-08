@@ -257,6 +257,15 @@ function DevHelper:showAIMarkers()
             showAIMarkersOfObject(implement.object)
         end
     end
+
+    local frontMarker, backMarker = Markers.getMarkerNodes(self.vehicle)
+    CpUtil.drawDebugNode(frontMarker, false, 3)
+    CpUtil.drawDebugNode(backMarker, false, 3)
+
+    if self.vehicle:getAIDirectionNode() then 
+        CpUtil.drawDebugNode(self.vehicle:getAIDirectionNode(), false , 3, "AiDirectionNode")
+    end
+
 end
 
 -- make sure to recreate the global dev helper whenever this script is (re)loaded

@@ -238,9 +238,13 @@ function CpUtil.destroyNode(node)
 	end
 end
 
-function CpUtil.drawDebugNode(node, alignToGround, yOffset)
+---@param node number
+---@param alignToGround boolean|nil
+---@param yOffset number|nil
+---@param text string|nil
+function CpUtil.drawDebugNode(node, alignToGround, yOffset, text)
 	if node and entityExists(node) then
-		DebugUtil.drawDebugNode(node, getName(node), alignToGround, yOffset)
+		DebugUtil.drawDebugNode(node, text or getName(node), alignToGround, yOffset)
 	end
 end
 

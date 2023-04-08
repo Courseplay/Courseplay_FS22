@@ -307,6 +307,18 @@
 			<Text language="de"><![CDATA[bei Parkposition]]></Text>
 			<Text language="en"><![CDATA[at park position]]></Text>
 		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title">
+			<Text language="de"><![CDATA[Stoppen bei 99% verdichtet]]></Text>
+			<Text language="en"><![CDATA[Stop with 99% compaction]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo">
+			<Text language="de"><![CDATA[Stoppen bei 99% verdichtet]]></Text>
+			<Text language="en"><![CDATA[Stop with 99% compaction]]></Text>
+		</Translation>
+		<Translation name="CP_bunkerSilo_compactionPercentage">
+			<Text language="de"><![CDATA[Silo Verdichtung:]]></Text>
+			<Text language="en"><![CDATA[Silo compaction:]]></Text>
+		</Translation>		
 	</Category>
 	<Category name="AI silo lader worker job parameters">
 		<Translation name="CP_siloLoaderJobParameters_subTitle_loadPosition">
