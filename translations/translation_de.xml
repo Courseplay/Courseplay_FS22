@@ -92,6 +92,9 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Warten auf Abfahrer:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="im Silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="bei Parkposition"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stoppen bei 99% verdichtet"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stoppen bei 99% verdichtet"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Silo Verdichtung:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
