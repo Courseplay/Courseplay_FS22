@@ -2,19 +2,38 @@
 ---@class CpBunkerSiloVehicleController
 CpBunkerSiloVehicleController = CpObject()
 CpBunkerSiloVehicleController.WALL_OFFSET = 0.5
-function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy)
+function CpBunkerSiloVehicleController:init(silo, vehicle, driveStrategy, directionNode)
+	self.debugChannel = CpDebug.DBG_SILO
+	
 	---@type CpBunkerSilo
 	self.silo = silo
 	self.vehicle = vehicle
 	self.driveStrategy = driveStrategy
+	self.directionNode = directionNode
 	self.isInverted = false
 
-	local vehicleNode = vehicle:getAIDirectionNode()
-	if calcDistanceFrom(self.silo.startNode, vehicleNode) > calcDistanceFrom(self.silo.heightNode, vehicleNode) then
-		self.isInverted = true
-	end
+	local sx, sz = self.silo:getStartPosition()
+	local hx, hz = self.silo:getHeightPosition()
 
-	self.debugChannel = CpDebug.DBG_SILO
+	local _, _, dsz = worldToLocal(directionNode, sx, 0, sz)
+	local _, _, dhz = worldToLocal(directionNode, hx, 0, hz)
+
+	if dsz > 0 and dhz > 0 then 
+		--- In front of the silo
+		if dsz > dhz then 
+			self.isInverted = true
+		end
+	elseif dsz > 0 and dhz < 0 then 
+		--- Is in the silo but in the wrong direction.
+		self.isInverted = true
+	elseif dsz < 0 and dhz > 0 then 
+		--- Is in the silo and in the correct direction.
+	elseif dsz < 0 and dhz < 0 then 
+		--- Exited the silo
+		if dsz > dhz then 
+			self.isInverted = true
+		end
+	end
 end
 
 function CpBunkerSiloVehicleController:delete()
@@ -99,6 +118,28 @@ function CpBunkerSiloVehicleController:getNextLine(numLines, width)
 	return 1
 end
 
+--- Gets the first line relative to the vehicle position
+---@param numLines any
+---@param width any
+---@return unknown
+function CpBunkerSiloVehicleController:getFirstLineApproach(numLines, width)
+	local sx, sz = self.silo:getStartPosition()
+	local hx, hz = self.silo:getHeightPosition()
+	if self.isInverted then 
+		sx, sz, hx, hz = hx, hz, sx, sz
+	end
+
+	local dsx, _, _ = worldToLocal(self.directionNode, sx, 0, sz)
+	local dhx, _, _ = worldToLocal(self.directionNode, hx, 0, hz)
+	local line = 1
+	if dsx > 0 then 
+		line = MathUtil.round(dsx / width)
+	elseif dhx > 0 then
+		line = MathUtil.round(dhx / width)
+	end
+	return MathUtil.clamp(line, 1, numLines)
+end
+
 --- Setups a map with all lanes mostly for debugging for now.
 ---@param width number
 ---@param unitWidth number
@@ -162,9 +203,10 @@ CpBunkerSiloLevelerController.LAST_DIRECTIONS = {
 	LEFT = 0,
 	RIGHT = 1
 }
-function CpBunkerSiloLevelerController:init(silo, vehicle, driveStrategy)
-	CpBunkerSiloVehicleController.init(self, silo, vehicle, driveStrategy)
-	self.lastLine = 1
+function CpBunkerSiloLevelerController:init(silo, vehicle, driveStrategy, directionNode)
+	CpBunkerSiloVehicleController.init(self, silo, vehicle, 
+		driveStrategy, directionNode)
+	self.lastLine = nil
 	self.currentTarget = nil
 	self.lastDirection = self.LAST_DIRECTIONS.LEFT
 end
@@ -184,8 +226,12 @@ end
 
 --- Gets the next line to drive.
 ---@param numLines number
+---@param width number
 ---@return number new line to drive on
-function CpBunkerSiloLevelerController:getNextLine(numLines)
+function CpBunkerSiloLevelerController:getNextLine(numLines, width)
+	if self.lastLine == nil then 
+		return self:getFirstLineApproach(numLines, width)
+	end
 	local nextLine, nextDirection
 	if self.lastDirection == self.LAST_DIRECTIONS.LEFT then 
 		--- 4-3-2-1
@@ -230,7 +276,8 @@ end
 CpBunkerSiloLoaderController = CpObject(CpBunkerSiloVehicleController)
 
 function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
-	CpBunkerSiloVehicleController.init(self, silo, vehicle, driveStrategy)
+	CpBunkerSiloVehicleController.init(self, silo, vehicle, 
+		driveStrategy, vehicle:getAIDirectionNode())
 end
 
 --- Gets the next line with the most fill level.

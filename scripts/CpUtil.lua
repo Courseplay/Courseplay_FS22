@@ -219,7 +219,7 @@ end
 ---@param x number
 ---@param z number
 ---@param yRotation number
----@param rootNode number
+---@param rootNode number|nil
 function CpUtil.createNode(name, x, z, yRotation, rootNode)
 	local node = createTransformGroup(name)
 	link(rootNode or g_currentMission.terrainRootNode, node)

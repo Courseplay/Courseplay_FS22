@@ -109,13 +109,21 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     if self.drivingForwardsIntoSilo then
         self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.frontMarkerNode, 
                                                                     self.siloEndProximitySensorRange, 1)
+        local x, _, z = getWorldTranslation(self.frontMarkerNode)
+        local dirX, _, dirZ = localDirectionToWorld(self.frontMarkerNode, 0, 0, 1)
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        self.siloEndDetectionMarker = CpUtil.createNode("siloEndDetectionMarker", x, z, yRot)
     else
         self.siloEndProximitySensor = SingleBackwardLookingProximitySensorPack(self.vehicle, self.backMarkerNode, 
                                                                     self.siloEndProximitySensorRange, 1)
+        local x, _, z = getWorldTranslation(self.backMarkerNode)
+        local dirX, _, dirZ = localDirectionToWorld(self.backMarkerNode, 0, 0, -1)
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        self.siloEndDetectionMarker = CpUtil.createNode("siloEndDetectionMarker", x, z, yRot)
     end
 
     --- Setup the silo controller, that handles the driving conditions and coordinations.
-	self.siloController = self.silo:setupLevelerTarget(self.vehicle, self)
+	self.siloController = self.silo:setupLevelerTarget(self.vehicle, self, self.siloEndDetectionMarker)
 
     if self.silo:isVehicleInSilo(self.vehicle) then 
         self:startDrivingIntoSilo()
@@ -390,12 +398,11 @@ end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
   
-    return self:isDriveDirectionReverse() and self.backMarkerNode or self.frontMarkerNode
+    return self.siloEndDetectionMarker
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarkerOffset()
-    --- While reverse driven, then the offset needs to be inverted, as end marker is rotated wrong.
-    return self.endReachedOffset--AIUtil.isReverseDriving(self.vehicle) and -self.endReachedOffset or self.endReachedOffset
+    return self.endReachedOffset
 end
 
 --- Gets the work width.
