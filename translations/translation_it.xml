@@ -46,9 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="Dal primo punto - inizio"/>
     <text name="CP_jobParameters_startAt_last" text="Dall'ultimo punto lavorato"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Modalità bunker silos"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Modalità di caricamento del silo"/>
     <text name="CP_jobParameters_startAt_unload" text="Scarico mietitrebbia/trincia"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Scarica il caricatore al silo"/>
     <text name="CP_jobParameters_startAt_bales" text="Raccogliere/avvolgere balle"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Calibrazione corsia:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Calibrazione corsia:"/>
@@ -70,10 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Scaricare: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Scaricare:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Mietitrebbia"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Caricatore"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>
@@ -95,8 +95,8 @@
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posizione di caricamento"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posizione di caricamento"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -104,7 +104,7 @@
     <text name="CP_job_baleCollect" text="CP: Raccogli/Avvolgi balle"/>
     <text name="CP_job_combineUnload" text="CP: scarica mietitrebbia"/>
     <text name="CP_job_bunkerSilo" text="CP: Lavoro in silos"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_siloLoader" text="CP: Caricamento del silo"/>
     <text name="CP_ai_page_generate_course" text="[CP] Genera percorso di lavoro"/>
     <text name="CP_ai_page_open_course_generator" text="[CP] Apri/Chiudi menù"/>
     <!---->
@@ -784,16 +784,16 @@ Usa l'icona del bersaglio sull'HUD per selezionare il silo sulla mappa AI. Se ve
 La posizione di parcheggio viene impostata con l'indicatore &quot;posizione di parcheggio&quot; che può essere utilizzato anche per guidare lì con l'aiutante della Giants
 prima di iniziare il lavoro vero e proprio.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="Caricamento del silo"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
-Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
+Con questo lavoro è possibile caricare da cumuli sopra o vicino al campo.
+Inoltre è possibile caricare da un silo bunker.
+Il caricatore può essere scaricato con uno scaricatore Courseplay.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
-The marker detects heaps or silos and highlights them on the map.
-Now it's possible to start the helper.
+Per avviare l'indicatore di caricamento nel menu AI è necessario impostare.
+Il marcatore rileva cumuli o silos e li evidenzia sulla mappa.
+Ora è possibile avviare l'helper.
 "/>
     <!---->
     <!--Input bindings-->
