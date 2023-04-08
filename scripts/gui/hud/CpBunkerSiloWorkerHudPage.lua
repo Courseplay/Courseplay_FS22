@@ -96,8 +96,7 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
     else
         compactionText = status:getCompactionText()
     end
-    --g_i18n:getText("CP_bunkerSilo_compactionPercentage")
-    self.compactionPercentageBtn:setTextDetails("-", compactionText)
+    self.compactionPercentageBtn:setTextDetails(g_i18n:getText("CP_bunkerSilo_compactionPercentage"), compactionText)
     self.compactionPercentageBtn:setDisabled(stopWithCompactedSilo:getIsDisabled())
 end
 
