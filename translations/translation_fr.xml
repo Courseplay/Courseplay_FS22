@@ -23,7 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Le point de déchargement est trop loin du champ."/>
     <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_no_heap_found" text="Aucun tas ou silo détecté."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -45,10 +45,10 @@
     <text name="CP_jobParameters_startAt_nearest" text="Point le plus proche"/>
     <text name="CP_jobParameters_startAt_first" text="Premier point"/>
     <text name="CP_jobParameters_startAt_last" text="Dernier point"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Mode Silo Bunker"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Silo Bunker"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Tas/Silo"/>
     <text name="CP_jobParameters_startAt_unload" text="Déchargement de la récolteuse"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Déchargement d'une chargeuse"/>
     <text name="CP_jobParameters_startAt_bales" text="Ramassage/enrub. des bottes"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Position dans la rangée"/>
     <text name="CP_jobParameters_laneOffset_title" text="Position dans la rangée"/>
@@ -70,10 +70,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Déchargement: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Déchargement:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Moissonneuse"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Chargeuse"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Ouvrier IA pour le déchargement:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Utiliser un ouvrier IA pour le déchargement:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Station de déchargement:"/>
@@ -95,16 +95,16 @@
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Position de chargement"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Position de chargement"/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP:Travail"/>
     <text name="CP_job_baleCollect" text="CP:Ramassage/enrub. bottes"/>
-    <text name="CP_job_combineUnload" text="CP:Déchargement récolteuse"/>
+    <text name="CP_job_combineUnload" text="CP:Déchargement récolteuse/chargeuse"/>
     <text name="CP_job_bunkerSilo" text="CP:Tassage silo"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_siloLoader" text="CP:Chargeuse tas/silo"/>
     <text name="CP_ai_page_generate_course" text="CP:Générer une course"/>
     <text name="CP_ai_page_open_course_generator" text="CP:Ouvrir/fermer le générateur de courses"/>
     <!---->
@@ -432,8 +432,9 @@ Il permet également d'utiliser des presses et des autochargeuses en utilisant l
 Nouveauté pour cette édition FS22, le Courseplay vous permettra également de générer des courses dans les vignes.
 Il existe également des courses à outils multiples permettant jusqu'à 5 ouvriers Courseplay de travailler en même temps dans le même champ.
 Les moissonneuses-batteuses peuvent automatiquement aller se vider dans une remorque située près ou sur le champ moissonné.
-Vous pouvez définir des contours de champs personnalisés si nécessaire afin que le Courseplay puisse également travailler des surfaces non déclarées initialement sur la carte (comme par exemple l'entretien des prairies).
+Vous pouvez définir des contours de champs personnalisés si nécessaire afin que le Courseplay puisse également travailler des surfaces non déclarées initialement sur la carte (comme par exemple l'entretien des prairies) ou encore lorsque vous regroupez plusieurs champs.
 Enfin, Courseplay dispose d'une interface avec Autodrive, pour permettre à l'ouvrier devant recharger un semoir de se rendre à un point de recharge ou encore aller automatiquement décharger une autochargeuse à un silo désiré.
+Depuis la version 7.2.1.0 ou supérieure, il est désormais possible de demander à l'ouvrier CP de décharger des récolteuses et de venir créer un tas au sol sur le champ ou à côté.
 
 Pour plus d'informations, veuillez vous rendre sur notre github : https://github.com/Courseplay/Courseplay_FS22 .
 Vous pouvez y obtenir de l'aide ou signaler tout problème que vous avez rencontré.
@@ -449,7 +450,7 @@ De cette façon, nous essayons d'aider les nouveaux utilisateurs à se familiari
 Vous devez d'abord sélectionner un véhicule depuis le menu des ouvriers afin de pouvoir générer une course CP ou configurer les paramètres de la course actuelle. 
 La course active s'affichera sur la carte.
 Les paramètres globaux sont toujours accessibles.
-Pour générer une course et la démarrer, choisissez dans le type de tâche CP:Travail ou CP:Ramassage/enrub. bottes.
+Pour générer une course et la démarrer, choisissez dans le type de tâche CP:Travail,CP:Ramassage/enrub. bottes, CP:Tassage silo, CP:Remplissage silo.
 "/>
     <text name="CP_help_page_startJobMenuFunctions_text" text="
 Pour créer une course CP, assurez vous de sélectionner un véhicule équipé avec des outils compatibles avec un travail du Courseplay (CP).
@@ -763,16 +764,14 @@ En plus de la largeur de travail, vous pouvez également choisir dans quel sens 
 Utilisez la cible depuis l'ATH pour sélectionner le silo depuis la carte du menu des tâches des ouvriers. Il sera visible avec des contours bleus et deviendra blanc lorsqu'il sera sélectionné avec succès.
 La position de stationnement ou d'attente est définie à l'aide du marqueur &quot;Stationnement&quot; qui peut également être utilisé comme destination par un ouvrier Giants avant de laisser la main au CP pour le travail dans le silo.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="Chargeuse de tas/silo"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
-Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
+Cette tâche permet de désigner un tas sur ou à côté du champ ou un silo bunker comme point d'approvisionnement. 
+La chargeuse peut être vidée par une tâche de déchargement Courseplay.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
-The marker detects heaps or silos and highlights them on the map.
-Now it's possible to start the helper.
+Placer le marqueur d'approvisionnement sur un tas ou un silo. Ils apparaissent en surbrillance sur la carte.
+Ensuite vous pouvez lancer la tâche.
 "/>
     <!---->
     <!--Input bindings-->
