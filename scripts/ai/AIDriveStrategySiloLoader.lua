@@ -278,7 +278,7 @@ function AIDriveStrategySiloLoader:onPathfindingDoneToStart(path)
         local course = self:getRememberedCourseAndIx()
         self:debug("No alignment path found!")
         self:startCourse(course, 1)
-        self.state = self.states.
+        self.state = self.states.WAITING_FOR_PREPARING
         self:lowerImplements()
     end
 end
