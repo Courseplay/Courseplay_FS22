@@ -97,7 +97,7 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
 
     local distance = self.siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
 
-    if distance > 2 * self.turningRadius then
+    if distance > self.turningRadius then
         --- Alignment needed
         self:startPathfindingToStart(self.siloCourse)
     else
@@ -184,6 +184,7 @@ function AIDriveStrategySiloLoader:onWaypointPassed(ix, course)
             local course = self:getRememberedCourseAndIx()
             self:startCourse(course, 1)
             self.state = self.states.WAITING_FOR_PREPARING
+            self:lowerImplements()
         elseif self.state == self.states.WORKING then
             self.state = self.states.FINISHED
         end
@@ -254,7 +255,7 @@ function AIDriveStrategySiloLoader:startPathfindingToStart(course)
         local done, path
         local fm = self:getFrontAndBackMarkers()
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
-            self.vehicle, course, 1, 0, -(fm + 4),
+            self.vehicle, course, 1, 0, -1.5 *(fm + 4),
             false, nil)
         if done then
             return self:onPathfindingDoneToStart(path)
@@ -277,12 +278,12 @@ function AIDriveStrategySiloLoader:onPathfindingDoneToStart(path)
         local course = self:getRememberedCourseAndIx()
         self:debug("No alignment path found!")
         self:startCourse(course, 1)
-        self.state = self.states.WAITING_FOR_PREPARING
+        self.state = self.states.
+        self:lowerImplements()
     end
 end
 
 function AIDriveStrategySiloLoader:prepareForStart()
-    self:lowerImplements()
     if not self.conveyorController:isPipeMoving() then
         self.state = self.states.WORKING
         self.conveyorController:enableDischargeToObject()
