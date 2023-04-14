@@ -64,12 +64,16 @@ function ConveyorController:disableDischarge()
 end
 
 function ConveyorController:onFinished()
-	self.implement:aiImplementEndLine()
+	if self.wasLowered then
+		--- Only allowed, if the vehicle was lowered once.
+		self.implement:aiImplementEndLine()
+	end
 	self.implement:setIsTurnedOn(false)
 	self:disableDischarge()
 end
 
 function ConveyorController:onLowering()
+	self.wasLowered = true
 	self.implement:aiImplementStartLine()
 end
 

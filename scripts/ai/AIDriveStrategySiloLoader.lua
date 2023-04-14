@@ -97,7 +97,7 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
 
     local distance = self.siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
 
-    if distance > self.turningRadius then
+    if distance > 1.5 * self.turningRadius then
         --- Alignment needed
         self:startPathfindingToStart(self.siloCourse)
     else
