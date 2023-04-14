@@ -309,11 +309,11 @@
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title">
 			<Text language="de"><![CDATA[Stoppen bei 99% verdichtet]]></Text>
-			<Text language="en"><![CDATA[Stop with 99% compaction]]></Text>
+			<Text language="en"><![CDATA[Stop at 99% compaction]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo">
 			<Text language="de"><![CDATA[Stoppen bei 99% verdichtet]]></Text>
-			<Text language="en"><![CDATA[Stop with 99% compaction]]></Text>
+			<Text language="en"><![CDATA[Stop at 99% compaction]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSilo_compactionPercentage">
 			<Text language="de"><![CDATA[Silo Verdichtung:]]></Text>

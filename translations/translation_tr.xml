@@ -92,8 +92,8 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Boşaltıcıyı bekliyorum:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="siloda"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="park konumunda"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop with 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop with 99% compaction"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
     <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
