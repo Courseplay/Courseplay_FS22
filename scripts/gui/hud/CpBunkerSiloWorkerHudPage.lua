@@ -24,8 +24,8 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 	self.driveDirectionBtn:setCallback(callback, callback)             			
     
     --- Waiting at park position
-	local x, y = unpack(lines[2].left)
-	local xRight,_ = unpack(lines[2].right)
+	local x, y = unpack(lines[1].left)
+	local xRight,_ = unpack(lines[1].right)
 	self.waitAtBtn = CpHudTextSettingElement.new(self, x, y,
 										xRight, CpBaseHud.defaultFontSize)
 	local callback = {
@@ -36,7 +36,7 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 	self.waitAtBtn:setCallback(callback, callback)             				
 	
     --- Work width
-    self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+    self.workWidthBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().bunkerSiloWorkWidth) 
 
     --- Goal button.
@@ -54,8 +54,8 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
     end)
 
     --- Bunker silo compaction percentage
-    local x, y = unpack(lines[1].left)
-	local xRight,_ = unpack(lines[1].right)
+    local x, y = unpack(lines[3].left)
+	local xRight,_ = unpack(lines[3].right)
 	self.compactionPercentageBtn = CpHudTextSettingElement.new(self, x, y,
 										xRight, CpBaseHud.defaultFontSize)
 	local callback = {
