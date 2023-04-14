@@ -73,19 +73,20 @@ function CpAIJobCombineUnloader:applyCurrentState(vehicle, mission, farmId, isDi
 	self:copyFrom(vehicle:getCpCombineUnloaderJob())
 
 	local x, z = self.cpJobParameters.fieldPosition:getPosition()
-
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
 		self.cpJobParameters.fieldPosition:setPosition(x, z)
 	end
-
 	local x, z = self.cpJobParameters.fieldUnloadPosition:getPosition()
 
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
+		local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
+		local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 		self.cpJobParameters.fieldUnloadPosition:setPosition(x, z)
+		self.cpJobParameters.fieldUnloadPosition:setAngle(angle)
 	end
 end
 

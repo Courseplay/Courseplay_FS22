@@ -62,7 +62,10 @@ function CpAIJobSiloLoader:applyCurrentState(vehicle, mission, farmId, isDirectS
 	-- no field position from the previous job, use the vehicle's current position
 	if x == nil or z == nil then
 		x, _, z = getWorldTranslation(vehicle.rootNode)
+		local dirX, _, dirZ = localDirectionToWorld(vehicle.rootNode, 0, 0, 1)
+		local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 		self.cpJobParameters.loadPosition:setPosition(x, z)
+		self.cpJobParameters.loadPosition:setAngle(angle)
 	end
 end
 
