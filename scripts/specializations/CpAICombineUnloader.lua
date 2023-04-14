@@ -19,6 +19,8 @@ function CpAICombineUnloader.initSpecialization()
     --- Registers pipe controller measurement test function
     g_devHelper.consoleCommands:registerConsoleCommand("cpMeasurePipe", 
         "Measures the pipe properties while unfolded.", "consoleCommandMeasurePipeProperties", CpAICombineUnloader)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpInstantUnfoldPipe", 
+        "Instant unfold of the pipe", "consoleCommandInstantUnfoldPipe", CpAICombineUnloader)
 end
 
 --- Helper command to test the pipe measurement.
@@ -29,6 +31,23 @@ function CpAICombineUnloader:consoleCommandMeasurePipeProperties()
         if pipeObject then 
             local controller = PipeController(vehicle, pipeObject)
             controller:printPipeDebug()
+            controller:delete()
+        else 
+            CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
+        end
+    else 
+        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
+    end
+end
+
+function CpAICombineUnloader:consoleCommandInstantUnfoldPipe()
+    local vehicle = g_currentMission.controlledVehicle
+    if vehicle then 
+        local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
+        if pipeObject then 
+            local controller = PipeController(vehicle, pipeObject)
+            controller:printPipeDebug()
+            controller:instantUnfold(true)
             controller:delete()
         else 
             CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")

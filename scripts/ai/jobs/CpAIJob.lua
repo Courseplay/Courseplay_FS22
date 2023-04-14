@@ -63,6 +63,9 @@ function CpAIJob:isTargetReached()
 	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
 	local tx, tz = self.cpJobParameters.startPosition:getPosition()
+	if tx == nil or tz == nil then 
+		return true
+	end
 	local targetReached = MathUtil.vector2Length(x - tx, z - tz) < 3
 
 	return targetReached
