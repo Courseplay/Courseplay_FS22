@@ -184,6 +184,7 @@ function AIDriveStrategySiloLoader:onWaypointPassed(ix, course)
             local course = self:getRememberedCourseAndIx()
             self:startCourse(course, 1)
             self.state = self.states.WAITING_FOR_PREPARING
+            self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
             self:lowerImplements()
         elseif self.state == self.states.WORKING then
             self.state = self.states.FINISHED
@@ -279,6 +280,7 @@ function AIDriveStrategySiloLoader:onPathfindingDoneToStart(path)
         self:debug("No alignment path found!")
         self:startCourse(course, 1)
         self.state = self.states.WAITING_FOR_PREPARING
+        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
         self:lowerImplements()
     end
 end
