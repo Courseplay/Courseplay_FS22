@@ -92,6 +92,9 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Ожидать разгружающего:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="в яме"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="на парковке"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->

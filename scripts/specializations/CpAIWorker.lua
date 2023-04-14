@@ -379,7 +379,9 @@ function CpAIWorker:onUpdate(dt)
         end
         if g_updateLoopIndex % 4 == 0 then
             local tX, tZ, moveForwards, maxSpeed =  spec.driveStrategy:getDriveData(dt)
-
+            if not spec.driveStrategy then 
+                return
+            end
             -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
             local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
             local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
@@ -437,10 +439,15 @@ function CpAIWorker:stopCpDriver()
         spec.driveStrategy = nil
     end
 
-    self:brake(1)
+    if self.isServer then 
+        WheelsUtil.updateWheelsPhysics(self, 0, 0, 0, true, true)
+    end
+    if self.brake then 
+        self:brake(1)
+    end
 	self:stopVehicle()
 	self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true)
-
+    self:brakeToStop()
     local actionController = self.rootVehicle.actionController
 
 	if actionController ~= nil then

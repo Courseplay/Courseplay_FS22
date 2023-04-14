@@ -91,6 +91,7 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
         return
     end
 
+    self.stopWithCompactedSilo = jobParameters.stopWithCompactedSilo:getValue()
     self.waitAtParkPosition = jobParameters.waitAtParkPosition:getValue()
     self:debug("Wait at park position: %s", tostring(jobParameters.waitAtParkPosition:getValue()))
     if self.leveler then 
@@ -105,18 +106,24 @@ function AIDriveStrategyBunkerSilo:startWithoutCourse(jobParameters)
     end
 
     --- Proximity sensor to detect the silo end wall.
-    self.siloEndDetectionMarker = self:getEndMarker()
     if self.drivingForwardsIntoSilo then
-        self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
-                                                                        self.siloEndProximitySensorRange, 1)
+        self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.frontMarkerNode, 
+                                                                    self.siloEndProximitySensorRange, 1)
+        local x, _, z = getWorldTranslation(self.frontMarkerNode)
+        local dirX, _, dirZ = localDirectionToWorld(self.frontMarkerNode, 0, 0, 1)
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        self.siloEndDetectionMarker = CpUtil.createNode("siloEndDetectionMarker", x, z, yRot)
     else
-        self.siloEndProximitySensor = SingleBackwardLookingProximitySensorPack(self.vehicle, self.siloEndDetectionMarker, 
-                                                                        self.siloEndProximitySensorRange, 1)
+        self.siloEndProximitySensor = SingleBackwardLookingProximitySensorPack(self.vehicle, self.backMarkerNode, 
+                                                                    self.siloEndProximitySensorRange, 1)
+        local x, _, z = getWorldTranslation(self.backMarkerNode)
+        local dirX, _, dirZ = localDirectionToWorld(self.backMarkerNode, 0, 0, -1)
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        self.siloEndDetectionMarker = CpUtil.createNode("siloEndDetectionMarker", x, z, yRot)
     end
 
-
     --- Setup the silo controller, that handles the driving conditions and coordinations.
-	self.siloController = self.silo:setupLevelerTarget(self.vehicle, self, self.drivingForwardsIntoSilo)
+	self.siloController = self.silo:setupLevelerTarget(self.vehicle, self, self.siloEndDetectionMarker)
 
     if self.silo:isVehicleInSilo(self.vehicle) then 
         self:startDrivingIntoSilo()
@@ -150,9 +157,9 @@ end
 function AIDriveStrategyBunkerSilo:setAllStaticParameters()
     AIDriveStrategyCourse.setAllStaticParameters(self)
     Markers.setMarkerNodes(self.vehicle)
-    local _
-    _, self.frontMarkerDistance = Markers.getFrontMarkerNode(self.vehicle)
-    _, self.backMarkerDistance = Markers.getBackMarkerNode(self.vehicle)
+
+    self.frontMarkerNode, self.backMarkerNode, self.frontMarkerDistance, self.backMarkerDistance = 
+        Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
 
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 
@@ -178,6 +185,7 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
 end
 
 function AIDriveStrategyBunkerSilo:setSilo(silo)
+    ---@type CpBunkerSilo
 	self.silo = silo	
 end
 
@@ -254,6 +262,17 @@ function AIDriveStrategyBunkerSilo:getDriveData(dt, vX, vY, vZ)
     if self.vehicle:getIsAIPreparingToDrive() then 
         self:setMaxSpeed(0) --- Unfolding/folding
     end
+
+    if self.stopWithCompactedSilo and self.silo:getCompactionPercentage() >= 99 then 
+        self:debug("Stopping, as the silo is compacted.")
+        self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+    end
+
+    if not self.silo:canBeFilled() then 
+        self:debug("Stopping, as the silo state is no longer filling.")
+        self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
+    end
+
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
@@ -285,9 +304,9 @@ function AIDriveStrategyBunkerSilo:update(dt)
         if self.siloEndDetectionMarker ~= nil then
             DebugUtil.drawDebugNode(self.siloEndDetectionMarker, "siloEndDetectionMarker", false, 1)
         end
-        local frontMarkerNode, backMarkerNode = Markers.getMarkerNodes(self.vehicle)
-        DebugUtil.drawDebugNode(frontMarkerNode, "FrontMarker", false, 1)
-        DebugUtil.drawDebugNode(backMarkerNode, "BackMarker", false, 1)
+
+        DebugUtil.drawDebugNode(self.frontMarkerNode, "FrontMarker", false, 1)
+        DebugUtil.drawDebugNode(self.backMarkerNode, "BackMarker", false, 1)
         if self.parkNode then 
             DebugUtil.drawDebugNode(self.parkNode, "ParkNode", true, 3)
         end
@@ -305,11 +324,17 @@ function AIDriveStrategyBunkerSilo:drive()
     if self.state == self.states.DRIVING_INTO_SILO then
 
         local _, _, closestObject = self.siloEndProximitySensor:getClosestObjectDistanceAndRootVehicle()
-        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndMarkerOffset())
-        if self.silo:isTheSameSilo(closestObject) or isEndReached then
-            self:debug("End wall detected or bunker silo end is reached.")
+        if self.silo:isTheSameSilo(closestObject) then
+            self:debug("End wall detected.")
             self:startDrivingOutOfSilo()
         end
+
+        local isEndReached, maxSpeed = self.siloController:isEndReached(self:getEndMarker(), self:getEndMarkerOffset())
+        if isEndReached then
+            self:debug("Bunker silo end is reached.")
+            self:startDrivingOutOfSilo()
+        end
+
         self:setMaxSpeed(maxSpeed)
 
         if self:isDrivingToParkPositionAllowed() then
@@ -372,13 +397,12 @@ function AIDriveStrategyBunkerSilo:getTemporaryBackCourseLength()
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarker()
-    local frontMarker, backMarker = Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
-    return self:isDriveDirectionReverse() and backMarker or frontMarker
+  
+    return self.siloEndDetectionMarker
 end
 
 function AIDriveStrategyBunkerSilo:getEndMarkerOffset()
-    --- While reverse driven, then the offset needs to be inverted, as end marker is rotated wrong.
-    return AIUtil.isReverseDriving(self.vehicle) and -self.endReachedOffset or self.endReachedOffset
+    return self.endReachedOffset
 end
 
 --- Gets the work width.
@@ -387,7 +411,7 @@ function AIDriveStrategyBunkerSilo:getWorkWidth()
 end
 
 function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
-    local course, firstWpIx = self:getDriveIntoSiloCourse()
+    local course, _ = self:getDriveIntoSiloCourse()
         
     local x, y, z = course:getWaypointPosition(1)
     local yRot = course:getWaypointYRotation(1)
@@ -398,7 +422,7 @@ function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
         setRotation(self.turnNode, 0, yRot + math.pi, 0)
     end
 
-    local path = PathfinderUtil.findAnalyticPath(self:getReedsSheppSolver(), self.vehicle:getAIDirectionNode(), 0, self.turnNode,
+    local path = PathfinderUtil.findAnalyticPath(ReedsSheppSolver(), self.vehicle:getAIDirectionNode(), 0, self.turnNode,
     0, 0, self.turningRadius)
     if not path or #path == 0 then
         self:debug('Could not find ReedsShepp path, skipping turn!')
@@ -411,30 +435,6 @@ function AIDriveStrategyBunkerSilo:startTransitionToNextLane()
         self.state = self.states.DRIVING_TURN
         self:debug("Started driving turn to next lane.")
     end
-end
-
-function AIDriveStrategyBunkerSilo:getReedsSheppSolver()
-
-    local forwardToReversePathWords = {
-    --    ReedsShepp.PathWords.LfRbLb,
-    --    ReedsShepp.PathWords.RfLbRb,
-    --    ReedsShepp.PathWords.LfRfLb, 
-     --   ReedsShepp.PathWords.RfLfRb,
-        ReedsShepp.PathWords.LfRufLubRb,
-        --LbRubLufRf = {},
-        ReedsShepp.PathWords.RfLufRubLb,
-        --RbLubRufLf = {},
-    }
-    
-    local reverseToForwardPathWords = {
-        ReedsShepp.PathWords.LbRfLf,
-        ReedsShepp.PathWords.RbLfRf,
-        ReedsShepp.PathWords.LbRbLf,
-        ReedsShepp.PathWords.RbLbRf,
-    }
-    
-    local pathWords = self:isDriveDirectionReverse() and forwardToReversePathWords or ReedsShepp.PathWords
-    return ReedsSheppSolver()
 end
 
 --- Starts driving into the silo.
@@ -666,3 +666,7 @@ function AIDriveStrategyBunkerSilo:onPathfindingDoneToParkPosition(path)
     end
 end
 
+---@param status CpStatus
+function AIDriveStrategyBunkerSilo:updateCpStatus(status)
+    status:setLevelSiloStatus(self.silo:getCompactionPercentage())
+end

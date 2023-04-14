@@ -28,4 +28,7 @@
 			</Texts>
 		</Setting>
 	</SettingSubTitle>
+	<SettingSubTitle title="stopWithCompactedSilo">
+		<Setting classType="AIParameterBooleanSetting" name="stopWithCompactedSilo" defaultBool="false" isDisabled="isCpActive"/>
+	</SettingSubTitle>
 </Settings>

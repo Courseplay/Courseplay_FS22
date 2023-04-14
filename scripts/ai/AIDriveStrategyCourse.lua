@@ -205,7 +205,7 @@ end
 ---@param class ImplementController
 ---@param spec table
 ---@param states table
----@param specReference string
+---@param specReference string|nil
 ---@return table last implement found.
 ---@return table last implement controller
 function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, states, specReference)

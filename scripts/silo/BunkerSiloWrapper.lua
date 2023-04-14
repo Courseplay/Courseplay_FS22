@@ -380,9 +380,11 @@ function CpBunkerSilo:draw()
 	for i, controller in pairs(self.controllers) do 
 		controller:draw()
 	end
+	if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
+		self:drawDebug()
+	end
 	if CpBunkerSilo.DRAW_DEBUG then
 		self:drawUnloaderArea()
-		self:drawDebug()
 
 		local x, z = self.sx + self.dirXWidth * self.width/2 + self.dirXLength * 2, self.sz + self.dirZWidth * self.width/2 + self.dirZLength * 2
 		local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z) + 2
@@ -394,6 +396,21 @@ function CpBunkerSilo:draw()
 	end
 end
 
+--- Gets the compaction percentage in 0-100
+---@return number
+function CpBunkerSilo:getCompactionPercentage()
+	return self.silo.compactedPercent
+end
+
+---@return boolean
+function CpBunkerSilo:canBeFilled()
+	return self.silo.state == BunkerSilo.STATE_FILL
+end
+
+---@return boolean
+function CpBunkerSilo:canBeEmptied()
+	return self.silo.state == BunkerSilo.STATE_DRAIN
+end
 
 --------------------------------------------------
 --- Vehicle controllers.
@@ -402,9 +419,10 @@ end
 --- Creates a controller for the vehicle.
 ---@param vehicle Vehicle
 ---@param driveStrategy AIDriveStrategyBunkerSilo
+---@param directionNode number
 ---@return CpBunkerSiloLevelerController
-function CpBunkerSilo:setupLevelerTarget(vehicle, driveStrategy)
-	self.controllers[vehicle.rootNode] = CpBunkerSiloLevelerController(self, vehicle, driveStrategy)
+function CpBunkerSilo:setupLevelerTarget(vehicle, driveStrategy, directionNode)
+	self.controllers[vehicle.rootNode] = CpBunkerSiloLevelerController(self, vehicle, driveStrategy, directionNode)
 	self.numControllers = self.numControllers + 1 
 	return self.controllers[vehicle.rootNode]
 end

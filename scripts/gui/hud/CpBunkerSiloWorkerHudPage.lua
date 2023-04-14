@@ -24,8 +24,8 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 	self.driveDirectionBtn:setCallback(callback, callback)             			
     
     --- Waiting at park position
-	local x, y = unpack(lines[2].left)
-	local xRight,_ = unpack(lines[2].right)
+	local x, y = unpack(lines[1].left)
+	local xRight,_ = unpack(lines[1].right)
 	self.waitAtBtn = CpHudTextSettingElement.new(self, x, y,
 										xRight, CpBaseHud.defaultFontSize)
 	local callback = {
@@ -36,7 +36,7 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
 	self.waitAtBtn:setCallback(callback, callback)             				
 	
     --- Work width
-    self.workWidthBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+    self.workWidthBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().bunkerSiloWorkWidth) 
 
     --- Goal button.
@@ -53,7 +53,17 @@ function CpBunkerSiloWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
         baseHud:openCourseGeneratorGui(vehicle)
     end)
 
-    CpGuiUtil.addCopyCourseBtn(self, baseHud, vehicle, lines, wMargin, hMargin, 1)
+    --- Bunker silo compaction percentage
+    local x, y = unpack(lines[3].left)
+	local xRight,_ = unpack(lines[3].right)
+	self.compactionPercentageBtn = CpHudTextSettingElement.new(self, x, y,
+										xRight, CpBaseHud.defaultFontSize)
+	local callback = {
+		callbackStr = "onClickPrimary",
+		class =  vehicle:getCpBunkerSiloWorkerJobParameters().stopWithCompactedSilo,
+		func =   vehicle:getCpBunkerSiloWorkerJobParameters().stopWithCompactedSilo.setNextItem,
+	}
+	self.compactionPercentageBtn:setCallback(callback, callback)             				
 end
 
 function CpBunkerSiloWorkerHudPageElement:update(dt)
@@ -61,6 +71,8 @@ function CpBunkerSiloWorkerHudPageElement:update(dt)
 	
 end
 
+---@param vehicle table
+---@param status CpStatus
 function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
    
 	local driveDirection = vehicle:getCpBunkerSiloWorkerJobParameters().drivingForwardsIntoSilo
@@ -77,7 +89,15 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
     self.workWidthBtn:setVisible(workWidth:getIsVisible())
 
-    CpGuiUtil.updateCopyBtn(self, vehicle, status)
+    local compactionText 
+    local stopWithCompactedSilo = vehicle:getCpBunkerSiloWorkerJobParameters().stopWithCompactedSilo
+    if stopWithCompactedSilo:getValue() then
+        compactionText = string.format("%s/99%%", status:getCompactionText(true))
+    else
+        compactionText = status:getCompactionText()
+    end
+    self.compactionPercentageBtn:setTextDetails(g_i18n:getText("CP_bunkerSilo_compactionPercentage"), compactionText)
+    self.compactionPercentageBtn:setDisabled(stopWithCompactedSilo:getIsDisabled())
 end
 
 function CpBunkerSiloWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
