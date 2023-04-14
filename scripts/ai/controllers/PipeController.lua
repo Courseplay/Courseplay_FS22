@@ -289,16 +289,20 @@ end
 function PipeController:instantUnfold(ignorePipeState)
     if self.pipeSpec.currentState ~= self.pipeSpec.targetState or 
         self.pipeSpec.currentState ~= PipeController.PIPE_STATE_OPEN or ignorePipeState then
+        --- First we need to unfold the implement and then open the pipe
         if self.foldableSpec.turnOnFoldDirection == -1 then
+            --- Unfolded direction is -1
             Foldable.setAnimTime(self.implement, 0, true)
         else 
             Foldable.setAnimTime(self.implement, 1, true)
         end
         if self.pipeSpec.hasMovablePipe then
+            --- After unfolding the implement, make sure the pipe gets unfolded.
             self.implement:updatePipeNodes(999999, nil)
             self.pipeSpec.targetState = 0
             self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
             self.implement:updatePipeNodes(999999, nil)
+            --- Close and open the pipe again, as sometimes this gets stuck...
             self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED, true)
             self.implement:updatePipeNodes(999999, nil)
             self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
@@ -318,6 +322,7 @@ function PipeController:resetFold(foldState, foldAnimTime, pipeState)
     if not self.pipeSpec.hasMovablePipe then
         --- Restoring the fold state
         Foldable.setAnimTime(self.implement, foldAnimTime, true)
+        --- Makes sure the fold state is correctly set.
         self.implement:setFoldDirection(-foldState, true)
         self.implement:setFoldDirection(foldState, true)
         return
@@ -325,6 +330,7 @@ function PipeController:resetFold(foldState, foldAnimTime, pipeState)
     if pipeState == PipeController.PIPE_STATE_CLOSED then
         --- Restoring the fold state
         Foldable.setAnimTime(self.implement, foldAnimTime, true)
+        --- Makes sure the fold state is correctly set.
         self.implement:setFoldDirection(-foldState, true)
         self.implement:setFoldDirection(foldState, true)
         --- Restoring the pipe position
