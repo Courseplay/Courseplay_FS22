@@ -297,6 +297,7 @@ end
 function CpBunkerSiloLevelerController:draw()
 	CpBunkerSiloVehicleController.draw(self)
 	if self:isDebugEnabled() then
+		self.silo:drawDebug()
 		self.silo:drawUnloaderArea()
 		if g_currentMission.controlledVehicle == self.vehicle then
 			local debugData = self.silo:getDebugData()

@@ -380,9 +380,6 @@ function CpBunkerSilo:draw()
 	for i, controller in pairs(self.controllers) do 
 		controller:draw()
 	end
-	if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
-		self:drawDebug()
-	end
 	if CpBunkerSilo.DRAW_DEBUG then
 		self:drawUnloaderArea()
 
