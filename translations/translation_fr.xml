@@ -92,9 +92,9 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Attente d'un déchargement:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="Dans le silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="Sur l'emplacement d'attente"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Arrêt à 99% de tassement"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Arrêt à 99% de tassement"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Tassement du silo:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
