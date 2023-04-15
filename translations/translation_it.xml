@@ -23,7 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posizione di scarico del campo è troppo lontano dal campo."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nessun silos trovato."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_no_heap_found" text="Nessun silos trovato."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -37,7 +37,7 @@
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_tooltip" text=""/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_tooltip" text=""/>
     <text name="CP_jobParameters_fieldPosition_title" text="Posizione del campo:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posizione silos:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Posizione bunker silos:"/>
     <text name="CP_jobParameters_parkPosition_title" text="Posizione parcheggio:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Iniziare da:"/>
     <text name="CP_jobParameters_startAt_title" text="Iniziare da:"/>
@@ -46,9 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="Dal primo punto - inizio"/>
     <text name="CP_jobParameters_startAt_last" text="Dall'ultimo punto lavorato"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Modalità bunker silos"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Modalità di caricamento del silo"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Modalità di caricamento del silos"/>
     <text name="CP_jobParameters_startAt_unload" text="Scarico mietitrebbia/trincia"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Scarica il caricatore al silo"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Scarica il caricatore al silos"/>
     <text name="CP_jobParameters_startAt_bales" text="Raccogliere/avvolgere balle"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Calibrazione corsia:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Calibrazione corsia:"/>
@@ -84,17 +84,17 @@
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direzione nel silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direzione nel silo:"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direzione nel bunker silos:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direzione nel bunker silos:"/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="In avanti"/>
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Inversione"/>
     <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="In attesa scarico:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="In attesa scarico:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="nel silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="nel bunker silos"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="in posizione di parcheggio"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Ferma al 99% di compattazione"/>"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Ferma al 99% di compattazione"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Compattazione bunker Silos:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
@@ -107,7 +107,7 @@
     <text name="CP_job_baleCollect" text="CP: Raccogli/Avvolgi balle"/>
     <text name="CP_job_combineUnload" text="CP: scarica mietitrebbia"/>
     <text name="CP_job_bunkerSilo" text="CP: Lavoro in silos"/>
-    <text name="CP_job_siloLoader" text="CP: Caricamento del silo"/>
+    <text name="CP_job_siloLoader" text="CP: Caricamento del silos"/>
     <text name="CP_ai_page_generate_course" text="[CP] Genera percorso di lavoro"/>
     <text name="CP_ai_page_open_course_generator" text="[CP] Apri/Chiudi menù"/>
     <!---->
@@ -177,7 +177,7 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Impostazioni del lavoratore del silos"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Impostazioni del lavoratore del bunker silo"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Larghezza di lavoro"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Larghezza di lavoro. Valore: 0 - 50"/>
     <!---->
@@ -437,7 +437,7 @@ Nuovo con questa iterazione di CP è il lavoro sul campo della vite.
 I percorsi sul campo possono essere impostati in modalità multiattrezzi, che consente l'utilizzo di un massimo di 5 conducenti che lavorano in un convoglio sullo stesso campo.
 È anche possibile far scaricare automaticamente la mietitrebbia in un rimorchio su/vicino al campo.
 È possibile assegnare bordi di campo personalizzati da utilizzare, ad esempio: nel caso di un prato, che non è riconosciuto come campo normale.
-Infine CP ha un'interfaccia per Autodrive, che consente il riempimento di una seminatrice in un silo vicino o lo scarico di un carro e così via.
+Infine CP ha un'interfaccia per Autodrive, che consente il riempimento di una seminatrice in un silos vicino o lo scarico di un carro e così via.
 
 Per ulteriori informazioni, visita il nostro github: https://github.com/Courseplay/Courseplay_FS22 .
 Lì puoi ottenere aiuto o segnalare qualsiasi problema che hai riscontrato.
@@ -621,7 +621,7 @@ Avvolgere le balle è molto semplice. Carica un percorso della tua pressa e iniz
 inizia con l'avvolgimento/raccolta delle balle dall'HUD o dal menu IA.
 "/>
     <text name="CP_help_page_wrapFunction_text" text="
-Quando si utilizza un percorso, l'assistente guida con un offset preimpostato in modo che il ritiro delle balle da avvolgere si trovino nel mezzo del percorso.
+Quando si utilizza un percorso, l'assistente guida con una compensazione preimpostata in modo che il ritiro delle balle da avvolgere si trovino nel mezzo del percorso.
 Senza una rotta, Courseplay scansiona il campo alla ricerca di balle da scartare e usa la ricerca percorso per trovare un modo per
 la balla più vicina da avvolgere.
 La retromarcia automatica se una balla è davanti al veicolo o se siamo troppo vicini al bordo del campo dovrebbe prevenire incidenti.
@@ -774,23 +774,23 @@ Inoltre, per i rimorchi è necessario selezionare un lato ribaltabile.
 "/>
     <text name="CP_help_page_bunker_title" text="Lavoratore del silos bunker"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay è in grado di compattare o distribuire la pula in un silo bunker o spingere la pula in un silo a cuneo.
+Courseplay è in grado di compattare o distribuire la pula in un silos bunker o spingere la pula in un silos a cuneo.
 La compattazione è possibile senza alcun attrezzo speciale, con un rullo, un peso o solo il veicolo.
 Per la distribuzione, ci sono strumenti speciali. (ad es. der Fliegel DUO).
 Per i silos a cuneo, viene utilizzato uno scudo per spingere la pula sul retro del silo.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-Se il veicolo ha un distributore o uno scudo collegato, la modalità Silo è preselezionata. Con solo un peso o un rullo attaccato
+Se il veicolo ha un distributore o uno scudo collegato, la modalità Silos è preselezionata. Con solo un peso o un rullo attaccato
 si passa dal punto di partenza finché non viene visualizzata la modalità.
-Oltre alla larghezza di lavoro, è possibile selezionare anche la direzione in cui il conducente deve entrare nel silo. Con uno scudo attaccato, la direzione viene selezionata automaticamente.
-Usa l'icona del bersaglio sull'HUD per selezionare il silo sulla mappa AI. Se verrà mostrato con linee blu e si illuminerà di bianco se è selezionato.
+Oltre alla larghezza di lavoro, è possibile selezionare anche la direzione in cui il conducente deve entrare nel silos. Con uno scudo attaccato, la direzione viene selezionata automaticamente.
+Usa l'icona del bersaglio sull'HUD per selezionare il silos sulla mappa AI. Se verrà mostrato con linee blu e si illuminerà di bianco se è selezionato.
 La posizione di parcheggio viene impostata con l'indicatore &quot;posizione di parcheggio&quot; che può essere utilizzato anche per guidare lì con l'aiutante della Giants
 prima di iniziare il lavoro vero e proprio.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Caricamento del silo"/>
+    <text name="CP_help_page_siloLoader_title" text="Caricamento del silos"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
 Con questo lavoro è possibile caricare da cumuli sopra o vicino al campo.
-Inoltre è possibile caricare da un silo bunker.
+Inoltre è possibile caricare da un silos bunker.
 Il caricatore può essere scaricato con uno scaricatore Courseplay.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
