@@ -92,7 +92,7 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="In attesa scarico:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="nel bunker silos"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="in posizione di parcheggio"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Ferma al 99% di compattazione"/>"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Ferma al 99% di compattazione"/>
     <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Ferma al 99% di compattazione"/>
     <text name="CP_bunkerSilo_compactionPercentage" text="Compattazione bunker Silos:"/>
     <!---->
