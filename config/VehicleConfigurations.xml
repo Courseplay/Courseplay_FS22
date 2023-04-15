@@ -312,7 +312,7 @@ You can define the following custom settings:
              ignoreCollisionBoxesWhenFolded = "true"
     />
     <Vehicle name="wrapper7850C.xml"
-             baleCollectorOffset = "1.3"
+             baleCollectorOffset = "1.6"
     />
     <Vehicle name="pw10012.xml"
              noReverse = "true"
