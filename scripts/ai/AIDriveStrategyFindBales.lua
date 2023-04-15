@@ -376,7 +376,7 @@ function AIDriveStrategyFindBales:onPathfindingDoneToNextBale(path, goalNodeInva
         else
             self:info('Pathfinding failed three times, giving up')
             self.pathfinderFailureCount = 0
-            self.vehicle:stopCurrentAIJob(AIMessageErrorUnknown.new())
+            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
         end
         return false
     end
