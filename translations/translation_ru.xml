@@ -14,7 +14,7 @@
     <text name="CP_unit_meter" text="м"/>
     <text name="CP_unit_foot" text="ft"/>
     <text name="CP_copy" text="Копировать курс: "/>
-    <text name="CP_infoText" text="CoursePlay(%s): За помощью, для отправки отчета об ошибках или исправлениях, пожалуйста, посетите: https://github.com/Courseplay/Courseplay_FS22."/>
+    <text name="CP_infoText" text="CoursePlay(%s): Обратиться за помощью, отправить отчет об ошибках или исправлениях, можете посетив: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Создайте курс до начала работы."/>
     <text name="CP_error_could_not_generate_course" text="Не удалось сгенерировать курс. В логе может содержаться дополнительная информация."/>
     <text name="CP_error_not_on_field" text="Цель не на поле."/>
@@ -23,7 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Разгружающий Giants не доступен."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Положение выгрузки слишком далеко от поля."/>
     <text name="CP_error_no_bunkerSilo_found" text="Силосную яму не найдено."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_no_heap_found" text="Не найдена куча."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -46,9 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="начальной точки"/>
     <text name="CP_jobParameters_startAt_last" text="последней путевой точки"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="работы в силосной яме"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="работы с кучами"/>
     <text name="CP_jobParameters_startAt_unload" text="разгрузки комбайна"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="разгрузки выгружающего на кучу"/>
     <text name="CP_jobParameters_startAt_bales" text="сбора/обмотки тюков"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Смещение проходов:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Смещение проходов:"/>
@@ -70,14 +70,14 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Разгрузка: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Разгрузка:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Комбайн"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Загрузчик"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Разгружающий Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Использовать разгрузку на поле:"/>
     <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Позиция разгрузки на поле:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Сторона разгрузки прицепа:"/>
@@ -92,14 +92,14 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Ожидать разгружающего:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="в яме"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="на парковке"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Остановиться при уровне прессования 99%"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Остановиться при уровне прессования 99%"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Трамбование кучи:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Позиция загрузки"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Позиция загрузки"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -107,7 +107,7 @@
     <text name="CP_job_baleCollect" text="CP: Сбор/обмотка тюков"/>
     <text name="CP_job_combineUnload" text="CP: Разгрузка комбайна"/>
     <text name="CP_job_bunkerSilo" text="CP: Работа в силосной яме"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_siloLoader" text="CP: Загрузка из кучи"/>
     <text name="CP_ai_page_generate_course" text="CP: Сгенерировать курс"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Откр/закр. генератор курсов"/>
     <!---->
@@ -786,16 +786,16 @@ Courseplay способен прессовать или распределять
 Позиция для парковке устанавливается маркером &quot;позиция парковки&quot; которую также можно использовать для движения туда помощником Giants, 
 прежде чем начать реальную работу.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="Загрузка из кучи"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
-Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
+С помощью этого режима можно загрузить из кучи на поле или возле него.
+Кроме того, можно загружать из силосной ямы.
+Погрузчик может грузить в Courseplay-разгрузчика.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
-The marker detects heaps or silos and highlights them on the map.
-Now it's possible to start the helper.
+Чтобы начать необходимо установить погрузочный маркер в меню ИИ.
+Маркер обнаруживает кучи или бункеры и выделяет их на карте.
+Теперь можно запускать помощника.
 "/>
     <!---->
     <!--Input bindings-->
