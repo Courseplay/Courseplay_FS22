@@ -40,7 +40,7 @@
 			<Text language="en"><![CDATA[Courseplay(%s): For help, bug reports or patch notes, please visit: https://github.com/Courseplay/Courseplay_FS22.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_course">
-			<Text language="de"><![CDATA[Erstelle zuerst einen Kurs vor dem Starten.]]></Text>
+			<Text language="de"><![CDATA[Erstelle einen Kurs vor dem Starten des Jobs.]]></Text>
 			<Text language="en"><![CDATA[Generate a course before starting the job.]]></Text>
 		</Translation>
 		<Translation name="CP_error_could_not_generate_course">
@@ -64,7 +64,7 @@
 			<Text language="en"><![CDATA[Giants unloader not available.]]></Text>
 		</Translation>
 		<Translation name="CP_error_fieldUnloadPosition_too_far_away_from_field">
-			<Text language="de"><![CDATA[Feld Abladeposition ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="de"><![CDATA[Feldabladeposition ist zu weit vom Feld entfernt.]]></Text>
 			<Text language="en"><![CDATA[Field unload position is too far away from the field.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_bunkerSilo_found">
@@ -72,8 +72,8 @@
 			<Text language="en"><![CDATA[No silo found.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_heap_found">
-			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
-			<Text language="en"><![CDATA[No silo found.]]></Text>
+			<Text language="de"><![CDATA[Keinen Haufen gefunden.]]></Text>
+			<Text language="en"><![CDATA[No heap found.]]></Text>
 		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
@@ -118,11 +118,11 @@
 			<Text language="en"><![CDATA[Field position:]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_bunkerSiloPosition_title">
-			<Text language="de"><![CDATA[Silo Position:]]></Text>
+			<Text language="de"><![CDATA[Siloposition:]]></Text>
 			<Text language="en"><![CDATA[Silo position:]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_parkPosition_title">
-			<Text language="de"><![CDATA[Park Position:]]></Text>
+			<Text language="de"><![CDATA[Parkposition:]]></Text>
 			<Text language="en"><![CDATA[Park position:]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_subTitle_startAt">
@@ -150,23 +150,23 @@
 			<Text language="en"><![CDATA[last waypoint]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bunkerSilo">
-			<Text language="de"><![CDATA[Bunkersilo Modus]]></Text>
+			<Text language="de"><![CDATA[Bunkersilo-Modus]]></Text>
 			<Text language="en"><![CDATA[Bunker silo mode]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_siloLoader">
-			<Text language="de"><![CDATA[Silo laden Modus]]></Text>
+			<Text language="de"><![CDATA[Silo laden]]></Text>
 			<Text language="en"><![CDATA[Silo load mode]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload">
-			<Text language="de"><![CDATA[Entlade Drescher]]></Text>
+			<Text language="de"><![CDATA[Drescher entladen]]></Text>
 			<Text language="en"><![CDATA[unload combine]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_unload_siloLoader">
-			<Text language="de"><![CDATA[Entlade Silo lader]]></Text>
+			<Text language="de"><![CDATA[Silolader entladen]]></Text>
 			<Text language="en"><![CDATA[Unload Silo loader]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_startAt_bales">
-			<Text language="de"><![CDATA[Sammel/Wickel Ballen]]></Text>
+			<Text language="de"><![CDATA[Ballen sammeln/wickeln]]></Text>
 			<Text language="en"><![CDATA[collecting/wrapping bales]]></Text>
 		</Translation>
 		<Translation name="CP_jobParameters_subTitle_laneOffset">
@@ -270,7 +270,7 @@
 			<Text language="en"><![CDATA[Field unloading position:]]></Text>
 		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_unloadingTipSide_title">
-			<Text language="de"><![CDATA[Anhänger Abladeseite:]]></Text>
+			<Text language="de"><![CDATA[Abladeseite Anhänger:]]></Text>
 			<Text language="en"><![CDATA[Trailer tip side:]]></Text>
 		</Translation>
 	</Category>
@@ -308,15 +308,15 @@
 			<Text language="en"><![CDATA[at park position]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title">
-			<Text language="de"><![CDATA[Stoppen bei 99% verdichtet]]></Text>
+			<Text language="de"><![CDATA[Stoppen bei 99% Verdichtung]]></Text>
 			<Text language="en"><![CDATA[Stop at 99% compaction]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo">
-			<Text language="de"><![CDATA[Stoppen bei 99% verdichtet]]></Text>
+			<Text language="de"><![CDATA[Stoppen bei 99% Verdichtung]]></Text>
 			<Text language="en"><![CDATA[Stop at 99% compaction]]></Text>
 		</Translation>
 		<Translation name="CP_bunkerSilo_compactionPercentage">
-			<Text language="de"><![CDATA[Silo Verdichtung:]]></Text>
+			<Text language="de"><![CDATA[Siloverdichtung:]]></Text>
 			<Text language="en"><![CDATA[Silo compaction:]]></Text>
 		</Translation>		
 	</Category>
@@ -340,7 +340,7 @@
 			<Text language="en"><![CDATA[CP: Bale collect/wrap]]></Text>
 		</Translation>
 		<Translation name="CP_job_combineUnload">
-			<Text language="de"><![CDATA[CP: Entlade Drescher]]></Text>
+			<Text language="de"><![CDATA[CP: Drescher entladen]]></Text>
 			<Text language="en"><![CDATA[CP: Unload Combine]]></Text>
 		</Translation>
 		<Translation name="CP_job_bunkerSilo">
@@ -352,11 +352,11 @@
 			<Text language="en"><![CDATA[CP: Silo loading]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_generate_course">
-			<Text language="de"><![CDATA[CP: Generiere Feldkurs.]]></Text>
+			<Text language="de"><![CDATA[CP: Feldkurs generieren.]]></Text>
 			<Text language="en"><![CDATA[CP: Generate fieldwork course.]]></Text>
 		</Translation>
 		<Translation name="CP_ai_page_open_course_generator">
-			<Text language="de"><![CDATA[CP: Öffne/Schließe Kursgenerator.]]></Text>
+			<Text language="de"><![CDATA[CP: Kursgenerator öffnen/schließen.]]></Text>
 			<Text language="en"><![CDATA[CP: Open/close course generator.]]></Text>
 		</Translation>
 	</Category>
@@ -564,8 +564,8 @@
 			<Text language="en"><![CDATA[If the unloader's fill level is over this value, it won't wait for the combine]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_useAdditiveFillUnit_title">
-			<Text language="de"><![CDATA[Siliermittel überwachen.]]></Text>
-			<Text language="en"><![CDATA[Check for silage additive.]]></Text>
+			<Text language="de"><![CDATA[Siliermittel überwachen]]></Text>
+			<Text language="en"><![CDATA[Check for silage additive]]></Text>
 		</Translation>
 		<Translation name="CP_vehicle_setting_useAdditiveFillUnit_tooltip">
 			<Text language="de"><![CDATA[Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt.]]></Text>
@@ -1114,7 +1114,7 @@
 			<Text language="en"><![CDATA[Player mouse event]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip">
-			<Text language="de"><![CDATA[Aktiviert/Deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs.]]></Text>
+			<Text language="de"><![CDATA[Aktiviert/deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs.]]></Text>
 			<Text language="en"><![CDATA[Enables/disables the player mouse event for the info text display outside of a vehicle.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_preferCustomFields_title">
@@ -1126,7 +1126,7 @@
 			<Text language="en"><![CDATA[Prefer custom field if there is also a regular field at the selected position.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_distanceUnit_title">
-			<Text language="de"><![CDATA[Distanz Einheit]]></Text>
+			<Text language="de"><![CDATA[Distanzeinheit]]></Text>
 			<Text language="en"><![CDATA[Distance unit]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_distanceUnit_tooltip">
@@ -1156,7 +1156,7 @@
 			<Text language="en"><![CDATA[temporary course]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_change_mode">
-			<Text language="de"><![CDATA[Ändere Modus]]></Text>
+			<Text language="de"><![CDATA[Modus ändern]]></Text>
 			<Text language="en"><![CDATA[Change mode]]></Text>
 		</Translation>
 		<Translation name="CP_courseManager_load_courses">
@@ -1272,7 +1272,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Deletes all waypoints until the last waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_yesNo_deleteToLastWp_title">
-			<Text language="de"><![CDATA[Sollen wirklich alle Wegpunkte bis zu letzten gelöscht werden?]]></Text>
+			<Text language="de"><![CDATA[Sollen wirklich alle Wegpunkte bis zum letzten gelöscht werden?]]></Text>
 			<Text language="en"><![CDATA[Are you sure, that all waypoint till the last one should be deleted?]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_err">
@@ -1985,7 +1985,7 @@ Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten erledigt werden
 Die erste Möglichkeit wäre, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer fährt den Kurs ab.
 Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davonrollen.
 Hier sorgt der Job "CP: Ballen sammeln/wickeln" für Abhilfe, dieser braucht keinen Kurs.
-Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit "Sammel/Wickel Ballen", oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
+Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit "Ballen sammeln/wickeln", oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
 Der Zähler im HUD zeigt die noch auf dem Feld verbleibenden Ballen seit dem letzten Scan an. Das Scannen nach Ballen findet nur zu bestimmten Zeitpunkten statt, bei denen es nötig ist nach Ballen zu suchen, um die Performance zu schonen.
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2275,12 +2275,12 @@ Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
 Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
 Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
 - Es muss ein Überladewagen oder maximal ein Anhänger angekuppelt sein.
-- Mit dem Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay Drescher auf dem Feld werden dann abgetankt.
+- Mit dem Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay-Drescher auf dem Feld werden dann abgetankt.
 - Gestartet werden kann der Abfahrer wenn er direkt auf dem Feld ist oder sehr nahe zur Feldgrenze steht.
 
-Es gibt nur wenige Einstellungen zur Feineinstellung:
+Es gibt nur wenige Optionen zur Feineinstellung:
 - Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
-- Offsets im HUD, falls das Rohr des Dreschers den Abfahrer zum überladen nicht trifft.
+- Offsets im HUD, falls das Rohr des Dreschers den Abfahrer zum Überladen nicht trifft.
 
 ]]></Text>
 			<Text language="en"><![CDATA[
@@ -2306,11 +2306,11 @@ is to avoid waiting for a combine to call with a trailer almost full.
 		</Translation>
 		<Translation name="CP_help_page_unloaderTrailer_text">
 			<Text language="de"><![CDATA[
-Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
+Wird ein Anhänger zum Abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
 - Giants Helfer:
-  1) Starten über das AI Menü mit der aktiven Option Giants Helfer nutzen oder im HUD starten mit aktivem Lenkrad Knopf.
-  2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktiven Lenkrad sichtbar.
-- AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
+  1) Starten über das Helfermenü mit der aktiven Option "Giants Ablader benutzen" oder im HUD starten mit aktivem Lenkrad-Knopf.
+  2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktivem Lenkrad sichtbar.
+- AutoDrive: Funktioniert wie mit einem Ladewagen. Schaue dir dazu AutoDrive-Tutorials an.
 ]]></Text>
 			<Text language="en"><![CDATA[
 If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
@@ -2369,30 +2369,30 @@ With some trailers the tip side can be switched between the back and the grain d
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_bunker_title">
-			<Text language="de"><![CDATA[Bunker Silo Arbeiter]]></Text>
+			<Text language="de"><![CDATA[Bunkersilo Arbeiter]]></Text>
 			<Text language="en"><![CDATA[Bunker silo worker]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_bunkerGeneral_text">
 			<Text language="de"><![CDATA[
-Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo bis zum Ende zu schieben.
-Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht, oder nur dem Fahrzeug.
-Zum Verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO aus dem Modhub).
-Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Silo zu schieben.
+Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen oder in einem Keilsilo bis zum Ende zu schieben.
+Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht oder nur dem Fahrzeug.
+Zum Verteilen gibt es spezielle Geräte, wie z.B. den Fliegl DUO aus dem Modhub.
+Für Keilsilos wird ein Schild benutzt, um das Häckselgut nach hinten in das Silo zu schieben.
 ]]></Text>
 			<Text language="en"><![CDATA[
 Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
 Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
+For distribution, there are special tools (e.g. Fliegl DUO).
 For wedge silos, a shield is used to push the chaff to the back of the silo.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_bunkerBasic_text">
 			<Text language="de"><![CDATA[
-Für einen Verteiler oder Schild gibt es nur den Bunker Silo Modus.
-Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
- - Ebenfalls muss die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
-Mit dem Zielknopf im HUD, wird auf der AI Karte der Bunker ausgewählt. 
-Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
+Für einen Verteiler oder Schild gibt es nur den Bunkersilo-Modus.
+Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunkersilo-Modus gewechselt.
+Ebenfalls kann die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
+Mit dem Zielknopf im HUD wird auf der Helferkarte der Bunker ausgewählt. 
+Der ausgewählte Bunkerumriss auf der Karte wird dann weiß.
 Die Parkposition wird mit dem Marker "Parkposition" gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
 Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
 ]]></Text>
@@ -2402,7 +2402,7 @@ you toggle through the starting point until the mode appears.
 Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
 the direction is selected automatically.
 Use the target icon on the HUD to select the silo on the AI Map. It will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker "parking position" wich can also be used to drive there with the Giants helper
+The parking position is set with the marker "parking position" which can also be used to drive there with the Giants helper
 before starting the actual work.
 ]]></Text>
 		</Translation>
@@ -2414,10 +2414,10 @@ before starting the actual work.
 			<Text language="de"><![CDATA[
 Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
 Ebenfalls ist es möglich damit Silos zu entleeren.
-Der Lader kann durch einen Courseplay Abfahrer entladen werden.
-Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer standard Position aus und lädt den Haufen auf.
+Der Lader kann durch einen Courseplay-Abfahrer entladen werden.
+Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer Standardposition aus und lädt den Haufen auf.
 Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position des Arms wie gewohnt einstellen und den Fahrer wieder starten.
-Bedenkt dabei, dass das automatische abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
+Bedenkt dabei, dass das automatische Abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
 ]]></Text>
 			<Text language="en"><![CDATA[
 You can use this job with a Ropa Maus or similar to pick up heaps on or near the field and unload into a Courseplay unloader.
@@ -2430,7 +2430,7 @@ Keep in mind that the automatic unloading with CP goes in the same direction as 
 		</Translation>
 		<Translation name="CP_help_page_siloLoaderBasic_text">
 			<Text language="de"><![CDATA[
-Als erstes muss auf der AI Menü Karte der Lade-Marker gesetzt werden.
+Als erstes muss auf der Helferkarte der Lade-Marker gesetzt werden.
 Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
 Anschließend kann der Helfer gestartet werden.
 ]]></Text>
@@ -2444,64 +2444,64 @@ Now it's possible to start the helper.
 	</Category>
 	<Category name="Input bindings">	
 		<Translation name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS">
-			<Text language="de"><![CDATA[CP: Nächsten Debugkanal auswählen.]]></Text>
-			<Text language="en"><![CDATA[CP: Select next debug channel.]]></Text>
+			<Text language="de"><![CDATA[CP: Nächsten Debugkanal auswählen]]></Text>
+			<Text language="en"><![CDATA[CP: Select next debug channel]]></Text>
 		</Translation>
 		<Translation name="input_CP_DBG_CHANNEL_SELECT_NEXT">
-			<Text language="de"><![CDATA[CP: Vorherigen Debugkanal auswählen.]]></Text>
-			<Text language="en"><![CDATA[CP: Select previous debug channel.]]></Text>
+			<Text language="de"><![CDATA[CP: Vorherigen Debugkanal auswählen]]></Text>
+			<Text language="en"><![CDATA[CP: Select previous debug channel]]></Text>
 		</Translation>
 		<Translation name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT">
-			<Text language="de"><![CDATA[CP: Aktuellen Debugkanal aktivieren/deaktivieren.]]></Text>
-			<Text language="en"><![CDATA[CP: Change current debug channel.]]></Text>
+			<Text language="de"><![CDATA[CP: Aktuellen Debugkanal ein-/ausschalten]]></Text>
+			<Text language="en"><![CDATA[CP: Change current debug channel]]></Text>
 		</Translation>
 		<Translation name="input_CP_DBG_CHANNEL_MENU_VISIBILITY">
-			<Text language="de"><![CDATA[CP: Zeige Debugkanäle-Menü ja/nein.]]></Text>
-			<Text language="en"><![CDATA[CP: Shows debug channel menu yes/no.]]></Text>
+			<Text language="de"><![CDATA[CP: Debugkanäle-Menü anzeigen/ausblenden]]></Text>
+			<Text language="en"><![CDATA[CP: Show/hide debug channel menu]]></Text>
 		</Translation>
 		<Translation name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY">
-			<Text language="de"><![CDATA[CP: Öffne Mini-GUI]]></Text>
+			<Text language="de"><![CDATA[CP: Mini-GUI öffnen]]></Text>
 			<Text language="en"><![CDATA[CP: Open mini GUI]]></Text>
 		</Translation>
 		<Translation name="input_CP_START_STOP">
-			<Text language="de"><![CDATA[CP: Starte/Stoppe CP-Helfer]]></Text>
+			<Text language="de"><![CDATA[CP: CP-Helfer starten/stoppen]]></Text>
 			<Text language="en"><![CDATA[CP: Start/stop driver]]></Text>
 		</Translation>
 		<Translation name="input_CP_CHANGE_STARTING_POINT">
-			<Text language="de"><![CDATA[CP: Ändert den Startpunkt]]></Text>
-			<Text language="en"><![CDATA[CP: Changes starting point]]></Text>
+			<Text language="de"><![CDATA[CP: Startpunkt ändern]]></Text>
+			<Text language="en"><![CDATA[CP: Change starting point]]></Text>
 		</Translation>
 		<Translation name="input_CP_CLEAR_COURSE">
-			<Text language="de"><![CDATA[CP: Löscht den geladen Kurs]]></Text>
-			<Text language="en"><![CDATA[CP: Clears currently loaded course]]></Text>
+			<Text language="de"><![CDATA[CP: Aktuell geladenen Kurs löschen]]></Text>
+			<Text language="en"><![CDATA[CP: Clear currently loaded course]]></Text>
 		</Translation>
 		<Translation name="input_CP_CHANGE_COURSE_VISIBILITY">
-			<Text language="de"><![CDATA[CP: Ändert die Kurs Sichtbarkeit]]></Text>
-			<Text language="en"><![CDATA[CP: Toggles the course visibility]]></Text>
+			<Text language="de"><![CDATA[CP: Kurs Sichtbarkeit ändern]]></Text>
+			<Text language="en"><![CDATA[CP: Toggle course visibility]]></Text>
 		</Translation>
 		<Translation name="input_CP_TOGGLE_MOUSE">
 			<Text language="de"><![CDATA[CP: Mauszeiger an/aus]]></Text>
 			<Text language="en"><![CDATA[CP: Mouse cursor on/off]]></Text>
 		</Translation>
 		<Translation name="input_CP_OPEN_CLOSE_HUD">
-			<Text language="de"><![CDATA[CP: Öffne/Schließe HUD]]></Text>
-			<Text language="en"><![CDATA[CP: Open/close hud]]></Text>
+			<Text language="de"><![CDATA[CP: HUD öffnen/schließen]]></Text>
+			<Text language="en"><![CDATA[CP: Open/close HUD]]></Text>
 		</Translation>
 		<Translation name="input_CP_OPEN_VEHICLE_SETTINGS">
-			<Text language="de"><![CDATA[CP: Öffnet Fahrzeugeinstellungen]]></Text>
-			<Text language="en"><![CDATA[CP: Opens vehicle settings]]></Text>
+			<Text language="de"><![CDATA[CP: Fahrzeugeinstellungen öffnen]]></Text>
+			<Text language="en"><![CDATA[CP: Open vehicle settings]]></Text>
 		</Translation>
 		<Translation name="input_CP_OPEN_GLOBAL_SETTINGS">
-			<Text language="de"><![CDATA[CP: Öffnet globale Einstellungen]]></Text>
-			<Text language="en"><![CDATA[CP: Opens global settings]]></Text>
+			<Text language="de"><![CDATA[CP: Globale Einstellungen öffnen]]></Text>
+			<Text language="en"><![CDATA[CP: Open global settings]]></Text>
 		</Translation>
 		<Translation name="input_CP_OPEN_COURSEGENERATOR_SETTINGS">
-			<Text language="de"><![CDATA[CP: Öffnet Kursgenerator/Jobmenü]]></Text>
+			<Text language="de"><![CDATA[CP: Kursgenerator/Jobmenü öffnen]]></Text>
 			<Text language="en"><![CDATA[CP: Open course generator/job menu]]></Text>
 		</Translation>
 		<Translation name="input_CP_OPEN_COURSEMANAGER">
-			<Text language="de"><![CDATA[CP: Öffnet Kursmanager]]></Text>
-			<Text language="en"><![CDATA[CP: Opens course manager]]></Text>
+			<Text language="de"><![CDATA[CP: Kursmanager öffnen]]></Text>
+			<Text language="en"><![CDATA[CP: Open course manager]]></Text>
 		</Translation>
 	</Category>
 </Translations>
