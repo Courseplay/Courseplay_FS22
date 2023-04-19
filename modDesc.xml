@@ -83,22 +83,22 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen 
 - Modbeschreibung aktualisiert
 - Nutze Vorgewende
 - Arbeite auf nicht rechteckigen Feldern
-- Arbeite um Feldinseln(z.b. Strommasten) umher
-- Speicher die generierten Kurse von z.b. einem Drescher ab, um diese zum Aufsammeln mit einem Ladewagen oder einer Ballenpresse zu nutzen.
-- Sammel/wickel Ballen automatisch auf einem Feld.
+- Arbeite um Feldinseln (z.B. Strommasten) umher
+- Speichere die generierten Kurse von z.B. einem Drescher ab, um diese zum Aufsammeln mit einem Ladewagen oder einer Ballenpresse zu nutzen.
+- Ballen auf einem Feld automatisch sammeln oder wickeln
 - Arbeite auf und zwischen den Weinreben
 - Lasse bis zu 5 Helfer auf dem gleichen Feld in einer Gruppe zusammenarbeiten
-- Lasse dein Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
-- Drescher abtanken mit Trailer oder Überladewagen.
+- Lasse deinen Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
+- Drescher abtanken mit Anhänger oder Überladewagen.
 - Erstelle deine eigenen Felder, wo immer du möchtest
-- Arbeitet super mit Autodrive zusammen, lasse Courseplay die Feldarbeit erledigen und
-Autodrive erledigt das abtanken eines Ladewagen oder auffüllen einer Sähmaschine.
-- Verändere die generierten Kurse mit dem Kurseditor .
-- Im Bunker-Silo schieben und verdichten.
+- Arbeitet super mit AutoDrive zusammen, lasse Courseplay die Feldarbeit erledigen und
+AutoDrive erledigt das Abtanken eines Ladewagens oder Auffüllen einer Sämaschine.
+- Verändere die generierten Kurse mit dem Kurseditor.
+- Im Bunkersilo schieben und verdichten.
 
-Für mehr Informationen, Hilfe oder Fehlermeldung schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
+Für mehr Informationen, Hilfe oder Fehlermeldungen schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
-Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug reports, Feedback und Vorschläge zur Verbesserung.
+Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
 
 Changelog 7.2.0.5:
 - Göweil Pack Fehler gefixt, wenn das Courseplay HUD im Fahrzeug aktiv ist.
