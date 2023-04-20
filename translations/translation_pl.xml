@@ -21,9 +21,9 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Pomocnik SI rozładowujący za daleko pola."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Pozycja startowa zbyt daleko pola."/>
     <text name="CP_error_giants_unloader_not_available" text="Pomocnik SI Giantsa rozładowujący niedostępny."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Stanowisko rozładunku pola jest zbyt oddalone od pola."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Pozycja rozładunku na polu jest zbyt daleko pola."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nie znaleziono silosu."/>
-    <text name="CP_error_no_heap_found" text="Nie znaleziono sterty."/>
+    <text name="CP_error_no_heap_found" text="Nie znaleziono pryzmy."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -46,9 +46,9 @@
     <text name="CP_jobParameters_startAt_first" text="Pierwszego punkt trasy"/>
     <text name="CP_jobParameters_startAt_last" text="Ostatni punkt trasy"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Tryb silosu bunkrowego"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Tryb załadunku silosu"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Tryb załadunku pryzmy"/>
     <text name="CP_jobParameters_startAt_unload" text="Rozładunku kombajnu/sieczkarni"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Rozładowanie ładowacza silosu"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Rozładunku załadowującego"/>
     <text name="CP_jobParameters_startAt_bales" text="Zbierania/Owijania bel"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Przesunięcie linii:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Przesunięcie linii:"/>
@@ -73,14 +73,14 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Rozładuj: "/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Rozładuj:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Kombajn"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Ładowacz"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Załadunkowego"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Pomocnik SI Giantsa rozładowujący:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Użyj pomocnika SI Giantsa rozładowującego:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Miejsce rozładunku:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Rozładowacz Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Pomocnik SI Giantsa rozładowujący:"/>
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Użyj rozładunku na polu:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Pozycja do rozładunku na polu:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Strona wyładunku przyczepy:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Pozycja rozładunku na polu:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Strona kiprowania przyczepy:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -92,9 +92,9 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Oczekiwanie na wyładowującego:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="W silosie"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="Na pozycji postojowej"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Zatrzymanie przy 99% zagęszczeniu"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Zatrzymanie przy 99% zagęszczeniu"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Zagęszczanie silosów:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Zatrzymaj przy zagęszczeniu 99%"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Zatrzymaj przy zagęszczeniu 99%"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Zagęszczenie pryzmy:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
@@ -107,7 +107,7 @@
     <text name="CP_job_baleCollect" text="CP: Zbieranie/Owijanie bel"/>
     <text name="CP_job_combineUnload" text="CP: Rozładunek kombajnu"/>
     <text name="CP_job_bunkerSilo" text="CP: Silos bunkrowy"/>
-    <text name="CP_job_siloLoader" text="CP: Załadunek silosu"/>
+    <text name="CP_job_siloLoader" text="CP: Załadunek pryzmy"/>
     <text name="CP_ai_page_generate_course" text="CP: Wygeneruj kurs pracy polowej"/>
     <text name="CP_ai_page_open_course_generator" text="CP: Otwórz/Zamknij generator kursu"/>
     <!---->
@@ -117,7 +117,7 @@
     <text name="CP_ai_messageError" text="Pomocnik SI %s niespodziewanie przerwał pracę - opuścił kurs!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono ścieżki!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Pracownik AI %s niespodziewanie zakończył pracę - rozładunek na polu niemożliwy!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Pomocnik SI  %s niespodziewanie przerwał pracę - rozładunek na polu niemożliwy!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -406,7 +406,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_errorStopped" text="Opuścił kurs, zatrzymał się"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Nie można wykonać rozładunku na ziemię"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Kiprowanie na ziemię niemożliwe"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -421,8 +421,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_customFieldManager_save" text="Zapisz nowe pole"/>
     <text name="CP_controllerGui_startRecording" text="Rozpocznij nagrywanie nowego pola."/>
     <text name="CP_controllerGui_stopRecording" text="Zakończ nagrywanie nowego pola."/>
-    <text name="CP_controllerGui_pauseRecording" text="Wstrzymaj nagrywanie niestandardowych pól."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Wznów nagrywanie niestandardowych pól."/>
+    <text name="CP_controllerGui_pauseRecording" text="Wstrzymaj nagrywanie nowego pola."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Wznów nagrywanie nowego pola."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -738,7 +738,7 @@ Dostępnych jest tylko kilka ustawień, które możesz zmienić:
   uniknięcie czekania na kombajn z prawie pełną przyczepą.
 - Możesz użyć przesunięć w HUD, aby dostosować pozycję pomocnika rozładowującego pod rurą kombajnu.
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Używanie przyczep"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
 Jeśli używasz zwykłej przyczepy do rozładunku, istnieją dwa sposoby transportu zbiorów do silosu lub punktu sprzedaży: Pracownik SI z gry lub AutoDrive.
 Możesz użyć menu AI i utworzyć zadanie, a następnie aktywować funkcję Pomocnika SI i cel rozładunku na
@@ -747,7 +747,7 @@ W tym drugim przypadku musisz wybrać stację rozładunkową po tym, jak ikona k
 
 Opróżnianie przyczepy za pomocą AutoDrive działa tak samo, jak korzystanie z przyczepy samozbierającej, sprawdź samouczki AutoDrive w Internecie.
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="Używanie wozów przeładunkowych"/>
     <text name="CP_help_page_unloaderAuger_text" text="
 Wozy przeładunkowe są bardzo proste w użyciu.
 Podobnie jak w przypadku przyczep, za pomocą ikony celu wybierasz pole, na którym chcesz rozładować kombajn.
@@ -756,14 +756,14 @@ Jeśli wóz przeładunkowy jest pełen, automatycznie szuka przyczepy na polu lu
 W przypadku, gdy przyczepa jest pełna, a wóz przeładunkowy nadal nie jest pusty, szuka innej przyczepy do rozładunku.
 Jeśli nie ma w pobliżu żadnej wolnej przyczepy, będzie ona nadal rozładowywać kombajn.
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="Rozładunek na polu"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+Pozycja rozładunku może zostać wybrana poprzez znacznik rozładunku.
+Pozycja ta musi być na tym samym polu lub blisko jego krawędzi.
+Jeżeli znacznik jest ustawiony na istniejącej pryzmie, 
+wtedy zostanie ona użyta do rozładunku.
+Kierunek znacznika ustala kierunek rozładunku.
+Dodatkowo można ubrać stronę kiprowania przyczepy.
 "/>
     <text name="CP_help_page_bunker_title" text="Pracownik silosu bunkrowego"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
@@ -781,16 +781,16 @@ Użyj ikony 'celu' na HUD, aby wybrać silos na mapie AI. Jeśli zostanie zaznac
 Pozycję parkowania ustawia się za pomocą znacznika &quot;pozycja parkowania&quot; którego można również użyć, aby pojechać tam z pracownikiem SI
 przed rozpoczęciem właściwej pracy.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="Załadunek pryzmy"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-Przy użyciu tego zadania możliwe jest ładowanie z kopczyków na polu lub w pobliżu niego.
-Dodatkowo możliwe jest ładowanie ze silosu bunkrowego.
-Ładowacz można rozładować za pomocą rozładowywacza Courseplay.
+W tym trybie możliwy jest załadunek pryzmy na polu lub w jego pobliżu.
+Dodatkowo można załadować pryzmę z silosu bunkrowego.
+Załadunkowy możne zostać rozładowany poprzez rozładunkowego Courseplay.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-Aby rozpocząć marker ładowania, należy ustawić go w menu AI.
-Marker wykrywa kopczyki lub silosy i podświetla je na mapie.
-Teraz można uruchomić pomocnika.
+Aby rozpocząć załadunek, punkt załadunkowy musi zostać ustawiony w menu SI.
+Znacznik wykrywa pryzmę lub silos i podświetla to na mapie.
+Terze możesz rozpocząć pracę pomocnika.
 "/>
     <!---->
     <!--Input bindings-->
