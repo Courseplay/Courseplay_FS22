@@ -1272,8 +1272,8 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Deletes all waypoints until the last waypoint.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_yesNo_deleteToLastWp_title">
-			<Text language="de"><![CDATA[Sollen wirklich alle Wegpunkte bis zum letzten gelöscht werden?]]></Text>
-			<Text language="en"><![CDATA[Are you sure, that all waypoint till the last one should be deleted?]]></Text>
+			<Text language="de"><![CDATA[Sollen wirklich alle Wegpunkte bis zum Letzten gelöscht werden?]]></Text>
+			<Text language="en"><![CDATA[Are you sure, that all waypoints till the last one should be deleted?]]></Text>
 		</Translation>
 		<Translation name="CP_editor_delete_err">
 			<Text language="de"><![CDATA[Zu wenige Wegpunkte übrig.]]></Text>
@@ -1321,7 +1321,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 		</Translation>
 		<Translation name="CP_editor_course_advanced_changeTurn_err">
 			<Text language="de"><![CDATA[Zu nahe zu einem weiteren Wendepunkt.]]></Text>
-			<Text language="en"><![CDATA[To close to another turning point.]]></Text>
+			<Text language="en"><![CDATA[Too close to another turning point.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_title">
 			<Text language="de"><![CDATA[Mehrere Wegpunkte bewegen]]></Text>
@@ -1329,7 +1329,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_primary_text">
 			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und bewegt diese zusammen mit allen Wegpunkten dazwischen.]]></Text>
-			<Text language="en"><![CDATA[Selects two waypoint and moves these with all the waypoints in between.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoints and moves these with all the waypoints in between.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_moveExtended_secondary_text">
 			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
@@ -1341,7 +1341,7 @@ The course is saved automatically on closing of the editor and overrides the sel
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_primary_text">
 			<Text language="de"><![CDATA[Wählt zwei Wegpunkte aus und fügt dann mehrere Wegpunkte ein, die als Kurve erstellt werden.]]></Text>
-			<Text language="en"><![CDATA[Selects two waypoint and adds some waypoints in between as a curve.]]></Text>
+			<Text language="en"><![CDATA[Selects two waypoints and adds some waypoints in between as a curve.]]></Text>
 		</Translation>
 		<Translation name="CP_editor_course_advanced_curveInsert_secondary_text">
 			<Text language="de"><![CDATA[Setzt die Auswahl der Wegpunkte zurück.]]></Text>
@@ -1527,11 +1527,11 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="en"><![CDATA[Stop custom field recording.]]></Text>
 		</Translation>
 		<Translation name="CP_controllerGui_pauseRecording">
-			<Text language="de"><![CDATA[Pausiert die Feldrandaufnahme.]]></Text>
+			<Text language="de"><![CDATA[Pausieren der Feldrandaufnahme.]]></Text>
 			<Text language="en"><![CDATA[Pause custom field recording.]]></Text>
 		</Translation>
 		<Translation name="CP_controllerGui_unpauseRecording">
-			<Text language="de"><![CDATA[Fortsetzten der Feldrandaufnahme.]]></Text>
+			<Text language="de"><![CDATA[Fortsetzen der Feldrandaufnahme.]]></Text>
 			<Text language="en"><![CDATA[Unpause custom field recording.]]></Text>
 		</Translation>
 	</Category>
@@ -1559,7 +1559,7 @@ Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich 
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
-Ab Version 7.2.1.0 ist es auch Möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand ab zu legen.
+Ab Version 7.2.1.0 ist es auch möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand abzulegen.
 
 Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
