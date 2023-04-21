@@ -100,6 +100,17 @@ function CpAIParameterPosition:getPositionType()
 	return self.positionType
 end
 
+--- Is the Position within 1m distance?
+---@param otherPosition CpAIParameterPosition
+---@return boolean
+function CpAIParameterPosition:isAlmostEqualTo(otherPosition)
+	local x, z = otherPosition:getPosition()
+	if x ~= nil and self.x ~= nil then
+		return MathUtil.vector2Length(self.x - x, self.z - z)	<= 1
+	end
+	return false
+end
+
 --- Position with angle in the AI Menu.
 ---@class CpAIParameterPositionAngle : CpAIParameterPosition
 CpAIParameterPositionAngle = CpObject(CpAIParameterPosition)
@@ -212,6 +223,18 @@ end
 
 function CpAIParameterPositionAngle:getValue()
 	return self.x, self.z, self.angle
+end
+
+--- Is the Position within 1m distance and angle within 1° degree?
+---@param otherPosition CpAIParameterPositionAngle
+---@return boolean
+function CpAIParameterPositionAngle:isAlmostEqualTo(otherPosition)
+	local angle = otherPosition.getAngle and otherPosition:getAngle()
+	if angle ~= nil and self.angle ~= nil then
+		return math.deg(MathUtil.getAngleDifference(angle, self.angle)) < 1 
+			and CpAIParameterPosition.isAlmostEqualTo(self, otherPosition)
+	end
+	return false
 end
 
 function CpAIParameterPositionAngle:getString()

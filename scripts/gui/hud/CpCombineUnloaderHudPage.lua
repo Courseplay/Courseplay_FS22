@@ -1,9 +1,16 @@
 --- CombineUnloader Hud page
----@class CpCombineUnloaderHudPageElement : CpHudElement
-CpCombineUnloaderHudPageElement = {}
+---@class CpCombineUnloaderHudPageElement : CpHudPageElement
+CpCombineUnloaderHudPageElement = {
+    copyCache = nil
+}
 local CpCombineUnloaderHudPageElement_mt = Class(CpCombineUnloaderHudPageElement, CpHudPageElement)
 
 function CpCombineUnloaderHudPageElement.new(overlay, parentHudElement, customMt)
+    ---@class CpCombineUnloaderHudPageElement : CpHudPageElement
+    ---@field copyButton CpHudButtonElement
+    ---@field pasteButton CpHudButtonElement
+    ---@field clearCacheBtn CpHudButtonElement
+    ---@field copyCacheText CpTextHudElement
     local self = CpHudPageElement.new(overlay, parentHudElement, customMt or CpCombineUnloaderHudPageElement_mt)
     return self
 end
@@ -11,15 +18,15 @@ end
 function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
     
     --- Tool offset x
-	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
+	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
 												vehicle:getCpSettings().toolOffsetX)
 
     --- Tool offset z
-    self.toolOffsetZBtn = baseHud:addLineTextButton(self, 1, CpBaseHud.defaultFontSize, 
+    self.toolOffsetZBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().toolOffsetZ)
 
     --- Full threshold 
-    self.fullThresholdBtn = baseHud:addLineTextButton(self, 3, CpBaseHud.defaultFontSize, 
+    self.fullThresholdBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().fullThreshold)              
 
     --- Giants unloading station
@@ -75,11 +82,38 @@ function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, 
     self.goalBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         baseHud:openCourseGeneratorGui(vehicle)
     end)
+
+    CpGuiUtil.addCopyAndPasteButtons(self, baseHud, 
+        vehicle, lines, wMargin, hMargin, 1)
+
+    self.copyButton:setCallback("onClickPrimary", vehicle, function (vehicle)
+        if not CpBaseHud.copyPasteCache.hasVehicle and vehicle.getCpCombineUnloaderJob then 
+            CpBaseHud.copyPasteCache.combineUnloaderVehicle = vehicle
+            CpBaseHud.copyPasteCache.hasVehicle = true
+        end
+    end)
+
+
+    self.pasteButton:setCallback("onClickPrimary", vehicle, function (vehicle)
+        if CpBaseHud.copyPasteCache.hasVehicle and not vehicle:getIsCpActive() then 
+            if CpBaseHud.copyPasteCache.combineUnloaderVehicle then 
+                vehicle:applyCpCombineUnloaderJobParameters(CpBaseHud.copyPasteCache.combineUnloaderVehicle:getCpCombineUnloaderJob())
+            else 
+                local parameters = CpBaseHud.copyPasteCache.siloLoaderVehicle:getCpSiloLoaderWorkerJobParameters()
+                vehicle:getCpCombineUnloaderJobParameters().fieldUnloadPosition:copy(parameters.loadPosition)
+            end
+        end
+    end)
+
+    self.clearCacheBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
+        CpBaseHud.copyPasteCache.hasVehicle = false
+        CpBaseHud.copyPasteCache.siloLoaderVehicle = nil 
+        CpBaseHud.copyPasteCache.combineUnloaderVehicle = nil
+    end)
 end
 
 function CpCombineUnloaderHudPageElement:update(dt)
 	CpCombineUnloaderHudPageElement:superClass().update(self, dt)
-	
 end
 
 function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
@@ -114,6 +148,62 @@ function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
     end
     self.driveNowBtn:setDisabled(not vehicle:getIsCpActive())
     self.driveNowBtn:setVisible(vehicle:getIsCpActive())   
+
+    --- Update copy and paste buttons
+    self:updateCopyButtons(vehicle)
+
+end
+
+function CpCombineUnloaderHudPageElement:updateCopyButtons(vehicle)
+    if CpBaseHud.copyPasteCache.hasVehicle then 
+        local copyCacheVehicle, arePositionEqual
+        if CpBaseHud.copyPasteCache.combineUnloaderVehicle then 
+            copyCacheVehicle = CpBaseHud.copyPasteCache.combineUnloaderVehicle
+            arePositionEqual = self:arePositionEqual(vehicle:getCpCombineUnloaderJobParameters(), 
+                copyCacheVehicle:getCpCombineUnloaderJobParameters())
+        else
+            copyCacheVehicle = CpBaseHud.copyPasteCache.siloLoaderVehicle
+            local loadPosition = copyCacheVehicle:getCpSiloLoaderWorkerJobParameters().loadPosition
+            local unloadPosition = vehicle:getCpCombineUnloaderJobParameters().fieldUnloadPosition
+            arePositionEqual = unloadPosition:isAlmostEqualTo(loadPosition)
+        end
+        local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(copyCacheVehicle)
+        local text = CpUtil.getName(copyCacheVehicle)
+        if fieldNum then 
+            text = string.format("%s(%s)", text, fieldNum)
+        end
+        self.copyCacheText:setTextDetails(text)
+        self.clearCacheBtn:setVisible(true)
+        self.pasteButton:setVisible(true)
+        self.copyButton:setVisible(false)
+        if vehicle:getIsCpActive() or arePositionEqual then 
+            self.copyCacheText:setTextColorChannels(unpack(CpBaseHud.OFF_COLOR))
+            self.pasteButton:setColor(unpack(CpBaseHud.OFF_COLOR))
+            self.pasteButton:setDisabled(true)
+        else 
+            self.copyCacheText:setTextColorChannels(unpack(CpBaseHud.WHITE_COLOR))
+            self.pasteButton:setColor(unpack(CpBaseHud.ON_COLOR))
+            self.pasteButton:setDisabled(false)
+        end
+    else
+        self.copyCacheText:setTextDetails("")
+        self.clearCacheBtn:setVisible(false)
+        self.pasteButton:setVisible(false)
+        self.copyButton:setVisible(true)
+    end
+end
+
+function CpCombineUnloaderHudPageElement:arePositionEqual(parameters, otherParameters)
+    if not parameters.fieldUnloadPosition:isAlmostEqualTo(otherParameters.fieldUnloadPosition) then 
+        return false
+    end 
+    if not parameters.startPosition:isAlmostEqualTo(otherParameters.startPosition) then 
+        return false
+    end
+    if not parameters.fieldPosition:isAlmostEqualTo(otherParameters.fieldPosition) then 
+        return false
+    end
+    return true 
 end
 
 function CpCombineUnloaderHudPageElement:isStartingPointBtnDisabled(vehicle)

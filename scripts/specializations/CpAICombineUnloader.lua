@@ -11,6 +11,9 @@ CpAICombineUnloader.NAME = ".cpAICombineUnloader"
 CpAICombineUnloader.SPEC_NAME = CpAICombineUnloader.MOD_NAME .. CpAICombineUnloader.NAME
 CpAICombineUnloader.KEY = "."..CpAICombineUnloader.MOD_NAME..CpAICombineUnloader.NAME
 
+--- Register all active unloaders here to access them fast.
+CpAICombineUnloader.activeUnloaders = {}
+
 function CpAICombineUnloader.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     local key = "vehicles.vehicle(?)" .. CpAICombineUnloader.KEY
@@ -72,10 +75,13 @@ function CpAICombineUnloader.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, 'onLoadFinished', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onReadStream', CpAICombineUnloader)
     SpecializationUtil.registerEventListener(vehicleType, 'onWriteStream', CpAICombineUnloader)
+    SpecializationUtil.registerEventListener(vehicleType, 'onPreDelete', CpAICombineUnloader)
 end
 
 function CpAICombineUnloader.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpCombineUnloader", CpAICombineUnloader.startCpCombineUnloader)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpCombineUnloader", CpAICombineUnloader.stopCpCombineUnloader)
+
     SpecializationUtil.registerFunction(vehicleType, "startCpCombineUnloaderUnloading", CpAICombineUnloader.startCpCombineUnloaderUnloading)
 
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpCombineUnloader", CpAICombineUnloader.getCanStartCpCombineUnloader)
@@ -127,6 +133,10 @@ end
 function CpAICombineUnloader:onWriteStream(streamId, connection)
     local spec = self.spec_cpAICombineUnloader
     spec.cpJob:writeStream(streamId, connection)
+end
+
+function CpAICombineUnloader:onPreDelete()
+    CpAICombineUnloader.activeUnloaders[self.id] = nil
 end
 
 function CpAICombineUnloader:getCpCombineUnloaderJobParameters()
@@ -210,39 +220,17 @@ function CpAICombineUnloader:startCpAtLastWp(superFunc)
     end
 end
 
---- Custom version of AIFieldWorker:startFieldWorker()
-function CpAICombineUnloader:startCpCombineUnloader(...)
-    --- Calls the giants startFieldWorker function.
-    self:startFieldWorker()
-    if self.isServer then 
-        --- Replaces drive strategies.
-        CpAICombineUnloader.replaceDriveStrategies(self, ...)
-    end
+function CpAICombineUnloader:startCpCombineUnloader(jobParameters)
+    local strategy = AIDriveStrategyUnloadCombine.new()
+    strategy:setJobParameterValues(jobParameters)
+    strategy:setAIVehicle(self)
+    self:startCpWithStrategy(strategy)
+    CpAICombineUnloader.activeUnloaders[self.id] = self
 end
 
--- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse to take care of
--- field work.
-function CpAICombineUnloader:replaceDriveStrategies(jobParameters)
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP combine unload job, start the CP AI driver, setting up drive strategies...')
-    local spec = self.spec_aiFieldWorker
-    if spec.driveStrategies ~= nil then
-        for i = #spec.driveStrategies, 1, -1 do
-            spec.driveStrategies[i]:delete()
-            table.remove(spec.driveStrategies, i)
-        end
-        spec.driveStrategies = {}
-    end
-	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Combine unload job, install CP drive strategy for it')
-    local cpDriveStrategy = AIDriveStrategyUnloadCombine.new()
-    cpDriveStrategy:setJobParameterValues(jobParameters)
-    CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self)
-    self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
-    --- TODO: Correctly implement this strategy.
-	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
-    driveStrategyCollision:setAIVehicle(self)
-    table.insert(spec.driveStrategies, driveStrategyCollision)
-    --- Only the last driving strategy can stop the helper, while it is running.
-    table.insert(spec.driveStrategies, cpDriveStrategy)
+function CpAICombineUnloader:stopCpCombineUnloader()
+    CpAICombineUnloader.activeUnloaders[self.id] = nil
+    self:stopCpDriver()
 end
 
 --- Forces the driver to unload now.

@@ -69,6 +69,8 @@ end
 
 function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     -- to always have a valid course (for the traffic conflict detector mainly)
+    self:startCourse(Course.createStraightForwardCourse(self.vehicle, 5, 0, nil), 1)
+
     self.jobParameters = jobParameters
 
     local x, z, dx, dz

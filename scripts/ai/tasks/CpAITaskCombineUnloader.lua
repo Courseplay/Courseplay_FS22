@@ -31,6 +31,6 @@ function CpAITaskCombineUnloader:stop()
 	CpAITaskCombineUnloader:superClass().stop(self)
 
 	if self.isServer then
-		self.vehicle:stopFieldWorker()
+		self.vehicle:stopCpCombineUnloader()
 	end
 end

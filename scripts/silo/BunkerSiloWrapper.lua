@@ -93,6 +93,11 @@ function CpSilo:getWidthDirection()
 	return self.dirXWidth, self.dirZWidth
 end
 
+function CpSilo:getCenter()
+	local cx, cz = self:getFrontCenter()
+	return cx + self.dirXLength * self.length/2, cz + self.dirZLength * self.length/2
+end
+
 function CpSilo:getFrontCenter()
 	local width = self:getWidth()
 	return self.sx + self.dirXWidth * width/2, self.sz + self.dirZWidth * width/2
@@ -145,6 +150,16 @@ function CpSilo:drawArea(area)
 	local y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, area[1].x, 0, area[1].z) + 2
 	DebugUtil.drawDebugAreaRectangle(area[1].x, y, area[1].z, area[2].x, y, area[2].z, area[4].x, y, area[4].z, false, 1, 0, 0)
 end
+
+--- Are the two silo overlapping 
+function CpSilo:isOverlappingWith(otherSilo)
+	if not otherSilo then 
+		return false
+	end
+	local cx, cz = otherSilo:getCenter()
+	return self:isPointInArea(cx, cz, self.area)
+end
+
 
 --- Heap Bunker Silo
 --- Wrapper for a heap.

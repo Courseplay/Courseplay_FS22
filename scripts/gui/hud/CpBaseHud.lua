@@ -102,6 +102,11 @@ CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
 CpBaseHud.copyText = g_i18n:getText("CP_copy")
 
 CpBaseHud.courseCache = nil
+CpBaseHud.copyPasteCache = {
+    siloLoaderVehicle = nil,
+    combineUnloaderVehicle = nil,
+    hasVehicle = false
+}
 
 function CpBaseHud.registerXmlSchema(xmlSchema, baseKey)
     xmlSchema:register(XMLValueType.FLOAT, baseKey..CpBaseHud.xmlKey.."#posX", "Hud position x.")
