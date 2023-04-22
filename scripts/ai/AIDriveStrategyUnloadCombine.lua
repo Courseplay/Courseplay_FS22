@@ -2149,7 +2149,7 @@ function AIDriveStrategyUnloadCombine:waitingUntilFieldUnloadIsAllowed()
         ---@type AIDriveStrategyUnloadCombine
         local strategy = unloader:getCpDriveStrategy()
         if strategy and strategy:isUnloadingOnTheField(true) then 
-            if self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then 
+            if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then 
                 self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
                 return 
             end

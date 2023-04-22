@@ -144,6 +144,16 @@ function CpJobParameters:__tostring()
     end
 end
 
+function CpJobParameters:areAlmostEqualTo(otherParameters)
+    for i, param in pairs(self.settings) do 
+        if not param:isAlmostEqualTo(otherParameters[param:getName()]) then 
+            CpUtil.debugFormat(CpDebug.DBG_HUD, "Parameter: %s not equal!", param:getName())
+            return false
+        end
+    end
+    return true
+end
+
 --- AI parameters for the bale finder job.
 ---@class CpBaleFinderJobParameters : CpJobParameters
 CpBaleFinderJobParameters = CpObject(CpJobParameters)
