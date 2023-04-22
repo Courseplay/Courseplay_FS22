@@ -29,8 +29,15 @@ function CpCombineUnloaderHudPageElement:setupElements(baseHud, vehicle, lines, 
     self.fullThresholdBtn = baseHud:addLineTextButton(self, 4, CpBaseHud.defaultFontSize, 
                                                 vehicle:getCpSettings().fullThreshold)              
 
+    
+    --- Unloading combine or silo loader ?
+    self.unloadModeBtn = baseHud:addLeftLineTextButton(self, 6, CpBaseHud.defaultFontSize, 
+                            function (vehicle)
+                                vehicle:getCpCombineUnloaderJobParameters().unloadTarget:setNextItem()
+                            end, vehicle)
+
     --- Giants unloading station
-    local x, y = unpack(lines[4].left)
+    local x, y = unpack(lines[5].left)
     self.giantsUnloadStationText = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)                 
     self.giantsUnloadStationText:setCallback("onClickPrimary", vehicle, 
     function(vehicle)
@@ -117,6 +124,11 @@ function CpCombineUnloaderHudPageElement:update(dt)
 end
 
 function CpCombineUnloaderHudPageElement:updateContent(vehicle, status)
+
+    self.unloadModeBtn:setDisabled(vehicle:getIsCpActive())
+    local text = vehicle:getCpCombineUnloaderJobParameters().unloadTarget:getString()
+    self.unloadModeBtn:setTextDetails(text)
+
     local toolOffsetX = vehicle:getCpSettings().toolOffsetX
     local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
     self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
@@ -206,14 +218,6 @@ function CpCombineUnloaderHudPageElement:arePositionEqual(parameters, otherParam
     return true 
 end
 
-function CpCombineUnloaderHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return vehicle:getIsCpActive()
-end
-
-function CpCombineUnloaderHudPageElement:getStartingPointBtnText(vehicle)
-    return vehicle:getCpCombineUnloaderJobParameters().unloadTarget:getString()
-end
-
-function CpCombineUnloaderHudPageElement:executeStartingPointBtnCallback(vehicle)
-    vehicle:getCpCombineUnloaderJobParameters().unloadTarget:setNextItem()
+function CpCombineUnloaderHudPageElement:isStartingPointBtnVisible()
+    return false
 end

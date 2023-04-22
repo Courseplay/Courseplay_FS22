@@ -98,6 +98,8 @@ AIDriveStrategyUnloadCombine.isACombineUnloadAIDriver = true
 -- reaches the last waypoint, and the logic in unloadAugerWagon() will move the rig to the exact position anyway.
 AIDriveStrategyUnloadCombine.unloadTargetOffset = 1.5
 
+--- Offset to apply at the goal marker, so we don't crash with an empty unloader waiting there with the same position.
+AIDriveStrategyUnloadCombine.invertedGoalPositionOffset = -4.5
 
 --- Field unload constants
 AIDriveStrategyUnloadCombine.siloAreaOffsetFieldUnload = 2
@@ -249,7 +251,7 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     if x ~= nil and z ~= nil and angle ~= nil then 
         --- Additionally safety check, if the position is on the field or near it.
         if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
-            or CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < CpAIJobCombineUnloader.minStartDistanceToField then
+            or CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2 * CpAIJobCombineUnloader.minStartDistanceToField then
             --- Goal position marker set in the ai menu rotated by 180 degree.
             self.invertedGoalPositionMarkerNode = CpUtil.createNode("Inverted goal position marker", 
                 x, z, angle + math.pi)
@@ -1750,7 +1752,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMark
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     self.pathfindingStartedAt = g_currentMission.time
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.invertedGoalPositionMarkerNode, 4.5,
+    self:startPathfinding(self.invertedGoalPositionMarkerNode, self.invertedGoalPositionOffset,
         -1.5*AIUtil.getLength(self.vehicle), fieldNum, nil, 
         self.onPathfindingDoneToInvertedGoalPositionMarker)
 end
@@ -1768,8 +1770,8 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMar
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local dx, _, dz = getWorldTranslation(self.invertedGoalPositionMarkerNode)
     
-        course:appended(Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-            0, 0, 0, 3, false))
+        course:append(Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
+            self.invertedGoalPositionOffset, 0, 0, 3, false))
         self:startCourse(course, 1)
      else 
         self:debug("Could not find a path to the goal position marker, pass over to the job!")

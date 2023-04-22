@@ -498,6 +498,10 @@ function CpBaseHud:updateContent(vehicle, status)
     if activeLayout.isStartingPointBtnDisabled then 
         self.startingPointBtn:setDisabled(activeLayout:isStartingPointBtnDisabled(vehicle))
     end
+    self.startingPointBtn:setVisible(true)
+    if activeLayout.isStartingPointBtnVisible then 
+        self.startingPointBtn:setVisible(activeLayout:isStartingPointBtnVisible(vehicle))
+    end
     self.startingPointBtn:setTextDetails(vehicle:getCpStartText())
     if activeLayout.getStartingPointBtnText then 
         self.startingPointBtn:setTextDetails(activeLayout:getStartingPointBtnText(vehicle))

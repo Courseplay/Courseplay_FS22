@@ -88,6 +88,9 @@ end
 
 --- Applies the current position to the map hotspot.
 function CpAIParameterPosition:applyToMapHotspot(mapHotspot)
+	if not self:getCanBeChanged() then 
+		return false
+	end
 	local x, z = self:getPosition()
 	if x ~= nil then
 		mapHotspot:setWorldPosition(x, z)
@@ -207,6 +210,9 @@ end
 
 --- Applies the current position and angle to the map hotspot.
 function CpAIParameterPositionAngle:applyToMapHotspot(mapHotspot)
+	if not self:getCanBeChanged() then 
+		return false
+	end
 	if self.angle ~=nil and CpAIParameterPosition.applyToMapHotspot(self, mapHotspot) then
 		mapHotspot:setWorldRotation(self.angle + math.pi)
 		return true

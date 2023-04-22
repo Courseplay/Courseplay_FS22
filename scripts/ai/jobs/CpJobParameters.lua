@@ -80,7 +80,7 @@ end
 function CpJobParameters:getAiTargetMapHotspotParameters()
     local parameters = {}
     for i, setting in ipairs(self.settings) do
-        if setting:is_a(CpAIParameterPosition) then
+        if setting:is_a(CpAIParameterPosition) or setting:is_a(CpAIParameterUnloadingStation) then
             table.insert(parameters, setting)
         end
     end
@@ -172,8 +172,9 @@ end
 
 --- AI parameters for the bale finder job.
 ---@class CpCombineUnloaderJobParameters : CpJobParameters
+---@field useGiantsUnload AIParameterBooleanSetting
+---@field useFieldUnload AIParameterBooleanSetting
 CpCombineUnloaderJobParameters = CpObject(CpJobParameters)
-
 
 function CpCombineUnloaderJobParameters:init(job)
     self.job = job
@@ -193,8 +194,17 @@ function CpCombineUnloaderJobParameters:isFieldUnloadDisabled()
     return self.useGiantsUnload:getValue()
 end
 
+function CpCombineUnloaderJobParameters:isUnloadStationSelectorDisabled()
+    return self:isGiantsUnloadDisabled() or not self.useGiantsUnload:getValue() 
+end
+
+function CpCombineUnloaderJobParameters:isFieldUnloadPositionSelectorDisabled()
+    return self:isFieldUnloadDisabled() or not self.useFieldUnload:getValue() 
+end
+
+
 function CpCombineUnloaderJobParameters:isFieldUnloadTipSideDisabled()
-    return self:isFieldUnloadDisabled() or self:hasPipe()
+    return self:isFieldUnloadDisabled() or self:hasPipe() or not self.useFieldUnload:getValue() 
 end
 
 

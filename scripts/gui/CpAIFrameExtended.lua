@@ -334,17 +334,24 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 					if job.getCpJobParameters ~= nil then
 						local parameters = job:getCpJobParameters():getAiTargetMapHotspotParameters()
 						for i, param in pairs(parameters) do 
-							if param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
-								if param:applyToMapHotspot(self.aiTargetMapHotspot) then 
-									g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+							if param:is_a(CpAIParameterPosition) then
+								if param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.DRIVE_TO then 
+									if param:applyToMapHotspot(self.aiTargetMapHotspot) then 
+										g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+									end
+								elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
+									if param:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot) then
+										g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
+									end
+								elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
+									if param:applyToMapHotspot(self.unloadAiTargetMapHotspot) then
+										g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+									end
 								end
-							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.FIELD_OR_SILO then 
-								if param:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot) then
-									g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
-								end
-							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
-								if param:applyToMapHotspot(self.unloadAiTargetMapHotspot) then
-									g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
+							elseif param:is_a(CpAIParameterUnloadingStation) then 
+								g_currentMission:removeMapHotspot(self.aiUnloadingMarkerHotspot)
+								if param:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
+									g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
 								end
 							end
 						end
@@ -562,26 +569,13 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 			element:updateTitle()
 
 			if parameterType == AIParameterType.UNLOADING_STATION then
-				local unloadingStation = parameter:getUnloadingStation()
-
-				if unloadingStation ~= nil then
-					local placeable = unloadingStation.owningPlaceable
-
-					if placeable ~= nil and placeable.getHotspot ~= nil then
-						local hotspot = placeable:getHotspot(1)
-
-						if hotspot ~= nil then
-							local x, z = hotspot:getWorldPosition()
-
-							self.aiUnloadingMarkerHotspot:setWorldPosition(x, z)
-							g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
-						end
-					end
+				if parameter:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
+					g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
 				end
 			elseif parameterType == AIParameterType.LOADING_STATION then
 				local loadingStation = parameter:getLoadingStation()
 
-				if loadingStation ~= nil then
+				if loadingStation ~= nil and parameter:getCanBeChanged() then
 					local placeable = loadingStation.owningPlaceable
 
 					if placeable ~= nil and placeable.getHotspot ~= nil then
