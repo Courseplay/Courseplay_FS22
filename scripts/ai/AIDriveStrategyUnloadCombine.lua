@@ -1421,11 +1421,7 @@ function AIDriveStrategyUnloadCombine:unloadStoppedCombine()
                 self:debug('Finished unloading combine at end of fieldwork, changing to unload course')
                 self.ppc:setNormalLookaheadDistance()
                 self:releaseCombine()
-                if self.unloadTargetType == self.UNLOAD_TYPES.SILO_LOADER then 
-                    self:setNewState(self.states.IDLE)
-                else
-                    self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
-                end
+                self:startMovingBackFromCombine(self.states.MOVING_BACK_WITH_TRAILER_FULL, self.combineJustUnloaded)
             else
                 self:driveBesideCombine()
             end
@@ -1511,6 +1507,12 @@ end
 -- Start moving back from empty combine
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadCombine:startMovingBackFromCombine(newState, combine)
+    if self.unloadTargetType == self.UNLOAD_TYPES.SILO_LOADER then 
+        --- Finished unloading of silo unloader. Moving back is not needed.
+        self:setNewState(self.states.IDLE)
+        return
+    end
+
     local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 15)
     self:startCourse(reverseCourse, 1)
     self:setNewState(newState)
