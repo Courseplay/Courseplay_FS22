@@ -256,7 +256,11 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
             self.invertedGoalPositionMarkerNode = CpUtil.createNode("Inverted goal position marker", 
                 x, z, angle + math.pi)
             self:debug("Valid goal position marker was set.")
-        end     
+        else
+            self:debug("Goal position is to far away from the field!")
+        end
+    else
+        self:debug("Invalid start position found!")
     end
     if jobParameters.useFieldUnload:getValue() then 
         local fieldUnloadPosition = jobParameters.fieldUnloadPosition
@@ -1761,7 +1765,7 @@ end
 ---@param path table
 ---@param goalNodeInvalid boolean
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMarker(path, goalNodeInvalid)
-    if self:isPathFound(path, goalNodeInvalid, "Field unload position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
+    if self:isPathFound(path, goalNodeInvalid, "Inverted goal position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
         self:debug("Found a path to the inverted goal position marker. Appending the missing straight segment.")
         self:setNewState(self.states.DRIVING_TO_INVERTED_GOAL_POSITION_MARKER)
         local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
