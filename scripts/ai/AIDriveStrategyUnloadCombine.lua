@@ -2063,7 +2063,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingOnField(controller, allowRev
     --- for reverse unloading or to make sure the pathfinding
     --- is not crossing the heap area.
     local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
-        self.fieldUnloadPositionNode, 0, 50, -10)
+        self.fieldUnloadPositionNode, 0, CpAIJobCombineUnloader.maxHeapLength, -10)
 
     if found and heapSilo then 
         --- Heap was found
@@ -2154,6 +2154,7 @@ function AIDriveStrategyUnloadCombine:waitingUntilFieldUnloadIsAllowed()
                     self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
                     return 
                 end
+
             end
         end
     end
@@ -2162,6 +2163,14 @@ end
 
 --- Called when the driver reaches the field unloading position.
 function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
+
+    --- Re-scan heap, as another unloader might have deformed it
+    local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
+        self.fieldUnloadPositionNode, 0, CpAIJobCombineUnloader.maxHeapLength, -10)
+    if found and heapSilo then 
+        self:updateFieldPositionByHeapSilo(heapSilo)
+    end
+
     if self.fieldUnloadData.isReverseUnloading then 
 
         --- Trying to unload at the back of the trailer.
@@ -2277,7 +2286,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadingFinished()
         --- after creating the heap for the first time.
         --- This makes sure that the park position doesn't cross the heap. 
         local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(
-            self.fieldUnloadPositionNode, 0, 50, -2)
+            self.fieldUnloadPositionNode, 0, CpAIJobCombineUnloader.maxHeapLength, -2)
     
         if found and heapSilo then 
             self:updateFieldPositionByHeapSilo(heapSilo)

@@ -5,6 +5,7 @@
 CpAIJobSiloLoader = {
 	name = "SILO_LOADER_CP",
 	jobName = "CP_job_siloLoader",
+	maxHeapLength = 150
 }
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobSiloLoader, CpAIJob)
 
@@ -141,7 +142,7 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 	if found then 
 		return true, bunkerSilo
 	end
-	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(node, 0, 50, -10)
+	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(node, 0, self.maxHeapLength, -10)
 	return found, nil, heapSilo
 end
 
