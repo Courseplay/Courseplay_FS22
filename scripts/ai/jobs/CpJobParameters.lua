@@ -144,6 +144,9 @@ function CpJobParameters:__tostring()
     end
 end
 
+--- Are the setting values roughly equal.
+---@param otherParameters CpJobParameters
+---@return boolean
 function CpJobParameters:areAlmostEqualTo(otherParameters)
     for i, param in pairs(self.settings) do 
         if not param:isAlmostEqualTo(otherParameters[param:getName()]) then 

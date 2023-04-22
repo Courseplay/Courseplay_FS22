@@ -1763,7 +1763,7 @@ function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMark
         self.onPathfindingDoneToInvertedGoalPositionMarker)
 end
 
---- Path to the field unloading position was found.
+--- Path to the goal position was found.
 ---@param path table
 ---@param goalNodeInvalid boolean
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMarker(path, goalNodeInvalid)
@@ -1772,7 +1772,7 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMar
         self:setNewState(self.states.DRIVING_TO_INVERTED_GOAL_POSITION_MARKER)
         local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 
-        --- Append straight alignment segment
+        --- Append a straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
         local dx, _, dz = localToWorld(self.invertedGoalPositionMarkerNode, self.invertedGoalPositionOffset, 0, 0)
     
@@ -1781,7 +1781,6 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMar
         self:startCourse(course, 1)
      else 
         self:debug("Could not find a path to the goal position marker, pass over to the job!")
-        --- The job instance decides if the job has to quit.
         self.vehicle:getJob():onTrailerFull(self.vehicle, self)
     end
 end
@@ -2149,12 +2148,13 @@ function AIDriveStrategyUnloadCombine:waitingUntilFieldUnloadIsAllowed()
         if unloader ~= self.vehicle then
             ---@type AIDriveStrategyUnloadCombine
             local strategy = unloader:getCpDriveStrategy()
-            if strategy and strategy:isUnloadingOnTheField(true) then 
-                if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then 
-                    self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
-                    return 
+            if strategy then
+                if strategy:isUnloadingOnTheField(true) then 
+                    if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then 
+                        self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
+                        return 
+                    end
                 end
-
             end
         end
     end

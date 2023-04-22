@@ -371,6 +371,7 @@ function CpAIWorker:onUpdate(dt)
         end
     end
     local spec = self.spec_cpAIWorker
+    --- TODO: Check if a tick delay should be used for performance similar to AIFieldWorker or not.
     if spec.driveStrategy then 
         --- Should drive all CP modes, except fieldwork here.
         spec.driveStrategy:update(dt)

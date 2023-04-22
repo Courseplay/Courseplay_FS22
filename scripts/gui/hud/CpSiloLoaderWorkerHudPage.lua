@@ -77,38 +77,44 @@ function CpSiloLoaderWorkerHudPageElement:updateContent(vehicle, status)
     self:updateCopyButtons(vehicle)
 end
 
+--- Updates the copy, paste and clear buttons.
 function CpSiloLoaderWorkerHudPageElement:updateCopyButtons(vehicle)
     if CpBaseHud.copyPasteCache.hasVehicle then 
-        local copyCacheVehicle, arePositionEqual
-        if CpBaseHud.copyPasteCache.siloLoaderVehicle then 
-            copyCacheVehicle = CpBaseHud.copyPasteCache.siloLoaderVehicle
-            arePositionEqual = self:arePositionEqual(vehicle:getCpSiloLoaderWorkerJobParameters(), 
-                copyCacheVehicle:getCpSiloLoaderWorkerJobParameters())
-        else
-            copyCacheVehicle = CpBaseHud.copyPasteCache.combineUnloaderVehicle
-            local unloadPosition = copyCacheVehicle:getCpCombineUnloaderJobParameters().fieldUnloadPosition
-            local loadPosition = vehicle:getCpSiloLoaderWorkerJobParameters().loadPosition
-            arePositionEqual = unloadPosition:isAlmostEqualTo(loadPosition)
-
-        end
+        self.clearCacheBtn:setVisible(true)
+        self.pasteButton:setVisible(true)
+        self.copyButton:setVisible(false)
+        local copyCacheVehicle = CpBaseHud.copyPasteCache.siloLoaderVehicle or CpBaseHud.copyPasteCache.combineUnloaderVehicle
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(copyCacheVehicle)
         local text = CpUtil.getName(copyCacheVehicle)
         if fieldNum then 
             text = string.format("%s(%s)", text, fieldNum)
         end
         self.copyCacheText:setTextDetails(text)
-        self.clearCacheBtn:setVisible(true)
-        self.pasteButton:setVisible(true)
-        self.copyButton:setVisible(false)
-        if vehicle:getIsCpActive() or arePositionEqual then 
-            self.copyCacheText:setTextColorChannels(unpack(CpBaseHud.OFF_COLOR))
-            self.pasteButton:setColor(unpack(CpBaseHud.OFF_COLOR))
-            self.pasteButton:setDisabled(true)
-        else 
-            self.copyCacheText:setTextColorChannels(unpack(CpBaseHud.WHITE_COLOR))
-            self.pasteButton:setColor(unpack(CpBaseHud.ON_COLOR))
-            self.pasteButton:setDisabled(false)
+        self.copyCacheText:setTextColorChannels(unpack(CpBaseHud.OFF_COLOR))
+        self.pasteButton:setColor(unpack(CpBaseHud.OFF_COLOR))
+        self.pasteButton:setDisabled(true)
+        if copyCacheVehicle == vehicle or vehicle:getIsCpActive() then 
+            --- Paste disabled
+            return
         end
+
+        local arePositionEqual
+        if CpBaseHud.copyPasteCache.siloLoaderVehicle then 
+            arePositionEqual = self:arePositionEqual(vehicle:getCpSiloLoaderWorkerJobParameters(), 
+                copyCacheVehicle:getCpSiloLoaderWorkerJobParameters())
+        else
+            local unloadPosition = copyCacheVehicle:getCpCombineUnloaderJobParameters().fieldUnloadPosition
+            local loadPosition = vehicle:getCpSiloLoaderWorkerJobParameters().loadPosition
+            arePositionEqual = unloadPosition:isAlmostEqualTo(loadPosition)
+
+        end
+        if arePositionEqual then 
+            --- Paste disabled
+            return
+        end
+        self.copyCacheText:setTextColorChannels(unpack(CpBaseHud.WHITE_COLOR))
+        self.pasteButton:setColor(unpack(CpBaseHud.ON_COLOR))
+        self.pasteButton:setDisabled(false)
     else
         self.copyCacheText:setTextDetails("")
         self.clearCacheBtn:setVisible(false)

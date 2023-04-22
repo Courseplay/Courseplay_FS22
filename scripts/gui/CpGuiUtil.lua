@@ -249,6 +249,7 @@ function CpGuiUtil.setCameraRotation(vehicle, enableRotation, savedRotatableInfo
 	end
 end
 
+--- Adds the copy/paste button line to the hud layout with copy,paste and clear button.
 ---@param layout table
 ---@param baseHud CpBaseHud
 ---@param vehicle table
