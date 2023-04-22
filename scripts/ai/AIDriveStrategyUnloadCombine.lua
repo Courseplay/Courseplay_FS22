@@ -1768,10 +1768,10 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMar
 
         --- Append straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
-        local dx, _, dz = getWorldTranslation(self.invertedGoalPositionMarkerNode)
+        local dx, _, dz = localToWorld(self.invertedGoalPositionMarkerNode, self.invertedGoalPositionOffset, 0, 0)
     
         course:append(Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-            self.invertedGoalPositionOffset, 0, 0, 3, false))
+            0, 0, 0, 3, false))
         self:startCourse(course, 1)
      else 
         self:debug("Could not find a path to the goal position marker, pass over to the job!")
