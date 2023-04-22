@@ -2146,12 +2146,14 @@ end
 function AIDriveStrategyUnloadCombine:waitingUntilFieldUnloadIsAllowed()
     self:setMaxSpeed(0)
     for _, unloader in pairs(CpAICombineUnloader.activeUnloaders) do 
-        ---@type AIDriveStrategyUnloadCombine
-        local strategy = unloader:getCpDriveStrategy()
-        if strategy and strategy:isUnloadingOnTheField(true) then 
-            if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then 
-                self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
-                return 
+        if unloader ~= self.vehicle then
+            ---@type AIDriveStrategyUnloadCombine
+            local strategy = unloader:getCpDriveStrategy()
+            if strategy and strategy:isUnloadingOnTheField(true) then 
+                if self.fieldUnloadData.heapSilo and self.fieldUnloadData.heapSilo:isOverlappingWith(strategy:getFieldUnloadHeap()) then 
+                    self:debug("Is waiting for unloader: %s", CpUtil.getName(unloader))
+                    return 
+                end
             end
         end
     end
