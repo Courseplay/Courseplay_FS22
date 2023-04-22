@@ -2169,6 +2169,7 @@ function AIDriveStrategyUnloadCombine:onFieldUnloadPositionReached()
         self.fieldUnloadPositionNode, 0, CpAIJobCombineUnloader.maxHeapLength, -10)
     if found and heapSilo then 
         self:updateFieldPositionByHeapSilo(heapSilo)
+        self.fieldUnloadData.heapSilo = heapSilo
     end
 
     if self.fieldUnloadData.isReverseUnloading then 
