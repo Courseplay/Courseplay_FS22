@@ -569,8 +569,27 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 			element:updateTitle()
 
 			if parameterType == AIParameterType.UNLOADING_STATION then
-				if parameter:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
-					g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
+				if parameter.applyToMapHotspot then
+					if parameter:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
+						g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
+					end
+				else 
+					local unloadingStation = parameter:getUnloadingStation()
+
+					if unloadingStation ~= nil then
+						local placeable = unloadingStation.owningPlaceable
+
+						if placeable ~= nil and placeable.getHotspot ~= nil then
+							local hotspot = placeable:getHotspot(1)
+
+							if hotspot ~= nil then
+								local x, z = hotspot:getWorldPosition()
+
+								self.aiUnloadingMarkerHotspot:setWorldPosition(x, z)
+								g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
+							end
+						end
+					end
 				end
 			elseif parameterType == AIParameterType.LOADING_STATION then
 				local loadingStation = parameter:getLoadingStation()
