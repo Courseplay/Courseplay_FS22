@@ -39,9 +39,13 @@ end
 
 function CpAIBaleFinder.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpBaleFinder", CpAIBaleFinder.startCpBaleFinder)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpBaleFinder", CpAIBaleFinder.stopCpBaleFinder)
 
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCpBaleFinder", CpAIBaleFinder.getCanStartCpBaleFinder)
     SpecializationUtil.registerFunction(vehicleType, "getCpBaleFinderJobParameters", CpAIBaleFinder.getCpBaleFinderJobParameters)
+    SpecializationUtil.registerFunction(vehicleType, "getCpBaleFinderJob", CpAIBaleFinder.getCpBaleFinderJob)
+    SpecializationUtil.registerFunction(vehicleType, "applyCpBaleFinderJobParameters", CpAIBaleFinder.applyCpBaleFinderJobParameters)
+
 end
 
 function CpAIBaleFinder.registerOverwrittenFunctions(vehicleType)
@@ -85,9 +89,31 @@ function CpAIBaleFinder:saveToXMLFile(xmlFile, baseKey, usedModNames)
     spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
 
+function CpAIBaleFinder:onReadStream(streamId, connection)
+    local spec = self.spec_cpAIBaleFinder
+    spec.cpJob:readStream(streamId, connection)
+end
+
+function CpAIBaleFinder:onWriteStream(streamId, connection)
+    local spec = self.spec_cpAIBaleFinder
+    spec.cpJob:writeStream(streamId, connection)
+end
+
 function CpAIBaleFinder:getCpBaleFinderJobParameters()
     local spec = self.spec_cpAIBaleFinder
     return spec.cpJob:getCpJobParameters() 
+end
+
+function CpAIBaleFinder:getCpBaleFinderJob()
+    local spec = self.spec_cpAIBaleFinder
+    return spec.cpJob
+end
+
+
+function CpAIBaleFinder:applyCpBaleFinderJobParameters(job)
+    local spec = self.spec_cpAIBaleFinder
+    spec.cpJob:getCpJobParameters():validateSettings()
+    spec.cpJob:copyFrom(job)
 end
 
 function CpAIBaleFinder:getCpDriveStrategy(superFunc)
@@ -181,40 +207,17 @@ end
 --- Custom version of AIFieldWorker:startFieldWorker()
 function CpAIBaleFinder:startCpBaleFinder(fieldPolygon, jobParameters)
     --- Calls the giants startFieldWorker function.
-    self:startFieldWorker()
     if self.isServer then 
-        --- Replaces drive strategies.
-        CpAIBaleFinder.replaceDriveStrategies(self, fieldPolygon, jobParameters)
-
-        --- Remembers the last bale warp type setting value that was used.
-        local spec = self.spec_cpAIBaleFinder
-        spec.cpJobStartAtLastWp:getCpJobParameters().baleWrapType:setValue(jobParameters.baleWrapType:getValue())
+        local strategy = AIDriveStrategyFindBales.new()
+        -- this also starts the strategy
+        strategy:setFieldPolygon(fieldPolygon)
+        strategy:setAIVehicle(self, jobParameters)
+        strategy:setJobParameterValues(jobParameters)
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Starting bale finder job.")
+        self:startCpWithStrategy(strategy)
     end
 end
 
--- We replace the Giants AIDriveStrategyStraight with our AIDriveStrategyFieldWorkCourse  to take care of
--- field work.
-function CpAIBaleFinder:replaceDriveStrategies(fieldPolygon, jobParameters)
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'This is a CP field work job, start the CP AI driver, setting up drive strategies...')
-    local spec = self.spec_aiFieldWorker
-    if spec.driveStrategies ~= nil then
-        for i = #spec.driveStrategies, 1, -1 do
-            spec.driveStrategies[i]:delete()
-            table.remove(spec.driveStrategies, i)
-        end
-
-        spec.driveStrategies = {}
-    end
-	CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Bale collect/wrap job, install CP drive strategy for it')
-    local cpDriveStrategy = AIDriveStrategyFindBales.new()
-    cpDriveStrategy:setFieldPolygon(fieldPolygon)
-    cpDriveStrategy:setJobParameterValues(jobParameters)
-    CpUtil.try(cpDriveStrategy.setAIVehicle, cpDriveStrategy, self)
-    self.spec_cpAIFieldWorker.driveStrategy = cpDriveStrategy
-    --- TODO: Correctly implement this strategy.
-	local driveStrategyCollision = AIDriveStrategyCollision.new(cpDriveStrategy)
-    driveStrategyCollision:setAIVehicle(self)
-    table.insert(spec.driveStrategies, driveStrategyCollision)
-    --- Only the last driving strategy can stop the helper, while it is running.
-    table.insert(spec.driveStrategies, cpDriveStrategy)
+function CpAIBaleFinder:stopCpBaleFinder()
+    self:stopCpDriver()
 end
