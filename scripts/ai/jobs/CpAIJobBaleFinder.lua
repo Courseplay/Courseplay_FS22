@@ -3,7 +3,8 @@
 ---@field selectedFieldPlot FieldPlot
 CpAIJobBaleFinder = {
 	name = "BALE_FINDER_CP",
-	jobName = "CP_job_baleCollect"
+	jobName = "CP_job_baleCollect",
+	minStartDistanceToField = 20,
 }
 local AIJobBaleFinderCp_mt = Class(CpAIJobBaleFinder, CpAIJob)
 
@@ -68,8 +69,27 @@ function CpAIJobBaleFinder:validate(farmId)
 	if vehicle then 
 		vehicle:applyCpBaleFinderJobParameters(self)
 	end
+	--------------------------------------------------------------
+	--- Validate field setup
+	--------------------------------------------------------------
 	
 	isValid, errorMessage = self:validateFieldPosition(isValid, errorMessage)	
+
+	--------------------------------------------------------------
+	--- Validate start distance to field, if started with the hud
+	--------------------------------------------------------------
+	if isValid and self.isDirectStart then 
+		--- Checks the distance for starting with the hud, as a safety check.
+		--- Firstly check, if the vehicle is near the field.
+		local x, _, z = getWorldTranslation(vehicle.rootNode)
+		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+				  CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < self.minStartDistanceToField
+		if not isValid then
+			return false, g_i18n:getText("CP_error_vehicle_too_far_away_from_field")
+		end
+	end
+
+
 	return isValid, errorMessage
 end
 
