@@ -39,7 +39,7 @@ function AIDriveStrategyFindBales.new(customMt)
     end
     local self = AIDriveStrategyCourse.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyFindBales.myStates)
-    self.state = self.states.SEARCHING_FOR_NEXT_BALE
+    self.state = self.states.INITIAL
     -- cache for the nodes created by TurnContext
     self.turnNodes = {}
     -- course offsets dynamically set by the AI and added to all tool and other offsets
@@ -72,9 +72,6 @@ function AIDriveStrategyFindBales:startWithoutCourse()
         self:info(' - %s', CpUtil.getName(implement.object))
     end
 
-    self.bales = self:findBales()
-
-    self:collectNextBale()
 end
 
 function AIDriveStrategyFindBales:collectNextBale()
@@ -452,7 +449,12 @@ end
 --- implements are started/lowered etc.
 function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
-    if self.state == self.states.SEARCHING_FOR_NEXT_BALE then
+    
+    if self.state == self.states.INITIAL then
+        self.bales = self:findBales()
+        self:collectNextBale()
+        self.state = self.states.SEARCHING_FOR_NEXT_BALE
+    elseif self.state == self.states.SEARCHING_FOR_NEXT_BALE then
         self:setMaxSpeed(0)
         self:debug('work: searching for next bale')
         self:collectNextBale()

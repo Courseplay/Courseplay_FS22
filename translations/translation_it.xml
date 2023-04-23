@@ -22,6 +22,7 @@
     <text name="CP_error_start_position_to_far_away_from_field" text="Posizione di partenza troppo lontana dal campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posizione di scarico del campo è troppo lontano dal campo."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nessun silos trovato."/>
     <text name="CP_error_no_heap_found" text="Nessun silos trovato."/>
     <!---->
