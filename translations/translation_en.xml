@@ -23,7 +23,7 @@
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_no_heap_found" text="No heap found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -166,7 +166,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Tool offset vertical"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="If the unloader's fill level is over this value, it won't wait for the combine"/>
-    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive."/>
+    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Check for silage additive"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="If active and silage additive is emtpy, the driver will stop."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetric lane change"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetric lane change"/>
@@ -367,7 +367,7 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_delete_primary_text" text="Deletes the selected waypoint."/>
     <text name="CP_editor_delete_secondary_text" text="Continues deletion of hovered waypoints."/>
     <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoints till the last one should be deleted?"/>
     <text name="CP_editor_delete_err" text="Too few waypoints left."/>
     <text name="CP_editor_course_basic_title" text="Basic"/>
     <text name="CP_editor_course_basic_move_title" text="Moves a waypoint"/>
@@ -379,12 +379,12 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_editor_course_advanced_title" text="Advanced"/>
     <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
     <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="Too close to another turning point."/>
     <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Selects two waypoint and moves these with all the waypoints in between."/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="Selects two waypoints and moves these with all the waypoints in between."/>
     <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="Resets the selected waypoints."/>
     <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Selects two waypoint and adds some waypoints in between as a curve."/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="Selects two waypoints and adds some waypoints in between as a curve."/>
     <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="Resets the selected waypoints."/>
     <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
     <!---->
@@ -784,7 +784,7 @@ With some trailers the tip side can be switched between the back and the grain d
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
 Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
+For distribution, there are special tools (e.g. Fliegl DUO).
 For wedge silos, a shield is used to push the chaff to the back of the silo.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
@@ -793,7 +793,7 @@ you toggle through the starting point until the mode appears.
 Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
 the direction is selected automatically.
 Use the target icon on the HUD to select the silo on the AI Map. It will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
+The parking position is set with the marker &quot;parking position&quot; which can also be used to drive there with the Giants helper
 before starting the actual work.
 "/>
     <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
@@ -813,20 +813,20 @@ Now it's possible to start the helper.
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Select next debug channel."/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Select previous debug channel."/>
-    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Change current debug channel."/>
-    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Shows debug channel menu yes/no."/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Select next debug channel"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Select previous debug channel"/>
+    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Change current debug channel"/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Show/hide debug channel menu"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Open mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Start/stop driver"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Toggles the course visibility"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Change starting point"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Clear currently loaded course"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Toggle course visibility"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mouse cursor on/off"/>
-    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Open/close hud"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
+    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Open/close HUD"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Open vehicle settings"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Open global settings"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Open course manager"/>
   </texts>
 </l10n>

@@ -15,15 +15,15 @@
     <text name="CP_unit_foot" text="ft"/>
     <text name="CP_copy" text="Kurs kopieren: "/>
     <text name="CP_infoText" text="Courseplay(%s): Für Hilfe, Fehler oder Patch Notes, bitte hier vorbei schauen: https://github.com/Courseplay/Courseplay_FS22."/>
-    <text name="CP_error_no_course" text="Erstelle zuerst einen Kurs vor dem Starten."/>
+    <text name="CP_error_no_course" text="Erstelle einen Kurs vor dem Starten des Jobs."/>
     <text name="CP_error_could_not_generate_course" text="Konnte keinen Kurs generieren. Das Logfile könnte weitere Informationen enthalten."/>
     <text name="CP_error_not_on_field" text="Ziel ist nicht auf einem Feld."/>
     <text name="CP_error_unloader_to_far_away_from_field" text="Abfahrer ist zu weit vom Feld entfernt."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Startposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants Ablader nicht möglich."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Feld Abladeposition ist zu weit vom Feld entfernt."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Feldabladeposition ist zu weit vom Feld entfernt."/>
     <text name="CP_error_no_bunkerSilo_found" text="Keinen Silo gefunden."/>
-    <text name="CP_error_no_heap_found" text="Keinen Silo gefunden."/>
+    <text name="CP_error_no_heap_found" text="Keinen Haufen gefunden."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -37,19 +37,19 @@
     <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_tooltip" text=""/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_tooltip" text=""/>
     <text name="CP_jobParameters_fieldPosition_title" text="Feldposition:"/>
-    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo Position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park Position:"/>
+    <text name="CP_jobParameters_bunkerSiloPosition_title" text="Siloposition:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Parkposition:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Start am:"/>
     <text name="CP_jobParameters_startAt_title" text="Start am:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Wo die Arbeit gestartet wird."/>
     <text name="CP_jobParameters_startAt_nearest" text="Nahester Wegpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Erster Wegpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Letzter Wegpunkt"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunkersilo Modus"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo laden Modus"/>
-    <text name="CP_jobParameters_startAt_unload" text="Entlade Drescher"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Entlade Silo lader"/>
-    <text name="CP_jobParameters_startAt_bales" text="Sammel/Wickel Ballen"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunkersilo-Modus"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo laden"/>
+    <text name="CP_jobParameters_startAt_unload" text="Drescher entladen"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Silolader entladen"/>
+    <text name="CP_jobParameters_startAt_bales" text="Ballen sammeln/wickeln"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Bahn:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Bahn:"/>
     <text name="CP_jobParameters_laneOffset_tooltip" text="Bahnauswahl, wenn ein Multitoolkurs erstellt wurde."/>
@@ -80,7 +80,7 @@
     <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Abladen auf dem Feld:"/>
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Abladen auf dem Feld benutzen:"/>
     <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Abladeposition:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Anhänger Abladeseite:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Abladeseite Anhänger:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -92,9 +92,9 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Warten auf Abfahrer:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="im Silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="bei Parkposition"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stoppen bei 99% verdichtet"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stoppen bei 99% verdichtet"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo Verdichtung:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stoppen bei 99% Verdichtung"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stoppen bei 99% Verdichtung"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Siloverdichtung:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
@@ -105,11 +105,11 @@
     <!---->
     <text name="CP_job_fieldWork" text="CP: Feldarbeit"/>
     <text name="CP_job_baleCollect" text="CP: Ballen sammeln/wickeln"/>
-    <text name="CP_job_combineUnload" text="CP: Entlade Drescher"/>
+    <text name="CP_job_combineUnload" text="CP: Drescher entladen"/>
     <text name="CP_job_bunkerSilo" text="CP: Siloarbeit"/>
     <text name="CP_job_siloLoader" text="CP: Silo laden"/>
-    <text name="CP_ai_page_generate_course" text="CP: Generiere Feldkurs."/>
-    <text name="CP_ai_page_open_course_generator" text="CP: Öffne/Schließe Kursgenerator."/>
+    <text name="CP_ai_page_generate_course" text="CP: Feldkurs generieren."/>
+    <text name="CP_ai_page_open_course_generator" text="CP: Kursgenerator öffnen/schließen."/>
     <!---->
     <!--AI error messages-->
     <!---->
@@ -166,7 +166,7 @@
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Entleeren wenn über:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="Wenn der Füllstand des Abfahrers über diesem Wert liegt, wird er nicht auf den Drescher warten."/>
-    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Siliermittel überwachen."/>
+    <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Siliermittel überwachen"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Wenn aktiv und das Siliermittel leer ist, wird der Fahrer gestoppt."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrischer Bahnenwechsel"/>
     <text name="CP_vehicle_setting_symmetricLaneChange_tooltip" text="Symmetrischer Bahnenwechsel"/>
@@ -321,10 +321,10 @@
     <text name="CP_global_setting_infoTextHudActive_title" text="Helfer-Infofenster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Schaltet das Infofenster für die CP-Helfer an oder aus."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spielermaus"/>
-    <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiviert/Deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs."/>
+    <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiviert/deaktiviert die Mausinteraktion außerhalb eines Fahrzeugs."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Bevorzuge erstellten Feldrand"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Bevorzugt den selbst erstellten Feldrand, wenn dieser auf einen normalen Feld liegt."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distanz Einheit"/>
+    <text name="CP_global_setting_distanceUnit_title" text="Distanzeinheit"/>
     <text name="CP_global_setting_distanceUnit_tooltip" text="Distanzeinheit Meter oder Fuß."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Fuß"/>
@@ -334,7 +334,7 @@
     <text name="CP_courseManager_title" text="Kursmanager(%s) %s"/>
     <text name="CP_courseManager_no_current_course" text="kein Kurs"/>
     <text name="CP_courseManager_temporary_course" text="temporärer Kurs"/>
-    <text name="CP_courseManager_change_mode" text="Ändere Modus"/>
+    <text name="CP_courseManager_change_mode" text="Modus ändern"/>
     <text name="CP_courseManager_load_courses" text="Kurs laden"/>
     <text name="CP_courseManager_save_courses" text="Kurs speichern"/>
     <text name="CP_courseManager_edit_course" text="Kurseditor öffnen"/>
@@ -367,7 +367,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_editor_delete_primary_text" text="Löscht den ausgewählten Wegpunkt."/>
     <text name="CP_editor_delete_secondary_text" text="Löscht Wegpunkte, über die die Maus gezogen wird."/>
     <text name="CP_editor_delete_tertiary_text" text="Löscht alle Wegpunkte bis zum letzen Wegpunkt."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Sollen wirklich alle Wegpunkte bis zu letzten gelöscht werden?"/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Sollen wirklich alle Wegpunkte bis zum Letzten gelöscht werden?"/>
     <text name="CP_editor_delete_err" text="Zu wenige Wegpunkte übrig."/>
     <text name="CP_editor_course_basic_title" text="Einfach"/>
     <text name="CP_editor_course_basic_move_title" text="Wegpunkt bewegen"/>
@@ -421,8 +421,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_customFieldManager_save" text="Randkurs speichern"/>
     <text name="CP_controllerGui_startRecording" text="Starte Feldrandaufnahme."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppe Feldrandaufnahme."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pausiert die Feldrandaufnahme."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Fortsetzten der Feldrandaufnahme."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausieren der Feldrandaufnahme."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Fortsetzen der Feldrandaufnahme."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -439,7 +439,7 @@ Feldkurse können auch als Multitoolkurs gebaut werden, dadurch ist es möglich 
 Für Drescher gibt es die Möglichkeit des automatischen Abtankens in einen Anhänger nahe des Feldes.
 Eigene Feldränder können mit einem Fahrzeug aufgezeichnet oder auf der Menükarte gezeichnet werden und anschließend für die Generierung eines Feldkurses benutzt werden.
 Außerdem hat CP ein Interface für AutoDrive, dadurch ist es möglich Sämaschinen auffüllen zu lassen, Ladewagen zu entleeren und vieles mehr.
-Ab Version 7.2.1.0 ist es auch Möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand ab zu legen.
+Ab Version 7.2.1.0 ist es auch möglich, mit dem Drescher Abfahrer die geladene Frucht als Haufen am Feldrand abzulegen.
 
 Für weitere Informationen, schaut bitte auf Github vorbei unter:  https://github.com/Courseplay/Courseplay_FS22 .
 Dort könnte ihr Fragen stellen, Fehlerberichte einreichen oder Verbesserungen vorschlagen.
@@ -621,7 +621,7 @@ Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten erledigt werden
 Die erste Möglichkeit wäre, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer fährt den Kurs ab.
 Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davonrollen.
 Hier sorgt der Job &quot;CP: Ballen sammeln/wickeln&quot; für Abhilfe, dieser braucht keinen Kurs.
-Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit &quot;Sammel/Wickel Ballen&quot;, oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
+Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit &quot;Ballen sammeln/wickeln&quot;, oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
 Der Zähler im HUD zeigt die noch auf dem Feld verbleibenden Ballen seit dem letzten Scan an. Das Scannen nach Ballen findet nur zu bestimmten Zeitpunkten statt, bei denen es nötig ist nach Ballen zu suchen, um die Performance zu schonen.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="
@@ -745,21 +745,21 @@ Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
 Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
 Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
 - Es muss ein Überladewagen oder maximal ein Anhänger angekuppelt sein.
-- Mit dem Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay Drescher auf dem Feld werden dann abgetankt.
+- Mit dem Zielknopf im HUD muss vorher das Feld ausgewählt werden. Alle Courseplay-Drescher auf dem Feld werden dann abgetankt.
 - Gestartet werden kann der Abfahrer wenn er direkt auf dem Feld ist oder sehr nahe zur Feldgrenze steht.
 
-Es gibt nur wenige Einstellungen zur Feineinstellung:
+Es gibt nur wenige Optionen zur Feineinstellung:
 - Ab welchem Füllstand der Abfahrer voll ist und zum Entladen geschickt wird.
-- Offsets im HUD, falls das Rohr des Dreschers den Abfahrer zum überladen nicht trifft.
+- Offsets im HUD, falls das Rohr des Dreschers den Abfahrer zum Überladen nicht trifft.
 
 "/>
     <text name="CP_help_page_unloaderTrailer_title" text="Anhänger benutzen"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-Wird ein Anhänger zum abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
+Wird ein Anhänger zum Abfahren verwendet, gibt es 2 Möglichkeiten diesen zu entleeren:
 - Giants Helfer:
-  1) Starten über das AI Menü mit der aktiven Option Giants Helfer nutzen oder im HUD starten mit aktivem Lenkrad Knopf.
-  2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktiven Lenkrad sichtbar.
-- AutoDrive ähnlich wie mit einem Ladewagen schaue dir dazu AutoDrive Tutorials an.
+  1) Starten über das Helfermenü mit der aktiven Option &quot;Giants Ablader benutzen&quot; oder im HUD starten mit aktivem Lenkrad-Knopf.
+  2) Die gewünschte Abladestelle auswählen. Im HUD ist diese Option nur mit aktivem Lenkrad sichtbar.
+- AutoDrive: Funktioniert wie mit einem Ladewagen. Schaue dir dazu AutoDrive-Tutorials an.
 "/>
     <text name="CP_help_page_unloaderAuger_title" text="Überladewagen benutzen"/>
     <text name="CP_help_page_unloaderAuger_text" text="
@@ -780,19 +780,19 @@ dann wird dieser genutzt, um dort weiterhin abzuladen.
 Die Richtung des Markers entspricht der Abladerichtung.
 Bei einigen Anhängern kann die Abladeseite zwischen Hinten und Kornschieber gewählt werden.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker Silo Arbeiter"/>
+    <text name="CP_help_page_bunker_title" text="Bunkersilo Arbeiter"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen, oder in einem Keilsilo bis zum Ende zu schieben.
-Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht, oder nur dem Fahrzeug.
-Zum Verteilen gibt es spezielle Geräte. (z.B. der Fliegel DUO aus dem Modhub).
-Für Keilsilos wird ein Schild benutzt um das Häckselgut nach hinten in das Silo zu schieben.
+Courseplay ist in der Lage, Häckselgut in einem Bunker zu verdichten, verteilen oder in einem Keilsilo bis zum Ende zu schieben.
+Verdichten ist ohne ein spezielles Gerät möglich, mit Walzen, Gewicht oder nur dem Fahrzeug.
+Zum Verteilen gibt es spezielle Geräte, wie z.B. den Fliegl DUO aus dem Modhub.
+Für Keilsilos wird ein Schild benutzt, um das Häckselgut nach hinten in das Silo zu schieben.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-Für einen Verteiler oder Schild gibt es nur den Bunker Silo Modus.
-Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunker Silo Modus gewechselt.
- - Ebenfalls muss die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
-Mit dem Zielknopf im HUD, wird auf der AI Karte der Bunker ausgewählt. 
-Der ausgewählte Bunkerumriss auf der Karte wird dann Weiß.
+Für einen Verteiler oder Schild gibt es nur den Bunkersilo-Modus.
+Ohne Verteiler oder Schild wird durch das Durchschalten des Startpunkts zum Bunkersilo-Modus gewechselt.
+Ebenfalls kann die Fahrtrichtung, mit welcher in das Silo gefahren wird, angegeben werden.
+Mit dem Zielknopf im HUD wird auf der Helferkarte der Bunker ausgewählt. 
+Der ausgewählte Bunkerumriss auf der Karte wird dann weiß.
 Die Parkposition wird mit dem Marker &quot;Parkposition&quot; gesetzt und wird angefahren, wenn sich Abfahrer nahe des Silos befinden.
 Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker zu fahren, bevor mit der Arbeit begonnen wird.
 "/>
@@ -800,33 +800,33 @@ Die Parkposition kann auch genutzt werden, um mit dem Giants Helfer zum Bunker z
     <text name="CP_help_page_siloLoaderGeneral_text" text="
 Durch diesen Helfer können Haufen auf oder am Feld aufgesammelt werden.
 Ebenfalls ist es möglich damit Silos zu entleeren.
-Der Lader kann durch einen Courseplay Abfahrer entladen werden.
-Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer standard Position aus und lädt den Haufen auf.
+Der Lader kann durch einen Courseplay-Abfahrer entladen werden.
+Lässt man Courseplay direkt zum Haufen fahren, klappt dieser sich in einer Standardposition aus und lädt den Haufen auf.
 Passt euch die Position so nicht, könnt ihr den Fahrer stoppen und die Position des Arms wie gewohnt einstellen und den Fahrer wieder starten.
-Bedenkt dabei, dass das automatische abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
+Bedenkt dabei, dass das automatische Abtanken mit CP in Fahrtrichtung des Laders erfolgt. Lasst dem Abfahrer genug Platz am Lader vorbei zu kommen.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-Als erstes muss auf der AI Menü Karte der Lade-Marker gesetzt werden.
+Als erstes muss auf der Helferkarte der Lade-Marker gesetzt werden.
 Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
 Anschließend kann der Helfer gestartet werden.
 "/>
     <!---->
     <!--Input bindings-->
     <!---->
-    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Nächsten Debugkanal auswählen."/>
-    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Vorherigen Debugkanal auswählen."/>
-    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Aktuellen Debugkanal aktivieren/deaktivieren."/>
-    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Zeige Debugkanäle-Menü ja/nein."/>
-    <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Öffne Mini-GUI"/>
-    <text name="input_CP_START_STOP" text="CP: Starte/Stoppe CP-Helfer"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Ändert den Startpunkt"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Löscht den geladen Kurs"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Ändert die Kurs Sichtbarkeit"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_PREVIOUS" text="CP: Nächsten Debugkanal auswählen"/>
+    <text name="input_CP_DBG_CHANNEL_SELECT_NEXT" text="CP: Vorherigen Debugkanal auswählen"/>
+    <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: Aktuellen Debugkanal ein-/ausschalten"/>
+    <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Debugkanäle-Menü anzeigen/ausblenden"/>
+    <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Mini-GUI öffnen"/>
+    <text name="input_CP_START_STOP" text="CP: CP-Helfer starten/stoppen"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Startpunkt ändern"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Aktuell geladenen Kurs löschen"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="CP: Kurs Sichtbarkeit ändern"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Mauszeiger an/aus"/>
-    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Öffne/Schließe HUD"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Öffnet Fahrzeugeinstellungen"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Öffnet globale Einstellungen"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Öffnet Kursgenerator/Jobmenü"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Öffnet Kursmanager"/>
+    <text name="input_CP_OPEN_CLOSE_HUD" text="CP: HUD öffnen/schließen"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Fahrzeugeinstellungen öffnen"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Globale Einstellungen öffnen"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Kursgenerator/Jobmenü öffnen"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Kursmanager öffnen"/>
   </texts>
 </l10n>
