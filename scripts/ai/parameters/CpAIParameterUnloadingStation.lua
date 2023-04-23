@@ -4,7 +4,7 @@ CpAIParameterUnloadingStation = CpObject(AIParameterSettingList)
 
 function CpAIParameterUnloadingStation:init(data, vehicle, class)
 	AIParameterSettingList.init(self, data, vehicle, class)
-	self.type = AIParameterType.UNLOADING_STATION
+	self.guiParameterType = AIParameterType.UNLOADING_STATION
 	return self
 end
 
@@ -38,6 +38,27 @@ function CpAIParameterUnloadingStation:validateUnloadingStation(fillTypeIndex, f
 	end
 	return true, nil
 end
+
+--- Applies the current position to the map hotspot.
+function CpAIParameterUnloadingStation:applyToMapHotspot(mapHotspot)
+	if not self:getCanBeChanged() then 
+		return false
+	end
+	local unloadingStation = self:getUnloadingStation()
+	if unloadingStation ~= nil then
+		local placeable = unloadingStation.owningPlaceable
+		if placeable ~= nil and placeable.getHotspot ~= nil then
+			local hotspot = placeable:getHotspot(1)
+			if hotspot ~= nil then
+				local x, z = hotspot:getWorldPosition()
+				mapHotspot:setWorldPosition(x, z)
+				return true
+			end
+		end
+	end
+	return false
+end
+
 
 function CpAIParameterUnloadingStation:__tostring()
 	return string.format("CpAIParameterUnloadingStation(name=%s, value=%s, text=%s)", self.name, tostring(self:getValue()), self:getString())

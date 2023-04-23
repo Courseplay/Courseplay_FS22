@@ -371,35 +371,36 @@ function CpAIWorker:onUpdate(dt)
         end
     end
     local spec = self.spec_cpAIWorker
+    --- TODO: Check if a tick delay should be used for performance similar to AIFieldWorker or not.
     if spec.driveStrategy then 
         --- Should drive all CP modes, except fieldwork here.
         spec.driveStrategy:update(dt)
         if not spec.driveStrategy then 
             return
         end
-        if g_updateLoopIndex % 4 == 0 then
-            local tX, tZ, moveForwards, maxSpeed =  spec.driveStrategy:getDriveData(dt)
-            if not spec.driveStrategy then 
-                return
-            end
-            -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
-            local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
-            local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
-
-            if not moveForwards and self.spec_articulatedAxis ~= nil and
-                    self.spec_articulatedAxis.aiRevereserNode ~= nil then
-                pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
-            end
-
-            if not moveForwards and self:getAIReverserNode() ~= nil then
-                pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
-            end
-
-            local acceleration = 1
-            local isAllowedToDrive = maxSpeed ~= 0
-
-            AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
+        
+        local tX, tZ, moveForwards, maxSpeed =  spec.driveStrategy:getDriveData(dt)
+        if not spec.driveStrategy then 
+            return
         end
+        -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
+        local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
+        local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
+
+        if not moveForwards and self.spec_articulatedAxis ~= nil and
+                self.spec_articulatedAxis.aiRevereserNode ~= nil then
+            pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
+        end
+
+        if not moveForwards and self:getAIReverserNode() ~= nil then
+            pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
+        end
+
+        local acceleration = 1
+        local isAllowedToDrive = maxSpeed ~= 0
+
+        AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
+    
     end
 
 end

@@ -4,7 +4,8 @@ CpAIJobCombineUnloader = {
 	name = "COMBINE_UNLOADER_CP",
 	jobName = "CP_job_combineUnload",
 	minStartDistanceToField = 20,
-	minFieldUnloadDistanceToField = 20
+	minFieldUnloadDistanceToField = 20,
+	maxHeapLength = 150
 }
 
 local AIJobCombineUnloaderCp_mt = Class(CpAIJobCombineUnloader, CpAIJob)
@@ -206,7 +207,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 		local angle = self.cpJobParameters.fieldUnloadPosition:getAngle()
 		setTranslation(self.heapNode, x, 0, z)
 		setRotation(self.heapNode, 0, angle, 0)
-		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.heapNode, 0, 50, -10)
+		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.heapNode, 0, self.maxHeapLength, -10)
 		if found then	
 			self.heapPlot:setArea(heapSilo:getArea())
 			self.heapPlot:setVisible(true)
@@ -358,33 +359,29 @@ function CpAIJobCombineUnloader:startTask(task)
 	CpAIJobCombineUnloader:superClass().startTask(self, task)
 end
 
+--- Starting index for giants unload: 
+---  - Close or on the field, we make sure cp pathfinder is always involved.
+---  - Else if the trailer is full and we are far away from the field, then let giants drive to unload directly.
+---@return number
 function CpAIJobCombineUnloader:getStartTaskIndex()
+	local startTask = CpAIJobCombineUnloader:superClass().getStartTaskIndex(self)
 	if not self.cpJobParameters.useGiantsUnload:getValue() then 
-		return CpAIJobCombineUnloader:superClass().getStartTaskIndex(self)
+		return startTask
 	end
 	local vehicle = self:getVehicle()
-	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
-
-	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
-	
-	local vehicle = self.vehicleParameter:getVehicle()
 	local x, _, z = getWorldTranslation(vehicle.rootNode)
-	local tx, tz = self.cpJobParameters.startPosition:getPosition()
-	local targetReached = math.abs(x - tx) < 1 and math.abs(z - tz) < 1
-
-	if targetReached then
-		if readyToDriveUnloading then
-			self.combineUnloaderTask:skip()
-		end
-		return self.combineUnloaderTask.taskIndex
+	if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
+		CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2*self.minStartDistanceToField then
+		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Close to the field, start cp drive strategy.")
+		return startTask
 	end
-
-	if readyToDriveUnloading then
-		self.driveToTask:skip()
-		self.combineUnloaderTask:skip()
+	local fillLevelPercentage = FillLevelManager.getTotalTrailerFillLevelPercentage(vehicle)
+	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
+	if readyToDriveUnloading then 
+		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Not close to the field and vehicle is full, so start driving to unload.")
+		return self.driveToUnloadingTask.taskIndex
 	end
-
-	return self.driveToTask.taskIndex
+	return startTask
 end
 
 --- Callback by the drive strategy, when the trailer is full.
@@ -392,6 +389,7 @@ function CpAIJobCombineUnloader:onTrailerFull(vehicle, driveStrategy)
 	if self.cpJobParameters.useGiantsUnload:getValue() then 
 		--- Giants unload
 		self.combineUnloaderTask:skip()
+		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Trailer is full, giving control to giants!")
 	else 
 		vehicle:stopCurrentAIJob(AIMessageErrorIsFull.new())
 	end

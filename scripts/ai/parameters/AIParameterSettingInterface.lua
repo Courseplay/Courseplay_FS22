@@ -131,6 +131,10 @@ function AIParameterSettingInterface:copy(setting)
 
 end
 
+function AIParameterSettingInterface:isAlmostEqualTo(other)
+	
+end
+
 --- Applies title/tooltip texts for the gui element.
 function AIParameterSettingInterface:setGenericGuiElementValues(guiElement)
 	

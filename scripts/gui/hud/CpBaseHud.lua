@@ -102,6 +102,11 @@ CpBaseHud.automaticText = g_i18n:getText("CP_automatic")
 CpBaseHud.copyText = g_i18n:getText("CP_copy")
 
 CpBaseHud.courseCache = nil
+CpBaseHud.copyPasteCache = {
+    siloLoaderVehicle = nil,
+    combineUnloaderVehicle = nil,
+    hasVehicle = false
+}
 
 function CpBaseHud.registerXmlSchema(xmlSchema, baseKey)
     xmlSchema:register(XMLValueType.FLOAT, baseKey..CpBaseHud.xmlKey.."#posX", "Hud position x.")
@@ -492,6 +497,10 @@ function CpBaseHud:updateContent(vehicle, status)
     self.startingPointBtn:setDisabled(true)
     if activeLayout.isStartingPointBtnDisabled then 
         self.startingPointBtn:setDisabled(activeLayout:isStartingPointBtnDisabled(vehicle))
+    end
+    self.startingPointBtn:setVisible(true)
+    if activeLayout.isStartingPointBtnVisible then 
+        self.startingPointBtn:setVisible(activeLayout:isStartingPointBtnVisible(vehicle))
     end
     self.startingPointBtn:setTextDetails(vehicle:getCpStartText())
     if activeLayout.getStartingPointBtnText then 

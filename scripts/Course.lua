@@ -998,9 +998,9 @@ end
 
 --- Create a straight, forward course for the vehicle.
 ---@param vehicle table the course will start at the root node of the vehicle
----@param length number optional length of the course in meters, default is 100 meters
----@param xOffset number optional side offset for the course
----@param lastNode number optional force direction node
+---@param length number|nil optional length of the course in meters, default is 100 meters
+---@param xOffset number|nil optional side offset for the course
+---@param directionNode number|nil optional force direction node
 function Course.createStraightForwardCourse(vehicle, length, xOffset, directionNode)
 	local l = length or 100
 	return Course.createFromNode(vehicle, directionNode or vehicle.rootNode, xOffset or 0, 0, l, 5, false)

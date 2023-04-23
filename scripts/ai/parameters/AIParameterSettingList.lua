@@ -140,6 +140,10 @@ function AIParameterSettingList:is(value)
 	return self:getValue() == value
 end
 
+function AIParameterSettingList:isAlmostEqualTo(other)
+	return self:getValue() == other:getValue()
+end
+
 -- Get the current text key (for the logs, for example)
 function AIParameterSettingList:__tostring()
 	return string.format("AIParameterSettingList(name=%s, value=%s, text=%s)", self.name, tostring(self:getValue()), self:getString())

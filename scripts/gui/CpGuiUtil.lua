@@ -249,8 +249,52 @@ function CpGuiUtil.setCameraRotation(vehicle, enableRotation, savedRotatableInfo
 	end
 end
 
+--- Adds the copy/paste button line to the hud layout with copy,paste and clear button.
+---@param layout table
+---@param baseHud CpBaseHud
+---@param vehicle table
+---@param lines table
+---@param wMargin number
+---@param hMargin number
+---@param line number
+function CpGuiUtil.addCopyAndPasteButtons(layout, baseHud, vehicle, lines, wMargin, hMargin, line)
+	local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
+    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
+                                      
+	local leftX, leftY = unpack(lines[line].left)
+    local rightX, rightY = unpack(lines[line].right)
+    local btnYOffset = hMargin*0.2
+	local width, height = getNormalizedScreenValues(22, 22)
+
+	local copyOverlay = CpGuiUtil.createOverlay({width, height},
+	{imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.copySymbol))}, 
+	CpBaseHud.OFF_COLOR,
+	CpBaseHud.alignments.bottomRight)
+
+	local pasteOverlay = CpGuiUtil.createOverlay({width, height},
+		{imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.pasteSymbol))}, 
+		CpBaseHud.OFF_COLOR,
+		CpBaseHud.alignments.bottomRight)
+
+	local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
+		{imageFilename2, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
+		CpBaseHud.OFF_COLOR,
+		CpBaseHud.alignments.bottomRight)
+
+	layout.copyButton = CpHudButtonElement.new(copyOverlay, layout)
+	layout.copyButton:setPosition(rightX, rightY-btnYOffset)
+
+	layout.pasteButton = CpHudButtonElement.new(pasteOverlay, layout)
+    layout.pasteButton:setPosition(rightX, rightY-btnYOffset)
+
+	layout.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, layout)
+    layout.clearCacheBtn:setPosition(rightX - width - wMargin/2, rightY - btnYOffset)
+
+	layout.copyCacheText = CpTextHudElement.new(layout, leftX, leftY, CpBaseHud.defaultFontSize)
+end
+
 --- Setup for the copy course btn.
----@param layout CpHudPageElement
+---@param layout table
 ---@param baseHud CpBaseHud
 ---@param vehicle table
 ---@param lines table
@@ -258,57 +302,24 @@ end
 ---@param hMargin number
 ---@param line number
 function CpGuiUtil.addCopyCourseBtn(layout, baseHud, vehicle, lines, wMargin, hMargin, line)    
-    local imageFilename = Utils.getFilename('img/ui_courseplay.dds', g_Courseplay.BASE_DIRECTORY)
-    local imageFilename2 = Utils.getFilename('img/iconSprite.dds', g_Courseplay.BASE_DIRECTORY)
-    --- Copy course btn.                                          
-    layout.copyCourseElements = {}
-    layout.copyCourseIx = 1
-    layout.courseVehicles = {}
-    local leftX, leftY = unpack(lines[line].left)
-    local rightX, rightY = unpack(lines[line].right)
-    local btnYOffset = hMargin*0.2
-
-    local width, height = getNormalizedScreenValues(22, 22)
     
-    local copyOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.copySymbol))}, 
-                                                        CpBaseHud.OFF_COLOR,
-                                                        CpBaseHud.alignments.bottomRight)
+	CpGuiUtil.addCopyAndPasteButtons(layout, baseHud, vehicle, lines, wMargin, hMargin, line)
 
-    local pasteOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename, GuiUtils.getUVs(unpack(CpBaseHud.uvs.pasteSymbol))}, 
-                                                        CpBaseHud.OFF_COLOR,
-                                                        CpBaseHud.alignments.bottomRight)
-
-   
-    local clearCourseOverlay = CpGuiUtil.createOverlay({width, height},
-                                                        {imageFilename2, GuiUtils.getUVs(unpack(CpBaseHud.uvs.clearCourseSymbol))}, 
-                                                        CpBaseHud.OFF_COLOR,
-                                                        CpBaseHud.alignments.bottomRight)
-
-    layout.copyButton = CpHudButtonElement.new(copyOverlay, layout)
-    layout.copyButton:setPosition(rightX, rightY-btnYOffset)
     layout.copyButton:setCallback("onClickPrimary", vehicle, function (vehicle)
         if not CpBaseHud.courseCache and vehicle:hasCpCourse() then 
             CpBaseHud.courseCache = vehicle:getFieldWorkCourse()
         end
     end)
 
-    layout.pasteButton = CpHudButtonElement.new(pasteOverlay, layout)
-    layout.pasteButton:setPosition(rightX, rightY-btnYOffset)
     layout.pasteButton:setCallback("onClickPrimary", vehicle, function (vehicle)
         if CpBaseHud.courseCache and not vehicle:hasCpCourse() then 
             vehicle:cpCopyCourse(CpBaseHud.courseCache)
         end
     end)
 
-    layout.clearCacheBtn = CpHudButtonElement.new(clearCourseOverlay, layout)
-    layout.clearCacheBtn:setPosition(rightX - width - wMargin/2, rightY - btnYOffset)
     layout.clearCacheBtn:setCallback("onClickPrimary", vehicle, function (vehicle)
         CpBaseHud.courseCache = nil
     end)
-
-    layout.copyCacheText = CpTextHudElement.new(layout, leftX, leftY, CpBaseHud.defaultFontSize)
 
 end
 
