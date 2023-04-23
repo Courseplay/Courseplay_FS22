@@ -89,8 +89,20 @@ function CombineController:updateBeaconLightsAndFullMessage()
     end
 end
 
+--- Callback from the drive strategy, if the swath needs to be disabled.
+function CombineController:isStrawSwathDisabled()
+    return self.driveStrategy.isStrawSwathDisabled and self.driveStrategy:isStrawSwathDisabled()
+end
 
 function CombineController:updateStrawSwath(isOnHeadland)
+    if self:isStrawSwathDisabled() then 
+        if self.combineSpec.isSwathActive then
+            self:debug("Straw swath force disabled.")
+            self:setStrawSwath(false)
+        end
+        return
+    end
+
     local strawMode = self.settings.strawSwath:getValue()
     if self.combineSpec.isSwathActive then
         if strawMode == CpVehicleSettings.STRAW_SWATH_OFF or isOnHeadland and strawMode == CpVehicleSettings.STRAW_SWATH_ONLY_CENTER then

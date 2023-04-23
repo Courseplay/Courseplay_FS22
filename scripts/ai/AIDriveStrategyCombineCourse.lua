@@ -270,8 +270,16 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
     elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+        if self:isDischarging() then  
+            --- Unloader might have reached the combine, before pocket creation started.
+            self:setMaxSpeed(0)
+        end
     elseif self.unloadState == self.states.MAKING_POCKET then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
+        if self:isDischarging() then  
+            --- Unloader might have reached the combine, before pocket creation started.
+            self:setMaxSpeed(0)
+        end
     elseif self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
         self:setMaxSpeed(self.settings.turnSpeed:getValue())
     elseif self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
@@ -438,16 +446,18 @@ function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
 
     if self.state == self.states.UNLOADING_ON_FIELD and
             self.unloadState == self.states.MAKING_POCKET and
-            self.unloadInPocketIx and ix == self.unloadInPocketIx then
+            self.unloadInPocketIx and ix >= self.unloadInPocketIx then
         -- we are making a pocket and reached the waypoint where we are going to stop and wait for unload
         self:debug('Waiting for unload in the pocket')
         self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
     end
 
-    if self.returnedFromPocketIx and self.returnedFromPocketIx == ix then
-        -- back to normal look ahead distance for PPC, no tight turns are needed anymore
-        self:debug('Reset PPC to normal lookahead distance')
+    if self.unloadState ~= self.states.REVERSING_TO_MAKE_A_POCKET and self.returnedFromPocketIx and ix >= self.returnedFromPocketIx then
+        --- Pocket creation finished 
+        --- back to normal look ahead distance for PPC, no tight turns are needed anymore
+        self:debug('Finished pocket creation, reset PPC to normal lookahead distance')
         self.ppc:setNormalLookaheadDistance()
+        self.returnedFromPocketIx = nil
     end
     AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
 end
@@ -473,6 +483,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             -- offset the main fieldwork course and start on it
             self.aiOffsetX = math.min(self.pullBackRightSideOffset, self:getWorkWidth())
             self:startRememberedCourse()
+            self.combineController:updateStrawSwath(true)
         elseif self.unloadState == self.states.PULLING_BACK_FOR_UNLOAD then
             -- pulled back, now wait for unload
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
@@ -1206,6 +1217,11 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
             and self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
+--- Disables the straw swath, while making a pocket and also returning from the pocket.
+function AIDriveStrategyCombineCourse:isStrawSwathDisabled()
+    return self:isMakingPocket()
+end
+
 --- Check if the vehicle should stop during a turn (for example while it
 --- is held for unloading or waiting for the straw swath to stop
 function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
@@ -1789,6 +1805,13 @@ function AIDriveStrategyCombineCourse:isAboutToReturnFromPocket()
     return self.unloadState == self.states.WAITING_FOR_UNLOAD_IN_POCKET or
             (self.unloadState == self.states.WAITING_FOR_UNLOADER_TO_LEAVE and
                     self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET)
+end
+
+--- Is creating a pocket?
+function AIDriveStrategyCombineCourse:isMakingPocket()
+    return self.unloadState == self.states.MAKING_POCKET or
+            self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET or 
+            self:isAboutToReturnFromPocket() and self.returnedFromPocketIx ~= nil
 end
 
 ------------------------------------------------------------------------------------------------------------------------
