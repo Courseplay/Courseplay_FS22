@@ -4,7 +4,6 @@ local AITaskBaleFinderCp_mt = Class(CpAITaskBaleFinder, AITask)
 function CpAITaskBaleFinder.new(isServer, job, customMt)
 	local self = AITask.new(isServer, job, customMt or AITaskBaleFinderCp_mt)
 	self.vehicle = nil
-	self.fieldPolygon = nil
 	return self
 end
 
@@ -21,13 +20,11 @@ function CpAITaskBaleFinder:setVehicle(vehicle)
 	self.vehicle = vehicle
 end
 
-function CpAITaskBaleFinder:setFieldPolygon(fieldPolygon)
-	self.fieldPolygon = fieldPolygon
-end
-
 function CpAITaskBaleFinder:start()
 	if self.isServer then
-		self.vehicle:startCpBaleFinder(self.fieldPolygon, self.job:getCpJobParameters())
+		local tx, tz = self.job:getCpJobParameters().fieldPosition:getPosition()
+		local fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(tx, tz)
+		self.vehicle:startCpBaleFinder(fieldPolygon, self.job:getCpJobParameters())
 	end
 
 	CpAITaskBaleFinder:superClass().start(self)
@@ -37,6 +34,6 @@ function CpAITaskBaleFinder:stop()
 	CpAITaskBaleFinder:superClass().stop(self)
 
 	if self.isServer then
-		self.vehicle:stopFieldWorker()
+		self.vehicle:stopCpBaleFinder()
 	end
 end
