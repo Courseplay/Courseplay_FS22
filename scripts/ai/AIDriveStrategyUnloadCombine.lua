@@ -848,6 +848,7 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
         --- Trailer attached
         if self.invertedStartPositionMarkerNode then 
             --- The start position is valid, so drive in there before releasing and giving control to giants or AD.
+            self:debug('Trailer is full and a valid start position is set, so drive there before AD or giants can take over.')
             self:startPathfindingToInvertedGoalPositionMarker()
         else 
             --- No valid start position was set, so release the driver and give control to giants or AD.
