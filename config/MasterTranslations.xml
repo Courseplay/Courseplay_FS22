@@ -68,8 +68,8 @@
 			<Text language="en"><![CDATA[Field unload position is too far away from the field.]]></Text>
 		</Translation>
 		<Translation name="CP_error_vehicle_too_far_away_from_field">
-			<Text language="de"><![CDATA[Fahrzeug ist zu weit vom Feld entfernt um zu starten.]]></Text>
-			<Text language="en"><![CDATA[Vehicle is too far away from the field to start.]]></Text>
+			<Text language="de"><![CDATA[Fahrzeug ist zu weit vom Feld entfernt.]]></Text>
+			<Text language="en"><![CDATA[Vehicle is too far away from the field.]]></Text>
 		</Translation>
 		<Translation name="CP_error_no_bunkerSilo_found">
 			<Text language="de"><![CDATA[Keinen Silo gefunden.]]></Text>
