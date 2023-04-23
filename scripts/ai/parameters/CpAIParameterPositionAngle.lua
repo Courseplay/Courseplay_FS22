@@ -237,7 +237,7 @@ end
 function CpAIParameterPositionAngle:isAlmostEqualTo(otherPosition)
 	local angle = otherPosition.getAngle and otherPosition:getAngle()
 	if angle ~= nil and self.angle ~= nil then
-		return math.deg(MathUtil.getAngleDifference(angle, self.angle)) < 1 
+		return math.abs(math.deg(MathUtil.getAngleDifference(angle, self.angle))) < 1 
 			and CpAIParameterPosition.isAlmostEqualTo(self, otherPosition)
 	end
 	return false

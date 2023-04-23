@@ -137,7 +137,7 @@ AIDriveStrategyUnloadCombine.myStates = {
     BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
     MOVING_AWAY_FROM_BLOCKING_VEHICLE = { vehicle = nil }, -- reversing until we have enough space between us and the combine
     WAITING_FOR_MANEUVERING_COMBINE = {},
-    DRIVING_TO_INVERTED_GOAL_POSITION_MARKER = {} --- Drives there before giving control to AD or giants unloader
+    DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {} --- Drives to the start position with a trailer attached and gives control to giants or AD there.
 }
 
 -------------------------------------------------
@@ -253,11 +253,11 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
         if CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z)
             or CpMathUtil.getClosestDistanceToPolygonEdge(self.fieldPolygon, x, z) < 2 * CpAIJobCombineUnloader.minStartDistanceToField then
             --- Goal position marker set in the ai menu rotated by 180 degree.
-            self.invertedGoalPositionMarkerNode = CpUtil.createNode("Inverted goal position marker", 
+            self.invertedStartPositionMarkerNode = CpUtil.createNode("Inverted Start position marker", 
                 x, z, angle + math.pi)
             self:debug("Valid goal position marker was set.")
         else
-            self:debug("Goal position is to far away from the field!")
+            self:debug("Start position is too far away from the field for a valid goal position!")
         end
     else
         self:debug("Invalid start position found!")
@@ -445,7 +445,7 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         moveForwards = self:moveToNextFillNode()
     elseif self.state == self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER then
         self:moveAwayFromUnloadTrailer()
-    elseif self.state == self.states.DRIVING_TO_INVERTED_GOAL_POSITION_MARKER then 
+    elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then 
         self:setMaxSpeed(self:getFieldSpeed())
     ---------------------------------------------
     --- Unloading on the field
@@ -537,7 +537,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startRememberedCourse()
     elseif self.state == self.states.MOVING_AWAY_FROM_BLOCKING_VEHICLE then
         self:startWaitingForSomethingToDo()
-    elseif self.state == self.states.DRIVING_TO_INVERTED_GOAL_POSITION_MARKER then 
+    elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then 
         self:debug('Inverted goal position reached, so give control back to the job.')
         self.vehicle:getJob():onTrailerFull(self.vehicle, self)
     ---------------------------------------------
@@ -845,11 +845,12 @@ function AIDriveStrategyUnloadCombine:startUnloadingTrailers()
             self:startWaitingForSomethingToDo()
         end
     else
-        if self.invertedGoalPositionMarkerNode then 
-            --- Driving to the goal marker
+        --- Trailer attached
+        if self.invertedStartPositionMarkerNode then 
+            --- The start position is valid, so drive in there before releasing and giving control to giants or AD.
             self:startPathfindingToInvertedGoalPositionMarker()
         else 
-            --- The job instance decides if the job has to quit.
+            --- No valid start position was set, so release the driver and give control to giants or AD.
             self:debug('Full and have no auger wagon, stop, so eventually AD can take over.')
             self.vehicle:getJob():onTrailerFull(self.vehicle, self)
         end
@@ -1753,34 +1754,34 @@ function AIDriveStrategyUnloadCombine:findOtherUnloaderAroundCombine(combine, co
     end
 end
 
---- Find a path to the goal position marker, but in the opposite direction of the marker and an offset of 4.5 m to the side.
+--- Find a path to the start position marker, but in the opposite direction of the marker and an offset of 4.5 m to the side.
 function AIDriveStrategyUnloadCombine:startPathfindingToInvertedGoalPositionMarker()
     self:setNewState(self.states.WAITING_FOR_PATHFINDER)
     self.pathfindingStartedAt = g_currentMission.time
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
-    self:startPathfinding(self.invertedGoalPositionMarkerNode, self.invertedGoalPositionOffset,
+    self:startPathfinding(self.invertedStartPositionMarkerNode, self.invertedGoalPositionOffset,
         -1.5*AIUtil.getLength(self.vehicle), fieldNum, nil, 
         self.onPathfindingDoneToInvertedGoalPositionMarker)
 end
 
---- Path to the goal position was found.
+--- Path to the start position was found.
 ---@param path table
 ---@param goalNodeInvalid boolean
 function AIDriveStrategyUnloadCombine:onPathfindingDoneToInvertedGoalPositionMarker(path, goalNodeInvalid)
-    if self:isPathFound(path, goalNodeInvalid, "Inverted goal position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
+    if self:isPathFound(path, goalNodeInvalid, "Inverted start position", false) and self.state == self.states.WAITING_FOR_PATHFINDER then
         self:debug("Found a path to the inverted goal position marker. Appending the missing straight segment.")
-        self:setNewState(self.states.DRIVING_TO_INVERTED_GOAL_POSITION_MARKER)
+        self:setNewState(self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL)
         local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
 
         --- Append a straight alignment segment
         local x, _, z = course:getWaypointPosition(course:getNumberOfWaypoints())
-        local dx, _, dz = localToWorld(self.invertedGoalPositionMarkerNode, self.invertedGoalPositionOffset, 0, 0)
+        local dx, _, dz = localToWorld(self.invertedStartPositionMarkerNode, self.invertedGoalPositionOffset, 0, 0)
     
         course:append(Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
             0, 0, 0, 3, false))
         self:startCourse(course, 1)
      else 
-        self:debug("Could not find a path to the goal position marker, pass over to the job!")
+        self:debug("Could not find a path to the start position marker, pass over to the job!")
         self.vehicle:getJob():onTrailerFull(self.vehicle, self)
     end
 end
@@ -2372,8 +2373,8 @@ function AIDriveStrategyUnloadCombine:update(dt)
                 self.fieldUnloadData.heapSilo:drawDebug()
             end
         end
-        if self.state == self.states.DRIVING_TO_INVERTED_GOAL_POSITION_MARKER and self.invertedGoalPositionMarkerNode then
-            CpUtil.drawDebugNode(self.invertedGoalPositionMarkerNode, true, 3);
+        if self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL and self.invertedStartPositionMarkerNode then
+            CpUtil.drawDebugNode(self.invertedStartPositionMarkerNode, true, 3);
         end
     end
     self:updateImplementControllers(dt)
