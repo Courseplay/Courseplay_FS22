@@ -335,6 +335,10 @@ end
 ---@return number
 function AIParameterSettingList:getClosestSetupIx()
 	local value = self.values[self.current]
+	if value == nil then 
+		CpUtil.error("SettingList: %s value is nil for %s!", self.name, self.current)
+		return 1
+	end
 	-- find the value requested
 	local closestIx = 1
 	local closestDifference = math.huge
