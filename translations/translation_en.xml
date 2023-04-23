@@ -22,7 +22,7 @@
     <text name="CP_error_start_position_to_far_away_from_field" text="Starting position too far away from the field."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field."/>
     <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
     <text name="CP_error_no_heap_found" text="No heap found."/>
     <!---->
