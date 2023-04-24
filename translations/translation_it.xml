@@ -22,9 +22,9 @@
     <text name="CP_error_start_position_to_far_away_from_field" text="Posizione di partenza troppo lontana dal campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Scaricatore Giants non disponibile."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posizione di scarico del campo è troppo lontano dal campo."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
-    <text name="CP_error_no_bunkerSilo_found" text="Nessun silos trovato."/>
-    <text name="CP_error_no_heap_found" text="Nessun silos trovato."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Il veicolo è troppo lontano dal campo per partire."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Nessun bunker silos trovato."/>
+    <text name="CP_error_no_heap_found" text="Nessun cumulo trovato."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -735,9 +735,9 @@ Attenzione: non appena rilasci il pulsante del mouse, i punti verranno impostati
 La modalità scaricatore di Courseplay funziona con mietitrebbie, mietitrici e mietitrebbie trainate, guidate da Courseplay.
 Non funziona con i trinciatori.
 Puoi utilizzare un normale rimorchio o un carro a coclea per scaricare una mietitrebbia.
-Per svuotare i rimorchi, puoi utilizzare Giants Helper o AutoDrive.
+Per svuotare i rimorchi, puoi utilizzare l'aiutante Giants o AutoDrive.
 L'avvio dello scaricatore richiede alcune cose:
-- È necessario disporre di un singolo rimorchio o di un carro a coclea collegato. Più trailer non sono supportati.
+- È necessario disporre di un singolo rimorchio o di un carro a coclea collegato. Più rimorchi non sono supportati.
 - Usa l'icona del bersaglio sull'HUD per selezionare il campo da raccogliere. Lo scaricatore scaricherà tutte le mietitrebbie guidate Courseplay che lavorano su quel campo.
 - Devi essere sul campo o entro 20 metri dal campo per avviare lo scaricatore.
 
