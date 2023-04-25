@@ -21,10 +21,10 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Descargador muy lejos del campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posición inicial muy lejos del campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Descargador de Giants no disponible."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="La posición de descarga del campo está demasiado lejos del campo."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
-    <text name="CP_error_no_bunkerSilo_found" text="Ningún Silo encontrado."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Posición de descarga demasiado lejos del campo."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehículo demasiado lejos del campo."/>
+    <text name="CP_error_no_bunkerSilo_found" text="No se encontró ningún Silo."/>
+    <text name="CP_error_no_heap_found" text="No se encontró ningún montón."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -47,9 +47,9 @@
     <text name="CP_jobParameters_startAt_first" text="Primer punto"/>
     <text name="CP_jobParameters_startAt_last" text="Último punto"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Modo Trabajo en Silo"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Modo Carga de silo"/>
     <text name="CP_jobParameters_startAt_unload" text="Descargando Cosechadora/Picadora"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Descargar cargador de silo"/>
     <text name="CP_jobParameters_startAt_bales" text="Recogiendo/Envolviendo fardos"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Desplazamiento de carril:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Desplazamiento de carril:"/>
@@ -71,10 +71,10 @@
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Descargar: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Descargar:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combinada"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Cargador"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Descargador de Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usar Descargador de Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estación de descarga:"/>
@@ -93,14 +93,14 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Esperando por descargador:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="en Silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="en posición de estacionamiento"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Detener al 99% de compactación"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Detener al 99% de compactación"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Compactación de silos:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posición de carga"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posición de carga"/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -118,7 +118,7 @@
     <text name="CP_ai_messageError" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Abandonó el curso!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Ninguna Ruta encontrada!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡No es posible descargar en el campo!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -786,16 +786,16 @@ en blanco si está seleccionado.
 La posición de estacionamiento se establece con el marcador(posición de estacionamiento) que también se puede usar 
 para conducir allí con el Ayudante de Gigants antes de comenzar el trabajo real.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="Carga de silos"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
-Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
+Con este trabajo es posible cargar montones en o cerca del campo.
+Además, es posible cargar desde un silo de búnker..
+El cargador se puede descargar con un descargador de Courseplay.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
-The marker detects heaps or silos and highlights them on the map.
-Now it's possible to start the helper.
+Para iniciar el marcador de carga, en el menú AI debe configurarse.
+El marcador detecta montones o silos y los resalta en el mapa.
+Ahora es posible iniciar el ayudante.
 "/>
     <!---->
     <!--Input bindings-->
