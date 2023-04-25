@@ -348,8 +348,8 @@ function CpAIWorker:onUpdate(dt)
         else
             self.driveToFieldWorkStartStrategy:update(dt)
             if g_updateLoopIndex % 4 == 0 then
-                local tX, tZ, moveForwards, maxSpeed = self.driveToFieldWorkStartStrategy:getDriveData(dt)
-
+                local tX, tZ, moveForwards, maxSpeedStrategy = self.driveToFieldWorkStartStrategy:getDriveData(dt)
+                local maxSpeed = math.min(maxSpeedStrategy or math.huge, self:getCruiseControlMaxSpeed())
                 -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
                 local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
                 local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
@@ -379,7 +379,8 @@ function CpAIWorker:onUpdate(dt)
             return
         end
         
-        local tX, tZ, moveForwards, maxSpeed =  spec.driveStrategy:getDriveData(dt)
+        local tX, tZ, moveForwards, maxSpeedStrategy =  spec.driveStrategy:getDriveData(dt)
+        local maxSpeed = math.min(maxSpeedStrategy or math.huge, self:getCruiseControlMaxSpeed())
         if not spec.driveStrategy then 
             return
         end
