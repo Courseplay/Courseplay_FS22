@@ -1221,14 +1221,15 @@ end
 
 --- Get the length of the up/down row where waypoint ix is located
 --- @param ix number waypoint index in the row
---- @return number, number length of the current row and the index of the first waypoint of the row
+--- @return number length of the current row
+--- @return number index of the first waypoint of the row or ix, if no turn was found for some reason.
 function Course:getRowLength(ix)
 	for i = ix, 1, -1 do
 		if self:isTurnEndAtIx(i) then
 			return self:getDistanceToNextTurn(i), i
 		end
 	end
-	return 0, nil
+	return 0, ix
 end
 
 function Course:getNextRowLength(ix)
