@@ -22,7 +22,7 @@
     <text name="CP_error_start_position_to_far_away_from_field" text="Startovní pozice příliš daleko od pole."/>
     <text name="CP_error_giants_unloader_not_available" text="Giants odvozce není k dispozici."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Pozice vyložení je příliš daleko od pole."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Vozidlo je příliš daleko od pole."/>
     <text name="CP_error_no_bunkerSilo_found" text="Silážní jáma nenalezena."/>
     <text name="CP_error_no_heap_found" text="Hromada nenalezena."/>
     <!---->
