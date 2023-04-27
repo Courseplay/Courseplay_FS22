@@ -22,7 +22,7 @@
     <text name="CP_error_start_position_to_far_away_from_field" text="Position de départ trop éloignée du champ."/>
     <text name="CP_error_giants_unloader_not_available" text="Aucun ouvrier IA disponible pour le déchargement."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Le point de déchargement est trop loin du champ."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Le véhicule est trop éloigné du champ pour démarrer."/>
     <text name="CP_error_no_bunkerSilo_found" text="Aucun silo détecté."/>
     <text name="CP_error_no_heap_found" text="Aucun tas ou silo détecté."/>
     <!---->
