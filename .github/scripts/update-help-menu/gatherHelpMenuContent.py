@@ -54,6 +54,7 @@ class Page:
 @dataclass
 class Category:
     title : Text
+    subTitle : Text
     pages : list[ Page ]
     def __repr__(self):
         return f'Category(title: {self.title} \n	{self.pages})'
@@ -73,6 +74,7 @@ def loadHelpMenuConfig():
 	# Loads all translation sorted by their category, which are just comments in the separate translation files.
 	for category in root.iter('category'):
 		category_title = Text(category.attrib['title'])
+		category_subTitle = Text(category.attrib['title'])
 		page_list = []
 		for page in category.iter('page'):
 			page_title = Text(page.attrib['title'])
@@ -85,7 +87,7 @@ def loadHelpMenuConfig():
 				paragraph_list.append(para)
 			p = Page(page_title, paragraph_list)
 			page_list.append(p)
-		c = Category(category_title, page_list)
+		c = Category(category_title, category_subTitle, page_list)
 		categories.append(c)			
 	return categories
 
