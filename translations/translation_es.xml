@@ -816,6 +816,5 @@ Ahora es posible iniciar el ayudante.
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abrir menú del Generador de Cursos/Trabajo"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abre Administrador de Curso"/>
     <text name="TEST" text="CP: TEST"/>
-    <text name="TEST_2" text="CP: TEST"/>
   </texts>
 </l10n>

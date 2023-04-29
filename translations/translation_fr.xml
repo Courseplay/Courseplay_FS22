@@ -796,6 +796,5 @@ Ensuite vous pouvez lancer la tâche.
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Ouvre le générateur de course/menu de la course"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Ouvre le gestionnaire de courses"/>
     <text name="TEST" text="CP: TEST"/>
-    <text name="TEST_2" text="CP: TEST"/>
   </texts>
 </l10n>

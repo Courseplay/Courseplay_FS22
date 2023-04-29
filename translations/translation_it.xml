@@ -818,6 +818,5 @@ Ora è possibile avviare l'helper.
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Apri il generatore di corsi/menu dei lavori"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Apre gestore percorsi"/>
     <text name="TEST" text="CP: TEST"/>
-    <text name="TEST_2" text="CP: TEST"/>
   </texts>
 </l10n>

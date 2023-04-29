@@ -817,6 +817,5 @@ Courseplay способен прессовать или распределять
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Генератор курсов/меню работ"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Открыть управление курсами"/>
     <text name="TEST" text="CP: TEST"/>
-    <text name="TEST_2" text="CP: TEST"/>
   </texts>
 </l10n>
