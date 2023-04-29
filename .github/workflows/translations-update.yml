@@ -15,6 +15,9 @@ on:
             - "**/config/MasterTranslations.xml"
             - "**/config/HelpMenu.xml"
             - "**/contributors.json" # It's possible to add translators manually here.
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
 
 # The list of jobs this workflow executes
 jobs:

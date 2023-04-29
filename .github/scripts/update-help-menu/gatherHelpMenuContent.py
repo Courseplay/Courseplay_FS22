@@ -154,6 +154,7 @@ def convertImagesToPNG():
 			print(f"Converted image to {newFileName}")
 	img = PIL_Image.open(imgDir+"courseplayIconHud.dds")
 	img.save(outDir+"courseplayIconHud.png")
+	img.save(outDir+"favicon.ico", sizes=[(16,16), (32, 32), (48, 48), (64,64)])
 
 
 def main():
