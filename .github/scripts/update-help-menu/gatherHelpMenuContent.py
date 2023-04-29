@@ -9,8 +9,11 @@ outDir = os.getcwd() + "/.github/scripts/update-help-menu/data/"
 translationDir =  os.getcwd() + "/translations/"
 configDir =  os.getcwd() + "/config/"
 
+# Data structures defined in the help menu config file
+
 @dataclass
 class Image:
+    # TODO: not used at the moment
 	filename : str = ""
 	size : list[float] = field(default_factory=list)
 	raw_size : str = ""
@@ -46,7 +49,7 @@ class Page:
 	title : Text
 	paragraphs : list[ Paragraph ]
 	def __repr__(self):
-		return f'\n	Page(title: {self.title} \n		{self.paragraps})'
+		return f'\n	Page(title: {self.title} \n		{self.paragraphs})'
 
 @dataclass
 class Category:
@@ -56,7 +59,7 @@ class Category:
         return f'Category(title: {self.title} \n	{self.pages})'
     
 
-
+# First load the config file and build a python data tree
 def loadHelpMenuConfig():
 	
 	string = open(configDir + "HelpMenu.xml", encoding="utf-8").read()
@@ -101,6 +104,7 @@ def filter_text(string):
 
 
 def loadTranslations():
+    # Loads all translations and creates a json file for each.
 	translations = {}
 	# Goes through all language translation files. 
 	for filename in os.listdir(translationDir):
@@ -123,14 +127,20 @@ def main():
 		os.makedirs(outDir)
 	# Help menu setup keys for the dom generation.
 	categories = loadHelpMenuConfig()
-	with open(outDir + "config.json", 'w') as f:
+	filename = outDir + "config.json"
+	with open(filename, 'w') as f:
 		json.dump(JSONSerializer.serialize(categories),f)
+		print(f"Created config file at {filename}")
+		print(categories)
   
 	# Load translations
 	translations = loadTranslations()
-	for t,data in translations.items():
-		with open(outDir + t +".json", 'w', encoding='UTF-8') as f:
-			json.dump(data,f)
+	for t, data in translations.items():
+		filename = outDir + t +".json"
+		with open(filename, 'w', encoding='UTF-8') as f:
+			json.dump( data, f )
+			print(f'Saved translations to {filename}')
+			
  
 if __name__ == "__main__":
     main()
