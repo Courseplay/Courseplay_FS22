@@ -1,29 +1,50 @@
 
+"""
+File used to process help menu data for the courseplay website.
+
+1) Generates a DOM structure for the website and saves it in .json
+2) Generates .json files for all the translations
+3) Converts all .dds help menu images to .png
+
+"""
+
 import os, sys, re, json
 from lxml import etree as ET
 from dataclasses import dataclass, field
 from dataclasses_serialization.json import JSONSerializer
+from PIL import Image as PIL_Image
 
 outDir = os.getcwd() + "/help_menu_cache_data/"
 
 translationDir =  os.getcwd() + "/translations/"
 configDir =  os.getcwd() + "/config/"
+imgDir = os.getcwd() + "/img/"
+helpImgDir = imgDir + "helpmenu/"
 
 # Data structures defined in the help menu config file
 
 @dataclass
 class Image:
-    # TODO: not used at the moment
 	filename : str = ""
 	size : list[float] = field(default_factory=list)
-	raw_size : str = ""
+	size_str : str = ""
 	uvs : list[float] = field(default_factory=list)
-	raw_uvs : str = ""
+	uvs_str : str = ""
 	def fromXml(self, xmlElement):
 		if not xmlElement is None :
-			self.filename = xmlElement.attrib['filename']
-			self.raw_size = xmlElement.attrib['size']
-			self.raw_uvs = xmlElement.attrib['uvs']
+			# Website uses png images
+			dirname, filename = os.path.split(xmlElement.attrib['filename'])
+			self.filename = re.sub(".dds", ".png", filename)
+			self.size_str = xmlElement.attrib['size']
+			size = re.sub("px", "", self.size_str)
+			size_array = size.split()
+			for s in size_array:
+						self.size.append(int(s))
+			self.uvs_str = xmlElement.attrib['uvs']
+			uvs = re.sub("px", "", self.uvs_str)
+			uvs_array = uvs.split()
+			for uv in uvs_array:
+				self.uvs.append(int(uv))
 		return self
 
 @dataclass
@@ -67,7 +88,6 @@ def loadHelpMenuConfig():
  
 	string = re.sub("<\?.+\?>", "", string)	# Removes the xml declaration.
 	root = ET.fromstring(string)
-	print(root)
 	
 	categories = []
  
@@ -122,7 +142,19 @@ def loadTranslations():
 				text = entry.attrib['text']
 				translations[language][name] = text
 	return translations
-					
+				
+def convertImagesToPNG():
+    # Converts help menu images from .dds to .png
+	for filename in os.listdir(helpImgDir):
+		f = helpImgDir + filename
+		if os.path.isfile(f):
+			img = PIL_Image.open(f, mode='r')
+			newFileName = outDir+re.sub(".dds", ".png", filename)
+			img.save(newFileName)
+			print(f"Converted image to {newFileName}")
+	img = PIL_Image.open(imgDir+"courseplayIconHud.dds")
+	img.save(outDir+"courseplayIconHud.png")
+
 
 def main():
 	if not os.path.exists(outDir):
@@ -142,7 +174,8 @@ def main():
 		with open(filename, 'w', encoding='UTF-8') as f:
 			json.dump( data, f )
 			print(f'Saved translations to {filename}')
-			
+	# Converts help menu images to png
+	convertImagesToPNG()
  
 if __name__ == "__main__":
     main()
