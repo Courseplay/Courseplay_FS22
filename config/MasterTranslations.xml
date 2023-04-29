@@ -2514,6 +2514,12 @@ Now it's possible to start the helper.
 			<Text language="de"><![CDATA[CP: TEST]]></Text>
 			<Text language="en"><![CDATA[CP: TEST]]></Text>
 		</Translation> 
-		
+
+		<Translation name="TEST_2">
+			<Text language="de"><![CDATA[CP: TEST]]></Text>
+			<Text language="en"><![CDATA[CP: TEST]]></Text>
+		</Translation> 
+	
+
 	</Category>
 </Translations>
