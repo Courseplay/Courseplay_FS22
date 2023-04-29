@@ -43,13 +43,11 @@ jobs:
         uses: cpina/github-action-push-to-another-repository@main
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source-directory: 'help_menu_cache_data'
+          source-directory: '.help_menu_cache_data/'
           destination-github-username: 'Courseplay'
           destination-repository-name: 'Courseplay_FS22.github.io'
-          target-branch: 'master'
           commit-message: 'Updated from Courseplay_FS22'
-          target-directory: 'data'
+          target-directory: '.data/'
 
                 
