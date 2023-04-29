@@ -428,6 +428,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
+    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="General Information"/>
     <text name="CP_help_page_GeneralBase_text" text="

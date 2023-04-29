@@ -428,6 +428,7 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
+    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="General Information"/>
     <text name="CP_help_page_GeneralBase_text" text="

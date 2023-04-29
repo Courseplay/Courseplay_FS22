@@ -428,6 +428,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
+    <text name="CP_help_subTitle" text="Modifikation für den Landwirtschafts-Simulator 22"/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Generelle Informationen"/>
     <text name="CP_help_page_GeneralBase_text" text="

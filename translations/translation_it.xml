@@ -428,6 +428,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
+    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Informazioni Generali"/>
     <text name="CP_help_page_GeneralBase_text" text="
