@@ -19,7 +19,7 @@ jobs:
   generate_doc:
     name: Generates json files for help menu and translations
     runs-on: ubuntu-latest
-
+    container: ubuntu
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -40,15 +40,15 @@ jobs:
             python .github/scripts/update-help-menu/gatherHelpMenuContent.py
       
       - name: Pushes to another repository
-        uses: cpina/github-action-push-to-another-repository@main
+        uses: cpina/github-action-push-to-another-repository@composite-1.5.1
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
-          source-directory: 'help_menu_cache_data/'
+          source-directory: help_menu_cache_data/
           destination-github-username: 'Courseplay'
           destination-repository-name: 'Courseplay_FS22.github.io'
           commit-message: 'Updated from Courseplay_FS22'
-          target-directory: 'data/'
-          target-branch: 'master'
+          target-directory: data/
+          target-branch: master
 
                 
