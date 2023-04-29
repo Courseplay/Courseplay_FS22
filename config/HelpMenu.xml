@@ -2,10 +2,10 @@
 <!-- Every image filename needs to start with CP_ as prefix, with will be ignored for the path. -->
 <helpLines>
 	<!--Courseplay category-->
-	<category title="$l10n_CP_help_title">
+	<category title="$l10n_CP_help_title" subTitle="$l10n_CP_help_subTitle">
 		<page title="$l10n_CP_help_page_General_title">
 			<paragraph>
-				<text text="$l10n_CP_help_page_GeneralBase_text"/>
+				<text text="$l10n_CP_help_page_GeneralBase_text"/>															
 			</paragraph>
 		</page>
 		<page title="$l10n_CP_help_page_extendedJobMenu_title">

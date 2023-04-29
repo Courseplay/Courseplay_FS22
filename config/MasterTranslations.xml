@@ -1544,6 +1544,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 			<Text language="de"><![CDATA[Courseplay]]></Text>
 			<Text language="en"><![CDATA[Courseplay]]></Text>
 		</Translation>
+		<Translation name="CP_help_subTitle">
+			<Text language="de"><![CDATA[Modifikation für den Landwirtschafts-Simulator 22]]></Text>
+			<Text language="en"><![CDATA[A Modification for Farming Simulator 22 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_blank">
 			<Text language="de"><![CDATA[]]></Text>
 			<Text language="en"><![CDATA[]]></Text>
