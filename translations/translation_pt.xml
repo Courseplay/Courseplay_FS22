@@ -808,5 +808,6 @@ Now it's possible to start the helper.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Abre Configurações Globais"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abre Menu do Gerador Rotas"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abre Gerador de Rotas"/>
+    <text name="TEST" text="CP: TEST"/>
   </texts>
 </l10n>

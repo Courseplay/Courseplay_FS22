@@ -823,5 +823,6 @@ Agora é possível iniciar o auxiliar.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Abrir configurações globais"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Abrir gerenciador de rotas/menu de trabalho"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Abrir gerenciador de rotas"/>
+    <text name="TEST" text="CP: TEST"/>
   </texts>
 </l10n>

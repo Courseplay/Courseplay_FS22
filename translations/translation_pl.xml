@@ -811,5 +811,6 @@ Terze możesz rozpocząć pracę pomocnika.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Otwórz globalne ustawienia"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Otwórz menu generacji kursu/pracy"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Otwórz menadżer kursu"/>
+    <text name="TEST" text="CP: TEST"/>
   </texts>
 </l10n>

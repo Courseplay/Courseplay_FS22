@@ -817,5 +817,6 @@ Now it's possible to start the helper.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Åbner globale indstillinger"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Åbner rutegenerator/job menu"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Åbner rute manager"/>
+    <text name="TEST" text="CP: TEST"/>
   </texts>
 </l10n>

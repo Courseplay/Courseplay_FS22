@@ -805,5 +805,6 @@ Nyní je možné spustit pracovníka.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Otevřít globální nastavení"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Otevřít generátor tras/nabídky pracovníků"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Otevřít správce tras"/>
+    <text name="TEST" text="CP: TEST"/>
   </texts>
 </l10n>

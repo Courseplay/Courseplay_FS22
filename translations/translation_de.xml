@@ -830,5 +830,6 @@ Anschließend kann der Helfer gestartet werden.
     <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Globale Einstellungen öffnen"/>
     <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Kursgenerator/Jobmenü öffnen"/>
     <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Kursmanager öffnen"/>
+    <text name="TEST" text="CP: TEST"/>
   </texts>
 </l10n>
