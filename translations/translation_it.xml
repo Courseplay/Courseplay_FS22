@@ -428,7 +428,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
+    <text name="CP_help_subTitle" text="Una mod per Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Informazioni Generali"/>
     <text name="CP_help_page_GeneralBase_text" text="
@@ -615,8 +615,10 @@ La distanza di tutti i veicoli con lo stesso nome del percorso verrà automatica
 L'avvolgimento e la raccolta delle balle possono essere eseguiti in due modi diversi.
 Il primo consiste nel caricare lo stesso percorso utilizzato per la pressa per balle e lasciare che l'avvolgitore o il raccoglitore eseguano quel percorso.
 Tuttavia questo può essere complicato, poiché alcune balle amano rotolare o volare fuori dal percorso.
-A questo punto, il nostro tipo di lavoro Avvolgiture e raccolta può aiutare in quanto non necessita di un percorso.
-Rimani sul campo e avvia l'autista dall'HUD con avvolgi/raccogli le balle o usa la mappa IA per mandarlo in un campo per iniziare il lavoro.
+A questo punto, il nostro tipo di lavoro di confezionamento e ritiro può essere d'aiuto in quanto non necessita di un percorso.
+Con l'icona del bersaglio sull'HUD, devi selezionare il campo in cui vuoi raccogliere o avvolgere le balle. Dopodiché puoi avviare il conducente vicino al campo.
+Puoi anche utilizzare la mappa IA per inviarlo in un campo per iniziare il lavoro.
+Il contatore sull'HUD mostra le balle rimanenti sul campo dall'ultima scansione. CP eseguirà la scansione del campo alla ricerca di balle solo quando è davvero necessario per motivi di prestazioni.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="
 Avvolgere le balle è molto semplice. Carica un percorso della tua pressa e inizia come qualsiasi altro lavoro sul campo, o senza un percorso,
@@ -685,7 +687,7 @@ Se non sono in un campo, devi andare sul menu dell'IA e posizionare il segnalino
 Il generatore per le viti ha meno opzioni.
 A seconda dello strumento, devi scegliere di lavorare sul filare od a lato del filare.
 Per esempio. la mietitrice predefinita deve guidare e lavorare sul filare.
-      Il pre-potatore deve guidare a sinistra dal filare ma lavora sul filaree, quindi devi scegliere di lavorare sul filare, ma guidare con un offset.
+      Il potatore deve guidare a sinistra dal filare ma lavora sul filare, quindi devi scegliere di lavorare sul filare, ma guidare con un offset.
       Gli spruzzatori devono guidare vicino a lato del filare e devono saltare una fila, poiché spruzza a sinistra e a destra.
 "/>
     <text name="CP_help_page_vineWorkHarvester_text" text="
