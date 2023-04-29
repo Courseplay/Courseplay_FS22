@@ -4,7 +4,7 @@ from lxml import etree as ET
 from dataclasses import dataclass, field
 from dataclasses_serialization.json import JSONSerializer
 
-outDir = os.getcwd() + "/.github/scripts/update-help-menu/data/" 
+outDir = os.getcwd() + "/help_menu_cache_data/"
 
 translationDir =  os.getcwd() + "/translations/"
 configDir =  os.getcwd() + "/config/"
