@@ -119,6 +119,8 @@ def loadTranslations():
 					
 
 def main():
+	if not os.path.exists(outDir):
+		os.makedirs(outDir)
 	# Help menu setup keys for the dom generation.
 	categories = loadHelpMenuConfig()
 	with open(outDir + "config.json", 'w') as f:
