@@ -619,7 +619,8 @@ Wrapping and collecting bales can be done in two different ways.
 The first one is to load the same course you used for your baler and let the wrapper or collector run that course.
 However this can be tricky, as some bales love to roll or fly off the path.
 At this point, our wrap and collect job type can help as it doesn't need a course.
-Stay on the field and just start the driver from the HUD with wrap/collect bales or use the AI Map to send him to a field to start the job.
+With the target-icon on the HUD, you need to select the field, where you want to collect or wrap the bales. After that you can start the driver near the field.
+You can also use the AI Map to send him to a field to start the job.
 The counter on the HUD shows the remaining bales on the field since the last scan. CP will only scan the field for bales when it really has to for performance reasons.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="

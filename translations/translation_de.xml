@@ -622,7 +622,8 @@ Das Wickeln und Sammeln von Ballen kann auf 2 verschiedene Arten erledigt werden
 Die erste Möglichkeit wäre, den gleichen Kurs wie den von der Ballenpresse zu laden und der Helfer fährt den Kurs ab.
 Das kann allerdings etwas problematisch sein, da besonders Rundballen gerne mal davonrollen.
 Hier sorgt der Job &quot;CP: Ballen sammeln/wickeln&quot; für Abhilfe, dieser braucht keinen Kurs.
-Bleibe auf dem Feld und starte einfach den Helfer vom HUD mit &quot;Ballen sammeln/wickeln&quot;, oder benutze das Helfermenü, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
+Mit dem Ziel-Icon im HUD muss das Feld ausgewählt werden, auf dem die Ballen gesammelt oder gewickelt werden sollen. Danach kannst du den Abfahrer einfach in der Nähe des Feldes starten.
+Du kannst auch das Helfermenü benutzen, um dein Fahrzeug zu einem Feld zu schicken, wo Ballen gewickelt oder gesammelt werden sollen.
 Der Zähler im HUD zeigt die noch auf dem Feld verbleibenden Ballen seit dem letzten Scan an. Das Scannen nach Ballen findet nur zu bestimmten Zeitpunkten statt, bei denen es nötig ist nach Ballen zu suchen, um die Performance zu schonen.
 "/>
     <text name="CP_help_page_wrapBasic_text" text="
