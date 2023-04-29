@@ -37,7 +37,7 @@ jobs:
       - name: Fetch json data.
         run: | 
             python -m pip install -r .github/scripts/update-help-menu/requirements.txt
-            python .github/scripts/update-translations/gatherHelpMenuContent.py
+            python .github/scripts/update-help-menu/gatherHelpMenuContent.py
       
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
