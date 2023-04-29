@@ -5,7 +5,7 @@
 # Original implementation by: https://github.com/Thodor12
 
 # The workflow name
-name: Update translations
+name: Update-translations
 
 # Controls when the workflow will run
 on: 
@@ -13,6 +13,7 @@ on:
         paths:
             - "**/translations/**"
             - "**/config/MasterTranslations.xml"
+            - "**/config/HelpMenu.xml"
             - "**/contributors.json" # It's possible to add translators manually here.
 
 # The list of jobs this workflow executes
@@ -90,3 +91,4 @@ jobs:
             uses: stefanzweifel/git-auto-commit-action@v4
             with:
                 commit_message: Updated contributors
+    

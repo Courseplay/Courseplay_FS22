@@ -1,0 +1,2 @@
+lxml>=4.8.0
+dataclasses-serialization>=1.3.1

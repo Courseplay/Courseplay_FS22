@@ -1,0 +1,55 @@
+# 1) This workflow formats and updates the translation files.
+# 2) Adds translators to the contributor files.
+
+# Original implementation by: https://github.com/Thodor12
+
+# The workflow name
+name: Update-help-menu-git-pages
+
+on:
+  workflow_run:
+    workflows: 
+      - Update-translations
+    types:
+      - completed
+
+# The list of jobs this workflow executes
+jobs:
+  # Updates the translations
+  generate_doc:
+    name: Generates json files for help menu and translations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+            repository: ${{ github.event.pull_request.head.repo.full_name }}
+            ref: ${{ github.event.pull_request.head.ref }}
+            fetch-depth: 0
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+            architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+      
+      - name: Fetch json data.
+        run: | 
+            python -m pip install -r .github/scripts/update-help-menu/requirements.txt
+            python .github/scripts/update-translations/gatherHelpMenuContent.py
+      
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: '.github/scripts/update-help-menu/data'
+          destination-github-username: 'Courseplay'
+          destination-repository-name: 'Courseplay_FS22.github.io'
+          target-branch: 'master'
+          commit-message: 'Updated from Courseplay_FS22'
+          target-directory: 'data'
+
+                
