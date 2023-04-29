@@ -2509,11 +2509,11 @@ Now it's possible to start the helper.
 			<Text language="de"><![CDATA[CP: Kursmanager öffnen]]></Text>
 			<Text language="en"><![CDATA[CP: Open course manager]]></Text>
 		</Translation>
-<!--
+
 		<Translation name="TEST">
 			<Text language="de"><![CDATA[CP: TEST]]></Text>
 			<Text language="en"><![CDATA[CP: TEST]]></Text>
-		</Translation>
-		-->
+		</Translation> 
+		
 	</Category>
 </Translations>
