@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu
     steps:
+      - run: apt-get update && apt-get install -y openssh-client git
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
