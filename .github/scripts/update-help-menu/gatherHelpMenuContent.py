@@ -45,7 +45,15 @@ class Image:
 			uvs_array = uvs.split()
 			for uv in uvs_array:
 				self.uvs.append(int(uv))
+			self.saveUvScaledImage()
 		return self
+
+	def saveUvScaledImage(self):
+		# Applies the uvs, as the website can not do it.
+		img = PIL_Image.open(outDir+self.filename)
+		img = img.crop(self.uvs)
+		self.filename = re.sub(".png","",self.filename) + f"_{self.uvs[0]}_{self.uvs[1]}_{self.uvs[2]}_{self.uvs[3]}.png"
+		img.save(outDir+self.filename)
 
 @dataclass
 class Text:
@@ -142,7 +150,7 @@ def loadTranslations():
 				text = entry.attrib['text']
 				translations[language][name] = text
 	return translations
-				
+    
 def convertImagesToPNG():
     # Converts help menu images from .dds to .png
 	for filename in os.listdir(helpImgDir):
@@ -169,6 +177,9 @@ def convertImagesToPNG():
 def main():
 	if not os.path.exists(outDir):
 		os.makedirs(outDir)
+	# Converts help menu images to png
+	convertImagesToPNG()
+  
 	# Help menu setup keys for the dom generation.
 	categories = loadHelpMenuConfig()
 	filename = outDir + "config.json"
@@ -184,8 +195,6 @@ def main():
 		with open(filename, 'w', encoding='UTF-8') as f:
 			json.dump( data, f )
 			print(f'Saved translations to {filename}')
-	# Converts help menu images to png
-	convertImagesToPNG()
  
 if __name__ == "__main__":
     main()
