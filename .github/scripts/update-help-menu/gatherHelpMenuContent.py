@@ -152,11 +152,20 @@ def convertImagesToPNG():
 			newFileName = outDir+re.sub(".dds", ".png", filename)
 			img.save(newFileName)
 			print(f"Converted image to {newFileName}")
+	img = PIL_Image.open(os.getcwd()+"/icon_courseplay.dds")
+	img.save(outDir+"/icon_courseplay.png")
+
+	img = PIL_Image.open(imgDir+"ui_courseplay.dds")
+	img.save(outDir+"/ui_courseplay.png")
+
+	img = PIL_Image.open(imgDir+"iconSprite.dds")
+	img.save(outDir+"/iconSprite.png")	
+ 
 	img = PIL_Image.open(imgDir+"courseplayIconHud.dds")
-	img.save(outDir+"courseplayIconHud.png")
-	img.save(outDir+"favicon.ico", sizes=[(16,16), (32, 32), (48, 48), (64,64)])
+	img.save(outDir+"/courseplayIconHud.png")
 
 
+ 
 def main():
 	if not os.path.exists(outDir):
 		os.makedirs(outDir)
