@@ -428,7 +428,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
+    <text name="CP_help_subTitle" text="Un mod pour Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Informations générales"/>
     <text name="CP_help_page_GeneralBase_text" text="
