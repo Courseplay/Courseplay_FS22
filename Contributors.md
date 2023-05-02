@@ -5,7 +5,7 @@
 * [schwiti6190](https://github.com/schwiti6190)
 
 ### Translators
-* Brazilian Portuguese: [Admilson](https://github.com/Admilson)
+* Brazilian Portuguese: [Admilson](https://github.com/Admilson), [Lactic68](https://github.com/Lactic68)
 * Chinese Simplified: [kgdtuu](https://github.com/kgdtuu)
 * Czech: [SniperKittenCZ](https://github.com/SniperKittenCZ), [chroja](https://github.com/chroja)
 * Danish: [o0bonde](https://github.com/o0bonde)
