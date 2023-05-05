@@ -262,7 +262,7 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     else
         self:debug("Invalid start position found!")
     end
-    if jobParameters.useFieldUnload:getValue() then 
+    if jobParameters.useFieldUnload:getValue() and not jobParameters.useFieldUnload:getIsDisabled() then 
         local fieldUnloadPosition = jobParameters.fieldUnloadPosition
         if fieldUnloadPosition ~= nil and fieldUnloadPosition.x ~= nil and fieldUnloadPosition.z ~= nil and fieldUnloadPosition.angle ~= nil then
             --- Valid field unload position found and allowed.
