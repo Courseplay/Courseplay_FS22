@@ -375,6 +375,7 @@ function CpAIWorker:onUpdate(dt)
     if spec.driveStrategy then 
         --- Should drive all CP modes, except fieldwork here.
         spec.driveStrategy:update(dt)
+        SpecializationUtil.raiseEvent(self, "onAIFieldWorkerActive")
         if not spec.driveStrategy then 
             return
         end
