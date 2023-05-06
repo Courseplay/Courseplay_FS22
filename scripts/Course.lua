@@ -334,6 +334,13 @@ function Course:getCurrentWaypointIx()
 	return self.currentWaypoint
 end
 
+--- Gets the current waypoint.
+--- For a multi tool course the original field work waypoint reference. 
+---@return number
+function Course:getCurrentWaypointReferenceIx()
+	return self.waypoints[self.currentWaypoint]:getOriginalMultiToolReference() or self.currentWaypoint
+end
+
 function Course:setLastPassedWaypointIx(ix)
 	self.lastPassedWaypoint = ix
 end
@@ -1452,8 +1459,9 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 	local offsetCourse = Course(self.vehicle, {})
 	offsetCourse.multiTools = nVehicles
 	offsetCourse.name = self.name
-	local ix = 1
+	local ix, sIx = 1, 1
 	while ix and (ix < #self.waypoints) do
+		sIx = ix
 		local origHeadlandsCourse
 		-- time to get rid of this negative lane number marking the headland, why on Earth must it be negative?
 		local currentLaneNumber = self.waypoints[ix].lane
@@ -1482,12 +1490,16 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 					end
 					addTurnsToCorners(offsetHeadlands, math.rad(60), true)
 					CourseGenerator.pointsToXzInPlace(offsetHeadlands)
+					--- Applies the original field work course reference
+					Waypoint.applyOriginalMultiToolReference(offsetHeadlands, sIx, origHeadlandsCourse:getNumberOfWaypoints() )
 					offsetCourse:appendWaypoints(offsetHeadlands)
 					CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland done %d', ix)
 				end
 			else
 				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Short headland section to %d', ix)
 				origHeadlandsCourse:offsetUpDownRows(offset, 0)
+				--- Applies the original field work course reference
+				Waypoint.applyOriginalMultiToolReference(origHeadlandsCourse.waypoints, sIx, origHeadlandsCourse:getNumberOfWaypoints() )
 				offsetCourse:append(origHeadlandsCourse)
 			end
 		else
@@ -1497,6 +1509,8 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 			if upDownCourse:getNumberOfWaypoints() > 0 then
 				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Up/down section to %d', ix)
 				upDownCourse:offsetUpDownRows(offset, 0, useSameTurnWidth)
+				--- Applies the original field work course reference
+				Waypoint.applyOriginalMultiToolReference(upDownCourse.waypoints, sIx, upDownCourse:getNumberOfWaypoints() )
 				offsetCourse:append(upDownCourse)
 			end
 		end
