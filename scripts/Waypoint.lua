@@ -270,7 +270,7 @@ function Waypoint.applyOriginalMultiToolReference(wps, sIx, deltaIx)
 	local factor, dIx = deltaIx / #wps, 0
 	for ix=1, #wps do 
 		dIx = math.floor(ix * factor)
-		wps[ix] = Waypoint.initFromGeneratedWp(wps[ix], ix):setOriginalMultiToolReference(math.max(1, dIx) + sIx-1)
+		wps[ix] = Waypoint.init(wps[ix], ix):setOriginalMultiToolReference(math.max(1, dIx) + sIx-1)
 	end
 end
 
