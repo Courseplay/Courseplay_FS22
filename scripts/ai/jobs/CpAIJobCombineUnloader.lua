@@ -155,7 +155,10 @@ function CpAIJobCombineUnloader:validate(farmId)
 	------------------------------------
 	--- Validate start distance to field
 	-------------------------------------
-	local useGiantsUnload = self.cpJobParameters.useGiantsUnload:getValue()
+	local useGiantsUnload = false
+	if not self.cpJobParameters.useGiantsUnload:getIsDisabled() then 
+		useGiantsUnload =  self.cpJobParameters.useGiantsUnload:getValue() 
+	end
 	if isValid and self.isDirectStart then 
 		--- Checks the distance for starting with the hud, as a safety check.
 		--- Firstly check, if the vehicle is near the field.
@@ -195,7 +198,11 @@ function CpAIJobCombineUnloader:validate(farmId)
 	------------------------------------
 	--- Validate field unload if needed
 	-------------------------------------
-	if self.cpJobParameters.useFieldUnload:getValue() then 
+	local useFieldUnload = false
+	if not self.cpJobParameters.useFieldUnload:getIsDisabled() then 
+		useFieldUnload =  self.cpJobParameters.useFieldUnload:getValue() 
+	end
+	if useFieldUnload then 
 		
 		local x, z = self.cpJobParameters.fieldUnloadPosition:getPosition()
 		isValid = CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) or 
