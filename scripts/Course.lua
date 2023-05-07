@@ -21,9 +21,9 @@ Course = CpObject()
 
 --- Course constructor
 ---@param waypoints Waypoint[] table of waypoints of the course
----@param temporary boolean optional, default false is this a temporary course?
----@param first number optional, index of first waypoint to use
----@param last number optional, index of last waypoint to use to construct of the course
+---@param temporary boolean|nil optional, default false is this a temporary course?
+---@param first number|nil optional, index of first waypoint to use
+---@param last number|nil optional, index of last waypoint to use to construct of the course
 function Course:init(vehicle, waypoints, temporary, first, last)
 	-- add waypoints from current vehicle course
 	---@type Waypoint[]
@@ -1489,10 +1489,10 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 						offsetHeadlands[#offsetHeadlands].turnStart = true
 					end
 					addTurnsToCorners(offsetHeadlands, math.rad(60), true)
-					CourseGenerator.pointsToXzInPlace(offsetHeadlands)
+					local newHeadlandCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(offsetHeadlands), true)
 					--- Applies the original field work course reference
-					Waypoint.applyOriginalMultiToolReference(offsetHeadlands, sIx, origHeadlandsCourse:getNumberOfWaypoints() )
-					offsetCourse:appendWaypoints(offsetHeadlands)
+					Waypoint.applyOriginalMultiToolReference(newHeadlandCourse.waypoints, sIx, origHeadlandsCourse:getNumberOfWaypoints() )
+					offsetCourse:append(newHeadlandCourse)
 					CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland done %d', ix)
 				end
 			else
