@@ -21,9 +21,9 @@ Course = CpObject()
 
 --- Course constructor
 ---@param waypoints Waypoint[] table of waypoints of the course
----@param temporary boolean optional, default false is this a temporary course?
----@param first number optional, index of first waypoint to use
----@param last number optional, index of last waypoint to use to construct of the course
+---@param temporary boolean|nil optional, default false is this a temporary course?
+---@param first number|nil optional, index of first waypoint to use
+---@param last number|nil optional, index of last waypoint to use to construct of the course
 function Course:init(vehicle, waypoints, temporary, first, last)
 	-- add waypoints from current vehicle course
 	---@type Waypoint[]
@@ -332,6 +332,13 @@ end
 
 function Course:getCurrentWaypointIx()
 	return self.currentWaypoint
+end
+
+--- Gets the current waypoint.
+--- For a multi tool course the original field work waypoint reference. 
+---@return number
+function Course:getCurrentWaypointReferenceIx()
+	return self.waypoints[self.currentWaypoint]:getOriginalMultiToolReference() or self.currentWaypoint
 end
 
 function Course:setLastPassedWaypointIx(ix)
@@ -1452,8 +1459,9 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 	local offsetCourse = Course(self.vehicle, {})
 	offsetCourse.multiTools = nVehicles
 	offsetCourse.name = self.name
-	local ix = 1
+	local ix, sIx = 1, 1
 	while ix and (ix < #self.waypoints) do
+		sIx = ix
 		local origHeadlandsCourse
 		-- time to get rid of this negative lane number marking the headland, why on Earth must it be negative?
 		local currentLaneNumber = self.waypoints[ix].lane
@@ -1481,13 +1489,17 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 						offsetHeadlands[#offsetHeadlands].turnStart = true
 					end
 					addTurnsToCorners(offsetHeadlands, math.rad(60), true)
-					CourseGenerator.pointsToXzInPlace(offsetHeadlands)
-					offsetCourse:appendWaypoints(offsetHeadlands)
+					local newHeadlandCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(offsetHeadlands), true)
+					--- Applies the original field work course reference
+					Waypoint.applyOriginalMultiToolReference(newHeadlandCourse.waypoints, sIx, origHeadlandsCourse:getNumberOfWaypoints() )
+					offsetCourse:append(newHeadlandCourse)
 					CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Headland done %d', ix)
 				end
 			else
 				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Short headland section to %d', ix)
 				origHeadlandsCourse:offsetUpDownRows(offset, 0)
+				--- Applies the original field work course reference
+				Waypoint.applyOriginalMultiToolReference(origHeadlandsCourse.waypoints, sIx, origHeadlandsCourse:getNumberOfWaypoints() )
 				offsetCourse:append(origHeadlandsCourse)
 			end
 		else
@@ -1497,6 +1509,8 @@ function Course:calculateOffsetCourse(nVehicles, position, width, useSameTurnWid
 			if upDownCourse:getNumberOfWaypoints() > 0 then
 				CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Up/down section to %d', ix)
 				upDownCourse:offsetUpDownRows(offset, 0, useSameTurnWidth)
+				--- Applies the original field work course reference
+				Waypoint.applyOriginalMultiToolReference(upDownCourse.waypoints, sIx, upDownCourse:getNumberOfWaypoints() )
 				offsetCourse:append(upDownCourse)
 			end
 		end
