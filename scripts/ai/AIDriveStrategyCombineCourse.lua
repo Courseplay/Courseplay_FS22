@@ -1198,12 +1198,15 @@ end
 
 --- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
 function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
+    if self.pipeController:isFillableTrailerUnderPipe() then 
+        -- Disables Fuel save, when a trailer is under the pipe.
+        return false
+    end
     --- Enables fuel save, while waiting for the rain to stop.
     if self.combine:getIsThreshingDuringRain() then
         return true
     end
-    return not self.pipeController:isFillableTrailerUnderPipe()
-            and self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
+    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
 --- Check if the vehicle should stop during a turn (for example while it
