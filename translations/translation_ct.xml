@@ -693,7 +693,7 @@ R: 從剪貼板中刪除複製的路線。
 噴霧器工作在葡萄藤旁邊，所以它必須從葡萄藤上向左或向右行駛。
 由於噴霧器可以同時在左右藤上工作，我們可以跳過一行。
 "/>
-    <text name="CP_help_page_editor_title" text="Course editor"/>
+    <text name="CP_help_page_editor_title" text="任務編輯器"/>
     <text name="CP_help_page_editorGeneral_text" text="
 任務編輯器可用於編輯任務和自訂田地。
 當編輯器關閉時，載入的任務將被自動保存/修改。
@@ -708,15 +708,15 @@ R: 從剪貼板中刪除複製的路線。
     <text name="CP_help_page_editorBasic_text" text="
 基本類別下有：
 1）移動畫筆將懸停的航點移動到畫筆位置。
-2) 插入畫筆可以在所選航點的前面或後面插入航點。
+2）插入畫筆可以在所選航點的前面或後面插入航點。
 
 刪除航點可以用紅色的刪除按鈕來完成。
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
 在進階類別下有：
 1）用畫筆在選定的航點之間移動多個航點。
-2) 在選定的航點之間插入一條航點曲線的畫筆。
-3) 設置航點轉彎屬性的畫筆（只適用於航線而非自訂田地）。
+2）在選定的航點之間插入一條航點曲線的畫筆。
+3）設置航點轉彎屬性的畫筆（只適用於航線而非自訂田地）。
 "/>
     <text name="CP_help_page_unloader_title" text="收割機卸載"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
