@@ -106,7 +106,7 @@
     <!---->
     <text name="CP_job_fieldWork" text="CP: 田地工作"/>
     <text name="CP_job_baleCollect" text="CP: 扎捆/收集草垛"/>
-    <text name="CP_job_combineUnload" text="CP: 卸載聯合收割機"/>
+    <text name="CP_job_combineUnload" text="CP: 卸載收割機"/>
     <text name="CP_job_bunkerSilo" text="CP: 筒倉工作"/>
     <text name="CP_job_siloLoader" text="CP: 筒倉裝載"/>
     <text name="CP_ai_page_generate_course" text="CP: 生成田地工作路線"/>
@@ -135,7 +135,7 @@
     <text name="CP_vehicle_setting_showCourse_startStop" text="僅限起始點/終點"/>
     <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="當前航點"/>
     <text name="CP_vehicle_setting_showCourse_all" text="所有點"/>
-    <text name="CP_vehicle_setting_openHudWithMouse_title" text="用滑鼠打開Hud"/>
+    <text name="CP_vehicle_setting_openHudWithMouse_title" text="用滑鼠打開HUD"/>
     <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="右鍵打開HUD。 如果關閉，則僅使用鍵盤快捷鍵打開 HUD。"/>
     <text name="CP_vehicle_setting_fuelSave_title" text="節省燃油"/>
     <text name="CP_vehicle_setting_fuelSave_tooltip" text="在等待時關閉車輛。"/>
@@ -178,9 +178,9 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="筒倉工作設定"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="工作寬度"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="工作寬度 數值範圍: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -192,8 +192,8 @@
     <text name="CP_vehicle_setting_turnSpeed_tooltip" text="轉向時的最大速度。 數值範圍: 2 - 25"/>
     <text name="CP_vehicle_setting_reverseSpeed_title" text="倒車"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="倒車時最大速度。 數值範圍: 2 - 25"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="筒倉"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="在筒倉內行駛時的最高速度 數值範圍: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -303,8 +303,8 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="如果燃料剩餘量過低，司機將停止工作。"/>
     <text name="CP_global_setting_brokenThreshold_title" text="損壞臨界值"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="如果車輛或工具損壞過多，司機將停止工作。100%為關閉。"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="下雨時將停止收割機的工作"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="如果設定是啟用的，那麼所有收割機將等待至雨停"/>
     <text name="CP_global_setting_subTitle_userSettings" text="用戶設置"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="手把控制HUB"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="HUD（遊戲內CP界面）可搭配遊戲手把使用。"/>
@@ -317,18 +317,18 @@
     <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="允許在每次建立路徑時放寬路徑搜索的限制。值越高，計算速度越快。"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="顯示所有活動任務 "/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="在地圖上顯示所有活動任務。 "/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="在小地圖上顯示活動任務"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="啟用在迷你地圖上繪製路線."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="顯示訊息文本窗口 "/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="顯示一個訊息文本窗口。"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="車外滑鼠交互"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="啟用/禁用車輛外的滑鼠交互。"/>
     <text name="CP_global_setting_preferCustomFields_title" text="首選自訂田地"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="使用自訂田地，即使有原始田地。"/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
-    <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
-    <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <text name="CP_global_setting_distanceUnit_title" text="距離單位"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="距離單位米或英尺."/>
+    <text name="CP_global_setting_distanceUnit_meter" text="米"/>
+    <text name="CP_global_setting_distanceUnit_imperial" text="英尺"/>
     <!---->
     <!--Course manager-->
     <!---->
@@ -338,24 +338,24 @@
     <text name="CP_courseManager_change_mode" text="更改模式"/>
     <text name="CP_courseManager_load_courses" text="載入任務"/>
     <text name="CP_courseManager_save_courses" text="保存任務"/>
-    <text name="CP_courseManager_edit_course" text="Open course editor"/>
+    <text name="CP_courseManager_edit_course" text="開啟任務編輯器"/>
     <text name="CP_courseManager_clear_current_courses" text="清除當前任務"/>
-    <text name="CP_courseManager_create_directory" text="建立新文件夾"/>
+    <text name="CP_courseManager_create_directory" text="建立新資料夾"/>
     <text name="CP_courseManager_move_entry" text="移動"/>
     <text name="CP_courseManager_delete_entry" text="刪除"/>
     <text name="CP_courseManager_rename_entry" text="重命名"/>
     <text name="CP_courseManager_copy_entry" text="複製"/>
-    <text name="CP_courseManager_folder_dialog" text="文件夾名稱:"/>
+    <text name="CP_courseManager_folder_dialog" text="資料夾名稱:"/>
     <text name="CP_courseManager_course_dialog" text="任務名稱:"/>
-    <text name="CP_courseManager_deleteWarning" text="Are you sure, you want to delete (%s)?"/>
-    <text name="CP_courseManager_editCourseWarning" text="Course editing might create problems for the course drivers.
-You should only use this tool, when the course generator can't create a good enough course.
-The course is saved automatically on closing of the editor and overrides the selected course.
+    <text name="CP_courseManager_deleteWarning" text="你確定要刪除嗎 (%s)?"/>
+    <text name="CP_courseManager_editCourseWarning" text="編輯任務可能會給司機帶來問題
+只有在任務生成器不能建立足夠好的任務時，您才應該使用這個工具。
+在關閉編輯器時，該任務會自動保存，並覆蓋所選任務。
 "/>
-    <text name="CP_courseManager_deleteError" text="文件夾不是空的 (%s)!"/>
-    <text name="CP_courseManager_entryExistAlreadyError" text="文件已經存在於目標文件夾中 (%s)!"/>
-    <text name="CP_courseManager_noAccessError" text="無法訪問該文件夾 (%s)!"/>
-    <text name="CP_courseManager_targetIsNoFolderError" text="目標位置不是一個文件夾 (%s)!"/>
+    <text name="CP_courseManager_deleteError" text="資料夾不是空的 (%s)!"/>
+    <text name="CP_courseManager_entryExistAlreadyError" text="文件已經存在於目標資料夾中 (%s)!"/>
+    <text name="CP_courseManager_noAccessError" text="無法訪問該資料夾 (%s)!"/>
+    <text name="CP_courseManager_targetIsNoFolderError" text="目標位置不是一個資料夾 (%s)!"/>
     <text name="CP_courseManager_targetIsNoCourseError" text="目標位置不是任務 (%s)!"/>
     <text name="CP_courseManager_basicSettings" text="任務交互。 "/>
     <text name="CP_courseManager_advancedSettings" text="編輯文件。"/>
@@ -363,31 +363,31 @@ The course is saved automatically on closing of the editor and overrides the sel
     <!---->
     <!--Course editor-->
     <!---->
-    <text name="CP_editor_course_title" text="Course editor"/>
-    <text name="CP_editor_delete_title" text="Delete waypoints"/>
-    <text name="CP_editor_delete_primary_text" text="primary"/>
-    <text name="CP_editor_delete_secondary_text" text="secondary"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
-    <text name="CP_editor_delete_err" text="To few waypoints left."/>
-    <text name="CP_editor_course_basic_title" text="Basic"/>
-    <text name="CP_editor_course_basic_move_title" text="Move a waypoint"/>
-    <text name="CP_editor_course_basic_move_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_title" text="Insert waypoints"/>
-    <text name="CP_editor_course_basic_insert_primary_text" text="primary"/>
-    <text name="CP_editor_course_basic_insert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_basic_insert_err" text="Inserting between a turning point is not allowed."/>
-    <text name="CP_editor_course_advanced_title" text="Advanced"/>
-    <text name="CP_editor_course_advanced_changeTurn_title" text="Marks a waypoint as turn."/>
-    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="Adds or deletes a turning point. (The selected waypoint will be the turn start.)"/>
-    <text name="CP_editor_course_advanced_changeTurn_err" text="To close to another turning point."/>
-    <text name="CP_editor_course_advanced_moveExtended_title" text="Moves multiple waypoints"/>
-    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_title" text="Inserts waypoints as curve"/>
-    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="primary"/>
-    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="secondary"/>
-    <text name="CP_editor_course_advanced_curveInsert_err" text="Selecting a turning point is not allowed."/>
+    <text name="CP_editor_course_title" text="任務編輯器"/>
+    <text name="CP_editor_delete_title" text="刪除航點"/>
+    <text name="CP_editor_delete_primary_text" text="主要"/>
+    <text name="CP_editor_delete_secondary_text" text="次要"/>
+    <text name="CP_editor_delete_tertiary_text" text="刪除最後一個航點之前的所有航點"/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="你確定到最後一個的所有航點都應該被刪除嗎?"/>
+    <text name="CP_editor_delete_err" text="剩餘的航點太少."/>
+    <text name="CP_editor_course_basic_title" text="基本"/>
+    <text name="CP_editor_course_basic_move_title" text="移動航點"/>
+    <text name="CP_editor_course_basic_move_primary_text" text="主要"/>
+    <text name="CP_editor_course_basic_insert_title" text="插入航點"/>
+    <text name="CP_editor_course_basic_insert_primary_text" text="主要"/>
+    <text name="CP_editor_course_basic_insert_secondary_text" text="次要"/>
+    <text name="CP_editor_course_basic_insert_err" text="不允許在轉彎點之間插入"/>
+    <text name="CP_editor_course_advanced_title" text="進階"/>
+    <text name="CP_editor_course_advanced_changeTurn_title" text="將航點標記為轉彎"/>
+    <text name="CP_editor_course_advanced_changeTurn_primary_text" text="增加或刪除一個轉彎點。 (所選的航點將是轉彎的起點）。"/>
+    <text name="CP_editor_course_advanced_changeTurn_err" text="接近另一個轉彎點."/>
+    <text name="CP_editor_course_advanced_moveExtended_title" text="移動多個航點"/>
+    <text name="CP_editor_course_advanced_moveExtended_primary_text" text="主要"/>
+    <text name="CP_editor_course_advanced_moveExtended_secondary_text" text="次要"/>
+    <text name="CP_editor_course_advanced_curveInsert_title" text="將航點作為曲線插入"/>
+    <text name="CP_editor_course_advanced_curveInsert_primary_text" text="主要"/>
+    <text name="CP_editor_course_advanced_curveInsert_secondary_text" text="次要"/>
+    <text name="CP_editor_course_advanced_curveInsert_err" text="無法選擇轉彎點."/>
     <!---->
     <!--Info texts-->
     <!---->
@@ -399,15 +399,15 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_infoTexts_needsFilling" text="需要重新填充"/>
     <text name="CP_infoTexts_needsUnloading" text="需要卸載"/>
     <text name="CP_infoTexts_workFinished" text="完成工作"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="駕車前往聯合收割機"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="駕車前往拖車"/>
     <text name="CP_infoTexts_outOfMoney" text="資金不足"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="等待雨停"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
-    <text name="CP_infoTexts_errorStopped" text="離開了路線，停止工作"/>
+    <text name="CP_infoTexts_waitForUnloader" text="等待卸載機"/>
+    <text name="CP_infoTexts_errorStopped" text="已離開路線，將停止工作"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="錯誤的草垛類型"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="未找到路徑"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="無法傾倒在地面"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -415,15 +415,15 @@ The course is saved automatically on closing of the editor and overrides the sel
     <text name="CP_customFieldManager_confirm_delete" text="要刪除自訂田地嗎 %s?"/>
     <text name="CP_customFieldManager_delete" text="刪除自訂田地"/>
     <text name="CP_customFieldManager_rename" text="重命名自訂田地"/>
-    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
-    <text name="CP_customFieldManager_edit" text="Edit custom field"/>
+    <text name="CP_customFieldManager_rename_error" text="自訂田地名稱 %s 已使用."/>
+    <text name="CP_customFieldManager_edit" text="編輯自訂田地"/>
     <text name="CP_customFieldManager_draw" text="繪製自訂田地"/>
     <text name="CP_customFieldManager_draw_header" text="右鍵繪製自訂田地範圍"/>
     <text name="CP_customFieldManager_save" text="保存自訂田地"/>
     <text name="CP_controllerGui_startRecording" text="開始自訂田地記錄。"/>
     <text name="CP_controllerGui_stopRecording" text="停止自訂田地記錄。"/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="暫停自訂田地記錄。"/>
+    <text name="CP_controllerGui_unpauseRecording" text="取消暫停自訂田地記錄。"/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -523,31 +523,31 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 此功能還允許您使用牧草車或打包機拾取聯合收割機或割曬機留下的條帶。 
 任務文件的保存位置是：..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (或vanilla，例如MapUS).
 任務管理的工作方式與您在 FS19 中習慣的方式不同。 
-任務被保存到文件夾中，該文件夾將顯示在左側。 這意味著您至少需要一個文件夾才能開始將任務保存到其中。
-文件夾可以通過螢幕底部的按鈕簡單地建立並輸入名稱。
+任務被保存到資料夾中，該資料夾將顯示在左側。 這意味著您至少需要一個資料夾才能開始將任務保存到其中。
+資料夾可以通過螢幕底部的按鈕簡單地建立並輸入名稱。
 任務目前僅保存在本地。
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
-載入任務後，您可以透過單擊保存任務按鈕，然後單擊文件夾來保存它。  然後會出現一個彈出窗口，您可以在其中輸入任務名稱。 
+載入任務後，您可以透過單擊保存任務按鈕，然後單擊資料夾來保存它。  然後會出現一個彈出窗口，您可以在其中輸入任務名稱。 
 名稱和位置可以稍後更改。 
 要從您的車輛中刪除任務，請單擊“清除當前任務”按鈕。
-要載入任務，您必須先選擇文件夾，單擊載入任務按鈕，然後只需單擊要載入的任務。 
+要載入任務，您必須先選擇資料夾，單擊載入任務按鈕，然後只需單擊要載入的任務。 
 單擊更改模式會啟用任務管理的編輯模式。 
 "/>
     <text name="CP_help_page_courseManagerEdit_text" text="
 在編輯模式處於活動狀態時，您有以下選項：
-- 將任務移動到另一個文件夾。
-- 刪除任務或文件夾。 
-- 重命名任務或文件夾。 
+- 將任務移動到另一個資料夾。
+- 刪除任務或資料夾。 
+- 重命名任務或資料夾。 
 "/>
     <text name="CP_help_page_courseManagerEditFunctions_text" text="
 對於移動任務： 
   1) 單擊螢幕底部的移動按鈕。 
   2) 單擊要移動的任務。 
-  3) 單擊要將任務移至的文件夾。 
-要重命名，您只需單擊重命名按鈕，然後單擊文件夾或任務。 然後只需輸入新名稱。 
-要刪除任務或文件夾，請單擊刪除按鈕，然後單擊要刪除的文件夾或任務。 
-如果要刪除文件夾，文件夾必須為空。 
+  3) 單擊要將任務移至的資料夾。 
+要重命名，您只需單擊重命名按鈕，然後單擊資料夾或任務。 然後只需輸入新名稱。 
+要刪除任務或資料夾，請單擊刪除按鈕，然後單擊要刪除的資料夾或任務。 
+如果要刪除資料夾，資料夾必須為空。 
 "/>
     <text name="CP_help_page_minihud_title" text="迷你HUD"/>
     <text name="CP_help_page_minihud_text" text="
@@ -695,100 +695,99 @@ R: 從剪貼板中刪除複製的路線。
 "/>
     <text name="CP_help_page_editor_title" text="Course editor"/>
     <text name="CP_help_page_editorGeneral_text" text="
-The course editor can be used to edit courses and custom fields.
-The loaded courses will be saved/overritten automatically, when the editor is closed.
+任務編輯器可用於編輯任務和自訂田地。
+當編輯器關閉時，載入的任務將被自動保存/修改。
 
-1) Editing a custom field can be done with a selected field on the ai menu page.
-2) Editing a course can be done in the course manager. 
-   There you can edit a saved course, but be sure you cleared the currently loaded course from the vehicle.
+1) 編輯一個自訂田地可以在ai選單上選擇田地來完成。
+2) 編輯一個任務可以在任務管理器中完成。
+   在那裡你可以編輯一個已儲存的任務，但要確保你從車輛上清除了當前載入的任務。
 
-Editing of course should only be done, when the course generator can't produce a good enough course.
-Incorrect editing might couse problems for the cp driver, as the waypoints have hidden attributes.
+只有當任務生成器不能產生足夠好的任務時，才應該編輯任務。
+不正確的編輯可能會給cp司機帶來問題，因為航點具有隱藏屬性。
 "/>
     <text name="CP_help_page_editorBasic_text" text="
-Under the basic category are:
-1) The move brush moves a hovered waypoint to the brush position.
-2) The insert brush can insert waypoints ahead or behind of a selected waypoint.
+基本類別下有：
+1）移動畫筆將懸停的航點移動到畫筆位置。
+2) 插入畫筆可以在所選航點的前面或後面插入航點。
 
-Deleting of waypoints can be done with the red delete button.
+刪除航點可以用紅色的刪除按鈕來完成。
 "/>
     <text name="CP_help_page_editorAdvanced_text" text="
-Under the advanced category are:
-1) A brush to move multiple waypoints in between to selected waypoints.
-2) A brush to insert a curve of waypoints between to selected waypoints.
-3) A brush to set the turn attribute of a waypoint(only with a course and not a custom field).
+在進階類別下有：
+1）用畫筆在選定的航點之間移動多個航點。
+2) 在選定的航點之間插入一條航點曲線的畫筆。
+3) 設置航點轉彎屬性的畫筆（只適用於航線而非自訂田地）。
 "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="收割機卸載"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+Courseplay的卸載模式適用於Courseplay驅動的聯合收割機、收割機和牽引式收割機。
+它不適用於切碎機。
+你可以使用普通拖車或螺旋運穀車來卸載聯合收割機。
+要清空拖車，你可以使用Giants Helper或AutoDrive。
+啟動卸載需要一些東西：
+- 你需要連接一個拖車或螺旋運穀車。不支持多輛拖車。
+- 使用HUD上的目標圖標，選擇正在收割的田地。將卸載在該田地上工作的所有Courseplay驅動的收割機。
+- 你必須在田地上或在田地的20米範圍內才能啟動卸載。
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
-
+卸載只有幾個設置可以調整：
+- 你可以設置卸載的填充水平，在這個水平上卸載會認為自己已經滿了。這
+這是為了避免等待聯合收割機呼叫時拖車幾乎滿載。
+- 你可以使用HUD中的偏移量來調整卸載在收割機管道下的位置。
+                                                         
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="使用拖車"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+如果你使用拖車卸貨，有兩種方法可以將你的收穫運送到筒倉或銷售點：Giants helper
+或AutoDrive。
+你可以使用人工智能菜單並建立一個工作，然後通過啟用Giants helper功能和列表底部的卸載目標來實現。
+列表的底部，或者通過啟用HUD上的車輪圖標。
+在另一種情況下，你必須在車輪圖標變成藍色後選擇卸貨站。
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+用AutoDrive清空拖車的方法與使用裝載車的方法相同，請查看網路上的AutoDrive教學。
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="使用螺旋運穀車"/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+螺旋運穀車使用起來非常簡單。
+就像拖車一樣，你用目標圖標選擇你要卸載的聯合收割機或收割機的田地。
+要啟動卸載，請將其再次放在田地上或田地的20米範圍內。
+如果螺旋運穀車是滿的，它會自動尋找田地上或附近的拖車，以便向其卸載。
+如果拖車已滿，而螺旋運穀車仍未空，它將尋找另一輛拖車來卸貨。
+如果沒有可用的拖車，它將繼續卸載聯合收割機。
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="在田地上卸載"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+卸載位置可以用卸載標記來選擇。
+這個位置需要在同一個田地或靠近田地的邊緣。
+如果該標記指向一個已經存在的堆、 
+那麼這個堆就被用來卸載。
+標記的方向被用來作為卸載方向。
+此外，對於拖車來說，需要選擇一個頂邊。
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="青貯筒倉工作"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay能夠在青貯筒倉中壓實或分佈糠秕，或在楔形筒倉中推送糠秕。
+壓實不需要任何特殊的工具，可以用滾筒、重量或只是車輛。
+對於分配，有專門的工具。 (例如，der Fliegel DUO）。
+對於楔形筒倉，用整平器將秕糠推到筒倉的後面。
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+如果車輛連接了分配器或防護罩，則預選了筒倉模式。如果只安裝了砝碼或滾筒
+你可以在起點處進行切換，直到模式出現。
+除了工作寬度，你還可以選擇司機進入筒倉的方向。如果安裝了整平器、
+方向是自動選擇的。
+使用HUD上的目標圖標，在AI地圖上選擇筒倉。如果被選中，將以藍色線條顯示，並亮起白色燈光。
+停車位置是用標記&quot;停車位置&quot;來設置的，也可以在開始實際工作之前用Giants helper開車到那裡。
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="筒倉裝載"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
-Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
+有了這項工作，就有可能從田地上或附近的堆裡裝貨。
+此外，還可以從青貯筒倉中裝載。
+裝載機可以用Courseplay卸載機卸貨。
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
-The marker detects heaps or silos and highlights them on the map.
-Now it's possible to start the helper.
+要啟動AI選單上的裝載標記，需要進行設定。
+這個標記可以檢測到堆或筒倉，並在地圖上突出顯示它們。
+那麼現在可以啟用小幫手了。
 "/>
     <!---->
     <!--Input bindings-->
@@ -800,14 +799,14 @@ Now it's possible to start the helper.
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: 打開迷你HUB"/>
     <text name="input_CP_START_STOP" text="CP: 啟動/停止司機
 "/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: 改變起始點"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: 清除目前載入的任務"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="顯示車輛的目前路線"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: 滑鼠游標開/關"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: 打開/關閉迷你HUB"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: 開啟車輛設定"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: 開啟全局設定"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: 開啟任務生成/工作選單"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: 開啟任務管理"/>
   </texts>
 </l10n>
