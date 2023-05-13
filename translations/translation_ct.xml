@@ -20,7 +20,7 @@
     <text name="CP_error_not_on_field" text="不在田地中"/>
     <text name="CP_error_unloader_to_far_away_from_field" text="卸載機離田地太遠"/>
     <text name="CP_error_start_position_to_far_away_from_field" text="起始點位置離田地太遠"/>
-    <text name="CP_error_giants_unloader_not_available" text="大型卸載機不可用"/>
+    <text name="CP_error_giants_unloader_not_available" text="卸載點不可用"/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="田地卸載位置離田地太遠"/>
     <text name="CP_error_vehicle_too_far_away_from_field" text="車輛離田地太遠，無法啟動."/>
     <text name="CP_error_no_bunkerSilo_found" text="未發現筒倉"/>
@@ -75,10 +75,10 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="卸载:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="聯合"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="裝載"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="大型卸載:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="使用大型卸載:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="卸載點:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="使用卸載點:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="卸貨站:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="大型卸載:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="卸載點:"/>
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="在田地使用卸載:"/>
     <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="田地卸載位置:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="拖車尾部側面:"/>
