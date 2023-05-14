@@ -27,6 +27,11 @@ AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
 -- in the fruit
 AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold = 95
 
+--- Percentage delta leftover until full, when the combine slows down.
+AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 3 
+--- Minimum working speed, for slowdown.
+AIDriveStrategyCombineCourse.normalMinimalWorkingSpeed = 5
+
 AIDriveStrategyCombineCourse.myStates = {
     -- main states
     UNLOADING_ON_FIELD = {},
@@ -211,7 +216,17 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
         if self:shouldStopForUnloading() then
             -- player does not want us to move while discharging
             self:setMaxSpeed(0)
+        else
+            -- Slowdown the combine near the last few percent, so no crops are leftover, 
+            -- as the combine needs to stop in time, before it's full.
+            local leftoverPercentage = self.fillLevelFullPercentage - self.combineController:getFillLevelPercentage()
+            if( leftoverPercentage > 0 and leftoverPercentage < self.startingSlowdownFillLevelThreshold ) then 
+                local speed = leftoverPercentage * (self.vehicle:getSpeedLimit(true)/self.startingSlowdownFillLevelThreshold) + self.normalMinimalWorkingSpeed
+                self:setMaxSpeed(speed)
+            end
         end
+
+
     elseif self.state == self.states.TURNING then
         self:checkBlockingUnloader()
     elseif self.state == self.states.WAITING_FOR_LOWER then
