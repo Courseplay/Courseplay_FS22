@@ -332,6 +332,7 @@ function PipeController:resetFold(foldState, foldAnimTime, pipeState)
         Foldable.setAnimTime(self.implement, foldAnimTime, true)
         --- Makes sure the fold state is correctly set.
         self.implement:setFoldDirection(-foldState, true)
+        self.implement:updatePipeNodes(999999, nil)
         self.implement:setFoldDirection(foldState, true)
         --- Restoring the pipe position
         self.implement:updatePipeNodes(999999, nil)
@@ -342,19 +343,6 @@ function PipeController:resetFold(foldState, foldAnimTime, pipeState)
         end
     end
 end
-
-function PipeController.PipeFoldFix(implement, direction)
-    --- Fixes the pipe position,
-    --- when the pipe is being folded 
-    --- without closing the pipe before that.
-    if implement.spec_pipe then 
-        if direction == 1 then 
-            implement.spec_pipe.targetState = PipeController.PIPE_STATE_CLOSED
-		    implement.spec_pipe.currentState = PipeController.PIPE_STATE_CLOSED
-        end
-    end
-end
-Foldable.setFoldState = Utils.appendedFunction(Foldable.setFoldState, PipeController.PipeFoldFix)
 
 --------------------------------------------------------------------
 --- Moveable pipe
