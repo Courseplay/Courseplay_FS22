@@ -206,8 +206,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="總是伸出管子"/>
-    <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="當收割機裝滿並等待卸載時，始終伸出管子。"/>
+    <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="總是伸出螺旋鑽"/>
+    <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="當收割機裝滿並等待卸載時，始終伸出螺旋鑽。"/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="卸載時停車"/>
     <text name="CP_vehicle_setting_stopForUnload_tooltip" text="始終停車執行卸載。"/>
     <text name="CP_vehicle_setting_selfUnload_title" text="收割機自助卸載"/>
@@ -491,7 +491,7 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 地頭數量取決於工具的工作寬度，車輛距離田地邊緣轉向的距離取決於車輛加上所掛載工具的總長度。
 中心路線設置：
 - 田地中心路線：田地中心路線有不同的模式。最經典也是最常用的是往返。
-螺旋、圓形和區域模式都有各自獨特的優勢。例如，收割機的管子大部分時間朝向沒有作物的方向，以便接糧拖車卸載。
+螺旋、圓形和區域模式都有各自獨特的優勢。例如，收割機的螺旋鑽大部分時間朝向沒有作物的方向，以便接糧拖車卸載。
 - 往返：通常會自動找到最佳方向，但有時最長的邊更適合。如果您對其中任何一個都不滿意，請選擇手動並手動設置方向。
 - 要跳過的路徑：這是一個非常有用的選項，可以加快您的工作，使車輛不會在地頭的轉向、倒車時花費太多的時間。
 - 每塊土地的行數:這隻中心路徑被設置為土地時才有影響，並將告訴生成器每塊土地應該有多少行。行越多，產生的土地就越少。
