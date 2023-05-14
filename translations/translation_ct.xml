@@ -20,7 +20,7 @@
     <text name="CP_error_not_on_field" text="不在田地中"/>
     <text name="CP_error_unloader_to_far_away_from_field" text="卸載機離田地太遠"/>
     <text name="CP_error_start_position_to_far_away_from_field" text="起始點位置離田地太遠"/>
-    <text name="CP_error_giants_unloader_not_available" text="大型卸載機不可用"/>
+    <text name="CP_error_giants_unloader_not_available" text="卸載點不可用"/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="田地卸載位置離田地太遠"/>
     <text name="CP_error_vehicle_too_far_away_from_field" text="車輛離田地太遠，無法啟動."/>
     <text name="CP_error_no_bunkerSilo_found" text="未發現筒倉"/>
@@ -39,7 +39,7 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_tooltip" text=""/>
     <text name="CP_jobParameters_fieldPosition_title" text="田地位置："/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="筒倉位置:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="園區位置:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="田地位置:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="選擇起始點:"/>
     <text name="CP_jobParameters_startAt_title" text="選擇起始點:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="該任務的起始點"/>
@@ -48,7 +48,7 @@
     <text name="CP_jobParameters_startAt_last" text="最後的點"/>
     <text name="CP_jobParameters_startAt_bunkerSilo" text="青貯筒倉模式"/>
     <text name="CP_jobParameters_startAt_siloLoader" text="筒倉裝載模式"/>
-    <text name="CP_jobParameters_startAt_unload" text="開始卸貨 聯合收割機/青貯飼料收割機"/>
+    <text name="CP_jobParameters_startAt_unload" text="開始卸貨 聯合收割機/草糧收割機"/>
     <text name="CP_jobParameters_startAt_unload_siloLoader" text="卸載筒倉裝載機"/>
     <text name="CP_jobParameters_startAt_bales" text="扎捆/收集草垛"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="車道位置設定"/>
@@ -75,10 +75,10 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="卸载:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="聯合"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="裝載"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="大型卸載:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="使用大型卸載:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="卸載點:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="使用卸載點:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="卸貨站:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="大型卸載:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="卸載點:"/>
     <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="在田地使用卸載:"/>
     <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="田地卸載位置:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="拖車尾部側面:"/>
@@ -118,7 +118,7 @@
     <text name="CP_ai_messageError" text="AI 幫手 %s 意外停止工作 - 離開了路線！"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI 幫手 %s 已意外停止工作 - 未找到選定類型的草垛！"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI 幫手 %s 已意外停止工作 - 沒有找到路徑!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI 幫手 %s 已意外停止工作 - 無法在田地卸貨!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI 幫手 %s 已意外停止工作 - 無法在田地卸載!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -146,7 +146,7 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_title" text="允許路徑查找避行"/>
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="如果有必要，允許路徑查找生成帶有彎道的路徑，例如規避障礙或作物。"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="工作結束時收起工具"/>
-    <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="開啟/關閉 工作結束時工具的自動收起。"/>
+    <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="開啟/關閉 工作結束時工具自動收起。"/>
     <text name="CP_vehicle_setting_returnToStart_title" text="返回起始點"/>
     <text name="CP_vehicle_setting_returnToStart_tooltip" text="完成田地工作後返回起點"/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="升起工具"/>
@@ -165,7 +165,7 @@
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="工具橫向調整"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="工具縱向調整"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="工具縱向調整"/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="結束時為空:"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="卸載完時剩餘空間"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="檢查青貯添加劑"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="工作中的車輛青貯添加劑存箱是空的會停止工作。"/>
@@ -303,7 +303,7 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="如果燃料剩餘量過低，司機將停止工作。"/>
     <text name="CP_global_setting_brokenThreshold_title" text="損壞臨界值"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="如果車輛或工具損壞過多，司機將停止工作。100%為關閉。"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="下雨時將停止收割機的工作"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="下雨時停止收割機工作"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="如果設定是啟用的，那麼所有收割機將等待至雨停"/>
     <text name="CP_global_setting_subTitle_userSettings" text="用戶設置"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="手把控制HUB"/>
@@ -337,7 +337,7 @@
     <text name="CP_courseManager_temporary_course" text="臨時任務"/>
     <text name="CP_courseManager_change_mode" text="更改模式"/>
     <text name="CP_courseManager_load_courses" text="載入任務"/>
-    <text name="CP_courseManager_save_courses" text="保存任務"/>
+    <text name="CP_courseManager_save_courses" text="儲存任務"/>
     <text name="CP_courseManager_edit_course" text="開啟任務編輯器"/>
     <text name="CP_courseManager_clear_current_courses" text="清除當前任務"/>
     <text name="CP_courseManager_create_directory" text="建立新資料夾"/>
@@ -350,7 +350,7 @@
     <text name="CP_courseManager_deleteWarning" text="你確定要刪除嗎 (%s)?"/>
     <text name="CP_courseManager_editCourseWarning" text="編輯任務可能會給司機帶來問題
 只有在任務生成器不能建立足夠好的任務時，您才應該使用這個工具。
-在關閉編輯器時，該任務會自動保存，並覆蓋所選任務。
+在關閉編輯器時，該任務會自動儲存，並覆蓋所選任務。
 "/>
     <text name="CP_courseManager_deleteError" text="資料夾不是空的 (%s)!"/>
     <text name="CP_courseManager_entryExistAlreadyError" text="文件已經存在於目標資料夾中 (%s)!"/>
@@ -411,7 +411,7 @@
     <!---->
     <!--Custom field manager-->
     <!---->
-    <text name="CP_customFieldManager_confirm_save" text="是否要將錄製的任務保存為自訂田地 %s?"/>
+    <text name="CP_customFieldManager_confirm_save" text="是否要將錄製的任務儲存為自訂田地 %s?"/>
     <text name="CP_customFieldManager_confirm_delete" text="要刪除自訂田地嗎 %s?"/>
     <text name="CP_customFieldManager_delete" text="刪除自訂田地"/>
     <text name="CP_customFieldManager_rename" text="重命名自訂田地"/>
@@ -419,7 +419,7 @@
     <text name="CP_customFieldManager_edit" text="編輯自訂田地"/>
     <text name="CP_customFieldManager_draw" text="繪製自訂田地"/>
     <text name="CP_customFieldManager_draw_header" text="右鍵繪製自訂田地範圍"/>
-    <text name="CP_customFieldManager_save" text="保存自訂田地"/>
+    <text name="CP_customFieldManager_save" text="儲存自訂田地"/>
     <text name="CP_controllerGui_startRecording" text="開始自訂田地記錄。"/>
     <text name="CP_controllerGui_stopRecording" text="停止自訂田地記錄。"/>
     <text name="CP_controllerGui_pauseRecording" text="暫停自訂田地記錄。"/>
@@ -518,17 +518,17 @@ Courseplay 允許您生成具有附加功能的任務路線，例如：地頭。
 "/>
     <text name="CP_help_page_courseManager_title" text="任務管理"/>
     <text name="CP_help_page_courseManagerBase_text" text="
-任務管理器允許您保存任務並允許您稍後再次載入保存的任務。 
+任務管理器允許您儲存任務並允許您稍後再次載入儲存的任務。 
 當您想讓多個工人為車隊（多工具）駕駛同一路線時，這一點非常重要。 
 此功能還允許您使用牧草車或打包機拾取聯合收割機或割曬機留下的條帶。 
-任務文件的保存位置是：..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (或vanilla，例如MapUS).
+任務文件的儲存位置是：..\My Games\FarmingSimulator2022\modSettings\FS22_Courseplay\Courses\Mapname.SampleModMap (或vanilla，例如MapUS).
 任務管理的工作方式與您在 FS19 中習慣的方式不同。 
-任務被保存到資料夾中，該資料夾將顯示在左側。 這意味著您至少需要一個資料夾才能開始將任務保存到其中。
+任務被儲存到資料夾中，該資料夾將顯示在左側。 這意味著您至少需要一個資料夾才能開始將任務儲存到其中。
 資料夾可以通過螢幕底部的按鈕簡單地建立並輸入名稱。
-任務目前僅保存在本地。
+任務目前僅儲存在本地。
 "/>
     <text name="CP_help_page_courseManagerBaseFunctions_text" text="
-載入任務後，您可以透過單擊保存任務按鈕，然後單擊資料夾來保存它。  然後會出現一個彈出窗口，您可以在其中輸入任務名稱。 
+載入任務後，您可以透過單擊儲存任務按鈕，然後單擊資料夾來儲存它。  然後會出現一個彈出窗口，您可以在其中輸入任務名稱。 
 名稱和位置可以稍後更改。 
 要從您的車輛中刪除任務，請單擊“清除當前任務”按鈕。
 要載入任務，您必須先選擇資料夾，單擊載入任務按鈕，然後只需單擊要載入的任務。 
@@ -575,7 +575,7 @@ R: 從剪貼板中刪除複製的路線。
 有兩種方法可以建立自訂田地。
 第一個是使用HUD的紀錄功能。
 開始記錄並記錄田地邊界。
-完成後，再次按下按鈕，系統會詢問您是否要保存它。
+完成後，再次按下按鈕，系統會詢問您是否要儲存它。
 "/>
     <text name="CP_help_page_customFieldDone_text" text="查看 AI 菜單，您將看到記錄的田地邊界。
 通過單擊名稱，您將獲得刪除或重命名的選項。 
@@ -696,7 +696,7 @@ R: 從剪貼板中刪除複製的路線。
     <text name="CP_help_page_editor_title" text="任務編輯器"/>
     <text name="CP_help_page_editorGeneral_text" text="
 任務編輯器可用於編輯任務和自訂田地。
-當編輯器關閉時，載入的任務將被自動保存/修改。
+當編輯器關閉時，載入的任務將被自動儲存/修改。
 
 1) 編輯一個自訂田地可以在ai選單上選擇田地來完成。
 2) 編輯一個任務可以在任務管理器中完成。
@@ -797,8 +797,7 @@ Courseplay能夠在青貯筒倉中壓實或分佈糠秕，或在楔形筒倉中�
     <text name="input_CP_DBG_CHANNEL_TOGGLE_CURRENT" text="CP: 更改當前除錯通道。 "/>
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: 顯示除錯通道菜單 是/否。"/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: 打開迷你HUB"/>
-    <text name="input_CP_START_STOP" text="CP: 啟動/停止司機
-"/>
+    <text name="input_CP_START_STOP" text="CP: 啟動/停止司機"/>
     <text name="input_CP_CHANGE_STARTING_POINT" text="CP: 改變起始點"/>
     <text name="input_CP_CLEAR_COURSE" text="CP: 清除目前載入的任務"/>
     <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="顯示車輛的目前路線"/>
