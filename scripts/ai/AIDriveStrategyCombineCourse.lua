@@ -28,7 +28,7 @@ AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
 AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold = 95
 
 --- Percentage delta leftover until full, when the combine slows down.
-AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 3 
+AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 1.5 
 --- Minimum working speed, for slowdown.
 AIDriveStrategyCombineCourse.normalMinimalWorkingSpeed = 5
 
