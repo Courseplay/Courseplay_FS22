@@ -354,7 +354,7 @@ end
 
 function PathfinderUtil.CollisionDetector:debug(...)
     if self.vehicleData then 
-        self.vehicleData:debug(...)
+        PathfinderUtil.debug(self.vehicleData.vehicle, ...)
     end
 end
 
