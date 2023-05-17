@@ -227,7 +227,7 @@ end
 --- Sprayer:onStartWorkAreaProcessing(dt), when AI is active.
 --- Even if the AI is not a fieldworker and so on ...
 function AIDriveStrategyDriveToFieldWorkStart.giantsTurnOnFix(vehicle, superFunc, ...)
-    local rootVehicle = vehicle
+    local rootVehicle = vehicle.rootVehicle
     if rootVehicle.getIsCpDriveToFieldWorkActive and rootVehicle:getIsCpDriveToFieldWorkActive() then 
         return
     end
