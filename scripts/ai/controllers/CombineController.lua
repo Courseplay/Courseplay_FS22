@@ -120,6 +120,10 @@ function CombineController:setStrawSwath(enable)
     end
 end
 
+--- Is the combine currently dropping straw swath?
+function CombineController:isDroppingStrawSwath()
+    return self.combineSpec.strawPSenabled
+end
 -------------------------------------------------------------
 --- Chopper
 -------------------------------------------------------------

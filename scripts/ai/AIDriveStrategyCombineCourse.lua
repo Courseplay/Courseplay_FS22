@@ -1224,15 +1224,19 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
     return self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
 end
 
---- Check if the vehicle should stop during a turn (for example while it
+--- Check if the vehicle should stop during a turn for example while it
 --- is held for unloading or waiting for the straw swath to stop
 function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
+    --- Hold during discharge
     local discharging = self:isDischarging() and not self:isChopper()
+
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
-    local waitForStraw = self.combine.strawPSenabled and not isFinishingRow
-    self:debugSparse('discharging %s, held for unload %s, straw active %s, finishing row = %s',
-            tostring(discharging), tostring(self.heldForUnloadRefill), tostring(self.combine.strawPSenabled), tostring(isFinishingRow))
-    return discharging or self.heldForUnloadRefill or waitForStraw
+    local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
+
+    self:debugSparse('Turn maneuver=> Dischargeable: %s, wait for straw: %s, straw swath active: %s, finishing row: %s',
+        tostring(discharging), tostring(waitForStraw), 
+        tostring(self.combineController:isDroppingStrawSwath()), tostring(isFinishingRow))
+    return discharging or waitForStraw
 end
 
 --- Should we return to the first point of the course after we are done?
