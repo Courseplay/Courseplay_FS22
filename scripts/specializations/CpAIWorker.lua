@@ -53,6 +53,7 @@ end
 
 function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getIsCpActive", CpAIWorker.getIsCpActive)
+    SpecializationUtil.registerFunction(vehicleType, "getIsCpDriveToFieldWorkActive", CpAIWorker.getIsCpDriveToFieldWorkActive)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartableJob", CpAIWorker.getCpStartableJob)
 	SpecializationUtil.registerFunction(vehicleType, "getCpStartText", CpAIWorker.getCpStartText)
     SpecializationUtil.registerFunction(vehicleType, "cpStartStopDriver", CpAIWorker.cpStartStopDriver)
@@ -300,6 +301,11 @@ end
 --- Every cp job should be an instance of type CpAIJob.
 function CpAIWorker:getIsCpActive()
     return self:getIsAIActive() and self:getJob() and self:getJob():isa(CpAIJob)
+end
+
+--- Is cp drive to field work active
+function CpAIWorker:getIsCpDriveToFieldWorkActive()
+    return self:getIsCpActive() and self.driveToFieldWorkStartStrategy ~= nil
 end
 
 --- Is a cp job ready to be started?

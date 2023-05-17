@@ -222,3 +222,16 @@ function AIDriveStrategyDriveToFieldWorkStart:onWaypointChange(ix, course)
         self.vehicle:getJob():setStartFieldWorkCourse(course, ix)
     end
 end
+
+--- For whatever reason giants decided to turn on sprayers in: 
+--- Sprayer:onStartWorkAreaProcessing(dt), when AI is active.
+--- Even if the AI is not a fieldworker and so on ...
+function AIDriveStrategyDriveToFieldWorkStart.giantsTurnOnFix(vehicle, superFunc, ...)
+    local rootVehicle = vehicle.rootVehicle
+    if rootVehicle.getIsCpDriveToFieldWorkActive and rootVehicle:getIsCpDriveToFieldWorkActive() then 
+        return
+    end
+    return superFunc(vehicle, ...)
+end
+TurnOnVehicle.setIsTurnedOn = Utils.overwrittenFunction(TurnOnVehicle.setIsTurnedOn, 
+                        AIDriveStrategyDriveToFieldWorkStart.giantsTurnOnFix)
