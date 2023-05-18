@@ -101,6 +101,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Ladeposition"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Ladeposition"/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Fortschritt: "/>
     <!---->
     <!--AI jobs-->
     <!---->
