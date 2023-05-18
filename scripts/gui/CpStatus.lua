@@ -24,6 +24,10 @@ function CpStatus:reset()
     self.numBalesLeftOver = nil
     --- Bunker silo level driver
     self.compactionPercentage = nil
+    --- Silo loader 
+    self.fillLevelLeftOver = nil
+    self.fillLevelLeftOverSinceStart = nil
+    self.fillLevelPercentageLeftOver = nil
 end
 
 function CpStatus:start()
@@ -86,6 +90,17 @@ function CpStatus:setLevelSiloStatus(compactionPercentage)
     end
 end
 
+---@param fillLevelLeftOver number
+---@param fillLevelLeftOverSinceStart number
+function CpStatus:setSiloLoaderStatus(fillLevelLeftOver, fillLevelLeftOverSinceStart)
+    if self.fillLevelLeftOver == nil or math.abs(self.fillLevelLeftOver - fillLevelLeftOver) > 2000 then
+        self.fillLevelLeftOver = fillLevelLeftOver
+        self.fillLevelLeftOverSinceStart = fillLevelLeftOverSinceStart
+        self.fillLevelPercentageLeftOver = MathUtil.round(100 * (1 - fillLevelLeftOver / fillLevelLeftOverSinceStart))
+        self:raiseDirtyFlag()
+    end
+end
+
 function CpStatus:updateWaypointVisibility()
     SpecializationUtil.raiseEvent(self.vehicle, "onCpFieldworkWaypointChanged", self.currentWaypointIx)
 end
@@ -116,6 +131,16 @@ function CpStatus:getCompactionText(withoutPercentageSymbol)
     return '--'
 end
 
+function CpStatus:getSiloFillLevelPercentageLeftOver(withoutPercentageSymbol)
+    if self.isActive and self.fillLevelPercentageLeftOver ~=nil  then 
+        if withoutPercentageSymbol then 
+            return tostring(self.fillLevelPercentageLeftOver)
+        end
+        return string.format('%d%%', self.fillLevelPercentageLeftOver)
+    end 
+    return '--'
+end
+
 function CpStatus:getTimeRemainingText()
     return self.remainingTimeText
 end
@@ -139,6 +164,10 @@ function CpStatus:onWriteUpdateStream(streamId, connection, dirtyMask)
         streamWriteInt32(streamId, self.numBalesLeftOver or 0)
         --- Bunker silo level driver
         streamWriteInt32(streamId, self.compactionPercentage or 0)
+        --- Silo loader 
+        streamWriteInt32(streamId, self.fillLevelLeftOver or 0)
+        streamWriteInt32(streamId, self.fillLevelLeftOverSinceStart or 0)
+        streamWriteInt32(streamId, self.fillLevelPercentageLeftOver or 0)
 	end
 end
 
@@ -154,6 +183,9 @@ function CpStatus:onReadUpdateStream(streamId, timestamp, connection)
         --- Bunker silo level driver
         self.compactionPercentage = streamReadInt32(streamId)
 
+        self.fillLevelLeftOver = streamReadInt32(streamId)
+        self.fillLevelLeftOverSinceStart = streamReadInt32(streamId)
+        self.fillLevelPercentageLeftOver = streamReadInt32(streamId)
         self:updateWaypointVisibility()
 	end
 end

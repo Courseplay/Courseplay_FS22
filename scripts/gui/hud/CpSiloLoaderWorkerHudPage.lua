@@ -34,6 +34,16 @@ function CpSiloLoaderWorkerHudPageElement:setupElements(baseHud, vehicle, lines,
         baseHud:openCourseGeneratorGui(vehicle)
     end)
 
+
+    --- Progress of fill level removed since the start of the driver.
+    local x, y = unpack(lines[4].left)
+    self.fillLevelProgressLabel = CpTextHudElement.new(self , x , y, CpBaseHud.defaultFontSize)
+    self.fillLevelProgressLabel:setTextDetails(g_i18n:getText("CP_siloLoader_fillLevelProgress"))
+    --- Progress of fill level removed since the start of the driver.
+    local x, y = unpack(lines[4].right)
+    self.fillLevelProgressText = CpTextHudElement.new(self, x, y, CpBaseHud.defaultFontSize, RenderText.ALIGN_RIGHT)
+    
+
     CpGuiUtil.addCopyAndPasteButtons(self, baseHud, 
     vehicle, lines, wMargin, hMargin, 1)
 
@@ -68,10 +78,14 @@ function CpSiloLoaderWorkerHudPageElement:update(dt)
 	
 end
 
+---@param vehicle table
+---@param status CpStatus
 function CpSiloLoaderWorkerHudPageElement:updateContent(vehicle, status)
     local workWidth = vehicle:getCpSettings().bunkerSiloWorkWidth
     self.workWidthBtn:setTextDetails(workWidth:getTitle(), workWidth:getString())
     self.workWidthBtn:setVisible(workWidth:getIsVisible())
+
+    self.fillLevelProgressText:setTextDetails(status:getSiloFillLevelPercentageLeftOver())
 
     --- Update copy and paste buttons
     self:updateCopyButtons(vehicle)

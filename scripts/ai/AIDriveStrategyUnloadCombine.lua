@@ -353,7 +353,10 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
 
     -- make sure if we have a combine we stay registered
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
-        self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
+        local strategy = self.combineToUnload:getCpDriveStrategy()
+        if strategy then
+            self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
+        end
     end
 
     if self.combineToUnload == nil or not self.combineToUnload:getIsCpActive() then 

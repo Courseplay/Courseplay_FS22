@@ -333,6 +333,10 @@
 			<Text language="de"><![CDATA[Ladeposition]]></Text>
 			<Text language="en"><![CDATA[Loading position]]></Text>
 		</Translation>
+		<Translation name="CP_siloLoader_fillLevelProgress">
+			<Text language="de"><![CDATA[Fortschritt: ]]></Text>
+			<Text language="en"><![CDATA[Progress: ]]></Text>
+		</Translation>		
 	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">
