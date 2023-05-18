@@ -22,7 +22,7 @@
     <text name="CP_error_start_position_to_far_away_from_field" text="Pozycja startowa zbyt daleko pola."/>
     <text name="CP_error_giants_unloader_not_available" text="Pomocnik SI Giantsa rozładowujący niedostępny."/>
     <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Pozycja rozładunku na polu jest zbyt daleko pola."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Pojazd jest zbyt daleko pola, aby ruszyć."/>
     <text name="CP_error_no_bunkerSilo_found" text="Nie znaleziono silosu."/>
     <text name="CP_error_no_heap_found" text="Nie znaleziono pryzmy."/>
     <!---->
@@ -428,7 +428,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
+    <text name="CP_help_subTitle" text="Modyfikacja do Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Informacje ogólne"/>
     <text name="CP_help_page_GeneralBase_text" text="
