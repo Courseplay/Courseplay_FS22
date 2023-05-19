@@ -33,6 +33,7 @@ https://github.com/karlkurzer/path_planner
 
 --- Interface definition for all pathfinders
 ---@class PathfinderInterface
+---@field environmentData HybridAStar.EnvironmentData|nil
 PathfinderInterface = CpObject()
 
 function PathfinderInterface:init()
@@ -74,11 +75,20 @@ end
 
 function PathfinderInterface:debug(...)
 	if CourseGenerator.isRunningInGame() then
-		CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, ...)
+		if self.environmentData then
+			self.environmentData:debug(...)
+		else
+			CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, ...)
+		end
 	else
 		print(string.format( ...))
 		io.stdout:flush()
 	end
+end
+
+---@param context PathfinderUtil.Context
+function PathfinderInterface:setEnvironmentData(context)
+	--- override
 end
 
 --- Interface definition for pathfinder constraints (for dependency injection of node penalty/validity checks
@@ -119,7 +129,7 @@ end
 function PathfinderConstraintInterface:showStatistics()
 end
 
----@class HybridAStar
+---@class HybridAStar : PathfinderInterface
 HybridAStar = CpObject(PathfinderInterface)
 
 --- Get length of path
@@ -350,11 +360,22 @@ function HybridAStar.NodeList:print()
 	end
 end
 
----Environment data
+---Environment data wrapper around the pathfinder util context
 ---@class HybridAStar.EnvironmentData
 HybridAStar.EnvironmentData = CpObject()
 
+---@param context PathfinderUtil.Context
+function HybridAStar.EnvironmentData:init(context)
+	self.context = context
+end
 
+function HybridAStar.EnvironmentData:debug(...)
+	self.context:debug(...)	
+end
+
+---@param yieldAfter number
+---@param maxIterations number
+---@param mustBeAccurate boolean|nil
 function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
 	self.count = 0
 	self.yields = 0
@@ -377,6 +398,10 @@ function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
 	self.ignoreValidityAtStart = true
 end
 
+---@param context PathfinderUtil.Context
+function HybridAStar:setEnvironmentData(context)
+	self.environmentData = HybridAStar.EnvironmentData(context)
+end
 
 function HybridAStar:getMotionPrimitives(turnRadius, allowReverse)
 	return HybridAStar.MotionPrimitives(turnRadius, 6.75, allowReverse)
@@ -667,12 +692,18 @@ function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterat
 	self.analyticSolver = analyticSolver
 end
 
+---@param context PathfinderUtil.Context
+function HybridAStarWithAStarInTheMiddle:setEnvironmentData(context)
+	self.environmentData = HybridAStar.EnvironmentData(context)
+end
+
 function HybridAStarWithAStarInTheMiddle:getAStar()
 	return AStar(self.yieldAfter)
 end
 
 ---@param start State3D start node
 ---@param goal State3D goal node
+---@param turnRadius number
 ---@param allowReverse boolean allow reverse driving
 ---@param constraints PathfinderConstraintInterface constraints (validity, penalty) for the pathfinder
 --- must have the following functions defined:
@@ -869,8 +900,12 @@ HybridAStarWithPathInTheMiddle = CpObject(HybridAStarWithAStarInTheMiddle)
 ---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
 function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate, analyticSolver)
 	self.path = path
-	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', hybridRange, #path)
 	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate, analyticSolver)
+end
+
+function HybridAStarWithPathInTheMiddle:start(...)
+	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', self.hybridRange, #self.path)
+	HybridAStarWithAStarInTheMiddle.start(self, ...)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()

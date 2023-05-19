@@ -762,6 +762,7 @@ end
 function PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
     PathfinderUtil.overlapBoxes = {}
     local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 40000, mustBeAccurate)
+    pathfinder:setEnvironmentData(context)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -798,6 +799,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
 
     PathfinderUtil.overlapBoxes = {}
     local pathfinder
+    local context = PathfinderUtil.Context(vehicle, {})
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
         local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth, backMarkerDistance)
@@ -809,13 +811,14 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
             CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
         end
         pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true, analyticSolver)
+        pathfinder:setEnvironmentData(context)
     else
         -- only use a middle section when the target is really far away
         pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true, analyticSolver)
+        pathfinder:setEnvironmentData(context)
     end
 
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
-    local context = PathfinderUtil.Context(vehicle, {})
     local constraints = PathfinderConstraints(context, nil, turnOnField and 10 or nil, fieldNum)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
@@ -953,6 +956,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode
             fieldNum)
 
     local pathfinder = AStar(100, 10000)
+    pathfinder:setEnvironmentData(context)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, false,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
