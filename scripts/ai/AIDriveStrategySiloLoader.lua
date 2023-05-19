@@ -96,6 +96,8 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
     self.siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
         0, 0, 3, 3, false)
 
+    --- fill level, when the driver is started
+    self.fillLevelLeftOverSinceStart = self.silo:getTotalFillLevel()
 
     local distance = self.siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
 
@@ -104,6 +106,8 @@ function AIDriveStrategySiloLoader:startWithoutCourse(jobParameters)
         self:startPathfindingToStart(self.siloCourse)
     else
         self:startCourse(self.siloCourse, 1)
+        self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+        self:lowerImplements()
     end
 
 end
@@ -310,6 +314,11 @@ function AIDriveStrategySiloLoader:update(dt)
             self.bunkerSiloController:draw()
         end
     end
+end
+
+
+function AIDriveStrategySiloLoader:updateCpStatus(status)
+    status:setSiloLoaderStatus(self.silo:getTotalFillLevel(), self.fillLevelLeftOverSinceStart)
 end
 
 ---------------------------------------------

@@ -160,6 +160,20 @@ function CpSilo:isOverlappingWith(otherSilo)
 	return self:isPointInArea(cx, cz, self.area)
 end
 
+---@return number|nil fillType
+function CpSilo:getFillType()
+--	return DensityMapHeightUtil.getFillTypeAtArea(self.wx, self.wz, self.sx, self.sz, self.hx + self.width*self.dirXWidth, self.hz + self.width*self.dirZWidth)
+	return DensityMapHeightUtil.getFillTypeAtArea( self.sx, self.sz, self.wx, self.wz, self.hx, self.hz)
+end
+
+---@return number fillLevel
+function CpSilo:getTotalFillLevel()
+	local fillType = self:getFillType()
+	if fillType and fillType ~= FillType.UNKNOWN then 
+		return DensityMapHeightUtil.getFillLevelAtArea(fillType, self.sx, self.sz, self.wx, self.wz, self.hx, self.hz)
+	end
+	return 0
+end
 
 --- Heap Bunker Silo
 --- Wrapper for a heap.
@@ -651,4 +665,12 @@ function CpBunkerSilo:getDebugData()
 		end
 	end
 	return data
+end
+
+function CpBunkerSilo:getFillType()
+	return self.silo.outputFillType
+end
+
+function CpBunkerSilo:getTotalFillLevel()
+	return self.silo.fillLevel
 end
