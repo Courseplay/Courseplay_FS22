@@ -101,7 +101,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posizione di caricamento"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posizione di caricamento"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Avanzamento: "/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -567,7 +567,7 @@ J: Copia e incolla un percorso su un altro veicolo.
      Una volta premuto il pulsante copia, quando l'icona diventa verde, il percorso può essere incollato su un veicolo senza percorso.
 K e L: Facendo clic sul testo verranno ripristinate le modifiche ai valori automatici.
 M: Mostra il percorso copiato.
-N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiutensile. Cliccando sul testo si alternano le posizioni.
+N: Quest'area mostra la correzione della corsia se è stata caricata una rotta multiattrezzo. Cliccando sul testo si alternano le posizioni.
 O: Avvia/interrompi la registrazione di un corso sul campo personalizzato.
 P: Rimuove il porcorso dal veicolo
 Q: Modifica la visibilità del percorso tra: acceso, spento e solo start/stop.
