@@ -38,10 +38,10 @@ end
 ---@param tz number
 ---@param isCustomField boolean
 ---@return boolean found vine nodes
----@return table all vine segments
----@return node closest segment
----@return node closest vine node
----@return Placeable closest placeable
+---@return table|nil all vine segments
+---@return table|nil closest segment
+---@return table|nil closest vine node
+---@return Placeable|nil closest placeable
 function VineScanner:getVineNodesOnField(vertices, tx, tz, isCustomField)
 	if vertices == nil or next(vertices) == nil or tx == nil or tz == nil then 
 		self.lines = nil
@@ -75,8 +75,10 @@ function VineScanner:getVineNodesOnField(vertices, tx, tz, isCustomField)
 	if not closestSegment then 
 		self.lines = nil
 		self.width = nil
+		self:debug("No vine node found nearby!")
 		return false
 	end
+	self:debug("Found a vine node within %.2fm", closestDist)
 	return true, vineSegments, closestSegment, closestNode, closestPlaceable
 end
 
@@ -91,7 +93,7 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 	local isValid, vineSegments, closestSegment, closestNode, closestPlaceable = self:getVineNodesOnField(vertices, tx, tz, isCustomField)
 
 	if not isValid then 
-		return
+		return false
 	end
 	--- Only use vine segments with the same directions, as the closest segment found.
 	local dirX, dirZ = MathUtil.vector2Normalize(closestSegment.x2 - closestSegment.x1, closestSegment.z2 - closestSegment.z1)
@@ -119,7 +121,7 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 	end
 
 	if #lines <= 0 then 
-		self:debug("No lines could ne found")
+		self:debug("No lines could ne found!")
 		return false
 	end
  
@@ -127,8 +129,6 @@ function VineScanner:findVineNodesInField(vertices, tx, tz, isCustomField)
 	for i, l in ipairs(lines) do
 		table.insert(newLines, self:getStartEndPointForLine(l))
 	end
-
-
 
 	--- Makes sure the closest line is near the starting point, which should be lines[1].x1/z1
 	local dist1 = MathUtil.vector2Length(newLines[1].x1-tx, newLines[1].z1-tz)
@@ -194,7 +194,8 @@ function VineScanner:separateIntoColumns(lines, closestNode)
 	local columnsRight = {}
 	--- Left columns 
 	local ix = 1
-	while true do
+	local maxIterations = 500
+	while ix < maxIterations do
 		local nx = (ix-1)*width
 		local x, _, z = localToWorld(closestNode, nx, 0, 0) 
 		local foundVine = false
@@ -215,7 +216,8 @@ function VineScanner:separateIntoColumns(lines, closestNode)
 	self:debug("Found %d columns to the left.", #columnsLeft)
 	--- Right columns 
 	ix = 1
-	while true do 	
+	local maxIterations = 500
+	while ix < maxIterations do
 		local nx = ix*(-width)
 		local x, _, z = localToWorld(closestNode, nx, 0, 0) 	
 		local foundVine = false
@@ -298,13 +300,13 @@ end
 ---@param vineOffset number should the driver driver beside or over the vines. (-1/0/1)
 ---@param tx number field position x
 ---@param tz number field position z
----@return table field boundary
----@return number width between the vine nodes.
----@return table starting point for the generator
----@return number angle of the vine rows(degree)
+---@return table|nil field boundary
+---@return number|nil width between the vine nodes.
+---@return table|nil starting point for the generator
+---@return number|nil angle of the vine rows(degree)
 function VineScanner:getCourseGeneratorVertices(vineOffset, tx, tz)
 	if not self.lines then 
-		return
+		return 
 	end
 	vineOffset = -vineOffset * self.width/2
 	self:debug("vineOffset: %f", vineOffset)

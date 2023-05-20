@@ -86,6 +86,7 @@ function CpAIJobFieldWork:validateFieldSetup(isValid, errorMessage)
         self.hasValidPosition = true
         self.foundVines = g_vineScanner:findVineNodesInField(self.fieldPolygon, tx, tz, self.customField ~= nil)
         if self.foundVines then
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Found vine nodes, generating a vine field border.")
             self.fieldPolygon = g_vineScanner:getCourseGeneratorVertices(0, tx, tz)
         end
 
