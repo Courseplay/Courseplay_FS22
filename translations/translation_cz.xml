@@ -101,7 +101,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Nakládací pozice"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Nakládací pozice"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Pokrok: "/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -212,8 +212,7 @@
     <text name="CP_vehicle_setting_stopForUnload_title" text="Zastavit při vykládání"/>
     <text name="CP_vehicle_setting_stopForUnload_tooltip" text="Vždy zastaví jízdu při vykládání."/>
     <text name="CP_vehicle_setting_selfUnload_title" text="Kombajn se vyloží samostatně"/>
-    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Samostatné vyložení kombajnu do vleku, který je poblíž. Není podporováno v režimu multitools nebo konvoje.
-"/>
+    <text name="CP_vehicle_setting_selfUnload_tooltip" text="Samostatné vyložení kombajnu do vleku, který je poblíž. Není podporováno v režimu multitools nebo konvoje."/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_title" text="Vyložit kombajn na první souvrati"/>
     <text name="CP_vehicle_setting_unloadOnFirstHeadland_tooltip" text="Kombajn si přivolá odvozce na první souvrati."/>
     <text name="CP_vehicle_setting_strawSwath_title" text="Pokos slámy"/>
@@ -430,7 +429,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <!--Help menu-->
     <!---->
     <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
+    <text name="CP_help_subTitle" text="Modifikace pro Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Všeobecné informace"/>
     <text name="CP_help_page_GeneralBase_text" text="
