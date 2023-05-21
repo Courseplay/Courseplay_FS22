@@ -7,7 +7,7 @@
 
 **[Download the latest developer version](https://github.com/Courseplay/Courseplay_FS22/releases/latest)** (the file FS22_Courseplay.zip).
 
-**[Courseplay Website]([https:](https://courseplay.github.io/Courseplay_FS22.github.io/))**
+**[Courseplay Website](https://courseplay.github.io/Courseplay_FS22.github.io/)**
 
 ## What Works
 * **Multiplayer support**
