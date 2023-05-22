@@ -97,7 +97,7 @@ function AITurn:turn()
 end
 
 function AITurn:onBlocked()
-    -- will only try to recover once, so unregister here
+    -- unregister here before the AITurn object is destructed
     self.proximityController:unregisterBlockingObjectListener()
     self.driveStrategy:startRecoveryTurn()
 end
@@ -543,7 +543,7 @@ function CourseTurn:startTurn()
         end
     else
         if self.driveStrategy:isTurnOnFieldActive() then
-            self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is on')
+            self:debug('Starting a calculated turn: not enough room on field to turn but turn on field is on, can not use pathfinder turn, even if it is enabled')
             self:generateCalculatedTurn()
             self.state = self.states.TURNING
         elseif not self.settings.allowPathfinderTurns:getValue() then
@@ -551,7 +551,7 @@ function CourseTurn:startTurn()
             self:generateCalculatedTurn()
             self.state = self.states.TURNING
         else
-            self:debug('Starting a pathfinder turn: not enough room on field to turn, turn on field is or pathfinder turns are enabled')
+            self:debug('Starting a pathfinder turn: not enough room on field to turn, turn on field is off, and pathfinder turns are enabled')
             self:generatePathfinderTurn(false)
         end
     end
@@ -797,6 +797,12 @@ function RecoveryTurn:onWaypointChange(ix)
             self:generatePathfinderTurn(false)
         end
     end
+end
+
+function RecoveryTurn:onBlocked()
+    -- unregister here before the AITurn object is destructed
+    self.proximityController:unregisterBlockingObjectListener()
+    self:debug('Recovering from blocked turn unsuccessful.')
 end
 
 --- Combines (in general, when harvesting) in headland corners we want to work the corner first, then back up and then
