@@ -461,15 +461,47 @@ function AIDriveStrategyFieldWorkCourse:startTurn(ix)
     self.turnContext = TurnContext(self.vehicle, self.course, ix, ix + 1, self.turnNodes, self:getWorkWidth(), fm, bm,
             self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
     if AITurn.canMakeKTurn(self.vehicle, self.turnContext, self.workWidth, self:isTurnOnFieldActive()) then
-        self.aiTurn = KTurn(self.vehicle, self, self.ppc, self.turnContext, self.workWidth)
+        self.aiTurn = KTurn(self.vehicle, self, self.ppc, self.proximityController, self.turnContext, self.workWidth)
     else
-        self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.turnContext, self.course, self.workWidth)
+        self.aiTurn = CourseTurn(self.vehicle, self, self.ppc, self.proximityController, self.turnContext, self.course, self.workWidth)
     end
     self.state = self.states.TURNING
 end
 
 function AIDriveStrategyFieldWorkCourse:isTurning()
     return self.state == self.states.TURNING
+end
+
+-- switch back to fieldwork after the turn ended.
+---@param ix number waypoint to resume fieldwork after
+---@param forceIx boolean if true, fieldwork will resume exactly at ix. If false, we'll look for the next waypoint
+--- in front of us.
+function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
+    self.ppc:setNormalLookaheadDistance()
+    self.state = self.states.WORKING
+    self:lowerImplements()
+    -- restore our own listeners for waypoint changes
+    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
+    local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix,
+            self.vehicle:getAIDirectionNode(), self.workWidth / 2)
+    self:startCourse(self.course, startIx)
+end
+
+--- Attempt to recover from a turn where the vehicle got blocked. This replaces the current turn with a
+--- RecoveryTurn, which just backs up a bit and then uses the pathfinder to create a turn back to the
+--- start of the next row.
+---@return boolean true if a recovery turn could be created
+function AIDriveStrategyFieldWorkCourse:startRecoveryTurn()
+    self:debug('Blocked in a turn, attempt to recover')
+    if self.turnContext then
+        self.aiTurn = RecoveryTurn(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
+                self.course, self.workWidth)
+        self.state = self.states.TURNING
+        return true
+    else
+        self:debug('Lost turn context to recover, remain blocked.')
+        return false
+    end
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -520,30 +552,16 @@ function AIDriveStrategyFieldWorkCourse:startAlignmentTurn(fieldWorkCourse, star
     self.ppc:setShortLookaheadDistance()
     if alignmentCourse then
         local fm, bm = self:getFrontAndBackMarkers()
-        self.turnContext = RowStartOrFinishContext(self.vehicle, fieldWorkCourse, startIx, startIx, self.turnNodes, self:getWorkWidth(), fm, bm,
-                self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
-        self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, alignmentCourse, fieldWorkCourse, self.workWidth)
+        self.turnContext = RowStartOrFinishContext(self.vehicle, fieldWorkCourse, startIx, startIx, self.turnNodes,
+                self:getWorkWidth(), fm, bm, self:getTurnEndSideOffset(), self:getTurnEndForwardOffset())
+        self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.proximityController,
+                self.turnContext, alignmentCourse, fieldWorkCourse, self.workWidth)
         self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
     else
         self:debug('Could not create alignment course to first up/down row waypoint, continue without it')
         self.state = self.states.WAITING_FOR_LOWER
         self:lowerImplements()
     end
-end
-
--- switch back to fieldwork after the turn ended.
----@param ix number waypoint to resume fieldwork after
----@param forceIx boolean if true, fieldwork will resume exactly at ix. If false, we'll look for the next waypoint
---- in front of us.
-function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
-    self.ppc:setNormalLookaheadDistance()
-    self.state = self.states.WORKING
-    self:lowerImplements()
-    -- restore our own listeners for waypoint changes
-    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix,
-            self.vehicle:getAIDirectionNode(), self.workWidth / 2)
-    self:startCourse(self.course, startIx)
 end
 
 function AIDriveStrategyFieldWorkCourse:checkTransitionFromConnectingTrack(ix, course)

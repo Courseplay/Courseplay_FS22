@@ -307,9 +307,9 @@ function AnalyticTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, t
 	self:debug('r=%.1f, w=%.1f, steeringLength=%.1f, distanceToFieldEdge=%.1f',
 		turningRadius, workWidth, steeringLength, distanceToFieldEdge)
 
-	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
+	local turnEndNode, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(self.steeringLength)
 
-	self.course = self:findAnalyticPath(vehicleDirectionNode, startOffset, turnEndNode, 0, goalOffset, self.turningRadius)
+	self.course = self:findAnalyticPath(vehicleDirectionNode, 0, turnEndNode, 0, goalOffset, self.turningRadius)
 
 	-- make sure we use tight turn offset towards the end of the course so a towed implement is aligned with the new row
 	self.course:setUseTightTurnOffsetForLastWaypoints(10)
@@ -536,8 +536,9 @@ function VineTurnManeuver:init(vehicle, turnContext, vehicleDirectionNode, turni
 
 	self:debug('Start generating')
 
-	local turnEndNode, startOffset, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(0)
+	local turnEndNode, goalOffset = self.turnContext:getTurnEndNodeAndOffsets(0)
 	local _, _, dz = turnContext:getLocalPositionOfTurnEnd(vehicle:getAIDirectionNode())
+	local startOffset = 0
 	if dz > 0 then
 		startOffset = startOffset + dz
 	else

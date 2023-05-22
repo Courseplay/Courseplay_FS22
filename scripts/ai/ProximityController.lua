@@ -19,6 +19,7 @@ function ProximityController:init(vehicle, width)
     -- if anything closer than this, we stop
     self.stopThreshold = CpTemporaryObject(self.stopThresholdNormal)
     self.blockingVehicle = CpTemporaryObject(nil)
+    self.blockingObject = CpTemporaryObject(nil)
     self.ignoreObjectCallbackRegistrations = {}
     self:setState(self.states.NO_OBSTACLE, 'proximity controller initialized')
     local frontMarker, backMarker = Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
@@ -66,6 +67,25 @@ function ProximityController:onBlockingVehicle(vehicle, isBack)
     if self.onBlockingVehicleObject then
         -- notify our listeners
         self.onBlockingVehicleCallback(self.onBlockingVehicleObject, vehicle, isBack)
+    end
+end
+
+--- Register a function the controller calls when any object which isn't a vehicle has been blocking us for some time.
+function ProximityController:registerBlockingObjectListener(object, callback)
+    self.onBlockingObjectCallback = callback
+    self.onBlockingObjectObject = object
+end
+
+function ProximityController:unregisterBlockingObjectListener()
+    self.onBlockingObjectCallback = nil
+    self.onBlockingObjectObject = nil
+end
+
+---@param isBack boolean true if it was detected behind us
+function ProximityController:onBlockingObject(isBack)
+    if self.onBlockingObjectObject then
+        -- notify our listeners
+        self.onBlockingObjectCallback(self.onBlockingObjectObject, isBack)
     end
 end
 
@@ -162,16 +182,29 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
                 string.format('Obstacle ahead, d = %.1f, deg = %.1f, too close, stop.', d, deg))
         maxSpeed = 0
         self.showBlockedByObjectMessageTimer:setAndProlong(true, self.messageThreshold, self.messageThreshold)
-        if vehicle ~= nil and vehicle == self.blockingVehicle:get() then
-            -- have been blocked by this guy long enough, try to recover
-            CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
-                    '%s has been blocking us for a while at %.1f m', CpUtil.getName(vehicle), d)
-            self:onBlockingVehicle(vehicle, not moveForwards)
-        end
-        if not self.blockingVehicle:isPending() then
-            -- first time we are being blocked, remember the time
-            CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, '%s is blocking us (%.1fm)', CpUtil.getName(vehicle), d)
-            self.blockingVehicle:set(vehicle, nil, 7000)
+        if vehicle ~= nil then
+            if vehicle == self.blockingVehicle:get() then
+                -- have been blocked by this guy long enough, try to recover
+                CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle,
+                        '%s has been blocking us for a while at %.1f m', CpUtil.getName(vehicle), d)
+                self:onBlockingVehicle(vehicle, not moveForwards)
+            end
+            if not self.blockingVehicle:isPending() then
+                -- first time we are being blocked by a vehicle, remember the time
+                CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, '%s is blocking us (%.1fm)', CpUtil.getName(vehicle), d)
+                self.blockingVehicle:set(vehicle, nil, 7000)
+            end
+        else
+            -- whatever is blocking us, it is not a vehicle
+            if self.blockingObject:get() then
+                -- have been blocked by an object long enough
+                CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, 'An object has been blocking us for a while at %.1f m', d)
+                self:onBlockingObject(not moveForwards)
+            elseif not self.blockingObject:isPending() then
+                -- first time we are being blocked
+                CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, self.vehicle, 'An object blocking us at %.1f m', d)
+                self.blockingObject:set(true, nil, 5000)
+            end
         end
 
     elseif normalizedD < 1 and self:isSlowdownEnabled(vehicle) then
