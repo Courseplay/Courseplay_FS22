@@ -783,8 +783,10 @@ function RecoveryTurn:init(vehicle, driveStrategy, ppc, proximityController, tur
     -- blocked too, indicating that we give up.
     self.proximityController:registerBlockingObjectListener(self, RecoveryTurn.onBlocked)
     self.retryCount = retryCount or 0
+    reverseDistance = reverseDistance or 10
+    self:debug('retry count %d, reverse distance %.1f', self.retryCount, reverseDistance)
     self.state = self.states.REVERSING_AFTER_BLOCKED
-    self.turnCourse = Course.createStraightReverseCourse(self.vehicle, reverseDistance or 10)
+    self.turnCourse = Course.createStraightReverseCourse(self.vehicle, reverseDistance)
     self.ppc:setCourse(self.turnCourse)
     self.ppc:initialize(1)
 end
