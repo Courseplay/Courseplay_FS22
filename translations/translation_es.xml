@@ -101,7 +101,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posición de carga"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posición de carga"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Progreso: "/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -109,7 +109,7 @@
     <text name="CP_job_baleCollect" text="CP: Recoger/Envolver fardos"/>
     <text name="CP_job_combineUnload" text="CP: Descargar Cosechadora"/>
     <text name="CP_job_bunkerSilo" text="CP: Trabajo en Silo"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_siloLoader" text="CP: Carga de silos"/>
     <text name="CP_ai_page_generate_course" text="CP: Crear ruta de trabajo de campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Abrir/Cerrar generador de rutas."/>
     <!---->
