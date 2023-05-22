@@ -490,12 +490,14 @@ end
 --- Attempt to recover from a turn where the vehicle got blocked. This replaces the current turn with a
 --- RecoveryTurn, which just backs up a bit and then uses the pathfinder to create a turn back to the
 --- start of the next row.
+---@param reverseDistance number|nil distance to back up before retrying pathfinding (default 10 m)
+---@param retryCount number|nil how many times have we tried to recover so far? (to limit the number of retries)
 ---@return boolean true if a recovery turn could be created
-function AIDriveStrategyFieldWorkCourse:startRecoveryTurn()
+function AIDriveStrategyFieldWorkCourse:startRecoveryTurn(reverseDistance, retryCount)
     self:debug('Blocked in a turn, attempt to recover')
     if self.turnContext then
         self.aiTurn = RecoveryTurn(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
-                self.course, self.workWidth)
+                self.course, self.workWidth, reverseDistance, retryCount)
         self.state = self.states.TURNING
         return true
     else

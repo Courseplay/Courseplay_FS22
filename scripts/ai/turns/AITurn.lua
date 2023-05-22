@@ -99,7 +99,7 @@ end
 function AITurn:onBlocked()
     -- unregister here before the AITurn object is destructed
     self.proximityController:unregisterBlockingObjectListener()
-    self.driveStrategy:startRecoveryTurn()
+    self.driveStrategy:startRecoveryTurn(1 * self.turningRadius)
 end
 
 function AITurn:onWaypointChange(ix)
@@ -773,13 +773,18 @@ end
 --- of the turn context, just as a pathfinder turn would do.
 ---@class RecoveryTurn : CourseTurn
 RecoveryTurn = CpObject(CourseTurn)
-function RecoveryTurn:init(vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, name)
+---@param reverseDistance number|nil distance to back up before retrying pathfinding, default 10 m
+---@param retryCount number|nil this attempt's retry count, that is how many times so far have this turn tried to
+--- recover? First call should be 0 (default)
+function RecoveryTurn:init(vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth,
+                           reverseDistance, retryCount, name)
     CourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, name or 'RecoveryTurn')
     -- we could also just unregister, but this way we'll have a log entry in case the recovery is
     -- blocked too, indicating that we give up.
     self.proximityController:registerBlockingObjectListener(self, RecoveryTurn.onBlocked)
+    self.retryCount = retryCount or 0
     self.state = self.states.REVERSING_AFTER_BLOCKED
-    self.turnCourse = Course.createStraightReverseCourse(self.vehicle, 10)
+    self.turnCourse = Course.createStraightReverseCourse(self.vehicle, reverseDistance or 10)
     self.ppc:setCourse(self.turnCourse)
     self.ppc:initialize(1)
 end
@@ -805,7 +810,13 @@ end
 function RecoveryTurn:onBlocked()
     -- unregister here before the AITurn object is destructed
     self.proximityController:unregisterBlockingObjectListener()
-    self:debug('Recovering from blocked turn unsuccessful, giving up.')
+    if self.retryCount < 1 then
+        self:debug('Recovering from blocked turn unsuccessful after %d tries, trying again.', self.retryCount + 1)
+        -- back up a bit more and see if that works
+        self.driveStrategy:startRecoveryTurn(0.5 * self.turningRadius, self.retryCount + 1)
+    else
+        self:debug('Recovering from blocked turn unsuccessful, giving up after %d tries.', self.retryCount + 1)
+    end
 end
 
 --- Combines (in general, when harvesting) in headland corners we want to work the corner first, then back up and then
