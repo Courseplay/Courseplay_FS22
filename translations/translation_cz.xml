@@ -761,7 +761,7 @@ pak se tato hromada používá k vyložení.
 Směr značky se používá pro směr vykládky.
 Navíc pro vleky je třeba zvolit vykládací stranu.
 "/>
-    <text name="CP_help_page_bunker_title" text="Pacovník v silážní jámě"/>
+    <text name="CP_help_page_bunker_title" text="Pracovník v silážní jámě"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
 Courseplay je schopen dusat nebo nahrnovat řezanku v silážní jámě.
 Zhutňování je možné bez speciálního nářadí, s válcem, závažím nebo jen vozidlem.
