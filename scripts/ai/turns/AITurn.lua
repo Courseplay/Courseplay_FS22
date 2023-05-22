@@ -775,6 +775,9 @@ end
 RecoveryTurn = CpObject(CourseTurn)
 function RecoveryTurn:init(vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, name)
     CourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, name or 'RecoveryTurn')
+    -- we could also just unregister, but this way we'll have a log entry in case the recovery is
+    -- blocked too, indicating that we give up.
+    self.proximityController:registerBlockingObjectListener(self, RecoveryTurn.onBlocked)
     self.state = self.states.REVERSING_AFTER_BLOCKED
     self.turnCourse = Course.createStraightReverseCourse(self.vehicle, 10)
     self.ppc:setCourse(self.turnCourse)
@@ -802,7 +805,7 @@ end
 function RecoveryTurn:onBlocked()
     -- unregister here before the AITurn object is destructed
     self.proximityController:unregisterBlockingObjectListener()
-    self:debug('Recovering from blocked turn unsuccessful.')
+    self:debug('Recovering from blocked turn unsuccessful, giving up.')
 end
 
 --- Combines (in general, when harvesting) in headland corners we want to work the corner first, then back up and then
