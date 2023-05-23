@@ -145,11 +145,12 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 	-- move the line to find out the size of the heap
 	
 	--find maxX 
+	local maxSteps = 250
 	local stepSize = 0.1
 	local searchWidth = 0.1
 	local maxX = 0
 	local tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ = 0, 0, 0, 0, 0, 0
-	for i=stepSize, 250, stepSize do
+	for i=stepSize, maxSteps, stepSize do
 		tempStartX, tempStartY, tempStartZ = localToWorld(point, i, 0, 0)
 		tempHeightX, tempHeightY, tempHeightZ= localToWorld(point, i, 0, length*2)
 		local fillType = DensityMapHeightUtil.getFillTypeAtLine(tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ, searchWidth)
@@ -164,7 +165,7 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 	--find minX 
 	local minX = 0
 	local tempStartX, tempStartZ, tempHeightX, tempHeightZ = 0, 0, 0, 0;
-	for i=stepSize, 250, stepSize do
+	for i=stepSize, maxSteps, stepSize do
 		tempStartX, tempStartY, tempStartZ = localToWorld(point, -i, 0, 0)
 		tempHeightX, tempHeightY, tempHeightZ= localToWorld(point, -i, 0, length*2)
 		local fillType = DensityMapHeightUtil.getFillTypeAtLine(tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ, searchWidth)
@@ -179,7 +180,7 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 	--find minZ and maxZ
 	local foundHeap = false
 	local minZ, maxZ = 0, 0
-	for i=0, 250, stepSize do
+	for i=0, 5*maxSteps, stepSize do
 		tempStartX, tempStartY, tempStartZ = localToWorld(point, maxX, 0, i)
 		tempHeightX, tempHeightY, tempHeightZ= localToWorld(point, -minX, 0, i)
 		local fillType = DensityMapHeightUtil.getFillTypeAtLine(tempStartX, tempStartY, tempStartZ, tempHeightX, tempHeightY, tempHeightZ, searchWidth)
