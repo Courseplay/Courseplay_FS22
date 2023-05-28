@@ -157,7 +157,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self:lowerImplements()
     elseif self.state == self.states.WAITING_FOR_LOWER then
         self:setMaxSpeed(0)
-        if self.vehicle:getCanAIFieldWorkerContinueWork() then
+        if self:getCanContinueWork() then
             self:debug('all tools ready, start working')
             self.state = self.states.WORKING
         else

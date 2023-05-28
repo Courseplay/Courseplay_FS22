@@ -71,7 +71,7 @@ function AIDriveStrategyFindBales:startWithoutCourse()
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:info(' - %s', CpUtil.getName(implement.object))
     end
-
+    self:lowerImplements()
 end
 
 function AIDriveStrategyFindBales:collectNextBale()
@@ -451,9 +451,16 @@ function AIDriveStrategyFindBales:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
     
     if self.state == self.states.INITIAL then
-        self.bales = self:findBales()
-        self:collectNextBale()
-        self.state = self.states.SEARCHING_FOR_NEXT_BALE
+        if self:getCanContinueWork() then 
+            self.state = self.states.SEARCHING_FOR_NEXT_BALE
+        else
+            --- Waiting until the unfolding has finished.
+            if self.bales == nil then 
+                --- Makes sure the hud bale counter already get's updated
+                self.bales = self:findBales() 
+            end
+            self:setMaxSpeed(0)
+        end
     elseif self.state == self.states.SEARCHING_FOR_NEXT_BALE then
         self:setMaxSpeed(0)
         self:debug('work: searching for next bale')

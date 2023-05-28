@@ -21,6 +21,7 @@ Base class for all Courseplay drive strategies
 
 ---@class AIDriveStrategyCourse : AIDriveStrategy
 ---@field vehicle table
+---@field controllers table
 AIDriveStrategyCourse = {}
 local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 
@@ -289,6 +290,19 @@ function AIDriveStrategyCourse:lowerImplements()
     self.vehicle:raiseStateChange(Vehicle.STATE_CHANGE_AI_START_LINE)
     --- Lowers implements, that are not covered by giants.
     self:raiseControllerEvent(self.onLoweringEvent)
+end
+
+--- Can the ai worker continue working?
+---@return boolean
+function AIDriveStrategyCourse:getCanContinueWork()
+    --- Not every implement, for example balers or bale wrapper are handled by the giants function.
+    for _, controller in pairs(self.controllers) do
+        ---@type ImplementController
+        if not controller:canContinueWork() then
+            return false
+        end
+    end
+    return self.vehicle:getCanAIFieldWorkerContinueWork()
 end
 
 -----------------------------------------------------------------------------------------------------------------------
