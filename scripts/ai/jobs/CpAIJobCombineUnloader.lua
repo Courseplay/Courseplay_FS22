@@ -214,7 +214,7 @@ function CpAIJobCombineUnloader:validate(farmId)
 		local angle = self.cpJobParameters.fieldUnloadPosition:getAngle()
 		setTranslation(self.heapNode, x, 0, z)
 		setRotation(self.heapNode, 0, angle, 0)
-		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(self.heapNode, 0, self.maxHeapLength, -10)
+		local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(vehicle, self.heapNode, 0, self.maxHeapLength, -10)
 		if found then	
 			self.heapPlot:setArea(heapSilo:getArea())
 			self.heapPlot:setVisible(true)

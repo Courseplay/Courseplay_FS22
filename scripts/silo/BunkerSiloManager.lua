@@ -93,18 +93,19 @@ BunkerSilo.delete = Utils.prependedFunction(BunkerSilo.delete, removeBunkerSilo)
 BunkerSiloManagerUtil = {}
 BunkerSiloManagerUtil.debugChannel = CpDebug.DBG_SILO
 
-function BunkerSiloManagerUtil.debug(...)
-	CpUtil.debugFormat(BunkerSiloManagerUtil.debugChannel, ...)	
+function BunkerSiloManagerUtil.debug(vehicle, ...)
+	CpUtil.debugVehicle(BunkerSiloManagerUtil.debugChannel, vehicle, ...)	
 end
 
 --- Checks fo a silo between the to points.
+---@param vehicle table
 ---@param node number StartPoint
 ---@param xOffset number 
 ---@param length number SearchLength
 ---@param zOffset number StartOffset
 ---@return boolean silo found?
 ---@return CpBunkerSilo|nil 
-function BunkerSiloManagerUtil.getBunkerSiloBetween(node, xOffset, length, zOffset)
+function BunkerSiloManagerUtil.getBunkerSiloBetween(vehicle, node, xOffset, length, zOffset)
 	local x, _, z = localToWorld(node, xOffset, 0, zOffset)
 	local tx, _, tz = localToWorld(node, xOffset, 0, length)
 	for _, bunker in pairs(g_bunkerSiloManager:getSilos()) do
@@ -113,27 +114,28 @@ function BunkerSiloManagerUtil.getBunkerSiloBetween(node, xOffset, length, zOffs
 		local x3, z3 = bunker:getHeightPosition()
 		if MathUtil.hasRectangleLineIntersection2D(x1,z1, x2-x1, z2-z1,
 			x3-x1, z3-z1, x, z, tx-x, tz-z) then
-			BunkerSiloManagerUtil.debug("Bunker silo was found: %s", CpUtil.getName(bunker:getSilo()))
+			BunkerSiloManagerUtil.debug(vehicle, "Bunker silo was found: %s", CpUtil.getName(bunker:getSilo()))
 			return true, bunker
 		end
 	end
-	BunkerSiloManagerUtil.debug("Bunker silo could not be found!")
+	BunkerSiloManagerUtil.debug(vehicle, "Bunker silo could not be found!")
 	return false, nil
 end
 
 ---Checks for heaps between two points
+---@param vehicle table
 ---@param node number StartPoint
 ---@param xOffset number 
 ---@param length number SearchLength
 ---@param zOffset number StartOffset
 ---@return boolean found heap?
 ---@return CpHeapBunkerSilo|nil
-function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffset)
+function BunkerSiloManagerUtil.createHeapBunkerSilo(vehicle, node, xOffset, length, zOffset)
 	local p1x, p1y, p1z = localToWorld(node, xOffset, 0, zOffset)
 	local p2x, p2y, p2z = localToWorld(node, xOffset, 0, length)
 	local heapFillType = DensityMapHeightUtil.getFillTypeAtLine(p1x, p1y, p1z, p2x, p2y, p2z, 5)
 	if heapFillType == nil or heapFillType == FillType.UNKNOWN then 
-		BunkerSiloManagerUtil.debug("Heap could not be found!")
+		BunkerSiloManagerUtil.debug(vehicle, "Heap could not be found!")
 		return false, nil
 	end
 	length = length - zOffset
@@ -156,7 +158,7 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 		--print(string.format("fillType:%s distance: %.1f", tostring(fillType), i))	
 		if fillType ~= heapFillType then
 			maxX = i-stepSize
-			BunkerSiloManagerUtil.debug("maxX = %.2f", maxX)
+			BunkerSiloManagerUtil.debug(vehicle, "maxX = %.2f", maxX)
 			break
 		end
 	end
@@ -171,7 +173,7 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 		--print(string.format("fillType:%s distance: %.1f", tostring(fillType), i))	
 		if fillType ~= heapFillType then
 			minX = i-stepSize
-			BunkerSiloManagerUtil.debug("minX = %.2f", minX)
+			BunkerSiloManagerUtil.debug(vehicle, "minX = %.2f", minX)
 			break
 		end
 	end
@@ -187,12 +189,12 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 			if fillType == heapFillType then
 				foundHeap = true
 				minZ = i-stepSize
-				BunkerSiloManagerUtil.debug("minZ = %.2f", minZ)
+				BunkerSiloManagerUtil.debug(vehicle, "minZ = %.2f", minZ)
 			end
 		else
 			if fillType ~= heapFillType then
 				maxZ = i-stepSize+1
-				BunkerSiloManagerUtil.debug("maxZ = %.2f", maxZ)
+				BunkerSiloManagerUtil.debug(vehicle, "maxZ = %.2f", maxZ)
 				break
 			end
 		end	
@@ -208,13 +210,13 @@ function BunkerSiloManagerUtil.createHeapBunkerSilo(node, xOffset, length, zOffs
 	local fillLevel = DensityMapHeightUtil.getFillLevelAtArea(heapFillType, sx, sz, wx, wz, hx, hz)
 
 	if fillLevel < 200 then 
-		BunkerSiloManagerUtil.debug("Heap is to small with %s(%d) and fillLevel: %.2f.",
+		BunkerSiloManagerUtil.debug(vehicle, "Heap is to small with %s(%d) and fillLevel: %.2f.",
 			g_fillTypeManager:getFillTypeByIndex(heapFillType).title, heapFillType, fillLevel)
 		return false, nil
 	end
 
 	local bunker = CpHeapBunkerSilo(sx, sz, wx, wz, hx, hz)
-	BunkerSiloManagerUtil.debug("Heap found with %s(%d) and fillLevel: %.2f", 
+	BunkerSiloManagerUtil.debug(vehicle, "Heap found with %s(%d) and fillLevel: %.2f", 
 		g_fillTypeManager:getFillTypeByIndex(heapFillType).title, heapFillType, fillLevel)
 
 	CpUtil.destroyNode(point)
