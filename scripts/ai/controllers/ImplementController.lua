@@ -36,7 +36,7 @@ function ImplementController:isEnabled(currentState)
 end
 
 function ImplementController:debug(...)
-    CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self.implement)
+    CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self.implement, ...)
 end
 
 function ImplementController:debugSparse(...)
