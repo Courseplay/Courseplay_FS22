@@ -96,3 +96,7 @@ end
 function ImplementController:isFuelSaveAllowed()
     return true
 end
+
+function ImplementController:canContinueWork()
+    return true
+end

@@ -89,3 +89,13 @@ end
 function BaleWrapperController:onStart()
     self.baleWrapper:setFoldDirection(self.baleWrapper.spec_foldable.turnOnFoldDirection)
 end
+
+--- Returns false, while the wrapper is being unfolded.
+---@return boolean
+function BaleWrapperController:canContinueWork()
+    local spec = self.baleWrapper.spec_foldable
+    if spec == nil then 
+        return true
+    end
+    return spec.foldAnimTime == 0 or spec.foldAnimTime == 1
+end
