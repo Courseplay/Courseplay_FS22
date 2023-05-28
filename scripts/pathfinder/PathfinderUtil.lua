@@ -150,6 +150,10 @@ function PathfinderUtil.VehicleData:debug(...)
     PathfinderUtil.debug(self.vehicle, ...)    
 end
 
+function PathfinderUtil.VehicleData:getVehicle()
+    return self.vehicle
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Helpers
 ------------------------------------------------------------------------------------------------------------------------
@@ -189,10 +193,6 @@ function PathfinderUtil.Context:init(vehicle, vehiclesToIgnore, objectsToIgnore)
     self.turnRadius = AIUtil.getTurningRadius(vehicle) or 10
     self.vehiclesToIgnore = vehiclesToIgnore or {}
     self.objectsToIgnore = objectsToIgnore or {}
-end
-
-function PathfinderUtil.Context:debug(...)
-    self.vehicleData:debug(...)
 end
 
 --- Calculate the four corners of a rectangle around a node (for example the area covered by a vehicle)
@@ -646,7 +646,7 @@ function PathfinderConstraints:resetConstraints()
 end
 
 function PathfinderConstraints:debug(...)
-    self.context:debug(...)
+    self.context.vehicleData:debug(...)
 end
 
 ---@param start State3D
@@ -762,7 +762,7 @@ end
 function PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
     PathfinderUtil.overlapBoxes = {}
     local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 40000, mustBeAccurate)
-    pathfinder:setEnvironmentData(context)
+    pathfinder:setVehicleForDebug(context.vehicleData:getVehicle())
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -811,11 +811,11 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
             CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
         end
         pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true, analyticSolver)
-        pathfinder:setEnvironmentData(context)
+        pathfinder:setVehicleForDebug(vehicle)
     else
         -- only use a middle section when the target is really far away
         pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true, analyticSolver)
-        pathfinder:setEnvironmentData(context)
+        pathfinder:setVehicleForDebug(vehicle)
     end
 
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
@@ -956,7 +956,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode
             fieldNum)
 
     local pathfinder = AStar(100, 10000)
-    pathfinder:setEnvironmentData(context)
+    pathfinder:setVehicleForDebug(vehicle)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, false,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid

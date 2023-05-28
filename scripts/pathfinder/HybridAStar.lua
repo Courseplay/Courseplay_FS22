@@ -33,7 +33,7 @@ https://github.com/karlkurzer/path_planner
 
 --- Interface definition for all pathfinders
 ---@class PathfinderInterface
----@field environmentData HybridAStar.EnvironmentData|nil
+---@field vehicle table|nil
 PathfinderInterface = CpObject()
 
 function PathfinderInterface:init()
@@ -73,10 +73,16 @@ function PathfinderInterface:resume(...)
 	return false
 end
 
+--- Sets the vehicle, for vehicle debug.
+---@param vehicle any
+function PathfinderInterface:setVehicleForDebug(vehicle)
+	self.vehicle = vehicle
+end
+
 function PathfinderInterface:debug(...)
 	if CourseGenerator.isRunningInGame() then
-		if self.environmentData then
-			self.environmentData:debug(...)
+		if self.vehicle then
+			CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, self.vehicle, ...)
 		else
 			CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, ...)
 		end
@@ -84,11 +90,6 @@ function PathfinderInterface:debug(...)
 		print(string.format( ...))
 		io.stdout:flush()
 	end
-end
-
----@param context PathfinderUtil.Context
-function PathfinderInterface:setEnvironmentData(context)
-	--- override
 end
 
 --- Interface definition for pathfinder constraints (for dependency injection of node penalty/validity checks
@@ -360,19 +361,6 @@ function HybridAStar.NodeList:print()
 	end
 end
 
----Environment data wrapper around the pathfinder util context
----@class HybridAStar.EnvironmentData
-HybridAStar.EnvironmentData = CpObject()
-
----@param context PathfinderUtil.Context
-function HybridAStar.EnvironmentData:init(context)
-	self.context = context
-end
-
-function HybridAStar.EnvironmentData:debug(...)
-	self.context:debug(...)	
-end
-
 ---@param yieldAfter number
 ---@param maxIterations number
 ---@param mustBeAccurate boolean|nil
@@ -396,11 +384,6 @@ function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
 	-- the same two parameters are used to discretize the continuous state space
 	self.analyticSolverEnabled = true
 	self.ignoreValidityAtStart = true
-end
-
----@param context PathfinderUtil.Context
-function HybridAStar:setEnvironmentData(context)
-	self.environmentData = HybridAStar.EnvironmentData(context)
 end
 
 function HybridAStar:getMotionPrimitives(turnRadius, allowReverse)
@@ -690,11 +673,6 @@ function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterat
 	self.hybridAStarPathfinder = HybridAStar(self.yieldAfter, maxIterations, mustBeAccurate)
 	self.aStarPathfinder = self:getAStar()
 	self.analyticSolver = analyticSolver
-end
-
----@param context PathfinderUtil.Context
-function HybridAStarWithAStarInTheMiddle:setEnvironmentData(context)
-	self.environmentData = HybridAStar.EnvironmentData(context)
 end
 
 function HybridAStarWithAStarInTheMiddle:getAStar()
