@@ -34,7 +34,7 @@ function CpGlobalSettingsFrame:onGuiSetupFinished()
 	self.settings = g_Courseplay.globalSettings:getSettingsTable()
 	local settingsBySubTitle, pageTitle = g_Courseplay.globalSettings:getSettingSetup()
 	self.settingsBySubTitle = settingsBySubTitle
-	self.header:setText(pageTitle)	
+	self.header:setText(g_i18n:getText(pageTitle))	
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout, self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.boxLayout:invalidateLayout()

@@ -37,7 +37,7 @@ function CpVehicleSettingsFrame:onGuiSetupFinished()
 		self.boxLayout.elements[i]:delete()
 	end
 	local settingsBySubTitle,pageTitle = CpVehicleSettings.getSettingSetup()
-	self.pageTitle = pageTitle
+	self.pageTitle = g_i18n:getText(pageTitle)
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.boxLayout:invalidateLayout()

@@ -145,9 +145,9 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 	local setupKey = xmlFile:getValue("Settings#prefixText")
 	local pageTitle = xmlFile:getValue("Settings#title")
 	if pageTitle then
-		class.pageTitle =  g_i18n:getText(xmlFile:getValue("Settings#title"))
+		class.pageTitle =  xmlFile:getValue("Settings#title")
 	else 
-		class.pageTitle = g_i18n:getText(setupKey .. "title")
+		class.pageTitle = setupKey .. "title"
 	end
 	xmlFile:iterate("Settings.SettingSubTitle", function (i, masterKey)
 		local subTitle = xmlFile:getValue(masterKey.."#title")
