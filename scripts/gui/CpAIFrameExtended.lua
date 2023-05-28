@@ -270,11 +270,11 @@ function CpInGameMenuAIFrameExtended:bindCourseGeneratorSettings()
 		if self.currentJob:hasFoundVines() then 
 			self.vineCourseGeneratorLayoutElements:setVisible(true)
 			self.vineCourseGeneratorLayoutElements:setDisabled(false)
-			self.courseGeneratorHeader:setText(g_i18n:getText(vineTitle))
+			self.courseGeneratorHeader:setText(vineTitle)
 		else 
 			self.courseGeneratorLayoutElements:setVisible(true)
 			self.courseGeneratorLayoutElements:setDisabled(false)
-			self.courseGeneratorHeader:setText(g_i18n:getText(title))
+			self.courseGeneratorHeader:setText(title)
 		end
 	end
 end

@@ -37,7 +37,7 @@ function CpVehicleSettingsFrame:onGuiSetupFinished()
 		self.boxLayout.elements[i]:delete()
 	end
 	local settingsBySubTitle,pageTitle = CpVehicleSettings.getSettingSetup()
-	self.pageTitle = g_i18n:getText(pageTitle)
+	self.pageTitle = pageTitle
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
 	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.boxLayout:invalidateLayout()
@@ -47,7 +47,6 @@ end
 function CpVehicleSettingsFrame:onFrameOpen()
 	CpVehicleSettingsFrame:superClass().onFrameOpen(self)
 	self.currentVehicle = CpInGameMenuAIFrameExtended.getVehicle()
-	self.header:setText()
 	--- Changes the page title.
 	local title = string.format(self.pageTitle,self.currentVehicle:getName())
 	self.header:setText(title)	

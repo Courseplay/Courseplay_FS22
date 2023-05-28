@@ -32,11 +32,11 @@ function CpGlobalSettingsFrame:onGuiSetupFinished()
 	FocusManager:removeElement(self.multiTextOptionPrefab)
 
 	self.settings = g_Courseplay.globalSettings:getSettingsTable()
-	local settingsBySubTitle,pageTitle = g_Courseplay.globalSettings:getSettingSetup()
+	local settingsBySubTitle, pageTitle = g_Courseplay.globalSettings:getSettingSetup()
 	self.settingsBySubTitle = settingsBySubTitle
-	self.header:setText(g_i18n:getText(pageTitle))	
+	self.header:setText(pageTitle)	
 	CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle,
-	self.boxLayout,self.multiTextOptionPrefab, self.subTitlePrefab)
+	self.boxLayout, self.multiTextOptionPrefab, self.subTitlePrefab)
 	self.boxLayout:invalidateLayout()
 end
 

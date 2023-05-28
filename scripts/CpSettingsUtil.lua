@@ -279,7 +279,7 @@ end
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle, parentGuiElement, genericSettingElement, genericSubTitleElement)
 	for _, data in ipairs(settingsBySubTitle) do 
 		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
-		clonedSubTitleElement:setText(data.title)
+		clonedSubTitleElement:setText(g_i18n:getText(data.title))
 		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		for _, setting in ipairs(data.elements) do 
 			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
@@ -298,7 +298,7 @@ function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings
 	for _, setting in ipairs(settings) do 
 
 		local titleElement = genericSettingElementTitle:clone(parentGuiElement, true)
-		titleElement:setText(setting.data.title)
+		titleElement:setText(g_i18n:getText(setting.data.title))
 		genericSettingElement:unlinkElement()
 		CpUtil.debugFormat(CpDebug.DBG_HUD, "Bound setting %s", setting:getName())
 		local clonedSettingElement = genericSettingElement:clone(parentGuiElement, true)
@@ -383,7 +383,7 @@ end
 ---@param class table
 function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle, class, settings)
 	for _, data in ipairs(settingsBySubTitle) do 
-		local parameterGroup = AIParameterGroup.new(data.title)
+		local parameterGroup = AIParameterGroup.new(g_i18n:getText(data.title))
 		for _, setting in ipairs(data.elements) do 
 			local s = settings[setting:getName()]
 			parameterGroup:addParameter(s)
