@@ -152,6 +152,7 @@ end
 -- convenience debug function to show the vehicle name and expects string.format() arguments, 
 -- CpUtil.debugVehicle( CpDebug.DBG_TURN, vehicle, "fill level is %.1f, mode = %d", fillLevel, mode )
 ---@param channel number
+---@param vehicle table
 function CpUtil.debugVehicle(channel, vehicle, ...)
 	local rootVehicle = vehicle and vehicle.rootVehicle
 	local active = rootVehicle == nil or rootVehicle.getCpSettings == nil or CpUtil.isVehicleDebugActive(rootVehicle)
@@ -165,6 +166,16 @@ function CpUtil.debugVehicle(channel, vehicle, ...)
 			end,
 			...)
 	end
+end
+
+--- Debug function for implements, that calls CpUtil.debugVehicle, with the root vehicle. 
+---@param channel number
+---@param implement table
+---@param ... unknown
+function CpUtil.debugImplement(channel, implement, ...)
+	local rootVehicle = implement and implement.rootVehicle or implement
+	CpUtil.debugVehicle(channel, rootVehicle, 
+					CpUtil.getName(implement) .. ': ' .. string.format(...))
 end
 
 function CpUtil.isVehicleDebugActive(vehicle)
