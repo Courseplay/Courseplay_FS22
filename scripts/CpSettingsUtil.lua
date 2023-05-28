@@ -154,9 +154,9 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		--- This flag can by used to simplify the translation text. 
 		local pre = xmlFile:getValue(masterKey.."#prefix", true)	
 		if pre then 
-			subTitle = g_i18n:getText(setupKey.."subTitle_"..subTitle)
+			subTitle = setupKey.."subTitle_"..subTitle
 		else 
-			subTitle = g_i18n:getText(subTitle)
+			subTitle = subTitle
 		end
 
 		local isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
@@ -178,15 +178,15 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.name = xmlFile:getValue(baseKey.."#name")
 			local title = xmlFile:getValue(baseKey.."#title")
 			if title then
-				settingParameters.title = g_i18n:getText(title)
+				settingParameters.title = title
 			else 
-				settingParameters.title = g_i18n:getText(setupKey..settingParameters.name.."_title")
+				settingParameters.title = setupKey..settingParameters.name.."_title"
 			end
 			local tooltip = xmlFile:getValue(baseKey.."#tooltip")
 			if tooltip then
-				settingParameters.tooltip = g_i18n:getText(tooltip)
+				settingParameters.tooltip = tooltip
 			else 
-				settingParameters.tooltip = g_i18n:getText(setupKey..settingParameters.name.."_tooltip")
+				settingParameters.tooltip = setupKey..settingParameters.name.."_tooltip"
 			end
 			settingParameters.default = xmlFile:getValue(baseKey.."#default")
 			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
