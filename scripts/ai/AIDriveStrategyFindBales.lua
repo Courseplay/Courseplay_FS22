@@ -71,7 +71,7 @@ function AIDriveStrategyFindBales:startWithoutCourse()
     for _, implement in pairs(self.vehicle:getAttachedImplements()) do
         self:info(' - %s', CpUtil.getName(implement.object))
     end
-
+    self:lowerImplements()
 end
 
 function AIDriveStrategyFindBales:collectNextBale()

@@ -84,3 +84,8 @@ end
 function BaleWrapperController:isFuelSaveAllowed()
     return not (self:isWorking() and not self.haveBaler)
 end
+
+--- Giants isn't unfolding the bale wrapper for us, so we do it here.
+function BaleWrapperController:onStart()
+    self.baleWrapper:setFoldDirection(self.baleWrapper.spec_foldable.turnOnFoldDirection)
+end
