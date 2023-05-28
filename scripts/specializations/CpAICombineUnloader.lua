@@ -222,8 +222,8 @@ end
 
 function CpAICombineUnloader:startCpCombineUnloader(jobParameters)
     local strategy = AIDriveStrategyUnloadCombine.new()
-    strategy:setJobParameterValues(jobParameters)
     strategy:setAIVehicle(self)
+    strategy:setJobParameterValues(jobParameters)
     self:startCpWithStrategy(strategy)
     CpAICombineUnloader.activeUnloaders[self.id] = self
 end
