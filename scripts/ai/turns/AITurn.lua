@@ -798,10 +798,10 @@ function RecoveryTurn:turn()
     end
 end
 
-function RecoveryTurn:onWaypointChange(ix)
-    AITurn.onWaypointChange(self, ix)
+function RecoveryTurn:onWaypointPassed(ix)
+    AITurn.onWaypointPassed(self, ix)
     if self.turnCourse and self.turnCourse:isLastWaypointIx(ix) then
-        if self.states == self.state.REVERSING_AFTER_BLOCKED then
+        if self.state == self.states.REVERSING_AFTER_BLOCKED then
             self:debug('Starting a pathfinder turn: plenty of room on field to turn and pathfinder turns are enabled')
             self:generatePathfinderTurn(false)
         end
