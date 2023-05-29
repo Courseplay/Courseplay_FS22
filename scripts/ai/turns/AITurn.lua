@@ -804,8 +804,8 @@ function RecoveryTurn:turn()
     end
 end
 
-function RecoveryTurn:onWaypointPassed(ix)
-    AITurn.onWaypointPassed(self, ix)
+function RecoveryTurn:onWaypointPassed(ix, course)
+    AITurn.onWaypointPassed(self, ix, course)
     if self.turnCourse and self.turnCourse:isLastWaypointIx(ix) then
         if self.state == self.states.REVERSING_AFTER_BLOCKED then
             self:debug('Starting a pathfinder turn to recover after being blocked')
