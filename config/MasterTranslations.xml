@@ -81,42 +81,6 @@
 		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
-		<Translation name="CP_jobParameters_title">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_baleFinderJobParameters_title">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_baleFinderJobParameters_baleWrapType_tooltip">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_combineUnloaderJobParameters_title">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_combineUnloaderJobParameters_useGiantsUnload_tooltip">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_combineUnloaderJobParameters_unloadingStation_tooltip">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_bunkerSiloJobParameters_title">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_tooltip">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
-		<Translation name="CP_bunkerSiloJobParameters_waitAtParkPosition_tooltip">
-			<Text language="de"><![CDATA[]]></Text>
-			<Text language="en"><![CDATA[]]></Text>
-		</Translation>
 		<Translation name="CP_jobParameters_fieldPosition_title">
 			<Text language="de"><![CDATA[Feldposition:]]></Text>
 			<Text language="en"><![CDATA[Field position:]]></Text>

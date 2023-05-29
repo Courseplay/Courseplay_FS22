@@ -36,11 +36,11 @@ function AIParameterSetting:getName()
 end
 
 function AIParameterSetting:getTooltip()
-	return self.tooltip
+	return g_i18n:getText(self.tooltip)
 end
 
 function AIParameterSetting:getTitle()
-	return self.title
+	return g_i18n:getText(self.title)
 end
 
 function AIParameterSetting:getType()

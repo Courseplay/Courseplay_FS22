@@ -127,15 +127,17 @@ function CpCourseGeneratorSettings.loadSettingsSetup()
 end
 
 function CpCourseGeneratorSettings.getSettingSetup(vehicle)
+    local title = g_i18n:getText(CpCourseGeneratorSettings.pageTitle)
     return CpCourseGeneratorSettings.settingsBySubTitle, 
-            vehicle and string.format(CpCourseGeneratorSettings.pageTitle, vehicle:getName()) 
-            or CpCourseGeneratorSettings.pageTitle
+            vehicle and string.format(title, vehicle:getName()) 
+            or title
 end
 
 function CpCourseGeneratorSettings.getVineSettingSetup(vehicle)
+    local title = g_i18n:getText(CpCourseGeneratorSettings.vineSettings.pageTitle)
     return CpCourseGeneratorSettings.vineSettings.settingsBySubTitle, 
-            vehicle and string.format(CpCourseGeneratorSettings.vineSettings.pageTitle, vehicle:getName()) 
-            or CpCourseGeneratorSettings.vineSettings.pageTitle
+            vehicle and string.format(title, vehicle:getName()) 
+            or title
 end
 
 function CpCourseGeneratorSettings:loadSettings(savegame)

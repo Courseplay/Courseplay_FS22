@@ -145,18 +145,18 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 	local setupKey = xmlFile:getValue("Settings#prefixText")
 	local pageTitle = xmlFile:getValue("Settings#title")
 	if pageTitle then
-		class.pageTitle =  g_i18n:getText(xmlFile:getValue("Settings#title"))
+		class.pageTitle =  xmlFile:getValue("Settings#title")
 	else 
-		class.pageTitle = g_i18n:getText(setupKey .. "title")
+		class.pageTitle = setupKey .. "title"
 	end
 	xmlFile:iterate("Settings.SettingSubTitle", function (i, masterKey)
 		local subTitle = xmlFile:getValue(masterKey.."#title")
 		--- This flag can by used to simplify the translation text. 
 		local pre = xmlFile:getValue(masterKey.."#prefix", true)	
 		if pre then 
-			subTitle = g_i18n:getText(setupKey.."subTitle_"..subTitle)
+			subTitle = setupKey.."subTitle_"..subTitle
 		else 
-			subTitle = g_i18n:getText(subTitle)
+			subTitle = subTitle
 		end
 
 		local isDisabledFunc = xmlFile:getValue(masterKey.."#isDisabled")
@@ -178,15 +178,15 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 			settingParameters.name = xmlFile:getValue(baseKey.."#name")
 			local title = xmlFile:getValue(baseKey.."#title")
 			if title then
-				settingParameters.title = g_i18n:getText(title)
+				settingParameters.title = title
 			else 
-				settingParameters.title = g_i18n:getText(setupKey..settingParameters.name.."_title")
+				settingParameters.title = setupKey..settingParameters.name.."_title"
 			end
 			local tooltip = xmlFile:getValue(baseKey.."#tooltip")
 			if tooltip then
-				settingParameters.tooltip = g_i18n:getText(tooltip)
+				settingParameters.tooltip = tooltip
 			else 
-				settingParameters.tooltip = g_i18n:getText(setupKey..settingParameters.name.."_tooltip")
+				settingParameters.tooltip = setupKey..settingParameters.name.."_tooltip"
 			end
 			settingParameters.default = xmlFile:getValue(baseKey.."#default")
 			settingParameters.defaultBool = xmlFile:getValue(baseKey.."#defaultBool")
@@ -279,7 +279,7 @@ end
 function CpSettingsUtil.generateGuiElementsFromSettingsTable(settingsBySubTitle, parentGuiElement, genericSettingElement, genericSubTitleElement)
 	for _, data in ipairs(settingsBySubTitle) do 
 		local clonedSubTitleElement = genericSubTitleElement:clone(parentGuiElement)
-		clonedSubTitleElement:setText(data.title)
+		clonedSubTitleElement:setText(g_i18n:getText(data.title))
 		FocusManager:loadElementFromCustomValues(clonedSubTitleElement)
 		for _, setting in ipairs(data.elements) do 
 			local clonedSettingElement = genericSettingElement:clone(parentGuiElement)
@@ -298,7 +298,7 @@ function CpSettingsUtil.generateGuiElementsFromSettingsTableAlternating(settings
 	for _, setting in ipairs(settings) do 
 
 		local titleElement = genericSettingElementTitle:clone(parentGuiElement, true)
-		titleElement:setText(setting.data.title)
+		titleElement:setText(g_i18n:getText(setting.data.title))
 		genericSettingElement:unlinkElement()
 		CpUtil.debugFormat(CpDebug.DBG_HUD, "Bound setting %s", setting:getName())
 		local clonedSettingElement = genericSettingElement:clone(parentGuiElement, true)
@@ -383,7 +383,7 @@ end
 ---@param class table
 function CpSettingsUtil.generateAiJobGuiElementsFromSettingsTable(settingsBySubTitle, class, settings)
 	for _, data in ipairs(settingsBySubTitle) do 
-		local parameterGroup = AIParameterGroup.new(data.title)
+		local parameterGroup = AIParameterGroup.new(g_i18n:getText(data.title))
 		for _, setting in ipairs(data.elements) do 
 			local s = settings[setting:getName()]
 			parameterGroup:addParameter(s)
