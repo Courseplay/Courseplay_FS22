@@ -782,12 +782,18 @@ function RecoveryTurn:init(vehicle, driveStrategy, ppc, proximityController, tur
     -- blocked too, indicating that we give up.
     self.proximityController:registerBlockingObjectListener(self, RecoveryTurn.onBlocked)
     self.retryCount = retryCount or 0
-    reverseDistance = reverseDistance or 10
-    self:debug('retry count %d, reverse distance %.1f', self.retryCount, reverseDistance)
-    self.state = self.states.REVERSING_AFTER_BLOCKED
-    self.turnCourse = Course.createStraightReverseCourse(self.vehicle, reverseDistance)
-    self.ppc:setCourse(self.turnCourse)
-    self.ppc:initialize(1)
+    if self.driveStrategy:getAllowReversePathfinding() then
+        self:debug('Starting a pathfinder turn to recover after being blocked without reversing first')
+        self:generatePathfinderTurn(false)
+    else
+        reverseDistance = reverseDistance or 10
+        self:debug('reverse pathfinding not allowed, reversing before pathfinding, retry count %d, reverse distance %.1f',
+                self.retryCount, reverseDistance)
+        self.state = self.states.REVERSING_AFTER_BLOCKED
+        self.turnCourse = Course.createStraightReverseCourse(self.vehicle, reverseDistance)
+        self.ppc:setCourse(self.turnCourse)
+        self.ppc:initialize(1)
+    end
 end
 
 function RecoveryTurn:turn()
@@ -802,7 +808,7 @@ function RecoveryTurn:onWaypointPassed(ix)
     AITurn.onWaypointPassed(self, ix)
     if self.turnCourse and self.turnCourse:isLastWaypointIx(ix) then
         if self.state == self.states.REVERSING_AFTER_BLOCKED then
-            self:debug('Starting a pathfinder turn: plenty of room on field to turn and pathfinder turns are enabled')
+            self:debug('Starting a pathfinder turn to recover after being blocked')
             self:generatePathfinderTurn(false)
         end
     end
