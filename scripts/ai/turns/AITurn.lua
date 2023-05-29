@@ -578,7 +578,6 @@ function CourseTurn:turn()
     self:changeDirectionWhenAligned()
     self:changeToFwdWhenWaypointReached()
 
-    -- TODO keep only the turn control, remove this turnEnd thing as it overlaps with turnStart/turnEnd
     if TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(),
             TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END) then
         self.state = self.states.ENDING_TURN
@@ -801,8 +800,8 @@ end
 
 function RecoveryTurn:onWaypointChange(ix)
     AITurn.onWaypointChange(self, ix)
-    if self.turnCourse then
-        if self.turnCourse:isLastWaypointIx(ix) then
+    if self.turnCourse and self.turnCourse:isLastWaypointIx(ix) then
+        if self.states == self.state.REVERSING_AFTER_BLOCKED then
             self:debug('Starting a pathfinder turn: plenty of room on field to turn and pathfinder turns are enabled')
             self:generatePathfinderTurn(false)
         end
