@@ -224,6 +224,7 @@ function CpAICombineUnloader:startCpCombineUnloader(jobParameters)
     local strategy = AIDriveStrategyUnloadCombine.new()
     strategy:setAIVehicle(self)
     strategy:setJobParameterValues(jobParameters)
+    self:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
     self:startCpWithStrategy(strategy)
     CpAICombineUnloader.activeUnloaders[self.id] = self
 end
