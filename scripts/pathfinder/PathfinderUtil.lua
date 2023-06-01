@@ -146,6 +146,10 @@ function PathfinderUtil.VehicleData:calculateSizeOfObjectList(vehicle, implement
     --        self.dFront, self.dRear, self.dLeft, self.dRight)
 end
 
+function PathfinderUtil.VehicleData:debug(...)
+    PathfinderUtil.debug(self.vehicle, ...)    
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Helpers
 ------------------------------------------------------------------------------------------------------------------------
@@ -274,9 +278,9 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
             return
         end
         if collidingObject:isa(Bale) then
-            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision with bale %d', collidingObject.id)
+            self:debug('collision with bale %d', collidingObject.id)
         else
-            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision: %s', collidingObject:getName())
+            self:debug('collision: %s', collidingObject:getName())
         end
     end
     if getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
@@ -288,7 +292,7 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
         --- TODO: DensityMapHeightUtil.getFillTypeAtArea() would be better.
         local fillType = DensityMapHeightUtil.getFillTypeAtLine(x, y, z, x + dirX * size, y, z + dirZ * size, size)
         if fillType and fillType ~= FillType.UNKNOWN then 
-            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'collision with terrain and fillType: %s.', 
+            self:debug('collision with terrain and fillType: %s.', 
                 g_fillTypeManager:getFillTypeByIndex(fillType).title)
         else 
             --- Ignore terrain hits, if no fillType is dropped to the ground was detected.
@@ -337,12 +341,17 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
     if true and self.collidingShapes > 0 then
         table.insert(PathfinderUtil.overlapBoxes,
                 { x = x, y = y + 0.2, z = z, xRot = xRot, yRot = yRot, zRot = zRot, width = width, length = length })
-        CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
-                'pathfinder colliding shapes %s with %s at x = %.1f, z = %.1f, (%.1fx%.1f), yRot = %d',
+        self:debug('pathfinder colliding shapes %s with %s at x = %.1f, z = %.1f, (%.1fx%.1f), yRot = %d',
                 self.collidingShapesText, vehicleData.name, x, z, width, length, math.deg(yRot))
     end
 
     return self.collidingShapes
+end
+
+function PathfinderUtil.CollisionDetector:debug(...)
+    if self.vehicleData then 
+        PathfinderUtil.debug(self.vehicleData.vehicle, ...)
+    end
 end
 
 PathfinderUtil.collisionDetector = PathfinderUtil.CollisionDetector()
@@ -484,10 +493,8 @@ function PathfinderConstraints:init(context, maxFruitPercent, offFieldPenalty, f
     self:resetCounts()
     local areaToAvoidText = self.areaToAvoid and
             string.format('are to avoid %.1f x %.1f m', self.areaToAvoid.length, self.areaToAvoid.width) or 'none'
-    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
-            'Pathfinder constraints: off field penalty %.1f, max fruit percent: %.1f, field number %d, %s, ignore fruit %s',
-            self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText,
-            self.areaToIgnoreFruit or 'none')
+    self:debug( 'Pathfinder constraints: off field penalty %.1f, max fruit percent: %.1f, field number %d, %s, ignore fruit %s',
+                        self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText, self.areaToIgnoreFruit or 'none')
 end
 
 function PathfinderConstraints:resetCounts()
@@ -546,8 +553,8 @@ function PathfinderConstraints:isValidAnalyticSolutionNode(node, log)
     local analyticLimit = self.maxFruitPercent * 2
     if hasFruit and fruitValue > analyticLimit then
         if log then
-            CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'isValidAnalyticSolutionNode: fruitValue %.1f, max %.1f @ %.1f, %.1f',
-                    fruitValue, analyticLimit, node.x, -node.y)
+            self.context:debug( 'isValidAnalyticSolutionNode: fruitValue %.1f, max %.1f @ %.1f, %.1f',
+                                fruitValue, analyticLimit, node.x, -node.y)
         end
         return false
     end
@@ -614,25 +621,28 @@ end
 
 function PathfinderConstraints:relaxConstraints()
     self:showStatistics()
-    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'relaxing pathfinder constraints: allow driving through fruit')
+    self:debug('relaxing pathfinder constraints: allow driving through fruit')
     self.maxFruitPercent = math.huge
     self:resetCounts()
 end
 
 function PathfinderConstraints:showStatistics()
-    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER,
-            'Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, area to avoid: %d',
-            self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
-            self.areaToAvoidPenaltyCount)
-    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, '  max fruit %.1f %%, off-field penalty: %.1f',
-            self.maxFruitPercent, self.offFieldPenalty)
+    self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, area to avoid: %d',
+        self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
+        self.areaToAvoidPenaltyCount)
+    self:debug('  max fruit %.1f %%, off-field penalty: %.1f',
+        self.maxFruitPercent, self.offFieldPenalty)
 end
 
 function PathfinderConstraints:resetConstraints()
-    CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, 'resetting pathfinder constraints: maximum fruit percent allowed is now %.1f',
+    self:debug('resetting pathfinder constraints: maximum fruit percent allowed is now %.1f',
             self.initialMaxFruitPercent)
     self.maxFruitPercent = self.initialMaxFruitPercent
     self:resetCounts()
+end
+
+function PathfinderConstraints:debug(...)
+    self.context.vehicleData:debug(...)
 end
 
 ---@param start State3D
@@ -667,7 +677,7 @@ function PathfinderUtil.startPathfindingFromVehicleToGoal(vehicle, goal,
             offFieldPenalty or PathfinderUtil.defaultOffFieldPenalty,
             fieldNum, areaToAvoid, areaToIgnoreFruit)
 
-    return PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
+    return PathfinderUtil.startPathfinding(vehicle, start, goal, context, constraints, allowReverse, mustBeAccurate)
 end
 
 ---@param course Course
@@ -739,15 +749,16 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 --- Interface function to start the pathfinder
 ------------------------------------------------------------------------------------------------------------------------
+---@param vehicle table for debugging only
 ---@param start State3D start node
 ---@param goal State3D goal node
 ---@param context PathfinderUtil.Context
 ---@param constraints PathfinderConstraints
 ---@param allowReverse boolean allow reverse driving
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
-function PathfinderUtil.startPathfinding(start, goal, context, constraints, allowReverse, mustBeAccurate)
+function PathfinderUtil.startPathfinding(vehicle, start, goal, context, constraints, allowReverse, mustBeAccurate)
     PathfinderUtil.overlapBoxes = {}
-    local pathfinder = HybridAStarWithAStarInTheMiddle(context.turnRadius * 4, 100, 40000, mustBeAccurate)
+    local pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, context.turnRadius * 4, 100, 40000, mustBeAccurate)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -784,6 +795,7 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
 
     PathfinderUtil.overlapBoxes = {}
     local pathfinder
+    local context = PathfinderUtil.Context(vehicle, {})
     if courseWithHeadland and courseWithHeadland:getNumberOfHeadlands() > 0 then
         -- if there's a headland, we want to drive on the headland to the next row
         local headlandPath = findShortestPathOnHeadland(start, goal, courseWithHeadland, turnRadius, workingWidth, backMarkerDistance)
@@ -794,14 +806,13 @@ function PathfinderUtil.findPathForTurn(vehicle, startOffset, goalReferenceNode,
         if dirDeg > 45 or true then
             CourseGenerator.debug('First headland waypoint isn\'t in front of us (%.1f), remove first few waypoints to avoid making a circle %.1f %.1f', dirDeg, dx, dz)
         end
-        pathfinder = HybridAStarWithPathInTheMiddle(turnRadius * 3, 200, headlandPath, true, analyticSolver)
+        pathfinder = HybridAStarWithPathInTheMiddle(vehicle, turnRadius * 3, 200, headlandPath, true, analyticSolver)
     else
         -- only use a middle section when the target is really far away
-        pathfinder = HybridAStarWithAStarInTheMiddle(turnRadius * 6, 200, 10000, true, analyticSolver)
+        pathfinder = HybridAStarWithAStarInTheMiddle(vehicle, turnRadius * 6, 200, 10000, true, analyticSolver)
     end
 
     local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(vehicle)
-    local context = PathfinderUtil.Context(vehicle, {})
     local constraints = PathfinderConstraints(context, nil, turnOnField and 10 or nil, fieldNum)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, turnRadius, allowReverse,
             constraints, context.trailerHitchLength)
@@ -938,7 +949,7 @@ function PathfinderUtil.startAStarPathfindingFromVehicleToNode(vehicle, goalNode
             PathfinderUtil.defaultOffFieldPenalty,
             fieldNum)
 
-    local pathfinder = AStar(100, 10000)
+    local pathfinder = AStar(vehicle, 100, 10000)
     local done, path, goalNodeInvalid = pathfinder:start(start, goal, context.turnRadius, false,
             constraints, context.trailerHitchLength)
     return pathfinder, done, path, goalNodeInvalid
@@ -1089,4 +1100,8 @@ function PathfinderUtil.showOverlapBoxes()
     for _, box in ipairs(PathfinderUtil.overlapBoxes) do
         DebugUtil.drawOverlapBox(box.x, box.y, box.z, box.xRot, box.yRot, box.zRot, box.width, 1, box.length, 0, 100, 0)
     end
+end
+
+function PathfinderUtil.debug(vehicle, ...)
+    CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, vehicle, ...)
 end

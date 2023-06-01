@@ -138,11 +138,12 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 	end
 	setTranslation(self.heapNode, x, 0, z)
 	setRotation(self.heapNode, 0, angle, 0)
-	local found, bunkerSilo = BunkerSiloManagerUtil.getBunkerSiloBetween(node, 0, 25, -5)
+	local vehicle = self.vehicleParameter:getVehicle()
+	local found, bunkerSilo = BunkerSiloManagerUtil.getBunkerSiloBetween(vehicle, node, 0, 25, -5)
 	if found then 
 		return true, bunkerSilo
 	end
-	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(node, 0, self.maxHeapLength, -10)
+	local found, heapSilo = BunkerSiloManagerUtil.createHeapBunkerSilo(vehicle, node, 0, self.maxHeapLength, -10)
 	return found, nil, heapSilo
 end
 

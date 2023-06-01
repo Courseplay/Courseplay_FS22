@@ -36,8 +36,7 @@ function ImplementController:isEnabled(currentState)
 end
 
 function ImplementController:debug(...)
-    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, self.vehicle,
-            CpUtil.getName(self.implement) .. ': ' .. string.format(...))
+    CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, self.implement, ...)
 end
 
 function ImplementController:debugSparse(...)

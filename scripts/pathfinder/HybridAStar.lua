@@ -33,6 +33,7 @@ https://github.com/karlkurzer/path_planner
 
 --- Interface definition for all pathfinders
 ---@class PathfinderInterface
+---@field vehicle table|nil
 PathfinderInterface = CpObject()
 
 function PathfinderInterface:init()
@@ -74,7 +75,11 @@ end
 
 function PathfinderInterface:debug(...)
 	if CourseGenerator.isRunningInGame() then
-		CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, ...)
+		if self.vehicle then
+			CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, self.vehicle, ...)
+		else
+			CpUtil.debugFormat(CpDebug.DBG_PATHFINDER, ...)
+		end
 	else
 		print(string.format( ...))
 		io.stdout:flush()
@@ -119,7 +124,7 @@ end
 function PathfinderConstraintInterface:showStatistics()
 end
 
----@class HybridAStar
+---@class HybridAStar : PathfinderInterface
 HybridAStar = CpObject(PathfinderInterface)
 
 --- Get length of path
@@ -350,12 +355,11 @@ function HybridAStar.NodeList:print()
 	end
 end
 
----Environment data
----@class HybridAStar.EnvironmentData
-HybridAStar.EnvironmentData = CpObject()
-
-
-function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
+---@param yieldAfter number
+---@param maxIterations number
+---@param mustBeAccurate boolean|nil
+function HybridAStar:init(vehicle, yieldAfter, maxIterations, mustBeAccurate)
+	self.vehicle = vehicle
 	self.count = 0
 	self.yields = 0
 	self.yieldAfter = yieldAfter or 200
@@ -376,7 +380,6 @@ function HybridAStar:init(yieldAfter, maxIterations, mustBeAccurate)
 	self.analyticSolverEnabled = true
 	self.ignoreValidityAtStart = true
 end
-
 
 function HybridAStar:getMotionPrimitives(turnRadius, allowReverse)
 	return HybridAStar.MotionPrimitives(turnRadius, 6.75, allowReverse)
@@ -625,8 +628,8 @@ end
 --- 3 dimensional as we do not take the heading into account and we use a different set of motion primitives
 AStar = CpObject(HybridAStar)
 
-function AStar:init(yieldAfter, maxIterations)
-	HybridAStar.init(self, yieldAfter, maxIterations)
+function AStar:init(vehicle, yieldAfter, maxIterations)
+	HybridAStar.init(self, vehicle, yieldAfter, maxIterations)
 	-- this needs to be small enough that no vehicle fit between the grid points (and remain undetected)
 	self.deltaPos = 3
 	self.deltaPosGoal = self.deltaPos
@@ -654,25 +657,27 @@ HybridAStarWithAStarInTheMiddle = CpObject(PathfinderInterface)
 ---@param yieldAfter number coroutine yield after so many iterations (number of iterations in one update loop)
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
 ---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
-function HybridAStarWithAStarInTheMiddle:init(hybridRange, yieldAfter, maxIterations, mustBeAccurate, analyticSolver)
+function HybridAStarWithAStarInTheMiddle:init(vehicle, hybridRange, yieldAfter, maxIterations, mustBeAccurate, analyticSolver)
 	-- path generation phases
+	self.vehicle = vehicle
 	self.START_TO_MIDDLE = 1
 	self.MIDDLE = 2
 	self.MIDDLE_TO_END = 3
 	self.ALL_HYBRID = 4 -- start and goal close enough, we only need a single phase with hybrid
 	self.hybridRange = hybridRange
 	self.yieldAfter = yieldAfter or 100
-	self.hybridAStarPathfinder = HybridAStar(self.yieldAfter, maxIterations, mustBeAccurate)
+	self.hybridAStarPathfinder = HybridAStar(vehicle, self.yieldAfter, maxIterations, mustBeAccurate)
 	self.aStarPathfinder = self:getAStar()
 	self.analyticSolver = analyticSolver
 end
 
 function HybridAStarWithAStarInTheMiddle:getAStar()
-	return AStar(self.yieldAfter)
+	return AStar(self.vehicle, self.yieldAfter)
 end
 
 ---@param start State3D start node
 ---@param goal State3D goal node
+---@param turnRadius number
 ---@param allowReverse boolean allow reverse driving
 ---@param constraints PathfinderConstraintInterface constraints (validity, penalty) for the pathfinder
 --- must have the following functions defined:
@@ -847,8 +852,9 @@ end
 DummyAStar = CpObject(HybridAStar)
 
 ---@param path State3D[] collection of nodes defining the configuration space
-function DummyAStar:init(path)
+function DummyAStar:init(vehicle, path)
 	self.path = path
+	self.vehicle = vehicle
 end
 
 function DummyAStar:findPath()
@@ -867,12 +873,17 @@ HybridAStarWithPathInTheMiddle = CpObject(HybridAStarWithAStarInTheMiddle)
 ---@param path State3D[] path to use in the middle part
 ---@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
 ---@param analyticSolver AnalyticSolver the analytic solver the use (optional)
-function HybridAStarWithPathInTheMiddle:init(hybridRange, yieldAfter, path, mustBeAccurate, analyticSolver)
+function HybridAStarWithPathInTheMiddle:init(vehicle, hybridRange, yieldAfter, path, mustBeAccurate, analyticSolver)
+	self.vehicle = vehicle
 	self.path = path
-	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', hybridRange, #path)
-	HybridAStarWithAStarInTheMiddle.init(self, hybridRange, yieldAfter, 10000, mustBeAccurate, analyticSolver)
+	HybridAStarWithAStarInTheMiddle.init(self, vehicle, hybridRange, yieldAfter, 10000, mustBeAccurate, analyticSolver)
+end
+
+function HybridAStarWithPathInTheMiddle:start(...)
+	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', self.hybridRange, #self.path)
+	HybridAStarWithAStarInTheMiddle.start(self, ...)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()
-	return DummyAStar(self.path)
+	return DummyAStar(self.vehicle, self.path)
 end

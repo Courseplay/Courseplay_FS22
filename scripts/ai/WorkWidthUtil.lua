@@ -313,7 +313,7 @@ function WorkWidthUtil.showWorkWidth(vehicle, workWidth, offsX, offsZ)
     end
 end
 
----@param object table
-function WorkWidthUtil.debug(object, str, ...)
-    CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, object, '%s: ' .. str, CpUtil.getName(object), ...)
+---@param implement table
+function WorkWidthUtil.debug(implement, ...)
+    CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, implement, ...)
 end
