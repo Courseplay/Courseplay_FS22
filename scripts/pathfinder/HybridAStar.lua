@@ -881,7 +881,7 @@ end
 
 function HybridAStarWithPathInTheMiddle:start(...)
 	self:debug('Start pathfinding on headland, hybrid A* range is %.1f, %d points on headland', self.hybridRange, #self.path)
-	HybridAStarWithAStarInTheMiddle.start(self, ...)
+	return HybridAStarWithAStarInTheMiddle.start(self, ...)
 end
 
 function HybridAStarWithPathInTheMiddle:getAStar()
