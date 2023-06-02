@@ -1076,7 +1076,10 @@ function AIDriveStrategyCombineCourse:findBestWaypointToUnloadOnUpDownRows(ix, i
     if pipeInFruit and not isPipeInFruitAllowed then
         --if the pipe is in fruit AND the user selects 'avoid fruit'
         if ixAtRowStart then
-            if ixAtRowStart > currentIx then
+            if self.course:getMultiTools() > 1 then
+                self:debug('Pipe may be in fruit at waypoint %d, we have no reliable information as multitool active, rejecting rendezvous', ix)
+                newWpIx = nil
+            elseif ixAtRowStart > currentIx then
                 -- have not started the previous row yet
                 self:debug('Pipe would be in fruit at waypoint %d. Check previous row', ix)
                 pipeInFruit, _ = self:isPipeInFruitAt(ixAtRowStart - 2) -- wp before the turn start
