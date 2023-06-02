@@ -287,7 +287,7 @@
     <text name="CP_global_setting_wageModifier_tooltip" text="Mzdy CP pracovníků jako procento mzdy normálního pracovníka."/>
     <text name="CP_global_setting_autoRepair_title" text="Automatické opravy"/>
     <text name="CP_global_setting_autoRepair_tooltip" text="CP pracovník automaticky opravuje vozidlo."/>
-    <text name="CP_global_setting_autoRepair_off" text="Neoprvovat"/>
+    <text name="CP_global_setting_autoRepair_off" text="Neopravovat"/>
     <text name="CP_global_setting_autoRepair_less_than_25" text="&lt; 25%"/>
     <text name="CP_global_setting_autoRepair_less_than_70" text="&lt; 70%"/>
     <text name="CP_global_setting_autoRepair_always" text="Udržovat v dobrém stavu"/>
