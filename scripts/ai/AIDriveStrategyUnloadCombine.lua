@@ -78,9 +78,11 @@ This is currently screwed up...
 AIDriveStrategyUnloadCombine = {}
 local AIDriveStrategyUnloadCombine_mt = Class(AIDriveStrategyUnloadCombine, AIDriveStrategyCourse)
 
+-- when moving out of way of another vehicle, move at least so many meters
 AIDriveStrategyUnloadCombine.minDistanceWhenMovingOutOfWay = 5
+-- when moving out of way of another vehicle, move at most so many meters
+AIDriveStrategyUnloadCombine.maxDistanceWhenMovingOutOfWay = 25
 AIDriveStrategyUnloadCombine.safeManeuveringDistance = 30 -- distance to keep from a combine not ready to unload
-AIDriveStrategyUnloadCombine.unloaderFollowingDistance = 30 -- distance to keep between two unloaders assigned to the same chopper
 AIDriveStrategyUnloadCombine.pathfindingRange = 5 -- won't do pathfinding if target is closer than this
 AIDriveStrategyUnloadCombine.proximitySensorRange = 15
 AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg = 35 -- under this angle the unloader considers itself aligned with the combine
@@ -136,7 +138,6 @@ AIDriveStrategyUnloadCombine.myStates = {
     MOVING_BACK_WITH_TRAILER_FULL = { vehicle = nil }, -- moving back from a combine we just unloaded (not assigned anymore)
     BACKING_UP_FOR_REVERSING_COMBINE = { vehicle = nil }, -- reversing as long as the combine is reversing
     MOVING_AWAY_FROM_OTHER_VEHICLE = { vehicle = nil }, -- moving until we have enough space between us and an other vehicle
-    MOVING_AWAY_FROM_OTHER_UNLOADER_WHILE_IDLE = { vehicle = nil },
     WAITING_FOR_MANEUVERING_COMBINE = {},
     DRIVING_BACK_TO_START_POSITION_WHEN_FULL = {} --- Drives to the start position with a trailer attached and gives control to giants or AD there.
 }
@@ -726,6 +727,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Who I am?
 ------------------------------------------------------------------------------------------------------------------------
+---@param vehicle table
+---@return boolean true if vehicle is an active Courseplay controlled unloader, in combine unload mode
 function AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(vehicle)
     if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
         local strategy = vehicle:getCpDriveStrategy()
@@ -739,6 +742,8 @@ function AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(vehicle)
     return false
 end
 
+---@param vehicle table
+---@return boolean true if vehicle is an active Courseplay controlled unloader, in silo loader mode
 function AIDriveStrategyUnloadCombine.isActiveCpSiloLoader(vehicle)
     if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
         local strategy = vehicle:getCpDriveStrategy()
@@ -1592,7 +1597,7 @@ function AIDriveStrategyUnloadCombine:createMoveAwayCourse(blockingVehicle)
         self:debug('%s is behind us, moving forward (dz: %.1f, front %.1f, back %.1f)', CpUtil.getName(blockingVehicle),
                 dz, frontMarkerOffset, backMarkerOffset)
         return Course.createFromNode(self.vehicle, self.vehicle:getAIDirectionNode(), 0,
-                frontMarkerOffset, frontMarkerOffset + 25, 5, false)
+                frontMarkerOffset, frontMarkerOffset + self.maxDistanceWhenMovingOutOfWay, 5, false)
     end
 end
 
@@ -1635,7 +1640,8 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                 local _, _, from = localToLocal(Markers.getBackMarkerNode(self.vehicle), blockingVehicle:getAIDirectionNode(), 0, 0, 0)
                 self:debug('%s is a CP combine, head on, so generate a course from %.1f m, xOffset %.1f',
                         CpUtil.getName(blockingVehicle), from, xOffset)
-                course = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, true)
+                course = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from,
+                        from + self.maxDistanceWhenMovingOutOfWay, 5, true)
                 -- we will stop reversing when we are far enough from the combine's path
                 self.state.properties.dx = xOffset
             elseif CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), blockingVehicle:getAIDirectionNode(), 30) then
@@ -1645,7 +1651,8 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                 local _, _, from = localToLocal(Markers.getFrontMarkerNode(self.vehicle), blockingVehicle:getAIDirectionNode(), 0, 0, 0)
                 self:debug('%s is a CP combine, same direction, generate a course from %.1f with xOffset %.1f',
                         CpUtil.getName(blockingVehicle), from, xOffset)
-                course = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from, from + 25, 5, false)
+                course = Course.createFromNode(self.vehicle, blockingVehicle:getAIDirectionNode(), xOffset, from,
+                        from + self.maxDistanceWhenMovingOutOfWay, 5, false)
                 -- drive the entire course, making sure the trailer is also out of way
                 self.state.properties.dx = xOffset
             else
@@ -1680,7 +1687,7 @@ end
 
 function AIDriveStrategyUnloadCombine:requestToMoveForward(requestingVehicle)
     self:debug('%s requests us to move forward.', CpUtil.getName(requestingVehicle))
-    local course = Course.createStraightForwardCourse(self.vehicle, 25, 0)
+    local course = Course.createStraightForwardCourse(self.vehicle, self.maxDistanceWhenMovingOutOfWay, 0)
     self:setNewState(self.states.MOVING_AWAY_FROM_OTHER_VEHICLE)
     self.state.properties.vehicle = requestingVehicle
     self.state.properties.dx = nil
@@ -1746,7 +1753,7 @@ function AIDriveStrategyUnloadCombine:requestToBackupForReversingCombine(blocked
         self:rememberCourse(self.course, self.course:getCurrentWaypointIx())
         self.stateAfterMovedOutOfWay = self.state
 
-        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 25)
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, self.maxDistanceWhenMovingOutOfWay)
         self:startCourse(reverseCourse, 1)
         self:debug('Moving out of the way for %s', blockedVehicle:getName())
         self:setNewState(self.states.BACKING_UP_FOR_REVERSING_COMBINE)
@@ -2037,7 +2044,7 @@ function AIDriveStrategyUnloadCombine:startMovingAwayFromUnloadTrailer(attemptTo
     self.selfUnloadTargetNode = nil
     self.attemptToUnloadAgainAfterMovedAway = attemptToUnloadAgainAfterMovedAway
     self.pipeController:closePipe(false)
-    self.course = Course.createStraightForwardCourse(self.vehicle, 25,
+    self.course = Course.createStraightForwardCourse(self.vehicle, self.maxDistanceWhenMovingOutOfWay,
             self.pipeController:isPipeOnTheLeftSide() and -2 or 2)
     self:setNewState(self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER)
     self:startCourse(self.course, 1)

@@ -868,6 +868,8 @@ function AIDriveStrategyCombineCourse:callUnloader(bestUnloader, tentativeRendez
     end
 end
 
+---@param vehicle table
+---@return boolean true if vehicle is an active Courseplay controlled combine/harvester
 function AIDriveStrategyCombineCourse.isActiveCpCombine(vehicle)
     if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
         -- not driven by CP
