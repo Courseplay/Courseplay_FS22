@@ -147,7 +147,7 @@ function PathfinderUtil.VehicleData:calculateSizeOfObjectList(vehicle, implement
 end
 
 function PathfinderUtil.VehicleData:debug(...)
-    PathfinderUtil.debug(self.vehicle, ...)    
+    PathfinderUtil.debug(self.vehicle, ...)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -284,17 +284,17 @@ function PathfinderUtil.CollisionDetector:overlapBoxCallback(transformId)
         end
     end
     if getHasClassId(transformId, ClassIds.TERRAIN_TRANSFORM_GROUP) then
-        
+
         local x, y, z = unpack(self.currentOverlapBoxPosition.pos)
         local dirX, dirZ = unpack(self.currentOverlapBoxPosition.direction)
         local size = self.currentOverlapBoxPosition.size
         --- Roughly checks the overlap box for any dropped fill type to the ground.
         --- TODO: DensityMapHeightUtil.getFillTypeAtArea() would be better.
         local fillType = DensityMapHeightUtil.getFillTypeAtLine(x, y, z, x + dirX * size, y, z + dirZ * size, size)
-        if fillType and fillType ~= FillType.UNKNOWN then 
-            self:debug('collision with terrain and fillType: %s.', 
-                g_fillTypeManager:getFillTypeByIndex(fillType).title)
-        else 
+        if fillType and fillType ~= FillType.UNKNOWN then
+            self:debug('collision with terrain and fillType: %s.',
+                    g_fillTypeManager:getFillTypeByIndex(fillType).title)
+        else
             --- Ignore terrain hits, if no fillType is dropped to the ground was detected.
             return
         end
@@ -327,8 +327,8 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
     local dirX, dirZ = MathUtil.getDirectionFromYRotation(yRot)
     --- Save these for the overlap box callback.
     self.currentOverlapBoxPosition = {
-        pos = {x, y, z},
-        direction = {dirX, dirZ},
+        pos = { x, y, z },
+        direction = { dirX, dirZ },
         size = math.max(width, length)
     }
     self.collidingShapes = 0
@@ -337,7 +337,7 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
     local collisionMask = CollisionFlag.STATIC_WORLD + CollisionFlag.TREE + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA
 
     overlapBox(x, y + 0.2, z, xRot, yRot, zRot, width, 1, length, 'overlapBoxCallback', self, collisionMask, true, true, true)
-    
+
     if true and self.collidingShapes > 0 then
         table.insert(PathfinderUtil.overlapBoxes,
                 { x = x, y = y + 0.2, z = z, xRot = xRot, yRot = yRot, zRot = zRot, width = width, length = length })
@@ -349,7 +349,7 @@ function PathfinderUtil.CollisionDetector:findCollidingShapes(node, vehicleData,
 end
 
 function PathfinderUtil.CollisionDetector:debug(...)
-    if self.vehicleData then 
+    if self.vehicleData then
         PathfinderUtil.debug(self.vehicleData.vehicle, ...)
     end
 end
@@ -437,8 +437,8 @@ function PathfinderUtil.NodeArea:contains(x, z)
 end
 
 function PathfinderUtil.NodeArea:drawDebug()
-    DebugUtil.drawDebugRectangle(self.node, self.xOffset, self.xOffset + self.width, 
-        self.zOffset, self.zOffset + self.length, 5, 1, 1, 0, 1, false)
+    DebugUtil.drawDebugRectangle(self.node, self.xOffset, self.xOffset + self.width,
+            self.zOffset, self.zOffset + self.length, 5, 1, 1, 0, 1, false)
 end
 
 --[[
@@ -493,8 +493,8 @@ function PathfinderConstraints:init(context, maxFruitPercent, offFieldPenalty, f
     self:resetCounts()
     local areaToAvoidText = self.areaToAvoid and
             string.format('are to avoid %.1f x %.1f m', self.areaToAvoid.length, self.areaToAvoid.width) or 'none'
-    self:debug( 'Pathfinder constraints: off field penalty %.1f, max fruit percent: %.1f, field number %d, %s, ignore fruit %s',
-                        self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText, self.areaToIgnoreFruit or 'none')
+    self:debug('Pathfinder constraints: off field penalty %.1f, max fruit percent: %.1f, field number %d, %s, ignore fruit %s',
+            self.offFieldPenalty, self.maxFruitPercent, self.fieldNum, areaToAvoidText, self.areaToIgnoreFruit or 'none')
 end
 
 function PathfinderConstraints:resetCounts()
@@ -553,8 +553,8 @@ function PathfinderConstraints:isValidAnalyticSolutionNode(node, log)
     local analyticLimit = self.maxFruitPercent * 2
     if hasFruit and fruitValue > analyticLimit then
         if log then
-            self.context:debug( 'isValidAnalyticSolutionNode: fruitValue %.1f, max %.1f @ %.1f, %.1f',
-                                fruitValue, analyticLimit, node.x, -node.y)
+            self:debug('isValidAnalyticSolutionNode: fruitValue %.1f, max %.1f @ %.1f, %.1f',
+                    fruitValue, analyticLimit, node.x, -node.y)
         end
         return false
     end
@@ -628,10 +628,10 @@ end
 
 function PathfinderConstraints:showStatistics()
     self:debug('Nodes: %d, Penalties: fruit: %d, off-field: %d, collisions: %d, area to avoid: %d',
-        self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
-        self.areaToAvoidPenaltyCount)
+            self.totalNodeCount, self.fruitPenaltyNodeCount, self.offFieldPenaltyNodeCount, self.collisionNodeCount,
+            self.areaToAvoidPenaltyCount)
     self:debug('  max fruit %.1f %%, off-field penalty: %.1f',
-        self.maxFruitPercent, self.offFieldPenalty)
+            self.maxFruitPercent, self.offFieldPenalty)
 end
 
 function PathfinderConstraints:resetConstraints()
@@ -732,7 +732,7 @@ local function findShortestPathOnHeadland(start, goal, course, turnRadius, worki
     -- during a turn
     local usableHeadlandWidth = headlandWidth - (distanceFromRowEnd + turnRadius)
     local closestHeadland = math.max(1, math.min(course:getNumberOfHeadlands() - 1,
-                    math.floor(usableHeadlandWidth / workingWidth) + 1))
+            math.floor(usableHeadlandWidth / workingWidth) + 1))
     -- to be able to use the existing getSectionBetweenPoints, we first create a Polyline[], then construct a State3D[]
     local headland = getHeadland(course, closestHeadland)
     CpUtil.debugVehicle(CpDebug.DBG_PATHFINDER, course:getVehicle(),
