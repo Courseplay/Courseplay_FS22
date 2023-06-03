@@ -1617,7 +1617,7 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
             not self:isBeingHeld() then
         self:debug('%s has been blocking us for a while, move a bit', CpUtil.getName(blockingVehicle))
         local course
-        if self:isActiveCpCombine(blockingVehicle) then
+        if AIDriveStrategyCombineCourse.isActiveCpCombine(blockingVehicle) then
             -- except we are blocking our buddy, so set up a course parallel to the combine's direction,
             -- with an offset from the combine that makes sure we are clear. Use the trailer's root node (and not
             -- the tractor's) as when we reversing, it is easier when the trailer remains on the same side of the combine
