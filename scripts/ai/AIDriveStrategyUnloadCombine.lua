@@ -1660,7 +1660,8 @@ function AIDriveStrategyUnloadCombine:onBlockingVehicle(blockingVehicle, isBack)
                 self.state.properties.dx = nil
                 course = self:createMoveAwayCourse(blockingVehicle)
             end
-        elseif AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(blockingVehicle) and
+        elseif (AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(blockingVehicle) or
+                AIDriveStrategyUnloadCombine.isActiveCpSiloLoader(blockingVehicle)) and
                 blockingVehicle:getCpDriveStrategy():isIdle() then
             self:debug('%s is an idle CP combine unloader, request it to move.', CpUtil.getName(blockingVehicle))
             blockingVehicle:getCpDriveStrategy():requestToMoveForward(self.vehicle)
