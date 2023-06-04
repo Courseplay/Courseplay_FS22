@@ -385,15 +385,6 @@ function AIDriveStrategyCourse:getCurrentCourse()
     return self.ppc:getCourse() or self.course
 end
 
-function AIDriveStrategyCourse:isActiveCpCombine(vehicle)
-    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
-        -- not driven by CP
-        return false
-    end
-    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
-    return driveStrategy and driveStrategy.callUnloader ~= nil
-end
-
 function AIDriveStrategyCourse:update()
     self.ppc:update()
     self:updatePathfinding()

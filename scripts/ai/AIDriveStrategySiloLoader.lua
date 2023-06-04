@@ -364,19 +364,6 @@ function AIDriveStrategySiloLoader:hold(periodMs)
     self.temporaryHold:set(true, math.min(math.max(0, periodMs), 30000))
 end
 
-function AIDriveStrategySiloLoader:isActiveCpUnloader(vehicle)
-    if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
-        local strategy = vehicle:getCpDriveStrategy()
-        if strategy then 
-            local unloadTargetType = strategy:getUnloadTargetType()
-            if unloadTargetType ~= nil then 
-                return unloadTargetType == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.SILO_LOADER
-            end
-        end    
-    end
-    return false
-end
-
 function AIDriveStrategySiloLoader:callUnloaderWhenNeeded()
     if not self.timeToCallUnloader:get() then
         return
@@ -403,7 +390,7 @@ function AIDriveStrategySiloLoader:findUnloader()
     local bestScore = -math.huge
     local bestUnloader, bestEte
     for _, vehicle in pairs(g_currentMission.vehicles) do
-        if self:isActiveCpUnloader(vehicle) then
+        if AIDriveStrategyUnloadCombine.isActiveCpSiloLoader(vehicle) then
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()

@@ -868,17 +868,15 @@ function AIDriveStrategyCombineCourse:callUnloader(bestUnloader, tentativeRendez
     end
 end
 
-function AIDriveStrategyCombineCourse:isActiveCpUnloader(vehicle)
-    if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
-        local strategy = vehicle:getCpDriveStrategy()
-        if strategy then 
-            local unloadTargetType = strategy:getUnloadTargetType()
-            if unloadTargetType ~= nil then 
-                return unloadTargetType == AIDriveStrategyUnloadCombine.UNLOAD_TYPES.COMBINE
-            end
-        end
+---@param vehicle table
+---@return boolean true if vehicle is an active Courseplay controlled combine/harvester
+function AIDriveStrategyCombineCourse.isActiveCpCombine(vehicle)
+    if not (vehicle.getIsCpActive and vehicle:getIsCpActive()) then
+        -- not driven by CP
+        return false
     end
-    return false
+    local driveStrategy = vehicle.getCpDriveStrategy and vehicle:getCpDriveStrategy()
+    return driveStrategy and driveStrategy.callUnloader ~= nil
 end
 
 --- Find an unloader to drive to the target, which may either be the combine itself (when stopped and waiting for unload)
@@ -891,7 +889,7 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
     local bestScore = -math.huge
     local bestUnloader, bestEte
     for _, vehicle in pairs(g_currentMission.vehicles) do
-        if self:isActiveCpUnloader(vehicle) then
+        if AIDriveStrategyUnloadCombine.isActiveCpCombineUnloader(vehicle) then
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
