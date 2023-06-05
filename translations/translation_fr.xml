@@ -92,7 +92,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Position de chargement"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Position de chargement"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Progression: "/>
     <!---->
     <!--AI jobs-->
     <!---->
