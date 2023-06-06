@@ -28,7 +28,7 @@
     <!---->
     <!--AI job parameters-->
     <!---->
-    <text name="CP_jobParameters_fieldPosition_title" text="Положение на поле:"/>
+    <text name="CP_jobParameters_fieldPosition_title" text="Точка в области поля:"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Положение перед ямой:"/>
     <text name="CP_jobParameters_parkPosition_title" text="Положение парковки:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Начать с:"/>
