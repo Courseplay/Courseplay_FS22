@@ -224,7 +224,7 @@
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_title" text="Перекрытие поворотных полос"/>
     <text name="CP_vehicle_courseGeneratorSetting_headlandOverlapPercent_tooltip" text="Перекрытие проходов поворотных полос в процентах от рабочей ширины. Значение: 0 - 25."/>
     <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_title" text="Сдвиг границ поля"/>
-    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, чтобы добавить буфер вокруг рабочей зоны, отрицательные - увеличивают рабочее пространство за пределы поля. Значение: -2 - 5.8."/>
+    <text name="CP_vehicle_courseGeneratorSetting_fieldMargin_tooltip" text="Положительные значения уменьшают размер поля, отрицательные - увеличивают рабочую область за пределы поля. Значения: -2 - 5.8."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_title" text="Пропускать проходов"/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsToSkip_tooltip" text="Сколько пропускать проходов при переходе к следующему проходу при челночном методе. Значение: 0 - 6."/>
     <text name="CP_vehicle_courseGeneratorSetting_rowsPerLand_title" text="Проходов в загоне"/>
