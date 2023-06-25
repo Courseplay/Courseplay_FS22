@@ -116,7 +116,7 @@ function generateCourseForField( field, implementWidth, headlandSettings,
 	field.boundary = Polygon:new( field.boundary )
 	field.boundary:calculateData()
 
-	if fieldMargin ~= 0 then
+	if math.abs(fieldMargin) >= 0.1 then
 		CourseGenerator.debug('Applying %.1f field margin', fieldMargin)
 		-- calculate a headland track inwards (fieldMargin > 0) or outwards (fieldMargin < 0) to use as the new field
 		-- boundary.
