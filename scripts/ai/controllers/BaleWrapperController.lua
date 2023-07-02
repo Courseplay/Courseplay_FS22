@@ -87,7 +87,9 @@ end
 
 --- Giants isn't unfolding the bale wrapper for us, so we do it here.
 function BaleWrapperController:onStart()
-    self.baleWrapper:setFoldDirection(self.baleWrapper.spec_foldable.turnOnFoldDirection)
+    if self.baler.spec_foldable then
+        self.baleWrapper:setFoldDirection(self.baleWrapper.spec_foldable.turnOnFoldDirection)
+    end
 end
 
 --- Returns false, while the wrapper is being unfolded.

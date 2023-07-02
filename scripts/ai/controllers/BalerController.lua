@@ -109,7 +109,9 @@ end
 
 --- Giants isn't unfolding balers, so we do it here.
 function BalerController:onStart()
-    self.baler:setFoldDirection(self.baler.spec_foldable.turnOnFoldDirection)
+    if self.baler.spec_foldable then
+        self.baler:setFoldDirection(self.baler.spec_foldable.turnOnFoldDirection)
+    end
 end
 
 function BalerController:onFinished()
