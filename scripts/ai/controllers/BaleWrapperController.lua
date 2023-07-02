@@ -87,7 +87,13 @@ end
 
 --- Giants isn't unfolding the bale wrapper for us, so we do it here.
 function BaleWrapperController:onStart()
-    self.baleWrapper:setFoldDirection(self.baleWrapper.spec_foldable.turnOnFoldDirection)
+    -- for some reason, bale wrappers that don't really unfold still have a spec_foldable, although there
+    -- is no foldable defined in the XML file. If we unfold these, they are stuck in the unfold state, also,
+    -- the check for foldAnimTime == 1 in canContinueWork() won't work, see #2598. These all have a default
+    -- 0.0001 anim time, so check if the anim time is a reasonable value and only unfold then.
+    if self.baleWrapper.spec_foldable and self.baleWrapper.spec_foldable.maxFoldAnimDuration > 0.1 then
+        self.baleWrapper:setFoldDirection(self.baleWrapper.spec_foldable.turnOnFoldDirection)
+    end
 end
 
 --- Returns false, while the wrapper is being unfolded.
