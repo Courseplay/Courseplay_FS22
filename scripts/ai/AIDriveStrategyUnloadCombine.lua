@@ -193,7 +193,7 @@ function AIDriveStrategyUnloadCombine.new(customMt)
     self.states = CpUtil.copyStates(self.states, self.trailerUnloadStates)
     self.states = CpUtil.copyStates(self.states, self.fieldUnloadStates)
 
-    self.state = self.states.IDLE
+    self.state = self.states.INITIAL
     self.debugChannel = CpDebug.DBG_UNLOAD_COMBINE
     ---@type ImplementController[]
     self.controllers = {}
@@ -374,7 +374,14 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
             self:debug('Drive unload now requested')
             self:startUnloadingTrailers()
         end
-
+    elseif self.state == self.states.INITIAL then
+        Timer.createOneshot(50, function ()
+            --- Pipe measurement seems to be buggy with a few over loaders, like bergman RRW 500,
+            --- so a small delay of 50 ms is inserted here before unfolding starts.
+            self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+            self.state = self.states.IDLE
+        end)
+        self:setMaxSpeed(0)
     elseif self.state == self.states.IDLE then
         -- nothing to do right now, wait for one of the following:
         -- - combine calls
