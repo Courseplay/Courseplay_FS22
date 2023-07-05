@@ -25,6 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="Vehículo demasiado lejos del campo."/>
     <text name="CP_error_no_bunkerSilo_found" text="No se encontró ningún Silo."/>
     <text name="CP_error_no_heap_found" text="No se encontró ningún montón."/>
+    <text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -93,6 +94,8 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posición de carga"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posición de carga"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Progreso: "/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
     <!---->
     <!--AI jobs-->
     <!---->

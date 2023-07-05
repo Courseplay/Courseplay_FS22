@@ -25,6 +25,7 @@
     <text name="CP_error_vehicle_too_far_away_from_field" text="A jármű túl messze van a mezőtől a kezdéshez."/>
     <text name="CP_error_no_bunkerSilo_found" text="Siló nem található."/>
     <text name="CP_error_no_heap_found" text="Siló nem található."/>
+	<text name="CP_error_no_unload_trigger_found" text="No unloading point found."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -93,6 +94,8 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Rakodási pozíció"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Rakodási pozíció"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Folyamat: "/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
+    <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
     <!---->
     <!--AI jobs-->
     <!---->
