@@ -305,6 +305,10 @@
 			<Text language="de"><![CDATA[Fortschritt: ]]></Text>
 			<Text language="en"><![CDATA[Progress: ]]></Text>
 		</Translation>
+		<Translation name="CP_siloLoaderJobParameters_subTitle_unloading">
+			<Text language="de"><![CDATA[Abladen in:]]></Text>
+			<Text language="en"><![CDATA[Unloading at:]]></Text>
+		</Translation>
 		<Translation name="CP_siloLoaderJobParameters_unloadAt_trailer">
 			<Text language="de"><![CDATA[Anhänger]]></Text>
 			<Text language="en"><![CDATA[Trailer]]></Text>

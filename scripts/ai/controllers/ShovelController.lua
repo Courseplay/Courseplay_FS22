@@ -57,12 +57,12 @@ function ShovelController:getDischargeNode()
 end
 
 --- Is the shovel node over the trailer?
----@param trailer table
+---@param refNode number
 ---@param margin number|nil
 ---@return boolean
-function ShovelController:isShovelOverTrailer(trailer, margin)
+function ShovelController:isShovelOverTrailer(refNode, margin)
     local node = self:getShovelNode()
-    local x, y, z = localToLocal(trailer.rootNode, node, 0, 0, 0)
+    local x, y, z = localToLocal(refNode, node, 0, 0, 0)
     margin = margin or 0
     return z < margin
 end

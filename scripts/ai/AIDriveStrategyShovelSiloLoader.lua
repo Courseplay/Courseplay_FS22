@@ -40,7 +40,6 @@ AIDriveStrategyShovelSiloLoader.myStates = {
     DRIVING_OUT_OF_SILO = {shovelPosition = ShovelController.POSITIONS.TRANSPORT},
     WAITING_FOR_TRAILER = {shovelPosition = ShovelController.POSITIONS.TRANSPORT},
     DRIVING_TO_UNLOAD_POSITION = {shovelPosition = ShovelController.POSITIONS.TRANSPORT},
-    DRIVING_TO_TRAILER = {shovelPosition = ShovelController.POSITIONS.TRANSPORT},
     DRIVING_TO_UNLOAD = {shovelPosition = ShovelController.POSITIONS.PRE_UNLOADING, shovelMovingSpeed = 0},
     UNLOADING = {shovelPosition = ShovelController.POSITIONS.UNLOADING, shovelMovingSpeed = 0},
 }
@@ -145,12 +144,6 @@ function AIDriveStrategyShovelSiloLoader:onWaypointPassed(ix, course)
             self:startPathfindingToUnloadPosition()
         elseif self.state == self.states.DRIVING_TO_UNLOAD_POSITION then
             self.state = self.states.WAITING_FOR_TRAILER
-        elseif self.state == self.states.DRIVING_TO_TRAILER then
-            local course = Course.createFromNodeToNode(self.vehicle, self.vehicle:getAIDirectionNode(), self.unloadNode, 
-                0, 0, 0, 3, false)
-            self:startCourse(course, 1)
-
-            self.state = self.states.DRIVING_TO_UNLOAD
         elseif self.state == self.states.DRIVING_TO_UNLOAD then
             self.state = self.states.UNLOADING
 
@@ -211,12 +204,13 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.WAITING_FOR_TRAILER then 
         self:setMaxSpeed(0)
         self:searchForTrailerToUnloadInto()
-    elseif self.state == self.states.DRIVING_TO_TRAILER then 
-        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.DRIVING_TO_UNLOAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        if self.shovelController:isShovelOverTrailer(self.targetTrailer.trailer) then 
-            self.state = self.states.UNLOADING     
+        if self.targetTrailer then 
+            if self.shovelController:isShovelOverTrailer(self.targetTrailer.exactFillRootNode) then 
+                self.state = self.states.UNLOADING     
+                self:setMaxSpeed(0)
+            end
         end
     elseif self.state == self.states.UNLOADING then 
         self:setMaxSpeed(0)
@@ -351,10 +345,13 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
             exactFillRootNode = exactFillRootNode,
             trailer = trailer
         }
-        -- self:debug("Found valid trailer %s attached to %s with a distance of %.2fm to the silo front center for fill type %s in fill unit %d.", 
-        --     CpUtil.getName(vehicle), CpUtil.getName(vehicle.rootVehicle),
-        --     self.maxValidTrailerDistance, g_fillTypeManager:getFillTypeTitleByIndex(fillType), fillUnitIndex)
-        self:startPathfindingToTrailer(trailer, exactFillRootNode)
+        local dx, _, dz = getWorldTranslation(exactFillRootNode)
+        local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
+        local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
+            0, -3, 0, 3, false)
+        local firstWpIx = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
+        self:startCourse(course, firstWpIx)
+        self.state = self.states.DRIVING_TO_UNLOAD
     end
 end
 
@@ -392,55 +389,6 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToUnloadPosition(path,
     else 
         self:debug("Failed to drive close to unload position.")
         self.state = self.states.WAITING_FOR_TRAILER
-    end
-end
-
---- Find an alignment path to the heap course.
-function AIDriveStrategyShovelSiloLoader:startPathfindingToTrailer(trailer, exactFillRootNode)
-    if not self.pathfinder or not self.pathfinder:isActive() then
-        self.state = self.states.WAITING_FOR_PATHFINDER
-        local dx, _, _ = localToLocal(self.shovelController:getShovelNode(), trailer.rootNode, 0, 0, 0)
-
-        local loadingLeftSide = dx > 0
-
-        local x, y, z = localToLocal(exactFillRootNode, trailer.rootNode, 0, 0, 0)
-
-        local gx, gy, gz = localToWorld(trailer.rootNode, x, y, z)
-        local dirX, dirZ = localDirectionToWorld(trailer.rootNode, loadingLeftSide and 1 or -1, 0, 0)
-        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-        setTranslation(self.unloadNode, gx, gy, gz)
-        setRotation(self.unloadNode, 0, yRot, 0)
-
-        local spaceToTrailer = math.max(self.turningRadius, self.safeSpaceToTrailer)
-
-        self.pathfindingStartedAt = g_currentMission.time
-        local done, path, goalNodeInvalid
-        self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-            self.vehicle, self.unloadNode,
-            0, -spaceToTrailer, true,
-            nil, {}, nil,
-            0, nil, true
-        )
-        if done then
-            return self:onPathfindingDoneToTrailer(path, goalNodeInvalid)
-        else
-            self:setPathfindingDoneCallback(self, self.onPathfindingDoneToTrailer)
-        end
-    else
-        self:debug('Pathfinder already active')
-    end
-    return true
-end
-
-function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToTrailer(path, goalNodeInvalid)
-    if path and #path > 2 then
-        self:debug("Found alignment path to trailer.")
-        local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(course, 1)
-        self.state = self.states.DRIVING_TO_TRAILER
-    else 
-        self:debug("Failed to find valid path to trailer!")
-        self.state = self.sates.WAITING_FOR_TRAILER
     end
 end
 
