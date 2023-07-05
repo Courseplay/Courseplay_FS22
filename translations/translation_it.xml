@@ -94,6 +94,7 @@
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posizione di caricamento"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posizione di caricamento"/>
     <text name="CP_siloLoader_fillLevelProgress" text="Avanzamento: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_unloading" text="Unloading at:"/>
     <text name="CP_siloLoaderJobParameters_unloadAt_trailer" text="Trailer"/>
     <text name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger" text="Unload station"/>
     <!---->
