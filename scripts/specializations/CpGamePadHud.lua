@@ -197,7 +197,8 @@ function CpGamePadHud:actionEventOpenCloseDisplay()
 	elseif self:getCanStartCpBunkerSiloWorker() and self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO
 		or AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
 		page = CpGamePadHud.BUNKER_SILO_PAGE
-	elseif self:getCanStartCpSiloLoaderWorker() then
+	elseif self:getCanStartCpSiloLoaderWorker() and ( AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)
+		or self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING) then
 		page = CpGamePadHud.SILO_LOADER_PAGE
 	else
 		page = CpGamePadHud.FIELDWORK_PAGE

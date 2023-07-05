@@ -339,11 +339,12 @@ function Courseplay.register(typeManager)
 		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
 		CpAICombineUnloader.register(typeManager, typeName, typeEntry.specializations)
-		CpAIBunkerSiloWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAISiloLoaderWorker.register(typeManager, typeName, typeEntry.specializations)
+		CpAIBunkerSiloWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpGamePadHud.register(typeManager, typeName,typeEntry.specializations)
 		CpHud.register(typeManager, typeName, typeEntry.specializations)
 		CpInfoTexts.register(typeManager, typeName, typeEntry.specializations)
+		CpShovelPositions.register(typeManager, typeName, typeEntry.specializations)
 	end
 end
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, Courseplay.register)

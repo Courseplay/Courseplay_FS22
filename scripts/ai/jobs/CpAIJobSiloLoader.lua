@@ -36,6 +36,7 @@ function CpAIJobSiloLoader:setupJobParameters()
 	CpAIJobSiloLoader:superClass().setupJobParameters(self)
 	self:setupCpJobParameters(CpSiloLoaderJobParameters(self))
 	self.cpJobParameters.loadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
+	self.cpJobParameters.unloadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
 end
 
 function CpAIJobSiloLoader:getIsAvailableForVehicle(vehicle)
@@ -67,6 +68,14 @@ function CpAIJobSiloLoader:applyCurrentState(vehicle, mission, farmId, isDirectS
 		local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
 		self.cpJobParameters.loadPosition:setPosition(x, z)
 		self.cpJobParameters.loadPosition:setAngle(angle)
+	end
+
+	local x, z = self.cpJobParameters.unloadPosition:getPosition()
+
+	-- no unload position use the vehicle's current position
+	if x == nil or z == nil then
+		x, _, z = getWorldTranslation(vehicle.rootNode)
+		self.cpJobParameters.unloadPosition:setPosition(x, z)
 	end
 end
 
@@ -121,6 +130,14 @@ function CpAIJobSiloLoader:validate(farmId)
 		return false, g_i18n:getText("CP_error_no_heap_found")
 	end
 
+	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
+		--- Validate the trigger setup
+		local found, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
+
+		return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+	end
+
+
 	return isValid, errorMessage
 end
 
@@ -147,7 +164,32 @@ function CpAIJobSiloLoader:getBunkerSiloOrHeap(loadPosition, node)
 	return found, nil, heapSilo
 end
 
+--- Gets the unload trigger at the unload position.
+---@param unloadPosition CpAIParameterPositionAngle
+---@return boolean
+---@return table|nil
+function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
+	local x, z = unloadPosition:getPosition()
+	local angle = unloadPosition:getAngle()
+	if x == nil or angle == nil then
+		return false
+	end	
+	return false
+end
+
 function CpAIJobSiloLoader:drawSilos(map)
     self.heapPlot:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
+end
+
+
+--- Gets the giants unload station.
+function CpAIJobSiloLoader:getUnloadingStations()
+	local unloadingStations = {}
+	for _, unloadingStation in pairs(g_currentMission.storageSystem:getUnloadingStations()) do
+		if g_currentMission.accessHandler:canPlayerAccess(unloadingStation) and unloadingStation:isa(UnloadingStation) then
+			table.insert(unloadingStations, unloadingStation)
+		end
+	end
+	return unloadingStations
 end

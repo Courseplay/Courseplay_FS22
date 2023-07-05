@@ -265,7 +265,7 @@ function CpAIWorker:changeCourseVisibility()
 end
 
 function CpAIWorker:startStopCpActionEvent()
-    self:cpStartStopDriver()
+    self:cpStartStopDriver(true)
 end
 
 --- Directly starts a cp job or stops a currently active job.

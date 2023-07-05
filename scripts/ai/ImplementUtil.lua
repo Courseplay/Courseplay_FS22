@@ -407,6 +407,9 @@ function ImplementUtil.getLevelerNode(object)
     return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] and object.spec_leveler.nodes[1]
 end
 
+--- Visually displays the bale collector offset
+---@param vehicle table
+---@param offset number
 function ImplementUtil.showBaleCollectorOffset(vehicle, offset)
     local implement = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
     if not implement then 
@@ -418,3 +421,61 @@ function ImplementUtil.showBaleCollectorOffset(vehicle, offset)
         DebugUtil.drawDebugLine(x, y, z, dx, dy, dz, 1, 0, 0)
     end
 end
+
+--- Checks if loading from an implement to another is possible.
+---@param loadTargetImplement table
+---@param implementToLoadFrom table
+---@param dischargeNode table|nil optional otherwise the current selected node is used.
+---@param suppressLog boolean|nil 
+---@return boolean is loading possible?
+---@return number|nil target implement fill unit ix to load into.
+---@return number|nil fill type to load
+---@return number|nil target exact fill root node
+function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, dischargeNode, suppressLog)
+    
+    local function debug(str, ...)
+        if not suppressLog then
+            CpUtil.debugVehicle(CpDebug.DBG_SILO, implementToLoadFrom.rootVehicle, 
+                str, ...)
+        end
+    end
+
+    if dischargeNode == nil then 
+        dischargeNode = implementToLoadFrom:getCurrentDischargeNode()
+    end
+    if dischargeNode == nil then 
+        debug("No valid discharge node found!")
+        return false, nil, nil, nil
+    end
+
+    local fillType = implementToLoadFrom:getDischargeFillType(dischargeNode)
+
+    if fillType == nil or fillType == FillType.UNKNOWN then 
+        debug("No valid fill type to load!")
+        return false, nil, nil, nil
+    end
+
+    local validTarget, targetFillUnitIndex, exactFillRootNode
+    for fillUnitIndex, fillUnit in pairs(loadTargetImplement:getFillUnits()) do 
+        if loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, fillType) then
+            if loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, fillType) then 
+                if loadTargetImplement.getFillUnitFreeCapacity == nil or loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, fillType, implementToLoadFrom:getActiveFarm()) > 0 then
+                    if loadTargetImplement.getIsFillAllowedFromFarm == nil or loadTargetImplement:getIsFillAllowedFromFarm(implementToLoadFrom:getActiveFarm()) then
+                        validTarget, targetFillUnitIndex, exactFillRootNode = true, fillUnitIndex, loadTargetImplement:getFillUnitExactFillRootNode(fillUnitIndex)
+                    else
+                        debug("Fill unit(%d) filling to target farm %s from %s not allowed!", fillUnitIndex, loadTargetImplement:getOwnerFarmId(), implementToLoadFrom:getActiveFarm())
+                    end
+                else
+                    debug("Fill unit(%d) is full with fill type %s!", fillUnitIndex, g_fillTypeManager:getFillTypeTitleByIndex(fillType))
+                end
+            else
+                debug("Fill unit(%d) doesn't allow fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeTitleByIndex(fillType))
+            end
+        else
+            debug("Fill unit(%d) doesn't support fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeTitleByIndex(fillType))
+        end
+    end
+
+    return validTarget, targetFillUnitIndex, fillType, exactFillRootNode
+end
+

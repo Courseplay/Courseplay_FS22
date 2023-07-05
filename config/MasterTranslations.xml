@@ -79,6 +79,10 @@
 			<Text language="de"><![CDATA[Keinen Haufen gefunden.]]></Text>
 			<Text language="en"><![CDATA[No heap found.]]></Text>
 		</Translation>
+		<Translation name="CP_error_no_unload_trigger_found">
+			<Text language="de"><![CDATA[Keinen Abladepunkt gefunden.]]></Text>
+			<Text language="en"><![CDATA[No unloading point found.]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI job parameters">	
 		<Translation name="CP_jobParameters_fieldPosition_title">
@@ -300,7 +304,15 @@
 		<Translation name="CP_siloLoader_fillLevelProgress">
 			<Text language="de"><![CDATA[Fortschritt: ]]></Text>
 			<Text language="en"><![CDATA[Progress: ]]></Text>
-		</Translation>		
+		</Translation>
+		<Translation name="CP_siloLoaderJobParameters_unloadAt_trailer">
+			<Text language="de"><![CDATA[Anhänger]]></Text>
+			<Text language="en"><![CDATA[Trailer]]></Text>
+		</Translation>
+		<Translation name="CP_siloLoaderJobParameters_unloadAt_unloadTrigger">
+			<Text language="de"><![CDATA[Abladestation]]></Text>
+			<Text language="en"><![CDATA[Unload station]]></Text>
+		</Translation>
 	</Category>
 	<Category name="AI jobs">
 		<Translation name="CP_job_fieldWork">

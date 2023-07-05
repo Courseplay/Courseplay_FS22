@@ -98,8 +98,11 @@ function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
 	return not self:getCanStartCpFieldWork() 
         and not self:getCanStartCpBaleFinder() 
         and not self:getCanStartCpCombineUnloader()
-        and not self:getCanStartCpSiloLoaderWorker()
-        and (not self:hasCpCourse() or AIUtil.hasChildVehicleWithSpecialization(self, Leveler, nil))
+
+        and (not self:hasCpCourse() or
+            AIUtil.hasChildVehicleWithSpecialization(self, Leveler))
+        and not (AIUtil.hasChildVehicleWithSpecialization(self, Shovel) 
+            and AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt))
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)
@@ -109,10 +112,10 @@ end
 function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIBunkerSiloWorker
     local job = self:getCanStartCpBunkerSiloWorker() and spec.cpJob
-    if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, Leveler) then 
+    if isStartedByHud then 
         job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO and job
     end
-	return superFunc(self) or job
+	return superFunc(self, isStartedByHud) or job
 end
 
 function CpAIBunkerSiloWorker:getCpStartText(superFunc)

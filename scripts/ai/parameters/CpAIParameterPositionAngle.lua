@@ -121,7 +121,8 @@ CpAIParameterPositionAngle = CpObject(CpAIParameterPosition)
 CpAIParameterPositionAngle.POSITION_TYPES = {
 		DRIVE_TO = 0,	--- with angle
 		FIELD_OR_SILO = 1, --- without angle
-		UNLOAD = 2 --- with angle
+		UNLOAD = 2, --- with angle
+		LOAD = 3 --- with angle
 	}
 ---@param data table
 ---@param vehicle table

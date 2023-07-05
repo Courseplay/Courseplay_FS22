@@ -299,9 +299,9 @@ function CpAIFieldWorker:getCanStartCp(superFunc)
 end
 
 --- Gets the field work job for the hud or start action event.
-function CpAIFieldWorker:getCpStartableJob(superFunc)
+function CpAIFieldWorker:getCpStartableJob(superFunc, ...)
     local spec = self.spec_cpAIFieldWorker
-	return self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob or superFunc(self)
+	return self:getCanStartCpFieldWork() and self:hasCpCourse() and spec.cpJob or superFunc(self, ...)
 end
 
 function CpAIFieldWorker:getCpStartText(superFunc)

@@ -1,6 +1,14 @@
 ---@class ShovelController : ImplementController
 ShovelController = CpObject(ImplementController)
 
+ShovelController.POSITIONS = {
+    DEACTIVATED = 0, 
+    LOADING = 1,
+    TRANSPORT = 2,
+    PRE_UNLOADING = 3,
+    UNLOADING = 4,
+}
+
 function ShovelController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.shovelSpec = self.implement.spec_shovel
@@ -16,11 +24,11 @@ function ShovelController:getShovelNode()
 end
 
 function ShovelController:isFull()
-    return self:getFillLevelPercentage() >= 0.98
+    return self:getFillLevelPercentage() >= 99
 end
 
 function ShovelController:isEmpty()
-    return self:getFillLevelPercentage() <= 0.01
+    return self:getFillLevelPercentage() <= 1
 end
 
 function ShovelController:getFillLevelPercentage()
@@ -40,6 +48,48 @@ function ShovelController:getShovelFillType()
     return self.shovelSpec.loadingFillType
 end
 
-function ShovelController:isReadyToLoad()
-    return self:getShovelFillType() == FillType.UNKNOWN and self:getFillLevelPercentage() < 0.5 
+function ShovelController:getDischargeFillType()
+    return self.implement:getDischargeFillType(self:getDischargeNode())
+end
+
+function ShovelController:getDischargeNode()
+    return self.implement:getCurrentDischargeNode()
+end
+
+--- Is the shovel node over the trailer?
+---@param trailer table
+---@param margin number|nil
+---@return boolean
+function ShovelController:isShovelOverTrailer(trailer, margin)
+    local node = self:getShovelNode()
+    local x, y, z = localToLocal(trailer.rootNode, node, 0, 0, 0)
+    margin = margin or 0
+    return z < margin
+end
+
+function ShovelController:moveShovelToLoadingPosition()
+    return self:moveShovelToPosition(self.POSITIONS.LOADING)
+end
+
+function ShovelController:moveShovelToTransportPosition()
+    return self:moveShovelToPosition(self.POSITIONS.TRANSPORT)
+end
+
+function ShovelController:moveShovelToPreUnloadPosition()
+    return self:moveShovelToPosition(self.POSITIONS.PRE_UNLOADING)
+end
+
+function ShovelController:moveShovelToUnloadPosition()
+    return self:moveShovelToPosition(self.POSITIONS.UNLOADING)
+end
+
+function ShovelController:onFinished()
+    self.implement:cpResetShovelState()
+end
+
+---@param pos number shovel position 1-4
+---@return boolean reached? 
+function ShovelController:moveShovelToPosition(pos)
+    self.implement:cpSetShovelState(pos)
+    return self.implement:areCpShovelPositionsDirty()
 end

@@ -260,7 +260,9 @@ end
 
 function CpGamePadHudSiloLoaderScreen:update(dt, ...)
 	CpGamePadHudSiloLoaderScreen:superClass().update(self, dt, ...)
-
+	if not self.vehicle:getCanStartCpSiloLoaderWorker() or self.vehicle:getCpStartingPointSetting():getValue() ~= CpJobParameters.START_AT_SILO_LOADING then
+		self.vehicle:reopenCpGamePadHud()
+	end
 end
 
 function CpGamePadHudSiloLoaderScreen:drawWorkWidth()

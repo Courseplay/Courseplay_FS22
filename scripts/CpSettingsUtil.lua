@@ -70,7 +70,7 @@ function CpSettingsUtil.init()
 	schema:register(XMLValueType.STRING, "Settings#autoUpdateGui", "Gui gets updated automatically")
 
 	local key = "Settings.SettingSubTitle(?)"
-	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title", nil, true)
+	schema:register(XMLValueType.STRING, key .."#title", "Setting sub title", nil)
 	schema:register(XMLValueType.BOOL, key .."#prefix", "Setting sub title is a prefix", true)
 	
 	schema:register(XMLValueType.STRING, key.."#isDisabled", "Callback function, if the settings is disabled.") -- optional
@@ -157,7 +157,7 @@ function CpSettingsUtil.loadSettingsFromSetup(class, filePath)
 		class.pageTitle = setupKey .. "title"
 	end
 	xmlFile:iterate("Settings.SettingSubTitle", function (i, masterKey)
-		local subTitle = xmlFile:getValue(masterKey.."#title")
+		local subTitle = xmlFile:getValue(masterKey.."#title", "...")
 		--- This flag can by used to simplify the translation text. 
 		local pre = xmlFile:getValue(masterKey.."#prefix", true)	
 		if pre then 

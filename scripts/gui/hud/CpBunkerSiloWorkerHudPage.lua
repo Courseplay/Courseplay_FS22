@@ -101,5 +101,11 @@ function CpBunkerSiloWorkerHudPageElement:updateContent(vehicle, status)
 end
 
 function CpBunkerSiloWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return AIUtil.hasAIImplementWithSpecialization(vehicle, Leveler)
+    return AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler) 
+        and not AIUtil.hasChildVehicleWithSpecialization(vehicle, Shovel) 
+
+end
+
+function CpBunkerSiloWorkerHudPageElement:getStartingPointBtnText(vehicle)
+    return vehicle:getCpStartingPointSetting():getString()
 end

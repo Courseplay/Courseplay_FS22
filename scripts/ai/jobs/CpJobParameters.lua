@@ -127,6 +127,16 @@ function CpJobParameters:isBunkerSiloHudModeDisabled()
     return self:isAIMenuJob()
 end
 
+function CpJobParameters:isSiloLoadingHudModeDisabled()
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        if not vehicle:getCanStartCpSiloLoaderWorker() then 
+            return true
+        end
+    end
+    return self:isAIMenuJob()
+end
+
 --- Callback raised by a setting and executed as an vehicle event.
 ---@param callbackStr string event to be raised
 ---@param setting AIParameterSettingList setting that raised the callback.
@@ -136,7 +146,6 @@ function CpJobParameters:raiseCallback(callbackStr, setting, ...)
         SpecializationUtil.raiseEvent(vehicle, callbackStr, setting, ...)
     end
 end
-
 
 function CpJobParameters:__tostring()
    return tostring(self.settings)
@@ -311,6 +320,9 @@ end
 
 --- AI parameters for the bunker silo job.
 ---@class CpSiloLoaderJobParameters : CpJobParameters
+---@field unloadAt AIParameterSettingList
+---@field UNLOAD_TRAILER number
+---@field UNLOAD_TRIGGER number
 CpSiloLoaderJobParameters = CpObject(CpJobParameters)
 
 function CpSiloLoaderJobParameters:init(job)
@@ -325,4 +337,35 @@ end
 
 function CpSiloLoaderJobParameters.getSettings(vehicle)
     return vehicle.spec_cpAISiloLoaderWorker.cpJob:getCpJobParameters()
+end
+
+function CpSiloLoaderJobParameters:isShovelSiloLoadDisabled()
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        return AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt)
+    end
+    return false
+end
+
+function CpSiloLoaderJobParameters:isUnloadPositionDisabled()
+    return self:isShovelSiloLoadDisabled() or self.unloadAt == CpSiloLoaderJobParameters.UNLOAD_TRAILER
+end
+
+function CpSiloLoaderJobParameters:isUnloadStationDisabled()
+    return true
+end
+
+function CpSiloLoaderJobParameters:generateUnloadingStations(setting, oldIx)
+    local unloadingStationIds = {}
+    local texts = {}
+    table.insert(unloadingStationIds, -1)
+    table.insert(texts, "---")
+    if self.job then
+        for i, unloadingStation in ipairs(self.job:getUnloadingStations()) do 
+            local id = NetworkUtil.getObjectId(unloadingStation)
+            table.insert(unloadingStationIds, id)
+            table.insert(texts,  unloadingStation:getName() or "")
+        end
+    end
+    return unloadingStationIds, texts, oldIx
 end

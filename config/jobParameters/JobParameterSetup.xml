@@ -19,12 +19,14 @@
 				<Value name="START_AT_FIRST_POINT">2</Value>
 				<Value name="START_AT_LAST_POINT">3</Value>
 				<Value name="START_AT_BUNKER_SILO" isDisabled="isBunkerSiloHudModeDisabled">4</Value> <!-- Only for bunker silo mode in the hud!-->
+				<Value name="START_AT_SILO_LOADING" isDisabled="isSiloLoadingHudModeDisabled">5</Value> <!-- Only for shovel silo loadings mode in the hud!-->
 			</Values>
 			<Texts>
 				<Text>nearest</Text>
 				<Text>first</Text>
 				<Text>last</Text>
 				<Text>bunkerSilo</Text>
+				<Text>siloLoader</Text>
 			</Texts>
 		</Setting>
 	</SettingSubTitle>
