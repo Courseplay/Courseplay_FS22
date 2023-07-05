@@ -19,46 +19,76 @@ function CpAICombineUnloader.initSpecialization()
     local key = "vehicles.vehicle(?)" .. CpAICombineUnloader.KEY
     CpJobParameters.registerXmlSchema(schema, key..".cpJob")
 
-    --- Registers pipe controller measurement test function
-    g_devHelper.consoleCommands:registerConsoleCommand("cpMeasurePipe", 
+    --- Registers pipe controller measurement test and debug functions
+    g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerMeasurePipe", 
         "Measures the pipe properties while unfolded.", "consoleCommandMeasurePipeProperties", CpAICombineUnloader)
-    g_devHelper.consoleCommands:registerConsoleCommand("cpInstantUnfoldPipe", 
+    g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerInstantUnfoldPipe", 
         "Instant unfold of the pipe", "consoleCommandInstantUnfoldPipe", CpAICombineUnloader)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerInstantFoldPipeAndImplement", 
+        "Instant fold of the pipe + implement", "consoleCommandInstantFoldPipeAndImplement", CpAICombineUnloader)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerDebugFoldablePipe", 
+        "Debug for foldable pipes", "consoleCommandDebugFoldablePipe", CpAICombineUnloader)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpPipeControllerSetFoldTime", 
+        "Debug for setting foldable pipe time", "consoleCommandSetFoldTime", CpAICombineUnloader)
+end
+
+local function executePipeControllerCommand(lambdaFunc, ...)
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
+        return
+    end
+    local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
+    if not pipeObject then 
+        CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
+        return
+    end
+    local controller = PipeController(vehicle, pipeObject, true)
+    lambdaFunc(controller, ...)
+    controller:delete()
 end
 
 --- Helper command to test the pipe measurement.
 function CpAICombineUnloader:consoleCommandMeasurePipeProperties()
-    local vehicle = g_currentMission.controlledVehicle
-    if vehicle then 
-        local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
-        if pipeObject then 
-            local controller = PipeController(vehicle, pipeObject)
-            controller:printPipeDebug()
-            controller:delete()
-        else 
-            CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
-        end
-    else 
-        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
-    end
+    executePipeControllerCommand(function(controller)
+        controller:measurePipeProperties()
+    end)
 end
 
 function CpAICombineUnloader:consoleCommandInstantUnfoldPipe()
-    local vehicle = g_currentMission.controlledVehicle
-    if vehicle then 
-        local pipeObject = AIUtil.getImplementOrVehicleWithSpecialization(vehicle, Pipe)
-        if pipeObject then 
-            local controller = PipeController(vehicle, pipeObject)
-            controller:printPipeDebug()
-            controller:instantUnfold(true)
-            controller:delete()
-        else 
-            CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
-        end
-    else 
-        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
-    end
+    executePipeControllerCommand(function(controller)
+        controller:printFoldableDebug()
+        controller:printPipeDebug()
+        controller:instantUnfold(true)
+        controller:printFoldableDebug()
+        controller:printPipeDebug()
+    end)
 end
+
+function CpAICombineUnloader:consoleCommandInstantFoldPipeAndImplement()
+    executePipeControllerCommand(function(controller)
+        controller:printFoldableDebug()
+        controller:printPipeDebug()
+        controller:instantFold()
+        controller:printFoldableDebug()
+        controller:printPipeDebug()
+    end)
+end
+
+function CpAICombineUnloader:consoleCommandDebugFoldablePipe()
+    executePipeControllerCommand(function(controller)
+        controller:measurePipeProperties()
+    end)
+end
+
+function CpAICombineUnloader:consoleCommandSetFoldTime(time, placeComponents)
+    executePipeControllerCommand(function(controller)
+        controller:printFoldableDebug()
+        controller:debugSetFoldTime(time, placeComponents)
+        controller:printFoldableDebug()
+    end)
+end
+
 
 function CpAICombineUnloader.prerequisitesPresent(specializations)
     return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 

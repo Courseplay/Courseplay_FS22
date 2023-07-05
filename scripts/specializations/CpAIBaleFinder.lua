@@ -213,6 +213,7 @@ function CpAIBaleFinder:startCpBaleFinder(fieldPolygon, jobParameters)
         strategy:setFieldPolygon(fieldPolygon)
         strategy:setAIVehicle(self, jobParameters)
         strategy:setJobParameterValues(jobParameters)
+        self:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
         CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "Starting bale finder job.")
         self:startCpWithStrategy(strategy)
     end

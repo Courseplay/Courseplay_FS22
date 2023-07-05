@@ -341,7 +341,9 @@ function CpAIWorker:startCpDriveTo(task, jobParameters)
 end
 
 function CpAIWorker:stopCpDriveTo()
-    self.driveToFieldWorkStartStrategy:delete()
+    if self.driveToFieldWorkStartStrategy then
+        self.driveToFieldWorkStartStrategy:delete()
+    end
     self.driveToFieldWorkStartStrategy = nil
 end
 

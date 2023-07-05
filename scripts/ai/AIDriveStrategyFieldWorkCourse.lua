@@ -95,6 +95,8 @@ function AIDriveStrategyFieldWorkCourse:start(course, startIx, jobParameters)
         self:startCourse(course, startIx)
         self.state = self.states.INITIAL
     end
+    --- Store a reference to the original generated course
+    self.originalGeneratedFieldWorkCourse = self.vehicle:getFieldWorkCourse()
 end
 
 --- Event raised when the driver has finished.
@@ -700,7 +702,7 @@ function AIDriveStrategyFieldWorkCourse:updateCpStatus(status)
         local ix = self.fieldWorkCourse:getCurrentWaypointIx()
         local numWps = self.fieldWorkCourse:getNumberOfWaypoints()
         if self.fieldWorkCourse:getMultiTools()>1 then 
-            numWps = self.vehicle:getFieldWorkCourse():getNumberOfWaypoints()
+            numWps = self.originalGeneratedFieldWorkCourse:getNumberOfWaypoints()
             --- Find the closed waypoint to the vehicle
             ix = self.fieldWorkCourse:getCurrentWaypointReferenceIx()
            

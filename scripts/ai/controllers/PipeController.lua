@@ -9,7 +9,8 @@ PipeController.PIPE_STATE_MOVING = 0
 PipeController.PIPE_STATE_CLOSED = 1
 PipeController.PIPE_STATE_OPEN = 2
 
-function PipeController:init(vehicle, implement)
+function PipeController:init(vehicle, implement, isConsoleCommand)
+    self.isConsoleCommand = isConsoleCommand
     ImplementController.init(self, vehicle, implement)
     self.pipeSpec = self.implement.spec_pipe
     self.cylinderedSpec = self.implement.spec_cylindered
@@ -20,7 +21,9 @@ function PipeController:init(vehicle, implement)
 
     self.pipeOffsetX, self.pipeOffsetZ = 0, 0
     self.pipeOnLeftSide = true
-    self:measurePipeProperties()
+    if not isConsoleCommand then
+        self:measurePipeProperties()
+    end
 
     self.isDischargingTimer = CpTemporaryObject(false)
     self.isDischargingToGround = false
@@ -249,17 +252,22 @@ end
 --- Measures pipe properties: xOffset, zOffset, pipeOnLeftSide
 function PipeController:measurePipeProperties()
     --- Old fold and pipe states.
-    local foldAnimTime = self.implement.spec_foldable.foldAnimTime
-    local foldState = -self.implement:getToggledFoldDirection()
+    local isFolded = true
+    if (self.foldableSpec.turnOnFoldDirection == -1 and self.foldableSpec.foldAnimTime == 0) or 
+        (self.foldableSpec.turnOnFoldDirection == 1 and self.foldableSpec.foldAnimTime == 1) then 
+        isFolded = false
+    end
+    local foldAnimTime = self.foldableSpec.foldAnimTime
+    local currentFoldDirection = self.foldableSpec.foldMoveDirection
     local pipeAnimTime = self.implement:getAnimationTime(self.pipeSpec.animation.name)
-    local pipeState = self.pipeSpec.targetState
-    local pipeAnimCurrentSpeed = pipeState == PipeController.PIPE_STATE_CLOSED and -self.pipeSpec.animation.speedScale 
-        or self.pipeSpec.animation.speedScale
-    self:debug("Measuring pipe properties return values => pipeState: %s, foldAnimTime: %s, pipeAnimTime: %s, pipeAnimCurrentSpeed: %s",
-        tostring(pipeState), tostring(foldAnimTime), tostring(pipeAnimTime), tostring(pipeAnimCurrentSpeed))
+    local targetPipeState = self.pipeSpec.targetState
+    local currentPipeState = self.pipeSpec.currentState
     
-    self:instantUnfold()
+    self:printFoldableDebug()
+    self:printPipeDebug()
 
+    self:instantUnfold(isFolded, currentPipeState, targetPipeState)
+    
     local _
     local dischargeNode = self:getDischargeNode()
     if self.implement.getAIDirectionNode then 
@@ -281,66 +289,111 @@ function PipeController:measurePipeProperties()
         self.pipeOffsetX, self.pipeOffsetZ, tostring(self.pipeOnLeftSide))
 
     --- Restoring old states.
-    self:resetFold(foldState, foldAnimTime, 
-        pipeState)
+    self:resetFold(isFolded, currentFoldDirection, foldAnimTime, 
+        currentPipeState, targetPipeState, pipeAnimTime)
+    self:printFoldableDebug()
+    self:printPipeDebug()
+
 end
 
 --- Unfolds the pipe completely to measure the pipe properties.
-function PipeController:instantUnfold(ignorePipeState)
-    if self.pipeSpec.currentState ~= self.pipeSpec.targetState or 
-        self.pipeSpec.currentState ~= PipeController.PIPE_STATE_OPEN or ignorePipeState then
+function PipeController:instantUnfold(isFolded, currentPipeState, targetPipeState)
+    if currentPipeState == targetPipeState and currentPipeState == PipeController.PIPE_STATE_OPEN then 
+        --- Pipe was already extended before measurement
+        self:debug("Pipe was already open and extended!")
+        return
+    end
+    if isFolded then 
         --- First we need to unfold the implement and then open the pipe
         if self.foldableSpec.turnOnFoldDirection == -1 then
-            --- Unfolded direction is -1
-            Foldable.setAnimTime(self.implement, 0, true)
+            Foldable.setAnimTime(self.implement, 0, false)
         else 
-            Foldable.setAnimTime(self.implement, 1, true)
+            Foldable.setAnimTime(self.implement, 1, false)
         end
-        if self.pipeSpec.hasMovablePipe then
-            --- After unfolding the implement, make sure the pipe gets unfolded.
-            self.implement:updatePipeNodes(999999, nil)
-            self.pipeSpec.targetState = 0
-            self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
-            self.implement:updatePipeNodes(999999, nil)
-            --- Close and open the pipe again, as sometimes this gets stuck...
-            self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED, true)
-            self.implement:updatePipeNodes(999999, nil)
-            self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
-            self.implement:updatePipeNodes(999999, nil)
-            if self.pipeSpec.animation.name ~= nil then
-                self.implement:setAnimationTime(self.pipeSpec.animation.name, 1, true, false)
-            end
-        end
+        AnimatedVehicle.updateAnimations(self.implement, 99999999, true)
+        self:debug("Implement is folded and needs to be unfolded.")
     end
+    --- After unfolding the implement, make sure the pipe also gets unfolded.
+    if self.pipeSpec.animation.name ~= nil then
+        self.implement:setAnimationTime(self.pipeSpec.animation.name, 1, true, false)
+        self:debug("Opening Pipe with animation.")
+    else 
+        self:debug("Opening Pipe without animation.")
+    end
+    self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
+    self.implement:updatePipeNodes(99999999, nil)
+end
+
+--- Instantly folds the pipe and the implement.
+function PipeController:instantFold()
+    if self.pipeSpec.currentState ~= self.pipeSpec.targetPipeState or self.pipeSpec.currentState ~= PipeController.PIPE_STATE_CLOSED then 
+        if self.pipeSpec.animation.name ~= nil then
+            self.implement:setAnimationTime( self.pipeSpec.animation.name, 0, true, false )
+        end
+        self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED, true)
+        self.implement:updatePipeNodes(99999999, nil)
+    end
+    self.implement:setFoldDirection(-self.foldableSpec.turnOnFoldDirection, true)
+    if self.foldableSpec.turnOnFoldDirection == -1 then
+        Foldable.setAnimTime(self.implement, 1, false)
+    else 
+        Foldable.setAnimTime(self.implement, 0, false)
+    end
+    self.implement:setFoldDirection(0, true)
+    AnimatedVehicle.updateAnimations(self.implement, 99999999, true)
+    self.implement:setFoldDirection(-self.foldableSpec.turnOnFoldDirection, true)
 end
 
 --- Restores the folding and pipe states/positions.
----@param foldState number
+---@param isFolded boolean
+---@param currentFoldDirection number
 ---@param foldAnimTime number
----@param pipeState number
-function PipeController:resetFold(foldState, foldAnimTime, pipeState)
-    if not self.pipeSpec.hasMovablePipe then
-        --- Restoring the fold state
-        Foldable.setAnimTime(self.implement, foldAnimTime, true)
-        --- Makes sure the fold state is correctly set.
-        self.implement:setFoldDirection(-foldState, true)
-        self.implement:setFoldDirection(foldState, true)
+---@param currentPipeState number
+---@param targetPipeState number
+---@param pipeAnimTime number
+function PipeController:resetFold(isFolded, currentFoldDirection, foldAnimTime, currentPipeState, targetPipeState, pipeAnimTime)
+    if currentPipeState == targetPipeState and currentPipeState == PipeController.PIPE_STATE_OPEN then 
+        --- Pipe was already extended before measurement, 
+        --- so the everything can be left as it is.
+        self:debug("Pipe was already open, before the measurement started.")
         return
     end
-    if pipeState == PipeController.PIPE_STATE_CLOSED then
-        --- Restoring the fold state
-        Foldable.setAnimTime(self.implement, foldAnimTime, true)
-        --- Makes sure the fold state is correctly set.
-        self.implement:setFoldDirection(-foldState, true)
-        self.implement:updatePipeNodes(999999, nil)
-        self.implement:setFoldDirection(foldState, true)
-        --- Restoring the pipe position
-        self.implement:updatePipeNodes(999999, nil)
-        self.implement:setPipeState(pipeState, true)
-        self.implement:updatePipeNodes(999999, nil)
+    if isFolded then 
+        self:debug("Implement was folded before, so implement and pipe needs to be folded.")
         if self.pipeSpec.animation.name ~= nil then
-            self.implement:setAnimationTime(self.pipeSpec.animation.name, 0, true, false)
+            self.implement:setAnimationTime( self.pipeSpec.animation.name, 0, true, false )
+            self:debug("Closing Pipe with animation.")
+        else 
+            self:debug("Closing Pipe without animation.")
         end
+        self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED, true)
+        self.implement:updatePipeNodes(99999999, nil)
+        -- - Implement was not unfolded, so we restore the old state.
+        self.implement:setFoldDirection(-self.foldableSpec.turnOnFoldDirection, true)
+        Foldable.setAnimTime(self.implement, foldAnimTime, false)
+        AnimatedVehicle.updateAnimations(self.implement, 99999999, true)
+        self.implement:setFoldDirection(0, true)
+        self.implement:setFoldDirection(-self.foldableSpec.turnOnFoldDirection, true)
+        Timer.createOneshot(1, function()
+            self.implement:setFoldDirection(currentFoldDirection, true)
+        end)
+    else 
+        self:debug("Implement was unfolded before, but pipe was not unfolded.")
+        if self.pipeSpec.animation.name ~= nil then
+            self.implement:setAnimationTime( self.pipeSpec.animation.name, pipeAnimTime, true, false )
+            self:debug("Resetting pipe fold state with animation.")
+        else 
+            self:debug("Resetting pipe fold state without animation.")
+        end
+        if targetPipeState == PipeController.PIPE_STATE_OPEN then 
+            --- Pipe was opening, before the measurement started
+            self.implement:setPipeState(PipeController.PIPE_STATE_OPEN, true)
+            self:debug("Pipe was opening before measurement.")
+        else 
+            self.implement:setPipeState(PipeController.PIPE_STATE_CLOSED, true)
+            self:debug("Pipe was closing before measurement.")
+        end
+        self.implement:updatePipeNodes(99999999, nil)
     end
 end
 
@@ -415,7 +468,7 @@ end
 
 function PipeController:moveDependedPipePart(tool, dt)
 
-    if self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
+    if self.driveStrategy and self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
         ImplementUtil.stopMovingTool(self.implement, tool)
         return
     end
@@ -474,7 +527,7 @@ end
 
 function PipeController:movePipeUp(tool, childToolNode, dt)
 
-    if self:isDischarging() or self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
+    if self:isDischarging() or self.driveStrategy and self.driveStrategy.isMoveablePipeDisabled and self.driveStrategy:isMoveablePipeDisabled() then 
         --- Stops this moving tool, while discharging.
         ImplementUtil.stopMovingTool(self.implement, tool)
         return
@@ -546,46 +599,90 @@ end
 --- Debug functions
 --------------------------------------------------------------------
 
+function PipeController:debugSetFoldTime(timeStr, place)
+    if timeStr ~= nil then 
+        local time = tonumber(timeStr)
+        if time ~= nil and time >= 0 and time <= 1 then  
+            Foldable.setAnimTime(self.implement, time, place ~= nil)
+            self:debug("Fold time set to %.2f with placeComponents: %s", time, tostring(place))
+            return
+        end
+    end
+    self:debug("Failed to set time: %s", tostring(timeStr))
+end
+
 function PipeController:printPipeDebug()
-    self:info("Current pipe state: %s, Target pipe state: %s, numStates: %s", 
+    self:debug("--Pipe Debug--")
+    self:debug("Current pipe state: %s, Target pipe state: %s, numStates: %s", 
         tostring(self.pipeSpec.currentState), tostring(self.pipeSpec.targetState), tostring(self.pipeSpec.numStates))   
-    self:info("Is pipe state change allowed: %s", self.implement:getIsPipeStateChangeAllowed())
-    self:info("Fold => minTime: %s, maxTime : %s, minState: %s, maxState: %s",
+    self:debug("Is pipe state change allowed: %s", self.implement:getIsPipeStateChangeAllowed())
+    self:debug("Fold => minTime: %s, maxTime : %s, minState: %s, maxState: %s",
         tostring(self.pipeSpec.foldMinTime), tostring(self.pipeSpec.foldMaxTime), 
         tostring(self.pipeSpec.foldMinState), tostring(self.pipeSpec.foldMaxState))
-    self:info("aiFoldedPipeUsesTrailerSpace: %s", tostring(self.pipeSpec.aiFoldedPipeUsesTrailerSpace))
-    self:info("Pipe offset x: %.2f, offset z: %.2f", self.pipeOffsetX, self.pipeOffsetZ)
+    self:debug("aiFoldedPipeUsesTrailerSpace: %s", tostring(self.pipeSpec.aiFoldedPipeUsesTrailerSpace))
+    self:debug("Pipe offset x: %.2f, offset z: %.2f", self.pipeOffsetX, self.pipeOffsetZ)
+    if self.pipeSpec.animation.name ~= nil then
+        local pipeAnimTime = self.implement:getAnimationTime(self.pipeSpec.animation.name)
+        self:debug("Animation name: %s value: %.2f", self.pipeSpec.animation.name, pipeAnimTime)
+    end
+    self:debug("--Pipe Debug finished--")
+end
 
+function PipeController:printFoldableDebug()
+    self:debug("--Foldable Debug--")
+    self:debug("Foldable => startAnimTime: %.2f, foldAnimTime: %.2f", 
+        self.foldableSpec.startAnimTime, self.foldableSpec.foldAnimTime)
+    self:debug("Foldable => foldMoveDirection: %d, turnOnFoldDirection: %d", 
+        self.foldableSpec.foldMoveDirection, self.foldableSpec.turnOnFoldDirection)
+    self:debug("Foldable => allowUnfoldingByAI: %s, maxFoldAnimDuration: %.2f", 
+        tostring(self.foldableSpec.allowUnfoldingByAI), self.foldableSpec.maxFoldAnimDuration)
+    self:debug("Foldable => turnOnFoldMaxLimit: %.2f, turnOnFoldMinLimit: %.2f", 
+        self.foldableSpec.turnOnFoldMaxLimit, self.foldableSpec.turnOnFoldMinLimit)
+    self:debug("--Foldable Debug finished--")
 end
 
 function PipeController:printMoveablePipeDebug()
-    CpUtil.infoImplement(self.implement, "Num of moveable tools: %d", #self.validMovingTools)
-    CpUtil.infoImplement(self.implement, "Base moving tool")
+    self:debug("--Moveable Pipe Debug--")
+    self:debug("Num of moveable tools: %d", #self.validMovingTools)
+    self:debug("Base moving tool")
     self:printMovingToolDebug(self.baseMovingTool)
-    CpUtil.infoImplement(self.implement, "Base moving tool child")
+    self:debug("Base moving tool child")
     self:printMovingToolDebug(self.baseMovingToolChild)
-end
-
-function PipeController:printDischargeableDebug()
-    local dischargeNode = self:getDischargeNode()
-    CpUtil.infoImplement(self.implement, "Discharge node fill unit index: %d, emptySpeed: %s", 
-        dischargeNode.fillUnitIndex, self.implement:getDischargeNodeEmptyFactor(dischargeNode))
-    CpUtil.infoImplement(self.implement, "canDischargeToGround %s, canDischargeToObject: %s",
-        dischargeNode.canDischargeToGround, dischargeNode.canDischargeToObject)
-    CpUtil.infoImplement(self.implement, "canStartDischargeAutomatically %s, canStartGroundDischargeAutomatically: %s",
-        dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
-    CpUtil.infoImplement(self.implement, "stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
-        dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
-    CpUtil.infoImplement(self.implement, "getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
-        self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
-    CpUtil.infoImplement(self.implement, "Discharge node offset => x: %.2f, z: %.2f", 
-        self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
+    self:debug("--Moveable Pipe Debug finished--")
 end
 
 function PipeController:printMovingToolDebug(tool)
     if tool == nil then 
-        CpUtil.infoImplement(self.implement, "Tool not found.")
+        self:debug("Tool not found.")
         return
     end
-    CpUtil.infoImplement(self.implement, "RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
+    self:debug("RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
+end
+
+
+function PipeController:printDischargeableDebug()
+    self:debug("--Dischargeable Debug--")
+    local dischargeNode = self:getDischargeNode()
+    self:debug("Discharge node fill unit index: %d, emptySpeed: %s", 
+        dischargeNode.fillUnitIndex, self.implement:getDischargeNodeEmptyFactor(dischargeNode))
+    self:debug("canDischargeToGround %s, canDischargeToObject: %s",
+        dischargeNode.canDischargeToGround, dischargeNode.canDischargeToObject)
+    self:debug("canStartDischargeAutomatically %s, canStartGroundDischargeAutomatically: %s",
+        dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
+    self:debug("stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
+        dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
+    self:debug("getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
+        self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
+    self:debug("Discharge node offset => x: %.2f, z: %.2f", 
+        self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
+    self:debug("--Dischargeable Debug finished--")
+end
+
+function PipeController:debug(...)
+    if self.isConsoleCommand then
+        --- Ignore vehicle debug, if the pipe controller was created by a console command.
+        self:info(...)
+        return
+    end
+    ImplementController.debug(self, ...)    
 end
