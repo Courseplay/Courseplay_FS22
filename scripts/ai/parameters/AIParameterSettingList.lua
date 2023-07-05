@@ -647,7 +647,7 @@ function AIParameterSettingList:showInputTextDialog()
 		end,
 		maxCharacters = 7,
 		target = self,
-		dialogPrompt = self.data.title,
+		dialogPrompt = self:getTitle(),
 		confirmText = g_i18n:getText("button_ok"),
 	})
 end
