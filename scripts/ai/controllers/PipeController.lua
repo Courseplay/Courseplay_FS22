@@ -604,78 +604,78 @@ function PipeController:debugSetFoldTime(timeStr, place)
         local time = tonumber(timeStr)
         if time ~= nil and time >= 0 and time <= 1 then  
             Foldable.setAnimTime(self.implement, time, place ~= nil)
-            self:info("Fold time set to %.2f with placeComponents: %s", time, tostring(place))
+            self:debug("Fold time set to %.2f with placeComponents: %s", time, tostring(place))
             return
         end
     end
-    self:info("Failed to set time: %s", tostring(timeStr))
+    self:debug("Failed to set time: %s", tostring(timeStr))
 end
 
 function PipeController:printPipeDebug()
-    self:info("--Pipe Debug--")
-    self:info("Current pipe state: %s, Target pipe state: %s, numStates: %s", 
+    self:debug("--Pipe Debug--")
+    self:debug("Current pipe state: %s, Target pipe state: %s, numStates: %s", 
         tostring(self.pipeSpec.currentState), tostring(self.pipeSpec.targetState), tostring(self.pipeSpec.numStates))   
-    self:info("Is pipe state change allowed: %s", self.implement:getIsPipeStateChangeAllowed())
-    self:info("Fold => minTime: %s, maxTime : %s, minState: %s, maxState: %s",
+    self:debug("Is pipe state change allowed: %s", self.implement:getIsPipeStateChangeAllowed())
+    self:debug("Fold => minTime: %s, maxTime : %s, minState: %s, maxState: %s",
         tostring(self.pipeSpec.foldMinTime), tostring(self.pipeSpec.foldMaxTime), 
         tostring(self.pipeSpec.foldMinState), tostring(self.pipeSpec.foldMaxState))
-    self:info("aiFoldedPipeUsesTrailerSpace: %s", tostring(self.pipeSpec.aiFoldedPipeUsesTrailerSpace))
-    self:info("Pipe offset x: %.2f, offset z: %.2f", self.pipeOffsetX, self.pipeOffsetZ)
+    self:debug("aiFoldedPipeUsesTrailerSpace: %s", tostring(self.pipeSpec.aiFoldedPipeUsesTrailerSpace))
+    self:debug("Pipe offset x: %.2f, offset z: %.2f", self.pipeOffsetX, self.pipeOffsetZ)
     if self.pipeSpec.animation.name ~= nil then
         local pipeAnimTime = self.implement:getAnimationTime(self.pipeSpec.animation.name)
-        self:info("Animation name: %s value: %.2f", self.pipeSpec.animation.name, pipeAnimTime)
+        self:debug("Animation name: %s value: %.2f", self.pipeSpec.animation.name, pipeAnimTime)
     end
-    self:info("--Pipe Debug finished--")
+    self:debug("--Pipe Debug finished--")
 end
 
 function PipeController:printFoldableDebug()
-    self:info("--Foldable Debug--")
-    self:info("Foldable => startAnimTime: %.2f, foldAnimTime: %.2f", 
+    self:debug("--Foldable Debug--")
+    self:debug("Foldable => startAnimTime: %.2f, foldAnimTime: %.2f", 
         self.foldableSpec.startAnimTime, self.foldableSpec.foldAnimTime)
-    self:info("Foldable => foldMoveDirection: %d, turnOnFoldDirection: %d", 
+    self:debug("Foldable => foldMoveDirection: %d, turnOnFoldDirection: %d", 
         self.foldableSpec.foldMoveDirection, self.foldableSpec.turnOnFoldDirection)
-    self:info("Foldable => allowUnfoldingByAI: %s, maxFoldAnimDuration: %.2f", 
+    self:debug("Foldable => allowUnfoldingByAI: %s, maxFoldAnimDuration: %.2f", 
         tostring(self.foldableSpec.allowUnfoldingByAI), self.foldableSpec.maxFoldAnimDuration)
-    self:info("Foldable => turnOnFoldMaxLimit: %.2f, turnOnFoldMinLimit: %.2f", 
+    self:debug("Foldable => turnOnFoldMaxLimit: %.2f, turnOnFoldMinLimit: %.2f", 
         self.foldableSpec.turnOnFoldMaxLimit, self.foldableSpec.turnOnFoldMinLimit)
-    self:info("--Foldable Debug finished--")
+    self:debug("--Foldable Debug finished--")
 end
 
 function PipeController:printMoveablePipeDebug()
-    self:info("--Moveable Pipe Debug--")
-    self:info("Num of moveable tools: %d", #self.validMovingTools)
-    self:info("Base moving tool")
+    self:debug("--Moveable Pipe Debug--")
+    self:debug("Num of moveable tools: %d", #self.validMovingTools)
+    self:debug("Base moving tool")
     self:printMovingToolDebug(self.baseMovingTool)
-    self:info("Base moving tool child")
+    self:debug("Base moving tool child")
     self:printMovingToolDebug(self.baseMovingToolChild)
-    self:info("--Moveable Pipe Debug finished--")
+    self:debug("--Moveable Pipe Debug finished--")
 end
 
 function PipeController:printMovingToolDebug(tool)
     if tool == nil then 
-        self:info("Tool not found.")
+        self:debug("Tool not found.")
         return
     end
-    self:info("RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
+    self:debug("RotMin: %s, RotMax: %s, RotSpeed", tostring(tool.rotMin), tostring(tool.rotMax), tostring(tool.rotSpeed))
 end
 
 
 function PipeController:printDischargeableDebug()
-    self:info("--Dischargeable Debug--")
+    self:debug("--Dischargeable Debug--")
     local dischargeNode = self:getDischargeNode()
-    self:info("Discharge node fill unit index: %d, emptySpeed: %s", 
+    self:debug("Discharge node fill unit index: %d, emptySpeed: %s", 
         dischargeNode.fillUnitIndex, self.implement:getDischargeNodeEmptyFactor(dischargeNode))
-    self:info("canDischargeToGround %s, canDischargeToObject: %s",
+    self:debug("canDischargeToGround %s, canDischargeToObject: %s",
         dischargeNode.canDischargeToGround, dischargeNode.canDischargeToObject)
-    self:info("canStartDischargeAutomatically %s, canStartGroundDischargeAutomatically: %s",
+    self:debug("canStartDischargeAutomatically %s, canStartGroundDischargeAutomatically: %s",
         dischargeNode.canStartDischargeAutomatically, dischargeNode.canStartGroundDischargeAutomatically)
-    self:info("stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
+    self:debug("stopDischargeIfNotPossible %s, canDischargeToGroundAnywhere: %s",
         dischargeNode.stopDischargeIfNotPossible, dischargeNode.canDischargeToGroundAnywhere)
-    self:info("getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
+    self:debug("getCanDischargeToObject() %s, getCanDischargeToGround(): %s",
         self.implement:getCanDischargeToObject(dischargeNode), self.implement:getCanDischargeToGround(dischargeNode))
-    self:info("Discharge node offset => x: %.2f, z: %.2f", 
+    self:debug("Discharge node offset => x: %.2f, z: %.2f", 
         self:getDischargeXOffset(dischargeNode), self:getUnloadOffsetZ(dischargeNode))
-    self:info("--Dischargeable Debug finished--")
+    self:debug("--Dischargeable Debug finished--")
 end
 
 function PipeController:debug(...)
