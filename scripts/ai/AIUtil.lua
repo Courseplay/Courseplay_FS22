@@ -688,3 +688,19 @@ function AIUtil.hasCutterOnTrailerAttached(vehicle)
 	local trailer = AIUtil.getImplementWithSpecialization(vehicle, DynamicMountAttacher)
 	return trailer and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects) ~= nil and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects).spec_cutter ~= nil
 end
+
+--- Checks if cutter on an trailer is attached.
+function AIUtil.hasCutterAsTrailerAttached(vehicle)
+	local trailer = AIUtil.getImplementWithSpecialization(vehicle, Cutter)
+	if trailer then
+		local implement = vehicle:getImplementByObject(trailer)
+		local attacherJoint = vehicle:getAttacherJointByJointDescIndex(implement.jointDescIndex)
+		if attacherJoint then 
+			if attacherJoint.jointType == AttacherJoints.JOINTTYPE_CUTTER or 
+				attacherJoint.jointType == AttacherJoints.JOINTTYPE_CUTTERHARVESTER then 
+				return false
+			end
+			return true
+		end
+	end
+end

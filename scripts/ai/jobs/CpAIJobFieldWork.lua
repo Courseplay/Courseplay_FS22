@@ -275,7 +275,8 @@ function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
     local nextTaskIndex = CpAIJobFieldWork:superClass().getNextTaskIndex(self, isSkipTask)
     if self.currentTaskIndex == self.driveToTask.taskIndex then
         local vehicle = self.vehicleParameter:getVehicle()
-        if vehicle and AIUtil.hasCutterOnTrailerAttached(vehicle) then 
+        if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
+            or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Cutter on trailer attached.")
             return nextTaskIndex
         else 
@@ -284,6 +285,18 @@ function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
 	end
 
 	return nextTaskIndex
+end
+
+function CpAIJobFieldWork:getStartTaskIndex()
+    if self.isDirectStart or self:isTargetReached() then 
+        local vehicle = self.vehicleParameter:getVehicle()
+        if AIUtil.hasCutterOnTrailerAttached(vehicle) or 
+            AIUtil.hasCutterAsTrailerAttached(vehicle) then 
+           return 2
+        end
+        return 3
+    end
+    return 1
 end
 
 function CpAIJobFieldWork:onFinishAttachCutter()

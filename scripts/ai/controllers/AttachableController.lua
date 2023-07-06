@@ -13,6 +13,12 @@ function AttachableController:init(vehicle, implement)
 	end
 end
 
+function AttachableController:getCutterJointPositionNode()
+	if self.cutterInputAttacherJoint then 
+		return self.cutterInputAttacherJoint.node
+	end
+end
+
 function AttachableController:isDetachActive()
 	return self.attachableSpec.detachingInProgress
 end
