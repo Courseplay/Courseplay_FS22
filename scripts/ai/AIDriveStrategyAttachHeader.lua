@@ -184,7 +184,7 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         self.cutterNode = CpUtil.createNode("cutterNode", x, z, rotY)
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-            self.vehicle, self.cutterNode, 0, -self.turningRadius,
+            self.vehicle, self.cutterNode, 0, -1.5*self.turningRadius,
             false, nil, nil )
         if done then
             return self:onPathfindingDoneToCutter(path, goalNodeInvalid)
