@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="L'ouvrier %s s'est arrêté car il ne trouve pas de chemin !"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="L'ouvrier %s a interrompu son travail - déchargement au champ impossible !"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Déchargement au sol impossible"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

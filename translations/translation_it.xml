@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'operatore CP %s ha interrotto il lavoro in modo imprevisto - non sono state trovate balle del tipo selezionato!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="L'operatore IA %s ha interrotto il lavoro in modo imprevisto - nessun percorso trovato!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Il lavoratore IA %s ha interrotto il lavoro in modo imprevisto - lo scarico sul campo non è possibile!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo di balla errato"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nessun percorso trovato"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Scarico a terra non supportato"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

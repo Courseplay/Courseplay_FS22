@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI 幫手 %s 已意外停止工作 - 未找到選定類型的草垛！"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI 幫手 %s 已意外停止工作 - 沒有找到路徑!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI 幫手 %s 已意外停止工作 - 無法在田地卸載!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@
     <text name="CP_infoTexts_wrongBaleWrapType" text="錯誤的草垛類型"/>
     <text name="CP_infoTexts_errorNoPathFound" text="未找到路徑"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="無法傾倒在地面"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbejder %s har stoppet arbejdet uventet - ingen baller af valgt type fundet!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI hjælper %s har stoppet arbejdet uventet - ingen sti fundet!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ Ruten gemmes automatisk ved lukning af editoren og tilsidesætter den valgte rut
     <text name="CP_infoTexts_wrongBaleWrapType" text="Forkerte balle type"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ingen rute fundet"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

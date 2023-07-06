@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_wrongBaleWrapType" text="Ballentyp nicht gefunden"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Keinen Weg gefunden"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Abladen zum Boden nicht möglich"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Schneidwerk nicht unterstützt"/>
     <!---->
     <!--Custom field manager-->
     <!---->

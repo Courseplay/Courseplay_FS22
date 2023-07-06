@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pracovník %s přestal neočekávaně pracovat – nebyl nalezen zvolený typ balíků!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pracovník AI %s neočekávaně ukončil práci - nebyla nalezena žádná cesta!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI pracovník %s neočekávaně přestal pracovat - vykládání na poli není možné!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nenalezena trasa"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Vysypání na zem není možné"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

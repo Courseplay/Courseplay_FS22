@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Ninguna Ruta encontrada!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡No es posible descargar en el campo!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ningún camino encontrado"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="No es posible volcar al suelo"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

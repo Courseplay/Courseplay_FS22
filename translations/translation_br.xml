@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador AI %s parou de funcionar inesperadamente - nenhum caminho encontrado!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - não é possível descarregar no campo!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Caminho não encontrado"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Inclinação para o solo não é possível"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

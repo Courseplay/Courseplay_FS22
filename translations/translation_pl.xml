@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono ścieżki!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Pomocnik SI  %s niespodziewanie przerwał pracę - rozładunek na polu niemożliwy!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Kiprowanie na ziemię niemożliwe"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->

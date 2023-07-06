@@ -111,6 +111,7 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="%s segítő váratlanul abbahagyta a munkát - Nincs a kiválasztott típusú bála!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI segítő %s váratlanul abbahagyta a munkát - útvonal nem található!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -400,6 +401,7 @@ Az útvonal automatikusan mentésre kerül a szerkesztő bezárásakor és felü
     <text name="CP_infoTexts_wrongBaleWrapType" text="Rossz bálatípus"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Útvonal nem található"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
     <!---->
     <!--Custom field manager-->
     <!---->
