@@ -15,13 +15,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Drive strategy for driving to the waypoint where we want to start the fieldwork.
+Drive strategy for pickup up the header of an trailer, 
+which needs to be attached to the harvester.
 
-- Make sure everything is raised (maybe folded?)
-- Find a path to the start waypoint (first or last worked on), avoiding fruit
-- When getting close to the end of the course (to the work start waypoint), give control
-  to the field work strategy, which will then drive the last few meters making sure the
-  implements are in a working position when reaching the work start waypoint.
+The trailer gets detached immediately 
+and the harvester picks up the cutter from the trailer.
+After that a bit of space is made between the harvester and the trailer
+and the strategy finishes.
 
 ]]--
 
@@ -61,13 +61,10 @@ function AIDriveStrategyAttachHeader:delete()
 end
 
 function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
-    ---@type table, AttachableController
     self.trailer = AIUtil.getImplementWithSpecialization(self.vehicle, DynamicMountAttacher)
-
     self.dynamicMountAttacherController = DynamicMountAttacherController(vehicle, self.trailer)
     self.attachableController = AttachableController(vehicle, self.trailer)
-    
-    self.cutter, self.attachableCutterController = AttachableController(vehicle, self.dynamicMountAttacherController:getMountedImplement())
+    self.attachableCutterController = AttachableController(vehicle, self.dynamicMountAttacherController:getMountedImplement())
     self.attacherJointController = AttacherJointController(vehicle,vehicle)
     self:appendImplementController(self.attacherJointController)
 end
@@ -128,6 +125,8 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
             Markers.setMarkerNodes(self.vehicle)
             self:setFrontAndBackMarkers()
             self:startPathfindingToCutter()
+            --- Detach has finished, so need make sure the reverse driver gets updated.
+            self.reverser = AIReverseDriver(self.vehicle, self.ppc)
         end
     elseif self.state == self.states.DRIVING_TO_HEADER then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
@@ -149,7 +148,7 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
         if not self.attacherJointController:isAttachActive() then
             Markers.setMarkerNodes(self.vehicle)
-            local course = Course.createStraightReverseCourse(self.vehicle,5*self.turningRadius,0)
+            local course = Course.createStraightReverseCourse(self.vehicle,1.5*self.turningRadius,0)
             self:startCourse(course, 1)
             self.state = self.states.REVERSING_FROM_CUTTER
         end
@@ -223,7 +222,7 @@ function AIDriveStrategyAttachHeader:onWaypointPassed(ix, course)
             self:startCourse(course, 1)
             self.state = self.states.DRIVING_TO_CUTTER
         elseif self.state == self.states.DRIVING_TO_CUTTER then
-            local course = Course.createStraightReverseCourse(self.vehicle,3*self.turningRadius,0)
+            local course = Course.createStraightReverseCourse(self.vehicle,1.5*self.turningRadius,0)
             self:startCourse(course, 1)
             self.state = self.states.REVERSING_FROM_CUTTER
         elseif self.state == self.states.REVERSING_FROM_CUTTER then
