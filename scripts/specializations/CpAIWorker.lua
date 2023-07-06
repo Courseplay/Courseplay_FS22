@@ -60,6 +60,8 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
+    SpecializationUtil.registerFunction(vehicleType, "startCpAttachHeader", CpAIWorker.startCpAttachHeader)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpAttachHeader", CpAIWorker.stopCpAttachHeader)
     SpecializationUtil.registerFunction(vehicleType, "freezeCp", CpAIWorker.freezeCp)
     SpecializationUtil.registerFunction(vehicleType, "unfreezeCp", CpAIWorker.unfreezeCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpWithStrategy", CpAIWorker.startCpWithStrategy)
@@ -345,6 +347,20 @@ function CpAIWorker:stopCpDriveTo()
         self.driveToFieldWorkStartStrategy:delete()
     end
     self.driveToFieldWorkStartStrategy = nil
+end
+
+function CpAIWorker:startCpAttachHeader(jobParameters)
+    local strategy = AIDriveStrategyAttachHeader.new()
+    strategy:setAIVehicle(self, jobParameters)
+    self:startCpWithStrategy(strategy)
+end
+
+function CpAIWorker:stopCpAttachHeader()
+    local spec = self.spec_cpAIWorker
+    if spec.driveStrategy then 
+        spec.driveStrategy:delete()
+        spec.driveStrategy = nil
+    end
 end
 
 function CpAIWorker:onUpdate(dt)

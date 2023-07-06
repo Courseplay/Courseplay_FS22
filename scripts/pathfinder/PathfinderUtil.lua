@@ -901,13 +901,13 @@ end
 ---@param xOffset number side offset of the goal from the goal node
 ---@param zOffset number length offset of the goal from the goal node
 ---@param allowReverse boolean allow reverse driving
----@param fieldNum number if other than 0 or nil the pathfinding is restricted to the given field and its vicinity
----@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection (optional)
----@param maxFruitPercent number maximum percentage of fruit present before a node is marked as invalid (optional). If
+---@param fieldNum number|nil if other than 0 or nil the pathfinding is restricted to the given field and its vicinity
+---@param vehiclesToIgnore table[]|nil list of vehicles to ignore for the collision detection (optional)
+---@param maxFruitPercent number|nil maximum percentage of fruit present before a node is marked as invalid (optional). If
 --- nil, will set according to the vehicle setting: 50% when avoid fruit is enabled, math.huge when disabled.
----@param offFieldPenalty number penalty to apply to nodes off the field
----@param areaToAvoid PathfinderUtil.NodeArea nodes in this area will be penalized so the path will most likely avoid it
----@param mustBeAccurate boolean must be accurately find the goal position/angle (optional)
+---@param offFieldPenalty number|nil penalty to apply to nodes off the field
+---@param areaToAvoid PathfinderUtil.NodeArea|nil nodes in this area will be penalized so the path will most likely avoid it
+---@param mustBeAccurate boolean|nil must be accurately find the goal position/angle (optional)
 function PathfinderUtil.startPathfindingFromVehicleToNode(vehicle, goalNode,
                                                           xOffset, zOffset, allowReverse,
                                                           fieldNum, vehiclesToIgnore, maxFruitPercent,

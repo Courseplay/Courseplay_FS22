@@ -1018,9 +1018,9 @@ end
 --- Create a straight, reverse course for the vehicle.
 ---@param vehicle table the course will start at the root node of the last implement attached to the vehicle, or
 --- at the vehicle's root node if there are not implements attached.
----@param length number optional length of the course in meters, default is 100 meters
----@param xOffset number optional side offset for the course
----@param lastNode number optional force last node
+---@param length number|nil optional length of the course in meters, default is 100 meters
+---@param xOffset number|nil optional side offset for the course
+---@param lastNode number|nil optional force last node
 function Course.createStraightReverseCourse(vehicle, length, xOffset, lastNode)
 	local lastTrailer = AIUtil.getLastAttachedImplement(vehicle)
 	local l = length or 100

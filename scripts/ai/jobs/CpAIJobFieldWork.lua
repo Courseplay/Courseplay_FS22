@@ -23,6 +23,8 @@ function CpAIJobFieldWork:setupTasks(isServer)
     CpAIJobFieldWork:superClass().setupTasks(self, isServer)
     -- then we add our own driveTo task to drive from the target position to the waypoint where the
     -- fieldwork starts (first waypoint or the one we worked on last)
+    self.attachHeaderTask = CpAITaskAttachHeader.new(isServer, self)
+    self:addTask(self.attachHeaderTask)
     self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
     self:addTask(self.driveToFieldWorkStartTask)
     self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
@@ -110,6 +112,7 @@ function CpAIJobFieldWork:setValues()
     local vehicle = self.vehicleParameter:getVehicle()
     self.driveToFieldWorkStartTask:reset()
     self.driveToFieldWorkStartTask:setVehicle(vehicle)
+    self.attachHeaderTask:setVehicle(vehicle)
     self.fieldWorkTask:setVehicle(vehicle)
     self:validateFieldSetup()
 end
@@ -266,4 +269,23 @@ function CpAIJobFieldWork:setStartPosition(startPosition)
     if self.fieldWorkTask then
         self.fieldWorkTask:setStartPosition(startPosition)
     end
+end
+
+function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
+    local nextTaskIndex = CpAIJobFieldWork:superClass().getNextTaskIndex(self, isSkipTask)
+    if self.currentTaskIndex == self.driveToTask.taskIndex then
+        local vehicle = self.vehicleParameter:getVehicle()
+        if vehicle and AIUtil.hasCutterOnTrailerAttached(vehicle) then 
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Cutter on trailer attached.")
+            return nextTaskIndex
+        else 
+            return nextTaskIndex + 1
+        end
+	end
+
+	return nextTaskIndex
+end
+
+function CpAIJobFieldWork:onFinishAttachCutter()
+    self.attachHeaderTask:skip()
 end

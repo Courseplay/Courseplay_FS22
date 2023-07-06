@@ -75,6 +75,22 @@ function AIMessageErrorGroundUnloadNotSupported:getMessage()
 	return g_i18n:getText("CP_ai_messageErrorGroundUnloadNotSupported")
 end
 
+AIMessageErrorCutterNotSupported = {
+	name = "CP_ERROR_CUTTER_NOT_SUPPORTED"
+}
+local AIMessageErrorCutterNotSupported_mt = Class(AIMessageErrorCutterNotSupported, AIMessage)
+
+function AIMessageErrorCutterNotSupported.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorCutterNotSupported_mt)
+
+	return self
+end
+
+function AIMessageErrorCutterNotSupported:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorCutterNotSupported")
+end
+
+
 
 function AIMessageErrorIsFull.register()
 	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorIsFull.name, AIMessageErrorIsFull)

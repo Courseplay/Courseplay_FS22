@@ -353,6 +353,10 @@
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - unloading on the field not possible!]]></Text>
 		</Translation>
+		<Translation name="CP_ai_messageErrorCutterNotSupported">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - attaching of the header is impossible!]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
 		<Translation name="CP_vehicle_setting_title">
@@ -1451,6 +1455,10 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_errorGroundUnloadNotSupported">
 			<Text language="de"><![CDATA[Abladen zum Boden nicht möglich]]></Text>
 			<Text language="en"><![CDATA[Tipping to ground not possible]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorCutterNotSupported">
+			<Text language="de"><![CDATA[Schneidwerk nicht unterstützt]]></Text>
+			<Text language="en"><![CDATA[Cutter not supported]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	
