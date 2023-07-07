@@ -255,7 +255,7 @@ function AIDriveStrategyAttachHeader:attachHasFinished()
     if self.mode == self.MODES.ATTACH_HEADER_FROM_ATTACHED_TRAILER then 
         Markers.setMarkerNodes(self.vehicle)
         local length = AIUtil.getLength(self.vehicle)
-        local course = Course.createStraightReverseCourse(self.vehicle,math.max(1.5 * self.turningRadius, length),0)
+        local course = Course.createStraightReverseCourse(self.vehicle,math.max(self.workWidth/2 + 1.5 * self.turningRadius, length),0)
         self:startCourse(course, 1)
         self.state = self.states.REVERSING_FROM_CUTTER
     else 
