@@ -47,8 +47,8 @@ function CpAIJobSiloLoader:getCanStartJob()
 	return self.hasValidPosition
 end
 
----@param vehicle Vehicle
----@param mission Mission
+---@param vehicle table
+---@param mission table
 ---@param farmId number
 ---@param isDirectStart boolean disables the drive to by giants
 ---@param isStartPositionInvalid boolean resets the drive to target position by giants and the field position to the vehicle position.
@@ -104,7 +104,10 @@ function CpAIJobSiloLoader:validate(farmId)
 	self.heapPlot:setVisible(false)
 	self.heap = nil
 	self.bunkerSilo = nil
+	self.unloadStation = nil
+	self.unloadTrigger = nil
 	self.hasValidPosition = false
+	self:getCpJobParameters().unloadStation:setValue(-1)
 	local isValid, errorMessage = CpAIJob.validate(self, farmId)
 	if not isValid then
 		return isValid, errorMessage
@@ -132,11 +135,22 @@ function CpAIJobSiloLoader:validate(farmId)
 
 	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
 		--- Validate the trigger setup
-		local found, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
-
-		return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+		local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
+		if found then 
+			self.unloadStation = unloadStation
+			self.unloadTrigger = unloadTrigger
+			if unloadStation == nil then 
+				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+			end
+			local id = NetworkUtil.getObjectId(unloadStation)
+			if id ~= nil then 
+				self:getCpJobParameters().unloadStation:setValue(id)
+				self:getCpJobParameters().unloadStation:validateUnloadingStation()
+			end
+		else 
+			return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+		end
 	end
-
 
 	return isValid, errorMessage
 end
@@ -170,16 +184,19 @@ end
 ---@return table|nil
 function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	local x, z = unloadPosition:getPosition()
-	local angle = unloadPosition:getAngle()
-	if x == nil or angle == nil then
+	local dirX, dirZ = unloadPosition:getDirection()
+	if x == nil or dirX == nil then
 		return false
 	end	
-	return false
+	return g_triggerManager:getDischargeableUnloadTriggerAt( x, z, dirX, dirZ, 5, 5)
 end
 
 function CpAIJobSiloLoader:drawSilos(map)
     self.heapPlot:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
+	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
+		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger)
+	end
 end
 
 

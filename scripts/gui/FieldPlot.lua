@@ -48,7 +48,7 @@ function FieldPlot:draw(map)
 
 	local lastWp = self.waypoints and  #self.waypoints>0 and self.waypoints[#self.waypoints]
 	if self.drawLastWp and lastWp then 
-		local x, y = self:worldToScreen(map, lastWp.x, lastWp.z )
+		local x, y = CpGuiUtil.worldToScreen(map, lastWp.x, lastWp.z )
 		local signSizeMeters = 1.5* self.lineThickness
 		local zoom = map.fullScreenLayout:getIconZoom()
 		local width, height = signSizeMeters * map.uiScale * zoom, signSizeMeters * map.uiScale * zoom * g_screenAspectRatio

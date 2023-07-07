@@ -704,11 +704,3 @@ function CpBunkerSilo:getDebugData()
 	end
 	return data
 end
-
-function CpBunkerSilo:getFillType()
-	return self.silo.outputFillType
-end
-
-function CpBunkerSilo:getTotalFillLevel()
-	return self.silo.fillLevel
-end

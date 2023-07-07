@@ -62,9 +62,10 @@ end
 ---@return boolean
 function ShovelController:isShovelOverTrailer(refNode, margin)
     local node = self:getShovelNode()
-    local x, y, z = localToLocal(refNode, node, 0, 0, 0)
+    local _, _, distShovelToRoot = localToLocal(node, self.implement.rootVehicle:getAIDirectionNode(), 0, 0, 0)
+    local _, _, distTrailerToRoot = localToLocal(refNode, self.implement.rootVehicle:getAIDirectionNode(), 0, 0, 0)
     margin = margin or 0
-    return z < margin
+    return ( distTrailerToRoot - distShovelToRoot ) < margin
 end
 
 function ShovelController:moveShovelToLoadingPosition()

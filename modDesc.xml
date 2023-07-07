@@ -381,6 +381,7 @@ Changelog 7.1.0.0:
 		<sourceFile filename="scripts/gui/FieldPlot.lua"/>
 		<sourceFile filename="scripts/gui/BunkerSiloPlot.lua"/>
 		<sourceFile filename="scripts/gui/HeapPlot.lua"/>
+		<sourceFile filename="scripts/gui/UnloadingTriggerPlot.lua"/>
 		<sourceFile filename="scripts/gui/CpStatus.lua"/>
 		<sourceFile filename="scripts/gui/CpAIHotspots.lua"/>
 		<sourceFile filename="scripts/gui/CpAIFrameExtended.lua"/>

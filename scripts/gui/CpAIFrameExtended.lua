@@ -346,6 +346,10 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 									if param:applyToMapHotspot(self.fieldSiloAiTargetMapHotspot) then
 										g_currentMission:addMapHotspot(self.fieldSiloAiTargetMapHotspot)
 									end
+								elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.LOAD then 
+									if param:applyToMapHotspot(self.loadAiTargetMapHotspot) then
+										g_currentMission:addMapHotspot(self.loadAiTargetMapHotspot)
+									end
 								elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
 									if param:applyToMapHotspot(self.unloadAiTargetMapHotspot) then
 										g_currentMission:addMapHotspot(self.unloadAiTargetMapHotspot)
@@ -355,10 +359,6 @@ function CpInGameMenuAIFrameExtended:setMapSelectionItem(hotspot)
 								g_currentMission:removeMapHotspot(self.aiUnloadingMarkerHotspot)
 								if param:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
 									g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
-								end
-							elseif param:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.LOAD then 
-								if param:applyToMapHotspot(self.loadAiTargetMapHotspot) then
-									g_currentMission:addMapHotspot(self.loadAiTargetMapHotspot)
 								end
 							end
 						end
@@ -613,57 +613,68 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 
 				self.aiTargetMapHotspot:setWorldRotation(angle)
 			end
-		else
+		end
+	end
+end
+InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,
+															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
+
+function CpInGameMenuAIFrameExtended:updateWarnings()
+	for _, element in ipairs(self.currentJobElements) do
+		local parameter = element.aiParameter
+		local parameterType = parameter:getType()
+		if parameterType == AIParameterType.TEXT then
+			local title = element:getDescendantByName("title")
+
+			title:setText(parameter:getString())
+		elseif parameterType == AIParameterType.UNLOADING_STATION then
 			element:updateTitle()
-
-			if parameterType == AIParameterType.UNLOADING_STATION then
-				if parameter.applyToMapHotspot then
-					if parameter:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
-						g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
-					end
-				else 
-					local unloadingStation = parameter:getUnloadingStation()
-
-					if unloadingStation ~= nil then
-						local placeable = unloadingStation.owningPlaceable
-
-						if placeable ~= nil and placeable.getHotspot ~= nil then
-							local hotspot = placeable:getHotspot(1)
-
-							if hotspot ~= nil then
-								local x, z = hotspot:getWorldPosition()
-
-								self.aiUnloadingMarkerHotspot:setWorldPosition(x, z)
-								g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
-							end
-						end
-					end
+			if parameter.applyToMapHotspot then
+				if parameter:applyToMapHotspot(self.aiUnloadingMarkerHotspot) then 
+					g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
 				end
-			elseif parameterType == AIParameterType.LOADING_STATION then
-				local loadingStation = parameter:getLoadingStation()
+			else 
+				local unloadingStation = parameter:getUnloadingStation()
 
-				if loadingStation ~= nil and parameter:getCanBeChanged() then
-					local placeable = loadingStation.owningPlaceable
+				if unloadingStation ~= nil then
+					local placeable = unloadingStation.owningPlaceable
 
 					if placeable ~= nil and placeable.getHotspot ~= nil then
 						local hotspot = placeable:getHotspot(1)
 
 						if hotspot ~= nil then
 							local x, z = hotspot:getWorldPosition()
-
-							self.aiLoadingMarkerHotspot:setWorldPosition(x, z)
-							g_currentMission:addMapHotspot(self.aiLoadingMarkerHotspot)
+							self.aiUnloadingMarkerHotspot:setWorldPosition(x, z)
+							g_currentMission:addMapHotspot(self.aiUnloadingMarkerHotspot)
 						end
 					end
 				end
 			end
-		end
+		elseif parameterType == AIParameterType.UNLOADING_STATION then
+			element:updateTitle()
+			local loadingStation = parameter:getLoadingStation()
 
+			if loadingStation ~= nil and parameter:getCanBeChanged() then
+				local placeable = loadingStation.owningPlaceable
+
+				if placeable ~= nil and placeable.getHotspot ~= nil then
+					local hotspot = placeable:getHotspot(1)
+
+					if hotspot ~= nil then
+						local x, z = hotspot:getWorldPosition()
+
+						self.aiLoadingMarkerHotspot:setWorldPosition(x, z)
+						g_currentMission:addMapHotspot(self.aiLoadingMarkerHotspot)
+					end
+				end
+			end
+		end
 		element:setDisabled(not parameter:getCanBeChanged())
 	end
 end
-InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMenuAIFrame.updateParameterValueTexts,
-															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
+
+InGameMenuAIFrame.updateWarnings = Utils.appendedFunction(InGameMenuAIFrame.updateWarnings, 
+																CpInGameMenuAIFrameExtended.updateWarnings)
 
 --- Enables clickable field hotspots.
 function CpInGameMenuAIFrameExtended:onClickHotspot(element,hotspot)

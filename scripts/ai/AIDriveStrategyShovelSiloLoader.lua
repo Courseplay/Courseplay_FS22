@@ -42,6 +42,7 @@ AIDriveStrategyShovelSiloLoader.myStates = {
     DRIVING_TO_UNLOAD_POSITION = {shovelPosition = ShovelController.POSITIONS.TRANSPORT},
     DRIVING_TO_UNLOAD = {shovelPosition = ShovelController.POSITIONS.PRE_UNLOADING, shovelMovingSpeed = 0},
     UNLOADING = {shovelPosition = ShovelController.POSITIONS.UNLOADING, shovelMovingSpeed = 0},
+    REVERSING_AWAY_FROM_UNLOAD = {shovelPosition = ShovelController.POSITIONS.PRE_UNLOADING, shovelMovingSpeed = 0},
 }
 
 AIDriveStrategyShovelSiloLoader.safeSpaceToTrailer = 5
@@ -104,7 +105,7 @@ end
 function AIDriveStrategyShovelSiloLoader:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
-
+    ---@type table, ShovelController
     self.shovelImplement, self.shovelController = self:addImplementController(vehicle, ShovelController, Shovel, {}, nil)
 
 end
@@ -146,7 +147,12 @@ function AIDriveStrategyShovelSiloLoader:onWaypointPassed(ix, course)
             self.state = self.states.WAITING_FOR_TRAILER
         elseif self.state == self.states.DRIVING_TO_UNLOAD then
             self.state = self.states.UNLOADING
-
+        elseif self.state == self.states.REVERSING_AWAY_FROM_UNLOAD then
+            if self.shovelController:isEmpty() then
+                self:startDrivingToSilo()
+            else 
+                self.state = self.states.WAITING_FOR_TRAILER
+            end
             --self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
         end
     end
@@ -215,8 +221,10 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING then 
         self:setMaxSpeed(0)
         if self:hasFinishedUnloading() then 
-            self:startDrivingToSilo()
+            self:startReversingAwayFromUnloading()
         end
+    elseif self.state == self.states.REVERSING_AWAY_FROM_UNLOAD then
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     end
     if self.state.properties.shovelPosition then 
         if not self.frozen and self.shovelController:moveShovelToPosition(self.state.properties.shovelPosition) then 
@@ -440,7 +448,7 @@ end
 --- Unloading
 ----------------------------------------------------------------
 function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
-    if self.targetTrailer.trailer:getFillUnitFreeCapacity(self.targetTrailer.fillUnitIndex) <= 0 then 
+    if self.targetTrailer and self.targetTrailer.trailer:getFillUnitFreeCapacity(self.targetTrailer.fillUnitIndex) <= 0 then 
         self:debug("Trailer is full, abort unloading into trailer %s.", CpUtil.getName(self.targetTrailer.trailer))
         return true
     end
@@ -452,3 +460,9 @@ function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
     return false
 end
 
+function AIDriveStrategyShovelSiloLoader:startReversingAwayFromUnloading()
+    local _, _, spaceToTrailer = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
+    local course = Course.createStraightReverseCourse(self.vehicle, 2*spaceToTrailer, 0 )
+    self:startCourse(course, 1)
+    self.state = self.states.REVERSING_AWAY_FROM_UNLOAD
+end

@@ -169,6 +169,15 @@ function CpGuiUtil.getGenericSubTitleElementFromLayout(rootElement)
 	return CpGuiUtil.getFirstElementWithProfileName(rootElement, "settingsMenuSubtitle")
 end
 
+--- Gets the rgb color in 0-1 from 0-255.
+---@param r number
+---@param g number
+---@param b number
+---@param alpha number|nil
+---@return number
+---@return number
+---@return number
+---@return number
 function CpGuiUtil.getNormalizedRgb(r, g, b, alpha)
 	return r / 255, g / 255, b / 255, alpha
 end
@@ -204,6 +213,64 @@ function CpGuiUtil.setTarget(element, target)
 	element.target = target
 	element.targetName = target.name
 end
+
+------------------------------------------------
+--- Plots 
+------------------------------------------------
+
+--- Translates the world coordinates to screen coordinates.
+---@param map table
+---@param worldX number
+---@param worldZ number
+---@param isHudMap boolean|nil If the hud minimap is used.
+---@return number
+---@return number
+---@return number
+---@return boolean
+function CpGuiUtil.worldToScreen(map, worldX, worldZ, isHudMap)
+	local objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * 0.5 + 0.25
+	local objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * 0.5 + 0.25
+	local x, y, _, _ = map.fullScreenLayout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
+	local rot = 0
+	local visible = true
+	if isHudMap then 
+		--- The plot is displayed in the hud.
+		objectX = (worldX + map.worldCenterOffsetX) / map.worldSizeX * map.mapExtensionScaleFactor + map.mapExtensionOffsetX
+		objectZ = (worldZ + map.worldCenterOffsetZ) / map.worldSizeZ * map.mapExtensionScaleFactor + map.mapExtensionOffsetZ
+
+		x, y, rot, visible = map.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, false)
+		if map.state == IngameMap.STATE_MINIMAP_ROUND and map.layout.rotateWithMap then 
+			x, y, rot, visible = CpGuiUtil.getMapObjectPositionCircleLayoutFix(map.layout, objectX, objectZ, 0, 0, 0, false)
+		end
+	end
+	return x, y, rot, visible
+end
+
+--- Giants was not so kind, as to allow getting the positions even, if the object is outside the map range ...
+--- This is a custom version for: IngameMapLayoutCircle:getMapObjectPosition(...)
+---@param layout table
+---@param objectU number
+---@param objectV number
+---@param width number
+---@param height number
+---@param rot number
+---@param persistent boolean
+---@return number
+---@return number
+---@return number
+---@return boolean
+function CpGuiUtil.getMapObjectPositionCircleLayoutFix(layout, objectU, objectV, width, height, rot, persistent)
+	local mapWidth, mapHeight = layout:getMapSize()
+	local mapX, mapY = layout:getMapPosition()
+	local objectX = objectU * mapWidth + mapX
+	local objectY = (1 - objectV) * mapHeight + mapY
+	objectX, objectY, rot = layout:rotateWithMap(objectX, objectY, rot, persistent)
+	objectX = objectX - width * 0.5
+	objectY = objectY - height * 0.5
+
+	return objectX, objectY, rot, true
+end
+
 
 ------------------------------------------------
 --- Hud 

@@ -194,12 +194,14 @@ FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.
 function Courseplay:update(dt)
 	g_devHelper:update()
 	g_bunkerSiloManager:update(dt)
+	g_triggerManager:update(dt)
 end
 
 function Courseplay:draw()
 	if not g_gui:getIsGuiVisible() then
 		g_vineScanner:draw()
 		g_bunkerSiloManager:draw()
+		g_triggerManager:draw()
 	end
 	g_devHelper:draw()
 	CpDebug:draw()

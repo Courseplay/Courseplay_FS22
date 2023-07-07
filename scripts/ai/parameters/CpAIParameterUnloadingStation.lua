@@ -41,7 +41,7 @@ end
 
 --- Applies the current position to the map hotspot.
 function CpAIParameterUnloadingStation:applyToMapHotspot(mapHotspot)
-	if not self:getCanBeChanged() then 
+	if not self:getIsVisible() then 
 		return false
 	end
 	local unloadingStation = self:getUnloadingStation()
