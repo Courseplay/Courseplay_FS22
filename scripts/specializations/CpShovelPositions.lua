@@ -55,7 +55,7 @@ CpShovelPositions = {
 			5
 		},
 	},
-	DEBUG = false
+	DEBUG = true
 }
 CpShovelPositions.MOD_NAME = g_currentModName
 CpShovelPositions.NAME = ".cpShovelPositions"
@@ -258,12 +258,37 @@ function CpShovelPositions.setShovelPosition(dt, spec, shovel, shovelNode, angle
 		dyRot = yRot
 	end
 	
-	CpShovelPositions.debug(shovel, 
-		"Shovel position(%d) angle: %.2f, targetAngle: %.2f, yRot: %.2f, oldRot: %.2f", 
-		spec.state, math.deg(angle), math.deg(targetAngle), math.deg(dyRot), math.deg(oldRot)) 
+	local tool = spec.shovelTool
+	if tool.rotSpeed == nil then
+		return
+	end
 
-	return ImplementUtil.moveMovingToolToRotation(spec.shovelVehicle, spec.shovelTool, dt, 
-		MathUtil.clamp(oldRot + dyRot , spec.shovelTool.rotMin, spec.shovelTool.rotMax))
+	local spec = shovel.spec_cylindered
+	tool.curRot[1], tool.curRot[2], tool.curRot[3] = getRotation(tool.node)
+	local rotSpeed = MathUtil.clamp(dyRot * tool.rotSpeed, tool.rotSpeed/3, 0.5)
+	if dyRot < 0 then
+		rotSpeed=rotSpeed*(-1)
+	end
+
+	CpShovelPositions.debug(shovel, 
+		"Shovel position angle: %.2f, targetAngle: %.2f, yRot: %.2f, oldRot: %.2f, rotSpeed: %.5f, rotMin: %.2f, rotMax: %.2f", 
+		math.deg(angle), math.deg(targetAngle), math.deg(dyRot), math.deg(oldRot), 
+		rotSpeed, math.deg(tool.rotMin), math.deg(tool.rotMax)) 
+
+	if math.abs(dyRot) < math.pi/(2*180) or rotSpeed == 0 then
+		ImplementUtil.stopMovingTool(shovel, tool)
+		return false
+	end
+	if Cylindered.setToolRotation(shovel, tool, rotSpeed, dt, dyRot) then
+		Cylindered.setDirty(shovel, tool)
+
+		shovel:raiseDirtyFlags(tool.dirtyFlag)
+		shovel:raiseDirtyFlags(spec.cylinderedDirtyFlag)
+		return true
+	end
+
+	-- return ImplementUtil.moveMovingToolToRotation(spec.shovelVehicle, spec.shovelTool, dt, 
+	-- 	MathUtil.clamp(oldRot + dyRot , spec.shovelTool.rotMin, spec.shovelTool.rotMax))
 end
 
 --- Changes the front loader angle dependent on the selected position, relative to a target height.

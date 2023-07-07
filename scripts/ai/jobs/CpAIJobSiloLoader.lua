@@ -132,26 +132,31 @@ function CpAIJobSiloLoader:validate(farmId)
 	else 
 		return false, g_i18n:getText("CP_error_no_heap_found")
 	end
-
-	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
-		--- Validate the trigger setup
-		local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
-		if found then 
-			self.unloadStation = unloadStation
-			self.unloadTrigger = unloadTrigger
-			if unloadStation == nil then 
+	if not AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) then 
+		if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
+			--- Validate the trigger setup
+			local found, unloadTrigger, unloadStation = self:getUnloadTriggerAt(self.cpJobParameters.unloadPosition)
+			if found then 
+				self.unloadStation = unloadStation
+				self.unloadTrigger = unloadTrigger
+				if unloadStation == nil then 
+					return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+				end
+				local id = NetworkUtil.getObjectId(unloadStation)
+				if id ~= nil then 
+					self:getCpJobParameters().unloadStation:setValue(id)
+					self:getCpJobParameters().unloadStation:validateUnloadingStation()
+				end
+			else 
 				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 			end
-			local id = NetworkUtil.getObjectId(unloadStation)
-			if id ~= nil then 
-				self:getCpJobParameters().unloadStation:setValue(id)
-				self:getCpJobParameters().unloadStation:validateUnloadingStation()
-			end
-		else 
+		end
+		local unloadPosition = self:getCpJobParameters()
+		if unloadPosition.x == nil or unloadPosition.angle == nil then 
 			return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 		end
+		
 	end
-
 	return isValid, errorMessage
 end
 

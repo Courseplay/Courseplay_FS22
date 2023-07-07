@@ -321,12 +321,12 @@ function CpBunkerSiloLoaderController:init(silo, vehicle, driveStrategy)
 	self.isInverted = false
 	
 	if MathUtil.vector2Length(sx-dx, sz-dz) < MathUtil.vector2Length(hx-dx, hz-dz) then
-		if self.silo.siloMode == self.silo.SIDE_MODES.ONE_SIDED_INVERTED then 
+		if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED_INVERTED then 
 			self.isInverted = true
 		end
 	else
 		self.isInverted = true
-		if self.silo.siloMode == self.silo.SIDE_MODES.ONE_SIDED then 
+		if self.silo.siloMode == CpBunkerSilo.SIDE_MODES.ONE_SIDED then 
 			self.isInverted = false
 		end
 	end

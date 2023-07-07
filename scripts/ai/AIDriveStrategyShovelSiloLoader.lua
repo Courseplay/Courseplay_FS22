@@ -86,8 +86,9 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
 
     self.jobParameters = jobParameters
     local position = jobParameters.unloadPosition
-    self.unloadPositionNode = CpUtil.createNode("unloadPositionNode", position.x, position.z, position.angle ) 
-
+    if position.x and position.angle then
+        self.unloadPositionNode = CpUtil.createNode("unloadPositionNode", position.x, position.z, position.angle ) 
+    end
     if self.bunkerSilo ~= nil then 
         self:debug("Bunker silo was found.")
         self.silo = self.bunkerSilo

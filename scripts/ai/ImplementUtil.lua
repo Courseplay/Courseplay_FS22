@@ -435,8 +435,10 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
     
     local function debug(str, ...)
         if not suppressLog then
-            CpUtil.debugVehicle(CpDebug.DBG_SILO, implementToLoadFrom.rootVehicle, 
-                str, ...)
+            if g_updateLoopIndex % 100 == 0 then
+                CpUtil.debugVehicle(CpDebug.DBG_SILO, implementToLoadFrom.rootVehicle, 
+                    str, ...)
+            end
         end
     end
 
