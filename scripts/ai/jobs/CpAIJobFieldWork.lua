@@ -274,12 +274,15 @@ end
 function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
     local nextTaskIndex = CpAIJobFieldWork:superClass().getNextTaskIndex(self, isSkipTask)
     if self.currentTaskIndex == self.driveToTask.taskIndex then
+        --- Checks if a cutter is attached on the back, 
+        --- so the attach header strategy needs to be used.
         local vehicle = self.vehicleParameter:getVehicle()
         if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
             or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
             CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Cutter on trailer attached.")
             return nextTaskIndex
         else 
+            --- Header Attach strategy is not needed.
             return nextTaskIndex + 1
         end
 	end
@@ -292,13 +295,16 @@ function CpAIJobFieldWork:getStartTaskIndex()
         local vehicle = self.vehicleParameter:getVehicle()
         if AIUtil.hasCutterOnTrailerAttached(vehicle) or 
             AIUtil.hasCutterAsTrailerAttached(vehicle) then 
-           return 2
+            --- Makes sure the direct start from the hud, starts with the attach header strategy.
+            return 2
         end
+        --- Skips the attach header strategy.
         return 3
     end
     return 1
 end
 
 function CpAIJobFieldWork:onFinishAttachCutter()
+    --- Finished attaching a given header.
     self.attachHeaderTask:skip()
 end

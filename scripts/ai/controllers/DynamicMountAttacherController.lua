@@ -1,4 +1,5 @@
-
+--- Controls trailer, which can mount objects/implements 
+--- Only works with cutters/ harvester headers for now.
 ---@class DynamicMountAttacherController : ImplementController
 DynamicMountAttacherController = CpObject(ImplementController)
 

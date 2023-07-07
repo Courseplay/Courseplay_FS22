@@ -138,6 +138,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self:raiseControllerEvent(self.onStartEvent)
 end
 
+--- Does the strategy need the current assigned course?
 function AIDriveStrategyCourse:isGeneratedCourseNeeded()
     return true
 end

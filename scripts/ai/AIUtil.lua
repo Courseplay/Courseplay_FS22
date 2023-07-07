@@ -689,7 +689,7 @@ function AIUtil.hasCutterOnTrailerAttached(vehicle)
 	return trailer and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects) ~= nil and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects).spec_cutter ~= nil
 end
 
---- Checks if cutter on an trailer is attached.
+--- Checks if the cutter is attached on the back, as it also has wheels for transport.
 function AIUtil.hasCutterAsTrailerAttached(vehicle)
 	local trailer = AIUtil.getImplementWithSpecialization(vehicle, Cutter)
 	if trailer then

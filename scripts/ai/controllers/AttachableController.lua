@@ -1,3 +1,9 @@
+--- This controller is for implement, that can be attach to vehicles.
+--- Controls the detaching of the implement
+--- and gives information's where the where the attacher joints
+--- can be attached.
+--- Only implemented for cutter for now.
+---
 ---@class AttachableController : ImplementController
 AttachableController = CpObject(ImplementController)
 
@@ -23,19 +29,17 @@ function AttachableController:isDetachActive()
 	return self.attachableSpec.detachingInProgress
 end
 
-function AttachableController:isAttachActive()
-	if self.cutterInputAttacherJoint then
-		local cutterImplement = self.implement:getImplementByJointDescIndex(self.cutterInputAttacherJoint.index)
-		return cutterImplement.attachingIsInProgress
-	end
-end
-
+--- Tries to detach the implement if possible.
+---@return boolean
 function AttachableController:detach()
 	local detachAllowed, warning, showWarning = self.implement:isDetachAllowed()
 	if detachAllowed then
 		self.implement:startDetachProcess()
 		return true
+	else 
+		self:debug("Failed to detach with warning: %s!", warning)
 	end
+	return false
 end
 
 function AttachableController:update()

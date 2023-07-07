@@ -60,11 +60,14 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     end
 
     if object.spec_dynamicMountAttacher then 
+        --- Enables fetching the work with of cutter, 
+        --- which are attached on an separate header trailer 
+        --- at the back of the harvester.
         local spec = object.spec_dynamicMountAttacher
         local obj = next(spec.dynamicMountedObjects)
         if obj then 
             if obj.spec_cutter then 
-                WorkWidthUtil.debug(obj, 'Using this cutter instead of the header trailer %s.',
+                WorkWidthUtil.debug(obj, 'Using this cutter instead of the header trailer %s attached.',
                     CpUtil.getName(object))
                 object = obj
                 referenceNode = obj.rootNode
