@@ -85,6 +85,12 @@ function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
     self.attachableController = AttachableController(vehicle, self.trailer)
     self.attacherJointController = AttacherJointController(vehicle, vehicle)
     self:appendImplementController(self.attacherJointController)
+
+    local trailerAreaNode = createTransformGroup("tempTrailerNode")
+	-- link(self.trailer.rootNode, self.trailerAreaNode)
+	-- setTranslation(self.trailerAreaNode, self.trailer.size.widthOffset, self.trailer.size.heightOffset + self.trailer.size.height / 2, self.trailer.size.lengthOffset)
+    self.trailerAreaToAvoid =  PathfinderUtil.NodeArea(trailerAreaNode, -self.trailer.size.width/2, -self.trailer.size.length/2, self.trailer.size.width, self.trailer.size.length)
+
 end
 
 function AIDriveStrategyAttachHeader:setAllStaticParameters()
@@ -117,6 +123,10 @@ function AIDriveStrategyAttachHeader:update(dt)
         if self.cutterNode then 
             CpUtil.drawDebugNode(self.cutterNode, false, 3)
         end
+    end
+    if self.trailerAreaToAvoid then
+      --  DebugUtil.drawDebugCube(self.trailerAreaNode, self.trailer.size.width, self.trailer.size.height, self.trailer.size.length, 0, 0, 1)
+        self.trailerAreaToAvoid:drawDebug()
     end
 end
 
@@ -223,10 +233,13 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         local rotY = MathUtil.getYRotationFromDirection(dirX, dirZ)
         self.cutterNode = CpUtil.createNode("cutterNode", x, z, rotY)
         local length = AIUtil.getLength(self.vehicle)
+        
         local done, path, goalNodeInvalid
         self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
             self.vehicle, self.cutterNode, 0, -math.max(1.5*length, 1.5*self.turningRadius),
-            false, nil, {self.vehicle}, 100 )
+            true, nil, {self.vehicle},
+            math.huge, 0,
+            self.trailerAreaToAvoid )
         if done then
             return self:onPathfindingDoneToCutter(path, goalNodeInvalid)
         else
