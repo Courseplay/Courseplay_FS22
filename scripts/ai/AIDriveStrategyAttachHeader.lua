@@ -44,6 +44,7 @@ AIDriveStrategyAttachHeader.MODES = {
     ATTACH_HEADER_FROM_ATTACHED_TRAILER = 1,
     ATTACH_HEADER_WITH_WHEELS_ATTACHED = 2,
 }
+AIDriveStrategyAttachHeader.DRIVING_AWAY_FROM_HEADER_FORWARD_DISTANCE = 6
 
 
 function AIDriveStrategyAttachHeader.new(customMt)
@@ -156,7 +157,7 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
             self:setFrontAndBackMarkers()
             --- Detach has finished, so need make sure the reverse driver gets updated.
             self.reverser = AIReverseDriver(self.vehicle, self.ppc)
-            local course = Course.createStraightForwardCourse(self.vehicle, 3)
+            local course = Course.createStraightForwardCourse(self.vehicle, self.DRIVING_AWAY_FROM_HEADER_FORWARD_DISTANCE)
             self:startCourse(course, 1)
             self.state = self.states.DRIVING_AWAY_FROM_HEADER
         end
@@ -202,7 +203,7 @@ end
 ---@param moveForwards any
 ---@return boolean
 function AIDriveStrategyAttachHeader:ignoreProximityObject(object, vehicle, moveForwards)
-    if self.state == self.states.DRIVING_TO_ATTACH_CUTTER then 
+    if self.state == self.states.DRIVING_TO_ATTACH_CUTTER or self.state == self.states.DRIVING_TO_HEADER then 
         if vehicle == self.trailer then 
             return true
         end
