@@ -178,7 +178,7 @@ function CpAISiloLoaderWorker:startCpAtLastWp(superFunc, ...)
     end
 end
 
-function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap)
+function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap, unloadTrigger, unloadStation)
     if self.isServer then 
         local strategy
         if AIUtil.hasAIImplementWithSpecialization(self, ConveyorBelt) then 
@@ -189,6 +189,7 @@ function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo,
             strategy = AIDriveStrategyShovelSiloLoader.new()
         end
         strategy:setSiloAndHeap(bunkerSilo, heap)
+        strategy:setUnloadTriggerAndStation(unloadTrigger, unloadStation)
         strategy:setAIVehicle(self, jobParameters)
         self:startCpWithStrategy(strategy)
     end

@@ -314,6 +314,11 @@ You can define the following custom settings:
 			 ignoreCollisionBoxesWhenFolded = "true"
 	/>
 
+	<Vehicle name="torion1914.xml"
+             turnRadius = "12"
+    />
+
+
     <!--[DLC]-->
 
     <!--Harvester-->

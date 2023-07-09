@@ -101,9 +101,9 @@ end
 ---@param dirZ number
 ---@param width number
 ---@param length number
----@return boolean
----@return table|nil
----@return table|nil
+---@return boolean found?
+---@return table|nil unload trigger 
+---@return table|nil unload station/placeable
 function TriggerManager:getDischargeableUnloadTriggerAt(x, z, dirX, dirZ, width, length)
 	return self:getTriggerAt(self.dischargeableUnloadTriggers, x, z, dirX, dirZ, width, length)
 end

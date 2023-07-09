@@ -109,7 +109,7 @@ end
 function CpAIParameterPosition:isAlmostEqualTo(otherPosition)
 	local x, z = otherPosition:getPosition()
 	if x ~= nil and self.x ~= nil then
-		return MathUtil.vector2Length(self.x - x, self.z - z)	<= 1
+		return MathUtil.vector2Length(self.x - x, self.z - z) <= 1
 	end
 	return false
 end

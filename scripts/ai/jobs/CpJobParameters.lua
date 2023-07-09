@@ -347,7 +347,7 @@ function CpSiloLoaderJobParameters:isShovelSiloLoadDisabled()
 end
 
 function CpSiloLoaderJobParameters:isUnloadPositionDisabled()
-    return false --self:isShovelSiloLoadDisabled() or self.unloadAt == CpSiloLoaderJobParameters.UNLOAD_TRAILER
+    return self:isShovelSiloLoadDisabled() or self.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRAILER
 end
 
 function CpSiloLoaderJobParameters:isUnloadStationDisabled()

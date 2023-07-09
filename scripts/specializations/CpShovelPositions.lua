@@ -55,7 +55,7 @@ CpShovelPositions = {
 			5
 		},
 	},
-	DEBUG = true
+	DEBUG = false
 }
 CpShovelPositions.MOD_NAME = g_currentModName
 CpShovelPositions.NAME = ".cpShovelPositions"
@@ -64,9 +64,8 @@ CpShovelPositions.KEY = "." .. CpShovelPositions.SPEC_NAME
 
 function CpShovelPositions.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
-	if CpShovelPositions.DEBUG then 
-		g_devHelper.consoleCommands:registerConsoleCommand('cpSetShovelState', 'cpSetShovelState', 'consoleCommandSetShovelState', CpShovelPositions)
-	end
+	g_devHelper.consoleCommands:registerConsoleCommand('cpSetShovelState', 'cpSetShovelState', 'consoleCommandSetShovelState', CpShovelPositions)
+	
 end
 
 function CpShovelPositions.prerequisitesPresent(specializations)
