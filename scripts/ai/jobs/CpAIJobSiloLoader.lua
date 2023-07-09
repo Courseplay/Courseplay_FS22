@@ -150,12 +150,11 @@ function CpAIJobSiloLoader:validate(farmId)
 			else 
 				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
 			end
+			local unloadPosition = self:getCpJobParameters().unloadPosition
+			if unloadPosition.x == nil or unloadPosition.angle == nil then 
+				return false, g_i18n:getText("CP_error_no_unload_trigger_found")
+			end
 		end
-		local unloadPosition = self:getCpJobParameters().unloadPosition
-		if unloadPosition.x == nil or unloadPosition.angle == nil then 
-			return false, g_i18n:getText("CP_error_no_unload_trigger_found")
-		end
-		
 	end
 	return isValid, errorMessage
 end

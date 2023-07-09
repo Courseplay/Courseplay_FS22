@@ -62,6 +62,7 @@ function AIDriveStrategyShovelSiloLoader.new(customMt)
     local self = AIDriveStrategyCourse.new(customMt)
     AIDriveStrategyCourse.initStates(self, AIDriveStrategyShovelSiloLoader.myStates)
     self.state = self.states.INITIAL
+    self.debugChannel = CpDebug.DBG_SILO
     return self
 end
 
@@ -219,7 +220,11 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             return
         end
         if self.shovelController:isFull() then
-            self:startPathfindingToUnloadPosition()
+            if self.isUnloadingAtTrailerActive then 
+                self:setNewState(self.states.WAITING_FOR_TRAILER)
+            else 
+                self:startPathfindingToUnloadPosition()
+            end
         else
             self:startDrivingToSilo()
         end
@@ -244,6 +249,8 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.DRIVING_OUT_OF_SILO then 
         self:setMaxSpeed(self.settings.bunkerSiloSpeed:getValue())
     elseif self.state == self.states.DRIVING_TO_UNLOAD_POSITION then     
+        self:setMaxSpeed(self.settings.fieldSpeed:getValue())
+    elseif self.state == self.states.DRIVING_TO_UNLOAD_TRAILER then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.WAITING_FOR_TRAILER then 
         self:setMaxSpeed(0)
@@ -406,24 +413,25 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
             exactFillRootNode = exactFillRootNode,
             trailer = trailer
         }
-        
+        self:debug("Unloading to trailer %s in distance %.2f.", CpUtil.getName(trailer), dist)
         local _, _, distShovelDirectionNode = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
         --self.distShovelTrailerPreUnload
         local dirX, _, dirZ = localDirectionToWorld(trailer.rootNode, 0, 0, 1)
         local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
         local dx, _, dz = localToLocal(self.shovelController:getShovelNode(), trailer.rootNode, 0, 0, 0)
         if dx > 0 then 
-            local x, y, z = localToWorld(trailer.rootNode, dx + distShovelDirectionNode + self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, dx - distShovelDirectionNode - self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
-            setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot + math.pi/2), 0)
+            setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot - math.pi/2), 0)
 
         else 
-            local x, y, z = localToWorld(trailer.rootNode, dx - distShovelDirectionNode -self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, dx + distShovelDirectionNode + self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
-            setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot - math.pi/2), 0)
+            setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot + math.pi/2), 0)
         end
         self:startPathfindingToTrailer()
-
+    else 
+        self:debug("Unloading into trailer %s not possible.", CpUtil.getName(trailer))
     end
 end
 

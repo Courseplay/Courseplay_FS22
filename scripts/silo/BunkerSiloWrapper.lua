@@ -205,6 +205,10 @@ function CpSilo:getTotalFillLevel()
 	return 0
 end
 
+function CpSilo:isTheSameSilo()
+	--- override
+end
+
 --- Heap Bunker Silo
 --- Wrapper for a heap.
 ---@class CpHeapBunkerSilo :CpSilo
