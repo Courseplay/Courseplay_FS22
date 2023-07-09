@@ -420,12 +420,12 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
         local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
         local dx, _, dz = localToLocal(self.shovelController:getShovelNode(), trailer.rootNode, 0, 0, 0)
         if dx > 0 then 
-            local x, y, z = localToWorld(trailer.rootNode, dx - distShovelDirectionNode - self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, dx + math.abs(distShovelDirectionNode) + self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
             setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot - math.pi/2), 0)
 
         else 
-            local x, y, z = localToWorld(trailer.rootNode, dx + distShovelDirectionNode + self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, dx - math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
             setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot + math.pi/2), 0)
         end
@@ -491,7 +491,7 @@ end
 
 function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToTrailer(path, goalNodeInvalid)
     if path and #path > 2 then
-        self:debug("Found path to unloading station.")
+        self:debug("Found path to trailer %s.", CpUtil.getName(self.targetTrailer.trailer))
         local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         self:startCourse(course, 1)
         self:setNewState(self.states.DRIVING_TO_UNLOAD_TRAILER)
