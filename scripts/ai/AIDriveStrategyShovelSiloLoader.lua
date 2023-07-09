@@ -415,17 +415,16 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
         }
         self:debug("Unloading to trailer %s in distance %.2f.", CpUtil.getName(trailer), dist)
         local _, _, distShovelDirectionNode = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
-        --self.distShovelTrailerPreUnload
         local dirX, _, dirZ = localDirectionToWorld(trailer.rootNode, 0, 0, 1)
         local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
         local dx, _, dz = localToLocal(self.shovelController:getShovelNode(), trailer.rootNode, 0, 0, 0)
         if dx > 0 then 
-            local x, y, z = localToWorld(trailer.rootNode, dx + math.abs(distShovelDirectionNode) + self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, math.abs(distShovelDirectionNode) + self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
             setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot - math.pi/2), 0)
 
         else 
-            local x, y, z = localToWorld(trailer.rootNode, dx - math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, - math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
             setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot + math.pi/2), 0)
         end
