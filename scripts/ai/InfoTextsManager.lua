@@ -19,19 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class CpInfoTextElement
 CpInfoTextElement = CpObject()
 
-CpInfoTextElement.aiMessageNameToClass = {
-	AIMessageErrorOutOfFill = AIMessageErrorOutOfFill,
-	AIMessageErrorIsFull = AIMessageErrorIsFull,
-	AIMessageSuccessFinishedJob = AIMessageSuccessFinishedJob,
-	AIMessageErrorOutOfFuel = AIMessageErrorOutOfFuel,
-	AIMessageErrorVehicleBroken = AIMessageErrorVehicleBroken,
-	AIMessageErrorOutOfMoney = AIMessageErrorOutOfMoney,
-	AIMessageErrorBlockedByObject = AIMessageErrorBlockedByObject,
-	AIMessageCpError = AIMessageCpError,
-	AIMessageErrorWrongBaleWrapType = AIMessageErrorWrongBaleWrapType,
-	AIMessageCpErrorNoPathFound = AIMessageCpErrorNoPathFound
-}
-
 --- Info text 
 ---@param name string name called by in the lua code.
 ---@param text string displayed text
@@ -46,7 +33,7 @@ function CpInfoTextElement:init(name, text, id, hasFinished, event, aiMessageCla
 	self.hasFinished = hasFinished
 	self.event = event
 	if aiMessageClass then 
-		self.aiMessageClass = CpInfoTextElement.aiMessageNameToClass[aiMessageClass]
+		self.aiMessageClass = CpUtil.getClassObject(aiMessageClass)
 	end
 end
 

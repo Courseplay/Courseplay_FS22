@@ -105,14 +105,19 @@ function AIMessageErrorAutomaticCutterAttachNotActive:getMessage()
 	return g_i18n:getText("CP_ai_messageErrorAutomaticCutterAttachNotActive")
 end
 
+CpAIMessages = {}
 
-
-function AIMessageErrorIsFull.register()
-	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorIsFull.name, AIMessageErrorIsFull)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageCpError.name, AIMessageCpError)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageCpErrorNoPathFound.name, AIMessageCpErrorNoPathFound)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorWrongBaleWrapType.name, AIMessageErrorWrongBaleWrapType)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorGroundUnloadNotSupported.name, AIMessageErrorGroundUnloadNotSupported)
+function CpAIMessages.register()
+	local function register(messageClass)
+		g_currentMission.aiMessageManager:registerMessage(messageClass.name, messageClass)
+	end
+	register(AIMessageErrorIsFull)
+	register(AIMessageCpError)
+	register(AIMessageCpErrorNoPathFound)
+	register(AIMessageErrorWrongBaleWrapType)
+	register(AIMessageErrorGroundUnloadNotSupported)
+	register(AIMessageErrorCutterNotSupported)
+	register(AIMessageErrorAutomaticCutterAttachNotActive)
 end
 
 --- Another ugly hack, as the giants code to get the message index in mp isn't working ..
