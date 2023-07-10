@@ -81,7 +81,13 @@ function AIDriveStrategyDriveToFieldWorkStart:start(course, startIx, jobParamete
                 nVehicles,
                 nVehicles > 1 and jobParameters.laneOffset:getValue() or 0,
                 course:getWorkWidth() / nVehicles)
-        self.vehicle:prepareForAIDriving()
+        local implement = AIUtil.getImplementWithSpecialization(self.vehicle, Cutter)
+        if self:giantsPreFoldHeaderWithWheelsFix(implement) then 
+            self.vehicle:prepareForAIDriving()
+            self:giantsPostFoldHeaderWithWheelsFix(implement)
+        else 
+            self.vehicle:prepareForAIDriving()
+        end
         self:startCourseWithPathfinding(course, startIx)
     end
     --- Saves the course start position, so it can be given to the job instance.
@@ -235,3 +241,41 @@ function AIDriveStrategyDriveToFieldWorkStart.giantsTurnOnFix(vehicle, superFunc
 end
 TurnOnVehicle.setIsTurnedOn = Utils.overwrittenFunction(TurnOnVehicle.setIsTurnedOn, 
                         AIDriveStrategyDriveToFieldWorkStart.giantsTurnOnFix)
+
+--- Removes the fold ai prepare event, as these cutters with foldable wheels don't need to be folded.
+---@param implement table|nil
+---@return boolean|nil Event was removed
+function AIDriveStrategyDriveToFieldWorkStart:giantsPreFoldHeaderWithWheelsFix(implement)
+    if not implement or not implement.spec_foldable or not implement.spec_attachable then 
+        return
+    end
+    local controller = implement.spec_foldable.controlledActionFold
+    if not controller then 
+        return
+    end
+    for _, attacherJoint in pairs(implement:getInputAttacherJoints()) do
+        if attacherJoint.jointType ~= AttacherJoints.JOINTTYPE_CUTTER and
+            attacherJoint.jointType ~= AttacherJoints.JOINTTYPE_CUTTERHARVESTER then  
+            --- At least one attaching joint, which is not meant for a cutter was found.
+            --- This properly means a foldable cutter to trailer was found, like the New Holland Superflex Draper 45 ft. 
+            local ixToDelete
+            for ix, listener in pairs(controller.aiEventListener) do 
+                if listener.eventName == "onAIImplementPrepare" then 
+                    ixToDelete = ix
+                    break
+                end
+            end
+            if ixToDelete ~= nil then 
+                table.remove(controller.aiEventListener, ixToDelete)
+                implement:setFoldDirection(implement.spec_foldable.turnOnFoldDirection or 1)
+                return true
+            end
+        end
+    end
+end
+
+--- Resets to status quo
+---@param implement table
+function AIDriveStrategyDriveToFieldWorkStart:giantsPostFoldHeaderWithWheelsFix(implement)
+    implement.spec_foldable.controlledActionFold:addAIEventListener(implement, "onAIImplementPrepare", -1, true)
+end

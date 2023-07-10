@@ -274,6 +274,8 @@ function AIDriveStrategyAttachHeader:attachHasFinished()
         self:startCourse(course, 1)
         self.state = self.states.REVERSING_FROM_CUTTER
     else 
+        --- The header needs to be folded, as currently the wheels for transport are active.
+        self.trailer:setFoldDirection(self.trailer.spec_foldable.turnOnFoldDirection or 1)
         self.vehicle:getJob():onFinishAttachCutter()
     end
 end
