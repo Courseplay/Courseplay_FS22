@@ -569,6 +569,10 @@ end
 --- Unloading
 ----------------------------------------------------------------
 function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
+    if self.shovelController:isEmpty() then 
+        self:debug("Finished unloading, as the shovel is empty.")
+        return true
+    end
     if self.isUnloadingAtTrailerActive then 
         if self.targetTrailer.trailer:getFillUnitFreeCapacity(self.targetTrailer.fillUnitIndex) <= 0 then 
             self:debug("Trailer is full, abort unloading into trailer %s.", CpUtil.getName(self.targetTrailer.trailer))
@@ -579,10 +583,6 @@ function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
             self:debug("Unload Trigger is full.")
             return false
         end
-    end
-    if self.shovelController:isEmpty() then 
-        self:debug("Finished unloading, as the shovel is empty.")
-        return true
     end
 
     return false
