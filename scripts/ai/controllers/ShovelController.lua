@@ -60,7 +60,10 @@ function ShovelController:canDischarge()
     local dischargeNode = self:getDischargeNode()
     local spec = self.implement.spec_dischargeable
 	if not spec.isAsyncRaycastActive then
+        local oldNode = dischargeNode.raycast.node
+        dischargeNode.raycast.node = self.implement.spec_attachable.attacherJoint.node
 		self.implement:updateRaycast(dischargeNode)
+        dischargeNode.raycast.node = oldNode
 	end
     return dischargeNode.dischargeHit
 end
