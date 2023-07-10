@@ -358,10 +358,8 @@
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - attaching of the header is impossible!]]></Text>
 		</Translation>
 		<Translation name="CP_ai_messageErrorAutomaticCutterAttachNotActive">
-			<Text>
-				<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!]]></Text>
-				<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
-			</Text>
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
