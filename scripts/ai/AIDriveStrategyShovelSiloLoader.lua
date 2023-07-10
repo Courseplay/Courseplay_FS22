@@ -267,17 +267,20 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             refNode = self.unloadTrigger:getTrigger():getFillUnitExactFillRootNode()
         end
         if self.shovelController:isShovelOverTrailer(refNode) then 
-            self:setNewState(self.states.UNLOADING)
-            self:setMaxSpeed(0)
+            -- self:setNewState(self.states.UNLOADING)
+            -- self:setMaxSpeed(0)
         end
+        if not self.isUnloadingAtTrailerActive then 
+            if self.shovelController:isShovelOverTrailer(refNode, 3) and self.shovelController:canDischarge() then 
+                self:setNewState(self.states.UNLOADING)
+                self:setMaxSpeed(0)
+            end
+        end
+
     elseif self.state == self.states.UNLOADING then 
         self:setMaxSpeed(0)
         if self:hasFinishedUnloading() then
-            if self.isUnloadingAtTrailerActive then 
-                self:startReversingAwayFromUnloading()
-            else 
-                self:startDrivingToSilo()
-            end
+            self:startReversingAwayFromUnloading()
         end
     elseif self.state == self.states.REVERSING_AWAY_FROM_UNLOAD then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
@@ -422,9 +425,8 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
             local x, y, z = localToWorld(trailer.rootNode, math.abs(distShovelDirectionNode) + self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
             setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot - math.pi/2), 0)
-
         else 
-            local x, y, z = localToWorld(trailer.rootNode, - math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
+            local x, y, z = localToWorld(trailer.rootNode, -math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
             setTranslation(self.unloadPositionNode, x, y, z)
             setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot + math.pi/2), 0)
         end
@@ -553,7 +555,7 @@ function AIDriveStrategyShovelSiloLoader:approachUnloadStationForUnloading()
     local dx, _, dz = getWorldTranslation(self.unloadTrigger:getTrigger():getFillUnitExactFillRootNode())
     local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
     local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
-        0, -3, 0, 3, false)
+        0, -3, 3, 2, false)
     local firstWpIx = course:getNearestWaypoints(self.vehicle:getAIDirectionNode())
     self:startCourse(course, firstWpIx)
     self:setNewState(self.states.DRIVING_TO_UNLOAD)
@@ -573,9 +575,9 @@ function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
             return true
         end
     else 
-        if self.unloadTrigger:getTrigger():getFillUnitFreeCapacity(1, self.shovelController:getDischargeFillType(), self.vehicle:getOwnerFarmId()) then 
+        if self.unloadTrigger:getTrigger():getFillUnitFreeCapacity(1, self.shovelController:getDischargeFillType(), self.vehicle:getOwnerFarmId()) <= 0 then 
             self:debug("Unload Trigger is full.")
-            return true
+            return false
         end
     end
     if self.shovelController:isEmpty() then 

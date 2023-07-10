@@ -56,6 +56,15 @@ function ShovelController:getDischargeNode()
     return self.implement:getCurrentDischargeNode()
 end
 
+function ShovelController:canDischarge()
+    local dischargeNode = self:getDischargeNode()
+    local spec = self.implement.spec_dischargeable
+	if not spec.isAsyncRaycastActive then
+		self.implement:updateRaycast(dischargeNode)
+	end
+    return dischargeNode.dischargeHit
+end
+
 --- Is the shovel node over the trailer?
 ---@param refNode number
 ---@param margin number|nil
