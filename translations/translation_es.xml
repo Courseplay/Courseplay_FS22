@@ -112,6 +112,7 @@
     <text name="CP_ai_messageErrorNoPathFound" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Ninguna Ruta encontrada!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡No es posible descargar en el campo!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -199,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Desplegar siempre el tubo"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Despliegue siempre el tubo cuando la cosechadora esté llena y esperando el descargador."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Detener durante la descarga"/>
@@ -402,6 +405,7 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_errorNoPathFound" text="Ningún camino encontrado"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="No es posible volcar al suelo"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <!---->
     <!--Custom field manager-->
     <!---->

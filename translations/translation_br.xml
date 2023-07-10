@@ -112,6 +112,7 @@
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador AI %s parou de funcionar inesperadamente - nenhum caminho encontrado!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - não é possível descarregar no campo!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -199,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Manter o tubo desdobrado"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Desdobrar o tubo quando a colheitadeira estiver cheia ou aguardando descarregar."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Parar enquanto descarrega"/>
@@ -402,6 +405,7 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_errorNoPathFound" text="Caminho não encontrado"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Inclinação para o solo não é possível"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <!---->
     <!--Custom field manager-->
     <!---->

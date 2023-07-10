@@ -112,6 +112,7 @@
     <text name="CP_ai_messageErrorNoPathFound" text="L'operatore IA %s ha interrotto il lavoro in modo imprevisto - nessun percorso trovato!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Il lavoratore IA %s ha interrotto il lavoro in modo imprevisto - lo scarico sul campo non è possibile!"/>
     <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -199,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Aprire sempre il tubo"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Aprire sempre il tubo quando la mietitrebbia è piena e attende lo scaricatore"/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Fermati durante lo scarico"/>
@@ -402,6 +405,7 @@ Il percorso viene salvato automaticamente alla chiusura dell'editor e sovrascriv
     <text name="CP_infoTexts_errorNoPathFound" text="Nessun percorso trovato"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Scarico a terra non supportato"/>
     <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <!---->
     <!--Custom field manager-->
     <!---->
