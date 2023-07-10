@@ -267,8 +267,8 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             refNode = self.unloadTrigger:getTrigger():getFillUnitExactFillRootNode()
         end
         if self.shovelController:isShovelOverTrailer(refNode) then 
-            -- self:setNewState(self.states.UNLOADING)
-            -- self:setMaxSpeed(0)
+            self:setNewState(self.states.UNLOADING)
+            self:setMaxSpeed(0)
         end
         if not self.isUnloadingAtTrailerActive then 
             if self.shovelController:isShovelOverTrailer(refNode, 3) and self.shovelController:canDischarge() then 
