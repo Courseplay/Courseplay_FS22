@@ -114,6 +114,10 @@ function AIDriveStrategyAttachHeader:update(dt)
         if self.pathfinder then
             PathfinderUtil.showNodes(self.pathfinder)
         end
+        if self.trailerAreaToAvoid then
+            --  DebugUtil.drawDebugCube(self.trailerAreaNode, self.trailer.size.width, self.trailer.size.height, self.trailer.size.length, 0, 0, 1)
+            self.trailerAreaToAvoid:drawDebug()
+        end
     end
     if CpDebug:isChannelActive(CpDebug.DBG_FIELDWORK, self.vehicle) then
         if self.course and  self.course:isTemporary() then
@@ -124,10 +128,6 @@ function AIDriveStrategyAttachHeader:update(dt)
         if self.cutterNode then 
             CpUtil.drawDebugNode(self.cutterNode, false, 3)
         end
-    end
-    if self.trailerAreaToAvoid then
-      --  DebugUtil.drawDebugCube(self.trailerAreaNode, self.trailer.size.width, self.trailer.size.height, self.trailer.size.length, 0, 0, 1)
-        self.trailerAreaToAvoid:drawDebug()
     end
 end
 
