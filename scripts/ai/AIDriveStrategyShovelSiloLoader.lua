@@ -309,6 +309,7 @@ function AIDriveStrategyShovelSiloLoader:update(dt)
         if self.silo then 
             self.silo:drawDebug()
         end
+        self.siloController:draw()
         if self.heapSilo then 
             CpUtil.drawDebugNode(self.heapNode, false, 3)
         end
@@ -465,7 +466,7 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToUnloadPosition(path,
         self:setNewState(self.states.DRIVING_TO_UNLOAD_POSITION)
     else 
         self:debug("Failed to drive close to unload position.")
-        --self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     end
 end
 
@@ -509,13 +510,9 @@ function AIDriveStrategyShovelSiloLoader:startDrivingToSilo()
     local startPos, endPos = self.siloController:getTarget(self:getWorkWidth())
     local x, z = unpack(startPos)
     local dx, dz = unpack(endPos)
-
     local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
         0, 0, 3, 3, false)
-
-
     local distance = siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
-
     if distance > 1.5 * self.turningRadius then
         self:debug("Start driving to silo with pathfinder.")
         self:startPathfindingToStart(siloCourse)
@@ -530,7 +527,6 @@ function AIDriveStrategyShovelSiloLoader:startDrivingOutOfSilo()
     local startPos, endPos = self.siloController:getLastTarget()
     local x, z = unpack(endPos)
     local dx, dz = unpack(startPos)
-
     local reverseCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
         0, 0, 6, 3, true)
     local ix = reverseCourse:getNextRevWaypointIxFromVehiclePosition(1, self.vehicle:getAIDirectionNode(), 10)   
@@ -584,7 +580,6 @@ function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
             return false
         end
     end
-
     return false
 end
 
