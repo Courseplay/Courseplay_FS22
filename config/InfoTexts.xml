@@ -14,24 +14,25 @@
 -->
 
 <InfoTexts prefix="CP_infoTexts_">
-	<InfoText name="ERROR_STOPPED"						text="errorStopped" class="AIMessageCpError"/>
-	<InfoText name="ERROR_NO_PATH_FOUND"				text="errorNoPathFound" class="AIMessageCpErrorNoPathFound"/>
-	<InfoText name="ERROR_GROUND_UNLOAD_NOT_SUPPORTED"	text="errorGroundUnloadNotSupported" class="AIMessageErrorGroundUnloadNotSupported"/>
-	<InfoText name="ERROR_CUTTER_NOT_SUPPORTED"			text="errorCutterNotSupported" class="AIMessageErrorCutterNotSupported"/>
+	<InfoText name="ERROR_STOPPED"							text="errorStopped" class="AIMessageCpError"/>
+	<InfoText name="ERROR_NO_PATH_FOUND"					text="errorNoPathFound" class="AIMessageCpErrorNoPathFound"/>
+	<InfoText name="ERROR_GROUND_UNLOAD_NOT_SUPPORTED"		text="errorGroundUnloadNotSupported" class="AIMessageErrorGroundUnloadNotSupported"/>
+	<InfoText name="ERROR_CUTTER_NOT_SUPPORTED"				text="errorCutterNotSupported" class="AIMessageErrorCutterNotSupported"/>
+	<InfoText name="ERROR_AUTOMATIC_CUTTER_ATTACH_DISABLED" text="errorAutomaticCutterAttachNotActive" class="AIMessageErrorAutomaticCutterAttachNotActive"/>
 
-	<InfoText name="IS_STUCK"							text="isStuck"/>
-	<InfoText name="BLOCKED_BY_OBJECT"  				text="blockedByObject" class="AIMessageErrorBlockedByObject"/>
+	<InfoText name="IS_STUCK"								text="isStuck"/>
+	<InfoText name="BLOCKED_BY_OBJECT"  					text="blockedByObject" class="AIMessageErrorBlockedByObject"/>
 
-	<InfoText name="OUT_OF_MONEY"						text="outOfMoney"	  class="AIMessageErrorOutOfMoney"/>
-	<InfoText name="WRONG_BALE_WRAP_TYPE"				text="wrongBaleWrapType" class="AIMessageErrorWrongBaleWrapType"/>
-	<InfoText name="FUEL_IS_EMPTY"  					text="needsFuel"      hasFinished="true" event="onCpFuelEmpty" class="AIMessageErrorOutOfFuel"/>
-	<InfoText name="IS_COMPLETELY_BROKEN"  				text="needsRepair"    hasFinished="true" event="onCpBroken" class="AIMessageErrorVehicleBroken"/>
-	<InfoText name="NEEDS_FILLING"  					text="needsFilling"   hasFinished="true" event="onCpEmpty" class="AIMessageErrorOutOfFill"/>
-	<InfoText name="NEEDS_UNLOADING"  					text="needsUnloading" hasFinished="true" event="onCpFull" class="AIMessageErrorIsFull"/>
-	<InfoText name="FUEL_IS_LOW"						text="shouldRefuel"/>
-	<InfoText name="WAITING_FOR_RAIN_TO_FINISH" 		text="waitForRainToFinish"/>
-	<InfoText name="WAITING_FOR_UNLOADER" 				text="waitForUnloader"/>
-	<InfoText name="WORK_FINISHED"						text="workFinished"   hasFinished="true" event="onCpFinished" class="AIMessageSuccessFinishedJob"/>
-	<InfoText name="DRIVING_TO_COMBINE"					text="drivingToCombine"/>
-	<InfoText name="DRIVING_TO_SELF_UNLOAD"				text="drivingToSelfUnload"/>
+	<InfoText name="OUT_OF_MONEY"							text="outOfMoney"	  class="AIMessageErrorOutOfMoney"/>
+	<InfoText name="WRONG_BALE_WRAP_TYPE"					text="wrongBaleWrapType" class="AIMessageErrorWrongBaleWrapType"/>
+	<InfoText name="FUEL_IS_EMPTY"  						text="needsFuel"      hasFinished="true" event="onCpFuelEmpty" class="AIMessageErrorOutOfFuel"/>
+	<InfoText name="IS_COMPLETELY_BROKEN"  					text="needsRepair"    hasFinished="true" event="onCpBroken" class="AIMessageErrorVehicleBroken"/>
+	<InfoText name="NEEDS_FILLING"  						text="needsFilling"   hasFinished="true" event="onCpEmpty" class="AIMessageErrorOutOfFill"/>
+	<InfoText name="NEEDS_UNLOADING"  						text="needsUnloading" hasFinished="true" event="onCpFull" class="AIMessageErrorIsFull"/>
+	<InfoText name="FUEL_IS_LOW"							text="shouldRefuel"/>
+	<InfoText name="WAITING_FOR_RAIN_TO_FINISH" 			text="waitForRainToFinish"/>
+	<InfoText name="WAITING_FOR_UNLOADER" 					text="waitForUnloader"/>
+	<InfoText name="WORK_FINISHED"							text="workFinished"   hasFinished="true" event="onCpFinished" class="AIMessageSuccessFinishedJob"/>
+	<InfoText name="DRIVING_TO_COMBINE"						text="drivingToCombine"/>
+	<InfoText name="DRIVING_TO_SELF_UNLOAD"					text="drivingToSelfUnload"/>
 </InfoTexts>

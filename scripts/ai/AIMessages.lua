@@ -90,6 +90,21 @@ function AIMessageErrorCutterNotSupported:getMessage()
 	return g_i18n:getText("CP_ai_messageErrorCutterNotSupported")
 end
 
+AIMessageErrorAutomaticCutterAttachNotActive = {
+	name = "CP_ERROR_AUTOMATIC_CUTTER_ATTACH_NOT_ACTIVE"
+}
+local AIMessageErrorAutomaticCutterAttachNotActive_mt = Class(AIMessageErrorAutomaticCutterAttachNotActive, AIMessage)
+
+function AIMessageErrorAutomaticCutterAttachNotActive.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorAutomaticCutterAttachNotActive_mt)
+
+	return self
+end
+
+function AIMessageErrorAutomaticCutterAttachNotActive:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorAutomaticCutterAttachNotActive")
+end
+
 
 
 function AIMessageErrorIsFull.register()

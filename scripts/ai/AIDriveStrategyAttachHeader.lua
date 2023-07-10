@@ -41,8 +41,8 @@ AIDriveStrategyAttachHeader.myStates = {
     REVERSING_FROM_CUTTER = {} --- If the cutter was on an extern trailer, drive back a bit.
 }
 AIDriveStrategyAttachHeader.MODES = {
-    ATTACH_HEADER_FROM_ATTACHED_TRAILER = 1,
-    ATTACH_HEADER_WITH_WHEELS_ATTACHED = 2,
+    ATTACH_HEADER_FROM_ATTACHED_TRAILER = 1, --- The cutter/header is on an extern trailer.
+    ATTACH_HEADER_WITH_WHEELS_ATTACHED = 2, --- The cutter/header is foldable with attached wheels for transport without an extra trailer.
 }
 AIDriveStrategyAttachHeader.DRIVING_AWAY_FROM_HEADER_FORWARD_DISTANCE = 6
 
@@ -86,12 +86,8 @@ function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
     self.attachableController = AttachableController(vehicle, self.trailer)
     self.attacherJointController = AttacherJointController(vehicle, vehicle)
     self:appendImplementController(self.attacherJointController)
-
     local trailerAreaNode = createTransformGroup("tempTrailerNode")
-	-- link(self.trailer.rootNode, self.trailerAreaNode)
-	-- setTranslation(self.trailerAreaNode, self.trailer.size.widthOffset, self.trailer.size.heightOffset + self.trailer.size.height / 2, self.trailer.size.lengthOffset)
     self.trailerAreaToAvoid =  PathfinderUtil.NodeArea(trailerAreaNode, -self.trailer.size.width/2, -self.trailer.size.length/2, self.trailer.size.width, self.trailer.size.length)
-
 end
 
 function AIDriveStrategyAttachHeader:setAllStaticParameters()
@@ -148,8 +144,12 @@ function AIDriveStrategyAttachHeader:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
     elseif self.state == self.states.INITIAL then
         self:setMaxSpeed(0)
-        self.attachableController:detach()
-        self.state = self.states.WAITING_FOR_DETACH_TO_FINISH
+        if not self.settings.automaticCutterAttach:getValue() then 
+            self.vehicle:stopCurrentAIJob(AIMessageErrorAutomaticCutterAttachNotActive.new())
+        else 
+            self.attachableController:detach()
+            self.state = self.states.WAITING_FOR_DETACH_TO_FINISH
+        end
     elseif self.state == self.states.WAITING_FOR_DETACH_TO_FINISH then
         self:setMaxSpeed(0)
         if not self.attachableController:isDetachActive() then 
