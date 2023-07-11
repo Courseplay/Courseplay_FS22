@@ -431,6 +431,7 @@ end
 ---@return number|nil target implement fill unit ix to load into.
 ---@return number|nil fill type to load
 ---@return number|nil target exact fill root node
+---@return number|nil alternative fill type, when the implement gets turned on
 function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, dischargeNode, debugFunc)
     
     local function debug(str, ...)
@@ -448,7 +449,15 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
     end
 
     local fillType = implementToLoadFrom:getDischargeFillType(dischargeNode)
-
+    local alternativeFillType
+    if implementToLoadFrom.spec_turnOnVehicle then 
+        --- The discharge node flips when the implement gets turned on.
+        --- The fill type might be different then.
+        local turnOnDischargeNode = implementToLoadFrom.spec_turnOnVehicle.activateableDischargeNode
+        if turnOnDischargeNode then 
+            alternativeFillType = implementToLoadFrom:getDischargeFillType(turnOnDischargeNode)
+        end
+    end
     if fillType == nil or fillType == FillType.UNKNOWN then 
         debug("No valid fill type to load!")
         return false, nil, nil, nil
@@ -460,16 +469,19 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
     ---@return number|nil
     ---@return number|nil
     local function canLoad(fillUnitIndex)
-        if not loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, fillType) then
+        if  not loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, fillType) and 
+            not loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, alternativeFillType)  then
             debug("Fill unit(%d) doesn't support fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
             return false
         end
-        if not loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, fillType) then 
+        if not loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, fillType) and 
+            not loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, alternativeFillType) then
             debug("Fill unit(%d) doesn't allow fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
             return false
         end
         if loadTargetImplement.getFillUnitFreeCapacity and 
-            loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, fillType, implementToLoadFrom:getActiveFarm()) <= 0 then
+            loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, fillType, implementToLoadFrom:getActiveFarm()) <= 0 and
+            loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, alternativeFillType, implementToLoadFrom:getActiveFarm()) <= 0 then
             debug("Fill unit(%d) is full with fill type %s!", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
             return false  
         end
@@ -490,6 +502,6 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
         end
     end
 
-    return validTarget, targetFillUnitIndex, fillType, exactFillRootNode
+    return validTarget, targetFillUnitIndex, fillType, exactFillRootNode, alternativeFillType
 end
 
