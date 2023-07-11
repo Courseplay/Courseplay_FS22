@@ -181,7 +181,7 @@ end
 function CpAISiloLoaderWorker:startCpSiloLoaderWorker(jobParameters, bunkerSilo, heap, unloadTrigger)
     if self.isServer then 
         local strategy
-        if AIUtil.hasAIImplementWithSpecialization(self, ConveyorBelt) then 
+        if SpecializationUtil.hasSpecialization(ConveyorBelt, self.specializations) then 
             CpUtil.debugVehicle(CpDebug.DBG_SILO, self, "Starting a silo loader strategy.")
             strategy = AIDriveStrategySiloLoader.new()
         else 

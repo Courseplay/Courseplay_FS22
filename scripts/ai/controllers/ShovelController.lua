@@ -87,29 +87,18 @@ function ShovelController:isHighDumpShovel()
     return g_vehicleConfigurations:get(self.implement, "shovelMovingToolIx") ~= nil
 end
 
-function ShovelController:moveShovelToLoadingPosition()
-    return self:moveShovelToPosition(self.POSITIONS.LOADING)
-end
-
-function ShovelController:moveShovelToTransportPosition()
-    return self:moveShovelToPosition(self.POSITIONS.TRANSPORT)
-end
-
-function ShovelController:moveShovelToPreUnloadPosition()
-    return self:moveShovelToPosition(self.POSITIONS.PRE_UNLOADING)
-end
-
-function ShovelController:moveShovelToUnloadPosition()
-    return self:moveShovelToPosition(self.POSITIONS.UNLOADING)
-end
-
 function ShovelController:onFinished()
-    self.implement:cpResetShovelState()
+    if self.implement.cpResetShovelState then
+        self.implement:cpResetShovelState()
+    end
 end
 
 ---@param pos number shovel position 1-4
 ---@return boolean reached? 
 function ShovelController:moveShovelToPosition(pos)
+    if self.implement.cpSetShovelState == nil then 
+        return false
+    end
     self.implement:cpSetShovelState(pos)
     return self.implement:areCpShovelPositionsDirty()
 end
