@@ -2,11 +2,11 @@
 ---@class CpHudInfoTexts
 CpHudInfoTexts = CpObject()
 CpHudInfoTexts.baseSize = {
-	x = 300,
+	x = 350,
     y = 300
 }
 CpHudInfoTexts.basePosition = {
-	x = 1920 - 250,
+	x = 1920 - 300,
     y = 1080 - 100
 }
 CpHudInfoTexts.titleFontSize = 14
