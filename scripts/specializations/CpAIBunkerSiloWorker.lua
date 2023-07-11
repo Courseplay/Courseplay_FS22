@@ -95,12 +95,13 @@ end
 
 --- Is the bunker silo allowed?
 function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
+    if AIUtil.hasChildVehicleWithSpecialization(self, Shovel) then 
+        return false
+    end
 	return not self:getCanStartCpFieldWork() 
         and not self:getCanStartCpBaleFinder() 
         and not self:getCanStartCpCombineUnloader()
         and not self:getCanStartCpSiloLoaderWorker()
-        and (not self:hasCpCourse() or AIUtil.hasChildVehicleWithSpecialization(self, Leveler))
-        and not AIUtil.hasChildVehicleWithSpecialization(self, Shovel)
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)
@@ -110,9 +111,6 @@ end
 function CpAIBunkerSiloWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAIBunkerSiloWorker
     local job = self:getCanStartCpBunkerSiloWorker() and spec.cpJob
-    if isStartedByHud then 
-        job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_BUNKER_SILO and job
-    end
 	return superFunc(self, isStartedByHud) or job
 end
 

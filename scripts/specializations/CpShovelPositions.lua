@@ -278,14 +278,21 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 	
 	local attacherJointNode = self.spec_attachable.attacherJoint.node
 	local angle, shovelNode = CpShovelPositions.getShovelData(self)
-	local _, shovelY, _ = localToLocal(shovelNode, attacherJointNode, 0, 0, 0)
+	local _, shovelY, _ = localToLocal(self.rootNode, attacherJointNode, 0, 0, 0)
 	
+	--- local tempNode = createTransformGroup("tempVehicleSizeCenter")
+	-- link(vehicle.rootNode, tempNode)
+	-- setTranslation(tempNode, vehicle.size.widthOffset, vehicle.size.heightOffset + vehicle.size.height / 2, vehicle.size.lengthOffset)
+	-- DebugUtil.drawDebugCube(tempNode, vehicle.size.width, vehicle.size.height, vehicle.size.length, 0, 0, 1)
+	-- delete(tempNode)
+
+
 	--- All values will be calculated in the coordinate system from the vehicle root node.
 
 	local _, ty, tz = localToLocal(getChildAt(armTool.node, 0), armVehicle.rootNode, 0, 0, 0)
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
-	local sx, sy, sz = 0, targetHeight - shovelY, 0
-	local ex, ey, ez = 0, targetHeight - shovelY, 20
+	local sx, sy, sz = 0, targetHeight - shovelY - self.size.heightOffset, 0
+	local ex, ey, ez = 0, targetHeight - shovelY - self.size.heightOffset, 20
 	local yMax = ay + radiusArmToolToShovelTool
 	if sy > yMax then 
 		--- Makes sure the target height is still reachable
