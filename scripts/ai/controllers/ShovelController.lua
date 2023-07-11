@@ -13,6 +13,7 @@ function ShovelController:init(vehicle, implement)
     ImplementController.init(self, vehicle, implement)
     self.shovelSpec = self.implement.spec_shovel
     self.shovelNode = self.shovelSpec.shovelNodes[1]
+    self.turnOnSpec = self.implement.spec_turnOnVehicle
 end
 
 function ShovelController:update()
@@ -96,6 +97,20 @@ end
 ---@param pos number shovel position 1-4
 ---@return boolean reached? 
 function ShovelController:moveShovelToPosition(pos)
+    if self.turnOnSpec then
+        if pos == ShovelController.POSITIONS.UNLOADING then 
+            if not self.implement:getIsTurnedOn() and self.implement:getCanBeTurnedOn() then 
+                self.implement:setIsTurnedOn(true)
+                self:debug("Turning on the shovel.")
+            end
+            return false
+        else
+            if self.implement:getIsTurnedOn() then 
+                self.implement:setIsTurnedOn(false)
+                self:debug("turning off the shovel.")
+            end
+        end
+    end
     if self.implement.cpSetShovelState == nil then 
         return false
     end

@@ -148,9 +148,12 @@ function CpSiloLoaderWorkerHudPageElement:arePositionEqual(parameters, otherPara
 end
 
 function CpSiloLoaderWorkerHudPageElement:isStartingPointBtnDisabled(vehicle)
-    return AIUtil.hasAIImplementWithSpecialization(vehicle, ConveyorBelt)
+    return AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt)
 end
 
 function CpSiloLoaderWorkerHudPageElement:getStartingPointBtnText(vehicle)
+    if self:isStartingPointBtnDisabled(vehicle) then 
+        return vehicle:getCpStartText()
+    end
     return vehicle:getCpStartingPointSetting():getString()
 end
