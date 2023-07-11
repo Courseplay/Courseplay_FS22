@@ -89,10 +89,8 @@ function AIDriveStrategyShovelSiloLoader:setSiloAndHeap(bunkerSilo, heapSilo)
 end
 
 ---@param unloadTrigger CpTrigger
----@param unloadStation table
-function AIDriveStrategyShovelSiloLoader:setUnloadTriggerAndStation(unloadTrigger, unloadStation)
+function AIDriveStrategyShovelSiloLoader:setUnloadTrigger(unloadTrigger)
     self.unloadTrigger = unloadTrigger
-    self.unloadStation = unloadStation
 end
 
 function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
@@ -104,15 +102,19 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
     self.jobParameters = jobParameters
     self.unloadPositionNode = CpUtil.createNode("unloadPositionNode", 0, 0, 0) 
 
+    --- Is the unload target a trailer?
     self.isUnloadingAtTrailerActive = jobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRAILER
     if not self.isUnloadingAtTrailerActive then 
         self:debug("Starting shovel silo to unload into unload trigger.")
-        local x, y, z = getWorldTranslation(self.unloadTrigger:getTrigger():getFillUnitExactFillRootNode())
+        --- Uses the exactFillRootNode from the trigger 
+        --- and the direction of the unload position marker
+        --- to place the unload position node slightly in front.
+        local x, y, z = getWorldTranslation(self.unloadTrigger:getFillUnitExactFillRootNode())
         setTranslation(self.unloadPositionNode, x, y, z)
         local position = jobParameters.unloadPosition
         local dirX, dirZ = position:getDirection()
         setDirection(self.unloadPositionNode, dirX, 0, dirZ, 0, 0, 1)
-        local dx, dy, dz = localToWorld(self.unloadPositionNode, 0, 0, -self.distShovelUnloadStationPreUnload)
+        local dx, dy, dz = localToWorld(self.unloadPositionNode, 0, 0, -math.max(self.distShovelTrailerPreUnload, self.turningRadius))
         setTranslation(self.unloadPositionNode, dx, dy, dz)
     else 
         self:debug("Starting shovel silo to unload into trailer.")
@@ -192,7 +194,6 @@ function AIDriveStrategyShovelSiloLoader:onWaypointPassed(ix, course)
             else 
                 self:setNewState(self.states.WAITING_FOR_TRAILER)
             end
-            --self.vehicle:stopCurrentAIJob(AIMessageSuccessFinishedJob.new())
         end
     end
 end
@@ -258,13 +259,17 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             self:searchForTrailerToUnloadInto()
             self.lastTrailerSearch = g_time
         end
+        if CpDebug:isChannelActive(CpDebug.DBG_SILO, self.vehicle) then
+            DebugUtil.drawDebugCircleAtNode(self.siloFrontNode, self.maxValidTrailerDistanceToSiloFront, 
+                math.ceil(self.maxValidTrailerDistanceToSiloFront), nil, false, {0, 3, 0})
+        end
     elseif self.state == self.states.DRIVING_TO_UNLOAD then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         local refNode
         if self.isUnloadingAtTrailerActive then 
             refNode = self.targetTrailer.exactFillRootNode
         else 
-            refNode = self.unloadTrigger:getTrigger():getFillUnitExactFillRootNode()
+            refNode = self.unloadTrigger:getFillUnitExactFillRootNode()
         end
         if self.shovelController:isShovelOverTrailer(refNode) then 
             self:setNewState(self.states.UNLOADING)
@@ -336,17 +341,111 @@ function AIDriveStrategyShovelSiloLoader:getProximitySensorWidth()
     return self.vehicle.size.width - 0.5
 end
 
+function AIDriveStrategyShovelSiloLoader:getWorkWidth()
+    return self.settings.bunkerSiloWorkWidth:getValue()
+end
+
 function AIDriveStrategyShovelSiloLoader:setNewState(newState)
     self:debug("Changed State from %s to %s", self.state.name, newState.name)
     self.state = newState
 end
 
+--- Is the trailer valid or not?
+---@param trailer table
+---@param trailerToIgnore table|nil
+---@return boolean
+---@return table|nil
+function AIDriveStrategyShovelSiloLoader:isValidTrailer(trailer, trailerToIgnore)
+    local function debug(...)
+        self:debug("%s attached to: %s => %s", CpUtil.getName(trailer), 
+                trailer.rootVehicle and CpUtil.getName(trailer.rootVehicle) or "no root vehicle", string.format(...))
+    end
+    if not SpecializationUtil.hasSpecialization(Trailer, trailer.specializations) then 
+        return false
+    end
+    if trailer.rootVehicle and not AIUtil.isStopped(trailer.rootVehicle) then 
+        self:debug("is not stopped!", CpUtil.getName(trailer))
+        return false
+    end
+    if trailerToIgnore and table.hasElement(trailerToIgnore, trailer) then 
+        debug("will be ignored!", CpUtil.getName(trailer))
+        return false
+    end       
+    local canLoad, fillUnitIndex, fillType, exactFillRootNode = 
+        ImplementUtil.getCanLoadTo(trailer, self.shovelImplement, 
+        nil, debug) 
+    if not canLoad or exactFillRootNode == nil then 
+        debug("can't be used!", CpUtil.getName(trailer))
+        return false
+    end
+    return true, {  fillUnitIndex = fillUnitIndex,
+                    fillType = fillType,
+                    exactFillRootNode = exactFillRootNode,
+                    trailer = trailer } 
+end
+
+--- Gets the closest trailer data with the distance
+---@param trailerToIgnore table|nil optional trailers that will be ignored.
+---@return table|nil
+---@return number
+function AIDriveStrategyShovelSiloLoader:getClosestTrailerAndDistance(trailerToIgnore)
+    local closestDistance = math.huge
+    local closestTrailerData = nil
+    for i, vehicle in pairs(g_currentMission.vehicles) do 
+        local dist = calcDistanceFrom(vehicle.rootNode, self.siloFrontNode)
+        if dist < closestDistance then 
+            local valid, trailerData = self:isValidTrailer(vehicle, trailerToIgnore) 
+            if valid then
+                closestDistance = dist
+                closestTrailerData = trailerData
+            end
+        end
+    end
+    return closestTrailerData, closestDistance
+end
+
+--- Searches for trailer to unload into in a maximum radius relative to the silo front center.
+function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
+    self:debug("Searching for an trailer nearby.")
+    local trailerData, dist = self:getClosestTrailerAndDistance({})
+    if not trailerData then 
+        self:debug("No valid trailer found anywhere!")
+        return
+    end
+    local trailer = trailerData.trailer
+    if dist > self.maxValidTrailerDistanceToSiloFront then
+        self:debug("Closest Trailer %s attached to %s with the distance %.2fm/%.2fm found is to far away!", 
+            CpUtil.getName(trailer), trailer.rootVehicle and CpUtil.getName(trailer.rootVehicle) or "no root vehicle",
+            dist, self.maxValidTrailerDistanceToSiloFront)
+        return
+    end
+    --- Sets the unload position node in front of the closest side of the trailer.
+    self:debug("Found a valid trailer %s within distance %.2f", CpUtil.getName(trailer), dist)
+    self.targetTrailer = trailerData
+    local _, _, distShovelDirectionNode = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
+    local dirX, _, dirZ = localDirectionToWorld(trailer.rootNode, 0, 0, 1)
+    local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+    local dx, _, dz = localToLocal(self.shovelController:getShovelNode(), trailer.rootNode, 0, 0, 0)
+    if dx > 0 then 
+        local x, y, z = localToWorld(trailer.rootNode, math.abs(distShovelDirectionNode) + self.distShovelTrailerPreUnload, 0, 0)
+        setTranslation(self.unloadPositionNode, x, y, z)
+        setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot - math.pi/2), 0)
+    else 
+        local x, y, z = localToWorld(trailer.rootNode, -math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
+        setTranslation(self.unloadPositionNode, x, y, z)
+        setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot + math.pi/2), 0)
+    end
+    self:startPathfindingToTrailer()
+end
+
+
+
 ----------------------------------------------------------------
 --- Pathfinding
 ----------------------------------------------------------------
 
---- Find an alignment path to the heap course.
----@param course table heap course
+--- Find an alignment path to the silo lane course.
+---@param course table silo lane course
 function AIDriveStrategyShovelSiloLoader:startPathfindingToStart(course)
     if not self.pathfinder or not self.pathfinder:isActive() then
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
@@ -369,74 +468,19 @@ end
 
 function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToStart(path)
     if path and #path > 2 then
-        self:debug("Found alignment path to the course for the heap.")
+        self:debug("Found alignment path to the course for the silo.")
         local alignmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         self:startCourse(alignmentCourse, 1)
         self:setNewState(self.states.DRIVING_ALIGNMENT_COURSE)
     else 
         local course = self:getRememberedCourseAndIx()
-        self:debug("No alignment path found!")
+        self:debug("No alignment path found, so driving directly to the course!")
         self:startCourse(course, 1)
         self:setNewState(self.states.DRIVING_INTO_SILO)
     end
 end
 
-
-function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
-    self:debug("Searching for an trailer nearby.")
-    local function getClosestTrailerAndDistance()
-        local closestDistance = math.huge
-        local closestTrailer = nil
-        for i, vehicle in pairs(g_currentMission.vehicles) do 
-            if SpecializationUtil.hasSpecialization(Trailer, vehicle.specializations) and AIUtil.isStopped(vehicle.rootVehicle) then 
-                local dist = calcDistanceFrom(vehicle.rootNode, self.siloFrontNode)
-                if dist < closestDistance then 
-                    closestDistance = dist
-                    closestTrailer = vehicle
-                end
-            end
-        end
-        return closestTrailer, closestDistance
-    end
-    local trailer, dist = getClosestTrailerAndDistance()
-    if not trailer then 
-        self:debug("No valid trailer found anywhere!")
-        return
-    end
-    if dist > self.maxValidTrailerDistanceToSiloFront then
-        self:debug("No Trailer with the max distance found, closest: %.2f", dist)
-        return
-    end
-    self:debug("Found a trailer %s within distance %.2f", CpUtil.getName(trailer), dist)
-    local canLoad, fillUnitIndex, fillType, exactFillRootNode = 
-                    ImplementUtil.getCanLoadTo(trailer, self.shovelImplement) 
-    if canLoad and exactFillRootNode ~= nil then 
-        self.targetTrailer = {
-            fillUnitIndex = fillUnitIndex,
-            fillType = fillType,
-            exactFillRootNode = exactFillRootNode,
-            trailer = trailer
-        }
-        self:debug("Unloading to trailer %s in distance %.2f.", CpUtil.getName(trailer), dist)
-        local _, _, distShovelDirectionNode = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
-        local dirX, _, dirZ = localDirectionToWorld(trailer.rootNode, 0, 0, 1)
-        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
-        local dx, _, dz = localToLocal(self.shovelController:getShovelNode(), trailer.rootNode, 0, 0, 0)
-        if dx > 0 then 
-            local x, y, z = localToWorld(trailer.rootNode, math.abs(distShovelDirectionNode) + self.distShovelTrailerPreUnload, 0, 0)
-            setTranslation(self.unloadPositionNode, x, y, z)
-            setRotation(self.unloadPositionNode, 0, MathUtil.getValidLimit(yRot - math.pi/2), 0)
-        else 
-            local x, y, z = localToWorld(trailer.rootNode, -math.abs(distShovelDirectionNode) - self.distShovelTrailerPreUnload, 0, 0)
-            setTranslation(self.unloadPositionNode, x, y, z)
-            setRotation(self.unloadPositionNode, 0,  MathUtil.getValidLimit(yRot + math.pi/2), 0)
-        end
-        self:startPathfindingToTrailer()
-    else 
-        self:debug("Unloading into trailer %s not possible.", CpUtil.getName(trailer))
-    end
-end
-
+--- Starts Pathfinding to the position node in front of a unload trigger.
 function AIDriveStrategyShovelSiloLoader:startPathfindingToUnloadPosition()
     if not self.pathfinder or not self.pathfinder:isActive() then
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
@@ -466,10 +510,11 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToUnloadPosition(path,
         self:setNewState(self.states.DRIVING_TO_UNLOAD_POSITION)
     else 
         self:debug("Failed to drive close to unload position.")
-        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+      --  self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
     end
 end
 
+--- Starts Pathfinding to the position node in front of the trailer side.  
 function AIDriveStrategyShovelSiloLoader:startPathfindingToTrailer()
     if not self.pathfinder or not self.pathfinder:isActive() then
         self:setNewState(self.states.WAITING_FOR_PATHFINDER)
@@ -506,24 +551,27 @@ end
 --- Silo work
 ----------------------------------------------------------------
 
+--- Starts driving into the silo lane
 function AIDriveStrategyShovelSiloLoader:startDrivingToSilo()
+    --- Creates a straight course in the silo.
     local startPos, endPos = self.siloController:getTarget(self:getWorkWidth())
     local x, z = unpack(startPos)
     local dx, dz = unpack(endPos)
     local siloCourse = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
         0, 0, 3, 3, false)
     local distance = siloCourse:getDistanceBetweenVehicleAndWaypoint(self.vehicle, 1)
-    if distance > 1.5 * self.turningRadius then
+    if distance > self.turningRadius then
         self:debug("Start driving to silo with pathfinder.")
         self:startPathfindingToStart(siloCourse)
     else
-        self:debug("Start driving into the silo.")
+        self:debug("Start driving into the silo directly.")
         self:startCourse(siloCourse, 1)
         self:setNewState(self.states.DRIVING_INTO_SILO)
     end
 end
 
 function AIDriveStrategyShovelSiloLoader:startDrivingOutOfSilo()
+    --- Creates the straight reverse course.
     local startPos, endPos = self.siloController:getLastTarget()
     local x, z = unpack(endPos)
     local dx, dz = unpack(startPos)
@@ -537,6 +585,7 @@ function AIDriveStrategyShovelSiloLoader:startDrivingOutOfSilo()
     self:setNewState(self.states.DRIVING_OUT_OF_SILO)
 end
 
+--- Drives from the position node in front of the trailer to the trailer, so the unloading can begin after that.
 function AIDriveStrategyShovelSiloLoader:approachTrailerForUnloading()
     local dx, _, dz = getWorldTranslation(self.targetTrailer.exactFillRootNode)
     local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
@@ -547,8 +596,9 @@ function AIDriveStrategyShovelSiloLoader:approachTrailerForUnloading()
     self:setNewState(self.states.DRIVING_TO_UNLOAD)
 end
 
+--- Drives from the position node in front of the trigger to the unload trigger, so the unloading can begin after that.
 function AIDriveStrategyShovelSiloLoader:approachUnloadStationForUnloading()
-    local dx, _, dz = getWorldTranslation(self.unloadTrigger:getTrigger():getFillUnitExactFillRootNode())
+    local dx, _, dz = getWorldTranslation(self.unloadTrigger:getFillUnitExactFillRootNode())
     local x, _, z = getWorldTranslation(self.vehicle:getAIDirectionNode())
     local course = Course.createFromTwoWorldPositions(self.vehicle, x, z, dx, dz, 
         0, -3, 3, 2, false)
@@ -557,13 +607,12 @@ function AIDriveStrategyShovelSiloLoader:approachUnloadStationForUnloading()
     self:setNewState(self.states.DRIVING_TO_UNLOAD)
 end
 
-function AIDriveStrategyShovelSiloLoader:getWorkWidth()
-    return self.settings.bunkerSiloWorkWidth:getValue()
-end
-
 ----------------------------------------------------------------
 --- Unloading
 ----------------------------------------------------------------
+
+--- Is the unloading finished?
+---@return boolean
 function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
     if self.shovelController:isEmpty() then 
         self:debug("Finished unloading, as the shovel is empty.")
@@ -572,17 +621,18 @@ function AIDriveStrategyShovelSiloLoader:hasFinishedUnloading()
     if self.isUnloadingAtTrailerActive then 
         if self.targetTrailer.trailer:getFillUnitFreeCapacity(self.targetTrailer.fillUnitIndex) <= 0 then 
             self:debug("Trailer is full, abort unloading into trailer %s.", CpUtil.getName(self.targetTrailer.trailer))
+            self.targetTrailer = nil
             return true
         end
     else 
-        if self.unloadTrigger:getTrigger():getFillUnitFreeCapacity(1, self.shovelController:getDischargeFillType(), self.vehicle:getOwnerFarmId()) <= 0 then 
-            self:debug("Unload Trigger is full.")
-            return false
+        if self.unloadTrigger:getFillUnitFreeCapacity(1, self.shovelController:getDischargeFillType(), self.vehicle:getOwnerFarmId()) <= 0 then 
+            self:debugSparse("Unload Trigger is full.")
         end
     end
     return false
 end
 
+--- Starts reverse straight to make some space to the trailer or unload trigger.
 function AIDriveStrategyShovelSiloLoader:startReversingAwayFromUnloading()
     local _, _, spaceToTrailer = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
     local course = Course.createStraightReverseCourse(self.vehicle, 2*spaceToTrailer, 0 )

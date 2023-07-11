@@ -97,6 +97,9 @@ You can define the following custom settings:
 	Overrides the automatic selection of a moving tool for example for the shield controller of a snowcat.
 	Used to control the target tilt.
 
+- shovelMovingToolIx: number
+	If the shovel is a high dump shovel then this moving tool ix is needed.
+
 - modName: Name of the .zip file (without '.zip')
     In case a Mod has the same .xml filename for the vehicle/implement, as a default giants vehicle/implement,
     add the name of the .zip file to prevent conflicts. For example: "FS22_exampleMod".
@@ -317,7 +320,9 @@ You can define the following custom settings:
 	<Vehicle name="torion1914.xml"
              turnRadius = "12"
     />
-
+	<Vehicle name="wheelLoaderShovel.xml"
+             shovelMovingToolIx = "1"
+    />
 
     <!--[DLC]-->
 

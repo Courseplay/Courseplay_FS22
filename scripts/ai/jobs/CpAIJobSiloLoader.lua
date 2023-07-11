@@ -186,31 +186,47 @@ end
 ---@param unloadPosition CpAIParameterPositionAngle
 ---@return boolean
 ---@return table|nil
+---@return table|nil
 function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	local x, z = unloadPosition:getPosition()
 	local dirX, dirZ = unloadPosition:getDirection()
 	if x == nil or dirX == nil then
 		return false
 	end	
-	return g_triggerManager:getDischargeableUnloadTriggerAt( x, z, dirX, dirZ, 5, 5)
+	local fillType
+	local silo = self.heap or self.bunkerSilo
+	if silo then 
+		fillType = silo:getFillType()
+	end
+	local found, trigger, station = g_triggerManager:getDischargeableUnloadTriggerAt( x, z, dirX, dirZ, 5, 25)
+	if found and fillType~=nil then 
+		if not trigger:getIsFillTypeAllowed(fillType) then 
+			--- Fill type is not supported by the trigger.
+			return false
+		end
+	end
+	return found, trigger, station
 end
 
 function CpAIJobSiloLoader:drawSilos(map)
     self.heapPlot:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
 	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
-		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger)
+		local fillType
+		local silo = self.heap or self.bunkerSilo
+		if silo then 
+			fillType = silo:getFillType()
+		end
+		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillType)
 	end
 end
 
 
---- Gets the giants unload station.
+--- Gets the unload station.
 function CpAIJobSiloLoader:getUnloadingStations()
 	local unloadingStations = {}
 	for _, unloadingStation in pairs(g_currentMission.storageSystem:getUnloadingStations()) do
-		if g_currentMission.accessHandler:canPlayerAccess(unloadingStation) and unloadingStation:isa(UnloadingStation) then
-			table.insert(unloadingStations, unloadingStation)
-		end
+		table.insert(unloadingStations, unloadingStation)
 	end
 	return unloadingStations
 end

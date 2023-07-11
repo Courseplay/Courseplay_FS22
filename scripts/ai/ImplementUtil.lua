@@ -431,14 +431,11 @@ end
 ---@return number|nil target implement fill unit ix to load into.
 ---@return number|nil fill type to load
 ---@return number|nil target exact fill root node
-function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, dischargeNode, suppressLog)
+function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, dischargeNode, debugFunc)
     
     local function debug(str, ...)
-        if not suppressLog then
-            if g_updateLoopIndex % 100 == 0 then
-                CpUtil.debugVehicle(CpDebug.DBG_SILO, implementToLoadFrom.rootVehicle, 
-                    str, ...)
-            end
+        if debugFunc then
+            debugFunc(str, ...)
         end
     end
 
@@ -457,24 +454,39 @@ function ImplementUtil.getCanLoadTo(loadTargetImplement, implementToLoadFrom, di
         return false, nil, nil, nil
     end
 
+    --- Is the fill unit a valid load target?
+    ---@param fillUnitIndex number
+    ---@return boolean
+    ---@return number|nil
+    ---@return number|nil
+    local function canLoad(fillUnitIndex)
+        if not loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, fillType) then
+            debug("Fill unit(%d) doesn't support fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false
+        end
+        if not loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, fillType) then 
+            debug("Fill unit(%d) doesn't allow fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false
+        end
+        if loadTargetImplement.getFillUnitFreeCapacity and 
+            loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, fillType, implementToLoadFrom:getActiveFarm()) <= 0 then
+            debug("Fill unit(%d) is full with fill type %s!", fillUnitIndex, g_fillTypeManager:getFillTypeNameByIndex(fillType))
+            return false  
+        end
+        if loadTargetImplement.getIsFillAllowedFromFarm and 
+            not loadTargetImplement:getIsFillAllowedFromFarm(implementToLoadFrom:getActiveFarm()) then
+            debug("Fill unit(%d) filling to target farm %s from %s not allowed!", 
+                fillUnitIndex, loadTargetImplement:getOwnerFarmId(), implementToLoadFrom:getActiveFarm())
+            return false
+        end
+        return true, fillUnitIndex, loadTargetImplement:getFillUnitExactFillRootNode(fillUnitIndex)
+    end
+
     local validTarget, targetFillUnitIndex, exactFillRootNode
     for fillUnitIndex, fillUnit in pairs(loadTargetImplement:getFillUnits()) do 
-        if loadTargetImplement:getFillUnitSupportsFillType(fillUnitIndex, fillType) then
-            if loadTargetImplement:getFillUnitAllowsFillType(fillUnitIndex, fillType) then 
-                if loadTargetImplement.getFillUnitFreeCapacity == nil or loadTargetImplement:getFillUnitFreeCapacity(fillUnitIndex, fillType, implementToLoadFrom:getActiveFarm()) > 0 then
-                    if loadTargetImplement.getIsFillAllowedFromFarm == nil or loadTargetImplement:getIsFillAllowedFromFarm(implementToLoadFrom:getActiveFarm()) then
-                        validTarget, targetFillUnitIndex, exactFillRootNode = true, fillUnitIndex, loadTargetImplement:getFillUnitExactFillRootNode(fillUnitIndex)
-                    else
-                        debug("Fill unit(%d) filling to target farm %s from %s not allowed!", fillUnitIndex, loadTargetImplement:getOwnerFarmId(), implementToLoadFrom:getActiveFarm())
-                    end
-                else
-                    debug("Fill unit(%d) is full with fill type %s!", fillUnitIndex, g_fillTypeManager:getFillTypeTitleByIndex(fillType))
-                end
-            else
-                debug("Fill unit(%d) doesn't allow fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeTitleByIndex(fillType))
-            end
-        else
-            debug("Fill unit(%d) doesn't support fill type %s", fillUnitIndex, g_fillTypeManager:getFillTypeTitleByIndex(fillType))
+        validTarget, targetFillUnitIndex, exactFillRootNode = canLoad(fillUnitIndex)
+        if validTarget then 
+            break
         end
     end
 

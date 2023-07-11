@@ -101,8 +101,7 @@ function CpAIBunkerSiloWorker:getCanStartCpBunkerSiloWorker()
 
         and (not self:hasCpCourse() or
             AIUtil.hasChildVehicleWithSpecialization(self, Leveler))
-        and not (AIUtil.hasChildVehicleWithSpecialization(self, Shovel) 
-            and AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt))
+        and not AIUtil.hasChildVehicleWithSpecialization(self, Shovel)
 end
 
 function CpAIBunkerSiloWorker:getCanStartCp(superFunc)

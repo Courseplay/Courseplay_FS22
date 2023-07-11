@@ -547,7 +547,7 @@ function CpInGameMenuAIFrameExtended:startPickingPosition(superFunc, parameter, 
 		CpInGameMenuAIFrameExtended.resetHotspots(self)
 		self:updateParameterValueTexts()
 	end)
-
+	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
 	superFunc(self, parameter, callback, ...)
 end
 InGameMenuAIFrame.startPickPosition = Utils.overwrittenFunction(InGameMenuAIFrame.startPickPosition,
@@ -603,16 +603,16 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 		elseif parameterType == AIParameterType.POSITION or parameterType == AIParameterType.POSITION_ANGLE then
 			element:setText(parameter:getString())
 
-			g_currentMission:addMapHotspot(self.aiTargetMapHotspot)
+			g_currentMission:addMapHotspot(self.rawAiTargetMapHotspot)
 
 			local x, z = parameter:getPosition()
 
-			self.aiTargetMapHotspot:setWorldPosition(x, z)
+			self.rawAiTargetMapHotspot:setWorldPosition(x, z)
 
 			if parameterType == AIParameterType.POSITION_ANGLE then
 				local angle = parameter:getAngle() + math.pi
 
-				self.aiTargetMapHotspot:setWorldRotation(angle)
+				self.rawAiTargetMapHotspot:setWorldRotation(angle)
 			end
 		end
 	end

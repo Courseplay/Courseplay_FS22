@@ -250,7 +250,7 @@ function CpShovelPositions.setShovelPosition(dt, spec, shovel, shovelNode, angle
 		goalAngle)
 end
 
-function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits)
+function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits, useHighDumpShovel)
 	local min, max = unpack(shovelLimits)
 	local targetAngle = math.rad(min) + math.rad(max - min)/2
 	min, max = unpack(armLimits)
@@ -332,9 +332,24 @@ function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits)
 		local angle = MathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(alpha, yRot), armTool.rotMin, armTool.rotMax)
 		isDirty = ImplementUtil.moveMovingToolToRotation(armVehicle, armTool, dt, angle)
 	end
+
+	local highDumpShovelIx = g_vehicleConfigurations:get(self, "shovelMovingToolIx")
+	if highDumpShovelIx then 
+		local tool = self.spec_cylindered.movingTools[highDumpShovelIx]
+		if useHighDumpShovel then
+			local _, dy, _ = localDirectionToWorld(getParent(tool.node), 0, 0, 1)
+			angle = math.acos(dy)
+			targetAngle = math.pi/2
+			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt, tool.rotMax) or isDirty
+		else 
+			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt, tool.rotMin) or isDirty
+		end
+	end
 	local deltaAngle = targetAngle - angle
 	local goalAngle = MathUtil.clamp(oldShovelRot + deltaAngle, shovelTool.rotMin, shovelTool.rotMax)
-	isDirty = isDirty or ImplementUtil.moveMovingToolToRotation(shovelVehicle, shovelTool, dt, goalAngle)
+	isDirty = ImplementUtil.moveMovingToolToRotation(shovelVehicle, 
+		shovelTool, dt, goalAngle) or isDirty
+	
 	return isDirty
 end
 
@@ -442,7 +457,8 @@ function CpShovelPositions:updateUnloadingPosition(dt)
 	local isDirty
 	if angle and maxAngle then 
 		isDirty = CpShovelPositions.setShovelPosition2(self, dt, 
-		{math.deg(maxAngle), math.deg(maxAngle) + 2}, CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS) 
+		{math.deg(maxAngle), math.deg(maxAngle) + 2}, 
+		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, true)
 	end
 	spec.isDirty = isDirty
 end

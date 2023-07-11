@@ -5,13 +5,14 @@ UnloadingTriggerPlot = CpObject()
 function UnloadingTriggerPlot:init(node)
 	self.courseOverlayId = createImageOverlay('dataS/scripts/shared/graph_pixel.dds')
 	self.isVisible = false
-	-- the normal FS22 blue
-	self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
+	-- the normal FS22 blue -- 0.9900 0.4640 0.0010 1
+	--self.color = {CpGuiUtil.getNormalizedRgb(42, 193, 237)}
+	self.color = {CpGuiUtil.getNormalizedRgb(255, 128, 0)}
 	-- a lighter shade of the same color
-	self.lightColor = {CpGuiUtil.getNormalizedRgb(45, 207, 255)}
+	self.lightColor = {CpGuiUtil.getNormalizedRgb(213, 255, 0)}
 	-- a darker shade of the same color
 	self.darkColor = {CpGuiUtil.getNormalizedRgb(19, 87, 107)}
-	self.lineThickness = 2 / g_screenHeight -- 2 pixels
+	self.lineThickness = 4 / g_screenHeight -- 4 pixels
 	self.isHighlighted = false
 	local _
 	self.x, _, self.z = getWorldTranslation(node)
@@ -19,8 +20,11 @@ end
 
 function UnloadingTriggerPlot:draw(map)
 	local r, g, b = unpack(self.color)
+	if self.isHighlighted then 
+		r, g, b = unpack(self.lightColor)
+	end
 	setOverlayColor( self.courseOverlayId, r, g, b, 0.8 )
-	local x, y = CpGuiUtil.worldToScreen(map, self.x, self.z, false)
+	-- local x, y = CpGuiUtil.worldToScreen(map, self.x, self.z, false)
 
 	local s1x, s1y = CpGuiUtil.worldToScreen(map, self.x - 5, self.z - 5, false)
 	local e1x, e1y = CpGuiUtil.worldToScreen(map, self.x + 5, self.z + 5, false)

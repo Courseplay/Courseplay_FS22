@@ -1,7 +1,8 @@
---- Links all the needed trigger, except bunker silos to trigger wrappers.
+--- Stores all the relevant giants triggers expect bunker silos.
+--- For now only unload triggers are supported.
 ---@class TriggerManager
 TriggerManager = CpObject()
-
+TriggerManager.DEBUG = true
 function TriggerManager:init()
 	---@type table<number,CpTrigger>
 	self.unloadTriggers = {}
@@ -9,6 +10,8 @@ function TriggerManager:init()
 	self.dischargeableUnloadTriggers = {}
 end
 
+--- Adds an unload trigger.
+---@param silo table UnloadTrigger
 function TriggerManager:addUnloadingSilo(silo)
 	if silo.exactFillRootNode ~= nil then 
 		self.unloadTriggers[silo.exactFillRootNode] = CpTrigger(silo, silo.exactFillRootNode)
@@ -18,6 +21,8 @@ function TriggerManager:addUnloadingSilo(silo)
 	end
 end
 
+--- Removes the unload trigger, as it got removed for example sold.
+---@param silo table UnloadTrigger
 function TriggerManager:removeUnloadingSilo(silo)
 	if silo.exactFillRootNode ~= nil then 
 		if self.unloadTriggers[silo.exactFillRootNode] then
@@ -28,6 +33,9 @@ function TriggerManager:removeUnloadingSilo(silo)
 	end
 end
 
+--- Gets the unload trigger from the exactFillRootNode.
+---@param node number exactFillRootNode
+---@return CpTrigger
 function TriggerManager:getUnloadTriggerForNode(node)
 	return self.unloadTriggers[node]
 end
@@ -41,7 +49,7 @@ end
 ---@param width number
 ---@param length number
 ---@return boolean
----@return table|nil
+---@return CpTrigger|nil
 ---@return table|nil
 function TriggerManager:getTriggerAt(triggers, x, z, dirX, dirZ, width, length)
 	local angle = MathUtil.getYRotationFromDirection(dirX, dirZ)
@@ -74,7 +82,7 @@ function TriggerManager:getTriggerAt(triggers, x, z, dirX, dirZ, width, length)
 	for node, trigger in pairs(triggers) do 
 		dx, _, dz  = getWorldTranslation(node)
 		if CpMathUtil.isPointInPolygon(area, dx, dz) then 
-			return true, trigger, trigger:getTrigger():getTarget()
+			return true, trigger, trigger:getTarget()
 		end
 	end
 	return false
@@ -88,7 +96,7 @@ end
 ---@param width number
 ---@param length number
 ---@return boolean
----@return table|nil
+---@return CpTrigger|nil
 ---@return table|nil
 function TriggerManager:getUnloadTriggerAt(x, z, dirX, dirZ, width, length)
 	return self:getTriggerAt(self.unloadTriggers, x, z, dirX, dirZ, width, length)
@@ -102,7 +110,7 @@ end
 ---@param width number
 ---@param length number
 ---@return boolean found?
----@return table|nil unload trigger 
+---@return CpTrigger|nil unload trigger 
 ---@return table|nil unload station/placeable
 function TriggerManager:getDischargeableUnloadTriggerAt(x, z, dirX, dirZ, width, length)
 	return self:getTriggerAt(self.dischargeableUnloadTriggers, x, z, dirX, dirZ, width, length)
@@ -124,16 +132,19 @@ end
 --- Draws all bunker silos onto the ai map.
 ---@param map table map to draw to.
 ---@param selected CpTrigger silo that gets highlighted.
-function TriggerManager:drawDischargeableTriggers(map, selected)
+---@param fillType number|nil fill type that needs to be supported.
+function TriggerManager:drawDischargeableTriggers(map, selected, fillType)
 	for _, trigger in pairs(self.dischargeableUnloadTriggers) do 
-		trigger:drawPlot(map, selected)
+		trigger:drawPlot(map, selected, fillType)
 	end
 end
 
 function TriggerManager:draw()
 	for node, trigger in pairs(self.unloadTriggers) do 
-		local text = string.format("%s:\n %d", getName(node), node )
-		CpUtil.drawDebugNode(node, false, 2, text)
+		if self.DEBUG then
+			local text = string.format("%s:\n %d", getName(node), node )
+			CpUtil.drawDebugNode(node, false, 2, text)
+		end
 	end
 end
 
