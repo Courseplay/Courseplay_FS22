@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/Courseplay_FS22)
-Copyright (C) 2022 Courseplay Dev Team
+Copyright (C) 2023 Courseplay Dev Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -88,6 +88,7 @@ function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
     self:appendImplementController(self.attacherJointController)
     local trailerAreaNode = createTransformGroup("tempTrailerNode")
     self.trailerAreaToAvoid =  PathfinderUtil.NodeArea(trailerAreaNode, -self.trailer.size.width/2, -self.trailer.size.length/2, self.trailer.size.width, self.trailer.size.length)
+    CpUtil.destroyNode(trailerAreaNode)
 end
 
 function AIDriveStrategyAttachHeader:setAllStaticParameters()
@@ -232,7 +233,12 @@ function AIDriveStrategyAttachHeader:startPathfindingToCutter()
         local x, _, z = getWorldTranslation(goalNode)
         local dirX, _, dirZ = localDirectionToWorld(rootNode, 0, 0, 1)
         local rotY = MathUtil.getYRotationFromDirection(dirX, dirZ)
-        self.cutterNode = CpUtil.createNode("cutterNode", x, z, rotY)
+        if not self.cutterNode then
+            self.cutterNode = CpUtil.createNode("cutterNode", x, z, rotY)
+        else 
+            setTranslation(self.cutterNode, x, 0, z)
+            setRotation(self.cutterNode, 0, rotY, 0)
+        end
         local length = AIUtil.getLength(self.vehicle)
         
         local done, path, goalNodeInvalid

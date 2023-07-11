@@ -1,4 +1,4 @@
---- This controller is for implement, that can be attach to vehicles.
+--- This controller is for attachable implements.
 --- Controls the detaching of the implement
 --- and gives information's where the where the attacher joints
 --- can be attached.
