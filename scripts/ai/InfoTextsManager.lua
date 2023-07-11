@@ -89,6 +89,7 @@ function InfoTextManager:registerXmlSchema()
 	self.xmlSchema:register(XMLValueType.BOOL, self.xmlKey.."(?)#hasFinished", "Is folding of implements allowed?")
 	self.xmlSchema:register(XMLValueType.STRING, self.xmlKey.."(?)#event", "Event to call with the message.")
 	self.xmlSchema:register(XMLValueType.STRING, self.xmlKey.."(?)#class", "AI message class.")
+	self.xmlSchema:register(XMLValueType.STRING, self.xmlKey.."(?)#isOnlyShownOnPlayerStart", "AI message only shown, when started by player.")
 end
 
 --- Load the info text xml File.
