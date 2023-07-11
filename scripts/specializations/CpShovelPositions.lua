@@ -95,30 +95,9 @@ function CpShovelPositions.registerFunctions(vehicleType)
 	SpecializationUtil.registerFunction(vehicleType, "getCpShovelUnloadingPositionHeight", CpShovelPositions.getCpShovelUnloadingPositionHeight)
 end
 
-
-function CpShovelPositions:onLoad(savegame)
-	--- Register the spec: spec_ShovelPositions
-    self.spec_cpShovelPositions = self["spec_" .. CpShovelPositions.SPEC_NAME]
-    local spec = self.spec_cpShovelPositions
-	--- Current shovel state.
-	spec.state = CpShovelPositions.DEACTIVATED
-	spec.isDirty = false
-end
-
-function CpShovelPositions:onPostAttach()
-	if self.spec_cpShovelPositions then
-		CpShovelPositions.cpSetupShovelPositions(self)
-	end
-end
-
-function CpShovelPositions:onDraw()
-	if CpShovelPositions.DEBUG and self:getRootVehicle() then 
-		local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
-		if shovelNode then
-			DebugUtil.drawDebugNode(shovelNode, "shovelNode")
-		end
-	end
-end
+--------------------------------------------
+--- Console Commands
+--------------------------------------------
 
 local function executeConsoleCommand(func, ...)
 	local vehicle = g_currentMission.controlledVehicle
@@ -161,6 +140,50 @@ function CpShovelPositions:consoleCommandSetPreUnloadArmLimit(min, max)
 	end, min, max)
 end
 
+--------------------------------------------
+--- Event Listener
+--------------------------------------------
+
+function CpShovelPositions:onLoad(savegame)
+	--- Register the spec: spec_ShovelPositions
+    self.spec_cpShovelPositions = self["spec_" .. CpShovelPositions.SPEC_NAME]
+    local spec = self.spec_cpShovelPositions
+	--- Current shovel state.
+	spec.state = CpShovelPositions.DEACTIVATED
+	spec.isDirty = false
+end
+
+function CpShovelPositions:onPostAttach()
+	if self.spec_cpShovelPositions then
+		CpShovelPositions.cpSetupShovelPositions(self)
+	end
+end
+
+function CpShovelPositions:onDraw()
+	if CpShovelPositions.DEBUG and self:getRootVehicle() then 
+		local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
+		if shovelNode then
+			DebugUtil.drawDebugNode(shovelNode, "shovelNode")
+		end
+	end
+end
+
+function CpShovelPositions:onUpdateTick(dt)
+	local spec = self.spec_cpShovelPositions
+	if spec.shovelToolIx == nil or  spec.armToolIx == nil then 
+		return
+	end
+	if spec.state == CpShovelPositions.LOADING then 
+		CpShovelPositions.updateLoadingPosition(self, dt)
+	elseif spec.state == CpShovelPositions.TRANSPORT then 
+		CpShovelPositions.updateTransportPosition(self, dt)
+	elseif spec.state == CpShovelPositions.PRE_UNLOAD then 
+		CpShovelPositions.updatePreUnloadPosition(self, dt)
+	elseif spec.state == CpShovelPositions.UNLOADING then 
+		CpShovelPositions.updateUnloadingPosition(self, dt)
+	end
+end
+
 --- Changes the current shovel state position.
 function CpShovelPositions:cpSetShovelState(state)
 	local spec = self.spec_cpShovelPositions
@@ -182,6 +205,7 @@ function CpShovelPositions:cpResetShovelState()
 	ImplementUtil.stopMovingTool(spec.shovelVehicle, spec.shovelTool)
 end
 
+--- Is the current target shovel position not yet reached?
 function CpShovelPositions:areCpShovelPositionsDirty()
 	local spec = self.spec_cpShovelPositions
 	return spec.isDirty
@@ -212,8 +236,6 @@ function CpShovelPositions:cpSetupShovelPositions()
 						spec.shovelToolIx = i
 						spec.shovelTool = tool
 						spec.shovelVehicle = vehicle
-						spec.shovelProjectionNode = CpUtil.createNode("CpShovelProjectionNode", 
-							0, 0, 0, getParent(tool.node))
 					end
 				end
 			end
@@ -221,39 +243,19 @@ function CpShovelPositions:cpSetupShovelPositions()
 	end
 end
 
-function CpShovelPositions:onUpdateTick(dt)
-	local spec = self.spec_cpShovelPositions
-	if spec.shovelToolIx == nil or  spec.armToolIx == nil then 
-		return
-	end
-	if spec.state == CpShovelPositions.LOADING then 
-		CpShovelPositions.updateLoadingPosition(self, dt)
-	elseif spec.state == CpShovelPositions.TRANSPORT then 
-		CpShovelPositions.updateTransportPosition(self, dt)
-	elseif spec.state == CpShovelPositions.PRE_UNLOAD then 
-		CpShovelPositions.updatePreUnloadPosition(self, dt)
-	elseif spec.state == CpShovelPositions.UNLOADING then 
-		CpShovelPositions.updateUnloadingPosition(self, dt)
-	end
-end
-
---- Changes the shovel angle dependent on the selected position.
-function CpShovelPositions.setShovelPosition(dt, spec, shovel, shovelNode, angle, limits)
-	local min, max = unpack(limits)
-	local targetAngle = math.rad(min) + math.rad(max - min)/2
-	local deltaAngle = targetAngle - angle
-	local curRot = {}
-	curRot[1], curRot[2], curRot[3] = getRotation(spec.shovelTool.node)
-	local oldRot = curRot[spec.shovelTool.rotationAxis]
-	local goalAngle = MathUtil.clamp(oldRot + deltaAngle, spec.shovelTool.rotMin, spec.shovelTool.rotMax)
-	return ImplementUtil.moveMovingToolToRotation(spec.shovelVehicle, spec.shovelTool, dt, 
-		goalAngle)
-end
-
-function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits, useHighDumpShovel)
+--- Sets the current shovel position values, like the arm and shovel rotations.
+---@param dt number
+---@param shovelLimits table
+---@param armLimits table
+---@param useHighDumpShovel boolean|nil
+---@return boolean|nil
+function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHighDumpShovel)
 	local min, max = unpack(shovelLimits)
+	--- Target angle of the shovel node, which is at the end of the shovel.
 	local targetAngle = math.rad(min) + math.rad(max - min)/2
 	min, max = unpack(armLimits)
+	--- Target height of the arm.
+	--- This is relative to the attacher joint of the shovel.
 	local targetHeight = min + (max - min)/2
 
 	local shovelTool = self.spec_cpShovelPositions.shovelTool
@@ -265,71 +267,45 @@ function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits, useHi
 	curRot[1], curRot[2], curRot[3] = getRotation(shovelTool.node)
 	local oldShovelRot = curRot[shovelTool.rotationAxis]
 
-	local curRot = {}
+	curRot = {}
 	curRot[1], curRot[2], curRot[3] = getRotation(armTool.node)
 	local oldArmRot = curRot[armTool.rotationAxis]
+
 	local armProjectionNode = self.spec_cpShovelPositions.armProjectionNode
 	local armToolRefNode = self.spec_cpShovelPositions.armToolRefNode
-	local radius = calcDistanceFrom(shovelTool.node, armTool.node)
+
+	local radiusArmToolToShovelTool = calcDistanceFrom(shovelTool.node, armTool.node)
 	
 	local attacherJointNode = self.spec_attachable.attacherJoint.node
 	local angle, shovelNode = CpShovelPositions.getShovelData(self)
 	local _, shovelY, _ = localToLocal(shovelNode, attacherJointNode, 0, 0, 0)
 	
+	--- All values will be calculated in the coordinate system from the vehicle root node.
+
 	local _, ty, tz = localToLocal(getChildAt(armTool.node, 0), armVehicle.rootNode, 0, 0, 0)
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
 	local sx, sy, sz = 0, targetHeight - shovelY, 0
 	local ex, ey, ez = 0, targetHeight - shovelY, 20
-	local yMax = ay + radius
+	local yMax = ay + radiusArmToolToShovelTool
 	if sy > yMax then 
+		--- Makes sure the target height is still reachable
 		sy = yMax - 0.01
 		ey = yMax - 0.01
 	end
-	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(az, ay, radius,
+	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(az, ay, radiusArmToolToShovelTool,
 															sz, sy, ez, ey)
-	local wsx, wsy, wsz = localToWorld(armVehicle.rootNode, sx, sy, sz)
-	local wex, wey, wez = localToWorld(armVehicle.rootNode, ex, ey, ez)
-	DebugUtil.drawDebugLine(wsx, wsy, wsz, wex, wey, wez)
-
-	DebugUtil.drawDebugCircleAtNode(armVehicle.rootNode, radius, 30, nil, 
-		true, {ax, ay, az})
-	CpUtil.drawDebugNode(armVehicle.rootNode)
-	CpUtil.drawDebugNode(armTool.node)
-	CpUtil.drawDebugNode(shovelTool.node)
-	local isDirty
+	
+	local isDirty, alpha, oldRotRelativeArmRot
 	if hasIntersection then
 		setTranslation(armProjectionNode, 0, i1y, i1z)
 		setTranslation(armToolRefNode, ax, ay, az)
 		local _, shy, shz = localToLocal(shovelTool.node, armVehicle.rootNode, 0, 0, 0)
 		local dirZ, dirY = MathUtil.vector2Normalize(shz - az, shy - ay)
-		local yRot = MathUtil.getYRotationFromDirection(-dirZ, dirY) + math.pi/2
+		oldRotRelativeArmRot = MathUtil.getYRotationFromDirection(-dirZ, dirY) + math.pi/2
 
-		CpUtil.drawDebugNode(armProjectionNode)
-		CpUtil.drawDebugNode(armToolRefNode)
-		local alpha = math.atan2(i1y - ay, i1z - az)
+		alpha = math.atan2(i1y - ay, i1z - az)
 		local beta = -math.atan2(i2y - ay, i2z - az)
-		local debugData = {
-			{
-				name = "alpha", value = math.deg(alpha)
-			},
-			{
-				name = "deltaAlphaOld", value = math.deg(MathUtil.getAngleDifference(alpha, oldArmRot))
-			},
-			{
-				name = "old", value = math.deg(oldArmRot)
-			},
-			{
-				name = "deltaAlpha", value = math.deg(MathUtil.getAngleDifference(alpha, yRot))
-			},
-			{
-				name = "dirRot", value = math.deg(yRot)
-			},
-			{
-				name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty)
-			},
-		}
-		DebugUtil.renderTable(0.4, 0.4, 0.018, debugData, 0)
-		local angle = MathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(alpha, yRot), armTool.rotMin, armTool.rotMax)
+		local angle = MathUtil.clamp(oldArmRot - MathUtil.getAngleDifference(alpha, oldRotRelativeArmRot), armTool.rotMin, armTool.rotMax)
 		isDirty = ImplementUtil.moveMovingToolToRotation(armVehicle, armTool, dt, angle)
 	end
 
@@ -339,7 +315,7 @@ function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits, useHi
 		if useHighDumpShovel then
 			local _, dy, _ = localDirectionToWorld(getParent(tool.node), 0, 0, 1)
 			angle = math.acos(dy)
-			targetAngle = math.pi/2
+			targetAngle = math.pi/2 - math.pi/8
 			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt, tool.rotMax) or isDirty
 		else 
 			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt, tool.rotMin) or isDirty
@@ -350,113 +326,96 @@ function CpShovelPositions:setShovelPosition2(dt, shovelLimits, armLimits, useHi
 	isDirty = ImplementUtil.moveMovingToolToRotation(shovelVehicle, 
 		shovelTool, dt, goalAngle) or isDirty
 	
+	--- Debug information
+	local wsx, wsy, wsz = localToWorld(armVehicle.rootNode, sx, sy, sz)
+	local wex, wey, wez = localToWorld(armVehicle.rootNode, ex, ey, ez)
+	if g_currentMission.controlledVehicle == self.rootVehicle and CpDebug:isChannelActive(CpDebug.DBG_SILO) then 
+		DebugUtil.drawDebugLine(wsx, wsy, wsz, wex, wey, wez)
+		DebugUtil.drawDebugCircleAtNode(armVehicle.rootNode, radiusArmToolToShovelTool, 30, nil, 
+			true, {ax, ay, az})
+		CpUtil.drawDebugNode(armVehicle.rootNode)
+		CpUtil.drawDebugNode(armTool.node)
+		CpUtil.drawDebugNode(shovelTool.node)
+		CpUtil.drawDebugNode(armProjectionNode)
+		CpUtil.drawDebugNode(armToolRefNode)
+
+		local debugData = {}
+		if hasIntersection then	
+			table.insert(debugData, {
+				value = "",
+				name = "Arm Rotation" })
+			table.insert(debugData, { 
+				name = "alpha", value = math.deg(alpha) })
+			table.insert(debugData, { 
+				name = "deltaAlphaOld", value = math.deg(MathUtil.getAngleDifference(alpha, oldArmRot)) })
+			table.insert(debugData, { 
+				name = "old", value = math.deg(oldArmRot) })
+			table.insert(debugData, {
+				name = "deltaAlpha", value = math.deg(MathUtil.getAngleDifference(alpha, oldRotRelativeArmRot)) })
+			table.insert(debugData, {
+				name = "dirRot", value = math.deg(oldRotRelativeArmRot) })
+			table.insert(debugData, {
+				name = "distAlpha", value = MathUtil.vector2Length(i1z - tz, i1y - ty) })
+		
+			table.insert(debugData, {
+				value = "",
+				name = "",
+				columnOffset = 0.12
+			})
+		end
+		table.insert(debugData, {
+			value = "",
+			name = "Shovel Rotation" })
+		table.insert(debugData, { 
+			name = "angle", value = math.deg(angle) })
+		table.insert(debugData, { 
+			name = "deltaAngle", value = math.deg(deltaAngle) })	
+		table.insert(debugData, { 
+			name = "targetAngle", value = math.deg(targetAngle) })	
+		DebugUtil.renderTable(0.4, 0.4, 0.018, debugData, 0)
+	end
 	return isDirty
-end
-
---- Changes the front loader angle dependent on the selected position, relative to a target height.
-function CpShovelPositions.setArmPosition(dt, spec, shovel, shovelNode, limits)
-	--- Interval in which the shovel height should be in.
-	local min, max = unpack(limits)
-	local targetHeight = min + (max - min)/2
-	
-	local attacherJointNode = shovel.spec_attachable.attacherJoint.node
-	local _, shovelY, shovelR = localToLocal(attacherJointNode, shovelNode, 0, 0, 0)
-	
-	local x, y, z = getWorldTranslation(attacherJointNode)
-	local dy = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 0, z)
-	
-	local targetAttacherHeight = dy + shovelY + targetHeight 
-	local diff = targetAttacherHeight - y
-
-	CpShovelPositions.debug(shovel, "shovel => y: %.2f, z: %.2f, targetAttacherHeight: %.2f", shovelY, shovelR, targetAttacherHeight)
-
-	if math.abs(diff) < (max - min)/2 then 
-		ImplementUtil.stopMovingTool(spec.armVehicle, spec.armTool)
-		return false
-	end
-
-	local curRot = {}
-	curRot[1], curRot[2], curRot[3] = getRotation(spec.armTool.node)
-	local oldRot = curRot[spec.armTool.rotationAxis]
-	
-	setWorldTranslation(spec.armProjectionNode, x, targetAttacherHeight, z)
-
-	local _, ay, _ = localToLocal(spec.armTool.node, spec.armVehicle.rootNode, 0, 0, 0)
-
-	local nodeDiff = MathUtil.clamp( targetHeight - ay , -shovelR, shovelR) + ay
-
-	local ax, _, az = getWorldTranslation(spec.armTool.node)
-	local sx, sy, sz = getWorldTranslation(spec.shovelTool.node)
-
-	if CpShovelPositions.DEBUG then
-		DebugUtil.drawDebugCircleAtNode(spec.armTool.node, shovelR, 30, nil, true)
-
-		DebugUtil.drawDebugNode(spec.armProjectionNode, "Projection node", false, 0)
-
-		DebugUtil.drawDebugLine(x, targetAttacherHeight, z, sx, sy, sz)
-		DebugUtil.drawDebugLine(x, targetAttacherHeight, z, ax, targetAttacherHeight, az) -- y
-	end
-	local yRot = math.atan2(MathUtil.vector3Length(x - sx, targetAttacherHeight - sy, z - sz),
-		MathUtil.vector3Length(x - ax, 0, z - az))
-
-	if diff < 0 then 
-		yRot = yRot
-	else 
-		yRot = -yRot
-	end
-	
-	CpShovelPositions.debug(shovel, 
-		"Arm position(%d) height diff: %.2f, targetHeight: %.2f, old angle: %.2f, yRot: %.2f",
-		spec.state, diff, targetHeight,  math.deg(oldRot),  math.deg(yRot))
-
-	return ImplementUtil.moveMovingToolToRotation(spec.armVehicle, spec.armTool, dt, 
-		MathUtil.clamp(oldRot + yRot , spec.armTool.rotMin, spec.armTool.rotMax))
 end
 
 function CpShovelPositions:updateLoadingPosition(dt)
 	local spec = self.spec_cpShovelPositions
-	local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
+	local angle = CpShovelPositions.getShovelData(self)
 	local isDirty
 	if angle then 
-		isDirty = CpShovelPositions.setShovelPosition2(self, dt, 
+		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.LOADING_POSITION.SHOVEL_LIMITS, CpShovelPositions.LOADING_POSITION.ARM_LIMITS)
-	--	isDirty = isDirty or CpShovelPositions.setArmPosition(dt, spec, self, shovelNode, CpShovelPositions.LOADING_POSITION.ARM_LIMITS)
 	end
 	spec.isDirty = isDirty
 end
 
 function CpShovelPositions:updateTransportPosition(dt)
 	local spec = self.spec_cpShovelPositions
-	local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
+	local angle = CpShovelPositions.getShovelData(self)
 	local isDirty
 	if angle then 
-		isDirty = CpShovelPositions.setShovelPosition2(self, dt, 
+		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.TRANSPORT_POSITION.SHOVEL_LIMITS, CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS)
-	--	isDirty = CpShovelPositions.setShovelPosition(dt, spec, self, shovelNode, angle, CpShovelPositions.TRANSPORT_POSITION.SHOVEL_LIMITS)
-	--	isDirty = isDirty or CpShovelPositions.setArmPosition(dt, spec, self, shovelNode, CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS)
 	end
 	spec.isDirty = isDirty
 end
 
 function CpShovelPositions:updatePreUnloadPosition(dt)
 	local spec = self.spec_cpShovelPositions
-	local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
+	local angle = CpShovelPositions.getShovelData(self)
 	local isDirty
 	if angle then
-		isDirty = CpShovelPositions.setShovelPosition2(self, dt, 
+		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.PRE_UNLOAD_POSITION.SHOVEL_LIMITS, CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS) 
-		--isDirty = CpShovelPositions.setShovelPosition(dt, spec, self, shovelNode, angle, CpShovelPositions.PRE_UNLOAD_POSITION.SHOVEL_LIMITS)
-		--isDirty = isDirty or CpShovelPositions.setArmPosition(dt, spec, self, shovelNode, self:getCpShovelUnloadingPositionHeight())
 	end
 	spec.isDirty = isDirty
 end
 
 function CpShovelPositions:updateUnloadingPosition(dt)
 	local spec = self.spec_cpShovelPositions
-	local angle, shovelNode, maxAngle, minAngle, factor = CpShovelPositions.getShovelData(self)
+	local angle, _, maxAngle = CpShovelPositions.getShovelData(self)
 	local isDirty
 	if angle and maxAngle then 
-		isDirty = CpShovelPositions.setShovelPosition2(self, dt, 
+		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 		{math.deg(maxAngle), math.deg(maxAngle) + 2}, 
 		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, true)
 	end
@@ -503,8 +462,6 @@ function CpShovelPositions:getShovelData()
 	local factor = math.max(0, math.min(1, (angle - info.minSpeedAngle) / (info.maxSpeedAngle - info.minSpeedAngle)))
 	return angle, shovelSpec.shovelNodes[1].node, info.maxSpeedAngle, info.minSpeedAngle, factor
 end
-
-
 
 function CpShovelPositions.debug(implement, ...)
 	if CpShovelPositions.DEBUG then
