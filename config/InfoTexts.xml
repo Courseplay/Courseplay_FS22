@@ -9,6 +9,7 @@
 		hasFinished: Called when the driver has finished.
 		event: Event called, when the info text is activated.
 		aiMessageClass: string reference to a giants ai message.
+		isOnlyShownOnPlayerStart: disables the message in the info panel, but enables start notification.
 
 	The priority is from top to bottom, which makes the first the highest priority in the hud.
 -->
@@ -18,7 +19,7 @@
 	<InfoText name="ERROR_NO_PATH_FOUND"					text="errorNoPathFound" class="AIMessageCpErrorNoPathFound"/>
 	<InfoText name="ERROR_GROUND_UNLOAD_NOT_SUPPORTED"		text="errorGroundUnloadNotSupported" class="AIMessageErrorGroundUnloadNotSupported"/>
 	<InfoText name="ERROR_CUTTER_NOT_SUPPORTED"				text="errorCutterNotSupported" class="AIMessageErrorCutterNotSupported"/>
-	<InfoText name="ERROR_AUTOMATIC_CUTTER_ATTACH_DISABLED" text="errorAutomaticCutterAttachNotActive" class="AIMessageErrorAutomaticCutterAttachNotActive"/>
+	<InfoText name="ERROR_AUTOMATIC_CUTTER_ATTACH_DISABLED" text="errorAutomaticCutterAttachNotActive" class="AIMessageErrorAutomaticCutterAttachNotActive" isOnlyShownOnPlayerStart="true"/>
 
 	<InfoText name="IS_STUCK"								text="isStuck"/>
 	<InfoText name="BLOCKED_BY_OBJECT"  					text="blockedByObject" class="AIMessageErrorBlockedByObject"/>

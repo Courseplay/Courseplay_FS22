@@ -198,7 +198,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
-    local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(message)
+    local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(message)
 
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s",
                                                     tostring(hasFinished), tostring(event))
@@ -228,7 +228,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     end
     self:resetCpAllActiveInfoTexts()
     --- Only add the info text, if it's available and nobody is in the vehicle.
-    if not self:getIsControlled() and releaseMessage then
+    if not self:getIsControlled() and releaseMessage and not isOnlyShownOnPlayerStart then
         self:setCpInfoTextActive(releaseMessage)
     end
     superFunc(self, message,...)
