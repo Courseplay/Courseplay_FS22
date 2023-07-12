@@ -53,7 +53,7 @@ AIDriveStrategyShovelSiloLoader.safeSpaceToTrailer = 5
 AIDriveStrategyShovelSiloLoader.maxValidTrailerDistanceToSiloFront = 30
 AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 15 
 AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
-AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 7
+AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
 
 function AIDriveStrategyShovelSiloLoader.new(customMt)
     if customMt == nil then
@@ -114,7 +114,7 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
         local position = jobParameters.unloadPosition
         local dirX, dirZ = position:getDirection()
         setDirection(self.unloadPositionNode, dirX, 0, dirZ, 0, 0, 1)
-        local dx, dy, dz = localToWorld(self.unloadPositionNode, 0, 0, -math.max(self.distShovelTrailerPreUnload, self.turningRadius))
+        local dx, dy, dz = localToWorld(self.unloadPositionNode, 0, 0, -math.max(self.distShovelUnloadStationPreUnload, self.turningRadius))
         setTranslation(self.unloadPositionNode, dx, dy, dz)
     else 
         self:debug("Starting shovel silo to unload into trailer.")
