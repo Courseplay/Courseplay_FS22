@@ -75,13 +75,49 @@ function AIMessageErrorGroundUnloadNotSupported:getMessage()
 	return g_i18n:getText("CP_ai_messageErrorGroundUnloadNotSupported")
 end
 
+AIMessageErrorCutterNotSupported = {
+	name = "CP_ERROR_CUTTER_NOT_SUPPORTED"
+}
+local AIMessageErrorCutterNotSupported_mt = Class(AIMessageErrorCutterNotSupported, AIMessage)
 
-function AIMessageErrorIsFull.register()
-	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorIsFull.name, AIMessageErrorIsFull)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageCpError.name, AIMessageCpError)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageCpErrorNoPathFound.name, AIMessageCpErrorNoPathFound)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorWrongBaleWrapType.name, AIMessageErrorWrongBaleWrapType)
-	g_currentMission.aiMessageManager:registerMessage(AIMessageErrorGroundUnloadNotSupported.name, AIMessageErrorGroundUnloadNotSupported)
+function AIMessageErrorCutterNotSupported.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorCutterNotSupported_mt)
+
+	return self
+end
+
+function AIMessageErrorCutterNotSupported:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorCutterNotSupported")
+end
+
+AIMessageErrorAutomaticCutterAttachNotActive = {
+	name = "CP_ERROR_AUTOMATIC_CUTTER_ATTACH_NOT_ACTIVE"
+}
+local AIMessageErrorAutomaticCutterAttachNotActive_mt = Class(AIMessageErrorAutomaticCutterAttachNotActive, AIMessage)
+
+function AIMessageErrorAutomaticCutterAttachNotActive.new(customMt)
+	local self = AIMessage.new(customMt or AIMessageErrorAutomaticCutterAttachNotActive_mt)
+
+	return self
+end
+
+function AIMessageErrorAutomaticCutterAttachNotActive:getMessage()
+	return g_i18n:getText("CP_ai_messageErrorAutomaticCutterAttachNotActive")
+end
+
+CpAIMessages = {}
+
+function CpAIMessages.register()
+	local function register(messageClass)
+		g_currentMission.aiMessageManager:registerMessage(messageClass.name, messageClass)
+	end
+	register(AIMessageErrorIsFull)
+	register(AIMessageCpError)
+	register(AIMessageCpErrorNoPathFound)
+	register(AIMessageErrorWrongBaleWrapType)
+	register(AIMessageErrorGroundUnloadNotSupported)
+	register(AIMessageErrorCutterNotSupported)
+	register(AIMessageErrorAutomaticCutterAttachNotActive)
 end
 
 --- Another ugly hack, as the giants code to get the message index in mp isn't working ..

@@ -111,6 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Helfer %s hat die Arbeit gestoppt - keinen Ballen des gewählten Typs gefunden!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Helfer %s hat die Arbeit gestoppt - keinen Weg gefunden!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -198,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatisches Schneidwerk ankuppeln"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Ermöglicht das automatische ankuppeln von Schneidwerken, welche als Anhänger angekuppelt sind."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Rohr immer ausfahren"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Rohr ausfahren, wenn der Drescher voll ist und auf den Abfahrer wartet."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Beim Entladen stehen bleiben"/>
@@ -400,6 +404,8 @@ Der Kurs wird beim Schließen automatisch gespeichert und überschrieben.
     <text name="CP_infoTexts_wrongBaleWrapType" text="Ballentyp nicht gefunden"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Keinen Weg gefunden"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Abladen zum Boden nicht möglich"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Schneidwerk nicht unterstützt"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Schneidwerk ankuppeln deaktiviert"/>
     <!---->
     <!--Custom field manager-->
     <!---->

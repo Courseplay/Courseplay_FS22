@@ -111,6 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI 幫手 %s 已意外停止工作 - 未找到選定類型的草垛！"/>
     <text name="CP_ai_messageErrorNoPathFound" text="AI 幫手 %s 已意外停止工作 - 沒有找到路徑!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI 幫手 %s 已意外停止工作 - 無法在田地卸載!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -198,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="總是伸出螺旋鑽"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="當收割機裝滿並等待卸載時，始終伸出螺旋鑽。"/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="卸載時停車"/>
@@ -400,6 +404,8 @@
     <text name="CP_infoTexts_wrongBaleWrapType" text="錯誤的草垛類型"/>
     <text name="CP_infoTexts_errorNoPathFound" text="未找到路徑"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="無法傾倒在地面"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <!---->
     <!--Custom field manager-->
     <!---->

@@ -60,6 +60,8 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "getCanStartCp", CpAIWorker.getCanStartCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpDriveTo", CpAIWorker.startCpDriveTo)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriveTo", CpAIWorker.stopCpDriveTo)
+    SpecializationUtil.registerFunction(vehicleType, "startCpAttachHeader", CpAIWorker.startCpAttachHeader)
+    SpecializationUtil.registerFunction(vehicleType, "stopCpAttachHeader", CpAIWorker.stopCpAttachHeader)
     SpecializationUtil.registerFunction(vehicleType, "freezeCp", CpAIWorker.freezeCp)
     SpecializationUtil.registerFunction(vehicleType, "unfreezeCp", CpAIWorker.unfreezeCp)
     SpecializationUtil.registerFunction(vehicleType, "startCpWithStrategy", CpAIWorker.startCpWithStrategy)
@@ -196,7 +198,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
         CpUtil.infoVehicle(self, "no stop message was given.")
         return superFunc(self, message, ...)
     end
-    local releaseMessage, hasFinished, event = g_infoTextManager:getInfoTextDataByAIMessage(message)
+    local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(message)
 
     CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s",
                                                     tostring(hasFinished), tostring(event))
@@ -226,7 +228,7 @@ function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
     end
     self:resetCpAllActiveInfoTexts()
     --- Only add the info text, if it's available and nobody is in the vehicle.
-    if not self:getIsControlled() and releaseMessage then
+    if not self:getIsControlled() and releaseMessage and not isOnlyShownOnPlayerStart then
         self:setCpInfoTextActive(releaseMessage)
     end
     superFunc(self, message,...)
@@ -333,61 +335,54 @@ function CpAIWorker:getCanMotorRun(superFunc, ...)
 end
 
 function CpAIWorker:startCpDriveTo(task, jobParameters)
-    self.driveToTask = task
+    local spec = self.spec_cpAIWorker
+    spec.driveToTask = task
     ---@type AIDriveStrategyDriveToFieldWorkStart
-    self.driveToFieldWorkStartStrategy = AIDriveStrategyDriveToFieldWorkStart.new()
-    -- this also starts the strategy
-    CpUtil.try(self.driveToFieldWorkStartStrategy.setAIVehicle, self.driveToFieldWorkStartStrategy, self, jobParameters)
+    local strategy = AIDriveStrategyDriveToFieldWorkStart.new()
+    strategy:setAIVehicle(self, jobParameters)
+    self:startCpWithStrategy(strategy)
 end
 
 function CpAIWorker:stopCpDriveTo()
-    if self.driveToFieldWorkStartStrategy then
-        self.driveToFieldWorkStartStrategy:delete()
+    local spec = self.spec_cpAIWorker
+    spec.driveToTask = nil
+    if spec.driveStrategy then 
+        spec.driveStrategy:delete()
+        spec.driveStrategy = nil
     end
-    self.driveToFieldWorkStartStrategy = nil
+end
+
+function CpAIWorker:startCpAttachHeader(jobParameters)
+    local strategy = AIDriveStrategyAttachHeader.new()
+    strategy:setAIVehicle(self, jobParameters)
+    self:startCpWithStrategy(strategy)
+end
+
+function CpAIWorker:stopCpAttachHeader()
+    local spec = self.spec_cpAIWorker
+    if spec.driveStrategy then 
+        spec.driveStrategy:delete()
+        spec.driveStrategy = nil
+    end
 end
 
 function CpAIWorker:onUpdate(dt)
-    --- TODO: Refactor this!
-    if self.driveToFieldWorkStartStrategy and self.isServer then
-        if self.driveToFieldWorkStartStrategy:isWorkStartReached() then
-            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
-            self.driveToTask:onTargetReached(self.driveToFieldWorkStartStrategy:getStartPosition())
-        else
-            self.driveToFieldWorkStartStrategy:update(dt)
-            if g_updateLoopIndex % 4 == 0 then
-                local tX, tZ, moveForwards, maxSpeedStrategy = self.driveToFieldWorkStartStrategy:getDriveData(dt)
-                local maxSpeed = math.min(maxSpeedStrategy or math.huge, self:getCruiseControlMaxSpeed())
-                -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
-                local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
-                local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
-
-                if not moveForwards and self.spec_articulatedAxis ~= nil and
-                        self.spec_articulatedAxis.aiRevereserNode ~= nil then
-                    pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
-                end
-
-                if not moveForwards and self:getAIReverserNode() ~= nil then
-                    pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
-                end
-
-                local acceleration = 1
-                local isAllowedToDrive = maxSpeed ~= 0
-
-                AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
-            end
-        end
-    end
     local spec = self.spec_cpAIWorker
     --- TODO: Check if a tick delay should be used for performance similar to AIFieldWorker or not.
-    if spec.driveStrategy then 
+    if spec.driveStrategy and self.isServer then 
+        if spec.driveToTask and spec.driveStrategy.isWorkStartReached then
+            if spec.driveStrategy:isWorkStartReached() then 
+                CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Work start location reached')
+                spec.driveToTask:onTargetReached(spec.driveStrategy:getStartPosition())
+                return
+            end
+        end
         --- Should drive all CP modes, except fieldwork here.
         spec.driveStrategy:update(dt)
         SpecializationUtil.raiseEvent(self, "onAIFieldWorkerActive")
         if not spec.driveStrategy then 
             return
         end
-        
         local tX, tZ, moveForwards, maxSpeedStrategy =  spec.driveStrategy:getDriveData(dt)
         local maxSpeed = math.min(maxSpeedStrategy or math.huge, self:getCruiseControlMaxSpeed())
         if not spec.driveStrategy then 
@@ -396,23 +391,18 @@ function CpAIWorker:onUpdate(dt)
         -- same as AIFieldWorker:updateAIFieldWorker(), do the actual driving
         local tY = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, tX, 0, tZ)
         local pX, _, pZ = worldToLocal(self:getAISteeringNode(), tX, tY, tZ)
-
         if not moveForwards and self.spec_articulatedAxis ~= nil and
                 self.spec_articulatedAxis.aiRevereserNode ~= nil then
             pX, _, pZ = worldToLocal(self.spec_articulatedAxis.aiRevereserNode, tX, tY, tZ)
         end
-
         if not moveForwards and self:getAIReverserNode() ~= nil then
             pX, _, pZ = worldToLocal(self:getAIReverserNode(), tX, tY, tZ)
         end
-
         local acceleration = 1
         local isAllowedToDrive = maxSpeed ~= 0
-
-        AIVehicleUtil.driveToPoint(self, dt, acceleration, isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
-    
+        AIVehicleUtil.driveToPoint(self, dt, acceleration, 
+            isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
     end
-
 end
 
 --- Freeze (set speed to 0) of the CP driver, but keep everything up and running, showing all debug

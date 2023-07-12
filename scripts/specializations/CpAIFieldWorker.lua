@@ -271,13 +271,16 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             -- built in helper can't handle forage harvesters.
             AIUtil.hasImplementWithSpecialization(self, Cutter) or 
             AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
-            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or
+            AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or 
+            -- Harvester with cutter on trailer attached.
+            AIUtil.hasCutterOnTrailerAttached(self) or
             --- precision farming
             AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_soilSampler") or 
             --- FS22_aPalletAutoLoader from Achimobil: https://bitbucket.org/Achimobil79/ls22_palletautoloader/src/master/
             AIUtil.hasChildVehicleWithSpecialization(self, nil, "spec_aPalletAutoLoader")  or 
             --- FS22_UniversalAutoload from Loki79uk: https://github.com/loki79uk/FS22_UniversalAutoload
             AIUtil.hasValidUniversalTrailerAttached(self) then
+                
         return true
     end
     return self:getCanStartFieldWork()

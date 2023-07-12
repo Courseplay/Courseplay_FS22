@@ -23,6 +23,8 @@ function CpAIJobFieldWork:setupTasks(isServer)
     CpAIJobFieldWork:superClass().setupTasks(self, isServer)
     -- then we add our own driveTo task to drive from the target position to the waypoint where the
     -- fieldwork starts (first waypoint or the one we worked on last)
+    self.attachHeaderTask = CpAITaskAttachHeader.new(isServer, self)
+    self:addTask(self.attachHeaderTask)
     self.driveToFieldWorkStartTask = CpAITaskDriveTo.new(isServer, self)
     self:addTask(self.driveToFieldWorkStartTask)
     self.fieldWorkTask = CpAITaskFieldWork.new(isServer, self)
@@ -110,6 +112,7 @@ function CpAIJobFieldWork:setValues()
     local vehicle = self.vehicleParameter:getVehicle()
     self.driveToFieldWorkStartTask:reset()
     self.driveToFieldWorkStartTask:setVehicle(vehicle)
+    self.attachHeaderTask:setVehicle(vehicle)
     self.fieldWorkTask:setVehicle(vehicle)
     self:validateFieldSetup()
 end
@@ -266,4 +269,42 @@ function CpAIJobFieldWork:setStartPosition(startPosition)
     if self.fieldWorkTask then
         self.fieldWorkTask:setStartPosition(startPosition)
     end
+end
+
+function CpAIJobFieldWork:getNextTaskIndex(isSkipTask)
+    local nextTaskIndex = CpAIJobFieldWork:superClass().getNextTaskIndex(self, isSkipTask)
+    if self.currentTaskIndex == self.driveToTask.taskIndex then
+        --- Checks if a cutter is attached on the back, 
+        --- so the attach header strategy needs to be used.
+        local vehicle = self.vehicleParameter:getVehicle()
+        if vehicle and (AIUtil.hasCutterOnTrailerAttached(vehicle) 
+            or AIUtil.hasCutterAsTrailerAttached(vehicle)) then 
+            CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Cutter on trailer attached.")
+            return nextTaskIndex
+        else 
+            --- Header Attach strategy is not needed.
+            return nextTaskIndex + 1
+        end
+	end
+
+	return nextTaskIndex
+end
+
+function CpAIJobFieldWork:getStartTaskIndex()
+    if self.isDirectStart or self:isTargetReached() then 
+        local vehicle = self.vehicleParameter:getVehicle()
+        if AIUtil.hasCutterOnTrailerAttached(vehicle) or 
+            AIUtil.hasCutterAsTrailerAttached(vehicle) then 
+            --- Makes sure the direct start from the hud, starts with the attach header strategy.
+            return 2
+        end
+        --- Skips the attach header strategy.
+        return 3
+    end
+    return 1
+end
+
+function CpAIJobFieldWork:onFinishAttachCutter()
+    --- Finished attaching a given header.
+    self.attachHeaderTask:skip()
 end

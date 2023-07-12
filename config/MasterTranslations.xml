@@ -353,6 +353,14 @@
 			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - abladen auf dem Boden nicht möglich!]]></Text>
 			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - unloading on the field not possible!]]></Text>
 		</Translation>
+		<Translation name="CP_ai_messageErrorCutterNotSupported">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - ankuppelen von dem Schneidwerk nicht möglich!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - attaching of the header is impossible!]]></Text>
+		</Translation>
+		<Translation name="CP_ai_messageErrorAutomaticCutterAttachNotActive">
+			<Text language="de"><![CDATA[Helfer %s hat die Arbeit gestoppt - automatisches Scheidwerk ankuppeln deaktiviert!]]></Text>
+			<Text language="en"><![CDATA[AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!]]></Text>
+		</Translation>
 	</Category>
 	<Category name="Vehicle settings">	
 		<Translation name="CP_vehicle_setting_title">
@@ -651,6 +659,14 @@
 		</Translation>
 	</Category>
 	<Category name="Vehicle settings combine">
+		<Translation name="CP_vehicle_setting_automaticCutterAttach_title">
+			<Text language="de"><![CDATA[Automatisches Schneidwerk ankuppeln]]></Text>
+			<Text language="en"><![CDATA[Automatic cutter attach]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_automaticCutterAttach_tooltip">
+			<Text language="de"><![CDATA[Ermöglicht das automatische ankuppeln von Schneidwerken, welche als Anhänger angekuppelt sind.]]></Text>
+			<Text language="en"><![CDATA[Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer.]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_pipeAlwaysUnfold_title">
 			<Text language="de"><![CDATA[Rohr immer ausfahren]]></Text>
 			<Text language="en"><![CDATA[Always unfold the pipe]]></Text>
@@ -1451,6 +1467,14 @@ The course is saved automatically on closing of the editor and overrides the sel
 		<Translation name="CP_infoTexts_errorGroundUnloadNotSupported">
 			<Text language="de"><![CDATA[Abladen zum Boden nicht möglich]]></Text>
 			<Text language="en"><![CDATA[Tipping to ground not possible]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorCutterNotSupported">
+			<Text language="de"><![CDATA[Schneidwerk nicht unterstützt]]></Text>
+			<Text language="en"><![CDATA[Cutter not supported]]></Text>
+		</Translation>
+		<Translation name="CP_infoTexts_errorAutomaticCutterAttachNotActive">
+			<Text language="de"><![CDATA[Schneidwerk ankuppeln deaktiviert]]></Text>
+			<Text language="en"><![CDATA[Cutter attaching deactivated]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Custom field manager">	

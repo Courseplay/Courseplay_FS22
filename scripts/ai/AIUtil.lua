@@ -433,9 +433,9 @@ function AIUtil.getImplementWithSpecializationFromList(specialization, implement
 end
 
 --- Get number of child vehicles that have a certain specialization
----@param vehicle Vehicle
----@param specialization specialization to check for
----@return integer number of found vehicles
+---@param vehicle table
+---@param specialization table specialization to check for
+---@return number number of found vehicles
 function AIUtil.getNumberOfChildVehiclesWithSpecialization(vehicle, specialization)
 	local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, specialization, nil)
 
@@ -445,7 +445,7 @@ end
 --- Gets all child vehicles with a given specialization. 
 --- This can include the rootVehicle and implements
 --- that are not directly attached to the rootVehicle.
----@param vehicle Vehicle
+---@param vehicle table
 ---@param specialization table
 ---@param specializationReference string|nil alternative for mod specializations, as their object is not accessible by us.
 ---@return table all found vehicles/implements
@@ -471,7 +471,7 @@ end
 --- Was at least one child vehicle with the given specialization found ?
 --- This can include the rootVehicle and implements,
 --- that are not directly attached to the rootVehicle.
----@param vehicle Vehicle
+---@param vehicle table
 ---@param specialization table
 ---@param specializationReference string|nil
 ---@return boolean
@@ -681,4 +681,26 @@ end
 function AIUtil.hasValidUniversalTrailerAttached(vehicle)
     local implements, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, nil, "spec_universalAutoload")
 	return found and implements[1].spec_universalAutoload.isAutoloadEnabled
+end
+
+--- Checks if cutter on an trailer is attached.
+function AIUtil.hasCutterOnTrailerAttached(vehicle)
+	local trailer = AIUtil.getImplementWithSpecialization(vehicle, DynamicMountAttacher)
+	return trailer and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects) ~= nil and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects).spec_cutter ~= nil
+end
+
+--- Checks if the cutter is attached on the back, as it also has wheels for transport.
+function AIUtil.hasCutterAsTrailerAttached(vehicle)
+	local trailer = AIUtil.getImplementWithSpecialization(vehicle, Cutter)
+	if trailer then
+		local implement = vehicle:getImplementByObject(trailer)
+		local attacherJoint = vehicle:getAttacherJointByJointDescIndex(implement.jointDescIndex)
+		if attacherJoint then 
+			if attacherJoint.jointType == AttacherJoints.JOINTTYPE_CUTTER or 
+				attacherJoint.jointType == AttacherJoints.JOINTTYPE_CUTTERHARVESTER then 
+				return false
+			end
+			return true
+		end
+	end
 end

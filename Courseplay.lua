@@ -249,7 +249,7 @@ function Courseplay:load()
 	g_assignedCoursesManager:registerXmlSchema()
 
 	--- Register additional AI messages.
-	AIMessageErrorIsFull.register()	
+	CpAIMessages.register()	
 	g_vineScanner:setup()
 end
 

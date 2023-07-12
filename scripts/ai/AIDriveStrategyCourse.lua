@@ -121,7 +121,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self:setAllStaticParameters()
 
     -- TODO: this may or may not be the course we need for the strategy
-    local course = self:getGeneratedCourse(jobParameters)
+    local course = self:isGeneratedCourseNeeded() and self:getGeneratedCourse(jobParameters)
     if course then
         self:debug('Vehicle has a fieldwork course, figure out where to start')
         if course:wasEditedByCourseEditor() then
@@ -136,6 +136,11 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
         self:startWithoutCourse(jobParameters)
     end
     self:raiseControllerEvent(self.onStartEvent)
+end
+
+--- Does the strategy need the current assigned course?
+function AIDriveStrategyCourse:isGeneratedCourseNeeded()
+    return true
 end
 
 function AIDriveStrategyCourse:delete()
@@ -220,6 +225,10 @@ function AIDriveStrategyCourse:addImplementController(vehicle, class, spec, stat
         lastImplement, lastController = childVehicle, controller
     end
     return lastImplement, lastController
+end
+
+function AIDriveStrategyCourse:appendImplementController(controller)
+    table.insert(self.controllers, controller)
 end
 
 --- Checks if any controller disables fuel save, for example a round baler that is dropping a bale.

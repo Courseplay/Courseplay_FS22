@@ -19,19 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class CpInfoTextElement
 CpInfoTextElement = CpObject()
 
-CpInfoTextElement.aiMessageNameToClass = {
-	AIMessageErrorOutOfFill = AIMessageErrorOutOfFill,
-	AIMessageErrorIsFull = AIMessageErrorIsFull,
-	AIMessageSuccessFinishedJob = AIMessageSuccessFinishedJob,
-	AIMessageErrorOutOfFuel = AIMessageErrorOutOfFuel,
-	AIMessageErrorVehicleBroken = AIMessageErrorVehicleBroken,
-	AIMessageErrorOutOfMoney = AIMessageErrorOutOfMoney,
-	AIMessageErrorBlockedByObject = AIMessageErrorBlockedByObject,
-	AIMessageCpError = AIMessageCpError,
-	AIMessageErrorWrongBaleWrapType = AIMessageErrorWrongBaleWrapType,
-	AIMessageCpErrorNoPathFound = AIMessageCpErrorNoPathFound
-}
-
 --- Info text 
 ---@param name string name called by in the lua code.
 ---@param text string displayed text
@@ -39,14 +26,16 @@ CpInfoTextElement.aiMessageNameToClass = {
 ---@param hasFinished boolean is true, when the driver finished.
 ---@param event string event called when the info text was activated.
 ---@param aiMessageClass string reference to a giants ai message.
-function CpInfoTextElement:init(name, text, id, hasFinished, event, aiMessageClass)
+---@param isOnlyShownOnPlayerStart boolean
+function CpInfoTextElement:init(name, text, id, hasFinished, event, aiMessageClass, isOnlyShownOnPlayerStart)
 	self.name = name
 	self.text = text
 	self.id = id
 	self.hasFinished = hasFinished
 	self.event = event
+	self.isOnlyShownOnPlayerStart = isOnlyShownOnPlayerStart
 	if aiMessageClass then 
-		self.aiMessageClass = CpInfoTextElement.aiMessageNameToClass[aiMessageClass]
+		self.aiMessageClass = CpUtil.getClassObject(aiMessageClass)
 	end
 end
 
@@ -61,7 +50,7 @@ function CpInfoTextElement:isAssignedToAIMessage(message)
 end
 
 function CpInfoTextElement:getData()
-	return self.hasFinished, self.event
+	return self.hasFinished, self.event, self.isOnlyShownOnPlayerStart
 end
 
 function CpInfoTextElement:getText()
@@ -100,6 +89,7 @@ function InfoTextManager:registerXmlSchema()
 	self.xmlSchema:register(XMLValueType.BOOL, self.xmlKey.."(?)#hasFinished", "Is folding of implements allowed?")
 	self.xmlSchema:register(XMLValueType.STRING, self.xmlKey.."(?)#event", "Event to call with the message.")
 	self.xmlSchema:register(XMLValueType.STRING, self.xmlKey.."(?)#class", "AI message class.")
+	self.xmlSchema:register(XMLValueType.STRING, self.xmlKey.."(?)#isOnlyShownOnPlayerStart", "AI message only shown, when started by player.")
 end
 
 --- Load the info text xml File.
@@ -108,7 +98,7 @@ function InfoTextManager:loadFromXml()
 	
     local xmlFile = XMLFile.loadIfExists("InfoTextsXmlFile", self.xmlFileName, self.xmlSchema)
     if xmlFile then
-		local name, text, id, aiMessageClass, event, hasFinished
+		local name, text, id, aiMessageClass, event, hasFinished, isOnlyShownOnPlayerStart
 		local prefix = xmlFile:getValue(self.baseXmlKey.."#prefix", "")
         xmlFile:iterate(self.xmlKey, function (ix, key)
 			name = xmlFile:getValue(key .. "#name")
@@ -122,9 +112,8 @@ function InfoTextManager:loadFromXml()
 			hasFinished = xmlFile:getValue(key .. "#hasFinished", false)
 			event = xmlFile:getValue(key .. "#event")
 			aiMessageClass = xmlFile:getValue(key .. "#class")
-
-			InfoTextManager[name] = CpInfoTextElement(name, text, id, 
-													  hasFinished, event, aiMessageClass)
+			isOnlyShownOnPlayerStart = xmlFile:getValue(key .. "#isOnlyShownOnPlayerStart")
+			InfoTextManager[name] = CpInfoTextElement(name, text, id, hasFinished, event, aiMessageClass, isOnlyShownOnPlayerStart)
 			self.infoTextsById[id] = InfoTextManager[name]		
 			table.insert(self.infoTexts, InfoTextManager[name])
         end)
@@ -183,6 +172,8 @@ function InfoTextManager:getActiveInfoTexts()
 	return infos
 end
 
+---@param message table
+---@return CpInfoTextElement
 function InfoTextManager:getInfoTextByAIMessage(message)
 	for i, infoText in pairs(self.infoTexts) do 
 		if infoText:isAssignedToAIMessage(message)then 
@@ -196,11 +187,12 @@ end
 ---@return CpInfoTextElement Info text
 ---@return boolean Has the driver finished?
 ---@return string Event to call with the info text.
+---@return boolean Is the event only visible, when the player started?
 function InfoTextManager:getInfoTextDataByAIMessage(message)
 	local infoText = self:getInfoTextByAIMessage(message)
 	if infoText then 
-		local hasFinished, event = infoText:getData()
-		return infoText, hasFinished, event
+		local hasFinished, event, isOnlyShownOnPlayerStart = infoText:getData()
+		return infoText, hasFinished, event, isOnlyShownOnPlayerStart
 	end
 end
 

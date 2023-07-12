@@ -111,6 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono ścieżki!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Pomocnik SI  %s niespodziewanie przerwał pracę - rozładunek na polu niemożliwy!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -198,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Zawsze rozłóż rurę"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Zatrzymaj podczas rozładunku"/>
@@ -400,6 +404,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Kiprowanie na ziemię niemożliwe"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <!---->
     <!--Custom field manager-->
     <!---->

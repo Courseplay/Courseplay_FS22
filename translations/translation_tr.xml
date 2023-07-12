@@ -111,6 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - seçili türde balya bulunamadı!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Yapay zeka çalışanı %s beklenmedik bir şekilde çalışmayı durdurdu - Yol bulunamadı!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -198,6 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Boruyu her zaman açın"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Birleştirme dolduğunda ve boşaltıcıyı beklerken daima boruyu açın."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Boşaltma sırasında dur"/>
@@ -400,6 +404,8 @@ Editör kapatıldığında kurs otomatik olarak kaydedilir ve seçilen kursu ge�
     <text name="CP_infoTexts_wrongBaleWrapType" text="Yanlış balya tipi"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Yol bulunamadı"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
     <!---->
     <!--Custom field manager-->
     <!---->

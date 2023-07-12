@@ -59,6 +59,22 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         end
     end
 
+    if object.spec_dynamicMountAttacher then 
+        --- Enables fetching the work with of cutter, 
+        --- which are attached on an separate header trailer 
+        --- at the back of the harvester.
+        local spec = object.spec_dynamicMountAttacher
+        local obj = next(spec.dynamicMountedObjects)
+        if obj then 
+            if obj.spec_cutter then 
+                WorkWidthUtil.debug(obj, 'Using this cutter instead of the header trailer %s attached.',
+                    CpUtil.getName(object))
+                object = obj
+                referenceNode = obj.rootNode
+            end
+        end
+    end
+
     --- Work width for soil samplers.
     if not left and object.spec_soilSampler then
         if object.spec_soilSampler.samplingRadius then

@@ -75,6 +75,8 @@
 	</SettingSubTitle>
 
 	<SettingSubTitle title="combine" isVisible="areCombineSettingsVisible">
+		<!--Automatic header unloading-->
+		<Setting classType="AIParameterBooleanSetting" name="automaticCutterAttach" defaultBool="false"/>
 		<!--Stop for unload-->
 		<Setting classType="AIParameterBooleanSetting" name="stopForUnload"/>
 		<!--Selfunload-->
