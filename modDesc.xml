@@ -418,7 +418,6 @@ Changelog 7.1.0.0:
 	</extraSourceFiles>
 
 	<specializations>
-        <specialization name="courseplaySpec" className="CourseplaySpec" filename="scripts/specializations/CourseplaySpec.lua" />
 		<specialization name="cpVehicleSettings" className="CpVehicleSettings" filename="scripts/specializations/CpVehicleSettings.lua" />
 		<specialization name="cpCourseGeneratorSettings" className="CpCourseGeneratorSettings" filename="scripts/specializations/CpCourseGeneratorSettings.lua" />
 		<specialization name="cpCourseManager" className="CpCourseManager" filename="scripts/specializations/CpCourseManager.lua"/>

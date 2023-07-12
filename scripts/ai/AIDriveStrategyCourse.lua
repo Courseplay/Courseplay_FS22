@@ -602,13 +602,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCourse:disableCollisionDetection()
     if self.vehicle then
-        CourseplaySpec.disableCollisionDetection(self.vehicle)
+        CpAIWorker.disableCollisionDetection(self.vehicle)
     end
 end
 
 function AIDriveStrategyCourse:enableCollisionDetection()
     if self.vehicle then
-        CourseplaySpec.enableCollisionDetection(self.vehicle)
+        CpAIWorker.enableCollisionDetection(self.vehicle)
     end
 end
 

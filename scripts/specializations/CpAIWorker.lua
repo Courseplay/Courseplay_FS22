@@ -28,6 +28,9 @@ function CpAIWorker.register(typeManager, typeName, specializations)
 end
 
 function CpAIWorker.registerEvents(vehicleType)
+    SpecializationUtil.registerEvent(vehicleType, "onCpUnitChanged")
+    SpecializationUtil.registerEvent(vehicleType, "onCpDrawHudMap")
+
     SpecializationUtil.registerEvent(vehicleType, "onCpFinished")
 	SpecializationUtil.registerEvent(vehicleType, "onCpEmpty")
     SpecializationUtil.registerEvent(vehicleType, "onCpFull")
@@ -68,6 +71,7 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "cpHold", CpAIWorker.cpHold)
     SpecializationUtil.registerFunction(vehicleType, "cpBrakeToStop", CpAIWorker.cpBrakeToStop)
     SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIWorker.getCpDriveStrategy)
+    SpecializationUtil.registerFunction(vehicleType, 'getCpReverseDrivingDirectionNode', CpAIWorker.getCpReverseDrivingDirectionNode)
 end
 
 function CpAIWorker.registerOverwrittenFunctions(vehicleType)
@@ -75,9 +79,11 @@ function CpAIWorker.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'getCanMotorRun', CpAIWorker.getCanMotorRun)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, 'stopFieldWorker', CpAIWorker.stopFieldWorker)
 end
-------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------
 --- Event listeners
----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------
+
 function CpAIWorker:onLoad(savegame)
 	--- Register the spec: spec_CpAIWorker
     self.spec_cpAIWorker = self["spec_" .. CpAIWorker.SPEC_NAME]
@@ -85,6 +91,13 @@ function CpAIWorker:onLoad(savegame)
     --- Flag to make sure the motor isn't being turned on again by giants code, when we want it turned off.
     spec.motorDisabled = false
     spec.driveStrategy = nil
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_MILES], CpAIWorker.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.SETTING_CHANGED[GameSettings.SETTING.USE_ACRE], CpAIWorker.onUnitChanged, self)
+    g_messageCenter:subscribe(MessageType.CP_DISTANCE_UNIT_CHANGED, CpAIWorker.onUnitChanged, self)
+end
+
+function CpAIWorker:onUnitChanged()
+    SpecializationUtil.raiseEvent(self,"onCpUnitChanged")
 end
 
 function CpAIWorker:onLoadFinished()
@@ -136,6 +149,14 @@ function CpAIWorker:onRegisterActionEvents(isActiveForInput, isActiveForInputIgn
 	end
 end
 
+function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
+	CpAIWorker.updateActionEvents(self)
+end
+
+-----------------------------------------------
+--- Action input events
+-----------------------------------------------
+
 --- Updates the action event visibility and text.
 function CpAIWorker:updateActionEvents()
     local spec = self.spec_cpAIWorker
@@ -172,72 +193,6 @@ function CpAIWorker:updateActionEvents()
         g_inputBinding:setActionEventActive(actionEvent.actionEventId, self:hasCpCourse())
     end
 end
-
-function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
-	CpAIWorker.updateActionEvents(self)
-end
-
-
---- Used to enable/disable release of the helper
---- and handles post release functionality with for example auto drive.
---- TODO: This function is a mess and desperately needs a better solution!
-function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
-    if message then
-        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
-    else
-        CpUtil.infoVehicle(self, "no stop message was given.")
-        return superFunc(self, message, ...)
-    end
-    local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(message)
-
-    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s",
-                                                    tostring(hasFinished), tostring(event))
-
-    local wasCpActive = self:getIsCpActive()
-    if wasCpActive then
-        local driveStrategy = self:getCpDriveStrategy()
-        if driveStrategy then
-            -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
-            local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
-            if message:isa(AIMessageErrorBlockedByObject) then 
-                if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 then 
-                    if maxSpeed and maxSpeed < 1 then
-                        -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
-                        -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
-                        -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
-                        -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
-                        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer, with speed: %.2f', maxSpeed)
-                        return
-                    else 
-                        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Giants did not move timer triggered, with speed: %.2f!', maxSpeed)
-                    end
-                end
-            end
-            driveStrategy:onFinished()
-        end
-    end
-    self:resetCpAllActiveInfoTexts()
-    --- Only add the info text, if it's available and nobody is in the vehicle.
-    if not self:getIsControlled() and releaseMessage and not isOnlyShownOnPlayerStart then
-        self:setCpInfoTextActive(releaseMessage)
-    end
-    superFunc(self, message,...)
-    if wasCpActive then
-        if event then
-            SpecializationUtil.raiseEvent(self, event)
-        end
-        if hasFinished and self:getCpSettings().foldImplementAtEnd:getValue() then
-            --- Folds implements at the end if the setting is active.
-            self:prepareForAIDriving()
-        end
-
-    end
-end
-
-
------------------------------------------------
---- Action input events
------------------------------------------------
 
 function CpAIWorker:changeStartingPoint()
     local startingPointSetting = self:getCpStartingPointSetting()
@@ -289,6 +244,10 @@ function CpAIWorker:cpStartStopDriver(isStartedByHud)
 	end
 end
 
+-----------------------------------------------
+--- Status getter functions
+-----------------------------------------------
+
 --- Is a cp worker active ?
 --- Every cp job should be an instance of type CpAIJob.
 function CpAIWorker:getIsCpActive()
@@ -297,23 +256,24 @@ end
 
 --- Is cp drive to field work active
 function CpAIWorker:getIsCpDriveToFieldWorkActive()
-    return self:getIsCpActive() and self.driveToFieldWorkStartStrategy ~= nil
+    local spec = self.spec_cpAIWorker
+    return self:getIsCpActive() and spec.driveToTask ~=nil
 end
 
 --- Is a cp job ready to be started?
 function CpAIWorker:getCanStartCp()
-    return false
+    --- override
 end
 
 --- Gets the job to be started by the hud or the keybinding.
 function CpAIWorker:getCpStartableJob()
-	
+	--- override
 end
 
 --- Gets the additional action event start text,
 --- for example the starting point.
 function CpAIWorker:getCpStartText()
-	return ""
+	--- override
 end
 
 --- Makes sure giants isn't turning the motor back on, when we have turned it off.
@@ -322,6 +282,64 @@ function CpAIWorker:getCanMotorRun(superFunc, ...)
         return false
     end
     return superFunc(self, ...)
+end
+
+-----------------------------------------------
+--- Strategy handling
+-----------------------------------------------
+
+
+--- Used to enable/disable release of the helper
+--- and handles post release functionality with for example auto drive.
+function CpAIWorker:stopCurrentAIJob(superFunc, message, ...)
+    if message then
+        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "stop message: %s", message:getMessage())
+    else
+        CpUtil.infoVehicle(self, "no stop message was given.")
+        return superFunc(self, message, ...)
+    end
+    local releaseMessage, hasFinished, event, isOnlyShownOnPlayerStart = g_infoTextManager:getInfoTextDataByAIMessage(message)
+
+    CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, "finished: %s, event: %s",
+                                                    tostring(hasFinished), tostring(event))
+    local wasCpActive = self:getIsCpActive()
+    if wasCpActive then
+        local driveStrategy = self:getCpDriveStrategy()
+        if driveStrategy then
+            -- TODO: this isn't needed if we do not return a 0 < maxSpeed < 0.5, should either be exactly 0 or greater than 0.5
+            local maxSpeed = driveStrategy and driveStrategy:getMaxSpeed()
+            if message:isa(AIMessageErrorBlockedByObject) then 
+                if self.spec_aiFieldWorker.didNotMoveTimer and self.spec_aiFieldWorker.didNotMoveTimer < 0 then 
+                    if maxSpeed and maxSpeed < 1 then
+                        -- disable the Giants timeout which dismisses the AI worker if it does not move for 5 seconds
+                        -- since we often stop for instance in convoy mode when waiting for another vehicle to turn
+                        -- (when we do this, we set our maxSpeed to 0). So we also check our maxSpeed, this way the Giants timer will
+                        -- fire if we are blocked (thus have a maxSpeed > 0 but not moving)
+                        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Overriding the Giants did not move timer, with speed: %.2f', maxSpeed)
+                        return
+                    else 
+                        CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Giants did not move timer triggered, with speed: %.2f!', maxSpeed)
+                    end
+                end
+            end
+            driveStrategy:onFinished()
+        end
+    end
+    self:resetCpAllActiveInfoTexts()
+    --- Only add the info text, if it's available and nobody is in the vehicle.
+    if not self:getIsControlled() and releaseMessage and not isOnlyShownOnPlayerStart then
+        self:setCpInfoTextActive(releaseMessage)
+    end
+    superFunc(self, message,...)
+    if wasCpActive then
+        if event then
+            SpecializationUtil.raiseEvent(self, event)
+        end
+        if hasFinished and self:getCpSettings().foldImplementAtEnd:getValue() then
+            --- Folds implements at the end if the setting is active.
+            self:prepareForAIDriving()
+        end
+    end
 end
 
 function CpAIWorker:startCpDriveTo(task, jobParameters)
@@ -452,12 +470,10 @@ function CpAIWorker:stopCpDriver()
     --- Reset the flag.
     local spec = self.spec_cpAIWorker
     spec.motorDisabled = false
-
     if spec.driveStrategy then 
         spec.driveStrategy:delete()
         spec.driveStrategy = nil
     end
-
     if self.isServer then 
         WheelsUtil.updateWheelsPhysics(self, 0, 0, 0, true, true)
     end
@@ -472,15 +488,51 @@ function CpAIWorker:stopCpDriver()
 	if actionController ~= nil then
 		actionController:resetCurrentState()
 	end
-
 	self:raiseAIEvent("onAIFieldWorkerEnd", "onAIImplementEnd")
-
 end
 
 function CpAIWorker:getCpDriveStrategy()
     local spec = self.spec_cpAIWorker
     return spec.driveStrategy
 end
+
+function CpAIWorker:getCpReverseDrivingDirectionNode()
+    local spec = self.spec_cpAIWorker
+    if not spec.reverseDrivingDirectionNode and SpecializationUtil.hasSpecialization(ReverseDriving, self.specializations) then
+        spec.reverseDrivingDirectionNode =
+            CpUtil.createNewLinkedNode(self, "realReverseDrivingDirectionNode", self:getAIDirectionNode())
+        setRotation(spec.reverseDrivingDirectionNode, 0, math.pi, 0)
+    end
+    return spec.reverseDrivingDirectionNode
+end
+
+--- TODO: Do we really need the AIDriveStrategyCollision from giants, as this one is only active for fieldwork?
+function CpAIWorker:isCollisionDetectionEnabled()
+    local spec = self.spec_cpAIWorker
+    return spec.collisionDetectionEnabled
+end
+
+function CpAIWorker:enableCollisionDetection()
+    local spec = self.spec_cpAIWorker
+    spec.collisionDetectionEnabled = true
+end
+
+function CpAIWorker:disableCollisionDetection()
+    local spec = self.spec_cpAIWorker
+    spec.collisionDetectionEnabled = false
+end
+
+function CpAIWorker:getCollisionCheckActive(superFunc,...)
+    local spec = self.spec_cpAIWorker
+    if spec.collisionDetectionEnabled then
+        return superFunc(self,...)
+    else
+        return false
+    end
+end
+AIDriveStrategyCollision.getCollisionCheckActive = Utils.overwrittenFunction(
+        AIDriveStrategyCollision.getCollisionCheckActive, CpAIWorker.getCollisionCheckActive
+)
 
 function CpAIWorker:stopFieldWorker(superFunc, ...)
     --- Reset the flag.
