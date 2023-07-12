@@ -48,6 +48,7 @@ function CpAIWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onPreDelete", CpAIWorker)
     --- Autodrive events
     SpecializationUtil.registerEventListener(vehicleType, "onStopAutoDrive", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onStartAutoDrive", CpAIWorker)
@@ -151,6 +152,10 @@ end
 
 function CpAIWorker:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
 	CpAIWorker.updateActionEvents(self)
+end
+
+function CpAIWorker:onPreDelete()
+   
 end
 
 -----------------------------------------------
