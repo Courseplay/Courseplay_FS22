@@ -58,7 +58,7 @@ function ShovelController:getDischargeNode()
 end
 
 --- Checks if the shovel raycast has found an unload target.
----@param targetTrigger any
+---@param targetTrigger CpTrigger|nil
 ---@return boolean
 function ShovelController:canDischarge(targetTrigger)
     local dischargeNode = self:getDischargeNode()
@@ -69,7 +69,7 @@ function ShovelController:canDischarge(targetTrigger)
 		self.implement:updateRaycast(dischargeNode)
         dischargeNode.raycast.node = oldNode
 	end
-    if targetTrigger and targetTrigger ~= self.implement:getDischargeTargetObject(dischargeNode) then 
+    if targetTrigger and targetTrigger:getTrigger() ~= self.implement:getDischargeTargetObject(dischargeNode) then 
         return false
     end
     return dischargeNode.dischargeHit
