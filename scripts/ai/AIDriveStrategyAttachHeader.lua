@@ -89,9 +89,6 @@ function AIDriveStrategyAttachHeader:initializeImplementControllers(vehicle)
     --- This Area is not really needed, as the pathfinder finds the trailer collision.
     --- But it might be a good idea to change this to only include the attacher area.
     --- The area to avoid around the attacher might need to be larger. 
-    -- self.trailerAreaToAvoid =  PathfinderUtil.NodeArea(trailerAreaNode, -self.trailer.size.width/2 - self.trailer.size.widthOffset,
-    --                                                                     -self.trailer.size.length/2 - self.trailer.size.lengthOffset, 
-    --                                                                     self.trailer.size.width, self.trailer.size.length)
     self.trailerAreaToAvoid = PathfinderUtil.NodeArea.createVehicleArea(self.trailer)
 end
 
