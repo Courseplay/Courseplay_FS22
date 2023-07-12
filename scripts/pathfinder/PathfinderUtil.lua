@@ -441,6 +441,14 @@ function PathfinderUtil.NodeArea:drawDebug()
             self.zOffset, self.zOffset + self.length, 5, 1, 1, 0, 1, false)
 end
 
+--- Creates an area to avoid for a vehicle based on it's defined dimensions.
+---@param vehicle table
+---@return PathfinderUtil.NodeArea
+function PathfinderUtil.NodeArea.createVehicleArea(vehicle)
+    return PathfinderUtil.NodeArea(vehicle.rootNode, -vehicle.size.width/2 + vehicle.size.widthOffset, 
+        -vehicle.size.length/2 + vehicle.size.lengthOffset, vehicle.size.width, vehicle.size.length)
+end
+
 --[[
 Pathfinding is controlled by the constraints (validity and penalty) below. The pathfinder will call these functions
 for each node to determine their validity and penalty.
