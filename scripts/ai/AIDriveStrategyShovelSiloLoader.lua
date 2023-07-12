@@ -49,9 +49,8 @@ AIDriveStrategyShovelSiloLoader.myStates = {
     REVERSING_AWAY_FROM_UNLOAD = {shovelPosition = ShovelController.POSITIONS.PRE_UNLOADING, shovelMovingSpeed = 0},
 }
 
-AIDriveStrategyShovelSiloLoader.safeSpaceToTrailer = 5
 AIDriveStrategyShovelSiloLoader.maxValidTrailerDistanceToSiloFront = 30
-AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 15 
+AIDriveStrategyShovelSiloLoader.searchForTrailerDelaySec = 30 
 AIDriveStrategyShovelSiloLoader.distShovelTrailerPreUnload = 7
 AIDriveStrategyShovelSiloLoader.distShovelUnloadStationPreUnload = 8
 
@@ -161,11 +160,8 @@ function AIDriveStrategyShovelSiloLoader:setAllStaticParameters()
     self.proximityController = ProximityController(self.vehicle, self:getWorkWidth())
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
     self:setFrontAndBackMarkers()
-
     self.siloEndProximitySensor = SingleForwardLookingProximitySensorPack(self.vehicle, self.shovelController:getShovelNode(), 5, 1)
-
     self.heapNode = CpUtil.createNode("heapNode", 0, 0, 0, nil)
- 
     self.lastTrailerSearch = 0
 end
 
@@ -206,11 +202,8 @@ end
 --- implements are started/lowered etc.
 function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
-
     local moveForwards = not self.ppc:isReversing()
     local gx, gz, _
-
-    ----------------------------------------------------------------
     if not moveForwards then
         local maxSpeed
         gx, gz, maxSpeed = self:getReverseDriveData()
@@ -280,12 +273,11 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             self:setMaxSpeed(0)
         end
         if not self.isUnloadingAtTrailerActive then 
-            if self.shovelController:isShovelOverTrailer(refNode, 3) and self.shovelController:canDischarge() then 
+            if self.shovelController:isShovelOverTrailer(refNode, 3) and self.shovelController:canDischarge(self.unloadTrigger) then 
                 self:setNewState(self.states.UNLOADING)
                 self:setMaxSpeed(0)
             end
         end
-
     elseif self.state == self.states.UNLOADING then 
         self:setMaxSpeed(0)
         if self:hasFinishedUnloading() then
@@ -301,7 +293,6 @@ function AIDriveStrategyShovelSiloLoader:getDriveData(dt, vX, vY, vZ)
             end
         end
     end
-
     self:limitSpeed()
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
