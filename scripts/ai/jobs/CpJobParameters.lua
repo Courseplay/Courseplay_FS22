@@ -137,6 +137,18 @@ function CpJobParameters:isSiloLoadingHudModeDisabled()
     return self:isAIMenuJob()
 end
 
+function CpJobParameters:isFieldWorkHudModeDisabled()
+    local vehicle = self.job:getVehicle()
+    if vehicle then 
+        if (AIUtil.hasChildVehicleWithSpecialization(vehicle, Leveler) and 
+            not AIUtil.hasChildVehicleWithSpecialization(vehicle, Shovel)) or 
+            AIUtil.hasChildVehicleWithSpecialization(vehicle, ConveyorBelt) then 
+            return true
+        end
+    end
+    return false
+end
+
 --- Callback raised by a setting and executed as an vehicle event.
 ---@param callbackStr string event to be raised
 ---@param setting AIParameterSettingList setting that raised the callback.

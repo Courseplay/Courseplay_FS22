@@ -15,9 +15,9 @@
 	<SettingSubTitle title="startAt">
 		<Setting classType="AIParameterSettingList" name="startAt" default="2">
 			<Values>
-				<Value name="START_AT_NEAREST_POINT">1</Value>
-				<Value name="START_AT_FIRST_POINT">2</Value>
-				<Value name="START_AT_LAST_POINT">3</Value>
+				<Value name="START_AT_NEAREST_POINT" isDisabled="isFieldWorkHudModeDisabled">1</Value>
+				<Value name="START_AT_FIRST_POINT" isDisabled="isFieldWorkHudModeDisabled">2</Value>
+				<Value name="START_AT_LAST_POINT" isDisabled="isFieldWorkHudModeDisabled">3</Value>
 				<Value name="START_AT_BUNKER_SILO" isDisabled="isBunkerSiloHudModeDisabled">4</Value> <!-- Only for bunker silo mode in the hud!-->
 				<Value name="START_AT_SILO_LOADING" isDisabled="isSiloLoadingHudModeDisabled">5</Value> <!-- Only for shovel silo loadings mode in the hud!-->
 			</Values>
