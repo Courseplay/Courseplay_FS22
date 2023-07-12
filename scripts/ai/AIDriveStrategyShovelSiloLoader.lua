@@ -128,7 +128,11 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
     end
 
     local cx, cz = self.silo:getFrontCenter()
-    self.siloFrontNode = CpUtil.createNode("siloFrontNode", cx, cz, 0)
+    local dirX, dirZ = self.silo:getLengthDirection()
+    local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+    self.siloFrontNode = CpUtil.createNode("siloFrontNode", cx, cz, yRot)
+    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2, 
+        0, self.silo:getWidth(), self.silo:getLength())
 
     self.siloController = CpBunkerSiloLoaderController(self.silo, self.vehicle, self)
 end
@@ -313,6 +317,7 @@ function AIDriveStrategyShovelSiloLoader:update(dt)
         end
         if self.silo then 
             self.silo:drawDebug()
+            self.siloAreaToAvoid:drawDebug()
         end
         self.siloController:draw()
         if self.heapSilo then 
@@ -438,8 +443,6 @@ function AIDriveStrategyShovelSiloLoader:searchForTrailerToUnloadInto()
     self:startPathfindingToTrailer()
 end
 
-
-
 ----------------------------------------------------------------
 --- Pathfinding
 ----------------------------------------------------------------
@@ -454,7 +457,8 @@ function AIDriveStrategyShovelSiloLoader:startPathfindingToStart(course)
         local fm = self:getFrontAndBackMarkers()
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(
             self.vehicle, course, 1, 0, -(fm + 4),
-            true, nil)
+            true, nil, nil, 
+            nil, 0, self.siloAreaToAvoid)
         if done then
             return self:onPathfindingDoneToStart(path)
         else
@@ -489,7 +493,7 @@ function AIDriveStrategyShovelSiloLoader:startPathfindingToUnloadPosition()
             self.vehicle, self.unloadPositionNode,
             0, 0, true,
             nil, {}, nil,
-            0, nil, false
+            0, self.siloAreaToAvoid, false
         )
         if done then
             return self:onPathfindingDoneToUnloadPosition(path, goalNodeInvalid)
@@ -523,7 +527,7 @@ function AIDriveStrategyShovelSiloLoader:startPathfindingToTrailer()
             self.vehicle, self.unloadPositionNode,
             0, 0, true,
             nil, {}, nil,
-            0, nil, false
+            0, self.siloAreaToAvoid, false
         )
         if done then
             return self:onPathfindingDoneToTrailer(path, goalNodeInvalid)
@@ -635,7 +639,8 @@ end
 --- Starts reverse straight to make some space to the trailer or unload trigger.
 function AIDriveStrategyShovelSiloLoader:startReversingAwayFromUnloading()
     local _, _, spaceToTrailer = localToLocal(self.shovelController:getShovelNode(), self.vehicle:getAIDirectionNode(), 0, 0, 0)
-    local course = Course.createStraightReverseCourse(self.vehicle, 2*spaceToTrailer, 0 )
+    local course = Course.createStraightReverseCourse(self.vehicle, 2*spaceToTrailer, 
+        0, self.vehicle.rootNode )
     self:startCourse(course, 1)
     self:setNewState(self.states.REVERSING_AWAY_FROM_UNLOAD)
 end

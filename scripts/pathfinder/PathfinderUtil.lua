@@ -914,13 +914,13 @@ end
 ---@param xOffset number side offset of the goal from the goalWaypoint
 ---@param zOffset number length offset of the goal from the goalWaypoint
 ---@param allowReverse boolean allow reverse driving
----@param fieldNum number if > 0, the pathfinding is restricted to the given field and its vicinity. Otherwise the
+---@param fieldNum number|nil if > 0, the pathfinding is restricted to the given field and its vicinity. Otherwise the
 --- pathfinding considers any collision-free path valid, also outside of the field.
----@param vehiclesToIgnore table[] list of vehicles to ignore for the collision detection (optional)
----@param maxFruitPercent number maximum percentage of fruit present before a node is marked as invalid (optional)
----@param offFieldPenalty number penalty to apply to nodes off the field
----@param areaToAvoid PathfinderUtil.NodeArea nodes in this area will be penalized so the path will most likely avoid it
----@param areaToIgnoreFruit PathfinderUtil.Area area to ignore fruit
+---@param vehiclesToIgnore table[]|nil list of vehicles to ignore for the collision detection (optional)
+---@param maxFruitPercent number|nil maximum percentage of fruit present before a node is marked as invalid (optional)
+---@param offFieldPenalty number|nil penalty to apply to nodes off the field
+---@param areaToAvoid PathfinderUtil.NodeArea|nil nodes in this area will be penalized so the path will most likely avoid it
+---@param areaToIgnoreFruit PathfinderUtil.Area|nil area to ignore fruit
 ---@return PathfinderInterface pathfinder
 ---@return boolean done finished pathfinding?
 ---@return table|nil path that was found?

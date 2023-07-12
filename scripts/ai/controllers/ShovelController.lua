@@ -103,6 +103,9 @@ function ShovelController:moveShovelToPosition(pos)
                 self.implement:setIsTurnedOn(true)
                 self:debug("Turning on the shovel.")
             end
+            if not self.implement:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OBJECT then
+                self.implement:setDischargeState(Dischargeable.DISCHARGE_STATE_OBJECT)
+            end
             return false
         else
             if self.implement:getIsTurnedOn() then 
