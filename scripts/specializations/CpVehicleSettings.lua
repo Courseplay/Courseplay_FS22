@@ -6,9 +6,12 @@
 CpVehicleSettings = {}
 
 CpVehicleSettings.MOD_NAME = g_currentModName
-CpVehicleSettings.KEY = "."..CpVehicleSettings.MOD_NAME..".cpVehicleSettings"
 CpVehicleSettings.SETTINGS_KEY = ".settings"
 CpVehicleSettings.USER_KEY = ".users"
+CpVehicleSettings.NAME = ".cpVehicleSettings"
+CpVehicleSettings.SPEC_NAME = CpVehicleSettings.MOD_NAME .. CpVehicleSettings.NAME
+CpVehicleSettings.KEY = "." .. CpVehicleSettings.MOD_NAME .. CpVehicleSettings.NAME
+
 function CpVehicleSettings.initSpecialization()
 	local schema = Vehicle.xmlSchemaSavegame
     --- Old xml schema for settings
@@ -30,9 +33,14 @@ function CpVehicleSettings.initSpecialization()
     CpVehicleSettings.registerConsoleCommands()
 end
 
+function CpVehicleSettings.register(typeManager,typeName,specializations)
+	if CpVehicleSettings.prerequisitesPresent(specializations) then
+		typeManager:addSpecialization(typeName, CpVehicleSettings.SPEC_NAME)
+	end
+end
 
 function CpVehicleSettings.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpVehicleSettings.registerEvents(vehicleType)
@@ -44,8 +52,6 @@ function CpVehicleSettings.registerEventListeners(vehicleType)
 --	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpVehicleSettings)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpVehicleSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpVehicleSettings)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onCpUnitChanged", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CpVehicleSettings)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CpVehicleSettings)
@@ -74,8 +80,7 @@ end
 
 function CpVehicleSettings:onLoad(savegame)
 	--- Register the spec: spec_CpVehicleSettings
-    local specName = CpVehicleSettings.MOD_NAME .. ".cpVehicleSettings"
-    self.spec_cpVehicleSettings = self["spec_" .. specName]
+    self.spec_cpVehicleSettings = self["spec_" .. CpVehicleSettings.SPEC_NAME]
     local spec = self.spec_cpVehicleSettings
 
     --- Clones the generic settings to create different settings containers for each vehicle. 
@@ -90,43 +95,11 @@ function CpVehicleSettings:onLoadFinished()
     spec.wasLoaded = nil
 end
 
---- TODO: These are only applied on a implement an not on a single vehicle.
---- This means self driving vehicle are not getting these vehicle configuration values.
-function CpVehicleSettings:onPostAttachImplement(object)
-    --- Only apply these values, if were are not loading from a savegame.
-    local spec = self.spec_cpVehicleSettings
-    if spec.wasLoaded then 
-        return
-    end
-
-    CpVehicleSettings.setAutomaticWorkWidthAndOffset(self)
-    CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self)
-    CpVehicleSettings.setAutomaticBaleCollectorOffset(self)
-
-    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
-    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
-    CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.bunkerSiloWorkWidth, 'workingWidth')
-    CpVehicleSettings.validateSettings(self)
-end
-
-function CpVehicleSettings:onPreDetachImplement(implement)
-    --- Only apply these values, if were are not loading from a savegame.
-    local spec = self.spec_cpVehicleSettings
-    if spec.wasLoaded then 
-        return
-    end
-
-    CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, implement.object)
-    CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self, implement.object)
-    
-    CpVehicleSettings.resetToDefault(self, implement.object, spec.raiseImplementLate, 'raiseLate', false)
-    CpVehicleSettings.resetToDefault(self, implement.object, spec.lowerImplementEarly, 'lowerEarly', false)
-    CpVehicleSettings.validateSettings(self)
-end
 
 --- Changes the sprayer work width on fill type change, as it might depend on the loaded fill type.
 --- For example Lime and Fertilizer might have a different work width.
 function CpVehicleSettings:onStateChange(state, data)
+    local spec = self.spec_cpVehicleSettings
     if state == Vehicle.STATE_CHANGE_FILLTYPE_CHANGE and self:getIsSynchronized() then
         local _, hasSprayer = AIUtil.getAllChildVehiclesWithSpecialization(self, Sprayer, nil)
         if hasSprayer then 
@@ -137,6 +110,26 @@ function CpVehicleSettings:onStateChange(state, data)
                 self:getCourseGeneratorSettings().workWidth:setFloatValue(width)
             end
         end
+    elseif state == Vehicle.STATE_CHANGE_ATTACH then 
+        CpVehicleSettings.setAutomaticWorkWidthAndOffset(self)
+        CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self)
+        CpVehicleSettings.setAutomaticBaleCollectorOffset(self)
+        CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
+            spec.raiseImplementLate, 'raiseLate')
+        CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
+            spec.lowerImplementEarly, 'lowerEarly')
+        CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
+            spec.bunkerSiloWorkWidth, 'workingWidth')
+        CpVehicleSettings.validateSettings(self)
+    elseif state == Vehicle.STATE_CHANGE_DETACH then
+        CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, data.attachedVehicle)
+        CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self, data.attachedVehicle)
+        
+        CpVehicleSettings.resetToDefault(self, data.attachedVehicle, spec.raiseImplementLate, 
+            'raiseLate', false)
+        CpVehicleSettings.resetToDefault(self, data.attachedVehicle, spec.lowerImplementEarly, 
+            'lowerEarly', false)
+        CpVehicleSettings.validateSettings(self)
     end
 end
 

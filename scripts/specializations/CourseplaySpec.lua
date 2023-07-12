@@ -12,7 +12,7 @@ function CourseplaySpec.initSpecialization()
 end
 
 function CourseplaySpec.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CourseplaySpec.registerEventListeners(vehicleType)	
@@ -34,12 +34,9 @@ function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
   
 end
 
-
 function CourseplaySpec:onRegisterActionEvents(isActiveForInput, isActiveForInputIgnoreSelection)
 
 end
-
-
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Event listeners

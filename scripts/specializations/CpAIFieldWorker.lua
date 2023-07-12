@@ -39,8 +39,7 @@ function CpAIFieldWorker.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFull", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onCpFinished", CpAIFieldWorker)
 
-    SpecializationUtil.registerEventListener(vehicleType, "onPostDetachImplement", CpAIFieldWorker)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIFieldWorker)
+    SpecializationUtil.registerEventListener(vehicleType, "onStateChange", CpAIFieldWorker)
     SpecializationUtil.registerEventListener(vehicleType, 'onCpCourseChange', CpAIFieldWorker)
 
     SpecializationUtil.registerEventListener(vehicleType, 'onCpADStartedByPlayer', CpAIFieldWorker)
@@ -107,21 +106,19 @@ function CpAIFieldWorker:saveToXMLFile(xmlFile, baseKey, usedModNames)
     spec.cpJobStartAtLastWp:getCpJobParameters():saveToXMLFile(xmlFile, baseKey.. ".cpJobStartAtLastWp")
 end
 
+function CpAIFieldWorker:onStateChange(state, data)
+    local spec = self.spec_cpAIFieldWorker
+    if state == Vehicle.STATE_CHANGE_ATTACH then 
+        spec.cpJob:getCpJobParameters():validateSettings()
+    elseif state == Vehicle.STATE_CHANGE_DETACH then
+        spec.cpJob:getCpJobParameters():validateSettings()
+    end
+end
+
 function CpAIFieldWorker:onCpCourseChange()
     local spec = self.spec_cpAIFieldWorker
     spec.cpJob:getCpJobParameters():validateSettings()
 end
-
-function CpAIFieldWorker:onPostDetachImplement()
-    local spec = self.spec_cpAIFieldWorker
-    spec.cpJob:getCpJobParameters():validateSettings()
-end
-
-function CpAIFieldWorker:onPostAttachImplement()
-    local spec = self.spec_cpAIFieldWorker
-    spec.cpJob:getCpJobParameters():validateSettings()
-end
-
 
 function CpAIFieldWorker:getCpStartingPointSetting()
     local spec = self.spec_cpAIFieldWorker

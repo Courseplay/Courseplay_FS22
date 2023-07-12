@@ -107,16 +107,11 @@ end
 
 function CpAISiloLoaderWorker:getCpStartableJob(superFunc, isStartedByHud)
     local spec = self.spec_cpAISiloLoaderWorker
-    -- if AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) then 
-    --     return superFunc(self, isStartedByHud) or self:getCanStartCpSiloLoaderWorker() and spec.cpJob
-    -- elseif isStartedByHud then
-    --     if self:getCanStartCpSiloLoaderWorker() 
-    --         and self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING then
-    --         return superFunc(self, isStartedByHud) or spec.cpJob
-    --     end
-        
-    -- end
-	return superFunc(self, isStartedByHud) or self:getCanStartCpSiloLoaderWorker() and spec.cpJob
+    local job = self:getCanStartCpSiloLoaderWorker() and spec.cpJob
+    if isStartedByHud and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt) then 
+        job = self:getCpStartingPointSetting():getValue() == CpJobParameters.START_AT_SILO_LOADING and job
+    end
+	return superFunc(self, isStartedByHud) or job
 end
 
 function CpAISiloLoaderWorker:getCpStartText(superFunc)

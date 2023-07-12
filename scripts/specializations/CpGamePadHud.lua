@@ -44,7 +44,7 @@ function CpGamePadHud.initSpecialization()
 end
 
 function CpGamePadHud.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(AIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpGamePadHud.register(typeManager, typeName, specializations)

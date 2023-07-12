@@ -19,7 +19,7 @@ function CpAIBaleFinder.initSpecialization()
 end
 
 function CpAIBaleFinder.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(CpAIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpAIBaleFinder.register(typeManager,typeName,specializations)

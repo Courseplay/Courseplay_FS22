@@ -42,8 +42,6 @@ function CpAIWorker.registerEventListeners(vehicleType)
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CpAIWorker)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLoadFinished", CpAIWorker)
-    SpecializationUtil.registerEventListener(vehicleType, "onPreDetachImplement", CpAIWorker)
-    SpecializationUtil.registerEventListener(vehicleType, "onPostAttachImplement", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdate", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CpAIWorker)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpAIWorker)
@@ -92,16 +90,6 @@ end
 function CpAIWorker:onLoadFinished()
     
 end
-
-function CpAIWorker:onPreDetachImplement(implement)
-    local spec = self.spec_cpAIWorker
-end
-
-function CpAIWorker:onPostAttachImplement(object)
-    local spec = self.spec_cpAIWorker
-
-end
-
 
 function CpAIWorker:onLeaveVehicle(wasEntered)
     if wasEntered then 

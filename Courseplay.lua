@@ -325,19 +325,13 @@ end
 function Courseplay.register(typeManager)
 	--- TODO: make this function async. 
 	for typeName, typeEntry in pairs(typeManager.types) do	
+		CpAIWorker.register(typeManager, typeName, typeEntry.specializations)
 		if CourseplaySpec.prerequisitesPresent(typeEntry.specializations) then
 			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".courseplaySpec")	
 		end
-		if CpVehicleSettings.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpVehicleSettings")	
-		end
-		if CpCourseGeneratorSettings.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseGeneratorSettings")	
-		end
-		if CpCourseManager.prerequisitesPresent(typeEntry.specializations) then
-			typeManager:addSpecialization(typeName, Courseplay.MOD_NAME .. ".cpCourseManager")	
-		end
-		CpAIWorker.register(typeManager, typeName, typeEntry.specializations)
+		CpVehicleSettings.register(typeManager, typeName, typeEntry.specializations)
+		CpCourseGeneratorSettings.register(typeManager, typeName, typeEntry.specializations)
+		CpCourseManager.register(typeManager, typeName, typeEntry.specializations)
 		CpAIFieldWorker.register(typeManager, typeName, typeEntry.specializations)
 		CpAIBaleFinder.register(typeManager, typeName, typeEntry.specializations)
 		CpAICombineUnloader.register(typeManager, typeName, typeEntry.specializations)

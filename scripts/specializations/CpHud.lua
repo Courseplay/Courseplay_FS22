@@ -16,7 +16,7 @@ function CpHud.initSpecialization()
 end
 
 function CpHud.prerequisitesPresent(specializations)
-    return SpecializationUtil.hasSpecialization(CpAIFieldWorker, specializations) 
+    return SpecializationUtil.hasSpecialization(CpAIWorker, specializations) 
 end
 
 function CpHud.register(typeManager,typeName,specializations)
