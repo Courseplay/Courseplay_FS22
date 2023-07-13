@@ -51,6 +51,10 @@ function CpAIJobCombineUnloader:setupJobParameters()
 	CpAIJob.setupJobParameters(self)
     self:setupCpJobParameters(CpCombineUnloaderJobParameters(self))
 	self.cpJobParameters.fieldUnloadPosition:setSnappingAngle(math.pi/8) -- AI menu snapping angle of 22.5 degree.
+
+	--- Giants unload
+	self.unloadingStationParameter = self.cpJobParameters.unloadingStation
+	self.waitForFillingTask = self.combineUnloaderTask
 end
 
 function CpAIJobCombineUnloader:getIsAvailableForVehicle(vehicle)
@@ -279,42 +283,11 @@ function CpAIJobCombineUnloader:setupGiantsUnloaderData(vehicle)
 		self.driveToUnloadingTask:setTargetOffset(-maxOffset)
 
 	end
-	local unloadingStation = self.cpJobParameters.unloadingStation:getUnloadingStation()
-	if unloadingStation ~= nil  then 
-		local x, z, dirX, dirZ, trigger = unloadingStation:getAITargetPositionAndDirection(FillType.UNKNOWN)
-
-		if trigger ~= nil then
-			self.driveToUnloadingTask:setTargetPosition(x, z)
-			self.driveToUnloadingTask:setTargetDirection(dirX, dirZ)
-			self.dischargeTask:setUnloadTrigger(trigger)
-		end
-	end
 end
 
 function CpAIJobCombineUnloader:getNextTaskIndex(isSkipTask)
-	--- Giants unload, sets the correct dischargeNode and vehicle.
-	if self.currentTaskIndex == self.driveToUnloadingTask.taskIndex or self.currentTaskIndex == self.dischargeTask.taskIndex then
-
-		for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
-			if dischargeNodeInfo.dirty then
-				local vehicle = dischargeNodeInfo.vehicle
-				local fillUnitIndex = dischargeNodeInfo.dischargeNode.fillUnitIndex
-				if vehicle:getFillUnitFillLevel(fillUnitIndex) > 1 then
-					self.dischargeTask:setDischargeNode(vehicle, dischargeNodeInfo.dischargeNode, dischargeNodeInfo.offsetZ)
-
-					dischargeNodeInfo.dirty = false
-
-					return self.dischargeTask.taskIndex
-				end
-
-				dischargeNodeInfo.dirty = false
-			end
-		end
-	end
-
-	local nextTaskIndex = AIJobDeliver:superClass().getNextTaskIndex(self, isSkipTask)
-
-	return nextTaskIndex
+	--- Giants unload, sets the correct dischargeNode and vehicle and unload target information.
+	return AIJobDeliver.getNextTaskIndex(self, isSkipTask)
 end
 
 function CpAIJobCombineUnloader:canContinueWork()
@@ -324,32 +297,10 @@ function CpAIJobCombineUnloader:canContinueWork()
 	end
 	--- Giants unload, checks if the unloading station is still available and not full.
 	if self.cpJobParameters.useGiantsUnload:getValue() then 
-		local unloadingStation = self.cpJobParameters.unloadingStation:getUnloadingStation()
-
-		if unloadingStation == nil then
-			return false, AIMessageErrorUnloadingStationDeleted.new()
-		end
-		if self.currentTaskIndex == self.driveToUnloadingTask.taskIndex then
-			local hasSpace = false
-	
-			for _, dischargeNodeInfo in ipairs(self.dischargeNodeInfos) do
-				local dischargeVehicle = dischargeNodeInfo.vehicle
-				local fillUnitIndex = dischargeNodeInfo.dischargeNode.fillUnitIndex
-	
-				if dischargeVehicle:getFillUnitFillLevel(fillUnitIndex) > 1 then
-					local fillTypeIndex = dischargeVehicle:getFillUnitFillType(fillUnitIndex)
-	
-					if unloadingStation:getFreeCapacity(fillTypeIndex, self.startedFarmId) > 0 then
-						hasSpace = true
-	
-						break
-					end
-				end
-			end
-	
-			if not hasSpace then
-				return false, AIMessageErrorUnloadingStationFull.new()
-			end
+		
+		local canContinue, errorMessage = AIJobDeliver.canContinueWork(self)
+		if not canContinue then 
+			return canContinue, errorMessage
 		end
 	end
 
@@ -386,6 +337,11 @@ function CpAIJobCombineUnloader:getStartTaskIndex()
 	local readyToDriveUnloading = vehicle:getCpSettings().fullThreshold:getValue() < fillLevelPercentage
 	if readyToDriveUnloading then 
 		CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, vehicle, "Not close to the field and vehicle is full, so start driving to unload.")
+		--- Small hack, so we can use the giants function and don't need to do copy & paste.
+		local oldTaskIx = self.currentTaskIndex
+		self.currentTaskIndex = self.combineUnloaderTask.taskIndex
+		self:getNextTaskIndex()
+		self.currentTaskIndex = oldTaskIx
 		return self.driveToUnloadingTask.taskIndex
 	end
 	return startTask
