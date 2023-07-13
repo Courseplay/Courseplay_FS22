@@ -12,7 +12,7 @@
     <text name="CP_deactivated" text="desativado"/>
     <text name="CP_automatic" text="automático"/>
     <text name="CP_unit_meter" text="m"/>
-    <text name="CP_unit_foot" text="ft"/>
+    <text name="CP_unit_foot" text="pés"/>
     <text name="CP_copy" text="Copiar rota: "/>
     <text name="CP_infoText" text="Courseplay(%s): Para ajuda, reportar bug ou notas de patch, favor visitar: https://github.com/Courseplay/Courseplay_FS22."/>
     <text name="CP_error_no_course" text="Criar rota primeiro."/>
@@ -111,8 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="O trabalhador IA %s parou de trabalhar inesperadamente - nenhum tipo de fardo selecionado foi encontrado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador AI %s parou de funcionar inesperadamente - nenhum caminho encontrado!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - não é possível descarregar no campo!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="O trabalhador AI %s parou inesperadamente - impossível conectar o equipamento!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="O trabalhador AI %s parou inesperadamente - conexão automática do cortador desativada!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -200,8 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Conexão automático do cortador"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Permite a conexão automática de um cortador, que precisa ser acoplado como um reboque ou em um reboque separado."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Manter o tubo desdobrado"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Desdobrar o tubo quando a colheitadeira estiver cheia ou aguardando descarregar."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Parar enquanto descarrega"/>
@@ -404,8 +404,8 @@ A rota é salva automaticamente ao fechar o editor e substituir a rota seleciona
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Caminho não encontrado"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Inclinação para o solo não é possível"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cortador não suportado"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Conexão do cortador desativado"/>
     <!---->
     <!--Custom field manager-->
     <!---->
