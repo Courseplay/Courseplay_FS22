@@ -181,6 +181,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Travail dans les silos"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Largeur de travail"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Largeur de travail de la lame ou du rouleau. Valeur: 0 - 50"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->

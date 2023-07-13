@@ -181,6 +181,8 @@
     <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="筒倉工作設定"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="工作寬度"/>
     <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="工作寬度 數值範圍: 0 - 50"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_title" text="Shovel loading offset. Value: -1 - 1"/>
+    <text name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip" text="Shovel loading offset. Value: -1 - 1"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
