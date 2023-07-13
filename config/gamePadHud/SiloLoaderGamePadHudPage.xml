@@ -7,4 +7,5 @@
 <Settings title="CP_vehicle_setting_display">
 	<Setting type="jobParameters" name = "startAt" />
 	<Setting type="vehicleSettings" name="bunkerSiloWorkWidth"/>
+	<Setting type="vehicleSettings" name="loadingShovelHeightOffset"/>
 </Settings>

@@ -170,7 +170,7 @@ end
 
 function CpShovelPositions:onUpdateTick(dt)
 	local spec = self.spec_cpShovelPositions
-	if spec.shovelToolIx == nil or  spec.armToolIx == nil then 
+	if spec.shovelToolIx == nil or spec.armToolIx == nil or self.rootVehicle == nil then 
 		return
 	end
 	if spec.state == CpShovelPositions.LOADING then 
@@ -248,8 +248,9 @@ end
 ---@param shovelLimits table
 ---@param armLimits table
 ---@param useHighDumpShovel boolean|nil
+---@param heightOffset number|nil
 ---@return boolean|nil
-function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHighDumpShovel)
+function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHighDumpShovel, heightOffset)
 	local min, max = unpack(shovelLimits)
 	--- Target angle of the shovel node, which is at the end of the shovel.
 	local targetAngle = math.rad(min) + math.rad(max - min)/2
@@ -279,7 +280,8 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 	local attacherJointNode = self.spec_attachable.attacherJoint.node
 	local angle, shovelNode = CpShovelPositions.getShovelData(self)
 	local _, shovelY, _ = localToLocal(self.rootNode, attacherJointNode, 0, 0, 0)
-	
+	heightOffset = heightOffset or 0
+
 	--- local tempNode = createTransformGroup("tempVehicleSizeCenter")
 	-- link(vehicle.rootNode, tempNode)
 	-- setTranslation(tempNode, vehicle.size.widthOffset, vehicle.size.heightOffset + vehicle.size.height / 2, vehicle.size.lengthOffset)
@@ -291,13 +293,19 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 
 	local _, ty, tz = localToLocal(getChildAt(armTool.node, 0), armVehicle.rootNode, 0, 0, 0)
 	local ax, ay, az = localToLocal(armTool.node, armVehicle.rootNode, 0, 0, 0)
-	local sx, sy, sz = 0, targetHeight - shovelY - self.size.heightOffset, 0
-	local ex, ey, ez = 0, targetHeight - shovelY - self.size.heightOffset, 20
+	local sx, sy, sz = 0, targetHeight - shovelY - self.size.heightOffset + heightOffset, 0
+	local ex, ey, ez = 0, targetHeight - shovelY - self.size.heightOffset + heightOffset, 20
 	local yMax = ay + radiusArmToolToShovelTool
+	local yMin = ay - radiusArmToolToShovelTool
 	if sy > yMax then 
 		--- Makes sure the target height is still reachable
 		sy = yMax - 0.01
 		ey = yMax - 0.01
+	end
+	if sy < yMin then 
+		--- Makes sure the target height is still reachable
+		sy = yMin + 0.01
+		ey = yMin + 0.01
 	end
 	local hasIntersection, i1z, i1y, i2z, i2y = MathUtil.getCircleLineIntersection(az, ay, radiusArmToolToShovelTool,
 															sz, sy, ez, ey)
@@ -387,10 +395,13 @@ end
 function CpShovelPositions:updateLoadingPosition(dt)
 	local spec = self.spec_cpShovelPositions
 	local angle = CpShovelPositions.getShovelData(self)
+	local heightOffset = self.rootVehicle.getCpSettings and self.rootVehicle:getCpSettings().loadingShovelHeightOffset:getValue()
 	local isDirty
 	if angle then 
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
-			CpShovelPositions.LOADING_POSITION.SHOVEL_LIMITS, CpShovelPositions.LOADING_POSITION.ARM_LIMITS)
+			CpShovelPositions.LOADING_POSITION.SHOVEL_LIMITS, 
+			CpShovelPositions.LOADING_POSITION.ARM_LIMITS, 
+			nil, heightOffset)
 	end
 	spec.isDirty = isDirty
 end

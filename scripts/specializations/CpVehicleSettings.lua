@@ -120,6 +120,9 @@ function CpVehicleSettings:onStateChange(state, data)
             spec.lowerImplementEarly, 'lowerEarly')
         CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
             spec.bunkerSiloWorkWidth, 'workingWidth')
+        CpVehicleSettings.setFromVehicleConfiguration(self, data.attachedVehicle, 
+            spec.loadingShovelHeightOffset, 'loadingShovelOffset')
+
         CpVehicleSettings.validateSettings(self)
     elseif state == Vehicle.STATE_CHANGE_DETACH then
         CpVehicleSettings.setAutomaticWorkWidthAndOffset(self, data.attachedVehicle)
@@ -362,7 +365,7 @@ function CpVehicleSettings:areCourseSettingsVisible()
 end
 
 function CpVehicleSettings:areBunkerSiloSettingsVisible()
-    return self:getCanStartCpBunkerSiloWorker()
+    return self:getCanStartCpBunkerSiloWorker() or self:getCanStartCpSiloLoaderWorker()
 end
 
 function CpVehicleSettings:areCombineUnloaderSettingsVisible()
@@ -385,6 +388,10 @@ function CpVehicleSettings:setAutomaticBaleCollectorOffset()
     local configValue = g_vehicleConfigurations:getRecursively(self, "baleCollectorOffset")
     local offset = configValue ~= nil and configValue or halfVehicleWidth + 0.2
     spec.baleCollectorOffset:setFloatValue(offset)
+end
+
+function CpVehicleSettings:isLoadingShovelOffsetSettingVisible()
+    return self:getCanStartCpSiloLoaderWorker() and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)
 end
 
 --- Saves the user value changed on the server.

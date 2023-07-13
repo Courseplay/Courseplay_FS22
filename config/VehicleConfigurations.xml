@@ -97,6 +97,9 @@ You can define the following custom settings:
 	Overrides the automatic selection of a moving tool for example for the shield controller of a snowcat.
 	Used to control the target tilt.
 
+- loadingShovelOffset: number -1 : 1
+	Offset relative to the calculated loading shovel position, needs to be set for a shovel implement.
+
 - shovelMovingToolIx: number
 	If the shovel is a high dump shovel then this moving tool ix is needed.
 

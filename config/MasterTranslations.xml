@@ -613,6 +613,14 @@
 			<Text language="de"><![CDATA[Arbeitsbreite. Wert: 0 - 50]]></Text>
 			<Text language="en"><![CDATA[Work width. Value: 0 - 50]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_loadingShovelHeightOffset_title">
+			<Text language="de"><![CDATA[Schaufel Laden Versatz. Wert: -1 - 1]]></Text>
+			<Text language="en"><![CDATA[Shovel loading offset. Value: -1 - 1]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_loadingShovelHeightOffset_tooltip">
+			<Text language="de"><![CDATA[Schaufel Laden Versatz. Wert: -1 - 1]]></Text>
+			<Text language="en"><![CDATA[Shovel loading offset. Value: -1 - 1]]></Text>
+		</Translation>
 	</Category> 
 	<Category name="Vehicle settings speed">
 		<Translation name="CP_vehicle_setting_fieldWorkSpeed_title">
