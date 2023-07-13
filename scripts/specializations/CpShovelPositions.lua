@@ -331,9 +331,19 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 			local _, dy, _ = localDirectionToWorld(getParent(tool.node), 0, 0, 1)
 			angle = math.acos(dy)
 			targetAngle = math.pi/2 - math.pi/8
-			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt, tool.rotMax) or isDirty
+			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+				tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
 		else 
-			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt, tool.rotMin) or isDirty
+			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+				tool.invertAxis and tool.rotMax or tool.rotMin) or isDirty
+		end
+	else 
+		for i, tool in pairs(self.spec_cylindered.movingTools) do 
+			if tool.axis then 
+				isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+					tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
+				break
+			end
 		end
 	end
 	local deltaAngle = targetAngle - angle
@@ -409,10 +419,13 @@ end
 function CpShovelPositions:updateTransportPosition(dt)
 	local spec = self.spec_cpShovelPositions
 	local angle = CpShovelPositions.getShovelData(self)
+	local heightOffset = self.rootVehicle.getCpSettings and self.rootVehicle:getCpSettings().loadingShovelHeightOffset:getValue()
 	local isDirty
 	if angle then 
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
-			CpShovelPositions.TRANSPORT_POSITION.SHOVEL_LIMITS, CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS)
+			CpShovelPositions.TRANSPORT_POSITION.SHOVEL_LIMITS, 
+			CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS, 
+			nil, heightOffset)
 	end
 	spec.isDirty = isDirty
 end
