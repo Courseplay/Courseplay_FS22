@@ -342,18 +342,10 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         -- TODO: instead of just wait a few seconds we could check if the unloader has actually left
         if self.waitingForUnloaderSince + 5000 < g_currentMission.time then
             if self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK then
-                local pullBackReturnCourse = self:createPullBackReturnCourse()
-                if pullBackReturnCourse then
-                    self.unloadState = self.states.RETURNING_FROM_PULL_BACK
-                    self:debug('Unloading finished, returning to fieldwork on return course')
-                    self:startCourse(pullBackReturnCourse, 1)
-                    self:rememberCourse(self.courseAfterPullBack, self.ixAfterPullBack)
-                else
-                    self:debug('Unloading finished, returning to fieldwork directly')
-                    self:startCourse(self.courseAfterPullBack, self.ixAfterPullBack)
-                    self.ppc:setNormalLookaheadDistance()
-                    self:changeToFieldWork()
-                end
+                self:debug('Unloading after pulled back finished, returning to fieldwork')
+                self:startCourse(self.courseAfterPullBack, self.ixAfterPullBack)
+                self.ppc:setNormalLookaheadDistance()
+                self:changeToFieldWork()
             elseif self.stateBeforeWaitingForUnloaderToLeave == self.states.WAITING_FOR_UNLOAD_IN_POCKET then
                 self:debug('Unloading in pocket finished, returning to fieldwork')
                 self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
@@ -1171,12 +1163,6 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
         local width = self.pullBackRightSideOffset
         return PathfinderUtil.NodeArea(AIUtil.getDirectionNode(self.vehicle), xOffset, zOffset, width, length)
     end
-end
-
-function AIDriveStrategyCombineCourse:createPullBackReturnCourse()
-    -- nothing fancy here either, just move forward a few meters before returning to the fieldwork course
-    local referenceNode = AIUtil.getDirectionNode(self.vehicle)
-    return Course.createFromNode(self.vehicle, referenceNode, 0, 0, 6, 2, false)
 end
 
 --- Create a temporary course to make a pocket in the fruit on the right (or left), so we can move into that pocket and
