@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Globální nastavení"/>
     <text name="CP_global_setting_subTitle_general" text="Základní nastavení."/>
-    <text name="CP_global_setting_expertModeActive_title" text="Expertní režim"/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Aktivuje/deaktivuje expertní režim s dalšími funkcemi."/>
     <text name="CP_global_setting_wageModifier_title" text="Mzdy pracovníků"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Mzdy CP pracovníků jako procento mzdy normálního pracovníka."/>
     <text name="CP_global_setting_autoRepair_title" text="Automatické opravy"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zastavit kombajn, když prší"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Pokud je nastavení aktivní, pak všechny sklízeče čekají, až přestane pršet."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Uživatelské nastavení"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Expertní režim"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Aktivuje/deaktivuje expertní režim s dalšími funkcemi."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud nastavený pro Gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Použijte Hud, který lze ovládat pomocí Gamepadu."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Nápověda k akci"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Zobrazuje texty nápovědy k akci."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Nastavení generování trasy"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Rozdíl úhlů v cíli"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Faktor Delta úhlů"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Zobrazit všechny aktivní trasy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Zobrazuje všechny aktivní trasy na herní mapě."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Zobrazit trasy na minimapě"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Jednotka vzdálenosti metr nebo stopa."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Metr"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Stopa"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Nastavení generování trasy"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Rozdíl úhlů v cíli"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximální povolený rozdíl úhlu u cíle. Větší hodnoty jsou rychlejší, ale méně přesné."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Faktor Delta úhlů"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Faktor pro snížení přesnosti generování trasy při neúspěšných iteracích. Větší hodnoty jsou rychlejší."/>
     <!---->
     <!--Course manager-->
     <!---->

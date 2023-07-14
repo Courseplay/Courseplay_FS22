@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Глобальные настройки CoursePlay"/>
     <text name="CP_global_setting_subTitle_general" text="Основные настройки"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Экспертный режим "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Включить/отключить экспертный режим с дополнительными функциями."/>
     <text name="CP_global_setting_wageModifier_title" text="Заработная плата работника"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Заработная плата работника CoursePlay в процентах от заработной платы обычного рабочего."/>
     <text name="CP_global_setting_autoRepair_title" text="Автоматический ремонт"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Водитель будет отпущен, если транспортное средство или оборудование будут изношенным более порога. 100% это ВЫКЛ."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Останавливать комбайны, пока идёт дождь"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Если эта настройка активна, тогда все комбайны будут ожидать окончания дождя."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Пользовательские настройки"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Экспертный режим "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Включить/отключить экспертный режим с дополнительными функциями."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Дружелюбный к геймпаду HUD"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Использовать HUD, которым можно управлять с помощью геймпада."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Справка для действий"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Отображать вспомогательный текст для действий."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Настройки поиска пути"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Разница углов у цели"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Фактор угла сглаживания"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Показать все активные курсы"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Показать все активные курсы на игровой карте."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Отображать курсы на миникарте"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Установка единиц расстояния."/>
     <text name="CP_global_setting_distanceUnit_meter" text="метр"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="фут"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Настройки поиска пути"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Разница углов у цели"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Максимально допустимая разница углов у цели, большие значения быстрее, но менее точны."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Фактор угла сглаживания"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Фактор для снижения точности поиска пути при неудачных итерациях; большие значения - быстрее."/>
     <!---->
     <!--Course manager-->
     <!---->

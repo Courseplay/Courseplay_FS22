@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Általános beállítások"/>
     <text name="CP_global_setting_subTitle_general" text="Alapbeállítások"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Haladó mód"/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Haladó beállítások engedélyezése."/>
     <text name="CP_global_setting_wageModifier_title" text="CP segítő bére"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="CP segítő bére a normál segítői bér százalékában"/>
     <text name="CP_global_setting_autoRepair_title" text="Automatikus javítás"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="A segítő abbahagyja a munkát, ha a jármű/szerszám ennél jobban meghibásodik. 100% soha nem hagyja abba."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Felhasználói beállítások"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Haladó mód"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Haladó beállítások engedélyezése."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepaddal használható HUD"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Használja a gamepaddal is vezérelhető HUD-ot"/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Súgó a műveletekhez"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mutassa a súgót a különböző műveletekhez."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="útkereső beállításai"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Célszög különbség"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Simítási szög tényező"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Az összes aktív útvonal megjelenítése"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Az összes aktív útvonal megjelenítése a játéktérképen."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mutatja az útvonalakat a kistérképen"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Távolság egység (méter vagy láb)"/>
     <text name="CP_global_setting_distanceUnit_meter" text="Méter"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Láb"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="útkereső beállításai"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Célszög különbség"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximális megengedett szögkülönbség a célnál, a nagyobb értékek gyorsabbak, de kevésbé pontosak"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Simítási szög tényező"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Az útkeresés pontosságát csökkentő tényező sikertelen iterációk esetén; nagy értékek - gyorsabb"/>
     <!---->
     <!--Course manager-->
     <!---->

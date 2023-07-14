@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Ustawienia globalne"/>
     <text name="CP_global_setting_subTitle_general" text="Ustawienia podstawowe"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Tryb zaawansowany"/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Włącza/Wyłącza tryb zaawansowany z dodatkowymi funkcjami."/>
     <text name="CP_global_setting_wageModifier_title" text="Wynagrodzenie pomocników CP"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Procentowe wynagrodzenie pomocników CP względem zwykłych pomocników"/>
     <text name="CP_global_setting_autoRepair_title" text="Automatyczna naprawa"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli pojazd lub maszyna/narzędzie jest uszkodzona w ustalonym progu procentowym. 100% oznacza wyłączone."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zatrzymaj młócenie podczas deszczu"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Gdy to ustawienie jest aktywne, wszystkie kombajny zostaną zatrzymane i będą czekały na zakończenie opadów."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Ustawienia użytkownika"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Tryb zaawansowany"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Włącza/Wyłącza tryb zaawansowany z dodatkowymi funkcjami."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="HUD przyjazny kontrolerom"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Używa HUDa, który może być ustawiany przez kontrolery gier."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Okno pomocy"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Wyświetla klawisze od funkcji w oknie pomocy."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Ustawienia szukania ścieżki"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Różnica kątów na bramce"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maksymalna dopuszczalna różnica kątów na bramce, większe wartości są szybsze, ale mniej dokładne."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Współczynnik relaksu kątu delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Pokaż wszystkie aktywne kursy"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Pokazuje wszystkie aktywne kursy na podglądzie mapy."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Rysowanie kursu na minimapie"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Długość w metrach lub stopach."/>
     <text name="CP_global_setting_distanceUnit_meter" text="metr"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="stopa"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Ustawienia szukania ścieżki"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Różnica kątów na bramce"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maksymalna dopuszczalna różnica kątów na bramce, większe wartości są szybsze, ale mniej dokładne."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Współczynnik relaksu kątu delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Współczynnik zmniejszający dokładność wyznaczania ścieżki przy nieudanych iteracjach, większe wartości są szybsze"/>
     <!---->
     <!--Course manager-->
     <!---->

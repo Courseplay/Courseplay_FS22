@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Configurações global"/>
     <text name="CP_global_setting_subTitle_general" text="Configurações Basicas"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Modo especialista "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Ativa/desativa o modo especialista com recursos adicionais."/>
     <text name="CP_global_setting_wageModifier_title" text="Cp pagamento ao motorista"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Cp pagamento ao motorista por porcentagem"/>
     <text name="CP_global_setting_autoRepair_title" text="Reparo automático"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Motorista será liberado, se o veículo ou implemento estiver 100% danificado."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Parar a colheitadeira, enquanto estiver chovendo"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Se a configuração estiver ativa, todas as colheitadeiras aguardam a chuva passar."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Configurações do usuário"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Modo especialista "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Ativa/desativa o modo especialista com recursos adicionais."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatível com gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Use o Hud, que pode ser controlado com um Gamepad."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Ajuda do evento de ação"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Mostra os textos de ajuda do evento de ação."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Configurações Pathfinder"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Meta diferença angular"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferença angular máxima permitida na meta, valores maiores são mais rápidos, mas menos precisos"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Fator de relaxamento do ângulo delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Mostrar todas as rotas ativas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostrar todas as rotas ativas no mapa."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostrar rotas no minimapa"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Unidade de distância em metros ou Pés."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Metros"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Pés"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Configurações Pathfinder"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Meta diferença angular"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferença angular máxima permitida na meta, valores maiores são mais rápidos, mas menos precisos"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Fator de relaxamento do ângulo delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fator para diminuir a precisão do pathfinder com iterações malsucedidas, valores maiores são mais rápidos"/>
     <!---->
     <!--Course manager-->
     <!---->
