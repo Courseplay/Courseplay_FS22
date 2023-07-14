@@ -42,11 +42,16 @@ end
 
 ---@param map table
 ---@param selectedTrigger CpTrigger
----@param fillType number|nil
-function CpTrigger:drawPlot(map, selectedTrigger, fillType)
-	if fillType and fillType ~= FillType.UNKNOWN then 
-		if not self.trigger:getIsFillTypeAllowed(fillType) then 
-			--- Fill type is not allowed.
+---@param fillTypes table|nil
+function CpTrigger:drawPlot(map, selectedTrigger, fillTypes)
+	if fillTypes then 
+		local found = false
+		for i, fillType in pairs(fillTypes) do
+			if self.trigger:getIsFillTypeAllowed(fillType) then 
+				found = true
+			end
+		end
+		if not found then 
 			return
 		end
 	end

@@ -202,7 +202,15 @@ function CpAIJobSiloLoader:getUnloadTriggerAt(unloadPosition)
 	if found and fillType~=nil then 
 		if not trigger:getIsFillTypeAllowed(fillType) then 
 			--- Fill type is not supported by the trigger.
-			return false
+			found = false
+			local convertedOutputFillTypes = self:getConvertedFillTypes()
+			for _, convertedFillType in ipairs(convertedOutputFillTypes) do 
+				--- Checks possible found fill type conversions
+				if trigger:getIsFillTypeAllowed(convertedFillType) then
+					found = true
+					break
+				end
+			end
 		end
 	end
 	return found, trigger, station
@@ -212,12 +220,12 @@ function CpAIJobSiloLoader:drawSilos(map)
     self.heapPlot:draw(map)
 	g_bunkerSiloManager:drawSilos(map, self.bunkerSilo) 
 	if self.cpJobParameters.unloadAt:getValue() == CpSiloLoaderJobParameters.UNLOAD_TRIGGER then 
-		local fillType
+		local fillTypes = self:getConvertedFillTypes()
 		local silo = self.heap or self.bunkerSilo
 		if silo then 
-			fillType = silo:getFillType()
+			table.insert(fillTypes, silo:getFillType())
 		end
-		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillType)
+		g_triggerManager:drawDischargeableTriggers(map, self.unloadTrigger, fillTypes)
 	end
 end
 
@@ -229,4 +237,21 @@ function CpAIJobSiloLoader:getUnloadingStations()
 		table.insert(unloadingStations, unloadingStation)
 	end
 	return unloadingStations
+end
+
+--- Gets converted fill types if there are any.
+---@return table
+function CpAIJobSiloLoader:getConvertedFillTypes()
+	local fillTypes = {}
+	local vehicle = self:getVehicle()
+	if vehicle then 
+		local shovels, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Shovel)
+		local spec = found and shovels[1].spec_turnOnVehicle
+		if spec and spec.activateableDischargeNode and spec.activateableDischargeNode.fillTypeConverter  then 
+			for _, data in pairs(spec.activateableDischargeNode.fillTypeConverter) do 
+				table.insert(fillTypes, data.targetFillTypeIndex)
+			end
+		end
+	end
+	return fillTypes
 end

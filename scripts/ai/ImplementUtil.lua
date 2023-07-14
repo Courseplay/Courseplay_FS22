@@ -426,7 +426,7 @@ end
 ---@param loadTargetImplement table
 ---@param implementToLoadFrom table
 ---@param dischargeNode table|nil optional otherwise the current selected node is used.
----@param suppressLog boolean|nil 
+---@param debugFunc function|nil
 ---@return boolean is loading possible?
 ---@return number|nil target implement fill unit ix to load into.
 ---@return number|nil fill type to load

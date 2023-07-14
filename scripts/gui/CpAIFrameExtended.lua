@@ -588,8 +588,6 @@ function CpInGameMenuAIFrameExtended:updateParameterValueTexts(superFunc, ...)
 		return
 	end
 	g_currentMission:removeMapHotspot(self.aiTargetMapHotspot)
-	g_currentMission:removeMapHotspot(self.aiLoadingMarkerHotspot)
-	g_currentMission:removeMapHotspot(self.aiUnloadingMarkerHotspot)
 	g_currentMission:removeMapHotspot(self.driveToAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.fieldSiloAiTargetMapHotspot)
 	g_currentMission:removeMapHotspot(self.unloadAiTargetMapHotspot)
@@ -642,6 +640,8 @@ InGameMenuAIFrame.updateParameterValueTexts = Utils.overwrittenFunction(InGameMe
 															CpInGameMenuAIFrameExtended.updateParameterValueTexts)
 
 function CpInGameMenuAIFrameExtended:updateWarnings()
+	g_currentMission:removeMapHotspot(self.aiLoadingMarkerHotspot)
+	g_currentMission:removeMapHotspot(self.aiUnloadingMarkerHotspot)
 	for _, element in ipairs(self.currentJobElements) do
 		local parameter = element.aiParameter
 		local parameterType = parameter:getType()

@@ -132,10 +132,10 @@ end
 --- Draws all bunker silos onto the ai map.
 ---@param map table map to draw to.
 ---@param selected CpTrigger silo that gets highlighted.
----@param fillType number|nil fill type that needs to be supported.
-function TriggerManager:drawDischargeableTriggers(map, selected, fillType)
+---@param fillTypes table|nil fill type that needs to be supported.
+function TriggerManager:drawDischargeableTriggers(map, selected, fillTypes)
 	for _, trigger in pairs(self.dischargeableUnloadTriggers) do 
-		trigger:drawPlot(map, selected, fillType)
+		trigger:drawPlot(map, selected, fillTypes)
 	end
 end
 
