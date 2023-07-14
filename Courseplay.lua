@@ -192,9 +192,21 @@ end
 FSCareerMissionInfo.saveToXMLFile = Utils.prependedFunction(FSCareerMissionInfo.saveToXMLFile, Courseplay.saveToXMLFile)
 
 function Courseplay:update(dt)
-	g_devHelper:update()
-	g_bunkerSiloManager:update(dt)
-	g_triggerManager:update(dt)
+    g_devHelper:update()
+    g_bunkerSiloManager:update(dt)
+    g_triggerManager:update(dt)
+    if not self.postInit then 
+        -- Doubles the map zoom. Mainly to make it easier to set targets for unload triggers.
+        self.postInit = true
+        local function setIngameMapFix(mapElement)
+            local factor = 2*mapElement.terrainSize/2048
+            mapElement.zoomMax = mapElement.zoomMax * factor
+            mapElement.zoomDefault = mapElement.zoomDefault * factor
+            mapElement.mapZoom = mapElement.zoomDefault
+        end
+        setIngameMapFix(g_currentMission.inGameMenu.pageAI.ingameMap)
+        setIngameMapFix(g_currentMission.inGameMenu.pageMapOverview.ingameMap)
+    end
 end
 
 function Courseplay:draw()
