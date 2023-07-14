@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Global settings"/>
     <text name="CP_global_setting_subTitle_general" text="Basic settings"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
     <text name="CP_global_setting_wageModifier_title" text="Cp driver wages"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Cp driver wages as percentage of normal worker's wages"/>
     <text name="CP_global_setting_autoRepair_title" text="Automatic repair"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="User settings"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad friendly Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Use the Hud, wich can be controlled with a Gamepad."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder settings"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Angle difference at goal"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta angle relax factor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Shows all active courses"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Shows all active courses on the in game map."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Shows courses on the minimap"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder settings"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Angle difference at goal"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximum angle difference allowed at goal, bigger values are faster but less accurate"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta angle relax factor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster"/>
     <!---->
     <!--Course manager-->
     <!---->

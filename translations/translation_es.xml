@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Ajustes globales"/>
     <text name="CP_global_setting_subTitle_general" text="Ajustes globales"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Modo Experto"/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Habilita/Desabilita el modo experto con características adicionales."/>
     <text name="CP_global_setting_wageModifier_title" text="Salarios de conductores CP"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Salarios de conductores CP en porcentaje"/>
     <text name="CP_global_setting_autoRepair_title" text="Reparación automática"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. Si es 100% se desactiva."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Detener Cosechadoras, mientras llueve"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Si está activo, entonces todas las Cosechadoras esperarán a que se detenga la lluvia."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Ajustes de usuario"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Modo Experto"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Habilita/Desabilita el modo experto con características adicionales."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatible con gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Usa el Hud, que se puede controlar con un Gamepad. Si está activado, no se mostrará el Mini-Hud."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Mostrar teclas en la ventana de F1"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Muestra la asignación de teclas o botones en la ventana al presionar F1"/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Ajustes del generador de rutas"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ángulo máximo a usar"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Factor de ángulo Delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Muestra todos las rutas activas"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Muestra todos las rutas activas en el mapa del juego."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostrar los Cursos en el Minimapa."/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Unidades de distancia en Metros o Pies."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Metros"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Pies"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Ajustes del generador de rutas"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Ángulo máximo a usar"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Diferencia máxima de ángulo permitida en el destino, los valores más grandes son más rápidos pero menos precisos."/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Factor de ángulo Delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor para disminuir la precisión del generador de rutas con iteraciones fallidas, valores grandes son más rápidos."/>
     <!---->
     <!--Course manager-->
     <!---->

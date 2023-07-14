@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Globale instellingen"/>
     <text name="CP_global_setting_subTitle_general" text="Basisinstellingen"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
     <text name="CP_global_setting_wageModifier_title" text="Cp chauffeur loon"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Cp chauffeursloon als percentage van het normale loon van de werknemer"/>
     <text name="CP_global_setting_autoRepair_title" text="Automatische reparatie"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Driver will be released, if the vehicle or an implement is more broken. 100% is off."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Gebruikersinstellingen"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Expert mode "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Enables/disables expert mode with additional features."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Gamepad vriendelijke Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Gebruik de Hud, die kan worden bestuurd met een Gamepad."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Action event help"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Shows action event help texts."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Padvinder instellingen"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Hoekverschil op doel"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximaal toegestane hoekverschil bij het doel, grotere waarden zijn sneller maar minder nauwkeurig"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta hoek relax factor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor om de nauwkeurigheid van de padvinder te verminderen bij mislukte iteraties, grotere waarden zijn sneller"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Toont alle actieve koersen"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Toont alle actieve koersen op de in-game kaart."/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Padvinder instellingen"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Hoekverschil op doel"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Maximaal toegestane hoekverschil bij het doel, grotere waarden zijn sneller maar minder nauwkeurig"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Delta hoek relax factor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Factor om de nauwkeurigheid van de padvinder te verminderen bij mislukte iteraties, grotere waarden zijn sneller"/>
     <!---->
     <!--Course manager-->
     <!---->

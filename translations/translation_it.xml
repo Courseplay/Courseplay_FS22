@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Impostazioni Courseplay"/>
     <text name="CP_global_setting_subTitle_general" text="Generali"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Modalità avanzata "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Abilita/disabilita modalità avanzata per impostazioni addizionali."/>
     <text name="CP_global_setting_wageModifier_title" text="Salario autista"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Percentuale Salario autista Courseplay (Percentuale basata su lavoratore normale del gioco)"/>
     <text name="CP_global_setting_autoRepair_title" text="Riparazione automatica"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Il conducente verrà feramto se il veicolo od un attrezzo ha un livello di riparazione basso. Al 100% è spento."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Ferma la mietitrebbia quando piove."/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Se l'impostazione è attiva, tutti i mietitori aspettano che smetta di piovere."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Impostazioni utente"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Modalità avanzata "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Abilita/disabilita modalità avanzata per impostazioni addizionali."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Hud compatibile con il gamepad"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="La Hud, può essere controllata con un Gamepad."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Aiuto per eventi d'azione"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Visualizza testo aiuto eventi d'azione."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Ricerca percorso"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Differenza angolare obiettivo"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Differenza angolare massima consentita dall'obiettivo. I valori più grandi sono più veloci ma meno precisi"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Precisione angolo delta"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fattore di diminuzione della precisione di ricerca percorsi con iterazioni non riuscite. I valori più grandi sono più veloci"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visualizza percorsicorsi attivi"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Mostra tutti i percorsi attivi sulla mappa di gioco"/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Mostra i corsi sulla minimappa"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Unità di distanza metri o piedi."/>
     <text name="CP_global_setting_distanceUnit_meter" text="metri"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="piedi"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Ricerca percorso"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Differenza angolare obiettivo"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Differenza angolare massima consentita dall'obiettivo. I valori più grandi sono più veloci ma meno precisi"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Precisione angolo delta"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Fattore di diminuzione della precisione di ricerca percorsi con iterazioni non riuscite. I valori più grandi sono più veloci"/>
     <!---->
     <!--Course manager-->
     <!---->

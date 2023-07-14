@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="全局設置"/>
     <text name="CP_global_setting_subTitle_general" text="基本設置"/>
-    <text name="CP_global_setting_expertModeActive_title" text="專家模式"/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="啟用/禁用具有附加功能的專家模式。"/>
     <text name="CP_global_setting_wageModifier_title" text="Cp幫手工資"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="Cp幫手工資占普通幫手工資的百分比。"/>
     <text name="CP_global_setting_autoRepair_title" text="自動修理"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="如果車輛或工具損壞過多，司機將停止工作。100%為關閉。"/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="下雨時停止收割機工作"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="如果設定是啟用的，那麼所有收割機將等待至雨停"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="用戶設置"/>
+    <text name="CP_global_setting_expertModeActive_title" text="專家模式"/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="啟用/禁用具有附加功能的專家模式。"/>
     <text name="CP_global_setting_controllerHudSelected_title" text="手把控制HUB"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="HUD（遊戲內CP界面）可搭配遊戲手把使用。"/>
     <text name="CP_global_setting_showActionEventHelp_title" text="行動事件幫助"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="顯示行動事件幫助文本。"/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="路徑生成設置"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="目標的角度差"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="接近目標的最大允許角度差。數值越大，速度越快，精度越低。"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="路徑精度"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="允許在每次建立路徑時放寬路徑搜索的限制。值越高，計算速度越快。"/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="顯示所有活動任務 "/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="在地圖上顯示所有活動任務。 "/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="在小地圖上顯示活動任務"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="距離單位米或英尺."/>
     <text name="CP_global_setting_distanceUnit_meter" text="米"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="英尺"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="路徑生成設置"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="目標的角度差"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="接近目標的最大允許角度差。數值越大，速度越快，精度越低。"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="路徑精度"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="允許在每次建立路徑時放寬路徑搜索的限制。值越高，計算速度越快。"/>
     <!---->
     <!--Course manager-->
     <!---->

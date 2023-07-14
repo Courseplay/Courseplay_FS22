@@ -285,8 +285,6 @@
     <!---->
     <text name="CP_global_setting_title" text="Globalainställningar"/>
     <text name="CP_global_setting_subTitle_general" text="Standardinställningar"/>
-    <text name="CP_global_setting_expertModeActive_title" text="Expertläge "/>
-    <text name="CP_global_setting_expertModeActive_tooltip" text="Aktiverar / inaktiverar expertläge med ytterligare funktioner."/>
     <text name="CP_global_setting_wageModifier_title" text="CP förarens lön"/>
     <text name="CP_global_setting_wageModifier_tooltip" text="CP-förarens lön i procent av normala arbetarlöner (AI lön)"/>
     <text name="CP_global_setting_autoRepair_title" text="Reparera automatiskt vid"/>
@@ -301,16 +299,20 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Föraren kommer att stoppas om fordonet eller ett redskap är mer skadat. 100% är avstängd."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <!---->
+    <!--Global settings user settings-->
+    <!---->
     <text name="CP_global_setting_subTitle_userSettings" text="Användarinställningar"/>
+    <text name="CP_global_setting_expertModeActive_title" text="Expertläge "/>
+    <text name="CP_global_setting_expertModeActive_tooltip" text="Aktiverar / inaktiverar expertläge med ytterligare funktioner."/>
     <text name="CP_global_setting_controllerHudSelected_title" text="Handkontrolls vänlig Hud"/>
     <text name="CP_global_setting_controllerHudSelected_tooltip" text="Använd HUD, som kan styras med en handkontroll."/>
     <text name="CP_global_setting_showActionEventHelp_title" text="Action Event Hjälp"/>
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Visar action händelse hjälp texter."/>
-    <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder inställningar"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Vinkelskillnad vid mål"/>
-    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Den maximala vinklens skillnaden vid mål, större nummer är snabbare men mindre exakt"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Toleransfaktor"/>
-    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visa alla aktiva kurser"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Visa alla aktiva kurser på spelets map/pda"/>
     <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
@@ -325,6 +327,14 @@
     <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
+    <!---->
+    <!--Global settings pathfinder-->
+    <!---->
+    <text name="CP_global_setting_subTitle_pathfinder" text="Pathfinder inställningar"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_title" text="Vinkelskillnad vid mål"/>
+    <text name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip" text="Den maximala vinklens skillnaden vid mål, större nummer är snabbare men mindre exakt"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_title" text="Toleransfaktor"/>
+    <text name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip" text="Tillåter att släppa på begränsningarna för pathfinder vid varje nytt försök att skapa en väg. Ju större värde, desto snabbare blir beräkningshastigheten."/>
     <!---->
     <!--Course manager-->
     <!---->
