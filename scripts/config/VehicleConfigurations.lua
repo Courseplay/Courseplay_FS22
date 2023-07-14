@@ -128,7 +128,7 @@ end
 --- @param object table vehicle or implement object. This function uses the object's configFileName to uniquely
 --- identify the vehicle/implement.
 --- @param attribute string configuration attribute to get
---- @return any the value of the configuration attribute or nil if there's no custom config for it
+--- @return any|nil the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:get(object, attribute)
     -- TODO: use configFileNameClean, that is just the file name without the extension, or just use getName()
     if object and object.configFileName then   
@@ -152,7 +152,7 @@ end
 --- attribute is defined on multiple implements, only the first is returned
 --- @param object table vehicle
 --- @param attribute string configuration attribute to get
---- @return any the value of the configuration attribute or nil if there's no custom config for it
+--- @return any|nil the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:getRecursively(object, attribute)
     if not g_server then 
         CpUtil.info("Error: VehicleConfigurations:getRecursively() %s",attribute)

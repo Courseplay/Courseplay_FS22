@@ -27,6 +27,7 @@ end
 
 function CpHud.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, 'cpShowWorkWidth')
+    SpecializationUtil.registerEvent(vehicleType, 'cpShowBaleCollectorOffset')
     SpecializationUtil.registerEvent(vehicleType, 'cpUpdateMouseAction')
 end
 
@@ -39,6 +40,7 @@ function CpHud.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onLeaveVehicle", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CpHud)
 	SpecializationUtil.registerEventListener(vehicleType, "cpShowWorkWidth", CpHud)
+    SpecializationUtil.registerEventListener(vehicleType, "cpShowBaleCollectorOffset", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "cpUpdateMouseAction", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onWriteUpdateStream", CpHud)
     SpecializationUtil.registerEventListener(vehicleType, "onReadUpdateStream", CpHud)
@@ -174,6 +176,7 @@ function CpHud:onLoad(savegame)
     local spec = self.spec_cpHud
     spec.status = CpStatus(false, self)
 	spec.lastShownWorkWidthTimeStamp = g_time
+    spec.lastShownBaleCollectorOffsetTimeStamp = g_time
     spec.openCloseText = g_i18n:getText("input_CP_OPEN_CLOSE_HUD")
     
 end
@@ -242,6 +245,9 @@ function CpHud:onDraw()
                 CpHud.showCpCourseWorkWidth(self)
             end
 		end
+        if spec.lastShownBaleCollectorOffsetTimeStamp + CpHud.workWidthDisplayDelayMs > g_time then 
+            ImplementUtil.showBaleCollectorOffset(self, self:getCpSettings().baleCollectorOffset:getValue())
+        end
 	end
 end
 
@@ -267,6 +273,13 @@ function CpHud:cpShowWorkWidth()
 	local spec = self.spec_cpHud
 	if spec then
 		spec.lastShownWorkWidthTimeStamp = g_time
+	end
+end
+
+function CpHud:cpShowBaleCollectorOffset()
+	local spec = self.spec_cpHud
+	if spec then
+		spec.lastShownBaleCollectorOffsetTimeStamp = g_time
 	end
 end
 

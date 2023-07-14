@@ -325,8 +325,7 @@ function AIDriveStrategyFindBales:startPathfindingToBale(bale)
         local halfVehicleWidth = AIUtil.getWidth(self.vehicle) / 2
         local goal = self:getBaleTarget(bale)
         local configuredOffset = self:getConfiguredOffset()
-        local offset = Vector(0, safeDistanceFromBale +
-                (configuredOffset and configuredOffset or (halfVehicleWidth + 0.2)))
+        local offset = Vector(0, safeDistanceFromBale + configuredOffset)
         goal:add(offset:rotate(goal.t))
         self:debug('Start pathfinding to next bale (%d), safe distance from bale %.1f, half vehicle width %.1f, configured offset %s',
                 bale:getId(), safeDistanceFromBale, halfVehicleWidth,
@@ -532,11 +531,12 @@ function AIDriveStrategyFindBales:calculateTightTurnOffset()
 end
 
 function AIDriveStrategyFindBales:getConfiguredOffset()
-    if self.baleLoader then
-        return g_vehicleConfigurations:get(self.baleLoader, 'baleCollectorOffset')
-    elseif self.baleWrapper then
-        return g_vehicleConfigurations:get(self.baleWrapper, 'baleCollectorOffset')
-    end
+    return self.settings.baleCollectorOffset:getValue()
+    -- if self.baleLoader then
+    --     return g_vehicleConfigurations:get(self.baleLoader, 'baleCollectorOffset')
+    -- elseif self.baleWrapper then
+    --     return g_vehicleConfigurations:get(self.baleWrapper, 'baleCollectorOffset')
+    -- end
 end
 
 function AIDriveStrategyFindBales:isAutoContinueAtWaitPointEnabled()

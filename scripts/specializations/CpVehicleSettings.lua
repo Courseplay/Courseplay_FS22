@@ -373,6 +373,17 @@ function CpVehicleSettings:setAutomaticBunkerSiloWorkWidth(ignoreObject)
     spec.bunkerSiloWorkWidth:setFloatValue(width)
 end
 
+function CpVehicleSettings:isBaleCollectorOffsetVisible()
+    return self:getCanStartCpBaleFinder()
+end
+
+function CpVehicleSettings:setAutomaticBaleCollectorOffset()
+    local spec = self.spec_cpVehicleSettings
+    local halfVehicleWidth = AIUtil.getWidth(self) / 2
+    local offset = g_vehicleConfigurations:getRecursively(self, "baleCollectorOffset") or halfVehicleWidth + 0.2
+    spec.baleCollectorOffset:setFloatValue(offset)
+end
+
 --- Saves the user value changed on the server.
 function CpVehicleSettings:onCpUserSettingChanged(setting)
     if not self.isServer then 
