@@ -969,14 +969,6 @@
 			<Text language="de"><![CDATA[Grundeinstellungen]]></Text>
 			<Text language="en"><![CDATA[Basic settings]]></Text>
 		</Translation>
-		<Translation name="CP_global_setting_expertModeActive_title">
-			<Text language="de"><![CDATA[Expertenmodus]]></Text>
-			<Text language="en"><![CDATA[Expert mode ]]></Text>
-		</Translation>
-		<Translation name="CP_global_setting_expertModeActive_tooltip">
-			<Text language="de"><![CDATA[Schaltet den Expertenmodus an/aus, um weitere Einstellungen freizuschalten.]]></Text>
-			<Text language="en"><![CDATA[Enables/disables expert mode with additional features.]]></Text>
-		</Translation>
 		<Translation name="CP_global_setting_wageModifier_title">
 			<Text language="de"><![CDATA[CP-Fahrerlohn]]></Text>
 			<Text language="en"><![CDATA[Cp driver wages]]></Text>
@@ -1033,9 +1025,35 @@
 			<Text language="de"><![CDATA[Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange bis der Regen aufhört.]]></Text>
 			<Text language="en"><![CDATA[If the setting is active, then all harvester wait for the raining to stop.]]></Text>
 		</Translation>
+		<Translation name="CP_global_setting_fruitDestruction_title">
+			<Text language="de"><![CDATA[Helfer Fruchtzerstörung]]></Text>
+			<Text language="en"><![CDATA[AI Helper fruit destruction]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_fruitDestruction_tooltip">
+			<Text language="de"><![CDATA[Aktiviert/deaktiviert die Fruchtzerstörung von Helfern.]]></Text>
+			<Text language="en"><![CDATA[Enable/disable the fruit destruction for helpers.]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_fruitDestruction_only_cp">
+			<Text language="de"><![CDATA[Aktiviert nur für Courseplay Helfer]]></Text>
+			<Text language="en"><![CDATA[Only activated for Coursesplay helpers]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_fruitDestruction_all_helpers">
+			<Text language="de"><![CDATA[Aktiviert für alle Helfer]]></Text>
+			<Text language="en"><![CDATA[Activated for every helpers]]></Text>
+		</Translation>
+	</Category>
+	<Category name="Global settings user settings">
 		<Translation name="CP_global_setting_subTitle_userSettings">
 			<Text language="de"><![CDATA[Benutzereinstellungen]]></Text>
 			<Text language="en"><![CDATA[User settings]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_expertModeActive_title">
+			<Text language="de"><![CDATA[Expertenmodus]]></Text>
+			<Text language="en"><![CDATA[Expert mode ]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_expertModeActive_tooltip">
+			<Text language="de"><![CDATA[Schaltet den Expertenmodus an/aus, um weitere Einstellungen freizuschalten.]]></Text>
+			<Text language="en"><![CDATA[Enables/disables expert mode with additional features.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_controllerHudSelected_title">
 			<Text language="de"><![CDATA[Gamepadfreundliches HUD]]></Text>
@@ -1052,26 +1070,6 @@
 		<Translation name="CP_global_setting_showActionEventHelp_tooltip">
 			<Text language="de"><![CDATA[Schaltet die Anzeige der Tastenbelegung an und aus.]]></Text>
 			<Text language="en"><![CDATA[Shows action event help texts.]]></Text>
-		</Translation>
-		<Translation name="CP_global_setting_subTitle_pathfinder">
-			<Text language="de"><![CDATA[Pathfindereinstellungen]]></Text>
-			<Text language="en"><![CDATA[Pathfinder settings]]></Text>
-		</Translation>
-		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_title">
-			<Text language="de"><![CDATA[Ankunftswinkel am Ziel]]></Text>
-			<Text language="en"><![CDATA[Angle difference at goal]]></Text>
-		</Translation>
-		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip">
-			<Text language="de"><![CDATA[Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller.]]></Text>
-			<Text language="en"><![CDATA[Maximum angle difference allowed at goal, bigger values are faster but less accurate]]></Text>
-		</Translation>
-		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_title">
-			<Text language="de"><![CDATA[Änderungsfaktor Pathfinder]]></Text>
-			<Text language="en"><![CDATA[Delta angle relax factor]]></Text>
-		</Translation>
-		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip">
-			<Text language="de"><![CDATA[Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller.]]></Text>
-			<Text language="en"><![CDATA[Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_showsAllActiveCourses_title">
 			<Text language="de"><![CDATA[Zeige alle Kurse]]></Text>
@@ -1128,6 +1126,28 @@
 		<Translation name="CP_global_setting_distanceUnit_imperial">
 			<Text language="de"><![CDATA[Fuß]]></Text>
 			<Text language="en"><![CDATA[Foot]]></Text>
+		</Translation>
+	</Category>
+	<Category name="Global settings pathfinder">
+		<Translation name="CP_global_setting_subTitle_pathfinder">
+			<Text language="de"><![CDATA[Pathfindereinstellungen]]></Text>
+			<Text language="en"><![CDATA[Pathfinder settings]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_title">
+			<Text language="de"><![CDATA[Ankunftswinkel am Ziel]]></Text>
+			<Text language="en"><![CDATA[Angle difference at goal]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_maxDeltaAngleAtGoalDeg_tooltip">
+			<Text language="de"><![CDATA[Maximaler zulässiger Winkel am Ziel. Kleine Winkel sind genauer, große schneller.]]></Text>
+			<Text language="en"><![CDATA[Maximum angle difference allowed at goal, bigger values are faster but less accurate]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_title">
+			<Text language="de"><![CDATA[Änderungsfaktor Pathfinder]]></Text>
+			<Text language="en"><![CDATA[Delta angle relax factor]]></Text>
+		</Translation>
+		<Translation name="CP_global_setting_deltaAngleRelaxFactorDeg_tooltip">
+			<Text language="de"><![CDATA[Faktor um die Pathfindergenauigkeit bei gescheiterten Versuchen zu senken. Größere Werte sind schneller.]]></Text>
+			<Text language="en"><![CDATA[Factor to decrease pathfinder accuracy with unsuccessful iterations, bigger values are faster]]></Text>
 		</Translation>
 	</Category>
 	<Category name="Course manager">	

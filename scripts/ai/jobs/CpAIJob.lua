@@ -281,6 +281,31 @@ end
 
 AIJobFieldWork.getPricePerMs = Utils.overwrittenFunction(AIJobFieldWork.getPricePerMs, CpAIJob.getPricePerMs_FixPrecisionFarming)
 
+
+--- Fruit Destruction
+local function updateWheelDestructionAdjustment(vehicle, superFunc, ...)
+	if g_Courseplay.globalSettings.fruitDestruction:getValue() == g_Courseplay.globalSettings.AI_FRUIT_DESTRUCTION_OFF then 
+		--- AI Fruit destruction is disabled.
+		superFunc(vehicle, ...)
+		return
+	end
+	if g_Courseplay.globalSettings.fruitDestruction:getValue() == g_Courseplay.globalSettings.AI_FRUIT_DESTRUCTION_ONLY_CP 
+		and (not vehicle.rootVehicle.getIsCpActive or not vehicle.rootVehicle:getIsCpActive()) then 
+		--- AI Fruit destruction is disabled for other helpers than CP.
+		superFunc(vehicle, ...)
+		return
+	end
+	--- This hack enables AI Fruit destruction.
+	local oldFunc = vehicle.getIsAIActive
+	vehicle.getIsAIActive = function()
+		return false
+	end
+	superFunc(vehicle, ...)
+	vehicle.getIsAIActive = oldFunc
+end
+Wheels.onUpdate = Utils.overwrittenFunction(Wheels.onUpdate, updateWheelDestructionAdjustment)
+
+
 function CpAIJob:getVehicle()
 	return self.vehicleParameter:getVehicle() or self.vehicle
 end
