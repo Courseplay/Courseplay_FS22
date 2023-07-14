@@ -41,8 +41,8 @@ CpShovelPositions = {
 	},
 	PRE_UNLOAD_POSITION = {
 		ARM_LIMITS = {
-			7,
-			7
+			2.7,
+			2.8
 		},
 		SHOVEL_LIMITS = {
 			43,
@@ -51,8 +51,8 @@ CpShovelPositions = {
 	},
 	UNLOADING_POSITION = {
 		ARM_LIMITS = {
-			7,
-			7
+			2.7,
+			2.8
 		},
 	},
 	DEBUG = true
