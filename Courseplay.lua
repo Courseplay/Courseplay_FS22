@@ -34,6 +34,8 @@ function Courseplay:loadUserSettings()
 		CpHudInfoTexts.loadFromXmlFile(xmlFile, self.xmlKey)
 		xmlFile:save()
 		xmlFile:delete()
+	else
+		self:showUserInformation()
 	end
 end
 
@@ -59,22 +61,26 @@ end
 function Courseplay:showUserInformation(xmlFile, key)
 	local showInfoDialog = true
 	self.currentVersion = g_modManager:getModByName(self.MOD_NAME).version
-	local lastLoadedVersion = xmlFile:getValue(key.."#lastVersion")
-	if lastLoadedVersion then 
-		if self.currentVersion == lastLoadedVersion then 
-			showInfoDialog = false
+	if xmlFile then 
+		local lastLoadedVersion = xmlFile:getValue(key.."#lastVersion")
+		if lastLoadedVersion then 
+			if self.currentVersion == lastLoadedVersion then 
+				showInfoDialog = false
+			end
+			CpUtil.info("Current mod name: %s, Current version: %s, last version: %s", self.MOD_NAME, self.currentVersion, lastLoadedVersion)
+		else 
+			CpUtil.info("Current mod name: %s, Current version: %s, last version: ----", self.MOD_NAME, self.currentVersion)
 		end
-		CpUtil.info("Current version: %s, last version: %s", self.currentVersion, lastLoadedVersion)
 	else 
-		CpUtil.info("Current version: %s", self.currentVersion)
+		CpUtil.info("Current mod name: %s, first version: %s (no courseplay config file found)", self.MOD_NAME, self.currentVersion)
 	end
 	if showInfoDialog then
 		g_gui:showInfoDialog({
 			text = string.format(g_i18n:getText("CP_infoText"), self.currentVersion)
-
 		})
-		self.currentVersion = self.currentVersion
-		xmlFile:setValue(key.."#lastVersion", self.currentVersion)
+		if xmlFile then 
+			xmlFile:setValue(key.."#lastVersion", self.currentVersion)
+		end
 	end
 end
 
