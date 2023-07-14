@@ -91,6 +91,7 @@ function CpSiloLoaderWorkerHudPageElement:updateContent(vehicle, status)
     local loadingHeightOffset = vehicle:getCpSettings().loadingShovelHeightOffset
     self.loadingShovelHeightOffsetBtn:setTextDetails(loadingHeightOffset:getTitle(), loadingHeightOffset:getString())
     self.loadingShovelHeightOffsetBtn:setVisible(loadingHeightOffset:getIsVisible())
+    self.loadingShovelHeightOffsetBtn:setDisabled(loadingHeightOffset:getIsDisabled())
 
     self.fillLevelProgressText:setTextDetails(status:getSiloFillLevelPercentageLeftOver())
 

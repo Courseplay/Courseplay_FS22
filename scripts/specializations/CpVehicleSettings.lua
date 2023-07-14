@@ -394,6 +394,10 @@ function CpVehicleSettings:isLoadingShovelOffsetSettingVisible()
     return self:getCanStartCpSiloLoaderWorker() and not AIUtil.hasChildVehicleWithSpecialization(self, ConveyorBelt)
 end
 
+function CpVehicleSettings:isLoadingShovelOffsetSettingDisabled()
+    return not AIUtil.isStopped(self)
+end
+
 --- Saves the user value changed on the server.
 function CpVehicleSettings:onCpUserSettingChanged(setting)
     if not self.isServer then 
