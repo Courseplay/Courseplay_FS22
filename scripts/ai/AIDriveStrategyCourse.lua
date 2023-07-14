@@ -111,8 +111,7 @@ function AIDriveStrategyCourse:setAIVehicle(vehicle, jobParameters)
     self:initializeImplementControllers(vehicle)
     self.ppc = PurePursuitController(vehicle)
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    -- TODO_22 properly implement this in courseplaySpec
-    self.storage = vehicle.spec_courseplaySpec
+    self.storage = vehicle.spec_cpAIWorker
 
     self.settings = vehicle:getCpSettings()
     self.courseGeneratorSettings = vehicle:getCourseGeneratorSettings()
