@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="L'IA essayera d'éviter le plus possible de rouler dans les cultures."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Décalage horizontal de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Décalage vertical de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Décalage vertical de l'outil."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vider si supérieur à"/>

@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="O trabalhar vai tentar evitar passar por cima de culturas"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Ajuste da alfaia horizontal"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Ajuste da alfaia horizontal"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Ajuste da alfaia vertical"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Ajuste da alfaia vertical"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Despeja quando termina:"/>

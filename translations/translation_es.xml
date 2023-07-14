@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="El conductor intentará evitar conducir sobre los cultivos"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Desp. Herramienta Izq/Der"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Desp. Herramienta Izq/Der"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Desp. Herramienta Del/Tra"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Desp. Herramienta Del/Tra"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vaciar al estar al:"/>

@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="The AI will try to avoid driving in the fruit"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Tool offset horizontal"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Tool offset horizontal"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Tool offset vertical"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Tool offset vertical"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>

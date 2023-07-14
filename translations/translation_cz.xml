@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Umělá inteligence se pokusí vyhnout vjíždění do plodin."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Horizontální odsazení nástroje"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Nastaví horizontální odsazení nástroje."/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Vertikální odsazení nástroje"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Nastaví vertikální odsazení nástroje."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vyprázdnit po skončení:"/>

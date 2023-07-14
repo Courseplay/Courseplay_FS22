@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="工人将尽量避免开车碾压种植作物。"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="工具横向调整"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="工具横向调整"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="工具纵向调整"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="工具纵向调整"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>

@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="De AI zal proberen te voorkomen dat je in het fruit rijdt"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Werktuig horizontale offset"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Werktuig horizontale offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Werktuig verticale offset"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Werktuig verticale offset"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>

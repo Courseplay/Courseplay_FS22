@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Az AI megpróbálja elkerülni, hogy a terménybe hajtson"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Szerszámeltolás oldalra"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Szerszámeltolás balra/jobbra"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Szerszámeltolás hosszirányban"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Szerszámeltolás előre/hátra"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>

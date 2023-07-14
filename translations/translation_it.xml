@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="L'IA cercherà di evitare di guidare sul raccolto"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Correzione oriz."/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Correzione oriz."/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Correzione vert."/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Correzione vert."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vuota quando è al:"/>
