@@ -1034,8 +1034,8 @@
 			<Text language="en"><![CDATA[Enable/disable the fruit destruction for helpers.]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_only_cp">
-			<Text language="de"><![CDATA[Aktiviert nur für Courseplay Helfer]]></Text>
-			<Text language="en"><![CDATA[Only activated for Coursesplay helpers]]></Text>
+			<Text language="de"><![CDATA[Aktiviert für Courseplay Helfer]]></Text>
+			<Text language="en"><![CDATA[Activated for Coursesplay helpers]]></Text>
 		</Translation>
 		<Translation name="CP_global_setting_fruitDestruction_all_helpers">
 			<Text language="de"><![CDATA[Aktiviert für alle Helfer]]></Text>
