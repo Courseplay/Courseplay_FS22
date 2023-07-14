@@ -16,17 +16,31 @@ CpInGameMenuAIFrameExtended.DELAY = 1
 CpInGameMenuAIFrameExtended.hotspotFilterState = {}
 CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots = {
 	--- Hotspots visible, while drawing a custom field border.
-	MapHotspot.CATEGORY_FIELD,
---	MapHotspot.CATEGORY_UNLOADING,
---	MapHotspot.CATEGORY_LOADING,
---	MapHotspot.CATEGORY_PRODUCTION,
-	MapHotspot.CATEGORY_AI,
-	MapHotspot.CATEGORY_COMBINE,
-	MapHotspot.CATEGORY_STEERABLE,
-	MapHotspot.CATEGORY_PLAYER,
---	MapHotspot.CATEGORY_SHOP,
---	MapHotspot.CATEGORY_OTHER
-	CustomFieldHotspot.CATEGORY
+	[MapHotspot.CATEGORY_FIELD] = true,
+--	[MapHotspot.CATEGORY_UNLOADING] = true,
+--	[MapHotspot.CATEGORY_LOADING] = true,
+--	[MapHotspot.CATEGORY_PRODUCTION] = true,
+	[MapHotspot.CATEGORY_AI] = true,
+	[MapHotspot.CATEGORY_COMBINE] = true,
+	[MapHotspot.CATEGORY_STEERABLE] = true,
+	[MapHotspot.CATEGORY_PLAYER] = true,
+--	MapHotspot.CATEGORY_SHOP] = true,
+--	MapHotspot.CATEGORY_OTHER] = true,
+	[CustomFieldHotspot.CATEGORY] = true
+}
+
+CpInGameMenuAIFrameExtended.validPickingLoadingPositionHotspots = {
+	--- Hotspots visible, while picking a loading position.
+	[MapHotspot.CATEGORY_FIELD] = true,
+--	[MapHotspot.CATEGORY_UNLOADING] = true,
+--	[MapHotspot.CATEGORY_LOADING] = true,
+--	[MapHotspot.CATEGORY_PRODUCTION] = true,
+	[MapHotspot.CATEGORY_AI] = true,
+	[MapHotspot.CATEGORY_COMBINE] = true,
+	[MapHotspot.CATEGORY_STEERABLE] = true,
+	[MapHotspot.CATEGORY_PLAYER] = true,
+--	MapHotspot.CATEGORY_SHOP] = true,
+--	MapHotspot.CATEGORY_OTHER] = true,
 }
 
 function CpInGameMenuAIFrameExtended:onAIFrameLoadMapFinished()
@@ -538,6 +552,9 @@ function CpInGameMenuAIFrameExtended:startPickingPosition(superFunc, parameter, 
 		elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD then 
 			self.aiTargetMapHotspot = self.unloadAiTargetMapHotspot
 			self.currentPickingMapHotspotType = CpAIParameterPositionAngle.POSITION_TYPES.UNLOAD
+			CpInGameMenuAIFrameExtended.hotspotFilterState = {}
+			CpGuiUtil.saveAndDisableHotspotFilters(self.ingameMapBase, CpInGameMenuAIFrameExtended.hotspotFilterState)
+			CpGuiUtil.applyHotspotFilters(self.ingameMapBase, CpInGameMenuAIFrameExtended.validPickingLoadingPositionHotspots)
 		elseif parameter:getPositionType() == CpAIParameterPositionAngle.POSITION_TYPES.LOAD then 
 			self.aiTargetMapHotspot = self.loadAiTargetMapHotspot
 			self.currentPickingMapHotspotType = CpAIParameterPositionAngle.POSITION_TYPES.LOAD
@@ -559,6 +576,10 @@ InGameMenuAIFrame.startPickPositionAndRotation = Utils.overwrittenFunction(InGam
 function CpInGameMenuAIFrameExtended:resetHotspots()
 	self.aiTargetMapHotspot = self.rawAiTargetMapHotspot
 	self.currentPickingMapHotspotType = nil
+	if CpInGameMenuAIFrameExtended.hotspotFilterState then
+		CpGuiUtil.applyHotspotFilters(self.ingameMapBase, CpInGameMenuAIFrameExtended.hotspotFilterState)
+	end
+	CpInGameMenuAIFrameExtended.hotspotFilterState = nil
 end
 
 --- Added support for the cp field target position.
@@ -721,24 +742,18 @@ function InGameMenuAIFrame:onClickCreateFieldBorder()
 		g_customFieldManager:addField(CpInGameMenuAIFrameExtended.curDrawPositions)
 		CpInGameMenuAIFrameExtended.curDrawPositions = {}
 		--- Restore hotspot filters here:
-		for k, v in pairs(self.ingameMapBase.filter) do
-			self.ingameMapBase:setHotspotFilter(k, CpInGameMenuAIFrameExtended.hotspotFilterState[k])
+		if CpInGameMenuAIFrameExtended.hotspotFilterState then
+			CpGuiUtil.applyHotspotFilters(self.ingameMapBase, CpInGameMenuAIFrameExtended.hotspotFilterState)
 		end
-
+		CpInGameMenuAIFrameExtended.hotspotFilterState = nil
 	else
 		CpInGameMenuAIFrameExtended.curDrawPositions = {}
 		self.drawingCustomFieldHeader:setVisible(true)
 		self.mode = CpInGameMenuAIFrameExtended.MODE_DRAW_FIELD_BORDER 
 		CpInGameMenuAIFrameExtended.hotspotFilterState = {}
 		--- Change the hotspot filter here:
-		for k, v in pairs(self.ingameMapBase.filter) do
-			CpInGameMenuAIFrameExtended.hotspotFilterState[k] = v
-
-			self.ingameMapBase:setHotspotFilter(k, false)
-		end
-		for _,v in ipairs(CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots) do
-			self.ingameMapBase:setHotspotFilter(v, true)
-		end
+		CpGuiUtil.saveAndDisableHotspotFilters(self.ingameMapBase, CpInGameMenuAIFrameExtended.hotspotFilterState)
+		CpGuiUtil.applyHotspotFilters(self.ingameMapBase, CpInGameMenuAIFrameExtended.validCustomFieldCreationHotspots)
 	end
 end
 

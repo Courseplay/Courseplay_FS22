@@ -214,6 +214,25 @@ function CpGuiUtil.setTarget(element, target)
 	element.targetName = target.name
 end
 
+--- Apply the defined filter to the map.
+---@param map table ingame menu map
+---@param hotspots table
+function CpGuiUtil.applyHotspotFilters(map, hotspots)
+	for k, v in pairs(hotspots) do
+		map:setHotspotFilter(k, v)
+	end
+end
+
+--- Saves the hotspot filters and disables these on the map.
+---@param map table
+---@param hotspots table
+function CpGuiUtil.saveAndDisableHotspotFilters(map, hotspots)
+	for k, v in pairs(map.filter) do
+		map:setHotspotFilter(k, false)
+		hotspots[k] = v
+	end
+end
+
 ------------------------------------------------
 --- Plots 
 ------------------------------------------------
