@@ -301,7 +301,7 @@
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Wenn die Einstellung aktiviert ist, dann warten alle Drescher solange bis der Regen aufhört."/>
     <text name="CP_global_setting_fruitDestruction_title" text="Helfer Fruchtzerstörung"/>
     <text name="CP_global_setting_fruitDestruction_tooltip" text="Aktiviert/deaktiviert die Fruchtzerstörung von Helfern."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktiviert nur für Courseplay Helfer"/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktiviert für Courseplay Helfer"/>
     <text name="CP_global_setting_fruitDestruction_all_helpers" text="Aktiviert für alle Helfer"/>
     <!---->
     <!--Global settings user settings-->

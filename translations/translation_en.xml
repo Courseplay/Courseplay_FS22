@@ -301,7 +301,7 @@
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
     <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
     <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Activated for Coursesplay helpers"/>
     <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
     <!---->
     <!--Global settings user settings-->
