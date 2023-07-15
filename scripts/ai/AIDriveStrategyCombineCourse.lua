@@ -346,6 +346,7 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
                 if pullBackReturnCourse then
                     self.unloadState = self.states.RETURNING_FROM_PULL_BACK
                     self:debug('Unloading finished, returning to fieldwork on return course')
+                    self.ppc:setShortLookaheadDistance()
                     self:startCourse(pullBackReturnCourse, 1)
                     self:rememberCourse(self.courseAfterPullBack, self.ixAfterPullBack)
                 else
@@ -473,6 +474,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
     if self.state == self.states.UNLOADING_ON_FIELD then
         if self.unloadState == self.states.RETURNING_FROM_PULL_BACK then
             self:debug('Pull back finished, returning to fieldwork')
+            self.ppc:setNormalLookaheadDistance()
             self:startRememberedCourse()
             self:changeToFieldWork()
         elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
@@ -572,6 +574,8 @@ function AIDriveStrategyCombineCourse:changeToUnloadOnField()
             self:stopForUnload(self.states.PULLING_BACK_FOR_UNLOAD, true)
             self.courseAfterPullBack = self.course
             self.ixAfterPullBack = self.ppc:getLastPassedWaypointIx() or self.ppc:getCurrentWaypointIx()
+            -- remember where to start after the pull back, a bit further back just in case.
+            self.positionToContinueAfterPullback = PathfinderUtil.getVehiclePositionAsState3D(self.vehicle, 0, -2)
             -- tighter turns
             self.ppc:setShortLookaheadDistance()
             self:startCourse(pullBackCourse, 1)
@@ -1174,9 +1178,14 @@ function AIDriveStrategyCombineCourse:getAreaToAvoid()
 end
 
 function AIDriveStrategyCombineCourse:createPullBackReturnCourse()
-    -- nothing fancy here either, just move forward a few meters before returning to the fieldwork course
-    local referenceNode = AIUtil.getDirectionNode(self.vehicle)
-    return Course.createFromNode(self.vehicle, referenceNode, 0, 0, 6, 2, false)
+    local path, _ = PathfinderUtil.findAnalyticPathFromStartToGoal(
+            self:getAllowReversePathfinding() and ReedsSheppSolver() or DubinsSolver(),
+            PathfinderUtil.getVehiclePositionAsState3D(self.vehicle), self.positionToContinueAfterPullback, self.turningRadius)
+    if path then
+        return Course.createFromAnalyticPath(self.vehicle, path, true)
+    else
+        return nil
+    end
 end
 
 --- Create a temporary course to make a pocket in the fruit on the right (or left), so we can move into that pocket and

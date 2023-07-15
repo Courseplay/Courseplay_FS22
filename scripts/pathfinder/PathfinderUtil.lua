@@ -845,6 +845,15 @@ function PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffs
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, xOffset or 0, zOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
+    return PathfinderUtil.findAnalyticPathFromStartToGoal(solver, start, goal, turnRadius)
+end
+
+--- Generate an analytic path between a start and goal position (given as State3D)
+---@param solver AnalyticSolver for instance PathfinderUtil.dubinsSolver or PathfinderUtil.reedsSheppSolver
+---@param start State3D start pose
+---@param goal State3D goal pose
+---@param turnRadius number vehicle turning radius
+function PathfinderUtil.findAnalyticPathFromStartToGoal(solver, start, goal, turnRadius)
     local solution = solver:solve(start, goal, turnRadius)
     local length, path = solution:getLength(turnRadius)
     -- a solution with math.huge length means no soulution found
@@ -862,9 +871,11 @@ function PathfinderUtil.getNodePositionAndDirection(node, xOffset, zOffset)
 end
 
 ---@param vehicle table
+---@param xOffset|nil
+---@param zOffset|nil
 ---@return State3D position/heading of vehicle
-function PathfinderUtil.getVehiclePositionAsState3D(vehicle)
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode())
+function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), xOffset, zOffset)
     return State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 end
 
