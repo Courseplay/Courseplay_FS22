@@ -299,10 +299,10 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Motorista será liberado, se o veículo ou implemento estiver 100% danificado."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Parar a colheitadeira, enquanto estiver chovendo"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Se a configuração estiver ativa, todas as colheitadeiras aguardam a chuva passar."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Destruição de plantações pelo motorista AI"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Ativar/desativar destruição de plantações pelo motorista AI."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Somente ativado para motorista AI no Courseplay"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Ativado para todos os motoristas AI"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
