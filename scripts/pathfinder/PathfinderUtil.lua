@@ -845,7 +845,7 @@ function PathfinderUtil.findAnalyticPath(solver, vehicleDirectionNode, startOffs
     local start = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
     x, z, yRot = PathfinderUtil.getNodePositionAndDirection(goalReferenceNode, xOffset or 0, zOffset or 0)
     local goal = State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
-    return PathfinderUtil.findAnalyticPathFromVehicleToGoal(solver, start, goal, turnRadius)
+    return PathfinderUtil.findAnalyticPathFromStartToGoal(solver, start, goal, turnRadius)
 end
 
 --- Generate an analytic path between a start and goal position (given as State3D)
