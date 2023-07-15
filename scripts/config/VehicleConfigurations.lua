@@ -130,19 +130,17 @@ end
 --- @param attribute string configuration attribute to get
 --- @return any|nil the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:get(object, attribute)
-    -- TODO: use configFileNameClean, that is just the file name without the extension, or just use getName()
-    if object and object.configFileName then   
-        local vehicleXmlFileName = Utils.getFilenameFromPath(object.configFileName)
-        local modName = object.customEnvironment
+    if object and object.configFileNameClean then   
+        local modName = object.customEnvironment 
         if self.modVehicleConfigurations[modName] then 
             --- If a mod name was given, then also check the xml filename.
-            if self.modVehicleConfigurations[modName][vehicleXmlFileName] then 
-                return self.modVehicleConfigurations[modName][vehicleXmlFileName][attribute]
+            if self.modVehicleConfigurations[modName][object.configFileNameClean] then 
+                return self.modVehicleConfigurations[modName][object.configFileNameClean][attribute]
             end
-        elseif self.vehicleConfigurations[vehicleXmlFileName] then
-            return self.vehicleConfigurations[vehicleXmlFileName][attribute]
-        else
-            return nil
+        elseif self.vehicleConfigurations[object.configFileNameClean] then
+            return self.vehicleConfigurations[object.configFileNameClean][attribute]
+        elseif self.vehicleConfigurations[object.configFileNameClean..".xml"] then
+            return self.vehicleConfigurations[object.configFileNameClean..".xml"][attribute]
         end
     end
 end
@@ -154,17 +152,11 @@ end
 --- @param attribute string configuration attribute to get
 --- @return any|nil the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:getRecursively(object, attribute)
-    if not g_server then 
-        CpUtil.info("Error: VehicleConfigurations:getRecursively() %s",attribute)
-        return
-    end
-    local value = self:get(object, attribute)
-    if value then
-        return value
-    end
-    for _, implement in pairs(object:getAttachedImplements()) do
-        value = self:getRecursively(implement.object, attribute)
-        if value then
+    local value
+    for _, implement in pairs(object:getChildVehicles()) do
+        value = self:get(implement, attribute)
+        CpUtil.infoImplement(implement, "%s => %s: %s", implement.configFileNameClean, attribute, tostring(value))
+        if value ~= nil then
             return value
         end
     end

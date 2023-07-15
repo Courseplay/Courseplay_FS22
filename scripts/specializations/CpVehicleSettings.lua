@@ -99,6 +99,7 @@ function CpVehicleSettings:onPostAttachImplement(object)
 
     CpVehicleSettings.setAutomaticWorkWidthAndOffset(self)
     CpVehicleSettings.setAutomaticBunkerSiloWorkWidth(self)
+    CpVehicleSettings.setAutomaticBaleCollectorOffset(self)
 
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.raiseImplementLate, 'raiseLate')
     CpVehicleSettings.setFromVehicleConfiguration(self, object, spec.lowerImplementEarly, 'lowerEarly')
@@ -380,7 +381,8 @@ end
 function CpVehicleSettings:setAutomaticBaleCollectorOffset()
     local spec = self.spec_cpVehicleSettings
     local halfVehicleWidth = AIUtil.getWidth(self) / 2
-    local offset = g_vehicleConfigurations:getRecursively(self, "baleCollectorOffset") or halfVehicleWidth + 0.2
+    local configValue = g_vehicleConfigurations:getRecursively(self, "baleCollectorOffset")
+    local offset = configValue ~= nil and configValue or halfVehicleWidth + 0.2
     spec.baleCollectorOffset:setFloatValue(offset)
 end
 

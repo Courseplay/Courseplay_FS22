@@ -532,11 +532,6 @@ end
 
 function AIDriveStrategyFindBales:getConfiguredOffset()
     return self.settings.baleCollectorOffset:getValue()
-    -- if self.baleLoader then
-    --     return g_vehicleConfigurations:get(self.baleLoader, 'baleCollectorOffset')
-    -- elseif self.baleWrapper then
-    --     return g_vehicleConfigurations:get(self.baleWrapper, 'baleCollectorOffset')
-    -- end
 end
 
 function AIDriveStrategyFindBales:isAutoContinueAtWaitPointEnabled()
