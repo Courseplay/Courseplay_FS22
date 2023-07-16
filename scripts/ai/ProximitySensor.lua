@@ -25,10 +25,10 @@ function ProximitySensor:init(node, yRotationDeg, range, height, xOffset, vehicl
     self.node = node
     self.xOffset = xOffset
     self.rotationEnabled = rotationEnabled
-    local _, _, dz = localToLocal(node, vehicle.rootNode, 0, 0, 0)
-    self.angleToRootNode = math.abs(math.atan2(xOffset, dz))
+    local _, _, dz = localToLocal(node, vehicle:getAIDirectionNode(), 0, 0, 0)
+    self.angleToDirectionNode = math.abs(math.atan2(xOffset, dz))
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Proximity sensor dx %.1f, angle %.1f, angle to root %.1f',
-            xOffset, yRotationDeg, math.deg(self.angleToRootNode))
+            xOffset, yRotationDeg, math.deg(self.angleToDirectionNode))
     self.range = range
     -- the normal rotation (direction) of this sensor when the wheels are straight
     self.baseYRotation = math.rad(yRotationDeg)
@@ -83,9 +83,17 @@ function ProximitySensor:update()
         -- a radius around the vehicle's root node (in addition to the forward movement of the vehicle), and we want
         -- to point the sensor's ray in the resulting vector's direction. At the end, sensor's on the inside of the turn
         -- are rotated more into the turn than those on the outside due to this is what this correction factor
-        local correction = (self.vehicle.rotatedTime / self.xOffset) >= 0 and self.angleToRootNode or -self.angleToRootNode
-        self:setRotation(MathUtil.clamp(self.vehicle.rotatedTime * (2 * self.maxRotation + correction),
-                -2 * self.maxRotation, 2 * self.maxRotation))
+        -- also, rotatedTime's sign does not change when a reverse driving capable vehicle changes the driving
+        -- direction (cab is rotated, driver facing to the back of the tractor), so we need getSteeringDirection()
+        -- to compensate for that
+        local correction = self.vehicle:getSteeringDirection() *
+                ((self.vehicle.rotatedTime / self.xOffset) >= 0
+                and self.angleToDirectionNode or
+                -self.angleToDirectionNode)
+        self:setRotation(MathUtil.clamp(
+                self.vehicle.rotatedTime * (2 * self.maxRotation + correction) * self.vehicle:getSteeringDirection(),
+                -2 * self.maxRotation,
+                2 * self.maxRotation))
     end
 
     local x, _, z = localToWorld(self.node, self.xOffset, 0, 0)
