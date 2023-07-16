@@ -92,7 +92,7 @@
     <!---->
     <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Pozycja załadunku"/>
     <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Pozycja załadunku"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Postęp: "/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -111,8 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono bel wybranego typu!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pomocnik SI %s niespodziewanie przerwał pracę - nie znaleziono ścieżki!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Pomocnik SI  %s niespodziewanie przerwał pracę - rozładunek na polu niemożliwy!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Pomocnik SI %s niespodziewanie przerwał pracę - podczepienie hederu niemożliwe!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Pomocnik SI %s niespodziewanie przerwał pracę - automatyczne podczepienie hederu wyłączone!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -200,8 +200,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatyczne podczepianie hederu"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Umożliwia automatyczne podczepianie hederu, z wózkiem lub na osobnym wózku do hedera."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Zawsze rozłóż rurę"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Zawsze rozłóż rurę gdy kombajn jest pełny i czeka na rozładunek."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Zatrzymaj podczas rozładunku"/>
@@ -299,10 +299,10 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Kierowca zostanie zwolniony, jeśli pojazd lub maszyna/narzędzie jest uszkodzona w ustalonym progu procentowym. 100% oznacza wyłączone."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zatrzymaj młócenie podczas deszczu"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Gdy to ustawienie jest aktywne, wszystkie kombajny zostaną zatrzymane i będą czekały na zakończenie opadów."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Niszczenie upraw przez pomocnika SI"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Włącza/Wyłącza niszczenie upraw przez pomocników."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktywowane tylko dla pomocników Coursesplay"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Aktywowany dla każdego pomocnika"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -414,8 +414,8 @@ Kurs jest automatycznie zapisywany po zamknięciu edytora i nadpisuje wybrany ku
     <text name="CP_infoTexts_wrongBaleWrapType" text="Niewłaściwy typ beli"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nie znaleziono ścieżki"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Kiprowanie na ziemię niemożliwe"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Nieobsługiwany heder"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Podczepianie hederu nieaktywne"/>
     <!---->
     <!--Custom field manager-->
     <!---->
