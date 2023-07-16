@@ -22,7 +22,7 @@ function ProximityController:init(vehicle, width)
     self.blockingObject = CpTemporaryObject(nil)
     self.ignoreObjectCallbackRegistrations = {}
     self:setState(self.states.NO_OBSTACLE, 'proximity controller initialized')
-    local frontMarker, backMarker = Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
+    local frontMarker, backMarker = Markers.getMarkerNodes(self.vehicle)
     self.forwardLookingProximitySensorPack = WideForwardLookingProximitySensorPack(
             self.vehicle, frontMarker, self.sensorRange, 1, width)
     self.backwardLookingProximitySensorPack = WideBackwardLookingProximitySensorPack(
