@@ -22,23 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class AIUtil
 AIUtil = {}
 
-function AIUtil.isReverseDriving(vehicle)
-	if not vehicle then
-		printCallstack()
-		return false
-	end
-	return vehicle.spec_reverseDriving and vehicle.spec_reverseDriving.isReverseDriving
-end
-
 function AIUtil.getDirectionNode(vehicle)
-	-- our reference node we are tracking/controlling, by default it is the vehicle's root/direction node
-	if AIUtil.isReverseDriving(vehicle) then
-		-- reverse driving tractor, use the CP calculated reverse driving direction node pointing in the
-		-- direction the driver seat is facing
-		return vehicle:getReverseDrivingDirectionNode()
-	else
-		return vehicle:getAIDirectionNode() or vehicle.rootNode
-	end
+	-- TODO: We used this to make sure to return a direction node that always points to the
+	-- forward direction, even if a vehicle had its direction reversed (cabin turned). Now we
+	-- think getAIDirectionNode() guarantees this, the only reason this is still here is that
+	-- we need to check if it is possible the call this with a vehicle which has no AI direction node
+	-- and fall back to the root node.
+	return vehicle:getAIDirectionNode() or vehicle.rootNode
 end
 
 --- If we are towing an implement, move to a bigger radius in tight turns

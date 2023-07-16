@@ -30,10 +30,6 @@ function CourseplaySpec.registerEvents(vehicleType)
     SpecializationUtil.registerEvent(vehicleType, "onCpDrawHudMap")
 end
 
-function CourseplaySpec.registerFunctions(vehicleType)
-    SpecializationUtil.registerFunction(vehicleType, 'getReverseDrivingDirectionNode', CourseplaySpec.getReverseDrivingDirectionNode)
-end
-
 function CourseplaySpec.registerOverwrittenFunctions(vehicleType)
   
 end
@@ -75,15 +71,6 @@ end
 
 function CourseplaySpec:onLeaveVehicle(wasEntered)
    
-end
-function CourseplaySpec:getReverseDrivingDirectionNode()
-    local spec = self.spec_courseplaySpec
-    if not spec.reverseDrivingDirectionNode and SpecializationUtil.hasSpecialization(ReverseDriving, self.specializations) then
-        spec.reverseDrivingDirectionNode =
-            CpUtil.createNewLinkedNode(self, "realReverseDrivingDirectionNode", self:getAIDirectionNode())
-        setRotation(spec.reverseDrivingDirectionNode, 0, math.pi, 0)
-    end
-    return spec.reverseDrivingDirectionNode
 end
 
 function CourseplaySpec:isCollisionDetectionEnabled()
