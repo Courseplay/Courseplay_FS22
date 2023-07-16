@@ -448,7 +448,11 @@ function CpAIWorker:stopCpDriver()
     end
 	self:stopVehicle()
 	self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true)
-    self:brakeToStop()
+    if not AIUtil.isReverseDriving(self) then
+        --- This pretty nifty function only works for none reversed vehicles sadly.
+        --- TODO: Maybe implement the same feature for reverse driving vehicle if needed. 
+        self:brakeToStop()
+    end
     local actionController = self.rootVehicle.actionController
 
 	if actionController ~= nil then
