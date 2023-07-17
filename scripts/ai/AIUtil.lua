@@ -22,6 +22,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class AIUtil
 AIUtil = {}
 
+function AIUtil.isReverseDriving(vehicle)
+	if not vehicle then
+		printCallstack()
+		return false
+	end
+	return vehicle.spec_reverseDriving and vehicle.spec_reverseDriving.isReverseDriving
+end
+
 function AIUtil.getDirectionNode(vehicle)
 	-- TODO: We used this to make sure to return a direction node that always points to the
 	-- forward direction, even if a vehicle had its direction reversed (cabin turned). Now we
