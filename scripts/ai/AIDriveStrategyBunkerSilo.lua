@@ -159,7 +159,7 @@ function AIDriveStrategyBunkerSilo:setAllStaticParameters()
     Markers.setMarkerNodes(self.vehicle)
 
     self.frontMarkerNode, self.backMarkerNode, self.frontMarkerDistance, self.backMarkerDistance = 
-        Markers.getMarkerNodesRelativeToDirectionNode(self.vehicle)
+        Markers.getMarkerNodes(self.vehicle)
 
     self.proximityController:registerIgnoreObjectCallback(self, self.ignoreProximityObject)
 
