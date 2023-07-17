@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Versucht nach Möglichkeit nicht in der Frucht zu fahren."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Geräteversatz horizontal"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Geräteversatz horizontal"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Ballen Aufnahme Versatz"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Versatz für den Ballensammler"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Geräteversatz vertikal"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Entleeren wenn über:"/>

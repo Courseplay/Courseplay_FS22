@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="ИИ будет стараться не ехать по посевам."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Поперечное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Поперечное смещение инструмента."/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Продольное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Продольное смещение инструмента."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Опустошать когда заполнен:"/>

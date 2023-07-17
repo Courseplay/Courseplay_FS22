@@ -527,6 +527,14 @@
 			<Text language="de"><![CDATA[Geräteversatz horizontal]]></Text>
 			<Text language="en"><![CDATA[Tool offset horizontal]]></Text>
 		</Translation>
+		<Translation name="CP_vehicle_setting_baleCollectorOffset_title">
+			<Text language="de"><![CDATA[Ballen Aufnahme Versatz]]></Text>
+			<Text language="en"><![CDATA[Bale pickup offset]]></Text>
+		</Translation>
+		<Translation name="CP_vehicle_setting_baleCollectorOffset_tooltip">
+			<Text language="de"><![CDATA[Versatz für den Ballensammler]]></Text>
+			<Text language="en"><![CDATA[Offset for the bale collector]]></Text>
+		</Translation>
 		<Translation name="CP_vehicle_setting_toolOffsetZ_title">
 			<Text language="de"><![CDATA[Geräteversatz vertikal]]></Text>
 			<Text language="en"><![CDATA[Tool offset vertical]]></Text>

@@ -61,6 +61,10 @@
 		<Setting classType="AIParameterSettingList" name="toolOffsetX" min="-10" max="10" incremental="0.1" default="0" unit="2"
 				 onChangeCallback="cpShowWorkWidth" setDefault="setAutomaticWorkWidthAndOffset"
 				 isDisabled = "isToolOffsetDisabled" vehicleConfiguration="toolOffsetX"/>
+		<!--Bale finder Offset X-->
+		<Setting classType="AIParameterSettingList" name="baleCollectorOffset" min="-10" max="10" incremental="0.1" default="0" unit="2"
+				 onChangeCallback="cpShowBaleCollectorOffset" isVisible = "isBaleCollectorOffsetVisible" 
+				 setDefault="setAutomaticBaleCollectorOffset" vehicleConfiguration="baleCollectorOffset"/>
 		<!--Tool Offset Z-->
 		<Setting classType="AIParameterSettingList" name="toolOffsetZ" min="-10" max="10" incremental="0.1" default="0" unit="2"
 				 onChangeCallback="cpShowWorkWidth" isDisabled = "isToolOffsetDisabled" isVisible="areCombineUnloaderSettingsVisible" />

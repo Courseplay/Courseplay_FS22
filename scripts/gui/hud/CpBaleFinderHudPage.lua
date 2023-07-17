@@ -13,7 +13,7 @@ end
 function CpBaleFinderHudPageElement:setupElements(baseHud, vehicle, lines, wMargin, hMargin)
 	--- Tool offset x
 	self.toolOffsetXBtn = baseHud:addLineTextButton(self, 2, CpBaseHud.defaultFontSize, 
-												vehicle:getCpSettings().toolOffsetX)
+												vehicle:getCpSettings().baleCollectorOffset)
 
     --- Bale finder fill type
     local x, y = unpack(lines[3].left)
@@ -61,10 +61,10 @@ function CpBaleFinderHudPageElement:update(dt)
 end
 
 function CpBaleFinderHudPageElement:updateContent(vehicle, status)
-    local toolOffsetX = vehicle:getCpSettings().toolOffsetX
-    local text = toolOffsetX:getIsDisabled() and CpBaseHud.automaticText or toolOffsetX:getString()
-    self.toolOffsetXBtn:setTextDetails(toolOffsetX:getTitle(), text)
-    self.toolOffsetXBtn:setDisabled(toolOffsetX:getIsDisabled())    
+    local baleCollectorOffset = vehicle:getCpSettings().baleCollectorOffset
+    local text = baleCollectorOffset:getIsDisabled() and CpBaseHud.automaticText or baleCollectorOffset:getString()
+    self.toolOffsetXBtn:setTextDetails(baleCollectorOffset:getTitle(), text)
+    self.toolOffsetXBtn:setDisabled(baleCollectorOffset:getIsDisabled())    
 
     
     local baleWrapType = vehicle:getCpBaleFinderJobParameters().baleWrapType

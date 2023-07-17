@@ -406,3 +406,15 @@ end
 function ImplementUtil.getLevelerNode(object)
     return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] and object.spec_leveler.nodes[1]
 end
+
+function ImplementUtil.showBaleCollectorOffset(vehicle, offset)
+    local implement = AIUtil.getImplementWithSpecialization(vehicle, BaleLoader)
+    if not implement then 
+        implement = AIUtil.getImplementWithSpecialization(vehicle, BaleWrapper)
+    end
+    if implement then
+        local x, y, z = localToWorld(vehicle:getAIDirectionNode(), -offset, 3, -5)
+        local dx, dy, dz = localToWorld(vehicle:getAIDirectionNode(), -offset, 3, 2)
+        DebugUtil.drawDebugLine(x, y, z, dx, dy, dz, 1, 0, 0)
+    end
+end

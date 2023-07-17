@@ -157,6 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Forsøger så vidt muligt at køre udenom afgrøder."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Redskab forskudt vandret"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Redskab forskudt vandret"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Redskab forskudt lodret"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskab forskudt vertikal"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Tøm, når den er færdig:"/>
