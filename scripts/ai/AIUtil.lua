@@ -192,7 +192,7 @@ function AIUtil.getTurningRadius(vehicle)
 					implement:getName(), turnRadius)
 			end
 		end
-		if turnRadius == 0 then
+		if turnRadius == 0 and implement ~= vehicle then
 			if AIUtil.isImplementTowed(vehicle, implement) then
 				if AIUtil.hasImplementWithSpecialization(vehicle, Trailer) and
 						AIUtil.hasImplementWithSpecialization(vehicle, Pipe) then
