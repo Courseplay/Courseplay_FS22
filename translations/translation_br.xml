@@ -157,8 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="AI evitará dirigir na plantação"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Distancia horizontal do implemento"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Distancia horizontal do implemento"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Distância lateral para coleta de fardos"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Distância lateral para coleta de fardos"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Distancia vertical do implemento"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Distancia vertical do implemento"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Esvaziar quando acabar:"/>
