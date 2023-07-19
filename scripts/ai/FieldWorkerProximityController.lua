@@ -138,7 +138,9 @@ function FieldWorkerProximityController:getMaxSpeed(distanceLimit, currentMaxSpe
                 otherVehicle.getIsCpFieldWorkActive and otherVehicle:getIsCpFieldWorkActive() then
             local otherStrategy = otherVehicle:getCpDriveStrategy()
             local otherIsDone = otherStrategy and otherStrategy.isDone and otherStrategy:isDone()
-            if otherStrategy and not otherIsDone then
+            --- TODO: Might be worth to have the communication between vehicle strategies
+            --- moved to a specialization, so similar nil bugs as #2637 could be avoid.
+            if otherStrategy and otherStrategy.getFieldWorkProximity and not otherIsDone then
                 local otherConvoyDistance = otherVehicle:getCpSettings().convoyDistance:getValue()
                 maxConvoyDistance = math.max(maxConvoyDistance, otherConvoyDistance)
                 local distanceFromOther = otherStrategy:getFieldWorkProximity(self.vehicle.rootNode)
