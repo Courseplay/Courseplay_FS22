@@ -24,52 +24,46 @@ Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
 - let up to 5 helpers work on the same field in a group
 - combines find a trailer to self-unload when full
 - unload combines with trailer or auger wagon
+- use loaders pick up heaps on the field or to empty bunker silos
 - set up your own fields wherever you like
 - works great together with AutoDrive, let Courseplay do the fieldwork and AutoDrive to refill a sower or unload a forage wagon
 - customize the automatically created fieldwork courses to your liking with the course editor
 - work in bunker silo to push and compact
 
-A Link to our latest Release, Helppage and GitHub Page where you can find more information, help, and report issues please visit <a href="https://courseplay.dev/">Courseplay Webside</a>
+For a link to our latest release, Help page and GitHub page where you can find more information, help, and report issues please visit <a href="https://courseplay.dev/">Courseplay Website</a>
 or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub page</a>.
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
 
 Changelog 7.3.0.0:
-- Bale collector/wrapper now works the same way, as the combine unloader in terms of markers:
+- Bale collector/wrapper now works the same way as the combine unloader in terms of markers:
 The field position is now saved into the vehicle and will not be reset to the vehicle position, when started by the hud!
 The position has to be set everytime in the ai menu!
 This fixes problems with AD restarting and also has the advantage that you don't need another AD Target on the field to start the driver.
 
-- Combine Unloader Enhancements:
-After unloading a loader the reverse driving part is skipped.
-Added traffic control for unloading to the heap with multiple unloaders.
-Copy/paste job parameters between unloader and loader workers.
-AI menu position markers can now only be changed, if they are allowed.
-
-- Added Loader Driver for vehicles like Ropa Maus to pick up heaps of sugarbeet and empty bunker silos:
-While pick up a heap can be unloaded with the same unloader as combine unloader (switch the "Combine" on the HUD to "Loader", the rest is the same) when empty a bunker silo,
-it can work but due to walls, there is no way the unloader can unload it safely, try on your own risk :) The unloader will always drive next to the Loader and in the same direction.
-The Loader will unfold in a default position when he reaches the heap. However, when you drive there by yourself,
-unfold it and then move the pipe to a left or right position and a height like you want, it will keep the position when you start the driver.
+- Added Loader Driver for vehicles like Ropa Maus to pick up heaps of sugarbeet and to empty bunker silos:
+The loader can always work together with a combine unloader (switch the "Combine" on the HUD to "Loader", the rest is the same) when picking up heaps on a field.
+Using an unloader when emptying a bunker silo, can be tricky due the silo walls, try at your own risk :)
+The Loader will unfold in a default position when it reaches the heap. If the default position is not working for you,
+unfold it and move the pipe to a left or right position and a height you want before you start, it will maintain that position.
 
 - Added unload on field option for combine unloader. Use the target icon to get into the AI Menu:
 At the bottom there is a new option "Fieldunload" that have to be activated and a target set on or within 20m of the field where you unload on.
 The direction is in which direction the heap will grow.
 
 - Added new feature, where the combine automatically can pickup the header from an attached trailer:
-A new setting must be activated in the vehicle settings page under combine settings for this to work.
-There are two use cases:
-Player startes the harvester near a field with the cutter attached on the back, either on a trailer or an integrated cutter with trailer functionality.
-Sending the harvester to a field with Giants or Autodrive helper.
-The Trailer must be in a spot, where the combine has enough space to pick it up, reverse and then drive to the fieldwork course.
+A new setting must be activated in the vehicle settings page under combine settings for this to work and the combine
+must be towing a header (either with its own wheels or on a trailer). The combine will then automatically pick up the header
+when the player starts the harvester near a field or sends the harvester to a field with Giants or Autodrive helper.
+Remember, the combine needs enough space to park the trailer, pick the header up, reverse and then drive to the fieldwork course.
 
 - Added a proper offset setting to the HUD for bale collect/wrap mode.
-- Added global setting for fruit destruction of helpers. (off, CP only, all Helper).
-- Added a count down for bales to collect/wrap. Note that new bales produced on the same field will not update the counter immediately for performance reasons.
-- Added pause button for recording fieldborder.
+- Added global setting for fruit destruction of helpers. (off, Courseplay only, all helpers).
+- Added a countdown for bales to collect/wrap. Note that new bales produced on the same field will not update the counter immediately for performance reasons.
+- Added pause button for recording field boundary.
 - Help menu updated.
-- Removed most default debugs (kept some Info Prints for now)
-- New Webside with an exact copy of the ingame help <a href="https://courseplay.dev/">Courseplay Webside</a>
+- Removed most default debugs (kept some info prints for now)
+- New website with an exact copy of the in-game help <a href="https://courseplay.dev/">Courseplay Website</a>
 
 For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 
