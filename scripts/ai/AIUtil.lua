@@ -687,18 +687,23 @@ function AIUtil.hasCutterOnTrailerAttached(vehicle)
 	return trailer and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects) ~= nil and next(trailer.spec_dynamicMountAttacher.dynamicMountedObjects).spec_cutter ~= nil
 end
 
---- Checks if the cutter is attached on the back, as it also has wheels for transport.
+--- Checks if a cutter is attached and it's not registered as a valid combine cutter.
+--- A Example is the New Holland Superflex header, when it is attached as transport trailer. 
 function AIUtil.hasCutterAsTrailerAttached(vehicle)
-	local trailer = AIUtil.getImplementWithSpecialization(vehicle, Cutter)
-	if trailer then
-		local implement = vehicle:getImplementByObject(trailer)
-		local attacherJoint = vehicle:getAttacherJointByJointDescIndex(implement.jointDescIndex)
-		if attacherJoint then 
-			if attacherJoint.jointType == AttacherJoints.JOINTTYPE_CUTTER or 
-				attacherJoint.jointType == AttacherJoints.JOINTTYPE_CUTTERHARVESTER then 
-				return false
-			end
-			return true
-		end
+	local cutters, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Cutter)
+	if not found then
+		--- No attached cutter was found.
+		return false
 	end
+	local combines, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, Combine)
+	if not found then 
+		--- No valid combine object was found.
+		return false
+	end
+	local spec = combines[1].spec_combine
+	if spec.numAttachedCutters <= 0 then 
+		--- The cutter is not available for threshing in this combination.
+		return true
+	end
+	return false
 end
