@@ -247,10 +247,11 @@ end
 ---@param dt number
 ---@param shovelLimits table
 ---@param armLimits table
----@param useHighDumpShovel boolean|nil
+---@param isLoading boolean|nil
 ---@param heightOffset number|nil
+---@param isUnloading boolean|nil
 ---@return boolean|nil
-function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHighDumpShovel, heightOffset)
+function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoading, heightOffset, isUnloading)
 	local min, max = unpack(shovelLimits)
 	--- Target angle of the shovel node, which is at the end of the shovel.
 	local targetAngle = math.rad(min) + math.rad(max - min)/2
@@ -312,6 +313,7 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 	
 	local isDirty, alpha, oldRotRelativeArmRot
 	if hasIntersection then
+		--- Controls the arm height
 		setTranslation(armProjectionNode, 0, i1y, i1z)
 		setTranslation(armToolRefNode, ax, ay, az)
 		local _, shy, shz = localToLocal(shovelTool.node, armVehicle.rootNode, 0, 0, 0)
@@ -324,24 +326,31 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 		isDirty = ImplementUtil.moveMovingToolToRotation(armVehicle, armTool, dt, angle)
 	end
 
+	local highDumpShovelTool
 	local highDumpShovelIx = g_vehicleConfigurations:get(self, "shovelMovingToolIx")
-	if highDumpShovelIx then 
-		local tool = self.spec_cylindered.movingTools[highDumpShovelIx]
-		if useHighDumpShovel then
-			local _, dy, _ = localDirectionToWorld(getParent(tool.node), 0, 0, 1)
+	if highDumpShovelIx ~= nil then 
+		highDumpShovelTool = self.spec_cylindered.movingTools[highDumpShovelIx]
+		if isUnloading then
+			--- Makes sure the shovel is almost vertical for the high dump functionality
+			local _, dy, _ = localDirectionToWorld(getParent(highDumpShovelTool.node), 0, 0, 1)
 			angle = math.acos(dy)
-			targetAngle = math.pi/2 - math.pi/8
-			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-				tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
+			targetAngle = math.pi/2 - math.pi/6
 		else 
-			isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-				tool.invertAxis and tool.rotMax or tool.rotMin) or isDirty
+			isDirty = ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
+				highDumpShovelTool.invertAxis and highDumpShovelTool.rotMax or highDumpShovelTool.rotMin) or isDirty
 		end
 	else 
 		for i, tool in pairs(self.spec_cylindered.movingTools) do 
 			if tool.axis then 
-				isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-					tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
+				if isLoading or isUnloading then 
+					--- Opens the shovel for loading and unloading
+					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+						tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
+				else 
+					--- Closes the shovel after loading
+					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+						tool.invertAxis and tool.rotMax or tool.rotMin) or isDirty
+				end
 				break
 			end
 		end
@@ -351,6 +360,12 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, useHig
 	isDirty = ImplementUtil.moveMovingToolToRotation(shovelVehicle, 
 		shovelTool, dt, goalAngle) or isDirty
 	
+	if isUnloading and highDumpShovelTool then
+		--- Uses the high dump shovel functionality.
+		isDirty = isDirty or ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
+				highDumpShovelTool.invertAxis and highDumpShovelTool.rotMin or highDumpShovelTool.rotMax)
+	end
+
 	--- Debug information
 	local wsx, wsy, wsz = localToWorld(armVehicle.rootNode, sx, sy, sz)
 	local wex, wey, wez = localToWorld(armVehicle.rootNode, ex, ey, ez)
@@ -411,7 +426,7 @@ function CpShovelPositions:updateLoadingPosition(dt)
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.LOADING_POSITION.SHOVEL_LIMITS, 
 			CpShovelPositions.LOADING_POSITION.ARM_LIMITS, 
-			nil, heightOffset)
+			true, heightOffset)
 	end
 	spec.isDirty = isDirty
 end
@@ -425,7 +440,7 @@ function CpShovelPositions:updateTransportPosition(dt)
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 			CpShovelPositions.TRANSPORT_POSITION.SHOVEL_LIMITS, 
 			CpShovelPositions.TRANSPORT_POSITION.ARM_LIMITS, 
-			nil, heightOffset)
+			false, heightOffset)
 	end
 	spec.isDirty = isDirty
 end
@@ -448,7 +463,8 @@ function CpShovelPositions:updateUnloadingPosition(dt)
 	if angle and maxAngle then 
 		isDirty = CpShovelPositions.setShovelPosition(self, dt, 
 		{math.deg(maxAngle), math.deg(maxAngle) + 2}, 
-		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, true)
+		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS, false, 
+		nil, true)
 	end
 	spec.isDirty = isDirty
 end

@@ -130,8 +130,8 @@ function AIDriveStrategyShovelSiloLoader:startWithoutCourse(jobParameters)
     local dirX, dirZ = self.silo:getLengthDirection()
     local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
     self.siloFrontNode = CpUtil.createNode("siloFrontNode", cx, cz, yRot)
-    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2, 
-        0, self.silo:getWidth(), self.silo:getLength())
+    self.siloAreaToAvoid = PathfinderUtil.NodeArea(self.siloFrontNode, -self.silo:getWidth()/2 - 1, 
+        -1, self.silo:getWidth() + 2, self.silo:getLength() + 2)
 
     self.siloController = CpBunkerSiloLoaderController(self.silo, self.vehicle, self)
 end
