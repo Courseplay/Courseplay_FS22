@@ -120,11 +120,3 @@ function Markers.getMarkerNodes(vehicle)
     local backMarker = Markers.getBackMarkerNode(vehicle)
     return frontMarker, backMarker, g_vehicleMarkers[vehicle].frontMarkerOffset, g_vehicleMarkers[vehicle].backMarkerOffset
 end
-
-function Markers.delete()
-    for i, vehicle in pairs(g_vehicleMarkers) do 
-        for j, marker in pairs(vehicle) do 
-            CpUtil.destroyNode(marker)
-        end
-    end
-end

@@ -119,7 +119,6 @@ function Courseplay:deleteMap()
 	BufferedCourseDisplay.deleteBuffer()
 	g_signPrototypes:delete()
 	g_devHelper:delete()
-	Markers.delete()
 end
 
 function Courseplay:setupGui()
