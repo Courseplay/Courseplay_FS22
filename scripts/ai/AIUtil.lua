@@ -507,8 +507,6 @@ function AIUtil.isValidAIImplement(object)
 	end
 end
 
-
-
 --- Is this a real wheel the implement is actually rolling on (and turning around) or just some auxiliary support
 --- wheel? We need to know about the real wheels when finding the turn radius/distance between attacher joint and
 --- wheels.

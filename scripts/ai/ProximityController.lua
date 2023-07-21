@@ -156,10 +156,10 @@ end
 
 ---@param maxSpeed number current maximum allowed speed for vehicle
 ---@param moveForwards boolean are we moving forwards?
----@return number gx world x coordinate to drive to or nil
----@return number gz world z coordinate to drive to or nil
----@return boolean direction is forwards if true or nil
----@return number maximum speed adjusted to slow down (or 0 to stop) when obstacles are ahead, otherwise maxSpeed
+---@return number|nil gx world x coordinate to drive to or nil
+---@return number|nil gz world z coordinate to drive to or nil
+---@return boolean|nil direction is forwards if true or nil
+---@return number|nil maximum speed adjusted to slow down (or 0 to stop) when obstacles are ahead, otherwise maxSpeed
 function ProximityController:getDriveData(maxSpeed, moveForwards)
 
     --- Resets the traffic info text.
@@ -175,6 +175,15 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
         self:setState(self.states.NO_OBSTACLE, 'No obstacle')
         return nil, nil, nil, maxSpeed
     end
+    if object then 
+        --- Makes sure the detected object is not an implement or the root vehicle.
+        for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
+            if object == childVehicle then 
+                return 
+            end
+        end 
+    end
+
     local normalizedD = d / (range - self.stopThreshold:get())
     if d < self.stopThreshold:get() then
         -- too close, stop
