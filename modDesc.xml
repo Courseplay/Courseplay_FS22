@@ -52,9 +52,9 @@ At the bottom there is a new option "Fieldunload" that have to be activated and 
 The direction is in which direction the heap will grow.
 
 - Added new feature, where the combine automatically can pickup the header from an attached trailer:
-A new setting must be activated in the vehicle settings page under combine settings for this to work and the combine
-must be towing a header (either with its own wheels or on a trailer). The combine will then automatically pick up the header
-when the player starts the harvester near a field or sends the harvester to a field with Giants or Autodrive helper.
+A new setting must be activated in the vehicle settings page under combine settings for this to work
+and the combine must be towing a header (either with its own wheels or on a trailer).
+The combine will then automatically pick up the header when the player starts the harvester near a field or sends the harvester to a field with Giants or Autodrive helper.
 Remember, the combine needs enough space to park the trailer, pick the header up, reverse and then drive to the fieldwork course.
 
 - Added a proper offset setting to the HUD for bale collect/wrap mode.
