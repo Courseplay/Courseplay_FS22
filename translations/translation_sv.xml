@@ -18,29 +18,29 @@
     <text name="CP_error_no_course" text="Generera en kurs innan du startat ett arbete."/>
     <text name="CP_error_could_not_generate_course" text="Kunde inte generera kursen. Loggen kan ha mer information."/>
     <text name="CP_error_not_on_field" text="Målet är inte på ett fält."/>
-    <text name="CP_error_unloader_to_far_away_from_field" text="Unloader to far away from the field."/>
-    <text name="CP_error_start_position_to_far_away_from_field" text="Starting position to far away from the field."/>
-    <text name="CP_error_giants_unloader_not_available" text="Giants unloader not available."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
-    <text name="CP_error_no_bunkerSilo_found" text="No silo found."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_unloader_to_far_away_from_field" text="Avlastnings fordon för långt bort från fältet."/>
+    <text name="CP_error_start_position_to_far_away_from_field" text="Startposition för långt borta från fältet."/>
+    <text name="CP_error_giants_unloader_not_available" text="Giants avlastnings fordon inte tillgänglig."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Fältavlastningspositionen är för långt bort från fältet."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="Fordonet är för långt bort från fältet för att starta."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Ingen silo hittades."/>
+    <text name="CP_error_no_heap_found" text="Ingen silo hittades."/>
     <!---->
     <!--AI job parameters-->
     <!---->
     <text name="CP_jobParameters_fieldPosition_title" text="Fältposition: (Start markör)"/>
     <text name="CP_jobParameters_bunkerSiloPosition_title" text="Silo position:"/>
-    <text name="CP_jobParameters_parkPosition_title" text="Park position:"/>
+    <text name="CP_jobParameters_parkPosition_title" text="Parkeringsposition:"/>
     <text name="CP_jobParameters_subTitle_startAt" text="Starta på:"/>
     <text name="CP_jobParameters_startAt_title" text="Starta på:"/>
     <text name="CP_jobParameters_startAt_tooltip" text="Vart ska fältarbetet börja"/>
     <text name="CP_jobParameters_startAt_nearest" text="Närmast vägpunkt"/>
     <text name="CP_jobParameters_startAt_first" text="Första vägpunkt"/>
     <text name="CP_jobParameters_startAt_last" text="Senaste vägpunkten"/>
-    <text name="CP_jobParameters_startAt_bunkerSilo" text="Bunker silo mode"/>
-    <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
+    <text name="CP_jobParameters_startAt_bunkerSilo" text="Plansilo mode"/>
+    <text name="CP_jobParameters_startAt_siloLoader" text="Silo lastnings mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Lasta av tröska/Sträng"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Lasta av Silolastare"/>
     <text name="CP_jobParameters_startAt_bales" text="Samla in/plastade balar"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Körfältförskjutning:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Körfältförskjutning:"/>
@@ -58,49 +58,49 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="alla balar"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="bara plastade"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="bara oplastade"/>
-    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
+    <text name="CP_baleFinder_balesLeftover" text="Balar kvar:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Lasta av: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Lasta av:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Tröska"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Lastare"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants avlastnings fordon:"/>
+    <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Använd Giants avlastnings fordon:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Avlastningsplats:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants avlastnings fordon:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Använd lossning på fältet:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Fältavlastningsposition:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Vagnens tippsida:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
-    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Direction into the silo:"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Forwards"/>
-    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Reverse"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Waiting for unloader:"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="in silo"/>
-    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="at park position"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_drivingForwardsIntoSilo" text="Riktning in i silon:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_title" text="Riktning in i silon:"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_forwards" text="Framåt"/>
+    <text name="CP_bunkerSiloJobParameters_drivingForwardsIntoSilo_reverse" text="Baklänges"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_waitAtParkPosition" text="Väntar på avlastnings fordon:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Väntar på avlastnings fordon:"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="i silo"/>
+    <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="vid Parkeringsposition"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stanna vid 99 % komprimering"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stanna vid 99 % komprimering"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Silokomprimering:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Lastningspositionen"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Lastningspositionen"/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Framsteg: "/>
     <!---->
     <!--AI jobs-->
     <!---->
     <text name="CP_job_fieldWork" text="CP: Fältarbete"/>
     <text name="CP_job_baleCollect" text="CP: Bal Samla/Plasta"/>
-    <text name="CP_job_combineUnload" text="CP: Unload Combine"/>
-    <text name="CP_job_bunkerSilo" text="CP: Silo work"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_combineUnload" text="CP: Lasta Av Tröska"/>
+    <text name="CP_job_bunkerSilo" text="CP: Silo Arbete"/>
+    <text name="CP_job_siloLoader" text="CP: Silo Lastning"/>
     <text name="CP_ai_page_generate_course" text="CP: Skapa en kurs för fältarbete."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Öppna/Stäng kurs skaparen."/>
     <!---->
@@ -109,10 +109,10 @@
     <text name="CP_ai_messageErrorIsFull" text="AI-arbetaren %s har slutat arbeta oväntat - tanken är full!"/>
     <text name="CP_ai_messageError" text="AI-arbetaren %s har slutat arbeta oväntat - lämnade kursen!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="AI-arbetaren %s har slutat arbeta oväntat - inga balar av vald typ hittades!"/>
-    <text name="CP_ai_messageErrorNoPathFound" text="AI worker %s has stopped work unexpectedly - no Path found!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorNoPathFound" text="AI-arbetaren %s har slutat arbeta oväntat - ingen sökväg hittades!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI-arbetaren %s har slutat arbeta oväntat - avlastning på fältet är inte möjligt!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="AI-arbetaren %s har slutat arbeta oväntat - påkoppling av skärbord är inte möjligt!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI-arbetaren %s har slutat arbeta oväntat - automatiskt påkoppling av skärbord är Inaktiverad!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -127,10 +127,10 @@
     <text name="CP_vehicle_setting_showCourse_title" text="Visa kurs"/>
     <text name="CP_vehicle_setting_showCourse_tooltip" text="Visa den korrekta kursen för detta fordon"/>
     <text name="CP_vehicle_setting_showCourse_startStop" text="Start/Stop endast"/>
-    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Current waypoints"/>
+    <text name="CP_vehicle_setting_showCourse_currentWaypoint" text="Aktuell vägpunkt"/>
     <text name="CP_vehicle_setting_showCourse_all" text="Alla vägpunkter"/>
     <text name="CP_vehicle_setting_openHudWithMouse_title" text="Öppna HUD med musen"/>
-    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Vid deaktiverad kan HUD endast öppnas med keybind."/>
+    <text name="CP_vehicle_setting_openHudWithMouse_tooltip" text="Vid inaktiverad kan HUD endast öppnas med tangentbordet."/>
     <text name="CP_vehicle_setting_fuelSave_title" text="Bränslesparande"/>
     <text name="CP_vehicle_setting_fuelSave_tooltip" text="Stänger av fordonet medans du väntar."/>
     <text name="CP_vehicle_setting_stopAtEnd_title" text="Stanna vid slutet"/>
@@ -141,8 +141,8 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Aktiverar att använda pathfinder i vändning, till exempel för att undvika hinder och grödor"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Fäll ihop redskap i slutet av kursen"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Aktiverar/inaktiverar automatisk hopfällning av redskap i slutet av kursen."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
-    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Återvänd till startpunkten"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Återvänd till startpunkten efter avslutat fältarbete."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Redskapshöjning"/>
     <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Redskapshöjning tidig eller sent i början av en sväng/vändteg."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="Tidig"/>
@@ -157,12 +157,12 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Innhyrd personal (AI) försöker undvika att köra i grödorna"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Redskapsskjutning horisontellt"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Redskapsskjutning horisontellt"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Baluppsamlare sidledsförskjutning"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Sidledsförskjutning för Baluppsamlare"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Redskapsskjutning vertikalt"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Redskapsskjutning vertikalt"/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Empty when over:"/>
-    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="TODO"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Tom när den är över:"/>
+    <text name="CP_vehicle_setting_fullThreshold_tooltip" text="ATTGÖRA"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Kontrollerar om där finns ensilage tillsatts."/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Om aktivt och ensilage tillsattsen är tom, så stoppas föraren."/>
     <text name="CP_vehicle_setting_symmetricLaneChange_title" text="Symmetrisk linjebyte"/>
@@ -174,9 +174,9 @@
     <!---->
     <!--Vehicle bunker silo settings-->
     <!---->
-    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloworker settings"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Work width"/>
-    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Work width. Value: 0 - 50"/>
+    <text name="CP_vehicle_setting_subTitle_bunkerSilo" text="Siloarbetarinställningar"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_title" text="Arbetsbredd"/>
+    <text name="CP_vehicle_setting_bunkerSiloWorkWidth_tooltip" text="Arbetsbredd. Värde: 0 - 50"/>
     <!---->
     <!--Vehicle settings speed-->
     <!---->
@@ -189,7 +189,7 @@
     <text name="CP_vehicle_setting_reverseSpeed_title" text="Backning"/>
     <text name="CP_vehicle_setting_reverseSpeed_tooltip" text="Maximal hastighet när CP backar. Value: 2 - 25"/>
     <text name="CP_vehicle_setting_bunkerSiloSpeed_title" text="Silo"/>
-    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximum speed while driving in a silo. Value: 2 - 25"/>
+    <text name="CP_vehicle_setting_bunkerSiloSpeed_tooltip" text="Maximal hastighet när CP kör i silon. Värde: 2 - 25"/>
     <!---->
     <!--Vehicle settings sowing-->
     <!---->
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatisk påkoppling av skärbord"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Tillåter automatisk påkoppling av skärbord, som måste vara kopplad som släpvagn (direkt monterad på skärbordet) eller ligger på en skärbordsvagn."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Fäll alltid ut röret"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Fäll alltid ut röret när skördetröskan är full och väntar på tömmning."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Stanna vid tömming"/>
@@ -299,12 +299,12 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="Föraren kommer att stanna om bränslegränsen är mindre."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Skade Gräns"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Föraren kommer att stoppas om fordonet eller ett redskap är mer skadat. 100% är avstängd."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stoppar tröskan medan det regnar"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Om inställningen är aktiv väntar alla tröskor tills att regnet har sluta."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="CP föraren gröd förstörelse"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Aktivera/inaktivera gröd förstörelse för förare."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Endast aktiverad för Coursesplay-förare"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Aktiverad för alla AI förare"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -317,16 +317,16 @@
     <text name="CP_global_setting_showActionEventHelp_tooltip" text="Visar action händelse hjälp texter."/>
     <text name="CP_global_setting_showsAllActiveCourses_title" text="Visa alla aktiva kurser"/>
     <text name="CP_global_setting_showsAllActiveCourses_tooltip" text="Visa alla aktiva kurser på spelets map/pda"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Schows courses on the minimap"/>
-    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Enables drawing of the course onto the mini map."/>
+    <text name="CP_global_setting_drawOntoTheHudMap_title" text="Visar kurser på minikartan"/>
+    <text name="CP_global_setting_drawOntoTheHudMap_tooltip" text="Möjliggör ritning av kurser på minikartan."/>
     <text name="CP_global_setting_infoTextHudActive_title" text="Visa info-textfönster"/>
     <text name="CP_global_setting_infoTextHudActive_tooltip" text="Visar ett info-textfönster."/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_title" text="Spelarens musevenemang"/>
     <text name="CP_global_setting_infoTextHudPlayerMouseActive_tooltip" text="Aktiverar/inaktiverar Spelarens musevenemang för info -textvisningen utanför ett fordon."/>
     <text name="CP_global_setting_preferCustomFields_title" text="Föredra anpassade fält"/>
     <text name="CP_global_setting_preferCustomFields_tooltip" text="Föredra anpassat fält om det också finns ett vanligt fält vid den valda positionen."/>
-    <text name="CP_global_setting_distanceUnit_title" text="Distance unit"/>
-    <text name="CP_global_setting_distanceUnit_tooltip" text="Distance unit meter or Foot."/>
+    <text name="CP_global_setting_distanceUnit_title" text="Avståndsenhet"/>
+    <text name="CP_global_setting_distanceUnit_tooltip" text="Avståndsenhet Meter eller Foot."/>
     <text name="CP_global_setting_distanceUnit_meter" text="Meter"/>
     <text name="CP_global_setting_distanceUnit_imperial" text="Foot"/>
     <!---->
@@ -375,8 +375,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_editor_delete_title" text="Ta bort vägpunkt"/>
     <text name="CP_editor_delete_primary_text" text="primär"/>
     <text name="CP_editor_delete_secondary_text" text="sekundär"/>
-    <text name="CP_editor_delete_tertiary_text" text="Deletes all waypoints until the last waypoint."/>
-    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Are you sure, that all waypoint till the last one should be deleted?"/>
+    <text name="CP_editor_delete_tertiary_text" text="Tar bort alla vägpunkter fram till den sista vägpunkten."/>
+    <text name="CP_editor_delete_yesNo_deleteToLastWp_title" text="Är du säker på att du vill radera alla vägpunkter till den sista vägpunkten?"/>
     <text name="CP_editor_delete_err" text="Några få vägpunkter kvar."/>
     <text name="CP_editor_course_basic_title" text="Grundläggande"/>
     <text name="CP_editor_course_basic_move_title" text="Flytta en vägpunkt"/>
@@ -407,17 +407,17 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_infoTexts_needsFilling" text="Måste fyllas på"/>
     <text name="CP_infoTexts_needsUnloading" text="Måste tömmas"/>
     <text name="CP_infoTexts_workFinished" text="Slutfört arbetet"/>
-    <text name="CP_infoTexts_drivingToCombine" text="Driving to combine"/>
-    <text name="CP_infoTexts_drivingToSelfUnload" text="Driving to trailer"/>
+    <text name="CP_infoTexts_drivingToCombine" text="Kör till tröskan"/>
+    <text name="CP_infoTexts_drivingToSelfUnload" text="Kör till trailern"/>
     <text name="CP_infoTexts_outOfMoney" text="Slut på pengar"/>
     <text name="CP_infoTexts_waitForRainToFinish" text="Väntar på att det ska sluta regna för att kunna slutföra"/>
-    <text name="CP_infoTexts_waitForUnloader" text="Waiting on unloader"/>
+    <text name="CP_infoTexts_waitForUnloader" text="Väntar på avlastnings föraren"/>
     <text name="CP_infoTexts_errorStopped" text="Lämnade kursen, stannade"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Fel baltyp"/>
-    <text name="CP_infoTexts_errorNoPathFound" text="No path found"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorNoPathFound" text="Ingen sökväg hittades"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tippning på marken är inte möjlig"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Skärbordet stödjs ej"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Automatisk skärbords koppling är avaktiverad"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -432,8 +432,8 @@ Banan sparas automatiskt vid stängning av editorn och åsidosätter den valda b
     <text name="CP_customFieldManager_save" text="Spara anpassat fält"/>
     <text name="CP_controllerGui_startRecording" text="Starta anpassad fältinspelning."/>
     <text name="CP_controllerGui_stopRecording" text="Stoppa anpassad fältinspelning."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausa anpassad fältinspelning."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Återuppta anpassad fältinspelning."/>
     <!---->
     <!--Help menu-->
     <!---->
@@ -732,77 +732,77 @@ Under den avancerade kategorin finns:
 2) En pensel för att infoga en kurva av waypoints mellan till valda waypoints.
 3) En pensel för att ställa in svängattributet för en waypoint (endast med en kurs och inte ett anpassat fält).
 "/>
-    <text name="CP_help_page_unloader_title" text="Harvester unloader"/>
+    <text name="CP_help_page_unloader_title" text="Skördare avlastare"/>
     <text name="CP_help_page_unloaderGeneral_text" text="
-The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
-You can either use a regular trailer or an auger wagon to unload a combine.
-To empty trailers, you can use the Giants Helper or AutoDrive.
-Starting the unloader requires a few things:
-- You need to have a single trailer or auger wagon attached. Multiple trailers are not supported.
-- Use the Target Icon on the HUD to select the field being harvested. The unloader will unload all Courseplay driven harvesters working on that field.
-- You must be on the field or within 20 meters of the field to start the unloader.
+Avlastningsläget för Courseplay fungerar med skördetröskor, skördare och bogserade skördare som drivs av Courseplay.
+Det fungerar inte med choppers.
+Du kan antingen använda en vanlig släpvagn eller en skruvvagn för att lossa en skördetröska.
+För att tömma trailers kan du använda Giants Helper eller AutoDrive.
+Att starta avlastaren kräver några saker:
+– Du behöver ha en enkel släpvagn eller skruvvagn kopplad. Flera trailers stöds inte.
+- Använd målikonen på HUD för att välja fältet som ska skördas. Avlastaren kommer att lossa alla Courseplay-drivna skördare som arbetar på det fältet.
+– Du måste vara på fältet eller inom 20 meter från fältet för att starta avlastaren.
 
-Unloaders have only a few settings you can tweak:
-- You can set the fill level at which the unloader will consider itself full. This
-is to avoid waiting for a combine to call with a trailer almost full.
-- You can use the offsets in the HUD to adjust the position of the unloader under the harvester's pipe.
+Avlastare har bara ett fåtal inställningar som du kan justera:
+- Du kan ställa in den fyllnadsnivå vid vilken avlastaren ska anses vara full. Detta
+är att slippa vänta på att en skördetröska ska ringa med nästan full släp.
+- Du kan använda förskjutningarna i HUD för att justera läget för avlastaren under skördarens rör.
 
 "/>
-    <text name="CP_help_page_unloaderTrailer_title" text="Using trailers"/>
+    <text name="CP_help_page_unloaderTrailer_title" text="Använder släp"/>
     <text name="CP_help_page_unloaderTrailer_text" text="
-If you use a trailer to unload, there are two ways to transport your harvest to a silo or to a selling point: the Giants helper
-or AutoDrive.
-You can either use the AI Menu and create a Job, then by activating the Giants helper function and unload target at the
-bottom of the list, or by activation of the wheel icon on the HUD.
-In the latter case, you have to choose the unload station after the wheel icon turns blue.
+Om du använder en trailer för att lossa, finns det två sätt att transportera din skörd till en silo eller till ett försäljningsställe: Giants helper
+eller AutoDrive.
+Du kan antingen använda AI-menyn och skapa ett jobb, sedan genom att aktivera Giants-hjälpfunktionen och lasta av målet vid
+längst ner i listan, eller genom att aktivera hjulikonen på HUD.
+I det senare fallet måste du välja avlastningsstationen efter att hjulikonen blir blå.
 
-Emptying a trailer with AutoDrive works the same as using a loading wagon, check out the AutoDrive Tutorials on the Internet.
+Att tömma en trailer med AutoDrive fungerar på samma sätt som att använda en lastvagn, kolla in AutoDrive-handledningarna på Internet.
 "/>
-    <text name="CP_help_page_unloaderAuger_title" text="Using auger wagons"/>
+    <text name="CP_help_page_unloaderAuger_title" text="Använda Fältvagn"/>
     <text name="CP_help_page_unloaderAuger_text" text="
-Auger wagons are very simple to use.
-Just like with trailers, you use the target icon to choose the field where you want to unload a combine or harvester.
-To start the unloader, place it again on the field or within 20 meters of the field.
-If the auger wagon is full, it automatically looks for a trailer on or near the field to overload into it.
-In case the trailer is full and the auger wagon still not empty, it will look for another trailer to unload to.
-Is no trailer available, it will continue to unload the combine.
+Fältvagnar är mycket enkla att använda.
+Precis som med släp, använder du målikonen för att välja fältet där du vill lossa en skördetröska eller skördare.
+För att starta avlastaren, placera den igen på fältet eller inom 20 meter från fältet.
+Om skruvvagnen är full, letar den automatiskt efter en släpvagn på eller nära fältet för att överlasta den.
+Om trailern är full och skruvvagnen fortfarande inte är tom, kommer den att leta efter en annan trailer att lossa till.
+Finns ingen släpvagn tillgänglig fortsätter den att lasta av skördetröskan.
 "/>
-    <text name="CP_help_page_unloaderFieldUnload_title" text="Unload on the field"/>
+    <text name="CP_help_page_unloaderFieldUnload_title" text="avlastning på fältet"/>
     <text name="CP_help_page_unloaderFieldUnload_text" text="
-The unloading position can be selected with the unload marker.
-The position needs to be on the same field or near the field edge.
-If the marker points to an already existing heap, 
-then this heap is used to unload to.
-The direction of the marker is used for the unload direction.
-Additionally for trailers a tipside needs to be selected.
+Avlastningspositionen kan väljas med avlastningsmarkören.
+Positionen måste vara på samma fält eller nära fältkanten.
+Om markören pekar på en redan befintlig hög,
+sedan används denna hög för att lossa till.
+Markörens riktning används för avlastningsriktningen.
+Dessutom måste en tippsida väljas för släpvagnar.
 "/>
-    <text name="CP_help_page_bunker_title" text="Bunker silo worker"/>
+    <text name="CP_help_page_bunker_title" text="Plansiloarbetare"/>
     <text name="CP_help_page_bunkerGeneral_text" text="
-Courseplay is able to compact or distribute chaff in a bunker silo or push chaff in a wedge silo.
-Compacting is possible without any special tool, with a roller, weight or just the vehicle.
-For distribution, there are special tools. (e.g. der Fliegel DUO).
-For wedge silos, a shield is used to push the chaff to the back of the silo.
+Courseplay kan komprimera eller fördela silage i en plansilo eller trycka silage i en U-silo.
+Komprimering är möjlig utan specialverktyg, med vält, vikt eller bara fordonet.
+För distribution finns specialverktyg. (t.ex. der Fliegel DUO).
+För U-silos används en raka för att trycka silage till baksidan av silon.
 "/>
     <text name="CP_help_page_bunkerBasic_text" text="
-If the vehicle has a distributor or shield attached, the Silo mode is preselected. With only a weight or a roller attached
-you toggle through the starting point until the mode appears.
-Beside the working width, you can also select the direction the driver should drive into the silo. With a shield attached,
-the direction is selected automatically.
-Use the target icon on the HUD to select the silo on the AI Map. If will be shown with blue lines and lights up white if it is selected.
-The parking position is set with the marker &quot;parking position&quot; wich can also be used to drive there with the Giants helper
-before starting the actual work.
+Om fordonet har en fördelare eller skärm monterad, är Silo-läget förvalt. Med endast en vikt eller en rulle fäst
+du bläddrar genom startpunkten tills läget visas.
+Förutom arbetsbredden kan du även välja i vilken riktning föraren ska köra in i silon. Med en sköld fäst,
+riktningen väljs automatiskt.
+Använd målikonen på HUD för att välja silon på AI-kartan. If visas med blå linjer och lyser vitt om det är valt.
+Parkeringspositionen ställs in med markören &quot;parkeringsposition&quot; som också kan användas för att köra dit med Giants-hjälparen
+innan det egentliga arbetet påbörjas.
 "/>
-    <text name="CP_help_page_siloLoader_title" text="Silo loading"/>
+    <text name="CP_help_page_siloLoader_title" text="Silolastning"/>
     <text name="CP_help_page_siloLoaderGeneral_text" text="
-With this job it's possible to load from heaps on or near the field.
-Additionally it's possible to load from a bunker silo.
-The loader can be unloaded with an Courseplay unloader.
+Med detta jobb är det möjligt att lasta från högar på eller nära fältet.
+Dessutom är det möjligt att lasta från en plansilo.
+Lastaren kan lossas med en Courseplay-avlastare.
 "/>
     <text name="CP_help_page_siloLoaderBasic_text" text="
-To start the loading-marker on the AI menu needs to be set.
-The marker detects heaps or silos and highlights them on the map.
-Now it's possible to start the helper.
+För att starta laddningsmarkören på AI-menyn måste ställas in.
+Markören upptäcker högar eller silos och markerar dem på kartan.
+Nu är det möjligt att starta hjälparen.
 "/>
     <!---->
     <!--Input bindings-->
@@ -813,14 +813,14 @@ Now it's possible to start the helper.
     <text name="input_CP_DBG_CHANNEL_MENU_VISIBILITY" text="CP: Visa felsökningskanalsmeny Ja/Nej."/>
     <text name="input_CP_OPEN_CLOSE_VEHICLE_SETTING_DISPLAY" text="CP: Öppna mini GUI"/>
     <text name="input_CP_START_STOP" text="CP: Starta/Stoppa förare"/>
-    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Changes starting point"/>
-    <text name="input_CP_CLEAR_COURSE" text="CP: Clears currently loaded course"/>
-    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Show the current course of the vehicle"/>
+    <text name="input_CP_CHANGE_STARTING_POINT" text="CP: Ändrar startpunkt"/>
+    <text name="input_CP_CLEAR_COURSE" text="CP: Tabort den aktuella inlästa kursen"/>
+    <text name="input_CP_CHANGE_COURSE_VISIBILITY" text="Visa fordonets aktuella kurs"/>
     <text name="input_CP_TOGGLE_MOUSE" text="CP: Musmarkör På/Av"/>
     <text name="input_CP_OPEN_CLOSE_HUD" text="CP: Öppna/Stäng HUD"/>
-    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Opens vehicle settings"/>
-    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Opens global settings"/>
-    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Open course generator/job menu"/>
-    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Opens course manager"/>
+    <text name="input_CP_OPEN_VEHICLE_SETTINGS" text="CP: Öppna fordonsinställningarna"/>
+    <text name="input_CP_OPEN_GLOBAL_SETTINGS" text="CP: Öppnar globala inställningarna"/>
+    <text name="input_CP_OPEN_COURSEGENERATOR_SETTINGS" text="CP: Öppna kursgenerator/jobbmeny"/>
+    <text name="input_CP_OPEN_COURSEMANAGER" text="CP: Öppna kurshantering"/>
   </texts>
 </l10n>
