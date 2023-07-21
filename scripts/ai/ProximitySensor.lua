@@ -25,7 +25,7 @@ function ProximitySensor:init(node, yRotationDeg, range, height, xOffset, vehicl
     self.node = node
     self.xOffset = xOffset
     self.rotationEnabled = rotationEnabled
-    local _, _, dz = localToLocal(node, vehicle:getAIDirectionNode(), 0, 0, 0)
+    local _, _, dz = localToLocal(node,  AIUtil.getDirectionNode(vehicle), 0, 0, 0)
     self.angleToDirectionNode = math.abs(math.atan2(xOffset, dz))
     CpUtil.debugVehicle(CpDebug.DBG_TRAFFIC, vehicle, 'Proximity sensor dx %.1f, angle %.1f, angle to root %.1f',
             xOffset, yRotationDeg, math.deg(self.angleToDirectionNode))

@@ -69,7 +69,7 @@ function PathfinderUtil.VehicleData:init(vehicle, withImplements, buffer)
         }
         local inputAttacherJoint = self.trailer:getActiveInputAttacherJoint()
         if inputAttacherJoint then
-            local _, _, dz = localToLocal(inputAttacherJoint.node, vehicle:getAIDirectionNode(), 0, 0, 0)
+            local _, _, dz = localToLocal(inputAttacherJoint.node,  AIUtil.getDirectionNode(vehicle), 0, 0, 0)
             self.trailerHitchOffset = dz
         else
             self.trailerHitchOffset = self.dRear
@@ -130,7 +130,7 @@ end
 function PathfinderUtil.VehicleData:calculateSizeOfObjectList(vehicle, implements, buffer, rectangles)
     for _, implement in ipairs(implements) do
         --print(implement.object:getName())
-        local referenceNode = vehicle:getAIDirectionNode() --vehicle.rootNode
+        local referenceNode =  AIUtil.getDirectionNode(vehicle) --vehicle.rootNode
         if implement.object ~= self.trailer then
             -- everything else is attached to the root vehicle and calculated as it was moving with it (having
             -- the same heading)
@@ -875,7 +875,7 @@ end
 ---@param zOffset|nil
 ---@return State3D position/heading of vehicle
 function PathfinderUtil.getVehiclePositionAsState3D(vehicle, xOffset, zOffset)
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(vehicle:getAIDirectionNode(), xOffset, zOffset)
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection( AIUtil.getDirectionNode(vehicle), xOffset, zOffset)
     return State3D(x, -z, CourseGenerator.fromCpAngle(yRot))
 end
 
@@ -993,13 +993,13 @@ function PathfinderUtil.checkForObstaclesAhead(vehicle, turnRadius, objectsToIgn
     end
 
     local function findPath(start, hitchLength, xOffset, zOffset)
-        local x, y, z = localToWorld(vehicle:getAIDirectionNode(), xOffset, 0, zOffset)
+        local x, y, z = localToWorld(AIUtil.getDirectionNode(vehicle), xOffset, 0, zOffset)
         setTranslation(PathfinderUtil.helperNode, x, y, z)
-        local dx, dy, dz = localDirectionToWorld(vehicle:getAIDirectionNode(), xOffset, 0, xOffset == 0 and 1 or 0)
+        local dx, dy, dz = localDirectionToWorld(AIUtil.getDirectionNode(vehicle), xOffset, 0, xOffset == 0 and 1 or 0)
         local yRot = MathUtil.getYRotationFromDirection(dx, dz)
         setRotation(PathfinderUtil.helperNode, 0, yRot, 0)
         local path, len = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver,
-                vehicle:getAIDirectionNode(), 0, PathfinderUtil.helperNode, 0, 0, turnRadius)
+            AIUtil.getDirectionNode(vehicle), 0, PathfinderUtil.helperNode, 0, 0, turnRadius)
         -- making sure we continue with the correct trailer heading
         path[1]:setTrailerHeading(start:getTrailerHeading())
         State3D.calculateTrailerHeadings(path, hitchLength)

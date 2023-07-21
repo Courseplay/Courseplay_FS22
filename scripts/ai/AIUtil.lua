@@ -36,7 +36,7 @@ function AIUtil.getDirectionNode(vehicle)
 	-- think getAIDirectionNode() guarantees this, the only reason this is still here is that
 	-- we need to check if it is possible the call this with a vehicle which has no AI direction node
 	-- and fall back to the root node.
-	return vehicle:getAIDirectionNode() or vehicle.rootNode
+	return vehicle.getAIDirectionNode and vehicle:getAIDirectionNode() or vehicle.rootNode
 end
 
 --- If we are towing an implement, move to a bigger radius in tight turns
@@ -277,7 +277,7 @@ end
 function AIUtil.hasImplementsOnTheBack(vehicle)
 	for _, implement in pairs(vehicle:getAttachedImplements()) do
 		if implement.object ~= nil then
-			local _, _, dz = localToLocal(implement.object.rootNode, vehicle:getAIDirectionNode(), 0, 0, 0)
+			local _, _, dz = localToLocal(implement.object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 			if dz < 0 then
 				return true
 			end
@@ -291,7 +291,7 @@ end
 ---@param object table
 ---@return boolean
 function AIUtil.isObjectAttachedOnTheFront(vehicle,object)
-	local _, _, dz = localToLocal(object.rootNode, vehicle:getAIDirectionNode(), 0, 0, 0)
+	local _, _, dz = localToLocal(object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 	if dz > 0 then
 		return true
 	end
@@ -303,7 +303,7 @@ end
 ---@param object table
 ---@return boolean
 function AIUtil.isObjectAttachedOnTheBack(vehicle,object)
-	local _, _, dz = localToLocal(object.rootNode, vehicle:getAIDirectionNode(), 0, 0, 0)
+	local _, _, dz = localToLocal(object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 	if dz < 0 then
 		return true
 	end
@@ -328,12 +328,12 @@ function AIUtil.getFirstAttachedImplement(vehicle,suppressLog)
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
 			-- the distance from the vehicle's root node to the front of the implement
-			local _, _, d = localToLocal(implement.object.rootNode, vehicle:getAIDirectionNode(), 0, 0,
+			local _, _, d = localToLocal(implement.object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0,
 				implement.object.size.length / 2 + implement.object.size.lengthOffset)
 			if implement.object.spec_leveler then 
 				local nodeData = ImplementUtil.getLevelerNode(implement.object)
 				if nodeData then 
-					_, _, d = localToLocal(nodeData.node, vehicle:getAIDirectionNode(), 0, 0, 0)
+					_, _, d = localToLocal(nodeData.node, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 				end
 			end
 			if not suppressLog then
@@ -357,12 +357,12 @@ function AIUtil.getLastAttachedImplement(vehicle,suppressLog)
 	for _, implement in pairs(AIUtil.getAllAttachedImplements(vehicle)) do
 		if implement.object ~= nil then
 			-- the distance from the vehicle's root node to the back of the implement
-			local _, _, d = localToLocal(implement.object.rootNode, vehicle:getAIDirectionNode(), 0, 0,
+			local _, _, d = localToLocal(implement.object.rootNode, AIUtil.getDirectionNode(vehicle), 0, 0,
 				- implement.object.size.length / 2 + implement.object.size.lengthOffset)
 			if implement.object.spec_leveler then 
 				local nodeData = ImplementUtil.getLevelerNode(implement.object)
 				if nodeData then 
-					_, _, d = localToLocal(nodeData.node, vehicle:getAIDirectionNode(), 0, 0, 0)
+					_, _, d = localToLocal(nodeData.node, AIUtil.getDirectionNode(vehicle), 0, 0, 0)
 				end
 			end	
 			if not suppressLog then
