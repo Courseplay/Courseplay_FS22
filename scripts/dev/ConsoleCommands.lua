@@ -70,6 +70,9 @@ end
 ---@param saveGameNumber number
 function CpConsoleCommands:restartSaveGame(saveGameNumber)
 	if g_server then
+		if (saveGameNumber == nil or tonumber(saveGameNumber) == nil) and g_currentMission and g_currentMission.missionInfo then 
+			saveGameNumber = g_currentMission.missionInfo.savegameIndex 
+		end
 		doRestart(true, " -autoStartSavegameId " .. saveGameNumber)
 		CpUtil.info('Restarting savegame %d', saveGameNumber)
 	end
