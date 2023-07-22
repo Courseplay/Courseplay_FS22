@@ -41,14 +41,14 @@ The field position is now saved into the vehicle and will not be reset to the ve
 The position has to be set everytime in the ai menu!
 This fixes problems with AD restarting and also has the advantage that you don't need another AD Target on the field to start the driver.
 
-- Added Loader Driver for vehicles like Ropa Maus to pick up heaps of sugarbeet and to empty bunker silos:
+- Added Loader Driver for vehicles like Ropa Maus to pick up heaps of for example sugarbeet and to empty bunker silos:
 The loader can always work together with a combine unloader (switch the "Combine" on the HUD to "Loader", the rest is the same) when picking up heaps on a field.
 Using an unloader when emptying a bunker silo, can be tricky due the silo walls, try at your own risk :)
-The Loader will unfold in a default position when it reaches the heap. If the default position is not working for you,
-unfold it and move the pipe to a left or right position and a height you want before you start, it will maintain that position.
+The Loader will unfold in a default position when it reaches the heap.
+If the default position is not working for you, unfold it and move the convayer to a left or right position and a height you want before you start, it will maintain that position.
 
 - Added unload on field option for combine unloader. Use the target icon to get into the AI Menu:
-At the bottom there is a new option "Fieldunload" that have to be activated and a target set on or within 20m of the field where you unload on.
+At the bottom there is a new option "Unload on Field" that have to be activated and a target set on or within 20m of the field where you unload on.
 The direction is in which direction the heap will grow.
 
 - Added new feature, where the combine automatically can pickup the header from an attached trailer:
@@ -131,7 +131,44 @@ AutoDrive erledigt das Abtanken eines Ladewagens oder Auffüllen einer Sämaschi
 
 Für mehr Informationen, Hilfe oder Fehlermeldungen schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
+
+Ein Link zu der neuesten Version, der Hilfe Seite und Github, wo du mehr Informationen und Hilfe findest, sowie Probleme und Bugs melden kannst, findest du auf unserer <a href="https://courseplay.dev/">Courseplay Webseite</a>
+oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub Webseite</a>.
+
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
+
+Changelog 7.3.0.0:
+- Ballen sammeln und wickeln funktioniert jetzt wie der Drescher abtanken Modus, was den Zielmarker an geht:
+Die Feldposition ist jetzt im Fahrzeug gespeichert und wird beim starten über das HUD nicht mehr zurückgesetzt!
+Die Position muss jetzt jedes mal im Helfer Menü gesetzt werden!
+Das behebt das Problem wenn AutoDrive den Abfahrer neu startet und hat auch den Vorteil, das kein extra Zielpunkt für AutoDrive auf dem Feld erstellt werden muss.
+
+- Lader Modus für Fahrzeuge wie die Ropa Maus zum aufsammeln von Haufen wie z.B. Zuckerrüben oder zum leeren eines Bunkers hinzugefügt:
+Der Lader kann mit dem Drescher Abfahrer zusammen arbeiten (wechsel im HUD von Drescher zu Lader, der Rest ist gleich) um Haufen auf dem Feld auf zu nehmen.
+Wird ein Lader benutzt um ein Bunker zu leeren, kann es etwas schwierig werden wegen der Wände, Versuche unter eigenem Risko :)
+Der Lader wird sich in einer standart Position ausklappen, wenn der den Haufen erreicht hat.
+Wenn diese Position für dich nicht funktioniert, klappt ihn selber auf, bewewgt die Förderbänder in die position die ihr benötigt und startet den Abfahrer, er wird die Position beibehalten.
+
+- Abladen auf dem Feld Option hinzugefügt. Benutze das Ziel Icon im Helfermenü:
+Unten befindet sich eine neue Option "Abladen auf Feld" welche aktiviert werden muss und ein Ziel innerhalb von 20m um das Feld gesetzt werden muss wo entladen werden soll.
+Die Richtung bestimmt in welche Richtung der Haufen wachsen soll.
+
+- Eine neue Funktion für Drescher hinzugefügt, mit welcher er das Schneidwerk selber vom Trailer nimmt:
+Die Option muss in der jeweiligen Fahrzeugeinstellung unter den Drescher Optionen aktiviert werden.
+Der Drescher muss ein Schneidwerk ziehen (entweder mit eingebautem Wagen, oder auf einem extra Wagen).
+Der Drescher wird automatisch den Wagen abkuppeln und das Schneidwerk aufnehmen, wenn der Spieler den Drescher nahe des Feldes startet, oder wenn der Drescher durch Giants,
+oder dem AutoDrive Helfer zu einem Ziel geschickt wurde um dann dort an Courseplay zu übergeben.
+Bitte beachtet, dass der Drescher genug Platz braucht um den Trailer zu parken und das Schneidwerk vom Trailer zu nehmen, zurück zu fahren um dann zur Feldarbeit zu fahren.
+
+- Korrekten Versatz für Ballen sammeln/wickeln im HUD eingebaut.
+- Eine globale Einstellung für Fruchtzerstörung für alle Helfer hinzugefügt. (aus, nur Courseplay, alle Helfer)
+- Einen Zähler für Ballen sammeln/wickeln hinzugefügt. Aus performance gründen wird der Zähler nicht sofort geupdated, wenn Zeitgleich weitere Ballen produziert werden.
+- Eine Pausefunktion für das Aufzeichnen von Feldrändern hinzugefügt.
+- Hilfe Menü wurde aktualisiert.
+- Die meisten debugs wurden standartmäßig deaktiviert (einige Infos werden vorerst aktiv gelassen)
+- Neue Webseite mit einer exakten Kopie der Hilfe aus dem Spiel: <a href="https://courseplay.dev/">Courseplay Webseite</a>
+
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 
 Changelog 7.2.0.5:
 - Göweil Pack Fehler gefixt, wenn das Courseplay HUD im Fahrzeug aktiv ist.
@@ -172,7 +209,6 @@ Changelog 7.1.0.0:
 - Komplett neuer Kurse Manager in das Ingame Menu integriert.
 - Funktioniert jetzt gut mit AutoDrive zusammen, Courseplay übernimmt die Arbeit auf dem Feld und AutoDrive transportiert deine Ernte.
 
-Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 ]]>
 </de>
 </description> 
