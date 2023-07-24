@@ -159,7 +159,7 @@ end
 ---@return number|nil gx world x coordinate to drive to or nil
 ---@return number|nil gz world z coordinate to drive to or nil
 ---@return boolean|nil direction is forwards if true or nil
----@return number|nil maximum speed adjusted to slow down (or 0 to stop) when obstacles are ahead, otherwise maxSpeed
+---@return number maximum speed adjusted to slow down (or 0 to stop) when obstacles are ahead, otherwise maxSpeed
 function ProximityController:getDriveData(maxSpeed, moveForwards)
 
     --- Resets the traffic info text.
