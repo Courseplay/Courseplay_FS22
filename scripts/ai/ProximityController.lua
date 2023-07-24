@@ -178,8 +178,8 @@ function ProximityController:getDriveData(maxSpeed, moveForwards)
     if object then 
         --- Makes sure the detected object is not an implement or the root vehicle.
         for _, childVehicle in pairs(self.vehicle:getChildVehicles()) do
-            if object == childVehicle then 
-                return 
+            if object == childVehicle then
+                return nil, nil, nil, maxSpeed
             end
         end 
     end
