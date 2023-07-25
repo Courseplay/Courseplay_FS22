@@ -713,8 +713,7 @@ function CourseTurn:generateCalculatedTurn()
         end
         -- only use tight turn offset if we are towing something and not an articulated axis or track vehicle
         -- as those usually have a very small turn radius anyway, causing jackknifing
-        if self.steeringLength > 0 and not (SpecializationUtil.hasSpecialization(ArticulatedAxis, self.vehicle.specializations) or
-                SpecializationUtil.hasSpecialization(Crawler, self.vehicle.specializations)) then
+        if self.steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle) then
             self:debug('Enabling tight turn offset')
             self.enableTightTurnOffset = true
         end

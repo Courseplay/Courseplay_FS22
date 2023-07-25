@@ -705,3 +705,9 @@ function AIUtil.hasCutterAsTrailerAttached(vehicle)
 	end
 	return false
 end
+
+--- SpecializationUtil.hasSpecialization(ArticulatedAxis, specialization) has no use as now every vehicle
+--- seems to have a ArticulatedAxis specialization. Giants also using this check below.
+function AIUtil.hasArticulatedAxis(vehicle)
+	return vehicle.spec_articulatedAxis and vehicle.spec_articulatedAxis.componentJoint
+end
