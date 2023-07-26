@@ -110,9 +110,9 @@
     <text name="CP_ai_messageError" text="Pracovník %s přestal neočekávaně pracovat - opustil trasu!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Pracovník %s přestal neočekávaně pracovat – nebyl nalezen zvolený typ balíků!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Pracovník AI %s neočekávaně ukončil práci - nebyla nalezena žádná cesta!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI pracovník %s neočekávaně přestal pracovat - vykládání na poli není možné!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI pracovník %s přestal neočekávaně pracovat - vykládání na poli není možné!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Pracovník AI %s neočekávaně zastavil práci - připojení lišty není možné!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Pracovník AI %s přestal neočekávaně pracovat - automatické připojení lišty deaktivováno!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -157,11 +157,11 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Umělá inteligence se pokusí vyhnout vjíždění do plodin."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Horizontální odsazení nástroje"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Nastaví horizontální odsazení nástroje."/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Odsazení pro nakládání balíků"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Odsazení pro sběrač balíků."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Vertikální odsazení nástroje"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Nastaví vertikální odsazení nástroje."/>
-    <text name="CP_vehicle_setting_fullThreshold_title" text="Vyprázdnit po skončení:"/>
+    <text name="CP_vehicle_setting_fullThreshold_title" text="Vyprázdnit po naplnění:"/>
     <text name="CP_vehicle_setting_fullThreshold_tooltip" text="CO DĚLAT"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_title" text="Kontrola silážních aditiv"/>
     <text name="CP_vehicle_setting_useAdditiveFillUnit_tooltip" text="Pokud je aktivní a dojdou silážní aditiva, pracovník se zastaví."/>
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatické připojení sklízecí lišty"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Umožňuje automatické připojení sklízecí lišty, kterou je třeba připojit z podvalníku nebo na samostatně."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Stále otevřený komín"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Otevřít komín, když je kombajn plný a čeká na vykládku."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Zastavit při vykládání"/>
@@ -301,10 +301,10 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Řidič bude propuštěn, pokud je vozidlo nebo nářadí více rozbité. 100% je vypnuto."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Zastavit kombajn, když prší"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Pokud je nastavení aktivní, pak všechny sklízeče čekají, až přestane pršet."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Zničení plodin AI pracovníkem"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Zapíná/vypíná zničení plodin pro pracovníky."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Aktivní pouze pro CP pracovníky"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Aktivní pro všechny pracovníky"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -416,8 +416,8 @@ Trasa se automaticky uloží při zavření editoru a přepíše vybranou trasu.
     <text name="CP_infoTexts_wrongBaleWrapType" text="Špatný typ balíku"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Nenalezena trasa"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Vysypání na zem není možné"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Sklízecí lišta není podporována"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Připojování lišty deaktivováno"/>
     <!---->
     <!--Custom field manager-->
     <!---->

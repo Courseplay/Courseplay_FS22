@@ -157,8 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="Pomocnik spróbuje uniknąć jazdy na skróty przez uprawy."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Przes. poziome dla narzędzi"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Przesunięcie horyzontalne (poziome) dla narzędzi."/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Przes. podbieracza bel"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Przesunięcie dla podbieracza bel."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Przes. pionowe dla narzędzi"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Przesunięcie wertykalne (pionowe) dla narzędzi."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Opróżnij, gdy ponad:"/>

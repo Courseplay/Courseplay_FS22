@@ -111,8 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡No se encontraron pacas del tipo seleccionado!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabajador CP %s ha dejado de trabajar inesperadamente - ¡Ninguna Ruta encontrada!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: ¡No es posible descargar en el campo!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Trabajador CP %s ha dejado de trabajar inesperadamente: - ¡Acoplar el cabezal es imposible!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Trabajador CP %s ha dejado de trabajar inesperadamente: - ¡Acoplamiento automático del cabezal desabilitado!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -157,8 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="El conductor intentará evitar conducir sobre los cultivos"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Desp. Herramienta Izq/Der"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Desp. Herramienta Izq/Der"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Compensación de recogida de pacas"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Compensación para el recogedor de pacas"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Desp. Herramienta Del/Tra"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Desp. Herramienta Del/Tra"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vaciar al estar al:"/>
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Acoplamiento automático del cabezal"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Permite la conexión automática de un cabezal, que debe conectarse como un remolque o en un remolque para cabezales separado."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Desplegar siempre el tubo"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Despliegue siempre el tubo cuando la cosechadora esté llena y esperando el descargador."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Detener durante la descarga"/>
@@ -301,10 +301,10 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="El conductor será liberado, si el vehículo o un implemento está más desgastado. Si es 100% se desactiva."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Detener Cosechadoras, mientras llueve"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Si está activo, entonces todas las Cosechadoras esperarán a que se detenga la lluvia."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Conductor CP: Destrucción de cultivos."/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Habilita/Deshabilita la destrucción de cultivos para los ayudantes."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Solo activado para ayudantes CP"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activado para todos los ayudantes"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -416,8 +416,8 @@ El curso se guarda automáticamente al cerrar el editor y anula el curso selecci
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de paca incorrecta"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Ningún camino encontrado"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="No es posible volcar al suelo"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cabezal no compatible"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Acoplamiento automático del cabezal desactivado"/>
     <!---->
     <!--Custom field manager-->
     <!---->

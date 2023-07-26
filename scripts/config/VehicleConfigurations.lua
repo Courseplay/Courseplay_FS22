@@ -155,7 +155,7 @@ function VehicleConfigurations:getRecursively(object, attribute)
     local value
     for _, implement in pairs(object:getChildVehicles()) do
         value = self:get(implement, attribute)
-        CpUtil.infoImplement(implement, "%s => %s: %s", implement.configFileNameClean, attribute, tostring(value))
+        CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, implement, "%s => %s: %s", implement.configFileNameClean, attribute, tostring(value))
         if value ~= nil then
             return value
         end
