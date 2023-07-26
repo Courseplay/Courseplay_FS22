@@ -63,6 +63,7 @@ Remember, the combine needs enough space to park the trailer, pick the header up
 - Added pause button for recording field boundary.
 - Help menu updated.
 - Removed most default debugs (kept some info prints for now)
+- Increased modDesc Version to 76 (Game Version 1.11.0.0 or higher)
 - New website with an exact copy of the in-game help <a href="https://courseplay.dev/">Courseplay Website</a>
 
 For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
@@ -166,6 +167,7 @@ Bitte beachtet, dass der Drescher genug Platz braucht um den Trailer zu parken u
 - Eine Pausefunktion für das Aufzeichnen von Feldrändern hinzugefügt.
 - Hilfe Menü wurde aktualisiert.
 - Die meisten debugs wurden standartmäßig deaktiviert (einige Infos werden vorerst aktiv gelassen)
+- ModDesc Version auf 76 (Spielversion 1.11.0.0 oder höher)
 - Neue Webseite mit einer exakten Kopie der Hilfe aus dem Spiel: <a href="https://courseplay.dev/">Courseplay Webseite</a>
 
 Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
