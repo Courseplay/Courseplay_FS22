@@ -114,7 +114,6 @@ Changelog 7.1.0.0:
 <de>
 <![CDATA[Courseplay FS22
 Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen Sie intelligenter:
-- Modbeschreibung aktualisiert
 - Nutze Vorgewende
 - Arbeite auf nicht rechteckigen Feldern
 - Arbeite um Feldinseln (z.B. Strommasten) umher
@@ -125,13 +124,14 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen 
 - Lasse deinen Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
 - Drescher abtanken mit Anhänger oder Überladewagen.
 - Erstelle deine eigenen Felder, wo immer du möchtest
+- Im Bunkersilo schieben und verdichten.
+- Erstelle Haufen auf einem Feld, für z.B. eine Rübenmiete, durch den Drescher Abtank Modus.
+- Stelle eine Haufen Lader, wie z.b. den Ropa Maus 5, ein und Lade damit eine Rübenmiete auf und nutze eine Abfahrer zum Weg bringen.
 - Arbeitet super mit AutoDrive zusammen, lasse Courseplay die Feldarbeit erledigen und
 AutoDrive erledigt das Abtanken eines Ladewagens oder Auffüllen einer Sämaschine.
 - Verändere die generierten Kurse mit dem Kurseditor.
-- Im Bunkersilo schieben und verdichten.
 
 Für mehr Informationen, Hilfe oder Fehlermeldungen schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
-
 
 Ein Link zu der neuesten Version, der Hilfe Seite und Github, wo du mehr Informationen und Hilfe findest, sowie Probleme und Bugs melden kannst, findest du auf unserer <a href="https://courseplay.dev/">Courseplay Webseite</a>
 oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub Webseite</a>.
@@ -139,33 +139,33 @@ oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Coursepla
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
 
 Changelog 7.3.0.0:
-- Ballen sammeln und wickeln funktioniert jetzt wie der Drescher abtanken Modus, was den Zielmarker an geht:
-Die Feldposition ist jetzt im Fahrzeug gespeichert und wird beim starten über das HUD nicht mehr zurückgesetzt!
-Die Position muss jetzt jedes mal im Helfer Menü gesetzt werden!
-Das behebt das Problem wenn AutoDrive den Abfahrer neu startet und hat auch den Vorteil, das kein extra Zielpunkt für AutoDrive auf dem Feld erstellt werden muss.
+- Die Feldauswahl im Ballen sammeln und wickeln Modus funktioniert jetzt genauso wie beim Drescher abtanken.
+  Für jedes neue Feld muss diese Position im Menu jetzt neu gesetzt werden und wird somit nicht mehr durch das Öffnen über das Hud automatisch neu gesetzt!
+  Das erleichtert die Nutzung mit Autodrive, da somit der Autodrive nicht zwingend auf dem Feld mehr halten muss.
+- Das Abtanken von Drescher wurde erweitert, um einen Modus zum Abtanken von einem Haufen Lader, wie z.B. die Ropa Maus 5.
+  Durch eine zusätzliche Einstellung im Hud kann zwischen Drescher abtanken und Lader, also z.B. den Ropa, unterschieden werden.
+- Zusätzlich wurde dem Drescher Abtank Modus eine Option hinzugefügt zum Erstellen eines neue Haufens auf einem Feld.
+  Dafür muss diese Funktion ausgewählt werden und auf der Karte ein neuer Marker gesetzt werden.
+  Der Marker muss innerhalb des ausgewählten Feldes sein oder im Umkreis von maximal 20m.
+- Zum Laden des Haufens wurde ein neuer Modus hinzugefügt.
+  Dieser ermöglicht z.B. das Aufladen eines Zuckerüben Haufens mit einem Ropa Maus 5.
+  Dieser kann wie oben erwähnt mit einem Abfahrer entleert werden und dann über den Giants Abfahrer oder mit Autodrive zum entladen geschickt werden.
+  Ebenfalls funktioniert das Laden eines Bunker silos mit dem z.B. dem Ropa NawaRo.
+  Hier ist jedoch das automatische Abladen etwas schwierig und ist nicht immer möglich.
+  Als Tipp falls das Rohr um positioniert werden muss, kann dieses nach manuellem Aufklappen vor dem Starten des Helfer gemacht werden.
+- Als weitere Neuerung wurde das automatische Aufnehmen eines Scheidwerks von einem Schneidwerkswagen hinzugefügt.
+  Dafür muss der Wagen mit dem Schneidwerk oder ein Schneidwerk mit Rädern, welches keinen extra Wagen benötigt, am Drescher hinten angekuppelt sein.
+  Nachdem Starten wird der Anhänger abgekuppelt und der Drescher versucht das Schneidwerk anzukuppeln und anschließend ganz normal seine Arbeit zuverrichten.
+  Wichtig ist hier, dass der Drescher natürlich etwas Platz braucht zum Rangieren benötigt :)
+  Diese Option kann in den Fahrzeug Einstellungen aktiviert werden.
+  Wenn der Drescher mit Anhänger und Schneidwerk von Giants oder Autodrive zum Feld geschickt wird dann geht die Funktion natürlich auch solange die Einstellung aktiviert ist.
 
-- Lader Modus für Fahrzeuge wie die Ropa Maus zum aufsammeln von Haufen wie z.B. Zuckerrüben oder zum leeren eines Bunkers hinzugefügt:
-Der Lader kann mit dem Drescher Abfahrer zusammen arbeiten (wechsel im HUD von Drescher zu Lader, der Rest ist gleich) um Haufen auf dem Feld auf zu nehmen.
-Wird ein Lader benutzt um ein Bunker zu leeren, kann es etwas schwierig werden wegen der Wände, Versuche unter eigenem Risko :)
-Der Lader wird sich in einer standart Position ausklappen, wenn der den Haufen erreicht hat.
-Wenn diese Position für dich nicht funktioniert, klappt ihn selber auf, bewewgt die Förderbänder in die position die ihr benötigt und startet den Abfahrer, er wird die Position beibehalten.
-
-- Abladen auf dem Feld Option hinzugefügt. Benutze das Ziel Icon im Helfermenü:
-Unten befindet sich eine neue Option "Abladen auf Feld" welche aktiviert werden muss und ein Ziel innerhalb von 20m um das Feld gesetzt werden muss wo entladen werden soll.
-Die Richtung bestimmt in welche Richtung der Haufen wachsen soll.
-
-- Eine neue Funktion für Drescher hinzugefügt, mit welcher er das Schneidwerk selber vom Trailer nimmt:
-Die Option muss in der jeweiligen Fahrzeugeinstellung unter den Drescher Optionen aktiviert werden.
-Der Drescher muss ein Schneidwerk ziehen (entweder mit eingebautem Wagen, oder auf einem extra Wagen).
-Der Drescher wird automatisch den Wagen abkuppeln und das Schneidwerk aufnehmen, wenn der Spieler den Drescher nahe des Feldes startet, oder wenn der Drescher durch Giants,
-oder dem AutoDrive Helfer zu einem Ziel geschickt wurde um dann dort an Courseplay zu übergeben.
-Bitte beachtet, dass der Drescher genug Platz braucht um den Trailer zu parken und das Schneidwerk vom Trailer zu nehmen, zurück zu fahren um dann zur Feldarbeit zu fahren.
-
-- Korrekten Versatz für Ballen sammeln/wickeln im HUD eingebaut.
-- Eine globale Einstellung für Fruchtzerstörung für alle Helfer hinzugefügt. (aus, nur Courseplay, alle Helfer)
-- Einen Zähler für Ballen sammeln/wickeln hinzugefügt. Aus performance gründen wird der Zähler nicht sofort geupdated, wenn Zeitgleich weitere Ballen produziert werden.
+- Fehler bei der Einstellung des Versatzes im Ballen sammeln/wickeln Modus behoben.
+- Eine globale Einstellung für die Fruchtzerstörung von Helfern hinzugefügt. (aus, nur Courseplay Helfer, alle Helfer)
+- Einen Zähler für den Ballen sammeln/wickeln Modus hinzugefügt. 
+  Aus Performancegründen wird der Zähler nicht immer sofort aktualisiert.
 - Eine Pausefunktion für das Aufzeichnen von Feldrändern hinzugefügt.
-- Hilfe Menü wurde aktualisiert.
+- Hilfe Menü Einträge wurden aktualisiert.
 - Die meisten debugs wurden standartmäßig deaktiviert (einige Infos werden vorerst aktiv gelassen)
 - ModDesc Version auf 76 (Spielversion 1.11.0.0 oder höher)
 - Neue Webseite mit einer exakten Kopie der Hilfe aus dem Spiel: <a href="https://courseplay.dev/">Courseplay Webseite</a>
