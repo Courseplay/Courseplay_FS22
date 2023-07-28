@@ -130,7 +130,8 @@ function BalerController:isThisMyBale(baleObject)
         end
         -- we assume that the baler always drops bale #1. So if #1 changes, remember the one which was
         -- the first previously, as that must be the one being dropped
-        if self.previousFirstBale ~= self.balerSpec.bales[1].baleObject then
+        if self.balerSpec.bales and self.balerSpec.bales[1] and
+                self.previousFirstBale ~= self.balerSpec.bales[1].baleObject then
             -- the last dropped bale is removed from the baler approximately when it is halfway down the
             -- ramp, but then we still want to ignore it, so try to remember it for a while
             self.lastDroppedBale:set(self.previousFirstBale, 30000)
