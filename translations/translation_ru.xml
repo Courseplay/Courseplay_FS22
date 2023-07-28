@@ -111,8 +111,8 @@
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="ИИ-работник %s неожиданно прекратил работу - не найдено выбранного типа тюков!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="ИИ-работник %s неожиданно прекратил работу - не найдено пути!"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="ИИ-работник %s неожиданно прекратил работу - разгрузка на поле невозможна!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="ИИ-работник %s неожиданно прекратил работу - присоединение жатки не возможно!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="ИИ-работник %s неожиданно прекратил работу - автоприсоединение жатки отключено!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -157,8 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="ИИ будет стараться не ехать по посевам."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Поперечное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Поперечное смещение инструмента."/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Смещение подборщика тюков"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Смещение подборщика тюков"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Продольное смещение"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Продольное смещение инструмента."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Опустошать когда заполнен:"/>
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Автоприсоединение жатки"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Позволяет автоматическое прикрепление жатки, которую можно прикреплять как прицеп или на отдельном прицепе для жатки."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Всегда разворачивать трубу"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Всегда разворачивать трубу, когда комбайн заполнен и ожидает разгрузки."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Стоять при разгрузке"/>
@@ -301,10 +301,10 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="Водитель будет отпущен, если транспортное средство или оборудование будут изношенным более порога. 100% это ВЫКЛ."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Останавливать комбайны, пока идёт дождь"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Если эта настройка активна, тогда все комбайны будут ожидать окончания дождя."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="ИИ-помощник повреждает культуры"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Вкл/Выкл повреждение культур помощником."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Активно только для Coursesplay-помощников"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Активно для всех помощников"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -416,8 +416,8 @@
     <text name="CP_infoTexts_wrongBaleWrapType" text="Неправильный тип тюка"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Не найдено путь"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Выгрузка на землю не возможна"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Жатка не поддерживается"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Присоединение жатки не активно"/>
     <!---->
     <!--Custom field manager-->
     <!---->
