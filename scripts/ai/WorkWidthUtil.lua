@@ -155,6 +155,10 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
                 configuredOffset, left, right)
     elseif width and left and right then
         offset = left - width / 2
+        if left < 0 then 
+            --- If the offset is on the right side of the vehicle, than the right marker needs to be used for the calculation.
+            offset = right - width / 2
+        end
         WorkWidthUtil.debug(object, 'calculated tool offset is %.1f.', offset)
     else
         offset = 0
