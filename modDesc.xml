@@ -244,6 +244,7 @@ Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.c
 		<sourceFile filename="scripts/ai/controllers/AttachableController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/AttacherJointController.lua"/>
 		<sourceFile filename="scripts/ai/controllers/DynamicMountAttacherController.lua"/>
+		<sourceFile filename="scripts/ai/controllers/StumpCutterController.lua"/>
 		<sourceFile filename="scripts/ai/BaleToCollect.lua"/>
 		<sourceFile filename="scripts/ai/FillLevelManager.lua"/>
 		<sourceFile filename="scripts/ai/InfoTextsManager.lua"/>

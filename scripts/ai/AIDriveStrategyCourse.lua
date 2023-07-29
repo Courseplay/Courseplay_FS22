@@ -209,8 +209,8 @@ end
 --- Adds implement controllers for every implement, that has the given specialization.
 ---@param vehicle table
 ---@param class ImplementController
----@param spec table
----@param states table
+---@param spec table|nil
+---@param states table|nil
 ---@param specReference string|nil
 ---@return table last implement found.
 ---@return table last implement controller

@@ -257,6 +257,7 @@ function AIDriveStrategyFieldWorkCourse:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, VineCutterController, VineCutter, defaultDisabledStates)
 
     self:addImplementController(vehicle, SoilSamplerController, nil, defaultDisabledStates, "spec_soilSampler")
+    self:addImplementController(vehicle, StumpCutterController, StumpCutter, defaultDisabledStates)
 
 end
 
