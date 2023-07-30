@@ -49,7 +49,7 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
             local lastSpeed = rootVehicle:getLastSpeed()
             local isCpActive = rootVehicle.getIsCpActive and rootVehicle:getIsCpActive()
             CpUtil.debugVehicle(self.debugChannel, myVehicle,
-                    '%s is a trailer %s on my field, closest distance to %d is %.1f, attached to %s, root vehicle is %s, last speed %.1f, CP active %s',
+                    '%s is a trailer %s on my field, closest distance to the field is %.1f, attached to %s, root vehicle is %s, last speed %.1f, CP active %s',
                     otherVehicle:getName(), isOnField and '' or 'NOT', closestDistance, attacherVehicle and attacherVehicle:getName() or 'none',
                     rootVehicle:getName(), lastSpeed, isCpActive)
             -- consider only trailer on my field or close to my field, not driven by CP and stopped
