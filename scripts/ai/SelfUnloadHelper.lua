@@ -23,6 +23,8 @@ SelfUnloadHelper = {}
 SelfUnloadHelper.debugChannel = CpDebug.DBG_FIELDWORK
 -- keep the helper nodes we create in this table for each vehicle so no nodes need to be created/destroyed
 SelfUnloadHelper.bestFillNodes = {}
+-- search for trailers within this distance from the field
+SelfUnloadHelper.maxDistanceFromField = 20
 
 ------ Find a trailer we can use for self unloading
 function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pipeOffsetX)
@@ -36,20 +38,23 @@ function SelfUnloadHelper:findBestTrailer(fieldPolygon, myVehicle, fillType, pip
             if SpecializationUtil.hasSpecialization(Attachable, otherVehicle.specializations) then
                 attacherVehicle = otherVehicle.spec_attachable:getAttacherVehicle()
             end
-            local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(otherVehicle)
-            local myFieldNum = CpFieldUtil.getFieldNumUnderVehicle(myVehicle)
             local x, _, z = getWorldTranslation(otherVehicle.rootNode)
             local closestDistance = CpMathUtil.getClosestDistanceToPolygonEdge(fieldPolygon, x, z)
+            -- if the trailer is within 20 m of the field perimeter, we are good
+            local isOnField = closestDistance <= SelfUnloadHelper.maxDistanceFromField
+            if not isOnField then
+                -- not within 20 m, but could still be on the field
+                isOnField = CpMathUtil.isPointInPolygon(fieldPolygon, x, z)
+            end
             local lastSpeed = rootVehicle:getLastSpeed()
             local isCpActive = rootVehicle.getIsCpActive and rootVehicle:getIsCpActive()
             CpUtil.debugVehicle(self.debugChannel, myVehicle,
-                    '%s is a trailer on field %d, closest distance to %d is %.1f, attached to %s, root vehicle is %s, last speed %.1f, CP active %s',
-                    otherVehicle:getName(), fieldNum, myFieldNum, closestDistance, attacherVehicle and attacherVehicle:getName() or 'none',
+                    '%s is a trailer %s on my field, closest distance to the field is %.1f, attached to %s, root vehicle is %s, last speed %.1f, CP active %s',
+                    otherVehicle:getName(), isOnField and '' or 'NOT', closestDistance, attacherVehicle and attacherVehicle:getName() or 'none',
                     rootVehicle:getName(), lastSpeed, isCpActive)
             -- consider only trailer on my field or close to my field, not driven by CP and stopped
-            if rootVehicle ~= myVehicle and not isCpActive and lastSpeed < 0.1 and
-                    (fieldNum == myFieldNum or myFieldNum == 0 or closestDistance < 20)
-                    and not self:isInvalidAutoDriveTarget(myVehicle, rootVehicle) then
+            if rootVehicle ~= myVehicle and not isCpActive and lastSpeed < 0.1 and isOnField and
+                    not self:isInvalidAutoDriveTarget(myVehicle, rootVehicle) then
                 local d = calcDistanceFrom(myVehicle:getAIDirectionNode(), otherVehicle.rootNode or otherVehicle.nodeId)
                 local canLoad, freeCapacity, fillUnitIndex = FillLevelManager.canLoadTrailer(otherVehicle, fillType)
                 if d < minDistance and canLoad then

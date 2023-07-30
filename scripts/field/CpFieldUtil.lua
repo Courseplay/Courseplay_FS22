@@ -51,7 +51,7 @@ end
 
 --- Which field this node is on.
 ---@param node table Giants engine node
----@return number 0 if not on any field, otherwise the number of field, see note on getFieldItAtWorldPosition()
+---@return number 0 if not on any field, otherwise the number of field, see note on getFieldIdAtWorldPosition()
 function CpFieldUtil.getFieldNumUnderNode(node)
     local x, _, z = getWorldTranslation(node)
     return CpFieldUtil.getFieldIdAtWorldPosition(x, z)
@@ -62,8 +62,11 @@ function CpFieldUtil.getFieldNumUnderVehicle(vehicle)
     return CpFieldUtil.getFieldNumUnderNode(vehicle.rootNode)
 end
 
---- Returns the field ID (actually, land ID) for a position. The land is what you can buy in the game,
---- including the area around an actual field.
+--- Returns a field ID for a position. This really is the ID of the first field which is
+--- on the same farmland where the given position is. The farmland is what you can buy in the game,
+--- including the area around an actual field, and may extend well beyond the actual field.
+--- So do not use this the determine the field ID of a given position, as this does not guarantee
+--- that the position is actually on a field.
 function CpFieldUtil.getFieldIdAtWorldPosition(posX, posZ)
     local farmland = g_farmlandManager:getFarmlandAtWorldPosition(posX, posZ)
     if farmland ~= nil then
