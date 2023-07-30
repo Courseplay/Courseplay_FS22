@@ -1011,7 +1011,7 @@ end
 
 function AIDriveStrategyCombineCourse:checkFruitAtNode(node, offsetX, offsetZ)
     local x, _, z = localToWorld(node, offsetX, 0, offsetZ or 0)
-    local hasFruit, fruitValue = PathfinderUtil.hasFruit(x, z, 5, 3)
+    local hasFruit, fruitValue = PathfinderUtil.hasFruit(x, z, 1, 1)
     return hasFruit, fruitValue
 end
 
@@ -1022,7 +1022,7 @@ function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix)
     end
     self.storage.fruitCheckHelperWpNode:setToWaypoint(course, ix)
     local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeController:getPipeOffsetX())
-    self:debugSparse('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
+    self:debug('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
     return hasFruit, fruitValue
 end
 
