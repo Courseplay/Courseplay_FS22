@@ -38,14 +38,14 @@ Many thanks to our translators and to our community for reporting bugs, giving u
 Changelog 7.3.0.0:
 - Bale collector/wrapper now works the same way as the combine unloader in terms of markers:
 The field position is now saved into the vehicle and will not be reset to the vehicle position, when started by the hud!
-The position has to be set everytime in the ai menu!
+The position has to be set everytime in the AI menu!
 This fixes problems with AD restarting and also has the advantage that you don't need another AD Target on the field to start the driver.
 
 - Added Loader Driver for vehicles like Ropa Maus to pick up heaps of for example sugarbeet and to empty bunker silos:
 The loader can always work together with a combine unloader (switch the "Combine" on the HUD to "Loader", the rest is the same) when picking up heaps on a field.
 Using an unloader when emptying a bunker silo, can be tricky due the silo walls, try at your own risk :)
 The Loader will unfold in a default position when it reaches the heap.
-If the default position is not working for you, unfold it and move the convayer to a left or right position and a height you want before you start, it will maintain that position.
+If the default position is not working for you, unfold it and move the conveyor to a left or right position and a height you want before you start, it will maintain that position.
 
 - Added unload on field option for combine unloader. Use the target icon to get into the AI Menu:
 At the bottom there is a new option "Unload on Field" that have to be activated and a target set on or within 20m of the field where you unload on.
