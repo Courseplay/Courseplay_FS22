@@ -140,25 +140,25 @@ Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports
 
 Changelog 7.3.0.0:
 - Die Feldauswahl im Ballen sammeln und wickeln Modus funktioniert jetzt genauso wie beim Drescher abtanken.
-  Für jedes neue Feld muss diese Position im Menu jetzt neu gesetzt werden und wird somit nicht mehr durch das Öffnen über das Hud automatisch neu gesetzt!
-  Das erleichtert die Nutzung mit Autodrive, da somit der Autodrive nicht zwingend auf dem Feld mehr halten muss.
-- Das Abtanken von Drescher wurde erweitert, um einen Modus zum Abtanken von einem Haufen Lader, wie z.B. die Ropa Maus 5.
-  Durch eine zusätzliche Einstellung im Hud kann zwischen Drescher abtanken und Lader, also z.B. den Ropa, unterschieden werden.
-- Zusätzlich wurde dem Drescher Abtank Modus eine Option hinzugefügt zum Erstellen eines neue Haufens auf einem Feld.
-  Dafür muss diese Funktion ausgewählt werden und auf der Karte ein neuer Marker gesetzt werden.
-  Der Marker muss innerhalb des ausgewählten Feldes sein oder im Umkreis von maximal 20m.
+Für jedes neue Feld muss diese Position im Menu jetzt neu gesetzt werden und wird somit nicht mehr durch das Öffnen über das Hud automatisch neu gesetzt!
+Das erleichtert die Nutzung mit Autodrive, da somit der Autodrive Fahrer nicht mehr zwingend auf dem Feld halten muss.
+- Das Abtanken von Drescher wurde erweitert, um einen Modus zum Abtanken von einem Lader, wie z.B. die Ropa Maus 5.
+Durch eine zusätzliche Einstellung im Hud kann zwischen Drescher abtanken und Lader, also z.B. den Ropa, unterschieden werden.
+- Zusätzlich wurde dem Drescher abtanken Modus eine Option hinzugefügt zum direktem Abladen auf einem Feld.
+Dafür muss diese Funktion ausgewählt werden und auf der Karte ein neuer Marker gesetzt werden.
+Der Marker muss innerhalb des ausgewählten Feldes sein oder im Umkreis von maximal 20m um das Feld.
 - Zum Laden des Haufens wurde ein neuer Modus hinzugefügt.
-  Dieser ermöglicht z.B. das Aufladen eines Zuckerüben Haufens mit einem Ropa Maus 5.
-  Dieser kann wie oben erwähnt mit einem Abfahrer entleert werden und dann über den Giants Abfahrer oder mit Autodrive zum entladen geschickt werden.
-  Ebenfalls funktioniert das Laden eines Bunker silos mit dem z.B. dem Ropa NawaRo.
-  Hier ist jedoch das automatische Abladen etwas schwierig und ist nicht immer möglich.
-  Als Tipp falls das Rohr um positioniert werden muss, kann dieses nach manuellem Aufklappen vor dem Starten des Helfer gemacht werden.
+Dieser ermöglicht z.B. das Aufladen eines Zuckerüben Haufens mit einem Ropa Maus 5.
+Dieser kann wie oben erwähnt mit einem Abfahrer abgetankt werden und dann über den Giants Abfahrer oder mit Autodrive zum entladen geschickt werden.
+Ebenfalls funktioniert das Laden eines Bunker Silos mit dem z.B. dem Ropa NawaRo.
+Hier ist jedoch das automatische Abladen etwas schwierig und ist nicht immer möglich.
+Als Tipp falls das Rohr um positioniert werden muss, kann dieses nach manuellem Aufklappen vor dem Starten des Helfer gemacht werden.
 - Als weitere Neuerung wurde das automatische Aufnehmen eines Scheidwerks von einem Schneidwerkswagen hinzugefügt.
-  Dafür muss der Wagen mit dem Schneidwerk oder ein Schneidwerk mit Rädern, welches keinen extra Wagen benötigt, am Drescher hinten angekuppelt sein.
-  Nachdem Starten wird der Anhänger abgekuppelt und der Drescher versucht das Schneidwerk anzukuppeln und anschließend ganz normal seine Arbeit zuverrichten.
-  Wichtig ist hier, dass der Drescher natürlich etwas Platz braucht zum Rangieren benötigt :)
-  Diese Option kann in den Fahrzeug Einstellungen aktiviert werden.
-  Wenn der Drescher mit Anhänger und Schneidwerk von Giants oder Autodrive zum Feld geschickt wird dann geht die Funktion natürlich auch solange die Einstellung aktiviert ist.
+Dafür muss der Wagen mit dem Schneidwerk oder ein Schneidwerk mit Rädern, welches keinen extra Wagen benötigt, am Drescher hinten angekuppelt sein.
+Nachdem Starten wird der Anhänger abgekuppelt und der Drescher versucht das Schneidwerk anzukuppeln und anschließend ganz normal seine Arbeit zu verrichten.
+Wichtig ist hier, dass der Drescher natürlich etwas Platz zum Rangieren benötigt.
+Diese Option kann in den Fahrzeug Einstellungen aktiviert werden.
+Wenn der Drescher mit Anhänger und Schneidwerk von Giants oder Autodrive zum Feld geschickt wird, dann wird die Funktion natürlich auch benutzt, solange die Einstellung aktiviert ist.
 
 - Fehler bei der Einstellung des Versatzes im Ballen sammeln/wickeln Modus behoben.
 - Eine globale Einstellung für die Fruchtzerstörung von Helfern hinzugefügt. (aus, nur Courseplay Helfer, alle Helfer)
