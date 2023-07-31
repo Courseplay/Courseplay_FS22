@@ -106,13 +106,13 @@
     <!---->
     <!--AI error messages-->
     <!---->
-    <text name="CP_ai_messageErrorIsFull" text="L'ouvrier %s a interrompu son travail - la tremie est pleine!"/>
-    <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie!"/>
-    <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné!"/>
+    <text name="CP_ai_messageErrorIsFull" text="L'ouvrier %s a interrompu son travail - la tremie est pleine !"/>
+    <text name="CP_ai_messageError" text="L'ouvrier %s a interrompu son travail - la course n'est plus suivie !"/>
+    <text name="CP_ai_messageErrorWrongBaleWrapType" text="L'ouvrier %s a interrompu son travail - aucune botte trouvée du type sélectionné !"/>
     <text name="CP_ai_messageErrorNoPathFound" text="L'ouvrier %s s'est arrêté car il ne trouve pas de chemin !"/>
     <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="L'ouvrier %s a interrompu son travail - déchargement au champ impossible !"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="L'ouvrier %s a interrompu son travail - impossible d'attacher la barre de coupe !"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="L'ouvrier %s a interrompu son travail - l'attachement auto de la barre de coupe est désactivé !"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
@@ -157,8 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="L'IA essayera d'éviter le plus possible de rouler dans les cultures."/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Décalage horizontal de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Décalage horizontal de l'outil."/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Décalage du pickup de balle"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Décalage pour le collecteur de balles."/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Décalage vertical de l'outil"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Décalage vertical de l'outil."/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Vider si supérieur à"/>
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Attachement auto de la barre de coupe"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Permet l'attachement automatique d'une barre de coupe qui serait sur une remorque à barre de coupe."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Toujours déployer la buse"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Toujours déployer la buse lorsque la batteuse est pleine et attend un déchargement."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Arrêt pendant le déchargement"/>
@@ -301,10 +301,10 @@
     <text name="CP_global_setting_brokenThreshold_tooltip" text="L'ouvrier CP s'arrêtera si le véhicule ou un outil est abimé avec un état d'entretien sous ce seuil. 100% = éteint."/>
     <text name="CP_global_setting_stopThreshingDuringRain_title" text="Pas de récolte pendant la pluie"/>
     <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Arrête toutes les moissonneuses ou récolteuses en cas de pluie. Reprise automatique lorsque la pluie s'arrête."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Destruction des cultures pour les ouvriers IA"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Active/Désactive la destruction des cultures pour les ouvriers gérés par l'IA."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Activée seulement pour les ouvriers Courseplay"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activée pour tous les ouvriers"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -416,8 +416,8 @@ La course est automatiquement sauvegardée à la fermeture de l'éditeur et remp
     <text name="CP_infoTexts_wrongBaleWrapType" text="Mauvais type de bottes"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Aucun chemin trouvé"/>
     <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Déchargement au sol impossible"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Barre de coupe non supportée"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Attachement auto de la barre de coupe désactivé"/>
     <!---->
     <!--Custom field manager-->
     <!---->

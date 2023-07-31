@@ -36,6 +36,3 @@ ___
 * Skydancer
 * Wolverin0815
 * Pops64
-
-### Former Version Support
-Pops64 will continue support for version 5 of CP. This was the version used for FS17. This may be found in this **[repository](https://github.com/pops64/courseplay)**. Only bugfixes and refinement of current features will be supported at this time.
