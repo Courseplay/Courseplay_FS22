@@ -24,14 +24,49 @@ Courseplay takes the AI worker to the next level. Sow, harvest and plow smarter:
 - let up to 5 helpers work on the same field in a group
 - combines find a trailer to self-unload when full
 - unload combines with trailer or auger wagon
+- use loaders to pick up heaps on the field or to empty bunker silos
 - set up your own fields wherever you like
 - works great together with AutoDrive, let Courseplay do the fieldwork and AutoDrive to refill a sower or unload a forage wagon
 - customize the automatically created fieldwork courses to your liking with the course editor
 - work in bunker silo to push and compact
 
-For more information, help, and report issues please visit <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
+For a link to our latest release, Help page and GitHub page where you can find more information, help, and report issues please visit <a href="https://courseplay.dev/">Courseplay Website</a>
+or go directly to our <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub page</a>.
 
 Many thanks to our translators and to our community for reporting bugs, giving us feedback and great ideas.
+
+Changelog 7.3.0.0:
+- Bale collector/wrapper now works the same way as the combine unloader in terms of markers:
+The field position is now saved into the vehicle and will not be reset to the vehicle position, when started by the hud!
+The position has to be set everytime in the AI menu!
+This fixes problems with AD restarting and also has the advantage that you don't need another AD Target on the field to start the driver.
+
+- Added Loader Driver for vehicles like Ropa Maus to pick up heaps of for example sugarbeet and to empty bunker silos:
+The loader can always work together with a combine unloader (switch the "Combine" on the HUD to "Loader", the rest is the same) when picking up heaps on a field.
+Using an unloader when emptying a bunker silo, can be tricky due the silo walls, try at your own risk :)
+The Loader will unfold in a default position when it reaches the heap.
+If the default position is not working for you, unfold it and move the conveyor to a left or right position and a height you want before you start, it will maintain that position.
+
+- Added unload on field option for combine unloader. Use the target icon to get into the AI Menu:
+At the bottom there is a new option "Unload on Field" that have to be activated and a target set on or within 20m of the field where you unload on.
+The direction is in which direction the heap will grow.
+
+- Added new feature, where the combine automatically can pickup the header from an attached trailer:
+A new setting must be activated in the vehicle settings page under combine settings for this to work
+and the combine must be towing a header (either with its own wheels or on a trailer).
+The combine will then automatically pick up the header when the player starts the harvester near a field or sends the harvester to a field with Giants or Autodrive helper.
+Remember, the combine needs enough space to park the trailer, pick the header up, reverse and then drive to the fieldwork course.
+
+- Added a proper offset setting to the HUD for bale collect/wrap mode.
+- Added global setting for fruit destruction of helpers. (off, Courseplay only, all helpers).
+- Added a countdown for bales to collect/wrap. Note that new bales produced on the same field will not update the counter immediately for performance reasons.
+- Added pause button for recording field boundary.
+- Help menu updated.
+- Removed most default debugs (kept some info prints for now)
+- Increased modDesc Version to 76 (Game Version 1.11.0.0 or higher)
+- New website with an exact copy of the in-game help <a href="https://courseplay.dev/">Courseplay Website</a>
+
+For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 
 Changelog 7.2.0.5:
 - Goeweil pack bug fix for the stationary baler with the Courseplay hud.
@@ -74,13 +109,11 @@ Changelog 7.1.0.0:
 - Complete new course manager integrated into the ingame menu.
 - Works now great with AutoDrive, let Courseplay take care of the field work and use AutoDrive to transport your harvest.
 
-For a complete changelog please visit our <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release page</a> on GitHub.
 ]]>
 </en>
 <de>
 <![CDATA[Courseplay FS22
 Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen Sie intelligenter:
-- Modbeschreibung aktualisiert
 - Nutze Vorgewende
 - Arbeite auf nicht rechteckigen Feldern
 - Arbeite um Feldinseln (z.B. Strommasten) umher
@@ -91,14 +124,53 @@ Courseplay hebt den Helfer auf ein ganz neues Level. Säen, ernten und pflügen 
 - Lasse deinen Drescher automatisch zu einem Anhänger am Feld fahren und dort abtanken.
 - Drescher abtanken mit Anhänger oder Überladewagen.
 - Erstelle deine eigenen Felder, wo immer du möchtest
+- Im Bunkersilo schieben und verdichten.
+- Erstelle Haufen auf einem Feld, für z.B. eine Rübenmiete, durch den Drescher Abtank Modus.
+- Stelle eine Haufen Lader, wie z.b. den Ropa Maus 5, ein und Lade damit eine Rübenmiete auf und nutze eine Abfahrer zum Weg bringen.
 - Arbeitet super mit AutoDrive zusammen, lasse Courseplay die Feldarbeit erledigen und
 AutoDrive erledigt das Abtanken eines Ladewagens oder Auffüllen einer Sämaschine.
 - Verändere die generierten Kurse mit dem Kurseditor.
-- Im Bunkersilo schieben und verdichten.
 
 Für mehr Informationen, Hilfe oder Fehlermeldungen schaue hier vorbei: <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub</a>.
 
+Ein Link zu der neuesten Version, der Hilfe Seite und Github, wo du mehr Informationen und Hilfe findest, sowie Probleme und Bugs melden kannst, findest du auf unserer <a href="https://courseplay.dev/">Courseplay Webseite</a>
+oder du gehst direkt auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22">GitHub Webseite</a>.
+
 Vielen Dank an unsere Community für die zahlreichen Übersetzungen, Bug Reports, Feedback und Vorschläge zur Verbesserung.
+
+Changelog 7.3.0.0:
+- Die Feldauswahl im Ballen sammeln und wickeln Modus funktioniert jetzt genauso wie beim Drescher abtanken.
+Für jedes neue Feld muss diese Position im Menu jetzt neu gesetzt werden und wird somit nicht mehr durch das Öffnen über das Hud automatisch neu gesetzt!
+Das erleichtert die Nutzung mit Autodrive, da somit der Autodrive Fahrer nicht mehr zwingend auf dem Feld halten muss.
+- Das Abtanken von Drescher wurde erweitert, um einen Modus zum Abtanken von einem Lader, wie z.B. die Ropa Maus 5.
+Durch eine zusätzliche Einstellung im Hud kann zwischen Drescher abtanken und Lader, also z.B. den Ropa, unterschieden werden.
+- Zusätzlich wurde dem Drescher abtanken Modus eine Option hinzugefügt zum direktem Abladen auf einem Feld.
+Dafür muss diese Funktion ausgewählt werden und auf der Karte ein neuer Marker gesetzt werden.
+Der Marker muss innerhalb des ausgewählten Feldes sein oder im Umkreis von maximal 20m um das Feld.
+- Zum Laden des Haufens wurde ein neuer Modus hinzugefügt.
+Dieser ermöglicht z.B. das Aufladen eines Zuckerüben Haufens mit einem Ropa Maus 5.
+Dieser kann wie oben erwähnt mit einem Abfahrer abgetankt werden und dann über den Giants Abfahrer oder mit Autodrive zum entladen geschickt werden.
+Ebenfalls funktioniert das Laden eines Bunker Silos mit dem z.B. dem Ropa NawaRo.
+Hier ist jedoch das automatische Abladen etwas schwierig und ist nicht immer möglich.
+Als Tipp falls das Rohr um positioniert werden muss, kann dieses nach manuellem Aufklappen vor dem Starten des Helfer gemacht werden.
+- Als weitere Neuerung wurde das automatische Aufnehmen eines Scheidwerks von einem Schneidwerkswagen hinzugefügt.
+Dafür muss der Wagen mit dem Schneidwerk oder ein Schneidwerk mit Rädern, welches keinen extra Wagen benötigt, am Drescher hinten angekuppelt sein.
+Nachdem Starten wird der Anhänger abgekuppelt und der Drescher versucht das Schneidwerk anzukuppeln und anschließend ganz normal seine Arbeit zu verrichten.
+Wichtig ist hier, dass der Drescher natürlich etwas Platz zum Rangieren benötigt.
+Diese Option kann in den Fahrzeug Einstellungen aktiviert werden.
+Wenn der Drescher mit Anhänger und Schneidwerk von Giants oder Autodrive zum Feld geschickt wird, dann wird die Funktion natürlich auch benutzt, solange die Einstellung aktiviert ist.
+
+- Fehler bei der Einstellung des Versatzes im Ballen sammeln/wickeln Modus behoben.
+- Eine globale Einstellung für die Fruchtzerstörung von Helfern hinzugefügt. (aus, nur Courseplay Helfer, alle Helfer)
+- Einen Zähler für den Ballen sammeln/wickeln Modus hinzugefügt. 
+  Aus Performancegründen wird der Zähler nicht immer sofort aktualisiert.
+- Eine Pausefunktion für das Aufzeichnen von Feldrändern hinzugefügt.
+- Hilfe Menü Einträge wurden aktualisiert.
+- Die meisten debugs wurden standartmäßig deaktiviert (einige Infos werden vorerst aktiv gelassen)
+- ModDesc Version auf 76 (Spielversion 1.11.0.0 oder höher)
+- Neue Webseite mit einer exakten Kopie der Hilfe aus dem Spiel: <a href="https://courseplay.dev/">Courseplay Webseite</a>
+
+Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 
 Changelog 7.2.0.5:
 - Göweil Pack Fehler gefixt, wenn das Courseplay HUD im Fahrzeug aktiv ist.
@@ -139,7 +211,6 @@ Changelog 7.1.0.0:
 - Komplett neuer Kurse Manager in das Ingame Menu integriert.
 - Funktioniert jetzt gut mit AutoDrive zusammen, Courseplay übernimmt die Arbeit auf dem Feld und AutoDrive transportiert deine Ernte.
 
-Für eine komplette Changelog, schaut bitte auf unsere <a href="https://github.com/Courseplay/Courseplay_FS22/releases">Release Seite</a> auf GitHub vorbei.
 ]]>
 </de>
 </description> 
