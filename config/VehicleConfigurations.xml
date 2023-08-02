@@ -68,8 +68,8 @@ You can define the following custom settings:
 	and the edge of the bale when the bale grabber is right where it should be to pick up the bale.
 	Courseplay will adjust this offset according to the bale's dimensions but you may want to add a little buffer.
 
-- disableUnfoldBaleLoader: boolean
-    Deactivates the unfolding of the bale loader, as the implement can't be used while unfolded.
+- disableUnfolding: boolean
+    Deactivates the unfolding of the implement for fieldwork or bale finder.
 
 - raiseLate: boolean
     The default behavior is to raise the implement when the front of the work area reaches the end of the row or
@@ -285,7 +285,7 @@ You can define the following custom settings:
 
 	<!--\vehicles\samasz-->
 	<Vehicle name="steelDropDeck.xml"
-			 disableUnfoldBaleLoader = "true"
+			 disableUnfolding = "true"
 	/>
 
     <!--Tractors-->

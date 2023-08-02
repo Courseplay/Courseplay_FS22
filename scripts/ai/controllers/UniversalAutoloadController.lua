@@ -26,25 +26,8 @@ function UniversalAutoloadController:init(vehicle, implement)
     
     self.autoLoader = implement
     self.autoLoaderSpec = implement.spec_universalAutoload
-    self.foldableSpec = implement.spec_foldable
-    self:debug('Universal autoloader controller initialized')
-
-    if self.foldableSpec and g_vehicleConfigurations:get(implement, "disableUnfoldBaleLoader") then 
-        if self.foldableSpec.controlledActionFold ~= nil then 
-            self:debug("Removed ai foldable control")
-            self.foldableSpec.controlledActionFold:remove()
-            self.foldActionWasRemoved = true
-        end
-    end
-
 end
 
-function UniversalAutoloadController:delete()
-    if self.foldActionWasRemoved then 
-        --- Restores the controlledAction 
-        Foldable.onRootVehicleChanged(self.implement, self.vehicle)
-    end
-end
 
 function UniversalAutoloadController:isGrabbingBale()
     return false
@@ -93,8 +76,4 @@ end
 
 function UniversalAutoloadController:isChangingBaleSize()
     return false
-end
-
-function UniversalAutoloadController:hasToBeUnfolded()
-    
 end

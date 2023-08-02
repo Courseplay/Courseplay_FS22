@@ -16,31 +16,6 @@ function CpAIBaleFinder.initSpecialization()
     local key = "vehicles.vehicle(?)" .. CpAIBaleFinder.KEY
     CpJobParameters.registerXmlSchema(schema, key..".cpJob")
     CpJobParameters.registerXmlSchema(schema, key..".cpJobStartAtLastWp")
-    g_devHelper.consoleCommands:registerConsoleCommand("cpBaleFinderUniversalAutoloadStartTest", 
-        "Debug for testing the start of the universal autoload", "consoleUniversalAutoloadTest", CpAIBaleFinder)
-end
-
---- Helper command to test the pipe measurement.
-function CpAIBaleFinder:consoleUniversalAutoloadTest()
-    local vehicle = g_currentMission.controlledVehicle
-    if not vehicle then 
-        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
-        return
-    end
-    if not AIUtil.hasValidUniversalTrailerAttached(vehicle) then 
-        CpUtil.info("No valid universal autoload trailer is attached!")
-        return
-    end
-
-    local trailers, found = AIUtil.getAllChildVehiclesWithSpecialization(vehicle, 
-        nil, "spec_universalAutoload")
-    if not found then 
-        CpUtil.info("Could not measure pipe properties, as no valid vehicle/implement with pipe was found!")
-        return
-    end
-    local controller = UniversalAutoloadController(vehicle, trailers[1])
-    controller:onStart()
-    controller:delete()
 end
 
 function CpAIBaleFinder.prerequisitesPresent(specializations)
