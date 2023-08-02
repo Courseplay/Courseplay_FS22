@@ -50,7 +50,6 @@ VehicleConfigurations.attributes = {
     ignoreBaleCollisionForward = XMLValueType.BOOL,
 }
 
-
 function VehicleConfigurations:init()
     self.vehicleConfigurations = {}
     self.modVehicleConfigurations = {}
@@ -217,8 +216,11 @@ function VehicleConfigurations:registerConsoleCommands()
         "Prints the given attribute value for current vehicle and implements", 
         "consoleCommandPrintSingleAttributeValuesForVehicleAndImplements", self)
     g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsQueryForAllAttributes", 
-        "Prints the given attribute value for current vehicle and implements", 
+        "Prints all attribute values found for vehicle and it's implements", 
         "consoleCommandPrintAllAttributeValuesForVehicleAndImplements", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsListAttributes", 
+        "Prints all valid attribute names", 
+        "consoleCommandPrintAttributeNames", self)
 end
 
 function VehicleConfigurations:consoleCommandReload()
@@ -244,10 +246,10 @@ function VehicleConfigurations:consoleCommandPrintSingleAttributeValuesForVehicl
 		return
 	end
     if not self:isValidAttribute(attribute) then 
-        CpUtil.info("Attribute not found!")
+        CpUtil.info("Attribute(%s) not found!", attribute)
         return 
     end
-    CpUtil.infoVehicle(vehicle, "Found the following: ....")
+    CpUtil.info("Found the following for %s: ....", attribute)
     local values = self:queryAttributeValues(vehicle, attribute)
     for _, data in pairs(values) do
         if data.found then 
@@ -267,7 +269,7 @@ function VehicleConfigurations:consoleCommandPrintAllAttributeValuesForVehicleAn
     for attribute, _ in pairs(self.attributes) do 
         local values = self:queryAttributeValues(vehicle, attribute)
         if #values > 0 then 
-            CpUtil.infoVehicle(vehicle, "Found the following for %s: ....", attribute)
+            CpUtil.info("Found the following for %s: ....", attribute)
             for _, data in pairs(values) do
                 if data.found then 
                     CpUtil.infoVehicle(data.implement, "%s", tostring(data.value))
@@ -277,5 +279,10 @@ function VehicleConfigurations:consoleCommandPrintAllAttributeValuesForVehicleAn
     end
 end
 
+function VehicleConfigurations:consoleCommandPrintAttributeNames()
+    for attribute, xmlValueType in pairs(self.attributes) do 
+        CpUtil.info("Attribute: %s => %s", attribute, XMLValueType.TYPES[xmlValueType].name)
+    end
+end
 
 g_vehicleConfigurations = VehicleConfigurations()
