@@ -21,11 +21,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class UniversalAutoloadController : BaleLoaderController
 UniversalAutoloadController = CpObject(BaleLoaderController)
 
-function UniversalAutoloadController:init(vehicle, autoLoader)
-    self.autoLoader = autoLoader
-    self.autoLoaderSpec = autoLoader.spec_universalAutoload
-    ImplementController.init(self, vehicle, self.autoLoader)
+function UniversalAutoloadController:init(vehicle, implement)
+    ImplementController.init(self, vehicle, implement)
+    
+    self.autoLoader = implement
+    self.autoLoaderSpec = implement.spec_universalAutoload
+    self.foldableSpec = implement.spec_foldable
     self:debug('Universal autoloader controller initialized')
+
+    if self.foldableSpec and g_vehicleConfigurations:get(implement, "disableUnfoldBaleLoader") then 
+        if self.foldableSpec.controlledActionFold ~= nil then 
+            self:debug("Removed ai foldable control")
+            self.foldableSpec.controlledActionFold:remove()
+            self.foldActionWasRemoved = true
+        end
+    end
+
+end
+
+function UniversalAutoloadController:delete()
+    if self.foldActionWasRemoved then 
+        --- Restores the controlledAction 
+        Foldable.onRootVehicleChanged(self.implement, self.vehicle)
+    end
 end
 
 function UniversalAutoloadController:isGrabbingBale()
@@ -75,4 +93,8 @@ end
 
 function UniversalAutoloadController:isChangingBaleSize()
     return false
+end
+
+function UniversalAutoloadController:hasToBeUnfolded()
+    
 end
