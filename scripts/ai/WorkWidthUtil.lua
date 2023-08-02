@@ -34,12 +34,25 @@ end
 --- middle of the work area.
 ---
 ---@param object table
----@param referenceNode number the node for calculating the work width, if not supplied, use the object's root node
----@param ignoreObject table ignore this object when calculating the width (as it is being detached, for instance)
+---@param referenceNode number|nil the node for calculating the work width, if not supplied, use the object's root node
+---@param ignoreObject table|nil ignore this object when calculating the width (as it is being detached, for instance)
 ---@return number, number, number, number
 function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ignoreObject)
     -- when first called for the vehicle, referenceNode is empty, so use the vehicle root node
     referenceNode = referenceNode or object.rootNode
+    if object ~= object.rootVehicle then 
+        --- For the referenceNode of an attached implement we use the attacher joint.
+        if not WorkWidthUtil.refNode then 
+            WorkWidthUtil.refNode = CpUtil.createNode("workwidth helper node", 0, 0, 0 )
+        end
+        local x, y, z = getWorldTranslation(object:getActiveInputAttacherJoint().node)
+        setTranslation(WorkWidthUtil.refNode, x, y, z)
+        local dirX, _, dirZ = localDirectionToWorld(object.rootNode, 0, 0, 1)
+        local yRot = MathUtil.getYRotationFromDirection(dirX, dirZ)
+        setRotation(WorkWidthUtil.refNode, 0, yRot, 0)
+        referenceNode = WorkWidthUtil.refNode
+    end
+
     WorkWidthUtil.debug(object, 'getting working width...')
     -- check if we have a manually configured working width
     local configuredWidth = g_vehicleConfigurations:get(object, 'workingWidth')
@@ -95,6 +108,11 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     end
 
     if not left then
+        if object.spec_aiImplement then
+            --- Checks if the implement markers are inverted?
+            object.spec_aiImplement.aiMarkersInverted = false
+            AIVehicleUtil.updateInvertLeftRightMarkers(object.rootVehicle, object)
+        end
         -- no manual config, check AI markers
         _, left, right = WorkWidthUtil.getAIMarkerWidth(object, referenceNode)
     end
@@ -110,22 +128,23 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
             WorkWidthUtil.debug(object, 'has NO work areas')
         end
     end
-
+    local offset = 0
     local implements = object.getAttachedImplements and object:getAttachedImplements()
     if implements then
         -- get width of all implements
         for _, implement in ipairs(implements) do
             if implement.object ~= ignoreObject then
-                local _, _, thisLeft, thisRight = WorkWidthUtil.getAutomaticWorkWidthAndOffset(implement.object)
+                local _, otherOffset, thisLeft, thisRight = WorkWidthUtil.getAutomaticWorkWidthAndOffset(implement.object)
                 left = math.max(thisLeft or 0, left or -math.huge)
                 right = math.min(thisRight or 0, right or math.huge)
+                offset = offset + otherOffset
             end
         end
     end
 
     -- left > 0, right < 0. Offset > 0 and offset < 0 when the center line of all work areas are to the left and right,
     -- respectively, of the vehicle.
-    local width, offset
+    local width
     if configuredWidth then
         width = configuredWidth
         -- for now, assuming offset 0
@@ -142,7 +161,7 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
     end
 
     if configuredOffset then
-        offset = configuredOffset
+        offset = offset + configuredOffset
         if width == 0 then
             -- some vine tools have no working width but we do have a configured offset. Make sure that
             -- the vehicle will inherit this offset by returning a left, right pair at offset
@@ -154,14 +173,9 @@ function WorkWidthUtil.getAutomaticWorkWidthAndOffset(object, referenceNode, ign
         WorkWidthUtil.debug(object, 'using configured tool offset of %.1f, resulting left/right is %.1f/%.1f.',
                 configuredOffset, left, right)
     elseif width and left and right then
-        offset = left - width / 2
-        if left < 0 then 
-            --- If the offset is on the right side of the vehicle, than the right marker needs to be used for the calculation.
-            offset = right - width / 2
-        end
+        offset = offset + left - width / 2
         WorkWidthUtil.debug(object, 'calculated tool offset is %.1f.', offset)
     else
-        offset = 0
         WorkWidthUtil.debug(object, 'could not determine offset, using 0')
     end
 
