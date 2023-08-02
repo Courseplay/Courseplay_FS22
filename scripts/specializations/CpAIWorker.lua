@@ -538,20 +538,23 @@ end
 
 function CpAIWorker.registerConsoleCommands()
     g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleOnWorkStartTest", 
-        "Raise work start command", "consoleCommandRaiseWorkStart", CpAIWorker)
-    --- TODO: Add function to simulate lowering and raising with controllers.
+        "Raise the field work start event.", "consoleCommandRaiseWorkStart", CpAIWorker)
+    --- TODO: Adding functions to execute the lowering, raising and fieldwork end events.
 end
 
---- Helper command to test the pipe measurement.
+--- Raises the fieldwork start event with implement controllers installed,
+--- as these might turn on implements, that otherwise aren't turned on or
+--- disables the unfolding of a given implement.
 function CpAIBaleFinder:consoleCommandRaiseWorkStart()
     local vehicle = g_currentMission.controlledVehicle
     if not vehicle then 
-        CpUtil.info("Could not measure pipe properties without entering a vehicle!")
+        CpUtil.info("Not entered a valid vehicle!")
         return
     end
     local controllers = {}
     for i, childVehicle in pairs(vehicle:getChildVehicles()) do 
         if childVehicle.spec_foldable then 
+            --- TODO: Adding the other implement controllers that are needed here.
             table.insert(controllers, FoldableController(vehicle, childVehicle))
         end
     end

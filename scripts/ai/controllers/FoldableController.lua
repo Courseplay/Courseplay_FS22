@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/courseplay)
-Copyright (C) 2019-2022 Peter Vaiko
+Copyright (C) 2019-2023 Courseplay Dev Team 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
