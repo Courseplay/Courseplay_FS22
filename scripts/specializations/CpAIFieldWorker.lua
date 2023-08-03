@@ -277,6 +277,8 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             AIUtil.hasChildVehicleWithSpecialization(self, Plow) or
             --- A few mowers can't be used by the giants fieldworker 
             AIUtil.hasChildVehicleWithSpecialization(self, Mower) or
+            --- Pushed hand tools can't be used by the giants fieldworker 
+            AIUtil.hasChildVehicleWithSpecialization(self, PushHandTool) or
             -- Harvester with cutter on trailer attached.
             AIUtil.hasCutterOnTrailerAttached(self) or
             --- precision farming
