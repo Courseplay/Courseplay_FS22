@@ -7,9 +7,17 @@ function SowingMachineController:init(vehicle, implement)
     self.sowingMachineSpec = self.implement.spec_sowingMachine
 end
 
-function SowingMachineController:onLowering()
-	if not self.implement:getIsTurnedOn() and self.settings.optionalSowingMachineEnabled:getValue() then 
-    	self.implement:setIsTurnedOn(true)
+function SowingMachineController:update()
+	if self.settings.optionalSowingMachineEnabled:getValue() then 
+		--- Makes sure the sowing machine get's turned on
+		if not self.implement:getIsTurnedOn() then
+			self.implement:setIsTurnedOn(true)
+		end
+	else 
+		--- Makes sure the sowing machine is turned off if not needed.
+		if self.implement:getIsTurnedOn() then
+			self.implement:setIsTurnedOn(false)
+		end
 	end
 end
 
