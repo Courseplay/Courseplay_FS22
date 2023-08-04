@@ -20,14 +20,28 @@ local function onStartWorkAreaProcessing(sowingMachine, superFunc, ...)
 	local specSpray = sowingMachine.spec_sprayer
 	local sprayerParams = specSpray.workAreaParameters
 	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
-	if not fertilizingEnabled then 
+	if not fertilizingEnabled then
 		sprayerParams.sprayFillLevel = 0
-	elseif sprayerParams.sprayFillLevel <=0 and not sowingMachine:getIsSprayerExternallyFilled() then
-		CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS,sowingMachine,"Stopped Cp, as the fertilizer for sowing machine is empty.")
-		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 	end
-	return superFunc(sowingMachine, ...)
 end
-FertilizingSowingMachine.processSowingMachineArea = Utils.overwrittenFunction(FertilizingSowingMachine.processSowingMachineArea, onStartWorkAreaProcessing)
+Sprayer.onStartWorkAreaProcessing = Utils.overwrittenFunction(Sprayer.onStartWorkAreaProcessing, onStartWorkAreaProcessing)
 
+-- local function processSowingMachineArea(sowingMachine, superFunc, ...)
+-- 	local rootVehicle = sowingMachine.rootVehicle
+-- 	if not rootVehicle.getIsCpActive or not rootVehicle:getIsCpActive() then
+-- 		return superFunc(sowingMachine, ...)
+-- 	end
+-- 	local specSpray = sowingMachine.spec_sprayer
+-- 	local sprayerParams = specSpray.workAreaParameters
+-- 	local fertilizingEnabled = rootVehicle:getCpSettings().sowingMachineFertilizerEnabled:getValue()
+-- 	if not fertilizingEnabled then 
+-- 		sprayerParams.sprayFillLevel = 0
+-- 	elseif sprayerParams.sprayFillLevel <=0 and not sowingMachine:getIsSprayerExternallyFilled() then
+-- 		CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS,sowingMachine,"Stopped Cp, as the fertilizer for sowing machine is empty.")
+-- 		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
+-- 	end
+-- 	return superFunc(sowingMachine, ...)
+-- end
+-- FertilizingSowingMachine.processSowingMachineArea = Utils.overwrittenFunction(
+-- 	FertilizingSowingMachine.processSowingMachineArea, processSowingMachineArea)
 
