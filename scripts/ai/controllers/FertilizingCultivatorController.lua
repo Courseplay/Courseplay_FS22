@@ -19,7 +19,7 @@ local function processCultivatorArea(cultivator,superFunc,...)
 	if not fertilizingEnabled then 
 		sprayerParams.sprayFillLevel = 0
 	elseif sprayerParams.sprayFillLevel <=0 and not cultivator:getIsSprayerExternallyFilled() then
-		CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS,cultivator,"Stopped Cp, as fertilizer for cultivator is empty.")
+		CpUtil.debugImplement(CpDebug.DBG_IMPLEMENTS, cultivator, "Stopped Cp, as fertilizer for cultivator is empty.")
 		rootVehicle:stopCurrentAIJob(AIMessageErrorOutOfFill.new())
 	end
 	return superFunc(cultivator, ...)
