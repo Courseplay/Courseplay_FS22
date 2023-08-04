@@ -21,10 +21,10 @@
     <text name="CP_error_unloader_to_far_away_from_field" text="Descarregador muito longe do campo."/>
     <text name="CP_error_start_position_to_far_away_from_field" text="Posição de ínicio muito longe do campo."/>
     <text name="CP_error_giants_unloader_not_available" text="Descarregador da Giants não é acessível."/>
-    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="Field unload position is too far away from the field."/>
-    <text name="CP_error_vehicle_too_far_away_from_field" text="Vehicle is too far away from the field to start."/>
-    <text name="CP_error_no_bunkerSilo_found" text="Não à silo á vista."/>
-    <text name="CP_error_no_heap_found" text="No silo found."/>
+    <text name="CP_error_fieldUnloadPosition_too_far_away_from_field" text="A posição para descarregar no campo está muito longe do campo."/>
+    <text name="CP_error_vehicle_too_far_away_from_field" text="O veículo está muito longe para começar o trabalho no campo."/>
+    <text name="CP_error_no_bunkerSilo_found" text="Não há silo à vista."/>
+    <text name="CP_error_no_heap_found" text="Não encontrou nenhum silo."/>
     <!---->
     <!--AI job parameters-->
     <!---->
@@ -40,7 +40,7 @@
     <text name="CP_jobParameters_startAt_bunkerSilo" text="Modo de Silo de Silagem"/>
     <text name="CP_jobParameters_startAt_siloLoader" text="Silo load mode"/>
     <text name="CP_jobParameters_startAt_unload" text="Descarrega da ceifeira"/>
-    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Unload Silo loader"/>
+    <text name="CP_jobParameters_startAt_unload_siloLoader" text="Descarrega o carregar do Silo"/>
     <text name="CP_jobParameters_startAt_bales" text="Recolher/Enrolar fardos"/>
     <text name="CP_jobParameters_subTitle_laneOffset" text="Ajuste da trajectória:"/>
     <text name="CP_jobParameters_laneOffset_title" text="Ajuste da trajectória:"/>
@@ -58,21 +58,21 @@
     <text name="CP_baleFinderJobParameters_baleWrapType_all_bales" text="Todos os fardos"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_wrapped_bales" text="só enrolado"/>
     <text name="CP_baleFinderJobParameters_baleWrapType_only_not_wrapped_bales" text="não enrolado"/>
-    <text name="CP_baleFinder_balesLeftover" text="Bales left:"/>
+    <text name="CP_baleFinder_balesLeftover" text="Fardos que faltam:"/>
     <!---->
     <!--AI combine unloader job parameters-->
     <!---->
-    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Unload: "/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_unloadTarget" text="Descarrega: "/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Descarrega:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Ceifeira"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Carregador"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Descarregador da Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa Descarregador da giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação de descarregar:"/>
-    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Giants unloader:"/>
-    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Use unload on field:"/>
-    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Field unloading position:"/>
-    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Trailer tip side:"/>
+    <text name="CP_combineUnloaderJobParameters_subTitle_fieldUnload" text="Descarregador da Giants:"/>
+    <text name="CP_combineUnloaderJobParameters_useFieldUnload_title" text="Usa descarregar no campo:"/>
+    <text name="CP_combineUnloaderJobParameters_fieldUnloadPosition_title" text="Posição de descarregar no campo:"/>
+    <text name="CP_combineUnloaderJobParameters_unloadingTipSide_title" text="Lado para descarregar o atrelado:"/>
     <!---->
     <!--AI bunker silo worker job parameters-->
     <!---->
@@ -84,15 +84,15 @@
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_title" text="Esperar pela descarga:"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_silo" text="no silo"/>
     <text name="CP_bunkerSiloJobParameters_waitAtParkPosition_parkPosition" text="na posição de parque"/>
-    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Stop at 99% compaction"/>
-    <text name="CP_bunkerSilo_compactionPercentage" text="Silo compaction:"/>
+    <text name="CP_bunkerSiloJobParameters_stopWithCompactedSilo_title" text="Pára com 99% compactado"/>
+    <text name="CP_bunkerSiloJobParameters_subTitle_stopWithCompactedSilo" text="Pára com 99% compactadon"/>
+    <text name="CP_bunkerSilo_compactionPercentage" text="Compactação do Silo:"/>
     <!---->
     <!--AI silo lader worker job parameters-->
     <!---->
-    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Loading position"/>
-    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Loading position"/>
-    <text name="CP_siloLoader_fillLevelProgress" text="Progress: "/>
+    <text name="CP_siloLoaderJobParameters_subTitle_loadPosition" text="Posição para carregar"/>
+    <text name="CP_siloLoaderJobParameters_loadPosition_title" text="Posição para carregarn"/>
+    <text name="CP_siloLoader_fillLevelProgress" text="Progresso: "/>
     <!---->
     <!--AI jobs-->
     <!---->
@@ -100,7 +100,7 @@
     <text name="CP_job_baleCollect" text="CP:  Recolher/enrolar fardos"/>
     <text name="CP_job_combineUnload" text="CP: Descarrega Ceifeira"/>
     <text name="CP_job_bunkerSilo" text="CP: Trabalho no Silo"/>
-    <text name="CP_job_siloLoader" text="CP: Silo loading"/>
+    <text name="CP_job_siloLoader" text="CP: Carregar Silo"/>
     <text name="CP_ai_page_generate_course" text="CP: Gerar rota para serviço no campo."/>
     <text name="CP_ai_page_open_course_generator" text="CP: Abrir/fechar gerador de rotas."/>
     <!---->
@@ -110,16 +110,16 @@
     <text name="CP_ai_messageError" text="Trabalhador %s parou o serviço de repente - saiu da rota!"/>
     <text name="CP_ai_messageErrorWrongBaleWrapType" text="Trabalhador %s parou o serviço de repente - não encontra fardos do tipo pretendido!"/>
     <text name="CP_ai_messageErrorNoPathFound" text="Trabalhador %s parou o serviço de repente - não encontra o caminho!"/>
-    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="AI worker %s has stopped work unexpectedly - unloading on the field not possible!"/>
-    <text name="CP_ai_messageErrorCutterNotSupported" text="AI worker %s has stopped work unexpectedly - attaching of the header is impossible!"/>
-    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="AI worker %s has stopped work unexpectedly - automatic cutter attach disabled!"/>
+    <text name="CP_ai_messageErrorGroundUnloadNotSupported" text="Trabalhador %s parou o serviço de repente - não é possível descarregar no campo!"/>
+    <text name="CP_ai_messageErrorCutterNotSupported" text="Trabalhador %s parou o serviço de repente - é impossível conectar a cabeça da ceifeira!"/>
+    <text name="CP_ai_messageErrorAutomaticCutterAttachNotActive" text="Trabalhador %s parou o serviço de repente - está desactivo, conectar automaticamente a cabeça da ceifeira!"/>
     <!---->
     <!--Vehicle settings-->
     <!---->
     <text name="CP_vehicle_setting_title" text="Configuração do veículo para (%s)"/>
     <text name="CP_vehicle_setting_subTitle_basic" text="Configurações básicas"/>
     <text name="CP_vehicle_setting_subTitle_implement" text="Configurações das alfaias"/>
-    <text name="CP_vehicle_setting_subTitle_combine" text="configurações da Ceifeira"/>
+    <text name="CP_vehicle_setting_subTitle_combine" text="Configurações da Ceifeira"/>
     <text name="CP_vehicle_setting_subTitle_seeder" text="Configurações do Semeador"/>
     <text name="CP_vehicle_setting_subTitle_multitool" text="Configurações de diversas alfaias"/>
     <text name="CP_vehicle_setting_subTitle_speed" text="Velocidades"/>
@@ -141,10 +141,10 @@
     <text name="CP_vehicle_setting_allowPathfinderTurns_tooltip" text="Se necessário, autoriza o encontrar caminho gerar rotas com desvios, como por exemplo para evitar obstáculos e culturas"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_title" text="Dobra a alfaia quando acaba o serviço"/>
     <text name="CP_vehicle_setting_foldImplementAtEnd_tooltip" text="Activa/desactiva dobrar automaticamente a alfaia no fim do serviço."/>
-    <text name="CP_vehicle_setting_returnToStart_title" text="Return to starting point"/>
-    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Return to starting point after finished fieldwork."/>
+    <text name="CP_vehicle_setting_returnToStart_title" text="Regressa ao ponto de início"/>
+    <text name="CP_vehicle_setting_returnToStart_tooltip" text="Regressa ao ponto de início quando termina o trabalho no campo."/>
     <text name="CP_vehicle_setting_raiseImplementLate_title" text="Levanta alfaia"/>
-    <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Levanta a alfaia cedo ou tarde no inicio da volta."/>
+    <text name="CP_vehicle_setting_raiseImplementLate_tooltip" text="Levanta a alfaia cedo ou tarde no início da volta."/>
     <text name="CP_vehicle_setting_raiseImplementLate_early" text="cedo"/>
     <text name="CP_vehicle_setting_raiseImplementLate_late" text="tarde"/>
     <text name="CP_vehicle_setting_lowerImplementEarly_title" text="Baixa alfaia"/>
@@ -157,8 +157,8 @@
     <text name="CP_vehicle_setting_avoidFruit_tooltip" text="O trabalhar vai tentar evitar passar por cima de culturas"/>
     <text name="CP_vehicle_setting_toolOffsetX_title" text="Ajuste da alfaia horizontal"/>
     <text name="CP_vehicle_setting_toolOffsetX_tooltip" text="Ajuste da alfaia horizontal"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Bale pickup offset"/>
-    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Offset for the bale collector"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_title" text="Ajuste do juntador de fardos"/>
+    <text name="CP_vehicle_setting_baleCollectorOffset_tooltip" text="Ajuste do juntador de fardos"/>
     <text name="CP_vehicle_setting_toolOffsetZ_title" text="Ajuste da alfaia vertical"/>
     <text name="CP_vehicle_setting_toolOffsetZ_tooltip" text="Ajuste da alfaia vertical"/>
     <text name="CP_vehicle_setting_fullThreshold_title" text="Despeja quando termina:"/>
@@ -202,8 +202,8 @@
     <!---->
     <!--Vehicle settings combine-->
     <!---->
-    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Automatic cutter attach"/>
-    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Allows automatic attachment of a cutter, which needs to be attach as a trailer or on a seperate header trailer."/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_title" text="Conector Automatico da cabeça cortadora"/>
+    <text name="CP_vehicle_setting_automaticCutterAttach_tooltip" text="Permite conectar automaticamente a cabeça duma ceifeira, que precisa estar conectado ao atrelado ou colocado num atrelado atrás."/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_title" text="Desdobra sempre o tubo"/>
     <text name="CP_vehicle_setting_pipeAlwaysUnfold_tooltip" text="Desdobra sempre o tubo de descarga quando a ceifeira está cheia e á espera para descarregar."/>
     <text name="CP_vehicle_setting_stopForUnload_title" text="Pára enquanto descarrega"/>
@@ -299,12 +299,12 @@
     <text name="CP_global_setting_fuelThreshold_tooltip" text="O motorista irá parar, se a percentagem de combustível for menor."/>
     <text name="CP_global_setting_brokenThreshold_title" text="Limite de danos"/>
     <text name="CP_global_setting_brokenThreshold_tooltip" text="O trabalhador irá parar, se o veículo ou a alfaia tiverem mais dano. Os 100% indica que não aciona este opção."/>
-    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Stops harvester, while it's raining"/>
-    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="If the setting is active, then all harvester wait for the raining to stop."/>
-    <text name="CP_global_setting_fruitDestruction_title" text="AI Helper fruit destruction"/>
-    <text name="CP_global_setting_fruitDestruction_tooltip" text="Enable/disable the fruit destruction for helpers."/>
-    <text name="CP_global_setting_fruitDestruction_only_cp" text="Only activated for Coursesplay helpers"/>
-    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activated for every helpers"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_title" text="Pára a colheita enquanto chove"/>
+    <text name="CP_global_setting_stopThreshingDuringRain_tooltip" text="Se estiver activo, todas as ceifeiras esperam enquanto a chuva não parar."/>
+    <text name="CP_global_setting_fruitDestruction_title" text="Destruição de colheita pelo trabalhador"/>
+    <text name="CP_global_setting_fruitDestruction_tooltip" text="Activa ou desactiva a destruição de colheitas por parte do trabalhador."/>
+    <text name="CP_global_setting_fruitDestruction_only_cp" text="Só activo para trabalhadores do CP"/>
+    <text name="CP_global_setting_fruitDestruction_all_helpers" text="Activado para todos os trabalhadores"/>
     <!---->
     <!--Global settings user settings-->
     <!---->
@@ -415,9 +415,9 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_infoTexts_errorStopped" text="Está parado, saiu da rota"/>
     <text name="CP_infoTexts_wrongBaleWrapType" text="Tipo de fardo errado"/>
     <text name="CP_infoTexts_errorNoPathFound" text="Não encontra a rota"/>
-    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Tipping to ground not possible"/>
-    <text name="CP_infoTexts_errorCutterNotSupported" text="Cutter not supported"/>
-    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Cutter attaching deactivated"/>
+    <text name="CP_infoTexts_errorGroundUnloadNotSupported" text="Não é possível descarregar para o chão"/>
+    <text name="CP_infoTexts_errorCutterNotSupported" text="Cabeça de corte não é suportada"/>
+    <text name="CP_infoTexts_errorAutomaticCutterAttachNotActive" text="Conectar a cabeça de corte desactivo"/>
     <!---->
     <!--Custom field manager-->
     <!---->
@@ -425,20 +425,20 @@ A rota é guardada automaticamente ao fechar o editor e sobrepõe-se a qualquer 
     <text name="CP_customFieldManager_confirm_delete" text="Queres apagar o campo personalizado %s?"/>
     <text name="CP_customFieldManager_delete" text="Apagar o campo personalizado"/>
     <text name="CP_customFieldManager_rename" text="Renomeia o campo personalizado"/>
-    <text name="CP_customFieldManager_rename_error" text="Custom field name %s already in use."/>
+    <text name="CP_customFieldManager_rename_error" text="O nome personalizado do campo %s já está em uso."/>
     <text name="CP_customFieldManager_edit" text="Editar campo personalizado"/>
     <text name="CP_customFieldManager_draw" text="Desenhar campo personalizado"/>
     <text name="CP_customFieldManager_draw_header" text="Desenha o limite para o campo personalizado com o botão direito do rato."/>
     <text name="CP_customFieldManager_save" text="Guarda campo personalizado"/>
     <text name="CP_controllerGui_startRecording" text="Início gravação de campo personalizado."/>
     <text name="CP_controllerGui_stopRecording" text="Pára a gravação de campo personalizado."/>
-    <text name="CP_controllerGui_pauseRecording" text="Pause custom field recording."/>
-    <text name="CP_controllerGui_unpauseRecording" text="Unpause custom field recording."/>
+    <text name="CP_controllerGui_pauseRecording" text="Pausa a gravação de campo personalizado."/>
+    <text name="CP_controllerGui_unpauseRecording" text="Continua a gravação de campo personalizado."/>
     <!---->
     <!--Help menu-->
     <!---->
-    <text name="CP_help_title" text="Courseplay"/>
-    <text name="CP_help_subTitle" text="A Modification for Farming Simulator 22 "/>
+    <text name="CP_help_title" text="Gestor de Rotas"/>
+    <text name="CP_help_subTitle" text="Uma Modificação para o Farming Simulator 22 "/>
     <text name="CP_help_page_blank" text=""/>
     <text name="CP_help_page_General_title" text="Informação Geral"/>
     <text name="CP_help_page_GeneralBase_text" text="
