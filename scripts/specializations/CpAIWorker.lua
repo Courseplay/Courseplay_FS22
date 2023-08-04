@@ -367,6 +367,7 @@ function CpAIWorker:stopCpAttachHeader()
     end
 end
 
+--- Sets a stop flag to make the driver stop after the worker finished.
 function CpAIWorker:cpBrakeToStop()
     local spec = self.spec_cpAIWorker
     spec.brakeToStop = true
@@ -412,6 +413,7 @@ function CpAIWorker:onUpdate(dt)
     if spec.brakeToStop then 
        local drivableSpec = self.spec_drivable
         if spec.brakeToStop then
+            --- Based on the Drivable:brakeToStop() function, but also enables vehicles with a turned cabin.
             local lastSpeed = self:getLastSpeed()
             drivableSpec.lastInputValues.targetSpeed = 0.51
             drivableSpec.lastInputValues.targetDirection = 1
