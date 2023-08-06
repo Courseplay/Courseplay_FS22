@@ -356,7 +356,14 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
         local strategy = self.combineToUnload:getCpDriveStrategy()
         if strategy then
-            self.combineToUnload:getCpDriveStrategy():registerUnloader(self)
+            if strategy.registerUnloader then
+                strategy:registerUnloader(self)
+            else
+                -- combine may have been stopped and restarted, so CP is active again but not yet the combine strategy,
+                -- for instance it is now driving to work start, so it can't accept a registration
+                self:debug('Lost my combine')
+                self:startWaitingForSomethingToDo()
+            end
         end
     end
 
