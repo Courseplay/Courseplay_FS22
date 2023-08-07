@@ -682,7 +682,10 @@ end
 function AIDriveStrategyUnloadCombine:releaseCombine()
     self.combineJustUnloaded = nil
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
-        self.combineToUnload:getCpDriveStrategy():deregisterUnloader(self)
+        local strategy = self.combineToUnload:getCpDriveStrategy()
+        if strategy and strategy.deregisterUnloader then
+            strategy:deregisterUnloader(self)
+        end
         self.combineJustUnloaded = self.combineToUnload
     end
     self.combineToUnload = nil
