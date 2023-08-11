@@ -272,6 +272,8 @@ function CpAIFieldWorker:getCanStartCpFieldWork()
             AIUtil.hasImplementWithSpecialization(self, Cutter) or 
             AIUtil.hasChildVehicleWithSpecialization(self, VineCutter) or 
             AIUtil.hasChildVehicleWithSpecialization(self, VinePrepruner) or 
+            --- This also allows the use of stump cutters, that work like a mulcher.
+            AIUtil.hasChildVehicleWithSpecialization(self, Plow) or
             -- Harvester with cutter on trailer attached.
             AIUtil.hasCutterOnTrailerAttached(self) or
             --- precision farming
