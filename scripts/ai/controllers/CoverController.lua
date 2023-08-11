@@ -30,6 +30,7 @@ function CoverController:getFillUnits()
 		end
 		return fillUnits
 	end
+	return {}
 end
 
 function CoverController:onStart()
