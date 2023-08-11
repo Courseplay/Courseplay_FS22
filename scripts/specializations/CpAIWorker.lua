@@ -67,6 +67,7 @@ function CpAIWorker.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "startCpWithStrategy", CpAIWorker.startCpWithStrategy)
     SpecializationUtil.registerFunction(vehicleType, "stopCpDriver", CpAIWorker.stopCpDriver)
     SpecializationUtil.registerFunction(vehicleType, "cpHold", CpAIWorker.cpHold)
+    SpecializationUtil.registerFunction(vehicleType, "cpBrakeToStop", CpAIWorker.cpBrakeToStop)
     SpecializationUtil.registerFunction(vehicleType, "getCpDriveStrategy", CpAIWorker.getCpDriveStrategy)
 end
 
@@ -366,6 +367,12 @@ function CpAIWorker:stopCpAttachHeader()
     end
 end
 
+--- Sets a stop flag to make the driver stop after the worker finished.
+function CpAIWorker:cpBrakeToStop()
+    local spec = self.spec_cpAIWorker
+    spec.brakeToStop = true
+end
+
 function CpAIWorker:onUpdate(dt)
     local spec = self.spec_cpAIWorker
     --- TODO: Check if a tick delay should be used for performance similar to AIFieldWorker or not.
@@ -403,6 +410,28 @@ function CpAIWorker:onUpdate(dt)
         AIVehicleUtil.driveToPoint(self, dt, acceleration, 
             isAllowedToDrive, moveForwards, pX, pZ, maxSpeed)
     end
+    if spec.brakeToStop then 
+       local drivableSpec = self.spec_drivable
+        if spec.brakeToStop then
+            --- Based on the Drivable:brakeToStop() function, but also enables vehicles with a turned cabin.
+            local lastSpeed = self:getLastSpeed()
+            drivableSpec.lastInputValues.targetSpeed = 0.51
+            drivableSpec.lastInputValues.targetDirection = 1
+            if AIUtil.isReverseDriving(self) then
+                --- Works the same but needs to be inverted for the calculation in the Drivable spec.
+                drivableSpec.lastInputValues.targetDirection = self.movingDirection
+                drivableSpec.lastInputValues.targetSpeed = lastSpeed + 0.51
+
+            end
+            if lastSpeed < 1 then
+                --- The brake request gets reset when the vehicle stopped.
+                spec.brakeToStop = false
+                drivableSpec.lastInputValues.targetSpeed = nil
+                drivableSpec.lastInputValues.targetDirection = nil
+            end
+        end
+    end
+
 end
 
 --- Freeze (set speed to 0) of the CP driver, but keep everything up and running, showing all debug
@@ -448,11 +477,7 @@ function CpAIWorker:stopCpDriver()
     end
 	self:stopVehicle()
 	self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF, true)
-    if not AIUtil.isReverseDriving(self) then
-        --- This pretty nifty function only works for none reversed vehicles sadly.
-        --- TODO: Maybe implement the same feature for reverse driving vehicle if needed. 
-        self:brakeToStop()
-    end
+    self:cpBrakeToStop()
     local actionController = self.rootVehicle.actionController
 
 	if actionController ~= nil then

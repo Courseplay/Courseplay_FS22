@@ -16,6 +16,13 @@ function CpAITaskFieldWork:start()
 	
 end
 
+function CpAITaskFieldWork:stop(wasJobStopped)
+	if self.isServer then 
+		self.vehicle:stopCpFieldWorker()
+	end
+	AITask.stop(self, wasJobStopped)
+end
+
 function CpAITaskFieldWork:setStartPosition(startPosition)
 	self.startPosition = startPosition
 end
