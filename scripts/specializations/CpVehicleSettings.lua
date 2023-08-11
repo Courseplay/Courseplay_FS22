@@ -327,6 +327,12 @@ function CpVehicleSettings:isOptionalSowingMachineSettingVisible()
     return found and not vehicles[1]:getAIRequiresTurnOn()
 end
 
+function CpVehicleSettings:isOptionalSowingMachineSettingDisabled()
+    local vehicles, found = AIUtil.getAllChildVehiclesWithSpecialization(self, SowingMachine)
+    return not found or vehicles[1]:getAIRequiresTurnOn()
+end
+
+
 function CpVehicleSettings:isSowingMachineFertilizerSettingVisible()
     return AIUtil.hasChildVehicleWithSpecialization(self, FertilizingSowingMachine) or 
              AIUtil.hasChildVehicleWithSpecialization(self, FertilizingCultivator)
