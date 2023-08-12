@@ -19,3 +19,11 @@ FSDensityMapUtil.updateMowerArea = function(fruitType, startWorldX, startWorldZ,
     return oldFunc(fruitType, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, false)
 end
 
+--- For some reason the animations are not working for an ai driven hand mower..
+--- So we disable them to avoid errors.
+local function postAnimationUpdate(vehicle, superFunc, ...)
+    if not vehicle.getIsCpActive and vehicle:getIsCpActive() then 
+        superFunc(vehicle, ...)
+    end
+end
+PushHandTool.postAnimationUpdate = Utils.overwrittenFunction(PushHandTool.postAnimationUpdate, postAnimationUpdate)
