@@ -30,9 +30,10 @@ AIDriveStrategyFieldWorkCourse.myStates = {
     WAITING_FOR_LOWER_DELAYED = {},
     WAITING_FOR_STOP = {},
     WAITING_FOR_WEATHER = {},
-    TURNING = {},
+    TURNING = {useAITurnDriveData = true},
     TEMPORARY = {},
     RETURNING_TO_START = {},
+    DRIVING_TO_WORK_START_WAYPOINT = {useAITurnDriveData = true},
 }
 
 AIDriveStrategyFieldWorkCourse.normalFillLevelFullPercentage = 99.5
@@ -108,7 +109,7 @@ end
 function AIDriveStrategyFieldWorkCourse:update(dt)
     AIDriveStrategyFieldWorkCourse:superClass().update(self, dt)
     if CpDebug:isChannelActive(CpDebug.DBG_TURN, self.vehicle) then
-        if self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
+        if self:useAITurnDriveData() then
             if self.turnContext then
                 self.turnContext:drawDebug()
             end
@@ -175,7 +176,7 @@ function AIDriveStrategyFieldWorkCourse:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
     elseif self.state == self.states.WORKING then
         self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue())
-    elseif self.state == self.states.TURNING or self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
+    elseif self:useAITurnDriveData() then
         -- we use a turn for driving to the waypoint to start working
         local turnGx, turnGz, turnMoveForwards, turnMaxSpeed = self.aiTurn:getDriveData(dt)
         self:setMaxSpeed(turnMaxSpeed)
@@ -388,7 +389,7 @@ end
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyFieldWorkCourse:onWaypointChange(ix, course)
-    if self.state ~= self.states.TURNING and self.state ~= self.states.DRIVING_TO_WORK_START_WAYPOINT
+    if not self:useAITurnDriveData()
             and self.state ~= self.states.ON_CONNECTING_TRACK
             and self.course:isTurnStartAtIx(ix) then
         if self.state == self.states.INITIAL then
@@ -536,7 +537,7 @@ end
 --- where it needs to be.
 ---
 --- (It is called alignment because it makes sure the vehicle is aligned with the start waypoint so
---- that it points to the right direction and the implements can start work exactly at the waypoint)
+--- that it points to the right direction and the implements can start working exactly at the waypoint)
 ---
 --- The caller can pass in an already created alignment course with an index. In that case, we'll use
 --- that course, starting at alignmentStartIx for the turn, otherwise a new course is created from
@@ -632,6 +633,11 @@ function AIDriveStrategyFieldWorkCourse:setAllStaticParameters()
     self.fieldWorkerProximityController = FieldWorkerProximityController(self.vehicle, self.workWidth)
 end
 
+-- useAITurnDriveData: in this state we are driving an AITurn course and thus rely on the AITurn or derived
+-- class to get the drive data
+function AIDriveStrategyFieldWorkCourse:useAITurnDriveData()
+    return self.state.properties.useAITurnDriveData
+end
 -----------------------------------------------------------------------------------------------------------------------
 --- Dynamic parameters (may change while driving)
 -----------------------------------------------------------------------------------------------------------------------

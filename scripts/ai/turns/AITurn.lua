@@ -609,7 +609,7 @@ function CourseTurn:endTurn(dt)
                     self:debug("implements lowered, resume fieldwork")
                     self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
                 else
-                    self:debug('waiting for lower at dz=%.1f', dz)
+                    self:debug('waiting for lower at dz=%.1f %s', dz, self.vehicle:getAttachedImplements()[1].object:getCanAIImplementContinueWork())
                     -- we are almost at the start of the row but still not lowered everything,
                     -- hold.
                     return false
@@ -941,26 +941,25 @@ function CombinePocketHeadlandTurn:onWaypointPassed(ix, course)
     end
 end
 
--- TODO: This is not used, and has not been updated with all the AITurn changes for a while
 --- A turn type which isn't really a turn, we only use this to finish a row (drive straight until the implement
---- reaches the end of the row, don't drive towards the next waypoint until then)
---- This is to make sure the last row before transitioning to the headland is properly finished, otherwise
---- we'd start driving towards the next headland waypoint, turning towards it before the implement reaching the
---- end of the row and leaving unworked patches.
+--- reaches the end of the row, don't drive towards the next waypoint until then) and then call the
+--- user supplied callback.
 ---@class FinishRowOnly : AITurn
 FinishRowOnly = CpObject(AITurn)
 
-function FinishRowOnly:init(vehicle, driver, turnContext)
-    AITurn.init(self, vehicle, driver, turnContext, 'FinishRowOnly')
+function FinishRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext, callbackObject, callbackFunction)
+    AITurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, 0, 'FinishRow')
+    self.callbackObject = callbackObject
+    self.callbackFunction = callbackFunction
 end
 
-function FinishRowOnly:finishRow()
-    -- keep driving straight until we need to raise our implements
-    if self.driveStrategy:shouldRaiseImplements(self:getRaiseImplementNode()) then
-        self:debug('Row finished, returning to fieldwork.')
-        self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx, true)
-    end
-    return false
+function FinishRowOnly:startTurn()
+    self:debug('Triggering callback function')
+    self.callbackFunction(self.callbackObject)
+end
+
+function FinishRowOnly:updateTurnProgress()
+    -- do nothing since this isn't really a turn
 end
 
 --- A turn which really isn't a turn just a course to start a field work row using the supplied course and

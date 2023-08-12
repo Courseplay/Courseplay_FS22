@@ -893,7 +893,7 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx, 
 			end
 		end
 	end
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint from vehicle position after %d', ix)
 	return ix, false
 end
 
@@ -907,7 +907,7 @@ function Course:getNextRevWaypointIxFromVehiclePosition(ix, vehicleNode, lookAhe
 			end
 		end
 	end
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next reverse waypoint from vehicle position after %d', ix)
 	return ix
 end
 

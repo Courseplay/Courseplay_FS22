@@ -31,6 +31,7 @@ local AIDriveStrategyDriveToFieldWorkStart_mt = Class(AIDriveStrategyDriveToFiel
 
 AIDriveStrategyDriveToFieldWorkStart.myStates = {
     PREPARE_TO_DRIVE = {},
+    DRIVING_TO_WORK_START = {},
     WORK_START_REACHED = {},
 }
 
@@ -130,7 +131,7 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
         local isReadyToDrive, blockingVehicle = self.vehicle:getIsAIReadyToDrive()
         if isReadyToDrive then
-            self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
+            self.state = self.states.DRIVING_TO_WORK_START
             self:debug('Ready to drive to work start')
         else
             self:debugSparse('Not ready to drive because of %s, preparing ...', CpUtil.getName(blockingVehicle))
@@ -138,11 +139,11 @@ function AIDriveStrategyDriveToFieldWorkStart:getDriveData(dt, vX, vY, vZ)
                 self.prepareTimeout = self.prepareTimeout + dt
                 if 2000 < self.prepareTimeout then
                     self:debug('Timeout preparing, continue anyway')
-                    self.state = self.states.DRIVING_TO_WORK_START_WAYPOINT
+                    self.state = self.states.DRIVING_TO_WORK_START
                 end
             end
         end
-    elseif self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
+    elseif self.state == self.states.DRIVING_TO_WORK_START then
         self:setMaxSpeed(self.settings.fieldSpeed:getValue())
     elseif self.state == self.states.WORK_START_REACHED then
         if self.emergencyBrake:get() then
