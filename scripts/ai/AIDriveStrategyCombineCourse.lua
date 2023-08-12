@@ -1658,6 +1658,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
         self:debug('Pathfinding to return to fieldwork after self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        self.returnCourse:adjustForTowedImplements(2)
         local fm, bm = self:getFrontAndBackMarkers()
         self.turnContext = RowStartOrFinishContext(self.vehicle, course, ix, ix, self.turnNodes, self:getWorkWidth(),
                 fm, bm, 0, 0)
