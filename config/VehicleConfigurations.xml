@@ -288,6 +288,16 @@ You can define the following custom settings:
 			 disableUnfolding = "true"
 	/>
 
+    <!--\vehicles\fliegl-->
+    <Vehicle name="dts59.xml"
+             disableUnfolding = "true"
+    />
+
+    <!--\vehicles\loadeking-->
+    <Vehicle name="renownTriAxleBeavertailLowDrop.xml"
+             disableUnfolding = "true"
+    />
+
     <!--Tractors-->
     
     <!--\vehicles\stara-->
@@ -304,6 +314,15 @@ You can define the following custom settings:
     <!--Harvester-->
 
     <!--Implements-->
+
+    <!--Platinum-->
+    <Vehicle name="semiLowloader3A.xml"
+             disableUnfolding = "true"
+    />
+    <Vehicle name="lowloader4A.xml"
+             disableUnfolding = "true"
+    />
+
     <!--Vermeer-->
     <Vehicle name="tm1410.xml"
              offset = "-4"
