@@ -308,6 +308,7 @@ function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     self:addImplementController(vehicle, CoverController, Cover, {}, nil)
+    self:addImplementController(vehicle, FoldableController, Foldable, {})
 end
 
 function AIDriveStrategyUnloadCombine:resetPathfinder()

@@ -41,6 +41,7 @@ VehicleConfigurations.attributes = {
     implementWheelAlwaysOnGround = XMLValueType.BOOL,
     ignoreCollisionBoxesWhenFolded = XMLValueType.BOOL,
     baleCollectorOffset = XMLValueType.FLOAT,
+    disableUnfolding = XMLValueType.BOOL,
     raiseLate = XMLValueType.BOOL,
     lowerEarly = XMLValueType.BOOL,
     useVehicleSizeForMarkers = XMLValueType.BOOL,
@@ -49,13 +50,13 @@ VehicleConfigurations.attributes = {
     ignoreBaleCollisionForward = XMLValueType.BOOL,
 }
 
-
 function VehicleConfigurations:init()
     self.vehicleConfigurations = {}
     self.modVehicleConfigurations = {}
     if g_currentMission then
         self:loadFromXml()
     end
+    self:registerConsoleCommands()
 end
 
 function VehicleConfigurations:registerXmlSchema()
@@ -130,6 +131,10 @@ end
 --- @param attribute string configuration attribute to get
 --- @return any|nil the value of the configuration attribute or nil if there's no custom config for it
 function VehicleConfigurations:get(object, attribute)
+    if not self:isValidAttribute(attribute) then 
+        CpUtil.infoImplement(object, "The given attribute name: %s is not valid!", attribute)
+        return 
+    end
     if object and object.configFileNameClean then   
         local modName = object.customEnvironment 
         if self.modVehicleConfigurations[modName] then 
@@ -161,6 +166,123 @@ function VehicleConfigurations:getRecursively(object, attribute)
         end
     end
     return nil
+end
+
+--- Checks if the attribute is registered.
+---@param attribute string
+---@return boolean
+function VehicleConfigurations:isValidAttribute(attribute)
+    if attribute == nil then 
+        return false
+    end
+    for name, _ in pairs(self.attributes) do 
+        if name == attribute then 
+            return true
+        end
+    end
+    return false
+end
+
+--- Queries through the vehicle and implements and collects all values for the given attribute.
+---@param vehicle table
+---@param attribute string
+---@return table
+function VehicleConfigurations:queryAttributeValues(vehicle, attribute)
+    local values = {}
+    for _, implement in pairs(vehicle:getChildVehicles()) do
+        local value = self:get(implement, attribute)
+        local data = {
+            value = value,
+            implement = implement,
+            found = value ~= nil
+        }
+        table.insert(values, data)
+    end
+    return values
+end
+
+-----------------------------------------------
+--- Console commands
+-----------------------------------------------
+
+function VehicleConfigurations:registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsReload", 
+        "Read custom vehicle configurations", 
+        "consoleCommandReload", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsPrintConfigFileNames", 
+        "Prints the config filename of the entered vehicle and implements", 
+        "consoleCommandPrintConfigFileNames", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsQuerySingleAttribute", 
+        "Prints the given attribute value for current vehicle and implements", 
+        "consoleCommandPrintSingleAttributeValuesForVehicleAndImplements", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsQueryForAllAttributes", 
+        "Prints all attribute values found for vehicle and it's implements", 
+        "consoleCommandPrintAllAttributeValuesForVehicleAndImplements", self)
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleConfigurationsListAttributes", 
+        "Prints all valid attribute names", 
+        "consoleCommandPrintAttributeNames", self)
+end
+
+function VehicleConfigurations:consoleCommandReload()
+    self:loadFromXml()
+end
+
+function VehicleConfigurations:consoleCommandPrintConfigFileNames()
+    local vehicle = g_currentMission.controlledVehicle
+	if not vehicle then 
+		CpUtil.info("No vehicle entered!")
+		return
+	end
+	for i, v in pairs(vehicle:getChildVehicles()) do 
+		CpUtil.infoVehicle(v, ": %s(Mod: %s)", tostring(v.configFileNameClean), 
+			tostring(v.customEnvironment ~= nil and v.customEnvironment or false))
+	end
+end
+
+function VehicleConfigurations:consoleCommandPrintSingleAttributeValuesForVehicleAndImplements(attribute)
+    local vehicle = g_currentMission.controlledVehicle
+	if not vehicle then 
+		CpUtil.info("No vehicle entered!")
+		return
+	end
+    if not self:isValidAttribute(attribute) then 
+        CpUtil.info("Attribute(%s) not found!", attribute)
+        return 
+    end
+    CpUtil.info("Found the following for %s: ....", attribute)
+    local values = self:queryAttributeValues(vehicle, attribute)
+    for _, data in pairs(values) do
+        if data.found then 
+            CpUtil.infoVehicle(data.implement, "%s", tostring(data.value))
+        else 
+            CpUtil.infoVehicle(data.implement, "not found")
+        end
+    end
+end
+
+function VehicleConfigurations:consoleCommandPrintAllAttributeValuesForVehicleAndImplements()
+    local vehicle = g_currentMission.controlledVehicle
+	if not vehicle then 
+		CpUtil.info("No vehicle entered!")
+		return
+	end
+    for attribute, _ in pairs(self.attributes) do 
+        local values = self:queryAttributeValues(vehicle, attribute)
+        if #values > 0 then 
+            CpUtil.info("Found the following for %s: ....", attribute)
+            for _, data in pairs(values) do
+                if data.found then 
+                    CpUtil.infoVehicle(data.implement, "%s", tostring(data.value))
+                end
+            end
+        end
+    end
+end
+
+function VehicleConfigurations:consoleCommandPrintAttributeNames()
+    for attribute, xmlValueType in pairs(self.attributes) do 
+        CpUtil.info("Attribute: %s => %s", attribute, XMLValueType.TYPES[xmlValueType].name)
+    end
 end
 
 g_vehicleConfigurations = VehicleConfigurations()

@@ -114,6 +114,7 @@ function AIDriveStrategyFindBales:initializeImplementControllers(vehicle)
     self.baleLoader = self.baleLoader or self:addImplementController(vehicle, UniversalAutoloadController, nil, {}, "spec_universalAutoload")
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
+    self:addImplementController(vehicle, FoldableController, Foldable, {})
 end
 
 --- Wait for the giants bale loader to finish grabbing the bale.
