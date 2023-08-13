@@ -545,7 +545,7 @@ end
 --- Raises the fieldwork start event with implement controllers installed,
 --- as these might turn on implements, that otherwise aren't turned on or
 --- disables the unfolding of a given implement.
-function CpAIBaleFinder:consoleCommandRaiseWorkStart()
+function CpAIWorker:consoleCommandRaiseWorkStart()
     local vehicle = g_currentMission.controlledVehicle
     if not vehicle then 
         CpUtil.info("Not entered a valid vehicle!")
