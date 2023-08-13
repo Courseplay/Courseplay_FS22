@@ -187,6 +187,7 @@ function CpAICombineUnloader:isValidTrailer(trailer)
     if #spec.dischargeNodes <= 0 then 
         return false
     end
+    return true
 end
 
 function CpAICombineUnloader:isOnlyOneTrailerAttached()
