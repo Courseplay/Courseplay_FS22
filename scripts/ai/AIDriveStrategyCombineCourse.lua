@@ -62,7 +62,7 @@ AIDriveStrategyCombineCourse.myStates = {
     DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED = {},
     SELF_UNLOADING_AFTER_FIELDWORK_ENDED = {},
     SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE = {},
-    RETURNING_FROM_SELF_UNLOAD = { useAITurnDriveData = true },
+    RETURNING_FROM_SELF_UNLOAD = {},
 }
 
 -- stop limit we use for self unload to approach the trailer
@@ -500,7 +500,6 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
         elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
             self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
             self:lowerImplements()
-            -- TODO: maybe lowerImplements should not set the WAITING_FOR_LOWER_DELAYED state...
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.MAKING_POCKET
             -- offset the main fieldwork course and start on it
@@ -1658,7 +1657,7 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
         self:debug('Pathfinding to return to fieldwork after self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self.returnCourse:adjustForTowedImplements(2)
+        returnCourse:adjustForTowedImplements(2)
         local fm, bm = self:getFrontAndBackMarkers()
         self.turnContext = RowStartOrFinishContext(self.vehicle, course, ix, ix, self.turnNodes, self:getWorkWidth(),
                 fm, bm, 0, 0)

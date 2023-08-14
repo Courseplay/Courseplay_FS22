@@ -79,8 +79,8 @@ function AIDriveStrategyPlowCourse:getDriveData(dt, vX, vY, vZ)
         self:setMaxSpeed(0)
         if not self.plow.spec_plow:getIsAnimationPlaying(self.plow.spec_plow.rotationPart.turnAnimation) then
             self:setOffsetX()
+            self:startWaitingForLower()
             self:lowerImplements(self.vehicle)
-            self.state = self.states.WAITING_FOR_LOWER_DELAYED
             self:debug('Plow rotation finished, ')
         end
     elseif self.state == self.states.UNFOLDING_PLOW then

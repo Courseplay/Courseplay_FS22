@@ -184,9 +184,11 @@ function AIDriveStrategyDriveToFieldWorkStart:startCourseWithPathfinding(course,
         local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
         -- always drive a behind the target waypoint so there's room to straighten out towed implements
         -- a bit before start working
-        self:debug('Pathfinding to waypoint %d, with zOffset min(%.1f, %.1f)', ix, -self.frontMarkerDistance, -steeringLength)
+        self.zOffset = math.min(-self.frontMarkerDistance, -steeringLength)
+        self:debug('Pathfinding to waypoint %d, with zOffset %.1f = min(%.1f, %.1f)', ix, self.zOffset,
+                -self.frontMarkerDistance, -steeringLength)
         self.pathfinder, done, path = PathfinderUtil.startPathfindingFromVehicleToWaypoint(self.vehicle, course, ix,
-                self.multitoolOffset, math.min(-self.frontMarkerDistance, -steeringLength), self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
+                self.multitoolOffset, self.zOffset, self:getAllowReversePathfinding(), fieldNum, nil, ix < 3 and math.huge, nil, nil,
                 fruitAtTarget and PathfinderUtil.Area(x, z, 2 * self.workWidth))
         if done then
             return self:onPathfindingDoneToCourseStart(path)
@@ -208,6 +210,9 @@ function AIDriveStrategyDriveToFieldWorkStart:onPathfindingDoneToCourseStart(pat
         self:debug('Pathfinding to start fieldwork finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         courseToStart = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        -- make sure the course extends to the first waypoint
+        courseToStart:appendWaypoints({fieldWorkCourse:getWaypoint(ix)})
+        courseToStart:adjustForTowedImplements(2)
     else
         self:debug('Pathfinding to start fieldwork failed, using alignment course instead')
         courseToStart = self:createAlignmentCourse(fieldWorkCourse, ix)

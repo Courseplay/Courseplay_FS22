@@ -977,6 +977,12 @@ function Course:extend(length, dx, dz)
 		local z = lastWp.z + dz * i
 		self:appendWaypoint({x = x, z = z})
 	end
+	if length % step > 0 then
+		-- add the remainder to make sure we extend all the way up to length
+		local x = lastWp.x + dx * length
+		local z = lastWp.z + dz * length
+		self:appendWaypoint({x = x, z = z})
+	end
 	-- enrich the waypoints we added
 	self:enrichWaypointData(nWaypoints)
 end
@@ -1045,6 +1051,7 @@ function Course:adjustForTowedImplements(extensionLength)
 	local waypoints = {self.waypoints[1]}
 	for i = 2, #self.waypoints do
 		if self:switchingDirectionAt(i) then
+			print(i)
 			local wp = self.waypoints[i - 1]
 			local newWp = Waypoint(wp)
 			newWp.x = wp.x + wp.dx * extensionLength
