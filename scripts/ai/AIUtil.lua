@@ -596,16 +596,15 @@ function AIUtil.getVehicleAndImplementsTotalLength(vehicle)
 end
 
 function AIUtil.findLoweringDurationMs(vehicle)
-	local function getLoweringDurationMs(object)
-		if object.spec_animatedVehicle then
-			-- TODO: implement these in the specifications?
-			return math.max(object.spec_animatedVehicle:getAnimationDuration('lowerAnimation'),
-					object.spec_animatedVehicle:getAnimationDuration('rotatePickup'),
-					object.spec_animatedVehicle:getAnimationDuration('folding'))
-		else
-			return 0
-		end
-	end
+    local function getLoweringDurationMs(object)
+        if object.spec_animatedVehicle then
+            -- TODO: implement these in the specifications?
+            return math.max(object.spec_animatedVehicle:getAnimationDuration('lowerAnimation'),
+                    object.spec_animatedVehicle:getAnimationDuration('rotatePickup'))
+        else
+            return 0
+        end
+    end
 
 	local loweringDurationMs = getLoweringDurationMs(vehicle)
 	CpUtil.debugVehicle(CpDebug.DBG_IMPLEMENTS, vehicle, 'Lowering duration: %d ms', loweringDurationMs)
