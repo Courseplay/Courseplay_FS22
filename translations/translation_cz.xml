@@ -66,6 +66,7 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Vykládka:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Kombajn"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Nakladač"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_chopper" text="Chopper"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants odvozce:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Použít Giants odvozce:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Místo vykládky:"/>

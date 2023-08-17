@@ -183,7 +183,7 @@ function CpBaleFinderJobParameters:isBaleWrapSettingVisible()
     end
 end
 
---- AI parameters for the bale finder job.
+--- AI parameters for the Combine Unloader job.
 ---@class CpCombineUnloaderJobParameters : CpJobParameters
 ---@field useGiantsUnload AIParameterBooleanSetting
 ---@field useFieldUnload AIParameterBooleanSetting

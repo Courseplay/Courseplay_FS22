@@ -27,6 +27,9 @@ AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
 -- in the fruit
 AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold = 95
 
+--Chopper Child Class needs this variable. Setting to 0 for Parent as it is not needed 
+AIDriveStrategyCombineCourse.distanceOverFieldEdgeAllowed = 0
+
 --- Percentage delta leftover until full, when the combine slows down.
 AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 1.5 
 --- Minimum working speed, for slowdown.
@@ -81,7 +84,6 @@ function AIDriveStrategyCombineCourse.new(customMt)
     self.stopDisabledAfterEmpty = CpTemporaryObject(false)
     self.stopDisabledAfterEmpty:set(false, 1)
     self:initUnloadStates()
-    self.chopperCanDischarge = CpTemporaryObject(false)
     -- hold the harvester temporarily
     self.temporaryHold = CpTemporaryObject(false)
     -- periodically check if we need to call an unloader
@@ -120,11 +122,6 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     AIDriveStrategyCombineCourse.superClass().setAllStaticParameters(self)
     self:debug('AIDriveStrategyCombineCourse set')
 
-    if self:isChopper() then
-        self:debug('This is a chopper.')
-    end
-
-    self:checkMarkers()
     self:measureBackDistance()
     Markers.setMarkerNodes(self.vehicle, self.measuredBackDistance)
 
@@ -167,17 +164,6 @@ function AIDriveStrategyCombineCourse:getProximitySensorWidth()
     return self:getWorkWidth()
 end
 
--- This part of an ugly workaround to make the chopper pickups work
-function AIDriveStrategyCombineCourse:checkMarkers()
-    for _, implement in pairs(AIUtil.getAllAIImplements(self.vehicle)) do
-        local aiLeftMarker, aiRightMarker, aiBackMarker = implement.object:getAIMarkers()
-        if not aiLeftMarker or not aiRightMarker or not aiBackMarker then
-            self.notAllImplementsHaveAiMarkers = true
-            return
-        end
-    end
-end
-
 --- Get the combine object, this can be different from the vehicle in case of tools towed or mounted on a tractor
 function AIDriveStrategyCombineCourse:getCombine()
     return self.combine
@@ -185,7 +171,6 @@ end
 
 function AIDriveStrategyCombineCourse:update(dt)
     AIDriveStrategyFieldWorkCourse.update(self, dt)
-    self:updateChopperFillType()
     self:onDraw()
 end
 
@@ -677,15 +662,9 @@ function AIDriveStrategyCombineCourse:checkFruit()
     dx = dx / length
     dz = dz / length
     self.vehicle.aiDriveDirection = { dx, dz }
-    -- getValidityOfTurnDirections works only if all AI Implements have aiMarkers. Since
-    -- we make all Cutters AI implements, even the ones which do not have AI markers (such as the
-    -- chopper pickups which do not work with the Giants helper) we have to make sure we don't call
-    -- getValidityOfTurnDirections for those
-    if self.notAllImplementsHaveAiMarkers then
-        self.fruitLeft, self.fruitRight = 0, 0
-    else
-        self.fruitLeft, self.fruitRight = AIVehicleUtil.getValidityOfTurnDirections(self.vehicle)
-    end
+    
+    self.fruitLeft, self.fruitRight = AIVehicleUtil.getValidityOfTurnDirections(self.vehicle)
+
     local workWidth = self:getWorkWidth()
     local x, _, z = localToWorld(self.vehicle:getAIDirectionNode(), workWidth, 0, 0)
     self.fieldOnLeft = CpFieldUtil.isOnField(x, z)
@@ -701,6 +680,7 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
     -- calculate fill rate so the combine driver knows if it can make the next row without unloading
     local fillLevel = self.combineController:getFillLevel()
     local capacity = self.combineController:getCapacity()
+
     if ix > 1 then
         local dToNext = self.course:getDistanceToNextWaypoint(ix - 1)
         if self.fillLevelAtLastWaypoint and self.fillLevelAtLastWaypoint > 0 and self.fillLevelAtLastWaypoint <= fillLevel then
@@ -897,7 +877,7 @@ function AIDriveStrategyCombineCourse:findUnloader(combine, waypoint)
             local x, _, z = getWorldTranslation(self.vehicle.rootNode)
             ---@type AIDriveStrategyUnloadCombine
             local driveStrategy = vehicle:getCpDriveStrategy()
-            if driveStrategy:isServingPosition(x, z, 0) then
+            if driveStrategy:isServingPosition(x, z, self.distanceOverFieldEdgeAllowed) then
                 local unloaderFillLevelPercentage = driveStrategy:getFillLevelPercentage()
                 if driveStrategy:isIdle() and unloaderFillLevelPercentage < 99 then
                     local unloaderDistance, unloaderEte
@@ -1231,14 +1211,14 @@ function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
     if self.combine:getIsThreshingDuringRain() then
         return true
     end
-    return self:isWaitingForUnload() or self:isChopperWaitingForUnloader()
+    return self:isWaitingForUnload()
 end
 
 --- Check if the vehicle should stop during a turn for example while it
 --- is held for unloading or waiting for the straw swath to stop
 function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     --- Hold during discharge
-    local discharging = self:isDischarging() and not self:isChopper()
+    local discharging = self:isDischarging()
 
     local isFinishingRow = self.aiTurn and self.aiTurn:isFinishingRow()
     local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
@@ -1374,62 +1354,15 @@ function AIDriveStrategyCombineCourse:getFieldworkCourse()
     return self.course
 end
 
-function AIDriveStrategyCombineCourse:isChopper()
-    return self.combineController:isChopper()
-end
-
 -----------------------------------------------------------------------------------------------------------------------
 --- Pipe handling
 -----------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyCombineCourse:handlePipe(dt)
-    if self:isChopper() then
-        self:handleChopperPipe()
-    else
-        self:handleCombinePipe(dt)
-    end
-end
-
-function AIDriveStrategyCombineCourse:handleCombinePipe(dt)
-
     if self.pipeController:isFillableTrailerUnderPipe() or self:isAutoDriveWaitingForPipe() then
         self.pipeController:openPipe()
     else
         self.pipeController:closePipe(true)
     end
-end
-
---- Not exactly sure what this does, but without this the chopper just won't move.
---- Copied from AIDriveStrategyCombine:update()
-function AIDriveStrategyCombineCourse:updateChopperFillType()
-    if self:isChopper() then
-        self.combineController:updateChopperFillType()
-    end
-end
-
--- TODO: move this to the PipeController?
-function AIDriveStrategyCombineCourse:handleChopperPipe()
-    self.pipeController:handleChopperPipe()
-
-    local trailer = self.pipeController:getClosestObject()
-    local dischargeNode = self.pipeController:getDischargeNode()
-    local targetObject = self.pipeController:getDischargeObject()
-    self:debugSparse('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
-    if not self.waitingForTrailer and self:isAnyWorkAreaProcessing() and (targetObject == nil or trailer == nil) then
-        self:debug('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
-                tostring(dischargeNode), tostring(targetObject), tostring(trailer))
-        self.waitingForTrailer = true
-    end
-    if self.waitingForTrailer then
-        self:setMaxSpeed(0)
-        if not (targetObject == nil or trailer == nil) then
-            self:debug('Chopper has trailer now, continue')
-            self.waitingForTrailer = false
-        end
-    end
-end
-
-function AIDriveStrategyCombineCourse:isChopperWaitingForUnloader()
-    return self.waitingForTrailer
 end
 
 function AIDriveStrategyCombineCourse:isAnyWorkAreaProcessing()
@@ -1482,13 +1415,6 @@ end
 
 function AIDriveStrategyCombineCourse:getFillType()
     return self.pipeController:getFillType()
-end
-
--- even if there is a trailer in range, we should not start moving until the pipe is turned towards the
--- trailer and can start discharging. This returning true does not mean there's a trailer under the pipe,
--- this seems more like for choppers to check if there's a potential target around
-function AIDriveStrategyCombineCourse:canDischarge()
-    return self.pipeController:getDischargeObject()
 end
 
 function AIDriveStrategyCombineCourse:isDischarging()
@@ -1639,6 +1565,7 @@ end
 --- events are for the low level coordination between the combine and its unloader(s). CombineUnloadManager
 --- takes care about coordinating the work between multiple combines.
 function AIDriveStrategyCombineCourse:clearAllUnloaderInformation()
+    self:debug('All Unloader Info has been cleared')
     self:cancelRendezvous()
     self.unloader:reset()
 end
@@ -1653,33 +1580,9 @@ end
 --- Deregister a combine unload AI driver from notifications
 ---@param driver CombineUnloadAIDriver
 function AIDriveStrategyCombineCourse:deregisterUnloader(driver, noEventSend)
+    self:debug('Unloader has be unregistered')
     self:cancelRendezvous()
     self.unloader:reset()
-end
-
---- Make life easier for unloaders, increases reach of the pipe
---- Old code ??
-function AIDriveStrategyCombineCourse:fixMaxRotationLimit()
-    if self.pipe then
-        local lastPipeNode = self.pipe.nodes and self.pipe.nodes[#self.pipe.nodes]
-        if self:isChopper() and lastPipeNode and lastPipeNode.maxRotationLimits then
-            self.oldLastPipeNodeMaxRotationLimit = lastPipeNode.maxRotationLimits
-            self:debug('Chopper fix maxRotationLimits, old Values: x=%s, y= %s, z =%s', tostring(lastPipeNode.maxRotationLimits[1]), tostring(lastPipeNode.maxRotationLimits[2]), tostring(lastPipeNode.maxRotationLimits[3]))
-            lastPipeNode.maxRotationLimits = nil
-        end
-    end
-end
-
---- Old code ??
-function AIDriveStrategyCombineCourse:resetFixMaxRotationLimit()
-    if self.pipe then
-        local lastPipeNode = self.pipe.nodes and self.pipe.nodes[#self.pipe.nodes]
-        if lastPipeNode and self.oldLastPipeNodeMaxRotationLimit then
-            lastPipeNode.maxRotationLimits = self.oldLastPipeNodeMaxRotationLimit
-            self:debug('Chopper: reset maxRotationLimits is x=%s, y= %s, z =%s', tostring(lastPipeNode.maxRotationLimits[1]), tostring(lastPipeNode.maxRotationLimits[3]), tostring(lastPipeNode.maxRotationLimits[3]))
-            self.oldLastPipeNodeMaxRotationLimit = nil
-        end
-    end
 end
 
 --- Offset of the pipe from the combine implement's root node
@@ -1964,3 +1867,4 @@ function AIDriveStrategyCombineCourse:updateInfoTexts()
         end
     end
 end
+

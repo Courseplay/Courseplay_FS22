@@ -66,6 +66,7 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Scaricare:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Mietitrebbia"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Caricatore"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_chopper" text="Chopper"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Usa scaricatore Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Stazione di scarico:"/>

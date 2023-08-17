@@ -145,7 +145,6 @@ function AIDriveStrategyBunkerSilo:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, BunkerSiloCompacterController, BunkerSiloCompacter, {})
     self:addImplementController(vehicle, MotorController, Motorized, {})
     self:addImplementController(vehicle, WearableController, Wearable, {})
-    self:addImplementController(vehicle, FoldableController, Foldable, {})
 end
 
 function AIDriveStrategyBunkerSilo:isFuelSaveAllowed()

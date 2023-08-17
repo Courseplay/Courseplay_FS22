@@ -17,10 +17,12 @@
 			<Values>
 				<Value name="UNLOAD_COMBINE">1</Value>
 				<Value name="UNLOAD_SILO_LOADER">2</Value>
+				<Value name="UNLOAD_CHOPPER">3</Value>
 			</Values>
 			<Texts>
 				<Text>combine</Text>
 				<Text>siloLoader</Text>
+				<Text>chopper</Text>
 			</Texts>
 		</Setting>
 	</SettingSubTitle>

@@ -68,9 +68,6 @@ You can define the following custom settings:
 	and the edge of the bale when the bale grabber is right where it should be to pick up the bale.
 	Courseplay will adjust this offset according to the bale's dimensions but you may want to add a little buffer.
 
-- disableUnfolding: boolean
-    Deactivates the unfolding of the implement for fieldwork or bale finder.
-
 - raiseLate: boolean
     The default behavior is to raise the implement when the front of the work area reaches the end of the row or
     the field edge. This works great for rectangular shaped work areas but with other shapes (like a plow) it may
@@ -283,21 +280,6 @@ You can define the following custom settings:
              workingWidth = "8.4"
     />
 
-	<!--\vehicles\samasz-->
-	<Vehicle name="steelDropDeck.xml"
-			 disableUnfolding = "true"
-	/>
-
-    <!--\vehicles\fliegl-->
-    <Vehicle name="dts59.xml"
-             disableUnfolding = "true"
-    />
-
-    <!--\vehicles\loadeking-->
-    <Vehicle name="renownTriAxleBeavertailLowDrop.xml"
-             disableUnfolding = "true"
-    />
-
     <!--Tractors-->
     
     <!--\vehicles\stara-->
@@ -314,15 +296,6 @@ You can define the following custom settings:
     <!--Harvester-->
 
     <!--Implements-->
-
-    <!--Platinum-->
-    <Vehicle name="semiLowloader3A.xml"
-             disableUnfolding = "true"
-    />
-    <Vehicle name="lowloader4A.xml"
-             disableUnfolding = "true"
-    />
-
     <!--Vermeer-->
     <Vehicle name="tm1410.xml"
              offset = "-4"

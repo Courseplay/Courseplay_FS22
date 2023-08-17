@@ -178,25 +178,13 @@ function CpAICombineUnloader:getCpDriveStrategy(superFunc)
     return superFunc(self) or self.spec_cpAICombineUnloader.driveStrategy
 end
 
---- Makes sure only trailers with discharge nodes are used.
-function CpAICombineUnloader:isValidTrailer(trailer)
-    local spec = trailer.spec_dischargeable
-    if not spec then 
-        return false
-    end
-    if #spec.dischargeNodes <= 0 then 
-        return false
-    end
-    return true
-end
-
 function CpAICombineUnloader:isOnlyOneTrailerAttached()
     --- Checks if at least one fill unit to unload into is there
     --- and only max one trailer attached.
     local vehicles = AIUtil.getAllChildVehiclesWithSpecialization(self, Trailer, nil)
     local numTrailers = 0
     for _,v in pairs(vehicles) do 
-        if v ~= self and CpAICombineUnloader.isValidTrailer(self, v) then
+        if v ~= self then
             numTrailers = numTrailers + 1
         end
     end
@@ -263,7 +251,14 @@ function CpAICombineUnloader:startCpAtLastWp(superFunc)
 end
 
 function CpAICombineUnloader:startCpCombineUnloader(jobParameters)
-    local strategy = AIDriveStrategyUnloadCombine.new()
+    local strategy
+    if jobParameters.unloadTarget:getValue() == CpCombineUnloaderJobParameters.UNLOAD_CHOPPER then
+        --Call the chopper class
+        strategy = AIDriveStrategyUnloadChopper.new()
+    else
+        --Call the combine/silo unloader
+        strategy = AIDriveStrategyUnloadCombine.new()
+    end
     strategy:setAIVehicle(self)
     strategy:setJobParameterValues(jobParameters)
     self:startCpWithStrategy(strategy)

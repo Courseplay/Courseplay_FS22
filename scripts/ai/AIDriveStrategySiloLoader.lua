@@ -135,7 +135,6 @@ end
 function AIDriveStrategySiloLoader:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
-    self:addImplementController(vehicle, FoldableController, Foldable, {})
     local _
     _, self.conveyorController = self:addImplementController(vehicle, ConveyorController, ConveyorBelt, {}, nil)
     _, self.shovelController = self:addImplementController(vehicle, ShovelController, Shovel, {}, nil)

@@ -277,7 +277,7 @@ function AIDriveStrategyUnloadCombine:setJobParameterValues(jobParameters)
     if jobParameters.unloadTarget:getValue() == CpCombineUnloaderJobParameters.UNLOAD_COMBINE then
         self.unloadTargetType = self.UNLOAD_TYPES.COMBINE
         self:debug("Unload target is a combine.")
-    else
+    elseif jobParameters.unloadTarget:getValue() == CpCombineUnloaderJobParameters.UNLOAD_SILO_LOADER then
         self.unloadTargetType = self.UNLOAD_TYPES.SILO_LOADER
         self:debug("Unload target is a silo loader.")
     end
@@ -308,7 +308,6 @@ function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     self:addImplementController(vehicle, CoverController, Cover, {}, nil)
-    self:addImplementController(vehicle, FoldableController, Foldable, {})
 end
 
 function AIDriveStrategyUnloadCombine:resetPathfinder()
@@ -628,8 +627,8 @@ function AIDriveStrategyUnloadCombine:getTrailersTargetNode()
                 self:debugSparse('Can\'t find trailer target node')
             end
         else
-            self:debugSparse('Combine says it can\'t load trailer')
-            --TODO: maybe then send the unloader away if activated?
+            self:debugSparse('Combine says it can\'t load trailer %s driven by %s filling %s', CpUtil.getName(trailer), CpUtil.getName(self.vehicle), self.combineToUnload:getCpDriveStrategy():getFillType())
+            --TODO: maybe then send the unloader away if activated?.
         end
     else
         self:debugSparse('Can\'t find trailer')
@@ -823,9 +822,9 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         return false
     end
     if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+    AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > %d)',
-                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+        AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
         return false
     end
     -- close enough and approximately same direction and behind and not too far to the left or right, about the same
@@ -851,9 +850,9 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         return false
     end
     if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+    AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: direction difference is > %d)',
-                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+        AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
         return false
     end
     if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
@@ -1270,7 +1269,7 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
             -- the same reference everywhere
             local goal = PathfinderUtil.getWaypointAsState3D(target, -xOffset or 0, zOffset or 0)
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
-                    self.vehicle, goal, allowReverse or false, fieldNum, vehiclesToIgnore, {},
+                    self.vehicle, goal, self:getAllowReversePathfinding() or false, fieldNum, vehiclesToIgnore, {},
                     maxFruitPercent, self.offFieldPenalty, areaToAvoid)
         else
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(

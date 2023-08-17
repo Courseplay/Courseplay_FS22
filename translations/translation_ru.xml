@@ -66,6 +66,7 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Разгрузка:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Комбайн"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Загрузчик"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_chopper" text="Chopper"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Разгружающий Giants:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Использовать разгружающего Giants:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Станция разгрузки:"/>

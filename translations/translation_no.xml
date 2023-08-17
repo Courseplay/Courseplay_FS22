@@ -66,6 +66,7 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Unload:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Combine"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Loader"/>
+    <text name="CP_combineUnloaderJobParameters_unloadTarget_chopper" text="Chopper"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants unloader:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Unloading station:"/>
