@@ -308,6 +308,7 @@ function AIDriveStrategyUnloadCombine:initializeImplementControllers(vehicle)
     self:addImplementController(vehicle, MotorController, Motorized, {}, nil)
     self:addImplementController(vehicle, WearableController, Wearable, {}, nil)
     self:addImplementController(vehicle, CoverController, Cover, {}, nil)
+    self:addImplementController(vehicle, FoldableController, Foldable, {})
 end
 
 function AIDriveStrategyUnloadCombine:resetPathfinder()
@@ -822,9 +823,9 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         return false
     end
     if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-    AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > %d)',
-        AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
         return false
     end
     -- close enough and approximately same direction and behind and not too far to the left or right, about the same
@@ -850,9 +851,9 @@ function AIDriveStrategyUnloadCombine:isInFrontAndAlignedToMovingCombine(debugEn
         return false
     end
     if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-    AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
         self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: direction difference is > %d)',
-        AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
         return false
     end
     if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then

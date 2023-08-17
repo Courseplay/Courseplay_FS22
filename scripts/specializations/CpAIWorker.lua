@@ -14,6 +14,7 @@ function CpAIWorker.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
     --- Registers the last job key.
     CpJobParameters.registerXmlSchema(schema, CpAIWorker.LAST_JOB_KEY)
+    CpAIWorker.registerConsoleCommands()
 end
 
 function CpAIWorker.prerequisitesPresent(specializations)
@@ -528,5 +529,37 @@ function CpAIWorker:onStartAutoDrive()
         --- Apply hud variables
         SpecializationUtil.raiseEvent(self, "onCpADStartedByPlayer")
         CpJobStartAtLastWpSyncRequestEvent.sendEvent(self)
+    end
+end
+
+---------------------------------------------
+--- Console commands
+---------------------------------------------
+
+function CpAIWorker.registerConsoleCommands()
+    g_devHelper.consoleCommands:registerConsoleCommand("cpVehicleOnWorkStartTest", 
+        "Raise the field work start event.", "consoleCommandRaiseWorkStart", CpAIWorker)
+    --- TODO: Adding functions to execute the lowering, raising and fieldwork end events.
+end
+
+--- Raises the fieldwork start event with implement controllers installed,
+--- as these might turn on implements, that otherwise aren't turned on or
+--- disables the unfolding of a given implement.
+function CpAIWorker:consoleCommandRaiseWorkStart()
+    local vehicle = g_currentMission.controlledVehicle
+    if not vehicle then 
+        CpUtil.info("Not entered a valid vehicle!")
+        return
+    end
+    local controllers = {}
+    for i, childVehicle in pairs(vehicle:getChildVehicles()) do 
+        if childVehicle.spec_foldable then 
+            --- TODO: Adding the other implement controllers that are needed here.
+            table.insert(controllers, FoldableController(vehicle, childVehicle))
+        end
+    end
+    vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+    for _, c in pairs(controllers) do 
+        c:delete()
     end
 end

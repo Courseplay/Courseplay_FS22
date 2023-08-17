@@ -21,12 +21,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ---@class UniversalAutoloadController : BaleLoaderController
 UniversalAutoloadController = CpObject(BaleLoaderController)
 
-function UniversalAutoloadController:init(vehicle, autoLoader)
-    self.autoLoader = autoLoader
-    self.autoLoaderSpec = autoLoader.spec_universalAutoload
-    ImplementController.init(self, vehicle, self.autoLoader)
-    self:debug('Universal autoloader controller initialized')
+function UniversalAutoloadController:init(vehicle, implement)
+    ImplementController.init(self, vehicle, implement)
+    
+    self.autoLoader = implement
+    self.autoLoaderSpec = implement.spec_universalAutoload
 end
+
 
 function UniversalAutoloadController:isGrabbingBale()
     return false

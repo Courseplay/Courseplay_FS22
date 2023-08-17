@@ -27,9 +27,6 @@ AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
 -- in the fruit
 AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold = 95
 
---Chopper Child Class needs this variable. Setting to 0 for Parent as it is not needed 
-AIDriveStrategyCombineCourse.distanceOverFieldEdgeAllowed = 0
-
 --- Percentage delta leftover until full, when the combine slows down.
 AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 1.5 
 --- Minimum working speed, for slowdown.

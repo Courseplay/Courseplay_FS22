@@ -14,7 +14,6 @@ CpConsoleCommands.commands = {
 	{ 'cpLoadFile', 'Load a lua file', 'loadFile' },
 	{ 'cpToggleDevHelper', 'Toggle development helper visual debug info', 'cpToggleDevHelper' },
 	{ 'cpSaveAllFields', 'Save all fields of the map to an XML file for offline debugging', 'cpSaveAllFields' },
-	{ 'cpReadVehicleConfigurations', 'Read custom vehicle configurations', 'cpReadVehicleConfigurations' },
 	{ 'cpSaveAllVehiclePositions', 'Save the position of all vehicles', 'cpSaveAllVehiclePositions' },
 	{ 'cpRestoreAllVehiclePositions', 'Restore the position of all vehicles', 'cpRestoreAllVehiclePositions' },
 	{ 'cpSetPathfinderDebug', 'Set pathfinder visual debug level (0-2)', 'cpSetPathfinderDebug' },
@@ -208,10 +207,6 @@ end
 
 function CpConsoleCommands:cpSaveAllFields()
 	CpFieldUtil.saveAllFields()
-end
-
-function CpConsoleCommands:cpReadVehicleConfigurations()
-	g_vehicleConfigurations:loadFromXml()
 end
 
 function CpConsoleCommands:cpSaveAllVehiclePositions()
