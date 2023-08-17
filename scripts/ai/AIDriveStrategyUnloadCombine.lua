@@ -384,10 +384,12 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
         end
     elseif self.state == self.states.INITIAL then
         Timer.createOneshot(50, function ()
-            --- Pipe measurement seems to be buggy with a few over loaders, like bergman RRW 500,
-            --- so a small delay of 50 ms is inserted here before unfolding starts.
-            self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
-            self.state = self.states.IDLE
+            if self.state == self.states.INITIAL then
+                --- Pipe measurement seems to be buggy with a few over loaders, like bergman RRW 500,
+                --- so a small delay of 50 ms is inserted here before unfolding starts.
+                self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+                self.state = self.states.IDLE
+            end
         end)
         self:setMaxSpeed(0)
     elseif self.state == self.states.IDLE then
