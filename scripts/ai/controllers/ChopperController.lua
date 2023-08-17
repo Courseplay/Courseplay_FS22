@@ -11,19 +11,6 @@ end
 --- Chopper
 -------------------------------------------------------------
 
---- Make life easier for unloaders, increase chopper discharge distance
---- Is this really neccasery?
-function ChopperController:fixDischargeDistanceForChopper()
-    -- local dischargeNode = self.implement:getCurrentDischargeNode()
-    -- if self:isChopper() and dischargeNode and dischargeNode.maxDistance then
-    --     local safeDischargeNodeMaxDistance = 40
-    --     if dischargeNode.maxDistance < safeDischargeNodeMaxDistance then
-    --         self:debug('Chopper maximum throw distance is %.1f, increasing to %.1f', dischargeNode.maxDistance, safeDischargeNodeMaxDistance)
-    --         dischargeNode.maxDistance = safeDischargeNodeMaxDistance
-    --     end
-    -- end
-end
-
 function ChopperController:getChopperDischargeDistance()
     local dischargeNode = self.implement:getCurrentDischargeNode()
     if self:isChopper() and dischargeNode and dischargeNode.maxDistance then

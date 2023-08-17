@@ -108,6 +108,12 @@ function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
 
+function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
+    AIDriveStrategyChopperCourse.superClass().start(self, course, startIx, jobParameters)
+    -- Update the pipeOffset side when we start work  
+    self:updatePipeOffset(startIx)
+end
+
 function AIDriveStrategyCombineCourse:driveUnloadOnField()
     if self.unloadState == self.states.STOPPING_FOR_UNLOAD then
         self:setMaxSpeed(0)
@@ -136,7 +142,7 @@ function AIDriveStrategyChopperCourse:estimateDistanceUntilFull(ix)
     local fillLevel = 1
     local capacity = 1
 
-    -- Choppers don't have fill levels get the trailer we currently are discharging too fill levels
+    -- Choppers don't have fill levels get the trailer we currently are discharging too fill levels. This is for when we have multiple tippers
     fillLevel, capacity = self:getTrailerFillLevel()
 
     if ix > 1 then
@@ -228,36 +234,6 @@ function AIDriveStrategyChopperCourse:getTrailerFillLevel()
     return fillLevel, capacity
 end
 
-function AIDriveStrategyChopperCourse:getFillLevelPercentage()
-    -- Hack to get the combineUnloader driver working
-    return 1
-end
-
---- Make life easier for unloaders, increases reach of the pipe
---- Old code ?? Not used. TO BE DELETED
-function AIDriveStrategyChopperCourse:fixMaxRotationLimit()
-    if self.pipe then
-        local lastPipeNode = self.pipe.nodes and self.pipe.nodes[#self.pipe.nodes]
-        if self:isChopper() and lastPipeNode and lastPipeNode.maxRotationLimits then
-            self.oldLastPipeNodeMaxRotationLimit = lastPipeNode.maxRotationLimits
-            self:debug('Chopper fix maxRotationLimits, old Values: x=%s, y= %s, z =%s', tostring(lastPipeNode.maxRotationLimits[1]), tostring(lastPipeNode.maxRotationLimits[2]), tostring(lastPipeNode.maxRotationLimits[3]))
-            lastPipeNode.maxRotationLimits = nil
-        end
-    end
-end
-
---- Old code ?? Not used. TO BE DELETED
-function AIDriveStrategyChopperCourse:resetFixMaxRotationLimit()
-    if self.pipe then
-        local lastPipeNode = self.pipe.nodes and self.pipe.nodes[#self.pipe.nodes]
-        if lastPipeNode and self.oldLastPipeNodeMaxRotationLimit then
-            lastPipeNode.maxRotationLimits = self.oldLastPipeNodeMaxRotationLimit
-            self:debug('Chopper: reset maxRotationLimits is x=%s, y= %s, z =%s', tostring(lastPipeNode.maxRotationLimits[1]), tostring(lastPipeNode.maxRotationLimits[3]), tostring(lastPipeNode.maxRotationLimits[3]))
-            self.oldLastPipeNodeMaxRotationLimit = nil
-        end
-    end
-end
-
 function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
     return self.waitingForTrailer
 end
@@ -344,14 +320,6 @@ function AIDriveStrategyChopperCourse:checkFruit()
             self.fruitLeft, self.fruitRight, tostring(self.fieldOnLeft), tostring(self.fieldOnRight))
 end
 
--- even if there is a trailer in range, we should not start moving until the pipe is turned towards the
--- trailer and can start discharging. This returning true does not mean there's a trailer under the pipe,
--- this seems more like for choppers to check if there's a potential target around
--- Not being used. Replaced by other functions TO BE DELETED
-function AIDriveStrategyChopperCourse:canDischarge()
-    return self.pipeController:getDischargeObject()
-end
-
 -- Return true for no headlands so we can reduce off field pently for our unloader driver
 function AIDriveStrategyChopperCourse:hasNoHeadlands()
     return self.course:getNumberOfHeadlands() == 0
@@ -404,18 +372,3 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     --TODO Add a check to see if we are on the last row and if we are set the it to field side
     self:debug('I have left the pipeoffset on the right side')
 end
-
-function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
-    AIDriveStrategyChopperCourse.superClass().start(self, course, startIx, jobParameters)
-    -- Update the pipeOffset side when we start work  
-    self:updatePipeOffset(startIx)
-end
-
-
--- -- TODO this code snipet seems to be peppered through out differnt child classes this should be moved higher up the stack
--- function AIDriveStrategyChopperCourse:isFruitAtIx(ix, xOffset, zOffset)
---     local x + xOffset, _, z + zOffset = self.course:getWaypointPosition(ix)
---     local hasFruit = PathfinderUtil.hasFruit(x, z, 1, 1)
---     self:debug('isFruitAtIx %s, x = %.1f, z = %.1f (xOffset = %.1f, zOffset = %.1f', tostring(hasFruit), x, z, xOffset, zOffset)
---     return hasFruit
--- end

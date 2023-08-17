@@ -172,8 +172,8 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.MOVING_FWD_WITH_TRAILER_FULL then
         self:setFieldSpeed()
-        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
-        if dz > -10 then
+        local totalDistance = self:getDistanceFromCombine(self.state.properties.vehicle)
+        if totalDistance > 25 then
             self:startUnloadingTrailers()
         end
         
@@ -288,7 +288,6 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     end
 end
 
--- Course.createStraightForwardCourse(vehicle, length, xOffset, directionNode)
 ------------------------------------------------------------------------------------------------------------------------
 -- Waiting for maneuvering combine
 -----------------------------------------------`-------------------------------------------------------------------------
@@ -320,15 +319,6 @@ function AIDriveStrategyUnloadChopper:onPathfindingDoneToCombine(path, goalNodeI
         return false
     end
 end
-
--- function AIDriveStrategyUnloadChopper:isOkToStartUnloadingCombine()
---     if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) and self.course:isCloseToLastWaypoint(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength / 5) then
---         return self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
---     else
---         self:debugSparse('combine not ready to unload, waiting')
---         return false
---     end
--- end
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Check for full trailer when unloading a combine
