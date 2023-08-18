@@ -114,14 +114,16 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
             self:startUnloadingTrailers()
         end
     elseif self.state == self.states.INITIAL then
-        Timer.createOneshot(50, function ()
-            if self.state == self.states.INITIAL then
-                --- Pipe measurement seems to be buggy with a few over loaders, like bergman RRW 500,
-                --- so a small delay of 50 ms is inserted here before unfolding starts.
-                self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
-                self.state = self.states.IDLE
-            end
-        end)
+        if not self.startTimer then
+            --- Only create one instance of the timer and wait until it finishes.
+            self.startTimer = Timer.createOneshot(50, function ()
+            --- Pipe measurement seems to be buggy with a few over loaders, like bergman RRW 500,
+            --- so a small delay of 50 ms is inserted here before unfolding starts.
+            self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
+            self.state = self.states.IDLE
+            self.startTimer = nil
+            end)
+        end
         self:setMaxSpeed(0)
     elseif self.state == self.states.IDLE then
         -- nothing to do right now, wait for one of the following:
@@ -172,11 +174,6 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
 
     elseif self.state == self.states.MOVING_FWD_WITH_TRAILER_FULL then
         self:setFieldSpeed()
-        local totalDistance = self:getDistanceFromCombine(self.state.properties.vehicle)
-        -- Move away unless the combine starts turning
-        if totalDistance > 50 then
-            self:startUnloadingTrailers()
-        end
         
     elseif self.state == self.states.MOVING_BACK then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
@@ -223,6 +220,56 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     return gx, gz, moveForwards, self.maxSpeed, 100
 end
 
+------------------------------------------------------------------------------------------------------------------------
+-- On last waypoint
+------------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
+    self:debug('Last waypoint passed')
+    if self.state == self.states.DRIVING_TO_COMBINE then
+        if self:isOkToStartUnloadingCombine() then
+            -- Right behind the combine, aligned, go for the pipe
+            self:startUnloadingCombine()
+        else
+            self:startWaitingForSomethingToDo()
+        end
+    elseif self.state == self.states.DRIVING_TO_MOVING_COMBINE then
+        self:startCourseFollowingCombine()
+    elseif self.state == self.states.BACKING_UP_FOR_REVERSING_COMBINE then
+        self:setNewState(self.stateAfterMovedOutOfWay)
+        self:startRememberedCourse()
+    elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
+        self:startWaitingForSomethingToDo()
+    elseif self.state == self.states.MOVING_FWD_WITH_TRAILER_FULL then
+        self:startUnloadingTrailers()
+    elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
+        self:debug('Inverted goal position reached, so give control back to the job.')
+        self.vehicle:getJob():onTrailerFull(self.vehicle, self)
+        ---------------------------------------------
+        --- Self unload
+        ---------------------------------------------
+    elseif self.state == self.states.DRIVING_TO_SELF_UNLOAD then
+        self:onLastWaypointPassedWhenDrivingToSelfUnload()
+    elseif self.state == self.states.MOVING_TO_NEXT_FILL_NODE then
+        -- should just for safety
+        self:startMovingAwayFromUnloadTrailer()
+    elseif self.state == self.states.MOVING_AWAY_FROM_UNLOAD_TRAILER then
+        self:onMovedAwayFromUnloadTrailer()
+        ---------------------------------------------
+        --- Unloading on the field
+        ---------------------------------------------
+    elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_POSITION then
+        self:setNewState(self.states.WAITING_UNTIL_FIELD_UNLOAD_IS_ALLOWED)
+    elseif self.state == self.states.UNLOADING_ON_THE_FIELD then
+        self:onFieldUnloadingFinished()
+    elseif self.state == self.states.DRIVE_TO_REVERSE_FIELD_UNLOAD_POSITION then
+        self:onReverseFieldUnloadPositionReached()
+    elseif self.state == self.states.REVERSING_TO_THE_FIELD_UNLOAD_HEAP then
+        self:onReverseFieldUnloadHeapReached()
+    elseif self.state == self.states.DRIVE_TO_FIELD_UNLOAD_PARK_POSITION then
+        self:onFieldUnloadParkPositionReached()
+    end
+end
+
 -- We don't care if we hit the chopper when unloading. Was causing issues durning turns
 function AIDriveStrategyUnloadChopper:ignoreChopper(object, vehicle, moveForwards, hitTerrain)
     return self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload
@@ -245,12 +292,32 @@ end
 -- Start moving away from empty combine
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combine)
-    local fwdCourse = Course.createStraightForwardCourse(self.vehicle, 100)
-    self:startCourse(fwdCourse, 1)
+    -- Create a Node facing the oppistote direction
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode())
+    local goal = CpUtil.createNode("goal", x, z, yRot + math.pi)
+
+    -- Deterime what side the offset should be applied
+    local offsetFix = -(self.combineOffset/math.abs(self.combineOffset))
+    local offsetX = math.max(math.abs(self.combineOffset * 2), self.turningRadius * 2)
+    offsetX = offsetX * offsetFix
+
+    self:debug('Creating chopper drive away course at x=%d z=%d offsetX=%d', x, z, offsetX)
+    local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, 0, goal,
+    offsetX, -10, self.turningRadius)
+    if path then
+        self:debug('I found a Anayltice Path and I am now going to drive it')
+        self.driveAwayFromChopperCourse = Course.createFromAnalyticPath(self.vehicle, path, true)
+        self.driveAwayFromChopperCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
+        self:startCourse(self.driveAwayFromChopperCourse, 1)
+    else
+        self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, 50)
+        self:startCourse(fwdCourse, 1)
+    end
     self:setNewState(newState)
     self.state.properties.vehicle = combine
     return
 end
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Unload combine (moving)
 -- We are driving on a copy of the combine's course with an offset

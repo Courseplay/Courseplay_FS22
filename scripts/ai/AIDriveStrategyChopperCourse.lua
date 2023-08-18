@@ -54,12 +54,10 @@ function AIDriveStrategyChopperCourse:setAllStaticParameters()
     --Old Code to add markers to Choppers which don't have AI markers
     self:checkMarkers()
     AIDriveStrategyChopperCourse.superClass().setAllStaticParameters(self)
-    -- Create a second unloader object so we can handle two unloaders at once
-    -- Can't create a table due inhirted class funciontality
-    self.reliefUnloader = CpTemporaryObject(nil)
+
     -- We need set this as a variable and update left/right side on turns in self:updatePipeOffset()
-    self.pipeOffsetX = math.abs(self.chopperController:getChopperDischargeDistance() * .5)
-    local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX, self:getWorkWidth())
+    self:setPipeOffset()
+    local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX - 2, self:getWorkWidth())
     self:debug('Pipe in fruit map updated, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
             total, pipeInFruit)
     self:debug('AIDriveStrategyChopperCourse set')
@@ -112,6 +110,30 @@ function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
     AIDriveStrategyChopperCourse.superClass().start(self, course, startIx, jobParameters)
     -- Update the pipeOffset side when we start work  
     self:updatePipeOffset(startIx)
+end
+
+function AIDriveStrategyCombineCourse:checkRendezvous()
+    if self.unloaderToRendezvous:get() then
+        local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
+        local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.unloaderRendezvousWaypointIx)
+        if d < 10 then
+            self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
+                    self.unloaderRendezvousWaypointIx)
+            self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
+        elseif lastPassedWaypointIx > self.unloaderRendezvousWaypointIx then
+            -- past the rendezvous waypoint
+            self:debug('Unloader missed the rendezvous at %d', self.unloaderRendezvousWaypointIx)
+            local unloaderWhoDidNotShowUp = self.unloaderToRendezvous:get()
+            -- need to call this before onMissedRendezvous as the unloader will call back to set up a new rendezvous
+            -- and we don't want to cancel that right away
+            self:cancelRendezvous()
+            unloaderWhoDidNotShowUp:getCpDriveStrategy():onMissedRendezvous(self.vehicle)
+        end
+        if self:isDischarging() then
+            self:debug('Discharging, cancelling unloader rendezvous')
+            self:cancelRendezvous()
+        end
+    end
 end
 
 function AIDriveStrategyCombineCourse:driveUnloadOnField()
@@ -331,6 +353,10 @@ function AIDriveStrategyChopperCourse:resumeFieldworkAfterTurn(ix)
     AIDriveStrategyChopperCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
 
+function AIDriveStrategyChopperCourse:setPipeOffset()
+    -- Get the max discharge distance of the chopper and use 40% of that as our pipe offset
+    self.pipeOffsetX = math.abs(self.chopperController:getChopperDischargeDistance() * .4)
+end
 -- Currently works need to improve fruit side check
 function AIDriveStrategyChopperCourse:getPipeOffset(additionalOffsetX, additionalOffsetZ)
     self:debugSparse('Chopper PipeOffsetX is %.2f', self.pipeOffsetX)
@@ -347,7 +373,7 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     self.pipeOffsetX = math.abs(self.pipeOffsetX)
     --Check for a turn in the next 5 waypoints if we find one use our current waypoint for fruit check. With this we can assume we ar at the end of a row.
     -- This avoids unreliable pipeinfruit map data at turn points
-    while ix <= ix + 20 do
+    while ix <= ix + 10 do
         if self.course:isTurnStartAtIx(ix) then
             self:debug('There is a turn soon check fruit at my current location')
             if self.course:isPipeInFruitAt(ix) then
@@ -364,7 +390,7 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     end
     self:debug('I have found no turn soon check the next 10 waypoints for fruit')
     -- We didn't find the a turn so check the 5 waypoints ahead in pipeinfruit map to see for fruit. This should also avoid any bad fruit data
-    if self.course:isPipeInFruitAt(ix + 10) then
+    if self.course:isPipeInFruitAt(ix) then
         self.pipeOffsetX = -self.pipeOffsetX
         self:debug('I have updated pipeoffset to left side')
         return

@@ -66,7 +66,6 @@
     <text name="CP_combineUnloaderJobParameters_unloadTarget_title" text="Descarregar:"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_combine" text="Colheitadeira"/>
     <text name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader" text="Carregar"/>
-    <text name="CP_combineUnloaderJobParameters_unloadTarget_chopper" text="Chopper"/>
     <text name="CP_combineUnloaderJobParameters_subTitle_giantsUnloader" text="Giants descarrega:"/>
     <text name="CP_combineUnloaderJobParameters_useGiantsUnload_title" text="Use giants para descarregar:"/>
     <text name="CP_combineUnloaderJobParameters_unloadingStation_title" text="Estação para descarregar:"/>

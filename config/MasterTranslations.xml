@@ -209,6 +209,10 @@
 			<Text language="de"><![CDATA[Drescher]]></Text>
 			<Text language="en"><![CDATA[Combine]]></Text>
 		</Translation>
+		<Translation name="CP_combineUnloaderJobParameters_unloadTarget_chopper">
+			<Text language="de"><![CDATA[Häcksler]]></Text>
+			<Text language="en"><![CDATA[Chopper]]></Text>
+		</Translation>
 		<Translation name="CP_combineUnloaderJobParameters_unloadTarget_siloLoader">
 			<Text language="de"><![CDATA[Lader]]></Text>
 			<Text language="en"><![CDATA[Loader]]></Text>
@@ -2300,7 +2304,6 @@ Attention: As soon as you release the mouse button, the waypoints will be set, t
 		<Translation name="CP_help_page_unloaderGeneral_text">
 			<Text language="de"><![CDATA[
 Der Abfahrermodus von Courseplay funktioniert nur mit Dreschern, Vollerntern und gezogenen Erntern, die von Courseplay gesteuert werden.
-Häcksler funktionieren nicht.
 Zum Abtanken können normale Anhänger oder Überladewagen verwendet werden.
 Zum Entleeren von Anhängern kann entweder der Giants Helfer oder AutoDrive verwendet werden.
 Um einen Abfahrer zu starten gibt es ein paar Voraussetzungen:
@@ -2315,7 +2318,6 @@ Es gibt nur wenige Optionen zur Feineinstellung:
 ]]></Text>
 			<Text language="en"><![CDATA[
 The unloader mode of Courseplay works with combines, harvesters and towed harvesters driven by Courseplay.
-It does not work with choppers.
 You can either use a regular trailer or an auger wagon to unload a combine.
 To empty trailers, you can use the Giants Helper or AutoDrive.
 Starting the unloader requires a few things:
