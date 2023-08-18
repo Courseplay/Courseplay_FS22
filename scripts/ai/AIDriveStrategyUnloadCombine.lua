@@ -383,14 +383,16 @@ function AIDriveStrategyUnloadCombine:getDriveData(dt, vX, vY, vZ)
             self:startUnloadingTrailers()
         end
     elseif self.state == self.states.INITIAL then
-        Timer.createOneshot(50, function ()
-            if self.state == self.states.INITIAL then
+        if not self.startTimer then
+            --- Only create one instance of the timer and wait until it finishes.
+            self.startTimer = Timer.createOneshot(50, function ()
                 --- Pipe measurement seems to be buggy with a few over loaders, like bergman RRW 500,
                 --- so a small delay of 50 ms is inserted here before unfolding starts.
                 self.vehicle:raiseAIEvent("onAIFieldWorkerStart", "onAIImplementStart")
                 self.state = self.states.IDLE
-            end
-        end)
+                self.startTimer = nil
+            end)
+        end
         self:setMaxSpeed(0)
     elseif self.state == self.states.IDLE then
         -- nothing to do right now, wait for one of the following:
