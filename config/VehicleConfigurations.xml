@@ -361,6 +361,7 @@ You can define the following custom settings:
     />
     <Vehicle name="series3420.xml"
              noReverse = "true"
+             workingWidth = "30.5"
     />
     <Vehicle name="series71300.xml"
              noReverse = "true"
