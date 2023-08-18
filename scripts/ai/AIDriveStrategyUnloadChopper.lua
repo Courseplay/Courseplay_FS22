@@ -350,7 +350,7 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     if combineStrategy:isAboutToTurn() then
         -- Make a straight course to extend the row. This may cause issues on healands when the course isn't straight before a turn
         local fwdCourse = Course.createStraightForwardCourse(self.vehicle, 50)
-        self:startCourse(fwfwdCourse, 1)
+        self:startCourse(fwdCourse, 1)
     end
     -- when the combine is turning just don't move keep going until discharging stops tho as is maneuvering is called a little early
     if combineStrategy:isManeuvering() then
