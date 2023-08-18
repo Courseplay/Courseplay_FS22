@@ -628,7 +628,7 @@ function AIDriveStrategyUnloadCombine:getTrailersTargetNode()
                 self:debugSparse('Can\'t find trailer target node')
             end
         else
-            self:debugSparse('Combine says it can\'t load trailer %s driven by %s filling %s', CpUtil.getName(trailer), CpUtil.getName(self.vehicle), self.combineToUnload:getCpDriveStrategy():getFillType())
+            self:debugSparse('Combine says it can\'t load trailer %s driven by %s filling %s', CpUtil.getName(trailer), CpUtil.getName(self.vehicle), g_fillTypeManager:getFillTypeByIndex(self.combineToUnload:getCpDriveStrategy():getFillType()).title)
             --TODO: maybe then send the unloader away if activated?.
         end
     else
@@ -1270,7 +1270,7 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
             -- the same reference everywhere
             local goal = PathfinderUtil.getWaypointAsState3D(target, -xOffset or 0, zOffset or 0)
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
-                    self.vehicle, goal, self:getAllowReversePathfinding() or false, fieldNum, vehiclesToIgnore, {},
+                    self.vehicle, goal, false, fieldNum, vehiclesToIgnore, {},
                     maxFruitPercent, self.offFieldPenalty, areaToAvoid)
         else
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(

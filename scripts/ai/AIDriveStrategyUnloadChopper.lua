@@ -173,7 +173,8 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.MOVING_FWD_WITH_TRAILER_FULL then
         self:setFieldSpeed()
         local totalDistance = self:getDistanceFromCombine(self.state.properties.vehicle)
-        if totalDistance > 25 then
+        -- Move away unless the combine starts turning
+        if totalDistance > 50 then
             self:startUnloadingTrailers()
         end
         
