@@ -311,7 +311,7 @@ function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combi
         self:startCourse(self.driveAwayFromChopperCourse, 1)
     else
         self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, 50)
-        self:startCourse(fwdCourse, 1)
+        self:startCourse(self.driveAwayFromChopperCourse, 1)
     end
     self:setNewState(newState)
     self.state.properties.vehicle = combine
@@ -332,6 +332,7 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     -- allow on the fly offset changes
     self.combineOffset = self:getPipeOffset(self.combineToUnload)
     self.followCourse:setOffset(-self.combineOffset, 0)
+    local combineStrategy = self.combineToUnload:getCpDriveStrategy()
 
     if self:changeToUnloadWhenTrailerFull() then
         return
@@ -340,14 +341,19 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     self:driveBesideCombine()
 
     -- combine stopped in the meanwhile, like for example end of course
-    if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
+    if combineStrategy:willWaitForUnloadToFinish() then
         self:debug('change to unload stopped combine')
         self:setNewState(self.states.UNLOADING_STOPPED_COMBINE)
         return
     end
 
-    -- when the combine is turning just don't move
-    if self.combineToUnload:getCpDriveStrategy():isManeuvering() then
+    if combineStrategy:isAboutToTurn() then
+        -- Make a straight course to extend the row. This may cause issues on healands when the course isn't straight before a turn
+        local fwdCourse = Course.createStraightForwardCourse(self.vehicle, 50)
+        self:startCourse(fwfwdCourse, 1)
+    end
+    -- when the combine is turning just don't move keep going until discharging stops tho as is maneuvering is called a little early
+    if combineStrategy:isManeuvering() then
         self:setMaxSpeed(0)
     elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
         self:debug('Combine has finished turning we need to turn now')

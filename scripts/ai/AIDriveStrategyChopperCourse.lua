@@ -366,35 +366,33 @@ end
 -- Currently works need to improve fruit side check
 function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     -- We can't use self.fruitRight and self.fruitLeft as theses are only reliable during haversting.
-    -- Instead use the pipe in fruit map to see if the next 25 waypoints will have the pipe in fruit
-    -- If so switch the offset so the unloader will not drive in the fruit. Also if we encounter a turn start escape 
-    -- This should be more reliable as fruit side shouldn't change when not turning
-    -- Reset pipeOffsetx to the right side and check to see if needs to be changed to the left
-    self.pipeOffsetX = math.abs(self.pipeOffsetX)
-    --Check for a turn in the next 5 waypoints if we find one use our current waypoint for fruit check. With this we can assume we ar at the end of a row.
-    -- This avoids unreliable pipeinfruit map data at turn points
-    while ix <= ix + 10 do
+    -- Instead use the has Pathfinder Utiliy hasFruit() the same function used in generating a pip in fruit map
+    -- Pipe in fruit map can't be used on headlands so always use hasFruit
+    -- If fruit is found using our current pipe offset update to the opposite side
+
+    local storedIx = ix
+    while ix <= storedIx + 10 do
         if self.course:isTurnStartAtIx(ix) then
-            self:debug('There is a turn soon check fruit at my current location')
-            if self.course:isPipeInFruitAt(ix) then
-                self.pipeOffsetX = -self.pipeOffsetX
-                self:debug('I have updated pipeoffset to the left side')
-                return
-            else
-                self:debug('I have left the pipeoffset on the right side')
-                return
-            end
+            self:debug('There is a turn at %d check fruit at %d', ix, ix - 10)
+            ix = ix - 10
+            break
         else
             ix = ix + 1
         end
     end
-    self:debug('I have found no turn soon check the next 10 waypoints for fruit')
-    -- We didn't find the a turn so check the 5 waypoints ahead in pipeinfruit map to see for fruit. This should also avoid any bad fruit data
-    if self.course:isPipeInFruitAt(ix) then
+    if self:isFruitAtWaypoint(self.course, ix, self.pipeOffsetX) then
+        self:debug('I found fruit use the opposite side')
         self.pipeOffsetX = -self.pipeOffsetX
-        self:debug('I have updated pipeoffset to left side')
-        return
     end
-    --TODO Add a check to see if we are on the last row and if we are set the it to field side
-    self:debug('I have left the pipeoffset on the right side')
+    self:debug('No fruit found use the same side')
+end
+
+--- Is pipe in fruit according to the current field harvest state at waypoint?
+function AIDriveStrategyChopperCourse:isFruitAtWaypoint(course, ix, offsetX, offsetZ)
+    local x, _, z = course:getWaypointPosition(ix)
+
+    local hasFruit = PathfinderUtil.hasFruit(x + (offsetX or 0), z + (offsetZ or 0), 1, 1)
+
+    self:debug('at waypoint %d pipe in fruit %s', ix, tostring(hasFruit))
+    return hasFruit
 end
