@@ -37,7 +37,7 @@ local AIDriveStrategyUnloadChopper_mt = Class(AIDriveStrategyUnloadChopper, AIDr
 
 AIDriveStrategyUnloadChopper.myStates = {
     FOLLOWING_UNLOADING_CHOPPER = {},
-    MOVING_FWD_WITH_TRAILER_FULL = {}
+    MOVING_AWAY_WITH_TRAILER_FULL = {}
 }
 
 AIDriveStrategyUnloadChopper.UNLOAD_TYPES = {
@@ -172,7 +172,7 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
         -- someone is blocking us or we are blocking someone
         self:moveAwayFromOtherVehicle()
 
-    elseif self.state == self.states.MOVING_FWD_WITH_TRAILER_FULL then
+    elseif self.state == self.states.MOVING_AWAY_WITH_TRAILER_FULL then
         self:setFieldSpeed()
         
     elseif self.state == self.states.MOVING_BACK then
@@ -239,7 +239,7 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
         self:startRememberedCourse()
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         self:startWaitingForSomethingToDo()
-    elseif self.state == self.states.MOVING_FWD_WITH_TRAILER_FULL then
+    elseif self.state == self.states.MOVING_AWAY_WITH_TRAILER_FULL then
         self:startUnloadingTrailers()
     elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
         self:debug('Inverted goal position reached, so give control back to the job.')
@@ -272,7 +272,7 @@ end
 
 -- We don't care if we hit the chopper when unloading. Was causing issues durning turns
 function AIDriveStrategyUnloadChopper:ignoreChopper(object, vehicle, moveForwards, hitTerrain)
-    return self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload
+    return self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload and not self.combineToUnload:getCpDriveStrategy():isAboutToTurn()
 end
 
 function AIDriveStrategyUnloadChopper.isActiveCpChopperUnloader(vehicle)
@@ -409,7 +409,7 @@ function AIDriveStrategyUnloadChopper:changeToUnloadWhenTrailerFull()
             self:debug('... moving back a little in case AD wants to take over')
         end
         self:releaseCombine()
-        self:startMovingAwayFromChopper(self.states.MOVING_FWD_WITH_TRAILER_FULL, self.combineJustUnloaded)
+        self:startMovingAwayFromChopper(self.states.MOVING_AWAY_WITH_TRAILER_FULL, self.combineJustUnloaded)
         return true
     end
     return false
@@ -426,7 +426,7 @@ function AIDriveStrategyUnloadChopper:requestToBackupForReversingCombine(blocked
     if self.state ~= self.states.BACKING_UP_FOR_REVERSING_COMBINE and
             self.state ~= self.states.MOVING_BACK and
             self.state ~= self.states.MOVING_AWAY_FROM_OTHER_VEHICLE and
-            self.state ~= self.states.MOVING_FWD_WITH_TRAILER_FULL
+            self.state ~= self.states.MOVING_AWAY_WITH_TRAILER_FULL
     then
         -- reverse back a bit, this usually solves the problem
         -- TODO: there may be better strategies depending on the situation
