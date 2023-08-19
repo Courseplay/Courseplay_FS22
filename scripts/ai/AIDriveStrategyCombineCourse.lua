@@ -993,12 +993,12 @@ function AIDriveStrategyCombineCourse:checkFruitAtNode(node, offsetX, offsetZ)
 end
 
 --- Is pipe in fruit according to the current field harvest state at waypoint?
-function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix)
+function AIDriveStrategyCombineCourse:isPipeInFruitAtWaypointNow(course, ix, offsetX)
     if not self.storage.fruitCheckHelperWpNode then
         self.storage.fruitCheckHelperWpNode = WaypointNode(CpUtil.getName(self.vehicle) .. 'fruitCheckHelperWpNode')
     end
     self.storage.fruitCheckHelperWpNode:setToWaypoint(course, ix)
-    local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, self.pipeController:getPipeOffsetX())
+    local hasFruit, fruitValue = self:checkFruitAtNode(self.storage.fruitCheckHelperWpNode.node, offsetX or self.pipeController:getPipeOffsetX())
     self:debug('at waypoint %d pipe in fruit %s (fruitValue %.1f)', ix, tostring(hasFruit), fruitValue or 0)
     return hasFruit, fruitValue
 end

@@ -1,10 +1,11 @@
----@class ChopperController : ChopperController
+-- A subclass of the combine controller to provide clean seperation between Chopper specfic functions and combine functions
+-- Due to the interrelated nature of choppers and combines we should inherit the combine controller class
+---@class ChopperController : CombineController
 
 ChopperController = CpObject(CombineController)
 
 function ChopperController:init(vehicle, combine)
     CombineController.init(self, vehicle, combine)
-    -- self:fixDischargeDistanceForChopper()
 end
 
 -------------------------------------------------------------

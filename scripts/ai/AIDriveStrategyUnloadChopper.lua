@@ -25,7 +25,9 @@ Some things have to tweaked to make chopper unloaders work
 
 Alot of pocket making functions have been removed or there calling function has been brought here and edited to not call
 
-Unload Drivers move fowards when finished in aticipation of handling multiple unload drivers
+Unload Drivers make a U Turn when finished in aticipation of handling multiple unload drivers. To get out of the way
+
+Chopper Unload Drivers reverse when the Chopper is turning to avoid being in its way
 
 ]]--
 
@@ -37,7 +39,9 @@ local AIDriveStrategyUnloadChopper_mt = Class(AIDriveStrategyUnloadChopper, AIDr
 
 AIDriveStrategyUnloadChopper.myStates = {
     FOLLOWING_UNLOADING_CHOPPER = {},
-    MOVING_AWAY_WITH_TRAILER_FULL = {}
+    MOVING_AWAY_WITH_TRAILER_FULL = {},
+    WAITING_FOR_TURNING_CHOPPER = {},
+    BACKING_UP_FOR_TURNING_CHOPPER = {}
 }
 
 AIDriveStrategyUnloadChopper.UNLOAD_TYPES = {
@@ -51,6 +55,10 @@ AIDriveStrategyUnloadChopper.UNLOAD_TYPES = {
 -- have the old class definition (for example CombineUnloadManager.lua) of this class and thus, is_a() fails.
 -- Therefore, use this instead, this is safe after a reload.
 AIDriveStrategyUnloadChopper.isAChopperUnloadAIDriver = true
+
+------------------------------------------------------------------------------------------------------------------------
+-- Initilaztion functions
+-------------------------------------------------------------------------------------------------------------------------
 
 function AIDriveStrategyUnloadChopper.new(customMt)
     if customMt == nil then
@@ -67,7 +75,9 @@ function AIDriveStrategyUnloadChopper:setAIVehicle(vehicle, jobParameters)
     self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyUnloadChopper.ignoreChopper)
 end
 
--- Main Loop Copied from parent class edited for needs to unload choppers
+----------------------------------------------------------------------------------------------
+-- Main Loop For Chopper Unload Driver
+---------------------------------------------------------------------------------------------
 
 function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     self:updateLowFrequencyImplementControllers()
@@ -167,6 +177,20 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING_MOVING_COMBINE then
 
         self:unloadMovingCombine(dt)
+    
+    elseif self.state == self.states.BACKING_UP_FOR_TURNING_CHOPPER then
+
+        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+        -- Back up until the chopper is in front us so we don't interfer with its turn
+        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
+        if dz > 0 then
+            -- Alright the chopper is in front now. Wait for it to finish turn
+            self:setNewState(self.states.WAITING_FOR_TURNING_CHOPPER)
+        end
+    
+    elseif self.state == self.states.WAITING_FOR_TURNING_CHOPPER then
+        -- Check to see if the chopper is still turning
+        self:chopperIsManeuvering()
 
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         -- someone is blocking us or we are blocking someone
@@ -178,8 +202,8 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.MOVING_BACK then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         -- drive back until the combine is in front of us
-        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
-        if dz > 0 then
+        local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+        if dz > -3 then
             self:startWaitingForSomethingToDo()
         end
 
@@ -270,26 +294,8 @@ function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
     end
 end
 
--- We don't care if we hit the chopper when unloading. Was causing issues durning turns
-function AIDriveStrategyUnloadChopper:ignoreChopper(object, vehicle, moveForwards, hitTerrain)
-    return self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload and not self.combineToUnload:getCpDriveStrategy():isAboutToTurn()
-end
-
-function AIDriveStrategyUnloadChopper.isActiveCpChopperUnloader(vehicle)
-    if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
-        local strategy = vehicle:getCpDriveStrategy()
-        if strategy then
-            local unloadTargetType = strategy:getUnloadTargetType()            
-            if unloadTargetType ~= nil then
-                return unloadTargetType == AIDriveStrategyUnloadChopper.UNLOAD_TYPES.CHOPPER
-            end
-        end
-    end
-    return false
-end
-
 ------------------------------------------------------------------------------------------------------------------------
--- Start moving away from empty combine
+-- Start moving away from Chopper because our trailer is full
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combine)
     -- Create a Node facing the oppistote direction
@@ -322,6 +328,26 @@ end
 -- Unload combine (moving)
 -- We are driving on a copy of the combine's course with an offset
 ------------------------------------------------------------------------------------------------------------------------
+
+function AIDriveStrategyUnloadChopper:startCourseFollowingCombine()
+    local startIx
+    self.followCourse, startIx = self:setupFollowCourse()
+    self.combineOffset = self:getPipeOffset(self.combineToUnload)
+    self.followCourse:setOffset(-self.combineOffset, 0)
+    -- try to find the waypoint closest to the vehicle, as startIx we got is right beside the combine
+    -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
+    -- and we may end up between the end of the pipe and the combine
+    -- use a higher look ahead as we may be in front of the combine
+    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startIx,
+            self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
+    if found then
+        startIx = nextFwdIx
+    end
+    self:debug('Will follow combine\'s course at waypoint %d, side offset %.1f', startIx, self.followCourse.offsetX)
+    self:startCourse(self.followCourse, startIx)
+    self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+end
+
 function AIDriveStrategyUnloadChopper:unloadMovingCombine()
 
     -- ignore combine for the proximity sensor
@@ -329,9 +355,6 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     -- make sure the combine won't slow down when seeing us
     -- self.combineToUnload:getCpDriveStrategy():ignoreVehicleProximity(self.vehicle, 3000)
 
-    -- allow on the fly offset changes
-    self.combineOffset = self:getPipeOffset(self.combineToUnload)
-    self.followCourse:setOffset(-self.combineOffset, 0)
     local combineStrategy = self.combineToUnload:getCpDriveStrategy()
 
     if self:changeToUnloadWhenTrailerFull() then
@@ -346,25 +369,43 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
         self:setNewState(self.states.UNLOADING_STOPPED_COMBINE)
         return
     end
-
-    if combineStrategy:isAboutToTurn() then
-        -- Make a straight course to extend the row. This may cause issues on healands when the course isn't straight before a turn
-        local fwdCourse = Course.createStraightForwardCourse(self.vehicle, 50)
-        self:startCourse(fwdCourse, 1)
-    end
-    -- when the combine is turning just don't move keep going until discharging stops tho as is maneuvering is called a little early
+    -- The chopper row may 
     if combineStrategy:isManeuvering() then
-        self:setMaxSpeed(0)
+        -- Create a backup course so we stay out of the way of turning Chopper
+        local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 100)
+        self:startCourse(reverseCourse, 1)
+        self:setNewState(self.states.BACKING_UP_FOR_TURNING_CHOPPER)
+    end
+end
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- Waiting for maneuvering chopper
+-----------------------------------------------`-------------------------------------------------------------------------
+
+function AIDriveStrategyUnloadChopper:chopperIsManeuvering()
+    if self:changeToUnloadWhenTrailerFull() then
+        return
+    end
+    
+    if self.combineToUnload:getCpDriveStrategy():isManeuvering() then
+        
+        -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
+        local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+        if dz < 0 then
+            self:setMaxSpeed(self.combineToUnload.lastSpeedReal * 3600)
+        elseif dz > -3 then
+            self:setMaxSpeed(0)
+        end
     elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
         self:debug('Combine has finished turning we need to turn now')
         -- Turn around to meet back up with the combine
         self:pathfinderForUnloadChopperTurn()
+    else
+        -- The chopper is finsihed turning but didn't turn far resume previous state
+        self:startCourseFollowingCombine()
     end
 end
-
-------------------------------------------------------------------------------------------------------------------------
--- Waiting for maneuvering combine
------------------------------------------------`-------------------------------------------------------------------------
 
 function AIDriveStrategyUnloadChopper:pathfinderForUnloadChopperTurn()
     self:debug('Chopper finished turning I need to turn around to')
@@ -450,23 +491,26 @@ function AIDriveStrategyUnloadChopper:requestToBackupForReversingCombine(blocked
     end
 end
 
-function AIDriveStrategyUnloadChopper:startCourseFollowingCombine()
-    local startIx
-    self.followCourse, startIx = self:setupFollowCourse()
-    self.combineOffset = self:getPipeOffset(self.combineToUnload)
-    self.followCourse:setOffset(-self.combineOffset, 0)
-    -- try to find the waypoint closest to the vehicle, as startIx we got is right beside the combine
-    -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
-    -- and we may end up between the end of the pipe and the combine
-    -- use a higher look ahead as we may be in front of the combine
-    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startIx,
-            self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
-    if found then
-        startIx = nextFwdIx
+---------------------------------------------------------------------------------------------------------------------
+-- Utilites for Chopper Unload Driver
+--------------------------------------------------------------------------------------------------------------------
+
+-- We don't care if we hit the chopper when unloading. Was causing issues durning turns
+function AIDriveStrategyUnloadChopper:ignoreChopper(object, vehicle, moveForwards, hitTerrain)
+    return self.state == self.states.UNLOADING_MOVING_COMBINE and vehicle == self.combineToUnload
+end
+
+function AIDriveStrategyUnloadChopper.isActiveCpChopperUnloader(vehicle)
+    if vehicle.getIsCpCombineUnloaderActive and vehicle:getIsCpCombineUnloaderActive() then
+        local strategy = vehicle:getCpDriveStrategy()
+        if strategy then
+            local unloadTargetType = strategy:getUnloadTargetType()            
+            if unloadTargetType ~= nil then
+                return unloadTargetType == AIDriveStrategyUnloadChopper.UNLOAD_TYPES.CHOPPER
+            end
+        end
     end
-    self:debug('Will follow combine\'s course at waypoint %d, side offset %.1f', startIx, self.followCourse.offsetX)
-    self:startCourse(self.followCourse, startIx)
-    self:setNewState(self.states.UNLOADING_MOVING_COMBINE)
+    return false
 end
 
 -- Adjust offfield pentaly 

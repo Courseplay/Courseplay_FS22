@@ -366,7 +366,7 @@ end
 -- Currently works need to improve fruit side check
 function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     -- We can't use self.fruitRight and self.fruitLeft as theses are only reliable during haversting.
-    -- Instead use the has Pathfinder Utiliy hasFruit() the same function used in generating a pip in fruit map
+    -- Instead use the has Pathfinder Utiliy hasFruit() the same function used in generating a pipe in fruit map
     -- Pipe in fruit map can't be used on headlands so always use hasFruit
     -- If fruit is found using our current pipe offset update to the opposite side
 
@@ -380,19 +380,12 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
             ix = ix + 1
         end
     end
-    if self:isFruitAtWaypoint(self.course, ix, self.pipeOffsetX) then
+    local hasFruit = self:isPipeInFruitAtWaypointNow(self.course, ix, self.pipeOffsetX)
+    self:debug('I found fruit %s at waypoint %d', tostring(hasFruit), ix)
+    if hasFruit then
         self:debug('I found fruit use the opposite side')
         self.pipeOffsetX = -self.pipeOffsetX
     end
     self:debug('No fruit found use the same side')
 end
 
---- Is pipe in fruit according to the current field harvest state at waypoint?
-function AIDriveStrategyChopperCourse:isFruitAtWaypoint(course, ix, offsetX, offsetZ)
-    local x, _, z = course:getWaypointPosition(ix)
-
-    local hasFruit = PathfinderUtil.hasFruit(x + (offsetX or 0), z + (offsetZ or 0), 1, 1)
-
-    self:debug('at waypoint %d pipe in fruit %s', ix, tostring(hasFruit))
-    return hasFruit
-end
