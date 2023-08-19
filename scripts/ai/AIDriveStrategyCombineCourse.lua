@@ -162,13 +162,6 @@ function AIDriveStrategyCombineCourse:setAllStaticParameters()
     self.fillLevelFullPercentage = self.normalFillLevelFullPercentage
 end
 
--- useAITurnDriveData: in this state we are driving an AITurn course and thus rely on the AITurn or derived
--- class to get the drive data
-function AIDriveStrategyCombineCourse:useAITurnDriveData()
-    return self.state.properties.useAITurnDriveData or
-            (self.state == self.states.UNLOADING_ON_FIELD and self.unloadState.properties.useAITurnDriveData)
-end
-
 function AIDriveStrategyCombineCourse:initializeImplementControllers(vehicle)
     AIDriveStrategyCombineCourse:superClass().initializeImplementControllers(self, vehicle)
     local _
@@ -436,6 +429,11 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             self:setMaxSpeed(self.settings.fieldSpeed:getValue())
             self:enableCollisionDetection()
         end
+        -- apply the work starter's speed limit (when approaching the work start)
+        local _, _, _, maxSpeed = self.workStarter:getDriveData()
+        if maxSpeed ~= nil then
+            self:setMaxSpeed(maxSpeed)
+        end
     end
 end
 
@@ -495,8 +493,7 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self:changeToFieldWork()
         elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
             self:debug('Back from self unload, returning to fieldwork')
-            self:startRememberedCourse()
-            self:changeToFieldWork()
+            self.workStarter:onLastWaypoint()
         elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
             self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
             self:lowerImplements()
@@ -1661,9 +1658,8 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
         local fm, bm = self:getFrontAndBackMarkers()
         self.turnContext = RowStartOrFinishContext(self.vehicle, course, ix, ix, self.turnNodes, self:getWorkWidth(),
                 fm, bm, 0, 0)
-        self.aiTurn = StartRowOnly(self.vehicle, self, self.ppc, self.proximityController,
-                self.turnContext, returnCourse, course, self.workWidth)
-        self.course = course
+        self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, returnCourse)
+        self:startCourse(self.workStarter:getCourse(), 1)
         return true
     else
         self:debug('No path found to return to fieldwork after self unload (%d ms)',

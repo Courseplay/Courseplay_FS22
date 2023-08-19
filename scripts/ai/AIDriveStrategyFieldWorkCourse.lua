@@ -451,8 +451,6 @@ function AIDriveStrategyFieldWorkCourse:onWaypointPassed(ix, course)
         self:checkTransitionFromConnectingTrack(ix, course)
     elseif self.state == self.states.ON_CONNECTING_TRACK then
         self:checkTransitionFromConnectingTrack(ix, course)
-    elseif self.state == self.states.DRIVING_TO_WORK_START_WAYPOINT then
-        self.workStarter:onWaypointPassed(ix, course)
     end
     if course:isLastWaypointIx(ix) then
         self:onLastWaypointPassed()
@@ -506,7 +504,7 @@ function AIDriveStrategyFieldWorkCourse:resumeFieldworkAfterTurn(ix, forceIx)
     self:lowerImplements()
     -- restore our own listeners for waypoint changes
     self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
-    local startIx = forceIx and ix or self.course:getNextFwdWaypointIxFromVehiclePosition(ix,
+    local startIx = forceIx and ix or self.fieldWorkCourse:getNextFwdWaypointIxFromVehiclePosition(ix,
             self.vehicle:getAIDirectionNode(), self.workWidth / 2)
     self:startCourse(self.fieldWorkCourse, startIx)
 end
