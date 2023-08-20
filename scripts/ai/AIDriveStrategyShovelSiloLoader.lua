@@ -465,6 +465,7 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToStart(path)
     if path and #path > 2 then
         self:debug("Found alignment path to the course for the silo.")
         local alignmentCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        alignmentCourse:adjustForTowedImplements(2)
         self:startCourse(alignmentCourse, 1)
         self:setNewState(self.states.DRIVING_ALIGNMENT_COURSE)
     else 
@@ -501,6 +502,7 @@ function AIDriveStrategyShovelSiloLoader:onPathfindingDoneToUnloadPosition(path,
     if path and #path > 2 then
         self:debug("Found path to unloading station.")
         local course = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        course:adjustForTowedImplements(2)
         self:startCourse(course, 1)
         self:setNewState(self.states.DRIVING_TO_UNLOAD_POSITION)
     else 
