@@ -1051,7 +1051,6 @@ function Course:adjustForTowedImplements(extensionLength)
 	local waypoints = {self.waypoints[1]}
 	for i = 2, #self.waypoints do
 		if self:switchingDirectionAt(i) then
-			print(i)
 			local wp = self.waypoints[i - 1]
 			local newWp = Waypoint(wp)
 			newWp.x = wp.x + wp.dx * extensionLength
