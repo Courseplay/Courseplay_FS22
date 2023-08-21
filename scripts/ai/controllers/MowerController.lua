@@ -22,8 +22,10 @@ end
 --- For some reason the animations are not working for an ai driven hand mower..
 --- So we disable them to avoid errors.
 local function postAnimationUpdate(vehicle, superFunc, ...)
-    if not vehicle.getIsCpActive and vehicle:getIsCpActive() then 
-        superFunc(vehicle, ...)
+    if vehicle.getIsCpActive and vehicle:getIsCpActive() then 
+        --- Currently CP is driving and the animations can't be played.
+        return
     end
+    return superFunc(vehicle, ...)
 end
 PushHandTool.postAnimationUpdate = Utils.overwrittenFunction(PushHandTool.postAnimationUpdate, postAnimationUpdate)
