@@ -64,8 +64,16 @@ CpShovelPositions.KEY = "." .. CpShovelPositions.SPEC_NAME
 
 function CpShovelPositions.initSpecialization()
     local schema = Vehicle.xmlSchemaSavegame
-	g_devHelper.consoleCommands:registerConsoleCommand('cpSetShovelState', 'cpSetShovelState', 'consoleCommandSetShovelState', CpShovelPositions)
-	g_devHelper.consoleCommands:registerConsoleCommand('cpSetShovelArmLimit', 'cpSetShovelArmLimit', 'consoleCommandSetPreUnloadArmLimit', CpShovelPositions)
+	
+	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsPrintShovelDebug", 
+        "Prints debug information for the shovel", 
+        "consoleCommandPrintShovelDebug", CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetState", 
+        "Set's the current shovel state", 
+        "consoleCommandSetShovelState", CpShovelPositions)
+	g_devHelper.consoleCommands:registerConsoleCommand("cpShovelPositionsSetArmLimit", 
+        "Set's the arm max limit", 
+        "consoleCommandSetPreUnloadArmLimit", CpShovelPositions)
 end
 
 function CpShovelPositions.prerequisitesPresent(specializations)
@@ -138,6 +146,49 @@ function CpShovelPositions:consoleCommandSetPreUnloadArmLimit(min, max)
 		end
 		CpShovelPositions.PRE_UNLOAD_POSITION.ARM_LIMITS = { min, max }
 	end, min, max)
+end
+
+function CpShovelPositions:consoleCommandPrintShovelDebug(cylinderedDepth)
+	return executeConsoleCommand(function(shovelImplement)
+		--- Position debug
+		CpUtil.infoImplement(shovelImplement, "-- Position debug --")
+		local spec = shovelImplement.spec_cpShovelPositions
+		if spec then 
+			CpUtil.infoImplement(shovelImplement, " arm tool %s -> %s", 
+				CpUtil.getName(spec.armVehicle), tostring(spec.armToolIx))
+			CpUtil.infoImplement(shovelImplement, " shovel tool %s -> %s", 
+				CpUtil.getName(spec.shovelVehicle), tostring(spec.shovelToolIx))
+			local highDumpShovelIx = g_vehicleConfigurations:get(shovelImplement, "shovelMovingToolIx")	
+			CpUtil.infoImplement(shovelImplement, " shovel high dump %s -> %s", 
+				CpUtil.getName(shovelImplement), tostring(highDumpShovelIx))
+		end
+
+		CpUtil.infoImplement(shovelImplement, "-- Position debug --")
+		--- Shovel debug
+		local controller = ShovelController(shovelImplement.rootVehicle, shovelImplement, true)
+		controller:printShovelDebug()
+		controller:delete()
+		--- Cylindered debug here
+		CpUtil.infoImplement(shovelImplement, "-- Cylindered debug --")
+		cylinderedDepth = cylinderedDepth and tonumber(cylinderedDepth) or 0
+
+		local childVehicles = shovelImplement.rootVehicle:getChildVehicles()
+		for _, vehicle in ipairs(childVehicles) do
+			if vehicle.spec_cylindered then
+				for ix, tool in pairs(vehicle.spec_cylindered.movingTools) do
+					CpUtil.infoImplement(shovelImplement, " %s => ix: %d ",
+						CpUtil.getName(vehicle), ix)
+					if cylinderedDepth > 0 then
+						CpUtil.infoImplement(shovelImplement, " %s", 
+							DebugUtil.debugTableToString(tool, "   ", 0, cylinderedDepth))
+					end
+					CpUtil.infoImplement(shovelImplement, " %s => ix: %d finished", 
+						CpUtil.getName(vehicle), ix)
+				end
+			end
+		end
+		CpUtil.infoImplement(shovelImplement, "-- Cylindered debug finished --")
+	end)
 end
 
 --------------------------------------------
@@ -339,19 +390,23 @@ function CpShovelPositions:setShovelPosition(dt, shovelLimits, armLimits, isLoad
 			isDirty = ImplementUtil.moveMovingToolToRotation(self, highDumpShovelTool, dt,
 				highDumpShovelTool.invertAxis and highDumpShovelTool.rotMax or highDumpShovelTool.rotMin) or isDirty
 		end
-	else 
-		for i, tool in pairs(self.spec_cylindered.movingTools) do 
-			if tool.axis then 
-				if isLoading or isUnloading then 
-					--- Opens the shovel for loading and unloading
-					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-						tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
-				else 
-					--- Closes the shovel after loading
-					isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
-						tool.invertAxis and tool.rotMax or tool.rotMin) or isDirty
+	else
+		local shovelData = ImplementUtil.getShovelNode(self)
+		if shovelData.movingToolActivation then
+			--- The shovel has a moving tool for grabbing.
+			for i, tool in pairs(self.spec_cylindered.movingTools) do 
+				if tool.axis then 
+					if isLoading or isUnloading then 
+						--- Opens the shovel for loading and unloading
+						isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+							tool.invertAxis and tool.rotMin or tool.rotMax) or isDirty
+					else 
+						--- Closes the shovel after loading
+						isDirty = ImplementUtil.moveMovingToolToRotation(self, tool, dt,
+							tool.invertAxis and tool.rotMax or tool.rotMin) or isDirty
+					end
+					break
 				end
-				break
 			end
 		end
 	end

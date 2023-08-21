@@ -9,11 +9,12 @@ ShovelController.POSITIONS = {
     UNLOADING = 4,
 }
 
-function ShovelController:init(vehicle, implement)
+function ShovelController:init(vehicle, implement, isConsoleCommand)
     ImplementController.init(self, vehicle, implement)
     self.shovelSpec = self.implement.spec_shovel
-    self.shovelNode = self.shovelSpec.shovelNodes[1]
+    self.shovelNode = ImplementUtil.getShovelNode(implement)
     self.turnOnSpec = self.implement.spec_turnOnVehicle
+    self.isConsoleCommand = isConsoleCommand
 end
 
 function ShovelController:update()
@@ -125,4 +126,34 @@ function ShovelController:moveShovelToPosition(pos)
     end
     self.implement:cpSetShovelState(pos)
     return self.implement:areCpShovelPositionsDirty()
+end
+
+function ShovelController:printShovelDebug()
+    self:debug("--Shovel Debug--")
+    if self.shovelNode then
+        self:debug("Fill unit index: %d, max pickup angle: %.2f, width: %.2f", 
+            self.shovelNode.fillUnitIndex, 
+            math.deg(self.shovelNode.maxPickupAngle),
+            self.shovelNode.width)
+        if self.shovelNode.movingToolActivation then
+            self:debug("Has moving tool activation => open factor: %.2f, inverted: %s", 
+                self.shovelNode.movingToolActivation.openFactor, 
+                tostring(self.shovelNode.movingToolActivation.isInverted))
+        end
+        if self.shovelSpec.shovelDischargeInfo.node then
+            self:debug("min angle: %.2f, max angle: %.2f", 
+                math.deg(self.shovelSpec.shovelDischargeInfo.minSpeedAngle), 
+                math.deg(self.shovelSpec.shovelDischargeInfo.maxSpeedAngle))
+        end
+    end
+    self:debug("--Shovel Debug finished--")
+end
+
+function ShovelController:debug(...)
+    if self.isConsoleCommand then
+        --- Ignore vehicle debug setting, if the pipe controller was created by a console command.
+        self:info(...)
+        return
+    end
+    ImplementController.debug(self, ...)    
 end

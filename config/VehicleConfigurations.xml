@@ -340,6 +340,9 @@ You can define the following custom settings:
     <Vehicle name="lowloader4A.xml"
              disableUnfolding = "true"
     />
+	<Vehicle name="l180HHighTipShovel.xml"
+             shovelMovingToolIx = "1"
+    />
 
     <!--Vermeer-->
     <Vehicle name="tm1410.xml"

@@ -404,7 +404,11 @@ function ImplementUtil.stopMovingTool(implement, tool)
 end
 
 function ImplementUtil.getLevelerNode(object)
-    return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1] and object.spec_leveler.nodes[1]
+    return object.spec_leveler and object.spec_leveler.nodes and object.spec_leveler.nodes[1]
+end
+
+function ImplementUtil.getShovelNode(object)
+    return object.spec_shovel and object.spec_shovel.shovelNodes and object.spec_shovel.shovelNodes[1]
 end
 
 --- Visually displays the bale collector offset
