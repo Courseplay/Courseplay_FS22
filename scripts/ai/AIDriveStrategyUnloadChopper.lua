@@ -37,11 +37,11 @@ Chopper Unload Drivers reverse when the Chopper is turning to avoid being in its
 AIDriveStrategyUnloadChopper = {}
 local AIDriveStrategyUnloadChopper_mt = Class(AIDriveStrategyUnloadChopper, AIDriveStrategyUnloadCombine)
 
-AIDriveStrategyUnloadChopper.myStates = {
-    FOLLOWING_UNLOADING_CHOPPER = {},
-    MOVING_AWAY_WITH_TRAILER_FULL = {},
-    WAITING_FOR_TURNING_CHOPPER = {},
-    BACKING_UP_FOR_TURNING_CHOPPER = {}
+AIDriveStrategyUnloadChopper.myCombineUnloadStates = {
+    FOLLOWING_UNLOADING_CHOPPER = {collisionAvoidanceEnabled = true},
+    MOVING_AWAY_WITH_TRAILER_FULL = {collisionAvoidanceEnabled = true},
+    WAITING_FOR_TURNING_CHOPPER = {openCoverAllowed = true},
+    BACKING_UP_FOR_TURNING_CHOPPER = {openCoverAllowed = true}
 }
 
 AIDriveStrategyUnloadChopper.UNLOAD_TYPES = {
@@ -66,7 +66,8 @@ function AIDriveStrategyUnloadChopper.new(customMt)
     end
     local self = AIDriveStrategyUnloadCombine.new(customMt)
     self.unloadTargetType = self.UNLOAD_TYPES.CHOPPER
-    self.states = CpUtil.initStates(self.states, AIDriveStrategyUnloadChopper.myStates)
+    self.combineUnloadStates = CpUtil.initStates(self.combineUnloadStates, AIDriveStrategyUnloadChopper.myCombineUnloadStates)
+    self.states = CpUtil.copyStates(self.states, self.combineUnloadStates)
     return self
 end
 
@@ -178,16 +179,6 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
 
         self:unloadMovingCombine(dt)
     
-    elseif self.state == self.states.BACKING_UP_FOR_TURNING_CHOPPER then
-
-        self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        -- Back up until the chopper is in front us so we don't interfer with its turn
-        local _, _, dz = self:getDistanceFromCombine(self.state.properties.vehicle)
-        if dz > 0 then
-            -- Alright the chopper is in front now. Wait for it to finish turn
-            self:setNewState(self.states.WAITING_FOR_TURNING_CHOPPER)
-        end
-    
     elseif self.state == self.states.WAITING_FOR_TURNING_CHOPPER then
         -- Check to see if the chopper is still turning
         self:chopperIsManeuvering()
@@ -202,8 +193,8 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.MOVING_BACK then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         -- drive back until the combine is in front of us
-        local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
-        if dz > -3 then
+        local _, _, dz = self:getDistanceFromCombine( self.state.properties.vehicle)
+        if dz > 0 then
             self:startWaitingForSomethingToDo()
         end
 
@@ -247,7 +238,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- On last waypoint
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:onLastWaypointPassed()
+function AIDriveStrategyUnloadChopper:onLastWaypointPassed()
     self:debug('Last waypoint passed')
     if self.state == self.states.DRIVING_TO_COMBINE then
         if self:isOkToStartUnloadingCombine() then
@@ -374,7 +365,7 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
         -- Create a backup course so we stay out of the way of turning Chopper
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 100)
         self:startCourse(reverseCourse, 1)
-        self:setNewState(self.states.BACKING_UP_FOR_TURNING_CHOPPER)
+        self:setNewState(self.states.WAITING_FOR_TURNING_CHOPPER)
     end
 end
 
