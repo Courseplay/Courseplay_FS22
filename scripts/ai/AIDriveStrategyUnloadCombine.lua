@@ -630,7 +630,7 @@ function AIDriveStrategyUnloadCombine:getTrailersTargetNode()
                 self:debugSparse('Can\'t find trailer target node')
             end
         else
-            self:debugSparse('Combine says it can\'t load trailer %s driven by %s filling %s', CpUtil.getName(trailer), CpUtil.getName(self.vehicle), g_fillTypeManager:getFillTypeByIndex(self.combineToUnload:getCpDriveStrategy():getFillType()).title)
+            self:debugSparse('Combine says it can\'t load trailer %s driven by %s filling %s', CpUtil.getName(trailer), CpUtil.getName(self.vehicle), g_fillTypeManager:getFillTypeByIndex(self.combineToUnload:getCpDriveStrategy():getFillType()).title or 'N/A')
             --TODO: maybe then send the unloader away if activated?.
         end
     else

@@ -642,3 +642,12 @@ function AIDriveStrategyCombineCourse:isReadyToUnload(noUnloadWithPipeInFruit)
     self:debugSparse('isReadyToUnload(): defaulting to ready to unload')
     return true
 end
+
+function AIDriveStrategyChopperCourse:isChopper(combine)
+    local capacity = 0
+    local dischargeNode = combine:getCurrentDischargeNode()
+    if dischargeNode ~= nil then
+        capacity = combine:getFillUnitCapacity(dischargeNode.fillUnitIndex)
+    end
+    return capacity == math.huge
+end
