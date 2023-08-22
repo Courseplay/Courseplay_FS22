@@ -47,6 +47,14 @@ function AIDriveStrategyChopperCourse.new(customMt)
         customMt = AIDriveStrategyChopperCourse_mt
     end
     local self = AIDriveStrategyCombineCourse.new(customMt)
+    --- Unloaders Object. Stores all data about who we are unloading 
+    ---@type CpTemporaryObject
+    self.unloaders = {
+        unloaderA = CpTemporaryObject(nil),
+        unloaderB = CpTemporaryObject(nil),
+        nextUnloader = 'B',
+        currentUnloader = 'A'
+    }
     return self
 end
 
@@ -78,6 +86,7 @@ end
 
 function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
     self:handlePipe()
+
     if self.temporaryHold:get() then
         self:setMaxSpeed(0)
     end
@@ -102,6 +111,7 @@ function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
         -- Unloading
         self:driveUnloadOnField()
         self:callUnloaderWhenNeeded()
+        self:checkNextUnloader()
     end
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
 end
@@ -112,15 +122,23 @@ function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
     self:updatePipeOffset(startIx)
 end
 
-function AIDriveStrategyCombineCourse:checkRendezvous()
+function AIDriveStrategyChopperCourse:checkNextUnloader()
+    self:debug('I checked for next unloader')
+    if not self:getUnloader(self:getCurrentUnloader()) and self:getUnloader(self:getNextUnloader()) then
+        self:debug('checkNextUnloader: I lost my current unloder and I have one that is arriving switch them')
+        self:updateNextUnloader()
+    elseif self:getUnloader(self:getNextUnloader()) and self:getUnloader(self:getNextUnloader()):readyToRecive() then
+        self:debug('checkNextUnloader: Discharging to %s, s %s is ready to come along side', CpUtil.getName((self:getCurrentUnloader()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
+        self:getUnloader(self:getCurrentUnloader()):requestDriveUnloadNow()
+        self:updateNextUnloader()
+    elseif self:getUnloader(self:getNextUnloader()) then
+        self:debug('checkNextUnloader: Next Unloader is %s, is ready to come along side: %s', CpUtil.getName((self:getNextUnloaderUnloader())), self:getUnloader(self:getNextUnloader()):readyToRecive())
+    end
+end
+function AIDriveStrategyChopperCourse:checkRendezvous()
     if self.unloaderToRendezvous:get() then
         local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
-        local d = self.course:getDistanceBetweenWaypoints(lastPassedWaypointIx, self.unloaderRendezvousWaypointIx)
-        if d < 10 then
-            self:debugSparse('Slow down around the unloader rendezvous waypoint %d to let the unloader catch up',
-                    self.unloaderRendezvousWaypointIx)
-            self:setMaxSpeed(self.settings.fieldWorkSpeed:getValue() / 2)
-        elseif lastPassedWaypointIx > self.unloaderRendezvousWaypointIx then
+        if lastPassedWaypointIx > self.unloaderRendezvousWaypointIx then
             -- past the rendezvous waypoint
             self:debug('Unloader missed the rendezvous at %d', self.unloaderRendezvousWaypointIx)
             local unloaderWhoDidNotShowUp = self.unloaderToRendezvous:get()
@@ -129,14 +147,16 @@ function AIDriveStrategyCombineCourse:checkRendezvous()
             self:cancelRendezvous()
             unloaderWhoDidNotShowUp:getCpDriveStrategy():onMissedRendezvous(self.vehicle)
         end
-        if self:isDischarging() then
-            self:debug('Discharging, cancelling unloader rendezvous')
+        if self:getUnloader(self:getNextUnloader()) and self:getUnloader(self:getNextUnloader()):readyToRecive() then
+            self:debug('Discharging to %s, cancelling unloader rendezvous %s is ready to come along side', CpUtil.getName((self:getCurrentUnloader()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
+            self:getUnloader(self:getCurrentUnloader()):requestDriveUnloadNow()
+            self:updateNextUnloader()
             self:cancelRendezvous()
         end
     end
 end
 
-function AIDriveStrategyCombineCourse:driveUnloadOnField()
+function AIDriveStrategyChopperCourse:driveUnloadOnField()
     if self.unloadState == self.states.STOPPING_FOR_UNLOAD then
         self:setMaxSpeed(0)
         -- wait until we stopped before raising the implements
@@ -240,7 +260,7 @@ function AIDriveStrategyChopperCourse:findUnloader(combine, waypoint)
                 CpUtil.getName(bestUnloader), bestScore, bestEte)
         return bestUnloader, bestEte
     else
-        self:debug('findUnloader: no idle unloader found')
+        self:debugSparse('findUnloader: no idle unloader found')
     end
 end
 
@@ -254,10 +274,6 @@ function AIDriveStrategyChopperCourse:getTrailerFillLevel()
             fillLevel, capacity)
     end
     return fillLevel, capacity
-end
-
-function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
-    return self.waitingForTrailer
 end
 
 --- Not exactly sure what this does, but without this the chopper just won't move.
@@ -295,20 +311,30 @@ end
 -- TODO: move this to the PipeController? Rename this is it doesnt check pipe in checks for trailer in range
 function AIDriveStrategyChopperCourse:handlePipe()
     self.pipeController:handleChopperPipe()
+end
+
+function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
     local trailer, targetObject = self:nearestChopperTrailer()
     local dischargeNode = self.pipeController:getDischargeNode()
     self:debugSparse('%s %s', dischargeNode, self:isAnyWorkAreaProcessing())
-    if targetObject == nil or trailer == nil then
-        self:debugSparse('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
-                tostring(dischargeNode), tostring(targetObject), tostring(trailer))
-        self.waitingForTrailer = true
-    end
-    if self.waitingForTrailer then
-        if not (targetObject == nil or trailer == nil) then
-            self:debugSparse('Chopper has trailer now, continue')
-            self.waitingForTrailer = false
+    if not (targetObject == nil or trailer == nil) then 
+        if targetObject and targetObject.getIsCpActive and targetObject:getIsCpActive() then
+            local strategy = targetObject:getCpDriveStrategy()
+            if strategy.isAChopperUnloadAIDriver
+                and self:getUnloader(self:getCurrentUnloader()) 
+                and self:getUnloader(self:getCurrentUnloader()).vehicle == targetObject 
+                and self:getUnloader(self:getCurrentUnloader()):readyToRecive() then
+                    self:debugSparse('Chopper has a CP Driven trailer now, continue')
+                    return false
+            end
+        else
+            self:debugSparse('Chopper has a non CP Driven trailer now, continue')
+            return false
         end
     end
+    self:debugSparse('Chopper waiting for trailer, discharge node %s, target object %s, trailer %s',
+                tostring(dischargeNode), tostring(targetObject), tostring(trailer))
+    return true
 end
 
 function AIDriveStrategyChopperCourse:nearestChopperTrailer()
@@ -389,3 +415,229 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     self:debug('No fruit found use the same side')
 end
 
+function AIDriveStrategyChopperCourse:registerUnloader(driver, whichUnloader)
+    if whichUnloader == 'A' then
+        self:debugSparse('registerUnloader: %s is registed as driver A', CpUtil.getName(driver.vehicle))
+        self.unloaders.unloaderA:set(driver, 1000)
+    elseif whichUnloader == 'B' then
+        self:debugSparse('registerUnloader: %s is registed as driver B', CpUtil.getName(driver.vehicle))
+        self.unloaders.unloaderB:set(driver, 1000)
+    else
+        self:debugSparse('registerUnloader: %s tried to register but didn\'t pass me A/B Unloader', CpUtil.getName(driver.vehicle))
+    end
+end
+
+function AIDriveStrategyChopperCourse:resetUnloader(whichUnloader)
+    if whichUnloader == 'A' then
+        self:debug('resetUnloader: driver A was reset')
+        self.unloaders.unloaderA:reset()
+    elseif whichUnloader == 'B' then
+        self:debug('resetUnloader: driver B was rest')
+        self.unloaders.unloaderB:reset()
+    else
+        self:debug('resetUnloader: Someone tried to unregister but tell me who')
+    end
+end
+function AIDriveStrategyChopperCourse:deregisterUnloader(driver, whichUnloader, noEventSend)
+    self:debug('Unloader has been unregistered')
+    if self.unloaderToRendezvous:get() then
+        if self:getUnloader(whichUnloader) and self:getUnloader(whichUnloader).vehicle == self.unloaderToRendezvous:get() then
+            self:cancelRendezvous()
+        end
+    end
+    self:resetUnloader(whichUnloader)
+end
+
+function AIDriveStrategyChopperCourse:clearAllUnloaderInformation()
+    self:debug('All Unloader Info has been cleared')
+    self:cancelRendezvous()
+    self.unloader:reset()
+end
+
+-- function AIDriveStrategyChopperCourse:getUnloaderToRendezvous(whichUnloader)
+--     if whichUnloader = 'A' then
+--         return self.unloaders.unloaderAToRendezvous:get()
+--     elseif whichUnloader = 'B' then
+--         return self.unloaders.unloaderBToRendezvous:get()
+--     end
+-- end
+
+function AIDriveStrategyChopperCourse:getUnloader(whichUnloader)
+    if whichUnloader == 'A' then
+        return self.unloaders.unloaderA:get()
+    elseif whichUnloader == 'B' then
+        return self.unloaders.unloaderB:get()
+    end
+end
+
+-- function AIDriveStrategyChopperCourse:setUnloaderToRendezvous(driver, time, whichUnloader)
+--     if whichUnloader = 'A' then
+--         self:debug('setUnloaderToRendezvous: %s was registed as rendezvous driver A', CpUtil.getName(driver.vehicle))
+--         self.unloaders.unloaderAToRendezvous:set(driver, time, whichUnloader)
+--     elseif whichUnloader = 'B' then
+--         self:debug('setUnloaderToRendezvous: %s was registed as rendezvous driver B', CpUtil.getName(driver.vehicle))
+--         self.unloaders.unloaderBToRendezvous:set(driver, time, whichUnloader)
+--     else
+--         self:debug('setUnloaderToRendezvous: %s tried to register but didn\'t pass me A/B Unloader')
+--     end
+-- end
+
+-- function AIDriveStrategyChopperCourse:resetUnloaderToRendezvous(whichUnloader)
+--     if whichUnloader = 'A' then
+--         self:debug('resetUnloaderToRendezvous: driver A rendezvous was reset')
+--         self.unloaders.unloaderAToRendezvous:reset()
+--     elseif whichUnloader = 'B' then
+--         self:debug('resetUnloaderToRendezvous: driver B rendezvous was restet')
+--         self.unloaders.unloaderBToRendezvous:reset()
+--     else
+--         self:debug('resetUnloaderToRendezvous: Someone tried to unregister but tell me who')
+--     end
+-- end
+
+function AIDriveStrategyChopperCourse:updateNextUnloader()
+    self:debug('I updated the unloaders')
+    if self.unloaders.currentUnloader == 'A' then
+        self.unloaders.nextUnloader = 'A'
+        self.unloaders.currentUnloader = 'B'
+    else
+        self.unloaders.nextUnloader = 'B'
+        self.unloaders.currentUnloader = 'A'
+    end
+end
+
+function AIDriveStrategyChopperCourse:getNextUnloader()
+    return self.unloaders.nextUnloader
+end
+
+function AIDriveStrategyChopperCourse:getCurrentUnloader()
+    return self.unloaders.currentUnloader
+end
+
+-- function AIDriveStrategyChopperCourse:setInboundUnloader(unloaderIncoming)
+--     self.unloaders.inboundUnloader = unloaderIncoming
+-- end
+-- function AIDriveStrategyChopperCourse:cancelRendezvous(whichUnloader)
+--     local unloader = self:getUnloaderToRendezvous(whichUnloader)
+--     self:debug('cancelRendezvous: Rendezvous with %s at waypoint %d cancelled',
+--             CpUtil.getName(unloader or 'N/A'),
+--             self.unloaderRendezvousWaypointIx or -1)
+--     self.unloaderRendezvousWaypointIx = nil
+--     self.setInboundUnloader(false)
+--     self.resetUnloaderToRendezvous(whichUnloader)
+-- end
+
+-- function AIDriveStrategyChopperCourse:unloaderInbound()
+--     return self.unloaders.inboundUnloader
+-- end
+
+-- function AIDriveStrategyChopperCourse:shouldUnloaderFollow()
+--     return self:isDischarging()
+-- end
+
+function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
+
+    local bestUnloader, bestEte
+    if self:isWaitingForUnload() then
+        if self:getUnloader(self:getCurrentUnloader()) then
+            self:debugSparse('callUnloaderWhenNeeded: stopped, no unloader needed my unloader is just out of range')
+            return
+        end
+        bestUnloader, _ = self:findUnloader(self.vehicle, nil)
+        self:debugSparse('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
+        if bestUnloader then
+            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloader())
+        end
+    elseif self.timeToCallUnloader:get() then
+        if not self.waypointIxWhenCallUnloader then
+            self:debug('callUnloaderWhenNeeded: don\'t know yet where to meet the unloader')
+            return
+        end
+        -- Find a good waypoint to unload, as the calculated one may have issues, like pipe would be in the fruit,
+        -- or in a turn, etc.
+        -- TODO: isPipeInFruitAllowed
+        local tentativeRendezvousWaypointIx = self:findBestWaypointToUnload(self.waypointIxWhenCallUnloader, true)
+        if not tentativeRendezvousWaypointIx then
+            self:debug('callUnloaderWhenNeeded: can\'t find a good waypoint to meet the unloader')
+            return
+        end
+        bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(tentativeRendezvousWaypointIx))
+        -- getSpeedLimit() may return math.huge (inf), when turning for example, not sure why, and that throws off
+        -- our ETE calculation
+        if bestUnloader and self.vehicle:getSpeedLimit(true) < 100 then
+            local dToUnloadWaypoint = self.course:getDistanceBetweenWaypoints(tentativeRendezvousWaypointIx,
+                    self.course:getCurrentWaypointIx())
+            local myEte = dToUnloadWaypoint / (self.vehicle:getSpeedLimit(true) / 3.6)
+            self:debug('callUnloaderWhenNeeded: best unloader ETE at waypoint %d %.1fs, my ETE %.1fs',
+                    tentativeRendezvousWaypointIx, bestEte, myEte)
+            if bestEte - 5 > myEte then
+                -- I'll be at the rendezvous a lot earlier than the unloader which will almost certainly result in the
+                -- cancellation of the rendezvous.
+                -- So, set something up further away, with better chances,
+                -- using the unloader's ETE, knowing that 1) that ETE is for the current rendezvous point, 2) there
+                -- may be another unloader selected for that waypoint
+                local dToTentativeRendezvousWaypoint = bestEte * (self.vehicle:getSpeedLimit(true) / 3.6)
+                self:debug('callUnloaderWhenNeeded: too close to rendezvous waypoint, trying move it %.1fm',
+                        dToTentativeRendezvousWaypoint)
+                tentativeRendezvousWaypointIx = self.course:getNextWaypointIxWithinDistance(
+                        self.course:getCurrentWaypointIx(), dToTentativeRendezvousWaypoint)
+                if tentativeRendezvousWaypointIx then
+                    bestUnloader, bestEte = self:findUnloader(nil, self.course:getWaypoint(tentativeRendezvousWaypointIx))
+                    if bestUnloader then
+                        self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+                    end
+                else
+                    self:debug('callUnloaderWhenNeeded: still can\'t find a good waypoint to meet the unloader')
+                end
+            elseif bestEte + 5 > myEte then
+                -- do not call too early (like minutes before we get there), only when it needs at least as
+                -- much time to get there as the combine (-5 seconds)
+                self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+            end
+        end
+    else
+        -- check back again in a few seconds
+        self.timeToCallUnloader:set(false, 3000)
+    end
+end
+
+function AIDriveStrategyChopperCourse:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+    if bestUnloader:getCpDriveStrategy():call(self.vehicle,
+            self.course:getWaypoint(tentativeRendezvousWaypointIx), self:getNextUnloader()) then
+        self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
+        self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
+        self:debug('callUnloaderWhenNeeded: harvesting, unloader accepted rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
+    else
+        self:debug('callUnloaderWhenNeeded: harvesting, unloader rejected rendezvous at waypoint %d', tentativeRendezvousWaypointIx)
+    end
+end
+
+--- Are we ready for an unloader?
+--- @param noUnloadWithPipeInFruit boolean pipe must not be in fruit for unload
+function AIDriveStrategyCombineCourse:isReadyToUnload(noUnloadWithPipeInFruit)
+    -- no unloading when not in a safe state (like turning)
+    -- in these states we are always ready
+    if self:willWaitForUnloadToFinish() then
+        return true
+    end
+
+    -- but, if we are full and waiting for unload, we have no choice, we must be ready ...
+    if self.state == self.states.UNLOADING_ON_FIELD and self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
+        return true
+    end
+
+
+    if not self.course then
+        self:debugSparse('isReadyToUnload(): has no fieldwork course')
+        return false
+    end
+
+    -- around a turn, for example already working on the next row but not done with the turn yet
+
+    if self.course:isCloseToNextTurn(10) then
+        self:debugSparse('isReadyToUnload(): too close to turn')
+        return false
+    end
+    -- safe default, better than block unloading
+    self:debugSparse('isReadyToUnload(): defaulting to ready to unload')
+    return true
+end
