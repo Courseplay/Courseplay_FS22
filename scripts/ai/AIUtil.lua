@@ -102,7 +102,7 @@ end
 
 function AIUtil.getTowBarLength(vehicle)
 	-- is there a wheeled implement behind the tractor and is it on a pivot?
-	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle)
+	local implement = AIUtil.getFirstReversingImplementWithWheels(vehicle, true)
 	if not implement or not implement.steeringAxleNode then
 		CpUtil.debugVehicle(CpDebug.DBG_AI_DRIVER, vehicle, 'could not get tow bar length, using default 3 m.')
 		-- default is not 0 as this is used to calculate trailer heading and 0 here may result in NaNs

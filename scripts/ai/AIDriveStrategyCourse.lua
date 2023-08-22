@@ -28,7 +28,6 @@ local AIDriveStrategyCourse_mt = Class(AIDriveStrategyCourse, AIDriveStrategy)
 AIDriveStrategyCourse.myStates = {
     INITIAL = {},
     WAITING_FOR_PATHFINDER = {},
-    DRIVING_TO_WORK_START_WAYPOINT = {},
 }
 
 --- Implement controller events.

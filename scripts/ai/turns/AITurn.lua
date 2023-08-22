@@ -1,6 +1,6 @@
 --[[
 This file is part of Courseplay (https://github.com/Courseplay/courseplay)
-Copyright (C) 2019 Peter Vaiko
+Copyright (C) 2019 - 2023 Courseplay Dev Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -609,7 +609,7 @@ function CourseTurn:endTurn(dt)
                     self:debug("implements lowered, resume fieldwork")
                     self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
                 else
-                    self:debug('waiting for lower at dz=%.1f', dz)
+                    self:debug('waiting for lower at dz=%.1f %s', dz, self.vehicle:getAttachedImplements()[1].object:getCanAIImplementContinueWork())
                     -- we are almost at the start of the row but still not lowered everything,
                     -- hold.
                     return false
@@ -941,50 +941,127 @@ function CombinePocketHeadlandTurn:onWaypointPassed(ix, course)
     end
 end
 
--- TODO: This is not used, and has not been updated with all the AITurn changes for a while
 --- A turn type which isn't really a turn, we only use this to finish a row (drive straight until the implement
---- reaches the end of the row, don't drive towards the next waypoint until then)
---- This is to make sure the last row before transitioning to the headland is properly finished, otherwise
---- we'd start driving towards the next headland waypoint, turning towards it before the implement reaching the
---- end of the row and leaving unworked patches.
+--- reaches the end of the row, don't drive towards the next waypoint until then) and then call the
+--- user supplied callback.
 ---@class FinishRowOnly : AITurn
 FinishRowOnly = CpObject(AITurn)
 
-function FinishRowOnly:init(vehicle, driver, turnContext)
-    AITurn.init(self, vehicle, driver, turnContext, 'FinishRowOnly')
+---@param callbackObject table|nil
+---@param callbackFunction function|nil member function of callbackObject to call after the row is finished. If
+--- object and function is nil, just resume fieldwork.
+function FinishRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext, callbackObject, callbackFunction)
+    AITurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, 0, 'FinishRow')
+    self.callbackObject = callbackObject
+    self.callbackFunction = callbackFunction
 end
 
-function FinishRowOnly:finishRow()
-    -- keep driving straight until we need to raise our implements
-    if self.driveStrategy:shouldRaiseImplements(self:getRaiseImplementNode()) then
-        self:debug('Row finished, returning to fieldwork.')
-        self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx, true)
+-- don't perform the actual turn, just give back control to the strategy
+function FinishRowOnly:startTurn()
+    if self.callbackFunction and self.callbackObject then
+        self:debug('Row finished, triggering callback function')
+        self.callbackFunction(self.callbackObject)
+    else
+        self:debug('Row finished, no callback supplied, so resuming fieldwork')
+        self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
     end
-    return false
+end
+
+function FinishRowOnly:updateTurnProgress()
+    -- do nothing since this isn't really a turn
 end
 
 --- A turn which really isn't a turn just a course to start a field work row using the supplied course and
---- making sure we start working at that waypoint with all implements lowered in time.
+--- making sure we start working at the start point defined by the turn context with all implements lowered in time.
+--- This does not actually drive the course like the other AITurn derivates to keep full control in the strategy
+--- (like not registering its own onWaypoint* callbacks). It only provides a getDriveData() for limiting
+--- the speed, and probably should not even be a turn.
 ---@class StartRowOnly: CourseTurn
 StartRowOnly = CpObject(CourseTurn)
+---@param turnContext RowStartOrFinishContext a turn context holding all data about the work start location and
+--- the implement configuration
 ---@param startRowCourse Course course leading to the first waypoint of the row to start
----@param fieldWorkCourse Course field work course
----@param workWidth number
-function StartRowOnly:init(vehicle, driveStrategy, ppc, proximityController, turnContext, startRowCourse, fieldWorkCourse, workWidth)
-    CourseTurn.init(self, vehicle, driveStrategy, ppc, proximityController, turnContext, fieldWorkCourse, workWidth, 'StartRow')
+function StartRowOnly:init(vehicle, driveStrategy, ppc, turnContext, startRowCourse)
+    -- not yet reached a TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END marker
+    self:addState('DRIVING_TO_ROW')
+    -- close to the work start point, ready to lower at the right moment
+    self:addState('APPROACHING_ROW')
+    -- implements are now lowering, maneuver ends when they are completely lowered
+    self:addState('IMPLEMENTS_LOWERING')
+    self.vehicle = vehicle
+    self.settings = vehicle:getCpSettings()
+    self.turningRadius = AIUtil.getTurningRadius(self.vehicle)
+    ---@type AIDriveStrategyFieldWorkCourse
+    self.driveStrategy = driveStrategy
+    ---@type PurePursuitController
+    self.ppc = ppc
+    ---@type TurnContext
+    self.turnContext = turnContext
+    self.name = 'StartRowOnly'
+
     self.turnCourse = startRowCourse
-    self.enableTightTurnOffset = true
+
+    self.forceTightTurnOffset = false
+    local _, steeringLength = AIUtil.getSteeringParameters(self.vehicle)
+    self.enableTightTurnOffset = steeringLength > 0 and not AIUtil.hasArticulatedAxis(self.vehicle)
+
+        -- TODO: do we need tight turn offset here?
     self.turnCourse:setUseTightTurnOffsetForLastWaypoints(15)
     -- add a turn ending section into the row to make sure the implements are lowered correctly
     local endingTurnLength = self.turnContext:appendEndingTurnCourse(self.turnCourse, 3, true)
     TurnManeuver.setLowerImplements(self.turnCourse, endingTurnLength, true)
-    self.ppc:setCourse(self.turnCourse)
-    self.ppc:initialize(1)
-    self.state = self.states.TURNING
+    self.state = self.states.DRIVING_TO_ROW
 end
 
-function StartRowOnly:updateTurnProgress()
-    -- do nothing since this isn't really a turn
+function StartRowOnly:getCourse()
+    return self.turnCourse
+end
+
+--- Implements the usual getDriveData() interface, only ever sets the maximum speed though
+function StartRowOnly:getDriveData()
+    if self.state == self.states.DRIVING_TO_ROW then
+        if TurnManeuver.hasTurnControl(self.turnCourse, self.turnCourse:getCurrentWaypointIx(),
+                TurnManeuver.LOWER_IMPLEMENT_AT_TURN_END) then
+            self.state = self.states.APPROACHING_ROW
+            self:debug('Approaching row')
+        end
+    elseif self.state == self.states.APPROACHING_ROW then
+        local shouldLower, _ = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode,
+                self.ppc:isReversing())
+        if shouldLower then
+            -- have not started lowering implements yet
+            self:debug('Lowering implements')
+            self.driveStrategy:lowerImplements()
+            self.state = self.states.IMPLEMENTS_LOWERING
+            if self.ppc:isReversing() then
+                -- when ending a turn in reverse, don't drive the rest of the course, switch right back to fieldwork
+                self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+            end
+        end
+        return nil, nil, nil, self:getForwardSpeed()
+    elseif self.state == self.states.IMPLEMENTS_LOWERING then
+        local _, dz = self.driveStrategy:shouldLowerImplements(self.turnContext.workStartNode, self.ppc:isReversing())
+        -- implements already lowering, making sure we check if they are lowered, the faster we go, the earlier,
+        -- for those people who set insanely high turn speeds...
+        local implementCheckDistance = math.max(1, 0.1 * self.vehicle:getLastSpeed())
+        if dz and dz > -implementCheckDistance then
+            if self.vehicle:getCanAIFieldWorkerContinueWork() then
+                self:debug("implements lowered, resume fieldwork")
+                self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
+            else
+                self:debug('waiting for lower at dz=%.1f', dz)
+                -- we are almost at the start of the row but still not lowered everything, hold.
+                return nil, nil, nil, 0
+            end
+        end
+        return nil, nil, nil, self:getForwardSpeed()
+    end
+    return nil, nil, nil, nil
+end
+
+function StartRowOnly:onLastWaypoint()
+    self:debug('Last waypoint reached before all implements are lowered, resuming fieldwork')
+    self:resumeFieldworkAfterTurn(self.turnContext.turnEndWpIx)
 end
 
 --- A turn for working between vine rows.
