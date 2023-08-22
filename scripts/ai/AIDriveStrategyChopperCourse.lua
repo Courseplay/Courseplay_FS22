@@ -169,12 +169,12 @@ function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
 end
 
 function AIDriveStrategyChopperCourse:checkNextUnloader()
-    if not self:getUnloader(self:getCurrentUnloader()) and self:getUnloader(self:getNextUnloader()) then
+    if not self:getUnloader(self:getCurrentUnloaderIdent()) and self:getUnloader(self:getNextUnloader()) then
         self:debug('checkNextUnloader: I lost my current unloder and I have one that is arriving switch them')
         self:updateNextUnloader()
     elseif self:getUnloader(self:getNextUnloader()) and self:getUnloader(self:getNextUnloader()):readyToRecive() then
-        self:debug('checkNextUnloader: Discharging to %s, s %s is ready to come along side', CpUtil.getName((self:getCurrentUnloader()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
-        self:getUnloader(self:getCurrentUnloader()):requestDriveUnloadNow()
+        self:debug('checkNextUnloader: Discharging to %s, s %s is ready to come along side', CpUtil.getName((self:getCurrentUnloaderIdent()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
+        self:getUnloader(self:getCurrentUnloaderIdent()):requestDriveUnloadNow()
         self:updateNextUnloader()
     elseif self:getUnloader(self:getNextUnloader()) then
         self:debug('checkNextUnloader: Next Unloader is %s, is ready to come along side: %s', CpUtil.getName((self:getNextUnloader())), self:getUnloader(self:getNextUnloader()):readyToRecive())
@@ -193,7 +193,7 @@ function AIDriveStrategyChopperCourse:checkRendezvous()
             unloaderWhoDidNotShowUp:getCpDriveStrategy():onMissedRendezvous(self.vehicle)
         end
         if self:getUnloader(self:getNextUnloader()) and self:getUnloader(self:getNextUnloader()):readyToRecive() then
-            self:debug('Discharging to %s, cancelling unloader rendezvous %s is ready to come along side', CpUtil.getName((self:getCurrentUnloader()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
+            self:debug('Discharging to %s, cancelling unloader rendezvous %s is ready to come along side', CpUtil.getName((self:getCurrentUnloaderIdent()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
             self:cancelRendezvous()
         end
     end
@@ -310,8 +310,8 @@ end
 function AIDriveStrategyChopperCourse:getTrailerFillLevel()
     local fillLevel = 0
     local capacity = 1
-    if not self:isChopperWaitingForUnloader() then
-        local trailer, targetObject = self:nearestChopperTrailer() 
+    local trailer, targetObject = self:nearestChopperTrailer() 
+    if targetObject then
         fillLevel, capacity = FillLevelManager.getAllTrailerFillLevels(targetObject)
         self:debug('Chopper Trailer fill level is %.1f and can hold %.1f',
             fillLevel, capacity)
@@ -364,9 +364,9 @@ function AIDriveStrategyChopperCourse:isChopperWaitingForUnloader()
         if targetObject and targetObject.getIsCpActive and targetObject:getIsCpActive() then
             local strategy = targetObject:getCpDriveStrategy()
             if strategy.isAChopperUnloadAIDriver
-                and self:getUnloader(self:getCurrentUnloader()) 
-                and self:getUnloader(self:getCurrentUnloader()).vehicle == targetObject 
-                and self:getUnloader(self:getCurrentUnloader()):readyToRecive() then
+                and self:getUnloader(self:getCurrentUnloaderIdent()) 
+                and self:getUnloader(self:getCurrentUnloaderIdent()).vehicle == targetObject 
+                and self:getUnloader(self:getCurrentUnloaderIdent()):readyToRecive() then
                     self:debugSparse('Chopper has a CP Driven trailer now, continue')
                     return false
             end
@@ -520,10 +520,13 @@ function AIDriveStrategyChopperCourse:getNextUnloader()
     return self.unloaders.nextUnloader
 end
 
-function AIDriveStrategyChopperCourse:getCurrentUnloader()
+function AIDriveStrategyChopperCourse:getCurrentUnloaderIdent()
     return self.unloaders.currentUnloader
 end
 
+function AIDriveStrategyChopperCourse:getCurrentUnloader()
+    return self:getUnloader(self:getCurrentUnloaderIdent())
+end
 function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
 
     
@@ -536,14 +539,14 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
     self.timeToCallUnloader:set(false, 3000)
     local bestUnloader, bestEte
     if self:isWaitingForUnload() then
-        if self:getUnloader(self:getCurrentUnloader()) then
+        if self:getUnloader(self:getCurrentUnloaderIdent()) then
             self:debugSparse('callUnloaderWhenNeeded: stopped, no unloader needed my unloader is just out of range')
             return
         end
         bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         self:debugSparse('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
         if bestUnloader then
-            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloader())
+            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloaderIdent())
         end
         return
     else

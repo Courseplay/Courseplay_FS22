@@ -338,7 +338,8 @@ function AIDriveStrategyUnloadChopper:startCourseFollowingCombine()
     -- which may be far away and if that's our target, PPC will be slow to bring us back on the course
     -- and we may end up between the end of the pipe and the combine
     -- use a higher look ahead as we may be in front of the combine
-    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startIx,
+    local startIxOffset =  self.state.DRIVING_TO_MOVING_COMBINE and 5 or 0
+    local nextFwdIx, found = self.followCourse:getNextFwdWaypointIxFromVehiclePosition(startIx - startIxOffset,
             self.vehicle:getAIDirectionNode(), self.combineToUnload:getCpDriveStrategy():getWorkWidth(), 20)
     if found then
         startIx = nextFwdIx
@@ -547,7 +548,7 @@ function AIDriveStrategyUnloadChopper:call(combine, waypoint, whichUnloader)
             self:debug('call: Start pathfinding to rendezvous waypoint, xOffset = %.1f, zOffset = %.1f', xOffset, zOffset)
             self:startPathfinding(self.rendezvousWaypoint, xOffset, zOffset,
                     CpFieldUtil.getFieldNumUnderVehicle(self.combineToUnload),
-                    { self.combineToUnload }, self.onPathfindingDoneToMovingCombine)
+                    { self.combineToUnload, self.combineToUnload:getCpDriveStrategy():getCurrentUnloader().vehicle }, self.onPathfindingDoneToMovingCombine)
             return true
         else
             self:debug('call: Rendezvous waypoint to moving combine too close, wait a bit')
@@ -604,7 +605,8 @@ function AIDriveStrategyUnloadChopper:isUnloaderTurning()
 end
 
 function AIDriveStrategyUnloadChopper:readyToRecive()
-    return self.state == self.states.UNLOADING_MOVING_COMBINE
+    local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+    return self.course:isCloseToLastWaypoint(30) and dz < -10 or self.state == self.states.UNLOADING_MOVING_COMBINE
 end
 
 
@@ -634,13 +636,13 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
 
     -- Am I close to the end of my rendevous course and I am still in front? Slow down to wait for it to pass
     local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
-    if self.course:isCloseToLastWaypoint(50) and dz >-10 then
+    if self.course:isCloseToLastWaypoint(50) and dz > 0 then
         self:setMaxSpeed(self:getFieldSpeed()/2)
     end
 
     if self.course:isCloseToLastWaypoint(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength / 2) and
             self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self.vehicle) then
-        if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) and self:isBehindAndAlignedToCombine(false, 75) then
+        if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) and self:isBehindAndAlignedToCombine(false) then
             self:startUnloadingCombine()
         else
             self:debugSparse('Combine is late, waiting ...')
@@ -653,7 +655,7 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     end
 end
 
-function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled, maxDistanceBehind)
+function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
     if dz > 0 then
@@ -667,7 +669,7 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled, 
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
-    if d > (maxDistanceBehind or 30) then
+    if d > (75) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end
