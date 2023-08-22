@@ -189,7 +189,7 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
     
     elseif self.state == self.states.WAITING_FOR_TURNING_CHOPPER then
         -- Check to see if the chopper is still turning
-        self:chopperIsManeuvering()
+        self:chopperIsTurning()
 
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         -- someone is blocking us or we are blocking someone
@@ -371,8 +371,9 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
         return
     end
     -- The chopper row may 
-    if combineStrategy:isManeuvering() then
+    if combineStrategy:isTurning() then
         -- Create a backup course so we stay out of the way of turning Chopper
+        self:debug('The chopper is turning I better turn to')
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 100)
         self:startCourse(reverseCourse, 1)
         self:setNewState(self.states.WAITING_FOR_TURNING_CHOPPER)
@@ -384,12 +385,12 @@ end
 -- Waiting for maneuvering chopper
 -----------------------------------------------`-------------------------------------------------------------------------
 
-function AIDriveStrategyUnloadChopper:chopperIsManeuvering()
+function AIDriveStrategyUnloadChopper:chopperIsTurning()
     if self:changeToUnloadWhenTrailerFull() then
         return
     end
     
-    if self.combineToUnload:getCpDriveStrategy():isManeuvering() then
+    if self.combineToUnload:getCpDriveStrategy():isTurning() then
         
         -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
         local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
@@ -605,8 +606,7 @@ function AIDriveStrategyUnloadChopper:isUnloaderTurning()
 end
 
 function AIDriveStrategyUnloadChopper:readyToRecive()
-    local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
-    return self.course:isCloseToLastWaypoint(30) and dz < -10 or self.state == self.states.UNLOADING_MOVING_COMBINE
+    return self.course:isCloseToLastWaypoint(25) and self:isBehindAndAlignedToCombine(false) or self.state == self.states.UNLOADING_MOVING_COMBINE
 end
 
 
@@ -669,7 +669,7 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
         return false
     end
     local d = MathUtil.vector2Length(dx, dz)
-    if d > (75) then
+    if d > (40) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end

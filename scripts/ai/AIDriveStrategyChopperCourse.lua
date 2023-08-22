@@ -529,7 +529,11 @@ function AIDriveStrategyChopperCourse:getCurrentUnloader()
 end
 function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
 
-    
+    if self:getUnloader(self:getCurrentUnloaderIdent()) and self:getUnloader(self:getNextUnloader()) then
+        -- I have two unloaders already don't call any more
+        self:debug('callUnloaderWhenNeeded: I have two unloaders no need for more')
+        return
+    end
 
     if not self.timeToCallUnloader:get() then
         return
@@ -540,11 +544,11 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
     local bestUnloader, bestEte
     if self:isWaitingForUnload() then
         if self:getUnloader(self:getCurrentUnloaderIdent()) then
-            self:debugSparse('callUnloaderWhenNeeded: stopped, no unloader needed my unloader is just out of range')
+            self:debug('callUnloaderWhenNeeded: stopped, no unloader needed my unloader is just out of range')
             return
         end
         bestUnloader, _ = self:findUnloader(self.vehicle, nil)
-        self:debugSparse('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
+        self:debug('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
         if bestUnloader then
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloaderIdent())
         end
