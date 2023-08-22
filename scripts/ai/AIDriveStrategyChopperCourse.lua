@@ -454,14 +454,6 @@ function AIDriveStrategyChopperCourse:clearAllUnloaderInformation()
     self.unloader:reset()
 end
 
--- function AIDriveStrategyChopperCourse:getUnloaderToRendezvous(whichUnloader)
---     if whichUnloader = 'A' then
---         return self.unloaders.unloaderAToRendezvous:get()
---     elseif whichUnloader = 'B' then
---         return self.unloaders.unloaderBToRendezvous:get()
---     end
--- end
-
 function AIDriveStrategyChopperCourse:getUnloader(whichUnloader)
     if whichUnloader == 'A' then
         return self.unloaders.unloaderA:get()
@@ -469,30 +461,6 @@ function AIDriveStrategyChopperCourse:getUnloader(whichUnloader)
         return self.unloaders.unloaderB:get()
     end
 end
-
--- function AIDriveStrategyChopperCourse:setUnloaderToRendezvous(driver, time, whichUnloader)
---     if whichUnloader = 'A' then
---         self:debug('setUnloaderToRendezvous: %s was registed as rendezvous driver A', CpUtil.getName(driver.vehicle))
---         self.unloaders.unloaderAToRendezvous:set(driver, time, whichUnloader)
---     elseif whichUnloader = 'B' then
---         self:debug('setUnloaderToRendezvous: %s was registed as rendezvous driver B', CpUtil.getName(driver.vehicle))
---         self.unloaders.unloaderBToRendezvous:set(driver, time, whichUnloader)
---     else
---         self:debug('setUnloaderToRendezvous: %s tried to register but didn\'t pass me A/B Unloader')
---     end
--- end
-
--- function AIDriveStrategyChopperCourse:resetUnloaderToRendezvous(whichUnloader)
---     if whichUnloader = 'A' then
---         self:debug('resetUnloaderToRendezvous: driver A rendezvous was reset')
---         self.unloaders.unloaderAToRendezvous:reset()
---     elseif whichUnloader = 'B' then
---         self:debug('resetUnloaderToRendezvous: driver B rendezvous was restet')
---         self.unloaders.unloaderBToRendezvous:reset()
---     else
---         self:debug('resetUnloaderToRendezvous: Someone tried to unregister but tell me who')
---     end
--- end
 
 function AIDriveStrategyChopperCourse:updateNextUnloader()
     self:debug('I updated the unloaders')
@@ -512,27 +480,6 @@ end
 function AIDriveStrategyChopperCourse:getCurrentUnloader()
     return self.unloaders.currentUnloader
 end
-
--- function AIDriveStrategyChopperCourse:setInboundUnloader(unloaderIncoming)
---     self.unloaders.inboundUnloader = unloaderIncoming
--- end
--- function AIDriveStrategyChopperCourse:cancelRendezvous(whichUnloader)
---     local unloader = self:getUnloaderToRendezvous(whichUnloader)
---     self:debug('cancelRendezvous: Rendezvous with %s at waypoint %d cancelled',
---             CpUtil.getName(unloader or 'N/A'),
---             self.unloaderRendezvousWaypointIx or -1)
---     self.unloaderRendezvousWaypointIx = nil
---     self.setInboundUnloader(false)
---     self.resetUnloaderToRendezvous(whichUnloader)
--- end
-
--- function AIDriveStrategyChopperCourse:unloaderInbound()
---     return self.unloaders.inboundUnloader
--- end
-
--- function AIDriveStrategyChopperCourse:shouldUnloaderFollow()
---     return self:isDischarging()
--- end
 
 function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
 
