@@ -53,7 +53,8 @@ function AIDriveStrategyChopperCourse.new(customMt)
         unloaderA = CpTemporaryObject(nil),
         unloaderB = CpTemporaryObject(nil),
         nextUnloader = 'B',
-        currentUnloader = 'A'
+        currentUnloader = 'A',
+        changeoverHold = CpTemporaryObject(false),
     }
     return self
 end
@@ -111,9 +112,54 @@ function AIDriveStrategyChopperCourse:getDriveData(dt, vX, vY, vZ)
         -- Unloading
         self:driveUnloadOnField()
         self:callUnloaderWhenNeeded()
-        self:checkNextUnloader()
+
     end
     return AIDriveStrategyFieldWorkCourse.getDriveData(self, dt, vX, vY, vZ)
+end
+
+-----------------------------------------------------------------------------------------------------------------------
+--- Event listeners
+-----------------------------------------------------------------------------------------------------------------------
+function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
+    if self.state == self.states.UNLOADING_ON_FIELD and
+            (self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
+                    self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
+                    self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD) then
+        -- nothing to do while driving to unload and back
+        return AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
+    end
+
+    self:checkFruit()
+
+    -- make sure we start making a pocket while we still have some fill capacity left as we'll be
+    -- harvesting fruit while making the pocket unless we have self unload turned on
+    if self:shouldMakePocket() and not self.settings.selfUnload:getValue() then
+        self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
+    end
+
+    local isOnHeadland = self.course:isOnHeadland(ix)
+    self.combineController:updateStrawSwath(isOnHeadland)
+
+    if self.state == self.states.WORKING then
+        self:estimateDistanceUntilFull(ix)
+        self:callUnloaderWhenNeeded()
+        self:checkNextUnloader()
+    end
+
+    if self.state == self.states.UNLOADING_ON_FIELD and
+            self.unloadState == self.states.MAKING_POCKET and
+            self.unloadInPocketIx and ix == self.unloadInPocketIx then
+        -- we are making a pocket and reached the waypoint where we are going to stop and wait for unload
+        self:debug('Waiting for unload in the pocket')
+        self.unloadState = self.states.WAITING_FOR_UNLOAD_IN_POCKET
+    end
+
+    if self.returnedFromPocketIx and self.returnedFromPocketIx == ix then
+        -- back to normal look ahead distance for PPC, no tight turns are needed anymore
+        self:debug('Reset PPC to normal lookahead distance')
+        self.ppc:setNormalLookaheadDistance()
+    end
+    AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
 end
 
 function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
@@ -123,7 +169,6 @@ function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
 end
 
 function AIDriveStrategyChopperCourse:checkNextUnloader()
-    self:debug('I checked for next unloader')
     if not self:getUnloader(self:getCurrentUnloader()) and self:getUnloader(self:getNextUnloader()) then
         self:debug('checkNextUnloader: I lost my current unloder and I have one that is arriving switch them')
         self:updateNextUnloader()
@@ -132,7 +177,7 @@ function AIDriveStrategyChopperCourse:checkNextUnloader()
         self:getUnloader(self:getCurrentUnloader()):requestDriveUnloadNow()
         self:updateNextUnloader()
     elseif self:getUnloader(self:getNextUnloader()) then
-        self:debug('checkNextUnloader: Next Unloader is %s, is ready to come along side: %s', CpUtil.getName((self:getNextUnloaderUnloader())), self:getUnloader(self:getNextUnloader()):readyToRecive())
+        self:debug('checkNextUnloader: Next Unloader is %s, is ready to come along side: %s', CpUtil.getName((self:getNextUnloader())), self:getUnloader(self:getNextUnloader()):readyToRecive())
     end
 end
 function AIDriveStrategyChopperCourse:checkRendezvous()
@@ -149,8 +194,6 @@ function AIDriveStrategyChopperCourse:checkRendezvous()
         end
         if self:getUnloader(self:getNextUnloader()) and self:getUnloader(self:getNextUnloader()):readyToRecive() then
             self:debug('Discharging to %s, cancelling unloader rendezvous %s is ready to come along side', CpUtil.getName((self:getCurrentUnloader()).vehicle), CpUtil.getName((self:getNextUnloader()).vehicle))
-            self:getUnloader(self:getCurrentUnloader()):requestDriveUnloadNow()
-            self:updateNextUnloader()
             self:cancelRendezvous()
         end
     end
@@ -483,6 +526,14 @@ end
 
 function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
 
+    
+
+    if not self.timeToCallUnloader:get() then
+        return
+    end
+
+    -- check back again in a few seconds
+    self.timeToCallUnloader:set(false, 3000)
     local bestUnloader, bestEte
     if self:isWaitingForUnload() then
         if self:getUnloader(self:getCurrentUnloader()) then
@@ -494,7 +545,8 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
         if bestUnloader then
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloader())
         end
-    elseif self.timeToCallUnloader:get() then
+        return
+    else
         if not self.waypointIxWhenCallUnloader then
             self:debug('callUnloaderWhenNeeded: don\'t know yet where to meet the unloader')
             return
@@ -541,9 +593,6 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
                 self:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
             end
         end
-    else
-        -- check back again in a few seconds
-        self.timeToCallUnloader:set(false, 3000)
     end
 end
 

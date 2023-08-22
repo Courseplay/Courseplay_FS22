@@ -632,6 +632,12 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
         return
     end
 
+    -- Am I close to the end of my rendevous course and I am still in front? Slow down to wait for it to pass
+    local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+    if self.course:isCloseToLastWaypoint(50) and dz >-10 then
+        self:setMaxSpeed(self:getFieldSpeed()/2)
+    end
+
     if self.course:isCloseToLastWaypoint(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength / 2) and
             self.combineToUnload:getCpDriveStrategy():hasRendezvousWith(self.vehicle) then
         if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) and self:isBehindAndAlignedToCombine(false, 75) then
