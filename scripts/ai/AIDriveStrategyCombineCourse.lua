@@ -27,8 +27,14 @@ AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow = 30
 -- in the fruit
 AIDriveStrategyCombineCourse.waitForUnloadAtEndOfRowFillLevelThreshold = 95
 
+-- When to initiate a self unload before turning to the next row?
+-- if the fill level is above this threshold when about to begin a turn and there is a trailer
+-- close by, and ...
+AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowFillLevelThreshold = 60
+-- if the best trailer is less then this (meters) to the left or right
+AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowMaxDistance = 50
 --- Percentage delta leftover until full, when the combine slows down.
-AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 1.5 
+AIDriveStrategyCombineCourse.startingSlowdownFillLevelThreshold = 1.5
 --- Minimum working speed, for slowdown.
 AIDriveStrategyCombineCourse.normalMinimalWorkingSpeed = 5
 
@@ -50,12 +56,13 @@ AIDriveStrategyCombineCourse.myStates = {
     WAITING_FOR_UNLOADER_TO_LEAVE = {},
     RETURNING_FROM_POCKET = {},
     DRIVING_TO_SELF_UNLOAD = {},
+    DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW = {}, -- before turning into the next row, we unload into a nearby trailer
     SELF_UNLOADING = {},
     SELF_UNLOADING_WAITING_FOR_DISCHARGE = {},
     DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED = {},
     SELF_UNLOADING_AFTER_FIELDWORK_ENDED = {},
     SELF_UNLOADING_AFTER_FIELDWORK_ENDED_WAITING_FOR_DISCHARGE = {},
-    RETURNING_FROM_SELF_UNLOAD = {}
+    RETURNING_FROM_SELF_UNLOAD = {},
 }
 
 -- stop limit we use for self unload to approach the trailer
@@ -220,8 +227,8 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
             -- Slowdown the combine near the last few percent, so no crops are leftover, 
             -- as the combine needs to stop in time, before it's full.
             local leftoverPercentage = self.fillLevelFullPercentage - self.combineController:getFillLevelPercentage()
-            if( leftoverPercentage > 0 and leftoverPercentage < self.startingSlowdownFillLevelThreshold ) then 
-                local speed = leftoverPercentage * (self.vehicle:getSpeedLimit(true)/self.startingSlowdownFillLevelThreshold) + self.normalMinimalWorkingSpeed
+            if (leftoverPercentage > 0 and leftoverPercentage < self.startingSlowdownFillLevelThreshold) then
+                local speed = leftoverPercentage * (self.vehicle:getSpeedLimit(true) / self.startingSlowdownFillLevelThreshold) + self.normalMinimalWorkingSpeed
                 self:setMaxSpeed(speed)
             end
         end
@@ -237,7 +244,9 @@ function AIDriveStrategyCombineCourse:getDriveData(dt, vX, vY, vZ)
     elseif self.state == self.states.UNLOADING_ON_FIELD then
         -- Unloading
         self:driveUnloadOnField()
-        self:callUnloaderWhenNeeded()
+        if self:isWaitingForUnload() then
+            self:callUnloaderWhenNeeded()
+        end
     end
     if self:isTurning() and not self:isTurningOnHeadland() then
         if self:shouldHoldInTurnManeuver() then
@@ -371,7 +380,8 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             end
         end
     elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
-            self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
+            self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
+            self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW then
         if self:isCloseToCourseEnd(25) then
             -- slow down towards the end of the course, near the trailer
             self:setMaxSpeed(0.5 * self.settings.fieldSpeed:getValue())
@@ -393,8 +403,6 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
         if self:isUnloadFinished() then
             if not self:continueSelfUnloadToNextTrailer() then
                 self:debug('Self unloading finished, returning to fieldwork')
-                self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
-                self.ppc:setNormalLookaheadDistance()
                 self:returnToFieldworkAfterSelfUnload()
             end
         end
@@ -421,6 +429,11 @@ function AIDriveStrategyCombineCourse:driveUnloadOnField()
             self:setMaxSpeed(self.settings.fieldSpeed:getValue())
             self:enableCollisionDetection()
         end
+        -- apply the work starter's speed limit (when approaching the work start)
+        local _, _, _, maxSpeed = self.workStarter:getDriveData()
+        if maxSpeed ~= nil then
+            self:setMaxSpeed(maxSpeed)
+        end
     end
 end
 
@@ -430,6 +443,7 @@ end
 function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
     if self.state == self.states.UNLOADING_ON_FIELD and
             (self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
+                    self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW or
                     self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
                     self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD) then
         -- nothing to do while driving to unload and back
@@ -479,12 +493,10 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             self:changeToFieldWork()
         elseif self.unloadState == self.states.RETURNING_FROM_SELF_UNLOAD then
             self:debug('Back from self unload, returning to fieldwork')
-            self:startRememberedCourse()
-            self:changeToFieldWork()
+            self.workStarter:onLastWaypoint()
         elseif self.unloadState == self.states.REVERSING_TO_MAKE_A_POCKET then
             self:debug('Reversed, now start making a pocket to waypoint %d', self.unloadInPocketIx)
             self:lowerImplements()
-            -- TODO: maybe lowerImplements should not set the WAITING_FOR_LOWER_DELAYED state...
             self.state = self.states.UNLOADING_ON_FIELD
             self.unloadState = self.states.MAKING_POCKET
             -- offset the main fieldwork course and start on it
@@ -494,7 +506,8 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
             -- pulled back, now wait for unload
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_PULLED_BACK
             self:debug('Pulled back, now wait for unload')
-        elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
+        elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
+                self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW then
             self:debug('Self unloading point reached, fill level %.1f, waiting for unload to start.', fillLevel)
             self.unloadState = self.states.SELF_UNLOADING_WAITING_FOR_DISCHARGE
         elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
@@ -504,12 +517,9 @@ function AIDriveStrategyCombineCourse:onLastWaypointPassed()
     elseif self.state == self.states.WORKING and fillLevel > 0 then
         -- reset offset we used for the course ending to not miss anything
         self.aiOffsetZ = 0
-        if self.settings.selfUnload:getValue() and self:startSelfUnload() then
+        if self.settings.selfUnload:getValue() and
+                self:startSelfUnload(self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED) then
             self:debug('Start self unload after fieldwork ended')
-            self:raiseImplements()
-            self.state = self.states.UNLOADING_ON_FIELD
-            self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED
-            self.ppc:setShortLookaheadDistance()
             self:disableCollisionDetection()
         else
             -- let AutoDrive know we are done and can unload
@@ -544,12 +554,9 @@ end
 function AIDriveStrategyCombineCourse:changeToUnloadOnField()
     self:checkFruit()
     -- TODO: check around turn maneuvers we may not want to pull back before a turn
-    if self.settings.selfUnload:getValue() and self:startSelfUnload() then
+    self:rememberCourse(self.fieldWorkCourse, self:getBestWaypointToContinueFieldWork())
+    if self.settings.selfUnload:getValue() and self:startSelfUnload(self.states.DRIVING_TO_SELF_UNLOAD) then
         self:debug('Start self unload')
-        self:raiseImplements()
-        self.state = self.states.UNLOADING_ON_FIELD
-        self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
-        self.ppc:setShortLookaheadDistance()
     elseif self.settings.avoidFruit:getValue() and self:shouldMakePocket() then
         -- I'm on the edge of the field or fruit is on both sides, make a pocket on the right side and wait there for the unload
         local pocketCourse, nextIx = self:createPocketCourse()
@@ -735,6 +742,10 @@ function AIDriveStrategyCombineCourse:estimateDistanceUntilFull(ix)
 end
 
 function AIDriveStrategyCombineCourse:shouldWaitAtEndOfRow()
+    if self.settings.selfUnload:getValue() then
+        -- don't wait for anyone when self unloading
+        return false
+    end
     local nextRowStartIx = self.course:getNextRowStartIx(self.ppc:getRelevantWaypointIx())
     local lastPassedWaypointIx = self.ppc:getLastPassedWaypointIx() or self.ppc:getRelevantWaypointIx()
     local distanceToNextTurn = self.course:getDistanceToNextTurn(lastPassedWaypointIx) or math.huge
@@ -1223,7 +1234,7 @@ end
 
 --- Only allow fuel save, if no trailer is under the pipe and we are waiting for unloading.
 function AIDriveStrategyCombineCourse:isFuelSaveAllowed()
-    if self.pipeController:isFillableTrailerUnderPipe() then 
+    if self.pipeController:isFillableTrailerUnderPipe() then
         -- Disables Fuel save, when a trailer is under the pipe.
         return false
     end
@@ -1244,8 +1255,8 @@ function AIDriveStrategyCombineCourse:shouldHoldInTurnManeuver()
     local waitForStraw = self.combineController:isDroppingStrawSwath() and not isFinishingRow
 
     self:debugSparse('Turn maneuver=> Dischargeable: %s, wait for straw: %s, straw swath active: %s, finishing row: %s',
-        tostring(discharging), tostring(waitForStraw), 
-        tostring(self.combineController:isDroppingStrawSwath()), tostring(isFinishingRow))
+            tostring(discharging), tostring(waitForStraw),
+            tostring(self.combineController:isDroppingStrawSwath()), tostring(isFinishingRow))
     return discharging or waitForStraw
 end
 
@@ -1297,7 +1308,10 @@ end
 
 --- Can the cutter be turned off ?
 function AIDriveStrategyCombineCourse:getCanCutterBeTurnedOff()
-    return self:isWaitingForUnload() or self.state == self.states.UNLOADING_ON_FIELD and self:isUnloadStateOneOf(self.selfUnloadStates)
+    return self:isWaitingForUnload() or
+            (self.state == self.states.UNLOADING_ON_FIELD and self:isUnloadStateOneOf(self.selfUnloadStates) and
+            -- we want that cutter to be turned on when returning to fieldwork after self unload
+                    self.unloadState ~= self.states.RETURNING_FROM_SELF_UNLOAD)
 end
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -1341,7 +1355,18 @@ function AIDriveStrategyCombineCourse:startTurn(ix)
         end
     else
         self:debug('Non headland turn.')
-        AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+        if self.settings.selfUnload:getValue() and self:shouldSelfUnloadBeforeNextRow() then
+            self:debug('Fill level over %.0f, attempt to self unload before continue with next row',
+                    AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowFillLevelThreshold)
+            -- will continue at the turn end waypoint after the unload is finished
+            self:rememberCourse(self.fieldWorkCourse, ix + 1)
+            self.aiTurn = FinishRowOnly(self.vehicle, self, self.ppc, self.proximityController, self.turnContext,
+                    self, AIDriveStrategyCombineCourse.startSelfUnloadBeforeNextRow)
+            self.state = self.states.TURNING
+            self.waypointIxToContinueOnFailedSelfUnload = ix
+        else
+            AIDriveStrategyCombineCourse.superClass().startTurn(self, ix)
+        end
     end
 end
 
@@ -1508,20 +1533,32 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 --- Self unload
+--- When self unload is enabled, instead of calling an unloader when full, the combine will find
+--- a suitable trailer on or around the field, drive to the trailer and empty the grain tank into the trailer.
+--- See SelfUnloadHelper.lua on how exactly a trailer is picked.
+---
+--- There are two events which can trigger a self unload:
+--- 1. grain tank full
+--- 2. grain tank at more than 60% when the combine just finished a row and there is a
+---    trailer nearby.
+
 -----------------------------------------------------------------------------------------------------------------------
 --- Find a path to the best trailer to unload
-function AIDriveStrategyCombineCourse:startSelfUnload()
+function AIDriveStrategyCombineCourse:startSelfUnload(unloadStateAfterPathfindingDoneForSelfUnload,
+                                                      bestTrailer, fillRootNode)
 
     if not self.pathfinder or not self.pathfinder:isActive() then
-        self:rememberCourse(self.fieldWorkCourse, self:getBestWaypointToContinueFieldWork())
         self.pathfindingStartedAt = g_currentMission.time
         self.courseAfterPathfinding = nil
         self.waypointIxAfterPathfinding = nil
 
-        local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(self.fieldWorkCourse:getFieldPolygon(),
+        local targetNode, alignLength, offsetX = SelfUnloadHelper:getTargetParameters(
+                self.fieldWorkCourse:getFieldPolygon(),
                 self.vehicle,
                 self:getFillType(),
-                self.pipeController)
+                self.pipeController,
+                bestTrailer,
+                fillRootNode)
 
         if not targetNode then
             return false
@@ -1530,6 +1567,8 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
         -- little straight section parallel to the trailer to align better
         self.selfUnloadAlignCourse = Course.createFromNode(self.vehicle, targetNode,
                 offsetX, -alignLength + 1, -self.pipeController:getPipeOffsetZ() - 1, 1, false)
+
+        self.unloadStateAfterPathfindingDoneForSelfUnload = unloadStateAfterPathfindingDoneForSelfUnload
 
         local fieldNum = CpFieldUtil.getFieldNumUnderVehicle(self.vehicle)
         local done, path
@@ -1542,6 +1581,7 @@ function AIDriveStrategyCombineCourse:startSelfUnload()
         if done then
             return self:onPathfindingDoneBeforeSelfUnload(path)
         else
+            self.state = self.states.WAITING_FOR_PATHFINDER
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneBeforeSelfUnload)
         end
     else
@@ -1559,14 +1599,22 @@ function AIDriveStrategyCombineCourse:onPathfindingDoneBeforeSelfUnload(path)
             selfUnloadCourse:append(self.selfUnloadAlignCourse)
             self.selfUnloadAlignCourse = nil
         end
+        self:raiseImplements()
+        self.state = self.states.UNLOADING_ON_FIELD
+        self.unloadState = self.unloadStateAfterPathfindingDoneForSelfUnload
+        self.ppc:setShortLookaheadDistance()
         self:startCourse(selfUnloadCourse, 1)
         return true
     else
         self:debug('No path found to self unload in %d ms',
                 g_currentMission.time - (self.pathfindingStartedAt or 0))
-        if self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD then
+        if self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD then
             self.unloadState = self.states.WAITING_FOR_UNLOAD_ON_FIELD
-        elseif self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
+        elseif self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW then
+            -- continue turn as if nothing happened
+            self:startCourse(self.fieldWorkCourse, self.waypointIxToContinueOnFailedSelfUnload)
+            AIDriveStrategyCombineCourse.superClass().startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
+        elseif self.unloadStateAfterPathfindingDoneForSelfUnload == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED then
             self.unloadState = self.states.WAITING_FOR_UNLOAD_AFTER_FIELDWORK_ENDED
         end
         return false
@@ -1586,6 +1634,7 @@ function AIDriveStrategyCombineCourse:returnToFieldworkAfterSelfUnload()
         if done then
             return self:onPathfindingDoneAfterSelfUnload(path)
         else
+            self.state = self.states.WAITING_FOR_PATHFINDER
             self:setPathfindingDoneCallback(self, self.onPathfindingDoneAfterSelfUnload)
         end
     else
@@ -1597,22 +1646,34 @@ end
 function AIDriveStrategyCombineCourse:onPathfindingDoneAfterSelfUnload(path)
     -- TODO: for some reason, the combine lowers the header while unloading, that should be fixed, for now, raise it here
     self:raiseImplements()
+    local course, ix = self:getRememberedCourseAndIx()
     if path and #path > 2 then
+        self.state = self.states.UNLOADING_ON_FIELD
+        self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
+        self.ppc:setShortLookaheadDistance()
         self:debug('Pathfinding to return to fieldwork after self unload finished with %d waypoints (%d ms)',
                 #path, g_currentMission.time - (self.pathfindingStartedAt or 0))
         local returnCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
-        self:startCourse(returnCourse, 1)
+        returnCourse:adjustForTowedImplements(2)
+        local fm, bm = self:getFrontAndBackMarkers()
+        self.turnContext = RowStartOrFinishContext(self.vehicle, course, ix, ix, self.turnNodes, self:getWorkWidth(),
+                fm, bm, 0, 0)
+        self.workStarter = StartRowOnly(self.vehicle, self, self.ppc, self.turnContext, returnCourse)
+        self:startCourse(self.workStarter:getCourse(), 1)
         return true
     else
         self:debug('No path found to return to fieldwork after self unload (%d ms)',
                 g_currentMission.time - (self.pathfindingStartedAt or 0))
-        local course, ix = self:getRememberedCourseAndIx()
         local returnCourse = AlignmentCourse(self.vehicle, self.vehicle:getAIDirectionNode(),
                 self.turningRadius, course, ix, 0):getCourse()
         if returnCourse then
+            self.state = self.states.UNLOADING_ON_FIELD
+            self.unloadState = self.states.RETURNING_FROM_SELF_UNLOAD
+            self.ppc:setShortLookaheadDistance()
             self:debug('Start an alignment course to fieldwork waypoint %d', ix)
             self:startCourse(returnCourse, 1)
         else
+            self.state = self.states.WORKING
             self:debug('Could not generate alignment course to fieldwork waypoint %d, starting course directly', ix)
             self:startRememberedCourse()
         end
@@ -1624,15 +1685,48 @@ function AIDriveStrategyCombineCourse:continueSelfUnloadToNextTrailer()
     local fillLevel = self.combineController:getFillLevel()
     if fillLevel > 20 then
         self:debug('Self unloading finished, but fill level is %.1f, is there another trailer around we can unload to?', fillLevel)
-        if self:startSelfUnload() then
-            self:raiseImplements()
-            self.state = self.states.UNLOADING_ON_FIELD
-            self.unloadState = self.states.DRIVING_TO_SELF_UNLOAD
-            self.ppc:setShortLookaheadDistance()
+        if self:startSelfUnload(self.states.DRIVING_TO_SELF_UNLOAD) then
             return true
         end
     end
     return false
+end
+
+function AIDriveStrategyCombineCourse:shouldSelfUnloadBeforeNextRow()
+    if self:isFull(AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowFillLevelThreshold) then
+        local distance
+        self.selfUnloadBestTrailer, self.selfUnloadFillRootNode, distance = SelfUnloadHelper:findBestTrailer(
+                self.fieldWorkCourse:getFieldPolygon(),
+                self.vehicle,
+                self:getFillType(),
+                self.pipeController.pipeOffsetX)
+        local dx, _, dz = localToLocal(AIUtil.getDirectionNode(self.vehicle),
+                AIUtil.getDirectionNode(self.selfUnloadBestTrailer), 0, 0, 0)
+        self:debug('Best trailer dx: %.1f, dz: %.1f', dx, dz)
+        -- the best trailer is sort of in front of us and not too far to the left or right
+        if dz > -10 and math.abs(dx) < AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowMaxDistance then
+            self:debug('Best trailer for self unload is less than %.0f m, start self unload before continuing with next row',
+                    AIDriveStrategyCombineCourse.selfUnloadBeforeNextRowMaxDistance)
+            return true
+        end
+    end
+    return false
+end
+
+-- This is a callback from the "finish row only" turn initiated at the end of the row when there is a
+-- trailer nearby for self unloading. At this point, the row is done and we are ready to drive to the
+-- trailer before starting the next row
+function AIDriveStrategyCombineCourse:startSelfUnloadBeforeNextRow()
+    -- giving back control to the strategy, re-register these listeners
+    self.ppc:registerListeners(self, 'onWaypointPassed', 'onWaypointChange')
+    if self:startSelfUnload(self.states.DRIVING_TO_SELF_UNLOAD_BEFORE_NEXT_ROW,
+            self.selfUnloadBestTrailer, self.selfUnloadFillRootNode) then
+        self:debug('Start self unload before continuing with next row')
+    else
+        -- giving up self unload, attempt to re-initialize the turn
+        self:startCourse(self.fieldWorkCourse, self.waypointIxToContinueOnFailedSelfUnload)
+        AIDriveStrategyCombineCourse.superClass().startTurn(self, self.waypointIxToContinueOnFailedSelfUnload)
+    end
 end
 
 --- Let unloaders register for events. This is different from the CombineUnloadManager registration, these
@@ -1651,7 +1745,7 @@ function AIDriveStrategyCombineCourse:registerUnloader(driver)
 end
 
 --- Deregister a combine unload AI driver from notifications
----@param driver CombineUnloadAIDriver
+---@param driver AIDriveStrategyUnloadCombine
 function AIDriveStrategyCombineCourse:deregisterUnloader(driver, noEventSend)
     self:cancelRendezvous()
     self.unloader:reset()

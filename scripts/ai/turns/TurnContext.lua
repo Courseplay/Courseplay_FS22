@@ -384,8 +384,10 @@ function TurnContext:appendEndingTurnCourse(course, extraLength, useTightTurnOff
     local waypoints = {}
     -- A line between the front marker and the work start node, regardless of which one is first
     local startNode = dzFrontMarker < dzWorkStart and self.vehicleAtTurnEndNode or self.workStartNode
+    -- make sure course is long enough that the back marker reaches the work start
+    local lenToBackMarker = self.frontMarkerDistance - self.backMarkerDistance
 	-- extra length at the end to allow for alignment
-	extraLength = extraLength and (extraLength + 3) or 3
+	extraLength = extraLength and (extraLength + lenToBackMarker) or lenToBackMarker
     -- +1 so the first waypoint of the appended line won't overlap with the last wp of course
     self:debug('appendEndingTurnCourse: dzVehicleAtTurnEnd: %.1f, dzWorkStart: %.1f, extra %.1f)',
             dzFrontMarker, dzWorkStart, extraLength)

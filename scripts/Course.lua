@@ -893,7 +893,7 @@ function Course:getNextFwdWaypointIxFromVehiclePosition(ix, vehicleNode, maxDx, 
 			end
 		end
 	end
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint from vehicle position after %d', ix)
 	return ix, false
 end
 
@@ -907,7 +907,7 @@ function Course:getNextRevWaypointIxFromVehiclePosition(ix, vehicleNode, lookAhe
 			end
 		end
 	end
-	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next forward waypoint after %d', ix)
+	CpUtil.debugVehicle(CpDebug.DBG_COURSES, self.vehicle, 'Course: could not find next reverse waypoint from vehicle position after %d', ix)
 	return ix
 end
 
@@ -975,6 +975,12 @@ function Course:extend(length, dx, dz)
 	for i = first, last, step do
 		local x = lastWp.x + dx * i
 		local z = lastWp.z + dz * i
+		self:appendWaypoint({x = x, z = z})
+	end
+	if length % step > 0 then
+		-- add the remainder to make sure we extend all the way up to length
+		local x = lastWp.x + dx * length
+		local z = lastWp.z + dz * length
 		self:appendWaypoint({x = x, z = z})
 	end
 	-- enrich the waypoints we added
