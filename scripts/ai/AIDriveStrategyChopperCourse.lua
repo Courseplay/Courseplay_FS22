@@ -54,7 +54,6 @@ function AIDriveStrategyChopperCourse.new(customMt)
         unloaderB = CpTemporaryObject(nil),
         nextUnloader = 'B',
         currentUnloader = 'A',
-        changeoverHold = CpTemporaryObject(false),
     }
     return self
 end
@@ -475,14 +474,13 @@ function AIDriveStrategyChopperCourse:resetUnloader(whichUnloader)
         self:debug('resetUnloader: driver A was reset')
         self.unloaders.unloaderA:reset()
     elseif whichUnloader == 'B' then
-        self:debug('resetUnloader: driver B was rest')
+        self:debug('resetUnloader: driver B was reset')
         self.unloaders.unloaderB:reset()
     else
         self:debug('resetUnloader: Someone tried to unregister but tell me who')
     end
 end
 function AIDriveStrategyChopperCourse:deregisterUnloader(driver, whichUnloader, noEventSend)
-    self:debug('Unloader has been unregistered')
     if self.unloaderToRendezvous:get() then
         if self:getUnloader(whichUnloader) and self:getUnloader(whichUnloader).vehicle == self.unloaderToRendezvous:get() then
             self:cancelRendezvous()
