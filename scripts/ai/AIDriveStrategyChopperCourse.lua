@@ -119,7 +119,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 --- Event listeners
 -----------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyCombineCourse:onWaypointPassed(ix, course)
+function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     if self.state == self.states.UNLOADING_ON_FIELD and
             (self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD or
                     self.unloadState == self.states.DRIVING_TO_SELF_UNLOAD_AFTER_FIELDWORK_ENDED or
@@ -614,7 +614,7 @@ end
 
 --- Are we ready for an unloader?
 --- @param noUnloadWithPipeInFruit boolean pipe must not be in fruit for unload
-function AIDriveStrategyCombineCourse:isReadyToUnload(noUnloadWithPipeInFruit)
+function AIDriveStrategyChopperCourse:isReadyToUnload(noUnloadWithPipeInFruit)
     -- no unloading when not in a safe state (like turning)
     -- in these states we are always ready
     if self:willWaitForUnloadToFinish() then
@@ -643,7 +643,7 @@ function AIDriveStrategyCombineCourse:isReadyToUnload(noUnloadWithPipeInFruit)
     return true
 end
 
-function AIDriveStrategyChopperCourse:isChopper(combine)
+function AIDriveStrategyChopperCourse.isChopper(combine)
     local capacity = 0
     local dischargeNode = combine:getCurrentDischargeNode()
     if dischargeNode ~= nil then
