@@ -1272,11 +1272,11 @@ function AIDriveStrategyUnloadCombine:startPathfinding(
             -- the same reference everywhere
             local goal = PathfinderUtil.getWaypointAsState3D(target, -xOffset or 0, zOffset or 0)
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToGoal(
-                    self.vehicle, goal, false, fieldNum, vehiclesToIgnore, {},
+                    self.vehicle, goal, self:getAllowReversePathfinding() or false, fieldNum, vehiclesToIgnore, {},
                     maxFruitPercent, self.offFieldPenalty, areaToAvoid)
         else
             self.pathfinder, done, path, goalNodeInvalid = PathfinderUtil.startPathfindingFromVehicleToNode(
-                    self.vehicle, target, xOffset or 0, zOffset or 0, false,
+                    self.vehicle, target, xOffset or 0, zOffset or 0, self:getAllowReversePathfinding() or false,
                     fieldNum, vehiclesToIgnore, maxFruitPercent,
                     self.offFieldPenalty, areaToAvoid)
         end
