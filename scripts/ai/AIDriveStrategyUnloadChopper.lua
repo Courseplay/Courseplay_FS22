@@ -204,9 +204,11 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
         self:moveAwayFromOtherVehicle()
 
     elseif self.state == self.states.MOVING_AWAY_WITH_TRAILER_FULL then
-        
-        self:setMaxSpeed(self:getFieldSpeed())
-        
+        if self.chaseMode then
+            self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+        else
+            self:setMaxSpeed(self:getFieldSpeed())
+        end
     elseif self.state == self.states.MOVING_BACK then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         -- drive back until the combine is in front of us
@@ -274,6 +276,7 @@ function AIDriveStrategyUnloadChopper:onLastWaypointPassed()
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         self:startWaitingForSomethingToDo()
     elseif self.state == self.states.MOVING_AWAY_WITH_TRAILER_FULL then
+        self.chaseMode = false
         self:startUnloadingTrailers()
     elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
         self:debug('Inverted goal position reached, so give control back to the job.')
@@ -308,27 +311,35 @@ end
 -- Start moving away from Chopper because our trailer is full
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combine)
-    -- Create a Node facing the oppistote direction
-    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode())
-    local goal = CpUtil.createNode("goal", x, z, yRot + math.pi)
-
-    -- Deterime what side the offset should be applied
-    local offsetFix = -(self.combineOffset/math.abs(self.combineOffset))
-    local offsetX = math.max(math.abs(self.combineOffset * 2), self.turningRadius * 2)
-    offsetX = offsetX * offsetFix
-
-    self:debug('Creating chopper drive away course at x=%d z=%d offsetX=%d', x, z, offsetX)
-    local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, 0, goal,
-    offsetX, -10, self.turningRadius)
-    if path then
-        self:debug('I found a Anayltice Path and I am now going to drive it')
-        self.driveAwayFromChopperCourse = Course.createFromAnalyticPath(self.vehicle, path, true)
-        self.driveAwayFromChopperCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
-        self:startCourse(self.driveAwayFromChopperCourse, 1)
+    if combine and combine.getCpDriveStrategy and combine:getCpDriveStrategy():getChaseMode() then
+        -- If we are in chasemode then we are snugged up against the chopper driver backwards 
+        self:debug('Create reverse course to back away')
+        self.chaseMode = true
+        self.driveAwayFromChopperCourse = Course.createStraightReverseCourse(self.vehicle, self.turningRadius * 1.5 )
     else
-        self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, 50)
-        self:startCourse(self.driveAwayFromChopperCourse, 1)
+        -- Create a Node facing the oppistote direction
+        local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode())
+        local goal = CpUtil.createNode("goal", x, z, yRot + math.pi)
+
+        -- Deterime what side the offset should be applied
+        local offsetFix = -(self.combineOffset/math.abs(self.combineOffset))
+        -- Determine
+        local offsetX = math.max(math.abs(self.combineOffset * 2), self.turningRadius * 2)
+        offsetX = offsetX * offsetFix
+
+
+        self:debug('Creating chopper drive away course at x=%d z=%d offsetX=%d', x, z, offsetX)
+        local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, 0, goal,
+        offsetX, -10, self.turningRadius)
+        if path then
+            self:debug('I found a Anayltice Path and I am now going to drive it')
+            self.driveAwayFromChopperCourse = Course.createFromAnalyticPath(self.vehicle, path, true)
+            self.driveAwayFromChopperCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
+        else
+            self.driveAwayFromChopperCourse = Course.createStraightForwardCourse(self.vehicle, 50) 
+        end
     end
+    self:startCourse(self.driveAwayFromChopperCourse, 1)
     self:setNewState(newState)
     self.state.properties.vehicle = combine
     return
@@ -371,7 +382,6 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     if self:changeToUnloadWhenTrailerFull() then
         return
     end
-
     if combineStrategy:getChaseMode() then
         self:driveBehindCombine()
     else
@@ -395,27 +405,27 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
 end
 
 function AIDriveStrategyUnloadChopper:driveBehindCombine()
-     local targetNode = AIUtil.getAIDirectionNode()
-     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
-     local frontDistance = self:getFrontAndBackMarkers()
-     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
-     local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - frontDistance + 1)
-     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
-     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
-     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
- 
-     -- slow down while the pipe is unfolding to avoid crashing onto it
-     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
-         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
-     end
- 
-     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
-             CpUtil.getName(self.vehicle), dz, speed, factor)
- 
-     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
-         DebugUtil.drawDebugNode(targetNode, 'target')
-     end
-     self:setMaxSpeed(math.max(0, speed))
+    self:fixAutoAimNode()
+    local targetNode = self:getTrailersTargetNode()
+
+    -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
+    local dz = -self.proximityController:checkBlockingVehicleFront() + 1.25
+    -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
+    local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
+    local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
+
+    -- slow down while the pipe is unfolding to avoid crashing onto it
+    if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
+        speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
+    end
+
+    self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
+            CpUtil.getName(self.vehicle), dz, speed, factor)
+
+    if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+        DebugUtil.drawDebugNode(targetNode, 'target')
+    end
+    self:setMaxSpeed(math.max(0, speed))
 end
 ------------------------------------------------------------------------------------------------------------------------
 -- Waiting for maneuvering chopper
@@ -426,14 +436,18 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
         return
     end
     
-    if self.combineToUnload:getCpDriveStrategy():isTurning() then
+    if self.combineToUnload:getCpDriveStrategy():isTurning() or self.combineToUnload:getCpDriveStrategy():getConnectingTrack() then
         
-        -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
-        local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
-        if dz < 0 then
-            self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        elseif dz > -3 then
-            self:setMaxSpeed(0)
+        if self.combineToUnload:getCpDriveStrategy():getChaseMode() then
+            self:driveBehindCombine()
+        else
+            -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
+            local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+            if dz < 0 then
+                self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+            elseif dz > -3 then
+                self:setMaxSpeed(0)
+            end
         end
     elseif not self:isBehindAndAlignedToCombine() and not self:isInFrontAndAlignedToMovingCombine() then
         self:debug('Combine has finished turning we need to turn now')

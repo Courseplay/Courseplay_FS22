@@ -137,7 +137,6 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     end
 
     self:checkFruit()
-    self:headingToUpDown(ix)
 
     -- make sure we start making a pocket while we still have some fill capacity left as we'll be
     -- harvesting fruit while making the pocket unless we have self unload turned on
@@ -170,11 +169,11 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
 end
 
-function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
-    AIDriveStrategyChopperCourse.superClass().start(self, course, startIx, jobParameters)
-    -- Update the pipeOffset side when we start work  
-    self:updatePipeOffset(startIx)
-end
+-- function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
+--     AIDriveStrategyChopperCourse.superClass().start(self, course, startIx, jobParameters)
+--     -- Update the pipeOffset side when we start work  
+--     self:updatePipeOffset(startIx)
+-- end
 
 function AIDriveStrategyChopperCourse:checkNextUnloader()
     if not self:getUnloader(self:getCurrentUnloaderIdent()) and self:getUnloader(self:getNextUnloader()) then
@@ -451,29 +450,34 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     -- Pipe in fruit map can't be used on headlands so always use hasFruit
     -- If fruit is found using our current pipe offset update to the opposite side
     
+    local fruitCheckWaypoint = ix or self.course:getCurrentWaypointIx()
+    self:debug('Fruitwaypoint was set to %d', fruitCheckWaypoint)
+
+    if not self.course:isOnHeadland(fruitCheckWaypoint) then
+        local lRow = self.course:getRowLength(fruitCheckWaypoint)
+        if ixAtRowStart then
+            fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(fruitCheckWaypoint,lRow / 2)
+            self:debug('Fruitwaypoint was set to the middle of the row %d', fruitCheckWaypoint)
+        else
+            fruitCheckWaypoint = fruitCheckWaypoint + 20
+            self:debug('Fruitwaypoint was set 20 ahead to couldn\'t determine row length %d', fruitCheckWaypoint)
+        end
+    end
+
     -- Reset the pipeoffset if we where being chased by a unloader driver
     if self.pipeOffsetX == 0 then
         self:setPipeOffsetX()
         self.chaseMode = false
         self:setPipeOffsetZ()
+        self:debug('reset chase mode')
     end
 
-    local storedIx = ix
-    while ix <= storedIx + 10 do
-        if self.course:isTurnStartAtIx(ix) then
-            self:debug('There is a turn at %d check fruit at %d', ix, ix - 10)
-            ix = ix - 10
-            break
-        else
-            ix = ix + 1
-        end
-    end
-    local hasFruit = self:isPipeInFruitAtWaypointNow(self.course, ix, self.pipeOffsetX)
-    self:debug('I found fruit %s at waypoint %d', tostring(hasFruit), ix)
+    local hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
+    self:debug('I found fruit %s at waypoint %d', tostring(hasFruit), fruitCheckWaypoint)
     if hasFruit then
         self:debug('I found fruit use the opposite side')
         self.pipeOffsetX = -self.pipeOffsetX
-        hasFruit = self:isPipeInFruitAtWaypointNow(self.course, ix, self.pipeOffsetX)
+        hasFruit = self:isPipeInFruitAtWaypointNow(self.course, fruitCheckWaypoint, self.pipeOffsetX)
         if hasFruit then
             self:debug('I must be on a land row switch to chase mode')
             self.pipeOffsetX = 0
@@ -484,10 +488,10 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     end
     local x, _, z = localToWorld(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX, 0, 0)
     local fieldPolygon = self.course:getFieldPolygon()
-    if not CpMathUtil.isPointInPolygon(fieldPolygon, x, z) and not self.course:isOnHeadland(ix, 1) then
+    if not CpMathUtil.isPointInPolygon(fieldPolygon, x, z) and not self.course:isOnHeadland(fruitCheckWaypoint, 1) then
         self:debug('No fruit found use but no field found use the oppisote side')
         self.pipeOffsetX = -self.pipeOffsetX
-    elseif self.course:isOnHeadland(ix, 1) then
+    elseif self.course:isOnHeadland(fruitCheckWaypoint, 1) then
             self:debug('I am on a headland enganing chase mode')
             self.pipeOffsetX = 0
             self:setPipeOffsetZ(-self.measuredBackDistance - 2)
@@ -591,10 +595,11 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
         bestUnloader, _ = self:findUnloader(self.vehicle, nil)
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
         if bestUnloader then
+            self:updatePipeOffset()
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloaderIdent())
         end
         return
-    else
+    elseif not self.chaseMode then
         if not self.waypointIxWhenCallUnloader then
             self:debug('callUnloaderWhenNeeded: don\'t know yet where to meet the unloader')
             return
@@ -645,6 +650,7 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
 end
 
 function AIDriveStrategyChopperCourse:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
+    self:updatePipeOffset()
     if bestUnloader:getCpDriveStrategy():call(self.vehicle,
             self.course:getWaypoint(tentativeRendezvousWaypointIx), self:getNextUnloader()) then
         self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
@@ -697,10 +703,41 @@ function AIDriveStrategyChopperCourse.isChopper(combine)
     return capacity == math.huge
 end
 
-function AIDriveStrategyChopperCourse:headingToUpDown(ix)
-    self.connectingTrack = self.course:isOnConnectingTrack(ix)
+function AIDriveStrategyChopperCourse:getConnectingTrack()
+    return self.state == self.states.ON_CONNECTING_TRACK
 end
 
-function AIDriveStrategyChopperCourse:getConnectingTrack()
-    return self.connectingTrack
+--- We calculated a waypoint to meet the unloader (either because it asked for it or we think we'll need
+--- to unload. Now make sure that this location is not around a turn or the pipe isn't in the fruit by
+--- trying to move it up or down a bit. If that's not possible, just leave it and see what happens :)
+function AIDriveStrategyChopperCourse:findBestWaypointToUnloadOnUpDownRows(ix, isPipeInFruitAllowed)
+    local dToNextTurn = self.course:getDistanceToNextTurn(ix) or math.huge
+    local lRow, ixAtRowStart = self.course:getRowLength(ix)
+    local currentIx = self.course:getCurrentWaypointIx()
+    local newWpIx = ix
+    self:debug('Looking for a waypoint to unload around %d on up/down row, pipe in fruit %s, dToNextTurn: %d m, lRow = %d m',
+            ix, tostring(pipeInFruit), dToNextTurn, lRow or 0)
+
+    -- Waypoint would be on next row 
+    if ixAtRowStart then
+        -- so we'll have some distance for unloading
+        if dToNextTurn < AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow then
+            local safeIx = self.course:getPreviousWaypointIxWithinDistance(ix,
+                    AIDriveStrategyCombineCourse.safeUnloadDistanceBeforeEndOfRow)
+            newWpIx = math.max(ixAtRowStart + 1, safeIx or -1, ix - 4, currentIx)
+        end
+        -- Waypoint would be on next row 
+        if ixAtRowStart > currentIx then
+            self:debug('Waypoint on next row, rejecting rendezvous')
+            newWpIx = nil
+        end
+    end
+    -- no better idea, just use the original estimated, making sure we avoid turn start waypoints
+    if newWpIx and self.course:isTurnStartAtIx(newWpIx) then
+        self:debug('Calculated rendezvous waypoint is at turn start, moving it up')
+        -- make sure it is not on the turn start waypoint
+        return math.max(newWpIx - 1, currentIx)
+    else
+        return newWpIx
+    end
 end
