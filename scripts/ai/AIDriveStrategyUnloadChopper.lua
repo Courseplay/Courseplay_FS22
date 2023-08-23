@@ -52,6 +52,8 @@ AIDriveStrategyUnloadChopper.UNLOAD_TYPES = {
     CHOPPER = 3
 }
 
+AIDriveStrategyUnloadChopper.maxDirectionDifferenceDeg = 15
+
 -- Developer hack: to check the class of an object one should use the is_a() defined in CpObject.lua.
 -- However, when we reload classes on the fly during the development, the is_a() calls in other modules still
 -- have the old class definition (for example CombineUnloadManager.lua) of this class and thus, is_a() fails.
@@ -383,7 +385,7 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
         return
     end
     -- The chopper row may 
-    if combineStrategy:isTurning() then
+    if combineStrategy:isTurning() or combineStrategy:getConnectingTrack() then
         -- Create a backup course so we stay out of the way of turning Chopper
         self:debug('The chopper is turning I better turn to')
         local reverseCourse = Course.createStraightReverseCourse(self.vehicle, 100)
@@ -393,11 +395,11 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
 end
 
 function AIDriveStrategyUnloadChopper:driveBehindCombine()
-     local targetNode = self.vehicle.rootNode
+     local targetNode = AIUtil.getAIDirectionNode()
      local _, offsetZ = self:getPipeOffset(self.combineToUnload)
      local frontDistance = self:getFrontAndBackMarkers()
      -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
-     local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - frontDistance)
+     local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - frontDistance + 1)
      -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
      local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
      local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
@@ -670,7 +672,7 @@ function AIDriveStrategyUnloadChopper:driveToMovingCombine()
 
     -- Am I close to the end of my rendevous course and I am still in front? Slow down to wait for it to pass
     local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
-    if self.course:isCloseToLastWaypoint(50) and dz > 0 then
+    if self.course:isCloseToLastWaypoint(30) and dz > 0 then
         self:setMaxSpeed(self:getFieldSpeed()/2)
     end
 
@@ -699,19 +701,20 @@ function AIDriveStrategyUnloadChopper:isBehindAndAlignedToCombine(debugEnabled)
     end
     -- TODO: this does not take the pipe's side into account, and will return true when we are at the
     -- wrong side of the combine. That happens rarely as we
-    -- if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
-    --     self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
-    --     return false
-    -- end
+    -- This needs to be disabled when we are chasing as we are at 0 offset and get weried results
+    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) and not self.combineToUnload:getCpDriveStrategy():getChaseMode() then
+        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
+        return false
+    end
     local d = MathUtil.vector2Length(dx, dz)
     if d > (40) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
         return false
     end
     if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
-            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+            self.maxDirectionDifferenceDeg) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: direction difference is > %d)',
-                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+                self.maxDirectionDifferenceDeg)
         return false
     end
     -- close enough and approximately same direction and behind and not too far to the left or right, about the same

@@ -137,6 +137,7 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     end
 
     self:checkFruit()
+    self:headingToUpDown(ix)
 
     -- make sure we start making a pocket while we still have some fill capacity left as we'll be
     -- harvesting fruit while making the pocket unless we have self unload turned on
@@ -482,12 +483,11 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
         end
     end
     local x, _, z = localToWorld(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX, 0, 0)
-    --CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) and not 
-    -- if self.course:isOnHeadland(ix, 1) then
-    --     self:debug('No fruit found use but no field found use the oppisote side')
-    --     self.pipeOffsetX = -self.pipeOffsetX
-    -- else
-        if self.course:isOnHeadland(ix, 1) then
+    local fieldPolygon = self.course:getFieldPolygon()
+    if not CpMathUtil.isPointInPolygon(fieldPolygon, x, z) and not self.course:isOnHeadland(ix, 1) then
+        self:debug('No fruit found use but no field found use the oppisote side')
+        self.pipeOffsetX = -self.pipeOffsetX
+    elseif self.course:isOnHeadland(ix, 1) then
             self:debug('I am on a headland enganing chase mode')
             self.pipeOffsetX = 0
             self:setPipeOffsetZ(-self.measuredBackDistance - 2)
@@ -695,4 +695,12 @@ function AIDriveStrategyChopperCourse.isChopper(combine)
         capacity = combine:getFillUnitCapacity(dischargeNode.fillUnitIndex)
     end
     return capacity == math.huge
+end
+
+function AIDriveStrategyChopperCourse:headingToUpDown(ix)
+    self.connectingTrack = self.course:isOnConnectingTrack(ix)
+end
+
+function AIDriveStrategyChopperCourse:getConnectingTrack()
+    return self.connectingTrack
 end
