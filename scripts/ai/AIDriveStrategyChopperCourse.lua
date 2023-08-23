@@ -169,12 +169,6 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     AIDriveStrategyFieldWorkCourse.onWaypointPassed(self, ix, course)
 end
 
--- function AIDriveStrategyChopperCourse:start(course, startIx, jobParameters)
---     AIDriveStrategyChopperCourse.superClass().start(self, course, startIx, jobParameters)
---     -- Update the pipeOffset side when we start work  
---     self:updatePipeOffset(startIx)
--- end
-
 function AIDriveStrategyChopperCourse:checkNextUnloader()
     if not self:getUnloader(self:getCurrentUnloaderIdent()) and self:getUnloader(self:getNextUnloader()) then
         self:debug('checkNextUnloader: I lost my current unloder and I have one that is arriving switch them')
@@ -454,9 +448,9 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     self:debug('Fruitwaypoint was set to %d', fruitCheckWaypoint)
 
     if not self.course:isOnHeadland(fruitCheckWaypoint) then
-        local lRow = self.course:getRowLength(fruitCheckWaypoint)
+        local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
         if ixAtRowStart then
-            fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(fruitCheckWaypoint,lRow / 2)
+            fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(startIx,lRow / 2)
             self:debug('Fruitwaypoint was set to the middle of the row %d', fruitCheckWaypoint)
         else
             fruitCheckWaypoint = fruitCheckWaypoint + 20
