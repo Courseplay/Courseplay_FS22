@@ -81,6 +81,12 @@ function AIDriveStrategyUnloadChopper:setAIVehicle(vehicle, jobParameters)
     self.proximityController:registerIgnoreObjectCallback(self, AIDriveStrategyUnloadChopper.ignoreChopper)
 end
 
+function AIDriveStrategyUnloadChopper:setAllStaticParameters()
+    AIDriveStrategyUnloadChopper.superClass().setAllStaticParameters(self)
+    self.totalVehicleLength = AIUtil.getVehicleAndImplementsTotalLength(self.vehicle)
+    self:debug('totalVehicleLength: = %.2f', self.totalVehicleLength or 0)
+end
+
 ----------------------------------------------------------------------------------------------
 -- Main Loop For Chopper Unload Driver
 ---------------------------------------------------------------------------------------------
@@ -252,8 +258,10 @@ function AIDriveStrategyUnloadChopper:onLastWaypointPassed()
     if self.state == self.states.DRIVING_TO_COMBINE then
         if self:isOkToStartUnloadingCombine() then
             -- Right behind the combine, aligned, go for the pipe
+            self:debug('I should be unloading')
             self:startUnloadingCombine()
         else
+            self:debug('Calling Idle state')
             self:startWaitingForSomethingToDo()
         end
     elseif self.state == self.states.DRIVING_TO_MOVING_COMBINE then
@@ -362,7 +370,11 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
         return
     end
 
-    self:driveBesideCombine()
+    if combineStrategy:getChaseMode() then
+        self:driveBehindCombine()
+    else
+        self:driveBesideCombine()
+    end
 
     -- combine stopped in the meanwhile, like for example end of course
     if combineStrategy:willWaitForUnloadToFinish() then
@@ -380,7 +392,29 @@ function AIDriveStrategyUnloadChopper:unloadMovingCombine()
     end
 end
 
-
+function AIDriveStrategyUnloadChopper:driveBehindCombine()
+     local targetNode = self.vehicle.rootNode
+     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
+     local frontDistance = self:getFrontAndBackMarkers()
+     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
+     local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - frontDistance)
+     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
+     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
+     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
+ 
+     -- slow down while the pipe is unfolding to avoid crashing onto it
+     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
+         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
+     end
+ 
+     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
+             CpUtil.getName(self.vehicle), dz, speed, factor)
+ 
+     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+         DebugUtil.drawDebugNode(targetNode, 'target')
+     end
+     self:setMaxSpeed(math.max(0, speed))
+end
 ------------------------------------------------------------------------------------------------------------------------
 -- Waiting for maneuvering chopper
 -----------------------------------------------`-------------------------------------------------------------------------
@@ -613,7 +647,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 -- Drive to moving combine
 ------------------------------------------------------------------------------------------------------------------------
-function AIDriveStrategyUnloadCombine:driveToMovingCombine()
+function AIDriveStrategyUnloadChopper:driveToMovingCombine()
 
     self:checkForCombineProximity()
 
@@ -622,7 +656,7 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     self:checkForCombineTurnArea()
 
     -- stop when too close to a combine not ready to unload (wait until it is done with turning for example)
-    if self:isWithinSafeManeuveringDistance(self.combineToUnload) and self.combineToUnload:getCpDriveStrategy():isManeuvering() then
+    if self:isWithinSafeManeuveringDistance(self.combineToUnload) and self.combineToUnload:getCpDriveStrategy():isTurning() then
         self:startWaitingForManeuveringCombine()
     elseif self:isOkToStartUnloadingCombine() then
         self:startUnloadingCombine()
@@ -655,19 +689,20 @@ function AIDriveStrategyUnloadCombine:driveToMovingCombine()
     end
 end
 
-function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
+function AIDriveStrategyUnloadChopper:isBehindAndAlignedToCombine(debugEnabled)
     local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
     local pipeOffset = self:getPipeOffset(self.combineToUnload)
+
     if dz > 0 then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dz > 0')
         return false
     end
     -- TODO: this does not take the pipe's side into account, and will return true when we are at the
     -- wrong side of the combine. That happens rarely as we
-    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
-        self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
-        return false
-    end
+    -- if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
+    --     self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: dx > 1.5 pipe offset (%.1f > 1.5 * %.1f)', dx, pipeOffset)
+    --     return false
+    -- end
     local d = MathUtil.vector2Length(dx, dz)
     if d > (40) then
         self:debugIf(debugEnabled, 'isBehindAndAlignedToCombine: too far from combine (%.1f > 30)', d)
@@ -682,4 +717,13 @@ function AIDriveStrategyUnloadCombine:isBehindAndAlignedToCombine(debugEnabled)
     -- close enough and approximately same direction and behind and not too far to the left or right, about the same
     -- direction
     return true
+end
+
+function AIDriveStrategyUnloadChopper:isOkToStartUnloadingCombine()
+    if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) then
+        return self:isBehindAndAlignedToCombine()
+    else
+        self:debugSparse('combine not ready to unload, waiting')
+        return false
+    end
 end

@@ -54,7 +54,7 @@ This is currently screwed up...
 --- Unload target possibilities
 ---------------------------------------------
 
-1. Combines working on an field(no chopper!)
+1. Combines working on an field
 
 2. Silo loader picking up fill types dropped to the ground(heap) on the field or near the field.
 

@@ -55,6 +55,7 @@ function AIDriveStrategyChopperCourse.new(customMt)
         nextUnloader = 'B',
         currentUnloader = 'A',
     }
+    self.chaseMode = false
     return self
 end
 
@@ -64,7 +65,8 @@ function AIDriveStrategyChopperCourse:setAllStaticParameters()
     AIDriveStrategyChopperCourse.superClass().setAllStaticParameters(self)
 
     -- We need set this as a variable and update left/right side on turns in self:updatePipeOffset()
-    self:setPipeOffset()
+    self:setPipeOffsetX()
+    self:setPipeOffsetZ()
     local total, pipeInFruit = self.vehicle:getFieldWorkCourse():setPipeInFruitMap(self.pipeOffsetX - 2, self:getWorkWidth())
     self:debug('Pipe in fruit map updated, there are %d non-headland waypoints, of which at %d the pipe will be in the fruit',
             total, pipeInFruit)
@@ -77,6 +79,12 @@ function AIDriveStrategyChopperCourse:initializeImplementControllers(vehicle)
     _, self.pipeController = self:addImplementController(vehicle, PipeController, Pipe, {}, nil)
     self.combine, self.chopperController = self:addImplementController(vehicle, ChopperController, Combine, {}, nil)
 end
+
+-- function AIDriveStrategyChopperCourse:setJobParameterValues(jobParameters)
+--     AIDriveStrategyChopperCourse:superClass().setJobParameterValues(jobParameters)
+--     local x, z = jobParameters.fieldPosition:getPosition()
+--     self.fieldPolygon = CpFieldUtil.getFieldPolygonAtWorldPosition(x, z)
+-- end
 
 function AIDriveStrategyChopperCourse:update(dt)
     AIDriveStrategyCombineCourse.update(self, dt)
@@ -421,14 +429,18 @@ function AIDriveStrategyChopperCourse:resumeFieldworkAfterTurn(ix)
     AIDriveStrategyChopperCourse.superClass().resumeFieldworkAfterTurn(self, ix)
 end
 
-function AIDriveStrategyChopperCourse:setPipeOffset()
+function AIDriveStrategyChopperCourse:setPipeOffsetX()
     -- Get the max discharge distance of the chopper and use 40% of that as our pipe offset
-    self.pipeOffsetX = math.abs(self.chopperController:getChopperDischargeDistance() * .4)
+    self.pipeOffsetX = math.min(self.chopperController:getChopperDischargeDistance() * .4, self:getWorkWidth()/2 + 4)
+end
+
+function AIDriveStrategyChopperCourse:setPipeOffsetZ(offset)
+    self.pipeOffsetZ = offset or -3
 end
 -- Currently works need to improve fruit side check
 function AIDriveStrategyChopperCourse:getPipeOffset(additionalOffsetX, additionalOffsetZ)
     self:debugSparse('Chopper PipeOffsetX is %.2f', self.pipeOffsetX)
-    return self.pipeOffsetX + additionalOffsetX, -3 + additionalOffsetZ
+    return self.pipeOffsetX + additionalOffsetX, self.pipeOffsetZ + additionalOffsetZ
 end
 
 -- Currently works need to improve fruit side check
@@ -437,6 +449,13 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     -- Instead use the has Pathfinder Utiliy hasFruit() the same function used in generating a pipe in fruit map
     -- Pipe in fruit map can't be used on headlands so always use hasFruit
     -- If fruit is found using our current pipe offset update to the opposite side
+    
+    -- Reset the pipeoffset if we where being chased by a unloader driver
+    if self.pipeOffsetX == 0 then
+        self:setPipeOffsetX()
+        self.chaseMode = false
+        self:setPipeOffsetZ()
+    end
 
     local storedIx = ix
     while ix <= storedIx + 10 do
@@ -453,8 +472,32 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     if hasFruit then
         self:debug('I found fruit use the opposite side')
         self.pipeOffsetX = -self.pipeOffsetX
+        hasFruit = self:isPipeInFruitAtWaypointNow(self.course, ix, self.pipeOffsetX)
+        if hasFruit then
+            self:debug('I must be on a land row switch to chase mode')
+            self.pipeOffsetX = 0
+            self:setPipeOffsetZ(-self.measuredBackDistance - 2)
+            self.chaseMode = true
+            return
+        end
+    end
+    local x, _, z = localToWorld(self.storage.fruitCheckHelperWpNode.node, self.pipeOffsetX, 0, 0)
+    --CpMathUtil.isPointInPolygon(self.fieldPolygon, x, z) and not 
+    -- if self.course:isOnHeadland(ix, 1) then
+    --     self:debug('No fruit found use but no field found use the oppisote side')
+    --     self.pipeOffsetX = -self.pipeOffsetX
+    -- else
+        if self.course:isOnHeadland(ix, 1) then
+            self:debug('I am on a headland enganing chase mode')
+            self.pipeOffsetX = 0
+            self:setPipeOffsetZ(-self.measuredBackDistance - 2)
+        self.chaseMode = true
     end
     self:debug('No fruit found use the same side')
+end
+
+function AIDriveStrategyChopperCourse:getChaseMode()
+    return self.chaseMode
 end
 
 function AIDriveStrategyChopperCourse:registerUnloader(driver, whichUnloader)
@@ -618,11 +661,13 @@ function AIDriveStrategyChopperCourse:isReadyToUnload(noUnloadWithPipeInFruit)
     -- no unloading when not in a safe state (like turning)
     -- in these states we are always ready
     if self:willWaitForUnloadToFinish() then
+        self:debugSparse('isReadyToUnload(): willWait')
         return true
     end
 
     -- but, if we are full and waiting for unload, we have no choice, we must be ready ...
     if self.state == self.states.UNLOADING_ON_FIELD and self.unloadState == self.states.WAITING_FOR_UNLOAD_ON_FIELD then
+        self:debugSparse('isReadyToUnload(): state')
         return true
     end
 
