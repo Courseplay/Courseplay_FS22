@@ -2499,12 +2499,18 @@ Now it's possible to start the helper.
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_shovelLoader_title">
-			<Text language="de"><![CDATA[Radlader Fahrer]]></Text>
-			<Text language="en"><![CDATA[Wheelloader Driver]]></Text>
+			<Text language="de"><![CDATA[Radlader/Frontlader]]></Text>
+			<Text language="en"><![CDATA[Wheel loader/Front loader]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderGeneral_text">
 			<Text language="de"><![CDATA[
-Radlader wie er funktioniert und was er kann.
+Mit einem Radlader oder Tranktor mit Frontlader und Schaufel, lassen sich Bunker Silos oder Haufen automatisch aufnehmen und automatisch in einen Anhänger oder Lager abladen.
+Die Schaufelpositionen werden dabei automatisch auf die richtige Position gesetzt.
+Ist der Modus im HUD nicht direkt zu sehen, sollte er durch das durchschalten der "Startposition" gewählt werden können.
+
+Schaufeln mit gebiss öffnen dieses sogar beim laden und abladen und schließen dieses zum Transport.
+
+Die Schaufel zum zerkleinern von Zuckerrüben wird auch unterstützt.
 ]]></Text>
 			<Text language="en"><![CDATA[
 WIP
@@ -2512,7 +2518,13 @@ WIP
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderBasic_text">
 			<Text language="de"><![CDATA[
-So wird er eingestellt und gestartet.
+Um einen Radlader Fahrer zu starten, müssen zunächst über das Ziel Icon im HUD die Lade- und Entladeposition gewählt werden.
+Die Ladeposition wird wie auch bereits beim Lader mit der Ladeposition gewählt. Ein blauer Ramen entsteht um den Haufen.
+
+Die Abladeposition hängt davon ab, ob du in einen Anhänger oder in einen Trigger entladen möchtest.
+In einen Anhänger funktioniert automatisch und braucht keine Position. Es wird der naheste, stehende Anhänger gewählt und seitlich angefahren.
+
+Möchtest du in ein Lager entladen, muss zunächst das Ziel umgestellt werden und anschließend den Marker auf den Trigger gesetzt werden.
 ]]></Text>
 			<Text language="en"><![CDATA[
 WIP
@@ -2520,7 +2532,12 @@ WIP
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderTrigger_text">
 			<Text language="de"><![CDATA[
-Zusatzinfos zum Trigger mit Bild.
+Die Auswahl eines Triggers wirkt zunächst kompliziert, ist aber im Prinzip recht einfach.
+Da Gebäude mehrere Trigger haben können, muss dieses selber gewählt werden.
+Die verfügbaren Trigger werden als orangene Kreuze dar gestellt.
+Um einen Trigger zu wählen, setzt du den Punkt in der mitte des Runden Icons einfach mittig auf das Kreuz.
+Anschließend musst du noch die richtung wählen, in die der Fahrer den Trigger anfahren soll, da es keine klare Richtung eines Triggers gibt.
+Das Kreuz sollte jetzt wie im Bild dar gestellt gelb sein.
 ]]></Text>
 			<Text language="en"><![CDATA[
 WIP
