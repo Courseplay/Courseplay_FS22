@@ -50,10 +50,8 @@ function AIDriveStrategyChopperCourse.new(customMt)
     --- Unloaders Object. Stores all data about who we are unloading 
     ---@type CpTemporaryObject
     self.unloaders = {
-        unloaderA = CpTemporaryObject(nil),
-        unloaderB = CpTemporaryObject(nil),
-        nextUnloader = 'B',
-        currentUnloader = 'A',
+        currentUnloader = CpTemporaryObject(nil),
+        nextUnloader = CpTemporaryObject(nil)
     }
     self.chaseMode = false
     return self
@@ -146,15 +144,6 @@ function AIDriveStrategyChopperCourse:onWaypointPassed(ix, course)
     end
 
     self:checkFruit()
-
-    -- make sure we start making a pocket while we still have some fill capacity left as we'll be
-    -- harvesting fruit while making the pocket unless we have self unload turned on
-    if self:shouldMakePocket() and not self.settings.selfUnload:getValue() then
-        self.fillLevelFullPercentage = self.pocketFillLevelFullPercentage
-    end
-
-    local isOnHeadland = self.course:isOnHeadland(ix)
-    self.combineController:updateStrawSwath(isOnHeadland)
 
     if self.state == self.states.WORKING then
         self:estimateDistanceUntilFull(ix)
@@ -344,36 +333,48 @@ end
 -- Unloader Handling Functions
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function AIDriveStrategyChopperCourse:registerUnloader(driver, whichUnloader)
-    if whichUnloader == 'A' then
-        self:debugSparse('registerUnloader: %s is registed as driver A', CpUtil.getName(driver.vehicle))
-        self.unloaders.unloaderA:set(driver, 1000)
-    elseif whichUnloader == 'B' then
-        self:debugSparse('registerUnloader: %s is registed as driver B', CpUtil.getName(driver.vehicle))
-        self.unloaders.unloaderB:set(driver, 1000)
+function AIDriveStrategyChopperCourse:registerUnloader(driver)
+    if not self:getCurrentUnloader() then
+        self.unloaders.currentUnloader:set(driver, 1000)
+    elseif driver == self:getCurrentUnloader()  then
+        self.unloaders.currentUnloader:set(driver, 1000)
     else
-        self:debugSparse('registerUnloader: %s tried to register but didn\'t pass me A/B Unloader', CpUtil.getName(driver.vehicle))
+        self.unloaders.nextUnloader:set(driver, 1000)
     end
+    -- if whichUnloader == 'A' then
+    --     self:debugSparse('registerUnloader: %s is registed as driver A', CpUtil.getName(driver.vehicle))
+    --     self.unloaders.unloaderA:set(driver, 1000)
+    -- elseif whichUnloader == 'B' then
+    --     self:debugSparse('registerUnloader: %s is registed as driver B', CpUtil.getName(driver.vehicle))
+    --     self.unloaders.unloaderB:set(driver, 1000)
+    -- else
+    --     self:debugSparse('registerUnloader: %s tried to register but didn\'t pass me A/B Unloader', CpUtil.getName(driver.vehicle))
+    -- end
 end
 
-function AIDriveStrategyChopperCourse:resetUnloader(whichUnloader)
-    if whichUnloader == 'A' then
-        self:debug('resetUnloader: driver A was reset')
-        self.unloaders.unloaderA:reset()
-    elseif whichUnloader == 'B' then
-        self:debug('resetUnloader: driver B was reset')
-        self.unloaders.unloaderB:reset()
-    else
-        self:debug('resetUnloader: Someone tried to unregister but tell me who')
+function AIDriveStrategyChopperCourse:resetUnloader(driver)
+    if driver == self:getCurrentUnloader() then
+        self.unloaders.currentUnloader:set(driver, 1000)
+    elseif driver == self:getNextUnloader() == driver then
+        self.unloaders.nextUnloader:set(driver, 1000)
     end
+    -- if whichUnloader == 'A' then
+    --     self:debug('resetUnloader: driver A was reset')
+    --     self.unloaders.unloaderA:reset()
+    -- elseif whichUnloader == 'B' then
+    --     self:debug('resetUnloader: driver B was reset')
+    --     self.unloaders.unloaderB:reset()
+    -- else
+    --     self:debug('resetUnloader: Someone tried to unregister but tell me who')
+    -- end
 end
 function AIDriveStrategyChopperCourse:deregisterUnloader(driver, whichUnloader, noEventSend)
     if self.unloaderToRendezvous:get() then
-        if self:getUnloader(whichUnloader) and self:getUnloader(whichUnloader).vehicle == self.unloaderToRendezvous:get() then
+        if self:getUnloader(driver) and self:getUnloader(driver).vehicle == self.unloaderToRendezvous:get() then
             self:cancelRendezvous()
         end
     end
-    self:resetUnloader(whichUnloader)
+    self:resetUnloader(driver)
 end
 
 function AIDriveStrategyChopperCourse:clearAllUnloaderInformation()
@@ -382,39 +383,51 @@ function AIDriveStrategyChopperCourse:clearAllUnloaderInformation()
     self.unloader:reset()
 end
 
-function AIDriveStrategyChopperCourse:getUnloader(whichUnloader)
-    if whichUnloader == 'A' then
-        return self.unloaders.unloaderA:get()
-    elseif whichUnloader == 'B' then
-        return self.unloaders.unloaderB:get()
+function AIDriveStrategyChopperCourse:getUnloader(driver)
+    if driver == self:getCurrentUnloader() then
+        return self:getCurrentUnloader()
+    elseif driver == self:getNextUnloader() then
+        return self:getNextUnloader()
     end
+    -- if whichUnloader == 'A' then
+    --     return self.unloaders.unloaderA:get()
+    -- elseif whichUnloader == 'B' then
+    --     return self.unloaders.unloaderB:get()
+    -- end
 end
 
 function AIDriveStrategyChopperCourse:updateNextUnloader()
-    self:debug('I updated the unloaders')
-    if self.unloaders.currentUnloader == 'A' then
-        self.unloaders.nextUnloader = 'A'
-        self.unloaders.currentUnloader = 'B'
-    else
-        self.unloaders.nextUnloader = 'B'
-        self.unloaders.currentUnloader = 'A'
+    if self:getCurrentUnloader() then
+        self:resetUnloader(self:getCurrentUnloader())
     end
+    if self:getNextUnloader() then
+        self:registerUnloader(self:getNextUnloader())
+        self:resetUnloader(self:getNextUnloader())
+    end
+
+    -- if self.unloaders.currentUnloader == 'A' then
+    --     self.unloaders.nextUnloader = 'A'
+    --     self.unloaders.currentUnloader = 'B'
+    -- else
+    --     self.unloaders.nextUnloader = 'B'
+    --     self.unloaders.currentUnloader = 'A'
+    -- end
 end
 
-function AIDriveStrategyChopperCourse:getNextUnloaderID()
-    return self.unloaders.nextUnloader
-end
+-- function AIDriveStrategyChopperCourse:getNextUnloaderID()
+--     return self.unloaders.nextUnloader
+-- end
 
-function AIDriveStrategyChopperCourse:getCurrentUnloaderID()
-    return self.unloaders.currentUnloader
-end
+-- function AIDriveStrategyChopperCourse:getCurrentUnloaderID()
+--     return self.unloaders.currentUnloader
+-- end
 
 function AIDriveStrategyChopperCourse:getCurrentUnloader()
-    return self:getUnloader(self:getCurrentUnloaderID())
+    return self.unloaders.currentUnloader:get()
 end
 
 function AIDriveStrategyChopperCourse:getNextUnloader()
-    return self:getUnloader(self:getNextUnloaderID())
+    return self.unloaders.nextUnloader:get()
 end
 
 function AIDriveStrategyChopperCourse:checkNextUnloader()
@@ -453,7 +466,7 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
         self:debug('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
         if bestUnloader then
             self:updatePipeOffset()
-            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil, self:getCurrentUnloaderID())
+            bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
         end
         return
     elseif not self.chaseMode then
@@ -509,7 +522,7 @@ end
 function AIDriveStrategyChopperCourse:callUnloader(bestUnloader, tentativeRendezvousWaypointIx, bestEte)
     self:updatePipeOffset()
     if bestUnloader:getCpDriveStrategy():call(self.vehicle,
-            self.course:getWaypoint(tentativeRendezvousWaypointIx), self:getNextUnloaderID()) then
+            self.course:getWaypoint(tentativeRendezvousWaypointIx)) then
         self.unloaderToRendezvous:set(bestUnloader, 1000 * (bestEte + 30))
         self.unloaderRendezvousWaypointIx = tentativeRendezvousWaypointIx
         self:debug('callUnloaderWhenNeeded: harvesting, unloader accepted rendezvous at waypoint %d', self.unloaderRendezvousWaypointIx)
@@ -749,10 +762,9 @@ end
 function AIDriveStrategyChopperCourse:getTrailerFillLevel()
     local fillLevel = 0
     local capacity = 1
-    -- local trailer, targetObject = self:nearestChopperTrailer() 
-    targetObject = self:getCurrentUnloader().vehicle
-    if self:getCurrentUnloader() and self:getCurrentUnloader().vehicle then
-        fillLevel, capacity = FillLevelManager.getAllTrailerFillLevels(self:getCurrentUnloader().vehicle)
+    local trailer, targetObject = self:nearestChopperTrailer() 
+    if targetObject then
+        fillLevel, capacity = FillLevelManager.getAllTrailerFillLevels(targetObject)
         self:debug('Chopper Trailer fill level is %.1f and can hold %.1f',
             fillLevel, capacity)
     end

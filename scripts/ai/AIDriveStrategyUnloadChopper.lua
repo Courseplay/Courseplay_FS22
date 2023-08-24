@@ -70,7 +70,6 @@ function AIDriveStrategyUnloadChopper.new(customMt)
     end
     local self = AIDriveStrategyUnloadCombine.new(customMt)
     self.unloadTargetType = self.UNLOAD_TYPES.CHOPPER
-    self.whichUnloader = ''
     self.turningForChopperStates = CpUtil.initStates(self.combineUnloadStates, AIDriveStrategyUnloadChopper.myTurningForChopperStates)
     self.states = CpUtil.initStates(self.states, AIDriveStrategyUnloadChopper.myStates)
     self.combineUnloadStates = CpUtil.copyStates(self.combineUnloadStates, self.turningForChopperStates)
@@ -113,7 +112,7 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
         local strategy = self.combineToUnload:getCpDriveStrategy()
         if strategy then
             if strategy.registerUnloader then
-                strategy:registerUnloader(self, self.whichUnloader)
+                strategy:registerUnloader(self)
             else
                 -- combine may have been stopped and restarted, so CP is active again but not yet the combine strategy,
                 -- for instance it is now driving to work start, so it can't accept a registration
@@ -592,12 +591,12 @@ end
 ---@param waypoint Waypoint if given, the combine wants to meet the unloader at this waypoint, otherwise wants the
 --- unloader to come to the combine.
 ---@return boolean true if the unloader has accepted the request
-function AIDriveStrategyUnloadChopper:call(combine, waypoint, whichUnloader)
+function AIDriveStrategyUnloadChopper:call(combine, waypoint)
     if waypoint then
         -- combine set up a rendezvous waypoint for us, go there
         local xOffset, zOffset = self:getPipeOffset(combine)
         if self:isPathfindingNeeded(self.vehicle, waypoint, xOffset, zOffset, 25) then
-            self.whichUnloader = whichUnloader
+
             self.rendezvousWaypoint = waypoint
             self.combineToUnload = combine
             self:setNewState(self.states.WAITING_FOR_PATHFINDER)
@@ -632,7 +631,7 @@ function AIDriveStrategyUnloadChopper:call(combine, waypoint, whichUnloader)
             -- allow for more align space for shorter pipes
             zOffset = -self:getCombinesMeasuredBackDistance() - (pipeLength > 6 and 2 or 10)
         end
-        self.whichUnloader = whichUnloader
+
         self:startPathfindingToCombine(self.onPathfindingDoneToCombine, nil, zOffset)
         return true
     end
@@ -641,7 +640,6 @@ end
 function AIDriveStrategyUnloadChopper:startWaitingForSomethingToDo()
     if self.state ~= self.states.IDLE then
         self:releaseCombine()
-        self.whichUnloader = ''
         self.course = Course.createStraightForwardCourse(self.vehicle, 25)
         self:setNewState(self.states.IDLE)
     end
@@ -652,7 +650,7 @@ function AIDriveStrategyUnloadChopper:releaseCombine()
     if self.combineToUnload and self.combineToUnload:getIsCpActive() then
         local strategy = self.combineToUnload:getCpDriveStrategy()
         if strategy and strategy.deregisterUnloader then
-            strategy:deregisterUnloader(self, self.whichUnloader)
+            strategy:deregisterUnloader(self)
         end
         self.combineJustUnloaded = self.combineToUnload
     end
