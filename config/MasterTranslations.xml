@@ -2507,14 +2507,14 @@ Now it's possible to start the helper.
 Radlader wie er funktioniert und was er kann.
 ]]></Text>
 			<Text language="en"><![CDATA[
--
+WIP
 ]]></Text>
 		<Translation name="CP_help_page_shovelLoaderBasic_text">
 			<Text language="de"><![CDATA[
 So wird er eingestellt und gestartet.
 ]]></Text>
 			<Text language="en"><![CDATA[
--
+WIP
 ]]></Text>
 		</Translation>
 		<Translation name="CP_help_page_shovelLoaderTrigger_text">
@@ -2522,7 +2522,7 @@ So wird er eingestellt und gestartet.
 Zusatzinfos zum Trigger mit Bild.
 ]]></Text>
 			<Text language="en"><![CDATA[
--
+WIP
 ]]></Text>
 		</Translation>
 
