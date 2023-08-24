@@ -2543,6 +2543,17 @@ Das Kreuz sollte jetzt wie im Bild dar gestellt gelb sein.
 WIP
 ]]></Text>
 		</Translation>
+	</Translation>
+	<!--
+	<Translation name="CP_help_page_shovelLoaderTpsExtension_text">
+		<Text language="de"><![CDATA[
+TPS extension
+]]></Text>
+		<Text language="en"><![CDATA[
+TPS extension
+]]></Text>
+	</Translation>
+	-->
 
 	</Category>
 	<Category name="Input bindings">	

@@ -234,6 +234,9 @@
 				<text text="$l10n_CP_help_page_shovelLoaderTrigger_text"/>
 				<image filename="img/helpmenu/shovelloadertrigger.dds" size="1024 1024" uvs="0px 0px 830px 610px"/>
 			</paragraph>
+			<!--<paragraph>
+				<text text="$l10n_CP_help_page_shovelLoaderTpsExtension_text"/>
+			</paragraph>-->
 			
 		</page>
 	</category>
