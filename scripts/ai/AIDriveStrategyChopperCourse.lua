@@ -389,11 +389,6 @@ function AIDriveStrategyChopperCourse:getUnloader(driver)
     elseif driver == self:getNextUnloader() then
         return self:getNextUnloader()
     end
-    -- if whichUnloader == 'A' then
-    --     return self.unloaders.unloaderA:get()
-    -- elseif whichUnloader == 'B' then
-    --     return self.unloaders.unloaderB:get()
-    -- end
 end
 
 function AIDriveStrategyChopperCourse:updateNextUnloader()
@@ -405,22 +400,7 @@ function AIDriveStrategyChopperCourse:updateNextUnloader()
         self:resetUnloader(self:getNextUnloader())
     end
 
-    -- if self.unloaders.currentUnloader == 'A' then
-    --     self.unloaders.nextUnloader = 'A'
-    --     self.unloaders.currentUnloader = 'B'
-    -- else
-    --     self.unloaders.nextUnloader = 'B'
-    --     self.unloaders.currentUnloader = 'A'
-    -- end
 end
-
--- function AIDriveStrategyChopperCourse:getNextUnloaderID()
---     return self.unloaders.nextUnloader
--- end
-
--- function AIDriveStrategyChopperCourse:getCurrentUnloaderID()
---     return self.unloaders.currentUnloader
--- end
 
 function AIDriveStrategyChopperCourse:getCurrentUnloader()
     return self.unloaders.currentUnloader:get()
