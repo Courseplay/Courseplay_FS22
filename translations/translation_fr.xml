@@ -795,6 +795,16 @@ La chargeuse peut être vidée par une tâche de déchargement Courseplay.
 Placer le marqueur d'approvisionnement sur un tas ou un silo. Ils apparaissent en surbrillance sur la carte.
 Ensuite vous pouvez lancer la tâche.
 "/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

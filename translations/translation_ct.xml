@@ -806,6 +806,16 @@ Courseplay能夠在青貯筒倉中壓實或分佈糠秕，或在楔形筒倉中�
 這個標記可以檢測到堆或筒倉，並在地圖上突出顯示它們。
 那麼現在可以啟用小幫手了。
 "/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

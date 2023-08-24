@@ -830,6 +830,16 @@ Als erstes muss auf der Helferkarte der Lade-Marker gesetzt werden.
 Dieses erkennt vorhandende Haufen oder Silos und markiert den ausgewählten.
 Anschließend kann der Helfer gestartet werden.
 "/>
+    <text name="CP_help_page_shovelLoader_title" text="Radlader Fahrer"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+Radlader wie er funktioniert und was er kann.
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+So wird er eingestellt und gestartet.
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+Zusatzinfos zum Trigger mit Bild.
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

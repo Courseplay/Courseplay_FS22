@@ -804,6 +804,16 @@ Chcete-li spustit nakládací značku v nabídce AI, je třeba ji nastavit.
 Značka detekuje hromady nebo silážní jámy a zvýrazňuje je na mapě.
 Nyní je možné spustit pracovníka.
 "/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
+"/>
     <!---->
     <!--Input bindings-->
     <!---->

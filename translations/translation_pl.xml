@@ -811,6 +811,16 @@ Aby rozpocząć załadunek, punkt załadunkowy musi zostać ustawiony w menu SI.
 Znacznik wykrywa pryzmę lub silos i podświetla to na mapie.
 Terze możesz rozpocząć pracę pomocnika.
 "/>
+    <text name="CP_help_page_shovelLoader_title" text="Wheelloader Driver"/>
+    <text name="CP_help_page_shovelLoaderGeneral_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderBasic_text" text="
+WIP
+"/>
+    <text name="CP_help_page_shovelLoaderTrigger_text" text="
+WIP
+"/>
     <!---->
     <!--Input bindings-->
     <!---->
