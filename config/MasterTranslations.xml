@@ -2498,6 +2498,33 @@ The marker detects heaps or silos and highlights them on the map.
 Now it's possible to start the helper.
 ]]></Text>
 		</Translation>
+		<Translation name="CP_help_page_shovelLoader_title">
+			<Text language="de"><![CDATA[Radlader Fahrer]]></Text>
+			<Text language="en"><![CDATA[Wheelloader Driver]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_shovelLoaderGeneral_text">
+			<Text language="de"><![CDATA[
+Radlader wie er funktioniert und was er kann.
+]]></Text>
+			<Text language="en"><![CDATA[
+-
+]]></Text>
+		<Translation name="CP_help_page_shovelLoaderBasic_text">
+			<Text language="de"><![CDATA[
+So wird er eingestellt und gestartet.
+]]></Text>
+			<Text language="en"><![CDATA[
+-
+]]></Text>
+		</Translation>
+		<Translation name="CP_help_page_shovelLoaderTrigger_text">
+			<Text language="de"><![CDATA[
+Zusatzinfos zum Trigger mit Bild.
+]]></Text>
+			<Text language="en"><![CDATA[
+-
+]]></Text>
+		</Translation>
 
 	</Category>
 	<Category name="Input bindings">	

@@ -222,5 +222,19 @@
 				<text text="$l10n_CP_help_page_siloLoaderBasic_text"/>
 			</paragraph>
 		</page>
+		<!--Courseplay Shovel Loader Driver-->
+		<page title="$l10n_CP_help_page_shovelLoader_title">
+			<paragraph>
+				<text text="$l10n_CP_help_page_shovelLoaderGeneral_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_shovelLoaderBasic_text"/>
+			</paragraph>
+			<paragraph>
+				<text text="$l10n_CP_help_page_shovelLoaderTrigger_text"/>
+				<image filename="img/helpmenu/shovelloadertrigger.dds" size="1024 1024" uvs="0px 0px 765px 510px"/>
+			</paragraph>
+			
+		</page>
 	</category>
 </helpLines>
