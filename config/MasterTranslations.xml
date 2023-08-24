@@ -2509,6 +2509,7 @@ Radlader wie er funktioniert und was er kann.
 			<Text language="en"><![CDATA[
 WIP
 ]]></Text>
+		</Translation>
 		<Translation name="CP_help_page_shovelLoaderBasic_text">
 			<Text language="de"><![CDATA[
 So wird er eingestellt und gestartet.
