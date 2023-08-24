@@ -410,6 +410,9 @@ function AIDriveStrategyUnloadChopper:driveBehindCombine()
 
     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
     local dz = -self.proximityController:checkBlockingVehicleFront() + 1.25
+    if dz == math.huge then
+        dz = 0
+    end
     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
@@ -437,12 +440,17 @@ function AIDriveStrategyUnloadChopper:chopperIsTurning()
     end
     
     if self.combineToUnload:getCpDriveStrategy():isTurning() or self.combineToUnload:getCpDriveStrategy():getConnectingTrack() then
-        
+        -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
+        local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
         if self.combineToUnload:getCpDriveStrategy():getChaseMode() then
-            self:driveBehindCombine()
+            if dz < -20 then
+                self:setMaxSpeed(self.settings.reverseSpeed:getValue())
+            elseif dz > -25 then
+                self:setMaxSpeed(0)
+            end
         else
-            -- Back up until the chopper is in front us so we don't interfer with its turn and make sure we stay behind it
-            local _, _, dz = self:getDistanceFromCombine(self.combineToUnload)
+            
+            
             if dz < 0 then
                 self:setMaxSpeed(self.settings.reverseSpeed:getValue())
             elseif dz > -3 then
@@ -738,9 +746,72 @@ end
 
 function AIDriveStrategyUnloadChopper:isOkToStartUnloadingCombine()
     if self.combineToUnload:getCpDriveStrategy():isReadyToUnload(true) then
-        return self:isBehindAndAlignedToCombine()
+        return self:isBehindAndAlignedToCombine() or self:isInFrontAndAlignedToMovingCombine()
     else
         self:debugSparse('combine not ready to unload, waiting')
         return false
     end
 end
+
+--- In front of the combine, right distance from pipe to start unloading and the combine is moving
+function AIDriveStrategyUnloadChopper:isInFrontAndAlignedToMovingCombine(debugEnabled)
+    local dx, _, dz = localToLocal(self.vehicle.rootNode, self.combineToUnload:getAIDirectionNode(), 0, 0, 0)
+    local pipeOffset = self:getPipeOffset(self.combineToUnload)
+    if dz < 0 then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: dz < 0')
+        return false
+    end
+    -- was 30 meters from the parent function if we arent within the length of the vehicle we are to far foward and the chopper won't drive
+    if MathUtil.vector2Length(dx, dz) > self.totalVehicleLength then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: more than %.1f from combine',self.totalVehicleLength)
+        return false
+    end
+    if not self:isLinedUpWithPipe(dx, pipeOffset, 0.5) then
+        self:debugIf(debugEnabled,
+                'isInFrontAndAlignedToMovingCombine: dx (%.1f) not between 0.5 and 1.5 pipe offset (%.1f)', dx, pipeOffset)
+        return false
+    end
+    if not CpMathUtil.isSameDirection(self.vehicle:getAIDirectionNode(), self.combineToUnload:getAIDirectionNode(),
+            AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg) then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: direction difference is > %d)',
+                AIDriveStrategyUnloadCombine.maxDirectionDifferenceDeg)
+        return false
+    end
+    if self.combineToUnload:getCpDriveStrategy():willWaitForUnloadToFinish() then
+        self:debugIf(debugEnabled, 'isInFrontAndAlignedToMovingCombine: combine is not moving')
+        return false
+    end
+    -- in front of the combine, close enough and approximately same direction, about pipe offset side distance
+    -- and is not waiting (stopped) for the unloader
+    return true
+end
+
+
+-- function AIDriveStrategyUnloadChopper:driveBesideCombine()
+--     -- we don't want a moving target
+--     self:fixAutoAimNode()
+--     local targetNode = self:getTrailersTargetNode()
+--     if self.combineToUnload:getCpDriveStrategy():getSugarCaneHarvester() then
+--         local trailer = AIUtil.getImplementOrVehicleWithSpecialization(self.vehicle, Trailer)
+--         targetNode = trailer.rootNode
+--     end
+--     local _, offsetZ = self:getPipeOffset(self.combineToUnload)
+--     -- TODO: this - 1 is a workaround the fact that we use a simple P controller instead of a PI
+--     local _, _, dz = localToLocal(targetNode, self:getCombineRootNode(), 0, 0, -offsetZ - 2)
+--     -- use a factor to make sure we reach the pipe fast, but be more gentle while discharging
+--     local factor = self.combineToUnload:getCpDriveStrategy():isDischarging() and 0.5 or 2
+--     local speed = self.combineToUnload.lastSpeedReal * 3600 + MathUtil.clamp(-dz * factor, -10, 15)
+
+--     -- slow down while the pipe is unfolding to avoid crashing onto it
+--     if self.combineToUnload:getCpDriveStrategy():isPipeMoving() then
+--         speed = (math.min(speed, self.combineToUnload:getLastSpeed() + 2))
+--     end
+
+--     self:renderText(0, 0.02, "%s: driveBesideCombine: dz = %.1f, speed = %.1f, factor = %.1f",
+--             CpUtil.getName(self.vehicle), dz, speed, factor)
+
+--     if CpUtil.isVehicleDebugActive(self.vehicle) and CpDebug:isChannelActive(self.debugChannel) then
+--         DebugUtil.drawDebugNode(targetNode, 'target')
+--     end
+--     self:setMaxSpeed(math.max(0, speed))
+-- end
