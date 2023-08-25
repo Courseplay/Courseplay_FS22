@@ -794,14 +794,15 @@ function AIDriveStrategyUnloadChopper:isInFrontAndAlignedToMovingCombine(debugEn
     return true
 end
 
+-- Copied From Parent altered to extend the coruse at the end this is need for aligment purposes
 function AIDriveStrategyUnloadChopper:onPathfindingDoneToCombine(path, goalNodeInvalid)
     if self:isPathFound(path, goalNodeInvalid, CpUtil.getName(self.combineToUnload)) and self.state == self.states.WAITING_FOR_PATHFINDER then
         local driveToCombineCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
         -- Straight section is needed to be append to all pathfinder courses 
         -- since the chopper can't move with out us we need to make sure we are straight before approaching the chopper
-        local combineCurrentWaypoint = self.combineCourse and self.combineCourse:getWaypoint(self.combineCourse:getCurrentWaypointIx())
-        local dx = combineCurrentWaypoint and combineCurrentWaypoint.dx
-        local dz = combineCurrentWaypoint and combineCurrentWaypoint.dz
+        -- local combineCurrentWaypoint = self.combineToUnload and self.combineToUnload:getCpDriveStrategy():getClosestFieldworkWaypointIx()
+        -- local dx = combineCurrentWaypoint and combineCurrentWaypoint.dx
+        -- local dz = combineCurrentWaypoint and combineCurrentWaypoint.dz
         driveToCombineCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength)
         self:startCourse(driveToCombineCourse, 1)
         self:setNewState(self.states.DRIVING_TO_COMBINE)
@@ -810,6 +811,11 @@ function AIDriveStrategyUnloadChopper:onPathfindingDoneToCombine(path, goalNodeI
         self:startWaitingForSomethingToDo()
         return false
     end
+end
+
+-- Allows the combine to access the full threshold setting so it know when to send the trailer home
+function AIDriveStrategyUnloadChopper:getFullThreshold()
+    return self.settings.fullThreshold:getValue()
 end
 
 -- function AIDriveStrategyUnloadChopper:driveBesideCombine()
