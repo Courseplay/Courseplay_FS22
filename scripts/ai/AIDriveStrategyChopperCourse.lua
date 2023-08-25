@@ -351,10 +351,11 @@ end
 function AIDriveStrategyChopperCourse:registerUnloader(driver)
     if not self:getCurrentUnloader() then
         self.unloaders.currentUnloader:set(driver, 1000)
-        -- Update our call percentage to use the user supplied setting on the unloader or if something break just go with 95
+        -- Update our call percentage to use the user supplied setting on the unloader or if something breaks just go with 95
         self.callUnloaderAtFillLevelPercentage = driver:getFullThreshold() or 95
     elseif driver == self:getCurrentUnloader()  then
         self.unloaders.currentUnloader:set(driver, 1000)
+        self.callUnloaderAtFillLevelPercentage = driver:getFullThreshold() or 95
     else
         self.unloaders.nextUnloader:set(driver, 1000)
     end

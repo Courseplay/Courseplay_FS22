@@ -2219,8 +2219,13 @@ function AIDriveStrategyUnloadCombine:onPathfindingDoneBeforeUnloadingOnField(pa
                 -self.fieldUnloadData.xOffset, dz, zOffset, 3, false))
         self:startCourse(course, 1)
     else
-        self:info("Could not find a path to the field unload position!")
-        self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        -- This lets pathfinder try again with less strict pathfinder instead of just outright going home with its ball
+        if self.pathfinderFailureCount == 3 then
+            self:info("Could not find a path to the field unload position!")
+            self.vehicle:stopCurrentAIJob(AIMessageCpErrorNoPathFound.new())
+        else
+            self:startWaitingForSomethingToDo()
+        end
     end
 end
 
