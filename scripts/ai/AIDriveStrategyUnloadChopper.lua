@@ -203,10 +203,10 @@ function AIDriveStrategyUnloadChopper:getDriveData(dt, vX, vY, vZ)
         self:moveAwayFromOtherVehicle()
 
     elseif self.state == self.states.MOVING_AWAY_WITH_TRAILER_FULL then
-        if self.chaseMode then
-            self:setMaxSpeed(self.settings.reverseSpeed:getValue())
-        else
+        if moveForwards then
             self:setMaxSpeed(self:getFieldSpeed())
+        else
+            self:setMaxSpeed(self.settings.reverseSpeed:getValue())
         end
     elseif self.state == self.states.MOVING_BACK then
         self:setMaxSpeed(self.settings.reverseSpeed:getValue())
@@ -275,7 +275,6 @@ function AIDriveStrategyUnloadChopper:onLastWaypointPassed()
     elseif self.state == self.states.MOVING_AWAY_FROM_OTHER_VEHICLE then
         self:startWaitingForSomethingToDo()
     elseif self.state == self.states.MOVING_AWAY_WITH_TRAILER_FULL then
-        self.chaseMode = false
         self:startUnloadingTrailers()
     elseif self.state == self.states.DRIVING_BACK_TO_START_POSITION_WHEN_FULL then
         self:debug('Inverted goal position reached, so give control back to the job.')
@@ -310,27 +309,38 @@ end
 -- Start moving away from Chopper because our trailer is full
 ------------------------------------------------------------------------------------------------------------------------
 function AIDriveStrategyUnloadChopper:startMovingAwayFromChopper(newState, combine)
+    -- Create a Node facing the oppistote direction
+    local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode())
+    local goal = CpUtil.createNode("goal", x, z, yRot + math.pi)
+
     if combine and combine.getCpDriveStrategy and combine:getCpDriveStrategy():getChaseMode() then
         -- If we are in chasemode then we are snugged up against the chopper driver backwards 
         self:debug('Create reverse course to back away')
-        self.chaseMode = true
-        self.driveAwayFromChopperCourse = Course.createStraightReverseCourse(self.vehicle, self.turningRadius * 1.5 )
+        self.driveAwayFromChopperCourse = Course.createStraightReverseCourse(self.vehicle, self.turningRadius * 2 )
+        if combine:getCpDriveStrategy():getLandRow() then
+            local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, -self.turningRadius * 2, goal,
+            0, self.totalVehicleLength + 5, self.turningRadius)
+            if path then
+                self:debug('I found a Anayltice Path and I am now going to drive it')
+                local appendCourse = Course.createFromAnalyticPath(self.vehicle, path, true)
+                self.driveAwayFromChopperCourse:append(appendCourse)
+            end
+        end
     else
-        -- Create a Node facing the oppistote direction
-        local x, z, yRot = PathfinderUtil.getNodePositionAndDirection(self.vehicle:getAIDirectionNode())
-        local goal = CpUtil.createNode("goal", x, z, yRot + math.pi)
-
+        
         -- Deterime what side the offset should be applied
         local offsetFix = -(self.combineOffset/math.abs(self.combineOffset))
         -- Determine
         local offsetX = math.max(math.abs(self.combineOffset * 2), self.turningRadius * 2)
         offsetX = offsetX * offsetFix
 
+        local x, _, z = localToWorld(goal, offsetX, 0, -10)
+        local hasFruit = PathfinderUtil.hasFruit(x, z, 1, 1)
 
         self:debug('Creating chopper drive away course at x=%d z=%d offsetX=%d', x, z, offsetX)
         local path, length = PathfinderUtil.findAnalyticPath(PathfinderUtil.dubinsSolver, self.vehicle.rootNode, 0, goal,
         offsetX, -10, self.turningRadius)
-        if path then
+        if path and not hasFruit then
             self:debug('I found a Anayltice Path and I am now going to drive it')
             self.driveAwayFromChopperCourse = Course.createFromAnalyticPath(self.vehicle, path, true)
             self.driveAwayFromChopperCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
@@ -481,9 +491,9 @@ function AIDriveStrategyUnloadChopper:onPathfindingDoneChopperTurn(path, goalNod
         -- end up not parallel to the combine's course when we extend the pathfinder course in the direction of the
         -- last waypoint. Therefore, use the rendezvousWaypoint's direction instead
         -- Update the redezouswaypoint so the exensition course gets addeded
-        self.rendezvousWaypoint = self.combineCourse and self.combineCourse:getWaypoint(self.combineCourse:getCurrentWaypointIx())
-        local dx = self.rendezvousWaypoint and self.rendezvousWaypoint.dx
-        local dz = self.rendezvousWaypoint and self.rendezvousWaypoint.dz
+        local combineCurrentWaypoint = self.combineCourse and self.combineCourse:getWaypoint(self.combineCourse:getCurrentWaypointIx())
+        local dx = combineCurrentWaypoint and combineCurrentWaypoint.dx
+        local dz = combineCurrentWaypoint and combineCurrentWaypoint.dz
         turnAroundForChopper:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength, dx, dz)
         self:startCourse(turnAroundForChopper, 1)
         self:setNewState(self.states.TURNING_AROUND_FOR_CHOPPER)
@@ -784,6 +794,23 @@ function AIDriveStrategyUnloadChopper:isInFrontAndAlignedToMovingCombine(debugEn
     return true
 end
 
+function AIDriveStrategyUnloadChopper:onPathfindingDoneToCombine(path, goalNodeInvalid)
+    if self:isPathFound(path, goalNodeInvalid, CpUtil.getName(self.combineToUnload)) and self.state == self.states.WAITING_FOR_PATHFINDER then
+        local driveToCombineCourse = Course(self.vehicle, CourseGenerator.pointsToXzInPlace(path), true)
+        -- Straight section is needed to be append to all pathfinder courses 
+        -- since the chopper can't move with out us we need to make sure we are straight before approaching the chopper
+        local combineCurrentWaypoint = self.combineCourse and self.combineCourse:getWaypoint(self.combineCourse:getCurrentWaypointIx())
+        local dx = combineCurrentWaypoint and combineCurrentWaypoint.dx
+        local dz = combineCurrentWaypoint and combineCurrentWaypoint.dz
+        driveToCombineCourse:extend(AIDriveStrategyUnloadCombine.driveToCombineCourseExtensionLength)
+        self:startCourse(driveToCombineCourse, 1)
+        self:setNewState(self.states.DRIVING_TO_COMBINE)
+        return true
+    else
+        self:startWaitingForSomethingToDo()
+        return false
+    end
+end
 
 -- function AIDriveStrategyUnloadChopper:driveBesideCombine()
 --     -- we don't want a moving target

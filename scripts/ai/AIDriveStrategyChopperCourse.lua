@@ -267,8 +267,9 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
     -- Reset the pipeoffset if we where being chased by a unloader driver
     if self.pipeOffsetX == 0 then
         self:setPipeOffsetX()
-        self.chaseMode = false
         self:setPipeOffsetZ()
+        self.chaseMode = false
+        self.landRow = false
         self:debug('reset chase mode')
     end
     
@@ -303,6 +304,7 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
                 self.pipeOffsetX = 0
                 self:setPipeOffsetZ(-self.measuredBackDistance - 2)
                 self.chaseMode = true
+                self.landRow = true
                 return
             end
         end
@@ -329,6 +331,9 @@ function AIDriveStrategyChopperCourse:getChaseMode()
     return self.chaseMode
 end
 
+function AIDriveStrategyChopperCourse:getLandRow()
+    return self.landRow
+end
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Unloader Handling Functions
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -439,11 +444,11 @@ function AIDriveStrategyChopperCourse:callUnloaderWhenNeeded()
     local bestUnloader, bestEte
     if self:isWaitingForUnload() then
         if self:getCurrentUnloader() then
-            self:debug('callUnloaderWhenNeeded: stopped, no unloader needed my unloader is just out of range')
+            self:debugSparse('callUnloaderWhenNeeded: stopped, no unloader needed my unloader is just out of range')
             return
         end
         bestUnloader, _ = self:findUnloader(self.vehicle, nil)
-        self:debug('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
+        self:debugSparse('callUnloaderWhenNeeded: stopped, need unloader here and I currently don\'t have any unloaders')
         if bestUnloader then
             self:updatePipeOffset()
             bestUnloader:getCpDriveStrategy():call(self.vehicle, nil)
