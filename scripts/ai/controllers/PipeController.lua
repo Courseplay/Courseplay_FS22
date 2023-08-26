@@ -270,7 +270,16 @@ function PipeController:measurePipeProperties()
     
     local _
     local dischargeNode = self:getDischargeNode()
-    if self.implement.getAIDirectionNode then 
+
+    
+    if ImplementUtil.isChopper(self.implement) then
+        self:debug("Finding the pipe base node of the chopper")
+        -- Find the base node of the chopper. So we can measure pipe distance
+        local pipeNode = self:getPipesBaseNode()
+        self:debug('pipeNode = %s', pipeNode)
+        local dx, _, dz = localToLocal(pipeNode, dischargeNode.node, 0, 0, 0)
+        self.pipeOffsetX = MathUtil.vector2Length(dx, dz) 
+    elseif self.implement.getAIDirectionNode then 
         self:debug("The pipe is installed at the root vehicle.")
         self.pipeOffsetX, _, self.pipeOffsetZ = localToLocal(dischargeNode.node, 
             self.implement:getAIDirectionNode(), 0, 0, 0)
@@ -294,6 +303,15 @@ function PipeController:measurePipeProperties()
     self:printFoldableDebug()
     self:printPipeDebug()
 
+end
+
+function PipeController:getPipesBaseNode()
+    for i=1,#self.pipeSpec.nodes do
+        node = self.pipeSpec.nodes[i]
+       if node.autoAimYRotation then
+           return node.node
+       end
+   end
 end
 
 --- Unfolds the pipe completely to measure the pipe properties.

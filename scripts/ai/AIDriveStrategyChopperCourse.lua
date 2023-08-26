@@ -231,8 +231,11 @@ function AIDriveStrategyChopperCourse:setPipeOffsetX()
         -- Since the sugarcane havester rotates we need to find total pipe length and use that as our offset. 
         -- This may cause issues becase the pipe root node is behind the vehicle root node added a minus 2 offset to help
         -- TODO Find out how to acces the pipe root node and measure total distance from pipe root to dischare node as this is our pipe length
-        local dx, dz = self.pipeController:getPipeOffset()
-        self.pipeOffsetX = MathUtil.vector2Length(dx, dz) - 2
+        -- pipeNode = g_combineUnloadManager:getPipesBaseNode(self.vehicle)
+        -- dischargeNode = self:getDischargeNode()
+        -- local dx, _, dz = localToLocal(pipeNode, dischargeNode, 0, 0,0)
+        -- self.pipeOffsetX = MathUtil.vector2Length(dx, dz) - 2 
+        self.pipeOffsetX = self.pipeController:getPipeOffsetX()
     else
         -- Use the work width plus a little bit. But make sure we don't go further than 80% of the max discarge. 
         -- This may cause issues on very large modded choppers that didn't alter the discharge distance
@@ -273,8 +276,8 @@ function AIDriveStrategyChopperCourse:updatePipeOffset(ix)
 
     if not self.course:isOnHeadland(fruitCheckWaypoint) then
         local lRow, rowStartIx = self.course:getRowLength(fruitCheckWaypoint)
-        if ixAtRowStart then
-            fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(startIx,lRow / 2)
+        if rowStartIx then
+            fruitCheckWaypoint = self.course:getNextWaypointIxWithinDistance(rowStartIx, lRow / 2)
             self:debug('Fruitwaypoint was set to the middle of the row %d', fruitCheckWaypoint)
         else
             fruitCheckWaypoint = fruitCheckWaypoint + 10
@@ -590,16 +593,6 @@ function AIDriveStrategyChopperCourse:isReadyToUnload(noUnloadWithPipeInFruit)
     -- safe default, better than block unloading
     self:debugSparse('isReadyToUnload(): defaulting to ready to unload')
     return true
-end
-
--- Function to check to see if we are a chopper called when installing drive strageties
-function AIDriveStrategyChopperCourse.isChopper(combine)
-    local capacity = 0
-    local dischargeNode = combine:getCurrentDischargeNode()
-    if dischargeNode ~= nil then
-        capacity = combine:getFillUnitCapacity(dischargeNode.fillUnitIndex)
-    end
-    return capacity == math.huge
 end
 
 function AIDriveStrategyChopperCourse:getConnectingTrack()

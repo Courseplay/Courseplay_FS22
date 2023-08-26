@@ -354,7 +354,7 @@ function CpAIFieldWorker:replaceAIFieldWorkerDriveStrategies(jobParameters, star
         local combine = AIUtil.getImplementOrVehicleWithSpecialization(self, Combine) 
         local pipe = combine and SpecializationUtil.hasSpecialization(Pipe, combine.specializations)
         if combine and pipe then -- Default harvesters with a pipe.
-            if AIDriveStrategyChopperCourse.isChopper(combine) then
+            if ImplementUtil.isChopper(combine) then
                 CpUtil.debugVehicle(CpDebug.DBG_FIELDWORK, self, 'Found a chopper with pipe, install CP chopper drive strategy for it')
                 cpDriveStrategy = AIDriveStrategyChopperCourse.new()
                 self.spec_cpAIFieldWorker.chopperDriveStrategy = cpDriveStrategy
